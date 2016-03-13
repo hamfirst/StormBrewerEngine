@@ -1,7 +1,7 @@
 // UnitTests.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include <iostream>
 
 #include "Reflection\Reflection.h"
 
@@ -26,7 +26,7 @@ struct print_visitor
   template<class FieldData>
   void operator()(FieldData f)
   {
-    //std::cout << f.name() << "=" << f.get() << std::endl;
+    std::cout << f.name() << "=" << f.get() << std::endl;
   }
 };
 
