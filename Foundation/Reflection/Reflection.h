@@ -12,25 +12,26 @@
 #include <boost/preprocessor/stringize.hpp>
 
 
-#define REM(...) __VA_ARGS__
-#define EAT(...)
-
-// Retrieve the type
-#define TYPEOF(x) DETAIL_TYPEOF(DETAIL_TYPEOF_PROBE x,)
-#define DETAIL_TYPEOF(...) DETAIL_TYPEOF_HEAD(__VA_ARGS__)
-#define DETAIL_TYPEOF_HEAD(x, ...) REM x
-#define DETAIL_TYPEOF_PROBE(...) (__VA_ARGS__),
-// Strip off the type
-#define STRIP(x) EAT x
-// Show the type without parenthesis
-#define PAIR(x) REM x
-
 // A helper metafunction for adding const to a type
 template<class M, class T>
 struct make_const
 {
   typedef T type;
 };
+
+#define MEMBER_EAT(__VAR_ARGS__) __VAR_ARGS__
+
+#define MEMBER_DECL(x) MEMBER_DECL_EXCTRACT x
+#define MEMBER_TYPE(x) MEMBER_TYPE_EXCTRACT x
+#define MEMBER_NAME(x) MEMBER_NAME_EXCTRACT x
+#define MEMBER_TYPE_STR(x) MEMBER_TYPE_EXCTRACT_STR x
+#define MEMBER_NAME_STR(x) MEMBER_NAME_EXCTRACT_STR x
+
+#define MEMBER_DECL_EXCTRACT(X, Y) MEMBER_EAT X MEMBER_EAT Y
+#define MEMBER_TYPE_EXCTRACT(X, Y) MEMBER_EAT X
+#define MEMBER_NAME_EXCTRACT(X, Y) MEMBER_EAT Y
+#define MEMBER_TYPE_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE X
+#define MEMBER_NAME_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE Y
 
 template<class M, class T>
 struct make_const<const M, T>
@@ -47,25 +48,30 @@ struct field_data {}; \
 BOOST_PP_SEQ_FOR_EACH_I(REFLECT_EACH, data, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
 #define REFLECT_EACH(r, data, i, x) \
-PAIR(x); \
+MEMBER_DECL(x); \
 template<class Self> \
 struct field_data<i, Self> \
 { \
     Self & self; \
+    typedef MEMBER_TYPE(x) member_type; \
     field_data(Self & self) : self(self) {} \
     \
-    typename make_const<Self, decltype(x)>::type & get() \
+    typename make_const<Self, MEMBER_TYPE(x)>::type & get() \
     { \
-        return self.STRIP(x); \
+        return self.MEMBER_NAME(x); \
     }\
-    typename std::add_const<decltype(x)>::type & get() const \
+    typename std::add_const<MEMBER_TYPE(x)>::type & get() const \
     { \
-        return self.STRIP(x); \
+        return self.MEMBER_NAME(x); \
     }\
     const char * name() const \
     {\
-        return BOOST_PP_STRINGIZE(STRIP(x)); \
-    } \
+        return MEMBER_NAME_STR(x); \
+    }\
+    const char * type() const \
+    {\
+        return MEMBER_TYPE_STR(x); \
+    }\
 }; \
 
 template <class C, class Visitor, int I>
@@ -74,8 +80,8 @@ struct field_iterator
   void operator()(C& c, Visitor v)
   {
     auto f = C::field_data<I - 1, C>(c);
-    v(f);
-    field_iterator < C, Visitor, I - 1 >() (c, v);
+    v.operator()<C::field_data<I - 1, C>, C::field_data<I - 1, C>::member_type>(f);
+    field_iterator <C, Visitor, I - 1>() (c, v);
   }
 };
 
@@ -87,7 +93,6 @@ struct field_iterator<C, Visitor, 0>
 
   }
 };
-
 
 template<class C, class Visitor>
 void visit_each(C & c, Visitor v)
