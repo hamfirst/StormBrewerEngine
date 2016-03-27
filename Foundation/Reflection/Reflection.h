@@ -21,17 +21,19 @@ struct make_const
 
 #define MEMBER_EAT(__VAR_ARGS__) __VAR_ARGS__
 
+#define MEMBER_OP (
+#define MEMBER_CP )
 #define MEMBER_DECL(x) MEMBER_DECL_EXCTRACT x
-#define MEMBER_TYPE(x) MEMBER_TYPE_EXCTRACT x
-#define MEMBER_NAME(x) MEMBER_NAME_EXCTRACT x
+#define MEMBER_TYPE(x) MEMBER_TYPE_EXCTRACT x 
+#define MEMBER_NAME(x) MEMBER_NAME_EXCTRACT x 
 #define MEMBER_TYPE_STR(x) MEMBER_TYPE_EXCTRACT_STR x
-#define MEMBER_NAME_STR(x) MEMBER_NAME_EXCTRACT_STR x
+#define MEMBER_NAME_STR(x) MEMBER_NAME_EXCTRACT_STR x 
 
-#define MEMBER_DECL_EXCTRACT(X, Y) MEMBER_EAT X MEMBER_EAT Y
-#define MEMBER_TYPE_EXCTRACT(X, Y) MEMBER_EAT X
-#define MEMBER_NAME_EXCTRACT(X, Y) MEMBER_EAT Y
-#define MEMBER_TYPE_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE X
-#define MEMBER_NAME_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE Y
+#define MEMBER_DECL_EXCTRACT(X, Y) X Y
+#define MEMBER_TYPE_EXCTRACT(X, Y) X
+#define MEMBER_NAME_EXCTRACT(X, Y) Y
+#define MEMBER_TYPE_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE MEMBER_OP X MEMBER_CP
+#define MEMBER_NAME_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE MEMBER_OP Y MEMBER_CP
 
 template<class M, class T>
 struct make_const<const M, T>
@@ -42,6 +44,7 @@ struct make_const<const M, T>
 
 #define REFLECTABLE(...) \
 static const int fields_n = BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
+static const bool is_reflectable = true; \
 friend struct reflector; \
 template<int N, class Self> \
 struct field_data {}; \

@@ -8,9 +8,14 @@
 
 struct Inventory
 {
+  Inventory()
+  {
+    items.push_back(20);
+  }
+
 public:
   REFLECTABLE(
-    ((std::vector<int>), (items))
+    (std::vector<int>, items)
     )
 };
 
@@ -25,22 +30,28 @@ struct Person
 public:
   REFLECTABLE
     (
-      ((const char *), (name)),
-      ((int), (age)),
-      ((Inventory), (inv))
+      (const char *, name),
+      (int, age),
+      (Inventory, inv)
       )
 };
 
 struct member_printer
 {
-  template <class T, typename std::enable_if<std::is_class<T>::value>::type * = 0>
+  template <class T, typename std::enable_if<std::is_class<T>::value && T::is_reflectable>::type * = 0>
   void print(const char * name, const char * type, const T value)
   {
     std::cout << name << " " << type << std::endl;
     print_fields(value);
   }
 
-  template <class T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = 0>
+  template <class T, typename std::enable_if<std::is_integral<T>::value>::type * = 0>
+  void print(const char * name, const char * type, const T value)
+  {
+    std::cout << name << " " << type << " = " << value << std::endl;
+  }
+
+  template <class T, typename std::enable_if<std::is_floating_point<T>::value>::type * = 0>
   void print(const char * name, const char * type, const T value)
   {
     std::cout << name << " " << type << " = " << value << std::endl;
@@ -52,7 +63,31 @@ struct member_printer
     std::cout << name << " " << type << " = " << value << std::endl;
   }
 
-  template <class T, class Enable = void>
+  template <class T, typename std::enable_if<std::is_integral<T>::value>::type * = 0>
+  void print(const char * name, const char * type, const std::vector<T> & value)
+  {
+    std::cout << name << " " << type << " = [ " << std::endl;
+
+    for (auto v : value)
+    {
+      std::cout << v << std::endl;
+    }
+
+    std::cout << "]" << std::endl;
+  }
+
+  template <class T, typename std::enable_if<std::is_floating_point<T>::value>::type * = 0>
+  void print(const char * name, const char * type, const std::vector<T> & value)
+  {
+    std::cout << name << " " << type << " = [ " << std::endl;
+
+    for (auto v : value)
+    {
+      std::cout << v << std::endl;
+    }
+
+    std::cout << "]" << std::endl;
+  }
 };
 
 struct print_visitor
