@@ -1,9 +1,5 @@
 #pragma once
 
-#include <type_traits>
-#include <functional>
-#include <algorithm>
-
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
@@ -27,11 +23,11 @@ struct make_const
 #define MEMBER_TYPE_STR(x) MEMBER_TYPE_EXCTRACT_STR x
 #define MEMBER_NAME_STR(x) MEMBER_NAME_EXCTRACT_STR x 
 
-#define MEMBER_DECL_EXCTRACT(X, Y) X Y
-#define MEMBER_TYPE_EXCTRACT(X, Y) X
-#define MEMBER_NAME_EXCTRACT(X, Y) Y
-#define MEMBER_TYPE_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE MEMBER_OP X MEMBER_CP
-#define MEMBER_NAME_EXCTRACT_STR(X, Y) BOOST_PP_STRINGIZE MEMBER_OP Y MEMBER_CP
+#define MEMBER_DECL_EXCTRACT(X, ...) __VA_ARGS__ X
+#define MEMBER_TYPE_EXCTRACT(X, ...) __VA_ARGS__
+#define MEMBER_NAME_EXCTRACT(X, ...) X
+#define MEMBER_TYPE_EXCTRACT_STR(X, ...) #__VA_ARGS__
+#define MEMBER_NAME_EXCTRACT_STR(X, ...) BOOST_PP_STRINGIZE MEMBER_OP X MEMBER_CP
 
 template<class M, class T>
 struct make_const<const M, T>

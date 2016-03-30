@@ -3,6 +3,61 @@
 
 #include <json\json.hpp>
 
+
+template <typename T, typename std::enable_if<
+  std::is_arithmetic<T>::value ||
+  std::is_same<T, r_string>::value
+>::type * = 0>
+void decode_json(T & value, nlohmann::json & j)
+{
+  value = j;
+}
+
+template <typename T, typename std::enable_if<
+  std::is_class<T>::value && T::is_reflectable
+>::type * = nullptr>
+void decode_json(T & value, nlohmann::json & j)
+{
+  member_json_decoder_visitor decoder(j);
+  visit_each(value, decoder);
+}
+
+template <typename T, typename std::enable_if<
+  std::is_class<T>::value && T::is_enum
+>::type * = 0>
+void decode_json(T & value, nlohmann::json & j)
+{
+  value = T::_from_string(j.get<std::string>().data());
+}
+
+template <class T>
+void decode_json(r_list<T> & value, nlohmann::json & j)
+{
+  value.clear();
+  value.reserve(j.size());
+  for (auto t : j)
+  {
+    T new_val;
+    decode_json(new_val, t);
+
+    value.push_back(new_val);
+  }
+}
+
+template <class T>
+void decode_json(r_dictionary<T> & value, nlohmann::json & j)
+{
+  value.clear();
+  value.reserve(j.size());
+  for (nlohmann::json::iterator it = j.begin(); it != j.end(); it++)
+  {
+    T new_val;
+    decode_json(new_val, it.value());
+
+    value[it.value().get<r_hash>()] = new_val;
+  }
+}
+
 struct member_json_decoder_visitor
 {
   member_json_decoder_visitor(nlohmann::json & value)
@@ -14,59 +69,7 @@ struct member_json_decoder_visitor
   template <class FieldData, class MemType>
   void operator()(FieldData f)
   {
-    decode(f.name(), f.type(), f.get());
-  }
-
-  template <class T, typename std::enable_if<std::is_class<T>::value && T::is_reflectable>::type * = 0>
-  void decode(const char * name, const char * type, T & value)
-  {
-    try
-    {
-      member_json_decoder_visitor decoder(m_Value[name]);
-      decoder.operator()(value);
-    }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_class<T>::value && T::is_enum>::type * = 0>
-  void decode(const char * name, const char * type, T & value)
-  {
-    try
-    {
-
-    }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_integral<T>::value>::type * = 0>
-  void decode(const char * name, const char * type, T & value)
-  {
-    try { value = m_Value[name]; }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_floating_point<T>::value>::type * = 0>
-  void decode(const char * name, const char * type, T & value)
-  {
-    try { value = m_Value[name]; }
-    catch (...) {}
-  }
-
-  template <class Enable = void>
-  void decode(const char * name, const char * type, r_string & value)
-  {
-    try { value = m_Value[name]; }
-    catch (...) {}
-  }
-
-  template <class T>
-  void decode(const char * name, const char * type, r_list<T> & value)
-  {
-    nlohmann::json = m_Value[name];
-    for (auto v : value)
-    {
-      decode(name, type, v);
-    }
+    decode_json(f.get(), m_Value[f.name()]);
   }
 
 public:
@@ -84,7 +87,7 @@ nlohmann::json encode_json(const T & value)
 
 template <typename T, typename std::enable_if<
   std::is_class<T>::value && T::is_reflectable
->::type * = 0>
+>::type * = nullptr>
 nlohmann::json encode_json(const T & value)
 {
   nlohmann::json j_value;
@@ -102,77 +105,42 @@ nlohmann::json encode_json(const T & value)
   return value._to_string();
 }
 
+template <class T>
+nlohmann::json encode_json(const r_list<T> & value)
+{
+  nlohmann::json j_value;
+  for (auto t : value)
+  {
+    j_value.push_back(encode_json(t));
+  }
+
+  return j_value;
+}
+
+template <class T>
+nlohmann::json encode_json(const r_dictionary<T> & value)
+{
+  nlohmann::json j_value;
+  for (std::pair<r_hash, T> t : value)
+  {
+    j_value[t.first] = t.second;
+  }
+
+  return j_value;
+}
 
 struct member_json_encoder_visitor
 {
   member_json_encoder_visitor(nlohmann::json & value)
     : m_Value(value)
   {
-
+  
   }
 
   template <class FieldData, class MemType>
   void operator()(FieldData f)
   {
-    encode(f.name(), f.type(), f.get());
-  }
-
-  template <class T, typename std::enable_if<std::is_class<T>::value && T::is_reflectable>::type * = 0>
-  void encode(const char * name, const char * type, T & value)
-  {
-    try
-    {
-      member_json_encoder_visitor encoder(m_Value[name]);
-      encoder.operator()(value);
-    }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_class<T>::value && T::is_enum>::type * = 0>
-  void encode(const char * name, const char * type, T & value)
-  {
-    try
-    {
-
-    }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_integral<T>::value>::type * = 0>
-  void encode(const char * name, const char * type, T & value)
-  {
-    try { m_Value[name] = value }
-    catch (...) {}
-  }
-
-  template <class T, typename std::enable_if<std::is_floating_point<T>::value>::type * = 0>
-  void encode(const char * name, const char * type, T & value)
-  {
-    try { m_Value[name] = value; }
-    catch (...) {}
-  }
-
-  template <class Enable = void>
-  void encode(const char * name, const char * type, r_string & value)
-  {
-    try { m_Value[name] = value; }
-    catch (...) {}
-  }
-
-  template <class T>
-  void encode(const char * name, const char * type, r_list<T> & value)
-  {
-    try 
-    {
-      for (auto v : value)
-      {
-        nlohmann::json json_value;
-        member_json_encoder_visitor encoder(json_value);
-
-        encoder(name, type, v);
-      }
-    }
-    catch (...) {}
+    m_Value[f.name()] = encode_json(f.get());
   }
 
 public:

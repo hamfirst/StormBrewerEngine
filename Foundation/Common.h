@@ -18,3 +18,9 @@ using r_list = std::vector<T>;
 template <class T>
 using r_dictionary = std::unordered_map<r_hash, T>;
 
+template <int lower, int upper>
+using r_int = int;
+
+template <class T, const char * description>
+using annotation = T;
+
