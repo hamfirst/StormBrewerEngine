@@ -12,6 +12,10 @@
     <ClInclude Include="Reflection\Reflection.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Reflection\ReflectionJson.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">

@@ -7,6 +7,12 @@
     <Filter Include="boost\preprocessor">
       <UniqueIdentifier>{3d44603d-fd37-472b-b60e-f5d85b526f56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="enum">
+      <UniqueIdentifier>{93460022-9baa-4342-a86f-e298962929b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{cfad91ea-2a59-4d69-8e8b-41fe40bd053b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boost\preprocessor\arithmetic.hpp">
@@ -812,6 +818,12 @@
     </ClInclude>
     <ClInclude Include="boost\preprocessor\control\detail\dmc\while.hpp">
       <Filter>boost\preprocessor</Filter>
+    </ClInclude>
+    <ClInclude Include="enum\enum.h">
+      <Filter>enum</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json.hpp">
+      <Filter>json</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
-
 #include <type_traits>
 #include <functional>
 #include <algorithm>
@@ -42,7 +40,7 @@ struct make_const<const M, T>
 };
 
 
-#define REFLECTABLE(...) \
+#define REFL_MEMBERS(...) \
 static const int fields_n = BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
 static const bool is_reflectable = true; \
 friend struct reflector; \

@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 
-#include "Reflection\Reflection.h"
+#include "Foundation\Common.h"
+#include "Foundation\Reflection\Reflection.h"
+#include "Foundation\Reflection\ReflectionJson.h"
 
 struct Inventory
 {
@@ -14,7 +17,7 @@ struct Inventory
   }
 
 public:
-  REFLECTABLE(
+  REFL_MEMBERS(
     (std::vector<int>, items)
     )
 };
@@ -28,7 +31,7 @@ struct Person
   {
   }
 public:
-  REFLECTABLE
+  REFL_MEMBERS
     (
       (const char *, name),
       (int, age),
@@ -58,32 +61,19 @@ struct member_printer
   }
 
   template <class Enable = void>
-  void print(const char * name, const char * type, const char * value)
+  void print(const char * name, const char * type, const r_string & value)
   {
     std::cout << name << " " << type << " = " << value << std::endl;
   }
 
-  template <class T, typename std::enable_if<std::is_integral<T>::value>::type * = 0>
-  void print(const char * name, const char * type, const std::vector<T> & value)
+  template <class T>
+  void print(const char * name, const char * type, const r_list<T> & value)
   {
     std::cout << name << " " << type << " = [ " << std::endl;
 
     for (auto v : value)
     {
-      std::cout << v << std::endl;
-    }
-
-    std::cout << "]" << std::endl;
-  }
-
-  template <class T, typename std::enable_if<std::is_floating_point<T>::value>::type * = 0>
-  void print(const char * name, const char * type, const std::vector<T> & value)
-  {
-    std::cout << name << " " << type << " = [ " << std::endl;
-
-    for (auto v : value)
-    {
-      std::cout << v << std::endl;
+      print(name, type, v);
     }
 
     std::cout << "]" << std::endl;
@@ -106,8 +96,21 @@ void print_fields(T & x)
   visit_each(x, print_visitor());
 }
 
+void print_num(int i)
+{
+  std::cout << i << '\n';
+}
+
 int main()
 {
+  nlohmann::json j;
+  nlohmann::json i = 2;
+
+  j.push_back(1);
+  j.push_back(i);
+
+  std::function<void(int)> f_display = print_num;
+
   Person p("Tom", 82);
   print_fields(p);
   return 0;

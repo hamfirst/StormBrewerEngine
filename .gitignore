@@ -212,3 +212,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 !External\boost\preprocessor\debug
+/StormBrewerEngine.VC.db
+/StormBrewerEngine.VC.VC.opendb

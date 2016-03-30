@@ -386,6 +386,8 @@
     <ClInclude Include="boost\preprocessor\variadic\to_tuple.hpp" />
     <ClInclude Include="boost\preprocessor\while.hpp" />
     <ClInclude Include="boost\preprocessor\wstringize.hpp" />
+    <ClInclude Include="enum\enum.h" />
+    <ClInclude Include="json\json.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
