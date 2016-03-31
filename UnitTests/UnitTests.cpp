@@ -20,9 +20,9 @@ struct Inventory
 
 public:
   REFL_MEMBERS
-    (
-      (items, r_list<int>)
-      )
+  (
+    (items, r_list<int>)
+  )
 };
 
 struct Person
@@ -35,14 +35,12 @@ struct Person
   }
 public:
   REFL_MEMBERS
-    (
-      (name, std::unordered_map<r_hash, int>),
-      (age, r_int<0, 10>),
-      (inv, Inventory),
-      (e, TestEnum)
-      )
-
-    std::unordered_map<r_hash, int> member;
+  (
+    (name, r_dictionary<r_string>),
+    (age, r_int<0, 10>),
+    (inv, Inventory),
+    (e, TestEnum)
+  )
 };
 
 int main()
@@ -58,3 +56,5 @@ int main()
 
   return 0;
 }
+
+

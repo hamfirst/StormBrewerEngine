@@ -10,7 +10,7 @@
 
 using r_string = std::string;
 using r_file = std::string;
-using r_hash = uint64_t;
+using r_hash = uint32_t;
 
 template <class T>
 using r_list = std::vector<T>;
