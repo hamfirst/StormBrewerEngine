@@ -1004,7 +1004,6 @@ BETTER_ENUMS_CONSTEXPR_ inline bool operator >=(const Enum &a, const Enum &b)  \
 
 #ifndef BETTER_ENUMS_DEFAULT_CONSTRUCTOR
 #   define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum)                              \
-      private:                                                                 \
         Enum() : _value(0) { }
 #endif
 

@@ -45,7 +45,7 @@ struct field_data {}; \
 BOOST_PP_SEQ_FOR_EACH_I(REFLECT_EACH, data, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
 #define REFLECT_EACH(r, data, i, x) \
-MEMBER_DECL(x); \
+MEMBER_DECL(x) = {}; \
 template<class Self> \
 struct field_data<i, Self> \
 { \
