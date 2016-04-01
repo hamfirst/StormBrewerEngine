@@ -131,6 +131,7 @@
     <ClCompile Include="Sprite\SpriteBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicTypes\BasicTypes.h" />
     <ClInclude Include="DataCommon.h" />
     <ClInclude Include="Sprite\SpriteBuilder.h" />
   </ItemGroup>

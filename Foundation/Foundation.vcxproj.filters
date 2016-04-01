@@ -7,6 +7,9 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{82f4cc32-a3ee-4696-86bd-d263f8bb9ad3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Document">
+      <UniqueIdentifier>{42b140c8-cc5b-46d9-a9fb-feef0c3c7f84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -16,10 +19,19 @@
     <ClInclude Include="Reflection\ReflectionJson.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="Document\Document.h">
+      <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentPath.h">
+      <Filter>Document</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">
       <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="Document\DocumentPath.cpp">
+      <Filter>Document</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

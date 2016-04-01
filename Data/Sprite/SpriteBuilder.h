@@ -1,7 +1,8 @@
 #pragma once
 
 #include "DataCommon.h"
- 
+#include "BasicTypes\BasicTypes.h"
+
 REFL_ENUM(SpriteFrameDataType, int,
   HitBox,
   Collision,
@@ -21,10 +22,8 @@ struct SpriteFrameDataBox
 {
   REFL_MEMBERS
   (
-    (int, StartX),
-    (int, StartY),
-    (int, EndX),
-    (int, EndY)
+    (Start, Vector2),
+    (End, Vector2)
   )
 };
 
@@ -32,9 +31,8 @@ struct SpriteFrameDataAnchor
 {
   REFL_MEMBERS
   (
-    (int, AnchorIndex),
-    (int, X),
-    (int, Y)
+    (AnchorIndex, int),
+    (Pos, Vector2)
   )
 };
 
@@ -42,8 +40,8 @@ struct SpriteFrameDataBoxList
 {
   REFL_MEMBERS
   (
-    (SpriteFrameDataType, Type),
-    (r_list<SpriteFrameDataBox>, Boxes)
+    (Type, SpriteFrameDataType),
+    (Boxes, r_list<SpriteFrameDataBox>)
   )
 };
 
@@ -51,10 +49,10 @@ struct SpriteFrameMetaData
 {
   REFL_MEMBERS
   (
-    (r_list<SpriteFrameDataBoxList>, BoxLists),
-    (r_list<SpriteFrameDataAnchor>, AnchorList),
-    (r_hash, FrameHash),
-    (int, FrameFlags)
+    (BoxLists, r_list<SpriteFrameDataBoxList>),
+    (AnchorList, r_list<SpriteFrameDataAnchor>),
+    (FrameHash, r_hash),
+    (FrameFlags, int)
   )
 };
 
@@ -62,9 +60,9 @@ struct SpriteBuilderSchemaTexture
 {
   REFL_MEMBERS
   (
-    (r_string, TextureFile),
-    (int, TileWidth),
-    (int, TileHeight)
+    (TextureFile, r_string),
+    (TileWidth, int),
+    (TileHeight, int)
   )
 };
 
@@ -72,9 +70,9 @@ struct SpriteAnchor
 {
   REFL_MEMBERS
   (
-    (r_string, Name),
-    (int, DefaultX),
-    (int, DefaultY)
+    (Name, r_string),
+    (DefaultX, int),
+    (DefaultY, int)
   )
 };
 
@@ -82,10 +80,10 @@ struct SpriteAnimEvent
 {
   REFL_MEMBERS
   (
-    (r_string, EventType),
-    (r_string, EventData),
-    (SpriteFrameDataType, MetaDataType),
-    (SpriteAnimEventMode, Mode)
+    (EventType, r_string),
+    (EventData, r_string),
+    (MetaDataType, SpriteFrameDataType),
+    (Mode, SpriteAnimEventMode)
   )
 };
 
@@ -93,12 +91,12 @@ struct SpriteAnimationFrame
 {
   REFL_MEMBERS
   (
-    (r_hash, FrameHash),
-    (int, FrameDelay),
-    (bool, LoopFrame),
-    (bool, HoldFrame),
-    (bool, MarkFrame),
-    (r_list<SpriteAnimEvent>, Events)
+    (FrameHash, r_hash),
+    (FrameDelay, int),
+    (LoopFrame, bool),
+    (HoldFrame, bool),
+    (MarkFrame, bool),
+    (Events, r_list<SpriteAnimEvent>)
   )
 };
 
@@ -106,10 +104,10 @@ struct SpriteAnimation
 {
   REFL_MEMBERS
   (
-    (r_string, Name),
-    (bool, Expanded),
-    (r_list<SpriteAnimEvent>, Events),
-    (r_list<SpriteAnimationFrame>, Frames)
+    (Name, r_string),
+    (Expanded, bool),
+    (Events, r_list<SpriteAnimEvent>),
+    (Frames, r_list<SpriteAnimationFrame>)
   )
 };
 
@@ -117,17 +115,15 @@ struct SpriteBuilderSchema
 {
   REFL_MEMBERS
   (
-    (bool, PreviewAnimate),
-    (bool, ShowMetaData),
-    (bool, ShowFrameGrid),
-    (r_list<SpriteBuilderSchemaTexture>, Textures),
-    (r_list<SpriteAnchor>, Anchors),
-    (r_dictionary<SpriteFrameMetaData>, FrameMetaData),
-    (SpriteFrameDataBox, MoveBox)
+    (PreviewAnimate, bool),
+    (ShowMetaData, bool),
+    (ShowFrameGrid, bool),
+    (Textures, r_list<SpriteBuilderSchemaTexture>),
+    (Anchors, r_list<SpriteAnchor>),
+    (FrameMetaData, r_dictionary<SpriteFrameMetaData>),
+    (MoveBox, SpriteFrameDataBox)
   )
 };
-
-
 
 class SpriteBuilder
 {
