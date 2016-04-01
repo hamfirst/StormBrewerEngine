@@ -1,5 +1,3 @@
-// UnitTests.cpp : Defines the entry point for the console application.
-//
 
 #include <iostream>
 #include <vector>
@@ -8,6 +6,8 @@
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\Reflection.h"
 #include "Foundation\Reflection\ReflectionJson.h"
+
+#include "Foundation\Document\DocumentPath.h"
 
 REFL_ENUM(TestEnum, int, kA, kB, kC);
 
@@ -43,16 +43,39 @@ public:
   )
 };
 
+template <class T>
+void TEST(T & t, bool expect_exception = false)
+{
+  try
+  {
+    bool val = t();
+    if (expect_exception)
+    {
+      assert(false);
+    }
+
+    assert(val);
+  }
+  catch (std::exception & ex)
+  {
+    assert(false);
+  }
+}
+
 int main()
 {
-  Person p("Tom", 82);
-  p.e = TestEnum::kC;
+  auto a = []() { DocumentPath p("a.a"); return p.GetSize() == 2 && p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName; };
 
-  nlohmann::json json_value = encode_json(p);
-  std::cout << json_value.dump(2);
+  TEST(a);
 
-  Person copy("", 0);
-  decode_json(copy, json_value);
+  //Person p("Tom", 82);
+  //p.e = TestEnum::kC;
+
+  //nlohmann::json json_value = encode_json(p);
+  //std::cout << json_value.dump(2);
+
+  //Person copy("", 0);
+  //decode_json(copy, json_value);
 
   return 0;
 }

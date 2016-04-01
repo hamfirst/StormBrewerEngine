@@ -7,6 +7,9 @@
     <Filter Include="PCH">
       <UniqueIdentifier>{fe0d284c-16a8-465b-a1a9-bc03353668ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BasicTypes">
+      <UniqueIdentifier>{3b199602-8182-4a0a-a9bf-d0c9289ed84e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteBuilder.cpp">
@@ -21,5 +24,8 @@
       <Filter>Sprite</Filter>
     </ClInclude>
     <ClInclude Include="DataCommon.h" />
+    <ClInclude Include="BasicTypes\BasicTypes.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
