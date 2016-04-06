@@ -10,33 +10,12 @@
 
 typedef const char *(*annotation_f)();
 
-using r_string = std::string;
-using r_file = std::string;
-using r_hash = uint32_t;
+using RString = std::string;
+using RFile = std::string;
+using RHash = uint32_t;
 
 template <class T>
-using r_list = std::vector<T>;
+using RList = std::vector<T>;
 
 template <class T>
-using r_dictionary = std::unordered_map<r_hash, T>;
-
-template <int lower, int upper>
-using r_int = int;
-
-template <class T, annotation_f f>
-struct annotation
-{
-  using type = T;
-};
-
-template <class T>
-struct remove_annotation
-{
-  using type = T;
-};
-
-template <class T, annotation_f f>
-struct remove_annotation<annotation<T, f>>
-{
-  using type = T;
-};
+using RDictionary = std::unordered_map<RHash, T>;

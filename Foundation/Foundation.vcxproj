@@ -25,10 +25,13 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
     <ClInclude Include="Document\DocumentPath.h" />
+    <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
+    <ClInclude Include="Reflection\ReflectionArray.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Document\Document.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
     <ClCompile Include="Reflection\TypeDatabase.cpp" />
   </ItemGroup>

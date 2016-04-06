@@ -11,7 +11,8 @@ public:
   enum IndexType : int
   {
     kFieldName,
-    kIndex,
+    kStringIndex,
+    kIntIndex
   };
 
   struct PathElement
@@ -20,8 +21,8 @@ public:
     std::string m_Data;
   };
 
-  int GetSize();
-  PathElement & operator[](int i);
+  int GetSize() const;
+  const PathElement & operator[](int i) const;
 
 private:
   std::vector<PathElement> m_Path;

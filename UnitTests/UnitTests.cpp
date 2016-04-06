@@ -5,6 +5,7 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\Reflection.h"
+#include "Foundation\Reflection\ReflectionArray.h"
 #include "Foundation\Reflection\ReflectionJson.h"
 
 #include "Foundation\Document\DocumentPath.h"
@@ -21,7 +22,7 @@ struct Inventory
 public:
   REFL_MEMBERS
   (
-    (items, r_list<int>)
+    (items, RList<int>)
   )
 };
 
@@ -36,15 +37,15 @@ struct Person
 public:
   REFL_MEMBERS
   (
-    (name, r_dictionary<r_string>),
-    (age, r_int<0, 10>),
+    (name, RDictionary<RString>),
+    (age, int),
     (inv, Inventory),
     (e, TestEnum)
   )
 };
 
 template <class T>
-void TEST(T & t, bool expect_exception = false)
+void TEST(T t, bool expect_exception = false)
 {
   try
   {
@@ -56,28 +57,110 @@ void TEST(T & t, bool expect_exception = false)
 
     assert(val);
   }
-  catch (std::exception & ex)
+  catch (...)
   {
-    assert(false);
+    if (expect_exception == false)
+    {
+      assert(false);
+    }
   }
+}
+
+
+
+void TestDocumentPath()
+{
+  TEST([]()
+  {
+    DocumentPath p("a.a");
+    return p.GetSize() == 2 &&
+      p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName &&
+      p[1].m_Data == "a" && p[1].m_Type == DocumentPath::kFieldName;
+  });
+
+  TEST([]()
+  {
+    DocumentPath p("a.a[1]");
+    return p.GetSize() == 3 &&
+      p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName &&
+      p[1].m_Data == "a" && p[1].m_Type == DocumentPath::kFieldName &&
+      p[2].m_Data == "1" && p[2].m_Type == DocumentPath::kIntIndex;
+  });
+
+  TEST([]()
+  {
+    DocumentPath p("a.a[1].a");
+    return p.GetSize() == 4 &&
+      p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName &&
+      p[1].m_Data == "a" && p[1].m_Type == DocumentPath::kFieldName &&
+      p[2].m_Data == "1" && p[2].m_Type == DocumentPath::kIntIndex &&
+      p[3].m_Data == "a" && p[3].m_Type == DocumentPath::kFieldName;
+  });
+
+  TEST([]()
+  {
+    DocumentPath p("a.a[1].a[asdf]");
+    return p.GetSize() == 5 &&
+      p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName &&
+      p[1].m_Data == "a" && p[1].m_Type == DocumentPath::kFieldName &&
+      p[2].m_Data == "1" && p[2].m_Type == DocumentPath::kIntIndex &&
+      p[3].m_Data == "a" && p[3].m_Type == DocumentPath::kFieldName &&
+      p[4].m_Data == "asdf" && p[4].m_Type == DocumentPath::kStringIndex;
+  });
+
+  TEST([]()
+  {
+    DocumentPath p("a.a[-1].a[asdf]");
+    return p.GetSize() == 5 &&
+      p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName &&
+      p[1].m_Data == "a" && p[1].m_Type == DocumentPath::kFieldName &&
+      p[2].m_Data == "-1" && p[2].m_Type == DocumentPath::kIntIndex &&
+      p[3].m_Data == "a" && p[3].m_Type == DocumentPath::kFieldName &&
+      p[4].m_Data == "asdf" && p[4].m_Type == DocumentPath::kStringIndex;
+  });
+
+  TEST([]() { DocumentPath p("a.."); return true; }, true);
+  TEST([]() { DocumentPath p("a."); return true; }, true);
+  TEST([]() { DocumentPath p("a[]"); return true; }, true);
+  TEST([]() { DocumentPath p("a[a].a["); return true; }, true);
+  TEST([]() { DocumentPath p("a[[1]"); return true; }, true);
+  TEST([]() { DocumentPath p("a[a.a]"); return true; }, true);
+  TEST([]() { DocumentPath p("a]"); return true; }, true);
+  TEST([]() { DocumentPath p("."); return true; }, true);
+  TEST([]() { DocumentPath p(""); return true; }, true);
+  TEST([]() { DocumentPath p("a.[asdf]"); return true; }, true);
+  TEST([]() { DocumentPath p("a.a[asdf.]"); return true; }, true);
+  TEST([]() { DocumentPath p("a.a[a]."); return true; }, true);
+  TEST([]() { DocumentPath p("a.a[--1]"); return true; }, true);
 }
 
 int main()
 {
-  auto a = []() { DocumentPath p("a.a"); return p.GetSize() == 2 && p[0].m_Data == "a" && p[0].m_Type == DocumentPath::kFieldName; };
+  RSparseList<int> asdf;
+  asdf.PushBack(1);
+  asdf.PushBack(2);
+  asdf.PushBack(30);
+  asdf.RemoveAt(1);
+  asdf.PushBack(90);
 
-  TEST(a);
+  Json j = EncodeJson(asdf);
+  std::string test = j.dump(2);
+  std::cout << test << std::endl;
+
+  TestDocumentPath();
+
+  RSparseList<int> asdf2;
+  DecodeJson(asdf2, j);
 
   //Person p("Tom", 82);
   //p.e = TestEnum::kC;
 
-  //nlohmann::json json_value = encode_json(p);
+  //nlohmann::json json_value = EncodeJson(p);
   //std::cout << json_value.dump(2);
 
   //Person copy("", 0);
-  //decode_json(copy, json_value);
+  //DecodeJson(copy, json_value);
 
   return 0;
 }
-
 

@@ -10,6 +10,9 @@
     <Filter Include="Document">
       <UniqueIdentifier>{42b140c8-cc5b-46d9-a9fb-feef0c3c7f84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{1066015e-4e2e-4218-851b-d15c8b9e476d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -25,12 +28,21 @@
     <ClInclude Include="Document\DocumentPath.h">
       <Filter>Document</Filter>
     </ClInclude>
+    <ClInclude Include="Json\Json.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectionArray.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">
       <Filter>Reflection</Filter>
     </ClCompile>
     <ClCompile Include="Document\DocumentPath.cpp">
+      <Filter>Document</Filter>
+    </ClCompile>
+    <ClCompile Include="Document\Document.cpp">
       <Filter>Document</Filter>
     </ClCompile>
   </ItemGroup>

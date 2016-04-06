@@ -72,18 +72,18 @@ struct field_data<i, Self> \
 }; \
 
 template <class C, class Visitor, int I>
-struct field_iterator
+struct FieldIterator
 {
   void operator()(C& c, Visitor v)
   {
     auto f = C::field_data<I - 1, C>(c);
     v.operator()<C::field_data<I - 1, C>, C::field_data<I - 1, C>::member_type>(f);
-    field_iterator <C, Visitor, I - 1>() (c, v);
+    FieldIterator <C, Visitor, I - 1>() (c, v);
   }
 };
 
 template <class C, class Visitor>
-struct field_iterator<C, Visitor, 0>
+struct FieldIterator<C, Visitor, 0>
 {
   void operator()(C& c, Visitor v)
   {
@@ -92,8 +92,8 @@ struct field_iterator<C, Visitor, 0>
 };
 
 template<class C, class Visitor>
-void visit_each(C & c, Visitor v)
+void VisitEach(C & c, Visitor v)
 {
-  field_iterator<C, Visitor, C::fields_n> itr;
+  FieldIterator<C, Visitor, C::fields_n> itr;
   itr.operator()(c, v);
 }

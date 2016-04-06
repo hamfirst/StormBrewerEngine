@@ -41,7 +41,7 @@ struct SpriteFrameDataBoxList
   REFL_MEMBERS
   (
     (Type, SpriteFrameDataType),
-    (Boxes, r_list<SpriteFrameDataBox>)
+    (Boxes, RList<SpriteFrameDataBox>)
   )
 };
 
@@ -49,9 +49,9 @@ struct SpriteFrameMetaData
 {
   REFL_MEMBERS
   (
-    (BoxLists, r_list<SpriteFrameDataBoxList>),
-    (AnchorList, r_list<SpriteFrameDataAnchor>),
-    (FrameHash, r_hash),
+    (BoxLists, RList<SpriteFrameDataBoxList>),
+    (AnchorList, RList<SpriteFrameDataAnchor>),
+    (FrameHash, RHash),
     (FrameFlags, int)
   )
 };
@@ -60,7 +60,7 @@ struct SpriteBuilderSchemaTexture
 {
   REFL_MEMBERS
   (
-    (TextureFile, r_string),
+    (TextureFile, RString),
     (TileWidth, int),
     (TileHeight, int)
   )
@@ -70,7 +70,7 @@ struct SpriteAnchor
 {
   REFL_MEMBERS
   (
-    (Name, r_string),
+    (Name, RString),
     (DefaultX, int),
     (DefaultY, int)
   )
@@ -80,8 +80,8 @@ struct SpriteAnimEvent
 {
   REFL_MEMBERS
   (
-    (EventType, r_string),
-    (EventData, r_string),
+    (EventType, RString),
+    (EventData, RString),
     (MetaDataType, SpriteFrameDataType),
     (Mode, SpriteAnimEventMode)
   )
@@ -91,12 +91,12 @@ struct SpriteAnimationFrame
 {
   REFL_MEMBERS
   (
-    (FrameHash, r_hash),
+    (FrameHash, RHash),
     (FrameDelay, int),
     (LoopFrame, bool),
     (HoldFrame, bool),
     (MarkFrame, bool),
-    (Events, r_list<SpriteAnimEvent>)
+    (Events, RList<SpriteAnimEvent>)
   )
 };
 
@@ -104,10 +104,10 @@ struct SpriteAnimation
 {
   REFL_MEMBERS
   (
-    (Name, r_string),
+    (Name, RString),
     (Expanded, bool),
-    (Events, r_list<SpriteAnimEvent>),
-    (Frames, r_list<SpriteAnimationFrame>)
+    (Events, RList<SpriteAnimEvent>),
+    (Frames, RList<SpriteAnimationFrame>)
   )
 };
 
@@ -118,9 +118,9 @@ struct SpriteBuilderSchema
     (PreviewAnimate, bool),
     (ShowMetaData, bool),
     (ShowFrameGrid, bool),
-    (Textures, r_list<SpriteBuilderSchemaTexture>),
-    (Anchors, r_list<SpriteAnchor>),
-    (FrameMetaData, r_dictionary<SpriteFrameMetaData>),
+    (Textures, RList<SpriteBuilderSchemaTexture>),
+    (Anchors, RList<SpriteAnchor>),
+    (FrameMetaData, RDictionary<SpriteFrameMetaData>),
     (MoveBox, SpriteFrameDataBox)
   )
 };

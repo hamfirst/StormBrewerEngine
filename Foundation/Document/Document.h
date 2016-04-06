@@ -1,6 +1,8 @@
 #pragma once
 
-#include "json\json.hpp"
+#include "Foundation\Document\DocumentPath.h"
+#include "Foundation\Json\Json.h"
+
 
 enum class DocumentModificationType
 {
@@ -8,9 +10,19 @@ enum class DocumentModificationType
   kDelete,
 };
 
+struct DocumentModification
+{
+  DocumentPath m_Path;
+  std::string m_Data;
+  DocumentModificationType m_Type;
+};
+
 class Document
 {
+  Document(const char * json_data);
 
+  // Returns reverse modification
+  DocumentModification ApplyModification(const DocumentModification & mod);
 private:
-  nlohmann::json m_Root;
+  Json m_Root;
 };
