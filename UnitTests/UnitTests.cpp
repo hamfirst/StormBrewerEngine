@@ -5,7 +5,6 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\Reflection.h"
-#include "Foundation\Reflection\ReflectionArray.h"
 #include "Foundation\Reflection\ReflectionJson.h"
 
 #include "Foundation\Document\DocumentPath.h"
@@ -16,7 +15,7 @@ struct Inventory
 {
   Inventory()
   {
-    items.push_back(20);
+    items.PushBack(20);
   }
 
 public:
@@ -80,6 +79,11 @@ int main()
   asdf.PushBack(30);
   asdf.RemoveAt(1);
   asdf.PushBack(90);
+
+  RHashMap<int> map;
+  map.Set(0, 2);
+  map.Get(0);
+  map.Remove(0);
 
   Json j = EncodeJson(asdf);
   std::string test = j.dump(2);
