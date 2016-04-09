@@ -13,6 +13,9 @@
     <Filter Include="Json">
       <UniqueIdentifier>{1066015e-4e2e-4218-851b-d15c8b9e476d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hash">
+      <UniqueIdentifier>{a4f0f3c8-077b-45f9-b18a-7d94280f3f26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -33,6 +36,9 @@
     </ClInclude>
     <ClInclude Include="Reflection\ReflectionArray.h">
       <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\Hash.h">
+      <Filter>Hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

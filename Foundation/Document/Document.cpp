@@ -20,7 +20,16 @@ DocumentModification Document::ApplyModification(const DocumentModification & mo
   int size = mod.m_Path.GetSize();
   for (int index = 0; index < size - 1; index++)
   {
-    cur_val = cur_val.at(mod.m_Path[index].m_Data.data());
+    cur_val = cur_val[mod.m_Path[index].m_FieldName];
+
+    if (mod.m_Path[index].m_IndexType == DocumentPath::IndexType::kIntIndex)
+    {
+      cur_val = cur_val.at(mod.m_Path[index].m_IntIndex);
+    }
+    else if(mod.m_Path[index].m_IndexType == DocumentPath::IndexType::kStringIndex)
+    {
+      cur_val = cur_val.at(mod.m_Path[index].m_StringIndex.data());
+    }
   }
 
   return DocumentModification {reverse_path, "", DocumentModificationType::kDelete };

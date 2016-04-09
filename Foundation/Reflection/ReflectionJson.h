@@ -1,6 +1,7 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Json\Json.h"
+#include "Foundation\Reflection\ReflectionArray.h"
 
 
 template <typename T, typename std::enable_if<
@@ -17,7 +18,7 @@ template <typename T, typename std::enable_if<
 >::type * = nullptr>
 void DecodeJson(T & value, Json & j)
 {
-  member_json_decoder_visitor decoder(j);
+  MemberJsonDecoderVisitor decoder(j);
   VisitEach(value, decoder);
 }
 
@@ -86,9 +87,9 @@ void DecodeJson(RDictionary<T> & value, Json & j)
   }
 }
 
-struct member_json_decoder_visitor
+struct MemberJsonDecoderVisitor
 {
-  member_json_decoder_visitor(Json & value)
+  MemberJsonDecoderVisitor(Json & value)
     : m_Value(value)
   {
 
@@ -97,7 +98,7 @@ struct member_json_decoder_visitor
   template <class FieldData, class MemType>
   void operator()(FieldData f)
   {
-    DecodeJson(f.get(), m_Value[f.name()]);
+    DecodeJson(f.Get(), m_Value[f.Name()]);
   }
 
 public:
@@ -119,7 +120,7 @@ template <typename T, typename std::enable_if<
 Json EncodeJson(const T & value)
 {
   Json j_value;
-  member_json_encoder_visitor encoder(j_value);
+  MemberJsonEncoderVisitor encoder(j_value);
 
   VisitEach(value, encoder);
   return j_value;
@@ -181,9 +182,9 @@ Json EncodeJson(const RDictionary<T> & value)
   return j_value;
 }
 
-struct member_json_encoder_visitor
+struct MemberJsonEncoderVisitor
 {
-  member_json_encoder_visitor(Json & value)
+  MemberJsonEncoderVisitor(Json & value)
     : m_Value(value)
   {
   
@@ -192,7 +193,7 @@ struct member_json_encoder_visitor
   template <class FieldData, class MemType>
   void operator()(FieldData f)
   {
-    m_Value[f.name()] = EncodeJson(f.get());
+    m_Value[f.Name()] = EncodeJson(f.Get());
   }
 
 public:

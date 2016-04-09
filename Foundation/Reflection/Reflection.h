@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <boost/preprocessor/variadic/size.hpp>
@@ -23,11 +24,11 @@ struct make_const
 #define MEMBER_TYPE_STR(x) MEMBER_TYPE_EXCTRACT_STR x
 #define MEMBER_NAME_STR(x) MEMBER_NAME_EXCTRACT_STR x 
 
-#define MEMBER_DECL_EXCTRACT(X, ...) __VA_ARGS__ X
-#define MEMBER_TYPE_EXCTRACT(X, ...) __VA_ARGS__
-#define MEMBER_NAME_EXCTRACT(X, ...) X
-#define MEMBER_TYPE_EXCTRACT_STR(X, ...) #__VA_ARGS__
-#define MEMBER_NAME_EXCTRACT_STR(X, ...) BOOST_PP_STRINGIZE MEMBER_OP X MEMBER_CP
+#define MEMBER_DECL_EXCTRACT(X, Y, ...) Y X
+#define MEMBER_TYPE_EXCTRACT(X, Y, ...) Y
+#define MEMBER_NAME_EXCTRACT(X, Y, ...) X
+#define MEMBER_TYPE_EXCTRACT_STR(X, Y, ...) BOOST_PP_STRINGIZE(Y)
+#define MEMBER_NAME_EXCTRACT_STR(X, Y, ...) BOOST_PP_STRINGIZE MEMBER_OP X MEMBER_CP
 
 template<class M, class T>
 struct make_const<const M, T>
@@ -35,10 +36,10 @@ struct make_const<const M, T>
   typedef typename std::add_const<T>::type type;
 };
 
-
 #define REFL_MEMBERS(...) \
-static const int fields_n = BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
-static const bool is_reflectable = true; \
+static constexpr int fields_n = BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
+static constexpr bool is_reflectable = true; \
+auto & GetDefault() { static std::remove_reference<decltype(*this)>::type def; return def; } \
 friend struct reflector; \
 template<int N, class Self> \
 struct field_data {}; \
@@ -53,21 +54,29 @@ struct field_data<i, Self> \
     typedef MEMBER_TYPE(x) member_type; \
     field_data(Self & self) : self(self) {} \
     \
-    typename make_const<Self, MEMBER_TYPE(x)>::type & get() \
+    typename make_const<Self, MEMBER_TYPE(x)>::type & Get() \
     { \
         return self.MEMBER_NAME(x); \
     }\
-    typename std::add_const<MEMBER_TYPE(x)>::type & get() const \
+    typename std::add_const<MEMBER_TYPE(x)>::type & Get() const \
     { \
         return self.MEMBER_NAME(x); \
     }\
-    const char * name() const \
+    const char * GetName() const \
     {\
         return MEMBER_NAME_STR(x); \
     }\
-    const char * type() const \
+    constexpr uint32_t GetNameHash() const \
+    {\
+      return COMPILE_TIME_CRC32_STR(MEMBER_NAME_STR(x)); \
+    }\
+    const char * GetType() const \
     {\
         return MEMBER_TYPE_STR(x); \
+    }\
+    void SetDefault() \
+    {\
+      self.MEMBER_NAME(x) = self.GetDefault().MEMBER_NAME(x); \
     }\
 }; \
 
@@ -77,7 +86,7 @@ struct FieldIterator
   void operator()(C& c, Visitor v)
   {
     auto f = C::field_data<I - 1, C>(c);
-    v.operator()<C::field_data<I - 1, C>, C::field_data<I - 1, C>::member_type>(f);
+    v(f);
     FieldIterator <C, Visitor, I - 1>() (c, v);
   }
 };
@@ -91,9 +100,49 @@ struct FieldIterator<C, Visitor, 0>
   }
 };
 
+template <class C, class Visitor, int I>
+struct FieldSelector
+{
+  void operator()(C& c, Visitor v, uint32_t field_name_hash)
+  {
+    auto f = C::field_data<I - 1, C>(c);
+
+    if (f.GetNameHash() == field_name_hash)
+    {
+      v(f);
+      return;
+    }
+
+    FieldSelector <C, Visitor, I - 1>() (c, v, field_name_hash);
+  }
+};
+
+template <class C, class Visitor>
+struct FieldSelector<C, Visitor, 0>
+{
+  void operator()(C& c, Visitor v, uint32_t field_name_hash)
+  {
+
+  }
+};
+
+
 template<class C, class Visitor>
 void VisitEach(C & c, Visitor v)
 {
   FieldIterator<C, Visitor, C::fields_n> itr;
-  itr.operator()(c, v);
+  itr(c, v);
+}
+
+template<class C, class Visitor>
+void VisitField(C & c, Visitor v, uint32_t field_name_hash)
+{
+  FieldSelector<C, Visitor, C::fields_n> itr;
+  itr(c, v, field_name_hash);
+}
+
+template <class C>
+void SetValueDefault(C & c, uint32_t field_name_hash)
+{
+  VisitField(c, [](auto field_data) { field_data.SetDefault(); }, field_name_hash);
 }

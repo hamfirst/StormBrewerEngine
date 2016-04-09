@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <enum/enum.h>
 
-typedef const char *(*annotation_f)();
+#include "Foundation\Hash\Hash.h"
 
 using RString = std::string;
 using RFile = std::string;

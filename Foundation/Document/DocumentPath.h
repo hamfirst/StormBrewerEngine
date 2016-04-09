@@ -8,17 +8,19 @@ class DocumentPath
 public:
   DocumentPath(const std::string & path);
 
-  enum IndexType : int
+  enum class IndexType : int
   {
-    kFieldName,
+    kNone,
     kStringIndex,
     kIntIndex
   };
 
   struct PathElement
   {
-    IndexType m_Type;
-    std::string m_Data;
+    std::string m_FieldName;
+    IndexType m_IndexType;
+    std::string m_StringIndex;
+    int m_IntIndex;
   };
 
   int GetSize() const;

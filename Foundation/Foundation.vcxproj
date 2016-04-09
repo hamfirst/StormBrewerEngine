@@ -25,6 +25,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
     <ClInclude Include="Document\DocumentPath.h" />
+    <ClInclude Include="Hash\Hash.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
     <ClInclude Include="Reflection\ReflectionArray.h" />
