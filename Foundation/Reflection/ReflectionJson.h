@@ -30,16 +30,16 @@ void DecodeJson(T & value, Json & j)
 }
 
 template <class T>
-void DecodeJson(RList<T> & value, Json & j)
+void DecodeJson(RArrayList<T> & value, Json & j)
 {
-  value.clear();
-  value.reserve(j.size());
+  value.Clear();
+  value.Reserve(j.size());
   for (auto t : j)
   {
     T new_val;
     DecodeJson(new_val, t);
 
-    value.push_back(new_val);
+    value.PushBack(new_val);
   }
 }
 
@@ -134,7 +134,7 @@ Json EncodeJson(const T & value)
 }
 
 template <class T>
-Json EncodeJson(const RList<T> & value)
+Json EncodeJson(const RArrayList<T> & value)
 {
   Json j_value;
   for (auto t : value)

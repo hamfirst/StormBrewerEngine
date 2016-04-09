@@ -27,8 +27,9 @@
     <ClInclude Include="Document\DocumentPath.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
-    <ClInclude Include="Reflection\ReflectionArray.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
+    <ClInclude Include="Reflection\ReflectionList.h" />
+    <ClInclude Include="Reflection\ReflectionMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document\Document.cpp" />

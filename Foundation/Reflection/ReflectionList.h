@@ -3,6 +3,77 @@
 #include "Foundation\Common.h"
 
 template <class T>
+class RArrayList
+{
+public:
+
+  void Clear()
+  {
+    m_Values.clear();
+  }
+
+  void Reserve(std::size_t size)
+  {
+    m_Values.reserve(size);
+  }
+
+  void PushBack(const T & val)
+  {
+    m_Values.push_back(val);
+  }
+
+  void InsertAt(const T & val, std::size_t logical_index)
+  {
+    if (logical_index == m_Values.size())
+    {
+      m_Values.push_back(ContainerData());
+      return;
+    }
+
+    m_Values.insert(m_Values.begin() + logical_index);
+  }
+
+  void RemoveAt(std::size_t logical_index)
+  {
+    m_Values.erase(m_Values.begin() + logical_index);
+  }
+
+  std::size_t HighestIndex()
+  {
+    return m_Values.size();
+  }
+
+  void Compress()
+  {
+  }
+
+  auto begin()
+  {
+    return m_Values.begin();
+  }
+
+  auto end()
+  {
+    return m_Values.end();
+  }
+
+  auto begin() const
+  {
+    return m_Value.begin();
+  }
+
+  auto end() const
+  {
+    return m_Values.end();
+  }
+
+private:
+
+  std::vector<T> m_Values;
+};
+
+
+template <class T>
 class RSparseList
 {
 public:
@@ -21,9 +92,9 @@ public:
       return m_PhysicalIndex != rhs.m_PhysicalIndex;
     }
 
-    const std::pair<int, T &> operator *() const
+    const std::pair<std::size_t, T &> operator *() const
     {
-      std::pair<int, T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
+      std::pair<std::size_t, T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
       return val;
     }
 
@@ -37,7 +108,7 @@ public:
 
   private:
 
-    RSparseListIterator(RSparseList<T> * list, int physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
+    RSparseListIterator(RSparseList<T> * list, std::size_t physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
 
     std::size_t m_PhysicalIndex = 0;
     RSparseList<T> * m_List;
@@ -59,9 +130,9 @@ public:
       return m_PhysicalIndex != rhs.m_PhysicalIndex;
     }
 
-    const std::pair<int, const T &> operator *() const
+    const std::pair<std::size_t, const T &> operator *() const
     {
-      std::pair<int, const T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
+      std::pair<std::size_t, const T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
       return val;
     }
 
@@ -75,7 +146,7 @@ public:
 
   private:
 
-    RSparseListIteratorConst(const RSparseList<T> * list, int physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
+    RSparseListIteratorConst(const RSparseList<T> * list, std::size_t physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
 
     std::size_t m_PhysicalIndex = 0;
     const RSparseList<T> * m_List;
@@ -120,7 +191,7 @@ public:
 
     if (m_HighestIndex == logical_index)
     {
-      for (int index = m_Values.size() - 1; index >= 0 && m_Values[index].m_Valid == false; index--)
+      for (std::size_t index = m_Values.size() - 1; index >= 0 && m_Values[index].m_Valid == false; index--)
       {
         m_HighestIndex--;
       }
@@ -184,7 +255,6 @@ public:
     return itr;
   }
 
-
 private:
   struct ContainerData
   {
@@ -239,7 +309,7 @@ public:
 
   private:
 
-    RMergeListIterator(RMergeList<T> * list, int physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
+    RMergeListIterator(RMergeList<T> * list, std::size_t physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
 
     int m_PhysicalIndex = 0;
     RMergeList<T> * m_List;
@@ -274,7 +344,7 @@ public:
 
   private:
 
-    RMergeListIteratorConst(const RMergeList<T> * list, int physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
+    RMergeListIteratorConst(const RMergeList<T> * list, std::size_t physical_index) : m_List(list), m_PhysicalIndex(physical_index) { }
 
     int m_PhysicalIndex = 0;
     const RMergeList<T> * m_List;

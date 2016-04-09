@@ -31,7 +31,10 @@
     <ClInclude Include="Json\Json.h">
       <Filter>Json</Filter>
     </ClInclude>
-    <ClInclude Include="Reflection\ReflectionArray.h">
+    <ClInclude Include="Reflection\ReflectionMap.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectionList.h">
       <Filter>Reflection</Filter>
     </ClInclude>
   </ItemGroup>

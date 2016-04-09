@@ -13,6 +13,9 @@
     <Filter Include="json">
       <UniqueIdentifier>{cfad91ea-2a59-4d69-8e8b-41fe40bd053b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="optional">
+      <UniqueIdentifier>{cf4b6c66-f99f-4275-a31b-1e7874add076}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boost\preprocessor\arithmetic.hpp">
@@ -824,6 +827,9 @@
     </ClInclude>
     <ClInclude Include="json\json.hpp">
       <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="optional\optional.hpp">
+      <Filter>optional</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
