@@ -95,12 +95,10 @@ int main()
   Person p;
   p.age = 90;
   SetValueDefault(p, COMPILE_TIME_CRC32_STR("age"));
+  p.e = TestEnum::kC;
 
-  //Person p("Tom", 82);
-  //p.e = TestEnum::kC;
-
-  //nlohmann::json json_value = EncodeJson(p);
-  //std::cout << json_value.dump(2);
+  auto json_value = EncodeJson(p);
+  std::cout << json_value.dump(2);
 
   //Person copy("", 0);
   //DecodeJson(copy, json_value);

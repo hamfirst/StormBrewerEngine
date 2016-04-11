@@ -22,11 +22,11 @@ DocumentModification Document::ApplyModification(const DocumentModification & mo
   {
     cur_val = cur_val[mod.m_Path[index].m_FieldName];
 
-    if (mod.m_Path[index].m_IndexType == DocumentPath::IndexType::kIntIndex)
+    if (mod.m_Path[index].m_IndexType == DocumentPathIndexType::kIntIndex)
     {
       cur_val = cur_val.at(mod.m_Path[index].m_IntIndex);
     }
-    else if(mod.m_Path[index].m_IndexType == DocumentPath::IndexType::kStringIndex)
+    else if(mod.m_Path[index].m_IndexType == DocumentPathIndexType::kStringIndex)
     {
       cur_val = cur_val.at(mod.m_Path[index].m_StringIndex.data());
     }

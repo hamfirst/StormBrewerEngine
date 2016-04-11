@@ -1,7 +1,7 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Json\Json.h"
-#include "Foundation\Reflection\ReflectionArray.h"
+#include "Foundation\Reflection\ReflectionList.h"
 
 
 template <typename T, typename std::enable_if<
@@ -190,10 +190,10 @@ struct MemberJsonEncoderVisitor
   
   }
 
-  template <class FieldData, class MemType>
+  template <class FieldData>
   void operator()(FieldData f)
   {
-    m_Value[f.Name()] = EncodeJson(f.Get());
+    m_Value[f.GetName()] = EncodeJson(f.Get());
   }
 
 public:

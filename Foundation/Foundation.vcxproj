@@ -25,9 +25,11 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
     <ClInclude Include="Document\DocumentPath.h" />
+    <ClInclude Include="Document\DocumentPathElement.h" />
     <ClInclude Include="Hash\Hash.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
+    <ClInclude Include="Reflection\ReflectionDocument.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
     <ClInclude Include="Reflection\ReflectionList.h" />
     <ClInclude Include="Reflection\ReflectionMap.h" />
@@ -35,6 +37,7 @@
   <ItemGroup>
     <ClCompile Include="Document\Document.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
+    <ClCompile Include="Document\DocumentPathElement.cpp" />
     <ClCompile Include="Reflection\TypeDatabase.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
