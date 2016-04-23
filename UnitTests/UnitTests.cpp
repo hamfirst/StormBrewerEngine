@@ -6,6 +6,7 @@
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\Reflection.h"
 #include "Foundation\Reflection\ReflectionJson.h"
+#include "Foundation\Reflection\TypeDatabase.h"
 
 #include "Foundation\Document\DocumentPath.h"
 
@@ -48,6 +49,8 @@ public:
   )
 };
 
+REGISTER_TYPE(Person);
+
 template <class T>
 void TEST(T t, bool expect_exception = false)
 {
@@ -72,6 +75,7 @@ void TEST(T t, bool expect_exception = false)
 
 int main()
 {
+  g_TypeDatabase->FinalizeTypes();
 
   RSparseList<int> asdf;
   asdf.PushBack(1);

@@ -11,6 +11,11 @@ public:
     m_Values.clear();
   }
 
+  void Reserve(size_t size)
+  {
+    m_Values.reserve(size);
+  }
+
   void Set(const K & k, T && t)
   {
     m_Values.insert_or_assign(k, t);
@@ -64,5 +69,5 @@ public:
   }
 
 public:
-  std::unordered_map<uint32_t, T> m_Values;
+  std::unordered_map<K, T> m_Values;
 };

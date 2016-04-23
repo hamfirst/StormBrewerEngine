@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <string>
 
 static constexpr uint32_t crc_table[256] = {
   0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
@@ -68,6 +69,24 @@ template<>
 constexpr uint32_t crc32<size_t(-1)>(const char * str)
 {
   return 0xFFFFFFFF;
+}
+
+static uint32_t crc32(const char * str)
+{
+  uint32_t hash = 0xFFFFFFFF;
+  while(*str != 0)
+  {
+    hash >>= 8;
+    hash ^= crc_table[(hash ^ *str) & 0xFF];
+    str++;
+  }
+
+  return hash ^ 0xFFFFFFFF;
+}
+
+static uint32_t crc32(const std::string str)
+{
+  return crc32(str.data());
 }
 
 #define COMPILE_TIME_CRC32_STR(x) (crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)

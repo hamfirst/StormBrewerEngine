@@ -33,6 +33,10 @@
     <ClInclude Include="Reflection\ReflectionJson.h" />
     <ClInclude Include="Reflection\ReflectionList.h" />
     <ClInclude Include="Reflection\ReflectionMap.h" />
+    <ClInclude Include="Reflection\ReflectionPolymorphic.h" />
+    <ClInclude Include="Reflection\ReflectionUI.h" />
+    <ClInclude Include="Reflection\TypeDatabase.h" />
+    <ClInclude Include="Singleton\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document\Document.cpp" />

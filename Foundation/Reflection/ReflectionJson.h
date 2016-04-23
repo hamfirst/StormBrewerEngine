@@ -1,3 +1,4 @@
+#pragma once
 
 #include "Foundation\Common.h"
 #include "Foundation\Json\Json.h"
@@ -8,7 +9,7 @@ template <typename T, typename std::enable_if<
   std::is_arithmetic<T>::value ||
   std::is_same<T, RString>::value
 >::type * = 0>
-void DecodeJson(T & value, Json & j)
+void DecodeJson(T & value, const Json & j)
 {
   value = j;
 }
@@ -16,7 +17,7 @@ void DecodeJson(T & value, Json & j)
 template <typename T, typename std::enable_if<
   std::is_class<T>::value && T::is_reflectable
 >::type * = nullptr>
-void DecodeJson(T & value, Json & j)
+void DecodeJson(T & value, const Json & j)
 {
   MemberJsonDecoderVisitor decoder(j);
   VisitEach(value, decoder);
@@ -25,13 +26,13 @@ void DecodeJson(T & value, Json & j)
 template <typename T, typename std::enable_if<
   std::is_class<T>::value && T::is_enum
 >::type * = 0>
-void DecodeJson(T & value, Json & j)
+void DecodeJson(T & value, const Json & j)
 {
   value = T::_from_string(j.get<std::string>().data());
 }
 
 template <class T>
-void DecodeJson(RArrayList<T> & value, Json & j)
+void DecodeJson(RArrayList<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
@@ -45,7 +46,7 @@ void DecodeJson(RArrayList<T> & value, Json & j)
 }
 
 template <class T>
-void DecodeJson(RSparseList<T> & value, Json & j)
+void DecodeJson(RSparseList<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
@@ -59,7 +60,7 @@ void DecodeJson(RSparseList<T> & value, Json & j)
 }
 
 template <class T>
-void DecodeJson(RMergeList<T> & value, Json & j)
+void DecodeJson(RMergeList<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
@@ -74,35 +75,36 @@ void DecodeJson(RMergeList<T> & value, Json & j)
 }
 
 template <class T>
-void DecodeJson(RDictionary<T> & value, Json & j)
+void DecodeJson(RDictionary<T> & value, const Json & j)
 {
-  value.clear();
-  value.reserve(j.size());
-  for (Json::iterator it = j.begin(); it != j.end(); it++)
+  value.Clear();
+  value.Reserve(j.size());
+  for (auto it : j)
   {
     T new_val;
-    DecodeJson(new_val, it.value());
+    DecodeJson(new_val, it);
 
-    value[it.value().get<RHash>()] = new_val;
+    RString key = it.get<RString>();
+    value.Set(key, std::move(new_val));
   }
 }
 
 struct MemberJsonDecoderVisitor
 {
-  MemberJsonDecoderVisitor(Json & value)
+  MemberJsonDecoderVisitor(const Json & value)
     : m_Value(value)
   {
 
   }
 
-  template <class FieldData, class MemType>
+  template <class FieldData>
   void operator()(FieldData f)
   {
-    DecodeJson(f.Get(), m_Value[f.Name()]);
+    DecodeJson(f.Get(), m_Value[f.GetName()]);
   }
 
 public:
-  Json & m_Value;
+  const Json & m_Value;
 };
 
 template <typename T, typename std::enable_if<
@@ -174,7 +176,7 @@ template <class T>
 Json EncodeJson(const RDictionary<T> & value)
 {
   Json j_value;
-  for (std::pair<RHash, T> t : value)
+  for (auto t : value)
   {
     j_value[t.first] = t.second;
   }

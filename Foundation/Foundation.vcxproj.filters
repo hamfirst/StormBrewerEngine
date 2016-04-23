@@ -16,6 +16,9 @@
     <Filter Include="Hash">
       <UniqueIdentifier>{a4f0f3c8-077b-45f9-b18a-7d94280f3f26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{9da02f11-ec60-4868-aeb6-442e6b80affc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -48,6 +51,18 @@
     </ClInclude>
     <ClInclude Include="Document\DocumentPathElement.h">
       <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectionUI.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\TypeDatabase.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectionPolymorphic.h">
+      <Filter>Reflection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
