@@ -71,25 +71,10 @@ constexpr uint32_t crc32<size_t(-1)>(const char * str)
   return 0xFFFFFFFF;
 }
 
-static uint32_t crc32(const char * str)
-{
-  uint32_t hash = 0xFFFFFFFF;
-  while(*str != 0)
-  {
-    hash >>= 8;
-    hash ^= crc_table[(hash ^ *str) & 0xFF];
-    str++;
-  }
-
-  return hash ^ 0xFFFFFFFF;
-}
-
-static uint32_t crc32(const std::string str)
-{
-  return crc32(str.data());
-}
-
 #define COMPILE_TIME_CRC32_STR(x) (crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
+
+uint32_t crc32(const char * str);
+uint32_t crc32(const std::string str);
 
 
 

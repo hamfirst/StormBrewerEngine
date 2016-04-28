@@ -7,6 +7,7 @@
 #include "Foundation\Reflection\Reflection.h"
 #include "Foundation\Reflection\ReflectionJson.h"
 #include "Foundation\Reflection\TypeDatabase.h"
+#include "Foundation\CallList\CallList.h"
 
 #include "Foundation\Document\DocumentPath.h"
 
@@ -75,7 +76,7 @@ void TEST(T t, bool expect_exception = false)
 
 int main()
 {
-  g_TypeDatabase->FinalizeTypes();
+  g_SingletonInitCallList.CallAll();
 
   RSparseList<int> asdf;
   asdf.PushBack(1);

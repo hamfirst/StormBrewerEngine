@@ -22,6 +22,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CallList\CallList.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
     <ClInclude Include="Document\DocumentPath.h" />
@@ -36,13 +37,16 @@
     <ClInclude Include="Reflection\ReflectionPolymorphic.h" />
     <ClInclude Include="Reflection\ReflectionUI.h" />
     <ClInclude Include="Reflection\TypeDatabase.h" />
+    <ClInclude Include="Reflection\TypeInfo.h" />
     <ClInclude Include="Singleton\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CallList\Hash.cpp" />
     <ClCompile Include="Document\Document.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
     <ClCompile Include="Document\DocumentPathElement.cpp" />
     <ClCompile Include="Reflection\TypeDatabase.cpp" />
+    <ClCompile Include="Singleton\Singleton.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{39856B1A-B463-4D99-9859-74912E1C6D00}</ProjectGuid>

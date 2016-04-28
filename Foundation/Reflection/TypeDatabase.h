@@ -6,26 +6,17 @@
 #include "Foundation\Reflection\Reflection.h"
 #include "Foundation\Reflection\ReflectionJson.h"
 
+#include "Foundation\CallList\CallList.h"
+
 #define REGISTER_TYPE(ClassName) \
 static class s_Reg##ClassName \
 {\
   public:\
   s_Reg##ClassName() \
   {\
-    static TypeRegisterInfo s_RegInfo\
-    {\
-      []() { g_TypeDatabase->RegisterType<ClassName>(#ClassName); },\
-      g_TypeRegistrationList\
-    };\
-    g_TypeRegistrationList = &s_RegInfo; \
+    g_TypeDatabaseRegistrationCallList.AddCall([]() { g_TypeDatabase->RegisterType<ClassName>(#ClassName);});\
   }\
 } s_RegInst##ClassName;\
-
-struct TypeRegisterInfo
-{
-  void(*m_RegisterClass)();
-  TypeRegisterInfo * m_Next;
-};
 
 struct TypeInfo
 {
@@ -43,7 +34,7 @@ struct TypeInfo
 class TypeDatabase
 {
 public:
-  void FinalizeTypes();
+  void Init();
 
   template<class T>
   void RegisterType(const char * class_name)
@@ -52,7 +43,7 @@ public:
     {
       std::string(class_name),
       []() -> void * { return new T(); },
-      [](void * ptr) -> Json { return EncodeJson(*((T *)ptr)); },
+      [](void * ptr) { return EncodeJson(*((T *)ptr)); },
       [](const Json & json_data) -> void * { T * t = new T(); DecodeJson(*t, json_data); return t; },
       []() { return GetFields<T>(); }
     };
@@ -65,4 +56,4 @@ private:
 };
 
 extern Singleton<TypeDatabase> g_TypeDatabase;
-extern TypeRegisterInfo * g_TypeRegistrationList;
+extern PreMainCallList g_TypeDatabaseRegistrationCallList;

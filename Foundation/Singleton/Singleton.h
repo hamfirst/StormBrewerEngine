@@ -1,14 +1,21 @@
 #pragma once
 
+#include "Foundation\CallList\CallList.h"
+#include "Foundation\Reflection\TypeInfo.h"
+
+extern PreMainCallList g_SingletonInitCallList;
+
 template <class T>
 class Singleton
 {
 public:
 
-  Singleton()
+  Singleton() final
   {
     static T singleton;
     m_T = &singleton;
+
+    AddInit<HasInit<T>::value>();
   }
 
   T * operator * ()
@@ -31,9 +38,19 @@ public:
     return m_T;
   }
 
-
 private:
   T * m_T;
-};
 
+  template <bool>
+  void AddInit()
+  {
+
+  }
+
+  template <>
+  void AddInit<true>()
+  {
+    g_SingletonInitCallList.AddCall([=]() {m_T->Init(); });
+  }
+};
 

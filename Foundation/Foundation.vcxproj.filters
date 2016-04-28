@@ -19,6 +19,9 @@
     <Filter Include="Singleton">
       <UniqueIdentifier>{9da02f11-ec60-4868-aeb6-442e6b80affc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CallList">
+      <UniqueIdentifier>{d070ec39-90d8-42c4-acbf-100299be22d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -64,6 +67,12 @@
     <ClInclude Include="Reflection\ReflectionPolymorphic.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="CallList\CallList.h">
+      <Filter>CallList</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\TypeInfo.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">
@@ -77,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="Document\DocumentPathElement.cpp">
       <Filter>Document</Filter>
+    </ClCompile>
+    <ClCompile Include="CallList\Hash.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton\Singleton.cpp">
+      <Filter>Singleton</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
