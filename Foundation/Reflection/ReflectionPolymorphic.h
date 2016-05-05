@@ -2,12 +2,13 @@
 #pragma once
 
 #include "Foundation\Common.h"
+#include "Foundation\Reflection\Reflection.h"
 
 template <class T>
 class RPolymorphic
 {
+  REFLECTION_PARENT_INFO;
 public:
-
 
   uint32_t GetTypeNameHash()
   {

@@ -23,7 +23,7 @@ struct Inventory
 public:
   REFL_MEMBERS
   (
-    (items, RList<int>)
+    (items, RList<RInt>)
   )
 };
 
@@ -43,10 +43,10 @@ struct Person
 public:
   REFL_MEMBERS
   (
-    (name, RDictionary<RString>),
-    (age, int),
+    (name, RHashMap<RString>),
+    (age, RInt),
     (inv, Inventory),
-    (e, TestEnum)
+    (e, REnum<TestEnum>)
   )
 };
 
@@ -78,14 +78,33 @@ int main()
 {
   g_SingletonInitCallList.CallAll();
 
-  RSparseList<int> asdf;
+  RInt i = 10;
+  i += 5;
+  RInt b = i + 2;
+  if (i && b)
+  {
+    i += b;
+  }
+
+  if (i > b)
+  {
+    if (5 < b + 2)
+    {
+      if (b != i + i)
+      {
+        i >>= b;
+      }
+    }
+  }
+
+  RSparseList<RInt> asdf;
   asdf.PushBack(1);
   asdf.PushBack(2);
   asdf.PushBack(30);
   asdf.RemoveAt(1);
   asdf.PushBack(90);
 
-  RHashMap<int> map;
+  RHashMap<RInt> map;
   map.Set(0, 2);
   map.Get(0);
   map.Remove(0);
@@ -94,7 +113,7 @@ int main()
   std::string test = j.dump(2);
   std::cout << test << std::endl;
 
-  RSparseList<int> asdf2;
+  RSparseList<RInt> asdf2;
   DecodeJson(asdf2, j);
 
   Person p;

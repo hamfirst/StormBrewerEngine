@@ -593,7 +593,6 @@ class Enum {                                                                   \
                                                                                \
   public:                                                                      \
     typedef Underlying                                      _integral;         \
-    static const bool is_enum = true;                                          \
                                                                                \
     enum _enumerated SetUnderlyingType(Underlying) { __VA_ARGS__ };            \
                                                                                \

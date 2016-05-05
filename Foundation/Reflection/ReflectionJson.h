@@ -2,16 +2,23 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Json\Json.h"
-#include "Foundation\Reflection\ReflectionList.h"
+#include "Foundation\Reflection\ReflectionCommon.h"
 
 
-template <typename T, typename std::enable_if<
-  std::is_arithmetic<T>::value ||
-  std::is_same<T, RString>::value
->::type * = 0>
-void DecodeJson(T & value, const Json & j)
+template <typename NumericType>
+void DecodeJson(RNumber<NumericType> & value, const Json & j)
 {
-  value = j;
+  value = j.get<NumericType>();
+}
+
+static void DecodeJson(RBool & value, const Json & j)
+{
+  value = j.get<bool>();
+}
+
+static void DecodeJson(RString & value, const Json & j)
+{
+  value = j.get<std::string>();
 }
 
 template <typename T, typename std::enable_if<
@@ -23,12 +30,10 @@ void DecodeJson(T & value, const Json & j)
   VisitEach(value, decoder);
 }
 
-template <typename T, typename std::enable_if<
-  std::is_class<T>::value && T::is_enum
->::type * = 0>
-void DecodeJson(T & value, const Json & j)
+template <class EnumType>
+void DecodeJson(REnum<EnumType> & value, const Json & j)
 {
-  value = T::_from_string(j.get<std::string>().data());
+  value = EnumType::_from_string(j.get<std::string>().data());
 }
 
 template <class T>
@@ -75,7 +80,7 @@ void DecodeJson(RMergeList<T> & value, const Json & j)
 }
 
 template <class T>
-void DecodeJson(RDictionary<T> & value, const Json & j)
+void DecodeJson(RHashMap<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
@@ -84,7 +89,7 @@ void DecodeJson(RDictionary<T> & value, const Json & j)
     T new_val;
     DecodeJson(new_val, it);
 
-    RString key = it.get<RString>();
+    RHash key = it.get<RHash>();
     value.Set(key, std::move(new_val));
   }
 }
@@ -107,13 +112,20 @@ public:
   const Json & m_Value;
 };
 
-template <typename T, typename std::enable_if<
-  std::is_arithmetic<T>::value ||
-  std::is_same<T, RString>::value
->::type * = 0>
-Json EncodeJson(const T & value)
+template <typename NumericType>
+Json EncodeJson(const RNumber<NumericType> & value)
 {
-  return value;
+  return (NumericType)value;
+}
+
+static Json EncodeJson(const RBool & value)
+{
+  return (bool)value;
+}
+
+static Json EncodeJson(const RString & value)
+{
+  return value.data();
 }
 
 template <typename T, typename std::enable_if<
@@ -128,10 +140,8 @@ Json EncodeJson(const T & value)
   return j_value;
 }
 
-template <typename T, typename std::enable_if<
-  std::is_class<T>::value && T::is_enum
->::type * = 0>
-Json EncodeJson(const T & value)
+template <class EnumType>
+Json EncodeJson(const REnum<EnumType> & value)
 {
   return value._to_string();
 }
@@ -173,12 +183,12 @@ Json EncodeJson(const RMergeList<T> & value)
 }
 
 template <class T>
-Json EncodeJson(const RDictionary<T> & value)
+Json EncodeJson(const RHashMap<T> & value)
 {
   Json j_value;
   for (auto t : value)
   {
-    j_value[t.first] = t.second;
+    j_value[t.first] = EncodeJson(t.second);
   }
 
   return j_value;

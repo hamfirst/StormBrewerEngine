@@ -1,5 +1,6 @@
 
 #include "Foundation\Common.h"
+#include "Foundation\Hash\Hash.h"
 
 uint32_t crc32(const char * str)
 {

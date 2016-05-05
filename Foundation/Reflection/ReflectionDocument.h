@@ -89,7 +89,7 @@ void DecodeDocumentModification(RMergeList<T> & value, Json & j, int path_index)
 }
 
 template <class T>
-void DecodeDocumentModification(RDictionary<T> & value, Json & j, int path_index)
+void DecodeDocumentModification(RHashMapy<T> & value, Json & j, int path_index)
 {
   for (Json::iterator it = j.begin(); it != j.end(); it++)
   {

@@ -1,11 +1,14 @@
 #pragma once
 
 #include "Foundation\Common.h"
+#include "Foundation\Reflection\Reflection.h"
 
 template <class K, class T>
 class ReflectionMap
 {
 public:
+  REFLECTION_PARENT_INFO;
+
   void Clear()
   {
     m_Values.clear();

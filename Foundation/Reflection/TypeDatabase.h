@@ -43,7 +43,7 @@ public:
     {
       std::string(class_name),
       []() -> void * { return new T(); },
-      [](void * ptr) { return EncodeJson(*((T *)ptr)); },
+      [](void * ptr) { return EncodeJson(*(static_cast<T *>(ptr))); },
       [](const Json & json_data) -> void * { T * t = new T(); DecodeJson(*t, json_data); return t; },
       []() { return GetFields<T>(); }
     };

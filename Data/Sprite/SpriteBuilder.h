@@ -120,7 +120,7 @@ struct SpriteBuilderSchema
     (ShowFrameGrid, bool),
     (Textures, RList<SpriteBuilderSchemaTexture>),
     (Anchors, RList<SpriteAnchor>),
-    (FrameMetaData, RDictionary<SpriteFrameMetaData>),
+    (FrameMetaData, RHashMap<SpriteFrameMetaData>),
     (MoveBox, SpriteFrameDataBox)
   )
 };

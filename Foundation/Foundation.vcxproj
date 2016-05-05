@@ -30,11 +30,17 @@
     <ClInclude Include="Hash\Hash.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
+    <ClInclude Include="Reflection\ReflectionCommon.h" />
     <ClInclude Include="Reflection\ReflectionDocument.h" />
+    <ClInclude Include="Reflection\ReflectionEnum.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
     <ClInclude Include="Reflection\ReflectionList.h" />
     <ClInclude Include="Reflection\ReflectionMap.h" />
+    <ClInclude Include="Reflection\ReflectionNumber.h" />
+    <ClInclude Include="Reflection\ReflectionParent.h" />
     <ClInclude Include="Reflection\ReflectionPolymorphic.h" />
+    <ClInclude Include="Reflection\ReflectionString.h" />
+    <ClInclude Include="Reflection\ReflectionStruct.h" />
     <ClInclude Include="Reflection\ReflectionUI.h" />
     <ClInclude Include="Reflection\TypeDatabase.h" />
     <ClInclude Include="Reflection\TypeInfo.h" />

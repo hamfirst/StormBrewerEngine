@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Foundation\Common.h"
+#include "Foundation\Reflection\Reflection.h" 
 
 template <class T>
 class RArrayList
 {
 public:
+  REFLECTION_PARENT_INFO;
 
   void Clear()
   {
@@ -77,6 +79,7 @@ template <class T>
 class RSparseList
 {
 public:
+  REFLECTION_PARENT_INFO;
 
   struct RSparseListIterator
   {
@@ -282,6 +285,8 @@ template <class T>
 class RMergeList
 {
 public:
+  REFLECTION_PARENT_INFO;
+
   struct RMergeListIterator
   {
     RMergeListIterator(const RMergeListIterator & rhs) : m_List(rhs.m_List), m_PhysicalIndex(rhs.m_PhysicalIndex) { }
