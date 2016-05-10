@@ -16,17 +16,11 @@ DocumentPath::DocumentPath(const std::string & path)
     auto index = json_value.find("Index");
     if (index == json_value.end())
     {
-      elem.m_IndexType = DocumentPathIndexType::kNone;
+      elem.m_Index = 0;
     }
     else if(index->is_number())
     {
-      elem.m_IndexType = DocumentPathIndexType::kIntIndex;
-      elem.m_IntIndex = index->get<int>();
-    }
-    else
-    {
-      elem.m_IndexType = DocumentPathIndexType::kStringIndex;
-      elem.m_StringIndex = index->get<std::string>();
+      elem.m_Index = index->get<int>();
     }
 
     m_Path.push_back(elem);

@@ -5,12 +5,12 @@
 template <typename T>
 class HasInit
 {
-  typedef char one;
-  typedef long two;
+  typedef char true_type;
+  typedef long false_type;
 
-  template <typename C> static one test(decltype(&C::Init));
-  template <typename C> static two test(...);
+  template <typename C> static true_type test(decltype(&C::Init));
+  template <typename C> static false_type test(...);
 
 public:
-  enum { value = sizeof(test<T>(0)) == sizeof(char) };
+  enum { value = sizeof(test<T>(0)) == sizeof(true_type) };
 };

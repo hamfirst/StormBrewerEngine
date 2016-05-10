@@ -10,7 +10,7 @@ class Singleton
 {
 public:
 
-  Singleton() final
+  Singleton()
   {
     static T singleton;
     m_T = &singleton;

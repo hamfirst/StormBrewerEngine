@@ -4,9 +4,8 @@
 #include <functional>
 
 #include "Foundation\Common.h"
-#include "Foundation\Reflection\Reflection.h"
-#include "Foundation\Reflection\ReflectionJson.h"
-#include "Foundation\Reflection\TypeDatabase.h"
+#include "Foundation\Reflection\TypeDatabaseRegister.h"
+#include "Foundation\Reflection\ReflectionParent.h"
 #include "Foundation\CallList\CallList.h"
 
 #include "Foundation\Document\DocumentPath.h"
@@ -50,7 +49,16 @@ public:
   )
 };
 
+struct PersonDerived : public Person
+{
+public:
+  REFL_MEMBERS_DERIVED(Person,
+    (crap, RInt)
+    )
+};
+
 REGISTER_TYPE(Person);
+REGISTER_TYPE(PersonDerived);
 
 template <class T>
 void TEST(T t, bool expect_exception = false)
@@ -74,28 +82,10 @@ void TEST(T t, bool expect_exception = false)
   }
 }
 
+
 int main()
 {
   g_SingletonInitCallList.CallAll();
-
-  RInt i = 10;
-  i += 5;
-  RInt b = i + 2;
-  if (i && b)
-  {
-    i += b;
-  }
-
-  if (i > b)
-  {
-    if (5 < b + 2)
-    {
-      if (b != i + i)
-      {
-        i >>= b;
-      }
-    }
-  }
 
   RSparseList<RInt> asdf;
   asdf.PushBack(1);
@@ -124,9 +114,10 @@ int main()
   auto json_value = EncodeJson(p);
   std::cout << json_value.dump(2);
 
-  //Person copy("", 0);
-  //DecodeJson(copy, json_value);
+  Person copy;
+  DecodeJson(copy, json_value);
 
+  InitializeParentInfo(copy);
   return 0;
 }
 

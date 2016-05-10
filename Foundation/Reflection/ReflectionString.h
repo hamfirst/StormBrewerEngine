@@ -29,6 +29,11 @@ public:
     m_Value = val;
   }
 
+  operator std::string() const
+  {
+    return m_Value;
+  }
+
   const std::string & operator = (const std::string & val)
   {
     m_Value = val;
@@ -645,7 +650,9 @@ public:
 private:
   void Modified()
   {
-    
+#ifdef REFLECTION_PARENT
+    ReflectionNotifySet(m_ReflectionInfo, m_Value.data());
+#endif
   }
 
   std::string m_Value;

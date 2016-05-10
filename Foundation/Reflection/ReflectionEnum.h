@@ -73,6 +73,10 @@ private:
   void Set(EnumType val)
   {
     m_Value = val;
+
+#ifdef REFLECTION_PARENT
+    ReflectionNotifySet(m_ReflectionInfo, _to_string());
+#endif
   }
 
   EnumType m_Value;

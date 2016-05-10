@@ -21,8 +21,6 @@ class Document
 {
   Document(const char * json_data);
 
-  // Returns reverse modification
-  DocumentModification ApplyModification(const DocumentModification & mod);
 private:
   Json m_Root;
 };

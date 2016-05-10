@@ -3,6 +3,7 @@
 #include <type_traits>
 
 #include "Foundation\Reflection\Reflection.h"
+#include "Foundation\Reflection\ReflectionChangeNotifier.h"
 
 class RBool
 {
@@ -22,6 +23,7 @@ public:
   bool operator = (bool val)
   {
     Set(m_Value);
+    return m_Value;
   }
 
   operator bool() const
@@ -48,6 +50,10 @@ private:
   void Set(bool val)
   {
     m_Value = val;
+
+#ifdef REFLECTION_PARENT
+    ReflectionNotifySet(m_ReflectionInfo, m_Value);
+#endif
   }
 
   bool m_Value;
@@ -151,85 +157,85 @@ public:
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator % (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator % (NumericType val) const
   {
     return m_Value % val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator %= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator %= (NumericType val)
   {
     Set(m_Value % val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator & (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator & (NumericType val) const
   {
     return m_Value & val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator &= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator &= (NumericType val)
   {
     Set(m_Value & val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator | (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator | (NumericType val) const
   {
     return m_Value | val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator |= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator |= (NumericType val)
   {
     Set(m_Value | val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ^ (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ^ (NumericType val) const
   {
     return m_Value ^ val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ^= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ^= (NumericType val)
   {
     Set(m_Value ^ val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ~ () const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ~ () const
   {
     return ~m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator >> (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator >> (NumericType val) const
   {
     return m_Value >> val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator >>= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator >>= (NumericType val)
   {
     Set(m_Value >> val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator << (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator << (NumericType val) const
   {
     return m_Value << val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator <<= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator <<= (NumericType val)
   {
     Set(m_Value << val);
     return m_Value;
@@ -269,6 +275,10 @@ private:
   void Set(NumericType val)
   {
     m_Value = val;
+
+#ifdef REFLECTION_PARENT
+    ReflectionNotifySet(m_ReflectionInfo, m_Value);
+#endif
   }
 
   NumericType m_Value;

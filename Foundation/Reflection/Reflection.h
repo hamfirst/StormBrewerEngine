@@ -9,16 +9,20 @@
 #define REFLECTION_PARENT
 #ifdef REFLECTION_PARENT
 
+class DocumentPath;
+
 struct ReflectionParentInfo
 {
-  void * m_Parent;
-  uint32_t m_ParentType;
-  uint32_t m_ParentFieldIndex;
-  uint32_t m_ParentArrayIndex;
+  ReflectionParentInfo * m_ParentInfo = nullptr;
+  uint32_t m_ParentType = 0;
+  uint32_t m_ParentIndex = 0;
+  void(*m_ChangeListener)(const DocumentPath & path, const std::string & json_data) = nullptr;
 };
 
 #define REFLECTION_PARENT_INFO \
   ReflectionParentInfo m_ReflectionInfo;
+
+
 
 #else
 
