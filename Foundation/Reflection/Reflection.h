@@ -6,8 +6,8 @@
 #include <boost/preprocessor/seq/for_each_i.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
-#define REFLECTION_PARENT
-#ifdef REFLECTION_PARENT
+#define REFLECTION_CHANGE_NOTIFIER
+#ifdef REFLECTION_CHANGE_NOTIFIER
 
 class DocumentPath;
 
@@ -19,13 +19,13 @@ struct ReflectionParentInfo
   void(*m_ChangeListener)(const DocumentPath & path, const std::string & json_data) = nullptr;
 };
 
-#define REFLECTION_PARENT_INFO \
+#define REFLECTION_CHANGE_NOTIFIER_INFO \
   ReflectionParentInfo m_ReflectionInfo;
 
 
 
 #else
 
-#define REFLECTION_PARENT_INFO
+#define REFLECTION_CHANGE_NOTIFIER_INFO
 
 #endif

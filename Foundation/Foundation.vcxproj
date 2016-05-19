@@ -25,6 +25,7 @@
     <ClInclude Include="CallList\CallList.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
+    <ClInclude Include="Document\DocumentModification.h" />
     <ClInclude Include="Document\DocumentPath.h" />
     <ClInclude Include="Document\DocumentPathElement.h" />
     <ClInclude Include="Hash\Hash.h" />
@@ -53,6 +54,7 @@
   <ItemGroup>
     <ClCompile Include="CallList\Hash.cpp" />
     <ClCompile Include="Document\Document.cpp" />
+    <ClCompile Include="Document\DocumentModification.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
     <ClCompile Include="Document\DocumentPathElement.cpp" />
     <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp" />

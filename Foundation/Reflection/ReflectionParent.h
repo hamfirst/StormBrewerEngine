@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Foundation\Common.h"
+#include "Foundation\Reflection\TypeDatabaseThin.h"
 
-#ifdef REFLECTION_PARENT
+#ifdef REFLECTION_CHANGE_NOTIFIER
 
 template <typename NumericType>
 void SetParentInfo(RNumber<NumericType> & value, const ReflectionParentInfo & info)
@@ -30,6 +31,19 @@ void SetParentInfo(T & value, const ReflectionParentInfo & info)
   MemberParentInfoVisitor parent_setter(new_info);
 
   VisitEach(value, parent_setter);
+}
+
+template <class T>
+void SetParentInfo(RPolymorphic<T> & value, const ReflectionParentInfo & info)
+{
+  value.m_ReflectionInfo = info;
+
+  ReflectionParentInfo new_info;
+  new_info.m_ParentInfo = &value.m_ReflectionInfo;
+  new_info.m_ParentIndex = 0;
+  new_info.m_ParentType = 0xFFFFFFFF;
+
+  SetParentInfo(value.GetValue(), value.GetTypeNameHash(), new_info);
 }
 
 template <class EnumType>
@@ -78,7 +92,7 @@ void SetParentInfo(RMergeList<T> & value, const ReflectionParentInfo & info)
 
   for (auto t : value)
   {
-    new_info.m_ParentArrayIndex = t.first;
+    new_info.m_ParentIndex = t.first;
     SetParentInfo(value, new_info);
   }
 }

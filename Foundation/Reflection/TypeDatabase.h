@@ -20,8 +20,9 @@ struct TypeInfo
   void (*m_DecodeJson)(void * ptr, const void * json_data);
 
   void (*m_SetParentInfo)(void * ptr, const ReflectionParentInfo & parent_info);
+  bool (*m_Compare)(const void * ptr1, const void * ptr2);
 
-  std::vector<std::string> (*m_GetFields)();
+  const char * (*m_GetFieldName)(int index);
 };
 
 

@@ -23,8 +23,9 @@ using RULong = RNumber<uint64_t>;
 using RFloat = RNumber<float>;
 
 template <class T>
-using RList = RArrayList<T>;
+using RList = RMergeList<T>;
 
 template <class T>
 using RHashMap = ReflectionMap<RHash, T>;
 
+#include "Foundation\Reflection\ReflectionJsonThin.h"

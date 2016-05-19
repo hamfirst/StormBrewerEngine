@@ -5,10 +5,16 @@
 
 struct DocumentPathElement
 {
-  DocumentPathElement() { }
-  DocumentPathElement(std::string field_name);
-  DocumentPathElement(std::string field_name, int index);
+  DocumentPathElement(std::string index);
+  DocumentPathElement(int index);
 
-  std::string m_FieldName;
-  int m_Index;
+  enum DocumentPathElementType
+  {
+    kStringIndex,
+    kIntIndex,
+  };
+
+  DocumentPathElementType m_Type;
+  std::string m_StringIndex;
+  uint32_t m_IntIndex;
 };

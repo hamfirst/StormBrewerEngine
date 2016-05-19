@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Foundation\Common.h"
+#include "Foundation\Reflection\ReflectionCommon.h"
 
 std::string ReflectValue(const RByte & value);
 std::string ReflectValue(const RShort & value);
@@ -53,12 +54,12 @@ std::string ReflectValue(const RArrayList<T> & value)
   {
     outp << ReflectValue(*itr);
 
-    itr++;
+    ++itr;
     while (itr != end)
     {
       outp << ", ";
       outp << ReflectValue(*itr);
-      itr++;
+      ++itr;
     }
   }
 
@@ -82,14 +83,14 @@ std::string ReflectValue(const RMergeList<T> & value)
     outp << "\": ";
     outp << ReflectValue(itr->second);
 
-    itr++;
+    ++itr;
     while (itr != end)
     {
       outp << "\"";
       outp << std::to_string(itr->first);
       outp << "\": ";
       outp << ReflectValue(itr->second);
-      itr++;
+      ++itr;
     }
   }
 
@@ -113,14 +114,14 @@ std::string ReflectValue(const RSparseList<T> & value)
     outp << "\": ";
     outp << ReflectValue(itr->second);
 
-    itr++;
+    ++itr;
     while (itr != end)
     {
       outp << "\"";
       outp << std::to_string(itr->first);
       outp << "\": ";
       outp << ReflectValue(itr->second);
-      itr++;
+      ++itr;
     }
   }
 

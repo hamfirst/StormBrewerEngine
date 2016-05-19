@@ -84,7 +84,7 @@ void DecodeJson(RMergeList<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
-  for (Json::iterator it = j.begin(); it != j.end(); ++it)
+  for (Json::const_iterator it = j.begin(); it != j.end(); ++it)
   {
     T new_val;
     DecodeJson(new_val, it.value());
@@ -191,10 +191,10 @@ Json EncodeJson(const RArrayList<T> & value)
 template <class T>
 Json EncodeJson(const RSparseList<T> & value)
 {
-  Json j_value;
+  Json j_value = Json::object();
   for (auto t : value)
   {
-    j_value.push_back(EncodeJson(t.second));
+    j_value[std::to_string(t.first)] = EncodeJson(t.second);
   }
 
   return j_value;
@@ -203,7 +203,7 @@ Json EncodeJson(const RSparseList<T> & value)
 template <class T>
 Json EncodeJson(const RMergeList<T> & value)
 {
-  Json j_value;
+  Json j_value = Json::object();
   for (auto t : value)
   {
     j_value[std::to_string(t.first)] = EncodeJson(t.second);

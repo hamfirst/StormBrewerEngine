@@ -6,7 +6,7 @@ template <class EnumType>
 class REnum
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   REnum()
   {
@@ -29,6 +29,11 @@ public:
     return m_Value._to_integral();
   }
 
+  operator EnumType() const
+  {
+    return m_Value;
+  }
+
   int _to_integral() const
   {
     return m_Value._to_integral();
@@ -39,32 +44,37 @@ public:
     return m_Value._to_string();
   }
 
-  bool operator == (EnumType val)
+  bool operator == (EnumType val) const
+  {
+    return m_Value == val;
+  }
+
+  bool operator == (const REnum<EnumType> & val) const
+  {
+    return m_Value == val.m_Value;
+  }
+
+  bool operator != (EnumType val) const
   {
     return m_Value != val;
   }
 
-  bool operator != (EnumType val)
-  {
-    return m_Value != val;
-  }
-
-  bool operator < (EnumType val)
+  bool operator < (EnumType val) const
   {
     return m_Value < val;
   }
 
-  bool operator <= (EnumType val)
+  bool operator <= (EnumType val) const
   {
     return m_Value <= val;
   }
 
-  bool operator > (EnumType val)
+  bool operator > (EnumType val) const
   {
     return m_Value > val;
   }
 
-  bool operator >= (EnumType val)
+  bool operator >= (EnumType val) const
   {
     return m_Value >= val;
   }
@@ -74,7 +84,7 @@ private:
   {
     m_Value = val;
 
-#ifdef REFLECTION_PARENT
+#ifdef REFLECTION_CHANGE_NOTIFIER
     ReflectionNotifySet(m_ReflectionInfo, _to_string());
 #endif
   }

@@ -16,3 +16,29 @@ Optional<void *> CreateTypeInstance(uint32_t type_name_hash)
     return Optional<void *>();
   }
 }
+
+bool CompareTypeInstance(void * ptr1, void * ptr2, uint32_t type_name_hash)
+{
+  Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
+
+  if (type_info)
+  {
+    return type_info->m_Compare(ptr1, ptr2);
+  }
+  else
+  {
+    return false;
+  }
+}
+
+#ifdef REFLECTION_CHANGE_NOTIFIER
+void SetParentInfo(void * ptr, const uint32_t type_name_hash, const ReflectionParentInfo & info)
+{
+  Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
+
+  if (type_info)
+  {
+    type_info->m_SetParentInfo(ptr, info);
+  }
+}
+#endif

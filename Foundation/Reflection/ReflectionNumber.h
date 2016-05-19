@@ -8,7 +8,7 @@
 class RBool
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RBool()
   {
@@ -46,12 +46,17 @@ public:
     return m_Value != val;
   }
 
+  bool operator == (const RBool & val) const
+  {
+    return m_Value != val.m_Value;
+  }
+
 private:
   void Set(bool val)
   {
     m_Value = val;
 
-#ifdef REFLECTION_PARENT
+#ifdef REFLECTION_CHANGE_NOTIFIER
     ReflectionNotifySet(m_ReflectionInfo, m_Value);
 #endif
   }
@@ -59,11 +64,27 @@ private:
   bool m_Value;
 };
 
+static bool ParseBool(const std::string & val)
+{
+  if (val == "true")
+  {
+    return true;
+  }
+  else if (val == "false")
+  {
+    return false;
+  }
+  else
+  {
+    throw std::exception("Invalid bool");
+  }
+}
+
 template <class NumericType>
 class RNumber
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RNumber()
   {
@@ -276,10 +297,46 @@ private:
   {
     m_Value = val;
 
-#ifdef REFLECTION_PARENT
+#ifdef REFLECTION_CHANGE_NOTIFIER
     ReflectionNotifySet(m_ReflectionInfo, m_Value);
 #endif
   }
 
   NumericType m_Value;
 };
+
+template <typename NumericType>
+static NumericType ParseNumber(const std::string & str)
+{
+  return (NumericType)std::stoll(str);
+}
+
+template <>
+static uint8_t ParseNumber(const std::string & str)
+{
+  return (uint8_t)std::stoull(str);
+}
+
+template <>
+static uint16_t ParseNumber(const std::string & str)
+{
+  return (uint16_t)std::stoull(str);
+}
+
+template <>
+static uint32_t ParseNumber(const std::string & str)
+{
+  return (uint32_t)std::stoull(str);
+}
+
+template <>
+static uint64_t ParseNumber(const std::string & str)
+{
+  return (uint64_t)std::stoull(str);
+}
+
+template <>
+static float ParseNumber(const std::string & str)
+{
+  return (float)std::stof(str);
+}

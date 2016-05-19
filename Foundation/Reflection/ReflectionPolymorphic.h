@@ -3,23 +3,59 @@
 #include "Foundation\Reflection\Reflection.h"
 #include "Foundation\Reflection\TypeDatabaseThin.h"
 
-template <class T, typename std::enable_if<
+template <class T, class DefaultType = T, typename std::enable_if<
   std::is_class<T>::value && std::has_virtual_destructor<T>::value && T::is_reflectable
 >::type * = nullptr>
 class RPolymorphic
 {
-  REFLECTION_PARENT_INFO;
 public:
+  REFLECTION_CHANGE_NOTIFIER_INFO;
+
+#ifdef REFLECTION_CHANGE_NOTIFIER
+  ReflectionParentInfo m_TypeReflectionInfo;
+#endif
 
   RPolymorphic()
   {
-    m_T = std::make_unique<T>();
-    m_TypeNameHash = m_T->GetTypeNameHash();
+    DefaultType * new_val = new DefaultType();
+    m_T = new_val;
+    m_TypeNameHash = new_val->GetTypeNameHash();
+
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    m_TypeReflectionInfo.m_ParentType = 0xFFFFFFFF;
+    m_TypeReflectionInfo.m_ParentIndex = 1;
+    m_TypeReflectionInfo.m_ParentInfo = &m_ReflectionInfo;
+#endif
   }
 
-  T * GetValue()
+  T & GetValue()
   {
     return m_T;
+  }
+
+  const T & GetValue() const
+  {
+    return m_T;
+  }
+
+  T * operator -> ()
+  {
+    return m_T;
+  }
+
+  const T * operator -> () const
+  {
+    return m_T;
+  }
+
+  bool operator == (const RPolymorphic<T> & rhs) const
+  {
+    if (m_TypeNameHash != rhs.m_TypeNameHash)
+    {
+      return false;
+    }
+
+    return CompareTypeInstance(m_T.get(), rhs.m_T.get(), m_TypeNameHash);
   }
 
   uint32_t GetTypeNameHash()
@@ -51,8 +87,19 @@ private:
 
   void Modified()
   {
-#ifdef REFLECTION_PARENT
-    ReflectionNotifySet(m_ReflectionInfo, m_T.get(), m_TypeNameHash);
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    if (m_ReflectionInfo.m_ParentInfo)
+    {
+      ReflectionParentInfo new_info;
+      new_info.m_ParentInfo = &m_ReflectionInfo;
+      new_info.m_ParentIndex = 0;
+      new_info.m_ParentType = 0xFFFFFFFF;
+
+      SetParentInfo(GetValue(), GetTypeNameHash(), new_info);
+    }
+
+    ReflectionNotifySet(m_TypeReflectionInfo, m_TypeNameHash);
+    ReflectionNotifySet(m_T->m_ReflectionInfo, m_T.get(), m_TypeNameHash);
 #endif
   }
 

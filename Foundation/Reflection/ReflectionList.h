@@ -2,16 +2,18 @@
 
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\Reflection.h" 
+#include "Foundation\Reflection\ReflectionChangeNotifier.h" 
 
 template <class T>
 class RArrayList
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   void Clear()
   {
     m_Values.clear();
+    Cleared();
   }
 
   void Reserve(std::size_t size)
@@ -22,6 +24,7 @@ public:
   void PushBack(const T & val)
   {
     m_Values.push_back(val);
+    Appended();
   }
 
   void InsertAt(const T & val, std::size_t logical_index)
@@ -33,11 +36,13 @@ public:
     }
 
     m_Values.insert(m_Values.begin() + logical_index);
+    Inserted(logical_index);
   }
 
   void RemoveAt(std::size_t logical_index)
   {
     m_Values.erase(m_Values.begin() + logical_index);
+    Removed(logical_index);
   }
 
   std::size_t HighestIndex()
@@ -69,7 +74,85 @@ public:
     return m_Values.end();
   }
 
+  bool operator == (const RArrayList<T> & rhs) const
+  {
+    if (m_Values.size() != rhs.m_Values.size())
+    {
+      return false;
+    }
+
+    auto itr1 = begin();
+    auto itr2 = rhs.begin();
+
+    auto last = end();
+
+    while (itr1 != last)
+    {
+      if (*itr1 == *itr2)
+      {
+        ++itr1;
+        ++itr2;
+        continue;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
 private:
+
+  void Cleared()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyClearArray(m_ReflectionInfo);
+#endif
+  }
+
+  void Appended()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    new_info.m_ParentIndex = (uint32_t)(m_Values.size() - 1);
+    new_info.m_ParentType = 0;
+
+    SetParentInfo(m_Values[m_Values.size() - 1], new_info);
+
+    ReflectionNotifyAppendArray(m_ReflectionInfo, ReflectValue(m_Values[m_Values.size() - 1]));
+#endif
+  }
+
+  void Inserted(std::size_t logical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    for (int index = logical_index; index < m_Values.size(); index++)
+    {
+      new_info.m_ParentIndex = index;
+      SetParentInfo(m_Values[index], new_info);
+    }
+
+    ReflectionNotifyInsertArray(m_ReflectionInfo, logical_index, ReflectValue(m_Values[m_Values.size() - 1]));
+#endif
+  }
+
+  void Removed(std::size_t logical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    for (int index = logical_index; index < m_Values.size(); index++)
+    {
+      new_info.m_ParentIndex = index;
+      SetParentInfo(m_Values[index], new_info);
+    }
+
+    ReflectionNotifyRemoveArray(m_ReflectionInfo, logical_index);
+#endif
+  }
 
   std::vector<T> m_Values;
 };
@@ -79,7 +162,7 @@ template <class T>
 class RSparseList
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   struct RSparseListIterator
   {
@@ -96,6 +179,12 @@ public:
     }
 
     const std::pair<std::size_t, T &> operator *() const
+    {
+      std::pair<std::size_t, T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
+      return val;
+    }
+
+    const std::pair<std::size_t, T &> operator ->() const
     {
       std::pair<std::size_t, T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
       return val;
@@ -139,6 +228,12 @@ public:
       return val;
     }
 
+    const std::pair<std::size_t, T &> operator ->() const
+    {
+      std::pair<std::size_t, T &> val(m_PhysicalIndex, m_List->m_Values[m_PhysicalIndex].m_T);
+      return val;
+    }
+
     void operator++()
     {
       do
@@ -172,6 +267,8 @@ public:
   {
     m_Values.push_back(ContainerData(val));
     m_HighestIndex = m_Values.size();
+
+    Inserted(m_Values.size() - 1);
   }
 
   void InsertAt(const T & val, std::size_t logical_index)
@@ -185,8 +282,9 @@ public:
 
     m_Values[logical_index] = ContainerData(val);
     m_HighestIndex = std::max(m_HighestIndex, logical_index);
-  }
 
+    Inserted(logical_index);
+  }
 
   void RemoveAt(std::size_t logical_index)
   {
@@ -199,6 +297,8 @@ public:
         m_HighestIndex--;
       }
     }
+
+    Removed(logical_index);
   }
 
   std::size_t HighestIndex()
@@ -220,6 +320,7 @@ public:
     }
 
     m_Values = new_vals;
+    Compressed();
   }
 
   RSparseListIterator begin()
@@ -258,6 +359,33 @@ public:
     return itr;
   }
 
+  bool operator == (const RSparseList<T> & rhs) const
+  {
+    if (m_Indices.size() != rhs.m_Indices.size())
+    {
+      return false;
+    }
+
+    auto itr1 = begin();
+    auto itr2 = rhs.begin();
+
+    auto last = end();
+
+    while (itr1 != last)
+    {
+      if (itr1->first == itr2->first && itr1->second == itr2->second)
+      {
+        ++itr1;
+        ++itr2;
+        continue;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
 private:
   struct ContainerData
   {
@@ -277,6 +405,51 @@ private:
     T m_T;
   };
 
+  void Cleared()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyClearObject(m_ReflectionInfo);
+#endif
+  }
+
+  void Compressed()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    new_info.m_ParentType = 0;
+
+    for (uint32_t index = 0; index < m_Values.size(); index++)
+    {
+      new_info.m_ParentIndex = index;
+      SetParentInfo(m_Values[index].m_T, new_info);
+    }
+
+
+    ReflectionNotifyCompress(m_ReflectionInfo);
+#endif
+  }
+
+  void Inserted(std::size_t logical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    new_info.m_ParentType = 0;
+    new_info.m_ParentIndex = logical_index;
+    SetParentInfo(m_Values[logical_index].m_T, new_info);
+
+    ReflectionNotifyInsertObject(m_ReflectionInfo, logical_index, ReflectValue(m_Values[logical_index].m_T));
+#endif
+  }
+
+  void Removed(std::size_t logical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyRemoveObject(m_ReflectionInfo, logical_index);
+#endif
+  }
+
   std::size_t m_HighestIndex = 0;
   std::vector<ContainerData> m_Values;
 };
@@ -285,7 +458,7 @@ template <class T>
 class RMergeList
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   struct RMergeListIterator
   {
@@ -307,9 +480,16 @@ public:
       return val;
     }
 
-    void operator++()
+    const std::pair<int, T &> operator ->() const
+    {
+      std::pair<int, T &> val(m_List->m_Indices[m_PhysicalIndex], m_List->m_Values[m_PhysicalIndex]);
+      return val;
+    }
+
+    RMergeListIterator & operator++()
     {
       m_PhysicalIndex++;
+      return *this;
     }
 
   private:
@@ -342,9 +522,16 @@ public:
       return val;
     }
 
-    void operator++()
+    const std::pair<int, T &> operator ->() const
+    {
+      std::pair<int, T &> val(m_List->m_Indices[m_PhysicalIndex], m_List->m_Values[m_PhysicalIndex]);
+      return val;
+    }
+
+    RMergeListIteratorConst & operator++()
     {
       m_PhysicalIndex++;
+      return *this;
     }
 
   private:
@@ -377,6 +564,7 @@ public:
     m_Values.push_back(val);
 
     m_HighestIndex++;
+    Inserted(m_HighestIndex - 1, m_Indices.size() - 1);
   }
 
   void InsertAt(const T & val, std::size_t logical_index)
@@ -392,11 +580,13 @@ public:
       m_Indices.push_back(logical_index);
       m_Values.push_back(val);
       m_HighestIndex = logical_index + 1;
+
+      Inserted(logical_index, m_Indices.size() - 1);
       return;
     }
 
     size_t array_size = m_Indices.size();
-    for (int test = 0; test < array_size; test++)
+    for (size_t test = 0; test < array_size; test++)
     {
       if (m_Indices[test] == logical_index)
       {
@@ -408,6 +598,8 @@ public:
       {
         m_Indices.insert(m_Indices.begin() + test, logical_index);
         m_Values.insert(m_Values.begin() + test, val);
+
+        Inserted(logical_index, test);
         return;
       }
     }
@@ -423,6 +615,8 @@ public:
       {
         m_Indices.erase(m_Indices.begin() + test);
         m_Values.erase(m_Values.begin() + test);
+
+        Removed(logical_index);
         return;
       }
     }
@@ -439,6 +633,8 @@ public:
     {
       m_Indices[index] = index;
     }
+
+    Compressed();
   }
 
   RMergeListIterator begin()
@@ -465,7 +661,69 @@ public:
     return itr;
   }
 
+  bool operator == (const RMergeList<T> & rhs) const
+  {
+    if (m_Indices.size() != rhs.m_Indices.size())
+    {
+      return false;
+    }
+
+    auto itr1 = begin();
+    auto itr2 = rhs.begin();
+
+    auto last = end();
+
+    while (itr1 != last)
+    {
+      if ((*itr1).first == (*itr2).first && (*itr1).second == (*itr2).second)
+      {
+        ++itr1;
+        ++itr2;
+        continue;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
 private:
+
+  void Cleared()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyClearObject(m_ReflectionInfo);
+#endif
+  }
+
+  void Compressed()
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyCompress(m_ReflectionInfo);
+#endif
+  }
+
+  void Inserted(std::size_t logical_index, std::size_t physical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionParentInfo new_info;
+    new_info.m_ParentInfo = &m_ReflectionInfo;
+    new_info.m_ParentIndex = logical_index;
+    new_info.m_ParentType = 0;
+
+    SetParentInfo(m_Values[logical_index], new_info);
+
+    ReflectionNotifyInsertObject(m_ReflectionInfo, logical_index, ReflectValue(m_Values[physical_index]));
+#endif
+  }
+
+  void Removed(std::size_t logical_index)
+  {
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifyRemoveObject(m_ReflectionInfo, logical_index);
+#endif
+  }
 
   std::size_t m_HighestIndex = 0;
 

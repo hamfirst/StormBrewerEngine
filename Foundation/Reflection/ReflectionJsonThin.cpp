@@ -47,12 +47,12 @@ std::string ReflectValue(const RULong & value)
 
 std::string ReflectValue(const RFloat & value)
 {
-  return std::string("\"") + std::to_string((float)value) + std::string("\"");
+  return std::to_string((float)value);
 }
 
 std::string ReflectValue(const RString & value)
 {
-  return Json::escape_string(value);
+  return std::string("\"") + Json::escape_string(value) + std::string("\"");
 }
 
 std::string ReflectValue(const void * value, uint32_t type_name_hash)

@@ -7,7 +7,7 @@
 class RString
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RString()
   {
@@ -30,6 +30,11 @@ public:
   }
 
   operator std::string() const
+  {
+    return m_Value;
+  }
+
+  operator const std::string & () const
   {
     return m_Value;
   }
@@ -60,6 +65,11 @@ public:
     m_Value = val;
     Modified();
     return m_Value;
+  }
+
+  bool operator == (const RString & val) const
+  {
+    return m_Value == val.m_Value;
   }
 
   auto begin()
@@ -650,7 +660,7 @@ public:
 private:
   void Modified()
   {
-#ifdef REFLECTION_PARENT
+#ifdef REFLECTION_CHANGE_NOTIFIER
     ReflectionNotifySet(m_ReflectionInfo, m_Value.data());
 #endif
   }

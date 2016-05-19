@@ -74,7 +74,7 @@ constexpr uint32_t crc32<size_t(-1)>(const char * str)
 #define COMPILE_TIME_CRC32_STR(x) (crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
 
 uint32_t crc32(const char * str);
-uint32_t crc32(const std::string str);
+uint32_t crc32(const std::string & str);
 
 
 

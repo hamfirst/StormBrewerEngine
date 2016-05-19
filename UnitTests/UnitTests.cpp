@@ -6,9 +6,10 @@
 #include "Foundation\Common.h"
 #include "Foundation\Reflection\TypeDatabaseRegister.h"
 #include "Foundation\Reflection\ReflectionParent.h"
+#include "Foundation\Document\DocumentModification.h"
 #include "Foundation\CallList\CallList.h"
 
-#include "Foundation\Document\DocumentPath.h"
+#include "Foundation\Document\Document.h"
 
 REFL_ENUM(TestEnum, int, kA, kB, kC);
 
@@ -16,7 +17,7 @@ struct Inventory
 {
   Inventory()
   {
-    items.PushBack(20);
+    //items.PushBack(20);
   }
 
 public:
@@ -29,8 +30,9 @@ public:
 struct Person
 {
   Person()
+    : 
+    age(20)
   {
-    age = 82;
   }
 
   Person(const char *name, int age)
@@ -42,7 +44,7 @@ struct Person
 public:
   REFL_MEMBERS
   (
-    (name, RHashMap<RString>),
+    (name, RString),
     (age, RInt),
     (inv, Inventory),
     (e, REnum<TestEnum>)
@@ -52,9 +54,11 @@ public:
 struct PersonDerived : public Person
 {
 public:
+
   REFL_MEMBERS_DERIVED(Person,
     (crap, RInt)
     )
+
 };
 
 REGISTER_TYPE(Person);
@@ -83,41 +87,35 @@ void TEST(T t, bool expect_exception = false)
 }
 
 
+Document * doc;
+std::vector<DocumentModification> reverse_list;
+
+void ChangeNotifier(const DocumentModification & mod)
+{
+  doc->ApplyDocumentModification(mod, reverse_list);
+}
+
 int main()
 {
   g_SingletonInitCallList.CallAll();
 
-  RSparseList<RInt> asdf;
-  asdf.PushBack(1);
-  asdf.PushBack(2);
-  asdf.PushBack(30);
-  asdf.RemoveAt(1);
-  asdf.PushBack(90);
+  PersonDerived person;
+  InitializeParentInfo(person);
 
-  RHashMap<RInt> map;
-  map.Set(0, 2);
-  map.Get(0);
-  map.Remove(0);
+  Json person_json = EncodeJson(person);
+  Document person_doc = person_json.dump();
 
-  Json j = EncodeJson(asdf);
-  std::string test = j.dump(2);
-  std::cout << test << std::endl;
+  doc = &person_doc;
 
-  RSparseList<RInt> asdf2;
-  DecodeJson(asdf2, j);
+  BeginChangeNotification(ChangeNotifier);
+  person.name = "Duder";
+  EndChangeNotification();
 
-  Person p;
-  p.age = 90;
-  SetValueDefault(p, COMPILE_TIME_CRC32_STR("age"));
-  p.e = TestEnum::kC;
+  PersonDerived copy;
+  //DecodeJson(copy, doc->GetJsonData());
 
-  auto json_value = EncodeJson(p);
-  std::cout << json_value.dump(2);
+  bool same = copy == person;
 
-  Person copy;
-  DecodeJson(copy, json_value);
-
-  InitializeParentInfo(copy);
   return 0;
 }
 

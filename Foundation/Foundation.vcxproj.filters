@@ -103,6 +103,9 @@
     <ClInclude Include="Reflection\TypeDatabaseRegister.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="Document\DocumentModification.h">
+      <Filter>Document</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp">
       <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="Document\DocumentModification.cpp">
+      <Filter>Document</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
