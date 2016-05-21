@@ -112,7 +112,7 @@ void Document::ApplyDocumentModification(const DocumentModification & mod, std::
         mod.m_Path,
         "",
         DocumentModificationType::kRemoveArray,
-        cur_val->size()
+        (uint32_t)cur_val->size()
       };
 
       reverse_operations.push_back(reverse_mod);

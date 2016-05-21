@@ -31,6 +31,9 @@
     <Filter Include="glm\simd">
       <UniqueIdentifier>{283d8521-2d17-43e3-85c8-8122e75b00df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="asio">
+      <UniqueIdentifier>{7f9276d0-fb3a-4674-b807-3ff8be111b4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boost\preprocessor\arithmetic.hpp">
@@ -1280,6 +1283,9 @@
     </ClInclude>
     <ClInclude Include="glm\simd\vector_relational.h">
       <Filter>glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="asio\asio.hpp">
+      <Filter>asio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -335,7 +335,7 @@ void ReflectionNotifyInsertArray(const ReflectionParentInfo & parent_info, std::
     CreateDocumentPath(parent_info),
     data,
     DocumentModificationType::kInsertArray,
-    index
+    (uint32_t)index
   };
 
   NodifyDocumentModification(mod);
@@ -350,7 +350,7 @@ void ReflectionNotifyInsertObject(const ReflectionParentInfo & parent_info, std:
     CreateDocumentPath(parent_info),
     data,
     DocumentModificationType::kInsertObject,
-    index
+    (uint32_t)index
   };
 
   NodifyDocumentModification(mod);
@@ -365,7 +365,7 @@ void ReflectionNotifyRemoveArray(const ReflectionParentInfo & parent_info, std::
     CreateDocumentPath(parent_info),
     "",
     DocumentModificationType::kRemoveArray,
-    index
+    (uint32_t)index
   };
 
   NodifyDocumentModification(mod);
@@ -380,7 +380,7 @@ void ReflectionNotifyRemoveObject(const ReflectionParentInfo & parent_info, std:
     CreateDocumentPath(parent_info),
     "",
     DocumentModificationType::kRemoveObject,
-    index
+    (uint32_t)index
   };
 
   NodifyDocumentModification(mod);
