@@ -4,30 +4,25 @@
 #include "Foundation\Common.h"
 #include "Foundation\Hash\Hash.h"
 #include "Foundation\Reflection\Reflection.h"
-#include "Foundation\Reflection\ReflectionJson.h"
 
 #include "Foundation\CallList\CallList.h"
 
-#define REGISTER_TYPE(ClassName) \
-static class s_Reg##ClassName \
-{\
-  public:\
-  s_Reg##ClassName() \
-  {\
-    g_TypeDatabaseRegistrationCallList.AddCall([]() { g_TypeDatabase->RegisterType<ClassName>(#ClassName);});\
-  }\
-} s_RegInst##ClassName;\
+struct ReflectionParentInfo;
 
 struct TypeInfo
 {
   std::string m_ClassName;
+  uint32_t m_TypeNameHash;
 
   void * (*m_HeapCreateDefault)();
 
-  Json (*m_EncodeJson)(void *);
-  void * (*m_DecodeJson)(const Json & json_data);
+  void (*m_EncodeJson)(const void * ptr, void * json_data);
+  void (*m_DecodeJson)(void * ptr, const void * json_data);
 
-  std::vector<std::string> (*m_GetFields)();
+  void (*m_SetParentInfo)(void * ptr, const ReflectionParentInfo & parent_info);
+  bool (*m_Compare)(const void * ptr1, const void * ptr2);
+
+  const char * (*m_GetFieldName)(int index);
 };
 
 
@@ -36,20 +31,8 @@ class TypeDatabase
 public:
   void Init();
 
-  template<class T>
-  void RegisterType(const char * class_name)
-  {
-    TypeInfo type_info
-    {
-      std::string(class_name),
-      []() -> void * { return new T(); },
-      [](void * ptr) { return EncodeJson(*(static_cast<T *>(ptr))); },
-      [](const Json & json_data) -> void * { T * t = new T(); DecodeJson(*t, json_data); return t; },
-      []() { return GetFields<T>(); }
-    };
-
-    m_Types[crc32(class_name)] = type_info;
-  }
+  void RegisterType(const TypeInfo & type_info);
+  Optional<TypeInfo> GetTypeInfo(uint32_t type_name_hash);
 
 private:
   std::unordered_map<uint32_t, TypeInfo> m_Types;

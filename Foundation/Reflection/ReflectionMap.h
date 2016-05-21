@@ -7,7 +7,33 @@ template <class K, class T>
 class ReflectionMap
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
+
+  bool operator == (const ReflectionMap<K, T> & rhs) const
+  {
+    if (rhs.Size() != this->Size())
+    {
+      return false;
+    }
+
+    auto it1 = rhs.begin();
+    auto it2 = this->begin();
+
+    auto last = this->end();
+    while (it2 != last)
+    {
+      if (it1->first == it2->first && it1->second == it2->second)
+      {
+        ++it1;
+        ++it2;
+        continue;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
 
   void Clear()
   {
@@ -49,6 +75,11 @@ public:
   T & operator [] (const K & k)
   {
     return m_Values[k];
+  }
+
+  std::size_t Size() const
+  {
+    return m_Values.size();
   }
 
   auto begin()

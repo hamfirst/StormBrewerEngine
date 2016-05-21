@@ -3,6 +3,7 @@
 #include "Foundation\Common.h"
 #include "Foundation\Json\Json.h"
 #include "Foundation\Reflection\ReflectionCommon.h"
+#include "Foundation\Reflection\TypeDatabase.h"
 
 
 template <typename NumericType>
@@ -36,7 +37,21 @@ void DecodeJson(REnum<EnumType> & value, const Json & j)
   value = EnumType::_from_string(j.get<std::string>().data());
 }
 
-template <class T>
+template <typename T>
+void DecodeJson(RPolymorphic<T> & value, const Json & j)
+{
+  uint32_t type_name_hash = j["TypeNameHash"].get<uint32_t>();
+  const Json & sub_obj_val = j["Obj"];
+
+  Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
+  if (type_info)
+  {
+    value.SetType(type_name_hash);
+    type_info->m_DecodeJson(value.GetValue());
+  }
+}
+
+template <typename T>
 void DecodeJson(RArrayList<T> & value, const Json & j)
 {
   value.Clear();
@@ -69,7 +84,7 @@ void DecodeJson(RMergeList<T> & value, const Json & j)
 {
   value.Clear();
   value.Reserve(j.size());
-  for (Json::iterator it = j.begin(); it != j.end(); ++it)
+  for (Json::const_iterator it = j.begin(); it != j.end(); ++it)
   {
     T new_val;
     DecodeJson(new_val, it.value());
@@ -147,6 +162,21 @@ Json EncodeJson(const REnum<EnumType> & value)
 }
 
 template <class T>
+Json EncodeJson(const RPolymorphic<T> & value)
+{
+  Json j_value;
+  Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(value.GetTypeNameHash());
+  if (!type_info)
+  {
+    return j_value;
+  }
+
+  j_value["TypeNameHash"] = value.GetTypeNameHash();
+  j_value["Obj"] = type_info.m_EncodeJson(value.GetValue());
+  return j_value;
+}
+
+template <class T>
 Json EncodeJson(const RArrayList<T> & value)
 {
   Json j_value;
@@ -161,10 +191,10 @@ Json EncodeJson(const RArrayList<T> & value)
 template <class T>
 Json EncodeJson(const RSparseList<T> & value)
 {
-  Json j_value;
+  Json j_value = Json::object();
   for (auto t : value)
   {
-    j_value.push_back(EncodeJson(t.second));
+    j_value[std::to_string(t.first)] = EncodeJson(t.second);
   }
 
   return j_value;
@@ -173,7 +203,7 @@ Json EncodeJson(const RSparseList<T> & value)
 template <class T>
 Json EncodeJson(const RMergeList<T> & value)
 {
-  Json j_value;
+  Json j_value = Json::object();
   for (auto t : value)
   {
     j_value[std::to_string(t.first)] = EncodeJson(t.second);

@@ -3,11 +3,12 @@
 #include <type_traits>
 
 #include "Foundation\Reflection\Reflection.h"
+#include "Foundation\Reflection\ReflectionChangeNotifier.h"
 
 class RBool
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RBool()
   {
@@ -22,6 +23,7 @@ public:
   bool operator = (bool val)
   {
     Set(m_Value);
+    return m_Value;
   }
 
   operator bool() const
@@ -44,20 +46,45 @@ public:
     return m_Value != val;
   }
 
+  bool operator == (const RBool & val) const
+  {
+    return m_Value != val.m_Value;
+  }
+
 private:
   void Set(bool val)
   {
     m_Value = val;
+
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifySet(m_ReflectionInfo, m_Value);
+#endif
   }
 
   bool m_Value;
 };
 
+static bool ParseBool(const std::string & val)
+{
+  if (val == "true")
+  {
+    return true;
+  }
+  else if (val == "false")
+  {
+    return false;
+  }
+  else
+  {
+    throw std::exception("Invalid bool");
+  }
+}
+
 template <class NumericType>
 class RNumber
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RNumber()
   {
@@ -151,85 +178,85 @@ public:
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator % (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator % (NumericType val) const
   {
     return m_Value % val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator %= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator %= (NumericType val)
   {
     Set(m_Value % val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator & (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator & (NumericType val) const
   {
     return m_Value & val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator &= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator &= (NumericType val)
   {
     Set(m_Value & val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator | (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator | (NumericType val) const
   {
     return m_Value | val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator |= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator |= (NumericType val)
   {
     Set(m_Value | val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ^ (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ^ (NumericType val) const
   {
     return m_Value ^ val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ^= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ^= (NumericType val)
   {
     Set(m_Value ^ val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator ~ () const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator ~ () const
   {
     return ~m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator >> (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator >> (NumericType val) const
   {
     return m_Value >> val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator >>= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator >>= (NumericType val)
   {
     Set(m_Value >> val);
     return m_Value;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator << (NumericType val) const
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator << (NumericType val) const
   {
     return m_Value << val;
   }
 
-  template <typename std::enable_if<std::is_integral<NumericType>::value>::type * = 0>
-  NumericType operator <<= (NumericType val)
+  template <class T = NumericType>
+  typename std::enable_if<std::is_integral<T>::value, T>::type operator <<= (NumericType val)
   {
     Set(m_Value << val);
     return m_Value;
@@ -269,7 +296,47 @@ private:
   void Set(NumericType val)
   {
     m_Value = val;
+
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifySet(m_ReflectionInfo, m_Value);
+#endif
   }
 
   NumericType m_Value;
 };
+
+template <typename NumericType>
+static NumericType ParseNumber(const std::string & str)
+{
+  return (NumericType)std::stoll(str);
+}
+
+template <>
+static uint8_t ParseNumber(const std::string & str)
+{
+  return (uint8_t)std::stoull(str);
+}
+
+template <>
+static uint16_t ParseNumber(const std::string & str)
+{
+  return (uint16_t)std::stoull(str);
+}
+
+template <>
+static uint32_t ParseNumber(const std::string & str)
+{
+  return (uint32_t)std::stoull(str);
+}
+
+template <>
+static uint64_t ParseNumber(const std::string & str)
+{
+  return (uint64_t)std::stoull(str);
+}
+
+template <>
+static float ParseNumber(const std::string & str)
+{
+  return (float)std::stof(str);
+}

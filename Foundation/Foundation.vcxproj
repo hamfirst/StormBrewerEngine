@@ -25,15 +25,18 @@
     <ClInclude Include="CallList\CallList.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Document\Document.h" />
+    <ClInclude Include="Document\DocumentModification.h" />
     <ClInclude Include="Document\DocumentPath.h" />
     <ClInclude Include="Document\DocumentPathElement.h" />
     <ClInclude Include="Hash\Hash.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
+    <ClInclude Include="Reflection\ReflectionChangeNotifier.h" />
     <ClInclude Include="Reflection\ReflectionCommon.h" />
     <ClInclude Include="Reflection\ReflectionDocument.h" />
     <ClInclude Include="Reflection\ReflectionEnum.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
+    <ClInclude Include="Reflection\ReflectionJsonThin.h" />
     <ClInclude Include="Reflection\ReflectionList.h" />
     <ClInclude Include="Reflection\ReflectionMap.h" />
     <ClInclude Include="Reflection\ReflectionNumber.h" />
@@ -43,15 +46,21 @@
     <ClInclude Include="Reflection\ReflectionStruct.h" />
     <ClInclude Include="Reflection\ReflectionUI.h" />
     <ClInclude Include="Reflection\TypeDatabase.h" />
+    <ClInclude Include="Reflection\TypeDatabaseRegister.h" />
+    <ClInclude Include="Reflection\TypeDatabaseThin.h" />
     <ClInclude Include="Reflection\TypeInfo.h" />
     <ClInclude Include="Singleton\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CallList\Hash.cpp" />
     <ClCompile Include="Document\Document.cpp" />
+    <ClCompile Include="Document\DocumentModification.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
     <ClCompile Include="Document\DocumentPathElement.cpp" />
+    <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp" />
+    <ClCompile Include="Reflection\ReflectionJsonThin.cpp" />
     <ClCompile Include="Reflection\TypeDatabase.cpp" />
+    <ClCompile Include="Reflection\TypeDatabaseThin.cpp" />
     <ClCompile Include="Singleton\Singleton.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

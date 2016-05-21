@@ -7,30 +7,35 @@
 DocumentPath::DocumentPath(const std::string & path)
 {
   Json parsed_value = path;
-  for (auto json_value : parsed_value)
+  for (auto elem_value : parsed_value)
   {
-    DocumentPathElement elem;
+    int type = elem_value["Type"].get<int>();
 
-    elem.m_FieldName = json_value["Field"].get<std::string>();
-    
-    auto index = json_value.find("Index");
-    if (index == json_value.end())
+    if (type == DocumentPathElement::kIntIndex)
     {
-      elem.m_IndexType = DocumentPathIndexType::kNone;
+      int index = elem_value["Index"].get<uint32_t>();
+      m_Path.emplace_back(index);
     }
-    else if(index->is_number())
+    else if (type == DocumentPathElement::kStringIndex)
     {
-      elem.m_IndexType = DocumentPathIndexType::kIntIndex;
-      elem.m_IntIndex = index->get<int>();
+      std::string index = elem_value["Index"].get<std::string>();
+      m_Path.emplace_back(index);
     }
     else
     {
-      elem.m_IndexType = DocumentPathIndexType::kStringIndex;
-      elem.m_StringIndex = index->get<std::string>();
+      throw std::exception("inconsistent document path");
     }
-
-    m_Path.push_back(elem);
   }
+}
+
+DocumentPath::DocumentPath(const std::vector<DocumentPathElement> & val)
+{
+  m_Path = val;
+}
+
+DocumentPath::DocumentPath(std::vector<DocumentPathElement> && val)
+{
+  m_Path = val;
 }
 
 int DocumentPath::GetSize() const
@@ -41,4 +46,32 @@ int DocumentPath::GetSize() const
 const DocumentPathElement & DocumentPath::operator[](int i) const
 {
   return m_Path[i];
+}
+
+std::string DocumentPath::Encode() const
+{
+  Json encoded_value;
+  
+  for (auto elem : m_Path)
+  {
+    Json elem_value;
+    elem_value["Type"] = elem.m_Type;
+
+    if (elem.m_Type == DocumentPathElement::kIntIndex)
+    {
+      elem_value["Index"] = (int)elem.m_Type;
+    }
+    else if (elem.m_Type == DocumentPathElement::kStringIndex)
+    {
+      elem_value["Index"] = elem.m_StringIndex;
+    }
+    else
+    {
+      throw std::exception("inconsistent document path");
+    }
+
+    encoded_value.push_back(elem_value);
+  }
+
+  return encoded_value.dump();
 }

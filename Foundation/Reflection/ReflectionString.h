@@ -7,7 +7,7 @@
 class RString
 {
 public:
-  REFLECTION_PARENT_INFO;
+  REFLECTION_CHANGE_NOTIFIER_INFO;
 
   RString()
   {
@@ -27,6 +27,16 @@ public:
   RString(const char * val)
   {
     m_Value = val;
+  }
+
+  operator std::string() const
+  {
+    return m_Value;
+  }
+
+  operator const std::string & () const
+  {
+    return m_Value;
   }
 
   const std::string & operator = (const std::string & val)
@@ -55,6 +65,11 @@ public:
     m_Value = val;
     Modified();
     return m_Value;
+  }
+
+  bool operator == (const RString & val) const
+  {
+    return m_Value == val.m_Value;
   }
 
   auto begin()
@@ -645,7 +660,9 @@ public:
 private:
   void Modified()
   {
-    
+#ifdef REFLECTION_CHANGE_NOTIFIER
+    ReflectionNotifySet(m_ReflectionInfo, m_Value.data());
+#endif
   }
 
   std::string m_Value;

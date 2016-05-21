@@ -15,7 +15,7 @@ uint32_t crc32(const char * str)
   return hash ^ 0xFFFFFFFF;
 }
 
-uint32_t crc32(const std::string str)
+uint32_t crc32(const std::string & str)
 {
   return crc32(str.data());
 }

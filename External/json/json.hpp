@@ -5803,6 +5803,7 @@ namespace nlohmann
 
     @complexity Linear in the length of string @a s.
     */
+  public:
     static string_t escape_string(const string_t& s)
     {
       const auto space = extra_space(s);
@@ -5926,6 +5927,7 @@ namespace nlohmann
     @param[in] indent_step     the indent level
     @param[in] current_indent  the current indent level (only used internally)
     */
+  public:
     void dump(std::ostream& o,
       const bool pretty_print,
       const unsigned int indent_step,

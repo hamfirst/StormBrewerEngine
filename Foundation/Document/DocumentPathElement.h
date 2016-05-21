@@ -3,22 +3,18 @@
 
 #include <string>
 
-enum class DocumentPathIndexType : int
-{
-  kNone,
-  kStringIndex,
-  kIntIndex
-};
-
 struct DocumentPathElement
 {
-  DocumentPathElement() { }
-  DocumentPathElement(std::string field_name);
-  DocumentPathElement(std::string field_name, int index);
-  DocumentPathElement(std::string field_name, std::string index);
+  DocumentPathElement(std::string index);
+  DocumentPathElement(int index);
 
-  std::string m_FieldName;
+  enum DocumentPathElementType
+  {
+    kStringIndex,
+    kIntIndex,
+  };
+
+  DocumentPathElementType m_Type;
   std::string m_StringIndex;
-  DocumentPathIndexType m_IndexType;
-  int m_IntIndex;
+  uint32_t m_IntIndex;
 };

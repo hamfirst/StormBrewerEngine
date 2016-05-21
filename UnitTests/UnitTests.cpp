@@ -4,12 +4,12 @@
 #include <functional>
 
 #include "Foundation\Common.h"
-#include "Foundation\Reflection\Reflection.h"
-#include "Foundation\Reflection\ReflectionJson.h"
-#include "Foundation\Reflection\TypeDatabase.h"
+#include "Foundation\Reflection\TypeDatabaseRegister.h"
+#include "Foundation\Reflection\ReflectionParent.h"
+#include "Foundation\Document\DocumentModification.h"
 #include "Foundation\CallList\CallList.h"
 
-#include "Foundation\Document\DocumentPath.h"
+#include "Foundation\Document\Document.h"
 
 REFL_ENUM(TestEnum, int, kA, kB, kC);
 
@@ -17,7 +17,7 @@ struct Inventory
 {
   Inventory()
   {
-    items.PushBack(20);
+    //items.PushBack(20);
   }
 
 public:
@@ -30,8 +30,9 @@ public:
 struct Person
 {
   Person()
+    : 
+    age(20)
   {
-    age = 82;
   }
 
   Person(const char *name, int age)
@@ -43,14 +44,25 @@ struct Person
 public:
   REFL_MEMBERS
   (
-    (name, RHashMap<RString>),
+    (name, RString),
     (age, RInt),
     (inv, Inventory),
     (e, REnum<TestEnum>)
   )
 };
 
+struct PersonDerived : public Person
+{
+public:
+
+  REFL_MEMBERS_DERIVED(Person,
+    (crap, RInt)
+    )
+
+};
+
 REGISTER_TYPE(Person);
+REGISTER_TYPE(PersonDerived);
 
 template <class T>
 void TEST(T t, bool expect_exception = false)
@@ -74,58 +86,35 @@ void TEST(T t, bool expect_exception = false)
   }
 }
 
+
+Document * doc;
+std::vector<DocumentModification> reverse_list;
+
+void ChangeNotifier(const DocumentModification & mod)
+{
+  doc->ApplyDocumentModification(mod, reverse_list);
+}
+
 int main()
 {
   g_SingletonInitCallList.CallAll();
 
-  RInt i = 10;
-  i += 5;
-  RInt b = i + 2;
-  if (i && b)
-  {
-    i += b;
-  }
+  PersonDerived person;
+  InitializeParentInfo(person);
 
-  if (i > b)
-  {
-    if (5 < b + 2)
-    {
-      if (b != i + i)
-      {
-        i >>= b;
-      }
-    }
-  }
+  Json person_json = EncodeJson(person);
+  Document person_doc = person_json.dump();
 
-  RSparseList<RInt> asdf;
-  asdf.PushBack(1);
-  asdf.PushBack(2);
-  asdf.PushBack(30);
-  asdf.RemoveAt(1);
-  asdf.PushBack(90);
+  doc = &person_doc;
 
-  RHashMap<RInt> map;
-  map.Set(0, 2);
-  map.Get(0);
-  map.Remove(0);
+  BeginChangeNotification(ChangeNotifier);
+  person.name = "Duder";
+  EndChangeNotification();
 
-  Json j = EncodeJson(asdf);
-  std::string test = j.dump(2);
-  std::cout << test << std::endl;
+  PersonDerived copy;
+  //DecodeJson(copy, doc->GetJsonData());
 
-  RSparseList<RInt> asdf2;
-  DecodeJson(asdf2, j);
-
-  Person p;
-  p.age = 90;
-  SetValueDefault(p, COMPILE_TIME_CRC32_STR("age"));
-  p.e = TestEnum::kC;
-
-  auto json_value = EncodeJson(p);
-  std::cout << json_value.dump(2);
-
-  //Person copy("", 0);
-  //DecodeJson(copy, json_value);
+  bool same = copy == person;
 
   return 0;
 }
