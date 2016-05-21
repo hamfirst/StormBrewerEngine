@@ -16,6 +16,9 @@
     <Filter Include="optional">
       <UniqueIdentifier>{cf4b6c66-f99f-4275-a31b-1e7874add076}</UniqueIdentifier>
     </Filter>
+    <Filter Include="asio">
+      <UniqueIdentifier>{977da54d-2cbc-48c0-94fa-9cb4fe942d89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boost\preprocessor\arithmetic.hpp">
@@ -830,6 +833,9 @@
     </ClInclude>
     <ClInclude Include="optional\optional.hpp">
       <Filter>optional</Filter>
+    </ClInclude>
+    <ClInclude Include="asio\asio.hpp">
+      <Filter>asio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
