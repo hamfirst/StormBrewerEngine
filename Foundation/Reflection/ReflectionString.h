@@ -24,7 +24,7 @@ public:
     m_Value = val;
   }
 
-  RString(const char * val)
+  RString(czstr val)
   {
     m_Value = val;
   }
@@ -46,7 +46,7 @@ public:
     return m_Value;
   }
 
-  const std::string & operator = (const char * val)
+  const std::string & operator = (czstr val)
   {
     m_Value = val;
     Modified();
@@ -185,7 +185,7 @@ public:
     return m_Value;
   }
 
-  const std::string & operator += (const char * val)
+  const std::string & operator += (czstr val)
   {
     m_Value += val;
     Modified();
@@ -220,14 +220,14 @@ public:
     return m_Value;
   }
 
-  const std::string & append(const char * val)
+  const std::string & append(czstr val)
   {
     m_Value.append(val);
     Modified();
     return m_Value;
   }
 
-  const std::string & append(const char * val, size_t n)
+  const std::string & append(czstr val, size_t n)
   {
     m_Value.append(val, n);
     Modified();
@@ -276,14 +276,14 @@ public:
     return m_Value;
   }
 
-  const std::string & assign(const char * val)
+  const std::string & assign(czstr val)
   {
     m_Value.assign(val);
     Modified();
     return m_Value;
   }
 
-  const std::string & assign(const char * val, size_t n)
+  const std::string & assign(czstr val, size_t n)
   {
     m_Value.assign(val, n);
     Modified();
@@ -333,14 +333,14 @@ public:
     return m_Value;
   }
 
-  const std::string & insert(size_t pos, const char * val)
+  const std::string & insert(size_t pos, czstr val)
   {
     m_Value.insert(pos, val);
     Modified();
     return m_Value;
   }
 
-  const std::string & insert(size_t pos, const char * val, size_t n)
+  const std::string & insert(size_t pos, czstr val, size_t n)
   {
     m_Value.insert(pos, val, n);
     Modified();
@@ -487,12 +487,12 @@ public:
     Modified();
   }
 
-  const char * c_str() const
+  czstr c_str() const
   {
     return m_Value.c_str();
   }
 
-  const char * data() const
+  czstr data() const
   {
     return m_Value.data();
   }
@@ -522,12 +522,12 @@ public:
     return m_Value.rfind(str, pos);
   }
 
-  size_t rfind(const char * s, size_t pos = std::string::npos) const
+  size_t rfind(czstr s, size_t pos = std::string::npos) const
   {
     return m_Value.rfind(s, pos);
   }
 
-  size_t rfind(const char * s, size_t pos, size_t n) const
+  size_t rfind(czstr s, size_t pos, size_t n) const
   {
     return m_Value.rfind(s, pos, n);
   }

@@ -58,7 +58,7 @@ public:
     return CompareTypeInstance(m_T.get(), rhs.m_T.get(), m_TypeNameHash);
   }
 
-  uint32_t GetTypeNameHash()
+  Hash GetTypeNameHash()
   {
     return m_TypeNameHash;
   }
@@ -72,7 +72,7 @@ public:
     Modified();
   }
 
-  void SetType(uint32_t type_name_hash)
+  void SetType(Hash type_name_hash)
   {
     Optional<void *> new_val = CreateTypeInstance(type_name_hash);
     if (new_val)
@@ -104,5 +104,5 @@ private:
   }
 
   std::unique_ptr<T> m_T;
-  uint32_t m_TypeNameHash;
+  Hash m_TypeNameHash;
 };

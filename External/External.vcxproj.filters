@@ -34,6 +34,15 @@
     <Filter Include="asio">
       <UniqueIdentifier>{7f9276d0-fb3a-4674-b807-3ff8be111b4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gsl">
+      <UniqueIdentifier>{7361014a-78f7-4830-a452-06d115330f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="upng">
+      <UniqueIdentifier>{f64a47a5-61a6-4679-b2a4-8d935ec2a264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gl3w">
+      <UniqueIdentifier>{c0cd6800-3d15-4610-b54e-480320ecd045}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boost\preprocessor\arithmetic.hpp">
@@ -1287,6 +1296,30 @@
     <ClInclude Include="asio\asio.hpp">
       <Filter>asio</Filter>
     </ClInclude>
+    <ClInclude Include="gsl\gsl.h">
+      <Filter>gsl</Filter>
+    </ClInclude>
+    <ClInclude Include="gsl\gsl_assert.h">
+      <Filter>gsl</Filter>
+    </ClInclude>
+    <ClInclude Include="gsl\gsl_util.h">
+      <Filter>gsl</Filter>
+    </ClInclude>
+    <ClInclude Include="gsl\span.h">
+      <Filter>gsl</Filter>
+    </ClInclude>
+    <ClInclude Include="gsl\string_span.h">
+      <Filter>gsl</Filter>
+    </ClInclude>
+    <ClInclude Include="upng\upng.h">
+      <Filter>upng</Filter>
+    </ClInclude>
+    <ClInclude Include="gl3w\gl3w.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
+    <ClInclude Include="gl3w\glcorearb.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glm\detail\dummy.cpp">
@@ -1294,6 +1327,12 @@
     </ClCompile>
     <ClCompile Include="glm\detail\glm.cpp">
       <Filter>glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="upng\upng.cpp">
+      <Filter>upng</Filter>
+    </ClCompile>
+    <ClCompile Include="gl3w\gl3w.c">
+      <Filter>gl3w</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

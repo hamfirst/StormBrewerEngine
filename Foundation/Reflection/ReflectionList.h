@@ -115,7 +115,7 @@ private:
 #ifdef REFLECTION_CHANGE_NOTIFIER
     ReflectionParentInfo new_info;
     new_info.m_ParentInfo = &m_ReflectionInfo;
-    new_info.m_ParentIndex = (uint32_t)(m_Values.size() - 1);
+    new_info.m_ParentIndex = static_cast<uint32_t>((m_Values.size() - 1));
     new_info.m_ParentType = 0;
 
     SetParentInfo(m_Values[m_Values.size() - 1], new_info);

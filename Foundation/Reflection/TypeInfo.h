@@ -3,7 +3,7 @@
 #include "Foundation\Common.h"
 
 template <typename T>
-class HasInit
+class HasInit final
 {
   typedef char true_type;
   typedef long false_type;

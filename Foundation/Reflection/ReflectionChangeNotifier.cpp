@@ -8,22 +8,25 @@
 #include "Foundation\Document\DocumentPath.h"
 #include "Foundation\Document\DocumentPathElement.h"
 
-thread_local void(*g_ChangeNotifier)(const DocumentModification & mod) = nullptr;
+int g_DisableChangeNotification = 0;
 
-void BeginChangeNotification(void(*change_notifier)(const DocumentModification & mod))
+void EnableChangeNotification()
 {
-  g_ChangeNotifier = change_notifier;
+  if (g_DisableChangeNotification > 0)
+  {
+    g_DisableChangeNotification--;
+  }
 }
 
-void EndChangeNotification()
+void DisableChangeNotification()
 {
-  g_ChangeNotifier = nullptr;
+  g_DisableChangeNotification++;
 }
 
-DocumentPath CreateDocumentPath(const ReflectionParentInfo & parent_info)
+DocumentPath CreateDocumentPath(ReflectionParentInfo & parent_info)
 {
   std::vector<DocumentPathElement> path;
-  const ReflectionParentInfo * info = &parent_info;
+  ReflectionParentInfo * info = &parent_info;
 
   while (info)
   {
@@ -48,7 +51,7 @@ DocumentPath CreateDocumentPath(const ReflectionParentInfo & parent_info)
       }
       else
       {
-        throw std::exception("invalid parent info");
+        throw std::runtime_error("invalid parent info");
       }
     }
     else
@@ -60,7 +63,7 @@ DocumentPath CreateDocumentPath(const ReflectionParentInfo & parent_info)
       }
       else
       {
-        throw std::exception("invalid parent info");
+        throw std::runtime_error("invalid parent info");
       }
     }
 
@@ -70,15 +73,32 @@ DocumentPath CreateDocumentPath(const ReflectionParentInfo & parent_info)
   return path;
 }
 
+
+void SetModifiedBits(ReflectionParentInfo & parent_info)
+{
+  if (parent_info.m_Modified != 1)
+  {
+    parent_info.m_Modified = 1;
+    if (parent_info.m_ParentInfo)
+    {
+      SetModifiedBits(*parent_info.m_ParentInfo);
+    }
+  }
+}
+
 void NodifyDocumentModification(const DocumentModification & mod)
 {
-  g_ChangeNotifier(mod);
+  
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, bool value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, bool value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -90,10 +110,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, bool value)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int8_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, int8_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -105,10 +129,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int8_t value)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int16_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, int16_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -120,10 +148,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int16_t value
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int32_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, int32_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -135,10 +167,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int32_t value
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int64_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, int64_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -150,10 +186,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, int64_t value
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint8_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, uint8_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -165,10 +205,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint8_t value
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint16_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, uint16_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -180,10 +224,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint16_t valu
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint32_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, uint32_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -195,10 +243,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint32_t valu
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint64_t value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, uint64_t value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -210,10 +262,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, uint64_t valu
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, float value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, float value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -225,10 +281,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, float value)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, const char * value)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, czstr value)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -240,10 +300,14 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, const char * 
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifySet(const ReflectionParentInfo & parent_info, void * value, uint32_t type_name_hash)
+void ReflectionNotifySet(ReflectionParentInfo & parent_info, void * value, Hash type_name_hash)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
   if (type_info)
   {
@@ -262,14 +326,18 @@ void ReflectionNotifySet(const ReflectionParentInfo & parent_info, void * value,
   }
   else
   {
-    throw std::exception("invalid polymorphic type");
+    throw std::runtime_error("invalid polymorphic type");
   }
 }
 
-void ReflectionNotifyClearArray(const ReflectionParentInfo & parent_info)
+void ReflectionNotifyClearArray(ReflectionParentInfo & parent_info)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -281,10 +349,14 @@ void ReflectionNotifyClearArray(const ReflectionParentInfo & parent_info)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyClearObject(const ReflectionParentInfo & parent_info)
+void ReflectionNotifyClearObject(ReflectionParentInfo & parent_info)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -296,10 +368,14 @@ void ReflectionNotifyClearObject(const ReflectionParentInfo & parent_info)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyAppendArray(const ReflectionParentInfo & parent_info, const std::string & data)
+void ReflectionNotifyAppendArray(ReflectionParentInfo & parent_info, const std::string & data)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -311,10 +387,14 @@ void ReflectionNotifyAppendArray(const ReflectionParentInfo & parent_info, const
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyCompress(const ReflectionParentInfo & parent_info)
+void ReflectionNotifyCompress(ReflectionParentInfo & parent_info)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
@@ -326,61 +406,77 @@ void ReflectionNotifyCompress(const ReflectionParentInfo & parent_info)
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyInsertArray(const ReflectionParentInfo & parent_info, std::size_t index, const std::string & data)
+void ReflectionNotifyInsertArray(ReflectionParentInfo & parent_info, std::size_t index, const std::string & data)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
     data,
     DocumentModificationType::kInsertArray,
-    (uint32_t)index
+    static_cast<uint32_t>(index)
   };
 
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyInsertObject(const ReflectionParentInfo & parent_info, std::size_t index, const std::string & data)
+void ReflectionNotifyInsertObject(ReflectionParentInfo & parent_info, std::size_t index, const std::string & data)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
     data,
     DocumentModificationType::kInsertObject,
-    (uint32_t)index
+    static_cast<uint32_t>(index)
   };
 
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyRemoveArray(const ReflectionParentInfo & parent_info, std::size_t index)
+void ReflectionNotifyRemoveArray(ReflectionParentInfo & parent_info, std::size_t index)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
     "",
     DocumentModificationType::kRemoveArray,
-    (uint32_t)index
+    static_cast<uint32_t>(index)
   };
 
   NodifyDocumentModification(mod);
 }
 
-void ReflectionNotifyRemoveObject(const ReflectionParentInfo & parent_info, std::size_t index)
+void ReflectionNotifyRemoveObject(ReflectionParentInfo & parent_info, std::size_t index)
 {
-  if (g_ChangeNotifier == nullptr) return;
+  if (g_DisableChangeNotification > 0)
+  {
+    return;
+  }
 
+  SetModifiedBits(parent_info);
   DocumentModification mod
   {
     CreateDocumentPath(parent_info),
     "",
     DocumentModificationType::kRemoveObject,
-    (uint32_t)index
+    static_cast<uint32_t>(index)
   };
 
   NodifyDocumentModification(mod);

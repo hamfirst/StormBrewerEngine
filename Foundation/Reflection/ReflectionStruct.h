@@ -56,7 +56,7 @@ using match_const_t = typename match_const<M, T>::type;
 static constexpr int fields_n = BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
 static constexpr bool is_reflectable = true; \
 const auto & GetDefault() const { static std::remove_reference<decltype(*this)>::type def; return def; } \
-uint32_t GetTypeNameHash() const { return crc32(typeid(*this).name()); }\
+Hash GetTypeNameHash() const { return crc32(typeid(*this).name()); }\
 template <class C> \
 bool operator == (const C & c) const \
 {\
@@ -78,15 +78,15 @@ template<> \
 struct field_data_static<i> \
 { \
   typedef MEMBER_TYPE(x) member_type; \
-  const char * GetName() const \
+  czstr GetName() const \
   {\
     return MEMBER_NAME_STR(x); \
   }\
-  constexpr uint32_t GetNameHash() const \
+  constexpr Hash GetNameHash() const \
   {\
     return COMPILE_TIME_CRC32_STR(MEMBER_NAME_STR(x)); \
   }\
-  const char * GetType() const \
+  czstr GetType() const \
   {\
     return MEMBER_TYPE_STR(x); \
   }\
@@ -119,7 +119,7 @@ struct field_data<i, Self> : field_data_static<i> \
 using MyBase = BaseClass; \
 static constexpr int fields_n = MyBase::fields_n + BOOST_PP_VARIADIC_SIZE(__VA_ARGS__); \
 const auto & GetDefault() const { static std::remove_reference<decltype(*this)>::type def; return def; } \
-uint32_t GetTypeNameHash() const { return crc32(typeid(*this).name()); }\
+Hash GetTypeNameHash() const { return crc32(typeid(*this).name()); }\
 template <class C> \
 bool operator == (const C & c) const \
 {\
@@ -133,9 +133,9 @@ struct field_data_static \
   typedef MyBase::field_data_static<N> parent_type; \
   parent_type parent_val; \
   typedef typename MyBase::field_data_static<N>::member_type member_type; \
-  const char * GetName() const { return parent_val.GetName(); } \
-  constexpr uint32_t GetNameHash() const { return parent_val.GetNameHash(); } \
-  const char * GetType() const { return parent_val.GetType(); } \
+  czstr GetName() const { return parent_val.GetName(); } \
+  constexpr Hash GetNameHash() const { return parent_val.GetNameHash(); } \
+  czstr GetType() const { return parent_val.GetType(); } \
   int GetFieldIndex() const { return parent_val.GetFieldIndex(); } \
 }; \
 template<int N, class Self> \
@@ -156,15 +156,15 @@ MEMBER_DECL(x) = {}; \
 template<> \
 struct field_data_static<MyBase::fields_n + i> \
 { \
-  const char * GetName() const \
+  czstr GetName() const \
   {\
     return MEMBER_NAME_STR(x); \
   }\
-  constexpr uint32_t GetNameHash() const \
+  constexpr Hash GetNameHash() const \
   {\
     return COMPILE_TIME_CRC32_STR(MEMBER_NAME_STR(x)); \
   }\
-  const char * GetType() const \
+  czstr GetType() const \
   {\
     return MEMBER_TYPE_STR(x); \
   }\
@@ -217,7 +217,7 @@ struct FieldIterator<C, Visitor, 0>
 template <class C, class Visitor, int I>
 struct FieldSelector
 {
-  void operator()(C& c, Visitor & v, uint32_t field_name_hash)
+  void operator()(C& c, Visitor & v, Hash field_name_hash)
   {
     auto f = C::field_data<C::fields_n - I, C>(c);
 
@@ -234,7 +234,7 @@ struct FieldSelector
 template <class C, class Visitor>
 struct FieldSelector<C, Visitor, 0>
 {
-  void operator()(C& c, Visitor & v, uint32_t field_name_hash)
+  void operator()(C& c, Visitor & v, Hash field_name_hash)
   {
 
   }
@@ -293,7 +293,7 @@ void VisitEach(C & c, Visitor & v)
 }
 
 template<class C, class Visitor>
-void VisitField(C & c, Visitor & v, uint32_t field_name_hash)
+void VisitField(C & c, Visitor & v, Hash field_name_hash)
 {
   FieldSelector<C, Visitor, C::fields_n> itr;
   itr(c, v, field_name_hash);
@@ -314,7 +314,7 @@ bool CompareFields(C & c1, C & c2)
 }
 
 template <class C>
-void SetValueDefault(C & c, uint32_t field_name_hash)
+void SetValueDefault(C & c, Hash field_name_hash)
 {
   VisitField(c, [](auto field_data) { field_data.SetDefault(); }, field_name_hash);
 }
@@ -330,9 +330,9 @@ std::vector<std::string> GetFields()
 }
 
 template <class C>
-const char * GetFieldName(int index)
+czstr GetFieldName(int index)
 {
-  const char * name = nullptr;
+  czstr name = nullptr;
   auto visitor = [&](auto field_data) { if (field_data.GetFieldIndex() == index) name = field_data.GetName(); };
 
   ExamineFields<C, decltype(visitor)>(visitor);

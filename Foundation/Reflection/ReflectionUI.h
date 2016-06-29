@@ -14,7 +14,7 @@ enum class RPropertyType
   kArray,
 };
 
-struct RPropertyInfo
+struct RPropertyInfo final
 {
   RPropertyType m_Type;
 

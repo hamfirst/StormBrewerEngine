@@ -10,7 +10,6 @@
 #include "Foundation\Reflection\ReflectionMap.h"
 
 using RFile = RString;
-using RHash = uint32_t;
 
 using RByte = RNumber<int8_t>;
 using RShort = RNumber<int16_t>;
@@ -21,6 +20,7 @@ using RUShort = RNumber<uint16_t>;
 using RUInt = RNumber<uint32_t>;
 using RULong = RNumber<uint64_t>;
 using RFloat = RNumber<float>;
+using RHash = RNumber<Hash>;
 
 template <class T>
 using RList = RMergeList<T>;
@@ -28,4 +28,5 @@ using RList = RMergeList<T>;
 template <class T>
 using RHashMap = ReflectionMap<RHash, T>;
 
+#include "Foundation\Reflection\ReflectionHash.h"
 #include "Foundation\Reflection\ReflectionJsonThin.h"

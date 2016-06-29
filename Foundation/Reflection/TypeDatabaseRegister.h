@@ -18,7 +18,7 @@ static class s_Reg##ClassName \
 
 
 template<class T>
-void RegisterType(const char * class_name)
+void RegisterType(czstr class_name)
 {
   TypeInfo type_info
   {

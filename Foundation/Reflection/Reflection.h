@@ -14,8 +14,9 @@ class DocumentPath;
 struct ReflectionParentInfo
 {
   ReflectionParentInfo * m_ParentInfo = nullptr;
-  uint32_t m_ParentType = 0;
-  uint32_t m_ParentIndex = 0;
+  Hash m_ParentType = 0;
+  uint16_t m_ParentIndex = 0;
+  uint16_t m_Modified = 0;
   void(*m_ChangeListener)(const DocumentPath & path, const std::string & json_data) = nullptr;
 };
 

@@ -28,6 +28,7 @@
     <ClInclude Include="Document\DocumentModification.h" />
     <ClInclude Include="Document\DocumentPath.h" />
     <ClInclude Include="Document\DocumentPathElement.h" />
+    <ClInclude Include="FileSystem\File.h" />
     <ClInclude Include="Hash\Hash.h" />
     <ClInclude Include="Json\Json.h" />
     <ClInclude Include="Reflection\Reflection.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Reflection\ReflectionCommon.h" />
     <ClInclude Include="Reflection\ReflectionDocument.h" />
     <ClInclude Include="Reflection\ReflectionEnum.h" />
+    <ClInclude Include="Reflection\ReflectionHash.h" />
     <ClInclude Include="Reflection\ReflectionJson.h" />
     <ClInclude Include="Reflection\ReflectionJsonThin.h" />
     <ClInclude Include="Reflection\ReflectionList.h" />
@@ -57,6 +59,7 @@
     <ClCompile Include="Document\DocumentModification.cpp" />
     <ClCompile Include="Document\DocumentPath.cpp" />
     <ClCompile Include="Document\DocumentPathElement.cpp" />
+    <ClCompile Include="FileSystem\File.cpp" />
     <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp" />
     <ClCompile Include="Reflection\ReflectionJsonThin.cpp" />
     <ClCompile Include="Reflection\TypeDatabase.cpp" />

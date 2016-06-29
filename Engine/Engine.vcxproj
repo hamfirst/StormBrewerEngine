@@ -114,7 +114,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Asset\Asset.h" />
+    <ClInclude Include="Asset\AssetReference.h" />
+    <ClInclude Include="Asset\TextureAsset.h" />
+    <ClInclude Include="Rendering\RenderErrorMacros.h" />
+    <ClInclude Include="Rendering\RenderTarget.h" />
+    <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\ShaderProgram.h" />
+    <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\VertexBuffer.h" />
+    <ClInclude Include="Rendering\VertexBufferBuilder.h" />
+    <ClInclude Include="Rendering\VertexDefinition.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\External\External.vcxproj">
@@ -125,9 +135,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Asset\Asset.cpp" />
+    <ClCompile Include="Asset\AssetReference.cpp" />
+    <ClCompile Include="Asset\TextureAsset.cpp" />
+    <ClCompile Include="Rendering\RenderTarget.cpp" />
+    <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="Rendering\ShaderProgram.cpp" />
+    <ClCompile Include="Rendering\Texture.cpp" />
     <ClCompile Include="Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="Rendering\VertexBufferBuilder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets" Condition="Exists('..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets'))" />
+  </Target>
 </Project>

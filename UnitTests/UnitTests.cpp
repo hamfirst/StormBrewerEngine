@@ -107,9 +107,9 @@ int main()
 
   doc = &person_doc;
 
-  BeginChangeNotification(ChangeNotifier);
+  EnableChangeNotification();
   person.name = "Duder";
-  EndChangeNotification();
+  DisableChangeNotification();
 
   PersonDerived copy;
   //DecodeJson(copy, doc->GetJsonData());

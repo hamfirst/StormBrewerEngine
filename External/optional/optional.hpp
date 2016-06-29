@@ -1,734 +1,1042 @@
-// Copyright 2014 by Martin Moene
+// Copyright (C) 2011 - 2012 Andrzej Krzemienski.
 //
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+// Use, modification, and distribution is subject to the Boost Software
+// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// optional lite is inspired on std::optional by Fernando Cacciola and
-// Andrzej Krzemienski and on expected lite by Martin Moene.
+// The idea and interface is based on Boost.Optional library
+// authored by Fernando Luis Cacciola Carballal
 
-#ifndef NONSTD_OPTIONAL_LITE_HPP
-#define NONSTD_OPTIONAL_LITE_HPP
+# ifndef ___OPTIONAL_HPP___
+# define ___OPTIONAL_HPP___
 
-#include <cassert>
-#include <stdexcept>
-#include <utility>
-
-#if ( 1200 <= _MSC_VER && _MSC_VER < 1300  )
-# define optional_COMPILER_IS_VC6  1
-#endif
-
-#if ( __cplusplus >= 201103L )
-# define optional_CPP11_OR_GREATER  1
-#endif
-
-#if optional_CPP11_OR_GREATER
+# include <utility>
 # include <type_traits>
-#endif
+# include <initializer_list>
+# include <cassert>
+# include <functional>
+# include <string>
+# include <stdexcept>
 
-#ifndef  optional_FEATURE_MAX_ALIGN_HACK
-# define optional_FEATURE_MAX_ALIGN_HACK  0
-#endif
+# define TR2_OPTIONAL_REQUIRES(...) typename enable_if<__VA_ARGS__::value, bool>::type = false
 
-#ifndef optional_FEATURE_ALIGN_AS
-// used in #if defined(), so no default...
-#endif
+# if defined __GNUC__ // NOTE: GNUC is also defined for Clang
+#   if (__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)
+#     define TR2_OPTIONAL_GCC_4_8_AND_HIGHER___
+#   elif (__GNUC__ > 4)
+#     define TR2_OPTIONAL_GCC_4_8_AND_HIGHER___
+#   endif
+#
+#   if (__GNUC__ == 4) && (__GNUC_MINOR__ >= 7)
+#     define TR2_OPTIONAL_GCC_4_7_AND_HIGHER___
+#   elif (__GNUC__ > 4)
+#     define TR2_OPTIONAL_GCC_4_7_AND_HIGHER___
+#   endif
+#
+#   if (__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && (__GNUC_PATCHLEVEL__ >= 1)
+#     define TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
+#   elif (__GNUC__ == 4) && (__GNUC_MINOR__ >= 9)
+#     define TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
+#   elif (__GNUC__ > 4)
+#     define TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
+#   endif
+# endif
+#
+# if defined __clang_major__
+#   if (__clang_major__ == 3 && __clang_minor__ >= 5)
+#     define TR2_OPTIONAL_CLANG_3_5_AND_HIGHTER_
+#   elif (__clang_major__ > 3)
+#     define TR2_OPTIONAL_CLANG_3_5_AND_HIGHTER_
+#   endif
+#   if defined TR2_OPTIONAL_CLANG_3_5_AND_HIGHTER_
+#     define TR2_OPTIONAL_CLANG_3_4_2_AND_HIGHER_
+#   elif (__clang_major__ == 3 && __clang_minor__ == 4 && __clang_patchlevel__ >= 2)
+#     define TR2_OPTIONAL_CLANG_3_4_2_AND_HIGHER_
+#   endif
+# endif
+#
+# if defined _MSC_VER
+#   if (_MSC_VER >= 1900)
+#     define TR2_OPTIONAL_MSVC_2015_AND_HIGHER___
+#   endif
+# endif
 
-#ifndef  optional_FEATURE_ALIGN_AS_FALLBACK
-# define optional_FEATURE_ALIGN_AS_FALLBACK  double
-#endif
+# if defined __clang__
+#   if (__clang_major__ > 2) || (__clang_major__ == 2) && (__clang_minor__ >= 9)
+#     define OPTIONAL_HAS_THIS_RVALUE_REFS 1
+#   else
+#     define OPTIONAL_HAS_THIS_RVALUE_REFS 0
+#   endif
+# elif defined TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
+#   define OPTIONAL_HAS_THIS_RVALUE_REFS 1
+# elif defined TR2_OPTIONAL_MSVC_2015_AND_HIGHER___
+#   define OPTIONAL_HAS_THIS_RVALUE_REFS 1
+# else
+#   define OPTIONAL_HAS_THIS_RVALUE_REFS 0
+# endif
 
-/* Object allocation and alignment
-*
-* optional lite reserves POD-type storage for an object of the underlying type
-* inside a union to prevent unwanted construction and uses placement new to
-* construct the object when required. Using non-placement new (malloc) to
-* obtain storage, ensures that the memory is properly aligned for the object's
-* type, whereas that's not the case with placement new.
-*
-* If you access data that's not properly aligned, it 1) may take longer than
-* when it is properly aligned (on x86 processors), or 2) it may terminate
-* the program immediately (many other processors).
-*
-* Although the C++ standard does not guarantee that all user-defined types
-* have the alignment of some POD type, in practice it's likely they do.
-*
-* If optional lite is compiled as C++11 or later, C++11 alignment facilities
-* are used for storage of the underlying object. When compiling with C++03,
-* optional lite tries to determine proper alignment using meta programming.
-* If this doesn't work out, you can control alignment via three macros.
-*
-* optional lite uses the following rules for alignment:
-*
-* 1. If the program compiles as C++11 or later, C++11 alignment facilities
-* are used.
-*
-* 2. If you define -Doptional_FEATURE_MAX_ALIGN_HACK=1 the underlying
-* type is aligned as the most restricted type in `struct max_align_t`. This
-* potentially wastes many bytes per optional if the actually required
-* alignment is much less, e.g. 24 bytes used instead of the 2 bytes required.
-*
-* 3. If you define -Doptional_FEATURE_ALIGN_AS='pod-type' the
-* underlying type is aligned as 'pod-type'. It's your obligation to specify a
-* type with proper alignment.
-*
-* 4. If you define -Doptional_FEATURE_ALIGN_AS_FALLBACK='pod-type' the
-* fallback type for alignment of rule 5 below becomes 'pod-type'. It's your
-* obligation to specify a type with proper alignment.
-*
-* 5. At default, optional lite tries to find a POD type with the same
-* alignment as the underlying type.
-*
-* The algorithm for alignment of 5. is:
-* - Determine the alignment A of the underlying type using `alignment_of<>`.
-* - Find a POD type from the list `alignment_types` with exactly alignment A.
-* - If no such POD type is found, use a type with a relatively strict
-*   alignment requirement such as double; this type is specified in
-*   `optional_FEATURE_ALIGN_AS_FALLBACK` (default double).
-*
-* Note that the algorithm of 5. differs from the one Andrei Alexandrescu uses
-* in Generic<Programming>: Discriminated Unions, part 2 (see below).
-*
-* The class template `alignment_of<>` is gleaned from Boost.TypeTraits,
-* The storage type `storage_t<>` is adapted from the one I created for
-* spike-expected.
-*
-* See also:
-*
-* Andrei Alexandrescu. Generic<Programming>: Discriminated Unions (I-III). CUJ. April 2002.
-* - http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/CUJ/2002/cexp2004/alexandr/alexandr.htm
-* - http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/CUJ/2002/cexp2006/alexandr/alexandr.htm
-* - http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/CUJ/2002/cexp2008/alexandr/alexandr.htm
-*/
 
-namespace nonstd {
+# if defined TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
+#   define OPTIONAL_HAS_CONSTEXPR_INIT_LIST 1
+#   define OPTIONAL_CONSTEXPR_INIT_LIST constexpr
+# else
+#   define OPTIONAL_HAS_CONSTEXPR_INIT_LIST 0
+#   define OPTIONAL_CONSTEXPR_INIT_LIST
+# endif
 
-  /// class optional
+# if defined TR2_OPTIONAL_CLANG_3_5_AND_HIGHTER_ && (defined __cplusplus) && (__cplusplus != 201103L)
+#   define OPTIONAL_HAS_MOVE_ACCESSORS 1
+# else
+#   define OPTIONAL_HAS_MOVE_ACCESSORS 0
+# endif
 
-  template< typename T >
-  class optional;
+# // In C++11 constexpr implies const, so we need to make non-const members also non-constexpr
+# if (defined __cplusplus) && (__cplusplus == 201103L)
+#   define OPTIONAL_MUTABLE_CONSTEXPR
+# else
+#   define OPTIONAL_MUTABLE_CONSTEXPR constexpr
+# endif
 
-  namespace optional_detail {
+namespace std {
 
-#if optional_FEATURE_MAX_ALIGN_HACK
+  namespace experimental {
 
-    // Max align, use most restricted type for alignment:
-
-#define optional_UNIQUE(  name )       optional_UNIQUE2( name, __LINE__ )
-#define optional_UNIQUE2( name, line ) optional_UNIQUE3( name, line )
-#define optional_UNIQUE3( name, line ) name ## line
-
-#define optional_ALIGN_TYPE( type ) \
-    type optional_UNIQUE( _t ); struct_t< type > optional_UNIQUE( _st )
-
-    template< typename T >
-    struct struct_t { T _; };
-
-    union max_align_t
-    {
-      optional_ALIGN_TYPE(char);
-      optional_ALIGN_TYPE(short int);
-      optional_ALIGN_TYPE(int);
-      optional_ALIGN_TYPE(long int);
-      optional_ALIGN_TYPE(float);
-      optional_ALIGN_TYPE(double);
-      optional_ALIGN_TYPE(long double);
-      optional_ALIGN_TYPE(char *);
-      optional_ALIGN_TYPE(short int *);
-      optional_ALIGN_TYPE(int *);
-      optional_ALIGN_TYPE(long int *);
-      optional_ALIGN_TYPE(float *);
-      optional_ALIGN_TYPE(double *);
-      optional_ALIGN_TYPE(long double *);
-      optional_ALIGN_TYPE(void *);
-
-#ifdef HAVE_LONG_LONG
-      optional_ALIGN_TYPE(long long);
-#endif
-
-      struct Unknown;
-
-      Unknown(*optional_UNIQUE(_))(Unknown);
-      Unknown * Unknown::* optional_UNIQUE(_);
-      Unknown(Unknown::* optional_UNIQUE(_))(Unknown);
-
-      struct_t< Unknown(*)(Unknown)         > optional_UNIQUE(_);
-      struct_t< Unknown * Unknown::*            > optional_UNIQUE(_);
-      struct_t< Unknown(Unknown::*)(Unknown) > optional_UNIQUE(_);
-    };
-
-#undef optional_UNIQUE
-#undef optional_UNIQUE2
-#undef optional_UNIQUE3
-
-#undef optional_ALIGN_TYPE
-
-#elif defined( optional_FEATURE_ALIGN_AS ) // optional_FEATURE_MAX_ALIGN_HACK
-
-    // Use user-specified type for alignment:
-
-#define optional_ALIGN_AS( unused ) \
-    optional_FEATURE_ALIGN_AS
-
-#else // optional_FEATURE_MAX_ALIGN_HACK
-
-    // Determine POD type to use for alignment:
-
-#define optional_ALIGN_AS( to_align ) \
-    typename type_of_size< alignment_types, alignment_of< to_align >::value >::type
-
-#if optional_COMPILER_IS_VC6
-
-    template< bool condition, typename Then, typename Else >
-    struct select
-    {
-      template < bool > struct selector;
-
-      template <> struct selector< true  > { typedef Then type; };
-      template <> struct selector< false > { typedef Else type; };
-
-      typedef typename selector< condition >::type type;
-    };
-
-#else // optional_COMPILER_IS_VC6
-
-    template < bool condition, typename Then, typename Else > struct select;
-    template < typename Then, typename Else > struct select< true, Then, Else > { typedef Then type; };
-    template < typename Then, typename Else > struct select< false, Then, Else > { typedef Else type; };
-
-#endif // optional_COMPILER_IS_VC6
-
+    // BEGIN workaround for missing is_trivially_destructible
+# if defined TR2_OPTIONAL_GCC_4_8_AND_HIGHER___
+    // leave it: it is already there
+# elif defined TR2_OPTIONAL_CLANG_3_4_2_AND_HIGHER_
+    // leave it: it is already there
+# elif defined TR2_OPTIONAL_MSVC_2015_AND_HIGHER___
+    // leave it: it is already there
+# elif defined TR2_OPTIONAL_DISABLE_EMULATION_OF_TYPE_TRAITS
+    // leave it: the user doesn't want it
+# else
     template <typename T>
-    struct alignment_of;
+    using is_trivially_destructible = std::has_trivial_destructor<T>;
+# endif
+    // END workaround for missing is_trivially_destructible
 
-    template <typename T>
-    struct alignment_of_hack
+# if (defined TR2_OPTIONAL_GCC_4_7_AND_HIGHER___)
+    // leave it; our metafunctions are already defined.
+# elif defined TR2_OPTIONAL_CLANG_3_4_2_AND_HIGHER_
+    // leave it; our metafunctions are already defined.
+# elif defined TR2_OPTIONAL_MSVC_2015_AND_HIGHER___
+    // leave it: it is already there
+# elif defined TR2_OPTIONAL_DISABLE_EMULATION_OF_TYPE_TRAITS
+    // leave it: the user doesn't want it
+# else
+
+
+    // workaround for missing traits in GCC and CLANG
+    template <class T>
+    struct is_nothrow_move_constructible
     {
-      char c;
-      T t;
-      alignment_of_hack();
+      constexpr static bool value = std::is_nothrow_constructible<T, T&&>::value;
     };
 
-    template <unsigned A, unsigned S>
-    struct alignment_logic
+
+    template <class T, class U>
+    struct is_assignable
     {
-      enum { value = A < S ? A : S };
+      template <class X, class Y>
+      constexpr static bool has_assign(...) { return false; }
+
+      template <class X, class Y, size_t S = sizeof((std::declval<X>() = std::declval<Y>(), true)) >
+      // the comma operator is necessary for the cases where operator= returns void
+      constexpr static bool has_assign(bool) { return true; }
+
+      constexpr static bool value = has_assign<T, U>(true);
     };
 
-    template< typename T >
-    struct alignment_of
+
+    template <class T>
+    struct is_nothrow_move_assignable
     {
-      enum {
-        value = alignment_logic<
-        sizeof(alignment_of_hack<T>) - sizeof(T), sizeof(T) >::value,
+      template <class X, bool has_any_move_assign>
+      struct has_nothrow_move_assign {
+        constexpr static bool value = false;
       };
+
+      template <class X>
+      struct has_nothrow_move_assign<X, true> {
+        constexpr static bool value = noexcept(std::declval<X&>() = std::declval<X&&>());
+      };
+
+      constexpr static bool value = has_nothrow_move_assign<T, is_assignable<T&, T&&>::value>::value;
     };
+    // end workaround
 
-    struct nulltype {};
 
-    template< typename Head, typename Tail >
-    struct typelist
+# endif
+
+
+
+    // 20.5.4, optional for object types
+    template <class T> class optional;
+
+    // 20.5.5, optional for lvalue reference types
+    template <class T> class optional<T&>;
+
+
+    // workaround: std utility functions aren't constexpr yet
+    template <class T> inline constexpr T&& constexpr_forward(typename std::remove_reference<T>::type& t) noexcept
     {
-      typedef Head head;
-      typedef Tail tail;
-    };
-
-    template< typename List, size_t N >
-    struct type_of_size
-    {
-      typedef typename select<
-        N == sizeof(typename List::head),
-        typename List::head,
-        typename type_of_size<typename List::tail, N >::type >::type type;
-    };
-
-#if ! optional_COMPILER_IS_VC6
-
-    template< size_t N >
-    struct type_of_size< nulltype, N >
-    {
-      typedef optional_FEATURE_ALIGN_AS_FALLBACK type;
-    };
-
-#else // optional_COMPILER_IS_VC6
-
-    // VC6: no partial specialization
-
-#define MK_TYPE_OF_SIZE( n ) \
-    template<> \
-    struct type_of_size< nulltype, n > \
-    { \
-        typedef optional_FEATURE_ALIGN_AS_FALLBACK type; \
+      return static_cast<T&&>(t);
     }
 
-    MK_TYPE_OF_SIZE(1);
-    MK_TYPE_OF_SIZE(2);
-    MK_TYPE_OF_SIZE(4);
-    MK_TYPE_OF_SIZE(8);
-    MK_TYPE_OF_SIZE(12);
-    MK_TYPE_OF_SIZE(16);
-    MK_TYPE_OF_SIZE(20);
-    MK_TYPE_OF_SIZE(24);
-    MK_TYPE_OF_SIZE(28);
-    MK_TYPE_OF_SIZE(32);
+    template <class T> inline constexpr T&& constexpr_forward(typename std::remove_reference<T>::type&& t) noexcept
+    {
+      static_assert(!std::is_lvalue_reference<T>::value, "!!");
+      return static_cast<T&&>(t);
+    }
 
-#undef MK_TYPE_OF_SIZE
+    template <class T> inline constexpr typename std::remove_reference<T>::type&& constexpr_move(T&& t) noexcept
+    {
+      return static_cast<typename std::remove_reference<T>::type&&>(t);
+    }
 
-#endif // optional_COMPILER_IS_VC6
 
-    template< typename T>
-    struct struct_t { T _; };
+#if defined NDEBUG
+# define TR2_OPTIONAL_ASSERTED_EXPRESSION(CHECK, EXPR) (EXPR)
+#else
+# define TR2_OPTIONAL_ASSERTED_EXPRESSION(CHECK, EXPR) ((CHECK) ? (EXPR) : ([]{assert(!#CHECK);}(), (EXPR)))
+#endif
 
-#define optional_ALIGN_TYPE( type ) \
-    typelist< type , typelist< struct_t< type >
 
-    struct Unknown;
+    namespace detail_
+    {
 
-    typedef
-      optional_ALIGN_TYPE(char),
-      optional_ALIGN_TYPE(short),
-      optional_ALIGN_TYPE(int),
-      optional_ALIGN_TYPE(long),
-      optional_ALIGN_TYPE(float),
-      optional_ALIGN_TYPE(double),
-      optional_ALIGN_TYPE(long double),
+      // static_addressof: a constexpr version of addressof
+      template <typename T>
+      struct has_overloaded_addressof
+      {
+        template <class X>
+        constexpr static bool has_overload(...) { return false; }
 
-      optional_ALIGN_TYPE(char *),
-      optional_ALIGN_TYPE(short *),
-      optional_ALIGN_TYPE(int *),
-      optional_ALIGN_TYPE(long *),
-      optional_ALIGN_TYPE(float *),
-      optional_ALIGN_TYPE(double *),
-      optional_ALIGN_TYPE(long double *),
+        template <class X, size_t S = sizeof(std::declval<X&>().operator&()) >
+        constexpr static bool has_overload(bool) { return true; }
 
-      optional_ALIGN_TYPE(Unknown(*)(Unknown)),
-      optional_ALIGN_TYPE(Unknown * Unknown::*),
-      optional_ALIGN_TYPE(Unknown(Unknown::*)(Unknown)),
+        constexpr static bool value = has_overload<T>(true);
+      };
 
-      nulltype
-    > > > > > > >    > > > > > > >
-    > > > > > > >    > > > > > > >
-    > > > > > >
-      alignment_types;
+      template <typename T, TR2_OPTIONAL_REQUIRES(!has_overloaded_addressof<T>)>
+      constexpr T* static_addressof(T& ref)
+      {
+        return &ref;
+      }
 
-#undef optional_ALIGN_TYPE
+      template <typename T, TR2_OPTIONAL_REQUIRES(has_overloaded_addressof<T>)>
+      T* static_addressof(T& ref)
+      {
+        return std::addressof(ref);
+      }
 
-#endif // optional_FEATURE_MAX_ALIGN_HACK
 
-    /// C++03 constructed union to hold value.
+      // the call to convert<A>(b) has return type A and converts b to type A iff b decltype(b) is implicitly convertible to A  
+      template <class U>
+      U convert(U v) { return v; }
 
-    template< typename T >
+    } // namespace detail
+
+
+    constexpr struct trivial_init_t {} trivial_init{};
+
+
+    // 20.5.6, In-place construction
+    constexpr struct in_place_t {} in_place{};
+
+
+    // 20.5.7, Disengaged state indicator
+    struct nullopt_t
+    {
+      struct init {};
+      constexpr explicit nullopt_t(init) {}
+    };
+    constexpr nullopt_t nullopt{ nullopt_t::init() };
+
+
+    // 20.5.8, class bad_optional_access
+    class bad_optional_access : public logic_error {
+    public:
+      explicit bad_optional_access(const string& what_arg) : logic_error{ what_arg } {}
+      explicit bad_optional_access(const char* what_arg) : logic_error{ what_arg } {}
+    };
+
+
+    template <class T>
     union storage_t
     {
-    private:
-      friend class optional<T>;
+      unsigned char dummy_;
+      T value_;
 
+      constexpr storage_t(trivial_init_t) noexcept : dummy_() {};
+
+      template <class... Args>
+      constexpr storage_t(Args&&... args) : value_(constexpr_forward<Args>(args)...) {}
+
+      ~storage_t() {}
+    };
+
+
+    template <class T>
+    union constexpr_storage_t
+    {
+      unsigned char dummy_;
+      T value_;
+
+      constexpr constexpr_storage_t(trivial_init_t) noexcept : dummy_() {};
+
+      template <class... Args>
+      constexpr constexpr_storage_t(Args&&... args) : value_(constexpr_forward<Args>(args)...) {}
+
+      ~constexpr_storage_t() = default;
+    };
+
+
+    template <class T>
+    struct optional_base
+    {
+      bool init_;
+      storage_t<T> storage_;
+
+      constexpr optional_base() noexcept : init_(false), storage_(trivial_init) {};
+
+      explicit constexpr optional_base(const T& v) : init_(true), storage_(v) {}
+
+      explicit constexpr optional_base(T&& v) : init_(true), storage_(constexpr_move(v)) {}
+
+      template <class... Args> explicit optional_base(in_place_t, Args&&... args)
+        : init_(true), storage_(constexpr_forward<Args>(args)...) {}
+
+      template <class U, class... Args, TR2_OPTIONAL_REQUIRES(is_constructible<T, std::initializer_list<U>>)>
+      explicit optional_base(in_place_t, std::initializer_list<U> il, Args&&... args)
+        : init_(true), storage_(il, std::forward<Args>(args)...) {}
+
+      ~optional_base() { if (init_) storage_.value_.T::~T(); }
+    };
+
+
+    template <class T>
+    struct constexpr_optional_base
+    {
+      bool init_;
+      constexpr_storage_t<T> storage_;
+
+      constexpr constexpr_optional_base() noexcept : init_(false), storage_(trivial_init) {};
+
+      explicit constexpr constexpr_optional_base(const T& v) : init_(true), storage_(v) {}
+
+      explicit constexpr constexpr_optional_base(T&& v) : init_(true), storage_(constexpr_move(v)) {}
+
+      template <class... Args> explicit constexpr constexpr_optional_base(in_place_t, Args&&... args)
+        : init_(true), storage_(constexpr_forward<Args>(args)...) {}
+
+      template <class U, class... Args, TR2_OPTIONAL_REQUIRES(is_constructible<T, std::initializer_list<U>>)>
+      OPTIONAL_CONSTEXPR_INIT_LIST explicit constexpr_optional_base(in_place_t, std::initializer_list<U> il, Args&&... args)
+        : init_(true), storage_(il, std::forward<Args>(args)...) {}
+
+      ~constexpr_optional_base() = default;
+    };
+
+    template <class T>
+    using OptionalBase = typename std::conditional<
+      is_trivially_destructible<T>::value,
+      constexpr_optional_base<T>,
+      optional_base<T>
+    >::type;
+
+
+
+    template <class T>
+    class optional : private OptionalBase<T>
+    {
+      static_assert(!std::is_same<typename std::decay<T>::type, nullopt_t>::value, "bad T");
+      static_assert(!std::is_same<typename std::decay<T>::type, in_place_t>::value, "bad T");
+
+
+      constexpr bool initialized() const noexcept { return OptionalBase<T>::init_; }
+      T* dataptr() { return std::addressof(OptionalBase<T>::storage_.value_); }
+      constexpr const T* dataptr() const { return detail_::static_addressof(OptionalBase<T>::storage_.value_); }
+
+# if OPTIONAL_HAS_THIS_RVALUE_REFS == 1
+      constexpr const T& contained_val() const& { return OptionalBase<T>::storage_.value_; }
+#   if OPTIONAL_HAS_MOVE_ACCESSORS == 1
+      OPTIONAL_MUTABLE_CONSTEXPR T&& contained_val() && { return std::move(OptionalBase<T>::storage_.value_); }
+      OPTIONAL_MUTABLE_CONSTEXPR T& contained_val() & { return OptionalBase<T>::storage_.value_; }
+#   else
+      T& contained_val() & { return OptionalBase<T>::storage_.value_; }
+      T&& contained_val() && { return std::move(OptionalBase<T>::storage_.value_); }
+#   endif
+# else
+      constexpr const T& contained_val() const { return OptionalBase<T>::storage_.value_; }
+      T& contained_val() { return OptionalBase<T>::storage_.value_; }
+# endif
+
+      void clear() noexcept {
+        if (initialized()) dataptr()->T::~T();
+        OptionalBase<T>::init_ = false;
+      }
+
+      template <class... Args>
+      void initialize(Args&&... args) noexcept(noexcept(T(std::forward<Args>(args)...)))
+      {
+        assert(!OptionalBase<T>::init_);
+        ::new (static_cast<void*>(dataptr())) T(std::forward<Args>(args)...);
+        OptionalBase<T>::init_ = true;
+      }
+
+      template <class U, class... Args>
+      void initialize(std::initializer_list<U> il, Args&&... args) noexcept(noexcept(T(il, std::forward<Args>(args)...)))
+      {
+        assert(!OptionalBase<T>::init_);
+        ::new (static_cast<void*>(dataptr())) T(il, std::forward<Args>(args)...);
+        OptionalBase<T>::init_ = true;
+      }
+
+    public:
       typedef T value_type;
 
-      storage_t() {}
+      // 20.5.5.1, constructors
+      constexpr optional() noexcept : OptionalBase<T>() {};
+      constexpr optional(nullopt_t) noexcept : OptionalBase<T>() {};
 
-      storage_t(value_type const & v)
+      optional(const optional& rhs)
+        : OptionalBase<T>()
       {
-        construct_value(v);
+        if (rhs.initialized()) {
+          ::new (static_cast<void*>(dataptr())) T(*rhs);
+          OptionalBase<T>::init_ = true;
+        }
       }
 
-      void construct_value(value_type const & v)
+      optional(optional&& rhs) noexcept(is_nothrow_move_constructible<T>::value)
+        : OptionalBase<T>()
       {
-        ::new(value_ptr()) value_type(v);
+        if (rhs.initialized()) {
+          ::new (static_cast<void*>(dataptr())) T(std::move(*rhs));
+          OptionalBase<T>::init_ = true;
+        }
       }
 
-      void destruct_value()
+      constexpr optional(const T& v) : OptionalBase<T>(v) {}
+
+      constexpr optional(T&& v) : OptionalBase<T>(constexpr_move(v)) {}
+
+      template <class... Args>
+      explicit constexpr optional(in_place_t, Args&&... args)
+        : OptionalBase<T>(in_place_t{}, constexpr_forward<Args>(args)...) {}
+
+      template <class U, class... Args, TR2_OPTIONAL_REQUIRES(is_constructible<T, std::initializer_list<U>>)>
+      OPTIONAL_CONSTEXPR_INIT_LIST explicit optional(in_place_t, std::initializer_list<U> il, Args&&... args)
+        : OptionalBase<T>(in_place_t{}, il, constexpr_forward<Args>(args)...) {}
+
+      // 20.5.4.2, Destructor
+      ~optional() = default;
+
+      // 20.5.4.3, assignment
+      optional& operator=(nullopt_t) noexcept
       {
-        // Note: VC6 requires the use of the
-        // template parameter T (cannot use value_type).
-        value_ptr()->~T();
+        clear();
+        return *this;
       }
 
-      value_type * value_ptr() const
+      optional& operator=(const optional& rhs)
       {
-        return as((value_type*)0);
+        if (initialized() == true && rhs.initialized() == false) clear();
+        else if (initialized() == false && rhs.initialized() == true)  initialize(*rhs);
+        else if (initialized() == true && rhs.initialized() == true)  contained_val() = *rhs;
+        return *this;
       }
 
-      value_type * value_ptr()
+      optional& operator=(optional&& rhs)
+        noexcept(is_nothrow_move_assignable<T>::value && is_nothrow_move_constructible<T>::value)
       {
-        return as((value_type*)0);
+        if (initialized() == true && rhs.initialized() == false) clear();
+        else if (initialized() == false && rhs.initialized() == true)  initialize(std::move(*rhs));
+        else if (initialized() == true && rhs.initialized() == true)  contained_val() = std::move(*rhs);
+        return *this;
       }
 
-      value_type const & value() const
+      template <class U>
+      auto operator=(U&& v)
+        -> typename enable_if
+        <
+        is_same<typename decay<U>::type, T>::value,
+        optional&
+        >::type
       {
-        return *value_ptr();
+        if (initialized()) { contained_val() = std::forward<U>(v); }
+        else { initialize(std::forward<U>(v)); }
+        return *this;
       }
 
-      value_type & value()
+
+      template <class... Args>
+      void emplace(Args&&... args)
       {
-        return *value_ptr();
+        clear();
+        initialize(std::forward<Args>(args)...);
       }
 
-#if optional_CPP11_OR_GREATER
+      template <class U, class... Args>
+      void emplace(initializer_list<U> il, Args&&... args)
+      {
+        clear();
+        initialize<U, Args...>(il, std::forward<Args>(args)...);
+      }
 
-      using aligned_storage_t = typename std::aligned_storage< sizeof(value_type), alignof(value_type) >::type;
-      aligned_storage_t buffer;
+      // 20.5.4.4, Swap
+      void swap(optional<T>& rhs) noexcept(is_nothrow_move_constructible<T>::value && noexcept(swap(declval<T&>(), declval<T&>())))
+      {
+        if (initialized() == true && rhs.initialized() == false) { rhs.initialize(std::move(**this)); clear(); }
+        else if (initialized() == false && rhs.initialized() == true) { initialize(std::move(*rhs)); rhs.clear(); }
+        else if (initialized() == true && rhs.initialized() == true) { using std::swap; swap(**this, *rhs); }
+      }
 
-#elif optional_FEATURE_MAX_ALIGN_HACK
+      // 20.5.4.5, Observers
 
-      typedef struct { unsigned char data[sizeof(value_type)]; } aligned_storage_t;
+      explicit constexpr operator bool() const noexcept { return initialized(); }
 
-      max_align_t hack;
-      aligned_storage_t buffer;
+      constexpr T const* operator ->() const {
+        return TR2_OPTIONAL_ASSERTED_EXPRESSION(initialized(), dataptr());
+      }
 
-#else
-      typedef optional_ALIGN_AS(value_type) align_as_type;
+# if OPTIONAL_HAS_MOVE_ACCESSORS == 1
 
-      typedef struct { align_as_type data[1 + (sizeof(value_type) - 1) / sizeof(align_as_type)]; } aligned_storage_t;
-      aligned_storage_t buffer;
+      OPTIONAL_MUTABLE_CONSTEXPR T* operator ->() {
+        assert(initialized());
+        return dataptr();
+      }
 
-#   undef optional_ALIGN_AS
+      constexpr T const& operator *() const& {
+        return TR2_OPTIONAL_ASSERTED_EXPRESSION(initialized(), contained_val());
+      }
 
-#endif // optional_FEATURE_MAX_ALIGN_HACK
+      OPTIONAL_MUTABLE_CONSTEXPR T& operator *() & {
+        assert(initialized());
+        return contained_val();
+      }
 
-      // Note: VC6 cannot handle as<T>():
+      OPTIONAL_MUTABLE_CONSTEXPR T&& operator *() && {
+        assert(initialized());
+        return constexpr_move(contained_val());
+      }
+
+      constexpr T const& value() const& {
+        return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+      }
+
+      OPTIONAL_MUTABLE_CONSTEXPR T& value() & {
+        return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+      }
+
+      OPTIONAL_MUTABLE_CONSTEXPR T&& value() && {
+        if (!initialized()) throw bad_optional_access("bad optional access");
+        return std::move(contained_val());
+      }
+
+# else
+
+      T* operator ->() {
+        assert(initialized());
+        return dataptr();
+      }
+
+      constexpr T const& operator *() const {
+        return TR2_OPTIONAL_ASSERTED_EXPRESSION(initialized(), contained_val());
+      }
+
+      T& operator *() {
+        assert(initialized());
+        return contained_val();
+      }
+
+      constexpr T const& value() const {
+        return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+      }
+
+      T& value() {
+        return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+      }
+
+# endif
+
+# if OPTIONAL_HAS_THIS_RVALUE_REFS == 1
+
+      template <class V>
+      constexpr T value_or(V&& v) const&
+      {
+        return *this ? **this : detail_::convert<T>(constexpr_forward<V>(v));
+      }
+
+#   if OPTIONAL_HAS_MOVE_ACCESSORS == 1
+
+      template <class V>
+      OPTIONAL_MUTABLE_CONSTEXPR T value_or(V&& v) &&
+      {
+        return *this ? constexpr_move(const_cast<optional<T>&>(*this).contained_val()) : detail_::convert<T>(constexpr_forward<V>(v));
+      }
+
+#   else
+
+      template <class V>
+      T value_or(V&& v) &&
+      {
+        return *this ? constexpr_move(const_cast<optional<T>&>(*this).contained_val()) : detail_::convert<T>(constexpr_forward<V>(v));
+      }
+
+#   endif
+
+# else
+
+      template <class V>
+      constexpr T value_or(V&& v) const
+      {
+        return *this ? **this : detail_::convert<T>(constexpr_forward<V>(v));
+      }
+
+# endif
+
+    };
+
+
+    template <class T>
+    class optional<T&>
+    {
+      static_assert(!std::is_same<T, nullopt_t>::value, "bad T");
+      static_assert(!std::is_same<T, in_place_t>::value, "bad T");
+      T* ref;
+
+    public:
+
+      // 20.5.5.1, construction/destruction
+      constexpr optional() noexcept : ref(nullptr) {}
+
+      constexpr optional(nullopt_t) noexcept : ref(nullptr) {}
+
+      constexpr optional(T& v) noexcept : ref(detail_::static_addressof(v)) {}
+
+      optional(T&&) = delete;
+
+      constexpr optional(const optional& rhs) noexcept : ref(rhs.ref) {}
+
+      explicit constexpr optional(in_place_t, T& v) noexcept : ref(detail_::static_addressof(v)) {}
+
+      explicit optional(in_place_t, T&&) = delete;
+
+      ~optional() = default;
+
+      // 20.5.5.2, mutation
+      optional& operator=(nullopt_t) noexcept {
+        ref = nullptr;
+        return *this;
+      }
+
+      // optional& operator=(const optional& rhs) noexcept {
+      // ref = rhs.ref;
+      // return *this;
+      // }
+
+      // optional& operator=(optional&& rhs) noexcept {
+      // ref = rhs.ref;
+      // return *this;
+      // }
 
       template <typename U>
-      U * as(U*) const
+      auto operator=(U&& rhs) noexcept
+        -> typename enable_if
+        <
+        is_same<typename decay<U>::type, optional<T&>>::value,
+        optional&
+        >::type
       {
-        return reinterpret_cast<U*>(const_cast<aligned_storage_t *>(&buffer));
+        ref = rhs.ref;
+        return *this;
+      }
+
+      template <typename U>
+      auto operator=(U&& rhs) noexcept
+        -> typename enable_if
+        <
+        !is_same<typename decay<U>::type, optional<T&>>::value,
+        optional&
+        >::type
+        = delete;
+
+      void emplace(T& v) noexcept {
+        ref = detail_::static_addressof(v);
+      }
+
+      void emplace(T&&) = delete;
+
+
+      void swap(optional<T&>& rhs) noexcept
+      {
+        std::swap(ref, rhs.ref);
+      }
+
+      // 20.5.5.3, observers
+      constexpr T* operator->() const {
+        return TR2_OPTIONAL_ASSERTED_EXPRESSION(ref, ref);
+      }
+
+      constexpr T& operator*() const {
+        return TR2_OPTIONAL_ASSERTED_EXPRESSION(ref, *ref);
+      }
+
+      constexpr T& value() const {
+        return ref ? *ref : (throw bad_optional_access("bad optional access"), *ref);
+      }
+
+      explicit constexpr operator bool() const noexcept {
+        return ref != nullptr;
+      }
+
+      template <class V>
+      constexpr typename decay<T>::type value_or(V&& v) const
+      {
+        return *this ? **this : detail_::convert<typename decay<T>::type>(constexpr_forward<V>(v));
       }
     };
 
-  } // namespace optional_detail
 
-    /// disengaged state tag
-
-  struct nullopt_t
-  {
-    struct init {};
-    nullopt_t(init) {}
-  };
-
-  // extra parenthesis to prevent the most vexing parse:
-  const nullopt_t nullopt((nullopt_t::init()));
-
-  /// optional access error
-
-  class bad_optional_access : public std::logic_error
-  {
-  public:
-    explicit bad_optional_access(char const * const what_arg)
-      : logic_error(what_arg) {}
-  };
-
-  /// optional
-
-  template< typename T>
-  class optional
-  {
-  private:
-    typedef void (optional::*safe_bool)() const;
-
-  public:
-    typedef T value_type;
-
-    optional()
-      : has_value(false)
-      , contained()
-    {}
-
-    optional(nullopt_t)
-      : has_value(false)
-      , contained()
-    {}
-
-    optional(value_type const & value)
-      : has_value(true)
-      , contained(value)
-    {}
-
-    optional(optional const & other)
-      : has_value(other.initialized())
+    template <class T>
+    class optional<T&&>
     {
-      if (other.initialized())
-        contained.construct_value(other.contained.value());
+      static_assert(sizeof(T) == 0, "optional rvalue references disallowed");
+    };
+
+
+    // 20.5.8, Relational operators
+    template <class T> constexpr bool operator==(const optional<T>& x, const optional<T>& y)
+    {
+      return bool(x) != bool(y) ? false : bool(x) == false ? true : *x == *y;
     }
 
-    ~optional()
+    template <class T> constexpr bool operator!=(const optional<T>& x, const optional<T>& y)
     {
-      if (initialized())
-        contained.destruct_value();
+      return !(x == y);
     }
 
-    operator safe_bool() const
+    template <class T> constexpr bool operator<(const optional<T>& x, const optional<T>& y)
     {
-      return initialized() ? &optional::this_type_does_not_support_comparisons : 0;
+      return (!y) ? false : (!x) ? true : *x < *y;
     }
 
-    optional & operator=(nullopt_t)
+    template <class T> constexpr bool operator>(const optional<T>& x, const optional<T>& y)
     {
-      clear();
-      return *this;
+      return (y < x);
     }
 
-    optional & operator=(optional const & rhs)
+    template <class T> constexpr bool operator<=(const optional<T>& x, const optional<T>& y)
     {
-      if (initialized() == true && rhs.initialized() == false) clear();
-      else if (initialized() == false && rhs.initialized() == true) initialize(*rhs);
-      else if (initialized() == true && rhs.initialized() == true) contained.value() = *rhs;
-      return *this;
+      return !(y < x);
     }
 
-    void swap(optional & other)
+    template <class T> constexpr bool operator>=(const optional<T>& x, const optional<T>& y)
     {
-      using std::swap;
-      if (initialized() == true && other.initialized() == true) { swap(**this, *other); }
-      else if (initialized() == false && other.initialized() == true) { initialize(*other); other.clear(); }
-      else if (initialized() == true && other.initialized() == false) { other.initialize(**this); clear(); }
+      return !(x < y);
     }
 
-    // observers
 
-    value_type const * operator ->() const
+    // 20.5.9, Comparison with nullopt
+    template <class T> constexpr bool operator==(const optional<T>& x, nullopt_t) noexcept
     {
-      assert(initialized());
-      return contained.value_ptr();
+      return (!x);
     }
 
-    value_type * operator ->()
+    template <class T> constexpr bool operator==(nullopt_t, const optional<T>& x) noexcept
     {
-      assert(initialized());
-      return contained.value_ptr();
+      return (!x);
     }
 
-    value_type const & operator *() const
+    template <class T> constexpr bool operator!=(const optional<T>& x, nullopt_t) noexcept
     {
-      assert(initialized());
-      return contained.value();
+      return bool(x);
     }
 
-    value_type & operator *()
+    template <class T> constexpr bool operator!=(nullopt_t, const optional<T>& x) noexcept
     {
-      assert(initialized());
-      return contained.value();
+      return bool(x);
     }
 
-    value_type const & value() const
+    template <class T> constexpr bool operator<(const optional<T>&, nullopt_t) noexcept
     {
-      if (!initialized())
-        throw bad_optional_access("accessing value of disengaged optional (const)");
-
-      return contained.value();
+      return false;
     }
 
-    value_type & value()
+    template <class T> constexpr bool operator<(nullopt_t, const optional<T>& x) noexcept
     {
-      if (!initialized())
-        throw bad_optional_access("accessing value of disengaged optional (non-const)");
-
-      return contained.value();
+      return bool(x);
     }
 
-    value_type value_or(value_type const & default_value)
+    template <class T> constexpr bool operator<=(const optional<T>& x, nullopt_t) noexcept
     {
-      return initialized() ? contained.value() : default_value;
+      return (!x);
     }
 
-  private:
-    void this_type_does_not_support_comparisons() const {}
-
-    bool initialized() const
+    template <class T> constexpr bool operator<=(nullopt_t, const optional<T>&) noexcept
     {
-      return has_value;
+      return true;
     }
 
-    template< typename V >
-    void initialize(V const & value)
+    template <class T> constexpr bool operator>(const optional<T>& x, nullopt_t) noexcept
     {
-      assert(!initialized());
-      contained.construct_value(value);
-      has_value = true;
+      return bool(x);
     }
 
-    void clear()
+    template <class T> constexpr bool operator>(nullopt_t, const optional<T>&) noexcept
     {
-      if (initialized())
-        contained.destruct_value();
-
-      has_value = false;
+      return false;
     }
 
-  private:
-    bool has_value;
-    optional_detail::storage_t< value_type > contained;
+    template <class T> constexpr bool operator>=(const optional<T>&, nullopt_t) noexcept
+    {
+      return true;
+    }
 
-  };
+    template <class T> constexpr bool operator>=(nullopt_t, const optional<T>& x) noexcept
+    {
+      return (!x);
+    }
 
-  // Relational operators
 
-  template< typename T > bool operator==(optional<T> const & x, optional<T> const & y)
-  {
-    return bool(x) != bool(y) ? false : bool(x) == false ? true : *x == *y;
-  }
 
-  template< typename T > bool operator!=(optional<T> const & x, optional<T> const & y)
-  {
-    return !(x == y);
-  }
+    // 20.5.10, Comparison with T
+    template <class T> constexpr bool operator==(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x == v : false;
+    }
 
-  template< typename T > bool operator<(optional<T> const & x, optional<T> const & y)
-  {
-    return (!y) ? false : (!x) ? true : *x < *y;
-  }
+    template <class T> constexpr bool operator==(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v == *x : false;
+    }
 
-  template< typename T > bool operator>(optional<T> const & x, optional<T> const & y)
-  {
-    return (y < x);
-  }
+    template <class T> constexpr bool operator!=(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x != v : true;
+    }
 
-  template< typename T > bool operator<=(optional<T> const & x, optional<T> const & y)
-  {
-    return !(y < x);
-  }
+    template <class T> constexpr bool operator!=(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v != *x : true;
+    }
 
-  template< typename T > bool operator>=(optional<T> const & x, optional<T> const & y)
-  {
-    return !(x < y);
-  }
+    template <class T> constexpr bool operator<(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x < v : true;
+    }
 
-  // Comparison with nullopt
+    template <class T> constexpr bool operator>(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v > *x : true;
+    }
 
-  template< typename T > bool operator==(optional<T> const & x, nullopt_t)
-  {
-    return (!x);
-  }
+    template <class T> constexpr bool operator>(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x > v : false;
+    }
 
-  template< typename T > bool operator==(nullopt_t, optional<T> const & x)
-  {
-    return (!x);
-  }
+    template <class T> constexpr bool operator<(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v < *x : false;
+    }
 
-  template< typename T > bool operator!=(optional<T> const & x, nullopt_t)
-  {
-    return bool(x);
-  }
+    template <class T> constexpr bool operator>=(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x >= v : false;
+    }
 
-  template< typename T > bool operator!=(nullopt_t, optional<T> const & x)
-  {
-    return bool(x);
-  }
+    template <class T> constexpr bool operator<=(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v <= *x : false;
+    }
 
-  template< typename T > bool operator<(optional<T> const &, nullopt_t)
-  {
-    return false;
-  }
+    template <class T> constexpr bool operator<=(const optional<T>& x, const T& v)
+    {
+      return bool(x) ? *x <= v : true;
+    }
 
-  template< typename T > bool operator<(nullopt_t, optional<T> const & x)
-  {
-    return bool(x);
-  }
+    template <class T> constexpr bool operator>=(const T& v, const optional<T>& x)
+    {
+      return bool(x) ? v >= *x : true;
+    }
 
-  template< typename T > bool operator<=(optional<T> const & x, nullopt_t)
-  {
-    return (!x);
-  }
 
-  template< typename T > bool operator<=(nullopt_t, optional<T> const &)
-  {
-    return true;
-  }
+    // Comparison of optional<T&> with T
+    template <class T> constexpr bool operator==(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x == v : false;
+    }
 
-  template< typename T > bool operator>(optional<T> const & x, nullopt_t)
-  {
-    return bool(x);
-  }
+    template <class T> constexpr bool operator==(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v == *x : false;
+    }
 
-  template< typename T > bool operator>(nullopt_t, optional<T> const &)
-  {
-    return false;
-  }
+    template <class T> constexpr bool operator!=(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x != v : true;
+    }
 
-  template< typename T > bool operator>=(optional<T> const &, nullopt_t)
-  {
-    return true;
-  }
+    template <class T> constexpr bool operator!=(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v != *x : true;
+    }
 
-  template< typename T > bool operator>=(nullopt_t, optional<T> const & x)
-  {
-    return (!x);
-  }
+    template <class T> constexpr bool operator<(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x < v : true;
+    }
 
-  // Comparison with T
+    template <class T> constexpr bool operator>(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v > *x : true;
+    }
 
-  template< typename T > bool operator==(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x == v : false;
-  }
+    template <class T> constexpr bool operator>(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x > v : false;
+    }
 
-  template< typename T > bool operator==(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v == *x : false;
-  }
+    template <class T> constexpr bool operator<(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v < *x : false;
+    }
 
-  template< typename T > bool operator!=(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x != v : true;
-  }
+    template <class T> constexpr bool operator>=(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x >= v : false;
+    }
 
-  template< typename T > bool operator!=(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v != *x : true;
-  }
+    template <class T> constexpr bool operator<=(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v <= *x : false;
+    }
 
-  template< typename T > bool operator<(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x < v : true;
-  }
+    template <class T> constexpr bool operator<=(const optional<T&>& x, const T& v)
+    {
+      return bool(x) ? *x <= v : true;
+    }
 
-  template< typename T > bool operator<(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v < *x : false;
-  }
+    template <class T> constexpr bool operator>=(const T& v, const optional<T&>& x)
+    {
+      return bool(x) ? v >= *x : true;
+    }
 
-  template< typename T > bool operator<=(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x <= v : true;
-  }
+    // Comparison of optional<T const&> with T
+    template <class T> constexpr bool operator==(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x == v : false;
+    }
 
-  template< typename T > bool operator<=(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v <= *x : false;
-  }
+    template <class T> constexpr bool operator==(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v == *x : false;
+    }
 
-  template< typename T > bool operator>(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x > v : false;
-  }
+    template <class T> constexpr bool operator!=(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x != v : true;
+    }
 
-  template< typename T > bool operator>(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v > *x : true;
-  }
+    template <class T> constexpr bool operator!=(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v != *x : true;
+    }
 
-  template< typename T > bool operator>=(optional<T> const & x, const T& v)
-  {
-    return bool(x) ? *x >= v : false;
-  }
+    template <class T> constexpr bool operator<(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x < v : true;
+    }
 
-  template< typename T > bool operator>=(T const & v, optional<T> const & x)
-  {
-    return bool(x) ? v >= *x : true;
-  }
+    template <class T> constexpr bool operator>(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v > *x : true;
+    }
 
-  // Specialized algorithms
+    template <class T> constexpr bool operator>(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x > v : false;
+    }
 
-  template< typename T >
-  void swap(optional<T> & x, optional<T> & y)
-  {
-    x.swap(y);
-  }
+    template <class T> constexpr bool operator<(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v < *x : false;
+    }
 
-  template< typename T >
-  optional<T> make_optional(T const & v)
-  {
-    return optional<T>(v);
-  }
+    template <class T> constexpr bool operator>=(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x >= v : false;
+    }
 
+    template <class T> constexpr bool operator<=(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v <= *x : false;
+    }
+
+    template <class T> constexpr bool operator<=(const optional<const T&>& x, const T& v)
+    {
+      return bool(x) ? *x <= v : true;
+    }
+
+    template <class T> constexpr bool operator>=(const T& v, const optional<const T&>& x)
+    {
+      return bool(x) ? v >= *x : true;
+    }
+
+
+    // 20.5.12, Specialized algorithms
+    template <class T>
+    void swap(optional<T>& x, optional<T>& y) noexcept(noexcept(x.swap(y)))
+    {
+      x.swap(y);
+    }
+
+
+    template <class T>
+    constexpr optional<typename decay<T>::type> make_optional(T&& v)
+    {
+      return optional<typename decay<T>::type>(constexpr_forward<T>(v));
+    }
+
+    template <class X>
+    constexpr optional<X&> make_optional(reference_wrapper<X> v)
+    {
+      return optional<X&>(v.get());
+    }
+
+
+  } // namespace experimental
 } // namespace std
 
-#endif // NONSTD_OPTIONAL_LITE_HPP
+namespace std
+{
+  template <typename T>
+  struct hash<std::experimental::optional<T>>
+  {
+    typedef typename hash<T>::result_type result_type;
+    typedef std::experimental::optional<T> argument_type;
+
+    constexpr result_type operator()(argument_type const& arg) const {
+      return arg ? std::hash<T>{}(*arg) : result_type{};
+    }
+  };
+
+  template <typename T>
+  struct hash<std::experimental::optional<T&>>
+  {
+    typedef typename hash<T>::result_type result_type;
+    typedef std::experimental::optional<T&> argument_type;
+
+    constexpr result_type operator()(argument_type const& arg) const {
+      return arg ? std::hash<T>{}(*arg) : result_type{};
+    }
+  };
+}
+
+# undef TR2_OPTIONAL_REQUIRES
+# undef TR2_OPTIONAL_ASSERTED_EXPRESSION
+
+# endif //___OPTIONAL_HPP___

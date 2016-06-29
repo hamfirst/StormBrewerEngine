@@ -23,7 +23,7 @@ DocumentPath::DocumentPath(const std::string & path)
     }
     else
     {
-      throw std::exception("inconsistent document path");
+      throw std::runtime_error("inconsistent document path");
     }
   }
 }
@@ -67,7 +67,7 @@ std::string DocumentPath::Encode() const
     }
     else
     {
-      throw std::exception("inconsistent document path");
+      throw std::runtime_error("inconsistent document path");
     }
 
     encoded_value.push_back(elem_value);

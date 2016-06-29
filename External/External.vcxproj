@@ -392,6 +392,8 @@
     <ClInclude Include="boost\preprocessor\while.hpp" />
     <ClInclude Include="boost\preprocessor\wstringize.hpp" />
     <ClInclude Include="enum\enum.h" />
+    <ClInclude Include="gl3w\gl3w.h" />
+    <ClInclude Include="gl3w\glcorearb.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\func_common.hpp" />
     <ClInclude Include="glm\detail\func_exponential.hpp" />
@@ -537,12 +539,20 @@
     <ClInclude Include="glm\vec3.hpp" />
     <ClInclude Include="glm\vec4.hpp" />
     <ClInclude Include="glm\vector_relational.hpp" />
+    <ClInclude Include="gsl\gsl.h" />
+    <ClInclude Include="gsl\gsl_assert.h" />
+    <ClInclude Include="gsl\gsl_util.h" />
+    <ClInclude Include="gsl\span.h" />
+    <ClInclude Include="gsl\string_span.h" />
     <ClInclude Include="json\json.hpp" />
     <ClInclude Include="optional\optional.hpp" />
+    <ClInclude Include="upng\upng.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gl3w\gl3w.c" />
     <ClCompile Include="glm\detail\dummy.cpp" />
     <ClCompile Include="glm\detail\glm.cpp" />
+    <ClCompile Include="upng\upng.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glm\detail\func_common.inl" />

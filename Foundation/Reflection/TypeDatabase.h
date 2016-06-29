@@ -9,10 +9,10 @@
 
 struct ReflectionParentInfo;
 
-struct TypeInfo
+struct TypeInfo final
 {
   std::string m_ClassName;
-  uint32_t m_TypeNameHash;
+  Hash m_TypeNameHash;
 
   void * (*m_HeapCreateDefault)();
 
@@ -22,20 +22,20 @@ struct TypeInfo
   void (*m_SetParentInfo)(void * ptr, const ReflectionParentInfo & parent_info);
   bool (*m_Compare)(const void * ptr1, const void * ptr2);
 
-  const char * (*m_GetFieldName)(int index);
+  czstr (*m_GetFieldName)(int index);
 };
 
 
-class TypeDatabase
+class TypeDatabase final
 {
 public:
   void Init();
 
   void RegisterType(const TypeInfo & type_info);
-  Optional<TypeInfo> GetTypeInfo(uint32_t type_name_hash);
+  Optional<TypeInfo> GetTypeInfo(Hash type_name_hash);
 
 private:
-  std::unordered_map<uint32_t, TypeInfo> m_Types;
+  std::unordered_map<Hash, TypeInfo> m_Types;
 };
 
 extern Singleton<TypeDatabase> g_TypeDatabase;

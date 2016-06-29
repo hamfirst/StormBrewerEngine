@@ -1,6 +1,6 @@
 #pragma once
 
-class PreMainCallList
+class PreMainCallList final
 {
 public:
 

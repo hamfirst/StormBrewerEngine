@@ -1,28 +1,37 @@
 #pragma once
 
 #include "Engine\EngineCommon.h"
-
-struct VertexInfo
-{
-  Vec2 m_Position;
-  Vec2 m_TexCoord;
-  Vec4 m_Color;
-};
+#include "Engine\Rendering\VertexDefinition.h"
 
 class VertexBuffer
 {
+public:
   VertexBuffer();
   VertexBuffer(const VertexBuffer & rhs) = delete;
-  VertexBuffer(VertexBuffer && rhs);
+  VertexBuffer(VertexBuffer && rhs) noexcept;
   ~VertexBuffer();
 
-  void SetVertexBufferData(VertexInfo * verts, uint32_t num_verts);
-  void SetIndexBufferData(uint16_t * indices, uint32_t num_indices);
+  VertexBuffer & operator = (VertexBuffer & rhs) = delete;
+  VertexBuffer & operator = (VertexBuffer && rhs) noexcept;
 
-public:
+  void Move(VertexBuffer && rhs) noexcept;
+  void Destroy();
 
-  int m_VertexBufferName;
-  int m_IndexBufferName;
+  void SetBufferData(const gsl::span<VertexInfo> & verts, const gsl::span<uint16_t> & indices, VertexBufferType type);
+  int GetLoadError() const { return m_LoadError; }
+
+  void Draw(int index_start = 0, int index_end = -1) const;
+
+private:
+
+  VertexBufferType m_Type;
+  uint32_t m_IndexCount;
+
+  unsigned int m_VertexBufferName;
+  unsigned int m_IndexBufferName;
+  unsigned int m_VertexArrayName;
+
+  int m_LoadError;
 };
 
 

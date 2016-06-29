@@ -31,7 +31,7 @@ struct SpriteFrameDataAnchor
 {
   REFL_MEMBERS
   (
-    (AnchorIndex, int),
+    (AnchorIndex, RInt),
     (Pos, Vector2)
   )
 };
@@ -52,7 +52,7 @@ struct SpriteFrameMetaData
     (BoxLists, RList<SpriteFrameDataBoxList>),
     (AnchorList, RList<SpriteFrameDataAnchor>),
     (FrameHash, RHash),
-    (FrameFlags, int)
+    (FrameFlags, RInt)
   )
 };
 
@@ -61,8 +61,7 @@ struct SpriteBuilderSchemaTexture
   REFL_MEMBERS
   (
     (TextureFile, RString),
-    (TileWidth, int),
-    (TileHeight, int)
+    (TileSize, Vector2)
   )
 };
 

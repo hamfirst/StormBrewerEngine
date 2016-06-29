@@ -76,7 +76,7 @@ static bool ParseBool(const std::string & val)
   }
   else
   {
-    throw std::exception("Invalid bool");
+    throw std::runtime_error("Invalid bool");
   }
 }
 
@@ -115,6 +115,11 @@ public:
   operator bool () const
   {
     return m_Value != 0;
+  }
+
+  float AsFloat() const
+  {
+    return (float)m_Value;
   }
 
   NumericType operator ++()
@@ -308,35 +313,35 @@ private:
 template <typename NumericType>
 static NumericType ParseNumber(const std::string & str)
 {
-  return (NumericType)std::stoll(str);
+  return static_cast<NumericType>(std::stoll(str));
 }
 
 template <>
 static uint8_t ParseNumber(const std::string & str)
 {
-  return (uint8_t)std::stoull(str);
+  return static_cast<uint8_t>(std::stoull(str));
 }
 
 template <>
 static uint16_t ParseNumber(const std::string & str)
 {
-  return (uint16_t)std::stoull(str);
+  return static_cast<uint16_t>(std::stoull(str));
 }
 
 template <>
 static uint32_t ParseNumber(const std::string & str)
 {
-  return (uint32_t)std::stoull(str);
+  return static_cast<uint32_t>(std::stoull(str));
 }
 
 template <>
 static uint64_t ParseNumber(const std::string & str)
 {
-  return (uint64_t)std::stoull(str);
+  return static_cast<uint64_t>(std::stoull(str));
 }
 
 template <>
 static float ParseNumber(const std::string & str)
 {
-  return (float)std::stof(str);
+  return static_cast<float>(std::stof(str));
 }

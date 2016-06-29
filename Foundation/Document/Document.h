@@ -5,12 +5,12 @@
 
 struct DocumentModification;
 
-class Document
+class Document final
 {
 public:
   Document();
   Document(const std::string & json_data);
-  Document(const char * json_data);
+  Document(czstr json_data);
 
   void ApplyDocumentModification(const DocumentModification & mod, std::vector<DocumentModification> & reverse_operations);
 

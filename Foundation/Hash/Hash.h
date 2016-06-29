@@ -58,23 +58,25 @@ static constexpr uint32_t crc_table[256] = {
   0x2d02ef8dL
 };
 
+using Hash = uint32_t;
+
 template<size_t idx>
-constexpr uint32_t crc32(const char * str)
+constexpr Hash crc32(czstr str)
 {
   return (crc32<idx - 1>(str) >> 8) ^ crc_table[(crc32<idx - 1>(str) ^ str[idx]) & 0x000000FF];
 }
 
 // This is the stop-recursion function
 template<>
-constexpr uint32_t crc32<size_t(-1)>(const char * str)
+constexpr Hash crc32<size_t(-1)>(czstr str)
 {
   return 0xFFFFFFFF;
 }
 
 #define COMPILE_TIME_CRC32_STR(x) (crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
 
-uint32_t crc32(const char * str);
-uint32_t crc32(const std::string & str);
+Hash crc32(czstr str);
+Hash crc32(const std::string & str);
 
 
 

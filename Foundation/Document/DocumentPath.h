@@ -5,7 +5,7 @@
 
 #include "Foundation\Document\DocumentPathElement.h"
 
-class DocumentPath
+class DocumentPath final
 {
 public:
   DocumentPath(const std::string & path);

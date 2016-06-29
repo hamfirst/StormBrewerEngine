@@ -13,9 +13,10 @@ enum class DocumentModificationType
   kInsertObject,
   kRemoveArray,
   kRemoveObject,
+  kResetToDefault,
 };
 
-struct DocumentModification
+struct DocumentModification final
 {
   std::string Encode() const;
   void Decode(const std::string & json_data);

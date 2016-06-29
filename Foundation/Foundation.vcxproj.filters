@@ -22,6 +22,9 @@
     <Filter Include="CallList">
       <UniqueIdentifier>{d070ec39-90d8-42c4-acbf-100299be22d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FileSystem">
+      <UniqueIdentifier>{f22b60c8-caef-4e4d-9dd3-b916947e9c24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Reflection\Reflection.h">
@@ -106,6 +109,12 @@
     <ClInclude Include="Document\DocumentModification.h">
       <Filter>Document</Filter>
     </ClInclude>
+    <ClInclude Include="Reflection\ReflectionHash.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem\File.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reflection\TypeDatabase.cpp">
@@ -137,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="Document\DocumentModification.cpp">
       <Filter>Document</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem\File.cpp">
+      <Filter>FileSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

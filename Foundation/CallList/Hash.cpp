@@ -2,9 +2,9 @@
 #include "Foundation\Common.h"
 #include "Foundation\Hash\Hash.h"
 
-uint32_t crc32(const char * str)
+Hash crc32(czstr str)
 {
-  uint32_t hash = 0xFFFFFFFF;
+  Hash hash = 0xFFFFFFFF;
   while (*str != 0)
   {
     hash >>= 8;
@@ -15,7 +15,7 @@ uint32_t crc32(const char * str)
   return hash ^ 0xFFFFFFFF;
 }
 
-uint32_t crc32(const std::string & str)
+Hash crc32(const std::string & str)
 {
   return crc32(str.data());
 }

@@ -7,47 +7,47 @@
 
 std::string ReflectValue(const RByte & value)
 {
-  return std::to_string((int8_t)value);
+  return std::to_string(static_cast<int8_t>(value));
 }
 
 std::string ReflectValue(const RShort & value)
 {
-  return std::to_string((int16_t)value);
+  return std::to_string(static_cast<int16_t>(value));
 }
 
 std::string ReflectValue(const RInt & value)
 {
-  return std::to_string((int32_t)value);
+  return std::to_string(static_cast<int32_t>(value));
 }
 
 std::string ReflectValue(const RLong & value)
 {
-  return std::to_string((int64_t)value);
+  return std::to_string(static_cast<int64_t>(value));
 }
 
 std::string ReflectValue(const RUByte & value)
 {
-  return std::to_string((uint8_t)value);
+  return std::to_string(static_cast<uint8_t>(value));
 }
 
 std::string ReflectValue(const RUShort & value)
 {
-  return std::to_string((uint16_t)value);
+  return std::to_string(static_cast<uint16_t>(value));
 }
 
 std::string ReflectValue(const RUInt & value)
 {
-  return std::to_string((uint32_t)value);
+  return std::to_string(static_cast<uint32_t>(value));
 }
 
 std::string ReflectValue(const RULong & value)
 {
-  return std::to_string((uint64_t)value);
+  return std::to_string(static_cast<uint64_t>(value));
 }
 
 std::string ReflectValue(const RFloat & value)
 {
-  return std::to_string((float)value);
+  return std::to_string(static_cast<float>(value));
 }
 
 std::string ReflectValue(const RString & value)
@@ -55,7 +55,7 @@ std::string ReflectValue(const RString & value)
   return std::string("\"") + Json::escape_string(value) + std::string("\"");
 }
 
-std::string ReflectValue(const void * value, uint32_t type_name_hash)
+std::string ReflectValue(const void * value, Hash type_name_hash)
 {
   Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
   if (type_info)
@@ -70,7 +70,7 @@ std::string ReflectValue(const void * value, uint32_t type_name_hash)
   }
 }
 
-std::string ReflectValuePolymorphic(const void * value, uint32_t type_name_hash)
+std::string ReflectValuePolymorphic(const void * value, Hash type_name_hash)
 {
   Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);
   if (type_info)

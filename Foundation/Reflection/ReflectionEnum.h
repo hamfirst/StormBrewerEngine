@@ -39,7 +39,7 @@ public:
     return m_Value._to_integral();
   }
 
-  const char * _to_string() const
+  czstr _to_string() const
   {
     return m_Value._to_string();
   }

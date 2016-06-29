@@ -22,7 +22,7 @@ std::string ReflectValue(const REnum<EnumType> & value)
   return buffer;
 }
 
-std::string ReflectValue(const void * value, uint32_t type_name_hash);
+std::string ReflectValue(const void * value, Hash type_name_hash);
 
 template <typename T, typename std::enable_if<
   std::is_class<T>::value && T::is_reflectable
@@ -33,7 +33,7 @@ std::string ReflectValue(const T & value)
 }
 
 
-std::string ReflectValuePolymorphic(const void * value, uint32_t type_name_hash);
+std::string ReflectValuePolymorphic(const void * value, Hash type_name_hash);
 
 template <class T>
 std::string ReflectValue(RPolymorphic<T> & value)

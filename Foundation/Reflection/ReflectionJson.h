@@ -40,7 +40,7 @@ void DecodeJson(REnum<EnumType> & value, const Json & j)
 template <typename T>
 void DecodeJson(RPolymorphic<T> & value, const Json & j)
 {
-  uint32_t type_name_hash = j["TypeNameHash"].get<uint32_t>();
+  Hash type_name_hash = j["TypeNameHash"].get<Hash>();
   const Json & sub_obj_val = j["Obj"];
 
   Optional<TypeInfo> type_info = g_TypeDatabase->GetTypeInfo(type_name_hash);

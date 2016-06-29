@@ -3,7 +3,7 @@
 
 #include <string>
 
-struct DocumentPathElement
+struct DocumentPathElement final
 {
   DocumentPathElement(std::string index);
   DocumentPathElement(int index);

@@ -27,5 +27,8 @@
     <ClInclude Include="BasicTypes\BasicTypes.h">
       <Filter>BasicTypes</Filter>
     </ClInclude>
+    <ClInclude Include="BasicTypes\BasicTypeFuncs.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

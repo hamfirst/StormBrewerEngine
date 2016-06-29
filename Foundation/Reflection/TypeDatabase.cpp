@@ -10,7 +10,7 @@ void TypeDatabase::Init()
   g_TypeDatabaseRegistrationCallList.CallAll();
 }
 
-Optional<TypeInfo> TypeDatabase::GetTypeInfo(uint32_t type_name_hash)
+Optional<TypeInfo> TypeDatabase::GetTypeInfo(Hash type_name_hash)
 {
   auto val = m_Types.find(type_name_hash);
   if (val == m_Types.end())

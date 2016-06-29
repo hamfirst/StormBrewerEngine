@@ -11,12 +11,12 @@ void DecodeDocumentModification(RNumber<NumericType> & value, const DocumentModi
 {
   if (path_index != mod.m_Path.GetSize() - 1)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   if (mod.m_Type != DocumentModificationType::kSet)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   value = ParseNumber<NumericType>(mod.m_Data);
@@ -26,12 +26,12 @@ static void DecodeDocumentModification(RBool & value, const DocumentModification
 {
   if (path_index != mod.m_Path.GetSize() - 1)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   if (mod.m_Type != DocumentModificationType::kSet)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   value = ParseBool(mod.m_Data);
@@ -41,12 +41,12 @@ static void DecodeDocumentModification(RString & value, const DocumentModificati
 {
   if (path_index != mod.m_Path.GetSize() - 1)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   if (mod.m_Type != DocumentModificationType::kSet)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   value = Json::parse(mod.m_Data).get<std::string>();
@@ -57,12 +57,12 @@ void DecodeDocumentModification(REnum<EnumType> & value, const DocumentModificat
 {
   if (path_index != mod.m_Path.GetSize() - 1)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   if (mod.m_Type != DocumentModificationType::kSet)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   value = EnumType::_from_string(Json::parse(mod.m_Data).get<std::string>());
@@ -75,12 +75,12 @@ void DecodeDocumentModification(T & value, const DocumentModification & mod, int
 {
   if (path_index == mod.m_Path.GetSize() - 1)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   if (mod.m_Path[path_index].m_Type != DocumentPathElement::kStringIndex)
   {
-    throw std::exception("invalid doc path");
+    throw std::runtime_error("invalid doc path");
   }
 
   MemberDocumentDecoderVisitor decoder(mod, path_index);
@@ -100,7 +100,7 @@ void DecodeDocumentModification(RArrayList<T> & value, const DocumentModificatio
     case kClearObject:
     case kInsertObject:
     case kRemoveObject:
-      throw std::exception("invalid doc modification");
+      throw std::runtime_error("invalid doc modification");
     case kClearArray:
       {
         value.Clear();
@@ -135,7 +135,7 @@ void DecodeDocumentModification(RArrayList<T> & value, const DocumentModificatio
   {
     if (mod.m_Path[path_index].m_Type != DocumentPathElement::kIntIndex)
     {
-      throw std::exception("invalid doc path");
+      throw std::runtime_error("invalid doc path");
     }
 
     DecodeDocumentModification(value[mod.m_Path[path_index].m_IntIndex], mod, path_index + 1);

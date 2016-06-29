@@ -16,7 +16,7 @@ Document::Document(const std::string & json_data)
   m_Root = Json::parse(json_data);
 }
 
-Document::Document(const char * json_data)
+Document::Document(czstr json_data)
 {
   m_Root = Json::parse(json_data);
 }
@@ -31,7 +31,7 @@ void Document::ApplyDocumentModification(const DocumentModification & mod, std::
     {
       if (cur_val->is_array() == false)
       {
-        throw std::exception("invalid modification path");
+        throw std::runtime_error("invalid modification path");
       }
 
       cur_val = &(*cur_val)[mod.m_Path[index].m_IntIndex];
@@ -40,14 +40,14 @@ void Document::ApplyDocumentModification(const DocumentModification & mod, std::
     {
       if (cur_val->is_object() == false || cur_val->find(mod.m_Path[index].m_StringIndex) == cur_val->end())
       {
-        throw std::exception("invalid modification path");
+        throw std::runtime_error("invalid modification path");
       }
 
       cur_val = &(*cur_val)[mod.m_Path[index].m_StringIndex];
     }
     else
     {
-      throw std::exception("invalid modification path");
+      throw std::runtime_error("invalid modification path");
     }
   }
 
@@ -112,7 +112,7 @@ void Document::ApplyDocumentModification(const DocumentModification & mod, std::
         mod.m_Path,
         "",
         DocumentModificationType::kRemoveArray,
-        (uint32_t)cur_val->size()
+        static_cast<uint32_t>(cur_val->size())
       };
 
       reverse_operations.push_back(reverse_mod);
@@ -121,7 +121,7 @@ void Document::ApplyDocumentModification(const DocumentModification & mod, std::
     break;
   case DocumentModificationType::kCompress:
     {
-      throw std::exception("compress is not allowed during serialization");
+      throw std::runtime_error("compress is not allowed during serialization");
     }
     break;
   case DocumentModificationType::kInsertArray:
