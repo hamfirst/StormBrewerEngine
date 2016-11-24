@@ -12,7 +12,6 @@
 
 #define ASIO_STANDALONE
 #define ASIO_SEPARATE_COMPILATION
-#define _WIN32_WINNT 0x0501
 
 #include "asio/associated_allocator.hpp"
 #include "asio/associated_executor.hpp"

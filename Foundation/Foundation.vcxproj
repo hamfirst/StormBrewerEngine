@@ -22,49 +22,58 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Allocator\Allocator2D.h" />
+    <ClInclude Include="Assert\Assert.h" />
+    <ClInclude Include="Blit\Blit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Blit\PixelBuffer.h" />
+    <ClInclude Include="Buffer\Buffer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Buffer\BufferUtil.h" />
     <ClInclude Include="CallList\CallList.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Document\Document.h" />
-    <ClInclude Include="Document\DocumentModification.h" />
-    <ClInclude Include="Document\DocumentPath.h" />
-    <ClInclude Include="Document\DocumentPathElement.h" />
+    <ClInclude Include="Delegate\Delegate.h" />
+    <ClInclude Include="Delegate\DelegateLink.h" />
+    <ClInclude Include="Delegate\DelegateList.h" />
     <ClInclude Include="FileSystem\File.h" />
-    <ClInclude Include="Hash\Hash.h" />
+    <ClInclude Include="Handle\Handle.h" />
+    <ClInclude Include="Handle\HandleList.h" />
     <ClInclude Include="Json\Json.h" />
-    <ClInclude Include="Reflection\Reflection.h" />
-    <ClInclude Include="Reflection\ReflectionChangeNotifier.h" />
-    <ClInclude Include="Reflection\ReflectionCommon.h" />
-    <ClInclude Include="Reflection\ReflectionDocument.h" />
-    <ClInclude Include="Reflection\ReflectionEnum.h" />
-    <ClInclude Include="Reflection\ReflectionHash.h" />
-    <ClInclude Include="Reflection\ReflectionJson.h" />
-    <ClInclude Include="Reflection\ReflectionJsonThin.h" />
-    <ClInclude Include="Reflection\ReflectionList.h" />
-    <ClInclude Include="Reflection\ReflectionMap.h" />
-    <ClInclude Include="Reflection\ReflectionNumber.h" />
-    <ClInclude Include="Reflection\ReflectionParent.h" />
-    <ClInclude Include="Reflection\ReflectionPolymorphic.h" />
-    <ClInclude Include="Reflection\ReflectionString.h" />
-    <ClInclude Include="Reflection\ReflectionStruct.h" />
-    <ClInclude Include="Reflection\ReflectionUI.h" />
-    <ClInclude Include="Reflection\TypeDatabase.h" />
-    <ClInclude Include="Reflection\TypeDatabaseRegister.h" />
-    <ClInclude Include="Reflection\TypeDatabaseThin.h" />
-    <ClInclude Include="Reflection\TypeInfo.h" />
+    <ClInclude Include="Network\Network.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Network\WebSocket.h" />
+    <ClInclude Include="Optional\Optional.h" />
     <ClInclude Include="Singleton\Singleton.h" />
+    <ClInclude Include="Thread\MessageQueue.h" />
+    <ClInclude Include="Thread\Semaphore.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CallList\Hash.cpp" />
-    <ClCompile Include="Document\Document.cpp" />
-    <ClCompile Include="Document\DocumentModification.cpp" />
-    <ClCompile Include="Document\DocumentPath.cpp" />
-    <ClCompile Include="Document\DocumentPathElement.cpp" />
+    <ClCompile Include="Allocator\Allocator2D.cpp" />
+    <ClCompile Include="Assert\Assert.cpp" />
+    <ClCompile Include="Blit\Blit.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Blit\PixelBuffer.cpp" />
+    <ClCompile Include="Buffer\Buffer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Buffer\BufferUtil.cpp" />
     <ClCompile Include="FileSystem\File.cpp" />
-    <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp" />
-    <ClCompile Include="Reflection\ReflectionJsonThin.cpp" />
-    <ClCompile Include="Reflection\TypeDatabase.cpp" />
-    <ClCompile Include="Reflection\TypeDatabaseThin.cpp" />
+    <ClCompile Include="Network\Network.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Network\WebSocket.cpp" />
     <ClCompile Include="Singleton\Singleton.cpp" />
+    <ClCompile Include="Thread\Semaphore.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{39856B1A-B463-4D99-9859-74912E1C6D00}</ProjectGuid>

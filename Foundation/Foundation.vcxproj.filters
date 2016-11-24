@@ -4,17 +4,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Reflection">
-      <UniqueIdentifier>{82f4cc32-a3ee-4696-86bd-d263f8bb9ad3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Document">
-      <UniqueIdentifier>{42b140c8-cc5b-46d9-a9fb-feef0c3c7f84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Json">
       <UniqueIdentifier>{1066015e-4e2e-4218-851b-d15c8b9e476d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hash">
-      <UniqueIdentifier>{a4f0f3c8-077b-45f9-b18a-7d94280f3f26}</UniqueIdentifier>
     </Filter>
     <Filter Include="Singleton">
       <UniqueIdentifier>{9da02f11-ec60-4868-aeb6-442e6b80affc}</UniqueIdentifier>
@@ -25,130 +16,130 @@
     <Filter Include="FileSystem">
       <UniqueIdentifier>{f22b60c8-caef-4e4d-9dd3-b916947e9c24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Allocator">
+      <UniqueIdentifier>{4bf8c900-479d-462a-9e39-0e7debeca8fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blit">
+      <UniqueIdentifier>{674fcf2d-a1d3-403a-b123-98ff600482fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assert">
+      <UniqueIdentifier>{f524b09c-6bd3-42bb-9f28-93cd911ba55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{75a1ace9-763e-4195-8d21-9d6625f7dbfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Optional">
+      <UniqueIdentifier>{561333fc-c649-4789-9050-882ec7304428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Delegate">
+      <UniqueIdentifier>{5d60db69-b3c0-4d21-a6b0-4c59c6d3de36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Handle">
+      <UniqueIdentifier>{e0f711eb-9ed4-46fd-8090-b3dfd698f1dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{81c53105-78fa-4967-a765-8d23b4f5e263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{d5320f2f-0153-419d-9294-971f4f9fc842}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Reflection\Reflection.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Reflection\ReflectionJson.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Document\Document.h">
-      <Filter>Document</Filter>
-    </ClInclude>
-    <ClInclude Include="Document\DocumentPath.h">
-      <Filter>Document</Filter>
-    </ClInclude>
     <ClInclude Include="Json\Json.h">
       <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionMap.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionList.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Hash\Hash.h">
-      <Filter>Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionDocument.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Document\DocumentPathElement.h">
-      <Filter>Document</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionUI.h">
-      <Filter>Reflection</Filter>
     </ClInclude>
     <ClInclude Include="Singleton\Singleton.h">
       <Filter>Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="Reflection\TypeDatabase.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionPolymorphic.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
     <ClInclude Include="CallList\CallList.h">
       <Filter>CallList</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\TypeInfo.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionNumber.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionParent.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionStruct.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionString.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionCommon.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionEnum.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionChangeNotifier.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionJsonThin.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\TypeDatabaseThin.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\TypeDatabaseRegister.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="Document\DocumentModification.h">
-      <Filter>Document</Filter>
-    </ClInclude>
-    <ClInclude Include="Reflection\ReflectionHash.h">
-      <Filter>Reflection</Filter>
     </ClInclude>
     <ClInclude Include="FileSystem\File.h">
       <Filter>FileSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Assert\Assert.h">
+      <Filter>Assert</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\Allocator2D.h">
+      <Filter>Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Blit\Blit.h">
+      <Filter>Blit</Filter>
+    </ClInclude>
+    <ClInclude Include="Blit\PixelBuffer.h">
+      <Filter>Blit</Filter>
+    </ClInclude>
+    <ClInclude Include="Optional\Optional.h">
+      <Filter>Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\MessageQueue.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\Semaphore.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\Delegate.h">
+      <Filter>Delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateList.h">
+      <Filter>Delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateLink.h">
+      <Filter>Delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle\HandleList.h">
+      <Filter>Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle\Handle.h">
+      <Filter>Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer\Buffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\WebSocket.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer\BufferUtil.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Reflection\TypeDatabase.cpp">
-      <Filter>Reflection</Filter>
-    </ClCompile>
-    <ClCompile Include="Document\DocumentPath.cpp">
-      <Filter>Document</Filter>
-    </ClCompile>
-    <ClCompile Include="Document\Document.cpp">
-      <Filter>Document</Filter>
-    </ClCompile>
-    <ClCompile Include="Document\DocumentPathElement.cpp">
-      <Filter>Document</Filter>
-    </ClCompile>
-    <ClCompile Include="CallList\Hash.cpp">
-      <Filter>Hash</Filter>
-    </ClCompile>
     <ClCompile Include="Singleton\Singleton.cpp">
       <Filter>Singleton</Filter>
     </ClCompile>
-    <ClCompile Include="Reflection\ReflectionJsonThin.cpp">
-      <Filter>Reflection</Filter>
-    </ClCompile>
-    <ClCompile Include="Reflection\TypeDatabaseThin.cpp">
-      <Filter>Reflection</Filter>
-    </ClCompile>
-    <ClCompile Include="Reflection\ReflectionChangeNotifier.cpp">
-      <Filter>Reflection</Filter>
-    </ClCompile>
-    <ClCompile Include="Document\DocumentModification.cpp">
-      <Filter>Document</Filter>
-    </ClCompile>
     <ClCompile Include="FileSystem\File.cpp">
       <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Assert\Assert.cpp">
+      <Filter>Assert</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator\Allocator2D.cpp">
+      <Filter>Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Blit\Blit.cpp">
+      <Filter>Blit</Filter>
+    </ClCompile>
+    <ClCompile Include="Blit\PixelBuffer.cpp">
+      <Filter>Blit</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Semaphore.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer\Buffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\WebSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Network.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer\BufferUtil.cpp">
+      <Filter>Buffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

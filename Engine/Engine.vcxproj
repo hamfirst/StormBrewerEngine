@@ -115,18 +115,95 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Asset\Asset.h" />
+    <ClInclude Include="Asset\AssetLoader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetManager.h" />
     <ClInclude Include="Asset\AssetReference.h" />
+    <ClInclude Include="Asset\AssetReferenceBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetReloadCallback.h" />
+    <ClInclude Include="Asset\AssetTypeMacros.h" />
+    <ClInclude Include="Asset\AudioAsset.h" />
+    <ClInclude Include="Asset\FontAsset.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Asset\MusicAsset.h" />
     <ClInclude Include="Asset\TextureAsset.h" />
+    <ClInclude Include="Audio\AudioFormat.h" />
+    <ClInclude Include="Audio\AudioManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioSpec.h" />
+    <ClInclude Include="Audio\KeyboardState.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Audio\MusicSpec.h" />
+    <ClInclude Include="Engine.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="EngineCommon.h" />
+    <ClInclude Include="Input\BinaryControlBinding.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Input\ScalarControlBinding.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Input\VectorControlBinding.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Rendering\RenderErrorMacros.h" />
+    <ClInclude Include="Rendering\RenderException.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Rendering\Rendering.h" />
+    <ClInclude Include="Rendering\RenderState.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Rendering\RenderTarget.h" />
+    <ClInclude Include="Rendering\RenderUtil.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\ShaderLiteral.h" />
     <ClInclude Include="Rendering\ShaderProgram.h" />
     <ClInclude Include="Rendering\Texture.h" />
+    <ClInclude Include="Rendering\VertexArray.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Rendering\VertexBuffer.h" />
     <ClInclude Include="Rendering\VertexBufferBuilder.h" />
     <ClInclude Include="Rendering\VertexDefinition.h" />
+    <ClInclude Include="Settings\EngineSettings.refl.h" />
+    <ClInclude Include="Settings\EngineSettings.refl.meta.h" />
+    <ClInclude Include="Text\TextManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Text\TextRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Text\TextShaders.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.vcxproj">
+      <Project>{a9ebcf0f-5c76-4487-ac43-a09536e31735}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\External\External.vcxproj">
       <Project>{f2c9910c-3e6e-4752-a69e-810cc743bc10}</Project>
     </ProjectReference>
@@ -136,19 +213,83 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asset\Asset.cpp" />
-    <ClCompile Include="Asset\AssetReference.cpp" />
+    <ClCompile Include="Asset\AssetLoader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Asset\AssetReferenceBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Asset\AudioAsset.cpp" />
+    <ClCompile Include="Asset\FontAsset.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Asset\MusicAsset.cpp" />
     <ClCompile Include="Asset\TextureAsset.cpp" />
+    <ClCompile Include="Audio\AudioManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Audio\KeyboardState.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Audio\MusicSpec.cpp" />
+    <ClCompile Include="Engine.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Input\BinaryControlBinding.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Input\ScalarControlBinding.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Input\VectorControlBinding.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderException.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderState.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Rendering\RenderTarget.cpp" />
+    <ClCompile Include="Rendering\RenderUtil.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Rendering\Shader.cpp" />
     <ClCompile Include="Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
+    <ClCompile Include="Rendering\VertexArray.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Rendering\VertexBuffer.cpp" />
     <ClCompile Include="Rendering\VertexBufferBuilder.cpp" />
+    <ClCompile Include="Settings\EngineSettings.refl.cpp" />
+    <ClCompile Include="Text\TextManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Text\TextRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets" Condition="Exists('..\packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets')" />
   </ImportGroup>

@@ -22,6 +22,9 @@ public:
 
   void Draw(int index_start = 0, int index_end = -1) const;
 
+  void Bind() const;
+  void Unbind() const;
+
 private:
 
   VertexBufferType m_Type;
@@ -29,7 +32,6 @@ private:
 
   unsigned int m_VertexBufferName;
   unsigned int m_IndexBufferName;
-  unsigned int m_VertexArrayName;
 
   int m_LoadError;
 };

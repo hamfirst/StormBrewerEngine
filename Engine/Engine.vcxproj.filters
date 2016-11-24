@@ -10,6 +10,15 @@
     <Filter Include="Asset">
       <UniqueIdentifier>{10cb1df4-c1b4-4e94-a00c-2499830e3161}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{86b4224c-4b37-48dd-bf99-c6a0b83e5f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{d622fe44-6bcc-46c5-a4eb-a34b4eacebc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{814e16ab-bf4e-4646-904a-6ebb039e0532}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -45,6 +54,89 @@
     <ClInclude Include="Asset\AssetReference.h">
       <Filter>Asset</Filter>
     </ClInclude>
+    <ClInclude Include="Asset\AssetLoader.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetManager.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetReferenceBase.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\EngineSettings.refl.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\EngineSettings.refl.meta.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="EngineCommon.h" />
+    <ClInclude Include="Asset\AssetTypeMacros.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AudioAsset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioFormat.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioManager.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioSpec.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\KeyboardState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\MusicSpec.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\MusicAsset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\FontAsset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextManager.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextRenderer.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ShaderLiteral.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextShaders.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\VertexArray.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetReloadCallback.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Rendering.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderException.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderState.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderUtil.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\BinaryControlBinding.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ScalarControlBinding.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\VectorControlBinding.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -71,8 +163,60 @@
     <ClCompile Include="Asset\TextureAsset.cpp">
       <Filter>Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Asset\AssetReference.cpp">
+    <ClCompile Include="Asset\AssetLoader.cpp">
       <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\AssetReferenceBase.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\EngineSettings.refl.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Asset\AudioAsset.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\AudioManager.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\KeyboardState.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\MusicAsset.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\MusicSpec.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\FontAsset.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\TextManager.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\TextRenderer.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\VertexArray.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderException.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderState.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderUtil.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\BinaryControlBinding.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ScalarControlBinding.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\VectorControlBinding.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

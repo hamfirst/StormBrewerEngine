@@ -10,9 +10,15 @@
       <Filter>asio</Filter>
     </ClCompile>
     <ClCompile Include="DocumentServer.cpp" />
+    <ClCompile Include="Document.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="FileSystemWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DocumentServer.h" />
-    <ClInclude Include="DocumentServerMain.h" />
+    <ClInclude Include="Document.h" />
+    <ClInclude Include="DocumentServerMessages.refl.h" />
+    <ClInclude Include="DocumentServerMessages.refl.meta.h" />
+    <ClInclude Include="FileSystemWatcher.h" />
   </ItemGroup>
 </Project>

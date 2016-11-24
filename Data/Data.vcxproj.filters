@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{1f2e0e81-53ba-4c17-9893-6743d9dc8634}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PCH">
       <UniqueIdentifier>{fe0d284c-16a8-465b-a1a9-bc03353668ed}</UniqueIdentifier>
     </Filter>
@@ -12,17 +9,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sprite\SpriteBuilder.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
     <ClCompile Include="PCH\PCH.cpp">
       <Filter>PCH</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sprite\SpriteBuilder.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="DataCommon.h" />
     <ClInclude Include="BasicTypes\BasicTypes.h">
       <Filter>BasicTypes</Filter>
