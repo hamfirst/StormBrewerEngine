@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "Engine/EngineCommon.h"
+
 class Buffer
 {
 public:
@@ -15,8 +17,8 @@ public:
   Buffer & operator = (const Buffer & rhs) = delete;
   Buffer & operator = (Buffer && rhs) noexcept;
 
-  uint8_t * Get();
-  const uint8_t * Get() const;
+  NullOptPtr<uint8_t> Get();
+  const NullOptPtr<uint8_t> Get() const;
 
   std::size_t GetSize() const;
 

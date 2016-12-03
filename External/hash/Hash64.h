@@ -204,3 +204,42 @@ inline Hash64 crc64lowercase(const std::string & str)
 {
   return crc64(str.data());
 }
+
+template <typename IntegerType>
+inline Hash crc64integer(IntegerType i)
+{
+  Hash hash = crc64begin();
+  char val[21];
+  char * c = &val[20];
+
+  if (i < 0)
+  {
+    hash = crc64additive(hash, '-');
+    do
+    {
+      *c = '0' - (i % 10);
+      i /= 10;
+      c--;
+    } while (i != 0);
+  }
+  else
+  {
+    do
+    {
+      *c = (i % 10) + '0';
+      i /= 10;
+      c--;
+    } while (i != 0);
+  }
+
+
+  c++;
+  while (c != &val[21])
+  {
+    hash += crc64additive(hash, *c);
+    c++;
+  }
+
+  return crc64end(hash);
+}
+

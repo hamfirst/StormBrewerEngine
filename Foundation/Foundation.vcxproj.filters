@@ -7,9 +7,6 @@
     <Filter Include="Json">
       <UniqueIdentifier>{1066015e-4e2e-4218-851b-d15c8b9e476d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Singleton">
-      <UniqueIdentifier>{9da02f11-ec60-4868-aeb6-442e6b80affc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CallList">
       <UniqueIdentifier>{d070ec39-90d8-42c4-acbf-100299be22d1}</UniqueIdentifier>
     </Filter>
@@ -43,14 +40,17 @@
     <Filter Include="Network">
       <UniqueIdentifier>{d5320f2f-0153-419d-9294-971f4f9fc842}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Variant">
+      <UniqueIdentifier>{fcd8f367-f48e-4a37-9226-f8a577ad8e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Document">
+      <UniqueIdentifier>{b11cd563-f17a-40f2-af2f-684d170f0307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Json\Json.h">
       <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton\Singleton.h">
-      <Filter>Singleton</Filter>
     </ClInclude>
     <ClInclude Include="CallList\CallList.h">
       <Filter>CallList</Filter>
@@ -106,11 +106,47 @@
     <ClInclude Include="Buffer\BufferUtil.h">
       <Filter>Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Variant\Variant.h">
+      <Filter>Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="Optional\NullOpt.h">
+      <Filter>Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchema.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonType.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchemaBasic.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchemaSerialize.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.meta.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\Document.h">
+      <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentTypes.refl.h">
+      <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentTypes.refl.meta.h">
+      <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentCompiler.h">
+      <Filter>Document</Filter>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentLoader.h">
+      <Filter>Document</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Singleton\Singleton.cpp">
-      <Filter>Singleton</Filter>
-    </ClCompile>
     <ClCompile Include="FileSystem\File.cpp">
       <Filter>FileSystem</Filter>
     </ClCompile>
@@ -140,6 +176,21 @@
     </ClCompile>
     <ClCompile Include="Buffer\BufferUtil.cpp">
       <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\Json.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\JsonSchema.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\JsonSchemaSerialize.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Document\Document.cpp">
+      <Filter>Document</Filter>
+    </ClCompile>
+    <ClCompile Include="Document\DocumentCompiler.cpp">
+      <Filter>Document</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -20,10 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\External\asio\asio.cpp" />
-    <ClCompile Include="Document.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="DocumentServer.cpp">
       <SubType>
       </SubType>
@@ -49,10 +45,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Document.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="DocumentServer.h">
       <SubType>
       </SubType>

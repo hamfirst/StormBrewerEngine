@@ -7,7 +7,7 @@
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/RenderState.h"
 
-#include "Data/BasicTypes/BasicTypes.h"
+#include "Data/BasicTypes/BasicTypes.refl.h"
 
 class RenderUtil
 {

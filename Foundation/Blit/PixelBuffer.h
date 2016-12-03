@@ -9,7 +9,7 @@
 class PixelBuffer
 {
 public:
-  PixelBuffer(uint8_t * buffer, int width, int height, int pixel_size = 4);
+  PixelBuffer(NotNullPtr<uint8_t> buffer, int width, int height, int pixel_size = 4);
   PixelBuffer(std::unique_ptr<uint8_t[]> buffer, int width, int height, int pixel_size = 4);
   PixelBuffer(int width, int height, int pixel_size = 4);
   PixelBuffer(int width, int height, const void * buffer_data, int pixel_size = 4);
@@ -42,11 +42,11 @@ public:
   int GetPixelSize() const { return m_PixelSize; }
   int GetStride() const { return m_Stride; }
 
-  uint8_t * GetPixelBuffer();
-  uint8_t * GetPixelBuffer(int x, int y);
+  NotNullPtr<uint8_t> GetPixelBuffer();
+  NotNullPtr<uint8_t> GetPixelBuffer(int x, int y);
 
-  const uint8_t * GetPixelBuffer() const;
-  const uint8_t * GetPixelBuffer(int x, int y) const;
+  const NotNullPtr<uint8_t> GetPixelBuffer() const;
+  const NotNullPtr<uint8_t> GetPixelBuffer(int x, int y) const;
 
 private:
 

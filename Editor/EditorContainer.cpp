@@ -140,6 +140,7 @@ void EditorContainer::connectionComplete()
 {
   m_Context->makeCurrent(m_Surface.get());
   EngineInit();
+  EngineRenderInit();
 
   g_TextManager.LoadFont("Fonts/arial.ttf", -1, 12);
 
@@ -148,6 +149,7 @@ void EditorContainer::connectionComplete()
   m_ConnectingDialog.hide();
   show();
 
+  OpenEditorForFile("Images/test.png");
   OpenEditorForFile("Sounds/DudeDeath.wav");
   OpenEditorForFile("Music/music.ogg");
 }

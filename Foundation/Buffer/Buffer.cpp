@@ -38,12 +38,12 @@ Buffer & Buffer::operator = (Buffer && rhs) noexcept
   return *this;
 }
 
-uint8_t * Buffer::Get()
+NullOptPtr<uint8_t> Buffer::Get()
 {
   return m_Data.get();
 }
 
-const uint8_t * Buffer::Get() const
+const NullOptPtr<uint8_t> Buffer::Get() const
 {
   return m_Data.get();
 }

@@ -26,7 +26,6 @@ AudioViewer::AudioViewer(bool is_audio, const char * file_path, QWidget *parent)
   {
     m_MusicAsset = MusicAsset::Load(file_path);
   }
-
   
 
   m_PlayButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay, nullptr, m_PlayButton));

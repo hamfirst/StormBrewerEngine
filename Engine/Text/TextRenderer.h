@@ -6,7 +6,7 @@
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
-#include "Data/BasicTypes/BasicTypes.h"
+#include "Data/BasicTypes/BasicTypes.refl.h"
 
 #include <unordered_map>
 

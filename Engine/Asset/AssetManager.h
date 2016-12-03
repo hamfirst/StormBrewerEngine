@@ -5,8 +5,6 @@
 
 #include <unordered_map>
 
-#include "Foundation/Singleton/Singleton.h"
-
 #include "Asset.h"
 #include "AssetLoader.h"
 
@@ -20,7 +18,7 @@ public:
     g_AssetLoader.RegisterAssetLoadCallback(&reload_info);
   }
 
-  AssetType * LoadAsset(czstr file_path)
+  NotNullPtr<AssetType> LoadAsset(czstr file_path)
   {
     static_assert(sizeof(Asset::AssetHandle) >= sizeof(typename plf::colony<AssetType>::iterator), "Invalid iterator size");
 
@@ -61,7 +59,7 @@ public:
     m_Assets.erase(*itr);
   }
 
-  void ReloadFile(const char * path)
+  void ReloadFile(czstr path)
   {
     uint64_t file_name_hash = crc64lowercase(path);
     auto existing_asset_itr = m_AssetLookup.find(file_name_hash);

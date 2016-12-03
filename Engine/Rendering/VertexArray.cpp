@@ -59,28 +59,7 @@ void VertexArray::CreateDefaultBinding(const ShaderProgram & program, const Vert
   glBindVertexArray(m_VertexArrayName); CHECK_GL_RENDER_ERROR;
 
   buffer.Bind();
-
-  int position_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_Position"); CHECK_GL_RENDER_ERROR;
-  int texcoord_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_TexCoord"); CHECK_GL_RENDER_ERROR;
-  int color_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_Color"); CHECK_GL_RENDER_ERROR;
-
-  if (position_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(position_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(position_attrib_loc, 2, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_Position)); CHECK_GL_RENDER_ERROR;
-  }
-
-  if (texcoord_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(texcoord_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(texcoord_attrib_loc, 2, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_TexCoord)); CHECK_GL_RENDER_ERROR;
-  }
-
-  if (color_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(color_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(color_attrib_loc, 4, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_Color)); CHECK_GL_RENDER_ERROR;
-  }
+  buffer.CreateDefaultBinding(program);
 
   glBindVertexArray(0); CHECK_GL_RENDER_ERROR;
 

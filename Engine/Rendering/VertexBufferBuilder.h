@@ -3,7 +3,7 @@
 #include "Engine\EngineCommon.h"
 #include "Engine\Rendering\VertexDefinition.h"
 #include "Engine\Rendering\VertexBuffer.h"
-#include "Data\BasicTypes\BasicTypes.h"
+#include "Data\BasicTypes\BasicTypes.refl.h"
 
 
 struct QuadVertexBuilderInfo

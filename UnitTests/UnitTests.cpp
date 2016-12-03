@@ -3,20 +3,33 @@
 #include <vector>
 #include <functional>
 
+#include <SDL/SDL.h>
+
+#include <gl3w/gl3w.h>
+
+#undef main
+#undef max
+#undef min
+
 #include "Foundation/Common.h"
 #include "Foundation/Delegate/Delegate.h"
 #include "Foundation/Network/Network.h"
 #include "Foundation/Network/WebSocket.h"
+#include "Foundation/Json/Json.h"
+#include "Foundation/Json/JsonSchemaSerialize.h"
 
-#include <SDL/SDL.h>
-#undef main
 
-#include <gl3w/gl3w.h>
+#include <StormData/StormDataJson.h>
 
 #include "Engine/Engine.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/Rendering.h"
+#include "Engine/Input/InputState.h"
+#include "Engine/Window/WindowManager.h"
+
+
+#include "TestTypes.refl.meta.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
@@ -66,19 +79,55 @@ void TestWebsocket()
   NetworkShutdown();
 }
 
+void TestJson()
+{
+  auto schema = GetJsonSchema<TestType>();
+  auto schema_data = SerializeJsonSchema(schema);
+
+  std::unique_ptr<JsonSchema[]> schema_list;
+  std::unique_ptr<JsonChildSchemaList[]> child_list;
+
+  auto backup_schema = DeserializeJsonSchema(schema_data, schema_list, child_list);
+
+  Json json(schema);
+
+  TestType obj{};
+  //obj.m_Sub.m_List.InsertAt(200, 1);
+  obj.m_Sub.m_List.InsertAt(200, 4);
+
+  std::string data = StormReflEncodeJson(obj);
+  std::vector<std::pair<std::string, std::string>> schema_errors;
+  json.Parse(data.data(), schema_errors);
+
+  const char * test_data = "{\"m_Sub\":{\"m_List\":{\"+4\":null,\"3\":100}}}";
+  Json test_additive(schema);
+  test_additive.Parse(test_data, schema_errors);
+
+  std::string test_result;
+  test_additive.EncodePretty(test_result);
+  printf("%s\n", test_result.data());
+
+  json.ApplyJson(test_additive);
+  json.RevertDataAtPath(".m_Sub.m_List[3]");
+  json.RevertDataAtPath(".m_Int");
+
+  std::string result;
+  json.EncodePretty(result);
+
+  printf("%s\n", result.data());
+}
+
 int main()
 {
-  NetworkInit();
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
-  {
-    fprintf(stderr, "Could not start SDL");
-    return 0;
-  }
-
-  auto window = SDL_CreateWindow("Window!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-  auto context = SDL_GL_CreateContext(window);
+  TestJson();
 
   EngineInit();
+
+  auto window = g_WindowManager.CreateNewWindow("Window!", 1280, 720);
+
+  EngineRenderInit();
+
+  InputState input_state;
 
   const char * test_vshader = SHADER_LITERAL(
     attribute vec2 a_Position;
@@ -117,9 +166,9 @@ int main()
   VertexArray ar;
   ar.CreateDefaultBinding(shader, buffer);
 
-  auto texture = TextureAsset::Load("test.png");
+  auto texture = TextureAsset::Load("Images/test.png");
 
-  g_TextManager.LoadFont("C:\\Windows\\Fonts\\arial.ttf", -1, 15);
+  g_TextManager.LoadFont("Fonts/arial.ttf", -1, 15);
 
   while (EngineWantsToQuit() == false)
   {
@@ -130,7 +179,7 @@ int main()
 
     if (texture.Resolve()->IsLoaded())
     {
-      //texture.Resolve()->GetTexture().BindTexture(0);
+      texture.Resolve()->GetTexture().BindTexture(0);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
     }
 
@@ -140,8 +189,7 @@ int main()
     shader.Unbind();
 
     g_TextManager.RenderText("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890*&`", -1, Color(0, 0, 255, 255), Vector2(0, 10), render_state);
-
-    SDL_GL_SwapWindow(window);
+    window.Swap();
   }
 
   EngineCleanup();

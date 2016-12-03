@@ -90,7 +90,7 @@ public:
     FreeHandleInternal(index);
   }
 
-  T * Resolve(Handle handle)
+  NullOptPtr<T> Resolve(Handle handle)
   {
     if (handle.m_Valid == 0)
     {
@@ -112,6 +112,20 @@ public:
     return t;
   }
 
+  std::size_t GetNumHandles() const
+  {
+    std::size_t handle_count = 0;
+    for (auto & elem : m_List)
+    {
+      if (elem.m_Handle.m_Valid)
+      {
+        handle_count++;
+      }
+    }
+
+    return handle_count;
+  }
+
   template <typename Callable>
   void VisitEach(Callable && callable)
   {
@@ -119,7 +133,7 @@ public:
     {
       if (elem.m_Handle.m_Valid)
       {
-        callable(elem.m_Handle, *reinterpret_cast<T *>(m_List[index].m_Buffer));
+        callable(elem.m_Handle, *reinterpret_cast<T *>(elem.m_Buffer));
       }
     }
   }

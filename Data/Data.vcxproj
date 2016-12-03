@@ -131,10 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes\BasicTypeFuncs.h" />
-    <ClInclude Include="BasicTypes\BasicTypes.h" />
+    <ClInclude Include="BasicTypes\BasicTypes.refl.h" />
+    <ClInclude Include="BasicTypes\BasicTypes.refl.meta.h" />
     <ClInclude Include="DataCommon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

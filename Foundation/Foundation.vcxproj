@@ -39,19 +39,46 @@
     <ClInclude Include="Delegate\Delegate.h" />
     <ClInclude Include="Delegate\DelegateLink.h" />
     <ClInclude Include="Delegate\DelegateList.h" />
+    <ClInclude Include="Document\Document.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentCompiler.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentLoader.h" />
+    <ClInclude Include="Document\DocumentTypes.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Document\DocumentTypes.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FileSystem\File.h" />
     <ClInclude Include="Handle\Handle.h" />
     <ClInclude Include="Handle\HandleList.h" />
     <ClInclude Include="Json\Json.h" />
+    <ClInclude Include="Json\JsonSchema.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Json\JsonSchemaBasic.h" />
+    <ClInclude Include="Json\JsonSchemaSerialize.h" />
+    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.h" />
+    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.meta.h" />
+    <ClInclude Include="Json\JsonType.h" />
     <ClInclude Include="Network\Network.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="Network\WebSocket.h" />
+    <ClInclude Include="Optional\NullOpt.h" />
     <ClInclude Include="Optional\Optional.h" />
-    <ClInclude Include="Singleton\Singleton.h" />
     <ClInclude Include="Thread\MessageQueue.h" />
     <ClInclude Include="Thread\Semaphore.h" />
+    <ClInclude Include="Variant\Variant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Allocator\Allocator2D.cpp" />
@@ -66,13 +93,26 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Buffer\BufferUtil.cpp" />
+    <ClCompile Include="Document\Document.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Document\DocumentCompiler.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FileSystem\File.cpp" />
+    <ClCompile Include="Json\Json.cpp" />
+    <ClCompile Include="Json\JsonSchema.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Json\JsonSchemaSerialize.cpp" />
     <ClCompile Include="Network\Network.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="Network\WebSocket.cpp" />
-    <ClCompile Include="Singleton\Singleton.cpp" />
     <ClCompile Include="Thread\Semaphore.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -179,6 +219,7 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Gsl.0.1.1.0\build\native\Microsoft.Gsl.targets" Condition="Exists('..\packages\Microsoft.Gsl.0.1.1.0\build\native\Microsoft.Gsl.targets')" />
   </ImportGroup>

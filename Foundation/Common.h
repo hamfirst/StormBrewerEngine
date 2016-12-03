@@ -14,14 +14,14 @@
 #include <unordered_map>
 #include <memory>
 
+#include <StormData/StormDataTypes.h>
+
 #include <cstdint>
 
 #include <gsl/gsl.h>
 
 #include <hash/Hash.h>
 #include <hash/Hash64.h>
-
-
 #include <glm/glm.hpp>
 
 using zstr = gsl::zstring<>;
@@ -35,7 +35,9 @@ using RenderVec4 = glm::vec4;
 using RenderMat3 = glm::mat3x4;
 using RenderMat4 = glm::mat4x4;
 
+
 #include "Foundation/Optional/Optional.h"
-#include "Foundation/Singleton/Singleton.h"
+#include "Foundation/Optional/NullOpt.h"
+#include "Foundation/Variant/Variant.h"
 #include "Foundation/Assert/Assert.h"
 

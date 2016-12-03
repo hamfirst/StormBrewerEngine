@@ -49,6 +49,7 @@ private:
   unsigned int m_LoadError;
 
   friend class VertexArray;
+  friend class VertexBuffer;
 
   std::string m_CompileLog;
   std::vector<Hash> m_Uniforms;

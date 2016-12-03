@@ -4,7 +4,7 @@
 #include "PixelBuffer.h"
 
 
-PixelBuffer::PixelBuffer(uint8_t * buffer, int width, int height, int pixel_size) :
+PixelBuffer::PixelBuffer(NotNullPtr<uint8_t> buffer, int width, int height, int pixel_size) :
   m_Memory(buffer),
   m_Width(width),
   m_Height(height),
@@ -61,22 +61,22 @@ PixelBuffer PixelBuffer::Rotate()
   return buffer;
 }
 
-uint8_t * PixelBuffer::GetPixelBuffer()
+NotNullPtr<uint8_t> PixelBuffer::GetPixelBuffer()
 {
   return m_Memory;
 }
 
-uint8_t * PixelBuffer::GetPixelBuffer(int x, int y)
+NotNullPtr<uint8_t> PixelBuffer::GetPixelBuffer(int x, int y)
 {
   return m_Memory + ((y * m_Stride) + x * m_PixelSize);
 }
 
-const uint8_t * PixelBuffer::GetPixelBuffer() const
+const NotNullPtr<uint8_t> PixelBuffer::GetPixelBuffer() const
 {
   return m_Memory;
 }
 
-const uint8_t * PixelBuffer::GetPixelBuffer(int x, int y) const
+const NotNullPtr<uint8_t> PixelBuffer::GetPixelBuffer(int x, int y) const
 {
   return m_Memory + ((y * m_Stride) + x * m_PixelSize);
 }

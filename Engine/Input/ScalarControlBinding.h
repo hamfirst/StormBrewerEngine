@@ -7,6 +7,10 @@ static const float kScalarControlThreshold = 0.75;
 
 class ScalarControlBinding
 {
+public:
+
+  using CallbackType = Delegate<void, float>;
+
   ScalarControlBinding(int priority, Delegate<void, float> callback);
 
   void UpdateState(float state);

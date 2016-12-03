@@ -8,22 +8,26 @@ static const float kScalarControlThreshold = 0.75;
 
 class VectorControlBinding
 {
-  VectorControlBinding(int priority, Delegate<void, RenderVec2> callback);
+public:
+
+  using CallbackType = Delegate<void, RenderVec2>;
+
+  VectorControlBinding(int priority, Delegate<void, RenderVec3> callback);
 
   void UpdateState(RenderVec2 state);
-  RenderVec2 GetCurrentState();
+  RenderVec3 GetCurrentState();
   void AdvanceFrame();
 
-  RenderVec2 GetPriorValue(unsigned int frames_ago);
+  RenderVec3 GetPriorValue(unsigned int frames_ago);
 
   int GetPriority() { return m_Priority; }
 
 private:
 
-  Delegate<void, RenderVec2> m_StateChangeCB;
-  RenderVec2 m_CurrentState = {};
+  Delegate<void, RenderVec3> m_StateChangeCB;
+  RenderVec3 m_CurrentState = {};
   int m_Priority;
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
-  RenderVec2 m_History[kScalarControlHistory] = {};
+  RenderVec3 m_History[kScalarControlHistory] = {};
 };

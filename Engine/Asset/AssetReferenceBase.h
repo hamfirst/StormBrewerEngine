@@ -22,5 +22,5 @@ protected:
 
   AssetReferenceBase(Asset * asset);
 
-  Asset * m_Asset;
+  NullOptPtr<Asset> m_Asset;
 };

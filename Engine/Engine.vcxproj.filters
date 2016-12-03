@@ -19,6 +19,9 @@
     <Filter Include="Text">
       <UniqueIdentifier>{814e16ab-bf4e-4646-904a-6ebb039e0532}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{b7ffc5f6-176e-4513-92eb-0c7c1bb5e78b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -86,9 +89,6 @@
     <ClInclude Include="Audio\AudioSpec.h">
       <Filter>Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Audio\KeyboardState.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Audio\MusicSpec.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -137,6 +137,36 @@
     <ClInclude Include="Input\VectorControlBinding.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Input\ControlBinding.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ControlBindingList.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ControlHandle.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ControlId.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\KeyboardState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ControlBindingSet.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WindowManager.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\PointerControlBinding.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -179,9 +209,6 @@
     <ClCompile Include="Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Audio\KeyboardState.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Asset\MusicAsset.cpp">
       <Filter>Asset</Filter>
     </ClCompile>
@@ -216,6 +243,31 @@
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Input\VectorControlBinding.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ControlHandle.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputState.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\KeyboardState.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ControlBindingSet.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ControlId.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCommon.cpp" />
+    <ClCompile Include="Window\WindowManager.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\Window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\PointerControlBinding.cpp">
       <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,6 +2,7 @@
 
 #include <QWidget>
 
+#include "Engine/EngineCommon.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Asset/AudioAsset.h"
 #include "Engine/Asset/MusicAsset.h"

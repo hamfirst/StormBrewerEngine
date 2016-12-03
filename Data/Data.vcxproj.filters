@@ -15,10 +15,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataCommon.h" />
-    <ClInclude Include="BasicTypes\BasicTypes.h">
+    <ClInclude Include="BasicTypes\BasicTypeFuncs.h">
       <Filter>BasicTypes</Filter>
     </ClInclude>
-    <ClInclude Include="BasicTypes\BasicTypeFuncs.h">
+    <ClInclude Include="BasicTypes\BasicTypes.refl.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicTypes\BasicTypes.refl.meta.h">
       <Filter>BasicTypes</Filter>
     </ClInclude>
   </ItemGroup>

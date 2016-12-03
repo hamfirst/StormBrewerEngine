@@ -56,6 +56,8 @@ TextureViewer::TextureViewer(const char * file_path, QWidget *parent) :
   m_FilePath(file_path),
   m_TextureAsset(TextureAsset::LoadWithCallback(file_path, TextureAsset::LoadCallback(&TextureViewer::HandleTextureLoad, this)))
 {
+  setFocusPolicy(Qt::ClickFocus);
+
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &TextureViewer::tick);
   timer->start(16);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Foundation/Singleton/Singleton.h"
 #include "Foundation/Optional/Optional.h"
 #include "Foundation/Handle/HandleList.h"
 

@@ -9,6 +9,6 @@ public:
 
 struct AssetReloadInfo
 {
-  AssetReloadCallback * m_Callback;
-  AssetReloadInfo * m_Next;
+  NotNullPtr<AssetReloadCallback> m_Callback;
+  NullOptPtr<AssetReloadInfo> m_Next;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Data/BasicTypes/BasicTypes.h"
+#include "Data/BasicTypes/BasicTypes.refl.h"
 
 enum class RenderingBlendMode
 {

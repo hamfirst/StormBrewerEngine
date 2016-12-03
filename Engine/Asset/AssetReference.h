@@ -20,12 +20,12 @@ public:
   AssetReference & operator = (const AssetReference & rhs) = default;
   AssetReference & operator = (AssetReference && rhs) = default;
 
-  AssetType * Resolve()
+  NullOptPtr<AssetType> Resolve()
   {
     return static_cast<AssetType *>(m_Asset);
   }
 
-  const AssetType * Resolve() const
+  const NullOptPtr<AssetType> Resolve() const
   {
     return static_cast<AssetType *>(m_Asset);
   }

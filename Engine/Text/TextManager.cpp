@@ -56,10 +56,10 @@ void TextManager::RenderText(czstr text, int font_id, Color color, const Vector2
   }
 
   auto num_glyphs = font->CreateVertexBufferForString(text, strlen(text), m_VertexBuffer, color);
-  m_VertexArray.CreateDefaultBinding(m_FontShader, m_VertexBuffer);
 
   m_FontShader.Bind();
-  m_VertexArray.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_FontShader);
 
   font->BindGlyphTexture(0);
 
@@ -76,7 +76,7 @@ void TextManager::RenderText(czstr text, int font_id, Color color, const Vector2
 
   render_state.DisableBlendMode();
 
-  m_VertexArray.Unbind();
+  m_VertexBuffer.Unbind();
   m_FontShader.Unbind();
 }
 
@@ -95,10 +95,10 @@ void TextManager::RenderTextShadowed(czstr text, int font_id, Color color, Color
   }
 
   auto num_glyphs = font->CreateVertexBufferForString(text, strlen(text), m_VertexBuffer, color);
-  m_VertexArray.CreateDefaultBinding(m_FontShader, m_VertexBuffer);
 
   m_FontShader.Bind();
-  m_VertexArray.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_FontShader);
 
   font->BindGlyphTexture(0);
 
@@ -123,7 +123,7 @@ void TextManager::RenderTextShadowed(czstr text, int font_id, Color color, Color
 
   render_state.DisableBlendMode();
 
-  m_VertexArray.Unbind();
+  m_VertexBuffer.Unbind();
   m_FontShader.Unbind();
 }
 
@@ -142,10 +142,10 @@ void TextManager::RenderTextOutlined(czstr text, int font_id, Color color, Color
   }
 
   auto num_glyphs = font->CreateVertexBufferForString(text, strlen(text), m_VertexBuffer, color);
-  m_VertexArray.CreateDefaultBinding(m_FontShader, m_VertexBuffer);
 
   m_FontShader.Bind();
-  m_VertexArray.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_FontShader);
 
   font->BindGlyphTexture(0);
 
@@ -185,7 +185,7 @@ void TextManager::RenderTextOutlined(czstr text, int font_id, Color color, Color
 
   render_state.DisableBlendMode();
 
-  m_VertexArray.Unbind();
+  m_VertexBuffer.Unbind();
   m_FontShader.Unbind();
 }
 

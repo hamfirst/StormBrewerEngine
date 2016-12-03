@@ -3,7 +3,6 @@
 #include <memory>
 #include <map>
 
-#include "Document.h"
 #include "FileSystemWatcher.h"
 
 #include <StormSockets/StormSocketConnectionId.h>
@@ -44,15 +43,6 @@ private:
   std::unique_ptr<StormSockets::StormSocketServerFrontendWebsocket> m_ReloadServerFrontend;
 
   std::unique_ptr<FileSystemWatcher> m_FilesystemWatcher;
-
-  struct DocumentData
-  {
-    Document m_Document;
-    std::string m_EditorData;
-  };
-
-  std::map<int, DocumentData> m_OpenDocuments;
-  std::vector<StormSockets::StormSocketConnectionId> m_OpenConnections;
 
   std::vector<StormSockets::StormSocketConnectionId> m_ReloadConnections;
 

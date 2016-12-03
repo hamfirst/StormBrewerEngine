@@ -5,7 +5,7 @@
 
 #include "Foundation/Common.h"
 
-#include "Data/BasicTypes/BasicTypes.h"
+#include "Data/BasicTypes/BasicTypes.refl.h"
 
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/VertexArray.h"
@@ -36,7 +36,6 @@ private:
   std::map<int, std::unique_ptr<TextRenderer>> m_Fonts;
 
   ShaderProgram m_FontShader;
-  VertexArray m_VertexArray;
   VertexBuffer m_VertexBuffer;
 };
 

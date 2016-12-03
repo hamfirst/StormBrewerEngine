@@ -127,3 +127,40 @@ inline Hash crc32lowercase(const std::string & str)
   return crc32lowercase(str.data());
 }
 
+template <typename IntegerType>
+inline Hash crc32integer(IntegerType i)
+{
+  Hash hash = crc32begin();
+  char val[21];
+  char * c = &val[20];
+
+  if (i < 0)
+  {
+    hash = crc32additive(hash, '-');
+    do
+    {
+      *c = '0' - (i % 10);
+      i /= 10;
+      c--;
+    } while (i != 0);
+  }
+  else
+  {
+    do
+    {
+      *c = (i % 10) + '0';
+      i /= 10;
+      c--;
+    } while (i != 0);
+  }
+
+
+  c++;
+  while (c != &val[21])
+  {
+    hash += crc32additive(hash, *c);
+    c++;
+  }
+
+  return crc32end(hash);
+}
