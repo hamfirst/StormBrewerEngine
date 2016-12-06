@@ -5,8 +5,6 @@
 
 #include "Foundation/Thread/MessageQueue.h"
 #include "Foundation/Thread/Semaphore.h"
-#include "Foundation/Optional/Optional.h"
-#include "Foundation/Buffer/Buffer.h"
 #include "Foundation/Network/WebSocket.h"
 
 #include "Engine/Asset/Asset.h"
@@ -25,6 +23,8 @@ public:
 
   Optional<Buffer> LoadFullFile(czstr file_path, int & file_open_error);
   void ReloadFile(czstr file_path);
+
+  static void DisableNetworkLoading();
 
 private:
 

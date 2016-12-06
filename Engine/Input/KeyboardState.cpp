@@ -25,15 +25,9 @@ void KeyboardState::CheckDeltaState(bool in_focus)
 
     if (m_PressedState[index] == 0 && pressed)
     {
-      const char * key_name = SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)index));
-      if (key_name)
-      {
-        printf("Key pressed: %s\n", key_name);
-      }
-
       if (m_InputState->m_BinaryControlCallback)
       {
-        m_InputState->m_BinaryControlCallback.Call(CreateKeyboardBinding(index));
+        m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(index));
       }
     }
 
@@ -41,36 +35,36 @@ void KeyboardState::CheckDeltaState(bool in_focus)
   }
 }
 
-BinaryControlHandle KeyboardState::AddControlBinding(int scan_code, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)
+BinaryControlHandle KeyboardState::AddKeyBinding(int scan_code, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)
 {
   Handle handle = m_KeyboardControls[scan_code].CreateControlBinding(priority, mode, callback);
   return BinaryControlHandle(m_InputState, handle, CreateKeyboardBinding(scan_code));
 }
 
-void KeyboardState::RemoveControlBinding(BinaryControlHandle handle)
+void KeyboardState::RemoveKeyBinding(BinaryControlHandle handle)
 {
   m_KeyboardControls[handle.m_ControlId.m_Index].RemoveControlBinding(handle.m_Control);
 }
 
-void KeyboardState::HandleKeypressMessage(int scan_code, bool pressed)
+void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed)
 {
   m_KeyboardControls[scan_code].SetControlValue(pressed);
 
   if (m_PressedState[scan_code] == 0 && pressed)
   {
-    const char * key_name = SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)scan_code));
-    if (key_name)
-    {
-      printf("Key pressed: %s\n", key_name);
-    }
-
     if (m_InputState->m_BinaryControlCallback)
     {
-      m_InputState->m_BinaryControlCallback.Call(CreateKeyboardBinding(scan_code));
+      m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(scan_code));
     }
   }
 
   m_PressedState[scan_code] = pressed;
+}
+
+czstr KeyboardState::GetKeyNameForScanCode(int scan_code)
+{
+  const char * key_name = SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)scan_code));
+  return key_name;
 }
 
 NullOptPtr<void> KeyboardState::GetControlBinding(const ControlHandle & handle)

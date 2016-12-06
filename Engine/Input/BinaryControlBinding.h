@@ -38,6 +38,7 @@ class BinaryControlHandle : public ControlHandle
 protected:
   friend class InputState;
   friend class KeyboardState;
+  friend class MouseState;
 
   BinaryControlHandle(NotNullPtr<InputState> input_state, Handle handle, ControlId control_id);
 

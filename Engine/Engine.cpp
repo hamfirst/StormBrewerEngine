@@ -15,6 +15,7 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Window/WindowManager.h"
+#include "Engine/Time/Time.h"
 
 static bool s_Quit = false;
 
@@ -47,12 +48,15 @@ bool EngineRenderInit()
   gl3wInit();
   g_TextManager.Init();
 
+  BootstrapContext();
+
   return true;
 }
 
 void EngineUpdate()
 {
   g_AssetLoader.ProcessResponses();
+  g_TimeManager.Update();
 
   SDL_Event e;
   while (SDL_PollEvent(&e))
@@ -63,22 +67,54 @@ void EngineUpdate()
     }
     else if (e.type == SDL_KEYDOWN)
     {
-      g_WindowManager.HandleKeypressMessage(e.key.windowID, e.key.keysym.scancode, true);
+      g_WindowManager.HandleKeyPressMessage(e.key.windowID, e.key.keysym.sym, e.key.keysym.scancode, true);
     }
     else if (e.type == SDL_KEYUP)
     {
-      g_WindowManager.HandleKeypressMessage(e.key.windowID, e.key.keysym.scancode, false);
+      g_WindowManager.HandleKeyPressMessage(e.key.windowID, e.key.keysym.sym, e.key.keysym.scancode, false);
+    }
+    else if (e.type == SDL_MOUSEBUTTONDOWN)
+    {
+      g_WindowManager.HandleMouseButtonPressMessage(e.button.windowID, e.button.button, true);
+    }
+    else if (e.type == SDL_MOUSEBUTTONUP)
+    {
+      g_WindowManager.HandleMouseButtonPressMessage(e.button.windowID, e.button.button, false);
     }
     else if (e.type == SDL_WINDOWEVENT)
     {
       if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
       {
-        g_WindowManager.SetWindowFocused(e.window.windowID, true);
+        g_WindowManager.SetWindowKeyboardFocused(e.window.windowID, true);
       }
       else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
       {
-        g_WindowManager.SetWindowFocused(e.window.windowID, true);
+        g_WindowManager.SetWindowKeyboardFocused(e.window.windowID, true);
       }
+      if (e.window.event == SDL_WINDOWEVENT_ENTER)
+      {
+        g_WindowManager.SetWindowMouseFocused(e.window.windowID, true);
+      }
+      else if (e.window.event == SDL_WINDOWEVENT_LEAVE)
+      {
+        g_WindowManager.SetWindowMouseFocused(e.window.windowID, true);
+      }
+      else if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+      {
+        g_WindowManager.SetWindowSize(e.window.windowID, Vector2(e.window.data1, e.window.data2));
+      }
+      else if (e.window.event == SDL_WINDOWEVENT_MOVED)
+      {
+        g_WindowManager.SetWindowPos(e.window.windowID, Vector2(e.window.data1, e.window.data2));
+      }
+    }
+    else if (e.type == SDL_TEXTINPUT)
+    {
+      g_WindowManager.HandleTextInputCommit(e.text.windowID, e.text.text);
+    }
+    else if (e.type == SDL_TEXTEDITING)
+    {
+      g_WindowManager.HandleTextInputComposition(e.edit.windowID, e.edit.text);
     }
   }
 

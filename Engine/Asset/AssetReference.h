@@ -25,9 +25,34 @@ public:
     return static_cast<AssetType *>(m_Asset);
   }
 
-  const NullOptPtr<AssetType> Resolve() const
+  NullOptPtr<const AssetType> Resolve() const
   {
-    return static_cast<AssetType *>(m_Asset);
+    return static_cast<const AssetType *>(m_Asset);
+  }
+
+  operator bool() const
+  {
+    return m_Asset != 0;
+  }
+
+  AssetType & operator * ()
+  {
+    return *Resolve();
+  }
+
+  const AssetType & operator * () const
+  {
+    return *Resolve();
+  }
+
+  AssetType * operator -> ()
+  {
+    return Resolve();
+  }
+
+  const AssetType * operator -> () const
+  {
+    return Resolve();
   }
 };
 

@@ -18,7 +18,7 @@ void BinaryControlBinding::UpdateState(BinaryControlBinding::ControlValueType st
 
     if (m_StateChangeCB)
     {
-      m_StateChangeCB.Call(state);
+      m_StateChangeCB(state);
     }
   }
 }

@@ -142,7 +142,8 @@ void TextureViewer::paintGL()
 
     m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 128), m_RenderState, true);
 
-    g_TextManager.RenderText(info.data(), -1, Color(255, 255, 255, 255), text_start, m_RenderState);
+    g_TextManager.SetTextPos(text_start);
+    g_TextManager.RenderText(info.data(), -1, m_RenderState);
   }
 }
 

@@ -16,6 +16,7 @@ protected:
 
 protected:
   friend class KeyboardState;
+  friend class MouseState;
 
   InputState * m_InputState;
   Handle m_Control;

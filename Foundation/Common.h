@@ -1,5 +1,7 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #ifdef min
 #undef min
 #endif
@@ -14,30 +16,24 @@
 #include <unordered_map>
 #include <memory>
 
-#include <StormData/StormDataTypes.h>
-
 #include <cstdint>
 
 #include <gsl/gsl.h>
 
 #include <hash/Hash.h>
 #include <hash/Hash64.h>
-#include <glm/glm.hpp>
 
-using zstr = gsl::zstring<>;
-using czstr = gsl::czstring<>;
-using zwstr = gsl::wzstring<>;
-using czwstr = gsl::cwzstring<>;
+#include <StormData/StormDataTypes.h>
 
-using RenderVec2 = glm::vec2;
-using RenderVec3 = glm::vec3;
-using RenderVec4 = glm::vec4;
-using RenderMat3 = glm::mat3x4;
-using RenderMat4 = glm::mat4x4;
-
-
+#include "Foundation/Math/Math.h"
 #include "Foundation/Optional/Optional.h"
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Variant/Variant.h"
 #include "Foundation/Assert/Assert.h"
 
+#include "Foundation/Buffer/Buffer.h"
+#include "Foundation/Delegate/Delegate.h"
+#include "Foundation/Handle/Handle.h"
+
+#include "Foundation/BasicTypes/BasicTypeFuncs.h"
+#include "Foundation/BasicTypes/BasicTypes.refl.h"

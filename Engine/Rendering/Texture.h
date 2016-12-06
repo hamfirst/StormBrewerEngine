@@ -34,6 +34,8 @@ public:
 
   int GetWidth() const { return m_Width; }
   int GetHeight() const { return m_Height; }
+
+  Vector2 GetSize() const { return Vector2(m_Width, m_Height); }
 private:
 
   unsigned int m_TextureName;

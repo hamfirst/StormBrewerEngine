@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Foundation/Common.h"
+
 #include <string>
 
-#include "Foundation/Buffer/Buffer.h"
 
 std::string BufferToString(const Buffer & buffer);
 

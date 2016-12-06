@@ -152,6 +152,7 @@ void EditorContainer::connectionComplete()
   OpenEditorForFile("Images/test.png");
   OpenEditorForFile("Sounds/DudeDeath.wav");
   OpenEditorForFile("Music/music.ogg");
+  OpenEditorForFile("Fonts/arial.ttf");
 }
 
 void EditorContainer::connectionFailed()

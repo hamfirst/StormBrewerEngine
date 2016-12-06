@@ -7,10 +7,16 @@
 
 static const unsigned int kPointerControlHistory = 512;
 
+struct PointerState
+{
+  Vector2 m_Pos;
+  bool m_InFocus;
+};
+
 class PointerControlBinding : public ControlBinding
 {
 public:
-  using ControlValueType = bool;
+  using ControlValueType = PointerState;
   using CallbackType = Delegate<void, ControlValueType>;
 
   PointerControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
@@ -19,15 +25,12 @@ public:
   ControlValueType GetCurrentState();
   void AdvanceFrame();
 
-  bool WasOn(unsigned int history_frames);
-  bool WasOff(unsigned int history_frames);
-
   ControlValueType GetPriorValue(unsigned int frames_ago);
 
 private:
 
   CallbackType m_StateChangeCB;
-  ControlValueType m_CurrentState = false;
+  ControlValueType m_CurrentState = {};
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
   ControlValueType m_History[kPointerControlHistory] = {};
@@ -37,7 +40,7 @@ class PointerControlHandle : public ControlHandle
 {
 protected:
   friend class InputState;
-  friend class KeyboardState;
+  friend class MouseState;
 
   PointerControlHandle(NotNullPtr<InputState> input_state, Handle handle, ControlId control_id);
 
@@ -45,10 +48,6 @@ public:
   PointerControlHandle() = default;
 
   PointerControlBinding::ControlValueType GetCurrentState();
-
-  bool WasOn(unsigned int history_frames);
-  bool WasOff(unsigned int history_frames);
-
   PointerControlBinding::ControlValueType GetPriorValue(unsigned int frames_ago);
 };
 

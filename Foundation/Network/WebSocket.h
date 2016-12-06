@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Foundation/Buffer/Buffer.h"
-#include "Foundation/Optional/Optional.h"
 
 enum class WebSocketPacketType
 {

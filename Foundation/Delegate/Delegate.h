@@ -220,6 +220,16 @@ public:
     return m_Caller(m_Buffer, std::forward<Args>(args)...);
   }
 
+  ReturnType operator ()(Args ... args)
+  {
+    if (m_Valid == false)
+    {
+      throw std::runtime_error("Calling unset delegate");
+    }
+
+    return m_Caller(m_Buffer, std::forward<Args>(args)...);
+  }
+
   void Clear()
   {
     if (m_Valid && m_Deleter != nullptr)

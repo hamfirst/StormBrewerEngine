@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Data/BasicTypes/BasicTypes.refl.h"
-
 enum class RenderingBlendMode
 {
   kAlpha,

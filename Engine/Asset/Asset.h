@@ -2,8 +2,6 @@
 
 #include <atomic>
 
-#include "Foundation/Buffer/Buffer.h"
-#include "Foundation/Delegate/Delegate.h"
 #include "Foundation/Delegate/DelegateList.h"
 #include "Foundation/Delegate/DelegateLink.h"
 

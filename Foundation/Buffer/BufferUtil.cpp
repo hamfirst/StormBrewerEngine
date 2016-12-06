@@ -1,6 +1,5 @@
 
 #include "Foundation/Common.h"
-#include "Foundation/Buffer/Buffer.h"
 
 std::string BufferToString(const Buffer & buffer)
 {

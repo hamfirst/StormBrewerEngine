@@ -22,10 +22,13 @@
 #include <StormData/StormDataJson.h>
 
 #include "Engine/Engine.h"
+#include "Engine/Asset/AssetLoader.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/Rendering.h"
+#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Input/InputState.h"
+#include "Engine/Input/TextInputContext.h"
 #include "Engine/Window/WindowManager.h"
 
 
@@ -117,6 +120,22 @@ void TestJson()
   printf("%s\n", result.data());
 }
 
+static Vector2 cursor_pos;
+static bool cursor_pressed;
+
+void UpdateCursorPos(PointerState p)
+{
+  cursor_pos = p.m_Pos;
+}
+
+
+void UpdateButtonState(bool pressed)
+{
+  cursor_pressed = pressed;
+  Box box = { { 50, 50 }, { 100, 100 } };
+}
+
+
 int main()
 {
   TestJson();
@@ -127,75 +146,48 @@ int main()
 
   EngineRenderInit();
 
-  InputState input_state;
-
-  const char * test_vshader = SHADER_LITERAL(
-    attribute vec2 a_Position;
-    attribute vec2 a_TexCoord;
-
-    varying vec2 v_TexCoord;
-
-    void main()
-    {
-      v_TexCoord = a_TexCoord;
-      gl_Position = vec4(a_Position, 0, 1);
-    }
-  );
-
-  const char * test_fshader = SHADER_LITERAL(
-
-    uniform sampler2D u_Texture;
-
-    varying vec2 v_TexCoord;
-
-    void main()
-    {
-      vec4 color = texture2D(u_Texture, v_TexCoord);
-      gl_FragColor = color + vec4(0.1, 0.1, 0.1, 0);
-    }
-  );
-
   RenderState render_state;
   render_state.InitRenderState(1280, 720);
 
-  ShaderProgram shader = MakeQuickShaderProgram(test_vshader, test_fshader);
-  QuadVertexBufferBuilder builder;
-  builder.AddQuad(QuadVertexBuilderInfo{ {Vector2(-1, -1), Vector2(1,1)}, {Vector2(0, 0), Vector2(1, 1)}, Vector2(1,1), Color(1,1,1,1) });
-  auto buffer = builder.CreateVertexBuffer();
-
-  VertexArray ar;
-  ar.CreateDefaultBinding(shader, buffer);
+  RenderUtil render_util;
+  render_util.LoadShaders();
 
   auto texture = TextureAsset::Load("Images/test.png");
-
   g_TextManager.LoadFont("Fonts/arial.ttf", -1, 15);
+
+  g_AssetLoader.DisableNetworkLoading();
+
+  auto & input_state = *window.GetInputState();
+  input_state.BindBinaryControl(CreateMouseButtonBinding(kMouseRightButton), 0, ControlBindingMode::kIgnoreLowerPriority, { UpdateButtonState });
+  input_state.BindPointerControl(CreateMousePointerBinding(), 0, ControlBindingMode::kIgnoreLowerPriority, { UpdateCursorPos });
+
+  MouseState::SetCursorVisibility(false);
+
+  auto input_context = window.CreateTextInputContext();
+  input_context->MakeCurrent(nullptr);
 
   while (EngineWantsToQuit() == false)
   {
     EngineUpdate();
 
-    shader.Bind();
-    ar.Bind();
+    RenderUtil::Clear();
 
-    if (texture.Resolve()->IsLoaded())
+    if (texture->IsLoaded())
     {
-      texture.Resolve()->GetTexture().BindTexture(0);
-      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+      texture->GetTexture().BindTexture(0);
+      render_util.DrawTexturedQuad(cursor_pos, Color(255, 255, 255, 255), texture->GetTexture(), render_state, false);
     }
 
-    buffer.Draw();
+    g_TextManager.SetTextPos(cursor_pos);
+    //g_TextManager.RenderText(g_TextInputManager.GetCurrentInput().data(), -1, render_state);
 
-    ar.Unbind();
-    shader.Unbind();
-
-    g_TextManager.RenderText("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890*&`", -1, Color(0, 0, 255, 255), Vector2(0, 10), render_state);
+    g_TextManager.SetTextPos(Vector2(0, 20));
+    g_TextManager.RenderInputText(input_context, -1, render_state);
     window.Swap();
   }
 
   EngineCleanup();
 
   SDL_Quit();
-  NetworkShutdown();
-
   return 0;
 }

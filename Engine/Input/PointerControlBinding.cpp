@@ -11,14 +11,16 @@ PointerControlBinding::PointerControlBinding(int priority, ControlBindingMode mo
 
 void PointerControlBinding::UpdateState(PointerControlBinding::ControlValueType state)
 {
-  if (state != m_CurrentState)
+  if (state.m_Pos.x != m_CurrentState.m_Pos.x ||
+      state.m_Pos.y != m_CurrentState.m_Pos.y ||
+      state.m_InFocus != m_CurrentState.m_InFocus)
   {
     m_CurrentState = state;
     m_History[m_HistoryIndex] = state;
 
     if (m_StateChangeCB)
     {
-      m_StateChangeCB.Call(state);
+      m_StateChangeCB(state);
     }
   }
 }
@@ -35,49 +37,11 @@ void PointerControlBinding::AdvanceFrame()
   m_HistoryCount++;
 }
 
-bool PointerControlBinding::WasOn(unsigned int history_frames)
-{
-  history_frames = std::min({ history_frames, m_HistoryCount, kPointerControlHistory });
-  int history_index = (m_HistoryIndex + kPointerControlHistory - history_frames) % kPointerControlHistory;
-
-  while (history_frames > 0)
-  {
-    if (m_History[history_index])
-    {
-      return true;
-    }
-
-    history_frames--;
-    history_index = (history_index + 1) % kPointerControlHistory;
-  }
-
-  return GetCurrentState();
-}
-
-bool PointerControlBinding::WasOff(unsigned int history_frames)
-{
-  history_frames = std::min({ history_frames, m_HistoryCount, kPointerControlHistory });
-  int history_index = (m_HistoryIndex + kPointerControlHistory - history_frames) % kPointerControlHistory;
-
-  while (history_frames > 0)
-  {
-    if (!m_History[history_index])
-    {
-      return true;
-    }
-
-    history_frames--;
-    history_index = (history_index + 1) % kPointerControlHistory;
-  }
-
-  return GetCurrentState();
-}
-
 PointerControlBinding::ControlValueType PointerControlBinding::GetPriorValue(unsigned int frames_ago)
 {
   if (frames_ago > m_HistoryCount || frames_ago > kPointerControlHistory)
   {
-    return false;
+    return{};
   }
 
   int history_index = (m_HistoryIndex + kPointerControlHistory - frames_ago) % kPointerControlHistory;
@@ -99,28 +63,6 @@ PointerControlBinding::ControlValueType PointerControlHandle::GetCurrentState()
   }
 
   return binding->GetCurrentState();
-}
-
-bool PointerControlHandle::WasOn(unsigned int history_frames)
-{
-  PointerControlBinding * binding = static_cast<PointerControlBinding *>(GetControlHandle());
-  if (binding == nullptr)
-  {
-    return{};
-  }
-
-  return binding->WasOn(history_frames);
-}
-
-bool PointerControlHandle::WasOff(unsigned int history_frames)
-{
-  PointerControlBinding * binding = static_cast<PointerControlBinding *>(GetControlHandle());
-  if (binding == nullptr)
-  {
-    return{};
-  }
-
-  return binding->WasOff(history_frames);
 }
 
 PointerControlBinding::ControlValueType PointerControlHandle::GetPriorValue(unsigned int frames_ago)

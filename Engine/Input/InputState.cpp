@@ -3,21 +3,31 @@
 #include "Engine/Input/InputState.h"
 
 InputState::InputState() :
-  m_KeyboardState(this)
+  m_KeyboardState(this),
+  m_MouseState(this)
 {
 
 }
 
-void InputState::Update(bool in_focus)
+void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, const Box & window_geo)
 {
-  m_KeyboardState.CheckDeltaState(in_focus);
+  m_KeyboardState.CheckDeltaState(in_keyboard_focus);
+  m_MouseState.CheckDeltaState(window_geo, in_mouse_focus);
 }
 
 BinaryControlHandle InputState::BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)
 {
   if (control.m_Type == ControlType::kKeyboard)
   {
-    return m_KeyboardState.AddControlBinding(control.m_Index, priority, mode, callback);
+    return m_KeyboardState.AddKeyBinding(control.m_Index, priority, mode, callback);
+  }
+
+  if (control.m_Type == ControlType::kMouse)
+  {
+    if (control.m_Index >= 0)
+    {
+      return m_MouseState.AddButtonBinding(control.m_Index, priority, mode, callback);
+    }
   }
 
   return{};
@@ -27,14 +37,43 @@ void InputState::UnbindBinaryControl(const BinaryControlHandle & handle)
 {
   if (handle.m_ControlId.m_Type == ControlType::kKeyboard)
   {
-    m_KeyboardState.RemoveControlBinding(handle);
+    m_KeyboardState.RemoveKeyBinding(handle);
+    return;
+  }
+
+  if (handle.m_ControlId.m_Type == ControlType::kMouse)
+  {
+    if (handle.m_ControlId.m_Index >= 0)
+    {
+      m_MouseState.RemoveButtonBinding(handle);
+    }
     return;
   }
 }
 
-void InputState::HandleKeypressMessage(int scan_code, bool pressed)
+PointerControlHandle InputState::BindPointerControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback)
 {
-  m_KeyboardState.HandleKeypressMessage(scan_code, pressed);
+  if (control.m_Type == ControlType::kMouse)
+  {
+    if (control.m_Index == -1)
+    {
+      return m_MouseState.AddCursorBinding(priority, mode, callback);
+    }
+  }
+
+  return{};
+}
+
+void InputState::UnbindPointerControl(const PointerControlHandle & handle)
+{
+  if (handle.m_ControlId.m_Type == ControlType::kMouse)
+  {
+    if (handle.m_ControlId.m_Index == -1)
+    {
+      m_MouseState.RemoveCursorBinding(handle);
+    }
+    return;
+  }
 }
 
 void InputState::SetBinaryControlInputCallback(const Delegate<void, const ControlId &> & callback)
@@ -45,4 +84,19 @@ void InputState::SetBinaryControlInputCallback(const Delegate<void, const Contro
 void InputState::ClearBinaryControlInputCallback()
 {
   m_BinaryControlCallback.Clear();
+}
+
+void InputState::HandleKeyPressMessage(int scan_code, bool pressed)
+{
+  m_KeyboardState.HandleKeyPressMessage(scan_code, pressed);
+}
+
+void InputState::HandleMouseButtonPressMessage(int button, bool pressed, bool in_focus)
+{
+  m_MouseState.HandleButtonPressMessage(button, pressed);
+}
+
+void InputState::HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus)
+{
+  m_MouseState.HandleMouseMoveMessage(x, y, window_geo, in_focus);
 }

@@ -1,0 +1,12 @@
+[submodule "StormReflMSBuildTask"]
+	path = StormReflMSBuildTask
+	url = https://github.com/hamfirst/StormReflMSBuildTask.git
+[submodule "StormRefl"]
+	path = StormRefl
+	url = https://github.com/hamfirst/StormRefl.git
+[submodule "StormData"]
+	path = StormData
+	url = https://github.com/hamfirst/StormData.git
+[submodule "StormSockets"]
+	path = StormSockets
+	url = https://github.com/hamfirst/StormSockets.git

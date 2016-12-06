@@ -5,6 +5,8 @@
 #include "Engine/Rendering/Shader.h"
 #include "Engine/Rendering/ShaderLiteral.h"
 
+#include <gl3w/gl3w.h>
+
 static const char * kQuadVertexShader = SHADER_LITERAL(
   attribute vec2 a_Position;
   attribute vec2 a_TexCoord;
@@ -80,16 +82,27 @@ void RenderUtil::LoadShaders()
 
   builder.AddQuad(quad);
   builder.FillVertexBuffer(m_VertexBuffer);
+}
 
-  m_QuadVertexArray.CreateDefaultBinding(m_QuadShader, m_VertexBuffer);
-  m_QuadTextureVertexArray.CreateDefaultBinding(m_QuadTextureShader, m_VertexBuffer);
+void RenderUtil::Clear()
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void RenderUtil::Clear(const Color & color)
+{
+  SetClearColor(color);
+  Clear();
+}
+
+void RenderUtil::SetClearColor(const Color & color)
+{
+  auto c = (RenderVec4)color;
+  glClearColor(c.r, c.g, c.b, c.a);
 }
 
 void RenderUtil::CleanupShaders()
 {
-  m_QuadVertexArray.Destroy();
-  m_QuadTextureVertexArray.Destroy();
-
   m_VertexBuffer.Destroy();
 
   m_QuadShader.Destroy();
@@ -99,7 +112,8 @@ void RenderUtil::CleanupShaders()
 void RenderUtil::DrawQuad(const Box & box, const Color & color, RenderState & render_state, bool alpha_blend)
 {
   m_QuadShader.Bind();
-  m_QuadVertexArray.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
 
   if (alpha_blend)
   {
@@ -118,14 +132,15 @@ void RenderUtil::DrawQuad(const Box & box, const Color & color, RenderState & re
     render_state.DisableBlendMode();
   }
 
+  m_VertexBuffer.Unbind();
   m_QuadShader.Unbind();
-  m_QuadVertexArray.Unbind();
 }
 
 void RenderUtil::DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, RenderState & render_state, bool alpha_blend)
 {
   m_QuadTextureShader.Bind();
-  m_QuadTextureVertexArray.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
 
   texture.BindTexture(0);
 
@@ -146,6 +161,35 @@ void RenderUtil::DrawTexturedQuad(const Box & box, const Color & color, const Te
     render_state.DisableBlendMode();
   }
 
+  m_VertexBuffer.Unbind();
   m_QuadTextureShader.Unbind();
-  m_QuadTextureVertexArray.Unbind();
+}
+
+void RenderUtil::DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, RenderState & render_state, bool alpha_blend)
+{
+  m_QuadTextureShader.Bind();
+  m_VertexBuffer.Bind();
+  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
+
+  texture.BindTexture(0);
+
+  if (alpha_blend)
+  {
+    render_state.EnableBlendMode();
+  }
+
+  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_state.GetRenderScreenSize());
+  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)start);
+  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)(start + texture.GetSize()));
+  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
+
+  m_VertexBuffer.Draw();
+
+  if (alpha_blend)
+  {
+    render_state.DisableBlendMode();
+  }
+
+  m_VertexBuffer.Unbind();
+  m_QuadTextureShader.Unbind();
 }

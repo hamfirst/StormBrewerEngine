@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Window/Window.h"
 #include "Engine/Window/WindowManager.h"
+#include "Engine/Input/TextInputContext.h"
 
 Window::Window() :
   m_WindowId(0)
@@ -49,6 +50,17 @@ Window & Window::operator = (Window && rhs)
   return *this;
 }
 
+
+void Window::MakeCurrent() const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.MakeCurrent(m_WindowId);
+}
+
 void Window::Swap() const
 {
   if (m_WindowId == 0)
@@ -66,7 +78,12 @@ NullOptPtr<InputState> Window::GetInputState() const
     return nullptr;
   }
 
-  g_WindowManager.GetInputState(m_WindowId);
+  return g_WindowManager.GetInputState(m_WindowId);
+}
+
+std::shared_ptr<TextInputContext> Window::CreateTextInputContext()
+{
+  return std::shared_ptr<TextInputContext>(new TextInputContext(m_WindowId));
 }
 
 void Window::AddRef()

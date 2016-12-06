@@ -18,7 +18,7 @@ void ScalarControlBinding::UpdateState(float state)
 
     if (m_StateChangeCB)
     {
-      m_StateChangeCB.Call(state);
+      m_StateChangeCB(state);
     }
   }
 }

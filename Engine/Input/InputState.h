@@ -1,18 +1,20 @@
 #pragma once
 
 #include "Engine/Input/KeyboardState.h"
+#include "Engine/Input/MouseState.h"
 
 class InputState
 {
 public:
   InputState();
 
-  void Update(bool in_focus);
+  void Update(bool in_keyboard_focus, bool in_mouse_focus, const Box & window_geo);
 
   BinaryControlHandle BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void UnbindBinaryControl(const BinaryControlHandle & handle);
-
-  void HandleKeypressMessage(int scan_code, bool pressed);
+  
+  PointerControlHandle BindPointerControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback);
+  void UnbindPointerControl(const PointerControlHandle & handle);
 
   void SetBinaryControlInputCallback(const Delegate<void, const ControlId &> & callback);
   void ClearBinaryControlInputCallback();
@@ -21,8 +23,17 @@ private:
 
   friend class ControlHandle;
   friend class KeyboardState;
+  friend class MouseState;
+  friend class WindowManager;
+
+  void HandleKeyPressMessage(int scan_code, bool pressed);
+  void HandleMouseButtonPressMessage(int button, bool pressed, bool in_focus);
+  void HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus);
+
+private:
 
   KeyboardState m_KeyboardState;
+  MouseState m_MouseState;
 
   Delegate<void, const ControlId &> m_BinaryControlCallback;
 };

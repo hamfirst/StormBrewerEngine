@@ -8,6 +8,10 @@ enum class ControlType
   kMouse,
 };
 
+static const int kMouseLeftButton = 1;
+static const int kMouseMiddleButton = 2;
+static const int kMouseRightButton = 3;
+
 
 struct ControlId
 {
@@ -17,3 +21,5 @@ struct ControlId
 };
 
 ControlId CreateKeyboardBinding(int scan_code);
+ControlId CreateMouseButtonBinding(int button);
+ControlId CreateMousePointerBinding();

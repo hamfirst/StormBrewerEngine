@@ -2,8 +2,6 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 
-#include "Data/BasicTypes/BasicTypeFuncs.h"
-
 QuadVertexBufferBuilder::QuadVertexBufferBuilder(std::size_t reserve_quads)
 {
   m_Quads.reserve(reserve_quads);

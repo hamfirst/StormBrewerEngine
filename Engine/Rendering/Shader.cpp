@@ -94,9 +94,11 @@ void Shader::LoadShader(czstr shader_source, ShaderType type)
       glGetShaderInfoLog(m_ShaderName, log_size, &outplen, error_log); CHECK_GL_LOAD_ERROR;
       error_log[log_size] = 0;
 
+      printf("Shader error: \n%s\n", error_log);
       m_CompileLog = error_log;
     }
 
+    m_LoadError = GL_INVALID_VALUE;
     return;
   }
 

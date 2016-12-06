@@ -168,11 +168,13 @@
     <ClInclude Include="Input\ControlId.h" />
     <ClInclude Include="Input\InputState.h" />
     <ClInclude Include="Input\KeyboardState.h" />
+    <ClInclude Include="Input\MouseState.h" />
     <ClInclude Include="Input\PointerControlBinding.h" />
     <ClInclude Include="Input\ScalarControlBinding.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Input\TextInputContext.h" />
     <ClInclude Include="Input\VectorControlBinding.h">
       <SubType>
       </SubType>
@@ -205,6 +207,10 @@
     <ClInclude Include="Rendering\VertexDefinition.h" />
     <ClInclude Include="Settings\EngineSettings.refl.h" />
     <ClInclude Include="Settings\EngineSettings.refl.meta.h" />
+    <ClInclude Include="Text\TextBackupFont.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Text\TextManager.h">
       <SubType>
       </SubType>
@@ -214,6 +220,11 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Text\TextShaders.h" />
+    <ClInclude Include="Time\Time.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Window\FakeWindow.h" />
     <ClInclude Include="Window\Window.h">
       <SubType>
       </SubType>
@@ -282,11 +293,13 @@
     <ClCompile Include="Input\ControlId.cpp" />
     <ClCompile Include="Input\InputState.cpp" />
     <ClCompile Include="Input\KeyboardState.cpp" />
+    <ClCompile Include="Input\MouseState.cpp" />
     <ClCompile Include="Input\PointerControlBinding.cpp" />
     <ClCompile Include="Input\ScalarControlBinding.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Input\TextInputContext.cpp" />
     <ClCompile Include="Input\VectorControlBinding.cpp">
       <SubType>
       </SubType>
@@ -314,6 +327,10 @@
     <ClCompile Include="Rendering\VertexBuffer.cpp" />
     <ClCompile Include="Rendering\VertexBufferBuilder.cpp" />
     <ClCompile Include="Settings\EngineSettings.refl.cpp" />
+    <ClCompile Include="Text\TextBackupFont.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Text\TextManager.cpp">
       <SubType>
       </SubType>
@@ -322,6 +339,11 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Time\Time.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Window\FakeWindow.cpp" />
     <ClCompile Include="Window\Window.cpp">
       <SubType>
       </SubType>

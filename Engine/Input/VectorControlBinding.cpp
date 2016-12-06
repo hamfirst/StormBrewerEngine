@@ -18,7 +18,7 @@ void VectorControlBinding::UpdateState(RenderVec2 state)
 
   if (m_StateChangeCB)
   {
-    m_StateChangeCB.Call(processed_state);
+    m_StateChangeCB(processed_state);
   }
 }
 

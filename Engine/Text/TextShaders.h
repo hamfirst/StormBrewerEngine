@@ -8,6 +8,7 @@ static const char * kBasicTextVertexShader = SHADER_LITERAL(
   attribute vec2 a_TexCoord;
   attribute vec4 a_Color;
 
+  varying vec2 v_Position;
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
 
@@ -22,6 +23,7 @@ static const char * kBasicTextVertexShader = SHADER_LITERAL(
     position *= 2.0;
 
     gl_Position = vec4(position, 0, 1);
+    v_Position = position;
     v_TexCoord = a_TexCoord;
     v_Color = a_Color;
   }
@@ -29,6 +31,7 @@ static const char * kBasicTextVertexShader = SHADER_LITERAL(
 
 static const char * kBasicTextFragmentShader = SHADER_LITERAL(
 
+  varying vec2 v_Position;
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
 
@@ -36,10 +39,40 @@ static const char * kBasicTextFragmentShader = SHADER_LITERAL(
   uniform vec4 u_Color;
   uniform float u_Str;
 
+  uniform vec4 u_Bounds;
+
   void main()
   {
-    vec4 color = texture2D(u_GlyphTexture, v_TexCoord);
-    gl_FragColor = mix(v_Color, u_Color, u_Color.a);
-    gl_FragColor.a *= u_Str * color.r;
+    bool oob =
+      v_Position.x < u_Bounds.x ||
+      v_Position.y < u_Bounds.y ||
+      v_Position.x > u_Bounds.z ||
+      v_Position.y > u_Bounds.w;
+
+    vec4 inp_color = texture2D(u_GlyphTexture, v_TexCoord);
+    vec4 outp_color = mix(v_Color, u_Color, u_Color.a);
+    outp_color.a *= u_Str * inp_color.r;
+
+    gl_FragColor = oob ? vec4(0, 0, 0, 0) : outp_color;
+  }
+);
+
+static const char * kSelectionBkgFragmentShader = SHADER_LITERAL(
+
+  varying vec2 v_Position;
+
+  uniform vec4 u_Color;
+
+  uniform vec4 u_Bounds;
+
+  void main()
+  {
+    bool oob =
+      v_Position.x < u_Bounds.x ||
+      v_Position.y < u_Bounds.y ||
+      v_Position.x > u_Bounds.z ||
+      v_Position.y > u_Bounds.w;
+
+    gl_FragColor = oob ? vec4(0,0,0,0) : u_Color;
   }
 );

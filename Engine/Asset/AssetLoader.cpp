@@ -10,7 +10,8 @@
 #define USE_WEBSOCKET_LOADING
 
 AssetLoader g_AssetLoader;
-AssetReloadInfo * s_AssetReloadList = nullptr;
+static AssetReloadInfo * s_AssetReloadList = nullptr;
+static bool s_DisableNetworkLoading = false;
 
 static std::string s_AssetServerHost = "localhost";
 
@@ -168,15 +169,18 @@ Optional<Buffer> AssetLoader::LoadFullFileRaw(czstr file_path, int & file_open_e
 Optional<Buffer> AssetLoader::LoadFullFileInternal(czstr file_path, int & file_open_error, WebSocket & websocket)
 {
 #ifdef USE_WEBSOCKET_LOADING
-  auto ws_file = LoadFullFileWebsocket(file_path, file_open_error, websocket);
-  if (ws_file)
+  if (s_DisableNetworkLoading == false)
   {
-    return ws_file;
-  }
+    auto ws_file = LoadFullFileWebsocket(file_path, file_open_error, websocket);
+    if (ws_file)
+    {
+      return ws_file;
+    }
 
-  if (file_open_error != 0)
-  {
-    return{};
+    if (file_open_error != 0)
+    {
+      return{};
+    }
   }
 #endif
 
@@ -191,6 +195,11 @@ void AssetLoader::ReloadFile(czstr file_path)
     reload_info->m_Callback->ReloadFile(file_path);
     reload_info = reload_info->m_Next;
   }
+}
+
+void AssetLoader::DisableNetworkLoading()
+{
+  s_DisableNetworkLoading = true;
 }
 
 void AssetLoader::LoadThread()

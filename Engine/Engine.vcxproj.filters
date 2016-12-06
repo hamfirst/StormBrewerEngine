@@ -22,6 +22,9 @@
     <Filter Include="Window">
       <UniqueIdentifier>{b7ffc5f6-176e-4513-92eb-0c7c1bb5e78b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{ac07c6c6-5bb9-4011-9b7c-bdd91326b244}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -167,6 +170,21 @@
     <ClInclude Include="Input\PointerControlBinding.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Input\MouseState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextBackupFont.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\FakeWindow.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\TextInputContext.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\Time.h">
+      <Filter>Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -269,6 +287,21 @@
     </ClCompile>
     <ClCompile Include="Input\PointerControlBinding.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\MouseState.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\TextBackupFont.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\FakeWindow.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\TextInputContext.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\Time.cpp">
+      <Filter>Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

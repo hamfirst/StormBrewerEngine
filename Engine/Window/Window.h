@@ -1,6 +1,7 @@
 #pragma once
 
 class InputState;
+class TextInputContext;
 
 class Window
 {
@@ -15,13 +16,16 @@ public:
   Window & operator = (const Window & rhs);
   Window & operator = (Window && rhs);
 
+  void MakeCurrent() const;
   void Swap() const;
 
   NullOptPtr<InputState> GetInputState() const;
+  std::shared_ptr<TextInputContext> CreateTextInputContext();
 
 private:
 
   friend class WindowManager;
+  friend class FakeWindow;
 
   void AddRef();
   void DecRef();

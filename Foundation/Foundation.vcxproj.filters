@@ -46,6 +46,12 @@
     <Filter Include="Document">
       <UniqueIdentifier>{b11cd563-f17a-40f2-af2f-684d170f0307}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BasicTypes">
+      <UniqueIdentifier>{02e0a5d3-fc4b-4653-884f-684015417fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{2a411f4a-6f9e-4a00-997a-077c7852bc6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -145,6 +151,18 @@
     <ClInclude Include="Document\DocumentLoader.h">
       <Filter>Document</Filter>
     </ClInclude>
+    <ClInclude Include="BasicTypes\BasicTypeFuncs.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicTypes\BasicTypes.refl.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicTypes\BasicTypes.refl.meta.h">
+      <Filter>BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -192,5 +210,6 @@
     <ClCompile Include="Document\DocumentCompiler.cpp">
       <Filter>Document</Filter>
     </ClCompile>
+    <ClCompile Include="Common.cpp" />
   </ItemGroup>
 </Project>

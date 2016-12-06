@@ -15,9 +15,12 @@ public:
 
   void CheckDeltaState(bool in_focus);
 
-  BinaryControlHandle AddControlBinding(int scan_code, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
-  void RemoveControlBinding(BinaryControlHandle handle);
-  void HandleKeypressMessage(int scan_code, bool pressed);
+  BinaryControlHandle AddKeyBinding(int scan_code, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
+  void RemoveKeyBinding(BinaryControlHandle handle);
+
+  void HandleKeyPressMessage(int scan_code, bool pressed);
+
+  static czstr GetKeyNameForScanCode(int scan_code);
 
 protected:
 

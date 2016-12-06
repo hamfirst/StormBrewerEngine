@@ -5,13 +5,7 @@
 #include "Engine/Asset/FontAsset.h"
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/VertexBuffer.h"
-
-#include "Data/BasicTypes/BasicTypes.refl.h"
-
-#include <unordered_map>
-
-#include <freetype/ft2build.h>
-#include FT_FREETYPE_H
+#include "Engine/Text/TextBackupFont.h"
 
 struct GlyphInfo
 {
@@ -27,10 +21,13 @@ struct GlyphInfo
 class TextRenderer
 {
 public:
-  TextRenderer(const AssetReference<FontAsset> & asset_ref, int font_size);
+  TextRenderer(const AssetReference<FontAsset> & asset_ref, int font_size, std::vector<std::unique_ptr<TextBackupFont>> & backup_fonts);
   ~TextRenderer();
 
-  std::size_t CreateVertexBufferForString(czstr utf8_str, std::size_t len, VertexBuffer & vertex_buffer, const Color & color);
+  std::pair<std::size_t, std::size_t> CreateVertexBufferForString(czstr utf8_str, std::size_t len, std::vector<Box> & glyph_positions,
+    const Color & text_color, const Color & selection_color, const Color & selection_bkg_color,
+    VertexBuffer & text_vertex_buffer, VertexBuffer & selection_vertex_buffer, int sel_start, int sel_end, int cursor_pos);
+
   void BindGlyphTexture(int texture_stage);
   Box GetTextSize(czstr utf8_str, std::size_t len);
 
@@ -43,9 +40,13 @@ private:
   void AddString(czstr utf8_str, std::size_t len);
   void AddGlyph(char32_t character_code);
 
+  FT_GlyphSlot LoadGlyph(char32_t character_code);
+  FT_GlyphSlot LoadBackupGlyph(char32_t character_code);
+
 private:
 
   AssetReference<FontAsset> m_Font;
+  std::vector<std::unique_ptr<TextBackupFont>> & m_BackupFonts;
 
   bool m_Loaded;
   FT_Face m_Face;
