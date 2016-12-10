@@ -53,7 +53,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENet", "External\enet\ENet.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StormTech", "StormTech", "{91271FF9-9EF7-4891-B2C6-BE92A48A86BE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StormNetBindingsEnet", "..\StormNet\StormNet\StormNetBindingsEnet.vcxproj", "{38144850-9225-4138-BBB5-F5401AD9A6DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StormNetBindingsEnet", "StormNet\StormNetBindingsEnet.vcxproj", "{38144850-9225-4138-BBB5-F5401AD9A6DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
