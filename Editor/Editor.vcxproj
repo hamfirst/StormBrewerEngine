@@ -223,9 +223,6 @@
     <ResourceCompile Include="Editor.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.vcxproj">
-      <Project>{a9ebcf0f-5c76-4487-ac43-a09536e31735}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{20ce5c06-23ad-46f5-842d-065d07457c7f}</Project>
     </ProjectReference>

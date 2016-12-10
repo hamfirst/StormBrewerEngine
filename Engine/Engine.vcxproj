@@ -235,9 +235,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.vcxproj">
-      <Project>{a9ebcf0f-5c76-4487-ac43-a09536e31735}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\External\External.vcxproj">
       <Project>{f2c9910c-3e6e-4752-a69e-810cc743bc10}</Project>
     </ProjectReference>

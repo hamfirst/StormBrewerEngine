@@ -10,3 +10,6 @@
 [submodule "StormSockets"]
 	path = StormSockets
 	url = https://github.com/hamfirst/StormSockets.git
+[submodule "StormNet"]
+	path = StormNet
+	url = https://github.com/hamfirst/StormNet.git
