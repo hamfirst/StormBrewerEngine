@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Dev\StormNet\StormRefl\llvm\tools\clang\include\clang\AST\CMakeLists.txt" />
+    <CustomBuild Include="C:\Dev\StormNet\StormRefl\llvm\CMakeFiles\34d62956f3c84a2df75fa138ea584091\CommentNodes.inc.tmp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Dev\StormNet\StormRefl\llvm\CMakeFiles\34d62956f3c84a2df75fa138ea584091\CommentNodes.inc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Dev\StormNet\StormRefl\llvm\CMakeFiles\0f2c0912cd4f3126e736eb03e3b2cb69\ClangCommentNodes.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Dev\StormNet\StormRefl\llvm\tools\clang\include\clang\AST\CMakeFiles\ClangCommentNodes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{13D947C4-D069-3E8A-BC3F-D254D8B2556F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
