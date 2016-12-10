@@ -1,17 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="analysis.c" />
-    <ClCompile Include="mlp.c" />
-    <ClCompile Include="mlp_data.c" />
-    <ClCompile Include="opus.c" />
-    <ClCompile Include="opus_compare.c" />
-    <ClCompile Include="opus_decoder.c" />
-    <ClCompile Include="opus_encoder.c" />
-    <ClCompile Include="opus_multistream.c" />
-    <ClCompile Include="opus_multistream_decoder.c" />
-    <ClCompile Include="opus_multistream_encoder.c" />
-    <ClCompile Include="repacketizer.c" />
     <ClCompile Include="silk\A2NLSF.c">
       <Filter>silk</Filter>
     </ClCompile>
@@ -366,9 +355,6 @@
     <ClCompile Include="silk\float\k2a_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
-    <ClCompile Include="silk\float\levinsondurbin_FLP.c">
-      <Filter>silk</Filter>
-    </ClCompile>
     <ClCompile Include="silk\float\LPC_analysis_filter_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
@@ -385,9 +371,6 @@
       <Filter>silk</Filter>
     </ClCompile>
     <ClCompile Include="silk\float\pitch_analysis_core_FLP.c">
-      <Filter>silk</Filter>
-    </ClCompile>
-    <ClCompile Include="silk\float\prefilter_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
     <ClCompile Include="silk\float\process_gains_FLP.c">
@@ -408,9 +391,6 @@
     <ClCompile Include="silk\float\schur_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
-    <ClCompile Include="silk\float\solve_LS_FLP.c">
-      <Filter>silk</Filter>
-    </ClCompile>
     <ClCompile Include="silk\float\sort_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
@@ -420,17 +400,19 @@
     <ClCompile Include="silk\float\wrappers_FLP.c">
       <Filter>silk</Filter>
     </ClCompile>
+    <ClCompile Include="analysis.c" />
+    <ClCompile Include="mlp.c" />
+    <ClCompile Include="mlp_data.c" />
+    <ClCompile Include="opus.c" />
+    <ClCompile Include="opus_compare.c" />
+    <ClCompile Include="opus_decoder.c" />
+    <ClCompile Include="opus_encoder.c" />
+    <ClCompile Include="opus_multistream.c" />
+    <ClCompile Include="opus_multistream_decoder.c" />
+    <ClCompile Include="opus_multistream_encoder.c" />
+    <ClCompile Include="repacketizer.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="analysis.h" />
-    <ClInclude Include="mlp.h" />
-    <ClInclude Include="opus.h" />
-    <ClInclude Include="opus_custom.h" />
-    <ClInclude Include="opus_defines.h" />
-    <ClInclude Include="opus_multistream.h" />
-    <ClInclude Include="opus_private.h" />
-    <ClInclude Include="opus_types.h" />
-    <ClInclude Include="tansig_table.h" />
     <ClInclude Include="silk\API.h">
       <Filter>silk</Filter>
     </ClInclude>
@@ -605,7 +587,17 @@
     <ClInclude Include="silk\float\structs_FLP.h">
       <Filter>silk</Filter>
     </ClInclude>
+    <ClInclude Include="analysis.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="mlp.h" />
+    <ClInclude Include="opus_private.h" />
+    <ClInclude Include="tansig_table.h" />
+    <ClInclude Include="version.h" />
+    <ClInclude Include="opus.h" />
+    <ClInclude Include="opus_custom.h" />
+    <ClInclude Include="opus_defines.h" />
+    <ClInclude Include="opus_multistream.h" />
+    <ClInclude Include="opus_types.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="celt">

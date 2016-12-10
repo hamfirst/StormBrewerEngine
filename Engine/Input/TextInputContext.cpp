@@ -6,7 +6,8 @@
 #include <SDL/SDL_keyboard.h>
 
 TextInputContext::TextInputContext(uint32_t window_id) :
-  m_WindowId(window_id)
+  m_WindowId(window_id),
+  m_LastModification(GetTimeSeconds())
 {
 
 }
@@ -24,6 +25,11 @@ void TextInputContext::Unbind()
 bool TextInputContext::IsTextInputActive()
 {
   return g_WindowManager.IsTextInputContextActive(m_WindowId, this);
+}
+
+double TextInputContext::GetTimeSinceLastUpdate()
+{
+  return GetTimeSeconds() - m_LastModification;
 }
 
 const std::string & TextInputContext::GetCurrentInput()
@@ -130,6 +136,8 @@ void TextInputContext::SetComposition(czstr character)
 
 void TextInputContext::HandleKeyPressEvent(int key_sym)
 {
+  m_LastModification = GetTimeSeconds();
+
   if (key_sym == SDLK_RETURN)
   {
     HandleEnterPressed();

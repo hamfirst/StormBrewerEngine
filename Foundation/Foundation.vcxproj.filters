@@ -52,6 +52,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{2a411f4a-6f9e-4a00-997a-077c7852bc6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{d73ab98b-f993-4f10-8143-d6ecdaa111c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -163,6 +166,12 @@
     <ClInclude Include="Math\Math.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Time\Time.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\FrameClock.h">
+      <Filter>Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -211,5 +220,11 @@
       <Filter>Document</Filter>
     </ClCompile>
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Time\Time.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\FrameClock.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

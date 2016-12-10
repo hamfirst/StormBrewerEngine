@@ -26,6 +26,7 @@
 #include <StormData/StormDataTypes.h>
 
 #include "Foundation/Math/Math.h"
+#include "Foundation/Time/Time.h"
 #include "Foundation/Optional/Optional.h"
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Variant/Variant.h"

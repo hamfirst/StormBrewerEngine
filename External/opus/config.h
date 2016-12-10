@@ -59,6 +59,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #endif
 
-
+#include "version.h"
 
 #endif /* CONFIG_H */

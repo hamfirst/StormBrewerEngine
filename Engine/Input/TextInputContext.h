@@ -15,6 +15,7 @@ public:
   void Unbind();
 
   bool IsTextInputActive();
+  double GetTimeSinceLastUpdate();
 
   const std::string & GetCurrentInput();
   const std::string & GetCurrentComposition();
@@ -51,6 +52,7 @@ private:
   std::size_t m_CursorPos = 0;
 
   uint32_t m_WindowId;
+  double m_LastModification;
 
   std::vector<std::pair<std::size_t, std::size_t>> m_CharacterPositions;
 };

@@ -15,7 +15,6 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Window/WindowManager.h"
-#include "Engine/Time/Time.h"
 
 static bool s_Quit = false;
 
@@ -56,7 +55,6 @@ bool EngineRenderInit()
 void EngineUpdate()
 {
   g_AssetLoader.ProcessResponses();
-  g_TimeManager.Update();
 
   SDL_Event e;
   while (SDL_PollEvent(&e))

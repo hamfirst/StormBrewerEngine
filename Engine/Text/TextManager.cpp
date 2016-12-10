@@ -11,7 +11,6 @@
 #include "Engine/Rendering/RenderErrorMacros.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Asset/AssetLoader.h"
-#include "Engine/Time/Time.h"
 
 #include <codecvt>
 
@@ -176,7 +175,7 @@ void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, i
   std::size_t compo_size = context->GetMultibyteLength(compo.data());
 
   double s;
-  int cursor_pos = std::modf(g_TimeManager.GetTime(), &s) <= 0.5 ? (int)context->GetCursorPos() : -1;
+  int cursor_pos = std::modf(context->GetTimeSinceLastUpdate(), &s) <= 0.5 ? (int)context->GetCursorPos() : -1;
 
   if (compo_size)
   {

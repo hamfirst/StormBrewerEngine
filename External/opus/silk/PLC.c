@@ -328,8 +328,10 @@ static OPUS_INLINE void silk_PLC_conceal(
         for( j = 0; j < LTP_ORDER; j++ ) {
             B_Q14[ j ] = silk_RSHIFT( silk_SMULBB( harm_Gain_Q15, B_Q14[ j ] ), 15 );
         }
-        /* Gradually reduce excitation gain */
-        rand_scale_Q14 = silk_RSHIFT( silk_SMULBB( rand_scale_Q14, rand_Gain_Q15 ), 15 );
+        if ( psDec->indices.signalType != TYPE_NO_VOICE_ACTIVITY ) {
+            /* Gradually reduce excitation gain */
+            rand_scale_Q14 = silk_RSHIFT( silk_SMULBB( rand_scale_Q14, rand_Gain_Q15 ), 15 );
+        }
 
         /* Slowly increase pitch lag */
         psPLC->pitchL_Q8 = silk_SMLAWB( psPLC->pitchL_Q8, psPLC->pitchL_Q8, PITCH_DRIFT_FAC_Q16 );
@@ -365,7 +367,8 @@ static OPUS_INLINE void silk_PLC_conceal(
         }
 
         /* Add prediction to LPC excitation */
-        sLPC_Q14_ptr[ MAX_LPC_ORDER + i ] = silk_ADD_LSHIFT32( sLPC_Q14_ptr[ MAX_LPC_ORDER + i ], LPC_pred_Q10, 4 );
+        sLPC_Q14_ptr[ MAX_LPC_ORDER + i ] = silk_ADD_SAT32( sLPC_Q14_ptr[ MAX_LPC_ORDER + i ],
+                                            silk_LSHIFT_SAT32( LPC_pred_Q10, 4 ));
 
         /* Scale with Gain */
         frame[ i ] = (opus_int16)silk_SAT16( silk_SAT16( silk_RSHIFT_ROUND( silk_SMULWW( sLPC_Q14_ptr[ MAX_LPC_ORDER + i ], prevGain_Q10[ 1 ] ), 8 ) ) );
