@@ -41,7 +41,7 @@
     <ClCompile Include="base\ftinit.c" />
     <ClCompile Include="lzw\ftlzw.c" />
     <ClCompile Include="base\ftstroke.c" />
-    <ClCompile Include="base\ftsystem.c" />  
+    <ClCompile Include="base\ftsystem.c" />
     <ClCompile Include="smooth\smooth.c" />
     <ClCompile Include="base\ftbbox.c" />
     <ClCompile Include="base\ftfntfmt.c" />
@@ -126,7 +126,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -156,7 +156,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -174,7 +174,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>

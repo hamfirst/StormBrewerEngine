@@ -22,6 +22,7 @@ void TextManager::Init()
   m_SelectionShader = MakeQuickShaderProgram(kBasicTextVertexShader, kSelectionBkgFragmentShader);
 
 #ifdef _MSC_VER
+  LoadBackupFont("C:\\Windows\\Fonts\\arial.ttf");
   LoadBackupFont("C:\\Windows\\Fonts\\gulim.ttc");
 #endif
 

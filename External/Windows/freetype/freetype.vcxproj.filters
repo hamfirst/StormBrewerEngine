@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="config\ftconfig.h" />
+    <ClInclude Include="config\ftheader.h" />
+    <ClInclude Include="config\ftmodule.h" />
+    <ClInclude Include="config\ftoption.h" />
+    <ClInclude Include="config\ftstdlib.h" />
+    <ClInclude Include="ft2build.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="autofit\autofit.c" />
+    <ClCompile Include="base\ftbase.c" />
+    <ClCompile Include="base\ftbbox.c" />
+    <ClCompile Include="base\ftbitmap.c" />
+    <ClCompile Include="base\ftfntfmt.c" />
+    <ClCompile Include="base\ftfstype.c" />
+    <ClCompile Include="base\ftgasp.c" />
+    <ClCompile Include="base\ftglyph.c" />
+    <ClCompile Include="base\ftgxval.c" />
+    <ClCompile Include="base\ftinit.c" />
+    <ClCompile Include="base\ftlcdfil.c" />
+    <ClCompile Include="base\ftmm.c" />
+    <ClCompile Include="base\ftotval.c" />
+    <ClCompile Include="base\ftpatent.c" />
+    <ClCompile Include="base\ftpfr.c" />
+    <ClCompile Include="base\ftstroke.c" />
+    <ClCompile Include="base\ftsynth.c" />
+    <ClCompile Include="base\ftsystem.c" />
+    <ClCompile Include="base\fttype1.c" />
+    <ClCompile Include="base\ftwinfnt.c" />
+    <ClCompile Include="bdf\bdf.c" />
+    <ClCompile Include="cache\ftcache.c" />
+    <ClCompile Include="cff\cff.c" />
+    <ClCompile Include="cid\type1cid.c" />
+    <ClCompile Include="gzip\ftgzip.c" />
+    <ClCompile Include="lzw\ftlzw.c" />
+    <ClCompile Include="pcf\pcf.c" />
+    <ClCompile Include="pfr\pfr.c" />
+    <ClCompile Include="psaux\psaux.c" />
+    <ClCompile Include="pshinter\pshinter.c" />
+    <ClCompile Include="psnames\psmodule.c" />
+    <ClCompile Include="raster\raster.c" />
+    <ClCompile Include="sfnt\sfnt.c" />
+    <ClCompile Include="smooth\smooth.c" />
+    <ClCompile Include="truetype\truetype.c" />
+    <ClCompile Include="type1\type1.c" />
+    <ClCompile Include="type42\type42.c" />
+    <ClCompile Include="winfonts\winfnt.c" />
+    <ClCompile Include="ftdebug.c" />
+  </ItemGroup>
+</Project>

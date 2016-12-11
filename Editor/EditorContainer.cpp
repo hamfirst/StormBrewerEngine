@@ -12,6 +12,8 @@
 #include <QOffscreenSurface>
 #include <QMessageBox>
 #include <QProcess>
+#include <QApplication>
+#include <QFileInfo>
 
 #include "Foundation/Network/Network.h"
 
@@ -142,7 +144,10 @@ void EditorContainer::connectionComplete()
   EngineInit();
   EngineRenderInit();
 
-  g_TextManager.LoadFont("Fonts/arial.ttf", -1, 12);
+  QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
+  exec_path += "/editor/OpenSans-Regular.ttf";
+
+  g_TextManager.LoadFont(exec_path.toStdString().data(), -1, 12);
 
   m_EngineInitialized = true;
 

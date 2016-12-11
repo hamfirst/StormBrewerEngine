@@ -157,7 +157,7 @@ void FontViewer::paintGL()
   Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
   Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 128), m_RenderState, true);
+  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), m_RenderState, true);
 
   g_TextManager.SetTextMode(TextRenderMode::kShadowed);
   g_TextManager.SetTextPos(text_start);
