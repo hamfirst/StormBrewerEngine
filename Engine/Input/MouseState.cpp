@@ -22,10 +22,11 @@ void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus)
 
   bool in_window = PointInBox(window_geo, Vector2(x, y));
 
-
   int height = window_geo.m_End.y - window_geo.m_Start.y;
   PointerState cur_state = { {x, height - y}, in_focus };
   m_PointerBinding.SetControlValue(cur_state);
+
+  m_PointerState = cur_state;
 
   for (int index = 1; index < kNumMouseButtons; index++)
   {
@@ -87,6 +88,23 @@ void MouseState::HandleMouseMoveMessage(int x, int y, const Box & window_geo, bo
   int height = window_geo.m_End.y - window_geo.m_Start.y;
   PointerState cur_state = { { x, height - y }, in_focus };
   m_PointerBinding.SetControlValue(cur_state);
+
+  m_PointerState = cur_state;
+}
+
+bool MouseState::GetButtonState(int button)
+{
+  if (button >= kNumMouseButtons)
+  {
+    return false;
+  }
+
+  return m_PressedState[button];
+}
+
+PointerState MouseState::GetPointerState()
+{
+  return m_PointerState;
 }
 
 NullOptPtr<void> MouseState::GetButtonBinding(const ControlHandle & handle)

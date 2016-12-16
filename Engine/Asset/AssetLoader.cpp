@@ -84,6 +84,10 @@ void AssetLoader::ProcessResponses()
         resp->m_Asset->m_State = AssetState::kLoadError;
       }
     }
+    else
+    {
+      resp->m_Asset->m_State = AssetState::kLoadError;
+    }
 
     resp->m_Asset->DecRef();
   }
@@ -98,6 +102,13 @@ void AssetLoader::ProcessResponses()
 
     ReloadFile(file->data());
   }
+}
+
+
+Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path)
+{
+  int file_open_error = 0;
+  return LoadFullFile(file_path, file_open_error);
 }
 
 Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path, int & file_open_error)

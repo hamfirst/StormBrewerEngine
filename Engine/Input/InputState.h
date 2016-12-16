@@ -19,6 +19,10 @@ public:
   void SetBinaryControlInputCallback(const Delegate<void, const ControlId &> & callback);
   void ClearBinaryControlInputCallback();
 
+  bool GetKeyState(int scan_code);
+  bool GetMouseButtonSate(int button);
+  PointerState GetPointerState();
+
 private:
 
   friend class ControlHandle;

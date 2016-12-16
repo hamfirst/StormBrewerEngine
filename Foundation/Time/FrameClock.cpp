@@ -8,6 +8,7 @@ FrameClock::FrameClock(double frame_interval)
 {
   m_FrameInterval = frame_interval;
   m_LastFrame = 0;
+  m_FrameCount = 0;
 }
 
 void FrameClock::Start()
@@ -30,9 +31,16 @@ void FrameClock::WaitUntilNextFrame()
   }
 
   m_LastFrame += m_FrameInterval;
+  m_FrameCount++;
 }
 
 void FrameClock::BeginFrame()
 {
   m_LastFrame += m_FrameInterval;
+  m_FrameCount++;
+}
+
+int FrameClock::GetFrameCount()
+{
+  return m_FrameCount;
 }

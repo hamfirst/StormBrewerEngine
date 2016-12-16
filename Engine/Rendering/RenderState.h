@@ -16,6 +16,9 @@ public:
   void EnableBlendMode(RenderingBlendMode mode = RenderingBlendMode::kAlpha);
   void DisableBlendMode();
 
+  void EnableScissorRect(const Box & box);
+  void DisableScissorRect();
+
   int GetScreenWidth();
   int GetScreenHeight();
 
@@ -29,6 +32,7 @@ private:
   int m_ScreenHeight = 1;
 
   bool m_BlendEnabled = false;
+  bool m_ScissorEnabled = false;
   RenderingBlendMode m_BlendMode = RenderingBlendMode::kAlpha;
 };
 

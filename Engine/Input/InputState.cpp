@@ -86,6 +86,21 @@ void InputState::ClearBinaryControlInputCallback()
   m_BinaryControlCallback.Clear();
 }
 
+bool InputState::GetKeyState(int scan_code)
+{
+  return m_KeyboardState.GetKeyState(scan_code);
+}
+
+bool InputState::GetMouseButtonSate(int button)
+{
+  return m_MouseState.GetButtonState(button);
+}
+
+PointerState InputState::GetPointerState()
+{
+  return m_MouseState.GetPointerState();
+}
+
 void InputState::HandleKeyPressMessage(int scan_code, bool pressed)
 {
   m_KeyboardState.HandleKeyPressMessage(scan_code, pressed);

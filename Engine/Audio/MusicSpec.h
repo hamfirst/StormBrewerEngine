@@ -12,7 +12,7 @@ class MusicSpec
 {
 public:
 
-  MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan);
+  MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan, bool looping);
   ~MusicSpec();
 
   MusicSpec(const MusicSpec & rhs) = default;
@@ -35,6 +35,7 @@ private:
 
   float m_Volume;
   float m_Pan;
+  bool m_Looping;
   bool m_Paused = false;
 
   Optional<ogg_sync_state> m_SyncState;

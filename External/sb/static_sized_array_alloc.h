@@ -48,11 +48,11 @@ public:
   template <typename ... InitArgs>
   Type * Allocate(std::size_t index, InitArgs && ... args)
   {
-    void * ptr = AllocateRaw();
+    void * ptr = AllocateRaw(index);
 
     try
     {
-      Type * t = new (m_Head) Type(std::forward<InitArgs>(args)...);
+      Type * t = new (ptr) Type(std::forward<InitArgs>(args)...);
       return t;
     }
     catch (...)

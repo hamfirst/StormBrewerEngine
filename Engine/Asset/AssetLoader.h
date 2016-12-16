@@ -21,6 +21,7 @@ public:
   void RequestFileLoad(Asset * asset, czstr file_path);
   void ProcessResponses();
 
+  Optional<Buffer> LoadFullFile(czstr file_path);
   Optional<Buffer> LoadFullFile(czstr file_path, int & file_open_error);
   void ReloadFile(czstr file_path);
 

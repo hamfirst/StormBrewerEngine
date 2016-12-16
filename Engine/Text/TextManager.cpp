@@ -19,7 +19,6 @@ TextManager g_TextManager;
 void TextManager::Init()
 {
   m_TextShader = MakeQuickShaderProgram(kBasicTextVertexShader, kBasicTextFragmentShader);
-  m_SelectionShader = MakeQuickShaderProgram(kBasicTextVertexShader, kSelectionBkgFragmentShader);
 
 #ifdef _MSC_VER
   LoadBackupFont("C:\\Windows\\Fonts\\arial.ttf");
@@ -55,7 +54,7 @@ bool TextManager::IsFontLoaded(int font_id)
   return font->Loaded();
 }
 
-void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
+void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
 {
   auto itr = m_Fonts.find(font_id);
   if (itr == m_Fonts.end())
@@ -69,38 +68,51 @@ void TextManager::RenderText(czstr text, int font_id, RenderState & render_state
     return;
   }
 
-  auto num_glyphs = font->CreateVertexBufferForString(text, strlen(text), m_GlyphPositions, 
-    m_PrimaryColor, m_SelectionColor, m_SelectionBkgColor, m_TextVertexBuffer, m_SelectionVertexBuffer, sel_start, sel_end, cursor_pos);
+  if (vertex_builder.m_FontId == -1)
+  {
+    vertex_builder.m_FontId = font_id;
+  }
+  else if (vertex_builder.m_FontId != font_id)
+  {
+    throw std::runtime_error("Cannot use a single text buffer with multiple fonts");
+  }
+
+  m_GlyphPositions.clear();
+  font->CreateVertexBufferForString(text, strlen(text), sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
+}
+
+void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state)
+{
+  if (vertex_builder.m_FontId == -1)
+  {
+    return;
+  }
+
+  auto itr = m_Fonts.find(vertex_builder.m_FontId);
+  if (itr == m_Fonts.end())
+  {
+    return;
+  }
+
+  auto & font = itr->second;
+  if (font->Loaded() == false)
+  {
+    return;
+  }
 
   RenderVec4 screen_bounds = { -1, -1, 1, 1 };
-  if (m_TextBounds)
+  if (m_Settings.m_TextBounds)
   {
-    screen_bounds.x = (float)m_TextBounds->m_Start.x / (float)render_state.GetScreenWidth();
-    screen_bounds.y = (float)m_TextBounds->m_Start.y / (float)render_state.GetScreenHeight();
-    screen_bounds.w = (float)m_TextBounds->m_End.x / (float)render_state.GetScreenWidth();
-    screen_bounds.z = (float)m_TextBounds->m_End.y / (float)render_state.GetScreenHeight();
+    screen_bounds.x = (float)m_Settings.m_TextBounds->m_Start.x / (float)render_state.GetScreenWidth();
+    screen_bounds.y = (float)m_Settings.m_TextBounds->m_Start.y / (float)render_state.GetScreenHeight();
+    screen_bounds.w = (float)m_Settings.m_TextBounds->m_End.x / (float)render_state.GetScreenWidth();
+    screen_bounds.z = (float)m_Settings.m_TextBounds->m_End.y / (float)render_state.GetScreenHeight();
 
     screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
     screen_bounds *= 2.0f;
   }
 
   render_state.EnableBlendMode();
-
-  if (num_glyphs.second > 0)
-  {
-    m_SelectionShader.Bind();
-    m_SelectionVertexBuffer.Bind();
-    m_SelectionVertexBuffer.CreateDefaultBinding(m_SelectionShader);
-
-    m_SelectionShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (RenderVec2)m_TextPos);
-    m_SelectionShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), m_SelectionBkgColor);
-    m_SelectionShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetScreenWidth(), (float)render_state.GetScreenHeight());
-    m_SelectionShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
-    m_SelectionVertexBuffer.Draw();
-
-    m_SelectionShader.Unbind();
-    m_SelectionVertexBuffer.Unbind();
-  }
 
   m_TextShader.Bind();
   m_TextVertexBuffer.Bind();
@@ -112,60 +124,18 @@ void TextManager::RenderText(czstr text, int font_id, RenderState & render_state
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetScreenWidth(), (float)render_state.GetScreenHeight());
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
 
-  if (m_Mode == TextRenderMode::kNormal)
-  {
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Str"), 1.0f);
-  }
-  if (m_Mode == TextRenderMode::kShadowed)
-  {
-    int x = m_TextPos.x;
-    int y = m_TextPos.y;
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Str"), 1.0f);
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ m_ShadowColor.r, m_ShadowColor.g, m_ShadowColor.b, 1.0f });
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x + 1, (float)y - 1);
-
-    m_TextVertexBuffer.Draw();
-  }
-  else if (m_Mode == TextRenderMode::kOutlined)
-  {
-    int x = m_TextPos.x;
-    int y = m_TextPos.y;
-
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ m_SelectionColor.r, m_SelectionColor.g, m_SelectionColor.b, 1.0f });
-
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_GlyphTexture"), 0);
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Str"), 0.5f);
-
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x + 1, (float)y + 1);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x - 1, (float)y + 1);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x - 1, (float)y - 1);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x + 1, (float)y - 1);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x + 1, (float)y);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x - 1, (float)y);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x, (float)y + 1);
-    m_TextVertexBuffer.Draw();
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (float)x, (float)y - 1);
-    m_TextVertexBuffer.Draw();
-
-    m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Str"), 1.0f);
-  }
-
-
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_TextPos"), (RenderVec2)m_TextPos);
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(0, 0, 0, 0));
-
   m_TextVertexBuffer.Draw();
 
   render_state.DisableBlendMode();
 
   m_TextVertexBuffer.Unbind();
   m_TextShader.Unbind();
+}
+
+void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
+{
+  AddTextToBuffer(text, font_id, m_BufferBuilder, sel_start, sel_end, cursor_pos);
+  RenderBuffer(m_BufferBuilder, render_state);
 }
 
 void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state)
@@ -187,7 +157,6 @@ void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, i
   {
     RenderText(text.data(), font_id, render_state, -1, -1, cursor_pos);
   }
-
 }
 
 Box TextManager::GetTextSize(czstr text, int font_id)
@@ -227,43 +196,43 @@ bool TextManager::BindGlyphTexture(int font_id, int texture_stage)
 
 void TextManager::SetTextMode(TextRenderMode mode)
 {
-  m_Mode = mode;
+  m_Settings.m_Mode = mode;
 }
 
 void TextManager::SetTextPos(const Vector2 & pos)
 {
-  m_TextPos = pos;
-  m_TextBounds = {};
+  m_Settings.m_TextPos = pos;
+  m_Settings.m_TextBounds = {};
 }
 
 void TextManager::SetTextBounds(const Box & bounds)
 {
-  m_TextBounds = bounds;
+  m_Settings.m_TextBounds = bounds;
 }
 
 void TextManager::ClearTextBounds()
 {
-  m_TextBounds = {};
+  m_Settings.m_TextBounds = {};
 }
 
 void TextManager::SetPrimaryColor(const Color & color)
 {
-  m_PrimaryColor = color;
+  m_Settings.m_PrimaryColor = color;
 }
 
 void TextManager::SetShadowColor(const Color & color)
 {
-  m_ShadowColor = color;
+  m_Settings.m_ShadowColor = color;
 }
 
 void TextManager::SetSelectionColor(const Color & color)
 {
-  m_SelectionColor = color;
+  m_Settings.m_SelectionColor = color;
 }
 
 void TextManager::SetSelectionBkgColor(const Color & color)
 {
-  m_SelectionBkgColor = color;
+  m_Settings.m_SelectionBkgColor = color;
 }
 
 void TextManager::LoadBackupFont(czstr font_path)

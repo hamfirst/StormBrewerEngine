@@ -10,8 +10,12 @@ public:
 
   void WaitUntilNextFrame();
   void BeginFrame();
+
+  int GetFrameCount();
   
 private:
   double m_FrameInterval;
   double m_LastFrame;
+
+  int m_FrameCount;
 };

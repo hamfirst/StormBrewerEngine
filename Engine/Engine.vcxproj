@@ -159,6 +159,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Input\ControlBinding.h" />
+    <ClInclude Include="Input\ControlBindingHandleList.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Input\ControlBindingList.h" />
     <ClInclude Include="Input\ControlBindingSet.h">
       <SubType>
@@ -208,6 +212,10 @@
     <ClInclude Include="Settings\EngineSettings.refl.h" />
     <ClInclude Include="Settings\EngineSettings.refl.meta.h" />
     <ClInclude Include="Text\TextBackupFont.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Text\TextBufferBuilder.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -278,6 +286,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Input\ControlBindingHandleList.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Input\ControlBindingSet.cpp">
       <SubType>
       </SubType>
@@ -321,6 +333,10 @@
     <ClCompile Include="Rendering\VertexBufferBuilder.cpp" />
     <ClCompile Include="Settings\EngineSettings.refl.cpp" />
     <ClCompile Include="Text\TextBackupFont.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Text\TextBufferBuilder.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -56,7 +56,7 @@ void AudioManager::ShutDown()
   }
 }
 
-AudioHandle AudioManager::PlayAudio(const AssetReference<AudioAsset> & asset_ref, float volume, float pan)
+AudioHandle AudioManager::PlayAudio(const AssetReference<AudioAsset> & asset_ref, float volume, float pan, bool looping)
 {
   if (m_DeviceId == 0)
   {
@@ -64,7 +64,7 @@ AudioHandle AudioManager::PlayAudio(const AssetReference<AudioAsset> & asset_ref
   }
 
   std::lock_guard<std::mutex> l(m_AudioMutex);
-  return m_PlayingAudio.AllocateElem(asset_ref, volume, pan);
+  return m_PlayingAudio.AllocateElem(asset_ref, volume, pan, looping);
 }
 
 void AudioManager::StopAudio(AudioHandle handle)
@@ -94,7 +94,7 @@ void AudioManager::SetAudioPaused(AudioHandle handle, bool pause)
   audio_spec->m_Paused = pause;
 }
 
-MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref, float volume, float pan)
+MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref, float volume, float pan, bool looping)
 {
   if (m_DeviceId == 0)
   {
@@ -102,7 +102,7 @@ MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref
   }
 
   std::lock_guard<std::mutex> l(m_AudioMutex);
-  return m_PlayingMusic.AllocateElem(std::make_unique<MusicSpec>(asset_ref, volume, pan));
+  return m_PlayingMusic.AllocateElem(std::make_unique<MusicSpec>(asset_ref, volume, pan, looping));
 }
 
 void AudioManager::StopMusic(MusicHandle handle)
@@ -136,133 +136,158 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 {
   memset(stream, 0, len);
 
-  std::size_t write_samples = len / (sizeof(float) * 2);
-
   AudioManager * p_this = (AudioManager *)userdata;
   std::lock_guard<std::mutex> l(p_this->m_AudioMutex);
 
-  auto audio_callback = [&](Handle audio_handle, AudioSpec & audio_spec)
+  auto audio_callback = [=](Handle audio_handle, AudioSpec & audio_spec)
   {
-    if (audio_spec.m_Paused)
+    int write_len = len;
+    float * write_stream = (float *)stream;
+
+    std::size_t write_samples = len / (sizeof(float) * 2);
+
+    do
     {
-      return true;
+      if (audio_spec.m_Paused)
+      {
+        return true;
+      }
+
+      std::size_t available_data = audio_spec.m_AudioBufferSize - audio_spec.m_AudioPos;
+      if (available_data == 0)
+      {
+        if (audio_spec.m_Looping == false)
+        {
+          return false;
+        }
+
+        audio_spec.m_AudioPos = 0;
+        available_data = audio_spec.m_AudioBufferSize;
+      }
+
+      uint8_t * audio_start = audio_spec.m_AudioBuffer.get() + audio_spec.m_AudioPos;
+      float * output_ptr = write_stream;
+
+      float volume = audio_spec.m_Volume;
+      float l_pan = audio_spec.m_Pan > 0 ? 1.0f - audio_spec.m_Pan : 1.0f;
+      float r_pan = audio_spec.m_Pan < 0 ? 1.0f + audio_spec.m_Pan : 1.0f;
+
+      if (audio_spec.m_AudioChannels == 2)
+      {
+        if (audio_spec.m_AudioFormat == AudioFormat::k32BitFloat)
+        {
+          std::size_t available_samples = available_data / (sizeof(float) * 2);
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          float * sample_ptr = (float *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += *sample_ptr * volume * l_pan;
+            sample_ptr++; output_ptr++;
+            *output_ptr += *sample_ptr * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(float) * 2);
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+        else if (audio_spec.m_AudioFormat == AudioFormat::k16BitInt)
+        {
+          std::size_t available_samples = available_data / (sizeof(int16_t) * 2);
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          int16_t * sample_ptr = (int16_t *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
+            sample_ptr++; output_ptr++;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(int16_t) * 2);
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+        else if (audio_spec.m_AudioFormat == AudioFormat::k8BitInt)
+        {
+          std::size_t available_samples = available_data / (sizeof(int8_t) * 2);
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          int8_t * sample_ptr = (int8_t *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
+            sample_ptr++; output_ptr++;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(int8_t) * 2);
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+      }
+      else
+      {
+        if (audio_spec.m_AudioFormat == AudioFormat::k32BitFloat)
+        {
+          std::size_t available_samples = available_data / (sizeof(float));
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          float * sample_ptr = (float *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += *sample_ptr * volume * l_pan;
+            output_ptr++;
+            *output_ptr += *sample_ptr * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(float));
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+        else if (audio_spec.m_AudioFormat == AudioFormat::k16BitInt)
+        {
+          std::size_t available_samples = available_data / (sizeof(int16_t));
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          int16_t * sample_ptr = (int16_t *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
+            output_ptr++;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(int16_t));
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+        else if (audio_spec.m_AudioFormat == AudioFormat::k8BitInt)
+        {
+          std::size_t available_samples = available_data / (sizeof(int8_t));
+          std::size_t output_samples = std::min(available_samples, write_samples);
+
+          int8_t * sample_ptr = (int8_t *)audio_start;
+          for (int sample = 0; sample < output_samples; sample++)
+          {
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
+            output_ptr++;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
+            sample_ptr++; output_ptr++;
+          }
+
+          audio_spec.m_AudioPos += output_samples * (sizeof(int8_t));
+          write_samples -= output_samples;
+          write_stream += output_samples;
+        }
+      }
     }
-
-    std::size_t available_data = audio_spec.m_AudioBufferSize - audio_spec.m_AudioPos;
-    if (available_data  == 0)
-    {
-      return false;
-    }
-
-    uint8_t * audio_start = audio_spec.m_AudioBuffer.get() + audio_spec.m_AudioPos;
-    float * output_ptr = (float *)stream;
-
-    float volume = audio_spec.m_Volume;
-    float l_pan = audio_spec.m_Pan > 0 ? 1.0f - audio_spec.m_Pan : 1.0f;
-    float r_pan = audio_spec.m_Pan < 0 ? 1.0f + audio_spec.m_Pan : 1.0f;
-
-    if (audio_spec.m_AudioChannels == 2)
-    {
-      if (audio_spec.m_AudioFormat == AudioFormat::k32BitFloat)
-      {
-        std::size_t available_samples = available_data / (sizeof(float) * 2);
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        float * sample_ptr = (float *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += *sample_ptr * volume * l_pan;
-          sample_ptr++; output_ptr++;
-          *output_ptr += *sample_ptr * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(float) * 2);
-      }
-      else if (audio_spec.m_AudioFormat == AudioFormat::k16BitInt)
-      {
-        std::size_t available_samples = available_data / (sizeof(int16_t) * 2);
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        int16_t * sample_ptr = (int16_t *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
-          sample_ptr++; output_ptr++;
-          *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(int16_t) * 2);
-      }
-      else if (audio_spec.m_AudioFormat == AudioFormat::k8BitInt)
-      {
-        std::size_t available_samples = available_data / (sizeof(int8_t) * 2);
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        int8_t * sample_ptr = (int8_t *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
-          sample_ptr++; output_ptr++;
-          *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(int8_t) * 2);
-      }
-    }
-    else
-    {
-      if (audio_spec.m_AudioFormat == AudioFormat::k32BitFloat)
-      {
-        std::size_t available_samples = available_data / (sizeof(float));
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        float * sample_ptr = (float *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += *sample_ptr * volume * l_pan;
-          output_ptr++;
-          *output_ptr += *sample_ptr * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(float));
-      }
-      else if (audio_spec.m_AudioFormat == AudioFormat::k16BitInt)
-      {
-        std::size_t available_samples = available_data / (sizeof(int16_t));
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        int16_t * sample_ptr = (int16_t *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
-          output_ptr++;
-          *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(int16_t));
-      }
-      else if (audio_spec.m_AudioFormat == AudioFormat::k8BitInt)
-      {
-        std::size_t available_samples = available_data / (sizeof(int8_t));
-        std::size_t output_samples = std::min(available_samples, write_samples);
-
-        int8_t * sample_ptr = (int8_t *)audio_start;
-        for (int sample = 0; sample < output_samples; sample++)
-        {
-          *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
-          output_ptr++;
-          *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
-          sample_ptr++; output_ptr++;
-        }
-
-        audio_spec.m_AudioPos += output_samples * (sizeof(int8_t));
-      }
-    }
+    while (audio_spec.m_Looping && write_samples > 0);
 
     return true;
   };

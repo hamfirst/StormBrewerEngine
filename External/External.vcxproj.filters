@@ -46,6 +46,12 @@
     <Filter Include="hash">
       <UniqueIdentifier>{63a030ac-98c3-4ac0-90d8-11917be5fa67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ogg">
+      <UniqueIdentifier>{fead3f5e-85c1-4988-a6f8-7d62df70d992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vorbis">
+      <UniqueIdentifier>{dfc3dd24-853a-4336-9ef3-9d9dd05892b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enum\enum.h">
@@ -555,6 +561,27 @@
     <ClInclude Include="hash\Hash64.h">
       <Filter>hash</Filter>
     </ClInclude>
+    <ClInclude Include="ogg\config_types.h">
+      <Filter>ogg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg\ogg.h">
+      <Filter>ogg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg\os_types.h">
+      <Filter>ogg</Filter>
+    </ClInclude>
+    <ClInclude Include="sb\fixed_sized_alloc.h">
+      <Filter>sb</Filter>
+    </ClInclude>
+    <ClInclude Include="sb\static_sized_alloc.h">
+      <Filter>sb</Filter>
+    </ClInclude>
+    <ClInclude Include="sb\static_sized_array_alloc.h">
+      <Filter>sb</Filter>
+    </ClInclude>
+    <ClInclude Include="sb\fixed_sized_array_alloc.h">
+      <Filter>sb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glm\detail\glm.cpp">
@@ -583,6 +610,12 @@
     </ClCompile>
     <ClCompile Include="binpack\SkylineBinPack.cpp">
       <Filter>binpack</Filter>
+    </ClCompile>
+    <ClCompile Include="ogg\bitwise.c">
+      <Filter>ogg</Filter>
+    </ClCompile>
+    <ClCompile Include="ogg\framing.c">
+      <Filter>ogg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

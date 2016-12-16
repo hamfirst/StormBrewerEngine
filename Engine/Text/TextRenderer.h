@@ -6,6 +6,8 @@
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Text/TextBackupFont.h"
+#include "Engine/Text/TextManager.h"
+#include "Engine/Text/TextBufferBuilder.h"
 
 struct GlyphInfo
 {
@@ -24,9 +26,8 @@ public:
   TextRenderer(const AssetReference<FontAsset> & asset_ref, int font_size, std::vector<std::unique_ptr<TextBackupFont>> & backup_fonts);
   ~TextRenderer();
 
-  std::pair<std::size_t, std::size_t> CreateVertexBufferForString(czstr utf8_str, std::size_t len, std::vector<Box> & glyph_positions,
-    const Color & text_color, const Color & selection_color, const Color & selection_bkg_color,
-    VertexBuffer & text_vertex_buffer, VertexBuffer & selection_vertex_buffer, int sel_start, int sel_end, int cursor_pos);
+  void CreateVertexBufferForString(czstr utf8_str, std::size_t len, int sel_start, int sel_end, int cursor_pos,
+    const TextSettings & settings, TextBufferBuilder & buffer, std::vector<Box> & glyph_positions);
 
   void BindGlyphTexture(int texture_stage);
   Box GetTextSize(czstr utf8_str, std::size_t len);
@@ -36,6 +37,8 @@ public:
 private:
 
   void FinalizeAssetLoad(FontAsset * asset, bool success);
+
+  void AddGlyphToBuffer(int x, int y, const GlyphInfo & glyph, const TextSettings & settings, TextBufferBuilder & buffer, const Color & color);
 
   void AddString(czstr utf8_str, std::size_t len);
   void AddGlyph(char32_t character_code);

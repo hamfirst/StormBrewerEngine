@@ -46,6 +46,16 @@ void KeyboardState::RemoveKeyBinding(BinaryControlHandle handle)
   m_KeyboardControls[handle.m_ControlId.m_Index].RemoveControlBinding(handle.m_Control);
 }
 
+bool KeyboardState::GetKeyState(int scan_code)
+{
+  if (scan_code >= kNumKeyboardKeys)
+  {
+    return false;
+  }
+
+  return m_PressedState[scan_code];
+}
+
 void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed)
 {
   m_KeyboardControls[scan_code].SetControlValue(pressed);

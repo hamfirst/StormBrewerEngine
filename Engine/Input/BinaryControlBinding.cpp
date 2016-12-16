@@ -23,7 +23,7 @@ void BinaryControlBinding::UpdateState(BinaryControlBinding::ControlValueType st
   }
 }
 
-BinaryControlBinding::ControlValueType BinaryControlBinding::GetCurrentState()
+BinaryControlBinding::ControlValueType BinaryControlBinding::GetCurrentState() const
 {
   return m_CurrentState;
 }
@@ -35,7 +35,7 @@ void BinaryControlBinding::AdvanceFrame()
   m_HistoryCount++;
 }
 
-bool BinaryControlBinding::WasOn(unsigned int history_frames)
+bool BinaryControlBinding::WasOn(unsigned int history_frames) const
 {
   history_frames = std::min({ history_frames, m_HistoryCount, kBinaryControlHistory });
   int history_index = (m_HistoryIndex + kBinaryControlHistory - history_frames) % kBinaryControlHistory;
@@ -54,7 +54,7 @@ bool BinaryControlBinding::WasOn(unsigned int history_frames)
   return GetCurrentState();
 }
 
-bool BinaryControlBinding::WasOff(unsigned int history_frames)
+bool BinaryControlBinding::WasOff(unsigned int history_frames) const
 {
   history_frames = std::min({ history_frames, m_HistoryCount, kBinaryControlHistory });
   int history_index = (m_HistoryIndex + kBinaryControlHistory - history_frames) % kBinaryControlHistory;
@@ -73,7 +73,7 @@ bool BinaryControlBinding::WasOff(unsigned int history_frames)
   return GetCurrentState();
 }
 
-BinaryControlBinding::ControlValueType BinaryControlBinding::GetPriorValue(unsigned int frames_ago)
+BinaryControlBinding::ControlValueType BinaryControlBinding::GetPriorValue(unsigned int frames_ago) const
 {
   if (frames_ago > m_HistoryCount || frames_ago > kBinaryControlHistory)
   {
@@ -90,7 +90,7 @@ BinaryControlHandle::BinaryControlHandle(NotNullPtr<InputState> input_state, Han
 
 }
 
-BinaryControlBinding::ControlValueType BinaryControlHandle::GetCurrentState()
+BinaryControlBinding::ControlValueType BinaryControlHandle::GetCurrentState() const
 {
   BinaryControlBinding * binding = static_cast<BinaryControlBinding *>(GetControlHandle());
   if (binding == nullptr)
@@ -101,7 +101,12 @@ BinaryControlBinding::ControlValueType BinaryControlHandle::GetCurrentState()
   return binding->GetCurrentState();
 }
 
-bool BinaryControlHandle::WasOn(unsigned int history_frames)
+BinaryControlHandle::operator bool() const
+{
+  return GetCurrentState();
+}
+
+bool BinaryControlHandle::WasOn(unsigned int history_frames) const
 {
   BinaryControlBinding * binding = static_cast<BinaryControlBinding *>(GetControlHandle());
   if (binding == nullptr)
@@ -112,7 +117,7 @@ bool BinaryControlHandle::WasOn(unsigned int history_frames)
   return binding->WasOn(history_frames);
 }
 
-bool BinaryControlHandle::WasOff(unsigned int history_frames)
+bool BinaryControlHandle::WasOff(unsigned int history_frames) const
 {
   BinaryControlBinding * binding = static_cast<BinaryControlBinding *>(GetControlHandle());
   if (binding == nullptr)
@@ -123,7 +128,7 @@ bool BinaryControlHandle::WasOff(unsigned int history_frames)
   return binding->WasOff(history_frames);
 }
 
-BinaryControlBinding::ControlValueType BinaryControlHandle::GetPriorValue(unsigned int frames_ago)
+BinaryControlBinding::ControlValueType BinaryControlHandle::GetPriorValue(unsigned int frames_ago) const
 {
   BinaryControlBinding * binding = static_cast<BinaryControlBinding *>(GetControlHandle());
   if (binding == nullptr)

@@ -87,7 +87,7 @@ void EngineUpdate()
       }
       else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
       {
-        g_WindowManager.SetWindowKeyboardFocused(e.window.windowID, true);
+        g_WindowManager.SetWindowKeyboardFocused(e.window.windowID, false);
       }
       if (e.window.event == SDL_WINDOWEVENT_ENTER)
       {
@@ -95,7 +95,7 @@ void EngineUpdate()
       }
       else if (e.window.event == SDL_WINDOWEVENT_LEAVE)
       {
-        g_WindowManager.SetWindowMouseFocused(e.window.windowID, true);
+        g_WindowManager.SetWindowMouseFocused(e.window.windowID, false);
       }
       else if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
       {

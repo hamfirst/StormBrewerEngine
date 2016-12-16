@@ -60,6 +60,26 @@ void RenderState::DisableBlendMode()
   }
 }
 
+void RenderState::EnableScissorRect(const Box & box)
+{
+  if (m_ScissorEnabled == false)
+  {
+    glEnable(GL_SCISSOR_TEST);
+    m_ScissorEnabled = true;
+  }
+
+  glScissor(box.m_Start.x, box.m_Start.y, box.m_End.x - box.m_Start.x, box.m_End.y - box.m_Start.y);
+}
+
+void RenderState::DisableScissorRect()
+{
+  if (m_ScissorEnabled)
+  {
+    glDisable(GL_SCISSOR_TEST);
+    m_ScissorEnabled = false;
+  }
+}
+
 int RenderState::GetScreenWidth()
 {
   return m_ScreenWidth;

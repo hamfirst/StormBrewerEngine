@@ -532,7 +532,6 @@
     <ClCompile Include="main\haiku\SDL_BeApp.cc" />
     <ClCompile Include="main\nacl\SDL_nacl_main.c" />
     <ClCompile Include="main\psp\SDL_psp_main.c" />
-    <ClCompile Include="main\windows\SDL_windows_main.c" />
     <ClCompile Include="power\SDL_power.c" />
     <ClCompile Include="power\windows\SDL_syspower.c" />
     <ClCompile Include="render\direct3d11\SDL_render_d3d11.c" />

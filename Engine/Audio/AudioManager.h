@@ -24,13 +24,13 @@ public:
   void Init();
   void ShutDown();
 
-  AudioHandle PlayAudio(const AssetReference<AudioAsset> & asset_ref, float volume = 1.0f, float pan = 0.0f);
+  AudioHandle PlayAudio(const AssetReference<AudioAsset> & asset_ref, float volume = 1.0f, float pan = 0.0f, bool looping = false);
   void StopAudio(AudioHandle handle);
   void SetAudioVolume(AudioHandle handle, float volume);
   void SetAudioPan(AudioHandle handle, float pan);
   void SetAudioPaused(AudioHandle handle, bool pause);
 
-  MusicHandle PlayMusic(const AssetReference<MusicAsset> & asset_ref, float volume = 1.0f, float pan = 0.0f);
+  MusicHandle PlayMusic(const AssetReference<MusicAsset> & asset_ref, float volume = 1.0f, float pan = 0.0f, bool looping = false);
   void StopMusic(MusicHandle handle);
   void SetMusicVolume(MusicHandle handle, float volume);
   void SetMusicPan(MusicHandle handle, float pan);

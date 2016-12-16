@@ -16,8 +16,18 @@ ControlHandle::ControlHandle(InputState * input_state, Handle handle, ControlId 
 
 }
 
-void * ControlHandle::GetControlHandle()
+void * ControlHandle::GetControlHandle() const
 {
-  return m_InputState->m_KeyboardState.GetControlBinding(*this);
+  if (m_ControlId.m_Type == ControlType::kKeyboard)
+  {
+    return m_InputState->m_KeyboardState.GetControlBinding(*this);
+  }
+
+  if (m_ControlId.m_Type == ControlType::kMouse)
+  {
+    return m_InputState->m_MouseState.GetButtonBinding(*this);
+  }
+
+  return nullptr;
 }
 

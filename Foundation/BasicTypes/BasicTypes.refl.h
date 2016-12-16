@@ -9,6 +9,7 @@ struct Vector2
   Vector2() = default;
 
   Vector2(int x, int y) : x(x), y(y) { }
+  Vector2(const RenderVec2 & v) : x((int)v.x), y((int)v.y) { }
 
   operator RenderVec2() const
   {

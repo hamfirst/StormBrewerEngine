@@ -8,7 +8,7 @@ class ShaderProgram;
 class VertexBuffer
 {
 public:
-  VertexBuffer();
+  explicit VertexBuffer(bool dynamic = false);
   VertexBuffer(const VertexBuffer & rhs) = delete;
   VertexBuffer(VertexBuffer && rhs) noexcept;
   ~VertexBuffer();
@@ -37,6 +37,7 @@ private:
   unsigned int m_IndexBufferName;
 
   int m_LoadError;
+  bool m_Dynamic;
 };
 
 

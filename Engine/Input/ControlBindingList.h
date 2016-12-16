@@ -53,7 +53,7 @@ public:
 
     auto sort_func = [](const ControlBindingType * p1, const ControlBindingType * p2)
     {
-      return p1->GetPriority() - p2->GetPriority();
+      return p1->GetPriority() > p2->GetPriority();
     };
 
     std::sort(&list[0], &list[list_size], sort_func);

@@ -6,25 +6,19 @@
 #include <bitset>
 
 template <typename Type, std::size_t MaxAllocs>
-class FixedSizedAlloc
+class FixedSizedArrayAlloc
 {
 public:
 
   static_assert(sizeof(Type) >= sizeof(void *), "Allocation type is too small to alias with a pointer");
   static_assert(MaxAllocs > 0, "Cannot have an allocator with 0 elements");
 
-  FixedSizedAlloc()
+  FixedSizedArrayAlloc()
   {
-    for (std::size_t index = 0; index < MaxAllocs - 1; index++)
-    {
-      *GetPtrAt(index) = GetAllocAt(index + 1);
-    }
 
-    *GetPtrAt(MaxAllocs - 1) = nullptr;
-    m_Head = GetPtrAt(0);
   }
 
-  ~FixedSizedAlloc()
+  ~FixedSizedArrayAlloc()
   {
     for (std::size_t index = 0; index < MaxAllocs; index++)
     {
@@ -35,20 +29,20 @@ public:
     }
   }
 
-  FixedSizedAlloc(const FixedSizedAlloc & rhs) = delete;
-  FixedSizedAlloc(FixedSizedAlloc && rhs) = delete;
+  FixedSizedArrayAlloc(const FixedSizedArrayAlloc & rhs) = delete;
+  FixedSizedArrayAlloc(FixedSizedArrayAlloc && rhs) = delete;
 
-  FixedSizedAlloc & operator = (const FixedSizedAlloc & rhs) = delete;
-  FixedSizedAlloc & operator = (FixedSizedAlloc && rhs) = delete;
+  FixedSizedArrayAlloc & operator = (const FixedSizedArrayAlloc & rhs) = delete;
+  FixedSizedArrayAlloc & operator = (FixedSizedArrayAlloc && rhs) = delete;
 
   template <typename ... InitArgs>
-  Type * Allocate(InitArgs && ... args)
+  Type * Allocate(std::size_t index, InitArgs && ... args)
   {
-    void * ptr = AllocateRaw();
+    void * ptr = AllocateRaw(index);
 
     try
     {
-      Type * t = new (m_Head) Type(std::forward<InitArgs>(args)...);
+      Type * t = new (ptr) Type(std::forward<InitArgs>(args)...);
       return t;
     }
     catch (...)
@@ -58,29 +52,20 @@ public:
     }
   }
 
-  void * AllocateRaw()
+  void * AllocateRaw(std::size_t index)
   {
-    if (m_Head == nullptr)
+    if (index >= MaxAllocs)
     {
       throw false;
     }
-
-    std::size_t index = GetIndexAt(m_Head);
 
     if (m_AllocMask[index])
     {
       throw false;
     }
 
-    void * t = m_Head;
-
-    void ** head_ptr = reinterpret_cast<void **>(m_Head);
-    void * new_head = *head_ptr;
-
     m_AllocMask.set(index);
-    m_Head = new_head;
-
-    return t;
+    return GetPtrAt(index);
   }
 
   void Free(Type * type)
@@ -92,17 +77,17 @@ public:
   void FreeRaw(void * ptr)
   {
     std::size_t index = GetIndexAt(ptr);
+    FreeRaw(index);
+  }
+
+  void FreeRaw(std::size_t index)
+  {
     if (m_AllocMask[index] == false)
     {
       throw false;
     }
 
     m_AllocMask.set(index, false);
-
-    void ** head_ptr = reinterpret_cast<void **>(ptr);
-    *head_ptr = m_Head;
-
-    m_Head = ptr;
   }
 
   std::size_t GetAllocationId(Type * ptr)
@@ -160,7 +145,6 @@ private:
   }
 
 private:
-  void * m_Head;
   std::bitset<MaxAllocs> m_AllocMask;
   uint8_t m_Memory[sizeof(Type) * MaxAllocs];
 };

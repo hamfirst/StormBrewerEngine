@@ -7,14 +7,15 @@ class AudioSpec
 {
 public:
 
-  AudioSpec(const AssetReference<AudioAsset> & audio_ref, float volume, float pan) :
+  AudioSpec(const AssetReference<AudioAsset> & audio_ref, float volume, float pan, bool looping) :
     m_AudioAsset(audio_ref),
     m_AudioBuffer(audio_ref.Resolve()->m_AudioBuffer),
     m_AudioBufferSize(audio_ref.Resolve()->m_AudioBufferSize),
     m_AudioFormat(audio_ref.Resolve()->m_AudioFormat),
     m_AudioChannels(audio_ref.Resolve()->m_AudioChannels),
     m_Volume(volume),
-    m_Pan(pan)
+    m_Pan(pan),
+    m_Looping(looping)
   {
     m_Volume = volume;
     m_Pan = pan;
@@ -43,5 +44,6 @@ private:
 
   std::size_t m_AudioPos = 0;
   bool m_Paused = false;
+  bool m_Looping = false;
 };
 

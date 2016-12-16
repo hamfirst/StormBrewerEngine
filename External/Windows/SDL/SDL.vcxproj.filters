@@ -1277,9 +1277,6 @@
     <ClCompile Include="main\psp\SDL_psp_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main\windows\SDL_windows_main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="power\SDL_power.c">
       <Filter>Source Files</Filter>
     </ClCompile>

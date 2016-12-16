@@ -3,11 +3,12 @@
 #include "Engine/Audio/MusicSpec.h"
 
 
-MusicSpec::MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan)
+MusicSpec::MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan, bool looping)
 {
   m_AudioAsset = audio_ref;
   m_Volume = volume;
   m_Pan = pan;
+  m_Looping = looping;
 }
 
 MusicSpec::~MusicSpec()

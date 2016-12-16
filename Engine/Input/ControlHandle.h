@@ -12,7 +12,7 @@ protected:
   ControlHandle();
   ControlHandle(NotNullPtr<InputState> input_state, Handle handle, ControlId control_id);
 
-  void * GetControlHandle();
+  void * GetControlHandle() const;
 
 protected:
   friend class KeyboardState;

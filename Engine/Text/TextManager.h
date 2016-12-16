@@ -9,6 +9,7 @@
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Rendering/RenderState.h"
+#include "Engine/Text/TextBufferBuilder.h"
 
 class TextRenderer;
 class TextBackupFont;
@@ -21,6 +22,22 @@ enum class TextRenderMode
   kOutlined,
 };
 
+struct TextSettings
+{
+  Vector2 m_TextPos;
+  Optional<Box> m_TextBounds;
+
+  TextRenderMode m_Mode;
+
+  Color m_PrimaryColor;
+  Color m_ShadowColor;
+
+  Color m_SelectionColor;
+  Color m_SelectionBkgColor;
+
+  std::vector<Box> m_GlyphPositions;
+};
+
 class TextManager
 {
 public:
@@ -30,6 +47,9 @@ public:
   
   void LoadFont(czstr font_path, int font_id, int font_size);
   bool IsFontLoaded(int font_id);
+
+  void AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state);
 
   void RenderText(czstr text, int font_id, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
   void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state);
@@ -55,24 +75,14 @@ private:
 
   std::map<int, std::unique_ptr<TextRenderer>> m_Fonts;
   std::vector<std::unique_ptr<TextBackupFont>> m_BackupFonts;
-
-  Vector2 m_TextPos;
-  Optional<Box> m_TextBounds;
-
   std::vector<Box> m_GlyphPositions;
 
-  TextRenderMode m_Mode;
-
-  Color m_PrimaryColor;
-  Color m_ShadowColor;
-
-  Color m_SelectionColor;
-  Color m_SelectionBkgColor;
+  TextSettings m_Settings;
 
   ShaderProgram m_TextShader;
-  ShaderProgram m_SelectionShader;
   VertexBuffer m_TextVertexBuffer;
-  VertexBuffer m_SelectionVertexBuffer;
+
+  TextBufferBuilder m_BufferBuilder;
 };
 
 extern TextManager g_TextManager;

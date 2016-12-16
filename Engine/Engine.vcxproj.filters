@@ -179,6 +179,12 @@
     <ClInclude Include="Input\TextInputContext.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Input\ControlBindingHandleList.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextBufferBuilder.h">
+      <Filter>Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -293,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="Input\TextInputContext.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ControlBindingHandleList.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\TextBufferBuilder.cpp">
+      <Filter>Text</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

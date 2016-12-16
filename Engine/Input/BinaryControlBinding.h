@@ -16,13 +16,13 @@ public:
   BinaryControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
 
   void UpdateState(ControlValueType state);
-  ControlValueType GetCurrentState();
+  ControlValueType GetCurrentState() const;
   void AdvanceFrame();
 
-  bool WasOn(unsigned int history_frames);
-  bool WasOff(unsigned int history_frames);
+  bool WasOn(unsigned int history_frames) const;
+  bool WasOff(unsigned int history_frames) const;
 
-  ControlValueType GetPriorValue(unsigned int frames_ago);
+  ControlValueType GetPriorValue(unsigned int frames_ago) const;
 
 private:
 
@@ -45,11 +45,12 @@ protected:
 public:
   BinaryControlHandle() = default;
 
-  BinaryControlBinding::ControlValueType GetCurrentState();
+  BinaryControlBinding::ControlValueType GetCurrentState() const;
+  operator bool() const;
 
-  bool WasOn(unsigned int history_frames);
-  bool WasOff(unsigned int history_frames);
+  bool WasOn(unsigned int history_frames) const;
+  bool WasOff(unsigned int history_frames) const;
 
-  BinaryControlBinding::ControlValueType GetPriorValue(unsigned int frames_ago);
+  BinaryControlBinding::ControlValueType GetPriorValue(unsigned int frames_ago) const;
 };
 
