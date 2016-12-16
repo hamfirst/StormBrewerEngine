@@ -7,7 +7,7 @@ struct GlyphInfo;
 class TextBufferBuilder
 {
 public:
-  TextBufferBuilder() = default;
+  TextBufferBuilder();
 
   TextBufferBuilder(const TextBufferBuilder & rhs) = delete;
   TextBufferBuilder(TextBufferBuilder && rhs) = default;
@@ -26,5 +26,5 @@ private:
   std::vector<VertexInfo> m_Verts;
   std::vector<uint16_t> m_Indicies;
 
-  int m_FontId = -1;
+  int m_FontId;
 };

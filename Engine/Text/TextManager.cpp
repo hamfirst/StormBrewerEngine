@@ -16,6 +16,12 @@
 
 TextManager g_TextManager;
 
+TextManager::TextManager() :
+  m_TextVertexBuffer(true)
+{
+
+}
+
 void TextManager::Init()
 {
   m_TextShader = MakeQuickShaderProgram(kBasicTextVertexShader, kBasicTextFragmentShader);
@@ -68,7 +74,7 @@ void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & v
     return;
   }
 
-  if (vertex_builder.m_FontId == -1)
+  if (vertex_builder.m_FontId == kInvalidFontId)
   {
     vertex_builder.m_FontId = font_id;
   }
@@ -83,7 +89,7 @@ void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & v
 
 void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state)
 {
-  if (vertex_builder.m_FontId == -1)
+  if (vertex_builder.m_FontId == kInvalidFontId)
   {
     return;
   }
@@ -114,6 +120,8 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   render_state.EnableBlendMode();
 
+  m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, vertex_builder.m_Indicies, VertexBufferType::kQuads);
+
   m_TextShader.Bind();
   m_TextVertexBuffer.Bind();
   m_TextVertexBuffer.CreateDefaultBinding(m_TextShader);
@@ -134,6 +142,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
 void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
 {
+  m_BufferBuilder.Reset();
   AddTextToBuffer(text, font_id, m_BufferBuilder, sel_start, sel_end, cursor_pos);
   RenderBuffer(m_BufferBuilder, render_state);
 }

@@ -15,6 +15,8 @@ class TextRenderer;
 class TextBackupFont;
 class TextInputContext;
 
+static const int kInvalidFontId = -1000000;
+
 enum class TextRenderMode
 {
   kNormal,
@@ -41,6 +43,8 @@ struct TextSettings
 class TextManager
 {
 public:
+
+  TextManager();
 
   void Init();
   void ShutDown();
