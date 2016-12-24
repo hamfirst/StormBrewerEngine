@@ -27,8 +27,8 @@ void TextManager::Init()
   m_TextShader = MakeQuickShaderProgram(kBasicTextVertexShader, kBasicTextFragmentShader);
 
 #ifdef _MSC_VER
-  LoadBackupFont("C:\\Windows\\Fonts\\arial.ttf");
-  LoadBackupFont("C:\\Windows\\Fonts\\gulim.ttc");
+  //LoadBackupFont("C:\\Windows\\Fonts\\arial.ttf");
+  //LoadBackupFont("C:\\Windows\\Fonts\\gulim.ttc");
 #endif
 
   SetTextMode();
@@ -87,6 +87,31 @@ void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & v
   font->CreateVertexBufferForString(text, strlen(text), sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
 }
 
+void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, TextBufferBuilder & vertex_builder, const char * prompt)
+{
+  std::string text = prompt;
+  std::size_t prompt_length = TextInputContext::GetMultibyteLength(prompt);
+  text += context->GetCurrentInput();
+
+  int cursor_pos = (int)(context->GetCursorPos() + prompt_length);
+
+  auto & compo = context->GetCurrentComposition();
+  std::size_t compo_size = context->GetMultibyteLength(compo.data());
+
+  double s;
+  bool show_cursor = std::modf(context->GetTimeSinceLastUpdate(), &s) <= 0.5;
+
+  if (compo_size)
+  {
+    text.insert(text.begin() + prompt_length + context->GetCharacterByteOffset(context->GetCursorPos()), compo.begin(), compo.end());
+    AddTextToBuffer(text.data(), font_id, vertex_builder, cursor_pos, (int)(cursor_pos + compo_size), show_cursor ? (int)(cursor_pos + compo_size) : -1);
+  }
+  else
+  {
+    AddTextToBuffer(text.data(), font_id, vertex_builder, -1, -1, cursor_pos);
+  }
+}
+
 void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state)
 {
   if (vertex_builder.m_FontId == kInvalidFontId)
@@ -120,7 +145,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   render_state.EnableBlendMode();
 
-  m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, vertex_builder.m_Indicies, VertexBufferType::kQuads);
+  m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kQuads);
 
   m_TextShader.Bind();
   m_TextVertexBuffer.Bind();
@@ -142,30 +167,16 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
 void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
 {
-  m_BufferBuilder.Reset();
-  AddTextToBuffer(text, font_id, m_BufferBuilder, sel_start, sel_end, cursor_pos);
-  RenderBuffer(m_BufferBuilder, render_state);
+  TextBufferBuilder buffer_builder;
+  AddTextToBuffer(text, font_id, buffer_builder, sel_start, sel_end, cursor_pos);
+  RenderBuffer(buffer_builder, render_state);
 }
 
-void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state)
+void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state, const char * prompt)
 {
-  std::string text = context->GetCurrentInput();
-
-  auto & compo = context->GetCurrentComposition();
-  std::size_t compo_size = context->GetMultibyteLength(compo.data());
-
-  double s;
-  int cursor_pos = std::modf(context->GetTimeSinceLastUpdate(), &s) <= 0.5 ? (int)context->GetCursorPos() : -1;
-
-  if (compo_size)
-  {
-    text.insert(text.begin() + context->GetCharacterByteOffset(context->GetCursorPos()), compo.begin(), compo.end());
-    RenderText(text.data(), font_id, render_state, (int)context->GetCursorPos(), (int)(context->GetCursorPos() + compo_size - 1), cursor_pos);
-  }
-  else
-  {
-    RenderText(text.data(), font_id, render_state, -1, -1, cursor_pos);
-  }
+  TextBufferBuilder buffer_builder;
+  AddTextToBuffer(context, font_id, buffer_builder, prompt);
+  RenderBuffer(buffer_builder, render_state);
 }
 
 Box TextManager::GetTextSize(czstr text, int font_id)

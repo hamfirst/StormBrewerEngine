@@ -8,11 +8,3 @@ TextBufferBuilder::TextBufferBuilder() :
 {
 
 }
-
-void TextBufferBuilder::Reset()
-{
-  m_Verts.clear();
-  m_Indicies.clear();
-
-  m_FontId = kInvalidFontId;
-}

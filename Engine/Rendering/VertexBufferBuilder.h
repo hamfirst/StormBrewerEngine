@@ -20,6 +20,8 @@ public:
   explicit QuadVertexBufferBuilder(std::size_t reserve_quads);
 
   void AddQuad(const QuadVertexBuilderInfo & quad);
+  void AddRepeatingQuad(const QuadVertexBuilderInfo & quad);
+
   VertexBuffer CreateVertexBuffer();
   VertexBuffer SliceVertexBuffer(const Box & bounds);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/Rendering/VertexDefinition.h"
+#include "Engine/Rendering/VertexList.h"
 
 struct GlyphInfo;
 
@@ -10,12 +11,10 @@ public:
   TextBufferBuilder();
 
   TextBufferBuilder(const TextBufferBuilder & rhs) = delete;
-  TextBufferBuilder(TextBufferBuilder && rhs) = default;
+  TextBufferBuilder(TextBufferBuilder && rhs) = delete;
 
   TextBufferBuilder & operator = (const TextBufferBuilder & rhs) = delete;
-  TextBufferBuilder & operator = (TextBufferBuilder && rhs) = default;
-
-  void Reset();
+  TextBufferBuilder & operator = (TextBufferBuilder && rhs) = delete;
 
 protected:
 
@@ -23,8 +22,7 @@ protected:
   friend class TextRenderer;
 
 private:
-  std::vector<VertexInfo> m_Verts;
-  std::vector<uint16_t> m_Indicies;
+  VertexList m_Verts;
 
   int m_FontId;
 };

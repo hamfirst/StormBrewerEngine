@@ -86,19 +86,19 @@ void TextRenderer::AddGlyphToBuffer(int x, int y, const GlyphInfo & glyph, const
 
   text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 2 : 0);
-  buffer.m_Verts.emplace_back(text_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+  buffer.m_Verts.AddVert(text_vert);
 
   text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 1);
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 0 : 1);
-  buffer.m_Verts.emplace_back(text_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+  buffer.m_Verts.AddVert(text_vert);
 
   text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 1 : 3);
-  buffer.m_Verts.emplace_back(text_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+  buffer.m_Verts.AddVert(text_vert);
 
   text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 2);
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 3 : 2);
-  buffer.m_Verts.emplace_back(text_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+  buffer.m_Verts.AddVert(text_vert);
 }
 
 void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, int sel_start, int sel_end, int cursor_pos,
@@ -124,6 +124,16 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
   std::size_t num_glyphs = to_next - wide_buffer;
   glyph_positions.reserve(num_glyphs);
 
+  int multiplier = 1;
+  if (settings.m_Mode == TextRenderMode::kShadowed)
+  {
+    multiplier = 2;
+  }
+  else if (settings.m_Mode == TextRenderMode::kOutlined)
+  {
+    multiplier = 9;
+  }
+
   for (uint16_t index = 0, glyph_index = 0; wide_buffer != to_next; wide_buffer++, glyph_index++)
   {
     if (*wide_buffer == '\n')
@@ -141,8 +151,12 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
       continue;
     }
 
-    AddGlyph(*wide_buffer);
     auto glyph_itr = m_GlyphMap.find(*wide_buffer);
+    if (glyph_itr == m_GlyphMap.end())
+    {
+      AddGlyph(*wide_buffer);
+      glyph_itr = m_GlyphMap.find(*wide_buffer);
+    }
 
     auto & glyph = glyph_itr->second;
 
@@ -167,16 +181,16 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
       VertexInfo sel_vert;
       sel_vert.m_Color = settings.m_SelectionBkgColor;
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
-      buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+      buffer.m_Verts.AddVert(sel_vert);
 
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 1);
-      buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+      buffer.m_Verts.AddVert(sel_vert);
 
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
-      buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+      buffer.m_Verts.AddVert(sel_vert);
 
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 2);
-      buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+      buffer.m_Verts.AddVert(sel_vert);
     }
     else
     {
@@ -242,16 +256,16 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
     sel_vert.m_TexCoord = {};
     sel_vert.m_Color = settings.m_PrimaryColor;
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
-    buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+    buffer.m_Verts.AddVert(sel_vert);
 
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 1);
-    buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+    buffer.m_Verts.AddVert(sel_vert);
 
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
-    buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+    buffer.m_Verts.AddVert(sel_vert);
 
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 2);
-    buffer.m_Verts.emplace_back(sel_vert); buffer.m_Indicies.push_back((uint16_t)buffer.m_Indicies.size());
+    buffer.m_Verts.AddVert(sel_vert);
   }
 }
 

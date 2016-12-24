@@ -4,6 +4,7 @@
 #include "Engine\Rendering\VertexDefinition.h"
 
 class ShaderProgram;
+class VertexList;
 
 class VertexBuffer
 {
@@ -19,7 +20,8 @@ public:
   void Move(VertexBuffer && rhs) noexcept;
   void Destroy();
 
-  void SetBufferData(const gsl::span<VertexInfo> & verts, const gsl::span<uint16_t> & indices, VertexBufferType type);
+  //void SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type);
+  void SetBufferData(const VertexList & list, VertexBufferType type);
   int GetLoadError() const { return m_LoadError; }
 
   void CreateDefaultBinding(const ShaderProgram & program) const;
@@ -34,7 +36,6 @@ private:
   uint32_t m_IndexCount;
 
   unsigned int m_VertexBufferName;
-  unsigned int m_IndexBufferName;
 
   int m_LoadError;
   bool m_Dynamic;

@@ -7,7 +7,8 @@
 
 TextInputContext::TextInputContext(uint32_t window_id) :
   m_WindowId(window_id),
-  m_LastModification(GetTimeSeconds())
+  m_LastModification(GetTimeSeconds()),
+  m_TimeCreated(m_LastModification)
 {
 
 }
@@ -21,6 +22,22 @@ void TextInputContext::Unbind()
 {
   g_WindowManager.ClearTextInputContext(m_WindowId, this);
 }
+
+void TextInputContext::SetEnterDelegate(const Delegate<void, const char *> & del)
+{
+  m_EnterDelegate = del;
+}
+
+void TextInputContext::SetEscapeDelegate(const Delegate<void, const char *> & del)
+{
+  m_EscapeDelegate = del;
+}
+
+void TextInputContext::SetTabDelegate(const Delegate<void, const char *> & del)
+{
+  m_TabDelegate = del;
+}
+
 
 bool TextInputContext::IsTextInputActive()
 {
@@ -101,6 +118,11 @@ std::size_t TextInputContext::GetMultibyteCharacterLength(czstr str)
 
 void TextInputContext::CommitInput(czstr input)
 {
+  if (GetTimeSeconds() - m_TimeCreated < 0.1f)
+  {
+    return;
+  }
+
   std::size_t num_characters = GetMultibyteLength(input);
 
   std::size_t insert_len = strlen(input);
@@ -144,7 +166,11 @@ void TextInputContext::HandleKeyPressEvent(int key_sym)
   }
   else if (key_sym == SDLK_BACKSPACE)
   {
-    HandlBackspacePressed();
+    HandleBackspacePressed();
+  }
+  else if (key_sym == SDLK_DELETE)
+  {
+    HandleDeletePressed();
   }
   else if (key_sym == SDLK_TAB)
   {
@@ -168,24 +194,41 @@ void TextInputContext::HandleKeyPressEvent(int key_sym)
       m_CursorPos++;
     }
   }
+  else if (key_sym == SDLK_HOME)
+  {
+    HandleHomePressed();
+  }
+  else if (key_sym == SDLK_END)
+  {
+    HandleEndPressed();
+  }
 }
 
 void TextInputContext::HandleEnterPressed()
 {
-
+  if (m_EnterDelegate)
+  {
+    m_EnterDelegate(m_Text.data());
+  }
 }
 
 void TextInputContext::HandleEscapePressed()
 {
-
+  if (m_EscapeDelegate)
+  {
+    m_EscapeDelegate(m_Text.data());
+  }
 }
 
 void TextInputContext::HandleTabPressed()
 {
-
+  if (m_TabDelegate)
+  {
+    m_TabDelegate(m_Text.data());
+  }
 }
 
-void TextInputContext::HandlBackspacePressed()
+void TextInputContext::HandleBackspacePressed()
 {
   if (m_CursorPos == 0)
   {
@@ -216,5 +259,46 @@ void TextInputContext::HandlBackspacePressed()
     itr->first -= character_len;
     itr->second -= character_len;
   }
+}
+
+void TextInputContext::HandleDeletePressed()
+{
+  if (m_CharacterPositions.size() == 0)
+  {
+    return;
+  }
+
+  if (m_Composition.size() != 0)
+  {
+    return;
+  }
+
+  if (m_CursorPos >= m_CharacterPositions.size())
+  {
+    return;
+  }
+
+  auto slice = m_CharacterPositions[m_CursorPos];
+  m_CharacterPositions.erase(m_CharacterPositions.begin() + m_CursorPos);
+
+  m_Text.erase(m_Text.begin() + slice.first, m_Text.begin() + slice.second);
+
+  auto character_len = slice.second - slice.first;
+
+  for (auto itr = m_CharacterPositions.begin() + m_CursorPos, end = m_CharacterPositions.end(); itr != end; ++itr)
+  {
+    itr->first -= character_len;
+    itr->second -= character_len;
+  }
+}
+
+void TextInputContext::HandleHomePressed()
+{
+  m_CursorPos = 0;
+}
+
+void TextInputContext::HandleEndPressed()
+{
+  m_CursorPos = m_CharacterPositions.size();
 }
 

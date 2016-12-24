@@ -1,6 +1,7 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
+#include "Engine/Rendering/VertexList.h"
 
 QuadVertexBufferBuilder::QuadVertexBufferBuilder(std::size_t reserve_quads)
 {
@@ -12,10 +13,45 @@ void QuadVertexBufferBuilder::AddQuad(const QuadVertexBuilderInfo & quad)
   m_Quads.push_back(quad);
 }
 
+void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & quad)
+{
+  auto start_x = quad.m_Position.m_Start.x;
+  auto tile_size = quad.m_TexCoords.m_End - quad.m_TexCoords.m_Start;
+  
+  int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x;
+  int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y;
+
+  QuadVertexBuilderInfo result_quad = quad;
+
+  int y = quad.m_Position.m_Start.y;
+  while (height > 0)
+  {
+    int width_copy = width;
+    int x = start_x;
+
+    int tile_height = std::min(height, (int)tile_size.y);
+
+    while (width_copy > 0)
+    {
+      int tile_width = std::min(width_copy, (int)tile_size.x);
+
+      result_quad.m_Position.m_Start = Vector2(x, y);
+      result_quad.m_Position.m_End = result_quad.m_Position.m_Start + Vector2(tile_width, tile_height);
+      result_quad.m_TexCoords.m_End = result_quad.m_TexCoords.m_Start + Vector2(tile_width, tile_height);
+      m_Quads.push_back(result_quad);
+
+      width_copy -= tile_width;
+      x += tile_width;
+    }
+
+    height -= tile_height;
+    y += tile_height;
+  }
+}
+
 VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
+  VertexList verts;
 
   // 0 = 00
   // 1 = 01
@@ -32,20 +68,18 @@ VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
       vert_info.m_TexCoord /= static_cast<RenderVec2>(quad.m_TextureSize);
       vert_info.m_Color = quad.m_Color;
 
-      indices.push_back((uint16_t)verts.size());
-      verts.push_back(vert_info);
+      verts.AddVert(vert_info);
     }
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
   return vertex_buffer;
 }
 
 VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
+  VertexList verts;
 
   for (auto & quad : m_Quads)
   {
@@ -68,23 +102,19 @@ VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
         vert_info.m_TexCoord /= static_cast<RenderVec2>(clipped_vert_data.m_TextureSize);
         vert_info.m_Color = clipped_vert_data.m_Color;
 
-        indices.push_back((uint16_t)verts.size());
-        verts.push_back(vert_info);
+        verts.AddVert(vert_info);
       }
     }
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
   return vertex_buffer;
 }
 
 void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
-
-  uint16_t vert_index = 0;
+  VertexList verts;
 
   for (auto & quad : m_Quads)
   {
@@ -96,14 +126,11 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
       vert_info.m_TexCoord /= static_cast<RenderVec2>(quad.m_TextureSize);
       vert_info.m_Color = quad.m_Color;
 
-      indices.push_back(vert_index);
-      verts.push_back(vert_info);
-
-      vert_index++;
+      verts.AddVert(vert_info);
     }
   }
 
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
 }
 
 PointVertexBufferBuilder::PointVertexBufferBuilder(std::size_t reserve_points)
@@ -118,8 +145,7 @@ void PointVertexBufferBuilder::AddPoint(const PointVertexBuilderInfo & point)
 
 VertexBuffer PointVertexBufferBuilder::CreateVertexBuffer()
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
+  VertexList verts;
 
   for (auto & point : m_Points)
   {
@@ -139,19 +165,17 @@ VertexBuffer PointVertexBufferBuilder::CreateVertexBuffer()
 
     vert_info.m_Color = point.m_Color;
 
-    indices.push_back((uint16_t)verts.size());
-    verts.push_back(vert_info);
+    verts.AddVert(vert_info);
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kPoints);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kPoints);
   return vertex_buffer;
 }
 
 VertexBuffer PointVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
+  VertexList verts;
 
   for (auto & point : m_Points)
   {
@@ -163,20 +187,18 @@ VertexBuffer PointVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
       vert_info.m_TexCoord /= static_cast<RenderVec2>(point.m_TextureSize);
       vert_info.m_Color = point.m_Color;
 
-      indices.push_back((uint16_t)verts.size());
-      verts.push_back(vert_info);
+      verts.AddVert(vert_info);
     }
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kPoints);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kPoints);
   return vertex_buffer;
 }
 
 void PointVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
-  std::vector<VertexInfo> verts;
-  std::vector<uint16_t> indices;
+  VertexList verts;
 
   for (auto & point : m_Points)
   {
@@ -186,9 +208,8 @@ void PointVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
     vert_info.m_TexCoord /= static_cast<RenderVec2>(point.m_TextureSize);
     vert_info.m_Color = point.m_Color;
 
-    indices.push_back((uint16_t)verts.size());
-    verts.push_back(vert_info);
+    verts.AddVert(vert_info);
   }
 
-  vertex_buffer.SetBufferData(verts, indices, VertexBufferType::kPoints);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kPoints);
 }

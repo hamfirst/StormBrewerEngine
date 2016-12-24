@@ -387,6 +387,11 @@ void WebSocket::SendPacket(const Buffer & buffer, WebSocketPacketType type)
   SendPacket(buffer.Get(), buffer.GetSize(), type);
 }
 
+void WebSocket::SendPacket(const std::string & data, WebSocketPacketType type)
+{
+  SendPacket(data.data(), data.size(), type);
+}
+
 void WebSocket::SendPacket(const void * data, std::size_t data_len, WebSocketPacketType type)
 {
   std::size_t header_len = 6;

@@ -99,7 +99,7 @@ void File::Read(gsl::span<uint8_t> & buffer, std::size_t read_amount)
 #endif
 }
 
-void File::Write(const gsl::span<uint8_t> & buffer, std::size_t write_amount)
+void File::Write(const gsl::span<const uint8_t> & buffer, std::size_t write_amount)
 {
   if (m_FileData.m_File == nullptr)
   {
@@ -107,6 +107,16 @@ void File::Write(const gsl::span<uint8_t> & buffer, std::size_t write_amount)
   }
 
   fwrite(buffer.data(), 1, write_amount, m_FileData.m_File);
+}
+
+void File::Write(const std::string & str)
+{
+  if (m_FileData.m_File == nullptr)
+  {
+    return;
+  }
+
+  fwrite(str.data(), 1, str.length(), m_FileData.m_File);
 }
 
 Buffer File::ReadFileFull()

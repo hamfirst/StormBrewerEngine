@@ -76,9 +76,20 @@ struct Vector2
     return Vector2(x / rhs.x, y / rhs.y);
   }
 
+  Vector2 operator / (int factor) const
+  {
+    return Vector2(x / factor, y / factor);
+  }
+
   Vector2 & operator /= (const Vector2 & rhs)
   {
     x /= rhs.x; y /= rhs.y;
+    return *this;
+  }
+
+  Vector2 operator /= (int factor)
+  {
+    x /= factor; y /= factor;
     return *this;
   }
 
@@ -106,6 +117,12 @@ struct Box
   Vector2 Size()
   {
     return m_End - m_Start;
+  }
+
+  Vector2 Center()
+  {
+    auto size = Size();
+    return m_Start + size / 2;
   }
 };
 

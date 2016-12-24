@@ -28,9 +28,15 @@ struct WindowManager::WindowState
 };
 
 
-Window WindowManager::CreateNewWindow(czstr title, int width, int height)
+Window WindowManager::CreateNewWindow(czstr title, int width, int height, bool fullscreen)
 {
-  auto sdl_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  auto flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+  if (fullscreen)
+  {
+    flags |= SDL_WINDOW_FULLSCREEN;
+  }
+
+  auto sdl_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   if (sdl_window == nullptr)
   {
     return{};
@@ -93,7 +99,6 @@ void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int 
   if (window.m_TextInputContext && pressed)
   {
     window.m_TextInputContext->HandleKeyPressEvent(key_code);
-    pressed = false;
   }
 
   window.m_InputState->HandleKeyPressMessage(scan_code, pressed);
@@ -153,7 +158,9 @@ void WindowManager::SetWindowPos(uint32_t window_id, const Vector2 & pos)
   auto itr = m_Windows.find(window_id);
   if (itr == m_Windows.end()) return;
   WindowState & window = itr->second;
+  auto size = window.m_WindowGeo.m_End - window.m_WindowGeo.m_Start;
   window.m_WindowGeo.m_Start = pos;
+  window.m_WindowGeo.m_End = pos + size;
 }
 
 void WindowManager::SetWindowSize(uint32_t window_id, const Vector2 & size)

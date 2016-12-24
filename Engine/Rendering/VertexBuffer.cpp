@@ -1,6 +1,7 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/VertexBuffer.h"
+#include "Engine/Rendering/VertexList.h"
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/RenderErrorMacros.h"
 
@@ -10,7 +11,6 @@
 VertexBuffer::VertexBuffer(bool dynamic)
 {
   m_VertexBufferName = 0;
-  m_IndexBufferName = 0;
   m_LoadError = 0;
   m_Type = VertexBufferType::kInvalid;
   m_IndexCount = 0;
@@ -37,14 +37,12 @@ VertexBuffer & VertexBuffer::operator = (VertexBuffer && rhs) noexcept
 void VertexBuffer::Move(VertexBuffer && rhs) noexcept
 {
   m_VertexBufferName = rhs.m_VertexBufferName;
-  m_IndexBufferName = rhs.m_IndexBufferName;
   m_LoadError = rhs.m_LoadError;
   m_Type = rhs.m_Type;
   m_IndexCount = rhs.m_IndexCount;
   m_Dynamic = rhs.m_Dynamic;
 
   rhs.m_VertexBufferName = 0;
-  rhs.m_IndexBufferName = 0;
   rhs.m_LoadError = 0;
   rhs.m_Type = VertexBufferType::kInvalid;
   rhs.m_IndexCount = 0;
@@ -58,41 +56,45 @@ void VertexBuffer::Destroy()
     m_VertexBufferName = 0;
   }
 
-  if (m_IndexBufferName != 0)
-  {
-    glDeleteBuffers(1, &m_IndexBufferName);
-    m_IndexBufferName = 0;
-  }
-
   m_LoadError = 0;
   m_Type = VertexBufferType::kInvalid;
   m_IndexCount = 0;
 }
 
-void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, const gsl::span<uint16_t> & indices, VertexBufferType type)
+//void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type)
+//{
+//  if (m_VertexBufferName == 0)
+//  {
+//    glGenBuffers(1, &m_VertexBufferName); CHECK_GL_RENDER_ERROR;
+//  }
+//
+//  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
+//  glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * verts.size(), verts.data(), m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
+//  glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
+//
+//  m_Type = type;
+//  m_IndexCount = (int)verts.size();
+//}
+
+void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
 {
+  if (list.m_Size == 0)
+  {
+    return;
+  }
+  
   if (m_VertexBufferName == 0)
   {
     glGenBuffers(1, &m_VertexBufferName); CHECK_GL_RENDER_ERROR;
   }
-
+  
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
-  glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * verts.size(), verts.data(), m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
+  glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * list.m_Size, list.m_Verts, m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
   glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
-
+  
   m_Type = type;
-  m_IndexCount = (uint32_t)indices.size();
-
-  if (m_IndexBufferName == 0)
-  {
-    glGenBuffers(1, &m_IndexBufferName); CHECK_GL_RENDER_ERROR;
-  }
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferName); CHECK_GL_RENDER_ERROR;
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint16_t), indices.data(), m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
+  m_IndexCount = (int)list.m_Size;
 }
-
 
 void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program) const
 {
@@ -121,7 +123,7 @@ void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program) const
 
 void VertexBuffer::Draw(int index_start, int index_end) const
 {
-  if (m_IndexBufferName == 0 || m_LoadError != 0)
+  if (m_VertexBufferName == 0 || m_LoadError != 0)
   {
     return;
   }
@@ -151,17 +153,15 @@ void VertexBuffer::Draw(int index_start, int index_end) const
     index_end = m_IndexCount;
   }
 
-  glDrawElements(mode, (index_end - index_start), GL_UNSIGNED_SHORT, (void *)(index_start * 2)); CHECK_GL_RENDER_ERROR;
+  glDrawArrays(mode, index_start, (index_end - index_start)); CHECK_GL_RENDER_ERROR;
 }
 
 void VertexBuffer::Bind() const
 {
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferName); CHECK_GL_RENDER_ERROR;
 }
 
 void VertexBuffer::Unbind() const
 {
   glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
 }

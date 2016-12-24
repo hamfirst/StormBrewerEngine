@@ -38,6 +38,7 @@ public:
   Optional<WebsocketPacket> PollPacket();
 
   void SendPacket(const Buffer & buffer, WebSocketPacketType type);
+  void SendPacket(const std::string & data, WebSocketPacketType type);
   void SendPacket(const void * data, std::size_t data_len, WebSocketPacketType type);
 
   void SendString(const std::string & str);

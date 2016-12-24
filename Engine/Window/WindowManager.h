@@ -9,7 +9,7 @@ class WindowManager
 {
 public:
 
-  Window CreateNewWindow(czstr title, int width, int height);
+  Window CreateNewWindow(czstr title, int width, int height, bool fullscreen = false);
 
 private:
 

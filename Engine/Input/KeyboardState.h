@@ -23,6 +23,7 @@ public:
   void HandleKeyPressMessage(int scan_code, bool pressed);
 
   static czstr GetKeyNameForScanCode(int scan_code);
+  static int ScanCodeFromJavascriptCode(int javascript_key_code);
 
 protected:
 

@@ -53,10 +53,11 @@ public:
   bool IsFontLoaded(int font_id);
 
   void AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, TextBufferBuilder & vertex_builder, const char * prompt = "");
   void RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state);
 
   void RenderText(czstr text, int font_id, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
-  void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state);
+  void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state, const char * prompt = "");
 
   Box GetTextSize(czstr text, int font_id);
 
@@ -85,8 +86,6 @@ private:
 
   ShaderProgram m_TextShader;
   VertexBuffer m_TextVertexBuffer;
-
-  TextBufferBuilder m_BufferBuilder;
 };
 
 extern TextManager g_TextManager;

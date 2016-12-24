@@ -104,7 +104,6 @@ void AssetLoader::ProcessResponses()
   }
 }
 
-
 Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path)
 {
   int file_open_error = 0;

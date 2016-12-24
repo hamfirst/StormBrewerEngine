@@ -14,6 +14,10 @@ public:
   void MakeCurrent(NullOptPtr<Box> input_box);
   void Unbind();
 
+  void SetEnterDelegate(const Delegate<void, const char *> & del);
+  void SetEscapeDelegate(const Delegate<void, const char *> & del);
+  void SetTabDelegate(const Delegate<void, const char *> & del);
+
   bool IsTextInputActive();
   double GetTimeSinceLastUpdate();
 
@@ -41,8 +45,12 @@ private:
   void HandleEnterPressed();
   void HandleEscapePressed();
   void HandleTabPressed();
-  void HandlBackspacePressed();
+  void HandleBackspacePressed();
+  void HandleDeletePressed();
+  void HandleHomePressed();
+  void HandleEndPressed();
 
+private:
 
   bool m_AllowNewLine;
 
@@ -53,6 +61,11 @@ private:
 
   uint32_t m_WindowId;
   double m_LastModification;
+  double m_TimeCreated;
 
   std::vector<std::pair<std::size_t, std::size_t>> m_CharacterPositions;
+
+  Delegate<void, const char *> m_EnterDelegate;
+  Delegate<void, const char *> m_EscapeDelegate;
+  Delegate<void, const char *> m_TabDelegate;
 };

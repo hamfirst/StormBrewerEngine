@@ -156,7 +156,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
       std::size_t available_data = audio_spec.m_AudioBufferSize - audio_spec.m_AudioPos;
       if (available_data == 0)
       {
-        if (audio_spec.m_Looping == false)
+        if (audio_spec.m_Looping == false || audio_spec.m_AudioBufferSize == 0)
         {
           return false;
         }

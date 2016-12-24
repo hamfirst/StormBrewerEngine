@@ -82,7 +82,7 @@ public:
     m_Valid = false;
   }
 
-  operator bool()
+  operator bool() const
   {
     return m_Valid;
   }
