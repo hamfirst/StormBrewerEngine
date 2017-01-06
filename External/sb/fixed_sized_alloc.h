@@ -48,7 +48,7 @@ public:
 
     try
     {
-      Type * t = new (m_Head) Type(std::forward<InitArgs>(args)...);
+      Type * t = new (ptr) Type(std::forward<InitArgs>(args)...);
       return t;
     }
     catch (...)

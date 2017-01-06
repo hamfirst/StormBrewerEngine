@@ -226,7 +226,7 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
     x += glyph.m_Advance;
   }
 
-  if (cursor_pos >= 0 && cursor_pos <= glyph_positions.size())
+  if (cursor_pos >= 0 && cursor_pos <= (int)glyph_positions.size())
   {
     Vector2 start_pos;
     Vector2 end_pos;
@@ -236,7 +236,7 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
       start_pos = Vector2(x, y + ascender);
       end_pos = Vector2(x + 1, y + descender);
     }
-    else if (cursor_pos < glyph_positions.size())
+    else if (cursor_pos < (int)glyph_positions.size())
     {
       start_pos = glyph_positions[cursor_pos].m_Start;
       end_pos = glyph_positions[cursor_pos].m_End;

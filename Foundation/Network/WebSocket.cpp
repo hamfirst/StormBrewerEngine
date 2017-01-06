@@ -17,8 +17,7 @@
 static void CloseSocket(volatile int & sock)
 {
 #ifdef _MSC_VER
-  int status = shutdown(sock, SD_BOTH);
-  if (status == 0) { status = closesocket(sock); }
+  closesocket(sock);
 #else
   int status = shutdown(sock, SHUT_RDWR);
   if (status == 0) { status = close(sock); }
@@ -84,6 +83,8 @@ WebSocket::WebSocket(WebSocket && rhs) noexcept
 
 WebSocket & WebSocket::operator = (WebSocket && rhs) noexcept
 {
+  Close();
+
   m_Socket = rhs.m_Socket;
   m_RemainderBuffer = std::move(rhs.m_RemainderBuffer);
   m_RemainderBufferPos = rhs.m_RemainderBufferPos;
@@ -107,6 +108,9 @@ bool WebSocket::Connect(const char * host, int port, const char * uri, const cha
   serv_addr.sin_family = AF_INET;
   memcpy(&serv_addr.sin_addr, host_info->h_addr, host_info->h_length);
   serv_addr.sin_port = htons(port);
+
+  int one = 1;
+  int return_val = setsockopt(m_Socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&one, sizeof(one));
 
   if (timeout == 0)
   {
@@ -132,8 +136,8 @@ bool WebSocket::Connect(const char * host, int port, const char * uri, const cha
     FD_SET(m_Socket, &fdset);
 
     timeval tv;
-    tv.tv_sec = 0;             /* 10 second timeout */
-    tv.tv_usec = timeout * 1000;
+    tv.tv_sec = timeout / 1000;
+    tv.tv_usec = (timeout % 1000) * 1000;
 
     if (select(m_Socket + 1, NULL, &fdset, NULL, &tv) == 1)
     {
@@ -328,8 +332,8 @@ Optional<WebsocketPacket> WebSocket::RecvPacket()
     }
   }
 
-  Buffer packet_buffer(len);
-  if (RecvData(packet_buffer.Get(), len) == false)
+  Buffer packet_buffer((std::size_t)len);
+  if (RecvData(packet_buffer.Get(), (std::size_t)len) == false)
   {
     return{};
   }
@@ -401,7 +405,7 @@ void WebSocket::SendPacket(const void * data, std::size_t data_len, WebSocketPac
   }
   else if(data_len > 125)
   {
-    header_len = 10;
+    header_len = 8;
   }
 
   Buffer send_buffer(header_len + data_len);
@@ -416,7 +420,7 @@ void WebSocket::SendPacket(const void * data, std::size_t data_len, WebSocketPac
   
   if (data_len > 65535)
   {
-    *header |= 126;
+    *header |= 127;
     header++;
 
     uint64_t * len_ptr = (uint64_t *)header;
@@ -426,7 +430,7 @@ void WebSocket::SendPacket(const void * data, std::size_t data_len, WebSocketPac
   }
   else if (data_len > 125)
   {
-    *header |= 125;
+    *header |= 126;
     header++;
 
     uint16_t * len_ptr = (uint16_t *)header;

@@ -8,6 +8,7 @@
 template <>
 struct StormReflTypeInfo<Vector2>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -64,6 +65,7 @@ struct StormReflTypeInfo<Vector2>::field_data<1, Self> : public StormReflTypeInf
 template <>
 struct StormReflTypeInfo<Box>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -120,6 +122,7 @@ struct StormReflTypeInfo<Box>::field_data<1, Self> : public StormReflTypeInfo<Bo
 template <>
 struct StormReflTypeInfo<Color>
 {
+  using MyBase = void;
   static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

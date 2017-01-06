@@ -8,6 +8,7 @@
 template <>
 struct StormReflTypeInfo<DocumentSchemaError>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -86,6 +87,7 @@ struct StormReflTypeInfo<DocumentSchemaError>::field_data<2, Self> : public Stor
 template <>
 struct StormReflTypeInfo<DocumentLink>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

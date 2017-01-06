@@ -8,6 +8,7 @@
 template <>
 struct StormReflTypeInfo<SubType>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -42,6 +43,7 @@ struct StormReflTypeInfo<SubType>::field_data<0, Self> : public StormReflTypeInf
 template <>
 struct StormReflTypeInfo<TestType>
 {
+  using MyBase = void;
   static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

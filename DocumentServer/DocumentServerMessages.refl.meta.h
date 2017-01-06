@@ -161,6 +161,7 @@ struct StormReflEnumInfo<DocumentServerMessageType>::elems<17>
 template <>
 struct StormReflTypeInfo<DocumentServerMessageState>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -239,6 +240,7 @@ struct StormReflTypeInfo<DocumentServerMessageState>::field_data<2, Self> : publ
 template <>
 struct StormReflTypeInfo<DocumentServerMessageInitComplete>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -273,6 +275,7 @@ struct StormReflTypeInfo<DocumentServerMessageInitComplete>::field_data<0, Self>
 template <>
 struct StormReflTypeInfo<DocumentServerMessageCreateRequest>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -351,6 +354,7 @@ struct StormReflTypeInfo<DocumentServerMessageCreateRequest>::field_data<2, Self
 template <>
 struct StormReflTypeInfo<DocumentServerMessageCreateError>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -429,6 +433,7 @@ struct StormReflTypeInfo<DocumentServerMessageCreateError>::field_data<2, Self> 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageOpenRequest>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -485,6 +490,7 @@ struct StormReflTypeInfo<DocumentServerMessageOpenRequest>::field_data<1, Self> 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageOpenError>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -563,6 +569,7 @@ struct StormReflTypeInfo<DocumentServerMessageOpenError>::field_data<2, Self> : 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageOpen>
 {
+  using MyBase = void;
   static constexpr int fields_n = 6;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -707,6 +714,7 @@ struct StormReflTypeInfo<DocumentServerMessageOpen>::field_data<5, Self> : publi
 template <>
 struct StormReflTypeInfo<DocumentServerMessageFinalizeRequest>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -785,6 +793,7 @@ struct StormReflTypeInfo<DocumentServerMessageFinalizeRequest>::field_data<2, Se
 template <>
 struct StormReflTypeInfo<DocumentServerMessageFinalizeResponse>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -863,6 +872,7 @@ struct StormReflTypeInfo<DocumentServerMessageFinalizeResponse>::field_data<2, S
 template <>
 struct StormReflTypeInfo<DocumentServerMessageSetEditorData>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -919,6 +929,7 @@ struct StormReflTypeInfo<DocumentServerMessageSetEditorData>::field_data<1, Self
 template <>
 struct StormReflTypeInfo<DocumentServerMessageChangeRequest>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -975,6 +986,7 @@ struct StormReflTypeInfo<DocumentServerMessageChangeRequest>::field_data<1, Self
 template <>
 struct StormReflTypeInfo<DocumentServerMessageApplyChange>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1053,6 +1065,7 @@ struct StormReflTypeInfo<DocumentServerMessageApplyChange>::field_data<2, Self> 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageChangeState>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1109,6 +1122,7 @@ struct StormReflTypeInfo<DocumentServerMessageChangeState>::field_data<1, Self> 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageUndo>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1143,6 +1157,7 @@ struct StormReflTypeInfo<DocumentServerMessageUndo>::field_data<0, Self> : publi
 template <>
 struct StormReflTypeInfo<DocumentServerMessageRedo>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1177,6 +1192,7 @@ struct StormReflTypeInfo<DocumentServerMessageRedo>::field_data<0, Self> : publi
 template <>
 struct StormReflTypeInfo<DocumentServerMessageSave>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1211,6 +1227,7 @@ struct StormReflTypeInfo<DocumentServerMessageSave>::field_data<0, Self> : publi
 template <>
 struct StormReflTypeInfo<DocumentServerMessageSaveError>
 {
+  using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -1267,6 +1284,7 @@ struct StormReflTypeInfo<DocumentServerMessageSaveError>::field_data<1, Self> : 
 template <>
 struct StormReflTypeInfo<DocumentServerMessageClose>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

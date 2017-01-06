@@ -27,3 +27,8 @@ static inline Vector2f SinCosf(float angle)
   return Vector2f{ cos(angle), sin(angle) };
 }
 
+static inline float WrapAngle(float angle)
+{
+  float n_angle = angle / k2Pi;
+  return (n_angle - floorf(n_angle)) * k2Pi;
+}

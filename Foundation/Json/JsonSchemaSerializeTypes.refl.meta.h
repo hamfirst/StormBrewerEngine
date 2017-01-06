@@ -8,6 +8,7 @@
 template <>
 struct StormReflTypeInfo<JsonSchemaSerializeInfo>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -86,6 +87,7 @@ struct StormReflTypeInfo<JsonSchemaSerializeInfo>::field_data<2, Self> : public 
 template <>
 struct StormReflTypeInfo<JsonSchemaSerializeChildList>
 {
+  using MyBase = void;
   static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
@@ -120,6 +122,7 @@ struct StormReflTypeInfo<JsonSchemaSerializeChildList>::field_data<0, Self> : pu
 template <>
 struct StormReflTypeInfo<JsonSchemaSerializeMessage>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

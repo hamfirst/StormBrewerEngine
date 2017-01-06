@@ -8,6 +8,7 @@
 template <>
 struct StormReflTypeInfo<EngineSettings>
 {
+  using MyBase = void;
   static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};

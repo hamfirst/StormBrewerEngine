@@ -71,6 +71,16 @@ public:
     Clear();
   }
 
+  template <typename ... Args>
+  T & Emplace(Args && ... args)
+  {
+    Clear();
+
+    T * src  = new(m_Buffer) T(std::forward<Args>(args)...);
+    m_Valid = true;
+    return *src;
+  }
+
   void Clear()
   {
     if (m_Valid)
