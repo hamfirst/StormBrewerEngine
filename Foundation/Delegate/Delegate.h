@@ -11,7 +11,6 @@ class DelegateDeleter
 public:
   static void DeleteObj(void * obj)
   {
-
   }
 };
 
@@ -24,6 +23,24 @@ public:
     using CallableDeref = std::remove_reference_t<Callable>;
     CallableDeref * callable = static_cast<CallableDeref *>(obj);
     callable->~CallableDeref();
+  }
+};
+
+template <typename ReturnType>
+struct DelegateReturnEmpty
+{
+  static ReturnType Process()
+  {
+    throw std::runtime_error("Calling unset delegate");
+  }
+};
+
+template <>
+struct DelegateReturnEmpty<void>
+{
+  static void Process()
+  {
+
   }
 };
 
@@ -214,7 +231,7 @@ public:
   {
     if (m_Valid == false)
     {
-      throw std::runtime_error("Calling unset delegate");
+      return DelegateReturnEmpty<ReturnType>::Process();
     }
 
     return m_Caller(m_Buffer, std::forward<Args>(args)...);

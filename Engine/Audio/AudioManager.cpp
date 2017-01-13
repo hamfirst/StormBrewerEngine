@@ -180,7 +180,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           float * sample_ptr = (float *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += *sample_ptr * volume * l_pan;
             sample_ptr++; output_ptr++;
@@ -198,7 +198,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           int16_t * sample_ptr = (int16_t *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
             sample_ptr++; output_ptr++;
@@ -216,7 +216,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           int8_t * sample_ptr = (int8_t *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
             sample_ptr++; output_ptr++;
@@ -237,7 +237,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           float * sample_ptr = (float *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += *sample_ptr * volume * l_pan;
             output_ptr++;
@@ -255,7 +255,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           int16_t * sample_ptr = (int16_t *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
             output_ptr++;
@@ -273,7 +273,7 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           std::size_t output_samples = std::min(available_samples, write_samples);
 
           int8_t * sample_ptr = (int8_t *)audio_start;
-          for (int sample = 0; sample < output_samples; sample++)
+          for (int sample = 0; sample < (int)output_samples; sample++)
           {
             *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
             output_ptr++;
