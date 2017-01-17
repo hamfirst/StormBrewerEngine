@@ -114,12 +114,12 @@ struct Box
   Vector2 m_Start;
   Vector2 m_End;
 
-  Vector2 Size()
+  Vector2 Size() const
   {
     return m_End - m_Start;
   }
 
-  Vector2 Center()
+  Vector2 Center() const
   {
     auto size = Size();
     return m_Start + size / 2;

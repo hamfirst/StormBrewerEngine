@@ -113,6 +113,15 @@ void WindowManager::HandleMouseButtonPressMessage(uint32_t window_id, int button
   window.m_InputState->HandleMouseButtonPressMessage(button, pressed, window.m_MouseFocus);
 }
 
+void WindowManager::HandleMouseMotionMessage(uint32_t window_id, int x, int y)
+{
+  auto itr = m_Windows.find(window_id);
+  if (itr == m_Windows.end()) return;
+  WindowState & window = itr->second;
+
+  window.m_InputState->HandleMouseMoveMessage(x, y, window.m_WindowGeo, window.m_MouseFocus);
+}
+
 void WindowManager::HandleTextInputCommit(uint32_t window_id, czstr character)
 {
   auto itr = m_Windows.find(window_id);
@@ -206,6 +215,22 @@ void WindowManager::Swap(uint32_t window_id)
   else
   {
     window.m_FakeWindow->m_SwapDelegate();
+  }
+}
+
+void WindowManager::SetMousePos(uint32_t window_id, int x, int y)
+{
+  auto itr = m_Windows.find(window_id);
+  if (itr == m_Windows.end()) return;
+  WindowState & window = itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    SDL_WarpMouseInWindow(window.m_SDLWindow, x, y);
+  }
+  else
+  {
+    window.m_FakeWindow->m_SetMousePosDelegate(x, y);
   }
 }
 

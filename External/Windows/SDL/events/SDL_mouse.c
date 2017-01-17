@@ -583,6 +583,11 @@ SDL_SetRelativeMouseMode(SDL_bool enabled)
          */
         SDL_SetMouseFocus(focusWindow);
         SDL_WarpMouseInWindow(focusWindow, focusWindow->w/2, focusWindow->h/2);
+
+        mouse->x = focusWindow->w / 2;
+        mouse->y = focusWindow->h / 2;
+        mouse->last_x = mouse->x;
+        mouse->last_y = mouse->y;
     }
 
     /* Set the relative mode */

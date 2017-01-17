@@ -19,6 +19,8 @@ public:
   void MakeCurrent() const;
   void Swap() const;
 
+  void SetMousePos(int x, int y) const;
+
   NullOptPtr<InputState> GetInputState() const;
   std::shared_ptr<TextInputContext> CreateTextInputContext();
 

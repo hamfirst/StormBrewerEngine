@@ -71,6 +71,16 @@ void Window::Swap() const
   g_WindowManager.Swap(m_WindowId);
 }
 
+void Window::SetMousePos(int x, int y) const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.SetMousePos(m_WindowId, x, y);
+}
+
 NullOptPtr<InputState> Window::GetInputState() const
 {
   if (m_WindowId == 0)

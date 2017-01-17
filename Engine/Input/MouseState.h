@@ -30,6 +30,7 @@ public:
 
   static bool GetCursorVisibility();
   static void SetCursorVisibility(bool visible);
+  static void LockMouseToWindow(bool enable);
 
 protected:
 

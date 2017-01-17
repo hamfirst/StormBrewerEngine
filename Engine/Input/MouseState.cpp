@@ -22,11 +22,14 @@ void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus)
 
   bool in_window = PointInBox(window_geo, Vector2(x, y));
 
-  int height = window_geo.m_End.y - window_geo.m_Start.y;
-  PointerState cur_state = { {x, height - y}, in_focus };
-  m_PointerBinding.SetControlValue(cur_state);
+  if (SDL_GetRelativeMouseMode() == SDL_FALSE)
+  {
+    int height = window_geo.m_End.y - window_geo.m_Start.y;
+    PointerState cur_state = { { x, height - y }, in_focus };
 
-  m_PointerState = cur_state;
+    m_PointerBinding.SetControlValue(cur_state);
+    m_PointerState = cur_state;
+  }
 
   for (int index = 1; index < kNumMouseButtons; index++)
   {
@@ -85,11 +88,22 @@ void MouseState::HandleButtonPressMessage(int button, bool pressed)
 
 void MouseState::HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus)
 {
-  int height = window_geo.m_End.y - window_geo.m_Start.y;
-  PointerState cur_state = { { x, height - y }, in_focus };
-  m_PointerBinding.SetControlValue(cur_state);
+  if (SDL_GetRelativeMouseMode() == SDL_TRUE)
+  {
+    int height = window_geo.m_End.y - window_geo.m_Start.y;
 
-  m_PointerState = cur_state;
+    PointerState cur_state = { { x, height - y }, in_focus };
+    m_PointerBinding.SetControlValue(cur_state);
+    m_PointerState = cur_state;
+  }
+  else
+  {
+    int height = window_geo.m_End.y - window_geo.m_Start.y;
+    PointerState cur_state = { { x, height - y }, in_focus };
+    m_PointerBinding.SetControlValue(cur_state);
+    m_PointerState = cur_state;
+  }
+
 }
 
 bool MouseState::GetButtonState(int button)
@@ -125,4 +139,9 @@ bool MouseState::GetCursorVisibility()
 void MouseState::SetCursorVisibility(bool visible)
 {
   SDL_ShowCursor(visible);
+}
+
+void MouseState::LockMouseToWindow(bool enable)
+{
+  SDL_SetRelativeMouseMode(enable ? SDL_TRUE : SDL_FALSE);
 }

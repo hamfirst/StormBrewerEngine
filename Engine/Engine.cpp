@@ -79,6 +79,17 @@ void EngineUpdate()
     {
       g_WindowManager.HandleMouseButtonPressMessage(e.button.windowID, e.button.button, false);
     }
+    else if (e.type == SDL_MOUSEMOTION)
+    {
+      if (SDL_GetRelativeMouseMode())
+      {
+        g_WindowManager.HandleMouseMotionMessage(e.motion.windowID, e.motion.x, e.motion.y);
+      }
+      else
+      {
+        g_WindowManager.HandleMouseMotionMessage(e.motion.windowID, e.motion.x, e.motion.y);
+      }
+    }
     else if (e.type == SDL_WINDOWEVENT)
     {
       if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
