@@ -2,7 +2,9 @@
 #include "Foundation/Common.h"
 #include "Foundation/FileSystem/File.h"
 
+#ifdef _MSC_VER
 #define PEDANTIC_BULLSHIT
+#endif
 
 
 File::File()
@@ -80,12 +82,12 @@ size_t File::GetFileLength() const
   return m_FileData.m_FileLength;
 }
 
-void File::Read(gsl::span<uint8_t> & buffer)
+void File::Read(const gsl::span<uint8_t> & buffer)
 {
   Read(buffer, buffer.length());
 }
 
-void File::Read(gsl::span<uint8_t> & buffer, std::size_t read_amount)
+void File::Read(const gsl::span<uint8_t> & buffer, std::size_t read_amount)
 {
   if (m_FileData.m_File == nullptr)
   {

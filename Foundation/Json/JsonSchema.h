@@ -36,7 +36,7 @@ struct JsonSchemaBuilder
     {
       auto visitor = [&](auto f)
       {
-        using member_type = std::remove_reference_t<decltype(f)>::member_type;
+        using member_type = typename std::template remove_reference_t<decltype(f)>::member_type;
         child_list.m_Children.emplace_back(JsonSchemaBuilder<member_type>::GetSchema());
         child_list.m_Names.emplace_back(f.GetName());
         child_list.m_NameLookup.emplace(std::make_pair(f.GetFieldNameHash(), f.GetFieldIndex()));

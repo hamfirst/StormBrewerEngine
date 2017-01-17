@@ -11,6 +11,14 @@
 #pragma comment (lib, "Mswsock.lib")
 #endif
 
+#ifdef _LINUX
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/select.h>
+#include <arpa/inet.h>
+#endif
+
 void NetworkInit()
 {
 #ifdef _MSC_VER

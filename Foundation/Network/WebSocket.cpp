@@ -7,9 +7,13 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
-#else
+
+#ifdef _LINUX
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/select.h>
+#include <arpa/inet.h>
 
 #define INVALID_SOCKET -1
 #endif

@@ -32,8 +32,8 @@ public:
   int GetFileOpenError() const;
   size_t GetFileLength() const;
 
-  void Read(gsl::span<uint8_t> & buffer);
-  void Read(gsl::span<uint8_t> & buffer, std::size_t read_amount);
+  void Read(const gsl::span<uint8_t> & buffer);
+  void Read(const gsl::span<uint8_t> & buffer, std::size_t read_amount);
   void Write(const gsl::span<const uint8_t> & buffer, std::size_t write_amount);
   void Write(const std::string & str);
 

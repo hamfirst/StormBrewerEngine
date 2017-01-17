@@ -12,6 +12,7 @@
 
 #define ASIO_STANDALONE
 #define ASIO_SEPARATE_COMPILATION
+#define ASIO_HAS_MOVE
 
 #include "asio/associated_allocator.hpp"
 #include "asio/associated_executor.hpp"

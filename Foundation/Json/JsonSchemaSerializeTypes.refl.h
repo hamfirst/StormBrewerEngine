@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include <StormRefl\StormRefl.h>
+#include <StormRefl/StormRefl.h>
 
 struct JsonSchemaSerializeInfo
 {
