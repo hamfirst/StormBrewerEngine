@@ -6,7 +6,7 @@
 #include <StormRefl/StormReflJsonStd.h>
 
 Json::Json(NotNullPtr<const JsonSchema> schema)
-  : m_Schema(schema), m_State(0)
+  : m_Schema(schema), m_State(0), m_JsonData(std::make_unique<JsonDataType>())
 {
   Clear();
 }
@@ -14,7 +14,7 @@ Json::Json(NotNullPtr<const JsonSchema> schema)
 Json::Json(const Json & rhs)
 {
   m_Schema = rhs.m_Schema;
-  m_JsonData = rhs.m_JsonData;
+  m_JsonData = std::make_unique<JsonDataType>(*rhs.m_JsonData.get());
 }
 
 Json::Json(Json && rhs)
@@ -31,7 +31,7 @@ Json::~Json()
 Json & Json::operator = (const Json & rhs)
 {
   m_Schema = rhs.m_Schema;
-  m_JsonData = rhs.m_JsonData;
+  m_JsonData = std::make_unique<JsonDataType>(*rhs.m_JsonData.get());
   return *this;
 }
 
@@ -44,46 +44,47 @@ Json & Json::operator = (Json && rhs)
 
 void Json::Clear()
 {
+  auto & json_data = *m_JsonData.get();
   switch (m_Schema->m_Type)
   {
   case JsonType::kNull:
-    m_JsonData = (void *)nullptr;
+    json_data = (void *)nullptr;
     return;
   case JsonType::kBool:
-    m_JsonData = false;
+    json_data = false;
     break;
   case JsonType::kUnsignedIntegerNumber:
     {
       uint64_t val = 0;
-      m_JsonData = val;
+      json_data = val;
     }
     break;
   case JsonType::kSignedIntegerNumber:
     {
       int64_t val = 0;
-      m_JsonData = val;
+      json_data = val;
     }
     break;
   case JsonType::kFloatingNumber:
     {
       float val = 0;
-      m_JsonData = val;
+      json_data = val;
     }
     break;
   case JsonType::kString:
-    m_JsonData = std::string("");
+    json_data = std::string("");
     break;
   case JsonType::kHomogenousArray:
-    m_JsonData = HomogeneousType();
+    json_data = HomogeneousType();
     break;
   case JsonType::kHeterogenousArray:
-    m_JsonData = HeterogeneousType();
+    json_data = HeterogeneousType();
     break;
   case JsonType::kHashMap:
-    m_JsonData = HashMapType();
+    json_data = HashMapType();
     break;
   case JsonType::kObject:
-    m_JsonData = ObjectType();
+    json_data = ObjectType();
     break;
   }
 }
@@ -93,7 +94,7 @@ void Json::SetState(int state)
   m_State = state;
   if (GetType() == JsonType::kHashMap)
   {
-    auto & arr = m_JsonData.GetAs<HashMapType>();
+    auto & arr = m_JsonData->GetAs<HashMapType>();
     for (auto & elem : arr)
     {
       auto & json = std::get<Json>(elem.second);
@@ -102,7 +103,7 @@ void Json::SetState(int state)
   }
   else if (GetType() == JsonType::kObject)
   {
-    auto & dict = m_JsonData.GetAs<ObjectType>();
+    auto & dict = m_JsonData->GetAs<ObjectType>();
     for (auto & elem : dict)
     {
       auto & json = std::get<Json>(elem.second);
@@ -119,7 +120,7 @@ void Json::Encode(std::string & sb)
     sb += "null";
     return;
   case JsonType::kBool:
-    if (m_JsonData.GetAs<bool>())
+    if (m_JsonData->GetAs<bool>())
     {
       sb += "true";
     }
@@ -130,30 +131,30 @@ void Json::Encode(std::string & sb)
     break;
   case JsonType::kUnsignedIntegerNumber:
     {
-      uint64_t val = m_JsonData.GetAs<uint64_t>();
+      uint64_t val = m_JsonData->GetAs<uint64_t>();
       sb += std::to_string(val);
     }
     break;
   case JsonType::kSignedIntegerNumber:
     {
-      int64_t val = m_JsonData.GetAs<int64_t>();
+      int64_t val = m_JsonData->GetAs<int64_t>();
       sb += std::to_string(val);
     }
     break;
   case JsonType::kFloatingNumber:
     {
-      float val = m_JsonData.GetAs<float>();
+      float val = m_JsonData->GetAs<float>();
       sb += std::to_string(val);
     }
     break;
   case JsonType::kString:
     {
-      StormReflEncodeJson(m_JsonData.GetAs<std::string>(), sb);
+      StormReflEncodeJson(m_JsonData->GetAs<std::string>(), sb);
     }
     break;
   case JsonType::kHomogenousArray:
     {
-      auto & vec = m_JsonData.GetAs<std::vector<Json>>();
+      auto & vec = m_JsonData->GetAs<std::vector<Json>>();
       auto itr = vec.begin();
 
       if (itr == vec.end())
@@ -181,7 +182,7 @@ void Json::Encode(std::string & sb)
     break;
   case JsonType::kHeterogenousArray:
     {
-      auto & vec = m_JsonData.GetAs<HeterogeneousType>();
+      auto & vec = m_JsonData->GetAs<HeterogeneousType>();
       auto itr = vec.begin();
 
       if (itr == vec.end())
@@ -209,7 +210,7 @@ void Json::Encode(std::string & sb)
     break;
   case JsonType::kHashMap:
     {
-      auto & dict = m_JsonData.GetAs<HashMapType>();
+      auto & dict = m_JsonData->GetAs<HashMapType>();
       auto itr = dict.begin();
 
       if (itr == dict.end())
@@ -253,7 +254,7 @@ void Json::Encode(std::string & sb)
 
   case JsonType::kObject:
     {
-      auto & dict = m_JsonData.GetAs<ObjectType>();
+      auto & dict = m_JsonData->GetAs<ObjectType>();
       auto itr = dict.begin();
 
       if (itr == dict.end())
@@ -296,7 +297,7 @@ void Json::EncodePretty(std::string & sb, int base_indent, int advance, bool do_
   {
   case JsonType::kHashMap:
     {
-      auto & dict = m_JsonData.GetAs<HashMapType>();
+      auto & dict = m_JsonData->GetAs<HashMapType>();
       auto itr = dict.begin();
 
       if (itr == dict.end())
@@ -342,7 +343,7 @@ void Json::EncodePretty(std::string & sb, int base_indent, int advance, bool do_
 
   case JsonType::kObject:
     {
-      auto & dict = m_JsonData.GetAs<ObjectType>();
+      auto & dict = m_JsonData->GetAs<ObjectType>();
       auto itr = dict.begin();
 
       if (itr == dict.end())
@@ -407,6 +408,7 @@ JsonParseResult Json::Parse(czstr data, std::vector<std::pair<std::string, std::
 
 JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const std::string & path, std::vector<std::pair<std::string, std::string>> & schema_errors)
 {
+  auto & json_data = *m_JsonData.get();
   StormReflJsonAdvanceWhiteSpace(data);
   if (*data == '{')
   {
@@ -421,7 +423,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         data++;
         result = data;
 
-        m_JsonData = dict;
+        json_data = dict;
         return JsonParseResult::kNone;
       }
 
@@ -510,7 +512,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
           data++;
           result = data;
 
-          m_JsonData = std::move(dict);
+          json_data = std::move(dict);
           return JsonParseResult::kNone;
         }
         else
@@ -530,7 +532,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         data++;
         result = data;
 
-        m_JsonData = dict;
+        json_data = dict;
         return JsonParseResult::kNone;
       }
 
@@ -597,7 +599,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
           data++;
           result = data;
 
-          m_JsonData = std::move(dict);
+          json_data = std::move(dict);
           return JsonParseResult::kNone;
         }
         else
@@ -624,7 +626,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         data++;
         result = data;
 
-        m_JsonData = arr;
+        json_data = arr;
         return JsonParseResult::kNone;
       }
     }
@@ -650,7 +652,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
       return JsonParseResult::kSyntaxError;
     }
 
-    m_JsonData = str;
+    json_data = str;
     return JsonParseResult::kNone;
   }
   else if ((*data <= '9' && *data >= '0') || *data == '-' || *data == '+' || *data == '.')
@@ -663,7 +665,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         return JsonParseResult::kSyntaxError;
       }
 
-      m_JsonData = val;
+      json_data = val;
       return JsonParseResult::kNone;
     }
     else if (m_Schema->m_Type == JsonType::kSignedIntegerNumber)
@@ -674,7 +676,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         return JsonParseResult::kSyntaxError;
       }
 
-      m_JsonData = val;
+      json_data = val;
       return JsonParseResult::kNone;
     }
     else if (m_Schema->m_Type == JsonType::kFloatingNumber)
@@ -685,7 +687,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
         return JsonParseResult::kSyntaxError;
       }
 
-      m_JsonData = val;
+      json_data = val;
       return JsonParseResult::kNone;
     }
     else
@@ -706,7 +708,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
 
     }
 
-    m_JsonData = true;
+    json_data = true;
     return JsonParseResult::kNone;
   }
   else if (*data == 'f')
@@ -721,7 +723,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
       return JsonParseResult::kSyntaxError;
     }
 
-    m_JsonData = false;
+    json_data = false;
     return JsonParseResult::kNone;
   }
   else if (*data == 'n')
@@ -736,7 +738,7 @@ JsonParseResult Json::Parse(czstr data, czstr & result, bool allow_null, const s
       return JsonParseResult::kSyntaxError;
     }
 
-    m_JsonData = (void *)nullptr;
+    json_data = (void *)nullptr;
     return JsonParseResult::kNull;
   }
 
@@ -763,8 +765,8 @@ void Json::ApplyJson(const Json & rhs)
 
   if (m_Schema->m_Type == JsonType::kObject)
   {
-    auto & rhs_dict = rhs.m_JsonData.GetAs<ObjectType>();
-    auto & this_dict = m_JsonData.GetAs<ObjectType>();
+    auto & rhs_dict = rhs.m_JsonData->GetAs<ObjectType>();
+    auto & this_dict = m_JsonData->GetAs<ObjectType>();
 
     JsonChildSchemaList * child_list = (JsonChildSchemaList *)m_Schema->m_ExtData;
 
@@ -790,8 +792,8 @@ void Json::ApplyJson(const Json & rhs)
   }
   else if(m_Schema->m_Type == JsonType::kHashMap)
   {
-    auto & rhs_arr = rhs.m_JsonData.GetAs<HashMapType>();
-    auto & this_arr = m_JsonData.GetAs<HashMapType>();
+    auto & rhs_arr = rhs.m_JsonData->GetAs<HashMapType>();
+    auto & this_arr = m_JsonData->GetAs<HashMapType>();
 
     for (auto & elem : rhs_arr)
     {
@@ -826,7 +828,7 @@ void Json::ApplyJson(const Json & rhs)
   }
   else
   {
-    m_JsonData = rhs.m_JsonData;
+    m_JsonData = std::make_unique<JsonDataType>(*rhs.m_JsonData.get());
   }
 }
 
@@ -844,7 +846,7 @@ NullOptPtr<Json> Json::GetJsonAtPath(czstr path, bool create_nodes)
       return nullptr;
     }
 
-    ObjectType & dict = m_JsonData.GetAs<ObjectType>();
+    ObjectType & dict = m_JsonData->GetAs<ObjectType>();
 
     Hash id_hash = crc32begin();
     path++;
@@ -891,7 +893,7 @@ NullOptPtr<Json> Json::GetJsonAtPath(czstr path, bool create_nodes)
       return nullptr;
     }
 
-    HashMapType & arr = m_JsonData.GetAs<HashMapType>();
+    HashMapType & arr = m_JsonData->GetAs<HashMapType>();
 
     path++;
     if (*path < '0' || *path > '9')
@@ -966,7 +968,7 @@ bool Json::RevertDataAtPath(czstr path)
     {
       uint64_t index = strtoull(path_end + 1, nullptr, 10);
 
-      auto & arr = json->m_JsonData.GetAs<HashMapType>();
+      auto & arr = json->m_JsonData->GetAs<HashMapType>();
       auto itr = arr.find(crc32integer(index));
 
       if (itr != arr.end())
@@ -1001,7 +1003,7 @@ bool Json::RevertDataAtPath(czstr path)
     {
       uint32_t field_hash = crc32(path_end + 1);
 
-      auto & dict = json->m_JsonData.GetAs<ObjectType>();
+      auto & dict = json->m_JsonData->GetAs<ObjectType>();
       auto itr = dict.find(field_hash);
 
       if (itr != dict.end())
@@ -1051,7 +1053,7 @@ void Json::ApplyChangeDirect(const ReflectionChangeNotification & change, NullOp
       auto type = GetType();
       if (type == JsonType::kHashMap)
       {
-        auto & arr = m_JsonData.GetAs<HashMapType>();
+        auto & arr = m_JsonData->GetAs<HashMapType>();
         arr.clear();
       }
       else
@@ -1072,7 +1074,7 @@ void Json::ApplyChangeDirect(const ReflectionChangeNotification & change, NullOp
       auto type = GetType();
       if (type == JsonType::kHashMap)
       {
-        auto & arr = m_JsonData.GetAs<HashMapType>();
+        auto & arr = m_JsonData->GetAs<HashMapType>();
         std::map<uint64_t, Json> sorted;
 
         for (auto & val : arr)
@@ -1102,7 +1104,7 @@ void Json::ApplyChangeDirect(const ReflectionChangeNotification & change, NullOp
       auto type = GetType();
       if (type == JsonType::kHashMap)
       {
-        auto & arr = m_JsonData.GetAs<HashMapType>();
+        auto & arr = m_JsonData->GetAs<HashMapType>();
         auto num_str = std::to_string(change.m_SubIndex);
 
         Hash hash = crc32(num_str);
@@ -1127,7 +1129,7 @@ void Json::ApplyChangeDirect(const ReflectionChangeNotification & change, NullOp
       auto type = GetType();
       if (type == JsonType::kHashMap)
       {
-        auto & arr = m_JsonData.GetAs<HashMapType>();
+        auto & arr = m_JsonData->GetAs<HashMapType>();
         auto num_str = std::to_string(change.m_SubIndex);
 
         Hash hash = crc32(num_str);

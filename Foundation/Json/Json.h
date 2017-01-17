@@ -40,7 +40,7 @@ public:
 
   JsonType GetType() const
   {
-    return (JsonType)m_JsonData.GetCurrentTypeIndex();
+    return (JsonType)m_JsonData->GetCurrentTypeIndex();
   }
 
   NotNullPtr<const JsonSchema> GetSchema() const
@@ -83,5 +83,5 @@ private:
 
   NotNullPtr<const JsonSchema> m_Schema;
   int m_State;
-  JsonDataType m_JsonData;
+  std::unique_ptr<JsonDataType> m_JsonData;
 };
