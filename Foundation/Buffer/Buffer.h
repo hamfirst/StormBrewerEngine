@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Engine/EngineCommon.h"
+#include "Foundation/Common.h"
 
 class Buffer
 {
