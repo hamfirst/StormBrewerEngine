@@ -18,6 +18,9 @@
 #include <sys/select.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <netdb.h>
 #endif
 
 void NetworkInit()

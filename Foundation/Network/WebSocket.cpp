@@ -10,12 +10,18 @@
 #endif
 
 #ifdef _LINUX
+#include <endian.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <netdb.h>
+
+#define htonll htobe64
 
 #define INVALID_SOCKET -1
 #endif
