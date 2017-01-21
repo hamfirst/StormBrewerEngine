@@ -13,10 +13,7 @@ ControlBindingSet::ControlBindingSet(InputState & input_state, int control_enum_
 
 ControlBindingSet::~ControlBindingSet()
 {
-  for (int index = 0; index < m_NumBinaryControls; index++)
-  {
-    m_InputState.UnbindBinaryControl(m_BinaryControls[index]);
-  }
+  Cleanup();
 }
 
 void ControlBindingSet::BindControl(const ControlId & control_id, int control_enum, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)
@@ -27,4 +24,15 @@ void ControlBindingSet::BindControl(const ControlId & control_id, int control_en
 const BinaryControlHandle & ControlBindingSet::GetControl(int control_enum)
 {
   return m_BinaryControls[control_enum];
+}
+
+void ControlBindingSet::Cleanup()
+{
+  for (int index = 0; index < m_NumBinaryControls; index++)
+  {
+    m_InputState.UnbindBinaryControl(m_BinaryControls[index]);
+  }
+
+  m_BinaryControls.release();
+  m_NumBinaryControls = 0;
 }

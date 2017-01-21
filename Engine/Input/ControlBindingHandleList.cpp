@@ -43,8 +43,12 @@ void ControlBindingHandleList::ReleaseAll()
     m_InputState->UnbindBinaryControl(handle);
   }
 
+  m_BinaryControls.clear();
+
   for (auto & handle : m_PointerControls)
   {
     m_InputState->UnbindPointerControl(handle);
   }
+
+  m_PointerControls.clear();
 }

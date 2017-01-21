@@ -15,6 +15,8 @@ public:
   void BindControl(const ControlId & control_id, int control_enum, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   const BinaryControlHandle & GetControl(int control_enum);
 
+  void Cleanup();
+
 private:
   InputState & m_InputState;
   std::unique_ptr<BinaryControlHandle[]> m_BinaryControls;
