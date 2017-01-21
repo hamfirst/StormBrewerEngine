@@ -206,9 +206,9 @@ inline Hash64 crc64lowercase(const std::string & str)
 }
 
 template <typename IntegerType>
-inline Hash crc64integer(IntegerType i)
+inline Hash64 crc64integer(IntegerType i)
 {
-  Hash hash = crc64begin();
+  Hash64 hash = crc64begin();
   char val[21];
   char * c = &val[20];
 

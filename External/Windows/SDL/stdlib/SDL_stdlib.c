@@ -315,7 +315,7 @@ __declspec(selectany) int _fltused = 1;
 //}
 #endif /* _MSC_VER == 1600 && defined(_WIN64) && !defined(_DEBUG) */
 
-#ifdef _M_IX86
+#ifdef _M_IX86_ 
 
 /* Float to long */
 void

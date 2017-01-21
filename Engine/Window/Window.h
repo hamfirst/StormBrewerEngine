@@ -18,6 +18,7 @@ public:
 
   void MakeCurrent() const;
   void Swap() const;
+  void Close() const;
 
   void SetMousePos(int x, int y) const;
 

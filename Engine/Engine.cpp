@@ -132,6 +132,8 @@ void EngineUpdate()
 
 void EngineCleanup()
 {
+  SDL_Quit();
+
   g_AssetLoader.ShutDown();
   g_AudioManager.ShutDown();
   g_TextManager.ShutDown();

@@ -1142,9 +1142,6 @@
     <ClCompile Include="cpuinfo\SDL_cpuinfo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dynapi\SDL_dynapi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="events\SDL_clipboardevents.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1353,9 +1350,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdlib\SDL_qsort.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdlib\SDL_stdlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdlib\SDL_string.c">
@@ -1776,6 +1770,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SDL.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdlib\SDL_stdlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dynapi\SDL_dynapi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
