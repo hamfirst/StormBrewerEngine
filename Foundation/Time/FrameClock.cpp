@@ -21,6 +21,11 @@ bool FrameClock::ShouldSkipFrame()
   return GetTimeSeconds() - m_LastFrame > m_FrameInterval * 2;
 }
 
+bool FrameClock::ShouldStartFrame()
+{
+  return GetTimeSeconds() - m_LastFrame > m_FrameInterval / 2;
+}
+
 void FrameClock::WaitUntilNextFrame()
 {
   double t = m_FrameInterval - (GetTimeSeconds() - m_LastFrame);

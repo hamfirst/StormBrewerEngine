@@ -7,6 +7,7 @@ public:
   
   void Start();
   bool ShouldSkipFrame();
+  bool ShouldStartFrame();
 
   void WaitUntilNextFrame();
   void BeginFrame();

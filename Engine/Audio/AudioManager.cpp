@@ -16,7 +16,6 @@ AudioManager g_AudioManager;
 AudioManager::AudioManager() :
   m_PlayingAudio(128)
 {
-
 }
 
 AudioManager::~AudioManager()
@@ -26,6 +25,8 @@ AudioManager::~AudioManager()
 
 void AudioManager::Init()
 {
+  m_AudioShutdown = false;
+
   SDL_AudioSpec want = {};
   want.freq = 44100;
   want.format = AUDIO_F32;
@@ -49,6 +50,12 @@ void AudioManager::Init()
 
 void AudioManager::ShutDown()
 {
+  std::lock_guard<std::mutex> l(m_AudioMutex);
+  m_AudioShutdown = true;
+
+  m_PlayingAudio.ReleaseAll();
+  m_PlayingMusic.ReleaseAll();
+
   if (m_DeviceId != 0)
   {
     SDL_CloseAudioDevice(m_DeviceId);
@@ -138,6 +145,11 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 
   AudioManager * p_this = (AudioManager *)userdata;
   std::lock_guard<std::mutex> l(p_this->m_AudioMutex);
+
+  if (p_this->m_AudioShutdown)
+  {
+    return;
+  }
 
   auto audio_callback = [=](Handle audio_handle, AudioSpec & audio_spec)
   {

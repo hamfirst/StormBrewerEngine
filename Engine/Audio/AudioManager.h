@@ -45,6 +45,7 @@ private:
   HandleList<std::unique_ptr<MusicSpec>> m_PlayingMusic;
 
   std::mutex m_AudioMutex;
+  std::atomic_bool m_AudioShutdown;
 };
 
 extern AudioManager g_AudioManager;

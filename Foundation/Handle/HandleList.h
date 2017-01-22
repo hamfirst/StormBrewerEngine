@@ -154,6 +154,18 @@ public:
     }
   }
 
+  void ReleaseAll()
+  {
+    for (int index = (int)m_List.size() - 1; index >= 0; index--)
+    {
+      auto & elem = m_List[index];
+      if (elem.m_Handle.m_Valid)
+      {
+        FreeHandleInternal(index);
+      }
+    }
+  }
+
 private:
 
   void FreeHandleInternal(int index)
