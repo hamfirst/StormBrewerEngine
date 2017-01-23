@@ -453,6 +453,13 @@ int KeyboardState::ScanCodeFromJavascriptCode(int javascript_key_code)
   case 222:
     return SDL_SCANCODE_APOSTROPHE;
 
+  case 10016:
+    return SDL_SCANCODE_RSHIFT;
+  case 10017:
+    return SDL_SCANCODE_RCTRL;
+  case 10018:
+    return SDL_SCANCODE_RALT;
+
         //"", // [223]
         //"META", // [224]
         //"ALTGR", // [225]

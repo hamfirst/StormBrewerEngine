@@ -32,6 +32,33 @@ private:
   std::vector<QuadVertexBuilderInfo> m_Quads;
 };
 
+struct LineVertexBuilderInfo
+{
+  Vector2 m_Start;
+  Vector2 m_End;
+  Vector2 m_TexCoordStart;
+  Vector2 m_TexCoordEnd;
+  Vector2 m_TextureSize;
+  Color m_Color;
+};
+
+class LineVertexBufferBuilder
+{
+public:
+  LineVertexBufferBuilder() = default;
+  explicit LineVertexBufferBuilder(std::size_t reserve_points);
+
+  void AddLine(const LineVertexBuilderInfo & line);
+
+  VertexBuffer CreateVertexBuffer();
+  void FillVertexBuffer(VertexBuffer & vertex_buffer);
+
+private:
+
+  std::vector<LineVertexBuilderInfo> m_Lines;
+};
+
+
 struct PointVertexBuilderInfo
 {
   Vector2 m_Position;

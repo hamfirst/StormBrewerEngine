@@ -43,24 +43,39 @@ void VertexList::AddVert(const VertexInfo & vert)
 {
   if (m_Capacity == m_Size)
   {
-    auto new_size = m_Capacity == 0 ? 1 : m_Capacity * 2;
-    auto new_verts = (VertexInfo *)malloc(sizeof(VertexInfo) * new_size);
-
-    memcpy(new_verts, m_Verts, m_Capacity * sizeof(VertexInfo));
-
-    if (m_Verts == s_ScratchVerts)
-    {
-      s_ScratchVertsUsed.store(false);
-    }
-    else
-    {
-      free(m_Verts);
-    }
-
-    m_Verts = new_verts;
-    m_Capacity = new_size;
+    Grow();
   }
 
   memcpy(&m_Verts[m_Size], &vert, sizeof(VertexInfo));
   m_Size++;
+}
+
+VertexInfo & VertexList::AddVert()
+{
+  if (m_Capacity == m_Size)
+  {
+    Grow();
+  }
+
+  return m_Verts[m_Size++];
+}
+
+void VertexList::Grow()
+{
+  auto new_size = m_Capacity == 0 ? 1 : m_Capacity * 2;
+  auto new_verts = (VertexInfo *)malloc(sizeof(VertexInfo) * new_size);
+
+  memcpy(new_verts, m_Verts, m_Capacity * sizeof(VertexInfo));
+
+  if (m_Verts == s_ScratchVerts)
+  {
+    s_ScratchVertsUsed.store(false);
+  }
+  else
+  {
+    free(m_Verts);
+  }
+
+  m_Verts = new_verts;
+  m_Capacity = new_size;
 }

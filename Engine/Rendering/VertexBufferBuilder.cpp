@@ -133,6 +133,68 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
   vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
 }
 
+LineVertexBufferBuilder::LineVertexBufferBuilder(std::size_t reserve_points)
+{
+  m_Lines.reserve(reserve_points);
+}
+
+void LineVertexBufferBuilder::AddLine(const LineVertexBuilderInfo & line)
+{
+  m_Lines.push_back(line);
+}
+
+VertexBuffer LineVertexBufferBuilder::CreateVertexBuffer()
+{
+  VertexList verts;
+
+  for (auto & line : m_Lines)
+  {
+    auto tex_size = static_cast<RenderVec2>(line.m_TextureSize);
+
+    VertexInfo vert_info;
+    vert_info.m_Color = line.m_Color;
+
+    vert_info.m_Position = line.m_Start;
+    vert_info.m_TexCoord = line.m_TexCoordStart;
+    vert_info.m_TexCoord /= tex_size;
+    verts.AddVert(vert_info);
+
+    vert_info.m_Position = line.m_End;
+    vert_info.m_TexCoord = line.m_TexCoordEnd;
+    vert_info.m_TexCoord /= tex_size;
+    verts.AddVert(vert_info);
+  }
+
+  VertexBuffer vertex_buffer;
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kLines);
+  return vertex_buffer;
+}
+
+void LineVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
+{
+  VertexList verts;
+
+  for (auto & line : m_Lines)
+  {
+    auto tex_size = static_cast<RenderVec2>(line.m_TextureSize);
+
+    VertexInfo vert_info;
+    vert_info.m_Color = line.m_Color;
+
+    vert_info.m_Position = line.m_Start;
+    vert_info.m_TexCoord = line.m_TexCoordStart;
+    vert_info.m_TexCoord /= tex_size;
+    verts.AddVert(vert_info);
+
+    vert_info.m_Position = line.m_End;
+    vert_info.m_TexCoord = line.m_TexCoordEnd;
+    vert_info.m_TexCoord /= tex_size;
+    verts.AddVert(vert_info);
+  }
+
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kLines);
+}
+
 PointVertexBufferBuilder::PointVertexBufferBuilder(std::size_t reserve_points)
 {
   m_Points.reserve(reserve_points);

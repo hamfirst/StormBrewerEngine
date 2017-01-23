@@ -16,8 +16,14 @@ public:
   VertexList & operator = (VertexList && rhs) = delete;
 
   void AddVert(const VertexInfo & vert);
+  VertexInfo & AddVert();
 
 private:
+
+  void Grow();
+
+private:
+
   friend class VertexBuffer;
 
   gsl::owner<VertexInfo *> m_Verts;

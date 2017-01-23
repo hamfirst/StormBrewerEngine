@@ -96,12 +96,12 @@ void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int 
   if (itr == m_Windows.end()) return;
   WindowState & window = itr->second;
 
+  window.m_InputState->HandleKeyPressMessage(scan_code, pressed);
+
   if (window.m_TextInputContext && pressed)
   {
     window.m_TextInputContext->HandleKeyPressEvent(key_code);
   }
-
-  window.m_InputState->HandleKeyPressMessage(scan_code, pressed);
 }
 
 void WindowManager::HandleMouseButtonPressMessage(uint32_t window_id, int button, bool pressed)

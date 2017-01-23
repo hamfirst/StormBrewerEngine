@@ -80,6 +80,8 @@ void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
 {
   if (list.m_Size == 0)
   {
+    m_Type = type;
+    m_IndexCount = 0;
     return;
   }
   
@@ -123,7 +125,7 @@ void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program) const
 
 void VertexBuffer::Draw(int index_start, int index_end) const
 {
-  if (m_VertexBufferName == 0 || m_LoadError != 0)
+  if (m_VertexBufferName == 0 || m_LoadError != 0 || m_IndexCount == 0)
   {
     return;
   }
