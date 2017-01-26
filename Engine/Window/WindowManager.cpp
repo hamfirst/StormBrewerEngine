@@ -234,6 +234,19 @@ void WindowManager::SetMousePos(uint32_t window_id, int x, int y)
   }
 }
 
+void WindowManager::SetVsyncEnabled(uint32_t window_id, bool enabled)
+{
+  auto itr = m_Windows.find(window_id);
+  if (itr == m_Windows.end()) return;
+  WindowState & window = itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    SDL_GL_MakeCurrent(window.m_SDLWindow, window.m_Context);
+    SDL_GL_SetSwapInterval(enabled);
+  }
+}
+
 void WindowManager::MakeCurrent(uint32_t window_id)
 {
   auto itr = m_Windows.find(window_id);

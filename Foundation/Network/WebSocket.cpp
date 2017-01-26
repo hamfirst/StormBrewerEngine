@@ -31,8 +31,8 @@ static void CloseSocket(volatile int & sock)
 #ifdef _MSC_VER
   closesocket(sock);
 #else
-  int status = shutdown(sock, SHUT_RDWR);
-  if (status == 0) { status = close(sock); }
+  shutdown(sock, SHUT_RDWR);
+  close(sock);
 #endif
 
   sock = (int)INVALID_SOCKET;

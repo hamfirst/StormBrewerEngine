@@ -39,6 +39,7 @@ private:
   void MakeCurrent(uint32_t window_id);
   void Swap(uint32_t window_id);
   void SetMousePos(uint32_t window_id, int x, int y);
+  void SetVsyncEnabled(uint32_t window_id, bool enabled);
   void CloseWindow(uint32_t window_id);
 
   void SetTextInputContext(uint32_t window_id, const std::shared_ptr<TextInputContext> & context, NullOptPtr<Box> input_box);

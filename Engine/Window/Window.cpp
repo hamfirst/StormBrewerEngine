@@ -91,6 +91,16 @@ void Window::SetMousePos(int x, int y) const
   g_WindowManager.SetMousePos(m_WindowId, x, y);
 }
 
+void Window::SetVsyncEnabled(bool enabled) const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.SetVsyncEnabled(m_WindowId, enabled);
+}
+
 NullOptPtr<InputState> Window::GetInputState() const
 {
   if (m_WindowId == 0)

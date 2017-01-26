@@ -21,6 +21,7 @@ public:
   void Close() const;
 
   void SetMousePos(int x, int y) const;
+  void SetVsyncEnabled(bool enabled) const;
 
   NullOptPtr<InputState> GetInputState() const;
   std::shared_ptr<TextInputContext> CreateTextInputContext();
