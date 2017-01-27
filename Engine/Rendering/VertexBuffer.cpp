@@ -142,9 +142,6 @@ void VertexBuffer::Draw(int index_start, int index_end) const
   case VertexBufferType::kTriangles:
     mode = GL_TRIANGLES;
     break;
-  case VertexBufferType::kQuads:
-    mode = GL_QUADS;
-    break;
   default:
   case VertexBufferType::kInvalid:
     return;

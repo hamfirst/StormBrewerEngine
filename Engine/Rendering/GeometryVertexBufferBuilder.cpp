@@ -106,6 +106,8 @@ void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, flo
     AddVert(start_far, c);
     AddVert(cur_far, c);
     AddVert(cur_near, c);
+    AddVert(start_far, c);
+    AddVert(cur_near, c);
     AddVert(start_near, c);
 
     start_far = cur_far;
@@ -119,13 +121,13 @@ void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, flo
 VertexBuffer GeometryVertexBufferBuilder::CreateVertexBuffer()
 {
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(m_List, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(m_List, VertexBufferType::kTriangles);
   return vertex_buffer;
 }
 
 void GeometryVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
-  vertex_buffer.SetBufferData(m_List, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(m_List, VertexBufferType::kTriangles);
 }
 
 void GeometryVertexBufferBuilder::AddVert(const Vector2f & pos, const Color & c)

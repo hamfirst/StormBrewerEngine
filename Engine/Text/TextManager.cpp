@@ -145,7 +145,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   render_state.EnableBlendMode();
 
-  m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kQuads);
+  m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kTriangles);
 
   m_TextShader.Bind();
   m_TextVertexBuffer.Bind();

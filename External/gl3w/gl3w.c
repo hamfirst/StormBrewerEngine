@@ -34,6 +34,8 @@
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
 
+#include <EGL/egl.h>
+
 static HMODULE libgl;
 
 static void open_libgl(void)
@@ -48,12 +50,14 @@ static void close_libgl(void)
 
 static GL3WglProc get_proc(const char *proc)
 {
-	GL3WglProc res;
+	//GL3WglProc res;
 
-	res = (GL3WglProc) wglGetProcAddress(proc);
-	if (!res)
-		res = (GL3WglProc) GetProcAddress(libgl, proc);
-	return res;
+  return (GL3WglProc)eglGetProcAddress(proc);
+
+	//res = (GL3WglProc) wglGetProcAddress(proc);
+	//if (!res)
+	//	res = (GL3WglProc) GetProcAddress(libgl, proc);
+	//return res;
 }
 #elif defined(__APPLE__) || defined(__APPLE_CC__)
 #include <Carbon/Carbon.h>
@@ -122,15 +126,17 @@ static struct {
 
 static int parse_version(void)
 {
-	if (!glGetIntegerv)
-		return -1;
+	//if (!glGetIntegerv)
+	//	return -1;
 
-	glGetIntegerv(GL_MAJOR_VERSION, &version.major);
-	glGetIntegerv(GL_MINOR_VERSION, &version.minor);
+	//glGetIntegerv(GL_MAJOR_VERSION, &version.major);
+	//glGetIntegerv(GL_MINOR_VERSION, &version.minor);
 
-	if (version.major < 3)
-		return -1;
-	return 0;
+	//if (version.major < 3)
+	//	return -1;
+	//return 0;
+
+  return 0;
 }
 
 static void load_procs(void);

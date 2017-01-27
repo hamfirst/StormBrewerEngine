@@ -58,10 +58,14 @@ VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
   // 2 = 11
   // 3 = 10
 
+  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+
   for (auto & quad : m_Quads)
   {
-    for (uint32_t index = 0; index < 4; index++)
+    for (uint32_t vert = 0; vert < 6; vert++)
     {
+      uint32_t index = index_vals[vert];
+
       VertexInfo vert_info;
       vert_info.m_Position = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, index < 2 ? index : 5 - index);
       vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index) ^ 0b10);
@@ -73,13 +77,15 @@ VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kTriangles);
   return vertex_buffer;
 }
 
 VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
 {
   VertexList verts;
+
+  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
 
   for (auto & quad : m_Quads)
   {
@@ -94,8 +100,10 @@ VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
       clipped_vert_data.m_TexCoords.m_Start += start_offset;
       clipped_vert_data.m_TexCoords.m_End += start_offset;
 
-      for (uint32_t index = 0; index < 4; index++)
+      for (uint32_t vert = 0; vert < 6; vert++)
       {
+        uint32_t index = index_vals[vert];
+
         VertexInfo vert_info;
         vert_info.m_Position = SelectVectorXY(clipped_vert_data.m_Position.m_Start, clipped_vert_data.m_Position.m_End, index < 2 ? index : 5 - index);
         vert_info.m_TexCoord = SelectVectorXY(clipped_vert_data.m_TexCoords.m_Start, clipped_vert_data.m_TexCoords.m_End, (index < 2 ? index : 5 - index) ^ 0b10);
@@ -108,7 +116,7 @@ VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
   }
 
   VertexBuffer vertex_buffer;
-  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kTriangles);
   return vertex_buffer;
 }
 
@@ -116,10 +124,14 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
   VertexList verts;
 
+  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+
   for (auto & quad : m_Quads)
   {
-    for (uint32_t index = 0; index < 4; index++)
+    for (uint32_t vert = 0; vert < 6; vert++)
     {
+      uint32_t index = index_vals[vert];
+
       VertexInfo vert_info;
       vert_info.m_Position = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, index < 2 ? index : 5 - index);
       vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index) ^ 0b10);
@@ -130,7 +142,7 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
     }
   }
 
-  vertex_buffer.SetBufferData(verts, VertexBufferType::kQuads);
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kTriangles);
 }
 
 LineVertexBufferBuilder::LineVertexBufferBuilder(std::size_t reserve_points)

@@ -20,6 +20,13 @@ static bool s_Quit = false;
 
 FT_Library g_FreeType;
 
+#ifdef _MSC_VER
+
+#pragma comment(lib, "../External/Windows/angle/libEGL.lib")
+#pragma comment(lib, "../External/Windows/angle/libGLESv2.lib")
+
+#endif
+
 bool EngineInit()
 {
   NetworkInit();
@@ -29,6 +36,10 @@ bool EngineInit()
     fprintf(stderr, "Could not start SDL");
     return false;
   }
+
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
   if (FT_Init_FreeType(&g_FreeType))
   {

@@ -98,7 +98,9 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
   for (GLuint index = 0; index < static_cast<GLuint>(num_shader_uniforms); index++)
   {
     GLsizei name_length;
-    glGetActiveUniformName(m_ProgramName, index, max_name_length, &name_length, name_buffer); CHECK_GL_LOAD_ERROR;
+    GLint size;
+    GLenum type;
+    glGetActiveUniform(m_ProgramName, index, max_name_length, &name_length, &size, &type, name_buffer); CHECK_GL_LOAD_ERROR;
 
     name_buffer[name_length] = 0;
 

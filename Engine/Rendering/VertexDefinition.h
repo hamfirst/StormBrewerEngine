@@ -7,7 +7,6 @@ enum class VertexBufferType
   kPoints,
   kLines,
   kTriangles,
-  kQuads,
   kInvalid,
 };
 

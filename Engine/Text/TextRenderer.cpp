@@ -96,6 +96,14 @@ void TextRenderer::AddGlyphToBuffer(int x, int y, const GlyphInfo & glyph, const
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 1 : 3);
   buffer.m_Verts.AddVert(text_vert);
 
+  text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
+  text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 2 : 0);
+  buffer.m_Verts.AddVert(text_vert);
+
+  text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
+  text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 1 : 3);
+  buffer.m_Verts.AddVert(text_vert);
+
   text_vert.m_Position = SelectVectorXY(start_pos, end_pos, 2);
   text_vert.m_TexCoord = SelectVectorXY(start_tex, end_tex, glyph.m_Rotated ? 3 : 2);
   buffer.m_Verts.AddVert(text_vert);
@@ -189,6 +197,12 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
       buffer.m_Verts.AddVert(sel_vert);
 
+      sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
+      buffer.m_Verts.AddVert(sel_vert);
+
+      sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
+      buffer.m_Verts.AddVert(sel_vert);
+
       sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 2);
       buffer.m_Verts.AddVert(sel_vert);
     }
@@ -259,6 +273,12 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
     buffer.m_Verts.AddVert(sel_vert);
 
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 1);
+    buffer.m_Verts.AddVert(sel_vert);
+
+    sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
+    buffer.m_Verts.AddVert(sel_vert);
+
+    sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 0);
     buffer.m_Verts.AddVert(sel_vert);
 
     sel_vert.m_Position = SelectVectorXY(start_pos, end_pos, 3);
