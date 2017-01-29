@@ -82,6 +82,8 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   AddVert(a + thick, c);
   AddVert(b + thick, c);
   AddVert(b - thick, c);
+  AddVert(a + thick, c);
+  AddVert(b - thick, c);
   AddVert(a - thick, c);
 }
 
