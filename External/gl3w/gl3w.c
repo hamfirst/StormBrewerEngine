@@ -37,35 +37,47 @@
 #include <EGL/egl.h>
 
 static HMODULE libgl;
+static int use_egl = 0;
 
-static void open_libgl(void)
+static void open_libgl(int egl_mode)
 {
-	libgl = LoadLibraryA("opengl32.dll");
+  use_egl = egl_mode;
+  if (!use_egl)
+  {
+    libgl = LoadLibraryA("opengl32.dll");
+  }
 }
 
 static void close_libgl(void)
 {
-	FreeLibrary(libgl);
+  if (!use_egl)
+  {
+    FreeLibrary(libgl);
+  }
 }
 
 static GL3WglProc get_proc(const char *proc)
 {
-	//GL3WglProc res;
+  if (use_egl)
+  {
+    return (GL3WglProc)eglGetProcAddress(proc);
+  }
 
-  return (GL3WglProc)eglGetProcAddress(proc);
+	GL3WglProc res;
 
-	//res = (GL3WglProc) wglGetProcAddress(proc);
-	//if (!res)
-	//	res = (GL3WglProc) GetProcAddress(libgl, proc);
-	//return res;
+	res = (GL3WglProc) wglGetProcAddress(proc);
+	if (!res)
+		res = (GL3WglProc) GetProcAddress(libgl, proc);
+	return res;
 }
+
 #elif defined(__APPLE__) || defined(__APPLE_CC__)
 #include <Carbon/Carbon.h>
 
 CFBundleRef bundle;
 CFURLRef bundleURL;
 
-static void open_libgl(void)
+static void open_libgl(int egl_mode)
 {
 	bundleURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
 		CFSTR("/System/Library/Frameworks/OpenGL.framework"),
@@ -98,7 +110,7 @@ static GL3WglProc get_proc(const char *proc)
 static void *libgl;
 static PFNGLXGETPROCADDRESSPROC glx_get_proc_address;
 
-static void open_libgl(void)
+static void open_libgl(int egl_mode)
 {
 	libgl = dlopen("libGL.so.1", RTLD_LAZY | RTLD_GLOBAL);
 	glx_get_proc_address = (PFNGLXGETPROCADDRESSPROC) dlsym(libgl, "glXGetProcAddressARB");
@@ -141,9 +153,9 @@ static int parse_version(void)
 
 static void load_procs(void);
 
-int gl3wInit(void)
+int gl3wInit(int egl_mode)
 {
-	open_libgl();
+	open_libgl(egl_mode);
 	load_procs();
 	close_libgl();
 	return parse_version();

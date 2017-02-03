@@ -17,6 +17,7 @@
 #include "Engine/Window/WindowManager.h"
 
 static bool s_Quit = false;
+static bool s_EGLMode = false;
 
 FT_Library g_FreeType;
 
@@ -27,7 +28,7 @@ FT_Library g_FreeType;
 
 #endif
 
-bool EngineInit()
+bool EngineInit(bool egl_mode)
 {
   NetworkInit();
 
@@ -37,9 +38,14 @@ bool EngineInit()
     return false;
   }
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+  s_EGLMode = egl_mode;
+  if (s_EGLMode)
+  {
+    SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "true");
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+  }
 
   if (FT_Init_FreeType(&g_FreeType))
   {
@@ -55,7 +61,7 @@ bool EngineInit()
 
 bool EngineRenderInit()
 {
-  gl3wInit();
+  gl3wInit(s_EGLMode);
   g_TextManager.Init();
 
   BootstrapContext();

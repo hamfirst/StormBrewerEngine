@@ -5,6 +5,9 @@
 
 #include <gl3w\gl3w.h>
 
+#define GL_LUMINANCE 0x1909
+
+
 Texture::Texture()
 {
   m_TextureName = 0;
@@ -68,7 +71,11 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
   switch (type)
   {
   case TextureType::kGrayscale:
+#if 1
+    format = GL_LUMINANCE;
+#else
     format = GL_RED;
+#endif
     break;
   case TextureType::kRGB:
     format = GL_RGB;
@@ -102,7 +109,11 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
   switch (type)
   {
   case TextureType::kGrayscale:
+#if 1
+    format = GL_LUMINANCE;
+#else
     format = GL_RED;
+#endif
     ASSERT(pixel_buffer.GetPixelSize() == 1, "Invalid Pixel Surface");
     break;
   case TextureType::kRGB:
@@ -140,7 +151,11 @@ void Texture::SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int
   switch (m_Type)
   {
   case TextureType::kGrayscale:
+#if 1
+    format = GL_LUMINANCE;
+#else
     format = GL_RED;
+#endif
     ASSERT(pixel_buffer.GetPixelSize() == 1, "Invalid Pixel Surface");
     break;
   case TextureType::kRGB:

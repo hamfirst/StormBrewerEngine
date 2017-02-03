@@ -44,7 +44,7 @@ extern "C" {
 typedef void (*GL3WglProc)(void);
 
 /* gl3w api */
-int gl3wInit(void);
+int gl3wInit(int egl_mode);
 int gl3wIsSupported(int major, int minor);
 GL3WglProc gl3wGetProcAddress(const char *proc);
 
