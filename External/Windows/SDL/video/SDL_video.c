@@ -1440,8 +1440,8 @@ SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
 
         window->x = bounds.x;
         window->y = bounds.y;
-        window->w = bounds.w;
-        window->h = bounds.h;
+        window->w = w;
+        window->h = h;
     }
 
     window->flags = ((flags & CREATE_FLAGS) | SDL_WINDOW_HIDDEN);
