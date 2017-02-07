@@ -24,7 +24,7 @@ public:
   void SetVsyncEnabled(bool enabled) const;
 
   NullOptPtr<InputState> GetInputState() const;
-  std::shared_ptr<TextInputContext> CreateTextInputContext();
+  std::shared_ptr<TextInputContext> CreateTextInputContext(bool allow_first_input = false);
 
 private:
 

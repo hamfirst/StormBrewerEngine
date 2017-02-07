@@ -58,7 +58,10 @@ bool KeyboardState::GetKeyState(int scan_code)
 
 void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed)
 {
-  m_KeyboardControls[scan_code].SetControlValue(pressed);
+  if (m_KeyboardControls[scan_code].SetControlValue(pressed))
+  {
+    m_PassThroughCallbacks.Call(pressed, CreateKeyboardBinding(scan_code));
+  }
 
   if (m_PressedState[scan_code] == 0 && pressed)
   {
@@ -69,6 +72,11 @@ void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed)
   }
 
   m_PressedState[scan_code] = pressed;
+}
+
+DelegateLink<void, bool, ControlId> KeyboardState::RegisterPassThroughDelegate(const Delegate<void, bool, ControlId> & del)
+{
+  return m_PassThroughCallbacks.AddDelegate(del);
 }
 
 czstr KeyboardState::GetKeyNameForScanCode(int scan_code)

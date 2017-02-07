@@ -32,12 +32,12 @@ public:
   }
 
   template <typename ControlValueType>
-  void SetControlValue(ControlValueType value)
+  bool SetControlValue(ControlValueType value)
   {
     auto list_size = m_HandleList.GetNumHandles();
     if (list_size == 0)
     {
-      return;
+      return true;
     }
 
     ControlBindingType ** list = (ControlBindingType **)alloca(sizeof(ControlBindingType *) * list_size);
@@ -75,6 +75,8 @@ public:
         list[index]->UpdateState(ControlValueType{});
       }
     }
+
+    return valid;
   }
 
 private:

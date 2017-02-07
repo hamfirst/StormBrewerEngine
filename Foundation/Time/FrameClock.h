@@ -13,6 +13,7 @@ public:
   void BeginFrame();
 
   int GetFrameCount();
+  double GetFrameInterval();
   
 private:
   double m_FrameInterval;

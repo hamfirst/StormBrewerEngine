@@ -47,6 +47,8 @@ bool EngineInit(bool egl_mode)
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
   }
 
+  SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
+
   if (FT_Init_FreeType(&g_FreeType))
   {
     fprintf(stderr, "Could not start FreeType");
@@ -55,6 +57,7 @@ bool EngineInit(bool egl_mode)
 
   g_AssetLoader.Init();
   g_AudioManager.Init();
+
 
   return true;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Foundation/Delegate/DelegateList.h"
+
 #include "Engine/Input/ControlBindingList.h"
 #include "Engine/Input/BinaryControlBinding.h"
 #include "Engine/Input/ControlHandle.h"
@@ -22,6 +24,8 @@ public:
 
   void HandleKeyPressMessage(int scan_code, bool pressed);
 
+  DelegateLink<void, bool, ControlId> RegisterPassThroughDelegate(const Delegate<void, bool, ControlId> & del);
+
   static czstr GetKeyNameForScanCode(int scan_code);
   static int ScanCodeFromJavascriptCode(int javascript_key_code);
 
@@ -34,4 +38,6 @@ private:
   InputState * m_InputState;
   bool m_PressedState[kNumKeyboardKeys] = {};
   ControlBindingList<BinaryControlBinding> m_KeyboardControls[kNumKeyboardKeys];
+
+  DelegateList<void, bool, ControlId> m_PassThroughCallbacks;
 };

@@ -31,7 +31,7 @@ void FrameClock::WaitUntilNextFrame()
   double t = m_FrameInterval - (GetTimeSeconds() - m_LastFrame);
   if (t >= 0)
   {
-    uint64_t micro_secs = (uint64_t)(t * 1000000);
+    uint64_t micro_secs = (uint64_t)((t * 1000000) * GetTimeScale());
     std::this_thread::sleep_for(std::chrono::microseconds(micro_secs));
   }
 
@@ -48,4 +48,9 @@ void FrameClock::BeginFrame()
 int FrameClock::GetFrameCount()
 {
   return m_FrameCount;
+}
+
+double FrameClock::GetFrameInterval()
+{
+  return m_FrameInterval;
 }

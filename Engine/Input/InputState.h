@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Foundation/Delegate/DelegateLink.h"
+
 #include "Engine/Input/KeyboardState.h"
 #include "Engine/Input/MouseState.h"
 
@@ -22,6 +24,8 @@ public:
   bool GetKeyState(int scan_code);
   bool GetMouseButtonSate(int button);
   PointerState GetPointerState();
+
+  DelegateLink<void, bool, ControlId> RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del);
 
 private:
 

@@ -101,6 +101,11 @@ PointerState InputState::GetPointerState()
   return m_MouseState.GetPointerState();
 }
 
+DelegateLink<void, bool, ControlId> InputState::RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del)
+{
+  return m_KeyboardState.RegisterPassThroughDelegate(del);
+}
+
 void InputState::HandleKeyPressMessage(int scan_code, bool pressed)
 {
   m_KeyboardState.HandleKeyPressMessage(scan_code, pressed);

@@ -5,10 +5,11 @@
 
 #include <SDL/SDL_keyboard.h>
 
-TextInputContext::TextInputContext(uint32_t window_id) :
+TextInputContext::TextInputContext(uint32_t window_id, bool allow_first_input) :
   m_WindowId(window_id),
   m_LastModification(GetTimeSeconds()),
-  m_TimeCreated(m_LastModification)
+  m_TimeCreated(m_LastModification),
+  m_AllowFirstInput(allow_first_input)
 {
 
 }
@@ -118,8 +119,9 @@ std::size_t TextInputContext::GetMultibyteCharacterLength(czstr str)
 
 void TextInputContext::CommitInput(czstr input)
 {
-  if (GetTimeSeconds() - m_TimeCreated < 0.1f)
+  if (m_AllowFirstInput == false)
   {
+    m_AllowFirstInput = true;
     return;
   }
 

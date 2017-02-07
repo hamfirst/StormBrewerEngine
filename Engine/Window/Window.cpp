@@ -111,9 +111,9 @@ NullOptPtr<InputState> Window::GetInputState() const
   return g_WindowManager.GetInputState(m_WindowId);
 }
 
-std::shared_ptr<TextInputContext> Window::CreateTextInputContext()
+std::shared_ptr<TextInputContext> Window::CreateTextInputContext(bool allow_first_input)
 {
-  return std::shared_ptr<TextInputContext>(new TextInputContext(m_WindowId));
+  return std::shared_ptr<TextInputContext>(new TextInputContext(m_WindowId, allow_first_input));
 }
 
 void Window::AddRef()

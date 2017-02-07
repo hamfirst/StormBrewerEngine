@@ -35,7 +35,7 @@ private:
   friend class WindowManager;
   friend class Window;
 
-  TextInputContext(uint32_t window_id);
+  TextInputContext(uint32_t window_id, bool allow_first_input);
 
   void CommitInput(czstr character);
   void SetComposition(czstr character);
@@ -62,6 +62,7 @@ private:
   uint32_t m_WindowId;
   double m_LastModification;
   double m_TimeCreated;
+  bool m_AllowFirstInput;
 
   std::vector<std::pair<std::size_t, std::size_t>> m_CharacterPositions;
 
