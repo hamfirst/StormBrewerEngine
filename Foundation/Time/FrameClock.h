@@ -12,6 +12,8 @@ public:
   void WaitUntilNextFrame();
   void BeginFrame();
 
+  double GetTimeUntilNextFrame();
+
   int GetFrameCount();
   double GetFrameInterval();
   

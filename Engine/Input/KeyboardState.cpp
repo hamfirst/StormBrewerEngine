@@ -269,7 +269,7 @@ int KeyboardState::ScanCodeFromJavascriptCode(int javascript_key_code)
   case 92:
     return SDL_SCANCODE_UNKNOWN;
   case 93:
-    return SDL_SCANCODE_RALT;
+    return SDL_SCANCODE_APPLICATION;
   case 94:
     return SDL_SCANCODE_UNKNOWN;
   case 95:

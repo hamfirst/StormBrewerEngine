@@ -28,7 +28,7 @@ bool FrameClock::ShouldStartFrame()
 
 void FrameClock::WaitUntilNextFrame()
 {
-  double t = m_FrameInterval - (GetTimeSeconds() - m_LastFrame);
+  double t = GetTimeUntilNextFrame();
   if (t >= 0)
   {
     uint64_t micro_secs = (uint64_t)((t * 1000000) * GetTimeScale());
@@ -43,6 +43,12 @@ void FrameClock::BeginFrame()
 {
   m_LastFrame += m_FrameInterval;
   m_FrameCount++;
+}
+
+double FrameClock::GetTimeUntilNextFrame()
+{
+  double t = m_FrameInterval - (GetTimeSeconds() - m_LastFrame);
+  return t;
 }
 
 int FrameClock::GetFrameCount()
