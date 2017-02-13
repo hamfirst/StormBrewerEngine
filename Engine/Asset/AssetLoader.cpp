@@ -113,18 +113,20 @@ Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path)
 Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path, int & file_open_error)
 {
 #ifdef USE_WEBSOCKET_LOADING
-  WebSocket ws;
-  auto ws_file = LoadFullFileWebsocket(file_path, file_open_error, ws);
-  if (ws_file)
+  if (s_DisableNetworkLoading == false)
   {
-    return ws_file;
-  }
+    WebSocket ws;
+    auto ws_file = LoadFullFileWebsocket(file_path, file_open_error, ws);
+    if (ws_file)
+    {
+      return ws_file;
+    }
 
-  if (file_open_error != 0)
-  {
-    return{};
+    if (file_open_error != 0)
+    {
+      return{};
+    }
   }
-
 #endif
 
   return LoadFullFileRaw(file_path, file_open_error);

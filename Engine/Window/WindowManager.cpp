@@ -86,7 +86,7 @@ void WindowManager::UpdateInput()
       SDL_StopTextInput();
     }
 
-    window.m_InputState->Update(window.m_KeyboardFocus && !window.m_TextInputContext, window.m_MouseFocus, window.m_WindowGeo);
+    window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo);
   }
 }
 
@@ -96,7 +96,7 @@ void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int 
   if (itr == m_Windows.end()) return;
   WindowState & window = itr->second;
 
-  window.m_InputState->HandleKeyPressMessage(scan_code, pressed);
+  window.m_InputState->HandleKeyPressMessage(scan_code, pressed, (bool)window.m_TextInputContext);
 
   if (window.m_TextInputContext && pressed)
   {

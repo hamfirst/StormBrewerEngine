@@ -14,6 +14,8 @@ public:
   void MakeCurrent(NullOptPtr<Box> input_box);
   void Unbind();
 
+  void ClearInput();
+
   void SetEnterDelegate(const Delegate<void, const char *> & del);
   void SetEscapeDelegate(const Delegate<void, const char *> & del);
   void SetTabDelegate(const Delegate<void, const char *> & del);

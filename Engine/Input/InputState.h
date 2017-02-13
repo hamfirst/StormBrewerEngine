@@ -10,7 +10,7 @@ class InputState
 public:
   InputState();
 
-  void Update(bool in_keyboard_focus, bool in_mouse_focus, const Box & window_geo);
+  void Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo);
 
   BinaryControlHandle BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void UnbindBinaryControl(const BinaryControlHandle & handle);
@@ -34,7 +34,7 @@ private:
   friend class MouseState;
   friend class WindowManager;
 
-  void HandleKeyPressMessage(int scan_code, bool pressed);
+  void HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active);
   void HandleMouseButtonPressMessage(int button, bool pressed, bool in_focus);
   void HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus);
 

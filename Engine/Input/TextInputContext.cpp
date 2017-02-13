@@ -24,6 +24,12 @@ void TextInputContext::Unbind()
   g_WindowManager.ClearTextInputContext(m_WindowId, this);
 }
 
+void TextInputContext::ClearInput()
+{
+  m_Text.clear();
+  m_CursorPos = 0;
+}
+
 void TextInputContext::SetEnterDelegate(const Delegate<void, const char *> & del)
 {
   m_EnterDelegate = del;

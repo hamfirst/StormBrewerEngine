@@ -19,7 +19,6 @@ double GetTimeSeconds()
   return s_TimePassed;
 }
 
-
 double GetRawTimeSeconds()
 {
   auto now = std::chrono::system_clock::now();

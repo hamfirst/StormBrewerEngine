@@ -9,9 +9,9 @@ InputState::InputState() :
 
 }
 
-void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, const Box & window_geo)
+void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo)
 {
-  m_KeyboardState.CheckDeltaState(in_keyboard_focus);
+  m_KeyboardState.CheckDeltaState(in_keyboard_focus, text_input_active);
   m_MouseState.CheckDeltaState(window_geo, in_mouse_focus);
 }
 
@@ -106,9 +106,9 @@ DelegateLink<void, bool, ControlId> InputState::RegisterKeyboardPassThroughCallb
   return m_KeyboardState.RegisterPassThroughDelegate(del);
 }
 
-void InputState::HandleKeyPressMessage(int scan_code, bool pressed)
+void InputState::HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active)
 {
-  m_KeyboardState.HandleKeyPressMessage(scan_code, pressed);
+  m_KeyboardState.HandleKeyPressMessage(scan_code, pressed, text_input_active);
 }
 
 void InputState::HandleMouseButtonPressMessage(int button, bool pressed, bool in_focus)

@@ -12,7 +12,7 @@ KeyboardState::KeyboardState(NotNullPtr<InputState> input_state) :
 
 }
 
-void KeyboardState::CheckDeltaState(bool in_focus)
+void KeyboardState::CheckDeltaState(bool in_focus, bool text_input_active)
 {
   int num_keys = 0;
   const uint8_t * keys = SDL_GetKeyboardState(&num_keys);
@@ -20,6 +20,11 @@ void KeyboardState::CheckDeltaState(bool in_focus)
   for (int index = 0; index < num_keys; index++)
   {
     bool pressed = keys[index] && in_focus;
+
+    if (text_input_active && m_PressedState[index] == false && ScanCodeBlockeByTextInput(index))
+    {
+      pressed = false;
+    }
 
     m_KeyboardControls[index].SetControlValue(pressed);
 
@@ -56,8 +61,13 @@ bool KeyboardState::GetKeyState(int scan_code)
   return m_PressedState[scan_code];
 }
 
-void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed)
+void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active)
 {
+  if (text_input_active && m_PressedState[scan_code] == false && ScanCodeBlockeByTextInput(scan_code))
+  {
+    pressed = false;
+  }
+
   if (m_KeyboardControls[scan_code].SetControlValue(pressed))
   {
     m_PassThroughCallbacks.Call(pressed, CreateKeyboardBinding(scan_code));
@@ -85,6 +95,18 @@ czstr KeyboardState::GetKeyNameForScanCode(int scan_code)
   return key_name;
 }
 
+bool KeyboardState::ScanCodeBlockeByTextInput(int scan_code)
+{
+  if ((scan_code >= SDL_SCANCODE_A && scan_code <= SDL_SCANCODE_Z) ||
+    (scan_code >= SDL_SCANCODE_1 && scan_code <= SDL_SCANCODE_0) ||
+    (scan_code >= SDL_SCANCODE_SPACE && scan_code <= SDL_SCANCODE_SLASH) ||
+    (scan_code >= SDL_SCANCODE_RIGHT && scan_code <= SDL_SCANCODE_UP))
+  {
+    return true;
+  }
+
+  return false;
+}
 
 int KeyboardState::ScanCodeFromJavascriptCode(int javascript_key_code)
 {
