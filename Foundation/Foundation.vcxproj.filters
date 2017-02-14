@@ -172,6 +172,9 @@
     <ClInclude Include="Time\FrameClock.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="Time\StopWatch.h">
+      <Filter>Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -224,6 +227,9 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="Time\FrameClock.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\StopWatch.cpp">
       <Filter>Time</Filter>
     </ClCompile>
   </ItemGroup>

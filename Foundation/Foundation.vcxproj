@@ -91,6 +91,10 @@
     <ClInclude Include="Thread\MessageQueue.h" />
     <ClInclude Include="Thread\Semaphore.h" />
     <ClInclude Include="Time\FrameClock.h" />
+    <ClInclude Include="Time\StopWatch.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Variant\Variant.h" />
   </ItemGroup>
@@ -137,6 +141,10 @@
     <ClCompile Include="Network\WebSocket.cpp" />
     <ClCompile Include="Thread\Semaphore.cpp" />
     <ClCompile Include="Time\FrameClock.cpp" />
+    <ClCompile Include="Time\StopWatch.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Time\Time.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
