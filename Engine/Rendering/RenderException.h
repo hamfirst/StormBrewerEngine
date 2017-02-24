@@ -10,3 +10,6 @@ public:
 private:
   int m_Error;
 };
+
+void ReportRenderError(const char * file, int line, int error);
+

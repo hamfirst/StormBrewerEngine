@@ -22,6 +22,7 @@ public:
   void ClearBinaryControlInputCallback();
 
   bool GetKeyState(int scan_code);
+  bool GetKeyPressedThisFrame(int scan_code);
   bool GetMouseButtonSate(int button);
   PointerState GetPointerState();
 

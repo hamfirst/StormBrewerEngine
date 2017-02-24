@@ -21,6 +21,7 @@ public:
   void RemoveKeyBinding(BinaryControlHandle handle);
 
   bool GetKeyState(int scan_code);
+  bool GetKeyPressedThisFrame(int scan_code);
 
   void HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active);
 
@@ -38,6 +39,7 @@ protected:
 private:
   InputState * m_InputState;
   bool m_PressedState[kNumKeyboardKeys] = {};
+  bool m_PressedThisFrame[kNumKeyboardKeys] = {};
   ControlBindingList<BinaryControlBinding> m_KeyboardControls[kNumKeyboardKeys];
 
   DelegateList<void, bool, ControlId> m_PassThroughCallbacks;

@@ -91,6 +91,11 @@ bool InputState::GetKeyState(int scan_code)
   return m_KeyboardState.GetKeyState(scan_code);
 }
 
+bool InputState::GetKeyPressedThisFrame(int scan_code)
+{
+  return m_KeyboardState.GetKeyPressedThisFrame(scan_code);
+}
+
 bool InputState::GetMouseButtonSate(int button)
 {
   return m_MouseState.GetButtonState(button);

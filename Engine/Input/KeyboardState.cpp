@@ -30,10 +30,15 @@ void KeyboardState::CheckDeltaState(bool in_focus, bool text_input_active)
 
     if (m_PressedState[index] == 0 && pressed)
     {
+      m_PressedThisFrame[index] = true;
       if (m_InputState->m_BinaryControlCallback)
       {
         m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(index));
       }
+    }
+    else
+    {
+      m_PressedThisFrame[index] = false;
     }
 
     m_PressedState[index] = pressed;
@@ -61,6 +66,16 @@ bool KeyboardState::GetKeyState(int scan_code)
   return m_PressedState[scan_code];
 }
 
+bool KeyboardState::GetKeyPressedThisFrame(int scan_code)
+{
+  if (scan_code >= kNumKeyboardKeys)
+  {
+    return false;
+  }
+
+  return m_PressedThisFrame[scan_code];
+}
+
 void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active)
 {
   if (text_input_active && m_PressedState[scan_code] == false && ScanCodeBlockeByTextInput(scan_code))
@@ -75,10 +90,15 @@ void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed, bool text
 
   if (m_PressedState[scan_code] == 0 && pressed)
   {
+    m_PressedThisFrame[scan_code] = true;
     if (m_InputState->m_BinaryControlCallback)
     {
       m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(scan_code));
     }
+  }
+  else
+  {
+    m_PressedThisFrame[scan_code] = false;
   }
 
   m_PressedState[scan_code] = pressed;

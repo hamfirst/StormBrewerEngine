@@ -75,6 +75,7 @@ bool EngineRenderInit()
 void EngineUpdate()
 {
   g_AssetLoader.ProcessResponses();
+  g_WindowManager.UpdateInput();
 
   SDL_Event e;
   while (SDL_PollEvent(&e))
@@ -146,8 +147,6 @@ void EngineUpdate()
       g_WindowManager.HandleTextInputComposition(e.edit.windowID, e.edit.text);
     }
   }
-
-  g_WindowManager.UpdateInput();
 }
 
 void EngineCleanup()
