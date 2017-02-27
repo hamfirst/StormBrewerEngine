@@ -87,6 +87,29 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   AddVert(a - thick, c);
 }
 
+void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c)
+{
+  auto offset = b - a;
+  auto len = glm::length(offset);
+
+  if (len == 0)
+  {
+    return;
+  }
+
+  auto dir = offset / len;
+  auto normal = Vector2f(dir.y, -dir.x);
+  auto start_thick = normal * (start_thickness / 2);
+  auto end_thick = normal * (end_thickness / 2);
+
+  AddVert(a + start_thick, c);
+  AddVert(b + end_thick, c);
+  AddVert(b - end_thick, c);
+  AddVert(a + start_thick, c);
+  AddVert(b - end_thick, c);
+  AddVert(a - start_thick, c);
+}
+
 void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs)
 {
   float offset_far = radius + thickness / 2.0f;
@@ -119,6 +142,40 @@ void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, flo
   }
 }
 
+void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs)
+{
+  float offset_far = radius + thickness / 2.0f;
+  float offset_near = radius - thickness / 2.0f;
+
+  auto start_angle = middle_angle - arc_half_angle;
+  auto start_dir = SinCosf(start_angle);
+
+  Vector2f start_far = pos + start_dir * offset_far;
+  Vector2f start_near = pos + start_dir * offset_near;
+
+  float angle_inc = arc_half_angle * 2 / num_segs;
+  float angle = start_angle + angle_inc;
+
+  for (int index = 1; index < num_segs + 1; index++)
+  {
+    auto dir = SinCosf(angle);
+
+    auto cur_far = pos + dir * offset_far;
+    auto cur_near = pos + dir * offset_near;
+
+    AddVert(start_far, c);
+    AddVert(cur_far, c);
+    AddVert(cur_near, c);
+    AddVert(start_far, c);
+    AddVert(cur_near, c);
+    AddVert(start_near, c);
+
+    start_far = cur_far;
+    start_near = cur_near;
+
+    angle += angle_inc;
+  }
+}
 
 VertexBuffer GeometryVertexBufferBuilder::CreateVertexBuffer()
 {

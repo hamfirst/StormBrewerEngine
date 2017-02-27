@@ -12,7 +12,9 @@ public:
   GeometryVertexBufferBuilder(const Vector2 & texture_pos, const Vector2 & texture_pos_size);
 
   void Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c);
+  void Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c);
   void Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs);
+  void Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs);
 
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
