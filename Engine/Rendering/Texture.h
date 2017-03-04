@@ -29,6 +29,7 @@ public:
   void SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int dst_y);
 
   void BindTexture(int texture_stage) const;
+  void SetLinearFilter() const;
 
   int GetLoadError() const { return m_LoadError; }
 

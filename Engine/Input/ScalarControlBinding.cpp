@@ -2,14 +2,14 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/ScalarControlBinding.h"
 
-ScalarControlBinding::ScalarControlBinding(int priority, Delegate<void, float> callback) :
-  m_StateChangeCB(callback),
-  m_Priority(priority)
+ScalarControlBinding::ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback) :
+  ControlBinding(priority, mode),
+  m_StateChangeCB(callback)
 {
 
 }
 
-void ScalarControlBinding::UpdateState(float state)
+void ScalarControlBinding::UpdateState(ScalarControlBinding::ControlValueType state)
 {
   if (state != m_CurrentState)
   {
@@ -23,7 +23,7 @@ void ScalarControlBinding::UpdateState(float state)
   }
 }
 
-float ScalarControlBinding::GetCurrentState()
+ScalarControlBinding::ControlValueType ScalarControlBinding::GetCurrentState()
 {
   return m_CurrentState;
 }
@@ -35,51 +35,41 @@ void ScalarControlBinding::AdvanceFrame()
   m_HistoryCount++;
 }
 
-bool ScalarControlBinding::WasOn(unsigned int history_frames)
-{
-  history_frames = std::min({ history_frames, m_HistoryCount, kScalarControlHistory });
-  int history_index = (m_HistoryIndex + kScalarControlHistory - history_frames) % kScalarControlHistory;
-
-  while (history_frames > 0)
-  {
-    if (m_History[history_index] > kScalarControlThreshold)
-    {
-      return true;
-    }
-
-    history_frames--;
-    history_index = (history_index + 1) % kScalarControlHistory;
-  }
-
-  return GetCurrentState() > kScalarControlThreshold;
-}
-
-bool ScalarControlBinding::WasOff(unsigned int history_frames)
-{
-  history_frames = std::min({ history_frames, m_HistoryCount, kScalarControlHistory });
-  int history_index = (m_HistoryIndex + kScalarControlHistory - history_frames) % kScalarControlHistory;
-
-  while (history_frames > 0)
-  {
-    if (m_History[history_index] <= kScalarControlThreshold)
-    {
-      return true;
-    }
-
-    history_frames--;
-    history_index = (history_index + 1) % kScalarControlHistory;
-  }
-
-  return GetCurrentState() <= kScalarControlThreshold;
-}
-
-float ScalarControlBinding::GetPriorValue(unsigned int frames_ago)
+ScalarControlBinding::ControlValueType ScalarControlBinding::GetPriorValue(unsigned int frames_ago)
 {
   if (frames_ago > m_HistoryCount || frames_ago > kScalarControlHistory)
   {
-    return 0;
+    return{};
   }
 
   int history_index = (m_HistoryIndex + kScalarControlHistory - frames_ago) % kScalarControlHistory;
   return m_History[history_index];
+}
+
+ScalarControlHandle::ScalarControlHandle(NotNullPtr<InputState> input_state, Handle handle, ControlId control_id) :
+  ControlHandle(input_state, handle, control_id)
+{
+
+}
+
+ScalarControlBinding::ControlValueType ScalarControlHandle::GetCurrentState()
+{
+  ScalarControlBinding * binding = static_cast<ScalarControlBinding *>(GetControlHandle());
+  if (binding == nullptr)
+  {
+    return{};
+  }
+
+  return binding->GetCurrentState();
+}
+
+ScalarControlBinding::ControlValueType ScalarControlHandle::GetPriorValue(unsigned int frames_ago)
+{
+  ScalarControlBinding * binding = static_cast<ScalarControlBinding *>(GetControlHandle());
+  if (binding == nullptr)
+  {
+    return{};
+  }
+
+  return binding->GetPriorValue(frames_ago);
 }

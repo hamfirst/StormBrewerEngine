@@ -230,6 +230,10 @@
     </ClInclude>
     <ClInclude Include="Input\ControlHandle.h" />
     <ClInclude Include="Input\ControlId.h" />
+    <ClInclude Include="Input\GamepadState.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Input\InputState.h" />
     <ClInclude Include="Input\KeyboardState.h" />
     <ClInclude Include="Input\MouseState.h" />
@@ -365,6 +369,10 @@
     </ClCompile>
     <ClCompile Include="Input\ControlHandle.cpp" />
     <ClCompile Include="Input\ControlId.cpp" />
+    <ClCompile Include="Input\GamepadState.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Input\InputState.cpp" />
     <ClCompile Include="Input\KeyboardState.cpp" />
     <ClCompile Include="Input\MouseState.cpp" />

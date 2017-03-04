@@ -4,7 +4,8 @@
 
 InputState::InputState() :
   m_KeyboardState(this),
-  m_MouseState(this)
+  m_MouseState(this),
+  m_GamepadState(this)
 {
 
 }

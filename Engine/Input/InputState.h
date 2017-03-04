@@ -4,6 +4,7 @@
 
 #include "Engine/Input/KeyboardState.h"
 #include "Engine/Input/MouseState.h"
+#include "Engine/Input/GamepadState.h"
 
 class InputState
 {
@@ -43,6 +44,7 @@ private:
 
   KeyboardState m_KeyboardState;
   MouseState m_MouseState;
+  GamepadState m_GamepadState;
 
   Delegate<void, const ControlId &> m_BinaryControlCallback;
 };

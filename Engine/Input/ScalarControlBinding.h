@@ -2,34 +2,47 @@
 
 #include "Foundation/Delegate/Delegate.h"
 
-static const unsigned int kScalarControlHistory = 512;
-static const float kScalarControlThreshold = 0.75;
+#include "Engine/Input/ControlBinding.h"
+#include "Engine/Input/ControlHandle.h"
 
-class ScalarControlBinding
+static const unsigned int kScalarControlHistory = 512;
+
+class ScalarControlBinding : public ControlBinding
 {
 public:
+  using ControlValueType = float;
+  using CallbackType = Delegate<void, ControlValueType>;
 
-  using CallbackType = Delegate<void, float>;
+  ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
 
-  ScalarControlBinding(int priority, Delegate<void, float> callback);
-
-  void UpdateState(float state);
-  float GetCurrentState();
+  void UpdateState(ControlValueType state);
+  ControlValueType GetCurrentState();
   void AdvanceFrame();
 
-  bool WasOn(unsigned int history_frames);
-  bool WasOff(unsigned int history_frames);
-
-  float GetPriorValue(unsigned int frames_ago);
-
-  int GetPriority() { return m_Priority; }
+  ControlValueType GetPriorValue(unsigned int frames_ago);
 
 private:
 
-  Delegate<void, float> m_StateChangeCB;
-  float m_CurrentState = 0;
-  int m_Priority;
+  CallbackType m_StateChangeCB;
+  ControlValueType m_CurrentState = {};
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
-  float m_History[kScalarControlHistory] = {};
+  ControlValueType m_History[kScalarControlHistory] = {};
 };
+
+class ScalarControlHandle : public ControlHandle
+{
+protected:
+  friend class InputState;
+  friend class MouseState;
+  friend class GamepadState;
+
+  ScalarControlHandle(NotNullPtr<InputState> input_state, Handle handle, ControlId control_id);
+
+public:
+  ScalarControlHandle() = default;
+
+  ScalarControlBinding::ControlValueType GetCurrentState();
+  ScalarControlBinding::ControlValueType GetPriorValue(unsigned int frames_ago);
+};
+
