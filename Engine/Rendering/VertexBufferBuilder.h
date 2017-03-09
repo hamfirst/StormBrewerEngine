@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Engine\EngineCommon.h"
-#include "Engine\Rendering\VertexDefinition.h"
-#include "Engine\Rendering\VertexBuffer.h"
+#include "Engine/EngineCommon.h"
+#include "Engine/Rendering/VertexDefinition.h"
+#include "Engine/Rendering/VertexBuffer.h"
 
 
 struct QuadVertexBuilderInfo

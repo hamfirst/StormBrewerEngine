@@ -1,9 +1,9 @@
 
-#include "Engine\EngineCommon.h"
-#include "Engine\Rendering\Texture.h"
-#include "Engine\Rendering\RenderErrorMacros.h"
+#include "Engine/EngineCommon.h"
+#include "Engine/Rendering/Texture.h"
+#include "Engine/Rendering/RenderErrorMacros.h"
 
-#include <gl3w\gl3w.h>
+#include <gl3w/gl3w.h>
 
 #define GL_LUMINANCE 0x1909
 

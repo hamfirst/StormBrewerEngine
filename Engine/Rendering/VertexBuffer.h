@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Engine\EngineCommon.h"
-#include "Engine\Rendering\VertexDefinition.h"
+#include "Engine/EngineCommon.h"
+#include "Engine/Rendering/VertexDefinition.h"
 
 class ShaderProgram;
 class VertexList;
