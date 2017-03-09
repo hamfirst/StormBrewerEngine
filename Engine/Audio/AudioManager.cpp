@@ -8,8 +8,8 @@
 
 #include <sb/vector.h>
 
-#include <SDL/SDL_audio.h>
-#include <SDL/SDL_log.h>
+#include <SDL2/SDL_audio.h>
+#include <SDL2/SDL_log.h>
 
 AudioManager g_AudioManager;
 

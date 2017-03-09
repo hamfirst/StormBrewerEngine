@@ -5,7 +5,7 @@
 
 #include "Foundation/Network/Network.h"
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #undef main
 
 #ifdef _MSC_VER

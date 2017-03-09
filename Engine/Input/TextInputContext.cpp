@@ -3,7 +3,7 @@
 #include "Engine/Input/TextInputContext.h"
 #include "Engine/Window/WindowManager.h"
 
-#include <SDL/SDL_keyboard.h>
+#include <SDL2/SDL_keyboard.h>
 
 TextInputContext::TextInputContext(uint32_t window_id, bool allow_first_input) :
   m_WindowId(window_id),

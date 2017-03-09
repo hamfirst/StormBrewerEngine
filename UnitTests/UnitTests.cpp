@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #include <gl3w/gl3w.h>
 

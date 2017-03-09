@@ -5,7 +5,7 @@
 #include "Foundation/Network/Network.h"
 
 #include <gl3w/gl3w.h>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #include <freetype/ft2build.h>
 #include FT_FREETYPE_H

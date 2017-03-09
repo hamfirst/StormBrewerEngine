@@ -3,8 +3,8 @@
 #include "Engine/Input/MouseState.h"
 #include "Engine/Input/InputState.h"
 
-#include <SDL/SDL_mouse.h>
-#include <SDL/SDL_events.h>
+#include <SDL2/SDL_mouse.h>
+#include <SDL2/SDL_events.h>
 
 
 MouseState::MouseState(NotNullPtr<InputState> input_state) :

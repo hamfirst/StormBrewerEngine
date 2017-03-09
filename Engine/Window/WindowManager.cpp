@@ -5,7 +5,7 @@
 #include "Engine/Input/InputState.h"
 #include "Engine/Input/TextInputContext.h"
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 
 WindowManager g_WindowManager;

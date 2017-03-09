@@ -3,7 +3,7 @@
 #include "Engine/Input/KeyboardState.h"
 #include "Engine/Input/InputState.h"
 
-#include <SDL/SDL_keyboard.h>
+#include <SDL2/SDL_keyboard.h>
 
 
 KeyboardState::KeyboardState(NotNullPtr<InputState> input_state) :

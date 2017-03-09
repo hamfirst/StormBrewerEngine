@@ -3,7 +3,7 @@
 #include "Engine/Input/GamepadState.h"
 #include "Engine/Input/InputState.h"
 
-#include <SDL/SDL_joystick.h>
+#include <SDL2/SDL_joystick.h>
 
 
 GamepadState::GamepadState(NotNullPtr<InputState> input_state) :
