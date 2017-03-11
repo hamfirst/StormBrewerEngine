@@ -52,6 +52,8 @@ File::File(czstr path, FileOpenMode mode)
 
   if (m_FileData.m_File != nullptr)
   {
+    m_FileData.m_FileOpenError = 0;
+
     fseek(m_FileData.m_File, 0, SEEK_END);
     m_FileData.m_FileLength = ftell(m_FileData.m_File);
     fseek(m_FileData.m_File, 0, SEEK_SET);
