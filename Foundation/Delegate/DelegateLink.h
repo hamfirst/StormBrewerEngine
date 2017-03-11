@@ -61,7 +61,7 @@ private:
     }
   }
 
-  template <typename ReturnType, typename ... Args>
+  template <typename, typename ...>
   friend class DelegateList;
 
   int m_DelegateIndex = -1;

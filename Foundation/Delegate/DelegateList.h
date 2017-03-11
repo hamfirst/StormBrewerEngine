@@ -59,7 +59,7 @@ public:
 
 private:
 
-  template <typename ReturnType, typename ... Args>
+  template <typename, typename ...>
   friend class DelegateLink;
 
   int AddDelegateInternal(const Delegate<ReturnType, Args...> & del)

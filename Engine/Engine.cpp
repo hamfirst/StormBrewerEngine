@@ -7,7 +7,7 @@
 #include <gl3w/gl3w.h>
 #include <SDL2/SDL.h>
 
-#include <freetype/ft2build.h>
+#include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
 #include "Engine/Asset/AssetLoader.h"
@@ -41,7 +41,9 @@ bool EngineInit(bool egl_mode)
   s_EGLMode = egl_mode;
   if (s_EGLMode)
   {
+#if SDL_REVISION_NUMBER >= 10864
     SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "true");
+#endif
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);

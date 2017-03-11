@@ -25,5 +25,6 @@ add_library(Foundation STATIC
             Network/WebSocket.cpp
             Thread/Semaphore.cpp
             Time/FrameClock.cpp
+            Time/StopWatch.cpp
             Time/Time.cpp)
             

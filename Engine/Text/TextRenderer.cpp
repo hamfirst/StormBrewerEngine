@@ -118,7 +118,11 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
   int ascender = (int)(((float)m_Face->bbox.yMax / (float)m_Face->units_per_EM) * m_FontSize);
   int descender = (int)(((float)m_Face->bbox.yMin / (float)m_Face->units_per_EM) * m_FontSize);
 
+#ifdef _MSC_VER
   char32_t * wide_buffer = (char32_t *)_alloca(sizeof(char32_t) * len);
+#else
+  char32_t * wide_buffer = (char32_t *)alloca(sizeof(char32_t) * len);
+#endif
   std::codecvt_utf8<char32_t> converter;
 
   std::mbstate_t mb = {};
@@ -306,7 +310,11 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len)
   size.m_End.x = 0;
   size.m_End.y = ascender;
 
+#ifdef _MSC_VER
   char32_t * wide_buffer = (char32_t *)_alloca(sizeof(char32_t) * len);
+#else
+  char32_t * wide_buffer = (char32_t *)alloca(sizeof(char32_t) * len);
+#endif
 
   std::codecvt_utf8<char32_t> converter;
 
@@ -354,7 +362,11 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len)
 
 void TextRenderer::AddString(czstr utf8_str, std::size_t len)
 {
+#ifdef _MSC_VER
   char32_t * wide_buffer = (char32_t *)_alloca(sizeof(char32_t) * len);
+#else
+  char32_t * wide_buffer = (char32_t *)alloca(sizeof(char32_t) * len);
+#endif
 
   std::codecvt_utf8<char32_t> converter;
 

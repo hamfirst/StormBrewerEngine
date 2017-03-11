@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-include_directories(.. ../External)
+include_directories(.. ../External /usr/include/freetype2)
 add_definitions(-D_LINUX)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -19,6 +19,7 @@ add_library(Engine STATIC
             Audio/MusicSpec.cpp
             Input/BinaryControlBinding.cpp
             Input/ControlBindingHandleList.cpp
+            Input/ControlBindingSet.cpp
             Input/ControlHandle.cpp
             Input/ControlId.cpp
             Input/GamepadState.cpp
@@ -48,7 +49,8 @@ add_library(Engine STATIC
             Text/TextRenderer.cpp
             Window/FakeWindow.cpp
             Window/Window.cpp
-            Window/WindowManager.cpp)
+            Window/WindowManager.cpp
+            Engine.cpp)
                         
             
             

@@ -49,7 +49,7 @@ private:
   NullOptPtr<InputState> GetInputState(uint32_t window_id);
 
   struct WindowState;
-  std::unordered_map<uint32_t, WindowState> m_Windows;
+  std::unordered_map<uint32_t, std::unique_ptr<WindowState> > m_Windows;
   uint32_t m_NextFakeWindowId = 1000000;
 
 };

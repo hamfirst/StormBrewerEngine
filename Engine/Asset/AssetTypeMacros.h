@@ -20,7 +20,7 @@ using LoadCallback = Delegate<void, AssetType *, bool>;                         
 static AssetReference<AssetType> Load(czstr file_path);                             \
 static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback & del);      \
                                                                                     \
-LoadCallbackLink AddLoadCallback(LoadCallback & del);                               \
+LoadCallbackLink AddLoadCallback(LoadCallback del);                               \
                                                                                     \
 private:                                                                            \
                                                                                     \
@@ -43,7 +43,7 @@ AssetType::LoadCallbackLink AssetType::LoadWithCallback(                        
   return asset->AddLoadCallback(del);                                               \
 }                                                                                   \
                                                                                     \
-AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback & del)          \
+AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback del)          \
 {                                                                                   \
   if (m_State == AssetState::kLoadError)                                            \
   {                                                                                 \
