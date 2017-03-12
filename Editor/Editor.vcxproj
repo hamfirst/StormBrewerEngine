@@ -300,14 +300,8 @@
     <ProjectReference Include="..\External\vorbis\vorbis.vcxproj">
       <Project>{5de1f49c-32c8-404f-ab22-10c74797dddd}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\External\Windows\freetype\freetype.vcxproj">
-      <Project>{41f87526-a047-4965-ba39-11b59a2f9484}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\External\Windows\opus\opus.vcxproj">
       <Project>{1c2fb29d-ff31-418d-9f6f-abe318e56061}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\External\Windows\SDL\SDL.vcxproj">
-      <Project>{98981703-76b2-458f-9423-c32b3c26c2c3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">
       <Project>{39856b1a-b463-4d99-9859-74912e1c6d00}</Project>
