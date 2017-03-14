@@ -75,11 +75,7 @@ constexpr Hash crc32<size_t(-1)>(czstr str)
   return 0xFFFFFFFF;
 }
 
-#ifdef _DEBUG
-#define COMPILE_TIME_CRC32_STR(x) crc32(x)
-#else
 #define COMPILE_TIME_CRC32_STR(x) (crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
-#endif
 
 inline Hash crc32begin()
 {

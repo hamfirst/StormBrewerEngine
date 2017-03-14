@@ -141,7 +141,7 @@ void EditorContainer::closeEvent(QCloseEvent * ev)
 void EditorContainer::connectionComplete()
 {
   m_Context->makeCurrent(m_Surface.get());
-  EngineInit();
+  EngineInit(true);
   EngineRenderInit();
 
   QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
