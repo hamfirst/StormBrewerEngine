@@ -260,10 +260,10 @@
     <ProjectReference Include="..\External\vorbis\vorbis.vcxproj">
       <Project>{5de1f49c-32c8-404f-ab22-10c74797dddd}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\External\Windows\freetype\freetype.vcxproj">
+    <ProjectReference Include="..\External\Windows\freetype2\freetype.vcxproj">
       <Project>{41f87526-a047-4965-ba39-11b59a2f9484}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\External\Windows\SDL\SDL.vcxproj">
+    <ProjectReference Include="..\External\Windows\SDL2\SDL.vcxproj">
       <Project>{98981703-76b2-458f-9423-c32b3c26c2c3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">

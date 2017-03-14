@@ -24,9 +24,13 @@ FT_Library g_FreeType;
 
 #ifdef _MSC_VER
 
+#ifdef _WIN64
+#pragma comment(lib, "../External/Windows/angle/x64/libEGL.lib")
+#pragma comment(lib, "../External/Windows/angle/x64/libGLESv2.lib")
+#else
 #pragma comment(lib, "../External/Windows/angle/libEGL.lib")
 #pragma comment(lib, "../External/Windows/angle/libGLESv2.lib")
-
+#endif
 #endif
 
 bool EngineInit(bool egl_mode)
