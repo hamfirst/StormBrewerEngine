@@ -6,6 +6,7 @@
 
 #include <gl3w/gl3w.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_revision.h>
 
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
