@@ -2,6 +2,8 @@
 #include "Foundation/Common.h"
 #include "Foundation/FileSystem/File.h"
 
+#include <errno.h>
+
 #ifdef _MSC_VER
 #define PEDANTIC_BULLSHIT
 #endif
@@ -170,6 +172,11 @@ bool FileExists(czstr path)
   fclose(fp);
   return true;
 #endif
+}
+
+bool FileDelete(czstr path)
+{
+  return remove(path) == 0;
 }
 
 std::string FileReadFullAsString(czstr path)
