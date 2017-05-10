@@ -1,19 +1,25 @@
 #pragma once
 
+#include <StormData/StormData.h>
 #include <StormData/StormDataTypes.h>
 
 #include "Foundation/Math/Math.h"
 
 struct Vector2
 {
-  Vector2() = default;
+  STORM_REFL;
+  Vector2();
+  Vector2(const Vector2 & rhs) = default;
+  Vector2(Vector2 && rhs) = default;
+  Vector2(int x, int y);
+  Vector2(const RenderVec2 & v);
 
-  Vector2(int x, int y) : x(x), y(y) { }
-  Vector2(const RenderVec2 & v) : x((int)v.x), y((int)v.y) { }
+  Vector2 & operator = (Vector2 && rhs) = default;
+  Vector2 & operator = (const Vector2 & rhs) = default;
 
   operator RenderVec2() const
   {
-    return RenderVec2{ x.AsFloat(), y.AsFloat() };
+    return RenderVec2{ (float)x, (float)y };
   }
 
   Vector2 operator + (const Vector2 & rhs) const
@@ -67,7 +73,7 @@ struct Vector2
 
   Vector2 operator *= (float rhs)
   {
-    x *= rhs; y *= rhs;
+    x = (int)(x * rhs); y = (int)(y * rhs);
     return *this;
   }
 
@@ -104,8 +110,17 @@ struct Vector2
     return *this;
   }
 
-  STORM_REFL;
-  RInt x, y;
+  bool operator == (const Vector2 & rhs) const
+  {
+    return x == rhs.x && y == rhs.y;
+  }
+
+  bool operator != (const Vector2 & rhs) const
+  {
+    return x != rhs.x || y != rhs.y;
+  }
+
+  int x, y;
 };
 
 struct Box
@@ -124,6 +139,15 @@ struct Box
     auto size = Size();
     return m_Start + size / 2;
   }
+
+  bool operator == (const Box & rhs) const
+  {
+    return m_Start == rhs.m_Start && m_End == rhs.m_End;
+  }
+
+  static Box FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size);
+  static Box FromPoint(const Vector2 & pos);
+  static Box FromPoints(const Vector2 & a, const Vector2 & b);
 };
 
 struct Color
@@ -134,10 +158,10 @@ struct Color
 
   operator RenderVec4() const
   {
-    return RenderVec4{ r.AsFloat(), g.AsFloat(), b.AsFloat(), a.AsFloat() };
+    return RenderVec4{ (float)r, (float)g, (float)b, (float)a };
   }
 
   STORM_REFL;
-  RFloat r, g, b, a;
+  float r, g, b, a;
 };
 

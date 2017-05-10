@@ -6,6 +6,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#ifndef _SCL_SECURE_NO_WARNINGS
+#define _SCL_SECURE_NO_WARNINGS
+#endif
+
 #ifdef min
 #undef min
 #endif
@@ -39,6 +43,7 @@
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Variant/Variant.h"
 #include "Foundation/Assert/Assert.h"
+#include "Foundation/Random/Random.h"
 
 #include "Foundation/Buffer/Buffer.h"
 #include "Foundation/Delegate/Delegate.h"

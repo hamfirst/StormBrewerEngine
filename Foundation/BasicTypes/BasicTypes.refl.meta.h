@@ -21,11 +21,11 @@ struct StormReflTypeInfo<Vector2>
 template <>
 struct StormReflTypeInfo<Vector2>::field_data_static<0>
 {
-  using member_type = RInt; // RNumber<int>
+  using member_type = int; // int
   static constexpr auto GetName() { return "x"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8CDC1683; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Vector2::x; }
 };
@@ -35,19 +35,19 @@ struct StormReflTypeInfo<Vector2>::field_data<0, Self> : public StormReflTypeInf
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.x; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.x; }
+  match_const_t<Self, int> & Get() { return self.x; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.x; }
   void SetDefault() { self.x = StormReflTypeInfo<Vector2>::GetDefault().x; }
 };
 
 template <>
 struct StormReflTypeInfo<Vector2>::field_data_static<1>
 {
-  using member_type = RInt; // RNumber<int>
+  using member_type = int; // int
   static constexpr auto GetName() { return "y"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFBDB2615; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Vector2::y; }
 };
@@ -57,8 +57,8 @@ struct StormReflTypeInfo<Vector2>::field_data<1, Self> : public StormReflTypeInf
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.y; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.y; }
+  match_const_t<Self, int> & Get() { return self.y; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.y; }
   void SetDefault() { self.y = StormReflTypeInfo<Vector2>::GetDefault().y; }
 };
 
@@ -135,11 +135,11 @@ struct StormReflTypeInfo<Color>
 template <>
 struct StormReflTypeInfo<Color>::field_data_static<0>
 {
-  using member_type = RFloat; // RNumber<float>
+  using member_type = float; // float
   static constexpr auto GetName() { return "r"; }
-  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6C09FF9D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Color::r; }
 };
@@ -149,19 +149,19 @@ struct StormReflTypeInfo<Color>::field_data<0, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RFloat> & Get() { return self.r; }
-  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.r; }
+  match_const_t<Self, float> & Get() { return self.r; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.r; }
   void SetDefault() { self.r = StormReflTypeInfo<Color>::GetDefault().r; }
 };
 
 template <>
 struct StormReflTypeInfo<Color>::field_data_static<1>
 {
-  using member_type = RFloat; // RNumber<float>
+  using member_type = float; // float
   static constexpr auto GetName() { return "g"; }
-  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x01D41B76; }
-  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Color::g; }
 };
@@ -171,19 +171,19 @@ struct StormReflTypeInfo<Color>::field_data<1, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RFloat> & Get() { return self.g; }
-  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.g; }
+  match_const_t<Self, float> & Get() { return self.g; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.g; }
   void SetDefault() { self.g = StormReflTypeInfo<Color>::GetDefault().g; }
 };
 
 template <>
 struct StormReflTypeInfo<Color>::field_data_static<2>
 {
-  using member_type = RFloat; // RNumber<float>
+  using member_type = float; // float
   static constexpr auto GetName() { return "b"; }
-  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x71BEEFF9; }
-  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &Color::b; }
 };
@@ -193,19 +193,19 @@ struct StormReflTypeInfo<Color>::field_data<2, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RFloat> & Get() { return self.b; }
-  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.b; }
+  match_const_t<Self, float> & Get() { return self.b; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.b; }
   void SetDefault() { self.b = StormReflTypeInfo<Color>::GetDefault().b; }
 };
 
 template <>
 struct StormReflTypeInfo<Color>::field_data_static<3>
 {
-  using member_type = RFloat; // RNumber<float>
+  using member_type = float; // float
   static constexpr auto GetName() { return "a"; }
-  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE8B7BE43; }
-  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &Color::a; }
 };
@@ -215,8 +215,8 @@ struct StormReflTypeInfo<Color>::field_data<3, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RFloat> & Get() { return self.a; }
-  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.a; }
+  match_const_t<Self, float> & Get() { return self.a; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.a; }
   void SetDefault() { self.a = StormReflTypeInfo<Color>::GetDefault().a; }
 };
 

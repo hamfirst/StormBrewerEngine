@@ -55,6 +55,24 @@
     <Filter Include="Time">
       <UniqueIdentifier>{d73ab98b-f993-4f10-8143-d6ecdaa111c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Random">
+      <UniqueIdentifier>{8068698c-861c-4cb0-b79a-e1bb0666dcc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkpField">
+      <UniqueIdentifier>{3b6e3fa5-3a8b-419f-8331-d3757b161068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PropertyMeta">
+      <UniqueIdentifier>{33aa06b7-0733-459c-a2ed-38b0d12ca321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Any">
+      <UniqueIdentifier>{7e0659b4-9aa8-4cef-a880-b791262a9a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpatialDatabase">
+      <UniqueIdentifier>{83f4ea46-b0fb-441d-b290-044def059f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SparseList">
+      <UniqueIdentifier>{210cdc64-b122-4ddd-859d-e9505c13a941}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -121,22 +139,7 @@
     <ClInclude Include="Optional\NullOpt.h">
       <Filter>Optional</Filter>
     </ClInclude>
-    <ClInclude Include="Json\JsonSchema.h">
-      <Filter>Json</Filter>
-    </ClInclude>
     <ClInclude Include="Json\JsonType.h">
-      <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Json\JsonSchemaBasic.h">
-      <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Json\JsonSchemaSerialize.h">
-      <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.h">
-      <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.meta.h">
       <Filter>Json</Filter>
     </ClInclude>
     <ClInclude Include="Document\Document.h">
@@ -175,6 +178,48 @@
     <ClInclude Include="Time\StopWatch.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="FileSystem\Path.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Random\Random.h">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="SkipField\SkipFieldIterator.h">
+      <Filter>SkpField</Filter>
+    </ClInclude>
+    <ClInclude Include="SkipField\SkipField.h">
+      <Filter>SkpField</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyMeta\PropertyFieldMetaFuncs.h">
+      <Filter>PropertyMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyMeta\PropertyFieldDatabase.h">
+      <Filter>PropertyMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyMeta\PropertyFieldMetaData.h">
+      <Filter>PropertyMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="Any\Any.h">
+      <Filter>Any</Filter>
+    </ClInclude>
+    <ClInclude Include="SpatialDatabase\SpatialDatabase.h">
+      <Filter>SpatialDatabase</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\IdAllocator.h">
+      <Filter>Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseList\SparseList.h">
+      <Filter>SparseList</Filter>
+    </ClInclude>
+    <ClInclude Include="Random\RandomGenerator.h">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Util.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Intersection.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -210,12 +255,6 @@
     <ClCompile Include="Json\Json.cpp">
       <Filter>Json</Filter>
     </ClCompile>
-    <ClCompile Include="Json\JsonSchema.cpp">
-      <Filter>Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Json\JsonSchemaSerialize.cpp">
-      <Filter>Json</Filter>
-    </ClCompile>
     <ClCompile Include="Document\Document.cpp">
       <Filter>Document</Filter>
     </ClCompile>
@@ -231,6 +270,33 @@
     </ClCompile>
     <ClCompile Include="Time\StopWatch.cpp">
       <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem\Path.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Random\Random.cpp">
+      <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicTypes\BasicTypes.refl.cpp">
+      <Filter>BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyMeta\PropertyFieldDatabase.cpp">
+      <Filter>PropertyMeta</Filter>
+    </ClCompile>
+    <ClCompile Include="Any\Any.cpp">
+      <Filter>Any</Filter>
+    </ClCompile>
+    <ClCompile Include="SpatialDatabase\SpatialDatabase.cpp">
+      <Filter>SpatialDatabase</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator\IdAllocator.cpp">
+      <Filter>Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Random\RandomGenerator.cpp">
+      <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Util.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

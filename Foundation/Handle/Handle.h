@@ -1,10 +1,19 @@
 #pragma once
 
+#include <cstdint>
+
 struct Handle
 {
   unsigned int m_Valid : 1;
   unsigned int m_Gen : 7;
   unsigned int m_Index : 24;
+
+  Handle()
+  {
+    m_Valid = 0;
+  }
+
+  Handle(const Handle & rhs) = default;
 
   bool operator == (const Handle & rhs) const
   {
@@ -23,6 +32,11 @@ template <typename ManagerType>
 class SpecificHandle : public Handle
 {
 public:
+  SpecificHandle()
+  {
+
+  }
+
   SpecificHandle(Handle handle) : Handle(handle)
   {
 

@@ -31,6 +31,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Allocator\Allocator2D.h" />
+    <ClInclude Include="Allocator\IdAllocator.h" />
+    <ClInclude Include="Any\Any.h" />
     <ClInclude Include="Assert\Assert.h" />
     <ClInclude Include="BasicTypes\BasicTypeFuncs.h" />
     <ClInclude Include="BasicTypes\BasicTypes.refl.h" />
@@ -68,19 +70,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="FileSystem\File.h" />
+    <ClInclude Include="FileSystem\Path.h" />
     <ClInclude Include="Handle\Handle.h" />
     <ClInclude Include="Handle\HandleList.h" />
     <ClInclude Include="Json\Json.h" />
-    <ClInclude Include="Json\JsonSchema.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Json\JsonSchemaBasic.h" />
-    <ClInclude Include="Json\JsonSchemaSerialize.h" />
-    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.h" />
-    <ClInclude Include="Json\JsonSchemaSerializeTypes.refl.meta.h" />
     <ClInclude Include="Json\JsonType.h" />
+    <ClInclude Include="Math\Intersection.h" />
     <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="Math\Util.h" />
     <ClInclude Include="Network\Network.h">
       <SubType>
       </SubType>
@@ -88,6 +85,15 @@
     <ClInclude Include="Network\WebSocket.h" />
     <ClInclude Include="Optional\NullOpt.h" />
     <ClInclude Include="Optional\Optional.h" />
+    <ClInclude Include="PropertyMeta\PropertyFieldDatabase.h" />
+    <ClInclude Include="PropertyMeta\PropertyFieldMetaData.h" />
+    <ClInclude Include="PropertyMeta\PropertyFieldMetaFuncs.h" />
+    <ClInclude Include="Random\Random.h" />
+    <ClInclude Include="Random\RandomGenerator.h" />
+    <ClInclude Include="SkipField\SkipField.h" />
+    <ClInclude Include="SkipField\SkipFieldIterator.h" />
+    <ClInclude Include="SparseList\SparseList.h" />
+    <ClInclude Include="SpatialDatabase\SpatialDatabase.h" />
     <ClInclude Include="Thread\MessageQueue.h" />
     <ClInclude Include="Thread\Semaphore.h" />
     <ClInclude Include="Time\FrameClock.h" />
@@ -100,7 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Allocator\Allocator2D.cpp" />
+    <ClCompile Include="Allocator\IdAllocator.cpp" />
+    <ClCompile Include="Any\Any.cpp" />
     <ClCompile Include="Assert\Assert.cpp" />
+    <ClCompile Include="BasicTypes\BasicTypes.refl.cpp" />
     <ClCompile Include="Blit\Blit.cpp">
       <SubType>
       </SubType>
@@ -128,17 +137,18 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FileSystem\File.cpp" />
+    <ClCompile Include="FileSystem\Path.cpp" />
     <ClCompile Include="Json\Json.cpp" />
-    <ClCompile Include="Json\JsonSchema.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Json\JsonSchemaSerialize.cpp" />
+    <ClCompile Include="Math\Util.cpp" />
     <ClCompile Include="Network\Network.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="Network\WebSocket.cpp" />
+    <ClCompile Include="PropertyMeta\PropertyFieldDatabase.cpp" />
+    <ClCompile Include="Random\Random.cpp" />
+    <ClCompile Include="Random\RandomGenerator.cpp" />
+    <ClCompile Include="SpatialDatabase\SpatialDatabase.cpp" />
     <ClCompile Include="Thread\Semaphore.cpp" />
     <ClCompile Include="Time\FrameClock.cpp" />
     <ClCompile Include="Time\StopWatch.cpp">
@@ -239,6 +249,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -9,12 +9,9 @@
 #include <StormRefl/StormReflMetaFuncs.h>
 #include <StormData/StormDataChangeNotifier.h>
 
-struct JsonSchema;
-
 enum class JsonParseResult
 {
   kNone,
-  kSchemaError,
   kSyntaxError,
   kNull,
 };
@@ -27,7 +24,7 @@ enum class JsonState
 class Json
 {
 public:
-  Json(NotNullPtr<const JsonSchema> schema);
+  Json();
   Json(const Json & rhs);
   Json(Json && rhs);
 
@@ -36,52 +33,39 @@ public:
   Json & operator = (const Json & rhs);
   Json & operator = (Json && rhs);
 
-  void Clear();
-
   JsonType GetType() const
   {
     return (JsonType)m_JsonData->GetCurrentTypeIndex();
   }
 
-  NotNullPtr<const JsonSchema> GetSchema() const
-  {
-    return m_Schema;
-  }
-
-  void SetState(int state);
-
   void Encode(std::string & sb);
   void EncodePretty(std::string & sb, int base_indent = 0, int advance = 2, bool do_indent = true);
 
-  JsonParseResult Parse(czstr data, std::vector<std::pair<std::string, std::string>> & schema_errors);
+  JsonParseResult Parse(czstr data);
   void ApplyChange(const ReflectionChangeNotification & change, NullOptPtr<ReflectionChangeNotification> reverse_change);
 
   void ApplyJson(const Json & rhs);
 
   NullOptPtr<Json> GetJsonAtPath(czstr path, bool create_nodes);
-  bool RevertDataAtPath(czstr path);
+
+  static Json CreateEmptyObject();
 
 protected:
 
-  JsonParseResult Parse(czstr data, czstr & result, bool allow_null, const std::string & path, std::vector<std::pair<std::string, std::string>> & schema_errors);
+  using ObjectType = std::unordered_map<uint32_t, std::pair<std::string, Json>>;
+  using ArrayType = std::vector<Json>;
 
-  void ApplyChangeDirect(const ReflectionChangeNotification & change, NullOptPtr<ReflectionChangeNotification> reverse_change);
+  JsonParseResult Parse(czstr data, czstr & result, bool allow_null);
+
+  std::tuple<NullOptPtr<Json>, NullOptPtr<Json>, Optional<ObjectType::iterator>>  GetJsonAndParentAtPath(
+    czstr path, NullOptPtr<Json> parent, czstr & created_node_path_end);
+
+  void ApplyChangeDirect(const ReflectionChangeNotification & change, NullOptPtr<ReflectionChangeNotification> reverse_change, 
+    Json * parent_node, ObjectType::iterator * itr, const std::string & created_node_path);
 
 private:
 
-  class vector_alias : public std::vector<Json>
-  {
+  using JsonDataType = Variant<void *, bool, uint64_t, int64_t, float, std::string, ArrayType, ObjectType>;
 
-  };
-
-  using ObjectType = std::unordered_map<uint32_t, std::pair<std::string, Json>>;
-  using HashMapType = std::unordered_map<uint32_t, std::tuple<uint64_t, bool, Json>>;
-  using HomogeneousType = std::vector<Json>;
-  using HeterogeneousType = vector_alias;
-
-  using JsonDataType = Variant<void *, bool, uint64_t, int64_t, float, std::string, HomogeneousType, HeterogeneousType, HashMapType, ObjectType>;
-
-  NotNullPtr<const JsonSchema> m_Schema;
-  int m_State;
   std::unique_ptr<JsonDataType> m_JsonData;
 };

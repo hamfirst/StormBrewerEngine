@@ -157,6 +157,26 @@ public:
     return reinterpret_cast<const T *>(m_Buffer);
   }
 
+  T * GetPtr()
+  {
+    if (!m_Valid)
+    {
+      return nullptr;
+    }
+
+    return reinterpret_cast<T *>(m_Buffer);
+  }
+
+  const T * GetPtr() const
+  {
+    if (!m_Valid)
+    {
+      return nullptr;
+    }
+
+    return reinterpret_cast<const T *>(m_Buffer);
+  }
+
 public:
 
   bool m_Valid = false;

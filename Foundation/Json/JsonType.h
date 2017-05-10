@@ -8,9 +8,7 @@ enum class JsonType
   kSignedIntegerNumber,
   kFloatingNumber,
   kString,
-  kHomogenousArray,
-  kHeterogenousArray,
-  kHashMap,
+  kArray,
   kObject,
 };
 

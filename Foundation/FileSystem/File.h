@@ -52,6 +52,7 @@ private:
 File FileOpen(czstr path, FileOpenMode mode);
 void FileClose(File & file);
 bool FileExists(czstr path);
+bool FileDelete(czstr path);
 
 std::string FileReadFullAsString(czstr path);
 

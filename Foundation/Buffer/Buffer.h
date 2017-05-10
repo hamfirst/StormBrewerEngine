@@ -9,7 +9,7 @@ class Buffer
 public:
   Buffer();
   explicit Buffer(std::size_t size);
-  Buffer(void * data_to_copy, std::size_t size);
+  Buffer(const void * data_to_copy, std::size_t size);
 
   Buffer(const Buffer & rhs) = delete;
   Buffer(Buffer && rhs) noexcept;

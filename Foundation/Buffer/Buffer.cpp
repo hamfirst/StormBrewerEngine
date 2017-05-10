@@ -11,11 +11,12 @@ Buffer::Buffer() :
 
 Buffer::Buffer(std::size_t size)
 {
-  m_Data = std::make_unique<uint8_t[]>(size);
+  m_Data = std::make_unique<uint8_t[]>(size + 1);
+  m_Data[size] = 0;
   m_DataSize = size;
 }
 
-Buffer::Buffer(void * data_to_copy, std::size_t size) :
+Buffer::Buffer(const void * data_to_copy, std::size_t size) :
   Buffer(size)
 {
   memcpy(m_Data.get(), data_to_copy, size);

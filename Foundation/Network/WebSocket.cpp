@@ -10,7 +10,13 @@
 #endif
 
 #ifdef _LINUX
+#ifdef __APPLE__
+
+#else
 #include <endian.h>
+#define htonll htobe64
+#endif
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -21,9 +27,8 @@
 #include <netinet/tcp.h>
 #include <netdb.h>
 
-#define htonll htobe64
-
 #define INVALID_SOCKET -1
+
 #endif
 
 static void CloseSocket(volatile int & sock)

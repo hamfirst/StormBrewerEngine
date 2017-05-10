@@ -6,6 +6,7 @@
 
 
 std::string BufferToString(const Buffer & buffer);
+Buffer StringToBuffer(std::string & str);
 
 template <typename T>
 Buffer MoveToBuffer(T && t)

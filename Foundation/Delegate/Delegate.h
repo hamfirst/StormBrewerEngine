@@ -48,7 +48,8 @@ template <typename ReturnType, typename ... Args>
 class Delegate
 {
 public:
-  Delegate()
+  Delegate() :
+    m_Valid(false)
   {
     
   }
@@ -109,7 +110,7 @@ public:
     m_Caller = [](void * obj, Args ... args) 
     { 
       std::remove_reference_t<Callable> * callable = static_cast<std::remove_reference_t<Callable> *>(obj);
-      return (*callable)(args...);
+      return (*callable)(std::forward<Args>(args)...);
     };
 
     m_Copier = [](const void * src, void * dst)
@@ -241,7 +242,7 @@ public:
   {
     if (m_Valid == false)
     {
-      throw std::runtime_error("Calling unset delegate");
+      return DelegateReturnEmpty<ReturnType>::Process();
     }
 
     return m_Caller(m_Buffer, std::forward<Args>(args)...);

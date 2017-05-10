@@ -32,3 +32,37 @@ static inline float WrapAngle(float angle)
   float n_angle = angle / k2Pi;
   return (n_angle - floorf(n_angle)) * k2Pi;
 }
+
+static inline float DiffAngle(float a, float b)
+{
+  auto wa = WrapAngle(a);
+  auto wb = WrapAngle(b);
+
+  if (wa > wb)
+  {
+    float d1 = wa - wb;
+    float d2 = wb + k2Pi - wa;
+    return d1 < d2 ? -d1 : d2;
+  }
+  else
+  {
+    float d1 = wb - wa;
+    float d2 = wa + k2Pi - wb;
+    return d1 < d2 ? d1 : -d2;
+  }
+}
+
+static inline float OffsetAngle(float a, float b)
+{
+  auto wa = WrapAngle(a);
+  auto wb = WrapAngle(b);
+
+  if (wa > wb)
+  {
+    return std::min(wa - wb, wb + k2Pi - wa);
+  }
+  else
+  {
+    return std::min(wb - wa, wa + k2Pi - wb);
+  }
+}

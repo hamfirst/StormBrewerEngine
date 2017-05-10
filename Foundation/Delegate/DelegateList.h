@@ -42,7 +42,7 @@ public:
   template <typename ... DelegateParams>
   DelegateLink<ReturnType, Args...> AddDelegate(DelegateParams && ... params)
   {
-    int delegate_index = AddDelegateInternal(Delegate<ReturnType, Args...>(params...));
+    int delegate_index = AddDelegateInternal(Delegate<ReturnType, Args...>(std::forward<DelegateParams>(params)...));
     return DelegateLink<ReturnType, Args...>(delegate_index, this);
   }
 
@@ -62,7 +62,7 @@ private:
   template <typename, typename ...>
   friend class DelegateLink;
 
-  int AddDelegateInternal(const Delegate<ReturnType, Args...> & del)
+  int AddDelegateInternal(Delegate<ReturnType, Args...> && del)
   {
     if (m_FreeSize == 0)
     {
@@ -90,7 +90,7 @@ private:
       }
 
       int insert_index = m_ListSize;
-      new(&new_mem[insert_index]) Optional<Delegate<ReturnType, Args...>>(del);
+      new(&new_mem[insert_index]) Optional<Delegate<ReturnType, Args...>>(std::move(del));
 
       m_FreeSize = new_list_size - m_ListSize - 1;
       m_ListSize = new_list_size;

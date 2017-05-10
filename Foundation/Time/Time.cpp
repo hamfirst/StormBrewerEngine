@@ -4,10 +4,10 @@
 
 #include <chrono>
 
-std::chrono::system_clock::time_point s_StartTime = std::chrono::system_clock::now();
-double s_TimePassed = 0;
-double s_LastUpdate = 0;
-double s_TimeScale = 1.0;
+static std::chrono::system_clock::time_point s_StartTime = std::chrono::system_clock::now();
+static double s_TimePassed = 0;
+static double s_LastUpdate = 0;
+static double s_TimeScale = 1.0;
 
 double GetTimeSeconds()
 {

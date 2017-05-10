@@ -11,7 +11,7 @@ public:
   };
 
   template <class Function>
-  void AddCall(Function & f)
+  void AddCall(Function && f)
   {
     static Function f_copy = f;
     static CallListElem elem;
@@ -20,6 +20,7 @@ public:
 
     m_Head = &elem;
   }
+
 
   void CallAll()
   {
@@ -35,3 +36,5 @@ private:
   CallListElem * m_Head;
 };
 
+#define ADD_PREMAIN_CALL(CallList, Prefix, Call) \
+  struct s_Reg_##Prefix##CallList { s_Reg_##Prefix##CallList(){ CallList.AddCall(Call); } } sv_Reg_##Prefix##CallList;
