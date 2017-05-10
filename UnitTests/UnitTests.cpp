@@ -16,8 +16,6 @@
 #include "Foundation/Network/Network.h"
 #include "Foundation/Network/WebSocket.h"
 #include "Foundation/Json/Json.h"
-#include "Foundation/Json/JsonSchemaSerialize.h"
-
 
 #include <StormData/StormDataJson.h>
 
@@ -30,7 +28,20 @@
 #include "Engine/Input/InputState.h"
 #include "Engine/Input/TextInputContext.h"
 #include "Engine/Window/WindowManager.h"
+#include "Engine/Shader/ShaderManager.h"
+#include "Engine/Sprite/SpriteEngineData.h"
+#include "Engine/Map/MapRender.h"
+#include "Engine/Entity/EntityRender.h"
+#include "Engine/Camera/Camera.h"
 
+#include "Runtime/RuntimeState.h"
+#include "Runtime/Entity/Entity.h"
+#include "Runtime/Entity/EntityResource.h"
+#include "Runtime/Sprite/SpriteResource.h"
+#include "Runtime/Map/MapResource.h"
+#include "Runtime/Mover/Mover.h"
+
+#include "Shared/AssetBundle/AssetBundle.h"
 
 #include "TestTypes.refl.meta.h"
 
@@ -84,35 +95,24 @@ void TestWebsocket()
 
 void TestJson()
 {
-  auto schema = GetJsonSchema<TestType>();
-  auto schema_data = SerializeJsonSchema(schema);
-
-  std::unique_ptr<JsonSchema[]> schema_list;
-  std::unique_ptr<JsonChildSchemaList[]> child_list;
-
-  auto backup_schema = DeserializeJsonSchema(schema_data, schema_list, child_list);
-
-  Json json(schema);
+  Json json;
 
   TestType obj{};
   //obj.m_Sub.m_List.InsertAt(200, 1);
   obj.m_Sub.m_List.InsertAt(200, 4);
 
   std::string data = StormReflEncodeJson(obj);
-  std::vector<std::pair<std::string, std::string>> schema_errors;
-  json.Parse(data.data(), schema_errors);
+  json.Parse(data.data());
 
   const char * test_data = "{\"m_Sub\":{\"m_List\":{\"+4\":null,\"3\":100}}}";
-  Json test_additive(schema);
-  test_additive.Parse(test_data, schema_errors);
+  Json test_additive;
+  test_additive.Parse(test_data);
 
   std::string test_result;
   test_additive.EncodePretty(test_result);
   printf("%s\n", test_result.data());
 
   json.ApplyJson(test_additive);
-  json.RevertDataAtPath(".m_Sub.m_List[3]");
-  json.RevertDataAtPath(".m_Int");
 
   std::string result;
   json.EncodePretty(result);
@@ -128,21 +128,20 @@ void UpdateCursorPos(PointerState p)
   cursor_pos = p.m_Pos;
 }
 
-
 void UpdateButtonState(bool pressed)
 {
   cursor_pressed = pressed;
   Box box = { { 50, 50 }, { 100, 100 } };
 }
 
-
 int main()
 {
-  TestJson();
+  //TestJson();
 
   EngineInit(true);
 
   auto window = g_WindowManager.CreateNewWindow("Window!", 1280, 720);
+  window.MakeCurrent();
 
   EngineRenderInit();
 
@@ -150,12 +149,13 @@ int main()
   render_state.InitRenderState(1280, 720);
 
   RenderUtil render_util;
+  render_util.SetClearColor(Color(100, 149, 237, 255));
   render_util.LoadShaders();
 
   auto texture = TextureAsset::Load("Images/test.png");
   g_TextManager.LoadFont("Fonts/arial.ttf", -1, 15);
 
-  g_AssetLoader.DisableNetworkLoading();
+  //g_AssetLoader.DisableNetworkLoading();
 
   auto & input_state = *window.GetInputState();
   input_state.BindBinaryControl(CreateMouseButtonBinding(kMouseRightButton), 0, ControlBindingMode::kIgnoreLowerPriority, { UpdateButtonState });
@@ -166,16 +166,55 @@ int main()
   auto input_context = window.CreateTextInputContext();
   input_context->MakeCurrent(nullptr);
 
+  int frame = 0;
+
+  RuntimeState runtime_state;
+
+  AssetBundle bundle;
+  bundle.LoadAsset<EntityResource>("./Entities/Entity.entity");
+  bundle.LoadAsset<MapResource>("./Maps/Test.map");
+  bool loaded = false;
+
+  Camera camera(Vector2(480, 270));
+
+
+  Entity * entity = nullptr;
+
   while (EngineWantsToQuit() == false)
   {
     EngineUpdate();
 
     RenderUtil::Clear();
 
+    if (loaded == false && bundle.AllLoadedSuccessfully())
+    {
+      auto map = MapResource::Load("./Maps/Test.map");
+      runtime_state.LoadMap(map.GetResource());
+
+      auto entity_resource = EntityResource::Load("./Entities/Entity.entity");
+      entity = runtime_state.CreateEntity(entity_resource.GetResource());
+      entity->GetPosition().x = 30;
+      entity->GetPosition().y = 100;
+      loaded = true;
+    }
+
+    if(loaded)
+    {
+      Box move_box = { {-8, -20}, {8, 20} };
+      entity->GetMoverState().m_Velocity.y -= 10;
+      Mover::UpdateMover(entity, move_box, 0xF);
+
+      entity->FrameAdvance(COMPILE_TIME_CRC32_STR("Idle"));
+
+      camera.SetPosition(entity->GetPosition());
+      //camera.DebugDraw(render_util, move_box, entity->GetPosition(), Color(255, 255, 0, 255));
+      //camera.DebugDrawCollision(&runtime_state, 0, render_util, Color(255, 255, 255, 255));
+    }
+
     if (texture->IsLoaded())
     {
       texture->GetTexture().BindTexture(0);
-      render_util.DrawTexturedQuad(cursor_pos, Color(255, 255, 255, 255), texture->GetTexture(), render_state, false);
+      render_util.DrawTexturedQuad(cursor_pos, Color(255, 255, 255, 255), texture->GetTexture(), render_state.GetScreenSize());
     }
 
     g_TextManager.SetTextPos(cursor_pos);
