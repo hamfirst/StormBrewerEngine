@@ -11,7 +11,9 @@ TextInputContext::TextInputContext(uint32_t window_id, bool allow_first_input) :
   m_TimeCreated(m_LastModification),
   m_AllowFirstInput(allow_first_input)
 {
-
+#ifndef _MSC_VER
+  m_AllowFirstInput = true;
+#endif
 }
 
 void TextInputContext::MakeCurrent(NullOptPtr<Box> input_box)
