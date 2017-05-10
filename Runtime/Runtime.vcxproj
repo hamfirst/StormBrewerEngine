@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Collision\CollisionSystem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Component\Component.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentHandle.cpp" />
+    <ClCompile Include="Component\ComponentInitData.refl.cpp" />
+    <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentSystem.cpp" />
+    <ClCompile Include="Component\ComponentUpdateBucketList.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DocumentResource\DocumentResourceBase.cpp" />
+    <ClCompile Include="DocumentResource\DocumentResourceManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DocumentResource\DocumentResourceReferenceBase.cpp" />
+    <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Entity\EntityDef.refl.cpp" />
+    <ClCompile Include="Entity\EntityHandle.cpp" />
+    <ClCompile Include="Entity\EntityResource.cpp" />
+    <ClCompile Include="Entity\EntitySystem.cpp" />
+    <ClCompile Include="Event\EventSystem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FrameData\FrameData.refl.cpp" />
+    <ClCompile Include="Map\MapDef.refl.cpp" />
+    <ClCompile Include="Map\MapInstance.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Map\MapResource.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Map\MapSystem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Mover\Mover.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Path\PathDef.refl.cpp" />
+    <ClCompile Include="Path\PathTypeDatabase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Runtime.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="RuntimeCommon.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="RuntimeState.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SpriteBase\SpriteBaseDef.refl.cpp" />
+    <ClCompile Include="Sprite\SpriteDef.refl.cpp" />
+    <ClCompile Include="Sprite\SpriteResource.cpp" />
+    <ClCompile Include="TileSheet\TileSheetDef.refl.cpp" />
+    <ClCompile Include="TileSheet\TileSheetResource.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Volume\VolumeDef.refl.cpp" />
+    <ClCompile Include="Volume\VolumeTypeDatabase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation\AnimationState.h" />
+    <ClInclude Include="Collision\CollisionSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Component\ComponentHandle.h" />
+    <ClInclude Include="Component\ComponentInitData.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentInitData.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentInitDataTypeDatabase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentInitDataTypeDatabaseRegister.h" />
+    <ClInclude Include="Component\ComponentList.h" />
+    <ClInclude Include="Component\ComponentRegistrationMacros.h" />
+    <ClInclude Include="Component\ComponentSystem.h" />
+    <ClInclude Include="Component\ComponentUpdateBucketList.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentUpdateRegistrationTemplates.h" />
+    <ClInclude Include="DocumentResource\DocumentResourceBase.h" />
+    <ClInclude Include="DocumentResource\DocumentResourceLoader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DocumentResource\DocumentResourceMacros.h" />
+    <ClInclude Include="DocumentResource\DocumentResourceManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DocumentResource\DocumentResourcePtr.h" />
+    <ClInclude Include="DocumentResource\DocumentResourceReference.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DocumentResource\DocumentResourceReferenceBase.h" />
+    <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Entity\EntityDef.refl.h" />
+    <ClInclude Include="Entity\EntityDef.refl.meta.h" />
+    <ClInclude Include="Entity\EntityHandle.h" />
+    <ClInclude Include="Entity\EntityResource.h" />
+    <ClInclude Include="Entity\EntitySystem.h" />
+    <ClInclude Include="Event\EventSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FrameData\FrameData.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FrameData\FrameData.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapDef.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapDef.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapInstance.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapMetaExtractor.h" />
+    <ClInclude Include="Map\MapResource.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapTile.h" />
+    <ClInclude Include="Map\MapTileJson.h" />
+    <ClInclude Include="Mover\Mover.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Mover\MoverState.h" />
+    <ClInclude Include="Path\PathDef.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Path\PathDef.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Path\PathTypeDatabase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Path\PathTypeRegister.h" />
+    <ClInclude Include="Runtime.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RuntimeCommon.h" />
+    <ClInclude Include="RuntimeState.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RuntimeStateFuncs.h" />
+    <ClInclude Include="SpriteBase\SpriteBaseDef.refl.h" />
+    <ClInclude Include="SpriteBase\SpriteBaseDef.refl.meta.h" />
+    <ClInclude Include="Sprite\SpriteDef.refl.h" />
+    <ClInclude Include="Sprite\SpriteDef.refl.meta.h" />
+    <ClInclude Include="Sprite\SpriteResource.h" />
+    <ClInclude Include="TileSheet\TileSheetDef.refl.h" />
+    <ClInclude Include="TileSheet\TileSheetDef.refl.meta.h" />
+    <ClInclude Include="TileSheet\TileSheetResource.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Volume\VolumeDef.refl.h" />
+    <ClInclude Include="Volume\VolumeDef.refl.meta.h" />
+    <ClInclude Include="Volume\VolumeTypeDatabase.h" />
+    <ClInclude Include="Volume\VolumeTypeRegister.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5FDCAA08-5FF7-41B8-8600-3EC9452F04D9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Runtime</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);RUNTIME_BUILD</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Runtime/RuntimeCommon.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);RUNTIME_BUILD</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Runtime/RuntimeCommon.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);RUNTIME_BUILD</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Runtime/RuntimeCommon.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);RUNTIME_BUILD</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Runtime/RuntimeCommon.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
