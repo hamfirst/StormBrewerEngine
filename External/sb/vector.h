@@ -51,5 +51,26 @@ bool vfind(const std::vector<T> & vec, const T & elem)
   return (itr != vec.end());
 }
 
+template <class T>
+int vfind_index(const std::vector<T> & vec, const T & elem)
+{
+  for (std::size_t index = 0, end = vec.size(); index < end; ++index)
+  {
+    if (vec[index] == elem)
+    {
+      return (int)index;
+    }
+  }
 
+  return -1;
+}
+
+template <class T>
+void vrearrange(std::vector<T> & vec, int src_index, int target_index)
+{
+  T val = std::move(vec[src_index]);
+
+  vec.erase(vec.begin() + src_index);
+  vec.emplace(vec.begin() + target_index, std::move(val));
+}
 

@@ -22,12 +22,6 @@
     <ClCompile Include="vorbisenc.c" />
     <ClCompile Include="vorbisfile.c" />
     <ClCompile Include="window.c" />
-    <ClCompile Include="..\ogg\bitwise.c">
-      <Filter>ogg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogg\framing.c">
-      <Filter>ogg</Filter>
-    </ClCompile>
     <ClCompile Include="sharedbook.c" />
   </ItemGroup>
   <ItemGroup>

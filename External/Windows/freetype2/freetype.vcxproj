@@ -170,6 +170,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);FT2_BUILD_LIBRARY</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

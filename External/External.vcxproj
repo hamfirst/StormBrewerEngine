@@ -114,6 +114,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -187,9 +188,8 @@
     <ClInclude Include="binpack\ShelfBinPack.h" />
     <ClInclude Include="binpack\ShelfNextFitBinPack.h" />
     <ClInclude Include="binpack\SkylineBinPack.h" />
+    <ClInclude Include="colony\colony.h" />
     <ClInclude Include="enum\enum.h" />
-    <ClInclude Include="gl3w\gl3w.h" />
-    <ClInclude Include="gl3w\glcorearb.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\func_common.hpp" />
     <ClInclude Include="glm\detail\func_exponential.hpp" />
@@ -364,7 +364,6 @@
     <ClCompile Include="binpack\ShelfBinPack.cpp" />
     <ClCompile Include="binpack\ShelfNextFitBinPack.cpp" />
     <ClCompile Include="binpack\SkylineBinPack.cpp" />
-    <ClCompile Include="gl3w\gl3w.c" />
     <ClCompile Include="glm\detail\glm.cpp" />
     <ClCompile Include="ogg\bitwise.c" />
     <ClCompile Include="ogg\framing.c" />

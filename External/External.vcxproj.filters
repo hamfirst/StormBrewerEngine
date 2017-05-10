@@ -34,9 +34,6 @@
     <Filter Include="upng">
       <UniqueIdentifier>{f64a47a5-61a6-4679-b2a4-8d935ec2a264}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gl3w">
-      <UniqueIdentifier>{c0cd6800-3d15-4610-b54e-480320ecd045}</UniqueIdentifier>
-    </Filter>
     <Filter Include="binpack">
       <UniqueIdentifier>{8e855da6-a7fb-4ad2-a137-00a1eeaf7da6}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="vorbis">
       <UniqueIdentifier>{dfc3dd24-853a-4336-9ef3-9d9dd05892b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="colony">
+      <UniqueIdentifier>{f6adf4ae-f9cf-4fa1-a6b5-7e3cab83063a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -519,12 +519,6 @@
     <ClInclude Include="upng\upng.h">
       <Filter>upng</Filter>
     </ClInclude>
-    <ClInclude Include="gl3w\gl3w.h">
-      <Filter>gl3w</Filter>
-    </ClInclude>
-    <ClInclude Include="gl3w\glcorearb.h">
-      <Filter>gl3w</Filter>
-    </ClInclude>
     <ClInclude Include="binpack\GuillotineBinPack.h">
       <Filter>binpack</Filter>
     </ClInclude>
@@ -582,6 +576,9 @@
     <ClInclude Include="sb\fixed_sized_array_alloc.h">
       <Filter>sb</Filter>
     </ClInclude>
+    <ClInclude Include="colony\colony.h">
+      <Filter>colony</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glm\detail\glm.cpp">
@@ -589,9 +586,6 @@
     </ClCompile>
     <ClCompile Include="upng\upng.cpp">
       <Filter>upng</Filter>
-    </ClCompile>
-    <ClCompile Include="gl3w\gl3w.c">
-      <Filter>gl3w</Filter>
     </ClCompile>
     <ClCompile Include="binpack\GuillotineBinPack.cpp">
       <Filter>binpack</Filter>

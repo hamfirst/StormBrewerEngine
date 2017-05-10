@@ -3,8 +3,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <cstring>
-
-#include <bitset>
+#include <utility>
 
 template <typename Type>
 class StaticSizedAlloc
@@ -34,6 +33,61 @@ public:
     m_Head = GetPtrAt(0);
   }
 
+  StaticSizedAlloc(std::size_t max_allocs, const StaticSizedAlloc<Type> & to_copy) :
+  {
+    if (max_allocs == 0)
+    {
+      throw false;
+    }
+
+    m_Memory = static_cast<uint8_t *>(malloc(sizeof(Type) * m_MaxAllocs));
+
+    std::size_t alloc_mask_size = (m_MaxAllocs + 7) / 8;
+    m_AllocMask = static_cast<uint8_t *>(malloc(alloc_mask_size));
+
+    m_AllocMask[0] = to_copy.m_AllocMask[0];
+
+    for (std::size_t index = 0, byte = 0, bit = 0; index < to_copy.m_MaxAllocs; ++index, ++bit)
+    {
+      if (bit == 8)
+      {
+        bit = 0;
+        byte++;
+
+        m_AllocMask[byte] = to_copy.m_AllocMask[byte];
+      }
+
+      if ((to_copy.m_AllocMask[byte] & (1 << bit)) != 0)
+      {
+        new (GetAllocAt(index)) Type(*to_copy.GetAllocAt());
+      }
+    }
+
+    int my_bytes = (m_MaxAllocs + 7) / 8;
+    int to_copy_bytes = (to_copy.m_MaxAllocs + 7) / 8;
+    if (my_bytes > to_copy_bytes)
+    {
+      memset(&m_AllocMask[to_copy_bytes], 0, my_bytes - to_copy_bytes);
+    }
+
+    m_Head = nullptr;
+    for (int index = m_MaxAllocs - 1, byte = (m_MaxAllocs - 1) / 8, bit = (m_MaxAllocs - 1) % 8; index >= 0; --index, --bit)
+    {
+      if (bit < 0)
+      {
+        bit = 7;
+        byte--;
+      }
+
+      if ((m_AllocMask[byte] & (1 << bit)) == 0)
+      {
+        auto ptr = GetPtrAt(index);
+        *ptr = m_Head;
+        m_Head = ptr;
+      }
+    }
+  }
+
   ~StaticSizedAlloc()
   {
     for (std::size_t index = 0; index < m_MaxAllocs; index++)
@@ -53,6 +107,14 @@ public:
 
   StaticSizedAlloc & operator = (const StaticSizedAlloc & rhs) = delete;
   StaticSizedAlloc & operator = (StaticSizedAlloc && rhs) = delete;
+
+  void Swap(StaticSizedAlloc<Type> & rhs)
+  {
+    std::swap(m_MaxAllocs, rhs.m_MaxAllocs);
+    std::swap(m_Head, rhs.m_Head);
+    std::swap(m_Memory, rhs.m_Memory);
+    std::swap(m_AllocMask, rhs.m_AllocMask);
+  }
 
   template <typename ... InitArgs>
   Type * Allocate(InitArgs && ... args)
@@ -140,8 +202,23 @@ public:
     return GetAllocAt(id);
   }
 
+  std::size_t GetMaxAllocs()
+  {
+    return m_MaxAllocs;
+  }
+
 private:
   Type * GetAllocAt(std::size_t index)
+  {
+    if (index >= m_MaxAllocs)
+    {
+      throw false;
+    }
+
+    return reinterpret_cast<Type *>(&m_Memory[sizeof(Type) * index]);
+  }
+
+  const Type * GetAllocAt(std::size_t index) const
   {
     if (index >= m_MaxAllocs)
     {
