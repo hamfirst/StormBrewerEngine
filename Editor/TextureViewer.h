@@ -34,7 +34,7 @@ public slots:
   void tick();
 
 private:
-  void HandleTextureLoad(TextureAsset * asset, bool success);
+  void HandleTextureLoad(TextureAsset * asset);
 
   TextureAsset::LoadCallbackLink m_TextureAsset;
 

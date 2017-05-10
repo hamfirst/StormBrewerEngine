@@ -1,10 +1,5 @@
 
 
-#include "EditorContainer.h"
-#include "TextureViewer.h"
-#include "FontViewer.h"
-#include "AudioViewer.h"
-
 #include <QTabWidget>
 #include <QTimer>
 #include <QDockWidget>
@@ -12,26 +7,90 @@
 #include <QOffscreenSurface>
 #include <QMessageBox>
 #include <QProcess>
+#include <QEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
 #include <QApplication>
 #include <QFileInfo>
+#include <QFileDialog>
+#include <QSettings>
+#include <QDebug>
 
-#include "Foundation/Network/Network.h"
+#include <StormRefl/StormReflJson.h>
+#include <StormRefl/StormReflMetaEnum.h>
 
-#include "Engine/Engine.h"
-#include "Engine/Text/TextManager.h"
+#include <StormData/StormDataChangePacket.h>
+
+#include <Foundation/Network/Network.h>
+#include <Foundation/FileSystem/Path.h>
+
+#include <Engine/Engine.h>
+#include <Engine/Text/TextManager.h>
+
+#include <Runtime/Component/ComponentSystem.h>
+#include <Runtime/Runtime.h>
+
+#include <DocumentServer/DocumentServerMessages.refl.meta.h>
+
+#include "EditorContainer.h"
+#include "TextureViewer.h"
+#include "FontViewer.h"
+#include "AudioViewer.h"
+#include "DocumentEditorWidgetBase.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
 #pragma comment(lib, "Version.lib")
 
+Delegate<void> g_GlobalUndo;
+Delegate<void> g_GlobalRedo;
+
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
-
 {
   setDockOptions(QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AnimatedDocks | QMainWindow::GroupedDragging);
   setDockNestingEnabled(true);
 
+  setAcceptDrops(true);
+  setDocumentMode(true);
+  setMinimumSize(300, 300);
+
+  g_DocumentRegistrationEditor = this;
+  g_DocumentRegistrationCallList.CallAll();
+
   ui.setupUi(this);
+  resize(1000, 600);
+
+  for (auto & doc_type : m_DocumentTypes)
+  {
+    auto action = ui.menu_New->addAction(doc_type.m_Name.data());
+    action->setData(QString(doc_type.m_Name.data()));
+    connect(action, &QAction::triggered, this, &EditorContainer::newFile);
+  }
+
+  connect(ui.action_Open, &QAction::triggered, this, &EditorContainer::open);
+  ui.action_Open->setShortcut(QKeySequence::Open);
+  connect(ui.action_Save, &QAction::triggered, this, &EditorContainer::save);
+  ui.action_Save->setShortcut(QKeySequence::Save);
+  connect(ui.action_Quit, &QAction::triggered, this, &EditorContainer::quit);
+  ui.action_Quit->setShortcut(QKeySequence::Quit);
+  connect(ui.action_Undo, &QAction::triggered, this, &EditorContainer::undo);
+  ui.action_Undo->setShortcut(QKeySequence::Undo);
+  connect(ui.action_Redo, &QAction::triggered, this, &EditorContainer::redo);
+  ui.action_Redo->setShortcut(QKeySequence::Redo);
+
+
+  m_RecentFileSeparator = ui.menu_File->addSeparator();
+  for (int index = 0; index < kNumRecentFiles; index++)
+  {
+    m_RecentFiles[index] = new QAction(this);
+    m_RecentFiles[index]->setVisible(false);
+    connect(m_RecentFiles[index], &QAction::triggered, this, &EditorContainer::openRecentFile);
+    ui.menu_File->addAction(m_RecentFiles[index]);
+  }
+
+  UpdateRecentFiles();
 
   m_Context = new QOpenGLContext(this);
   m_Context->setShareContext(QOpenGLContext::globalShareContext());
@@ -43,20 +102,11 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   m_EngineInitialized = false;
 
-  connect(&m_DocServer, &DocumentServerConnection::connectionComplete, this, &EditorContainer::connectionComplete);
-  connect(&m_DocServer, &DocumentServerConnection::connectionFailed, this, &EditorContainer::connectionFailed);
-  connect(&m_DocServer, &DocumentServerConnection::newEditorWindow, this, &EditorContainer::newEditorWindow);
-  connect(&m_DocServer, &DocumentServerConnection::closeEditorWindow, this, &EditorContainer::closeEditorWindow);
-  connect(&m_DocServer, &DocumentServerConnection::finalizeRequest, this, &EditorContainer::finalizeRequest);
-  connect(&m_DocServer, &DocumentServerConnection::applyChange, this, &EditorContainer::applyChange);
-  connect(&m_DocServer, &DocumentServerConnection::changeState, this, &EditorContainer::changeState);
-  connect(&m_DocServer, &DocumentServerConnection::createError, this, &EditorContainer::createError);
-  connect(&m_DocServer, &DocumentServerConnection::openError, this, &EditorContainer::openError);
-  connect(&m_DocServer, &DocumentServerConnection::saveError, this, &EditorContainer::saveError);
-
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
   timer->start(16);
+
+  m_RootPath = GetCanonicalRootPath();
 
   const char * doc_server_host = "localhost";
 
@@ -68,41 +118,75 @@ EditorContainer::EditorContainer(QWidget *parent) :
     }
   }
 
-  setMinimumSize(1280, 720);
-  m_DocServer.Connect(doc_server_host, 27800);
+  m_DocServerConnectionGen = 0;
+  m_DocumentServerThread.Connect(doc_server_host);
 
   m_TabWidget = new QTabWidget();
+  m_TabWidget->setTabsClosable(true);
+  m_TabWidget->setDocumentMode(true);
   setCentralWidget(m_TabWidget);
+  connect(m_TabWidget, &QTabWidget::tabCloseRequested, this, &EditorContainer::closeTab);
 
   m_ConnectingDialog.show();
+
+  m_Context->makeCurrent(m_Surface.get());
+
+  Component comp;
+
+  EngineInit(false);
+  EngineRenderInit();
+
+  g_ComponentTypeSystem.LoadPropertyDatabase(m_PropertyDatabase);
+  RuntimeRegisterTypes(m_PropertyDatabase);
+
+  QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
+  exec_path += "/editor/OpenSans-Regular.ttf";
+
+  g_TextManager.LoadFont(exec_path.toStdString().data(), -1, 12);
+
+  m_EngineInitialized = true;
+  m_NextDocumentId = 1;
+
+  g_GlobalUndo = [this] { undo(); };
+  g_GlobalRedo = [this] { redo(); };
 }
 
 EditorContainer::~EditorContainer()
 {
+  EngineCleanup();
 
+  for (auto itr = m_DocumentEditors.begin(); itr != m_DocumentEditors.end(); ++itr)
+  {
+    delete itr->second.m_Editor;
+  }
 }
 
-void EditorContainer::OpenEditorForFile(const char * file)
+void EditorContainer::OpenEditorForFile(czstr file)
 {
-  std::size_t len = strlen(file);
-
-  const char * extension = nullptr;
-  for (int index = (int)len - 1; index >= 0; index--)
+  for (auto & elem : m_DocumentEditors)
   {
-    if (file[index] == '.')
+    if (elem.second.m_Path == file)
     {
-      extension = file + index + 1;
+      auto tab = m_TabWidget->indexOf(elem.second.m_Editor);
+      if (tab != -1)
+      {
+        m_TabWidget->setCurrentIndex(tab);
+        return;
+      }
     }
   }
 
-  if (extension == nullptr)
+  std::size_t len = strlen(file);
+
+  auto extension = GetFileExtensionForCanonicalPath(std::string(file));
+  if (extension.length() == 0)
   {
     QMessageBox::warning(this, "Error opening file", QString(file) + QString(" has no extension"));
     return;
   }
 
+  auto file_name = GetFileNameForCanonicalPath(std::string(file));
   Hash extension_hash = crc32lowercase(extension);
-  Hash png_hash = COMPILE_TIME_CRC32_STR("png");
 
   QWidget * widget = nullptr;
   switch (extension_hash)
@@ -119,6 +203,18 @@ void EditorContainer::OpenEditorForFile(const char * file)
   case COMPILE_TIME_CRC32_STR("ogg"):
     widget = new AudioViewer(false, file);
     break;
+  default:
+    {
+      auto editor = CreateEditorForFile(file, extension_hash);
+      if (editor.first == nullptr)
+      {
+        break;
+      }
+
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kOpen ") + std::to_string(editor.second) + ' ' + file);
+      widget = editor.first;
+    }
+    break;
   }
 
   if (widget == nullptr)
@@ -127,82 +223,119 @@ void EditorContainer::OpenEditorForFile(const char * file)
     return;
   }
 
-  m_TabWidget->addTab(widget, file);
+  AddRecentFile(file);
+  UpdateRecentFiles();
+
+  m_TabWidget->addTab(widget, file_name.data());
+  m_TabWidget->setCurrentWidget(widget);
+}
+
+void EditorContainer::RegisterEditor(czstr asset_type, czstr file_extension, czstr default_dir, DocumentEditorCreationDelegate && widget_delegate)
+{
+  m_DocumentTypes.emplace_back(DocumentTypeData{ asset_type, file_extension, default_dir });
+  m_DocumentEditorCreationCallbacks.emplace(std::make_pair(crc32(file_extension + 1), std::move(widget_delegate)));
+}
+
+void EditorContainer::CloseEditor(QWidget * editor, bool send_message)
+{
+  auto index = m_TabWidget->indexOf(editor);
+  if (index == -1)
+  {
+    return;
+  }
+
+  m_TabWidget->removeTab(index);
+
+  for (auto itr = m_DocumentEditors.begin(); itr != m_DocumentEditors.end(); ++itr)
+  {
+    if (itr->second.m_Editor == editor)
+    {
+      if (send_message)
+      {
+        m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kClose ") + std::to_string(itr->first));
+      }
+
+      delete itr->second.m_Editor;
+      m_DocumentEditors.erase(itr);
+      return;
+    }
+  }
 }
 
 void EditorContainer::closeEvent(QCloseEvent * ev)
 {
+  closeAllTabs();
+
   if (m_EngineInitialized)
   {
     EngineCleanup();
   }
 }
 
+void EditorContainer::dragEnterEvent(QDragEnterEvent * event)
+{
+  if (event->mimeData()->hasFormat("text/uri-list"))
+  {
+    event->acceptProposedAction();
+  }
+}
+
+void EditorContainer::dropEvent(QDropEvent* event)
+{
+  auto mime_data = event->mimeData();
+
+  bool show_error = false;
+
+  if (mime_data->hasUrls())
+  {
+    QList<QUrl> file_list = mime_data->urls();
+    for (int index = 0; index < file_list.size(); index++)
+    {
+      auto filename = file_list.at(index).toLocalFile();
+
+      auto canonical_filename = filename.toStdString();
+      if (ConvertToCanonicalPath(canonical_filename, m_RootPath) == false)
+      {
+        show_error = true;
+        continue;
+      }
+
+      OpenEditorForFile(canonical_filename.data());
+    }
+  }
+
+  if (show_error)
+  {
+    QMessageBox::warning(this, "Error opening file", "One or more of the files was not in the document root path", QMessageBox::Ok);
+  }
+}
+
 void EditorContainer::connectionComplete()
 {
-  m_Context->makeCurrent(m_Surface.get());
-  EngineInit(true);
-  EngineRenderInit();
-
-  QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
-  exec_path += "/editor/OpenSans-Regular.ttf";
-
-  g_TextManager.LoadFont(exec_path.toStdString().data(), -1, 12);
-
-  m_EngineInitialized = true;
-
-  m_ConnectingDialog.hide();
+  m_ConnectingDialog.close();
   show();
-
-  OpenEditorForFile("Images/test.png");
-  OpenEditorForFile("Sounds/DudeDeath.wav");
-  OpenEditorForFile("Music/music.ogg");
-  OpenEditorForFile("Fonts/arial.ttf");
 }
 
 void EditorContainer::connectionFailed()
 {
+  m_ConnectingDialog.show();
+  hide();
 
+  closeAllTabs();
 }
 
-void EditorContainer::newEditorWindow(const DocumentServerMessageOpen & open_request)
+void EditorContainer::closeAllTabs()
 {
-
+  for (int index = m_TabWidget->count() - 1; index >= 0; --index)
+  {
+    closeTab(index);
+  }
 }
 
-void EditorContainer::closeEditorWindow(const DocumentServerMessageClose & close_request)
+void EditorContainer::closeTab(int index)
 {
-
-}
-
-void EditorContainer::finalizeRequest(const DocumentServerMessageFinalizeRequest & finalize_request)
-{
-
-}
-
-void EditorContainer::applyChange(const DocumentServerMessageApplyChange & apply_change)
-{
-
-}
-
-void EditorContainer::changeState(const DocumentServerMessageChangeState & change_state)
-{
-
-}
-
-void EditorContainer::createError(const DocumentServerMessageCreateError & error)
-{
-
-}
-
-void EditorContainer::openError(const DocumentServerMessageOpenError & error)
-{
-
-}
-
-void EditorContainer::saveError(const DocumentServerMessageSaveError & error)
-{
-
+  auto close_widget = m_TabWidget->widget(index);
+  CloseEditor(close_widget, true);
 }
 
 void EditorContainer::engineUpdate()
@@ -212,4 +345,343 @@ void EditorContainer::engineUpdate()
     m_Context->makeCurrent(m_Surface.get());
     EngineUpdate();
   }
+
+  DocumentServerEvent ev;
+  while (m_DocumentServerThread.GetEvent(ev))
+  {
+    HandleDocumentServerEvent(ev);
+  }
+}
+
+void EditorContainer::newFile()
+{
+  QAction * action = qobject_cast<QAction *>(sender());
+  if (action)
+  {
+    auto document_type = action->data().toString();
+    auto document_type_str = document_type.toStdString();
+    
+    DocumentTypeData * doc_type_data = nullptr;
+    for (auto & doc_type : m_DocumentTypes)
+    {
+      if (doc_type.m_Name == document_type_str)
+      {
+        doc_type_data = &doc_type;
+      }
+    }
+
+    if (doc_type_data == nullptr)
+    {
+      return;
+    }
+
+    auto caption = tr("New ") + document_type + tr(" File");
+    auto filter = document_type + tr(" (*") + doc_type_data->m_FileExension.c_str() + ")";
+    auto dir = GetCanonicalRootPath() + doc_type_data->m_DefaultDirectory + "/";
+    auto filename = QFileDialog::getSaveFileName(this, caption, dir.data(), filter);
+
+    if (filename.length() == 0)
+    {
+      return;
+    }
+
+    auto canonical_filename = filename.toStdString();
+    if(ConvertToCanonicalPath(canonical_filename, m_RootPath) == false)
+    {
+      QMessageBox::warning(this, "Error creating file", "File is not inside the document root path", QMessageBox::Ok);
+      return;
+    }
+
+    auto file_name = GetFileNameForCanonicalPath(std::string(canonical_filename));
+
+    auto extension = GetFileExtensionForCanonicalPath(canonical_filename);
+
+    auto extension_hash = crc32(extension);
+    auto editor = CreateEditorForFile(canonical_filename.data(), extension_hash);
+    if (editor.first == nullptr)
+    {
+      QMessageBox::warning(this, "Error creating file", QString("Could not find proper editor for file: ") + QString(filename));
+      return;
+    }
+
+    m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kNew ") + std::to_string(editor.second) + ' ' + canonical_filename);
+
+    AddRecentFile(file_name.data());
+    UpdateRecentFiles();
+
+    m_TabWidget->addTab(editor.first, file_name.data());
+    m_TabWidget->setCurrentWidget(editor.first);
+  }
+}
+
+void EditorContainer::open()
+{
+  auto filename = QFileDialog::getOpenFileName(this, tr("Open File"), ".", tr("All Files (*.*)"));
+
+  if (filename.length() == 0)
+  {
+    return;
+  }
+
+  auto canonical_filename = filename.toStdString();
+  if (ConvertToCanonicalPath(canonical_filename, m_RootPath) == false)
+  {
+    QMessageBox::warning(this, "Error opening file", "File is not inside the document root path", QMessageBox::Ok);
+    return;
+  }
+
+  OpenEditorForFile(canonical_filename.data());
+}
+
+void EditorContainer::save()
+{
+  auto current_tab = m_TabWidget->currentWidget();
+  for (auto & editor : m_DocumentEditors)
+  {
+    if (editor.second.m_Editor == current_tab)
+    {
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kSave ") + std::to_string(editor.first));
+      return;
+    }
+  }
+}
+
+void EditorContainer::close()
+{
+
+}
+
+void EditorContainer::quit()
+{
+  QApplication::closeAllWindows();
+}
+
+void EditorContainer::openRecentFile()
+{
+  QAction * action = qobject_cast<QAction *>(sender());
+  if (action)
+  {
+    auto file_name = action->data().toString().toStdString();
+    OpenEditorForFile(file_name.c_str());
+  }
+}
+
+void EditorContainer::undo()
+{
+  auto current_tab = m_TabWidget->currentWidget();
+  for (auto & editor : m_DocumentEditors)
+  {
+    if (editor.second.m_Editor == current_tab)
+    {
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kUndo ") + std::to_string(editor.first));
+      return;
+    }
+  }
+}
+
+void EditorContainer::redo()
+{
+  auto current_tab = m_TabWidget->currentWidget();
+  for (auto & editor : m_DocumentEditors)
+  {
+    if (editor.second.m_Editor == current_tab)
+    {
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kRedo ") + std::to_string(editor.first));
+      return;
+    }
+  }
+}
+
+void EditorContainer::AddRecentFile(const QString & filename)
+{
+  QSettings settings;
+  auto files = settings.value("recent_files").toStringList();
+
+  files.removeAll(filename);
+  files.prepend(filename);
+
+  while (files.size() > kNumRecentFiles)
+  {
+    files.removeLast();
+  }
+
+  settings.setValue("recent_files", files);
+}
+
+void EditorContainer::UpdateRecentFiles()
+{
+  QSettings settings;
+  auto files = settings.value("recent_files").toStringList();
+
+  int max_recent = kNumRecentFiles;
+  int num_files = std::min((int)files.size(), max_recent);
+
+  m_RecentFileSeparator->setVisible(num_files > 0);
+
+  for (int index = 0; index < num_files; index++)
+  {
+    QFileInfo file_info(files[index]);
+    if (file_info.exists())
+    {
+      auto menu_option = QString("&%1 - %2").arg(index + 1).arg(file_info.fileName());
+      m_RecentFiles[index]->setText(menu_option);
+      m_RecentFiles[index]->setData(files[index]);
+      m_RecentFiles[index]->setVisible(true);
+    }
+  }
+
+  for (int index = num_files; index < kNumRecentFiles; index++)
+  {
+    m_RecentFiles[index]->setVisible(false);
+  }
+}
+
+void EditorContainer::HandleDocumentServerEvent(DocumentServerEvent & ev)
+{
+  if (ev.m_Type == DocumentServerEventType::kConnected)
+  {
+    m_DocServerConnectionGen = atoi(ev.m_Data.data());
+    connectionComplete();
+  }
+  else if (ev.m_Type == DocumentServerEventType::kDisconnected)
+  {
+    connectionFailed();
+  }
+  else
+  {
+    const char * data = ev.m_Data.c_str();
+    qInfo() << data;
+
+    auto enum_hash = crc32begin();
+    while (*data != ' ')
+    {
+      if (*data == 0)
+      {
+        return;
+      }
+
+      enum_hash = crc32additive(enum_hash, *data);
+      *data++;
+    }
+
+    enum_hash = crc32end(enum_hash);
+
+    DocumentClientMessageType type;
+    if (StormReflGetEnumFromHash(type, enum_hash) == false)
+    {
+      return;
+    }
+
+    data++;
+    int document_id;
+    if (StormReflParseJson(document_id, data, data) == false)
+    {
+      return;
+    }
+
+    auto itr = m_DocumentEditors.find(document_id);
+    if (itr == m_DocumentEditors.end())
+    {
+      return;
+    }
+
+    switch (type)
+    {
+    case DocumentClientMessageType::kNewFileError:
+      QMessageBox::warning(this, "Error creating file", QString("Got file creation error: ") + data);
+      CloseEditor(itr->second.m_Editor, false);
+      return;
+    case DocumentClientMessageType::kOpenFileError:
+      QMessageBox::warning(this, "Error opening file", QString("Got file open error: ") + data);
+      CloseEditor(itr->second.m_Editor, false);
+      return;
+    case DocumentClientMessageType::kDocumentState:
+      {
+        int document_state;
+        if (StormReflParseJson(document_state, data, data) == false)
+        {
+          return;
+        }
+
+        data++;
+        int document_gen;
+        if (StormReflParseJson(document_gen, data, data) == false)
+        {
+          return;
+        }
+
+        data++;
+        itr->second.m_Editor->GotDocumentStateChange((DocumentState)document_state, data);
+      }
+      return;
+    case DocumentClientMessageType::kChange:
+      {
+        data++;
+        int document_gen;
+        if (StormReflParseJson(document_gen, data, data) == false)
+        {
+          return;
+        }
+
+        data++;
+        std::vector<std::string> change_packets;
+        if (StormReflParseJson(change_packets, data, data) == false)
+        {
+          return;
+        }
+        
+        for (auto & elem : change_packets)
+        {
+          ReflectionChangeNotification change;
+          if (StormDataParseChangePacket(change, elem.data()) == false)
+          {
+            return;
+          }
+
+          itr->second.m_Editor->GotDocumentChange(change);
+        }
+
+        itr->second.m_Editor->DocumentChangeComplete();
+      }
+      return;
+    case DocumentClientMessageType::kDocumentClosed:
+      {
+        CloseEditor(itr->second.m_Editor, false);
+      }
+      return;
+    case DocumentClientMessageType::kChangeOk:
+      {
+        itr->second.m_Editor->GotServerChangeOkay();
+      }
+      return;
+    case DocumentClientMessageType::kChangeLinks:
+      {
+        itr->second.m_Editor->LinksChanged(data);
+      }
+      return;
+    default:
+      return;
+    }
+  }
+}
+
+std::pair<QWidget *, int> EditorContainer::CreateEditorForFile(czstr file, uint32_t extension_hash)
+{
+  auto itr = m_DocumentEditorCreationCallbacks.find(extension_hash);
+  if (itr == m_DocumentEditorCreationCallbacks.end())
+  {
+    return{};
+  }
+
+  DocumentOutputDelegate del = [this, doc_id = m_NextDocumentId](DocumentServerMessageType type, const std::string & args)
+  {
+    m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string(StormReflGetEnumAsString(type)) + ' ' + std::to_string(doc_id) + ' ' + args);
+  };
+
+  auto editor = itr->second(m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
+
+  m_DocumentEditors.emplace(std::make_pair(m_NextDocumentId, DocumentEditorData{ editor, file }));
+  m_NextDocumentId++;
+
+  return std::make_pair(editor, m_NextDocumentId - 1);
 }

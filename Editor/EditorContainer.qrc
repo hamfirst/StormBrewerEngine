@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="EditorContainer">
+    <qresource prefix="/EditorContainer">
+        <file>Editor.ico</file>
     </qresource>
 </RCC>
