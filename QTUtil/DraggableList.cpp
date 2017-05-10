@@ -8,6 +8,7 @@
 #include <QStyle>
 #include <QTimer>
 #include <QFrame>
+#include <QPainter>
 
 DraggableList::DraggableList(Qt::Orientation orientation, bool invert, QWidget *parent) : QWidget(parent)
 {
@@ -312,6 +313,7 @@ void DraggableList::mouseReleaseEvent(QMouseEvent *)
     finalizePositions(true);
   }
 }
+
 
 void DraggableList::updateScrolls()
 {
