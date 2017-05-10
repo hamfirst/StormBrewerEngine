@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Engine/EngineCommon.h"
+
 #include <StormRefl/StormRefl.h>
 
-struct EngineSettings
+struct ENGINE_EXPORT EngineSettings
 {
   STORM_REFL;
 
@@ -12,7 +14,7 @@ struct EngineSettings
   int m_FontCacheSize = 256;
 };
 
-void LoadEngineSettingsFile();
+void ENGINE_EXPORT LoadEngineSettingsFile();
 
 extern EngineSettings g_EngineSettings;
 

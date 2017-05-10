@@ -2,7 +2,7 @@
 
 #include <exception>
 
-class RenderException : public std::exception
+class ENGINE_EXPORT RenderException : public std::exception
 {
 public:
   RenderException(int error);
@@ -11,5 +11,5 @@ private:
   int m_Error;
 };
 
-void ReportRenderError(const char * file, int line, int error);
+void ENGINE_EXPORT ReportRenderError(const char * file, int line, int error);
 

@@ -7,7 +7,7 @@
 
 static const unsigned int kBinaryControlHistory = 512;
 
-class BinaryControlBinding : public ControlBinding
+class ENGINE_EXPORT BinaryControlBinding : public ControlBinding
 {
 public:
   using ControlValueType = bool;
@@ -33,7 +33,7 @@ private:
   ControlValueType m_History[kBinaryControlHistory] = {};
 };
 
-class BinaryControlHandle : public ControlHandle
+class ENGINE_EXPORT BinaryControlHandle : public ControlHandle
 {
 protected:
   friend class InputState;

@@ -9,7 +9,7 @@ enum class ShaderType
   kInvalid,
 };
 
-class Shader
+class ENGINE_EXPORT Shader
 {
 public:
   Shader();

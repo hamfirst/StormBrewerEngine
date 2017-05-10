@@ -1,67 +1,78 @@
 #pragma once
 
 
-#define ASSET_HEADER_FUNCS(AssetType)                                               \
-friend class AssetManager<AssetType>;                                               \
-                                                                                    \
-AssetType() = default;                                                              \
-AssetType(const AssetType & rhs) = delete;                                          \
-AssetType(AssetType && rhs) = default;                                              \
-                                                                                    \
-struct LoadCallbackLink                                                             \
-{                                                                                   \
-  AssetReference<AssetType> m_AssetRef;                                             \
-  DelegateLink<void, AssetType *, bool> m_DelegateLink;                             \
-  AssetType * Get() { return m_AssetRef.Resolve(); }                                \
-};                                                                                  \
-                                                                                    \
-using LoadCallback = Delegate<void, AssetType *, bool>;                             \
-                                                                                    \
-static AssetReference<AssetType> Load(czstr file_path);                             \
-static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback & del);      \
-                                                                                    \
-LoadCallbackLink AddLoadCallback(LoadCallback del);                               \
-                                                                                    \
-private:                                                                            \
-                                                                                    \
-DelegateList<void, AssetType *, bool> m_LoadCallbackList;                           \
-void CallAssetLoadCallbacks(bool success) override;                                 \
+#define ASSET_HEADER_FUNCS(AssetType)                                                 \
+friend class AssetManager<AssetType>;                                                 \
+                                                                                      \
+AssetType() = default;                                                                \
+AssetType(const AssetType & rhs) = delete;                                            \
+AssetType(AssetType && rhs) = delete;                                                 \
+                                                                                      \
+struct LoadCallbackLink                                                               \
+{                                                                                     \
+  DelegateLink<void, NullOptPtr<AssetType>> m_DelegateLink;                           \
+  AssetReference<AssetType> m_AssetRef;                                               \
+  LoadCallbackLink() = default;                                                       \
+  LoadCallbackLink(const LoadCallbackLink & rhs) = delete;                            \
+  LoadCallbackLink(LoadCallbackLink && rhs) = default;                                \
+  LoadCallbackLink & operator = (const LoadCallbackLink & rhs) = delete;              \
+  LoadCallbackLink & operator = (LoadCallbackLink && rhs) = default;                  \
+                                                                                      \
+  ~LoadCallbackLink() { m_DelegateLink = {}; m_AssetRef = {}; }                       \
+  NullOptPtr<AssetType> Get() { return m_AssetRef.Resolve(); }                        \
+  NullOptPtr<const AssetType> Get() const { return m_AssetRef.Resolve(); }            \
+};                                                                                    \
+                                                                                      \
+                                                                                      \
+using LoadCallback = Delegate<void, NullOptPtr<AssetType>>;                           \
+                                                                                      \
+static AssetReference<AssetType> Load(czstr file_path);                               \
+static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback && del);       \
+                                                                                      \
+LoadCallbackLink AddLoadCallback(LoadCallback && del);                                \
+                                                                                      \
+private:                                                                              \
+                                                                                      \
+DelegateList<void, NullOptPtr<AssetType>> m_LoadCallbackList;                         \
+void CallAssetLoadCallbacks() override;                                               \
 
 
-#define ASSET_SOURCE_FUNCS(AssetType)                                               \
-static AssetManager<AssetType> s_AssetManager;                                      \
-                                                                                    \
-AssetReference<AssetType> AssetType::Load(czstr file_path)                          \
-{                                                                                   \
-  return AssetReference<AssetType>(s_AssetManager.LoadAsset(file_path));            \
-}                                                                                   \
-                                                                                    \
-AssetType::LoadCallbackLink AssetType::LoadWithCallback(                            \
-  czstr file_path, LoadCallback & del)                                              \
-{                                                                                   \
-  AssetType * asset = s_AssetManager.LoadAsset(file_path);                          \
-  return asset->AddLoadCallback(del);                                               \
-}                                                                                   \
-                                                                                    \
-AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback del)          \
-{                                                                                   \
-  if (m_State == AssetState::kLoadError)                                            \
-  {                                                                                 \
-    del.Call(this, false);                                                          \
-  }                                                                                 \
-  else if (m_State == AssetState::kLoaded)                                          \
-  {                                                                                 \
-    del.Call(this, true);                                                           \
-  }                                                                                 \
-                                                                                    \
-  return AssetType::LoadCallbackLink{                                               \
-        AssetReference<AssetType>(this), m_LoadCallbackList.AddDelegate(del) };     \
-}                                                                                   \
-                                                                                    \
-void AssetType::CallAssetLoadCallbacks(bool success)                                \
-{                                                                                   \
-  m_LoadCallbackList.Call(this, success);                                           \
-}                                                                                   \
+#define ASSET_SOURCE_FUNCS(AssetType)                                                 \
+static AssetManager<AssetType> s_##AssetType##Manager;                                \
+                                                                                      \
+AssetReference<AssetType> AssetType::Load(czstr file_path)                            \
+{                                                                                     \
+  return AssetReference<AssetType>(s_##AssetType##Manager.LoadAsset(file_path));      \
+}                                                                                     \
+                                                                                      \
+AssetType::LoadCallbackLink AssetType::LoadWithCallback(                              \
+  czstr file_path, LoadCallback && del)                                               \
+{                                                                                     \
+  AssetType * asset = s_##AssetType##Manager.LoadAsset(file_path);                    \
+  return asset->AddLoadCallback(std::move(del));                                      \
+}                                                                                     \
+                                                                                      \
+AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback && del)           \
+{                                                                                     \
+  if (m_State == AssetState::kLoadError)                                              \
+  {                                                                                   \
+    del.Call(this);                                                                   \
+  }                                                                                   \
+  else if (m_State == AssetState::kLoaded)                                            \
+  {                                                                                   \
+    del.Call(this);                                                                   \
+  }                                                                                   \
+                                                                                      \
+  return AssetType::LoadCallbackLink{                                                 \
+    m_LoadCallbackList.AddDelegate(std::move(del)), AssetReference<AssetType>(this) };\
+}                                                                                     \
+                                                                                      \
+                                                                                      \
+void AssetType::CallAssetLoadCallbacks()                                              \
+{                                                                                     \
+  m_LoadCallbackList.Call(this);                                                      \
+  Asset::CallAssetLoadCallbacks();                                                    \
+}                                                                                     \
 
 
 

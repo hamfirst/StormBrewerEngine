@@ -41,7 +41,7 @@ TextRenderer::~TextRenderer()
   }
 }
 
-void TextRenderer::FinalizeAssetLoad(FontAsset * asset, bool success)
+void TextRenderer::FinalizeAssetLoad(FontAsset * asset)
 {
   if (m_Face)
   {
@@ -49,7 +49,7 @@ void TextRenderer::FinalizeAssetLoad(FontAsset * asset, bool success)
     m_Face = nullptr;
   }
 
-  if (success)
+  if (asset->IsLoaded())
   {
     if (FT_New_Memory_Face(g_FreeType, asset->m_FontBuffer.Get(), (long)asset->m_FontBuffer.GetSize(), 0, &m_Face))
     {
@@ -61,7 +61,7 @@ void TextRenderer::FinalizeAssetLoad(FontAsset * asset, bool success)
     AddString(COMMON_CHARS, strlen(COMMON_CHARS));
   }
 
-  m_Loaded = success;
+  m_Loaded = asset->IsLoaded();
 }
 
 void TextRenderer::AddGlyphToBuffer(int x, int y, const GlyphInfo & glyph, const TextSettings & settings, TextBufferBuilder & buffer, const Color & color)

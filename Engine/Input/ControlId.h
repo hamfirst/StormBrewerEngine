@@ -14,25 +14,25 @@ static const int kMouseLeftButton = 1;
 static const int kMouseMiddleButton = 2;
 static const int kMouseRightButton = 3;
 
-
 enum class GamepadButton
 {
   kA,
   kB,
   kX,
   kY,
-  kR1,
-  kR2,
-  kR3,
-  kL1,
-  kL2,
+  kSelect,
+  kGuide,
+  kStart,
   kL3,
+  kR3,
+  kL2,
+  kR2,
   kDUp,
   kDDown,
   kDLeft,
   kDRight,
-  kStart,
-  kSelect,
+  kL1,
+  kR1,
   kCount,
 };
 
@@ -53,10 +53,10 @@ struct ControlId
   int m_SubIndex;
 };
 
-ControlId CreateKeyboardBinding(int scan_code);
-ControlId CreateMouseButtonBinding(int button);
-ControlId CreateMousePointerBinding();
-ControlId CreateGamepadConnectionBinding(int gamepad_idx);
-ControlId CreateGamepadButtonBinding(int gamepad_idx, GamepadButton button);
-ControlId CreateGamepadAxisBinding(int gamepad_idx, GamepadAxis axis);
+ControlId ENGINE_EXPORT CreateKeyboardBinding(int scan_code);
+ControlId ENGINE_EXPORT CreateMouseButtonBinding(int button);
+ControlId ENGINE_EXPORT CreateMousePointerBinding();
+ControlId ENGINE_EXPORT CreateGamepadConnectionBinding(int gamepad_idx);
+ControlId ENGINE_EXPORT CreateGamepadButtonBinding(int gamepad_idx, GamepadButton button);
+ControlId ENGINE_EXPORT CreateGamepadAxisBinding(int gamepad_idx, GamepadAxis axis);
 

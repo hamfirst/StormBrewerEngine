@@ -4,6 +4,8 @@
 
 #include "Foundation/Network/Network.h"
 
+#include "Runtime/Runtime.h"
+
 #include <gl3w/gl3w.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_revision.h>
@@ -16,6 +18,8 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Window/WindowManager.h"
+#include "Engine/Shader/ShaderManager.h"
+#include "Engine/Input/GamepadState.h"
 
 static bool s_Quit = false;
 static bool s_EGLMode = false;
@@ -36,8 +40,9 @@ FT_Library g_FreeType;
 bool EngineInit(bool egl_mode)
 {
   NetworkInit();
+  RuntimeInit();
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0)
   {
     fprintf(stderr, "Could not start SDL");
     return false;
@@ -65,6 +70,7 @@ bool EngineInit(bool egl_mode)
   g_AssetLoader.Init();
   g_AudioManager.Init();
 
+  GamepadState::Init();
 
   return true;
 }
@@ -73,6 +79,8 @@ bool EngineRenderInit()
 {
   gl3wInit(s_EGLMode);
   g_TextManager.Init();
+  g_ShaderManager.Init();
+
 
   BootstrapContext();
 
@@ -118,6 +126,14 @@ void EngineUpdate()
         g_WindowManager.HandleMouseMotionMessage(e.motion.windowID, e.motion.x, e.motion.y);
       }
     }
+    else if (e.type == SDL_CONTROLLERDEVICEADDED)
+    {
+      GamepadState::GamepadConnected(e.cdevice.which);
+    }
+    else if (e.type == SDL_CONTROLLERDEVICEREMOVED)
+    {
+      GamepadState::GamepadDisonnected(e.cdevice.which);
+    }
     else if (e.type == SDL_WINDOWEVENT)
     {
       if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
@@ -158,12 +174,16 @@ void EngineUpdate()
 
 void EngineCleanup()
 {
+  GamepadState::Cleanup();
+
   SDL_Quit();
 
   g_AssetLoader.ShutDown();
   g_AudioManager.ShutDown();
   g_TextManager.ShutDown();
+  g_ShaderManager.Shutdown();
 
+  RuntimeCleanup();
   NetworkShutdown();
 }
 

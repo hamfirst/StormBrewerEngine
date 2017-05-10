@@ -5,7 +5,7 @@
 
 struct GlyphInfo;
 
-class TextBufferBuilder
+class ENGINE_EXPORT TextBufferBuilder
 {
 public:
   TextBufferBuilder();

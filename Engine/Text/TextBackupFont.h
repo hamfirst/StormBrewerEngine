@@ -3,7 +3,7 @@
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
-class TextBackupFont
+class ENGINE_EXPORT TextBackupFont
 {
 public:
   TextBackupFont(Buffer && buffer);

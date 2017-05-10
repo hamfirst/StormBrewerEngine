@@ -6,7 +6,7 @@
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
-class VertexArray
+class ENGINE_EXPORT VertexArray
 {
 public:
   VertexArray();

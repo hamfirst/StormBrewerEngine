@@ -5,7 +5,9 @@
 class FakeWindow;
 class TextInputContext;
 
-class WindowManager
+struct WindowState;
+
+class ENGINE_EXPORT WindowManager
 {
 public:
 
@@ -25,6 +27,7 @@ private:
   void HandleKeyPressMessage(uint32_t window_id, int key_code, int scan_code, bool pressed);
   void HandleMouseButtonPressMessage(uint32_t window_id, int button, bool pressed);
   void HandleMouseMotionMessage(uint32_t window_id, int x, int y);
+  void HandleControllerConnectedMessage(uint32_t window_id, int x, int y);
   void HandleTextInputCommit(uint32_t window_id, czstr character);
   void HandleTextInputComposition(uint32_t window_id, czstr composition);
 
@@ -48,8 +51,6 @@ private:
 
   NullOptPtr<InputState> GetInputState(uint32_t window_id);
 
-  struct WindowState;
-  std::unordered_map<uint32_t, std::unique_ptr<WindowState> > m_Windows;
   uint32_t m_NextFakeWindowId = 1000000;
 
 };

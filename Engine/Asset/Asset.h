@@ -20,11 +20,43 @@ enum class AssetState
 template <typename AssetType>
 class AssetManager;
 
-class Asset
+class ENGINE_EXPORT GenericLoadCallbackLink
+{
+public:
+  GenericLoadCallbackLink() = default;
+  GenericLoadCallbackLink(const GenericLoadCallbackLink & rhs) = delete;
+  GenericLoadCallbackLink(GenericLoadCallbackLink && rhs) = default;
+  GenericLoadCallbackLink & operator = (const GenericLoadCallbackLink & rhs) = delete;
+  GenericLoadCallbackLink & operator = (GenericLoadCallbackLink && rhs) = default;
+  ~GenericLoadCallbackLink() { m_DelegateLink = {}; m_AssetRef = {}; }
+  NullOptPtr<Asset> Get() { return m_AssetRef.m_Asset; }
+
+private:
+
+  friend class Asset;
+
+  GenericLoadCallbackLink(DelegateLink<void, NullOptPtr<Asset>> && delegate_link, AssetReferenceBase && asset_ref) :
+    m_DelegateLink(std::move(delegate_link)),
+    m_AssetRef(std::move(asset_ref))
+  {
+
+  }
+
+  DelegateLink<void, NullOptPtr<Asset>> m_DelegateLink;
+  AssetReferenceBase m_AssetRef;
+};
+
+class ENGINE_EXPORT Asset
 {
 public:
   bool IsLoaded();
   bool IsError();
+
+  const std::string & GetFileName() const;
+
+  using GenericLoadCallback = Delegate<void, NullOptPtr<Asset>>;
+
+  GenericLoadCallbackLink AddLoadCallback(GenericLoadCallback del);
 
 protected:
   friend class AssetLoader;
@@ -38,13 +70,12 @@ protected:
   void FinalizeAssetLoad();
   void CallAssetLoadCallbacksWithFailure();
 
-
 public:
 
 protected:
-  virtual void PreProcessLoadedData(Buffer & file_data) { } // This is called from the loader thread
-  virtual bool OnDataLoadComplete(Buffer & file_data) { return true; }
-  virtual void CallAssetLoadCallbacks(bool success) = 0;
+  virtual int PreProcessLoadedData(Buffer & file_data); // This is called from the loader thread
+  virtual void OnDataLoadComplete(Buffer & file_data);
+  virtual void CallAssetLoadCallbacks();
 
 protected:
 
@@ -63,6 +94,8 @@ protected:
   AssetHandle m_Handle;
   void * m_AssetManager = nullptr;
   void(*m_Deleter)(void * asset_manager, const AssetHandle &) = nullptr;
+
+  DelegateList<void, NullOptPtr<Asset>> m_GenericLoadCallbackList;
 
   uint64_t m_FileNameHash = 0;
   std::string m_FileName;

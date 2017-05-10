@@ -49,6 +49,28 @@ void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & qua
   }
 }
 
+void QuadVertexBufferBuilder::AddFrame(const Box & position, const Vector2 & texture_size, const Vector2 & frame_size, int frame_index, const Color & color)
+{
+  if (frame_size.x == 0 || frame_size.y == 0 || texture_size.x == 0 || texture_size.y == 0)
+  {
+    return;
+  }
+
+  QuadVertexBuilderInfo quad;
+  quad.m_Position = position;
+  quad.m_Position.m_End += Vector2(1, 1);
+  quad.m_Color = color;
+  quad.m_TextureSize = texture_size;
+
+  int width_in_frames = (texture_size.x + frame_size.x - 1) / frame_size.x;
+  int fx = (frame_index % width_in_frames) * frame_size.x;
+  int fy = (frame_index / width_in_frames) * frame_size.y;
+
+  quad.m_TexCoords.m_Start = Vector2(fx, fy);
+  quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + frame_size;
+  AddQuad(quad);
+}
+
 VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
 {
   VertexList verts;
@@ -145,6 +167,7 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
   vertex_buffer.SetBufferData(verts, VertexBufferType::kTriangles);
 }
 
+
 LineVertexBufferBuilder::LineVertexBufferBuilder(std::size_t reserve_points)
 {
   m_Lines.reserve(reserve_points);
@@ -152,6 +175,37 @@ LineVertexBufferBuilder::LineVertexBufferBuilder(std::size_t reserve_points)
 
 void LineVertexBufferBuilder::AddLine(const LineVertexBuilderInfo & line)
 {
+  m_Lines.push_back(line);
+}
+
+void LineVertexBufferBuilder::AddBox(const QuadVertexBuilderInfo & quad)
+{
+  LineVertexBuilderInfo line;
+  line.m_Color = quad.m_Color;
+  line.m_TextureSize = quad.m_TextureSize;
+
+  line.m_Start = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b11);
+  line.m_End = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b10);
+  line.m_TexCoordStart = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b11);
+  line.m_TexCoordEnd = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b10);
+  m_Lines.push_back(line);
+
+  line.m_Start = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b01);
+  line.m_End = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b00);
+  line.m_TexCoordStart = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b01);
+  line.m_TexCoordEnd = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b00);
+  m_Lines.push_back(line);
+
+  line.m_Start = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b11);
+  line.m_End = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b01);
+  line.m_TexCoordStart = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b11);
+  line.m_TexCoordEnd = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b01);
+  m_Lines.push_back(line);
+
+  line.m_Start = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b10);
+  line.m_End = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, 0b00);
+  line.m_TexCoordStart = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b10);
+  line.m_TexCoordEnd = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, 0b00);
   m_Lines.push_back(line);
 }
 

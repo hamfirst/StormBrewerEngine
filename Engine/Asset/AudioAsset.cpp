@@ -31,26 +31,23 @@ struct AudioInfo
   int m_Channels;
 };
 
-void AudioAsset::PreProcessLoadedData(Buffer & buffer)
+int AudioAsset::PreProcessLoadedData(Buffer & buffer)
 {
   std::size_t file_size = buffer.GetSize();
   if (file_size < sizeof(WAVE_HEADER))
   {
-    m_LoadError = 1;
-    return;
+    return 1;
   }
 
   WAVE_HEADER * header = reinterpret_cast<WAVE_HEADER *>(buffer.Get());
   if (header->riff != 0x46464952)
   {
-    m_LoadError = 2;
-    return;
+    return 2;
   }
 
   if (header->sample_rate != 44100)
   {
-    m_LoadError = 3;
-    return;
+    return 3;
   }
 
   AudioFormat format;
@@ -70,23 +67,22 @@ void AudioAsset::PreProcessLoadedData(Buffer & buffer)
     }
     else
     {
-      m_LoadError = 4;
-      return;
+      return 4;
     }
   }
   else
   {
-    m_LoadError = 4;
-    return;
+    return 4;
   }
 
   auto audio_buffer = std::shared_ptr<uint8_t>(new uint8_t[header->data_size]);
   memcpy(audio_buffer.get(), header + 1, header->data_size);
 
   buffer = MoveToBuffer(AudioInfo{ std::move(audio_buffer), header->data_size, format, header->channels });
+  return 0;
 }
 
-bool AudioAsset::OnDataLoadComplete(Buffer & buffer)
+void AudioAsset::OnDataLoadComplete(Buffer & buffer)
 {
   AudioInfo info = MoveFromBuffer<AudioInfo>(buffer);
 
@@ -96,7 +92,6 @@ bool AudioAsset::OnDataLoadComplete(Buffer & buffer)
   m_AudioChannels = info.m_Channels;
 
   FinalizeAssetLoad();
-  return true;
 }
 
 ASSET_SOURCE_FUNCS(AudioAsset)

@@ -3,7 +3,7 @@
 #include "Engine/Input/BinaryControlBinding.h"
 #include "Engine/Input/PointerControlBinding.h"
 
-class ControlBindingHandleList
+class ENGINE_EXPORT ControlBindingHandleList
 {
 public:
   ControlBindingHandleList(NotNullPtr<InputState> input_state);

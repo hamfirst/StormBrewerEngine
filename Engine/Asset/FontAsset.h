@@ -5,12 +5,12 @@
 #include "Engine/Audio/AudioFormat.h"
 
 
-class FontAsset : public Asset
+class ENGINE_EXPORT FontAsset : public Asset
 {
 protected:
 
-  virtual void PreProcessLoadedData(Buffer & buffer) override;
-  virtual bool OnDataLoadComplete(Buffer & buffer) override;
+  virtual int PreProcessLoadedData(Buffer & buffer) override;
+  virtual void OnDataLoadComplete(Buffer & buffer) override;
 
 protected:
   friend class TextRenderer;

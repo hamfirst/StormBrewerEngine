@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Engine/EngineCommon.h"
+
 class InputState;
 class TextInputContext;
 
-class Window
+class ENGINE_EXPORT Window
 {
 public:
 

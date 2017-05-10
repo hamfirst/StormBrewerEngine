@@ -7,7 +7,7 @@
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/RenderState.h"
 
-class RenderUtil
+class ENGINE_EXPORT RenderUtil
 {
 public:
   void LoadShaders();
@@ -17,13 +17,17 @@ public:
   static void Clear(const Color & color);
   static void SetClearColor(const Color & color);
 
-  void DrawQuad(const Box & box, const Color & color, RenderState & render_state, bool alpha_blend);
-  void DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, RenderState & render_state, bool alpha_blend);
-  void DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, RenderState & render_state, bool alpha_blend);
+  void DrawQuad(const Box & box, const Color & color, const RenderVec2 & screen_size);
+
+  void DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, const RenderVec2 & screen_size);
+  void DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, const RenderVec2 & screen_size);
+
+  const Texture & GetDefaultTexture() const;
 
 private:
   ShaderProgram m_QuadShader;
   ShaderProgram m_QuadTextureShader;
 
   VertexBuffer m_VertexBuffer;
+  Texture m_DefaultTexture;
 };

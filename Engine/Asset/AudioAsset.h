@@ -7,12 +7,12 @@
 #include "Engine/Audio/AudioFormat.h"
 
 
-class AudioAsset : public Asset
+class ENGINE_EXPORT AudioAsset : public Asset
 {
 protected:
 
-  virtual void PreProcessLoadedData(Buffer & buffer) override;
-  virtual bool OnDataLoadComplete(Buffer & buffer) override;
+  virtual int PreProcessLoadedData(Buffer & buffer) override;
+  virtual void OnDataLoadComplete(Buffer & buffer) override;
 
 protected:
   friend class AudioManager;

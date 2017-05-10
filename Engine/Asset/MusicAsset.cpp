@@ -4,15 +4,15 @@
 #include "Engine/Asset/MusicAsset.h"
 #include "Engine/Asset/AssetManager.h"
 
-void MusicAsset::PreProcessLoadedData(Buffer & buffer)
+int MusicAsset::PreProcessLoadedData(Buffer & buffer)
 {
+  return 0;
 }
 
-bool MusicAsset::OnDataLoadComplete(Buffer & buffer)
+void MusicAsset::OnDataLoadComplete(Buffer & buffer)
 {
   m_AudioBuffer = std::move(buffer);
   FinalizeAssetLoad();
-  return true;
 }
 
 ASSET_SOURCE_FUNCS(MusicAsset)

@@ -1,6 +1,6 @@
 #pragma once
 
-class TextInputContext : public std::enable_shared_from_this<TextInputContext>
+class ENGINE_EXPORT TextInputContext : public std::enable_shared_from_this<TextInputContext>
 {
 public:
 

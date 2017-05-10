@@ -3,6 +3,9 @@
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/AudioFormat.h"
 #include "Engine/Audio/MusicSpec.h"
+#include "Engine/Asset/AudioAsset.h"
+
+#include "Foundation/Any/Any.h"
 
 #include <thread>
 
@@ -311,4 +314,21 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 
   p_this->m_PlayingAudio.Filter(audio_callback);
   p_this->m_PlayingMusic.Filter(music_callback);
+}
+
+void PlayAssetBundleSound(Any & load_data, float volume, float pan)
+{
+  auto load_link = load_data.Get<AudioAsset::LoadCallbackLink>();
+  if (load_link == nullptr)
+  {
+    return;
+  }
+
+  auto audio = load_link->Get();
+  if (audio == nullptr || audio->IsLoaded() == false)
+  {
+    return;
+  }
+
+  g_AudioManager.PlayAudio(audio, volume, pan, false);
 }

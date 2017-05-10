@@ -8,7 +8,7 @@ enum class RenderingBlendMode
 
 void BootstrapContext();
 
-class RenderState
+class ENGINE_EXPORT RenderState
 {
 public:
   void InitRenderState(int screen_width, int screen_height);

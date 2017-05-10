@@ -16,6 +16,9 @@
 
 TextManager g_TextManager;
 
+static std::map<int, std::unique_ptr<TextRenderer>> s_Fonts;
+std::vector<std::unique_ptr<TextBackupFont>> s_BackupFonts;
+
 TextManager::TextManager() :
   m_TextVertexBuffer(true)
 {
@@ -40,18 +43,18 @@ void TextManager::Init()
 
 void TextManager::ShutDown()
 {
-  m_Fonts.clear();
+  s_Fonts.clear();
 }
 
 void TextManager::LoadFont(czstr font_path, int font_id, int font_size)
 {
-  m_Fonts.emplace(std::make_pair(font_id, std::make_unique<TextRenderer>(FontAsset::Load(font_path), font_size, m_BackupFonts)));
+  s_Fonts.emplace(std::make_pair(font_id, std::make_unique<TextRenderer>(FontAsset::Load(font_path), font_size, s_BackupFonts)));
 }
 
 bool TextManager::IsFontLoaded(int font_id)
 {
-  auto itr = m_Fonts.find(font_id);
-  if (itr == m_Fonts.end())
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
   {
     return false ;
   }
@@ -62,8 +65,8 @@ bool TextManager::IsFontLoaded(int font_id)
 
 void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
 {
-  auto itr = m_Fonts.find(font_id);
-  if (itr == m_Fonts.end())
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
   {
     return;
   }
@@ -119,8 +122,8 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
     return;
   }
 
-  auto itr = m_Fonts.find(vertex_builder.m_FontId);
-  if (itr == m_Fonts.end())
+  auto itr = s_Fonts.find(vertex_builder.m_FontId);
+  if (itr == s_Fonts.end())
   {
     return;
   }
@@ -181,8 +184,8 @@ void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, i
 
 Box TextManager::GetTextSize(czstr text, int font_id)
 {
-  auto itr = m_Fonts.find(font_id);
-  if (itr == m_Fonts.end())
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
   {
     return{};
   }
@@ -198,8 +201,8 @@ Box TextManager::GetTextSize(czstr text, int font_id)
 
 bool TextManager::BindGlyphTexture(int font_id, int texture_stage)
 {
-  auto itr = m_Fonts.find(font_id);
-  if (itr == m_Fonts.end())
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
   {
     return false;
   }
@@ -262,6 +265,6 @@ void TextManager::LoadBackupFont(czstr font_path)
 
   if (buffer)
   {
-    m_BackupFonts.emplace_back(std::make_unique<TextBackupFont>(std::move(*buffer)));
+    s_BackupFonts.emplace_back(std::make_unique<TextBackupFont>(std::move(*buffer)));
   }
 }

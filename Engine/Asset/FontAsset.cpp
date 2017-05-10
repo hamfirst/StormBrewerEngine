@@ -4,16 +4,15 @@
 #include "Engine/Asset/FontAsset.h"
 #include "Engine/Asset/AssetManager.h"
 
-void FontAsset::PreProcessLoadedData(Buffer & buffer)
+int FontAsset::PreProcessLoadedData(Buffer & buffer)
 {
-
+  return 0;
 }
 
-bool FontAsset::OnDataLoadComplete(Buffer & buffer)
+void FontAsset::OnDataLoadComplete(Buffer & buffer)
 {
   m_FontBuffer = std::move(buffer);
   FinalizeAssetLoad();
-  return true;
 }
 
 ASSET_SOURCE_FUNCS(FontAsset)

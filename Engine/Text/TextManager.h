@@ -40,7 +40,7 @@ struct TextSettings
   std::vector<Box> m_GlyphPositions;
 };
 
-class TextManager
+class ENGINE_EXPORT TextManager
 {
 public:
 
@@ -78,8 +78,6 @@ public:
 private:
   void LoadBackupFont(czstr font_path);
 
-  std::map<int, std::unique_ptr<TextRenderer>> m_Fonts;
-  std::vector<std::unique_ptr<TextBackupFont>> m_BackupFonts;
   std::vector<Box> m_GlyphPositions;
 
   TextSettings m_Settings;

@@ -177,6 +177,54 @@ void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float 
   }
 }
 
+void GeometryVertexBufferBuilder::Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c)
+{
+  float sx = std::min(a.x, b.x);
+  float sy = std::min(a.y, b.y);
+  float ex = std::max(a.x, b.x);
+  float ey = std::max(a.y, b.y);
+
+  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
+  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
+  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
+  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
+}
+
+void GeometryVertexBufferBuilder::FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs)
+{
+  float angle_inc = k2Pi / num_segs;
+  float angle = angle_inc;
+
+  Vector2f prev_pos = { radius, 0 };
+
+  for (int index = 1; index < num_segs + 1; index++)
+  {
+    auto cur_pos = SinCosf(angle) * radius;
+
+    AddVert(pos, c);
+    AddVert(pos + cur_pos, c);
+    AddVert(pos + prev_pos, c);
+
+    prev_pos = cur_pos;
+    angle += angle_inc;
+  }
+}
+
+void GeometryVertexBufferBuilder::FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c)
+{
+  AddVert(Vector2f{ a.x, a.y }, c);
+  AddVert(Vector2f{ a.x, b.y }, c);
+  AddVert(Vector2f{ b.x, b.y }, c);
+  AddVert(Vector2f{ a.x, a.y }, c);
+  AddVert(Vector2f{ b.x, b.y }, c);
+  AddVert(Vector2f{ b.x, a.y }, c);
+}
+
+void GeometryVertexBufferBuilder::FilledRectangle(const Box & box, const Color & c)
+{
+  FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), c);
+}
+
 VertexBuffer GeometryVertexBufferBuilder::CreateVertexBuffer()
 {
   VertexBuffer vertex_buffer;

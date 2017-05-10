@@ -7,7 +7,7 @@
 
 static const unsigned int kScalarControlHistory = 512;
 
-class ScalarControlBinding : public ControlBinding
+class ENGINE_EXPORT ScalarControlBinding : public ControlBinding
 {
 public:
   using ControlValueType = float;
@@ -30,7 +30,7 @@ private:
   ControlValueType m_History[kScalarControlHistory] = {};
 };
 
-class ScalarControlHandle : public ControlHandle
+class ENGINE_EXPORT ScalarControlHandle : public ControlHandle
 {
 protected:
   friend class InputState;

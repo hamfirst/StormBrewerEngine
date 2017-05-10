@@ -24,12 +24,13 @@ void Asset::DecRef()
 void Asset::FinalizeAssetLoad()
 {
   m_State = AssetState::kLoaded;
-  CallAssetLoadCallbacks(true);
+  CallAssetLoadCallbacks();
 }
 
 void Asset::CallAssetLoadCallbacksWithFailure()
 {
-  CallAssetLoadCallbacks(false);
+  m_State = AssetState::kLoadError;
+  CallAssetLoadCallbacks();
 }
 
 bool Asset::IsLoaded()
@@ -40,4 +41,39 @@ bool Asset::IsLoaded()
 bool Asset::IsError()
 {
   return m_State == AssetState::kLoadError;
+}
+
+const std::string & Asset::GetFileName() const
+{
+  return m_FileName;
+}
+
+GenericLoadCallbackLink Asset::AddLoadCallback(GenericLoadCallback del)
+{
+  if (m_State == AssetState::kLoadError)
+  {
+    del.Call(this);
+  }
+  else if (m_State == AssetState::kLoaded)
+  {
+    del.Call(this);
+  }
+
+  return GenericLoadCallbackLink{
+    m_GenericLoadCallbackList.AddDelegate(del), AssetReferenceBase(this) };
+}
+
+int Asset::PreProcessLoadedData(Buffer & file_data)
+{
+  return 0;
+}
+
+void Asset::OnDataLoadComplete(Buffer & file_data)
+{
+
+}
+
+void Asset::CallAssetLoadCallbacks()
+{ 
+  m_GenericLoadCallbackList.Call(this); 
 }

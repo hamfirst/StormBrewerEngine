@@ -9,8 +9,9 @@
 
 
 WindowManager g_WindowManager;
+static std::unordered_map<uint32_t, std::unique_ptr<WindowState>> s_Windows;
 
-struct WindowManager::WindowState
+struct ENGINE_EXPORT  WindowState
 {
   SDL_Window * m_SDLWindow;
   SDL_GLContext m_Context;
@@ -45,7 +46,7 @@ Window WindowManager::CreateNewWindow(czstr title, int width, int height, bool f
   auto context = SDL_GL_CreateContext(sdl_window);
   uint32_t id = SDL_GetWindowID(sdl_window);
 
-  auto result = m_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowManager::WindowState>(new WindowManager::WindowState{ sdl_window, context, nullptr, 1, false, false })));
+  auto result = s_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowState>(new WindowState{ sdl_window, context, nullptr, 1, false, false })));
   WindowState & window = *result.first->second;
 
   int x, y;
@@ -64,13 +65,13 @@ Window WindowManager::CreateFakeWindow(FakeWindow * window, const Box & window_g
   uint32_t id = m_NextFakeWindowId;
   m_NextFakeWindowId++;
 
-  auto result = m_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowManager::WindowState>(new WindowManager::WindowState{ nullptr, nullptr, window, 1, false, false, window_geo, std::make_unique<InputState>() })));
+  auto result = s_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowState>(new WindowState{ nullptr, nullptr, window, 1, false, false, window_geo, std::make_unique<InputState>() })));
   return Window(id);
 }
 
 void WindowManager::UpdateInput()
 {
-  for (auto & window_info : m_Windows)
+  for (auto & window_info : s_Windows)
   {
     auto & window = *window_info.second;
 
@@ -92,8 +93,8 @@ void WindowManager::UpdateInput()
 
 void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int scan_code, bool pressed)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   window.m_InputState->HandleKeyPressMessage(scan_code, pressed, (bool)window.m_TextInputContext);
@@ -106,8 +107,8 @@ void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int 
 
 void WindowManager::HandleMouseButtonPressMessage(uint32_t window_id, int button, bool pressed)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   window.m_InputState->HandleMouseButtonPressMessage(button, pressed, window.m_MouseFocus);
@@ -115,8 +116,8 @@ void WindowManager::HandleMouseButtonPressMessage(uint32_t window_id, int button
 
 void WindowManager::HandleMouseMotionMessage(uint32_t window_id, int x, int y)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   window.m_InputState->HandleMouseMoveMessage(x, y, window.m_WindowGeo, window.m_MouseFocus);
@@ -124,8 +125,8 @@ void WindowManager::HandleMouseMotionMessage(uint32_t window_id, int x, int y)
 
 void WindowManager::HandleTextInputCommit(uint32_t window_id, czstr character)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_TextInputContext)
@@ -136,8 +137,8 @@ void WindowManager::HandleTextInputCommit(uint32_t window_id, czstr character)
 
 void WindowManager::HandleTextInputComposition(uint32_t window_id, czstr composition)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_TextInputContext)
@@ -148,24 +149,24 @@ void WindowManager::HandleTextInputComposition(uint32_t window_id, czstr composi
 
 void WindowManager::SetWindowKeyboardFocused(uint32_t window_id, bool focused)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_KeyboardFocus = focused;
 }
 
 void WindowManager::SetWindowMouseFocused(uint32_t window_id, bool focused)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_MouseFocus = focused;
 }
 
 void WindowManager::SetWindowPos(uint32_t window_id, const Vector2 & pos)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   auto size = window.m_WindowGeo.m_End - window.m_WindowGeo.m_Start;
   window.m_WindowGeo.m_Start = pos;
@@ -174,8 +175,8 @@ void WindowManager::SetWindowPos(uint32_t window_id, const Vector2 & pos)
 
 void WindowManager::SetWindowSize(uint32_t window_id, const Vector2 & size)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + size;
 }
@@ -183,16 +184,16 @@ void WindowManager::SetWindowSize(uint32_t window_id, const Vector2 & size)
 
 void WindowManager::AddWindowRef(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_RefCount++;
 }
 
 void WindowManager::DecWindowRef(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_RefCount--;
 
@@ -204,8 +205,8 @@ void WindowManager::DecWindowRef(uint32_t window_id)
 
 void WindowManager::Swap(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_SDLWindow)
@@ -220,8 +221,8 @@ void WindowManager::Swap(uint32_t window_id)
 
 void WindowManager::SetMousePos(uint32_t window_id, int x, int y)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_SDLWindow)
@@ -236,8 +237,8 @@ void WindowManager::SetMousePos(uint32_t window_id, int x, int y)
 
 void WindowManager::SetVsyncEnabled(uint32_t window_id, bool enabled)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_SDLWindow)
@@ -249,8 +250,8 @@ void WindowManager::SetVsyncEnabled(uint32_t window_id, bool enabled)
 
 void WindowManager::MakeCurrent(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_SDLWindow)
@@ -265,8 +266,8 @@ void WindowManager::MakeCurrent(uint32_t window_id)
 
 void WindowManager::CloseWindow(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
 
   if (window.m_SDLWindow)
@@ -278,13 +279,13 @@ void WindowManager::CloseWindow(uint32_t window_id)
     window.m_FakeWindow->m_CloseDelegate();
   }
 
-  m_Windows.erase(itr);
+  s_Windows.erase(itr);
 }
 
 void WindowManager::SetTextInputContext(uint32_t window_id, const std::shared_ptr<TextInputContext> & context, NullOptPtr<Box> input_box)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   window.m_TextInputContext = context;
 
@@ -313,8 +314,8 @@ void WindowManager::SetTextInputContext(uint32_t window_id, const std::shared_pt
 
 void WindowManager::ClearTextInputContext(uint32_t window_id, NotNullPtr<TextInputContext> context)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
   WindowState & window = *itr->second;
   if (window.m_TextInputContext.get() == context)
   {
@@ -339,16 +340,16 @@ void WindowManager::ClearTextInputContext(uint32_t window_id, NotNullPtr<TextInp
 
 bool WindowManager::IsTextInputContextActive(uint32_t window_id, NotNullPtr<TextInputContext> context)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return false;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return false;
   WindowState & window = *itr->second;
   return window.m_TextInputContext.get() == context;
 }
 
 NullOptPtr<InputState> WindowManager::GetInputState(uint32_t window_id)
 {
-  auto itr = m_Windows.find(window_id);
-  if (itr == m_Windows.end()) return nullptr;
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return nullptr;
   WindowState & window = *itr->second;
   return window.m_InputState.get();
 }

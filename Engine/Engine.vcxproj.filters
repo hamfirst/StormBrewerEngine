@@ -22,6 +22,24 @@
     <Filter Include="Window">
       <UniqueIdentifier>{b7ffc5f6-176e-4513-92eb-0c7c1bb5e78b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{3fa37876-53d1-482b-8ecd-1a343e7783ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{3470fc4f-036d-400b-9ce4-44f06737f3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{b4f4bd8a-c14b-47d4-ab9c-72e7ebe8e29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DrawList">
+      <UniqueIdentifier>{d5949624-8d92-4cf3-b7c6-0960f6d895fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{3da891e2-6e9f-493f-9e44-019dad8c3e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{9a7ed8e4-c887-48bb-9cba-8cdeefd545f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -194,6 +212,45 @@
     <ClInclude Include="Input\GamepadState.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Asset\AssetSync.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\DocumentAsset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetLoad.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\DocumentAssetLoader.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite\SpriteEngineData.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderManager.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\DefaultShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapManualTileLayerInstance.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawList\DrawList.h">
+      <Filter>DrawList</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEngineInstance.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapRender.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\EntityRender.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -323,6 +380,39 @@
     </ClCompile>
     <ClCompile Include="Input\GamepadState.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\DocumentAsset.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\AssetLoad.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\DocumentAssetLoader.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite\SpriteEngineData.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader\ShaderManager.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapManualTileLayerInstance.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawList\DrawList.cpp">
+      <Filter>DrawList</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapEngineInstance.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapRender.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\EntityRender.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

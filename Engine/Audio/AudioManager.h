@@ -15,7 +15,7 @@ class MusicSpec;
 using AudioHandle = SpecificHandle<AudioSpec>;
 using MusicHandle = SpecificHandle<MusicSpec>;
 
-class AudioManager
+class ENGINE_EXPORT AudioManager
 {
 public:
   AudioManager();

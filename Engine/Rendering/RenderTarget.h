@@ -2,7 +2,7 @@
 
 #include "Engine/EngineCommon.h"
 
-class RenderTarget
+class ENGINE_EXPORT RenderTarget
 {
   RenderTarget();
   RenderTarget(const RenderTarget & rhs) = delete;

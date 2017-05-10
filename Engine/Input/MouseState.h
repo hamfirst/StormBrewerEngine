@@ -9,7 +9,7 @@ class InputState;
 
 static const int kNumMouseButtons = 32;
 
-class MouseState
+class ENGINE_EXPORT MouseState
 {
 public:
   MouseState(NotNullPtr<InputState> input_state);

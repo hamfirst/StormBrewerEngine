@@ -3,7 +3,7 @@
 #include "VertexDefinition.h"
 
 
-class VertexList
+class ENGINE_EXPORT VertexList
 {
 public:
   VertexList();

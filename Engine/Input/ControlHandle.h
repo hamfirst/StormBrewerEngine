@@ -6,7 +6,7 @@
 
 class InputState;
 
-class ControlHandle
+class ENGINE_EXPORT ControlHandle
 {
 protected:
   ControlHandle();

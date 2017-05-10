@@ -2,7 +2,7 @@
 
 #include "Engine/Window/Window.h"
 
-class FakeWindow
+class ENGINE_EXPORT FakeWindow
 {
 public:
 

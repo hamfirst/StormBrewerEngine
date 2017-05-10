@@ -6,7 +6,7 @@
 #include "Engine/Input/MouseState.h"
 #include "Engine/Input/GamepadState.h"
 
-class InputState
+class ENGINE_EXPORT InputState
 {
 public:
   InputState();
@@ -26,6 +26,10 @@ public:
   bool GetKeyPressedThisFrame(int scan_code);
   bool GetMouseButtonSate(int button);
   PointerState GetPointerState();
+  bool GetGamepadConnected(int gamepad_idx);
+  bool GetGamepadButtonState(int gamepad_idx, GamepadButton button);
+  bool GetGamepadButtonPressedThisFrame(int gamepad_idx, GamepadButton button);
+  float GetGamepadAxis(int gamepad_idx, GamepadAxis axis);
 
   DelegateLink<void, bool, ControlId> RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del);
 

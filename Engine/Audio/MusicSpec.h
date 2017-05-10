@@ -8,7 +8,7 @@
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 
-class MusicSpec
+class ENGINE_EXPORT MusicSpec
 {
 public:
 
@@ -24,6 +24,8 @@ public:
 private:
 
   bool LoadFile();
+  void Restart();
+  void FreeResources();
   bool FillBuffer(void * data, std::size_t length);
   bool Decode();
 

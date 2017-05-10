@@ -105,6 +105,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,6 +116,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,6 +130,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,6 +147,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -159,6 +164,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -175,6 +181,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -183,6 +190,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Asset\Asset.h" />
+    <ClInclude Include="Asset\AssetLoad.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Asset\AssetLoader.h">
       <SubType>
       </SubType>
@@ -194,8 +205,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Asset\AssetReloadCallback.h" />
+    <ClInclude Include="Asset\AssetSync.h" />
     <ClInclude Include="Asset\AssetTypeMacros.h" />
     <ClInclude Include="Asset\AudioAsset.h" />
+    <ClInclude Include="Asset\DocumentAsset.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Asset\DocumentAssetLoader.h" />
     <ClInclude Include="Asset\FontAsset.h">
       <SubType>
       </SubType>
@@ -209,11 +226,23 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioSpec.h" />
     <ClInclude Include="Audio\MusicSpec.h" />
+    <ClInclude Include="Camera\Camera.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DrawList\DrawList.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Engine.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="EngineCommon.h" />
+    <ClInclude Include="Entity\EntityRender.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Input\BinaryControlBinding.h">
       <SubType>
       </SubType>
@@ -247,6 +276,9 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Map\MapEngineInstance.h" />
+    <ClInclude Include="Map\MapManualTileLayerInstance.h" />
+    <ClInclude Include="Map\MapRender.h" />
     <ClInclude Include="Rendering\GeometryVertexBufferBuilder.h">
       <SubType>
       </SubType>
@@ -280,6 +312,12 @@
     <ClInclude Include="Rendering\VertexList.h" />
     <ClInclude Include="Settings\EngineSettings.refl.h" />
     <ClInclude Include="Settings\EngineSettings.refl.meta.h" />
+    <ClInclude Include="Shader\DefaultShader.h" />
+    <ClInclude Include="Shader\ShaderManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Sprite\SpriteEngineData.h" />
     <ClInclude Include="Text\TextBackupFont.h">
       <SubType>
       </SubType>
@@ -308,15 +346,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\External\External.vcxproj">
-      <Project>{f2c9910c-3e6e-4752-a69e-810cc743bc10}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Foundation\Foundation.vcxproj">
-      <Project>{39856b1a-b463-4d99-9859-74912e1c6d00}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Asset\Asset.cpp" />
+    <ClCompile Include="Asset\AssetLoad.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Asset\AssetLoader.cpp">
       <SubType>
       </SubType>
@@ -326,6 +360,11 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Asset\AudioAsset.cpp" />
+    <ClCompile Include="Asset\DocumentAsset.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Asset\DocumentAssetLoader.cpp" />
     <ClCompile Include="Asset\FontAsset.cpp">
       <SubType>
       </SubType>
@@ -337,6 +376,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Audio\MusicSpec.cpp" />
+    <ClCompile Include="Camera\Camera.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DrawList\DrawList.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Engine.cpp">
       <SubType>
       </SubType>
@@ -354,6 +401,10 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">EngineCommon.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">EngineCommon.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">EngineCommon.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Entity\EntityRender.cpp">
+      <SubType>
+      </SubType>
     </ClCompile>
     <ClCompile Include="Input\BinaryControlBinding.cpp">
       <SubType>
@@ -386,6 +437,9 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Map\MapEngineInstance.cpp" />
+    <ClCompile Include="Map\MapManualTileLayerInstance.cpp" />
+    <ClCompile Include="Map\MapRender.cpp" />
     <ClCompile Include="Rendering\GeometryVertexBufferBuilder.cpp">
       <SubType>
       </SubType>
@@ -414,6 +468,11 @@
     <ClCompile Include="Rendering\VertexBufferBuilder.cpp" />
     <ClCompile Include="Rendering\VertexList.cpp" />
     <ClCompile Include="Settings\EngineSettings.refl.cpp" />
+    <ClCompile Include="Shader\ShaderManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Sprite\SpriteEngineData.cpp" />
     <ClCompile Include="Text\TextBackupFont.cpp">
       <SubType>
       </SubType>

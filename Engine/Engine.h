@@ -1,9 +1,10 @@
 #pragma once
 
+#include "EngineCommon.h"
 
-bool EngineInit(bool egl_mode);
-bool EngineRenderInit();
-void EngineUpdate();
-void EngineCleanup();
+bool ENGINE_EXPORT EngineInit(bool egl_mode);
+bool ENGINE_EXPORT EngineRenderInit();
+void ENGINE_EXPORT EngineUpdate();
+void ENGINE_EXPORT EngineCleanup();
 
-bool EngineWantsToQuit();
+bool ENGINE_EXPORT EngineWantsToQuit();

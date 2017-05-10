@@ -10,7 +10,7 @@ static const int kNumKeyboardKeys = 512;
 
 class InputState;
 
-class KeyboardState
+class ENGINE_EXPORT KeyboardState
 {
 public:
   KeyboardState(NotNullPtr<InputState> input_state);

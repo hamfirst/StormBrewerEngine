@@ -13,7 +13,7 @@ struct QuadVertexBuilderInfo
   Color m_Color;
 };
 
-class QuadVertexBufferBuilder
+class ENGINE_EXPORT QuadVertexBufferBuilder
 {
 public:
   QuadVertexBufferBuilder() = default;
@@ -22,10 +22,13 @@ public:
   void AddQuad(const QuadVertexBuilderInfo & quad);
   void AddRepeatingQuad(const QuadVertexBuilderInfo & quad);
 
+  void AddFrame(const Box & position, const Vector2 & texture_size, const Vector2 & frame_size, int frame_index, const Color & color);
+
   VertexBuffer CreateVertexBuffer();
   VertexBuffer SliceVertexBuffer(const Box & bounds);
 
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
+
 
 private:
 
@@ -42,13 +45,14 @@ struct LineVertexBuilderInfo
   Color m_Color;
 };
 
-class LineVertexBufferBuilder
+class ENGINE_EXPORT LineVertexBufferBuilder
 {
 public:
   LineVertexBufferBuilder() = default;
   explicit LineVertexBufferBuilder(std::size_t reserve_points);
 
   void AddLine(const LineVertexBuilderInfo & line);
+  void AddBox(const QuadVertexBuilderInfo & quad);
 
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
@@ -67,7 +71,7 @@ struct PointVertexBuilderInfo
   Color m_Color;
 };
 
-class PointVertexBufferBuilder
+class ENGINE_EXPORT PointVertexBufferBuilder
 {
 public:
   PointVertexBufferBuilder() = default;

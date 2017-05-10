@@ -3,7 +3,7 @@
 
 class Asset;
 
-class AssetReferenceBase
+class ENGINE_EXPORT AssetReferenceBase
 {
 public:
   AssetReferenceBase();
@@ -19,6 +19,7 @@ public:
 protected:
 
   friend class Asset;
+  friend class GenericLoadCallbackLink;
 
   AssetReferenceBase(Asset * asset);
 

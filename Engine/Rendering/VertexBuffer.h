@@ -6,7 +6,7 @@
 class ShaderProgram;
 class VertexList;
 
-class VertexBuffer
+class ENGINE_EXPORT VertexBuffer
 {
 public:
   explicit VertexBuffer(bool dynamic = false);

@@ -20,7 +20,7 @@ struct GlyphInfo
   int m_Advance;
 };
 
-class TextRenderer
+class ENGINE_EXPORT TextRenderer
 {
 public:
   TextRenderer(const AssetReference<FontAsset> & asset_ref, int font_size, std::vector<std::unique_ptr<TextBackupFont>> & backup_fonts);
@@ -36,7 +36,7 @@ public:
   
 private:
 
-  void FinalizeAssetLoad(FontAsset * asset, bool success);
+  void FinalizeAssetLoad(FontAsset * asset);
 
   void AddGlyphToBuffer(int x, int y, const GlyphInfo & glyph, const TextSettings & settings, TextBufferBuilder & buffer, const Color & color);
 

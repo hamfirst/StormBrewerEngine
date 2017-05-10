@@ -13,41 +13,7 @@ MusicSpec::MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume,
 
 MusicSpec::~MusicSpec()
 {
-  if (m_VorbisBlock)
-  {
-    vorbis_block_clear(&m_VorbisBlock.Value());
-    m_VorbisBlock = {};
-  }
-
-  if (m_VorbisDSP)
-  {
-    vorbis_dsp_clear(&m_VorbisDSP.Value());
-    m_VorbisDSP = {};
-  }
-
-  if (m_VorbisComment)
-  {
-    vorbis_comment_clear(&m_VorbisComment.Value());
-    m_VorbisComment = {};
-  }
-
-  if (m_VorbisInfo)
-  {
-    vorbis_info_clear(&m_VorbisInfo.Value());
-    m_VorbisInfo = {};
-  }
-
-  if (m_StreamState)
-  {
-    ogg_stream_clear(&m_StreamState.Value());
-    m_StreamState = {};
-  }
-
-  if (m_SyncState)
-  {
-    ogg_sync_clear(&m_SyncState.Value());
-    m_SyncState = {};
-  }
+  FreeResources();
 }
 
 bool MusicSpec::LoadFile()
@@ -144,6 +110,50 @@ bool MusicSpec::LoadFile()
   return true;
 }
 
+void MusicSpec::Restart()
+{
+  FreeResources();
+  LoadFile();
+}
+
+void MusicSpec::FreeResources()
+{
+  if (m_VorbisBlock)
+  {
+    vorbis_block_clear(&m_VorbisBlock.Value());
+    m_VorbisBlock = {};
+  }
+
+  if (m_VorbisDSP)
+  {
+    vorbis_dsp_clear(&m_VorbisDSP.Value());
+    m_VorbisDSP = {};
+  }
+
+  if (m_VorbisComment)
+  {
+    vorbis_comment_clear(&m_VorbisComment.Value());
+    m_VorbisComment = {};
+  }
+
+  if (m_VorbisInfo)
+  {
+    vorbis_info_clear(&m_VorbisInfo.Value());
+    m_VorbisInfo = {};
+  }
+
+  if (m_StreamState)
+  {
+    ogg_stream_clear(&m_StreamState.Value());
+    m_StreamState = {};
+  }
+
+  if (m_SyncState)
+  {
+    ogg_sync_clear(&m_SyncState.Value());
+    m_SyncState = {};
+  }
+}
 
 bool MusicSpec::FillBuffer(void * data, std::size_t length)
 {
@@ -230,6 +240,14 @@ bool MusicSpec::Decode()
 
     if (ogg_page_eos(&m_Page))
     {
+      if (m_Looping)
+      {
+        m_NumSamples = 0;
+        m_SamplePos = 0;
+        Restart();
+        return false;
+      }
+
       return true;
     }
 

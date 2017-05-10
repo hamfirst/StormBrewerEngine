@@ -13,7 +13,7 @@ struct PointerState
   bool m_InFocus;
 };
 
-class PointerControlBinding : public ControlBinding
+class ENGINE_EXPORT PointerControlBinding : public ControlBinding
 {
 public:
   using ControlValueType = PointerState;
@@ -36,7 +36,7 @@ private:
   ControlValueType m_History[kPointerControlHistory] = {};
 };
 
-class PointerControlHandle : public ControlHandle
+class ENGINE_EXPORT PointerControlHandle : public ControlHandle
 {
 protected:
   friend class InputState;

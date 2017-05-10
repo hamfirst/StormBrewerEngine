@@ -4,19 +4,23 @@
 #include "Engine/Asset/AssetTypeMacros.h"
 #include "Engine/Rendering/Texture.h"
 
-class TextureAsset : public Asset
+class ENGINE_EXPORT TextureAsset : public Asset
 {
 public:
 
   const Texture & GetTexture() const;
 
-  int GetWidth();
-  int GetHeight();
+  int GetWidth() const;
+  int GetHeight() const;
+
+  Vector2 GetSize() const;
+
+  NullOptPtr<const PixelBuffer> GetPixelBuffer() const;
 
 protected:
 
-  virtual void PreProcessLoadedData(Buffer & buffer) override;
-  virtual bool OnDataLoadComplete(Buffer & buffer) override;
+  virtual int PreProcessLoadedData(Buffer & buffer) override;
+  virtual void OnDataLoadComplete(Buffer & buffer) override;
 
 
 protected:

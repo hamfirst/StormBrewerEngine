@@ -8,6 +8,8 @@
 #include "Asset.h"
 #include "AssetLoader.h"
 
+class DocumentAsset;
+
 template <typename AssetType>
 class AssetManager : public AssetReloadCallback
 {
@@ -33,7 +35,7 @@ public:
     auto itr = m_Assets.emplace();
     auto & asset = *itr;
 
-    g_AssetLoader.RequestFileLoad(&asset, file_path);
+    g_AssetLoader.RequestFileLoad(&asset, file_path, std::is_same<AssetType, DocumentAsset>::value, false);
 
     Asset::AssetHandle handle;
     new (handle.m_Buffer) typename plf::colony<AssetType>::iterator(itr);
@@ -56,6 +58,7 @@ public:
   void DestroyAsset(const Asset::AssetHandle & handle)
   {
     auto itr = reinterpret_cast<const typename plf::colony<AssetType>::iterator *>(handle.m_Buffer);
+    m_AssetLookup.erase((*itr)->m_FileNameHash);
     m_Assets.erase(*itr);
   }
 
@@ -69,7 +72,7 @@ public:
     }
 
     auto & asset = *existing_asset_itr->second;
-    g_AssetLoader.RequestFileLoad(&asset, path);
+    g_AssetLoader.RequestFileLoad(&asset, path, std::is_same<AssetType, DocumentAsset>::value, true);
   }
 
 private:

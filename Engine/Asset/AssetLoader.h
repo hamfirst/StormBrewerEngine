@@ -6,19 +6,22 @@
 #include "Foundation/Thread/MessageQueue.h"
 #include "Foundation/Thread/Semaphore.h"
 #include "Foundation/Network/WebSocket.h"
+#include "Foundation/Document/DocumentCompiler.h"
+#include "Foundation/Document/DocumentLoader.h"
 
 #include "Engine/Asset/Asset.h"
 #include "Engine/Asset/AssetReloadCallback.h"
 
-class AssetLoader
+class ENGINE_EXPORT AssetLoader : public DocumentLoader
 {
 public:
   AssetLoader();
+  ~AssetLoader();
 
   void Init();
   void ShutDown();
 
-  void RequestFileLoad(Asset * asset, czstr file_path);
+  void RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload);
   void ProcessResponses();
 
   Optional<Buffer> LoadFullFile(czstr file_path);
@@ -36,6 +39,12 @@ private:
   Optional<Buffer> LoadFullFileRaw(czstr file_path, int & file_open_error);
   Optional<Buffer> LoadFullFileInternal(czstr file_path, int & file_open_error, WebSocket & websocket);
 
+  Optional<Buffer> LoadFullDocumentWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket);
+  Optional<Buffer> LoadFullDocumentRaw(czstr file_path, int & file_open_error);
+  Optional<Buffer> LoadFullDocumentInternal(czstr file_path, int & file_open_error, WebSocket & websocket);
+
+  virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback) override;
+
   template <typename AssetType>
   friend class AssetManager;
 
@@ -47,11 +56,15 @@ private:
   {
     Asset * m_Asset;
     std::string m_FilePath;
+    bool m_AsDocument;
+    bool m_AsReload;
   };
 
   struct AssetLoadResponse
   {
     Asset * m_Asset;
+    bool m_AsDocument;
+    bool m_AsReload;
     Buffer m_FileData;
   };
 
@@ -68,6 +81,8 @@ private:
   std::unique_ptr<WebSocket> m_ReloadServerSocket;
   std::thread m_ReloadThread;
 
+  std::mutex m_DocumentCompilerMutex;
+  DocumentCompiler m_DocumentCompiler;
 };
 
 extern AssetLoader g_AssetLoader;

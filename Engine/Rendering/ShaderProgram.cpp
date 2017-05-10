@@ -108,7 +108,7 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
   }
 }
 
-int ShaderProgram::GetUniformIndex(Hash uniform_name)
+int ShaderProgram::GetUniformIndex(Hash uniform_name) const
 {
   for (int index = 0; index < (int)m_Uniforms.size(); index++)
   {
@@ -121,72 +121,72 @@ int ShaderProgram::GetUniformIndex(Hash uniform_name)
   return -1;
 }
 
-int ShaderProgram::GetUniformIndex(czstr uniform_name)
+int ShaderProgram::GetUniformIndex(czstr uniform_name) const
 {
   return GetUniformIndex(crc32(uniform_name));
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, int v1)
+void ShaderProgram::SetUniform(Hash uniform_name, int v1) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform1i(uniform_index, v1); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2)
+void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform2i(uniform_index, v1, v2); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2, int v3)
+void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2, int v3) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform3i(uniform_index, v1, v2, v3); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4)
+void ShaderProgram::SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform4i(uniform_index, v1, v2, v3, v4); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, float v1)
+void ShaderProgram::SetUniform(Hash uniform_name, float v1) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform1f(uniform_index, v1); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2)
+void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform2f(uniform_index, v1, v2); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2, float v3)
+void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2, float v3) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform3f(uniform_index, v1, v2, v3); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4)
+void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform4f(uniform_index, v1, v2, v3, v4); CHECK_GL_RENDER_ERROR;
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec2 & v)
+void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec2 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform2f(uniform_index, v.x, v.y);
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec3 & v)
+void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec3 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform3f(uniform_index, v.x, v.y, v.z);
 }
 
-void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec4 & v)
+void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec4 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   glUniform4f(uniform_index, v.x, v.y, v.z, v.w);

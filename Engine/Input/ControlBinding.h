@@ -6,7 +6,7 @@ enum class ControlBindingMode
   kIgnoreLowerPriority,
 };
 
-class ControlBinding
+class ENGINE_EXPORT ControlBinding
 {
 public:
   ControlBinding(int priority, ControlBindingMode mode) : 

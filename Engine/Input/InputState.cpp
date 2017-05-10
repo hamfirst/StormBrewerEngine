@@ -1,6 +1,7 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/InputState.h"
+#include "Engine/Input/GamepadState.h"
 
 InputState::InputState() :
   m_KeyboardState(this),
@@ -14,6 +15,7 @@ void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_i
 {
   m_KeyboardState.CheckDeltaState(in_keyboard_focus, text_input_active);
   m_MouseState.CheckDeltaState(window_geo, in_mouse_focus);
+  m_GamepadState.CheckDeltaState(in_keyboard_focus);
 }
 
 BinaryControlHandle InputState::BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)
@@ -105,6 +107,26 @@ bool InputState::GetMouseButtonSate(int button)
 PointerState InputState::GetPointerState()
 {
   return m_MouseState.GetPointerState();
+}
+
+bool InputState::GetGamepadConnected(int gamepad_idx)
+{
+  return m_GamepadState.IsGamepadConnected(gamepad_idx);
+}
+
+bool InputState::GetGamepadButtonState(int gamepad_idx, GamepadButton button)
+{
+  return m_GamepadState.IsButtonPressed(gamepad_idx, button);
+}
+
+bool InputState::GetGamepadButtonPressedThisFrame(int gamepad_idx, GamepadButton button)
+{
+  return m_GamepadState.IsButtonPressedThisFrame(gamepad_idx, button);
+}
+
+float InputState::GetGamepadAxis(int gamepad_idx, GamepadAxis axis)
+{
+  return m_GamepadState.GetAxis(gamepad_idx, axis);
 }
 
 DelegateLink<void, bool, ControlId> InputState::RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del)

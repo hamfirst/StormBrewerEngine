@@ -10,13 +10,12 @@
 #include <upng/upng.h>
 
 
-void TextureAsset::PreProcessLoadedData(Buffer & buffer)
+int TextureAsset::PreProcessLoadedData(Buffer & buffer)
 {
   upng_t * png_data = upng_new_from_bytes(buffer.Get(), (unsigned long)buffer.GetSize());
   if (png_data == nullptr)
   {
-    m_LoadError = UPNG_ENOMEM;
-    return;
+    return UPNG_ENOMEM;
   }
 
   auto png_destroy = gsl::finally([&] { upng_free(png_data); });
@@ -24,14 +23,12 @@ void TextureAsset::PreProcessLoadedData(Buffer & buffer)
   upng_error load_error = upng_decode(png_data);
   if (load_error != UPNG_EOK)
   {
-    m_LoadError = load_error;
-    return;
+    return load_error;
   }
 
   if (upng_get_bitdepth(png_data) != 8)
   {
-    m_LoadError = UPNG_EUNFORMAT;
-    return;
+    return UPNG_EUNFORMAT;
   }
 
   unsigned int width = upng_get_width(png_data);
@@ -46,18 +43,15 @@ void TextureAsset::PreProcessLoadedData(Buffer & buffer)
     bpp = 4;
     break;
   default:
-    m_LoadError = UPNG_EUNFORMAT;
-    return;
+    return UPNG_EUNFORMAT;
   }
 
-  if (m_LoadError == 0)
-  {
-    // This is a little not cool, but I'm stealing data right out of the upng struct
-    buffer = MoveToBuffer(PixelBuffer(std::unique_ptr<uint8_t[]>(upng_steal_buffer(png_data)), width, height, bpp));
-  }
+  // This is a little not cool, but I'm stealing data right out of the upng struct
+  buffer = MoveToBuffer(PixelBuffer(std::unique_ptr<uint8_t[]>(upng_steal_buffer(png_data)), width, height, bpp));
+  return 0;
 }
 
-bool TextureAsset::OnDataLoadComplete(Buffer & buffer)
+void TextureAsset::OnDataLoadComplete(Buffer & buffer)
 {
   m_PixelBuffer = MoveFromBuffer<PixelBuffer>(buffer);
 
@@ -72,18 +66,19 @@ bool TextureAsset::OnDataLoadComplete(Buffer & buffer)
     break;
   default:
     m_LoadError = UPNG_EUNFORMAT;
-    return false;
+    CallAssetLoadCallbacksWithFailure();
+    return;
   }
 
   m_Texture.SetTextureData(*m_PixelBuffer, type);
   if (m_Texture.GetLoadError() != 0)
   {
     m_LoadError = m_Texture.GetLoadError();
-    return false;
+    CallAssetLoadCallbacksWithFailure();
+    return;
   }
 
   FinalizeAssetLoad();
-  return true;
 }
 
 const Texture & TextureAsset::GetTexture() const
@@ -91,14 +86,24 @@ const Texture & TextureAsset::GetTexture() const
   return m_Texture;
 }
 
-int TextureAsset::GetWidth()
+int TextureAsset::GetWidth() const
 {
   return m_PixelBuffer->GetWidth();
 }
 
-int TextureAsset::GetHeight()
+int TextureAsset::GetHeight() const
 {
   return m_PixelBuffer->GetHeight();
+}
+
+Vector2 TextureAsset::GetSize() const
+{
+  return Vector2(GetWidth(), GetHeight());
+}
+
+NullOptPtr<const PixelBuffer> TextureAsset::GetPixelBuffer() const
+{
+  return m_PixelBuffer.GetPtr();
 }
 
 ASSET_SOURCE_FUNCS(TextureAsset)

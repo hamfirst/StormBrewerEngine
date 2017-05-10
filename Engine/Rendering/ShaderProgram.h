@@ -4,7 +4,7 @@
 
 class Shader;
 
-class ShaderProgram
+class ENGINE_EXPORT ShaderProgram
 {
 public:
   ShaderProgram();
@@ -22,22 +22,22 @@ public:
   int GetLoadError() const { return m_LoadError; }
   const std::string & GetCompileLog() const { return m_CompileLog; }
 
-  int GetUniformIndex(Hash uniform_name);
-  int GetUniformIndex(czstr uniform_name);
+  int GetUniformIndex(Hash uniform_name) const;
+  int GetUniformIndex(czstr uniform_name) const;
 
-  void SetUniform(Hash uniform_name, int v1);
-  void SetUniform(Hash uniform_name, int v1, int v2);
-  void SetUniform(Hash uniform_name, int v1, int v2, int v3);
-  void SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4);
+  void SetUniform(Hash uniform_name, int v1) const;
+  void SetUniform(Hash uniform_name, int v1, int v2) const;
+  void SetUniform(Hash uniform_name, int v1, int v2, int v3) const;
+  void SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4) const;
 
-  void SetUniform(Hash uniform_name, float v1);
-  void SetUniform(Hash uniform_name, float v1, float v2);
-  void SetUniform(Hash uniform_name, float v1, float v2, float v3);
-  void SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4);
+  void SetUniform(Hash uniform_name, float v1) const;
+  void SetUniform(Hash uniform_name, float v1, float v2) const;
+  void SetUniform(Hash uniform_name, float v1, float v2, float v3) const;
+  void SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4) const;
 
-  void SetUniform(Hash uniform_name, const RenderVec2 & v);
-  void SetUniform(Hash uniform_name, const RenderVec3 & v);
-  void SetUniform(Hash uniform_name, const RenderVec4 & v);
+  void SetUniform(Hash uniform_name, const RenderVec2 & v) const;
+  void SetUniform(Hash uniform_name, const RenderVec3 & v) const;
+  void SetUniform(Hash uniform_name, const RenderVec4 & v) const;
 
 
   void Bind() const;  
@@ -55,4 +55,4 @@ private:
   std::vector<Hash> m_Uniforms;
 };
 
-ShaderProgram MakeQuickShaderProgram(const char * vertex_shader, const char * fragment_shader);
+ShaderProgram ENGINE_EXPORT MakeQuickShaderProgram(const char * vertex_shader, const char * fragment_shader);

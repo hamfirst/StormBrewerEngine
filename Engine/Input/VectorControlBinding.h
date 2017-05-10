@@ -6,7 +6,7 @@
 static const unsigned int kScalarControlHistory = 512;
 static const float kScalarControlThreshold = 0.75;
 
-class VectorControlBinding
+class ENGINE_EXPORT VectorControlBinding
 {
 public:
 

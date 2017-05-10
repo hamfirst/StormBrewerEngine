@@ -10,7 +10,7 @@ enum class TextureType
   kInvalid,
 };
 
-class Texture
+class ENGINE_EXPORT Texture
 {
 public:
   Texture();

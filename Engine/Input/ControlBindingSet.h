@@ -6,7 +6,7 @@
 
 class InputState;
 
-class ControlBindingSet
+class ENGINE_EXPORT ControlBindingSet
 {
 public:
   ControlBindingSet(InputState & input_state, int control_enum_count);
