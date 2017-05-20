@@ -6,7 +6,8 @@
 #include "PropertyEditorFile.h"
 #include "DocumentEditorWidgetBase.h"
 
-PropertyEditorFile::PropertyEditorFile(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
+PropertyEditorFile::PropertyEditorFile(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback, 
+  Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
@@ -24,7 +25,14 @@ PropertyEditorFile::PropertyEditorFile(DocumentEditorWidgetBase * editor, Proper
 
   connect(m_FileButton.get(), &QPushButton::pressed, this, &PropertyEditorFile::handleFileButtonPress);
 
-  m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorFile::HandleServerUpdate, this));
+  if (create_callback)
+  {
+    m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorFile::HandleServerUpdate, this));
+  }
+  else
+  {
+    m_CallbackId = 0;
+  }
 
   setMinimumHeight(std::max(m_Input->minimumHeight(), 20));
 }

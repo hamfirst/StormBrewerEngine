@@ -64,6 +64,7 @@ void ScrollingPanel::recalculate()
     }
 
     m_ScrollBar->setMaximum(child_height - height());
+    m_ScrollBar->setPageStep(height());
   }
 
   if (prev_scroll != m_ShowScrollbar)
@@ -110,11 +111,11 @@ void ScrollingPanel::wheelEvent(QWheelEvent * ev)
   auto delta = ev->delta();
   if (delta > 0)
   {
-    m_ScrollBar->setValue(m_ScrollBar->value() - 20);
+    m_ScrollBar->setValue(m_ScrollBar->value() - 100);
   }
   else
   {
-    m_ScrollBar->setValue(m_ScrollBar->value() + 20);
+    m_ScrollBar->setValue(m_ScrollBar->value() + 100);
   }
 }
 

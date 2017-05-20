@@ -41,6 +41,9 @@ public:
   void SetSelectionBox(const Box & box);
   void ClearSelectionBox();
 
+  void SetPreviewLine(const Line & line);
+  void ClearPreviewLine();
+
   template <typename ToolType, typename ... InitArgs>
   void SetTool(const MapEditorTool<ToolType> &, InitArgs && ... init_args)
   {
@@ -54,6 +57,8 @@ public:
   void ClearLayerSelection();
 
   void ZoomToEntity(std::size_t layer_index, std::size_t entity_index);
+  void ZoomToVolume(std::size_t layer_index);
+  void ZoomToPath(std::size_t layer_index);
 
   RenderVec2 TransformFromMapSpaceToClipSpace(RenderVec2 map_space);
   RenderVec2 TransformFromClipSpaceToMapSpace(RenderVec2 clip_space);
@@ -63,7 +68,7 @@ public:
   RenderVec2 TransformFromMapSpaceToScreenSpace(RenderVec2 map_space);
   RenderVec2 TransformFromScreenSpaceToMapSpace(RenderVec2 screen_space);
 
-  void SnapToGrid(Vector2 & pos);
+  void SnapToGrid(Vector2 & pos, bool cell_center = true);
 
   void SetTileFrameInfo(MapTile & tile, uint64_t frame_id);
   uint64_t GetFrameIdForMapTile(const MapTile & tile);
@@ -98,6 +103,7 @@ private:
 
   Optional<MapEditorLayerSelection> m_SelectedLayer;
   Optional<Box> m_SelectionBox;
+  Optional<Line> m_PreviewLine;
 
   std::unique_ptr<MapEditorToolBase> m_Tool;
   VertexBuffer m_DrawBuffer;
@@ -108,6 +114,8 @@ private:
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;
   VertexArray m_GridArray;
+
+  ShaderProgram m_DrawUtilShader;
 
   int m_GridWidth;
   int m_GridHeight;

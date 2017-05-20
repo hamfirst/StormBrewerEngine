@@ -63,6 +63,63 @@ struct StormReflTypeInfo<Vector2>::field_data<1, Self> : public StormReflTypeInf
 };
 
 template <>
+struct StormReflTypeInfo<Line>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "Line"; }
+  static constexpr auto GetNameHash() { return 0x71261BC8; }
+  static Line & GetDefault() { static Line def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<Line>::field_data_static<0>
+{
+  using member_type = Vector2; // Vector2
+  static constexpr auto GetName() { return "m_Start"; }
+  static constexpr auto GetType() { return "Vector2"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x124FC5EF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &Line::m_Start; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<Line>::field_data<0, Self> : public StormReflTypeInfo<Line>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, Vector2> & Get() { return self.m_Start; }
+  std::add_const_t<std::remove_reference_t<Vector2>> & Get() const { return self.m_Start; }
+  void SetDefault() { self.m_Start = StormReflTypeInfo<Line>::GetDefault().m_Start; }
+};
+
+template <>
+struct StormReflTypeInfo<Line>::field_data_static<1>
+{
+  using member_type = Vector2; // Vector2
+  static constexpr auto GetName() { return "m_End"; }
+  static constexpr auto GetType() { return "Vector2"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF31EF756; }
+  static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &Line::m_End; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<Line>::field_data<1, Self> : public StormReflTypeInfo<Line>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, Vector2> & Get() { return self.m_End; }
+  std::add_const_t<std::remove_reference_t<Vector2>> & Get() const { return self.m_End; }
+  void SetDefault() { self.m_End = StormReflTypeInfo<Line>::GetDefault().m_End; }
+};
+
+template <>
 struct StormReflTypeInfo<Box>
 {
   using MyBase = void;
@@ -224,7 +281,7 @@ namespace StormReflFileInfo
 {
   struct BasicTypes
   {
-    static const int types_n = 3;
+    static const int types_n = 4;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -237,11 +294,17 @@ namespace StormReflFileInfo
   template <>
   struct BasicTypes::type_info<1>
   {
-    using type = ::Box;
+    using type = ::Line;
   };
 
   template <>
   struct BasicTypes::type_info<2>
+  {
+    using type = ::Box;
+  };
+
+  template <>
+  struct BasicTypes::type_info<3>
   {
     using type = ::Color;
   };

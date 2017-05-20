@@ -9,7 +9,7 @@ FrameEditorByteArray::FrameEditorByteArray(const Box & rhs)
   m_Origin = rhs.m_Start - Vector2(1, 1);
   m_Size = rhs.m_End - rhs.m_Start + Vector2(3, 3);
 
-  m_Data = std::make_unique<uint8_t[]>(m_Size.x * m_Size.y);
+  m_Data = std::vector<uint8_t>(m_Size.x * m_Size.y);
 
   for (int y = 1; y < m_Size.y - 1; y++)
   {
@@ -26,7 +26,8 @@ FrameEditorByteArray::FrameEditorByteArray(const std::vector<Box> & rhs)
   {
     m_Origin = {};
     m_Size = Vector2(2, 2);
-    m_Data = std::make_unique<uint8_t[]>(4);
+    m_Data = std::vector<uint8_t>(4);
+    return;
   }
 
   Box b = rhs[0];
@@ -38,7 +39,7 @@ FrameEditorByteArray::FrameEditorByteArray(const std::vector<Box> & rhs)
   m_Origin = b.m_Start - Vector2(1, 1);
   m_Size = b.m_End - b.m_Start + Vector2(3, 3);
 
-  m_Data = std::make_unique<uint8_t[]>(m_Size.x * m_Size.y);
+  m_Data = std::vector<uint8_t>(m_Size.x * m_Size.y);
 
   for (auto & box : rhs)
   {
@@ -57,7 +58,7 @@ FrameEditorByteArray::FrameEditorByteArray(const std::vector<Box> & rhs)
 
 std::vector<Box> FrameEditorByteArray::ConvertToMinimalBoxes()
 {
-  auto marked = std::make_unique<uint8_t[]>(m_Size.x * m_Size.y);
+  auto marked = std::vector<uint8_t>(m_Size.x * m_Size.y);
   std::vector<Box> boxes;
 
   for (int y = 0; y < m_Size.y; y++)
@@ -121,7 +122,7 @@ std::vector<Box> FrameEditorByteArray::ConvertToMinimalBoxes()
 
 std::vector<Box> FrameEditorByteArray::ConvertToMaximalBoxes()
 {
-  auto marked = std::make_unique<uint8_t[]>(m_Size.x * m_Size.y);
+  auto marked = std::vector<uint8_t>(m_Size.x * m_Size.y);
   std::vector<Box> boxes;
 
   for (int y = 0; y < m_Size.y; y++)
@@ -185,7 +186,7 @@ std::vector<Box> FrameEditorByteArray::ConvertToMaximalBoxes()
 
 std::vector<FrameEditorEdge> FrameEditorByteArray::ConvertToEdges()
 {
-  auto marked = std::make_unique<uint8_t[]>(m_Size.x * m_Size.y);
+  auto marked = std::vector<uint8_t>(m_Size.x * m_Size.y);
   std::vector<FrameEditorEdge> edges;
 
   for (int y = 1; y < m_Size.y - 1; y++)
@@ -304,6 +305,53 @@ int FrameEditorByteArray::GetHeight() const
 Vector2 FrameEditorByteArray::GetSize() const
 {
   return m_Size;
+}
+
+void FrameEditorByteArray::AddBox(const Box & box)
+{
+  auto new_box = box;
+  new_box.m_Start -= m_Origin;
+  new_box.m_End -= m_Origin;
+
+  if (new_box.m_Start.x < 0 || new_box.m_Start.y < 0 || new_box.m_End.x >= m_Size.x || new_box.m_End.y >= m_Size.y)
+  {
+    auto min_boxes = ConvertToMinimalBoxes();
+    min_boxes.push_back(box);
+
+    *this = FrameEditorByteArray(min_boxes);
+    return;
+  }
+
+  for (int y = new_box.m_Start.y, end_y = new_box.m_End.y; y <= end_y; ++y)
+  {
+    for (int x = new_box.m_Start.x, end_x = new_box.m_End.x; x <= end_x; ++x)
+    {
+      m_Data[y * m_Size.x + x] = 1;
+    }
+  }
+}
+
+void FrameEditorByteArray::RemoveBox(const Box & box)
+{
+  auto new_box = box;
+  new_box.m_Start -= m_Origin;
+  new_box.m_End -= m_Origin;
+
+  new_box.m_End.x = std::min(new_box.m_End.x, m_Size.x);
+  new_box.m_End.y = std::min(new_box.m_End.y, m_Size.y);
+  
+  if (new_box.m_Start.x >= m_Size.x || new_box.m_Start.y >= m_Size.y || new_box.m_End.x < 0 || new_box.m_End.y < 0)
+  {
+    return;
+  }
+
+  for (int y = std::max(new_box.m_Start.y, 0), end_y = std::min(new_box.m_End.y, m_Size.y - 1); y <= end_y; ++y)
+  {
+    for (int x = std::max(new_box.m_Start.x, 0), end_x = std::min(new_box.m_End.x, m_Size.x - 1); x <= end_x; ++x)
+    {
+      m_Data[y * m_Size.x + x] = 0;
+    }
+  }
 }
 
 Vector2 FrameEditorByteArray::GetOffsetForEdgeType(FrameEditorEdgeType type)

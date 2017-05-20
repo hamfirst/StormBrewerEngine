@@ -1,6 +1,7 @@
 
 #include "FrameEditorContainer.h"
 #include "FrameEditorSingleBox.h"
+#include "FrameEditorMultiBox.h"
 #include "FrameEditorSingleLine.h"
 
 
@@ -38,6 +39,12 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
         {
           widget = new FrameEditorSingleBox(editor, sprite, texture_access, 
             [get_frame_data] { auto data = get_frame_data->Call(); return data ? &data->m_SingleBoxData : nullptr; }, frame_id, frame_data.m_Name.data(), nullptr);
+        }
+        break;
+      case FrameDataDefType::kMultiBox:
+        {
+          widget = new FrameEditorMultiBox(editor, sprite, texture_access, 
+            [get_frame_data] { auto data = get_frame_data->Call(); return data ? &data->m_MultiBoxData : nullptr; }, frame_id, frame_data.m_Name.data(), nullptr);
         }
         break;
       case FrameDataDefType::kSingleLine:

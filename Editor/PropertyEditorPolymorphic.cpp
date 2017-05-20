@@ -6,13 +6,15 @@
 
 #include <StormRefl/StormReflJson.h>
 
-PropertyEditorPolymorphic::PropertyEditorPolymorphic(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
+PropertyEditorPolymorphic::PropertyEditorPolymorphic(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback, 
+  Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
   m_PropertyPtr(std::move(data_ptr)),
   m_ChildPath(path + ".D"),
   m_BasePathHash(crc64(path)),
+  m_CreateCallback(create_callback),
   m_TypePathHash(crc64(path + ".T")),
   m_LocalChange(false),
   m_WriteBack(false)
@@ -37,8 +39,16 @@ PropertyEditorPolymorphic::PropertyEditorPolymorphic(DocumentEditorWidgetBase * 
   UpdateType();
   UpdateTypeWidget();
 
-  m_BaseCallbackId = m_Editor->AddChangeCallback(m_BasePathHash, DocumentExternalChangeCallback(&PropertyEditorPolymorphic::HandleServerUpdate, this));
-  m_TypeCallbackId = m_Editor->AddChangeCallback(m_TypePathHash, DocumentExternalChangeCallback(&PropertyEditorPolymorphic::HandleServerUpdate, this));
+  if (create_callback)
+  {
+    m_BaseCallbackId = m_Editor->AddChangeCallback(m_BasePathHash, DocumentExternalChangeCallback(&PropertyEditorPolymorphic::HandleServerUpdate, this));
+    m_TypeCallbackId = m_Editor->AddChangeCallback(m_TypePathHash, DocumentExternalChangeCallback(&PropertyEditorPolymorphic::HandleServerUpdate, this));
+  }
+  else
+  {
+    m_BaseCallbackId = 0;
+    m_TypeCallbackId = 0;
+  }
 }
 
 PropertyEditorPolymorphic::~PropertyEditorPolymorphic()
@@ -133,7 +143,7 @@ void PropertyEditorPolymorphic::UpdateTypeWidget()
         return prop->m_Poly.GetValue(parent_val);
       };
 
-      m_ChildWidget = PropertyEditorCreate(m_Editor, poly_option.m_FieldData, get_child_ptr, m_ChildPath,
+      m_ChildWidget = PropertyEditorCreate(m_Editor, poly_option.m_FieldData, m_CreateCallback, get_child_ptr, m_ChildPath,
         Delegate<void>(&PropertyEditorPolymorphic::HandleChildSizeChanged, this), nullptr, this);
 
       UpdateChildPosition();

@@ -14,8 +14,8 @@ class PropertyEditorList : public QWidget
 {
   Q_OBJECT;
 public:
-  PropertyEditorList(NotNullPtr<DocumentEditorWidgetBase> editor,
-    NotNullPtr<PropertyField> prop, Delegate<void *> data_ptr, const std::string & path, czstr list_name, QWidget * parent = nullptr);
+  PropertyEditorList(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback,
+    Delegate<void *> data_ptr, const std::string & path, czstr list_name, QWidget * parent = nullptr);
 
   ~PropertyEditorList();
 
@@ -47,6 +47,8 @@ private:
   std::string m_Path;
   uint64_t m_PathHash;
   uint64_t m_CallbackId;
+
+  bool m_CreateCallback;
 
   Delegate<void> m_SizeChangedCallback;
 

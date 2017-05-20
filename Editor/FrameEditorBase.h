@@ -46,6 +46,7 @@ protected:
   Vector2 TransformFrameToScreen(const Vector2 & pos);
 
   void DrawBox(const Box & box);
+  void DrawActionBox(const Box & box);
   void DrawEdge(const FrameEditorEdge & edge);
   void DrawHighlightedEdge(const FrameEditorEdge & edge);
 

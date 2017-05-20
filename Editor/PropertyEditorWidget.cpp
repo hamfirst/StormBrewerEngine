@@ -10,36 +10,36 @@
 #include "PropertyEditorList.h"
 #include "PropertyEditorPolymorphic.h"
 
-std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBase> editor, 
-  NotNullPtr<PropertyField> prop, Delegate<void *> && data_ptr, const std::string & path, Delegate<void> && size_change_cb, czstr name, QWidget * parent)
+std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback,
+  Delegate<void *> && data_ptr, const std::string & path, Delegate<void> && size_change_cb, czstr name, QWidget * parent)
 {
   switch (prop->m_Type)
   {
   case PropertyFieldType::kBool:
-    return std::make_unique<PropertyEditorBool>(editor, prop, std::move(data_ptr), path, parent);
+    return std::make_unique<PropertyEditorBool>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kString:
-    return std::make_unique<PropertyEditorString>(editor, prop, std::move(data_ptr), path, parent);
+    return std::make_unique<PropertyEditorString>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kFile:
-    return std::make_unique<PropertyEditorFile>(editor, prop, std::move(data_ptr), path, parent);
+    return std::make_unique<PropertyEditorFile>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kSignedNumber:
   case PropertyFieldType::kUnsignedNumber:
   case PropertyFieldType::kFloatNumber:
-    return std::make_unique<PropertyEditorNumber>(editor, prop, std::move(data_ptr), path, parent);
+    return std::make_unique<PropertyEditorNumber>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kList:
     {
-      auto widget = std::make_unique<PropertyEditorList>(editor, prop, std::move(data_ptr), path, name, parent);
+      auto widget = std::make_unique<PropertyEditorList>(editor, prop, create_callback, std::move(data_ptr), path, name, parent);
       widget->SetSizeChangeCallback(std::move(size_change_cb));
       return std::move(widget);
     }
   case PropertyFieldType::kPolymorphic:
     {
-      auto widget = std::make_unique<PropertyEditorPolymorphic>(editor, prop, std::move(data_ptr), path, parent);
+      auto widget = std::make_unique<PropertyEditorPolymorphic>(editor, prop, create_callback, std::move(data_ptr), path, parent);
       widget->SetSizeChangeCallback(std::move(size_change_cb));
       return std::move(widget);
     }
   case PropertyFieldType::kStruct:
     {
-      auto widget = std::make_unique<PropertyEditorStruct>(editor, prop, std::move(data_ptr), path, parent);
+      auto widget = std::make_unique<PropertyEditorStruct>(editor, prop, create_callback, std::move(data_ptr), path, parent);
       widget->SetSizeChangeCallback(std::move(size_change_cb));
       return std::move(widget);
     }

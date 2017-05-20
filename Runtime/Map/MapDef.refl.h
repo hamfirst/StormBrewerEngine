@@ -60,20 +60,32 @@ struct RUNTIME_EXPORT MapParalaxLayer
   RFloat m_ParalaxY;
 };
 
+struct RUNTIME_EXPORT MapPathPoint
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapPathPoint);
+
+  RInt m_X;
+  RInt m_Y;
+};
+
 struct RUNTIME_EXPORT MapPath
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPath);
-  ROpaque<std::vector<Vector2>> m_Points;
+  RString m_Name;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathData;
+  RMergeList<MapPathPoint> m_Points;
 };
 
 struct RUNTIME_EXPORT MapVolume
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapVolume);
-  ROpaque<Box> m_Volume;
-  RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_VolumeData;
+  RString m_Name;
+  RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeData;
+  RInt m_XStart;
+  RInt m_YStart;
+  RInt m_XEnd;
+  RInt m_YEnd;
 };
-
 
 struct RUNTIME_EXPORT MapDef
 {

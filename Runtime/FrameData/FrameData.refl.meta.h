@@ -9,7 +9,7 @@
 template <>
 struct StormReflEnumInfo<FrameDataDefType>
 {
-  static constexpr int elems_n = 2;
+  static constexpr int elems_n = 3;
   static constexpr auto GetName() { return "FrameDataDefType"; }
   static constexpr auto GetNameHash() { return 0xCD6F2DAB; }
   template <int N> struct elems { };
@@ -25,6 +25,14 @@ struct StormReflEnumInfo<FrameDataDefType>::elems<0>
 
 template <>
 struct StormReflEnumInfo<FrameDataDefType>::elems<1>
+{
+  static constexpr auto GetName() { return "kMultiBox"; }
+  static constexpr auto GetNameHash() { return 0xCE18C508; }
+  static constexpr auto GetValue() { return FrameDataDefType::kMultiBox; }
+};
+
+template <>
+struct StormReflEnumInfo<FrameDataDefType>::elems<2>
 {
   static constexpr auto GetName() { return "kSingleLine"; }
   static constexpr auto GetNameHash() { return 0x4F67990E; }
@@ -86,6 +94,63 @@ struct StormReflTypeInfo<FrameDataSingleBox>::field_data<1, Self> : public Storm
   match_const_t<Self, ROpaque<Box>> & Get() { return self.m_Data; }
   std::add_const_t<std::remove_reference_t<ROpaque<Box>>> & Get() const { return self.m_Data; }
   void SetDefault() { self.m_Data = StormReflTypeInfo<FrameDataSingleBox>::GetDefault().m_Data; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataMultiBox>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "FrameDataMultiBox"; }
+  static constexpr auto GetNameHash() { return 0x58C706A2; }
+  static FrameDataMultiBox & GetDefault() { static FrameDataMultiBox def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataMultiBox>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_FrameDataName"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x05708CE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &FrameDataMultiBox::m_FrameDataName; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataMultiBox>::field_data<0, Self> : public StormReflTypeInfo<FrameDataMultiBox>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_FrameDataName; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_FrameDataName; }
+  void SetDefault() { self.m_FrameDataName = StormReflTypeInfo<FrameDataMultiBox>::GetDefault().m_FrameDataName; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataMultiBox>::field_data_static<1>
+{
+  using member_type = ROpaque<std::vector<Box> >; // ROpaque<std::vector<Box, std::allocator<Box> > >
+  static constexpr auto GetName() { return "m_Data"; }
+  static constexpr auto GetType() { return "ROpaque<std::vector<Box, std::allocator<Box> > >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x69BF77B3; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &FrameDataMultiBox::m_Data; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataMultiBox>::field_data<1, Self> : public StormReflTypeInfo<FrameDataMultiBox>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ROpaque<std::vector<Box> >> & Get() { return self.m_Data; }
+  std::add_const_t<std::remove_reference_t<ROpaque<std::vector<Box> >>> & Get() const { return self.m_Data; }
+  void SetDefault() { self.m_Data = StormReflTypeInfo<FrameDataMultiBox>::GetDefault().m_Data; }
 };
 
 template <>
@@ -206,7 +271,7 @@ template <>
 struct StormReflTypeInfo<FrameData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -240,17 +305,39 @@ struct StormReflTypeInfo<FrameData>::field_data<0, Self> : public StormReflTypeI
 template <>
 struct StormReflTypeInfo<FrameData>::field_data_static<1>
 {
+  using member_type = RMergeList<FrameDataMultiBox>; // RMergeList<FrameDataMultiBox>
+  static constexpr auto GetName() { return "m_MultiBoxData"; }
+  static constexpr auto GetType() { return "RMergeList<FrameDataMultiBox>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x83FE1079; }
+  static constexpr unsigned GetTypeNameHash() { return 0xE8E4DBAF; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &FrameData::m_MultiBoxData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameData>::field_data<1, Self> : public StormReflTypeInfo<FrameData>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<FrameDataMultiBox>> & Get() { return self.m_MultiBoxData; }
+  std::add_const_t<std::remove_reference_t<RMergeList<FrameDataMultiBox>>> & Get() const { return self.m_MultiBoxData; }
+  void SetDefault() { self.m_MultiBoxData = StormReflTypeInfo<FrameData>::GetDefault().m_MultiBoxData; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameData>::field_data_static<2>
+{
   using member_type = RMergeList<FrameDataSingleLine>; // RMergeList<FrameDataSingleLine>
   static constexpr auto GetName() { return "m_SingleLineData"; }
   static constexpr auto GetType() { return "RMergeList<FrameDataSingleLine>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9EBB4AAE; }
   static constexpr unsigned GetTypeNameHash() { return 0xF795127A; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &FrameData::m_SingleLineData; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<FrameData>::field_data<1, Self> : public StormReflTypeInfo<FrameData>::field_data_static<1>
+struct StormReflTypeInfo<FrameData>::field_data<2, Self> : public StormReflTypeInfo<FrameData>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -421,7 +508,7 @@ namespace StormReflFileInfo
 {
   struct FrameData
   {
-    static const int types_n = 6;
+    static const int types_n = 7;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -434,29 +521,35 @@ namespace StormReflFileInfo
   template <>
   struct FrameData::type_info<1>
   {
-    using type = ::FrameDataSingleLineInfo;
+    using type = ::FrameDataMultiBox;
   };
 
   template <>
   struct FrameData::type_info<2>
   {
-    using type = ::FrameDataSingleLine;
+    using type = ::FrameDataSingleLineInfo;
   };
 
   template <>
   struct FrameData::type_info<3>
   {
-    using type = ::FrameData;
+    using type = ::FrameDataSingleLine;
   };
 
   template <>
   struct FrameData::type_info<4>
   {
-    using type = ::FrameDataDefElem;
+    using type = ::FrameData;
   };
 
   template <>
   struct FrameData::type_info<5>
+  {
+    using type = ::FrameDataDefElem;
+  };
+
+  template <>
+  struct FrameData::type_info<6>
   {
     using type = ::FrameDataDef;
   };

@@ -38,6 +38,9 @@ public:
   int GetHeight() const;
   Vector2 GetSize() const;
 
+  void AddBox(const Box & box);
+  void RemoveBox(const Box & box);
+
   void OffsetEdge(FrameEditorEdge & edge, int offset, Optional<Box> & box);
 
   static Vector2 GetOffsetForEdgeType(FrameEditorEdgeType type);
@@ -46,6 +49,6 @@ public:
 private:
   Vector2 m_Origin;
   Vector2 m_Size;
-  std::unique_ptr<uint8_t[]> m_Data;
+  std::vector<uint8_t> m_Data;
 };
 

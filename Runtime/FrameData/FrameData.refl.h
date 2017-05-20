@@ -16,6 +16,15 @@ public:
   ROpaque<Box> m_Data;
 };
 
+struct RUNTIME_EXPORT FrameDataMultiBox
+{
+public:
+  STORM_DATA_DEFAULT_CONSTRUCTION(FrameDataMultiBox);
+
+  RString m_FrameDataName;
+  ROpaque<std::vector<Box>> m_Data;
+};
+
 struct RUNTIME_EXPORT FrameDataSingleLineInfo
 {
   STORM_REFL;
@@ -43,12 +52,14 @@ public:
   STORM_DATA_DEFAULT_CONSTRUCTION(FrameData);
 
   RMergeList<FrameDataSingleBox> m_SingleBoxData;
+  RMergeList<FrameDataMultiBox> m_MultiBoxData;
   RMergeList<FrameDataSingleLine> m_SingleLineData;
 };
 
 enum STORM_REFL_ENUM class FrameDataDefType
 {
   kSingleBox,
+  kMultiBox,
   kSingleLine,
 };
 

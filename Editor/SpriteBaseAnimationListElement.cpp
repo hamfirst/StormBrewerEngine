@@ -47,7 +47,7 @@ SpriteBaseAnimationListElement::SpriteBaseAnimationListElement(NotNullPtr<Sprite
     }, nullptr, 
     m_FrameListContainer.get(), [this]() -> void * { auto anim = m_Sprite.m_Animations.TryGet(m_AnimationIndex); return anim ? &anim->m_Frames : nullptr; }, false);
 
-  m_AnimName = PropertyEditorCreate(m_Editor, m_Editor->GetPropertyFieldDatabase().GetBasicField(PropertyFieldType::kString),
+  m_AnimName = PropertyEditorCreate(m_Editor, m_Editor->GetPropertyFieldDatabase().GetBasicField(PropertyFieldType::kString), true,
     [this]()-> void * { auto anim = m_Sprite.m_Animations.TryGet(m_AnimationIndex); return anim ? &anim->m_Name : nullptr; },
     StormDataGetPath(m_Sprite.m_Animations[m_AnimationIndex].m_Name), {}, "Animation", this);
 

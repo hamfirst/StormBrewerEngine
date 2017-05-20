@@ -21,7 +21,7 @@ SpriteBaseAnimationListFrameElement::SpriteBaseAnimationListFrameElement(NotNull
 
   m_UpdateDelegateLink = m_TextureAccess.AddUpdateCallback([this] { update(); });
 
-  m_FrameDuration = PropertyEditorCreate(m_Editor, m_Editor->GetPropertyFieldDatabase().GetBasicSignedField(4),
+  m_FrameDuration = PropertyEditorCreate(m_Editor, m_Editor->GetPropertyFieldDatabase().GetBasicSignedField(4), true,
     [this]()-> void * { auto anim = m_Sprite.m_Animations.TryGet(m_AnimationIndex); if (!anim) return nullptr; 
                         auto frame = anim->m_Frames.TryGet(m_FrameIndex); return frame ? &frame->m_FrameDuration : nullptr; },
     StormDataGetPath(m_Sprite.m_Animations[m_AnimationIndex].m_Frames[m_FrameIndex].m_FrameDuration), {}, "Duration", this);

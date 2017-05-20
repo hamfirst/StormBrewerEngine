@@ -11,6 +11,12 @@ enum class MapEditorLayerItemType
   kEntity,
   kParalaxLayerParent,
   kParalaxLayer,
+  kVolumeParent,
+  kCreateVolume,
+  kVolume,
+  kPathParent,
+  kCreatePath,
+  kPath,
 };
 
 class MapEditorLayerSelection

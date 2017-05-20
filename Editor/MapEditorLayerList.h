@@ -66,8 +66,12 @@ private:
   bool m_ManualTileParentExpanded = true;
   bool m_EntityParentExpanded = true;
   bool m_ParalaxParentExpanded = true;
+  bool m_VolumeExpanded = true;
+  bool m_PathExpanded = true;
 
   DocumentSubValueListMirror m_ManualTileLayerMirror;
   DocumentSubValueListMirror m_EntityLayerMirror;
   DocumentSubValueListMirror m_ParalaxLayerMirror;
+  DocumentSubValueListMirror m_VolumeLayerMirror;
+  DocumentSubValueListMirror m_PathLayerMirror;
 };

@@ -16,6 +16,7 @@
 #include "MapEditorViewer.h"
 #include "MapEditor.h"
 #include "MapEditorToolBase.h"
+#include "DrawUtil.h"
 
 
 static const char * kMapViewerWidgetGridVertexShader = SHADER_LITERAL(
@@ -95,6 +96,16 @@ void MapEditorViewer::ClearSelectionBox()
   m_SelectionBox.Clear();
 }
 
+void MapEditorViewer::SetPreviewLine(const Line & line)
+{
+  m_PreviewLine = line;
+}
+
+void MapEditorViewer::ClearPreviewLine()
+{
+  m_PreviewLine.Clear();
+}
+
 void MapEditorViewer::SetTool(std::unique_ptr<MapEditorToolBase> && tool)
 {
   ClearTool();
@@ -142,6 +153,42 @@ void MapEditorViewer::ZoomToEntity(std::size_t layer_index, std::size_t entity_i
     {
       m_Center = RenderVec2{ entity->m_XPosition, entity->m_YPosition };
     }
+  }
+}
+
+void MapEditorViewer::ZoomToVolume(std::size_t layer_index)
+{
+  auto vol = m_Map.m_Volumes.TryGet(layer_index);
+
+  if(vol)
+  {
+    RenderVec2 pos = { vol->m_XEnd + vol->m_XStart, vol->m_YEnd + vol->m_YStart };
+    m_Center = pos * 0.5f;
+  }
+}
+
+void MapEditorViewer::ZoomToPath(std::size_t layer_index)
+{
+  auto path = m_Map.m_Paths.TryGet(layer_index);
+  if (path)
+  {
+    if (path->m_Points.HighestIndex() == -1)
+    {
+      return;
+    }
+
+    RenderVec2 pos = {};
+    float points = 0;
+
+    for (auto elem : path->m_Points)
+    {
+      pos.x += elem.second.m_X;
+      pos.y += elem.second.m_Y;
+      points += 1.0f;
+    }
+
+    pos /= points;
+    m_Center = pos;
   }
 }
 
@@ -194,15 +241,26 @@ RenderVec2 MapEditorViewer::TransformFromScreenSpaceToMapSpace(RenderVec2 screen
   return TransformFromClipSpaceToMapSpace(clip_space);
 }
 
-void MapEditorViewer::SnapToGrid(Vector2 & pos)
+void MapEditorViewer::SnapToGrid(Vector2 & pos, bool cell_center)
 {
   if (m_GridWidth <= 0 || m_GridHeight <= 0)
   {
     return;
   }
 
-  pos.x = pos.x - (pos.x >= 0 ? pos.x % m_GridWidth : m_GridWidth - 1 + ((pos.x + 1) % m_GridWidth)) + m_GridWidth / 2;
-  pos.y = pos.y - (pos.y >= 0 ? pos.y % m_GridHeight : m_GridHeight - 1 + ((pos.y + 1) % m_GridHeight)) + m_GridWidth / 2;
+  if (cell_center)
+  {
+    pos.x = pos.x - (pos.x >= 0 ? pos.x % m_GridWidth : m_GridWidth - 1 + ((pos.x + 1) % m_GridWidth)) + m_GridWidth / 2;
+    pos.y = pos.y - (pos.y >= 0 ? pos.y % m_GridHeight : m_GridHeight - 1 + ((pos.y + 1) % m_GridHeight)) + m_GridHeight / 2;
+  }
+  else
+  {
+    pos.x += m_GridWidth / 2;
+    pos.y += m_GridHeight / 2;
+
+    pos.x = pos.x - (pos.x >= 0 ? pos.x % m_GridWidth : m_GridWidth - 1 + ((pos.x + 1) % m_GridWidth));
+    pos.y = pos.y - (pos.y >= 0 ? pos.y % m_GridHeight : m_GridHeight - 1 + ((pos.y + 1) % m_GridHeight));
+  }
 }
 
 void MapEditorViewer::SetTileFrameInfo(MapTile & tile, uint64_t frame_id)
@@ -256,6 +314,7 @@ void MapEditorViewer::initializeGL()
   m_RenderUtil.LoadShaders();
 
   m_GridShader = MakeQuickShaderProgram(kMapViewerWidgetGridVertexShader, kMapViewerWidgetGridFragmentShader);
+  m_DrawUtilShader = DrawUtil::CreateShader();
 }
 
 void MapEditorViewer::resizeGL(int w, int h)
@@ -274,7 +333,6 @@ void MapEditorViewer::paintGL()
 
       if (m_Dragging)
       {
-        
         m_Tool->DrawMove(cursor_pos, 
           (QApplication::keyboardModifiers() & Qt::AltModifier) != 0, 
           (QApplication::keyboardModifiers() & Qt::ShiftModifier) != 0,
@@ -311,6 +369,8 @@ void MapEditorViewer::paintGL()
   auto & paralax_manager = m_Editor->GetParalaxManager();
   auto & tile_manager = m_Editor->GetManualTileManager();
   auto & entity_manager = m_Editor->GetEntityManager();
+  auto & volume_manager = m_Editor->GetVolumeManager();
+  auto & path_manager = m_Editor->GetPathManager();
 
   std::map<int, std::vector<Delegate<void>>> draw_callbacks;
 
@@ -430,6 +490,66 @@ void MapEditorViewer::paintGL()
     layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
   }
 
+  GeometryVertexBufferBuilder builder;
+  for (auto elem : m_Map.m_Volumes)
+  {
+    auto layer = volume_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    if (layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->Draw(builder, viewport_bounds, m_Center, m_Magnification);
+  }
+
+  for (auto elem : m_Map.m_Paths)
+  {
+    auto layer = path_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    if (layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->Draw(builder, viewport_bounds, m_Center, m_Magnification);
+  }
+
+  if (m_PreviewLine)
+  {
+    DrawUtil::DrawLine(builder, m_PreviewLine->m_Start, m_PreviewLine->m_End, m_Magnification);
+    DrawUtil::DrawCornerControl(builder, m_PreviewLine->m_Start, m_Magnification);
+    DrawUtil::DrawCornerControl(builder, m_PreviewLine->m_End, m_Magnification);
+  }
+
+  m_DrawUtilShader.Bind();
+  m_DrawBuffer.Bind();
+  m_DrawBuffer.CreateDefaultBinding(m_DrawUtilShader);
+  m_DrawBuffer.Draw();
+
+  m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), window_end - window_start);
+  m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
+  m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_Center } *-1.0f);
+  m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+  m_RenderUtil.GetDefaultTexture().BindTexture(0);
+
+  builder.FillVertexBuffer(m_DrawBuffer);
+  m_DrawBuffer.Bind();
+  m_DrawBuffer.CreateDefaultBinding(m_DrawUtilShader);
+  m_DrawBuffer.Draw();
+
+  shader.Bind();
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -m_Center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
   if (m_SelectionBox)

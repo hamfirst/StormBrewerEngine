@@ -14,7 +14,8 @@ class PropertyEditorBool : public QWidget
   Q_OBJECT;
 
 public:
-  PropertyEditorBool(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
+  PropertyEditorBool(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback,
+    Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
   ~PropertyEditorBool();
 
   virtual void resizeEvent(QResizeEvent * ev) override;

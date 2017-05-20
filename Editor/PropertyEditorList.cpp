@@ -2,19 +2,28 @@
 #include "PropertyEditorList.h"
 #include "PropertyEditorWidget.h"
 
-PropertyEditorList::PropertyEditorList(NotNullPtr<DocumentEditorWidgetBase> editor,
-  NotNullPtr<PropertyField> prop, Delegate<void *> data_ptr, const std::string & path, czstr list_name, QWidget * parent) :
+PropertyEditorList::PropertyEditorList(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback, 
+  Delegate<void *> data_ptr, const std::string & path, czstr list_name, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
   m_PropertyPtr(std::move(data_ptr)),
   m_Path(path),
   m_PathHash(crc64(path)),
+  m_CreateCallback(create_callback),
   m_Frame(std::make_unique<QGroupBox>(list_name ? list_name : "List", this)),
   m_AddButton(std::make_unique<QPushButton>(m_Frame.get()))
 {
   SyncElements();
-  m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorList::HandleServerChange, this));
+
+  if (create_callback)
+  {
+    m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorList::HandleServerChange, this));
+  }
+  else
+  {
+    m_CallbackId = 0;
+  }
 
   connect(m_AddButton.get(), &QPushButton::pressed, this, &PropertyEditorList::handleAddButtonClicked);
   m_AddButton->setText("+");
@@ -60,7 +69,8 @@ void PropertyEditorList::SyncElements()
     elem.m_RemoveButton = std::make_unique<QPushButton>(elem.m_FrameLabel.get());
     elem.m_RemoveButton->setText("-");
     elem.m_RemoveButton->show();
-    elem.m_Widget = PropertyEditorCreate(m_Editor, m_Property->m_List.m_ListData, get_child_delegate, child_path, [=] { HandleChildSizeChanged(index); }, nullptr, elem.m_FrameLabel.get());
+    elem.m_Widget = PropertyEditorCreate(m_Editor, m_Property->m_List.m_ListData, m_CreateCallback, 
+      get_child_delegate, child_path, [=] { HandleChildSizeChanged(index); }, nullptr, elem.m_FrameLabel.get());
     elem.m_Widget->show();
 
     connect(elem.m_RemoveButton.get(), &QPushButton::pressed, this, &PropertyEditorList::handleRemoveButtonClicked);
@@ -149,7 +159,8 @@ void PropertyEditorList::HandleServerChange(const ReflectionChangeNotification &
     elem.m_RemoveButton = std::make_unique<QPushButton>(elem.m_FrameLabel.get());
     elem.m_RemoveButton->setText("-");
     elem.m_RemoveButton->show();
-    elem.m_Widget = PropertyEditorCreate(m_Editor, m_Property->m_List.m_ListData, get_child_delegate, child_path, [=] { HandleChildSizeChanged(index); }, nullptr, elem.m_FrameLabel.get());
+    elem.m_Widget = PropertyEditorCreate(m_Editor, m_Property->m_List.m_ListData, m_CreateCallback, 
+      get_child_delegate, child_path, [=] { HandleChildSizeChanged(index); }, nullptr, elem.m_FrameLabel.get());
     elem.m_Widget->show();
 
     m_ChildElements.emplace(std::make_pair(index, std::move(elem)));

@@ -43,7 +43,9 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
   m_SelectNewLayers(false),
   m_ManualTileLayerMirror(m_Editor),
   m_EntityLayerMirror(m_Editor),
-  m_ParalaxLayerMirror(m_Editor)
+  m_ParalaxLayerMirror(m_Editor),
+  m_VolumeLayerMirror(m_Editor),
+  m_PathLayerMirror(m_Editor)
 {
   setFocusPolicy(Qt::ClickFocus);
   setMaximumWidth(220);
@@ -116,11 +118,32 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
       {
         label.m_LayerList = ptr;
+        label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kParalaxLayer, index };
         ptr->UpdateScroll();
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(MapEditorLayerSelection{ MapEditorLayerItemType::kParalaxLayer, index });
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+        }
+      },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
+    this
+    );
+
+  CreateMirrorList<RMergeList, MapPath, RString, MapEditorLayerListElement, MapEditorLayerList>(
+    m_PathLayerMirror,
+    m_Map.m_Paths,
+    ".m_Name",
+    [](MapPath & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
+      {
+        label.m_LayerList = ptr;
+        label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kPath, index };
+        ptr->UpdateScroll();
+
+        if (ptr->m_SelectNewLayers)
+        {
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -229,6 +252,16 @@ void MapEditorLayerList::DeleteLayer(const MapEditorLayerSelection & layer)
       m_Map.m_ParalaxLayers.RemoveAt(layer.m_Index);
       break;
     }
+  case MapEditorLayerItemType::kVolume:
+    {
+      m_Map.m_Volumes.RemoveAt(layer.m_Index);
+      break;
+    }
+  case MapEditorLayerItemType::kPath:
+    {
+      m_Map.m_Paths.RemoveAt(layer.m_Index);
+      break;
+    }
   }
 }
 
@@ -322,6 +355,76 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
     {
       MapEditorLayerSelection elem = {};
       elem.m_Type = MapEditorLayerItemType::kParalaxLayer;
+      elem.m_Index = layer.first;
+
+      if (visitor(elem, y_pos) == false)
+      {
+        return y_pos;
+      }
+
+      y_pos += layer_height;
+    }
+  }
+
+  elem = {};
+  elem.m_Type = MapEditorLayerItemType::kVolumeParent;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
+  if (m_VolumeExpanded)
+  {
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kCreateVolume;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
+    for (auto layer : m_Map.m_Volumes)
+    {
+      MapEditorLayerSelection elem = {};
+      elem.m_Type = MapEditorLayerItemType::kVolume;
+      elem.m_Index = layer.first;
+
+      if (visitor(elem, y_pos) == false)
+      {
+        return y_pos;
+      }
+
+      y_pos += layer_height;
+    }
+  }
+
+  elem = {};
+  elem.m_Type = MapEditorLayerItemType::kPathParent;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
+  if (m_PathExpanded)
+  {
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kCreatePath;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
+    for (auto layer : m_Map.m_Paths)
+    {
+      MapEditorLayerSelection elem = {};
+      elem.m_Type = MapEditorLayerItemType::kPath;
       elem.m_Index = layer.first;
 
       if (visitor(elem, y_pos) == false)
@@ -477,6 +580,43 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_ParalaxLayers[layer.m_Index].m_Name.data());
           break;
         }
+      case MapEditorLayerItemType::kVolumeParent:
+        {
+          QStyleOption option;
+          option.rect = QRect(2, y_pos, layer_height, layer_height);
+          style()->drawPrimitive(m_VolumeExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Volumes");
+          break;
+        }
+      case MapEditorLayerItemType::kCreateVolume:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "Create Volume");
+          break;
+        }
+      case MapEditorLayerItemType::kVolume:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_Volumes[layer.m_Index].m_Name.data());
+          break;
+        }
+      case MapEditorLayerItemType::kPathParent:
+        {
+          QStyleOption option;
+          option.rect = QRect(2, y_pos, layer_height, layer_height);
+          style()->drawPrimitive(m_PathExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Paths");
+          break;
+        }
+      case MapEditorLayerItemType::kCreatePath:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "Create Path");
+          break;
+        }
+      case MapEditorLayerItemType::kPath:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_Paths[layer.m_Index].m_Name.data());
+          break;
+        }
+
       }
 
       return true;
@@ -548,6 +688,20 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
       if (ev->x() < 15)
       {
         m_ParalaxParentExpanded = !m_ParalaxParentExpanded;
+      }
+      break;
+
+    case MapEditorLayerItemType::kVolumeParent:
+      if (ev->x() < 15)
+      {
+        m_VolumeExpanded = !m_VolumeExpanded;
+      }
+      break;
+
+    case MapEditorLayerItemType::kPathParent:
+      if (ev->x() < 15)
+      {
+        m_PathExpanded = !m_PathExpanded;
       }
       break;
     }

@@ -123,6 +123,13 @@ struct Vector2
   int x, y;
 };
 
+struct Line
+{
+  STORM_REFL;
+  Vector2 m_Start;
+  Vector2 m_End;
+};
+
 struct Box
 {
   STORM_REFL;
@@ -148,6 +155,13 @@ struct Box
   static Box FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size);
   static Box FromPoint(const Vector2 & pos);
   static Box FromPoints(const Vector2 & a, const Vector2 & b);
+
+  static Vector2 GetPoint(const Box & box, int point);
+  static void SetPoint(Box & box, int point, const Vector2 & pos);
+
+  static Line GetEdge(const Box & box, int edge);
+  static void SetEdge(Box & box, int edge, Line & line);
+  static bool OffsetEdge(Box & box, int edge, int offset);
 };
 
 struct Color

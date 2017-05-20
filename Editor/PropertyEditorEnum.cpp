@@ -6,7 +6,8 @@
 
 #include <StormRefl/StormReflJson.h>
 
-PropertyEditorEnum::PropertyEditorEnum(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
+PropertyEditorEnum::PropertyEditorEnum(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback, 
+  Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
@@ -30,7 +31,14 @@ PropertyEditorEnum::PropertyEditorEnum(DocumentEditorWidgetBase * editor, Proper
 
   UpdateValue();
 
-  m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorEnum::HandleServerUpdate, this));
+  if (create_callback)
+  {
+    m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorEnum::HandleServerUpdate, this));
+  }
+  else
+  {
+    m_CallbackId = 0;
+  }
 
   setMinimumHeight(std::max(m_Input->minimumHeight(), 20));
 }

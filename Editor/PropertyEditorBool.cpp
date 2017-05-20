@@ -2,7 +2,8 @@
 #include "PropertyEditorBool.h"
 #include "DocumentEditorWidgetBase.h"
 
-PropertyEditorBool::PropertyEditorBool(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
+PropertyEditorBool::PropertyEditorBool(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback,
+  Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
@@ -14,7 +15,14 @@ PropertyEditorBool::PropertyEditorBool(DocumentEditorWidgetBase * editor, Proper
   m_Input->SetUpdateCallback(Delegate<void>(&PropertyEditorBool::HandleTextUpdate, this));
   m_Input->RemoteUpdate(*static_cast<RBool *>(m_PropertyPtr()));
 
-  m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorBool::HandleServerUpdate, this));
+  if (create_callback)
+  {
+    m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorBool::HandleServerUpdate, this));
+  }
+  else
+  {
+    m_CallbackId = 0;
+  }
 
   setMinimumHeight(std::max(m_Input->minimumHeight(), 20));
 }

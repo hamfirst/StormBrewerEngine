@@ -99,7 +99,7 @@ void SpriteBaseTextureEditor::HandleSelectionChanged(int selection)
   else
   {
     m_Texture->LoadTexture(m_Sprite.m_Textures[selection].m_Filename.data());
-    m_PropertyEditor->LoadStruct(m_Editor, m_Sprite.m_Textures[selection]);
+    m_PropertyEditor->LoadStruct(m_Editor, m_Sprite.m_Textures[selection], true);
 
     auto texture_widget_update = [=]() 
     { 

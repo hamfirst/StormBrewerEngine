@@ -3,8 +3,8 @@
 #include "PropertyEditorWidget.h"
 
 
-PropertyEditorStruct::PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> editor,
-  NotNullPtr<PropertyField> prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
+PropertyEditorStruct::PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback, 
+  Delegate<void *> && data_ptr, const std::string & path, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Property(prop),
@@ -73,7 +73,7 @@ PropertyEditorStruct::PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> 
       child_element.m_NormalLabel->setText(name.data());
       child_element.m_NormalLabel->setAlignment(Qt::AlignLeft);
       child_element.m_NormalLabel->show();
-      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, get_child_ptr,
+      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, create_callback, get_child_ptr,
         path + "." + member.m_Name, std::move(size_change_cb), member.m_Name.data(), this);
     }
     else if(member.m_FieldData->m_Type != PropertyFieldType::kList)
@@ -81,12 +81,12 @@ PropertyEditorStruct::PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> 
       child_element.m_FrameLabel = std::make_unique<QGroupBox>(this);
       child_element.m_FrameLabel->setTitle(name.data());
       child_element.m_FrameLabel->show();
-      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, get_child_ptr,
+      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, create_callback, get_child_ptr,
         path + "." + member.m_Name, std::move(size_change_cb), member.m_Name.data(), this);
     }
     else
     {
-      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, get_child_ptr,
+      child_element.m_Widget = PropertyEditorCreate(editor, member.m_FieldData, create_callback, get_child_ptr,
         path + "." + member.m_Name, std::move(size_change_cb), name.data(), this);
     }
 
@@ -138,9 +138,9 @@ void PropertyEditorStruct::RespositionChildren()
     }
     else if(child.m_FrameLabel)
     {
-      child.m_FrameLabel->setGeometry(3, y + 3, width(), child.m_Widget->minimumHeight() + 13);
-      child.m_Widget->setGeometry(3, y + 13, width() - 6, child.m_Widget->minimumHeight());
-      y += child.m_Widget->minimumHeight() + 16;
+      child.m_FrameLabel->setGeometry(3, y + 3, width(), child.m_Widget->minimumHeight() + 23);
+      child.m_Widget->setGeometry(6, y + 20, width() - 12, child.m_Widget->minimumHeight());
+      y += child.m_Widget->minimumHeight() + 23;
     }
     else
     {

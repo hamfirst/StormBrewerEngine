@@ -144,6 +144,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="DrawUtil.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EditorContainer.cpp" />
     <ClCompile Include="EntityEditor.cpp" />
     <ClCompile Include="FontViewer.cpp" />
@@ -155,6 +159,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FrameEditorMultiBox.cpp" />
     <ClCompile Include="FrameEditorSingleBox.cpp">
       <SubType>
       </SubType>
@@ -184,6 +189,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorContainer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorMultiBox.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -364,6 +373,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorContainer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorMultiBox.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -557,6 +570,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorMultiBox.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorSingleBox.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">true</ExcludedFromBuild>
@@ -745,6 +762,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MapEditorPath.cpp" />
+    <ClCompile Include="MapEditorPathManager.cpp" />
     <ClCompile Include="MapEditorSelector.cpp">
       <SubType>
       </SubType>
@@ -781,7 +800,22 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MapEditorToolPathCreate.cpp" />
+    <ClCompile Include="MapEditorToolPathEditor.cpp" />
+    <ClCompile Include="MapEditorToolVolumeCreate.cpp" />
+    <ClCompile Include="MapEditorToolVolumeEditor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MapEditorViewer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MapEditorVolume.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MapEditorVolumeManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -918,7 +952,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
     </CustomBuild>
-    <ClInclude Include="FrameEditorShader.h" />
+    <ClInclude Include="DrawUtil.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <CustomBuild Include="FrameEditorSingleLine.h">
       <SubType>
       </SubType>
@@ -932,6 +969,20 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">Moc%27ing FrameEditorSingleLine.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
+    </CustomBuild>
+    <CustomBuild Include="FrameEditorMultiBox.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing FrameEditorMultiBox.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing FrameEditorMultiBox.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">Moc%27ing FrameEditorMultiBox.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_OPENGL_LIB -DQT_WEBSOCKETS_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWebSockets" "-I$(QTDIR)\include\QtWidgets" "-I$(INHERIT)\." "-I$(SolutionDir)\." "-I$(SolutionDir)External" "-I$(SolutionDir)External\Windows"</Command>
     </CustomBuild>
@@ -1099,6 +1150,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MapEditorPath.h" />
+    <ClInclude Include="MapEditorPathManager.h" />
     <ClInclude Include="MapEditorTileLayerManager.h">
       <SubType>
       </SubType>
@@ -1124,6 +1177,21 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MapEditorToolManualTileLayerSelect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolPathCreate.h" />
+    <ClInclude Include="MapEditorToolPathEditor.h" />
+    <ClInclude Include="MapEditorToolVolumeCreate.h" />
+    <ClInclude Include="MapEditorToolVolumeEditor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MapEditorVolume.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MapEditorVolumeManager.h">
       <SubType>
       </SubType>
     </ClInclude>

@@ -72,6 +72,9 @@
     <Filter Include="Source Files\DocumentEditors\FrameEditor">
       <UniqueIdentifier>{d4504bee-6c1c-4360-a48c-daa870743ec8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{dc544c31-4ca5-47cc-86f7-c8ab327c59c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -677,6 +680,45 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorSingleLine.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
+    <ClCompile Include="MapEditorVolumeManager.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorVolume.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawUtil.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolVolumeCreate.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolVolumeEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorPath.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorPathManager.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolPathCreate.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolPathEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameEditorMultiBox.cpp">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorMultiBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorMultiBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorMultiBox.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -835,6 +877,9 @@
     <CustomBuild Include="FrameEditorSingleLine.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </CustomBuild>
+    <CustomBuild Include="FrameEditorMultiBox.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -915,8 +960,32 @@
     <ClInclude Include="FrameEditorUtil.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClInclude>
-    <ClInclude Include="FrameEditorShader.h">
-      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    <ClInclude Include="MapEditorVolumeManager.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorVolume.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawUtil.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolVolumeCreate.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolVolumeEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorPath.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorPathManager.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolPathCreate.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolPathEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

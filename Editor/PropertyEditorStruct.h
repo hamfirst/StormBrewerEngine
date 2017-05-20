@@ -14,8 +14,8 @@ class PropertyEditorStruct : public QWidget
 {
   Q_OBJECT;
 public:
-  PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> editor, 
-    NotNullPtr<PropertyField> prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
+  PropertyEditorStruct(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback,
+    Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
 
   ~PropertyEditorStruct();
 

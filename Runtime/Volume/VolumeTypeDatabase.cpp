@@ -1,5 +1,5 @@
 
 #include "Runtime/RuntimeCommon.h"
-#include "Runtime/Path/PathTypeDatabase.h"
+#include "Runtime/Volume/VolumeTypeDatabase.h"
 
-std::unordered_map<uint32_t, PathDataTypeInfo> StormDataTypeDatabase<PathDataBase, PathDataTypeInfo>::m_TypeList;
+std::unordered_map<uint32_t, VolumeDataTypeInfo> StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>::m_TypeList;

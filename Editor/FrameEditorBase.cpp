@@ -6,13 +6,12 @@
 #include "StormData/StormDataPath.h"
 
 #include "Engine/Shader/ShaderManager.h"
-#include "Engine/Shader/DefaultShader.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 
 #include "FrameEditorBase.h"
 #include "FrameEditorUtil.h"
-#include "FrameEditorShader.h"
 #include "SpriteEditor.h"
+#include "DrawUtil.h"
 
 FrameEditorBase::FrameEditorBase(
   NotNullPtr<SpriteBaseEditor> editor,
@@ -98,39 +97,37 @@ Vector2 FrameEditorBase::TransformFrameToScreen(const Vector2 & pos)
 
 void FrameEditorBase::DrawBox(const Box & box)
 {
-  m_GeometryBuidler->FilledRectangle(box.m_Start, box.m_End + Vector2(1,1), Color(0, 0, 0, 200));
+  DrawUtil::DrawBox(m_GeometryBuidler.Value(), box);
+}
+
+void FrameEditorBase::DrawActionBox(const Box & box)
+{
+  DrawUtil::DrawActionBox(m_GeometryBuidler.Value(), box);
 }
 
 void FrameEditorBase::DrawEdge(const FrameEditorEdge & edge)
 {
-  auto offset = FrameEditorByteArray::GetOffsetForEdgeType(edge.m_Type);
-  m_GeometryBuidler->Line(edge.m_P1 + offset, edge.m_P2 + offset, 3.0f / m_Magnification, Color(250, 12, 250, 255));
+  DrawUtil::DrawEdge(m_GeometryBuidler.Value(), edge, m_Magnification);
 }
 
 void FrameEditorBase::DrawHighlightedEdge(const FrameEditorEdge & edge)
 {
-  auto offset = FrameEditorByteArray::GetOffsetForEdgeType(edge.m_Type);
-  m_GeometryBuidler->Line(edge.m_P1 + offset, edge.m_P2 + offset, 7.0f / m_Magnification, Color(128, 128, 250, 255));
+  DrawUtil::DrawHighlightedEdge(m_GeometryBuidler.Value(), edge, m_Magnification);
 }
 
 void FrameEditorBase::DrawLine(const Vector2 & a, const Vector2 & b)
 {
-  m_GeometryBuidler->Line(a, b, 5.0f / m_Magnification, Color(0, 0, 0, 255));
-  m_GeometryBuidler->Line(a, b, 3.0f / m_Magnification, Color(255, 255, 255, 255));
+  DrawUtil::DrawLine(m_GeometryBuidler.Value(), a, b, m_Magnification);
 }
 
 void FrameEditorBase::DrawCornerControl(const Vector2 & pos)
 {
-  m_GeometryBuidler->FilledCircle(pos, 7.0f / m_Magnification, Color(255, 255, 10, 255), 20);
-  m_GeometryBuidler->Circle(pos, 7.0f / m_Magnification, 2.0f / m_Magnification, Color(0, 0, 0, 255), 20);
-  m_GeometryBuidler->Circle(pos, 2.0f / m_Magnification, 1.0f / m_Magnification, Color(0, 0, 0, 255), 20);
+  DrawUtil::DrawCornerControl(m_GeometryBuidler.Value(), pos, m_Magnification);
 }
 
 void FrameEditorBase::DrawHighlightedCornerControl(const Vector2 & pos)
 {
-  m_GeometryBuidler->FilledCircle(pos, 7.0f / m_Magnification, Color(255, 255, 10, 255), 20);
-  m_GeometryBuidler->Circle(pos, 7.0f / m_Magnification, 3.0f / m_Magnification, Color(128, 128, 255, 250), 20);
-  m_GeometryBuidler->Circle(pos, 2.0f / m_Magnification, 1.0f / m_Magnification, Color(0, 0, 0, 255), 20);
+  DrawUtil::DrawHighlightedCornerControl(m_GeometryBuidler.Value(), pos, m_Magnification);
 }
 
 void FrameEditorBase::DrawData()
@@ -183,7 +180,7 @@ void FrameEditorBase::initializeGL()
   m_RenderState.InitRenderState(width(), height());
   m_RenderUtil.LoadShaders();
 
-  m_Shader = MakeQuickShaderProgram(kDefaultVertexShader, kFrameEditorFragmentShader);
+  m_Shader = DrawUtil::CreateShader();
 }
 
 void FrameEditorBase::resizeGL(int w, int h)

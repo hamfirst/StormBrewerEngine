@@ -15,7 +15,8 @@ class PropertyEditorPolymorphic : public QWidget
   Q_OBJECT;
 
 public:
-  PropertyEditorPolymorphic(DocumentEditorWidgetBase * editor, PropertyField * prop, Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
+  PropertyEditorPolymorphic(DocumentEditorWidgetBase * editor, PropertyField * prop, bool create_callback,
+    Delegate<void *> && data_ptr, const std::string & path, QWidget * parent = nullptr);
 
   ~PropertyEditorPolymorphic();
 
@@ -41,6 +42,8 @@ private:
   std::string m_ChildPath;
   uint64_t m_BasePathHash;
   uint64_t m_BaseCallbackId;
+
+  bool m_CreateCallback;
 
   uint64_t m_TypePathHash;
   uint64_t m_TypeCallbackId;

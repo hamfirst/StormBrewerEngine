@@ -18,22 +18,23 @@ class PropertyEditor : public ScrollingPanel
 public:
   PropertyEditor(QWidget * parent = nullptr);
 
-  void LoadObject(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, Delegate<void *> && data_ptr, const std::string & base_path);
+  void LoadObject(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, 
+    bool create_callback, Delegate<void *> && data_ptr, const std::string & base_path);
 
   template <typename T>
-  void LoadStruct(NotNullPtr<DocumentEditorWidgetBase> editor, T & t)
+  void LoadStruct(NotNullPtr<DocumentEditorWidgetBase> editor, T & t, bool create_callback)
   {
     auto path = StormDataGetPath(t);
     auto prop = editor->GetPropertyFieldDatabase().FindStructData(StormReflTypeInfo<T>::GetNameHash());
-    LoadObject(editor, prop, [&]() -> void * { return &t; }, path);
+    LoadObject(editor, prop, create_callback, [&]() -> void * { return &t; }, path);
   }
 
   template <typename T>
-  void LoadStruct(NotNullPtr<DocumentEditorWidgetBase> editor, T & t, Delegate<void *> && data_ptr)
+  void LoadStruct(NotNullPtr<DocumentEditorWidgetBase> editor, T & t, Delegate<void *> && data_ptr, bool create_callback)
   {
     auto path = StormDataGetPath(t);
     auto prop = editor->GetPropertyFieldDatabase().FindStructData(StormReflTypeInfo<T>::GetNameHash());
-    LoadObject(editor, prop, std::move(data_ptr), path);
+    LoadObject(editor, prop, create_callback, std::move(data_ptr), path);
   }
 
   void Unload();

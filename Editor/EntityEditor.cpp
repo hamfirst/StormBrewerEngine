@@ -24,7 +24,7 @@ EntityEditor::EntityEditor(PropertyFieldDatabase & property_db, const std::strin
   m_Layout->addWidget(m_EntityProperties.get(), 0, 1);
 
   m_PropertyEditor = m_EntityProperties->CreateWidget<PropertyEditor>();
-  m_PropertyEditor->LoadStruct(this, m_Entity);
+  m_PropertyEditor->LoadStruct(this, m_Entity, true);
 
   setLayout(m_Layout.get());
 }

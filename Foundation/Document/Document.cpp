@@ -462,7 +462,7 @@ bool Document::RecompileAtPath(czstr path, Json & outp_json)
 
   for (auto & link : m_Links)
   {
-    if (StormDataMatchPathPartial(path, link.m_Link.m_RemotePath.data()))
+    if (StormDataMatchPathPartial(path, link.m_Link.m_LocalPath.data()))
     {
       auto link_path = link.m_Link.m_RemotePath + (path + link.m_Link.m_LocalPath.length());
       auto src_json = link.m_Document->m_Compiled.GetJsonAtPath(link_path.data(), false);
@@ -472,9 +472,9 @@ bool Document::RecompileAtPath(czstr path, Json & outp_json)
         linked_data.emplace_back(std::make_pair("", src_json));
       }
     }
-    else if (StormDataMatchPathPartial(link.m_Link.m_RemotePath.data(), path))
+    else if (StormDataMatchPathPartial(link.m_Link.m_LocalPath.data(), path))
     {
-      auto src_json = link.m_Document->m_Compiled.GetJsonAtPath(link.m_Link.m_RemotePath.data(), false);
+      auto src_json = link.m_Document->m_Compiled.GetJsonAtPath(link.m_Link.m_LocalPath.data(), false);
       if (src_json)
       {
         linked_data.emplace_back(std::make_pair(link.m_Link.m_RemotePath.data() + path_len, src_json));
