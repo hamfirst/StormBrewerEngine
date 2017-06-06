@@ -214,3 +214,11 @@ ModelManifest.xml
 !External\boost\preprocessor\debug
 /StormBrewerEngine.VC.db
 /StormBrewerEngine.VC.VC.opendb
+
+Test/*.exe
+Test/*.dll
+Test/editor/*
+Test/iconengines/*
+Test/imageformats/*
+Test/platforms/*
+Test/translations/*
