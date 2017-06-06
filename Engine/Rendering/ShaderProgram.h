@@ -52,7 +52,7 @@ private:
   friend class VertexBuffer;
 
   std::string m_CompileLog;
-  std::vector<Hash> m_Uniforms;
+  std::vector<std::pair<Hash, int>> m_Uniforms;
 };
 
 ShaderProgram ENGINE_EXPORT MakeQuickShaderProgram(const char * vertex_shader, const char * fragment_shader);

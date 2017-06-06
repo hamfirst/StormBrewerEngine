@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 
 enum class WebSocketPacketType
 {
@@ -30,8 +31,10 @@ public:
   WebSocket & operator = (const WebSocket & rhs) = delete;
   WebSocket & operator = (WebSocket && rhs) noexcept;
 
-  bool Connect(const char * host, int port, const char * uri, const char * origin, int timeout = 0);
+  void StartConnect(const char * host, int port, const char * uri, const char * origin, int timeout = 0);
+
   bool IsConnected();
+  bool IsConnecting();
   void Close();
 
   Optional<WebsocketPacket> RecvPacket();
@@ -44,10 +47,25 @@ public:
   void SendString(const std::string & str);
 
 private:
+
+#ifdef _WEB
+
+  int m_Socket;
+  int m_Connected;
+  int m_Connecting;
+
+  std::queue<WebsocketPacket> m_PendingPackets;
+
+public:
+  void SetConnected(bool connected);
+  void GotMessage(NotNullPtr<uint8_t> message, int length, bool binary);
+
+#else
   bool RecvData(void * data, std::size_t len);
 
   volatile int m_Socket;
 
   Buffer m_RemainderBuffer;
   std::size_t m_RemainderBufferPos = 0;
+#endif
 };

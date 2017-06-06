@@ -5,7 +5,13 @@ template <class T>
 class Optional
 {
 public:
-  Optional() = default;
+  using MyType = T;
+
+  Optional() :
+    m_Valid(false)
+  {
+
+  }
 
   Optional(const Optional<T> & rhs)
   {
@@ -97,6 +103,11 @@ public:
     return m_Valid;
   }
 
+  bool IsValid() const
+  {
+    return m_Valid;
+  }
+
   T & Value()
   {
     if (!m_Valid)
@@ -179,8 +190,8 @@ public:
 
 public:
 
-  bool m_Valid = false;
-  char m_Buffer[sizeof(T)];
+  bool m_Valid;
+  alignas(alignof(T)) unsigned char m_Buffer[sizeof(T)];
 
 };
 

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <thread>
+#include <queue>
 
 #include "Foundation/Thread/MessageQueue.h"
 #include "Foundation/Thread/Semaphore.h"
@@ -32,8 +33,32 @@ public:
 
 private:
 
+  struct AssetLoadRequest
+  {
+    Asset * m_Asset;
+    std::string m_FilePath;
+    bool m_AsDocument;
+    bool m_AsReload;
+  };
+
+  struct AssetLoadResponse
+  {
+    Asset * m_Asset;
+    bool m_AsDocument;
+    bool m_AsReload;
+    Buffer m_FileData;
+  };
+
+
   void LoadThread();
   void ReloadThread();
+
+  void ConnectLoaderWebsocket(WebSocket & websocket);
+  void ConnectCompilerWebsocket(WebSocket & websocket);
+
+  std::string GetFullPath(const std::string & path);
+
+  void FinalizeAssetResponse(AssetLoadResponse & resp);
 
   Optional<Buffer> LoadFullFileWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket);
   Optional<Buffer> LoadFullFileRaw(czstr file_path, int & file_open_error);
@@ -52,25 +77,12 @@ private:
 
 private:
 
-  struct AssetLoadRequest
-  {
-    Asset * m_Asset;
-    std::string m_FilePath;
-    bool m_AsDocument;
-    bool m_AsReload;
-  };
-
-  struct AssetLoadResponse
-  {
-    Asset * m_Asset;
-    bool m_AsDocument;
-    bool m_AsReload;
-    Buffer m_FileData;
-  };
-
   volatile bool m_Running = false;
   int m_FileLoading = 0;
 
+  std::string m_RootPath;
+
+#ifndef _WEB
   MessageQueue<AssetLoadRequest> m_LoadRequests;
   MessageQueue<AssetLoadResponse> m_LoadResponses;
   MessageQueue<std::string> m_ModifiedFiles;
@@ -80,6 +92,17 @@ private:
 
   std::unique_ptr<WebSocket> m_ReloadServerSocket;
   std::thread m_ReloadThread;
+#else
+
+  int m_DelayRequests = true;
+  std::queue<AssetLoadRequest> m_PendingRequests;
+  std::queue<AssetLoadRequest> m_PendingLoads;
+  std::queue<AssetLoadRequest> m_PendingCompiles;
+
+  std::unique_ptr<WebSocket> m_LoaderSocket;
+  std::unique_ptr<WebSocket> m_CompilerSocket;
+  std::unique_ptr<WebSocket> m_ReloadServerSocket;
+#endif
 
   std::mutex m_DocumentCompilerMutex;
   DocumentCompiler m_DocumentCompiler;

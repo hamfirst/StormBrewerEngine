@@ -176,7 +176,7 @@ public:
 
       auto func = func_buffer->m_Func;
       auto c = func_buffer->m_C;
-      return (c->*func)(args...);
+      return (c->*func)(std::forward<Args>(args)...);
     };
 
     m_Deleter = nullptr;

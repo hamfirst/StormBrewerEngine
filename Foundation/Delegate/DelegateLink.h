@@ -30,6 +30,11 @@ public:
     Unlink();
   }
 
+  void Clear()
+  {
+    Unlink();
+  }
+
   DelegateLink & operator = (const DelegateLink & rhs) = delete;
   DelegateLink & operator = (DelegateLink && rhs) noexcept
   {

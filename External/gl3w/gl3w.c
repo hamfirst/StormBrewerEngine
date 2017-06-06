@@ -30,6 +30,25 @@
 
 #include <gl3w/gl3w.h>
 
+#ifdef _WEB
+
+int gl3wInit(int egl_mode)
+{
+  return 1;
+}
+
+int gl3wIsSupported(int major, int minor)
+{
+  return 1;
+}
+
+GL3WglProc gl3wGetProcAddress(const char *proc)
+{
+  return 0;
+}
+
+#else
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
@@ -1579,3 +1598,5 @@ static void load_procs(void)
 	gl3wViewportIndexedfv = (PFNGLVIEWPORTINDEXEDFVPROC) get_proc("glViewportIndexedfv");
 	gl3wWaitSync = (PFNGLWAITSYNCPROC) get_proc("glWaitSync");
 }
+
+#endif

@@ -5,18 +5,27 @@
 #include <QWheelEvent>
 #include <QApplication>
 
+#include "SDL2/SDL_keyboard.h"
+
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/ShaderLiteral.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Input/MouseState.h"
+#include "Engine/Input/KeyboardState.h"
+#include "Engine/Window/WindowManager.h"
 
 #include "Runtime/Map/MapDef.refl.h"
+
+#include "GameClient/GameContainer.h"
 
 #include "MapEditorViewer.h"
 #include "MapEditor.h"
 #include "MapEditorToolBase.h"
 #include "DrawUtil.h"
+
+extern DelegateList<void> g_GlobalUpdate;
 
 
 static const char * kMapViewerWidgetGridVertexShader = SHADER_LITERAL(
@@ -60,6 +69,17 @@ MapEditorViewer::MapEditorViewer(NotNullPtr<MapEditor> editor, MapDef & map, QWi
   timer->start(15);
 
   m_Magnification.Set(2.0f);
+
+  m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this]
+  {
+    if (m_PlayMode)
+    {
+      auto pos = mapToGlobal(QPoint(0, 0));
+      m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
+
+      m_GameContainer->Update();
+    }
+  });
 }
 
 MapEditorViewer::~MapEditorViewer()
@@ -277,6 +297,67 @@ uint64_t MapEditorViewer::GetFrameIdForMapTile(const MapTile & tile)
   return frame_id;
 }
 
+void MapEditorViewer::StartPlayMode()
+{
+  if (m_PlayMode)
+  {
+    return;
+  }
+
+  auto window_geo = geometry();
+  auto window_pos = mapToGlobal(QPoint(window_geo.x(), window_geo.y()));
+  auto window_box = Box{ Vector2{ window_pos.x(), window_pos.y() }, Vector2{ window_pos.x() + window_geo.width(), window_pos.y() + window_geo.height() } };
+
+  m_Panning = false;
+  if (m_Tool && m_Dragging)
+  {
+    m_Tool->DrawCancel();
+    m_Dragging = false;
+  }
+
+  SyncMouse();
+
+  m_FakeWindow = std::make_unique<FakeWindow>(
+    window_box,
+    [this] {},
+    [this] {},
+    [this](int x, int y) { QCursor::setPos(x, y); },
+    [this] { StopPlayMode(); },
+    [this](NullOptPtr<Box> box) {},
+    [this] {}
+  );
+
+  auto cursor_pos = mapFromGlobal(QCursor::pos());
+
+  if (window_geo.contains(cursor_pos))
+  {
+    m_FakeWindow->SetWindowMouseFocused(true);
+  }
+
+  if (hasFocus())
+  {
+    m_FakeWindow->SetWindowKeyboardFocused(true);
+  }
+
+  m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
+
+  m_GameContainer = std::make_unique<GameContainer>(m_FakeWindow->GetWindow());
+
+  m_PlayMode = true;
+}
+
+void MapEditorViewer::StopPlayMode()
+{
+  if (m_PlayMode == false)
+  {
+    return;
+  }
+
+  m_PlayMode = false;
+  m_GameContainer.reset();
+  m_FakeWindow.reset();
+}
+
 Vector2 MapEditorViewer::GetCursorPos()
 {
   auto qt_cursor_pos = mapFromGlobal(QCursor::pos());
@@ -320,10 +401,21 @@ void MapEditorViewer::initializeGL()
 void MapEditorViewer::resizeGL(int w, int h)
 {
   m_RenderState.SetScreenSize(Vector2(w, h));
+
+  if (m_PlayMode)
+  {
+    m_FakeWindow->SetWindowSize(Vector2(w, h));
+  }
 }
 
 void MapEditorViewer::paintGL()
 {
+  if (m_PlayMode)
+  {
+    m_GameContainer->Render();
+    return;
+  }
+
   if (m_Tool && m_LastDrawPos)
   {
     auto cursor_pos = GetCursorPos();
@@ -620,6 +712,27 @@ void MapEditorViewer::paintGL()
 
 void MapEditorViewer::keyPressEvent(QKeyEvent * event)
 {
+  if (event->key() == Qt::Key_F5)
+  {
+    if (m_PlayMode)
+    {
+      StopPlayMode();
+    }
+    else
+    {
+      StartPlayMode();
+    }
+
+    return;
+  }
+
+  if (m_PlayMode)
+  {
+    auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
+    m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, true);
+    return;
+  }
+
   if (event->key() == Qt::Key_Delete || event->key() == Qt::Key_Backspace)
   {
     if (m_Tool)
@@ -637,10 +750,43 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
   }
 }
 
+void MapEditorViewer::keyReleaseEvent(QKeyEvent * event)
+{
+  if (m_PlayMode)
+  {
+    auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
+    m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, false);
+    return;
+  }
+}
+
 void MapEditorViewer::mousePressEvent(QMouseEvent * event)
 {
-  m_CursorPos = QCursor::pos();
+  if (m_PlayMode)
+  {
+    int button;
+    if (event->button() == Qt::LeftButton)
+    {
+      button = kMouseLeftButton;
+    }
+    else if(event->button() == Qt::MiddleButton)
+    {
+      button = kMouseMiddleButton;
+    }
+    else if(event->button() == Qt::RightButton)
+    {
+      button = kMouseRightButton;
+    }
+    else
+    {
+      return;
+    }
 
+    m_FakeWindow->HandleMouseButtonPressMessage(button, true);
+    return;
+  }
+
+  m_CursorPos = QCursor::pos();
   bool alt = (bool)(event->modifiers() & Qt::AltModifier);
   bool shift = (bool)(event->modifiers() & Qt::ShiftModifier);
   bool ctrl = (bool)(event->modifiers() & Qt::ControlModifier);
@@ -684,6 +830,12 @@ void MapEditorViewer::mousePressEvent(QMouseEvent * event)
 
 void MapEditorViewer::mouseMoveEvent(QMouseEvent *event)
 {
+  if (m_PlayMode)
+  {
+    m_FakeWindow->HandleMouseMoveMessage(event->x(), event->y());
+    return;
+  }
+
   auto p = QCursor::pos();
 
   bool alt = (bool)(event->modifiers() & Qt::AltModifier);
@@ -719,6 +871,30 @@ void MapEditorViewer::mouseMoveEvent(QMouseEvent *event)
 
 void MapEditorViewer::mouseReleaseEvent(QMouseEvent * event)
 {
+  if (m_PlayMode)
+  {
+    int button;
+    if (event->button() == Qt::LeftButton)
+    {
+      button = kMouseLeftButton;
+    }
+    else if (event->button() == Qt::MiddleButton)
+    {
+      button = kMouseMiddleButton;
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+      button = kMouseRightButton;
+    }
+    else
+    {
+      return;
+    }
+
+    m_FakeWindow->HandleMouseButtonPressMessage(button, false);
+    return;
+  }
+
   bool alt = (bool)(event->modifiers() & Qt::AltModifier);
   bool shift = (bool)(event->modifiers() & Qt::ShiftModifier);
   bool ctrl = (bool)(event->modifiers() & Qt::ControlModifier);
@@ -750,6 +926,47 @@ void MapEditorViewer::wheelEvent(QWheelEvent *event)
   else
   {
     m_Magnification *= 1.25f;
+  }
+}
+
+void MapEditorViewer::moveEvent(QMoveEvent * event)
+{
+  if (m_PlayMode)
+  {
+    auto pos = mapToGlobal(QPoint(0, 0));
+    m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
+  }
+}
+
+void MapEditorViewer::focusInEvent(QFocusEvent * event)
+{
+  if (m_PlayMode)
+  {
+    m_FakeWindow->SetWindowKeyboardFocused(true);
+  }
+}
+
+void MapEditorViewer::focusOutEvent(QFocusEvent * event)
+{
+  if (m_PlayMode)
+  {
+    m_FakeWindow->SetWindowKeyboardFocused(false);
+  }
+}
+
+void MapEditorViewer::enterEvent(QEvent * event)
+{
+  if (m_PlayMode)
+  {
+    m_FakeWindow->SetWindowMouseFocused(true);
+  }
+}
+
+void MapEditorViewer::leaveEvent(QEvent * event)
+{
+  if (m_PlayMode)
+  {
+    m_FakeWindow->SetWindowMouseFocused(false);
   }
 }
 

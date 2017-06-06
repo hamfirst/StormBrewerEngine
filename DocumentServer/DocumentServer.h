@@ -64,6 +64,7 @@ public:
 
 private:
   virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback) override;
+  std::string GetFullPath(const std::string & path);
 
   void HandleDocumentChange(uint64_t file_hash, Document * document, const ReflectionChangeNotification & change);
   void HandleDocumentStateChange(uint64_t file_hash, Document * document, DocumentState state, DocumentState prev_state);
@@ -79,7 +80,10 @@ private:
 
   void SendMessageToClient(DocumentClientMessageType type, StormSockets::StormSocketConnectionId client_id, uint32_t document_id, const std::string & packet);
 
+
 private:
+
+  std::string m_RootPath;
 
   std::unique_ptr<StormSockets::StormSocketBackend> m_Backend;
   std::unique_ptr<StormSockets::StormSocketServerFrontendWebsocket> m_DocServerFrontend;

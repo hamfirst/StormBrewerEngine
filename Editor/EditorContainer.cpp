@@ -46,6 +46,8 @@
 Delegate<void> g_GlobalUndo;
 Delegate<void> g_GlobalRedo;
 
+DelegateList<void> g_GlobalUpdate;
+
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
 {
@@ -90,6 +92,9 @@ EditorContainer::EditorContainer(QWidget *parent) :
     ui.menu_File->addAction(m_RecentFiles[index]);
   }
 
+  m_RootPath = GetCanonicalRootPath();
+  const char * doc_server_host = "localhost";
+
   UpdateRecentFiles();
 
   m_Context = new QOpenGLContext(this);
@@ -106,9 +111,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
   timer->start(16);
 
-  m_RootPath = GetCanonicalRootPath();
-
-  const char * doc_server_host = "localhost";
 
   if (ProbePort(doc_server_host, 27800, 100) == false)
   {
@@ -344,6 +346,8 @@ void EditorContainer::engineUpdate()
   {
     m_Context->makeCurrent(m_Surface.get());
     EngineUpdate();
+
+    g_GlobalUpdate.Call();
   }
 
   DocumentServerEvent ev;
@@ -416,8 +420,7 @@ void EditorContainer::newFile()
 
 void EditorContainer::open()
 {
-  auto filename = QFileDialog::getOpenFileName(this, tr("Open File"), ".", tr("All Files (*.*)"));
-
+  auto filename = QFileDialog::getOpenFileName(this, tr("Open File"), m_RootPath.data(), tr("All Files (*.*)"));
   if (filename.length() == 0)
   {
     return;
@@ -513,21 +516,34 @@ void EditorContainer::UpdateRecentFiles()
   QSettings settings;
   auto files = settings.value("recent_files").toStringList();
 
+  while (files.size() > kNumRecentFiles)
+  {
+    files.removeLast();
+  }
+
   int max_recent = kNumRecentFiles;
   int num_files = std::min((int)files.size(), max_recent);
+
+  for (int index = 0; index < num_files; index++)
+  {
+    QFileInfo file_info(QString(m_RootPath.data()) + '/' + files[index]);
+    if (file_info.exists() == false)
+    {
+      files.removeAt(index);
+      index--;
+      num_files--;
+    }
+  }
 
   m_RecentFileSeparator->setVisible(num_files > 0);
 
   for (int index = 0; index < num_files; index++)
   {
-    QFileInfo file_info(files[index]);
-    if (file_info.exists())
-    {
-      auto menu_option = QString("&%1 - %2").arg(index + 1).arg(file_info.fileName());
-      m_RecentFiles[index]->setText(menu_option);
-      m_RecentFiles[index]->setData(files[index]);
-      m_RecentFiles[index]->setVisible(true);
-    }
+    QFileInfo file_info(QString(m_RootPath.data()) + '/' + files[index]);
+    auto menu_option = QString("&%1 - %2").arg(index + 1).arg(file_info.fileName());
+    m_RecentFiles[index]->setText(menu_option);
+    m_RecentFiles[index]->setData(files[index]);
+    m_RecentFiles[index]->setVisible(true);
   }
 
   for (int index = num_files; index < kNumRecentFiles; index++)

@@ -16,8 +16,11 @@
 #include "Foundation/Network/Network.h"
 #include "Foundation/Network/WebSocket.h"
 #include "Foundation/Json/Json.h"
+#include "Foundation/Math/Intersection.h"
 
-#include <StormData/StormDataJson.h>
+#include "StormData/StormDataJson.h"
+#include "StormNet/NetReflectionFixedPoint.h"
+#include "StormNet/NetReflectionFixedPointLUT.h"
 
 #include "Engine/Engine.h"
 #include "Engine/Asset/AssetLoader.h"
@@ -25,6 +28,7 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/Rendering.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Input/TextInputContext.h"
 #include "Engine/Window/WindowManager.h"
@@ -63,6 +67,8 @@ struct S
   {
     return 1;
   }
+
+  int a, b, c;
 };
 
 int TestDelegate()
@@ -134,6 +140,8 @@ void UpdateButtonState(bool pressed)
   Box box = { { 50, 50 }, { 100, 100 } };
 }
 
+INIT_LUT_DATA(int, 32, 24);
+
 int main()
 {
   //TestJson();
@@ -175,17 +183,79 @@ int main()
   bundle.LoadAsset<MapResource>("./Maps/Test.map");
   bool loaded = false;
 
+  for (auto val : CreateFixedPointRange(NetFixedPoint<int, 32, 24>(1), 4))
+  {
+    printf("%f\n", (float)val);
+  }
+
+  using Fixed = NetFixedPoint<int, 32, 24>;
+  Intersection<Fixed>::VecType vec(5, 5);
+
+  float init_val = 0.78215f;
+  auto s = cosf(init_val);
+
   Camera camera(Vector2(480, 270));
 
+  VertexBuffer draw_buffer(true);
 
   Entity * entity = nullptr;
+
+  RenderVec2 start = { 50, 30 };
+  RenderVec2 end = { 30, 10 };
+
+  auto line = Intersection<float>::CollisionLine(start, end);
+  auto circle = Intersection<float>::CollisionCircle(start, 4.0f);
+
+  RenderVec2 cursor_start = { 0, 10 };
+  RenderVec2 cursor_end = { 0, 10 };
 
   while (EngineWantsToQuit() == false)
   {
     EngineUpdate();
 
     RenderUtil::Clear();
+    GeometryVertexBufferBuilder builder;
 
+    auto pointer_state = input_state.GetPointerState();
+    cursor_end = camera.TransformFromScreenSpaceToWorldSpace(pointer_state.m_Pos, render_state, render_util);
+
+    if (input_state.GetMouseButtonState(1))
+    {
+      cursor_start = cursor_end;
+    }
+
+    auto sweep = Intersection<float>::CollisionLine(cursor_start, cursor_end);
+    builder.Line(start, end, 1.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
+
+    IntersectionResult<Intersection<float>::VecType> result;
+    if (Intersection<float>::SweptCircleToSweptCircleTest(sweep, line, circle.m_Radius * 2, result))
+    {
+      builder.Line(cursor_start, cursor_end, circle.m_Radius * 2 + 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+      builder.FilledCircle(cursor_start, circle.m_Radius + 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f), 20);
+      builder.FilledCircle(cursor_end, circle.m_Radius + 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f), 20);
+    }
+    //builder.FilledCircle(start, circle.m_Radius, Color(1.0f, 1.0f, 0.0f, 1.0f), 20);
+    builder.Line(cursor_start, cursor_end, circle.m_Radius * 2, Color(0.0f, 0.0f, 1.0f, 1.0f));
+    builder.FilledCircle(cursor_start, circle.m_Radius, Color(0.0f, 0.0f, 1.0f, 1.0f), 20);
+    builder.FilledCircle(cursor_end, circle.m_Radius, Color(0.0f, 0.0f, 1.0f, 1.0f), 20);
+
+    builder.FillVertexBuffer(draw_buffer);
+
+    auto & shader = g_ShaderManager.GetDefaultShader();
+
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), camera.GetResolution());
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), camera.GetPosition());
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+    shader.Bind();
+
+    render_util.GetDefaultTexture().BindTexture(0);
+
+    draw_buffer.Bind();
+    draw_buffer.CreateDefaultBinding(shader);
+    draw_buffer.Draw();
+
+    /*
     if (loaded == false && bundle.AllLoadedSuccessfully())
     {
       auto map = MapResource::Load("./Maps/Test.map");
@@ -222,6 +292,8 @@ int main()
 
     g_TextManager.SetTextPos(Vector2(0, 20));
     g_TextManager.RenderInputText(input_context, -1, render_state);
+
+    */
     window.Swap();
   }
 

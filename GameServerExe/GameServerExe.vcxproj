@@ -129,6 +129,9 @@
     <ProjectReference Include="..\EngineStubs\EngineStubs.vcxproj">
       <Project>{37b0e39d-d8fa-4042-8a67-29b9244b1402}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\External\binpack\binpack.vcxproj">
+      <Project>{d16dd340-97f1-4045-a353-2907054ffc9c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\External\enet\ENet.vcxproj">
       <Project>{17492c4d-0484-4614-9ef5-a74566b9acc8}</Project>
     </ProjectReference>

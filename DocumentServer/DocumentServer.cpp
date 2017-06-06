@@ -13,6 +13,7 @@
 #include <StormSockets/StormSocketServerFrontendWebsocket.h>
 
 #include <Foundation/FileSystem/File.h>
+#include <Foundation/FileSystem/Path.h>
 #include <Foundation/Document/Document.h>
 
 namespace fs = std::experimental::filesystem;
@@ -21,7 +22,9 @@ DocumentServer::DocumentServer() :
   m_DocumentCompiler(this)
 {
   m_Semaphore.Init(0);
-  m_FilesystemWatcher = std::make_unique<FileSystemWatcher>(m_Semaphore);
+
+  m_RootPath = GetCanonicalRootPath();
+  m_FilesystemWatcher = std::make_unique<FileSystemWatcher>(m_RootPath, m_Semaphore);
 
   StormSockets::StormSocketInitSettings backend_settings;
   backend_settings.NumIOThreads = 1;
@@ -142,12 +145,14 @@ void DocumentServer::Run()
         recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;        
 
         char * path = recv_buffer.data();
+
+        auto full_path = GetFullPath(path);
         Hash file_hash = crc32(path);
 
         auto cache_itr = m_CachedAssets.find(file_hash);
         if (cache_itr == m_CachedAssets.end())
         {
-          File file = FileOpen(path, FileOpenMode::kRead);
+          File file = FileOpen(full_path.data(), FileOpenMode::kRead);
 
           if (file.GetFileOpenError())
           {
@@ -313,6 +318,9 @@ void DocumentServer::Run()
 
       Hash file_hash = crc32(path);
       auto itr = m_CachedAssets.find(file_hash);
+
+      auto full_path = GetFullPath(path);
+
       if (itr != m_CachedAssets.end())
       {
         if (type == FileSystemOperation::kDelete)
@@ -325,7 +333,7 @@ void DocumentServer::Run()
           int attempts = 0;
           while (retry)
           {
-            File file = FileOpen(path.data(), FileOpenMode::kRead);
+            File file = FileOpen(full_path.data(), FileOpenMode::kRead);
 
             if (file.GetFileOpenError())
             {
@@ -379,7 +387,9 @@ void DocumentServer::Run()
 
 void DocumentServer::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback)
 {
-  File file = FileOpen(path, FileOpenMode::kRead);
+  auto full_path = GetFullPath(path);
+
+  File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
   {
     callback(file_hash, Optional<Buffer>{}, std::chrono::system_clock::time_point{});
@@ -391,6 +401,18 @@ void DocumentServer::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCa
 
   std::error_code ec;
   callback(file_hash, Optional<Buffer>(std::move(buffer)), std::experimental::filesystem::last_write_time(path, ec));
+}
+
+std::string DocumentServer::GetFullPath(const std::string & path)
+{
+  if (fs::path(path).is_absolute())
+  {
+    return path;
+  }
+  else
+  {
+    return m_RootPath + path;
+  }
 }
 
 void DocumentServer::HandleDocumentChange(uint64_t file_hash, Document * document, const ReflectionChangeNotification & change)
@@ -660,11 +682,12 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
   case DocumentServerMessageType::kNew:
     {
       const char * file_name = msg;
-      auto file = FileOpen(file_name, FileOpenMode::kRead);
+      auto full_path = GetFullPath(file_name);
+      auto file = FileOpen(full_path.data(), FileOpenMode::kRead);
 
       if (file.GetFileOpenError() != 0)
       {
-        auto new_file = FileOpen(file_name, FileOpenMode::kWrite);
+        auto new_file = FileOpen(full_path.data(), FileOpenMode::kWrite);
         if (new_file.GetFileOpenError() != 0)
         {
           SendMessageToClient(DocumentClientMessageType::kNewFileError, client_id, document_id, std::to_string(new_file.GetFileOpenError()));
@@ -685,7 +708,8 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
   case DocumentServerMessageType::kOpen:
     {
       const char * file_name = msg;
-      auto file = FileOpen(file_name, FileOpenMode::kRead);
+      auto full_path = GetFullPath(file_name);
+      auto file = FileOpen(full_path.data(), FileOpenMode::kRead);
 
       if (file.GetFileOpenError() != 0)
       {
@@ -893,3 +917,4 @@ void DocumentServer::SendMessageToClient(DocumentClientMessageType type, StormSo
   m_DocServerFrontend->SendPacketToConnection(writer, client_id);
   m_DocServerFrontend->FreeOutgoingPacket(writer);
 }
+

@@ -34,7 +34,11 @@ void AudioManager::Init()
   want.freq = 44100;
   want.format = AUDIO_F32;
   want.channels = 2;
+#ifdef _WEB
+  want.samples = 8192;
+#else
   want.samples = 512;
+#endif
   want.callback = &AudioManager::AudioCallback;
   want.userdata = this;
 
@@ -49,6 +53,11 @@ void AudioManager::Init()
   {
     SDL_PauseAudioDevice(m_DeviceId, 0);
   }
+
+  printf("Audio freq: %d\n", obtained.freq);
+  printf("Audio format: %d\n", obtained.format);
+  printf("Audio channels: %d\n", obtained.channels);
+  printf("Audio samples: %d\n", obtained.samples);
 }
 
 void AudioManager::ShutDown()
@@ -144,15 +153,17 @@ void AudioManager::SetMusicPaused(MusicHandle handle, bool pause)
 
 void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 {
+  AudioManager * p_this = (AudioManager *)userdata;
   memset(stream, 0, len);
 
-  AudioManager * p_this = (AudioManager *)userdata;
+#ifndef _WEB
   std::lock_guard<std::mutex> l(p_this->m_AudioMutex);
 
   if (p_this->m_AudioShutdown)
   {
     return;
   }
+#endif
 
   auto audio_callback = [=](Handle audio_handle, AudioSpec & audio_spec)
   {

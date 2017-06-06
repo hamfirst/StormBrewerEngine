@@ -35,6 +35,7 @@ public:
   Document & operator = (Document && rhs) = delete;
 
   ~Document();
+  void TearDown();
 
   const std::string & GetPath() const;
   uint64_t GetFileId() const;

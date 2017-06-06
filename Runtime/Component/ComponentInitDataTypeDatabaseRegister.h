@@ -1,13 +1,14 @@
 #pragma once
 
-#include <StormData/StormDataTypeDatabaseRegister.h>
+#include "StormData/StormDataTypeDatabase.h"
+#include "StormData/StormDataTypeDatabaseRegister.h"
 
 #include "Foundation/PropertyMeta/PropertyFieldDatabase.h"
 #include "Foundation/PropertyMeta/PropertyFieldMetaData.h"
 #include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 
 #include "Runtime/Component/ComponentInitDataTypeDatabase.h"
-
+#include "Runtime/Component/ComponentInitData.refl.h"
 
 
 template <typename TypeInfo, typename Class, typename ... BaseTypes>

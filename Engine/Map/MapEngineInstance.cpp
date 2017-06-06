@@ -5,7 +5,7 @@
 
 MapEngineInstance::MapEngineInstance(MapDef & map)
 {
-  for (auto & elem : map.m_ManualTileLayers)
+  for (auto elem : map.m_ManualTileLayers)
   {
     m_ManualTileLayers.emplace_back(map, elem.first);
   }

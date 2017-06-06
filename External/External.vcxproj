@@ -181,15 +181,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="asio\asio.hpp" />
-    <ClInclude Include="binpack\GuillotineBinPack.h" />
-    <ClInclude Include="binpack\MaxRectsBinPack.h" />
-    <ClInclude Include="binpack\Rect.h" />
-    <ClInclude Include="binpack\ShelfBinPack.h" />
-    <ClInclude Include="binpack\ShelfNextFitBinPack.h" />
-    <ClInclude Include="binpack\SkylineBinPack.h" />
     <ClInclude Include="colony\colony.h" />
-    <ClInclude Include="enum\enum.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\func_common.hpp" />
     <ClInclude Include="glm\detail\func_exponential.hpp" />
@@ -342,10 +334,6 @@
     <ClInclude Include="gsl\string_span.h" />
     <ClInclude Include="hash\Hash.h" />
     <ClInclude Include="hash\Hash64.h" />
-    <ClInclude Include="json\json.hpp" />
-    <ClInclude Include="ogg\config_types.h" />
-    <ClInclude Include="ogg\ogg.h" />
-    <ClInclude Include="ogg\os_types.h" />
     <ClInclude Include="optional\optional.hpp" />
     <ClInclude Include="sb\cstr.h" />
     <ClInclude Include="sb\fixed_sized_alloc.h" />
@@ -355,19 +343,9 @@
     <ClInclude Include="sb\static_sized_alloc.h" />
     <ClInclude Include="sb\static_sized_array_alloc.h" />
     <ClInclude Include="sb\vector.h" />
-    <ClInclude Include="upng\upng.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="binpack\GuillotineBinPack.cpp" />
-    <ClCompile Include="binpack\MaxRectsBinPack.cpp" />
-    <ClCompile Include="binpack\Rect.cpp" />
-    <ClCompile Include="binpack\ShelfBinPack.cpp" />
-    <ClCompile Include="binpack\ShelfNextFitBinPack.cpp" />
-    <ClCompile Include="binpack\SkylineBinPack.cpp" />
     <ClCompile Include="glm\detail\glm.cpp" />
-    <ClCompile Include="ogg\bitwise.c" />
-    <ClCompile Include="ogg\framing.c" />
-    <ClCompile Include="upng\upng.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glm\detail\func_common.inl" />

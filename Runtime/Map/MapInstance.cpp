@@ -18,7 +18,7 @@ MapInstance::MapInstance(NotNullPtr<RuntimeState> runtime_state, MapDef & map_de
 
   auto & main_coll = collision_list[0];
 
-  for (auto & elem : map_def.m_ManualTileLayers)
+  for (auto elem : map_def.m_ManualTileLayers)
   {
     if (elem.second.m_CollisionLayer == false)
     {
@@ -28,12 +28,12 @@ MapInstance::MapInstance(NotNullPtr<RuntimeState> runtime_state, MapDef & map_de
     auto tile_sheet = TileSheetResource::Load(elem.second.m_TileSheet.data());
 
     std::vector<std::pair<uint32_t, Vector2>> textures;
-    for (auto & tex : tile_sheet->m_Textures)
+    for (auto tex : tile_sheet->m_Textures)
     {
       textures.emplace_back(std::make_pair(crc32(tex.second.m_Filename.data()), Vector2(tex.second.m_FrameWidth, tex.second.m_FrameHeight)));
     }
 
-    for (auto & tile : elem.second.m_Tiles)
+    for (auto tile : elem.second.m_Tiles)
     {
       int texture_index = -1;
       for(std::size_t index = 0; index < textures.size(); ++index)
@@ -62,9 +62,9 @@ MapInstance::MapInstance(NotNullPtr<RuntimeState> runtime_state, MapDef & map_de
   runtime_state->m_CollisionSystem->PushMapCollision(m_MapId, collision_list);
 
   std::vector<Entity *> entities;
-  for (auto & elem : map_def.m_EntityLayers)
+  for (auto elem : map_def.m_EntityLayers)
   {
-    for (auto & entity : elem.second.m_Entities)
+    for (auto entity : elem.second.m_Entities)
     {
       auto new_entity = runtime_state->m_EntitySystem->CreateEntity(&entity.second.m_EntityDef, false);
       new_entity->GetPosition() = Vector2(entity.second.m_XPosition, entity.second.m_YPosition);

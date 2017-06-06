@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="enum">
-      <UniqueIdentifier>{93460022-9baa-4342-a86f-e298962929b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="json">
-      <UniqueIdentifier>{cfad91ea-2a59-4d69-8e8b-41fe40bd053b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="optional">
       <UniqueIdentifier>{cf4b6c66-f99f-4275-a31b-1e7874add076}</UniqueIdentifier>
     </Filter>
@@ -25,17 +19,8 @@
     <Filter Include="glm\simd">
       <UniqueIdentifier>{283d8521-2d17-43e3-85c8-8122e75b00df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="asio">
-      <UniqueIdentifier>{7f9276d0-fb3a-4674-b807-3ff8be111b4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gsl">
       <UniqueIdentifier>{7361014a-78f7-4830-a452-06d115330f8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="upng">
-      <UniqueIdentifier>{f64a47a5-61a6-4679-b2a4-8d935ec2a264}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="binpack">
-      <UniqueIdentifier>{8e855da6-a7fb-4ad2-a137-00a1eeaf7da6}</UniqueIdentifier>
     </Filter>
     <Filter Include="sb">
       <UniqueIdentifier>{4ca61bac-3594-405d-a389-81f65886b3c5}</UniqueIdentifier>
@@ -43,23 +28,11 @@
     <Filter Include="hash">
       <UniqueIdentifier>{63a030ac-98c3-4ac0-90d8-11917be5fa67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ogg">
-      <UniqueIdentifier>{fead3f5e-85c1-4988-a6f8-7d62df70d992}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="vorbis">
-      <UniqueIdentifier>{dfc3dd24-853a-4336-9ef3-9d9dd05892b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="colony">
       <UniqueIdentifier>{f6adf4ae-f9cf-4fa1-a6b5-7e3cab83063a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enum\enum.h">
-      <Filter>enum</Filter>
-    </ClInclude>
-    <ClInclude Include="json\json.hpp">
-      <Filter>json</Filter>
-    </ClInclude>
     <ClInclude Include="optional\optional.hpp">
       <Filter>optional</Filter>
     </ClInclude>
@@ -498,9 +471,6 @@
     <ClInclude Include="glm\simd\vector_relational.h">
       <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="asio\asio.hpp">
-      <Filter>asio</Filter>
-    </ClInclude>
     <ClInclude Include="gsl\gsl.h">
       <Filter>gsl</Filter>
     </ClInclude>
@@ -515,27 +485,6 @@
     </ClInclude>
     <ClInclude Include="gsl\string_span.h">
       <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="upng\upng.h">
-      <Filter>upng</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\GuillotineBinPack.h">
-      <Filter>binpack</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\MaxRectsBinPack.h">
-      <Filter>binpack</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\Rect.h">
-      <Filter>binpack</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\ShelfBinPack.h">
-      <Filter>binpack</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\ShelfNextFitBinPack.h">
-      <Filter>binpack</Filter>
-    </ClInclude>
-    <ClInclude Include="binpack\SkylineBinPack.h">
-      <Filter>binpack</Filter>
     </ClInclude>
     <ClInclude Include="sb\cstr.h">
       <Filter>sb</Filter>
@@ -554,15 +503,6 @@
     </ClInclude>
     <ClInclude Include="hash\Hash64.h">
       <Filter>hash</Filter>
-    </ClInclude>
-    <ClInclude Include="ogg\config_types.h">
-      <Filter>ogg</Filter>
-    </ClInclude>
-    <ClInclude Include="ogg\ogg.h">
-      <Filter>ogg</Filter>
-    </ClInclude>
-    <ClInclude Include="ogg\os_types.h">
-      <Filter>ogg</Filter>
     </ClInclude>
     <ClInclude Include="sb\fixed_sized_alloc.h">
       <Filter>sb</Filter>
@@ -583,33 +523,6 @@
   <ItemGroup>
     <ClCompile Include="glm\detail\glm.cpp">
       <Filter>glm\detail</Filter>
-    </ClCompile>
-    <ClCompile Include="upng\upng.cpp">
-      <Filter>upng</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\GuillotineBinPack.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\MaxRectsBinPack.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\Rect.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\ShelfBinPack.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\ShelfNextFitBinPack.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="binpack\SkylineBinPack.cpp">
-      <Filter>binpack</Filter>
-    </ClCompile>
-    <ClCompile Include="ogg\bitwise.c">
-      <Filter>ogg</Filter>
-    </ClCompile>
-    <ClCompile Include="ogg\framing.c">
-      <Filter>ogg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

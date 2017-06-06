@@ -13,39 +13,56 @@ MouseState::MouseState(NotNullPtr<InputState> input_state) :
 
 }
 
-void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus)
+void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus, bool query_state)
 {
   int x, y;
   const uint32_t button_mask = SDL_GetGlobalMouseState(&x, &y);
-  x -= window_geo.m_Start.x;
-  y -= window_geo.m_Start.y;
 
-  bool in_window = PointInBox(window_geo, Vector2(x, y));
-
-  if (SDL_GetRelativeMouseMode() == SDL_FALSE)
+  if (query_state)
   {
-    int height = window_geo.m_End.y - window_geo.m_Start.y;
-    PointerState cur_state = { { x, height - y }, in_focus };
+    bool in_window = PointInBox(window_geo, Vector2(x, y));
 
-    m_PointerBinding.SetControlValue(cur_state);
-    m_PointerState = cur_state;
-  }
+    x -= window_geo.m_Start.x;
+    y -= window_geo.m_Start.y;
 
-  for (int index = 1; index < kNumMouseButtons; index++)
-  {
-    bool pressed = ((1 << (index - 1)) & button_mask) != 0 && in_focus;
-
-    m_ButtonControls[index].SetControlValue(pressed);
-
-    if (m_PressedState[index] == 0 && pressed && in_window && in_focus)
+    if (SDL_GetRelativeMouseMode() == SDL_FALSE)
     {
-      if (m_InputState->m_BinaryControlCallback)
-      {
-        m_InputState->m_BinaryControlCallback(CreateMouseButtonBinding(index));
-      }
+      int height = window_geo.m_End.y - window_geo.m_Start.y;
+      PointerState cur_state = { { x, height - y }, in_focus };
+
+      m_PointerBinding.SetControlValue(cur_state);
+      m_PointerState = cur_state;
     }
 
-    m_PressedState[index] = pressed;
+    for (int index = 1; index < kNumMouseButtons; index++)
+    {
+      bool pressed = ((1 << (index - 1)) & button_mask) != 0 && in_focus;
+
+      m_ButtonControls[index].SetControlValue(pressed);
+
+      if (m_PressedState[index] == 0 && pressed && in_window && in_focus)
+      {
+        if (m_InputState->m_BinaryControlCallback)
+        {
+          m_InputState->m_BinaryControlCallback(CreateMouseButtonBinding(index));
+        }
+      }
+
+      m_PressedState[index] = pressed;
+    }
+  }
+  else
+  {
+    bool in_window = in_focus;
+
+    auto pointer_state = m_PointerState;
+    if (pointer_state.m_InFocus != in_focus)
+    {
+      pointer_state.m_InFocus = in_focus;
+
+      m_PointerBinding.SetControlValue(pointer_state);
+      m_PointerState = pointer_state;
+    }
   }
 }
 

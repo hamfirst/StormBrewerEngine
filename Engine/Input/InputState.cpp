@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Input/GamepadState.h"
+#include "Engine/Window/Window.h"
 
 InputState::InputState() :
   m_KeyboardState(this),
@@ -11,10 +12,10 @@ InputState::InputState() :
 
 }
 
-void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo)
+void InputState::Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo, bool query_state)
 {
-  m_KeyboardState.CheckDeltaState(in_keyboard_focus, text_input_active);
-  m_MouseState.CheckDeltaState(window_geo, in_mouse_focus);
+  m_KeyboardState.CheckDeltaState(in_keyboard_focus, text_input_active, query_state);
+  m_MouseState.CheckDeltaState(window_geo, in_mouse_focus, query_state);
   m_GamepadState.CheckDeltaState(in_keyboard_focus);
 }
 
@@ -99,7 +100,7 @@ bool InputState::GetKeyPressedThisFrame(int scan_code)
   return m_KeyboardState.GetKeyPressedThisFrame(scan_code);
 }
 
-bool InputState::GetMouseButtonSate(int button)
+bool InputState::GetMouseButtonState(int button)
 {
   return m_MouseState.GetButtonState(button);
 }

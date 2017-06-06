@@ -1,6 +1,6 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/Map/MapManualTileLayerinstance.h"
+#include "Engine/Map/MapManualTileLayerInstance.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 
@@ -144,7 +144,7 @@ MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t
       auto & texture_data = textures[texture_index];
       int width_in_frames = (texture->GetWidth() + texture_data.m_FrameWidth - 1) / texture_data.m_FrameWidth;
 
-      GridDrawElement draw_element{ texture };
+      GridDrawElement draw_element{ AssetReference<TextureAsset>(texture), VertexBuffer{} };
       QuadVertexBufferBuilder builder;
 
       for (auto & tile : bucket.second)

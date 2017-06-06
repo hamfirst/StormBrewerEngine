@@ -10,6 +10,8 @@ struct ComponentInitDataTypeInfo : public StormDataTypeInfo
   PropertyField * (*RegisterPropertyFields)(PropertyFieldDatabase & property_db);
 };
 
+extern template class StormDataTypeDatabase<ComponentInitData, ComponentInitDataTypeInfo>;
+
 class ComponentInitDataTypeDatabase : public StormDataTypeDatabase<ComponentInitData, ComponentInitDataTypeInfo>
 {
 public:

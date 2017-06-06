@@ -52,7 +52,7 @@ public:
   template <typename T, typename Event>
   uint32_t AddEventHandler(void (T::*func)(NotNullPtr<Event>))
   {
-    return m_Entity->AddEventHandler(this, Event::TypeNameHash, [this, func](void * ev) { (((T *)this)->*func)((Event *)ev); });
+    return AddEntityEventHandler(Event::TypeNameHash, [this, func](void * ev) { (((T *)this)->*func)((Event *)ev); });
   }
 
   void Destroy();
@@ -65,6 +65,9 @@ protected:
 
   void InitComponentStore(void * comp_store);
   void * GetComponentSore();
+
+private:
+  uint32_t AddEntityEventHandler(uint32_t event_type, Delegate<void, void *> && func);
 
 private:
 
@@ -97,3 +100,8 @@ private:
 
 };
 
+template <typename T>
+NullOptPtr<T> ComponentCast(NotNullPtr<Component> comp)
+{
+  return comp->CastTo<T>();
+}

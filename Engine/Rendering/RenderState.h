@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Engine/EngineCommon.h"
+
 enum class RenderingBlendMode
 {
   kAlpha,
@@ -15,6 +17,7 @@ public:
 
   void EnableBlendMode(RenderingBlendMode mode = RenderingBlendMode::kAlpha);
   void DisableBlendMode();
+  void SyncBlendMode();
 
   void EnableScissorRect(const Box & box);
   void DisableScissorRect();

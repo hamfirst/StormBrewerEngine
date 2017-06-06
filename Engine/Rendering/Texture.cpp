@@ -83,6 +83,8 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
   case TextureType::kRGBA:
     format = GL_RGBA;
     break;
+  case TextureType::kInvalid:
+    return;
   }
 
   glGenTextures(1, &m_TextureName); CHECK_GL_RENDER_ERROR;
@@ -128,6 +130,8 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
     ASSERT(false, "Invalid pixel surface type");
     return;
   }
+
+  //printf("Creating texture (%d, %d)\n", pixel_buffer.GetWidth(), pixel_buffer.GetHeight());
 
   glGenTextures(1, &m_TextureName); CHECK_GL_RENDER_ERROR;
   auto texture_destroy_on_error = gsl::finally([&] { if (m_LoadError != 0) { glDeleteTextures(1, &m_TextureName); m_TextureName = 0; } });

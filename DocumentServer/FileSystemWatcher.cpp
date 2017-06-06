@@ -17,14 +17,15 @@ struct FileSystemWatcherData
 
 #endif
 
-FileSystemWatcher::FileSystemWatcher(StormSockets::StormSemaphore & semaphore) :
+FileSystemWatcher::FileSystemWatcher(const std::string & root_path, StormSockets::StormSemaphore & semaphore) :
+  m_RootPath(root_path),
   m_Data(std::make_unique<FileSystemWatcherData>()),
   m_Semaphore(semaphore),
   m_ExitThread(false)
 {
 #ifdef _MSC_VER
   m_Data->m_DirectoryHandle = CreateFile(
-    ".",
+    m_RootPath.data(),
     FILE_LIST_DIRECTORY,
     FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
     NULL,
@@ -61,9 +62,9 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::
   return ret_val;
 }
 
-void FileSystemWatcher::IterateDirectory(const std::string & path, FileSystemDirectory & dir)
+void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & full_path, FileSystemDirectory & dir)
 {
-  for (fs::directory_iterator dir_itr = fs::directory_iterator(path), end = fs::directory_iterator(); dir_itr != end; ++dir_itr)
+  for (fs::directory_iterator dir_itr = fs::directory_iterator(full_path), end = fs::directory_iterator(); dir_itr != end; ++dir_itr)
   {
     auto info = dir_itr->status();
     if (fs::is_regular_file(info))
@@ -74,7 +75,7 @@ void FileSystemWatcher::IterateDirectory(const std::string & path, FileSystemDir
     else if (fs::is_directory(info))
     {
       FileSystemDirectory sub_dir;
-      IterateDirectory(path + dir_itr->path().filename().string() + "/", sub_dir);
+      IterateDirectory(local_path + dir_itr->path().filename().string() + "/", full_path + dir_itr->path().filename().string() + "/", sub_dir);
 
       dir.m_Directories.emplace(std::make_pair(dir_itr->path().filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
     }
@@ -226,7 +227,7 @@ void FileSystemWatcher::NotifyThread()
   std::string last_change;
   uint32_t last_change_time = 0;
 
-  IterateDirectory("./", m_RootDirectory);
+  IterateDirectory("./", m_RootPath.data(), m_RootDirectory);
   TriggerOperationForDirectoryFiles(m_RootDirectory, "./", FileSystemOperation::kAdd);
 
   m_Semaphore.Release(1);
@@ -256,11 +257,13 @@ void FileSystemWatcher::NotifyThread()
         }
 
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+        std::string conv_filename = conv.to_bytes(filename);
 
-        std::string changed_filename("./" + conv.to_bytes(filename));
+        std::string changed_filename("./" + conv_filename);
+        std::string full_path = m_RootPath + conv_filename;
 
-        auto path = fs::path(filename);
-        auto status = fs::status(path);
+        auto path = fs::path(changed_filename);
+        auto status = fs::status(full_path);
 
         bool is_deleted = fs::exists(status) == false;
         bool is_file = fs::is_regular_file(status);
@@ -280,7 +283,7 @@ void FileSystemWatcher::NotifyThread()
             if (dir)
             {
               std::error_code ec;
-              auto last_write = fs::last_write_time(path, ec);
+              auto last_write = fs::last_write_time(full_path, ec);
 
               dir->m_Files.emplace(std::make_pair(path.filename().string(), last_write));
               TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kAdd, last_write);
@@ -292,7 +295,7 @@ void FileSystemWatcher::NotifyThread()
             if (dir)
             {
               FileSystemDirectory sub_dir;
-              IterateDirectory(changed_filename.c_str(), sub_dir);
+              IterateDirectory(changed_filename.c_str(), m_RootPath.data(), sub_dir);
 
               TriggerOperationForDirectoryFiles(sub_dir, changed_filename + "/", FileSystemOperation::kAdd);
               dir->m_Directories.emplace(std::make_pair(path.filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
@@ -311,7 +314,7 @@ void FileSystemWatcher::NotifyThread()
               if (itr != dir->m_Files.end())
               {
                 std::error_code ec;
-                auto last_write = fs::last_write_time(path, ec);
+                auto last_write = fs::last_write_time(full_path, ec);
 
                 if (last_write > itr->second)
                 {

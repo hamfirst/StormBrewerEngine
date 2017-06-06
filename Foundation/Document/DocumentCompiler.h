@@ -30,7 +30,7 @@ private:
 
   friend class Document;
 
-  void HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> & buffer, std::chrono::system_clock::time_point last_modified_time);
+  void HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> && buffer, std::chrono::system_clock::time_point last_modified_time);
   void UnloadDocument(uint64_t file_id);
 
 private:

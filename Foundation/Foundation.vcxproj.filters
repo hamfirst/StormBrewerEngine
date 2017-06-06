@@ -299,4 +299,7 @@
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Foundation.natvis" />
+  </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 
 #include <gl3w/gl3w.h>
 
+#ifndef _WEB
 
 VertexArray::VertexArray()
 {
@@ -75,3 +76,5 @@ void VertexArray::Unbind() const
 {
   glBindVertexArray(0); CHECK_GL_RENDER_ERROR;
 }
+
+#endif

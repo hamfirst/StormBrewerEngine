@@ -52,7 +52,7 @@ struct PropertyMetaDataStruct<T, true>
         list.emplace_back(std::move(member_data));
       };
 
-      auto & crap = *(static_cast<T *>(nullptr));
+      T crap;
       StormReflVisitEach(crap, visitor);
     }
 
@@ -281,7 +281,7 @@ struct PropertyMetaData<REnum<T>>
 {
   static PropertyField * GetMetaData(PropertyFieldDatabase & property_db)
   {
-    auto enum_data = property_db->GetEnumData(StormReflEnumInfo<T>::GetNameHash());
+    auto enum_data = property_db.GetEnumData(StormReflEnumInfo<T>::GetNameHash());
     if (enum_data.first)
     {
       auto & values = enum_data.second->m_Enum.m_EnumData->m_PossibleValues;
@@ -293,7 +293,7 @@ struct PropertyMetaData<REnum<T>>
 
       StormReflVisitEnumValues<T>::VisitEach(visitor);
 
-      enum_data.second->m_Enum.Get = [](void * en) -> czstr { REnum<T> * elem = static_cast<REnum<T> *>(en); return StormReflGetEnumAsString((T)(*en)); };
+      enum_data.second->m_Enum.Get = [](void * en) -> czstr { REnum<T> * elem = static_cast<REnum<T> *>(en); return StormReflGetEnumAsString(*(T *)(en)); };
       enum_data.second->m_Enum.Set = [](void * en, czstr val) { REnum<T> * elem = static_cast<REnum<T> *>(en); T t; if (StormReflGetEnumFromHash(t, crc32(val))) { *elem = t; }};
     }
   }
@@ -404,7 +404,7 @@ struct PropertyMetaData<RPolymorphic<Base, TypeDatabase, TypeInfo>>
         list->m_PossibleValues.emplace_back(std::move(option));
       };
 
-      TypeDatabase::VisitTypes(visitor);
+      StormDataTypeDatabaseVisitTypes(typename TypeDatabase::VisitorInfo{}, visitor);
 
       poly_data.second->m_Poly.GetType = [](void * obj) { auto * p = static_cast<RPolymorphic<Base, TypeDatabase, TypeInfo> *>(obj); return p->GetTypeNameHash(); };
       poly_data.second->m_Poly.SetType = [](void * obj, uint32_t type) { auto * p = static_cast<RPolymorphic<Base, TypeDatabase, TypeInfo> *>(obj); p->SetTypeFromNameHash(type); };
@@ -431,5 +431,5 @@ PropertyField * GetProperyMetaData(PropertyFieldDatabase & property_db)
 template <typename T, typename SurroundingType, typename FieldData>
 PropertyField * GetProperyMetaData(PropertyFieldDatabase & property_db, FieldData field_data)
 {
-  return PropertyMetaData<T>::GetMetaData<SurroundingType, FieldData>(property_db, field_data);
+  return PropertyMetaData<T>::template GetMetaData<SurroundingType, FieldData>(property_db, field_data);
 }

@@ -7,7 +7,7 @@ std::string BufferToString(const Buffer & buffer)
   return std::string(buffer_data, buffer_data + buffer.GetSize());
 }
 
-Buffer StringToBuffer(std::string & str)
+Buffer StringToBuffer(const std::string & str)
 {
   return Buffer(str.data(), str.size());
 }

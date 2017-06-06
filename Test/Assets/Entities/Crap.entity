@@ -1,0 +1,13 @@
+[]
+
+{
+    "m_Components": {
+        "0": {
+            "T": 3406767092,
+            "D": {
+                "m_Test": 1
+            }
+        }
+    },
+    "m_Sprite": ".\/Sprites\/Test.sprite"
+}

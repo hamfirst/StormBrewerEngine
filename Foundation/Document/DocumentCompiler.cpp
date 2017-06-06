@@ -15,7 +15,12 @@ DocumentCompiler::DocumentCompiler(NotNullPtr<DocumentLoader> loader) :
 
 DocumentCompiler::~DocumentCompiler()
 {
+  for (auto & doc : m_Documents)
+  {
+    doc.second->TearDown();
+  }
 
+  m_Documents.clear();
 }
 
 NullOptPtr<Document> DocumentCompiler::CreateNewDocument(czstr path)
@@ -73,7 +78,7 @@ void DocumentCompiler::ReloadDocument(czstr path)
   m_Loader->LoadDocument(path, file_hash, DocumentLoadCallback(&DocumentCompiler::HandleDocumentLoaded, this));
 }
 
-void DocumentCompiler::HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> & buffer, std::chrono::system_clock::time_point last_modified_time)
+void DocumentCompiler::HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> && buffer, std::chrono::system_clock::time_point last_modified_time)
 {
   auto itr = m_Documents.find(file_id);
   if (itr == m_Documents.end())

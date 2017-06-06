@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
+class NetFixedPoint;
+
 template <typename VecType>
 using VecComp = decltype(VecType::x);
 
@@ -22,12 +25,62 @@ public:
     return abs(c);
   }
 
+  static auto Min(const VecCompType & a, const VecCompType & b)
+  {
+    return min(a, b);
+  }
+
+  static auto Max(const VecCompType & a, const VecCompType & b)
+  {
+    return max(a, b);
+  }
+
+  static auto Reciprocal(const VecCompType & c)
+  {
+    return VecCompType(1) / c;
+  }
+
   static auto Inverse(const VecCompType & c)
   {
-    return 1.0 / c;
+    return -c;
   }
 };
 
+template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
+class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
+{
+  using LengthType = NetFixedPoint<StorageType, NumBits, FractionalBits>;
+
+  static auto Sqrt(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return c.Sqrt();
+  }
+
+  static auto Abs(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return c.Abs();
+  }
+
+  static auto Min(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a, const NetFixedPoint<StorageType, NumBits, FractionalBits> & b)
+  {
+    return a.Min(b);
+  }
+
+  static auto Max(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a, const NetFixedPoint<StorageType, NumBits, FractionalBits> & b)
+  {
+    return a.Max(b);
+  }
+
+  static auto Reciprocal(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return VecCompType(1) / c;
+  }
+
+  static auto Inverse(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return c.Inverse();
+  }
+};
 
 template <typename VecType>
 using LengthType = typename IntersectionFuncs<VecType>::LengthType;
@@ -60,12 +113,12 @@ public:
 
   static auto GetPerpVec(const VecType & a)
   {
-    return VecType{ a.y, -a.x };
+    return VecType{ a.y, IntersectionFuncs<VecCompType>::Inverse(a.x) };
   }
 
-  static auto Reverse(VecType & a)
+  static auto Reverse(const VecType & a)
   {
-    return VecType{ -a.y, -a.x };
+    return VecType{ IntersectionFuncs<VecCompType>::Inverse(a.y), IntersectionFuncs<VecCompType>::Inverse(a.x) };
   }
 };
 
@@ -89,7 +142,10 @@ public:
     VecCompType y;
 
     VecType() = default;
-    VecType(VecCompType ix, VecCompType iy) : x(ix), y(iy) { }
+
+    template <typename VecInitType>
+    VecType(VecInitType ix, VecInitType iy) : x(ix), y(iy) { }
+
     VecType(const VecType & rhs) = default;
     VecType(VecType && rhs) = default;
 
@@ -173,6 +229,12 @@ public:
     }
   };
 
+  struct CollisionBoundingBox
+  {
+    VecType m_Start;
+    VecType m_End;
+  };
+
   struct CollisionCircle
   {
     VecType m_Center;
@@ -187,6 +249,26 @@ public:
 
       m_Radius = radius;
       m_RadiusSquared = m_Radius * m_Radius;
+    }
+
+    template <typename VectorType, typename VectorCompType>
+    CollisionCircle(const VectorType & center, VectorCompType radius, VectorCompType radius_squared)
+    {
+      m_Center.x = center.x;
+      m_Center.y = center.y;
+
+      m_Radius = radius;
+      m_RadiusSquared = radius_squared;
+    }
+
+    CollisionBoundingBox GetBoundingBox()
+    {
+      CollisionBoundingBox box;
+      box.m_Start.x = m_Center.x - m_Radius;
+      box.m_Start.y = m_Center.y - m_Radius;
+      box.m_End.x = m_Center.x + m_Radius;
+      box.m_End.y = m_Center.y + m_Radius;
+      return box;
     }
   };
 
@@ -211,7 +293,7 @@ public:
       m_Start.y = a.y;
       m_End.x = b.x;
       m_End.y = b.y;
-      m_Offset = b - a;
+      m_Offset = m_End - m_Start;
 
       m_Length = IntersectionVecFuncs<VecType>::Mag(m_Offset);
       m_Dir = m_Offset / m_Length;
@@ -221,11 +303,21 @@ public:
       m_EndD = IntersectionVecFuncs<VecType>::Dot(m_End, m_Dir);
       m_NormalD = IntersectionVecFuncs<VecType>::Dot(m_Start, m_Normal);
     }
+
+    CollisionBoundingBox GetBoundingBox()
+    {
+      CollisionBoundingBox box;
+      box.m_Start.x = IntersectionFuncs<VecCompType>::Min(m_Start.x, m_End.x);
+      box.m_Start.y = IntersectionFuncs<VecCompType>::Min(m_Start.y, m_End.y);
+      box.m_End.x = IntersectionFuncs<VecCompType>::Max(m_Start.x, m_End.x);
+      box.m_End.y = IntersectionFuncs<VecCompType>::Max(m_Start.y, m_End.y);
+      return box;
+    }
   };
 
-  bool SweptPointToLineTest(const CollisionLine & sweep, const CollisionLine & line, IntersectionResult & result)
+  static bool SweptPointToLineTest(const CollisionLine & sweep, const CollisionLine & line, IntersectionResult<VecType> & result)
   {
-    VecCompType zero = VecCompType(0);
+    const VecCompType zero = VecCompType(0);
 
     auto other_normal_start_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_Start) - line.m_NormalD;
     auto other_normal_end_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_End) - line.m_NormalD;
@@ -246,8 +338,8 @@ public:
     auto d1 = IntersectionVecFuncs<VecType>::Dot(line.m_Dir, sweep.m_Start);
     auto d2 = IntersectionVecFuncs<VecType>::Dot(line.m_Dir, sweep.m_End);
 
-    if (((d1 - line.m_StartD) < 0 && (d2 - line.m_StartD) < zero) ||
-        ((d2 - line.m_EndD) > 0 && (d2 - line.m_EndD) > zero))
+    if (((d1 - line.m_StartD) < zero && (d2 - line.m_StartD) < zero) ||
+        ((d1 - line.m_EndD) > zero && (d2 - line.m_EndD) > zero))
     {
       return false;
     }
@@ -276,7 +368,7 @@ public:
         }
         else
         {
-          result.m_T = (d1 - line.m_End) / sweep.m_Length;
+          result.m_T = (d1 - line.m_EndD) / sweep.m_Length;
           result.m_HitPos = line.m_End;
         }
 
@@ -294,7 +386,7 @@ public:
     return true;
   }
 
-  bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult & result)
+  static bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult<VecType> & result)
   {
     auto offset = sweep.m_Start - circle.m_Center;
 
@@ -307,13 +399,18 @@ public:
       result.m_Intersected = true;
       result.m_T = zero;
       result.m_HitNormal = start_dist_sqrd == 0 ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) : 
-        offset * IntersectionFuncs<VecCompType>::Inverse(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd));
+        offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd));
       result.m_HitPos = sweep.m_Start;
       return true;
     }
 
+    if (sweep.m_Length == 0)
+    {
+      return false;
+    }
+
     auto dist_from_line_start = IntersectionVecFuncs<VecType>::Dot(sweep.m_Dir, offset);
-    if (dist_from_line_start < zero)
+    if (dist_from_line_start > zero)
     {
       return false;
     }
@@ -325,7 +422,7 @@ public:
     }
 
     auto circle_d = IntersectionVecFuncs<VecType>::Dot(circle.m_Center, sweep.m_Dir);
-    if (circle_d >= sweep.m_EndD - circle.m_Radius)
+    if (circle_d >= sweep.m_EndD + circle.m_Radius)
     {
       return false;
     }
@@ -343,6 +440,167 @@ public:
     result.m_HitPos = sweep.m_Start + sweep.m_Dir * (sweep.m_Length * t);
     result.m_HitNormal = (result.m_HitPos - circle.m_Center) / circle.m_Radius;
     return true;
+  }
+
+  static bool SweptCircleToLineTest(const CollisionLine & sweep, VecCompType radius, const CollisionLine & line, bool check_start, bool check_end, IntersectionResult<VecType> & result)
+  {
+    auto start_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_Start);
+    if (IntersectionFuncs<VecCompType>::Abs(start_d - line.m_NormalD) < radius)
+    {
+      result.m_Intersected = true;
+      result.m_T = VecCompType(0);
+      result.m_HitPos = sweep.m_Start;
+      result.m_HitNormal = IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir);
+      return true;
+    }
+
+    auto moved_line = line;
+    if (start_d > line.m_NormalD)
+    {
+      moved_line.m_Start += line.m_Normal * radius;
+      moved_line.m_End += line.m_Normal * radius;
+      moved_line.m_NormalD += radius;
+    }
+    else
+    {
+      moved_line.m_Start -= line.m_Normal * radius;
+      moved_line.m_End -= line.m_Normal * radius;
+      moved_line.m_NormalD -= radius;
+    }
+
+    IntersectionResult<VecType> test_result;
+    SweptPointToLineTest(sweep, moved_line, test_result);
+
+    auto radius_squared = radius * radius;
+
+    if (check_start)
+    {
+      IntersectionResult<VecType> circle_result;
+      auto test_circle = CollisionCircle(line.m_Start, radius, radius_squared);
+      SweptPointToCircleTest(sweep, test_circle, circle_result);
+
+      if (circle_result.m_Intersected)
+      {
+        if (test_result.m_Intersected == false || circle_result.m_T < test_result.m_T)
+        {
+          test_result = circle_result;
+        }
+      }
+    }
+
+    if (check_end)
+    {
+      IntersectionResult<VecType> circle_result;
+      auto test_circle = CollisionCircle(line.m_End, radius, radius_squared);
+      SweptPointToCircleTest(sweep, test_circle, circle_result);
+
+      if (circle_result.m_Intersected)
+      {
+        if (test_result.m_Intersected == false || circle_result.m_T < test_result.m_T)
+        {
+          test_result = circle_result;
+        }
+      }
+    }
+
+    if (test_result.m_Intersected)
+    {
+      result = test_result;
+      return true;
+    }
+
+    return false;
+  }
+
+  static bool SweptCircleToSweptCircleTest(const CollisionLine & sweep1, const CollisionLine & sweep2, VecCompType radius, IntersectionResult<VecType> & result)
+  {
+    const auto zero = VecCompType(0);
+    const auto one = VecCompType(1);
+    const auto two = VecCompType(2);
+    const auto four = VecCompType(4);
+
+    if (radius == zero)
+    {
+      return false;
+    }
+
+    auto p1 = sweep1.m_Start;
+    auto p2 = sweep2.m_Start;
+    auto v1 = sweep1.m_Offset;
+    auto v2 = sweep2.m_Offset;
+
+    auto dpx = p1.x - p2.x;
+    auto dpy = p1.y - p2.y;
+    auto dvx = v1.x - v2.x;
+    auto dvy = v1.y - v2.y;
+
+    auto a = dvx * dvx + dvy * dvy;
+
+    if (a == zero)
+    {
+      return false;
+    }
+
+    auto b = dpx * dvx + dpy * dvy;
+    b *= 2;
+
+    auto c = dpx * dpx + dpy * dpy - radius * radius;
+
+    auto b_sqrd = b * b;
+    auto four_ac = four * a * c;
+
+    if (b_sqrd < four_ac)
+    {
+      return false;
+    }
+
+    auto sqrt_four_ac = IntersectionFuncs<VecCompType>::Sqrt(b_sqrd - four_ac);
+    auto neg_b = IntersectionFuncs<VecCompType>::Inverse(b);
+
+    auto num = neg_b - sqrt_four_ac;
+    if (num < 0)
+    {
+      num = neg_b + sqrt_four_ac;
+
+      if (num < 0)
+      {
+        return false;
+      }
+    }
+
+    auto denom = a * two;
+    auto t = num / denom;
+
+    if (t > one)
+    {
+      return false;
+    }
+
+    auto p1_final = p1 + sweep1.m_Dir * (t * sweep1.m_Length);
+    auto p2_final = p2 + sweep2.m_Dir * (t * sweep2.m_Length);
+
+    auto final_offset = p2_final - p1_final;
+    auto final_offset_len = IntersectionVecFuncs<VecType>::Mag(final_offset);
+
+    if (final_offset_len == zero)
+    {
+      return false;
+    }
+
+    result.m_Intersected = true;
+    result.m_T = t;
+    result.m_HitNormal = final_offset / final_offset_len;
+    result.m_HitPos = (p1_final + p2_final) / two;
+    return true;
+  }
+
+  static bool CollisionBoxOverlaps(const CollisionBoundingBox & b1, const CollisionBoundingBox & b2)
+  {
+    return 
+      !((b1.m_Start.x > b2.m_End.x) |
+        (b1.m_Start.y > b2.m_End.y) |
+        (b1.m_End.x < b2.m_Start.x) |
+        (b1.m_End.y < b2.m_Start.y));
   }
 };
 

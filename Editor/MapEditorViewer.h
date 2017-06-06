@@ -2,12 +2,15 @@
 
 #include <QOpenGLWidget>
 
+#include "Foundation/Delegate/DelegateLink.h"
+
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Window/FakeWindow.h"
 
 #include "Runtime/Map/MapDef.refl.h"
 #include "Runtime/Entity/EntityResource.h"
@@ -18,6 +21,7 @@
 
 class MapEditor;
 class MapEditorToolBase;
+class GameContainer;
 
 template <typename ToolType>
 class MapEditorTool
@@ -73,6 +77,9 @@ public:
   void SetTileFrameInfo(MapTile & tile, uint64_t frame_id);
   uint64_t GetFrameIdForMapTile(const MapTile & tile);
 
+  void StartPlayMode();
+  void StopPlayMode();
+
 protected:
 
   Vector2 GetCursorPos();
@@ -87,11 +94,19 @@ protected:
   void paintGL() override;
 
   void keyPressEvent(QKeyEvent * event) override;
+  void keyReleaseEvent(QKeyEvent * event) override;
 
   void mousePressEvent(QMouseEvent * event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent * event) override;
   void wheelEvent(QWheelEvent *event) override;
+
+  void moveEvent(QMoveEvent * event) override;
+
+  void focusInEvent(QFocusEvent * event) override;
+  void focusOutEvent(QFocusEvent * event) override;
+  void enterEvent(QEvent * event) override;
+  void leaveEvent(QEvent * event) override;
 
 public slots:
 
@@ -100,6 +115,11 @@ public slots:
 private:
   NotNullPtr<MapEditor> m_Editor;
   MapDef & m_Map;
+
+  std::unique_ptr<FakeWindow> m_FakeWindow;
+  std::unique_ptr<GameContainer> m_GameContainer;
+
+  DelegateLink<void> m_UpdateDelegate;
 
   Optional<MapEditorLayerSelection> m_SelectedLayer;
   Optional<Box> m_SelectionBox;
@@ -124,10 +144,12 @@ private:
   RenderVec2 m_Center = {};
   LerpVar m_Magnification;
 
+  bool m_PlayMode = false;
   bool m_Dragging = false;
   bool m_Panning = false;
   bool m_HasMouse = false;
 
   Optional<Vector2> m_LastDrawPos;
   QPoint m_CursorPos;
+  QPoint m_WindowPos;
 };

@@ -4,6 +4,7 @@
 
 #include "Foundation/Random/Random.h"
 
+#include "Runtime/Event/EventSystem.h"
 #include "Runtime/Entity/Entity.h"
 #include "Runtime/Entity/EntitySystem.h"
 #include "Runtime/Component/Component.h"

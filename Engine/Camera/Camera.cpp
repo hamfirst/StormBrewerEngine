@@ -3,6 +3,7 @@
 #include "Engine/Camera/Camera.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/DrawList/DrawList.h"
 #include "Engine/Map/MapRender.h"
@@ -11,15 +12,20 @@
 #include "Runtime/RuntimeState.h"
 #include "Runtime/Collision/CollisionSystem.h"
 
-Camera::Camera(const RenderVec2 & resolution, const RenderVec2 & initial_position) :
-  m_Resolution(resolution), m_Position(initial_position)
+Camera::Camera(const Vector2 & game_resolution, const Vector2 & screen_resolution, const RenderVec2 & initial_position) :
+  m_GameResolution(game_resolution), m_ScreenResolution(screen_resolution), m_Position(initial_position)
 {
 
 }
 
-void Camera::SetResolution(const RenderVec2 & resolution)
+void Camera::SetGameResolution(const RenderVec2 & resolution)
 {
-  m_Resolution = resolution;
+  m_GameResolution = resolution;
+}
+
+void Camera::SetScreenResolution(const RenderVec2 & resolution)
+{
+  m_ScreenResolution = resolution;
 }
 
 void Camera::SetPosition(const RenderVec2 & position)
@@ -27,14 +33,52 @@ void Camera::SetPosition(const RenderVec2 & position)
   m_Position = position;
 }
 
-const RenderVec2 & Camera::GetResolution()
+void Camera::BootstrapShader(const ShaderProgram & shader)
 {
-  return m_Resolution;
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 1.0f, 1.0f, 1.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+}
+
+const RenderVec2 & Camera::GetGameResolution()
+{
+  return m_GameResolution;
+}
+
+const RenderVec2 & Camera::GetScreenResolution()
+{
+  return m_ScreenResolution;
 }
 
 const RenderVec2 & Camera::GetPosition()
 {
   return m_Position;
+}
+
+RenderVec2 Camera::TransformFromScreenSpaceToClipSpace(const RenderVec2 & pos)
+{
+  RenderVec2 screen_size = m_ScreenResolution;
+  auto transformed_pos = pos;
+  transformed_pos -= screen_size * 0.5f;
+
+  transformed_pos /= screen_size * 0.5f;
+  return transformed_pos;
+}
+
+RenderVec2 Camera::TransformFromScreenSpaceToWorldSpace(const RenderVec2 & pos)
+{
+  auto clip_pos = TransformFromScreenSpaceToClipSpace(pos);
+  return TransformFromClipSpaceToWorldSpace(clip_pos);
+}
+
+RenderVec2 Camera::TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos)
+{
+  auto transformed_pos = pos;
+  transformed_pos *= m_GameResolution * 0.5f;
+  transformed_pos += m_Position;
+  return transformed_pos;
 }
 
 void Camera::Draw(NotNullPtr<RuntimeState> runtime_state, RenderState & render_state)
@@ -43,13 +87,13 @@ void Camera::Draw(NotNullPtr<RuntimeState> runtime_state, RenderState & render_s
 
   render_state.EnableBlendMode();
 
-  viewport.m_Start = m_Position - (m_Resolution / 2.0f);
-  viewport.m_End = viewport.m_Start + m_Resolution;
+  viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
+  viewport.m_End = viewport.m_Start + m_GameResolution;
 
   auto & default_shader = g_ShaderManager.GetDefaultShader();
   default_shader.Bind();
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_Resolution);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
 
   DrawList draw_list;
   MapRenderer::DrawAllMaps(runtime_state, draw_list);
@@ -78,8 +122,8 @@ void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, con
 void Camera::DebugDrawCollision(NotNullPtr<RuntimeState> runtime_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color)
 {
   Box viewport;
-  viewport.m_Start = m_Position - (m_Resolution / 2.0f);
-  viewport.m_End = viewport.m_Start + m_Resolution;
+  viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
+  viewport.m_End = viewport.m_Start + m_GameResolution;
 
   auto collision = runtime_state->m_CollisionSystem.get();
   if (collision_layer >= collision->m_CollisionLayers.size())

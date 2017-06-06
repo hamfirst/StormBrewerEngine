@@ -14,6 +14,10 @@ struct VolumeDataTypeInfo : public StormDataTypeInfo
   PropertyField * (*RegisterPropertyFields)(PropertyFieldDatabase & property_db);
 };
 
+extern template
+std::unordered_map<uint32_t, VolumeDataTypeInfo> StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>::m_TypeList;
+extern template class StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>;
+
 class VolumeTypeDatabase : public StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>
 {
 public:

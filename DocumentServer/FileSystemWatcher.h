@@ -35,14 +35,14 @@ struct FileSystemDirectory
 class FileSystemWatcher
 {
 public:
-  FileSystemWatcher(StormSockets::StormSemaphore & semaphore);
+  FileSystemWatcher(const std::string & root_path, StormSockets::StormSemaphore & semaphore);
   ~FileSystemWatcher();
 
   Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> GetFileChange();
 
 private:
 
-  void IterateDirectory(const std::string & path, FileSystemDirectory & dir);
+  void IterateDirectory(const std::string & local_path, const std::string & full_path, FileSystemDirectory & dir);
   NullOptPtr<FileSystemDirectory> GetDirectoryAtPath(const char * path, FileSystemDirectory & base);
   Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> GetFileOrDirectoryAtPath(const char * path, FileSystemDirectory & base);
 
@@ -55,6 +55,7 @@ private:
 
   std::unique_ptr<FileSystemWatcherData> m_Data;
 
+  std::string m_RootPath;
   FileSystemDirectory m_RootDirectory;
 
   StormSockets::StormSemaphore & m_Semaphore;

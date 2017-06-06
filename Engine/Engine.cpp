@@ -26,16 +26,6 @@ static bool s_EGLMode = false;
 
 FT_Library g_FreeType;
 
-#ifdef _MSC_VER
-
-#ifdef _WIN64
-#pragma comment(lib, "../External/Windows/angle/x64/libEGL.lib")
-#pragma comment(lib, "../External/Windows/angle/x64/libGLESv2.lib")
-#else
-#pragma comment(lib, "../External/Windows/angle/libEGL.lib")
-#pragma comment(lib, "../External/Windows/angle/libGLESv2.lib")
-#endif
-#endif
 
 bool EngineInit(bool egl_mode)
 {
@@ -48,6 +38,10 @@ bool EngineInit(bool egl_mode)
     return false;
   }
 
+#ifdef _WEB
+
+  s_EGLMode = false;
+#else
   s_EGLMode = egl_mode;
   if (s_EGLMode)
   {
@@ -58,6 +52,8 @@ bool EngineInit(bool egl_mode)
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
   }
+
+#endif
 
   SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
 

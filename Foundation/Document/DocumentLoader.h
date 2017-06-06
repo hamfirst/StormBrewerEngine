@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-using DocumentLoadCallback = Delegate<void, uint64_t, Optional<Buffer> &, std::chrono::system_clock::time_point>;
+using DocumentLoadCallback = Delegate<void, uint64_t, Optional<Buffer> &&, std::chrono::system_clock::time_point>;
 
 class DocumentLoader
 {

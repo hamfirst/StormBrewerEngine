@@ -1,14 +1,20 @@
 
-#include <Foundation/Common.h>
-#include <Foundation/FileSystem/Path.h>
+#include "Foundation/Common.h"
+#include "Foundation/FileSystem/Path.h"
+#include "Foundation/FileSystem/File.h"
+#include "Foundation/Buffer/BufferUtil.h"
 
+#ifndef _WEB
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
 
 bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 {
+#ifndef _WEB
   auto canonical_path = fs::canonical(path);
   path = canonical_path.string();
+#endif
 
   for (auto & c : path)
   {
@@ -37,8 +43,23 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 
 std::string GetCanonicalRootPath()
 {
+#ifndef _WEB
   auto canonical_path = fs::canonical(fs::current_path());
   auto root_path = canonical_path.string();
+
+  auto asset_dir_file = FileOpen("asset_dir.txt", FileOpenMode::kRead);
+  if (asset_dir_file.GetFileOpenError() == 0)
+  {
+    auto asset_dir_data = asset_dir_file.ReadFileFull();
+    auto asset_dir = BufferToString(asset_dir_data);
+
+    canonical_path = fs::canonical(asset_dir);
+    root_path = canonical_path.string();
+  }
+
+#else
+  std::string root_path = "";
+#endif
 
   for (auto & c : root_path)
   {
@@ -78,7 +99,7 @@ std::string GetFileExtensionForCanonicalPath(const std::string & path)
 {
   auto path_index = path.rfind('/');
   auto ext_index = path.rfind('.');
-  if (path_index = std::string::npos)
+  if (path_index == std::string::npos)
   {
     if (ext_index == std::string::npos)
     {

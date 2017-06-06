@@ -49,7 +49,8 @@ void DocumentServerThread::DocumentServerThreadMain()
   {
     if (connected == false)
     {
-      if (m_WebSocket.Connect(m_Host.data(), 27800, "/", m_Host.data(), 2000))
+      m_WebSocket.StartConnect(m_Host.data(), 27800, "/", m_Host.data(), 2000);
+      if (m_WebSocket.IsConnected())
       {
         m_ConnectionGen++;
         while (m_EventQueue.Enqueue(DocumentServerEvent{ DocumentServerEventType::kConnected, std::to_string(m_ConnectionGen) }) == false)

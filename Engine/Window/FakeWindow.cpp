@@ -17,6 +17,11 @@ FakeWindow::FakeWindow(const Box & window_geo, const Delegate<void> & make_curre
 
 }
 
+void FakeWindow::HandleMouseMoveMessage(int x, int y)
+{
+  g_WindowManager.HandleMouseMotionMessage(m_Window.m_WindowId, x, y);
+}
+
 void FakeWindow::HandleKeyPressMessage(int sdl_key, int scan_code, bool pressed)
 {
   g_WindowManager.HandleKeyPressMessage(m_Window.m_WindowId, sdl_key, scan_code, pressed);
@@ -49,7 +54,7 @@ void FakeWindow::SetWindowMouseFocused(bool focused)
 
 void FakeWindow::SetWindowPos(const Vector2 & pos)
 {
-  g_WindowManager.SetWindowSize(m_Window.m_WindowId, pos);
+  g_WindowManager.SetWindowPos(m_Window.m_WindowId, pos);
 }
 
 void FakeWindow::SetWindowSize(const Vector2 & size)

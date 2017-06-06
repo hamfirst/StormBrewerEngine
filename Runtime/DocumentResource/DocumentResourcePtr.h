@@ -22,16 +22,38 @@ public:
     m_Data = resource ? resource->GetData() : nullptr;
   }
 
-  DocumentResourcePtr(const DocumentResourcePtr<DataType, ResourceType> & rhs) = default;
-  DocumentResourcePtr(DocumentResourcePtr<DataType, ResourceType> && rhs) = default;
+  DocumentResourcePtr(const DocumentResourcePtr<DataType, ResourceType> & rhs) :
+    m_Data(rhs.m_Data),
+    m_Resource(rhs.m_Resource)
+  {
+
+  }
+
+  DocumentResourcePtr(DocumentResourcePtr<DataType, ResourceType> && rhs) :
+    m_Data(std::move(rhs.m_Data)),
+    m_Resource(std::move(rhs.m_Resource))
+  {
+
+  }
 
   ~DocumentResourcePtr()
   {
-    m_Resource = {};
+    m_Resource.Clear();
   }
 
-  DocumentResourcePtr<DataType, ResourceType> & operator = (const DocumentResourcePtr<DataType, ResourceType> & rhs) = default;
-  DocumentResourcePtr<DataType, ResourceType> & operator = (DocumentResourcePtr<DataType, ResourceType> && rhs) = default;
+  DocumentResourcePtr<DataType, ResourceType> & operator = (const DocumentResourcePtr<DataType, ResourceType> & rhs)
+  {
+    m_Data = rhs.m_Data;
+    m_Resource = rhs.m_Resource;
+    return *this;
+  }
+
+  DocumentResourcePtr<DataType, ResourceType> & operator = (DocumentResourcePtr<DataType, ResourceType> && rhs)
+  {
+    m_Data = std::move(rhs.m_Data);
+    m_Resource = std::move(rhs.m_Resource);
+    return *this;
+  }
 
   NullOptPtr<ResourceType> GetResource()
   {
@@ -85,8 +107,7 @@ public:
   DocumentResourceLoadCallbackLink() = default;
   ~DocumentResourceLoadCallbackLink()
   {
-    m_Link = {};
-    m_Resource = {};
+    m_Link.Clear();
   }
 
   DocumentResourceLoadCallbackLink(DocumentResourceReference<ResourceType> && ref, DelegateLink<void, NotNullPtr<ResourceType>> && link) :
@@ -96,33 +117,29 @@ public:
 
   }
 
-  DocumentResourceLoadCallbackLink(const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs)
+  DocumentResourceLoadCallbackLink(const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs) :
+    DocumentResourcePtr<DataType, ResourceType>(rhs)
   {
-    m_Data = rhs.m_Data;
     m_Link = rhs.m_Link;
-    m_Resource = rhs.m_Resource;
   }
 
-  DocumentResourceLoadCallbackLink(DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs)
+  DocumentResourceLoadCallbackLink(DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs) :
+    DocumentResourcePtr<DataType, ResourceType>(std::move(rhs))
   {
-    m_Data = rhs.m_Data;
     m_Link = std::move(rhs.m_Link);
-    m_Resource = std::move(rhs.m_Resource);
   }
 
   DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs)
   {
-    m_Data = rhs.m_Data;
+    DocumentResourcePtr<DataType, ResourceType>::operator = (rhs);
     m_Link = rhs.m_Link;
-    m_Resource = rhs.m_Resource;
     return *this;
   }
 
   DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs)
   {
-    m_Data = rhs.m_Data;
+    DocumentResourcePtr<DataType, ResourceType>::operator = (std::move(rhs));
     m_Link = std::move(rhs.m_Link);
-    m_Resource = std::move(rhs.m_Resource);
     return *this;
   }
 

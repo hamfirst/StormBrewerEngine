@@ -31,8 +31,6 @@
 #ifndef __gl3w_h_
 #define __gl3w_h_
 
-#include <gl3w/glcorearb.h>
-
 #ifndef __gl_h_
 #define __gl_h_
 #endif
@@ -47,6 +45,18 @@ typedef void (*GL3WglProc)(void);
 int gl3wInit(int egl_mode);
 int gl3wIsSupported(int major, int minor);
 GL3WglProc gl3wGetProcAddress(const char *proc);
+
+#ifdef _WEB
+
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+
+#define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
+#define  GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
+
+#else
+
+#include <gl3w/glcorearb.h>
 
 /* OpenGL functions */
 extern PFNGLACTIVESHADERPROGRAMPROC                         gl3wActiveShaderProgram;
@@ -1450,6 +1460,8 @@ extern PFNGLWAITSYNCPROC                                    gl3wWaitSync;
 #define glViewportIndexedf                            gl3wViewportIndexedf
 #define glViewportIndexedfv                           gl3wViewportIndexedfv
 #define glWaitSync                                    gl3wWaitSync
+
+#endif
 
 #ifdef __cplusplus
 }

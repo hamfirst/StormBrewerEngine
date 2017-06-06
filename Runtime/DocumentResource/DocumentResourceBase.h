@@ -9,6 +9,7 @@
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/DocumentResource/DocumentResourceReferenceBase.h"
 
+class DocumentResourceManager;
 
 class RUNTIME_EXPORT DocumentResourceBase
 {

@@ -1,0 +1,6 @@
+{
+  "m_SpriteGlobalData": [
+    { "m_Type": "kSingleBox", "m_Name": "MoveBox" },
+    { "m_Type": "kMultiBox", "m_Name": "Test" }
+  ]
+}

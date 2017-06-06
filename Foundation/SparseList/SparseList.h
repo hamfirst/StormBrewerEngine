@@ -115,8 +115,6 @@ public:
           new(&m_Values[index].m_Value) T(rhs.m_Values[index].m_Value);
         }
       }
-
-      InitAllElements();
     }
     else
     {
@@ -149,7 +147,6 @@ public:
   SparseList<T> & operator = (const SparseList<T> & rhs)
   {
     Copy(rhs);
-    Set();
 
     return *this;
   }
@@ -157,7 +154,6 @@ public:
   SparseList<T> & operator = (SparseList<T> && rhs)
   {
     Move(std::move(rhs));
-    Set();
 
     return *this;
   }

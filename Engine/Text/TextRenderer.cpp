@@ -53,9 +53,9 @@ void TextRenderer::FinalizeAssetLoad(FontAsset * asset)
   {
     if (FT_New_Memory_Face(g_FreeType, asset->m_FontBuffer.Get(), (long)asset->m_FontBuffer.GetSize(), 0, &m_Face))
     {
+      printf("Error creating font face\n");
       throw std::runtime_error("Coult not load font");
     }
-
 
     FT_Set_Pixel_Sizes(m_Face, 0, m_FontSize);
     AddString(COMMON_CHARS, strlen(COMMON_CHARS));

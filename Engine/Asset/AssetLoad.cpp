@@ -87,7 +87,7 @@ NullOptPtr<Asset> GenericAssetReference::Resolve()
 template <typename AssetType>
 GenericAssetReference InitGenericAssetReference(czstr file_path)
 {
-  using AssetRefType = typename AssetReference<AssetType>;
+  using AssetRefType = AssetReference<AssetType>;
   GenericAssetReference asset;
 
   asset.m_AssetLink = new AssetRefType(AssetType::Load(file_path));

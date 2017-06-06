@@ -81,7 +81,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_
 
 void EntitySystem::AddComponentsToEntity(NotNullPtr<EntityDef> entity_def, NotNullPtr<Entity> entity)
 {
-  for (auto & elem : entity_def->m_Components)
+  for (auto elem : entity_def->m_Components)
   {
     auto & init_data = elem.second;
     if (init_data.GetValue() == nullptr)

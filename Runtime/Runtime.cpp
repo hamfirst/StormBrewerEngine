@@ -1,6 +1,12 @@
 
 #include "Runtime/RuntimeCommon.h"
+
+#include "Runtime/Component/Component.h"
+#include "Runtime/Entity/Entity.h"
+
 #include "Runtime/Component/ComponentSystem.h"
+#include "Runtime/Entity/EntitySystem.h"
+
 #include "Runtime/DocumentResource/DocumentResourceManager.h"
 
 #include "Runtime/Sprite/SpriteDef.refl.meta.h"

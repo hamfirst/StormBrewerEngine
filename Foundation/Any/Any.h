@@ -15,11 +15,11 @@ public:
   {
     m_Ptr = new T(t);
     m_Deleter = [](void * ptr) { delete static_cast<T *>(ptr); };
-    m_Type = typeid(T).hash_code;
+    m_Type = typeid(T).hash_code();
   }
 
-  template <typename T, std::enable_if_t<std::is_same<std::decay_t<T>, Any>::value == false> * Enable = 0>
-  explicit Any(T && t)
+  template <typename T>
+  explicit Any(T && t, std::enable_if_t<std::is_same<std::decay_t<T>, Any>::value == false> * Enable = 0)
   {
     m_Ptr = new T(std::move(t));
     m_Deleter = [](void * ptr) { delete static_cast<T *>(ptr); };

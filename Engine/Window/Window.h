@@ -25,6 +25,9 @@ public:
   void SetMousePos(int x, int y) const;
   void SetVsyncEnabled(bool enabled) const;
 
+  Vector2 GetSize() const;
+  Box GetGeometry() const;
+
   NullOptPtr<InputState> GetInputState() const;
   std::shared_ptr<TextInputContext> CreateTextInputContext(bool allow_first_input = false);
 

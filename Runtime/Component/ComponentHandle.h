@@ -6,6 +6,9 @@
 class Component;
 class ComponentManager;
 
+template <typename T>
+NullOptPtr<T> ComponentCast(NotNullPtr<Component> comp);
+
 class RUNTIME_EXPORT ComponentHandle : public SpecificHandle<ComponentManager>
 {
 public:
@@ -19,12 +22,12 @@ public:
   NullOptPtr<Component> Resolve();
 
   template <typename T>
-  NullOptPtr<Component> ResolveTo()
+  NullOptPtr<T> ResolveTo()
   {
     auto comp = Resolve();
     if (comp)
     {
-      return comp->CastTo<T>();
+      return ComponentCast<T>(comp);
     }
 
     return nullptr;

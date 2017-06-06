@@ -45,6 +45,9 @@ private:
   void SetVsyncEnabled(uint32_t window_id, bool enabled);
   void CloseWindow(uint32_t window_id);
 
+  Vector2 GetWindowSize(uint32_t window_id);
+  Box GetWindowGeometry(uint32_t window_id);
+
   void SetTextInputContext(uint32_t window_id, const std::shared_ptr<TextInputContext> & context, NullOptPtr<Box> input_box);
   void ClearTextInputContext(uint32_t window_id, NotNullPtr<TextInputContext> context);
   bool IsTextInputContextActive(uint32_t window_id, NotNullPtr<TextInputContext> context);

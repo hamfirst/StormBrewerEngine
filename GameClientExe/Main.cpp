@@ -7,13 +7,12 @@
 
 #include <gl3w/gl3w.h>
 
-#undef main
 #undef max
 #undef min
 
 #include "Foundation/Common.h"
 
-#include <StormData/StormDataJson.h>
+#include "StormData/StormDataJson.h"
 
 #include "Engine/Engine.h"
 #include "Engine/Asset/AssetLoader.h"
@@ -33,7 +32,13 @@
 #include "Shared/AssetBundle/AssetBundle.h"
 
 #include "Game/GameState.h"
+#include "GameClient/GameContainer.h"
 #include "GameClient/GameRender.h"
+
+#ifdef _WEB
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
 
 
 #pragma comment(lib, "Winmm.lib")
@@ -41,13 +46,12 @@
 #pragma comment(lib, "Version.lib")
 #pragma comment(lib, "Opengl32.lib")
 
-int SDL_main(int argc, char *argv[])
+
+std::unique_ptr<GameContainer> s_GameContainer;
+
+int main(int argc, char *argv[])
 {
-  EngineInit(true);
-
-  Vector2 resolution(320, 180);
   int multiplier = 3;
-
   for (int index = 0; index < argc; index++)
   {
     if (!strcmp(argv[index], "-native"))
@@ -56,53 +60,45 @@ int SDL_main(int argc, char *argv[])
     }
   }
 
-  auto window = g_WindowManager.CreateNewWindow("Game Title!", resolution.x * multiplier, resolution.y * multiplier);
+  //g_AssetLoader.DisableNetworkLoading();
+  EngineInit(true);
+
+  Vector2 resolution(320, 180);
+  resolution *= multiplier;
+
+  auto window = g_WindowManager.CreateNewWindow("Game Title!", resolution.x, resolution.y);
   window.MakeCurrent();
 
   EngineRenderInit();
 
-  RenderState render_state;
-  render_state.InitRenderState(resolution.x, resolution.y);
+  g_TextManager.LoadFont("./Fonts/arial.ttf", -1, 12);
+  s_GameContainer = std::make_unique<GameContainer>(window);
 
-  RenderUtil render_util;
-  render_util.SetClearColor(Color(100, 149, 237, 255));
-  render_util.LoadShaders();
+#ifdef _WEB
 
-  g_TextManager.LoadFont("Fonts/arial.ttf", -1, 15);
+  emscripten_set_main_loop([]()
+  {
+    EngineUpdate();
+    s_GameContainer->Update();
+    s_GameContainer->Render();
 
-  g_AssetLoader.DisableNetworkLoading();
+  }, 0, false);
 
-  GameState game_state;
-
-  AssetBundle bundle;
-  bundle.LoadAsset<MapResource>("./Maps/Test.map");
-  bool loaded = false;
-
-  Camera camera(resolution);
+  return 0;
+#else
 
   while (EngineWantsToQuit() == false)
   {
     EngineUpdate();
-
-    RenderUtil::Clear();
-
-    if (loaded == false && bundle.AllLoadedSuccessfully())
-    {
-      auto map = MapResource::Load("./Maps/Test.map");
-      game_state.LoadMap(map.GetResource());
-      loaded = true;
-    }
-
-    if (loaded)
-    {
-      game_state.Update();
-    }
-
-    window.Swap();
+    s_GameContainer->Update();
+    s_GameContainer->Render();
   }
 
+  s_GameContainer.reset();
   EngineCleanup();
 
   SDL_Quit();
   return 0;
+
+#endif
 }

@@ -15,7 +15,7 @@ class ENGINE_EXPORT KeyboardState
 public:
   KeyboardState(NotNullPtr<InputState> input_state);
 
-  void CheckDeltaState(bool in_focus, bool text_input_active);
+  void CheckDeltaState(bool in_focus, bool text_input_active, bool query_state);
 
   BinaryControlHandle AddKeyBinding(int scan_code, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void RemoveKeyBinding(BinaryControlHandle handle);
@@ -30,6 +30,7 @@ public:
   static czstr GetKeyNameForScanCode(int scan_code);
   static bool ScanCodeBlockeByTextInput(int scan_code);
   static int ScanCodeFromJavascriptCode(int javascript_key_code);
+  static int ScanCodeFromQtCode(int qt_key_code);
 
 protected:
 
@@ -40,6 +41,7 @@ private:
   InputState * m_InputState;
   bool m_PressedState[kNumKeyboardKeys] = {};
   bool m_PressedThisFrame[kNumKeyboardKeys] = {};
+  bool m_PressedLastFrame[kNumKeyboardKeys] = {};
   ControlBindingList<BinaryControlBinding> m_KeyboardControls[kNumKeyboardKeys];
 
   DelegateList<void, bool, ControlId> m_PassThroughCallbacks;

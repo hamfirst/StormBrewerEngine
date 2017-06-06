@@ -71,6 +71,7 @@ NullOptPtr<SpriteResource> AssetBundle::GetSprite(czstr name)
   return nullptr;
 }
 
+
 bool AssetBundle::AllLoadedSuccessfully()
 {
   for (auto b : m_LoadSuccess)

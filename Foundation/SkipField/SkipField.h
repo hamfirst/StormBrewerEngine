@@ -168,7 +168,7 @@ public:
 
   void Release(NotNullPtr<Type> ptr)
   {
-    auto itr = reinterpret_cast<typename const plf::colony<Type>::iterator *>(&ptr->GetIterator().m_Buffer);
+    auto itr = reinterpret_cast<const typename plf::colony<Type>::iterator *>(&ptr->GetIterator().m_Buffer);
     auto handle = ptr->GetHandle();
 
     if (m_HandleList.ReleaseHandle(handle))

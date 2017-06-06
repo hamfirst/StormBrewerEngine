@@ -91,6 +91,11 @@ void * Component::GetComponentSore()
   return m_Handle.m_ComponentStore;
 }
 
+uint32_t Component::AddEntityEventHandler(uint32_t event_type, Delegate<void, void *> && func)
+{
+  return m_Entity->AddEventHandler(this, event_type, std::move(func));
+}
+
 void Component::SetOwner(NotNullPtr<Entity> entity)
 {
   m_Entity = entity;

@@ -1,5 +1,6 @@
 
 #include "Runtime/RuntimeCommon.h"
+#include "Runtime/Entity/Entity.h"
 #include "Runtime/Event/EventSystem.h"
 
 void EventSystem::FinalizeEvents()
@@ -26,4 +27,14 @@ void EventSystem::FinalizeEvents()
   m_EventReceivers.clear();
 
   m_EventDatabase.Clear();
+}
+
+EntityHandle EventSystem::GetEntityHandle(NotNullPtr<Entity> entity)
+{
+  return entity->GetHandle();
+}
+
+void EventSystem::TriggerEntityEventHandler(NotNullPtr<Entity> entity, uint32_t event_type, void * ev)
+{
+  entity->TriggerEventHandler(event_type, ev);
 }

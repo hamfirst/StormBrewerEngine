@@ -101,6 +101,27 @@ void Window::SetVsyncEnabled(bool enabled) const
   g_WindowManager.SetVsyncEnabled(m_WindowId, enabled);
 }
 
+
+Vector2 Window::GetSize() const
+{
+  if (m_WindowId == 0)
+  {
+    return{};
+  }
+
+  return g_WindowManager.GetWindowSize(m_WindowId);
+}
+
+Box Window::GetGeometry() const
+{
+  if (m_WindowId == 0)
+  {
+    return{};
+  }
+
+  return g_WindowManager.GetWindowGeometry(m_WindowId);
+}
+
 NullOptPtr<InputState> Window::GetInputState() const
 {
   if (m_WindowId == 0)

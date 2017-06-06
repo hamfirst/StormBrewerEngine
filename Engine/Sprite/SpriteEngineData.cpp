@@ -23,7 +23,7 @@ void SpriteEngineData::Load()
   std::vector<TextureAsset::LoadCallbackLink> old_textures = std::move(m_Textures);
 
   m_Reloading = true;
-  for (auto & elem : m_Sprite.m_Textures)
+  for (auto elem : m_Sprite.m_Textures)
   {
     m_Textures.push_back(TextureAsset::LoadWithCallback(elem.second.m_Filename.data(), [this](NullOptPtr<TextureAsset>) { BuildVertexBuffer(); }));
   }
@@ -40,7 +40,7 @@ void SpriteEngineData::BuildVertexBuffer()
   }
 
   std::vector<std::pair<uint32_t, std::size_t>> texture_lookup;
-  for (auto & elem : m_Sprite.m_Textures)
+  for (auto elem : m_Sprite.m_Textures)
   {
     texture_lookup.emplace_back(std::make_pair(crc32(elem.second.m_Filename.data()), elem.first));
   }
@@ -53,11 +53,11 @@ void SpriteEngineData::BuildVertexBuffer()
 
   int frame_index = 0;
 
-  for (auto & anim : m_Sprite.m_Animations)
+  for (auto anim : m_Sprite.m_Animations)
   {
     int start_frame = frame_index;
 
-    for (auto & frame : anim.second.m_Frames)
+    for (auto frame : anim.second.m_Frames)
     {
       frame_index++;
     }
@@ -65,9 +65,9 @@ void SpriteEngineData::BuildVertexBuffer()
     m_Frames.push_back(std::make_pair(start_frame, frame_index - start_frame));
   }
 
-  for (auto & anim : m_Sprite.m_Animations)
+  for (auto anim : m_Sprite.m_Animations)
   {
-    for (auto & frame : anim.second.m_Frames)
+    for (auto frame : anim.second.m_Frames)
     {
       uint64_t frame_id = frame.second.m_FrameId;
       int frame_index = (int)(frame_id & 0xFFFFFF);

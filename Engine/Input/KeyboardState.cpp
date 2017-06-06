@@ -5,43 +5,66 @@
 
 #include <SDL2/SDL_keyboard.h>
 
-
 KeyboardState::KeyboardState(NotNullPtr<InputState> input_state) :
   m_InputState(input_state)
 {
 
 }
 
-void KeyboardState::CheckDeltaState(bool in_focus, bool text_input_active)
+void KeyboardState::CheckDeltaState(bool in_focus, bool text_input_active, bool query_state)
 {
-  int num_keys = 0;
-  const uint8_t * keys = SDL_GetKeyboardState(&num_keys);
-
-  for (int index = 0; index < num_keys; index++)
+  if (query_state)
   {
-    bool pressed = keys[index] && in_focus;
+    int num_keys = 0;
+    const uint8_t * keys = SDL_GetKeyboardState(&num_keys);
 
-    if (text_input_active && m_PressedState[index] == false && ScanCodeBlockeByTextInput(index))
+    for (int index = 0; index < num_keys; index++)
     {
-      pressed = false;
-    }
+      bool pressed = keys[index] && in_focus;
 
-    m_KeyboardControls[index].SetControlValue(pressed);
-
-    if (m_PressedState[index] == 0 && pressed)
-    {
-      m_PressedThisFrame[index] = true;
-      if (m_InputState->m_BinaryControlCallback)
+      if (text_input_active && m_PressedState[index] == false && ScanCodeBlockeByTextInput(index))
       {
-        m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(index));
+        pressed = false;
       }
-    }
-    else
-    {
-      m_PressedThisFrame[index] = false;
-    }
 
-    m_PressedState[index] = pressed;
+      if (m_PressedLastFrame[index] == 0 && pressed)
+      {
+        m_PressedThisFrame[index] = true;
+      }
+      else if (m_PressedThisFrame[index])
+      {
+        m_PressedThisFrame[index] = false;
+      }
+
+      m_PressedLastFrame[index] = pressed;
+      m_KeyboardControls[index].SetControlValue(pressed);
+
+      if (m_PressedState[index] = pressed)
+      {
+        if (m_InputState->m_BinaryControlCallback)
+        {
+          m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(index));
+        }
+      }
+
+      m_PressedState[index] = pressed;
+    }
+  }
+  else
+  {
+    for (int index = 0; index < kNumKeyboardKeys; index++)
+    {
+      if (m_PressedLastFrame[index] == false && m_PressedState[index] == true)
+      {
+        m_PressedThisFrame[index] = true;
+      }
+      else
+      {
+        m_PressedThisFrame[index] = false;
+      }
+
+      m_PressedLastFrame[index] = m_PressedState[index];
+    }
   }
 }
 
@@ -88,20 +111,12 @@ void KeyboardState::HandleKeyPressMessage(int scan_code, bool pressed, bool text
     m_PassThroughCallbacks.Call(pressed, CreateKeyboardBinding(scan_code));
   }
 
-  if (m_PressedState[scan_code] == 0 && pressed)
-  {
-    m_PressedThisFrame[scan_code] = true;
-    if (m_InputState->m_BinaryControlCallback)
-    {
-      m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(scan_code));
-    }
-  }
-  else
-  {
-    m_PressedThisFrame[scan_code] = false;
-  }
-
   m_PressedState[scan_code] = pressed;
+
+  if (m_InputState->m_BinaryControlCallback)
+  {
+    m_InputState->m_BinaryControlCallback(CreateKeyboardBinding(scan_code));
+  }
 }
 
 DelegateLink<void, bool, ControlId> KeyboardState::RegisterPassThroughDelegate(const Delegate<void, bool, ControlId> & del)
@@ -546,6 +561,225 @@ int KeyboardState::ScanCodeFromJavascriptCode(int javascript_key_code)
   default:
     return SDL_SCANCODE_UNKNOWN;
   }
+}
+
+int KeyboardState::ScanCodeFromQtCode(int qt_key_code)
+{
+  switch (qt_key_code)
+  {
+  case 0x01000000: //Qt::Key_Escape:
+    return SDL_SCANCODE_ESCAPE;
+  case 0x01000001: // Qt::Key_Tab:
+    return SDL_SCANCODE_TAB;
+  case 0x01000002://Qt::Key_Backtab:
+    return SDL_SCANCODE_UNKNOWN;
+  case 0x01000003://Qt::Key_Backspace:
+    return SDL_SCANCODE_BACKSPACE;
+  case 0x01000004://Qt::Key_Return:
+    return SDL_SCANCODE_RETURN;
+  case 0x01000005://Qt::Key_Enter:
+    return SDL_SCANCODE_RETURN2;
+  case 0x01000006://Qt::Key_Insert:
+    return SDL_SCANCODE_INSERT;
+  case 0x01000007://Qt::Key_Delete:
+    return SDL_SCANCODE_DELETE;
+  case 0x01000008://Qt::Key_Pause:
+    return SDL_SCANCODE_PAUSE;
+  case 0x01000009://Qt::Key_Print:
+    return SDL_SCANCODE_PRINTSCREEN;
+  case 0x0100000b://Qt::Key_Clear:
+    return SDL_SCANCODE_CLEAR;
+  case 0x01000010://Qt::Key_Home:
+    return SDL_SCANCODE_HOME;
+  case 0x01000011://Qt::Key_End:
+    return SDL_SCANCODE_END;
+  case 0x01000012://Qt::Key_Left:
+    return SDL_SCANCODE_LEFT;
+  case 0x01000013://Qt::Key_Up:
+    return SDL_SCANCODE_UP;
+  case 0x01000014://Qt::Key_Right:
+    return SDL_SCANCODE_RIGHT;
+  case 0x01000015://Qt::Key_Down:
+    return SDL_SCANCODE_DOWN;
+  case 0x01000016://Qt::Key_PageUp:
+    return SDL_SCANCODE_PAGEUP;
+  case 0x01000017://Qt::Key_PageDown:
+    return SDL_SCANCODE_PAGEDOWN;
+  case 0x01000020://Qt::Key_Shift:
+    return SDL_SCANCODE_LSHIFT;
+  case 0x01000021://Qt::Key_Control:
+    return SDL_SCANCODE_LCTRL;
+  case 0x01000022://Qt::Key_Meta:
+    return SDL_SCANCODE_MENU;
+  case 0x01000023://Qt::Key_Alt:
+    return SDL_SCANCODE_LALT;
+  case 0x01000024://Qt::Key_CapsLock:
+    return SDL_SCANCODE_CAPSLOCK;
+  case 0x01000025://Qt::Key_NumLock:
+    return SDL_SCANCODE_NUMLOCKCLEAR;
+  case 0x01000026://Qt::Key_ScrollLock:
+    return SDL_SCANCODE_SCROLLLOCK;
+  case 0x01000030://Qt::Key_F1:
+    return SDL_SCANCODE_F1;
+  case 0x01000031://Qt::Key_F2:
+    return SDL_SCANCODE_F2;
+  case 0x01000032://Qt::Key_F3:
+    return SDL_SCANCODE_F3;
+  case 0x01000033://Qt::Key_F4:
+    return SDL_SCANCODE_F4;
+  case 0x01000034://Qt::Key_F5:
+    return SDL_SCANCODE_F5;
+  case 0x01000035://Qt::Key_F6:
+    return SDL_SCANCODE_F6;
+  case 0x01000036://Qt::Key_F7:
+    return SDL_SCANCODE_F7;
+  case 0x01000037://Qt::Key_F8:
+    return SDL_SCANCODE_F8;
+  case 0x01000038://Qt::Key_F9:
+    return SDL_SCANCODE_F9;
+  case 0x01000039://Qt::Key_F10:
+    return SDL_SCANCODE_F10;
+  case 0x0100003a://Qt::Key_F11:
+    return SDL_SCANCODE_F11;
+  case 0x0100003b://Qt::Key_F12:
+    return SDL_SCANCODE_F12;
+  case 0x0100003c://Qt::Key_F13:
+    return SDL_SCANCODE_F13;
+  case 0x0100003d://Qt::Key_F14:
+    return SDL_SCANCODE_F14;
+  case 0x0100003e://Qt::Key_F15:
+    return SDL_SCANCODE_F15;
+  case 0x0100003f://Qt::Key_F16:
+    return SDL_SCANCODE_F16;
+  case 0x01000040://Qt::Key_F17:
+    return SDL_SCANCODE_F17;
+  case 0x01000041://Qt::Key_F18:
+    return SDL_SCANCODE_F18;
+  case 0x01000042://Qt::Key_F19:
+    return SDL_SCANCODE_F19;
+  case 0x01000043://Qt::Key_F20:
+    return SDL_SCANCODE_F20;
+  case 0x01000044://Qt::Key_F21:
+    return SDL_SCANCODE_F21;
+  case 0x01000045://Qt::Key_F22:
+    return SDL_SCANCODE_F22;
+  case 0x01000046://Qt::Key_F23:
+    return SDL_SCANCODE_F23;
+  case 0x01000047://Qt::Key_F24:
+    return SDL_SCANCODE_F24;
+  case 0x01000055://Qt::Key_Menu:
+    return SDL_SCANCODE_APPLICATION;
+  case 0x01000058://Qt::Key_Help:
+    return SDL_SCANCODE_HELP;
+  case 0x20://Qt::Key_Space:
+    return SDL_SCANCODE_SPACE;
+  case 0x2a://Qt::Key_Asterisk:
+    return SDL_SCANCODE_KP_MULTIPLY;
+  case 0x2b://Qt::Key_Plus:
+    return SDL_SCANCODE_KP_PLUS;
+  case 0x2c://Qt::Key_Comma:
+    return SDL_SCANCODE_COMMA;
+  case 0x2d://Qt::Key_Minus:
+    return SDL_SCANCODE_MINUS;
+  case 0x2e://Qt::Key_Period:
+    return SDL_SCANCODE_PERIOD;
+  case 0x2f://Qt::Key_Slash:
+    return SDL_SCANCODE_SLASH;
+  case 0x30://Qt::Key_0:
+    return SDL_SCANCODE_0;
+  case 0x31://Qt::Key_1:
+    return SDL_SCANCODE_1;
+  case 0x32://Qt::Key_2:
+    return SDL_SCANCODE_2;
+  case 0x33://Qt::Key_3:
+    return SDL_SCANCODE_3;
+  case 0x34://Qt::Key_4:
+    return SDL_SCANCODE_4;
+  case 0x35://Qt::Key_5:
+    return SDL_SCANCODE_5;
+  case 0x36://Qt::Key_6:
+    return SDL_SCANCODE_6;
+  case 0x37://Qt::Key_7:
+    return SDL_SCANCODE_7;
+  case 0x38://Qt::Key_8:
+    return SDL_SCANCODE_8;
+  case 0x39://Qt::Key_9:
+    return SDL_SCANCODE_9;
+  case 0x3a://Qt::Key_Colon:
+    return SDL_SCANCODE_UNKNOWN;
+  case 0x3b://Qt::Key_Semicolon:
+    return SDL_SCANCODE_SEMICOLON;
+  case 0x41://Qt::Key_A:
+    return SDL_SCANCODE_A;
+  case 0x42://Qt::Key_B:
+    return SDL_SCANCODE_B;
+  case 0x43://Qt::Key_C:
+    return SDL_SCANCODE_C;
+  case 0x44://Qt::Key_D:
+    return SDL_SCANCODE_D;
+  case 0x45://Qt::Key_E:
+    return SDL_SCANCODE_E;
+  case 0x46://Qt::Key_F:
+    return SDL_SCANCODE_F;
+  case 0x47://Qt::Key_G:
+    return SDL_SCANCODE_G;
+  case 0x48://Qt::Key_H:
+    return SDL_SCANCODE_H;
+  case 0x49://Qt::Key_I:
+    return SDL_SCANCODE_I;
+  case 0x4a://Qt::Key_J:
+    return SDL_SCANCODE_J;
+  case 0x4b://Qt::Key_K:
+    return SDL_SCANCODE_K;
+  case 0x4c://Qt::Key_L:
+    return SDL_SCANCODE_L;
+  case 0x4d://Qt::Key_M:
+    return SDL_SCANCODE_M;
+  case 0x4e://Qt::Key_N:
+    return SDL_SCANCODE_N;
+  case 0x4f://Qt::Key_O:
+    return SDL_SCANCODE_O;
+  case 0x50://Qt::Key_P:
+    return SDL_SCANCODE_P;
+  case 0x51://Qt::Key_Q:
+    return SDL_SCANCODE_Q;
+  case 0x52://Qt::Key_R:
+    return SDL_SCANCODE_R;
+  case 0x53://Qt::Key_S:
+    return SDL_SCANCODE_S;
+  case 0x54://Qt::Key_T:
+    return SDL_SCANCODE_T;
+  case 0x55://Qt::Key_U:
+    return SDL_SCANCODE_U;
+  case 0x56://Qt::Key_V:
+    return SDL_SCANCODE_V;
+  case 0x57://Qt::Key_W:
+    return SDL_SCANCODE_W;
+  case 0x58://Qt::Key_X:
+    return SDL_SCANCODE_X;
+  case 0x59://Qt::Key_Y:
+    return SDL_SCANCODE_Y;
+  case 0x5a://Qt::Key_Z:
+    return SDL_SCANCODE_Z;
+  case 0x0100117e://Qt::Key_Mode_switch:
+    return SDL_SCANCODE_MODE;
+  case 0x01000061://Qt::Key_Back:
+    return SDL_SCANCODE_AC_BACK;
+  case 0x01000062://Qt::Key_Forward:
+    return SDL_SCANCODE_AC_FORWARD;
+  case 0x01000063://Qt::Key_Stop:
+    return SDL_SCANCODE_AC_STOP;
+  case 0x01000064://Qt::Key_Refresh:
+    return SDL_SCANCODE_AC_REFRESH;
+  case 0x01000070://Qt::Key_VolumeDown:
+    return SDL_SCANCODE_VOLUMEDOWN;
+  case 0x01000071://Qt::Key_VolumeMute:
+    return SDL_SCANCODE_MUTE;
+  case 0x01000072://Qt::Key_VolumeUp:
+    return SDL_SCANCODE_VOLUMEUP;
+  }
+
+  return SDL_SCANCODE_UNKNOWN;
 }
 
 NullOptPtr<void> KeyboardState::GetControlBinding(const ControlHandle & handle)

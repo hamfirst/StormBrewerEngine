@@ -14,7 +14,7 @@ class ENGINE_EXPORT MouseState
 public:
   MouseState(NotNullPtr<InputState> input_state);
 
-  void CheckDeltaState(const Box & window_geo, bool in_focus);
+  void CheckDeltaState(const Box & window_geo, bool in_focus, bool query_state);
 
   BinaryControlHandle AddButtonBinding(int button, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void RemoveButtonBinding(BinaryControlHandle handle);

@@ -30,6 +30,11 @@ Document::~Document()
   }
 }
 
+void Document::TearDown()
+{
+  m_Links.clear();
+}
+
 const std::string & Document::GetPath() const
 {
   return m_Path;

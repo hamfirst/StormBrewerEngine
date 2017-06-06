@@ -87,7 +87,13 @@ void WindowManager::UpdateInput()
       SDL_StopTextInput();
     }
 
-    window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo);
+#ifdef _WEB
+    bool update = false;
+#else
+    bool update = window.m_FakeWindow == nullptr;
+#endif
+
+    window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo, update);
   }
 }
 
@@ -280,6 +286,24 @@ void WindowManager::CloseWindow(uint32_t window_id)
   }
 
   s_Windows.erase(itr);
+}
+
+Vector2 WindowManager::GetWindowSize(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return{};
+  WindowState & window = *itr->second;
+
+  return window.m_WindowGeo.Size();
+}
+
+Box WindowManager::GetWindowGeometry(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return{};
+  WindowState & window = *itr->second;
+
+  return window.m_WindowGeo;
 }
 
 void WindowManager::SetTextInputContext(uint32_t window_id, const std::shared_ptr<TextInputContext> & context, NullOptPtr<Box> input_box)

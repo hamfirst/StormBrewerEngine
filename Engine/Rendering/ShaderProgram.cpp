@@ -104,7 +104,8 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
 
     name_buffer[name_length] = 0;
 
-    m_Uniforms.push_back(crc32(name_buffer));
+    auto location_index = glGetUniformLocation(m_ProgramName, name_buffer); CHECK_GL_LOAD_ERROR;
+    m_Uniforms.push_back(std::make_pair(crc32(name_buffer), location_index));
   }
 }
 
@@ -112,9 +113,9 @@ int ShaderProgram::GetUniformIndex(Hash uniform_name) const
 {
   for (int index = 0; index < (int)m_Uniforms.size(); index++)
   {
-    if (m_Uniforms[index] == uniform_name)
+    if (m_Uniforms[index].first == uniform_name)
     {
-      return index;
+      return m_Uniforms[index].second;
     }
   }
 

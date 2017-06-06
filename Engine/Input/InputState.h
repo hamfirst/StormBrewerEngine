@@ -6,12 +6,14 @@
 #include "Engine/Input/MouseState.h"
 #include "Engine/Input/GamepadState.h"
 
+class Window;
+
 class ENGINE_EXPORT InputState
 {
 public:
   InputState();
 
-  void Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo);
+  void Update(bool in_keyboard_focus, bool in_mouse_focus, bool text_input_active, const Box & window_geo, bool query_state);
 
   BinaryControlHandle BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void UnbindBinaryControl(const BinaryControlHandle & handle);
@@ -24,7 +26,7 @@ public:
 
   bool GetKeyState(int scan_code);
   bool GetKeyPressedThisFrame(int scan_code);
-  bool GetMouseButtonSate(int button);
+  bool GetMouseButtonState(int button);
   PointerState GetPointerState();
   bool GetGamepadConnected(int gamepad_idx);
   bool GetGamepadButtonState(int gamepad_idx, GamepadButton button);

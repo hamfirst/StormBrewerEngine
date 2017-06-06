@@ -27,7 +27,7 @@ DocumentResourceReferenceBase::DocumentResourceReferenceBase(const DocumentResou
 
 DocumentResourceReferenceBase::DocumentResourceReferenceBase(DocumentResourceReferenceBase && rhs) noexcept
 {
-  m_Resource = rhs.m_Resource;
+  m_Resource = std::move(rhs.m_Resource);
   rhs.m_Resource = nullptr;
 }
 
@@ -38,6 +38,11 @@ DocumentResourceReferenceBase::~DocumentResourceReferenceBase()
 
 DocumentResourceReferenceBase & DocumentResourceReferenceBase::operator = (const DocumentResourceReferenceBase & rhs) noexcept
 {
+  if (m_Resource == rhs.m_Resource)
+  {
+    return *this;
+  }
+
   Clear();
 
   if (rhs.m_Resource)

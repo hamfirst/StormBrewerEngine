@@ -114,9 +114,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameContainer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeTestSprite.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameRender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameContainer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeTestSprite.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameRender.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

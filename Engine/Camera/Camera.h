@@ -5,17 +5,26 @@
 class RuntimeState;
 class RenderState;
 class RenderUtil;
+class ShaderProgram;
 
 class Camera
 {
 public:
-  Camera(const RenderVec2 & resolution, const RenderVec2 & initial_position = {});
+  Camera(const Vector2 & game_resolution, const Vector2 & screen_resolution, const RenderVec2 & initial_position = {});
 
-  void SetResolution(const RenderVec2 & resolution);
+  void SetGameResolution(const RenderVec2 & resolution);
+  void SetScreenResolution(const RenderVec2 & resolution);
   void SetPosition(const RenderVec2 & position);
 
-  const RenderVec2 & GetResolution();
+  void BootstrapShader(const ShaderProgram & shader);
+
+  const RenderVec2 & GetGameResolution();
+  const RenderVec2 & GetScreenResolution();
   const RenderVec2 & GetPosition();
+
+  RenderVec2 TransformFromScreenSpaceToClipSpace(const RenderVec2 & pos);
+  RenderVec2 TransformFromScreenSpaceToWorldSpace(const RenderVec2 & pos);
+  RenderVec2 TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos);
 
   void Draw(NotNullPtr<RuntimeState> runtime_state, RenderState & render_state);
   void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color);
@@ -24,6 +33,7 @@ public:
   void DebugDrawCollision(NotNullPtr<RuntimeState> runtime_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color);
 
 private:
-  RenderVec2 m_Resolution;
+  RenderVec2 m_ScreenResolution;
+  RenderVec2 m_GameResolution;
   RenderVec2 m_Position;
 };

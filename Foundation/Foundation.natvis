@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="Optional&lt;*&gt;">
+    <DisplayString>{{ valid={ m_Valid } }</DisplayString>
+    <Expand>
+      <Item Name="[val]" ExcludeView="simple">*(($T1 *)m_Buffer)</Item>
+    </Expand>
+  </Type>
+
+</AutoVisualizer>

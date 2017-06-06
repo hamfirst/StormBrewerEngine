@@ -1,0 +1,11 @@
+[]
+
+{
+    "m_Textures": {
+        "0": {
+            "m_Filename": ".\/Images\/Background\/LD7.png",
+            "m_FrameWidth": 16,
+            "m_FrameHeight": 16
+        }
+    }
+}

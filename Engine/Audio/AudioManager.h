@@ -10,6 +10,7 @@
 
 #include <mutex>
 
+class AudioSpec;
 class MusicSpec;
 
 using AudioHandle = SpecificHandle<AudioSpec>;

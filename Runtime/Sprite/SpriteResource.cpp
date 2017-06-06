@@ -4,7 +4,10 @@
 #include "Runtime/Sprite/SpriteDef.refl.meta.h"
 #include "Runtime/Animation/AnimationState.h"
 
+#include "StormRefl/StormReflJson.h"
 #include "StormData/StormDataJson.h"
+
+#include "Foundation/BasicTypes/BasicTypes.refl.meta.h"
 
 #include <sb/vector.h>
 
@@ -164,7 +167,7 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
   }
 
   std::vector<std::pair<uint32_t, Vector2>> textures;
-  for (auto & tex : m_Data.m_Textures)
+  for (auto tex : m_Data.m_Textures)
   {
     textures.emplace_back(std::make_pair(crc32(tex.second.m_Filename.data()), Vector2(tex.second.m_FrameWidth, tex.second.m_FrameHeight)));
   }

@@ -6,6 +6,8 @@
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
+#ifndef _WEB
+
 class ENGINE_EXPORT VertexArray
 {
 public:
@@ -33,4 +35,5 @@ private:
   int m_LoadError;
 };
 
+#endif
 

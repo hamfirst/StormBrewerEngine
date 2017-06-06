@@ -51,6 +51,18 @@ void RenderState::EnableBlendMode(RenderingBlendMode mode)
   }
 }
 
+void RenderState::SyncBlendMode()
+{
+  if (m_BlendEnabled == false)
+  {
+    glDisable(GL_BLEND); CHECK_GL_RENDER_ERROR;
+  }
+  else
+  {
+    glEnable(GL_BLEND); CHECK_GL_RENDER_ERROR;
+  }
+}
+
 void RenderState::DisableBlendMode()
 {
   if (m_BlendEnabled == true)

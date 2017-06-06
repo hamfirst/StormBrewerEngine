@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Foundation/SkipField/SkipFieldIterator.h"
+#include "Runtime/Event/EventSystem.h"
 #include "Runtime/Entity/EntityHandle.h"
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Animation/AnimationState.h"
@@ -75,7 +76,7 @@ public:
   template <typename Event>
   void PushEventReceiver(const Box & box)
   {
-    m_EventSystem->PushEventReceiver(this, box);
+    m_EventSystem->PushEventReceiver(this, box, Event::TypeNameHash);
   }
 
   NotNullPtr<RuntimeState> GetRuntimeState();

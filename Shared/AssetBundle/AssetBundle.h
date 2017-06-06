@@ -8,6 +8,7 @@ class RenderUtil;
 
 class AnimationState;
 class TextureAsset;
+class MusicAsset;
 class SpriteResource;
 
 class AssetBundle

@@ -67,8 +67,11 @@ void TextureAsset::OnDataLoadComplete(Buffer & buffer)
   default:
     m_LoadError = UPNG_EUNFORMAT;
     CallAssetLoadCallbacksWithFailure();
+    //printf("Invalid pixel size: %d\n", m_PixelBuffer->GetPixelSize());
     return;
   }
+
+  //printf("Finalizing texture: %d %d\n", m_PixelBuffer->GetWidth(), m_PixelBuffer->GetHeight());
 
   m_Texture.SetTextureData(*m_PixelBuffer, type);
   if (m_Texture.GetLoadError() != 0)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Runtime/RuntimeCommon.h"
-#include "Runtime/Entity/Entity.h"
 #include "Runtime/Entity/EntityHandle.h"
 
 #include "Foundation/Any/Any.h"
@@ -21,7 +20,7 @@ public:
     event_data.m_EventData = Any(Event(std::forward<InitArgs>(init_args)...));
     event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<Entity> entity)
     {
-      entity->TriggerEventHandler(src_data->m_Type, src_data->m_EventData.Get<Event>());
+      TriggerEntityEventHandler(entity, src_data->m_Type, src_data->m_EventData.Get<Event>());
     };
 
     auto id = m_Events.size();
@@ -33,17 +32,24 @@ public:
 
 
   template <typename Event>
-  void PushEventReceiver(NotNullPtr<Entity> entity, const Box & box)
+  void PushEventReceiver(NotNullPtr<Entity> entity, const Box & box, uint32_t type)
   {
     EventDest dest;
-    dest.m_EntityHandle = entity->GetHandle();
+    dest.m_EntityHandle = GetEntityHandle(entity);
     dest.m_Box = box;
+    dest.m_Type = type;
     m_EventReceivers.emplace_back(std::move(dest));
   }
 
   void FinalizeEvents();
 
 private:
+
+  static EntityHandle GetEntityHandle(NotNullPtr<Entity> entity);
+  static void TriggerEntityEventHandler(NotNullPtr<Entity> entity, uint32_t event_type, void * ev);
+
+private:
+
   struct EventDest;
   struct EventSrc;
 

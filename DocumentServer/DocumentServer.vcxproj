@@ -27,7 +27,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\External\asio\asio.cpp" />
     <ClCompile Include="DocumentServer.cpp">
       <SubType>
       </SubType>
@@ -43,6 +42,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\External\asio\asio.vcxproj">
+      <Project>{eecddcd2-6ae2-441e-9919-4a53fc1b56f4}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\External\mbedtls\mbedtls.vcxproj">
       <Project>{c66678ed-eb9f-45a3-9bba-ce24aaa7a4ad}</Project>
     </ProjectReference>
@@ -175,7 +177,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_WIN32_WINNT=0x0501</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -188,7 +190,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -206,7 +208,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CoreOpt|Win32'">
@@ -224,7 +226,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -242,7 +244,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">
@@ -260,7 +262,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(SolutionDir)Assets</Command>
+      <Command>copy $(TargetPath) $(SolutionDir)Test</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

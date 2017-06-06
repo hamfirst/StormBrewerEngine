@@ -2,6 +2,7 @@
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Component/ComponentSystem.h"
 #include "Runtime/Component/ComponentInitDataTypeDatabase.h"
+#include "Runtime/Component/ComponentInitDataTypeDatabaseRegister.h"
 
 #include <sb/vector.h>
 
@@ -174,7 +175,7 @@ void ComponentTypeSystem::LoadPropertyDatabase(PropertyFieldDatabase & property_
     type_info.RegisterPropertyFields(property_db);
   };
 
-  ComponentInitDataTypeDatabase::VisitTypes(visitor);
+  StormDataTypeDatabaseVisitTypes(StormDataTypeDatabaseVistorInfo<ComponentInitData, ComponentInitDataTypeInfo>{}, visitor);
 }
 
 ComponentSystem::ComponentSystem()
