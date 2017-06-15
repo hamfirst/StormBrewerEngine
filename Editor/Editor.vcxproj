@@ -1727,6 +1727,9 @@
     <ProjectReference Include="..\External\binpack\binpack.vcxproj">
       <Project>{d16dd340-97f1-4045-a353-2907054ffc9c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\External\enet\ENet.vcxproj">
+      <Project>{17492c4d-0484-4614-9ef5-a74566b9acc8}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\External\External.vcxproj">
       <Project>{f2c9910c-3e6e-4752-a69e-810cc743bc10}</Project>
     </ProjectReference>
@@ -1763,6 +1766,9 @@
     <ProjectReference Include="..\Runtime\Runtime.vcxproj">
       <Project>{5fdcaa08-5ff7-41b8-8600-3ec9452f04d9}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Server\Server.vcxproj">
+      <Project>{bedfeb11-3655-4e60-b161-29fb34d814c4}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.vcxproj">
       <Project>{eff76349-a880-4523-aff2-d442cd3758c0}</Project>
     </ProjectReference>
@@ -1771,6 +1777,9 @@
     </ProjectReference>
     <ProjectReference Include="..\StormNet\StormNet.vcxproj">
       <Project>{24b20138-31a9-4262-bbcf-eb2341371e14}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\StormNet\StormNetBindingsEnet.vcxproj">
+      <Project>{38144850-9225-4138-bbb5-f5401ad9a6db}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

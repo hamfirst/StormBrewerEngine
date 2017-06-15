@@ -4,7 +4,7 @@
 #include "GameServer/GameServer.h"
 
 #include "Game/GameMessages.refl.meta.h"
-#include "Game/GameSimulation.refl.meta.h"
+#include "Game/GameFullState.refl.meta.h"
 
 GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager) :
   m_Server(game_server),
@@ -21,7 +21,7 @@ void GameInstanceManager::Update()
   }
 }
 
-bool GameInstanceManager::JoinPlayer(GameClient * client, const JoinGameMessage & message)
+bool GameInstanceManager::JoinPlayer(GameClientConnection * client, const JoinGameMessage & message)
 {
   if (message.m_GameId == 0)
   {
@@ -43,7 +43,7 @@ bool GameInstanceManager::JoinPlayer(GameClient * client, const JoinGameMessage 
     }
 
     auto game_id = GetRandomNumber64();
-    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, *stage)));
+    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, message.m_Settings, *stage)));
 
     auto game = result.first->second.get();
 
@@ -71,7 +71,7 @@ bool GameInstanceManager::JoinPlayer(GameClient * client, const JoinGameMessage 
   }
 }
 
-void GameInstanceManager::RemovePlayer(GameClient * client)
+void GameInstanceManager::RemovePlayer(GameClientConnection * client)
 {
   if (client->GetGameInstance() != nullptr)
   {

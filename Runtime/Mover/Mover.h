@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Runtime/RuntimeCommon.h"
+#include "Runtime/Mover/MoverState.h"
+#include "Runtime/Collision/CollisionSystem.h"
 
-class RuntimeState;
+class EngineState;
 class Entity;
 
 struct MoverResult
@@ -18,6 +20,7 @@ struct MoverResult
 class Mover
 {
 public:
-  static void UpdateMoverNoCollision(Entity * entity);
-  static MoverResult UpdateMover(Entity * entity, const Box & move_box, uint32_t collision_mask, bool check_initial = false);
+  static void UpdateMoverNoCollision(MoverState & mover_state);
+  static MoverResult UpdateMover(MoverState & mover_state, CollisionSystem & collision, 
+    const Vector2 & position, const Box & move_box, uint32_t collision_mask, bool check_initial = false);
 };

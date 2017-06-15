@@ -130,36 +130,59 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameController.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameLevelList.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameLogicContainer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameMessages.refl.cpp" />
-    <ClCompile Include="GameSimulation.refl.cpp" />
+    <ClCompile Include="GameNetworkEvents.refl.cpp" />
     <ClCompile Include="GameStage.cpp" />
     <ClCompile Include="GameStageManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameFullState.refl.h" />
+    <ClInclude Include="GameFullState.refl.meta.h" />
+    <ClInclude Include="GameLevelList.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameLogicContainer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameMessages.refl.h" />
     <ClInclude Include="GameMessages.refl.meta.h" />
+    <ClInclude Include="GameNetworkData.refl.h" />
+    <ClInclude Include="GameNetworkData.refl.meta.h" />
+    <ClInclude Include="GameNetworkEvents.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameNetworkEvents.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameNetworkSettings.h" />
     <ClInclude Include="GameProtocol.h" />
-    <ClInclude Include="GameSimulation.refl.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GameSimulation.refl.meta.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="GameServerEventSender.h" />
+    <ClInclude Include="GameSimulationEventCallbacks.h" />
     <ClInclude Include="GameStage.h" />
     <ClInclude Include="GameStageManager.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
       <SubType>
       </SubType>
     </ClInclude>

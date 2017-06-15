@@ -2,7 +2,6 @@
 #include "GameClient/GameModeTestSprite.h"
 #include "GameClient/GameContainer.h"
 
-#include "Runtime/Entity/Entity.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
 #include "Engine/Input/InputState.h"
@@ -10,10 +9,9 @@
 #include "Engine/Asset/MusicAsset.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Entity/Entity.h"
 
 #include "SDL2/SDL_scancode.h"
-
-#include <Windows.h>
 
 GameModeTestSprite::GameModeTestSprite(GameContainer & container) :
   m_Camera(Vector2(320, 240), container.GetWindow().GetSize())
@@ -44,7 +42,6 @@ void GameModeTestSprite::Update(GameContainer & container)
   if (input_state->GetKeyPressedThisFrame(SDL_SCANCODE_SPACE))
   {
     GetAssets().PlaySoundEffect("sfx");
-    OutputDebugString("Playing sound\n");
   }
 }
 

@@ -17,21 +17,21 @@
 #include <QSettings>
 #include <QDebug>
 
-#include <StormRefl/StormReflJson.h>
-#include <StormRefl/StormReflMetaEnum.h>
+#include "StormRefl/StormReflJson.h"
+#include "StormRefl/StormReflMetaEnum.h"
 
-#include <StormData/StormDataChangePacket.h>
+#include "StormData/StormDataChangePacket.h"
 
-#include <Foundation/Network/Network.h>
-#include <Foundation/FileSystem/Path.h>
+#include "Foundation/Network/Network.h"
+#include "Foundation/FileSystem/Path.h"
 
-#include <Engine/Engine.h>
-#include <Engine/Text/TextManager.h>
+#include "Engine/Engine.h"
+#include "Engine/Text/TextManager.h"
 
-#include <Runtime/Component/ComponentSystem.h>
-#include <Runtime/Runtime.h>
+#include "Engine/Component/ComponentSystem.h"
+#include "Runtime/Runtime.h"
 
-#include <DocumentServer/DocumentServerMessages.refl.meta.h>
+#include "DocumentServer/DocumentServerMessages.refl.meta.h"
 
 #include "EditorContainer.h"
 #include "TextureViewer.h"

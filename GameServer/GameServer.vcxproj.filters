@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="GameServer.cpp" />
-    <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="GameInstanceManager.cpp" />
     <ClCompile Include="GameEventReconciler.cpp" />
+    <ClCompile Include="GameClientConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
-    <ClInclude Include="GameClient.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameInstanceManager.h" />
     <ClInclude Include="GameEventReconciler.h" />
+    <ClInclude Include="GameClientConnection.h" />
   </ItemGroup>
 </Project>

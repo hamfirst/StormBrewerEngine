@@ -12,7 +12,7 @@ class AnimationState;
 
 struct EntityRenderState;
 
-using Sprite = DocumentResourcePtr<SpriteDef, SpriteResource>;
+using SpritePtr = DocumentResourcePtr<SpriteDef, SpriteResource>;
 using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource>;
 
 class SpriteResource : public DocumentResourceBase
@@ -23,7 +23,7 @@ public:
   NotNullPtr<SpriteDef> GetData();
   DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
 
-  static Sprite Load(czstr file_path);
+  static SpritePtr Load(czstr file_path);
   static SpriteLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback);
 
   int GetAnimationIndex(uint32_t animation_name_hash);

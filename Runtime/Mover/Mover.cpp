@@ -1,12 +1,10 @@
 
 #include "Runtime/RuntimeCommon.h"
-#include "Runtime/RuntimeState.h"
 #include "Runtime/Mover/Mover.h"
-#include "Runtime/Entity/Entity.h"
+#include "Runtime/Mover/MoverState.h"
 
-void Mover::UpdateMoverNoCollision(Entity * entity)
+void Mover::UpdateMoverNoCollision(MoverState & mover_state)
 {
-  auto & mover_state = entity->GetMoverState();
   mover_state.m_SubPixel += mover_state.m_Velocity;
 
   while (mover_state.m_SubPixel.x < 0)
@@ -34,18 +32,17 @@ void Mover::UpdateMoverNoCollision(Entity * entity)
   }
 }
 
-MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t collision_mask, bool check_initial)
+MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & collision, const Vector2 & position, const Box & move_box, uint32_t collision_mask, bool check_initial)
 {
   MoverResult result = {};
-  auto runtime_state = entity->GetRuntimeState();
 
   auto coll_box = move_box;
-  coll_box.m_Start += entity->GetPosition();
-  coll_box.m_End += entity->GetPosition();
+  coll_box.m_Start += position;
+  coll_box.m_End += position;
 
   if (check_initial)
   {
-    auto coll_result = runtime_state->CheckCollision(coll_box, collision_mask);
+    auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
       result.m_HitInitial = coll_result;
@@ -54,7 +51,6 @@ MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t c
     }
   }
 
-  auto & mover_state = entity->GetMoverState();
   mover_state.m_SubPixel += mover_state.m_Velocity;
 
   while (mover_state.m_SubPixel.x < 0)
@@ -62,7 +58,7 @@ MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t c
     coll_box.m_Start.x--;
     coll_box.m_End.x--;
 
-    auto coll_result = runtime_state->CheckCollision(coll_box, collision_mask);
+    auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
       mover_state.m_SubPixel.x = 0;
@@ -82,7 +78,7 @@ MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t c
     coll_box.m_Start.x++;
     coll_box.m_End.x++;
 
-    auto coll_result = runtime_state->CheckCollision(coll_box, collision_mask);
+    auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
       mover_state.m_SubPixel.x = 127;
@@ -102,7 +98,7 @@ MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t c
     coll_box.m_Start.y--;
     coll_box.m_End.y--;
 
-    auto coll_result = runtime_state->CheckCollision(coll_box, collision_mask);
+    auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
       mover_state.m_SubPixel.y = 0;
@@ -122,7 +118,7 @@ MoverResult Mover::UpdateMover(Entity * entity, const Box & move_box, uint32_t c
     coll_box.m_Start.y++;
     coll_box.m_End.y++;
 
-    auto coll_result = runtime_state->CheckCollision(coll_box, collision_mask);
+    auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
       mover_state.m_SubPixel.y = 127;

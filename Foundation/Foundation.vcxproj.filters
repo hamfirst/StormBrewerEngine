@@ -73,6 +73,9 @@
     <Filter Include="SparseList">
       <UniqueIdentifier>{210cdc64-b122-4ddd-859d-e9505c13a941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Update">
+      <UniqueIdentifier>{60f7918f-ea49-49bf-ba3f-1875581ce573}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -219,6 +222,12 @@
     </ClInclude>
     <ClInclude Include="Math\Intersection.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Update\UpdateBucketList.h">
+      <Filter>Update</Filter>
+    </ClInclude>
+    <ClInclude Include="Update\UpdateRegistrationTemplates.h">
+      <Filter>Update</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

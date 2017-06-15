@@ -5,8 +5,6 @@
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 
-#include "Game/GameState.h"
-
 class GameContainer;
 
 class GameMode

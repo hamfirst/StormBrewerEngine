@@ -19,7 +19,7 @@ class RenderUtil;
 
 struct MapEditorEntityManagerElement
 {
-  Sprite m_Sprite;
+  SpritePtr m_Sprite;
   Optional<Box> m_Frame;
 };
 

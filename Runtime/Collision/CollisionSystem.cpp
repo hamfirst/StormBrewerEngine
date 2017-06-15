@@ -4,8 +4,7 @@
 
 #include <sb/vector.h>
 
-CollisionSystem::CollisionSystem(NotNullPtr<RuntimeState> runtime_state, std::size_t num_collision_layers) :
-  m_RuntimeState(runtime_state),
+CollisionSystem::CollisionSystem(std::size_t num_collision_layers) :
   m_CollisionLayers(num_collision_layers)
 {
   for (auto & elem : m_CollisionLayers)

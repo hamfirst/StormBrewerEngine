@@ -3,14 +3,14 @@
 #include "Engine/Entity/EntityRender.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
-#include "Runtime/Entity/EntitySystem.h"
-#include "Runtime/Entity/Entity.h"
+#include "Engine/Entity/EntitySystem.h"
+#include "Engine/Entity/Entity.h"
 
 #include "Foundation/SkipField/SkipField.h"
 
-void EntityRenderer::DrawAllEntities(const Box & viewport_bounds, NotNullPtr<RuntimeState> runtime_state, DrawList & draw_list)
+void EntityRenderer::DrawAllEntities(const Box & viewport_bounds, NotNullPtr<EngineState> engine_state, DrawList & draw_list)
 {
-  auto entity_system = runtime_state->m_EntitySystem.get();
+  auto entity_system = engine_state->m_EntitySystem.get();
   auto entity_alloc = static_cast<SkipField<Entity> *>(entity_system->m_EntityAllocator);
 
   entity_alloc->VisitAll([&](Entity & entity)

@@ -46,7 +46,7 @@ DocumentResourceLoadCallbackLink<EntityDef, EntityResource> EntityResource::Load
   return p_this->AddLoadCallback(std::move(callback));
 }
 
-const Sprite & EntityResource::GetSprite() const
+const SpritePtr & EntityResource::GetSprite() const
 {
   return m_Sprite;
 }

@@ -6,6 +6,7 @@
 
 
 GameContainer::GameContainer(const Window & window) :
+  m_LevelList(),
   m_Window(window)
 {
   auto resolution = m_Window.GetSize();
@@ -22,6 +23,31 @@ GameContainer::GameContainer(const Window & window) :
 GameContainer::~GameContainer()
 {
 
+}
+
+EngineState & GameContainer::GetEngineState()
+{
+  return m_EngineState;
+}
+
+Window & GameContainer::GetWindow()
+{
+  return m_Window;
+}
+
+GameLevelList & GameContainer::GetLevelList()
+{
+  return m_LevelList;
+}
+
+RenderState & GameContainer::GetRenderState()
+{
+  return m_RenderState;
+}
+
+RenderUtil & GameContainer::GetRenderUtil()
+{
+  return m_RenderUtil;
 }
 
 void GameContainer::Update()
@@ -46,24 +72,4 @@ void GameContainer::Render()
   }
 
   m_Window.Swap();
-}
-
-GameState & GameContainer::GetGameState()
-{
-  return m_GameState;
-}
-
-Window & GameContainer::GetWindow()
-{
-  return m_Window;
-}
-
-RenderState & GameContainer::GetRenderState()
-{
-  return m_RenderState;
-}
-
-RenderUtil & GameContainer::GetRenderUtil()
-{
-  return m_RenderUtil;
 }

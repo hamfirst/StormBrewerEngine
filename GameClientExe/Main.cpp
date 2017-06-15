@@ -22,18 +22,16 @@
 #include "Engine/Window/WindowManager.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Camera/Camera.h"
+#include "Engine/Entity/Entity.h"
+#include "Engine/EngineState.h"
 
-#include "Runtime/RuntimeState.h"
-#include "Runtime/Entity/Entity.h"
 #include "Runtime/Entity/EntityResource.h"
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Map/MapResource.h"
 
 #include "Shared/AssetBundle/AssetBundle.h"
 
-#include "Game/GameState.h"
 #include "GameClient/GameContainer.h"
-#include "GameClient/GameRender.h"
 
 #ifdef _WEB
 #include <emscripten.h>

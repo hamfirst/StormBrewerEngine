@@ -15,7 +15,7 @@
 #include "Runtime/Entity/EntityResource.h"
 #include "Runtime/Map/MapResource.h"
 
-#include "Game/GameSimulation.refl.meta.h"
+#include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
 
 #include "GameServer/GameServer.h"
@@ -54,6 +54,9 @@ int main(int argc, char ** argv)
   bundle.LoadAsset<EntityResource>("./Entities/Tile.entity");
   bundle.LoadAsset<MapResource>("./Maps/Map.map");
 
+  GameLevelList level_list;
+  level_list.PreloadAllLevels();
+
   if (bundle.AllLoadedSuccessfully() == false)
   {
     printf("  Failed to load assets...\n");
@@ -61,8 +64,7 @@ int main(int argc, char ** argv)
   }
 
   printf("  Assets loaded...\n");
-
-  GameStageManager stage_manager;
+  GameStageManager stage_manager(level_list);
 
   printf("  Starting server...\n");
   NetworkInit();

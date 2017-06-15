@@ -1,7 +1,7 @@
 
 #include "Foundation/Math/Util.h"
 
-#include "GameEventReconciler.h"
+#include "GameServer/GameEventReconciler.h"
 
 GameEventReconciler::GameEventReconciler(int max_dist, int max_time) :
   m_MaxDist(max_dist),

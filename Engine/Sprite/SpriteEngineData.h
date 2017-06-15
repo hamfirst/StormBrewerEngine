@@ -5,11 +5,11 @@
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Asset/TextureAsset.h"
+#include "Engine/Entity/Entity.h"
 
 #include "Runtime/SpriteBase/SpriteBaseDef.refl.h"
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/TileSheet/TileSheetResource.h"
-#include "Runtime/Entity/Entity.h"
 
 class SpriteEngineData
 {
@@ -25,10 +25,10 @@ public:
   void BuildVertexBuffer();
   Optional<Box> Render(int animation_index, int animation_frame, const ShaderProgram & shader) const;
 
-  static Optional<Box> RenderSprite(const Sprite & sprite, int animation_index, int animation_frame, const ShaderProgram & shader);
+  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, const ShaderProgram & shader);
   static Optional<Box> RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame, const ShaderProgram & shader);
 
-  static NullOptPtr<TextureAsset> GetSpriteFrame(const Sprite & sprite, int animation_index, int animation_frame, Box & texture_coords);
+  static NullOptPtr<TextureAsset> GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
 private:
   SpriteBaseDef & m_Sprite;
   bool m_Reloading;

@@ -3,14 +3,14 @@
 #include <StormNet/NetServerBackendEnet.h>
 #include <StormNet/NetServer.h>
 
-#include "GameClient.h"
-#include "GameInstance.h"
-#include "GameInstanceManager.h"
+#include "GameServer/GameClientConnection.h"
+#include "GameServer/GameInstance.h"
+#include "GameServer/GameInstanceManager.h"
 
 #include "Game/GameProtocol.h"
 #include "Game/GameStageManager.h"
 
-using ServerBase = NetServer<GameClient, ServerProtocolDef, ClientProtocolDef>;
+using ServerBase = NetServer<GameClientConnection, ServerProtocolDef, ClientProtocolDef>;
 
 class GameServer : public ServerBase
 {
@@ -24,8 +24,8 @@ public:
 
 protected:
 
-  virtual GameClient * ConstructClient(void * client_mem, uint32_t connection_id, ProtocolType & proto) override;
-  virtual void CleanupClient(GameClient & client, ProtocolType & proto) override;
+  virtual GameClientConnection * ConstructClient(void * client_mem, uint32_t connection_id, ProtocolType & proto) override;
+  virtual void CleanupClient(GameClientConnection & client, ProtocolType & proto) override;
 
 private:
   GameStageManager & m_StageManager;

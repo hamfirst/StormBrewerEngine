@@ -78,6 +78,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogg", "External\ogg\ogg.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "upng", "External\upng\upng.vcxproj", "{B99590BD-BA57-4E0A-B9B0-A13C1680D188}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{BEDFEB11-3655-4E60-B161-29FB34D814C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CoreOpt|x64 = CoreOpt|x64
@@ -450,6 +452,18 @@ Global
 		{B99590BD-BA57-4E0A-B9B0-A13C1680D188}.Release|x64.Build.0 = Release|x64
 		{B99590BD-BA57-4E0A-B9B0-A13C1680D188}.Release|x86.ActiveCfg = Release|Win32
 		{B99590BD-BA57-4E0A-B9B0-A13C1680D188}.Release|x86.Build.0 = Release|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.CoreOpt|x64.ActiveCfg = Release|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.CoreOpt|x64.Build.0 = Release|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.CoreOpt|x86.ActiveCfg = Release|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.CoreOpt|x86.Build.0 = Release|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Debug|x64.ActiveCfg = Debug|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Debug|x64.Build.0 = Debug|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Debug|x86.ActiveCfg = Debug|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Debug|x86.Build.0 = Debug|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Release|x64.ActiveCfg = Release|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Release|x64.Build.0 = Release|x64
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Release|x86.ActiveCfg = Release|Win32
+		{BEDFEB11-3655-4E60-B161-29FB34D814C4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

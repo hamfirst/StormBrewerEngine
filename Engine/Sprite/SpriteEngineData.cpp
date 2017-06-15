@@ -165,7 +165,7 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
   return m_FrameTextureCoords[frame_index];
 }
 
-Optional<Box> SpriteEngineData::RenderSprite(const Sprite & sprite, int animation_index, int animation_frame, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, const ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)
@@ -199,7 +199,7 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int ani
   return sprite_data->Render(animation_index, animation_frame, shader);
 }
 
-NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const Sprite & sprite, int animation_index, int animation_frame, Box & texture_coords)
+NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)

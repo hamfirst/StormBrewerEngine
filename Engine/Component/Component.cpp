@@ -1,16 +1,17 @@
 
-#include "Runtime/RuntimeCommon.h"
+#include "Engine/EngineCommon.h"
 
-#include "Runtime/Component/Component.h"
-#include "Runtime/Component/ComponentSystem.h"
 #include "Runtime/Component/ComponentInitData.refl.meta.h"
 #include "Runtime/Component/ComponentInitDataTypeDatabase.h"
 #include "Runtime/Component/ComponentInitDataTypeDatabaseRegister.h"
 
-#include "Runtime/Component/ComponentList.h"
-#include "Runtime/Component/ComponentUpdateBucketList.h"
-#include "Runtime/Component/ComponentUpdateRegistrationTemplates.h"
-#include "Runtime/Entity/Entity.h"
+#include "Engine/Component/Component.h"
+#include "Engine/Component/ComponentSystem.h"
+
+#include "Engine/Component/ComponentList.h"
+#include "Engine/Component/ComponentUpdateBucketList.h"
+#include "Engine/Component/ComponentUpdateRegistrationTemplates.h"
+#include "Engine/Entity/Entity.h"
 
 REGISTER_BASE_COMPONENT(Component);
 
@@ -89,11 +90,6 @@ void Component::InitComponentStore(void * comp_store)
 void * Component::GetComponentSore()
 {
   return m_Handle.m_ComponentStore;
-}
-
-uint32_t Component::AddEntityEventHandler(uint32_t event_type, Delegate<void, void *> && func)
-{
-  return m_Entity->AddEventHandler(this, event_type, std::move(func));
 }
 
 void Component::SetOwner(NotNullPtr<Entity> entity)

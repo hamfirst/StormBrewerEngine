@@ -24,7 +24,7 @@ public:
   static EntityResourcePtr Load(czstr file_path);
   static DocumentResourceLoadCallbackLink<EntityDef, EntityResource> LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback);
 
-  const Sprite & GetSprite() const;
+  const SpritePtr & GetSprite() const;
 
 protected:
   virtual void OnDataLoadComplete(const std::string & resource_data) override;
@@ -37,5 +37,5 @@ private:
   EntityDef m_Data;
   DelegateList<void, NotNullPtr<EntityResource>> m_LoadCallbacks;
 
-  Sprite m_Sprite;
+  SpritePtr m_Sprite;
 };

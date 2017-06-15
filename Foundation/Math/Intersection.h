@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Foundation/BasicTypes/BasicTypes.refl.h"
+
 #include <cmath>
 
 template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
@@ -33,6 +35,16 @@ public:
   static auto Max(const VecCompType & a, const VecCompType & b)
   {
     return max(a, b);
+  }
+
+  static auto Floor(const VecCompType & a)
+  {
+    return floorf(a, b);
+  }
+
+  static auto Ceil(const VecCompType & a)
+  {
+    return ceilf(a, b);
   }
 
   static auto Reciprocal(const VecCompType & c)
@@ -69,6 +81,16 @@ class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
   static auto Max(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a, const NetFixedPoint<StorageType, NumBits, FractionalBits> & b)
   {
     return a.Max(b);
+  }
+
+  static auto Floor(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a)
+  {
+    return a.Floor()
+  }
+
+  static auto Ceil(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a)
+  {
+    return a.Ceil();
   }
 
   static auto Reciprocal(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
@@ -233,6 +255,17 @@ public:
   {
     VecType m_Start;
     VecType m_End;
+
+    Box ToNormalBox() const
+    {
+      Box b;
+      b.m_Start.x = IntersectionFuncs<VecCompType>::Floor(m_Start.x);
+      b.m_Start.y = IntersectionFuncs<VecCompType>::Floor(m_Start.y);
+
+      b.m_End.x = IntersectionFuncs<VecCompType>::Ceil(m_Start.x);
+      b.m_End.y = IntersectionFuncs<VecCompType>::Ceil(m_Start.y);
+      return b;
+    }
   };
 
   struct CollisionCircle

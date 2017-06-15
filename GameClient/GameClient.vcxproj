@@ -114,6 +114,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameClientController.refl.cpp" />
+    <ClCompile Include="GameClientEntitySync.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientLevelLoader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameContainer.cpp">
       <SubType>
       </SubType>
@@ -126,9 +135,20 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameRender.cpp" />
+    <ClCompile Include="GameNetworkClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameClientController.refl.h" />
+    <ClInclude Include="GameClientController.refl.meta.h" />
+    <ClInclude Include="GameClientEntitySync.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientEventSender.h" />
+    <ClInclude Include="GameClientLevelLoader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameContainer.h">
       <SubType>
       </SubType>
@@ -141,9 +161,10 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameRender.h" />
+    <ClInclude Include="GameNetworkClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

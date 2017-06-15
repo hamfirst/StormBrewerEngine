@@ -1,6 +1,6 @@
 #pragma once
 
-#include <StormData/StormDataTypeDatabase.h>
+#include "StormData/StormDataTypeDatabase.h"
 
 #include "Foundation/PropertyMeta/PropertyFieldDatabase.h"
 #include "Runtime/Component/ComponentInitData.refl.h"

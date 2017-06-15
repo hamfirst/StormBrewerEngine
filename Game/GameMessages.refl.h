@@ -5,12 +5,19 @@
 
 #include <StormNet/NetReflection.h>
 
-#include "Game/GameSimulation.refl.h"
+#include "Game/GameNetworkData.refl.h"
 
 struct FromServerMessage
 {
   NET_DECLARE_BASE_TYPE;
   NET_REFL;
+};
+
+struct LoadLevelMessage : public FromServerMessage
+{
+  NET_REFL;
+  GameInitSettings m_Settings;
+  uint64_t m_LoadToken;
 };
 
 struct PongMessage : public FromServerMessage
@@ -37,14 +44,9 @@ struct JoinGameMessage : public ToServerMessage
   GameInitSettings m_Settings;
 };
 
-struct SimEventBase
+struct FinishLoadingMessage : public ToServerMessage
 {
   NET_REFL;
-  NET_DECLARE_BASE_TYPE;
-};
-
-struct PlaceholderEvent : public SimEventBase
-{
-  NET_REFL;
+  uint64_t m_LoadToken;
 };
 

@@ -1,20 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="GameSimulation.refl.cpp" />
     <ClCompile Include="GameMessages.refl.cpp" />
     <ClCompile Include="GameStage.cpp" />
     <ClCompile Include="GameStageManager.cpp" />
+    <ClCompile Include="GameNetworkEvents.refl.cpp" />
+    <ClCompile Include="GameLevelList.cpp" />
+    <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="GameLogicContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameSimulation.refl.h" />
-    <ClInclude Include="GameSimulation.refl.meta.h" />
     <ClInclude Include="GameMessages.refl.h" />
     <ClInclude Include="GameMessages.refl.meta.h" />
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameStage.h" />
     <ClInclude Include="GameStageManager.h" />
+    <ClInclude Include="GameNetworkEvents.refl.h" />
+    <ClInclude Include="GameNetworkEvents.refl.meta.h" />
+    <ClInclude Include="GameNetworkData.refl.meta.h" />
+    <ClInclude Include="GameSimulationEventCallbacks.h" />
+    <ClInclude Include="GameLevelList.h" />
+    <ClInclude Include="GameNetworkData.refl.h" />
+    <ClInclude Include="GameNetworkSettings.h" />
+    <ClInclude Include="GameFullState.refl.h" />
+    <ClInclude Include="GameFullState.refl.meta.h" />
+    <ClInclude Include="GameController.h" />
+    <ClInclude Include="GameServerEventSender.h" />
+    <ClInclude Include="GameLogicContainer.h" />
   </ItemGroup>
 </Project>

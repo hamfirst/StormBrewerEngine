@@ -37,12 +37,12 @@ DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> SpriteResource::AddL
     DocumentResourceReference<SpriteResource>(this), m_LoadCallbacks.AddDelegate(std::move(callback)));
 }
 
-Sprite SpriteResource::Load(czstr file_path)
+SpritePtr SpriteResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path, 
     [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<SpriteResource *>(resource);
-  return Sprite(DocumentResourceReference<SpriteResource>(p_this));
+  return SpritePtr(DocumentResourceReference<SpriteResource>(p_this));
 }
 
 SpriteLoadLink SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback)

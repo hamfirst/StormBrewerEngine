@@ -43,41 +43,19 @@
     <Filter Include="Volume">
       <UniqueIdentifier>{ca14bad0-394d-4b51-b025-c7ede30a5abf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GenericResource">
+      <UniqueIdentifier>{231f4049-7435-4b79-b9a7-c65e1d58fd28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity\Entity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\EntitySystem.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\Component.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\ComponentSystem.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Component\ComponentInitData.refl.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Component\ComponentUpdateBucketList.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\ComponentHandle.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\EntityHandle.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="RuntimeCommon.cpp" />
     <ClCompile Include="Runtime.cpp" />
-    <ClCompile Include="RuntimeState.cpp" />
     <ClCompile Include="DocumentResource\DocumentResourceReferenceBase.cpp">
       <Filter>DocumentResource</Filter>
     </ClCompile>
@@ -108,20 +86,11 @@
     <ClCompile Include="Map\MapResource.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map\MapSystem.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\MapInstance.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Collision\CollisionSystem.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="Mover\Mover.cpp">
       <Filter>Mover</Filter>
-    </ClCompile>
-    <ClCompile Include="Event\EventSystem.cpp">
-      <Filter>Event</Filter>
     </ClCompile>
     <ClCompile Include="FrameData\FrameData.refl.cpp">
       <Filter>FrameData</Filter>
@@ -141,25 +110,16 @@
     <ClCompile Include="Volume\VolumeTypeDatabase.cpp">
       <Filter>Volume</Filter>
     </ClCompile>
+    <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity\Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\EntityDef.refl.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\EntityDef.refl.meta.h">
       <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\EntitySystem.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentSystem.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Sprite\SpriteDef.refl.h">
       <Filter>Sprite</Filter>
@@ -167,39 +127,14 @@
     <ClInclude Include="Sprite\SpriteDef.refl.meta.h">
       <Filter>Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\EntityHandle.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Component\ComponentInitData.refl.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Component\ComponentInitData.refl.meta.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Component\ComponentList.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentHandle.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentUpdateBucketList.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentUpdateRegistrationTemplates.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentInitDataTypeDatabase.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentInitDataTypeDatabaseRegister.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ComponentRegistrationMacros.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Runtime.h" />
     <ClInclude Include="RuntimeCommon.h" />
-    <ClInclude Include="RuntimeState.h" />
     <ClInclude Include="DocumentResource\DocumentResourceReference.h">
       <Filter>DocumentResource</Filter>
     </ClInclude>
@@ -230,7 +165,6 @@
     <ClInclude Include="Entity\EntityResource.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="RuntimeStateFuncs.h" />
     <ClInclude Include="Map\MapDef.refl.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -259,12 +193,6 @@
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="Map\MapResource.h">
-      <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\MapSystem.h">
-      <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\MapInstance.h">
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="Collision\CollisionSystem.h">
@@ -311,6 +239,21 @@
     </ClInclude>
     <ClInclude Include="Volume\VolumeTypeRegister.h">
       <Filter>Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentInitDataTypeDatabase.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentInitDataTypeDatabaseRegister.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\EventDispatcher.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectionDatabase.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericResource.h">
+      <Filter>GenericResource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

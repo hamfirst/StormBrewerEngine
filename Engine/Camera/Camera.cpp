@@ -8,8 +8,8 @@
 #include "Engine/DrawList/DrawList.h"
 #include "Engine/Map/MapRender.h"
 #include "Engine/Entity/EntityRender.h"
+#include "Engine/EngineState.h"
 
-#include "Runtime/RuntimeState.h"
 #include "Runtime/Collision/CollisionSystem.h"
 
 Camera::Camera(const Vector2 & game_resolution, const Vector2 & screen_resolution, const RenderVec2 & initial_position) :
@@ -81,7 +81,7 @@ RenderVec2 Camera::TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos)
   return transformed_pos;
 }
 
-void Camera::Draw(NotNullPtr<RuntimeState> runtime_state, RenderState & render_state)
+void Camera::Draw(NotNullPtr<EngineState> engine_state, RenderState & render_state)
 {
   Box viewport;
 
@@ -96,8 +96,8 @@ void Camera::Draw(NotNullPtr<RuntimeState> runtime_state, RenderState & render_s
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
 
   DrawList draw_list;
-  MapRenderer::DrawAllMaps(runtime_state, draw_list);
-  EntityRenderer::DrawAllEntities(viewport, runtime_state, draw_list);
+  MapRenderer::DrawAllMaps(engine_state, draw_list);
+  EntityRenderer::DrawAllEntities(viewport, engine_state, draw_list);
   draw_list.Draw(viewport, m_Position);
   default_shader.Unbind();
 }
@@ -119,13 +119,13 @@ void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, con
   DebugDraw(render_state, render_util, b, color);
 }
 
-void Camera::DebugDrawCollision(NotNullPtr<RuntimeState> runtime_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color)
+void Camera::DebugDrawCollision(NotNullPtr<EngineState> engine_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color)
 {
   Box viewport;
   viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
   viewport.m_End = viewport.m_Start + m_GameResolution;
 
-  auto collision = runtime_state->m_CollisionSystem.get();
+  auto collision = engine_state->m_CollisionSystem.get();
   if (collision_layer >= collision->m_CollisionLayers.size())
   {
     return;

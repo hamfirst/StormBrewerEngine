@@ -230,6 +230,13 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Component\ComponentHandle.h" />
+    <ClInclude Include="Component\ComponentList.h" />
+    <ClInclude Include="Component\ComponentRegistrationMacros.h" />
+    <ClInclude Include="Component\ComponentSystem.h" />
+    <ClInclude Include="Component\ComponentUpdateBucketList.h" />
+    <ClInclude Include="Component\ComponentUpdateRegistrationTemplates.h" />
     <ClInclude Include="DrawList\DrawList.h">
       <SubType>
       </SubType>
@@ -239,10 +246,15 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="EngineCommon.h" />
+    <ClInclude Include="EngineState.h" />
+    <ClInclude Include="EngineStateFuncs.h" />
+    <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Entity\EntityHandle.h" />
     <ClInclude Include="Entity\EntityRender.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Entity\EntitySystem.h" />
     <ClInclude Include="Input\BinaryControlBinding.h">
       <SubType>
       </SubType>
@@ -276,9 +288,10 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Map\MapEngineInstance.h" />
+    <ClInclude Include="Map\MapInstance.h" />
     <ClInclude Include="Map\MapManualTileLayerInstance.h" />
     <ClInclude Include="Map\MapRender.h" />
+    <ClInclude Include="Map\MapSystem.h" />
     <ClInclude Include="Rendering\GeometryVertexBufferBuilder.h">
       <SubType>
       </SubType>
@@ -380,6 +393,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Component\ComponentHandle.cpp" />
+    <ClCompile Include="Component\ComponentSystem.cpp" />
+    <ClCompile Include="Component\ComponentUpdateBucketList.cpp" />
     <ClCompile Include="DrawList\DrawList.cpp">
       <SubType>
       </SubType>
@@ -402,10 +419,14 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">EngineCommon.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">EngineCommon.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="EngineState.cpp" />
+    <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Entity\EntityHandle.cpp" />
     <ClCompile Include="Entity\EntityRender.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Entity\EntitySystem.cpp" />
     <ClCompile Include="Input\BinaryControlBinding.cpp">
       <SubType>
       </SubType>
@@ -437,9 +458,10 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Map\MapEngineInstance.cpp" />
+    <ClCompile Include="Map\MapInstance.cpp" />
     <ClCompile Include="Map\MapManualTileLayerInstance.cpp" />
     <ClCompile Include="Map\MapRender.cpp" />
+    <ClCompile Include="Map\MapSystem.cpp" />
     <ClCompile Include="Rendering\GeometryVertexBufferBuilder.cpp">
       <SubType>
       </SubType>

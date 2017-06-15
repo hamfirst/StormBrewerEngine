@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameServer/GameClient.h"
+#include "GameServer/GameClientConnection.h"
 #include "GameServer/GameInstance.h"
 
 #include "Game/GameMessages.refl.h"
@@ -15,8 +15,8 @@ public:
 
   void Update();
 
-  bool JoinPlayer(GameClient * client, const JoinGameMessage & message);
-  void RemovePlayer(GameClient * client);
+  bool JoinPlayer(GameClientConnection * client, const JoinGameMessage & message);
+  void RemovePlayer(GameClientConnection * client);
 
   bool CanJoinGame(GameInstance * instance, const GameInitSettings & settings) const;
 private:

@@ -6,8 +6,8 @@
 #include "Foundation/Document/DocumentCompiler.h"
 
 #include "Runtime/Sprite/SpriteDef.refl.h"
+#include "Runtime/Animation/AnimationState.h"
 #include "Runtime/Map/MapDef.refl.h"
-#include "Runtime/Entity/Entity.h"
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
 
 #include "Shared/AssetBundle/AssetBundle.h"

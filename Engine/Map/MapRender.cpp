@@ -1,26 +1,15 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Map/MapRender.h"
-#include "Engine/Map/MapEngineInstance.h"
-#include "Runtime/Map/MapSystem.h"
-#include "Runtime/Map/MapInstance.h"
+#include "Engine/Map/MapInstance.h"
+#include "Engine/Map/MapSystem.h"
 
-void MapRenderer::DrawAllMaps(NotNullPtr<RuntimeState> runtime_state, DrawList & draw_list)
+void MapRenderer::DrawAllMaps(NotNullPtr<EngineState> engine_state, DrawList & draw_list)
 {
-  auto map_system = runtime_state->m_MapSystem.get();
+  auto map_system = engine_state->m_MapSystem.get();
   for (auto & map : map_system->m_Maps)
   {
-    MapEngineInstance * inst = map.second->m_EngineData.Get<MapEngineInstance>();
-    if (inst == nullptr)
-    {
-      continue;
-    }
-
+    MapInstance * inst = map.second.get();
     inst->Draw(draw_list);
   }
-}
-
-Any CreateMapEngineData(MapDef & map_def)
-{
-  return Any(MapEngineInstance(map_def));
 }

@@ -3,7 +3,7 @@
 
 #include "GameServer.h"
 
-#include "Game/GameSimulation.refl.meta.h"
+#include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
 
 
@@ -32,13 +32,13 @@ GameInstanceManager & GameServer::GetGameInstanceManager()
   return m_GameInstanceManager;
 }
 
-GameClient * GameServer::ConstructClient(void * client_mem, uint32_t connection_id, ProtocolType & proto)
+GameClientConnection * GameServer::ConstructClient(void * client_mem, uint32_t connection_id, ProtocolType & proto)
 {
-  auto client = new (client_mem) GameClient(*this, connection_id, proto);
+  auto client = new (client_mem) GameClientConnection(*this, connection_id, proto);
   return client;
 }
 
-void GameServer::CleanupClient(GameClient & client, ProtocolType & proto)
+void GameServer::CleanupClient(GameClientConnection & client, ProtocolType & proto)
 {
   m_GameInstanceManager.RemovePlayer(&client);
 }

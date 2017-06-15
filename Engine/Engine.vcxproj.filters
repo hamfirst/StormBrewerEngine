@@ -40,6 +40,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{9a7ed8e4-c887-48bb-9cba-8cdeefd545f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{03c07c91-d533-462d-85dd-e493ed535036}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -239,9 +242,6 @@
     <ClInclude Include="DrawList\DrawList.h">
       <Filter>DrawList</Filter>
     </ClInclude>
-    <ClInclude Include="Map\MapEngineInstance.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Map\MapRender.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -251,6 +251,44 @@
     <ClInclude Include="Camera\Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Entity\Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\EntityHandle.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\EntitySystem.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentHandle.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentList.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentRegistrationMacros.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentSystem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentUpdateBucketList.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentUpdateRegistrationTemplates.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapInstance.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapSystem.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineState.h" />
+    <ClInclude Include="EngineStateFuncs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -402,9 +440,6 @@
     <ClCompile Include="DrawList\DrawList.cpp">
       <Filter>DrawList</Filter>
     </ClCompile>
-    <ClCompile Include="Map\MapEngineInstance.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Map\MapRender.cpp">
       <Filter>Map</Filter>
     </ClCompile>
@@ -414,5 +449,33 @@
     <ClCompile Include="Camera\Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Entity\Entity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\EntityHandle.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\EntitySystem.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentHandle.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentSystem.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentUpdateBucketList.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapInstance.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapSystem.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineState.cpp" />
   </ItemGroup>
 </Project>

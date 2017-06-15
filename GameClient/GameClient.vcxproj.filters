@@ -1,15 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameRender.cpp" />
     <ClCompile Include="GameContainer.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="GameModeTestSprite.cpp" />
+    <ClCompile Include="GameClientEntitySync.cpp" />
+    <ClCompile Include="GameNetworkClient.cpp" />
+    <ClCompile Include="GameClientController.refl.cpp" />
+    <ClCompile Include="GameClientLevelLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameRender.h" />
     <ClInclude Include="GameContainer.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameModeTestSprite.h" />
+    <ClInclude Include="GameClientEntitySync.h" />
+    <ClInclude Include="GameClientEventSender.h" />
+    <ClInclude Include="GameNetworkClient.h" />
+    <ClInclude Include="GameClientController.refl.meta.h" />
+    <ClInclude Include="GameClientController.refl.h" />
+    <ClInclude Include="GameClientLevelLoader.h" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,8 @@
 #include <memory>
 #include <utility>
 
+#include "Foundation/Optional/NullOpt.h"
+
 template <class A, class B> struct SparseListPairHelper
 {
   SparseListPairHelper(std::pair<A, B> && pair_data) :
@@ -406,6 +408,46 @@ public:
     }
 
     return m_Values[index].m_Value;
+  }
+
+  NullOptPtr<T> TryGet(std::size_t index)
+  {
+    if (m_HighestIndex == -1)
+    {
+      return nullptr;
+    }
+
+    if (index > (std::size_t)m_HighestIndex)
+    {
+      return nullptr;
+    }
+
+    if (m_Values[index].m_Valid == false)
+    {
+      return nullptr;
+    }
+
+    return &m_Values[index].m_Value;
+  }
+
+  NullOptPtr<const T> TryGet(std::size_t index) const
+  {
+    if (m_HighestIndex == -1)
+    {
+      return nullptr;
+    }
+
+    if (index > (std::size_t)m_HighestIndex)
+    {
+      return nullptr;
+    }
+
+    if (m_Values[index].m_Valid == false)
+    {
+      return nullptr;
+    }
+
+    return &m_Values[index].m_Value;
   }
 
   iterator begin()

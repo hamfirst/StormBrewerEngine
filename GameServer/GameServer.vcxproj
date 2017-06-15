@@ -142,10 +142,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameClient.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="GameClientConnection.cpp" />
     <ClCompile Include="GameEventReconciler.cpp">
       <SubType>
       </SubType>
@@ -164,10 +161,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameClient.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="GameClientConnection.h" />
     <ClInclude Include="GameEventReconciler.h">
       <SubType>
       </SubType>

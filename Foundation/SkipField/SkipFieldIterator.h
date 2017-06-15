@@ -2,6 +2,6 @@
 
 struct SkipFieldIterator
 {
-  char m_Buffer[sizeof(void *) * 3];
+  alignas(alignof(void *)) char m_Buffer[sizeof(void *) * 3];
 };
 

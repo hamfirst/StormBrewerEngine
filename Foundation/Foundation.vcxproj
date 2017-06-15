@@ -102,6 +102,8 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Time\Time.h" />
+    <ClInclude Include="Update\UpdateBucketList.h" />
+    <ClInclude Include="Update\UpdateRegistrationTemplates.h" />
     <ClInclude Include="Variant\Variant.h" />
   </ItemGroup>
   <ItemGroup>

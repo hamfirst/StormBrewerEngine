@@ -20,6 +20,7 @@
 #include "Engine/Window/WindowManager.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Input/GamepadState.h"
+#include "Engine/Component/ComponentSystem.h"
 
 static bool s_Quit = false;
 static bool s_EGLMode = false;
@@ -31,6 +32,11 @@ bool EngineInit(bool egl_mode)
 {
   NetworkInit();
   RuntimeInit();
+
+  g_ComponentRegisterCallList.CallAll();
+  g_ComponentUpdateDepRegisterCallList.CallAll();
+
+  g_ComponentTypeSystem.FinalizeComponentSystem();
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0)
   {
