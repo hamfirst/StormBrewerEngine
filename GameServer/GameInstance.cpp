@@ -15,7 +15,7 @@ GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInit
   m_GameId(game_id),
   m_InitSettings(settings),
   m_Stage(stage),
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   m_ReconcileFrame(0),
   m_EventReconciler(32, 4),
 #else
@@ -25,7 +25,7 @@ GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInit
   m_SendTimer(8),
   m_Completed(false)
 {
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   m_SimHistory.Push(SimHistory{});
   auto sim_data = m_SimHistory.Get();
 
@@ -35,7 +35,7 @@ GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInit
 
 void GameInstance::Update()
 {
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   m_ReconcileFrame = 0;
 
   auto sim_data = m_SimHistory.Get();
@@ -84,17 +84,15 @@ void GameInstance::Update()
 
     m_SendTimer = 8;
   }
-#else
+#elif NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 
   GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
-  for (auto & player : m_Players)
-  {
-    m_Controller.ApplyInput(player.m_PlayerIndex, game, m_Input.m_PlayerInput[player.m_PlayerIndex]);
-  }
+  m_Controller.CheckEndTurnTimer(game);
 
-  m_Controller.Update(game);
-
+#ifdef NET_MODE_TURN_BASED_REGULAR_UPDATES
   m_SendTimer--;
+#endif
+
   if (m_SendTimer <= 0)
   {
     for (auto & player : m_Players)
@@ -105,8 +103,26 @@ void GameInstance::Update()
       }
     }
 
-    m_SendTimer = 8;
+    m_SendTimer = kServerUpdateRate;
   }
+
+#ifdef NET_MODE_TURN_BASED_RUN
+
+
+#ifdef NET_MODE_TURN_BASED_INPUT
+  for (auto & player : m_Players)
+  {
+    m_Controller.ApplyInput(player.m_PlayerIndex, game, m_Input.m_PlayerInput[player.m_PlayerIndex]);
+  }
+#endif
+
+  while (m_GameState.m_GlobalData.m_Running)
+  {
+    m_Controller.Update(game);
+  }
+#endif
+
+
 
 #endif
 }
@@ -125,7 +141,7 @@ bool GameInstance::JoinPlayer(GameClientConnection * client, const JoinGameMessa
   }
 
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   auto sim_data = m_SimHistory.Get();
 
   auto team = GetRandomTeam();
@@ -194,7 +210,7 @@ void GameInstance::RemovePlayer(GameClientConnection * client)
   {
     if (itr->m_Client == client)
     {
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
       auto sim_data = m_SimHistory.Get();
       sim_data->m_Actions.emplace_back([player_index = itr->m_PlayerIndex](GameSimulation & sim, GameStage & stage) { sim.RemovePlayer(player_index); });
 
@@ -253,7 +269,7 @@ void GameInstance::UpdatePlayer(GameClientConnection * client, const ClientAuthD
         return;
       }
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
       auto sim_data = m_SimHistory.Get();
       if (auth_data.m_Frame > sim_data->m_Sim.m_FrameCount)
       {
@@ -299,7 +315,7 @@ std::vector<int> GameInstance::GetTeamCounts()
 {
   std::vector<int> teams(kMaxTeams);
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   auto sim_data = m_SimHistory.Get();
   for (auto & hero : sim_data->m_Sim.m_Players)
   {
@@ -344,7 +360,7 @@ std::size_t GameInstance::GetNumPlayers()
   return m_Players.size();
 }
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
 void GameInstance::Rewind(const ClientAuthData & auth_data, int player_index)
 {
   auto sim_data = m_SimHistory.Get();
@@ -391,6 +407,14 @@ void GameInstance::Rewind(const ClientAuthData & auth_data, int player_index)
   }
 
   m_SimHistory.SetAt(cur_sim, 0);
+}
+#endif
+
+#if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
+void GameInstance::HandleTimeExpired()
+{
+  GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
+  m_Controller.EndTurn(game);
 }
 #endif
 

@@ -1,11 +1,13 @@
 
 #include "GameClient/GameContainer.h"
-#include "GameClient/GameModeTestSprite.h"
+#include "GameClient/GameModeLogo.h"
+#include "GameClient/GameNetworkClient.h"
 
 #include "Engine/Text/TextManager.h"
 
 
 GameContainer::GameContainer(const Window & window) :
+  m_EngineState(this),
   m_LevelList(),
   m_Window(window)
 {
@@ -16,13 +18,18 @@ GameContainer::GameContainer(const Window & window) :
   m_RenderUtil.SetClearColor(Color(100, 149, 237, 255));
   m_RenderUtil.LoadShaders();
 
-  m_Mode = std::make_unique<GameModeTestSprite>(*this);
-  m_Mode->Initialize(*this);
+  SetInitialMode();
 }
 
 GameContainer::~GameContainer()
 {
 
+}
+
+void GameContainer::SetInitialMode()
+{
+  m_Mode = std::make_unique<GameModeLogo>();
+  m_Mode->Initialize(*this);
 }
 
 EngineState & GameContainer::GetEngineState()
@@ -48,6 +55,27 @@ RenderState & GameContainer::GetRenderState()
 RenderUtil & GameContainer::GetRenderUtil()
 {
   return m_RenderUtil;
+}
+
+void GameContainer::StartNetworkClient(const char * remote_ip, int remote_port)
+{
+  m_Client = std::make_unique<GameNetworkClient>(*this, remote_ip, remote_port);
+}
+
+void GameContainer::StopNetworkClient()
+{
+  m_Client.reset();
+}
+
+GameNetworkClient & GameContainer::GetClient()
+{
+  ASSERT(m_Client, "Attempting to get client when network client has not been started");
+  return *m_Client.get();
+}
+
+bool GameContainer::AllGlobalResourcesLoaded()
+{
+  return m_LevelList.IsLevelListLoaded() && m_GlobalResources.AreAllAssetsLoaded();
 }
 
 void GameContainer::Update()

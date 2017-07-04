@@ -56,8 +56,6 @@ private:
   void ConnectLoaderWebsocket(WebSocket & websocket);
   void ConnectCompilerWebsocket(WebSocket & websocket);
 
-  std::string GetFullPath(const std::string & path);
-
   void FinalizeAssetResponse(AssetLoadResponse & resp);
 
   Optional<Buffer> LoadFullFileWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket);

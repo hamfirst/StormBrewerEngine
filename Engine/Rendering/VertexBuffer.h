@@ -20,7 +20,7 @@ public:
   void Move(VertexBuffer && rhs) noexcept;
   void Destroy();
 
-  //void SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type);
+  void SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type);
   void SetBufferData(const VertexList & list, VertexBufferType type);
   int GetLoadError() const { return m_LoadError; }
 

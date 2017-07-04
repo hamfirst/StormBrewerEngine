@@ -43,6 +43,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{03c07c91-d533-462d-85dd-e493ed535036}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{392b9505-2d93-4d20-a538-b8ffb00ec54a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -242,12 +245,6 @@
     <ClInclude Include="DrawList\DrawList.h">
       <Filter>DrawList</Filter>
     </ClInclude>
-    <ClInclude Include="Map\MapRender.h">
-      <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\EntityRender.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Camera\Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
@@ -289,6 +286,54 @@
     </ClInclude>
     <ClInclude Include="EngineState.h" />
     <ClInclude Include="EngineStateFuncs.h" />
+    <ClInclude Include="UI\UIElementSpriteFrame.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementSpriteFrame.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElement.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementHandle.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UICustomPropertyData.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UICustomPropertyData.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTextureSlice.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTextureSlice.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementGradient.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementGradient.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementContainer.ref.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementContainer.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementContainer.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementText.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementText.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -440,12 +485,6 @@
     <ClCompile Include="DrawList\DrawList.cpp">
       <Filter>DrawList</Filter>
     </ClCompile>
-    <ClCompile Include="Map\MapRender.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\EntityRender.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Camera\Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
@@ -477,5 +516,29 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="EngineState.cpp" />
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementSpriteFrame.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementTextureSlice.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementGradient.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementHandle.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElement.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementContainer.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementText.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

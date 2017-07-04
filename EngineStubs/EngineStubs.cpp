@@ -2,6 +2,7 @@
 #include "Foundation/Common.h"
 #include "Foundation/Any/Any.h"
 #include "Foundation/FileSystem/File.h"
+#include "Foundation/FileSystem/Path.h"
 #include "Foundation/Document/Document.h"
 #include "Foundation/Document/DocumentCompiler.h"
 
@@ -17,9 +18,16 @@
 class DefaultDocumentAssetLoader : public DocumentLoader
 {
 public:
+  DefaultDocumentAssetLoader()
+  {
+    m_RootPath = GetCanonicalRootPath();
+  }
+
   virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback)
   {
-    File file = FileOpen(path, FileOpenMode::kRead);
+    auto path_str = GetFullPath(path, m_RootPath);
+
+    File file = FileOpen(path_str.data(), FileOpenMode::kRead);
     if (file.GetFileOpenError() != 0)
     {
       callback(file_hash, Optional<Buffer>{}, std::chrono::system_clock::time_point{});
@@ -32,6 +40,9 @@ public:
     std::error_code ec;
     callback(file_hash, Optional<Buffer>(std::move(buffer)), std::experimental::filesystem::last_write_time(path, ec));
   }
+  
+private:
+  std::string m_RootPath;
 };
 
 class DefaultDocumentResourceLoader : public DocumentResourceLoader

@@ -114,6 +114,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameCamera.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameClientController.refl.cpp" />
     <ClCompile Include="GameClientEntitySync.cpp">
       <SubType>
@@ -127,17 +131,37 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameGlobalResources.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameMode.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameModeTestSprite.cpp">
+    <ClCompile Include="GameModeConnecting.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeDebugOffline.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeLogo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeOnlineGameplay.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="GameNetworkClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameCamera.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameClientController.refl.h" />
     <ClInclude Include="GameClientController.refl.meta.h" />
     <ClInclude Include="GameClientEntitySync.h">
@@ -153,11 +177,27 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameGlobalResources.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameMode.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameModeTestSprite.h">
+    <ClInclude Include="GameModeConnecting.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeDebugOffline.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeLogo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeOnlineGameplay.h">
       <SubType>
       </SubType>
     </ClInclude>

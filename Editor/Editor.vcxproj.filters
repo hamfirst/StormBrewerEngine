@@ -719,6 +719,30 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorMultiBox.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
+    <ClCompile Include="GameServerWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GameClientWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GameServerWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GameClientWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameClientWidget.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GameServerWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameServerWidget.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -879,6 +903,12 @@
     </CustomBuild>
     <CustomBuild Include="FrameEditorMultiBox.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GameClientWidget.h">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GameServerWidget.h">
+      <Filter>Source Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

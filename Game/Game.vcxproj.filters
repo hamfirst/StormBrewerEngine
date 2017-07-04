@@ -6,8 +6,8 @@
     <ClCompile Include="GameStageManager.cpp" />
     <ClCompile Include="GameNetworkEvents.refl.cpp" />
     <ClCompile Include="GameLevelList.cpp" />
-    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameLogicContainer.cpp" />
+    <ClCompile Include="GameController.refl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMessages.refl.h" />
@@ -24,8 +24,11 @@
     <ClInclude Include="GameNetworkSettings.h" />
     <ClInclude Include="GameFullState.refl.h" />
     <ClInclude Include="GameFullState.refl.meta.h" />
-    <ClInclude Include="GameController.h" />
     <ClInclude Include="GameServerEventSender.h" />
     <ClInclude Include="GameLogicContainer.h" />
+    <ClInclude Include="GameController.refl.h" />
+    <ClInclude Include="GameController.refl.meta.h" />
+    <ClInclude Include="GameLevelListAsset.refl.h" />
+    <ClInclude Include="GameLevelListAsset.refl.meta.h" />
   </ItemGroup>
 </Project>

@@ -38,6 +38,8 @@
 #include "FontViewer.h"
 #include "AudioViewer.h"
 #include "DocumentEditorWidgetBase.h"
+#include "GameServerWidget.h"
+#include "GameClientWidget.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
@@ -77,19 +79,24 @@ EditorContainer::EditorContainer(QWidget *parent) :
   ui.action_Save->setShortcut(QKeySequence::Save);
   connect(ui.action_Quit, &QAction::triggered, this, &EditorContainer::quit);
   ui.action_Quit->setShortcut(QKeySequence::Quit);
+
   connect(ui.action_Undo, &QAction::triggered, this, &EditorContainer::undo);
   ui.action_Undo->setShortcut(QKeySequence::Undo);
   connect(ui.action_Redo, &QAction::triggered, this, &EditorContainer::redo);
   ui.action_Redo->setShortcut(QKeySequence::Redo);
 
+  connect(ui.action_StartServer, &QAction::triggered, this, &EditorContainer::startServer);
+  ui.action_StartServer->setShortcut(QKeySequence(Qt::Key_F7));
+  connect(ui.action_LaunchClients, &QAction::triggered, this, &EditorContainer::launchClients);
+  ui.action_LaunchClients->setShortcut(QKeySequence(Qt::Key_F8));
 
-  m_RecentFileSeparator = ui.menu_File->addSeparator();
+  m_RecentFileSeparator = ui.menuFile->addSeparator();
   for (int index = 0; index < kNumRecentFiles; index++)
   {
     m_RecentFiles[index] = new QAction(this);
     m_RecentFiles[index]->setVisible(false);
     connect(m_RecentFiles[index], &QAction::triggered, this, &EditorContainer::openRecentFile);
-    ui.menu_File->addAction(m_RecentFiles[index]);
+    ui.menuFile->addAction(m_RecentFiles[index]);
   }
 
   m_RootPath = GetCanonicalRootPath();
@@ -106,6 +113,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
   m_Surface->create();
 
   m_EngineInitialized = false;
+  m_Closing = false;
 
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
@@ -266,6 +274,10 @@ void EditorContainer::CloseEditor(QWidget * editor, bool send_message)
 
 void EditorContainer::closeEvent(QCloseEvent * ev)
 {
+  m_Closing = true;
+  m_ClientWidgets.clear();
+  m_ServerWidget.reset();
+
   closeAllTabs();
 
   if (m_EngineInitialized)
@@ -490,6 +502,45 @@ void EditorContainer::redo()
     if (editor.second.m_Editor == current_tab)
     {
       m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kRedo ") + std::to_string(editor.first));
+      return;
+    }
+  }
+}
+
+void EditorContainer::startServer()
+{
+  if (m_ServerWidget)
+  {
+    return;
+  }
+
+  m_ServerWidget = std::make_unique<GameServerWidget>();
+  m_ServerWidget->show();
+}
+
+void EditorContainer::launchClients()
+{
+  startServer();
+
+  m_ClientWidgets.emplace_back(std::make_unique<GameClientWidget>(this));
+  m_ClientWidgets.back()->show();
+
+  m_ClientWidgets.emplace_back(std::make_unique<GameClientWidget>(this));
+  m_ClientWidgets.back()->show();
+}
+
+void EditorContainer::NotifyClientWindowClosed(NotNullPtr<GameClientWidget> client)
+{
+  if (m_Closing)
+  {
+    return;
+  }
+
+  for (auto itr = m_ClientWidgets.begin(), end = m_ClientWidgets.end(); itr != end; ++itr)
+  {
+    if (itr->get() == client)
+    {
+      m_ClientWidgets.erase(itr);
       return;
     }
   }

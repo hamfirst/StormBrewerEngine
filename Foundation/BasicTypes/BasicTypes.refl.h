@@ -12,6 +12,7 @@ struct Vector2
   Vector2(const Vector2 & rhs) = default;
   Vector2(Vector2 && rhs) = default;
   Vector2(int x, int y);
+  Vector2(float x, float y);
   Vector2(const RenderVec2 & v);
 
   Vector2 & operator = (Vector2 && rhs) = default;

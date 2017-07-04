@@ -48,16 +48,10 @@ int main(int argc, char ** argv)
 
   printf("  Loading assets...\n");
 
-  AssetBundle bundle;
-  bundle.LoadAsset<EntityResource>("./Entities/Hero.entity");
-  bundle.LoadAsset<EntityResource>("./Entities/HeadIcon.entity");
-  bundle.LoadAsset<EntityResource>("./Entities/Tile.entity");
-  bundle.LoadAsset<MapResource>("./Maps/Map.map");
-
   GameLevelList level_list;
   level_list.PreloadAllLevels();
 
-  if (bundle.AllLoadedSuccessfully() == false)
+  if (level_list.IsPreloadComplete() == false)
   {
     printf("  Failed to load assets...\n");
     return 0;

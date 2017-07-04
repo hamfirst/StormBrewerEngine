@@ -250,10 +250,6 @@
     <ClInclude Include="EngineStateFuncs.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\EntityHandle.h" />
-    <ClInclude Include="Entity\EntityRender.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Entity\EntitySystem.h" />
     <ClInclude Include="Input\BinaryControlBinding.h">
       <SubType>
@@ -290,7 +286,6 @@
     </ClInclude>
     <ClInclude Include="Map\MapInstance.h" />
     <ClInclude Include="Map\MapManualTileLayerInstance.h" />
-    <ClInclude Include="Map\MapRender.h" />
     <ClInclude Include="Map\MapSystem.h" />
     <ClInclude Include="Rendering\GeometryVertexBufferBuilder.h">
       <SubType>
@@ -348,6 +343,43 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Text\TextShaders.h" />
+    <ClInclude Include="UI\UICustomPropertyData.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UICustomPropertyData.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElement.h" />
+    <ClInclude Include="UI\UIElementContainer.ref.meta.h" />
+    <ClInclude Include="UI\UIElementContainer.refl.h" />
+    <ClInclude Include="UI\UIElementContainer.refl.meta.h" />
+    <ClInclude Include="UI\UIElementGradient.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementGradient.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementHandle.h" />
+    <ClInclude Include="UI\UIElementSpriteFrame.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementSpriteFrame.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementText.refl.h" />
+    <ClInclude Include="UI\UIElementText.refl.meta.h" />
+    <ClInclude Include="UI\UIElementTextureSlice.refl.h" />
+    <ClInclude Include="UI\UIElementTextureSlice.refl.meta.h" />
+    <ClInclude Include="UI\UIManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Window\FakeWindow.h" />
     <ClInclude Include="Window\Window.h">
       <SubType>
@@ -422,10 +454,6 @@
     <ClCompile Include="EngineState.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\EntityHandle.cpp" />
-    <ClCompile Include="Entity\EntityRender.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="Entity\EntitySystem.cpp" />
     <ClCompile Include="Input\BinaryControlBinding.cpp">
       <SubType>
@@ -460,7 +488,6 @@
     </ClCompile>
     <ClCompile Include="Map\MapInstance.cpp" />
     <ClCompile Include="Map\MapManualTileLayerInstance.cpp" />
-    <ClCompile Include="Map\MapRender.cpp" />
     <ClCompile Include="Map\MapSystem.cpp" />
     <ClCompile Include="Rendering\GeometryVertexBufferBuilder.cpp">
       <SubType>
@@ -508,6 +535,17 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Text\TextRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UI\UIElement.cpp" />
+    <ClCompile Include="UI\UIElementContainer.refl.cpp" />
+    <ClCompile Include="UI\UIElementGradient.refl.cpp" />
+    <ClCompile Include="UI\UIElementHandle.cpp" />
+    <ClCompile Include="UI\UIElementSpriteFrame.refl.cpp" />
+    <ClCompile Include="UI\UIElementText.refl.cpp" />
+    <ClCompile Include="UI\UIElementTextureSlice.refl.cpp" />
+    <ClCompile Include="UI\UIManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>

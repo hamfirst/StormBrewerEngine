@@ -7,9 +7,11 @@
 #include "StormNet/NetPipeDeltaState.h"
 #include "StormNet/NetPipeDeltaStateReliable.h"
 
-#include "Game/GameMessages.refl.h"
-#include "Game/GameFullState.refl.h"
-#include "Game/GameNetworkEvents.refl.h"
+#include "Game/GameFullState.refl.meta.h"
+#include "Game/GameMessages.refl.meta.h"
+#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/GameNetworkEvents.refl.meta.h"
+
 #include "Game/GameNetworkSettings.h"
 
 using ServerProtocolDef = NetProtocolDefinition<
@@ -22,8 +24,10 @@ using ClientProtocolDef = NetProtocolDefinition<
   NetPipeMessage<GlobalNetworkEvent, NetPipeMode::kReliable>,
   NetPipeMessage<TargetNetworkEvent, NetPipeMode::kReliable>,
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   NetPipeDeltaState<GameFullState, 255, NetPipeMode::kUnreliableSequenced>,
+#elif NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
+  NetPipeFullState<GameFullState, NetPipeMode::kReliable>,
 #else
   NetPipeFullState<GameFullState, NetPipeMode::kUnreliableSequenced>,
 #endif

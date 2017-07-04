@@ -79,7 +79,7 @@ int SpriteResource::GetAnimationLength(uint32_t animation_name_hash)
   return 0;
 }
 
-bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop)
+bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop, int frames)
 {
   bool would_loop = false;
   int animation_index = GetAnimationIndex(animation_name_hash);
@@ -94,26 +94,60 @@ bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState &
     if (anim_state.m_AnimFrame < (int)m_AnimLengths[animation_index])
     {
       auto frame_start = m_AnimStart[anim_state.m_AnimIndex];
-      if (anim_state.m_AnimDelay + 1 >= (int)m_AnimationFrameDurations[frame_start + anim_state.m_AnimFrame])
+      while (frames)
       {
-        if (anim_state.m_AnimFrame + 1 >= (int)m_AnimLengths[animation_index])
+        if (frames > 0)
         {
-          would_loop = true;
-          if (loop)
+          if (anim_state.m_AnimDelay + 1 >= (int)m_AnimationFrameDurations[frame_start + anim_state.m_AnimFrame])
           {
-            anim_state.m_AnimFrame = 0;
-            anim_state.m_AnimDelay = 0;
+            if (anim_state.m_AnimFrame + 1 >= (int)m_AnimLengths[animation_index])
+            {
+              would_loop = true;
+              if (loop)
+              {
+                anim_state.m_AnimFrame = 0;
+                anim_state.m_AnimDelay = 0;
+              }
+            }
+            else
+            {
+              anim_state.m_AnimDelay = 0;
+              anim_state.m_AnimFrame++;
+            }
           }
+          else
+          {
+            anim_state.m_AnimDelay++;
+          }
+
+          frames--;
         }
         else
         {
-          anim_state.m_AnimDelay = 0;
-          anim_state.m_AnimFrame++;
+          if (anim_state.m_AnimDelay - 1 < 0)
+          {
+            if (anim_state.m_AnimFrame == 0)
+            {
+              would_loop = true;
+              if (loop)
+              {
+                anim_state.m_AnimFrame = (int)m_AnimLengths[animation_index] - 1;
+                anim_state.m_AnimDelay = (int)m_AnimationFrameDurations[frame_start + anim_state.m_AnimFrame] - 1;
+              }
+            }
+            else
+            {
+              anim_state.m_AnimFrame--;
+              anim_state.m_AnimDelay = (int)m_AnimationFrameDurations[frame_start + anim_state.m_AnimFrame] - 1;
+            }
+          }
+          else
+          {
+            anim_state.m_AnimDelay--;
+          }
+
+          frames++;
         }
-      }
-      else
-      {
-        anim_state.m_AnimDelay++;
       }
     }
   }

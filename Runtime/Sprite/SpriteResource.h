@@ -28,7 +28,7 @@ public:
 
   int GetAnimationIndex(uint32_t animation_name_hash);
   int GetAnimationLength(uint32_t animation_name_hash);
-  bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true);
+  bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1);
 
   void Render(EntityRenderState & render_state, Vector2 position);
 

@@ -6,8 +6,8 @@
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/DrawList/DrawList.h"
-#include "Engine/Map/MapRender.h"
-#include "Engine/Entity/EntityRender.h"
+#include "Engine/Entity/EntitySystem.h"
+#include "Engine/Map/MapSystem.h"
 #include "Engine/EngineState.h"
 
 #include "Runtime/Collision/CollisionSystem.h"
@@ -96,8 +96,9 @@ void Camera::Draw(NotNullPtr<EngineState> engine_state, RenderState & render_sta
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
 
   DrawList draw_list;
-  MapRenderer::DrawAllMaps(engine_state, draw_list);
-  EntityRenderer::DrawAllEntities(viewport, engine_state, draw_list);
+
+  engine_state->GetMapSystem()->DrawAllMaps(draw_list);
+  engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
   draw_list.Draw(viewport, m_Position);
   default_shader.Unbind();
 }

@@ -162,8 +162,6 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   m_TextVertexBuffer.Draw();
 
-  render_state.DisableBlendMode();
-
   m_TextVertexBuffer.Unbind();
   m_TextShader.Unbind();
 }

@@ -12,6 +12,7 @@ StopWatch::StopWatch() :
 void StopWatch::Start()
 {
   m_LastUpdate = GetTimeSeconds();
+  m_StartTime = m_LastUpdate;
 }
 
 double StopWatch::GetTimeSinceLastCheck()
@@ -22,6 +23,12 @@ double StopWatch::GetTimeSinceLastCheck()
   m_LastUpdate = cur_time;
 
   return diff_time * m_TimeScale;
+}
+
+double StopWatch::GetTimeSinceStart()
+{
+  auto cur_time = GetTimeSeconds();
+  return cur_time - m_StartTime;
 }
 
 void StopWatch::SetTimeScale(double scale)

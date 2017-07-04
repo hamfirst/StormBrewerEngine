@@ -72,6 +72,22 @@ std::string GetCanonicalRootPath()
   return root_path + "/";
 }
 
+std::string GetFullPath(const std::string & path, const std::string & root_path)
+{
+#ifdef _WEB
+  return path;
+#else
+  if (std::experimental::filesystem::path(path).is_absolute())
+  {
+    return path;
+  }
+  else
+  {
+    return root_path + path;
+  }
+#endif
+}
+
 std::string GetFileNameForCanonicalPath(const std::string & path)
 {
   auto index = path.rfind('/');

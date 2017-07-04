@@ -10,7 +10,7 @@ class ShaderProgram;
 class Camera
 {
 public:
-  Camera(const Vector2 & game_resolution, const Vector2 & screen_resolution, const RenderVec2 & initial_position = {});
+  Camera(const Vector2 & game_resolution = {}, const Vector2 & screen_resolution = {}, const RenderVec2 & initial_position = {});
 
   void SetGameResolution(const RenderVec2 & resolution);
   void SetScreenResolution(const RenderVec2 & resolution);

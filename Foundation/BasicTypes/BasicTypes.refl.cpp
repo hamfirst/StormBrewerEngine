@@ -16,6 +16,12 @@ Vector2::Vector2(int x, int y) :
 
 }
 
+Vector2::Vector2(float x, float y) :
+  x((int)x), y((int)y)
+{
+
+}
+
 Vector2::Vector2(const RenderVec2 & v) :
   x((int)v.x), y((int)v.y)
 {

@@ -61,20 +61,27 @@ void VertexBuffer::Destroy()
   m_IndexCount = 0;
 }
 
-//void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type)
-//{
-//  if (m_VertexBufferName == 0)
-//  {
-//    glGenBuffers(1, &m_VertexBufferName); CHECK_GL_RENDER_ERROR;
-//  }
-//
-//  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
-//  glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * verts.size(), verts.data(), m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
-//  glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
-//
-//  m_Type = type;
-//  m_IndexCount = (int)verts.size();
-//}
+void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type)
+{
+  if (verts.size() == 0)
+  {
+    m_Type = type;
+    m_IndexCount = 0;
+    return;
+  }
+
+  if (m_VertexBufferName == 0)
+  {
+    glGenBuffers(1, &m_VertexBufferName); CHECK_GL_RENDER_ERROR;
+  }
+
+  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
+  glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * verts.size(), verts.data(), m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
+  glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
+
+  m_Type = type;
+  m_IndexCount = (int)verts.size();
+}
 
 void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
 {

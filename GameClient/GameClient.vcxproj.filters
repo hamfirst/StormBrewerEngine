@@ -3,21 +3,31 @@
   <ItemGroup>
     <ClCompile Include="GameContainer.cpp" />
     <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="GameModeTestSprite.cpp" />
     <ClCompile Include="GameClientEntitySync.cpp" />
     <ClCompile Include="GameNetworkClient.cpp" />
     <ClCompile Include="GameClientController.refl.cpp" />
     <ClCompile Include="GameClientLevelLoader.cpp" />
+    <ClCompile Include="GameGlobalResources.cpp" />
+    <ClCompile Include="GameModeLogo.cpp" />
+    <ClCompile Include="GameModeConnecting.cpp" />
+    <ClCompile Include="GameModeOnlineGameplay.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameModeDebugOffline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameContainer.h" />
     <ClInclude Include="GameMode.h" />
-    <ClInclude Include="GameModeTestSprite.h" />
     <ClInclude Include="GameClientEntitySync.h" />
     <ClInclude Include="GameClientEventSender.h" />
     <ClInclude Include="GameNetworkClient.h" />
     <ClInclude Include="GameClientController.refl.meta.h" />
     <ClInclude Include="GameClientController.refl.h" />
     <ClInclude Include="GameClientLevelLoader.h" />
+    <ClInclude Include="GameGlobalResources.h" />
+    <ClInclude Include="GameModeLogo.h" />
+    <ClInclude Include="GameModeConnecting.h" />
+    <ClInclude Include="GameModeOnlineGameplay.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameModeDebugOffline.h" />
   </ItemGroup>
 </Project>

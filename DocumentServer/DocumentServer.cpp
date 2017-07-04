@@ -553,6 +553,7 @@ void DocumentServer::SendPendingChanges()
       m_DocServerFrontend->FinalizeOutgoingPacket(writer);
 
       m_DocServerFrontend->SendPacketToConnectionBlocking(writer, client.m_ConnectionId);
+      m_DocServerFrontend->FreeOutgoingPacket(writer);
     }
 
     val.second->m_DataGen++;

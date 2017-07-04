@@ -130,10 +130,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameController.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="GameController.refl.cpp" />
     <ClCompile Include="GameLevelList.cpp">
       <SubType>
       </SubType>
@@ -151,13 +148,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameController.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="GameController.refl.h" />
+    <ClInclude Include="GameController.refl.meta.h" />
     <ClInclude Include="GameFullState.refl.h" />
     <ClInclude Include="GameFullState.refl.meta.h" />
     <ClInclude Include="GameLevelList.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameLevelListAsset.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameLevelListAsset.refl.meta.h">
       <SubType>
       </SubType>
     </ClInclude>

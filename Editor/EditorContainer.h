@@ -18,6 +18,8 @@ class QTabWidget;
 class QOpenGLContext;
 class QOffscreenSurface;
 
+class GameServerWidget;
+
 using DocumentEditorCreationDelegate = Delegate<DocumentEditorBase *, PropertyFieldDatabase &, const std::string &, DocumentOutputDelegate &&, QWidget *>;
 
 class EditorContainer : public QMainWindow
@@ -57,6 +59,15 @@ public slots:
 
   void undo();
   void redo();
+
+  void startServer();
+  void launchClients();
+
+protected:
+
+  friend class GameClientWidget;
+
+  void NotifyClientWindowClosed(NotNullPtr<GameClientWidget> client);
 
 private:
 
@@ -99,11 +110,14 @@ private:
   ConnectingDialog m_ConnectingDialog;
   DocumentServerThread m_DocumentServerThread;
 
+  bool m_Closing;
   bool m_EngineInitialized;
   int m_DocServerConnectionGen;
   int m_NextDocumentId;
 
   std::string m_RootPath;
-
   PropertyFieldDatabase m_PropertyDatabase;
+
+  std::unique_ptr<GameServerWidget> m_ServerWidget;
+  std::vector<std::unique_ptr<GameClientWidget>> m_ClientWidgets;
 };

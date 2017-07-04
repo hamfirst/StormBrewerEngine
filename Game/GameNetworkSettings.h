@@ -1,0 +1,21 @@
+#pragma once
+
+#define NET_MODE_TURN_BASED_DETERMINISTIC   1
+#define NET_MODE_SERVER_AUTH                2
+#define NET_MODE_GGPO                       3
+#define NET_MODE_LOCKSTEP                   4
+
+#define NET_MODE NET_MODE_TURN_BASED_DETERMINISTIC
+
+#if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
+
+#define NET_MODE_TURN_BASED_RUN
+#define NET_MODE_TURN_BASED_INPUT
+#define NET_MODE_TURN_BASED_REGULAR_UPDATES
+
+#endif
+
+
+
+
+

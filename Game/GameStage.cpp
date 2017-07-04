@@ -9,5 +9,5 @@ GameStage::GameStage(const Map & map) :
 
 GameFullState GameStage::CreateDefaultGameState() const
 {
-  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjectCount) };
+  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjectCount, kMaxPlayers) };
 }

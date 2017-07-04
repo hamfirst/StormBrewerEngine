@@ -394,7 +394,7 @@ Optional<Buffer> AssetLoader::LoadFullFileWebsocket(czstr file_path, int & file_
 
 Optional<Buffer> AssetLoader::LoadFullFileRaw(czstr file_path, int & file_open_error)
 {
-  auto full_path = GetFullPath(file_path);
+  auto full_path = GetFullPath(file_path, m_RootPath);
 
   auto file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError())
@@ -499,7 +499,7 @@ void AssetLoader::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallb
 {
   auto default_time_point = std::chrono::system_clock::time_point();
 
-  auto full_path = GetFullPath(path);
+  auto full_path = GetFullPath(path, m_RootPath);
 
   File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
@@ -673,22 +673,6 @@ void AssetLoader::ConnectLoaderWebsocket(WebSocket & websocket)
 void AssetLoader::ConnectCompilerWebsocket(WebSocket & websocket)
 {
   websocket.StartConnect(s_AssetServerHost.data(), 27803, "/", "localhost");
-}
-
-std::string AssetLoader::GetFullPath(const std::string & path)
-{
-#ifdef _WEB
-  return path;
-#else
-  if (std::experimental::filesystem::path(path).is_absolute())
-  {
-    return path;
-  }
-  else
-  {
-    return m_RootPath + path;
-  }
-#endif
 }
 
 void AssetLoader::FinalizeAssetResponse(AssetLoadResponse & resp)

@@ -8,8 +8,8 @@
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameSimulationEventCallbacks.h"
 #include "Game/GameFullState.refl.h"
+#include "Game/GameController.refl.h"
 #include "Game/GameLogicContainer.h"
-#include "Game/GameController.h"
 #include "Game/GameServerEventSender.h"
 
 #include "GameServer/GameEventReconciler.h"
@@ -47,8 +47,12 @@ public:
 
 protected:
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   void Rewind(const ClientAuthData & auth_data, int player_index);
+#endif
+
+#if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
+  virtual void HandleTimeExpired() override;
 #endif
 
   virtual void SendGlobalEvent(std::size_t class_id, void * event_ptr) override;
@@ -64,7 +68,7 @@ private:
     int m_PlayerIndex;
     uint64_t m_LoadToken;
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
     int m_LastInputFrame;
     std::vector<ClientAuthData> m_PendingInput;
 #endif
@@ -78,7 +82,7 @@ private:
   GameInitSettings m_InitSettings;
   GameController m_Controller;
 
-#ifdef NETWORK_ALLOW_REWINDING
+#if NET_MODE == NET_MODE_GGPO
   struct SimHistory
   {
     GameFullState m_Sim;

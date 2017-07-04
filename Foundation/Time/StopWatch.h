@@ -8,6 +8,7 @@ public:
   void Start();
 
   double GetTimeSinceLastCheck();
+  double GetTimeSinceStart();
 
   void SetTimeScale(double scale);
   double GetTimeScale(double scale);
@@ -15,5 +16,6 @@ public:
 private:
   double m_LastUpdate;
   double m_TimeScale;
+  double m_StartTime;
 };
 

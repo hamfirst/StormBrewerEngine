@@ -726,6 +726,20 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
     return;
   }
 
+  if (event->key() == Qt::Key_F5)
+  {
+    if (m_PlayMode)
+    {
+      StopPlayMode();
+    }
+    else
+    {
+      StartPlayMode();
+    }
+
+    return;
+  }
+
   if (m_PlayMode)
   {
     auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());

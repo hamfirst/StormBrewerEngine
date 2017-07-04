@@ -729,6 +729,11 @@ bool WebSocket::RecvData(void * data, std::size_t len)
     }
   }
 
+  if (len == 0)
+  {
+    return true;
+  }
+
   int recv_len = recv(m_Socket, buffer, (int)len, MSG_WAITALL);
   if (recv_len <= 0)
   {
