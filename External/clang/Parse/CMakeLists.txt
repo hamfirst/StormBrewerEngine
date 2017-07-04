@@ -1,30 +1,10 @@
-cmake_minimum_required(VERSION 3.0)
+clang_tablegen(AttrParserStringSwitches.inc -gen-clang-attr-parser-string-switches
+  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
+  SOURCE ../Basic/Attr.td
+  TARGET ClangAttrParserStringSwitches)
 
-include_directories(. ../../../. ../../.././External)
-set(CMAKE_CXX_STANDARD 14)
-
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(../../.././External/Web)
-  set(PLATFORM_SRC_ClangAttrParserStringSwitches 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(../../.././External/Windows)
-  set(PLATFORM_SRC_ClangAttrParserStringSwitches 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_ClangAttrParserStringSwitches 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_ClangAttrParserStringSwitches 
-            )
-endif()
-
-set(GENERIC_SRC_ClangAttrParserStringSwitches 
-            )
-add_library(ClangAttrParserStringSwitches ${GENERIC_SRC_ClangAttrParserStringSwitches} ${PLATFORM_SRC_ClangAttrParserStringSwitches} )
+clang_tablegen(AttrSubMatchRulesParserStringSwitches.inc
+  -gen-clang-attr-subject-match-rules-parser-string-switches
+  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
+  SOURCE ../Basic/Attr.td
+  TARGET ClangAttrSubMatchRulesParserStringSwitches)

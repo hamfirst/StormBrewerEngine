@@ -1,30 +1,9 @@
-cmake_minimum_required(VERSION 3.0)
+clang_tablegen(AttrPCHRead.inc -gen-clang-attr-pch-read
+  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
+  SOURCE ../Basic/Attr.td
+  TARGET ClangAttrPCHRead)
 
-include_directories(. ../../../. ../../.././External)
-set(CMAKE_CXX_STANDARD 14)
-
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(../../.././External/Web)
-  set(PLATFORM_SRC_ClangAttrPCHRead 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(../../.././External/Windows)
-  set(PLATFORM_SRC_ClangAttrPCHRead 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_ClangAttrPCHRead 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_ClangAttrPCHRead 
-            )
-endif()
-
-set(GENERIC_SRC_ClangAttrPCHRead 
-            )
-add_library(ClangAttrPCHRead ${GENERIC_SRC_ClangAttrPCHRead} ${PLATFORM_SRC_ClangAttrPCHRead} )
+clang_tablegen(AttrPCHWrite.inc -gen-clang-attr-pch-write
+  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
+  SOURCE ../Basic/Attr.td
+  TARGET ClangAttrPCHWrite)
