@@ -4,6 +4,12 @@
 
 #include "Engine/EngineCommon.h"
 
+class RenderState;
+class RenderUtil;
+class GameContainer;
+
+using DrawListRenderCall = Delegate<void, GameContainer &, const Box &, const RenderVec2 &, RenderState &, RenderUtil &>;
+
 class DrawList
 {
 public:
@@ -18,11 +24,11 @@ public:
  
   void Clear();
 
-  void PushDraw(int layer_order, Delegate<void, const Box &, const RenderVec2 &> && cb);
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center);
+  void PushDraw(int layer_order, DrawListRenderCall && cb);
+  void Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
 
 private:
 
-  std::map<int, std::vector<Delegate<void, const Box &, const RenderVec2 &>>> m_DrawCallbacks;
+  std::map<int, std::vector<DrawListRenderCall>> m_DrawCallbacks;
 };
 

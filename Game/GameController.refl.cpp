@@ -4,6 +4,7 @@
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/GameNetworkEvents.refl.meta.h"
 #include "Game/GameSimulationEventCallbacks.h"
+#include "Game/GameStage.h"
 
 #include "Server/ServerObject/ServerObjectManager.h"
 
@@ -44,6 +45,8 @@ void GameController::PlayerJoined(std::size_t player_index, GameLogicContainer &
       global_data.m_TimeExpiration = kTurnMaxTime;
       global_data.m_ActiveTurn = 0;
 #endif
+
+      game.TriggerImmediateSend();
     }
   }
 }
@@ -132,32 +135,59 @@ void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & g
 
 void GameController::Update(GameLogicContainer & game)
 {
-  if (game.GetGlobalData().m_Started == false)
+  auto & game_data = game.GetGlobalData();
+  if (game_data.m_Started == false)
   {
 #ifdef NET_MODE_TURN_BASED_RUN
-    game.GetGlobalData().m_Running = false;
+    game_data.m_Running = false;
 #endif
 
     return;
   }
 
-  auto obj_manager = game.GetObjectManager();
-
-  ServerObjectUpdateList update_list;
-  obj_manager.CreateUpdateList(update_list);
-  
-  if (update_list.HasUpdates() == false)
+  if (game_data.m_WiningTeam != -1)
   {
     return;
   }
+
+  auto & obj_manager = game.GetObjectManager();
+
+  ServerObjectUpdateList update_list;
+  obj_manager.CreateUpdateList(update_list);
+
+#ifdef NET_MODE_TURN_BASED_RUN
+  CheckEndTurnTimer(game);
+
+  if (game_data.m_Running == false)
+  {
+    return;
+  }
+
+  auto time_left = game_data.m_TimeExpiration;
+  if (time_left == 0)
+  {
+    game_data.m_Running = false;
+    game_data.m_TimeExpiration = kTurnMaxTime;
+    return;
+  }
+
+  game_data.m_TimeExpiration = time_left - 1;
+
+#endif
 
   update_list.CallFirst(game);
   update_list.CallMiddle(game);
   update_list.CallLast(game);
 
-#ifdef NET_MODE_TURN_BASED_RUN
-  game.GetGlobalData().m_Running = false;
-#endif
+}
+
+
+void GameController::EndGame(int winning_team, GameLogicContainer & game)
+{
+  game.GetGlobalData().m_WiningTeam = winning_team;
+
+  auto & sim_events = game.GetSimEventCallbacks();
+  sim_events.HandleWinGame(winning_team);
 }
 
 void GameController::HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game)
@@ -175,7 +205,6 @@ bool GameController::IsPlayerActive(std::size_t player_index, GameLogicContainer
   }
 
   auto player_team = (int)global_data.m_Players[player_index].m_Team;
-
   return global_data.m_ActiveTurn == player_team;
 }
 
@@ -187,6 +216,13 @@ void GameController::CheckEndTurnTimer(GameLogicContainer & game)
   {
     return;
   }
+
+#ifdef NET_MODE_TURN_BASED_RUN
+  if (global_data.m_Running)
+  {
+    return;
+  }
+#endif
 
   auto time_left = global_data.m_TimeExpiration;
   if (time_left == 0)
@@ -203,8 +239,16 @@ void GameController::EndTurn(GameLogicContainer & game)
 {
   auto & global_data = game.GetGlobalData();
 
+  if (global_data.m_Running)
+  {
+    return;
+  }
+
 #ifdef NET_MODE_TURN_BASED_RUN
   global_data.m_Running = true;
+  global_data.m_TimeExpiration = kTurnUpdateTime;
+#else
+  global_data.m_TimeExpiration = kTurnMaxTime;
 #endif
 
   auto active = (int)global_data.m_ActiveTurn;
@@ -217,7 +261,6 @@ void GameController::EndTurn(GameLogicContainer & game)
     global_data.m_ActiveTurn = active + 1;
   }
 
-  global_data.m_TimeExpiration = kTurnMaxTime;
   game.TriggerImmediateSend();
 }
 
@@ -225,4 +268,5 @@ void GameController::HandleEndTurnEvent(const EndTurnEvent & ev, std::size_t pla
 {
   EndTurn(game);
 }
+
 #endif

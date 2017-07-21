@@ -1,26 +1,27 @@
 #pragma once
 
 #include "GameClient/GameMode.h"
-#include "GameClient/GameCamera.h"
+#include "GameClient/GameClientSystems.h"
 
 #include "Engine/Camera/Camera.h"
 
 class GameModeOnlineGameplay : public GameMode
 {
 public:
+  GameModeOnlineGameplay(GameContainer & game);
+  ~GameModeOnlineGameplay();
 
-  virtual void Initialize(GameContainer & container) override;
-  virtual void OnAssetsLoaded(GameContainer & container) override;
+  virtual void Initialize() override;
+  virtual void OnAssetsLoaded() override;
 
-  virtual void Update(GameContainer & container) override;
-  virtual void Render(GameContainer & container) override;
+  virtual void Update() override;
+  virtual void Render() override;
 
 protected:
 
 private:
 
-  GameCamera m_GameCamera;
-  Camera m_EngineCamera;
+  Optional<GameClientSystems> m_ClientSystems;
 };
 
 

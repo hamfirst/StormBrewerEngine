@@ -8,6 +8,9 @@
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Event/EventSystem.h"
 
+#include "Server/ServerObject/ServerObject.h"
+#include "Server/ServerObject/ServerObjectHandle.h"
+
 #include "Engine/EngineState.h"
 #include "Engine/Entity/Entity.h"
 #include "Engine/Entity/EntitySystem.h"
@@ -36,7 +39,7 @@ EntitySystem::~EntitySystem()
 NotNullPtr<Entity> EntitySystem::CreateEntity(bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), nullptr, m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, m_GameContainer);
 
   if (activate)
   {
@@ -49,7 +52,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(bool activate)
 NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), nullptr, m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, m_GameContainer);
 
   if (entity_def->m_Sprite.length() > 0)
   {
@@ -69,7 +72,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, 
 NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_resource, NullOptPtr<ServerObject> server_object, bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), server_object, m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), server_object->GetObjectHandle(), m_GameContainer);
 
   ptr->m_Sprite = entity_resource->m_Sprite;
   ptr->m_AssetHash = entity_resource->m_FileNameHash;
@@ -154,24 +157,36 @@ void EntitySystem::DrawAllEntities(const Box & viewport_bounds, DrawList & draw_
     }
 
     if (pos.x + render_state.m_FrameWidth / 2 < viewport_bounds.m_Start.x ||
-      pos.y + render_state.m_FrameHeight / 2 < viewport_bounds.m_Start.y ||
-      pos.x - render_state.m_FrameWidth / 2 > viewport_bounds.m_End.x ||
-      pos.y - render_state.m_FrameHeight / 2 > viewport_bounds.m_End.y)
+        pos.y + render_state.m_FrameHeight / 2 < viewport_bounds.m_Start.y ||
+        pos.x - render_state.m_FrameWidth / 2 > viewport_bounds.m_End.x ||
+        pos.y - render_state.m_FrameHeight / 2 > viewport_bounds.m_End.y)
     {
       return;
     }
 
-    draw_list.PushDraw(entity.GetLayer(), [e = &entity](const Box & viewport_bounds, const RenderVec2 & screen_center)
+    draw_list.PushDraw(entity.GetLayer(), [e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
-      auto & sprite = e->GetSprite();
-      auto & render_state = e->GetRenderState();
-      auto & shader = g_ShaderManager.GetDefaultShader();
-
-      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ e->GetPosition() } -screen_center);
-      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), render_state.m_Matrix);
-      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), render_state.m_Color);
-
-      SpriteEngineData::RenderSprite(sprite, render_state.m_AnimIndex, render_state.m_AnimFrame, shader);
+      if (e->m_CustomDraw)
+      {
+        e->m_CustomDraw(viewport_bounds, screen_center, render_state, render_util);
+      }
+      else
+      {
+        DefaultDrawEntity(e, viewport_bounds, screen_center);
+      }
     });
   });
+}
+
+void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center)
+{
+  auto & sprite = entity->GetSprite();
+  auto & render_state = entity->GetRenderState();
+  auto & shader = g_ShaderManager.GetDefaultShader();
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ entity->GetPosition() } - screen_center);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), render_state.m_Matrix);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), render_state.m_Color);
+
+  SpriteEngineData::RenderSprite(sprite, render_state.m_AnimIndex, render_state.m_AnimFrame, shader);
 }

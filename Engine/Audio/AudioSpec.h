@@ -2,17 +2,19 @@
 
 #include "Engine/Asset/AudioAsset.h"
 #include "Engine/Asset/AssetReference.h"
+#include "Engine/Audio/VolumeCategory.h"
 
 class AudioSpec
 {
 public:
 
-  AudioSpec(const AssetReference<AudioAsset> & audio_ref, float volume, float pan, bool looping) :
+  AudioSpec(const AssetReference<AudioAsset> & audio_ref, VolumeCategory cat, float volume, float pan, bool looping) :
     m_AudioAsset(audio_ref),
     m_AudioBuffer(audio_ref.Resolve()->m_AudioBuffer),
     m_AudioBufferSize(audio_ref.Resolve()->m_AudioBufferSize),
     m_AudioFormat(audio_ref.Resolve()->m_AudioFormat),
     m_AudioChannels(audio_ref.Resolve()->m_AudioChannels),
+    m_Category(cat),
     m_Volume(volume),
     m_Pan(pan),
     m_Looping(looping)
@@ -41,6 +43,8 @@ private:
 
   float m_Volume;
   float m_Pan;
+
+  VolumeCategory m_Category;
 
   std::size_t m_AudioPos = 0;
   bool m_Paused = false;

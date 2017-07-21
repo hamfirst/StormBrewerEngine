@@ -6,6 +6,7 @@
     <ClCompile Include="GameInstanceManager.cpp" />
     <ClCompile Include="GameEventReconciler.cpp" />
     <ClCompile Include="GameClientConnection.cpp" />
+    <ClCompile Include="GameServerGlobalResources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
@@ -13,5 +14,6 @@
     <ClInclude Include="GameInstanceManager.h" />
     <ClInclude Include="GameEventReconciler.h" />
     <ClInclude Include="GameClientConnection.h" />
+    <ClInclude Include="GameServerGlobalResources.h" />
   </ItemGroup>
 </Project>

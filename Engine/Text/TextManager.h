@@ -60,6 +60,7 @@ public:
   void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state, const char * prompt = "");
 
   Box GetTextSize(czstr text, int font_id);
+  Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, const char * prompt = "");
 
   bool BindGlyphTexture(int font_id, int texture_stage);
 

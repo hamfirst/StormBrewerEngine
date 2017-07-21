@@ -222,3 +222,7 @@ Test/iconengines/*
 Test/imageformats/*
 Test/platforms/*
 Test/translations/*
+
+FinalStatic/*
+
+*.tlog

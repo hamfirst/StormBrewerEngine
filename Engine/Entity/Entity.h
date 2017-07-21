@@ -13,11 +13,15 @@
 #include "Engine/Entity/EntityHandle.h"
 #include "Engine/Component/ComponentHandle.h"
 
+#include "Server/ServerObject/ServerObjectHandle.h"
+
 class EngineState;
 class Component;
 class Entity;
 class ServerObject;
 class GameContainer;
+class RenderState;
+class RenderUtil;
 
 using EntityEventSystem = EventSystem<Entity, EntityHandle>;
 extern template class EventSystem<Entity, EntityHandle>;
@@ -25,10 +29,12 @@ extern template class EventSystem<Entity, EntityHandle>;
 using EntityEventDispatch = EventDispatch<Entity, ComponentHandle>;
 extern template class EventDispatch<Entity, ComponentHandle>;
 
+using EntityCustomDraw = Delegate<void, const Box &, const RenderVec2 &, RenderState &, RenderUtil &>;
+
 class ENGINE_EXPORT Entity
 {
 public:
-  Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, NullOptPtr<ServerObject> server_object, NotNullPtr<GameContainer> game);
+  Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, const ServerObjectHandle & server_object, NotNullPtr<GameContainer> game);
   ~Entity();
 
   Entity(const Entity & rhs) = delete;
@@ -78,6 +84,7 @@ public:
 
   SpritePtr & GetSprite();
   Vector2 & GetPosition();
+  void SetPosition(const Vector2 & position);
   MoverState & GetMoverState();
   int & GetLayer();
   std::string & GetName();
@@ -90,6 +97,8 @@ public:
   NullOptPtr<ServerObject> GetServerObject();
 
   void SetRotation(bool flip_x, bool flip_y, float rotation = 0);
+  void SetCustomDrawingCallback(EntityCustomDraw && draw_callback);
+  void ClearCustomDrawingCallback();
 
   void Destroy();
 
@@ -131,7 +140,6 @@ protected:
 private:
   NotNullPtr<EngineState> m_EngineState;
   NotNullPtr<EntityEventSystem> m_EventSystem;
-  NullOptPtr<ServerObject> m_ServerObject;
   NotNullPtr<GameContainer> m_GameContainer;
 
   NullOptPtr<Entity> m_Parent;
@@ -139,6 +147,7 @@ private:
   bool m_Activated;
 
   SpritePtr m_Sprite;
+  EntityCustomDraw m_CustomDraw;
 
   MoverState m_MoverState;
   int m_Layer;
@@ -148,6 +157,7 @@ private:
 
   EntityHandle m_Handle;
   SkipFieldIterator m_Iterator;
+  ServerObjectHandle m_ServerObject;
 
   std::vector<std::pair<uint32_t, NotNullPtr<Component>>> m_Components;
   std::vector<NotNullPtr<Entity>> m_ChildEntities;

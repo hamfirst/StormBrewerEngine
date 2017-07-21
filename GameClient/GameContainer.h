@@ -8,9 +8,12 @@
 #include "Engine/EngineState.h"
 
 #include "Game/GameStageManager.h"
+#include "Game/GameSharedGlobalResources.h"
 
 #include "GameClient/GameMode.h"
-#include "GameClient/GameGlobalResources.h"
+#include "GameClient/GameClientGlobalResources.h"
+#include "GameClient/GameClientInstanceData.h"
+#include "GameClient/GameClientSystems.h"
 
 class GameMode;
 class GameNetworkClient;
@@ -18,10 +21,16 @@ class GameNetworkClient;
 template <typename GameMode>
 struct GameModeDef {};
 
+struct GameContainerInitSettings
+{
+  bool m_AutoConnect = false;
+  std::string m_UserName;
+};
+
 class GameContainer
 {
 public:
-  GameContainer(const Window & window);
+  GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings = nullptr);
   ~GameContainer();
 
   void SetInitialMode();
@@ -29,14 +38,26 @@ public:
   EngineState & GetEngineState();
   Window & GetWindow();
 
+  NullOptPtr<GameContainerInitSettings> GetInitSettings();
+  void ReleaseInitSettings();
+
   GameLevelList & GetLevelList();
+  GameSharedGlobalResources & GetSharedGlobalResources();
+  GameClientGlobalResources & GetClientGlobalResources();
+
+  NullOptPtr<GameClientInstanceData> GetInstanceData();
+  void SetInstanceData(NullOptPtr<GameClientInstanceData> instance_data);
+
+  NullOptPtr<GameClientSystems> GetClientSystems();
+  void SetClientSystems(NullOptPtr<GameClientSystems> client_systems);
 
   RenderState & GetRenderState();
   RenderUtil & GetRenderUtil();
-
-  void StartNetworkClient(const char * remote_ip, int remote_port);
+  
+  void StartNetworkClient();
   void StopNetworkClient();
   GameNetworkClient & GetClient();
+  GameNetworkClientInitSettings & GetNetworkInitSettings();
 
   bool AllGlobalResourcesLoaded();
 
@@ -46,8 +67,8 @@ public:
   template <typename Mode, typename ... Args>
   void SwitchMode(const GameModeDef<Mode> & def, Args && ... args)
   {
-    m_Mode = std::make_unique<Mode>(std::forward<Args>(args)...);
-    m_Mode->Initialize(*this);
+    m_Mode = std::make_unique<Mode>(*this, std::forward<Args>(args)...);
+    m_Mode->Initialize();
   }
 
 private:
@@ -56,8 +77,16 @@ private:
   Window m_Window;
   std::unique_ptr<GameMode> m_Mode;
   std::unique_ptr<GameNetworkClient> m_Client;
+  std::unique_ptr<GameContainerInitSettings> m_InitSettings;
 
-  GameGlobalResources m_GlobalResources;
+  GameNetworkClientInitSettings m_NetInitSettings;
+
+  GameSharedGlobalResources m_SharedGlobalResources;
+  GameClientGlobalResources m_ClientGlobalResources;
+
+  NullOptPtr<GameClientInstanceData> m_ClientInstanceData;
+  NullOptPtr<GameClientSystems> m_ClientSystems;
+
   GameLevelList m_LevelList;
 
   RenderState m_RenderState;

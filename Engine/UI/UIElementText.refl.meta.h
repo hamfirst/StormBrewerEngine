@@ -22,7 +22,7 @@ template <>
 struct StormReflTypeInfo<UIElementTextData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 19;
+  static constexpr int fields_n = 20;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -145,16 +145,38 @@ template <>
 struct StormReflTypeInfo<UIElementTextData>::field_data_static<5>
 {
   using member_type = float; // float
-  static constexpr auto GetName() { return "m_EnableTextBounds"; }
+  static constexpr auto GetName() { return "m_Centered"; }
   static constexpr auto GetType() { return "float"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x397C84F7; }
+  static constexpr unsigned GetFieldNameHash() { return 0x239066D4; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 5; }
-  static constexpr auto GetMemberPtr() { return &UIElementTextData::m_EnableTextBounds; }
+  static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Centered; }
 };
 
 template <typename Self>
 struct StormReflTypeInfo<UIElementTextData>::field_data<5, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, float> & Get() { return self.m_Centered; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_Centered; }
+  void SetDefault() { self.m_Centered = StormReflTypeInfo<UIElementTextData>::GetDefault().m_Centered; }
+};
+
+template <>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<6>
+{
+  using member_type = float; // float
+  static constexpr auto GetName() { return "m_EnableTextBounds"; }
+  static constexpr auto GetType() { return "float"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x397C84F7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &UIElementTextData::m_EnableTextBounds; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UIElementTextData>::field_data<6, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -164,19 +186,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<5, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<6>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<7>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_TextBoundsStartX"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5F948DF6; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsStartX; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<6, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<6>
+struct StormReflTypeInfo<UIElementTextData>::field_data<7, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -186,19 +208,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<6, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<7>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<8>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_TextBoundsStartY"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2893BD60; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsStartY; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<7, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<7>
+struct StormReflTypeInfo<UIElementTextData>::field_data<8, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -208,19 +230,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<7, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<8>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<9>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_TextBoundsEndX"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC67E8723; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 8; }
+  static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsEndX; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<8, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<8>
+struct StormReflTypeInfo<UIElementTextData>::field_data<9, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<9>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -230,19 +252,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<8, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<9>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<10>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_TextBoundsEndY"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB179B7B5; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsEndY; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<9, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<9>
+struct StormReflTypeInfo<UIElementTextData>::field_data<10, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<10>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -252,19 +274,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<9, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<10>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<11>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_PrimaryColorR"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3223A5A2; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_PrimaryColorR; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<10, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<10>
+struct StormReflTypeInfo<UIElementTextData>::field_data<11, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<11>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -274,19 +296,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<10, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<11>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<12>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_PrimaryColorG"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5FFE4149; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 11; }
+  static constexpr auto GetFieldIndex() { return 12; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_PrimaryColorG; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<11, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<11>
+struct StormReflTypeInfo<UIElementTextData>::field_data<12, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<12>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -296,19 +318,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<11, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<12>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<13>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_PrimaryColorB"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2F94B5C6; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 12; }
+  static constexpr auto GetFieldIndex() { return 13; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_PrimaryColorB; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<12, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<12>
+struct StormReflTypeInfo<UIElementTextData>::field_data<13, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<13>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -318,19 +340,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<12, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<13>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<14>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_PrimaryColorA"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB69DE47C; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 13; }
+  static constexpr auto GetFieldIndex() { return 14; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_PrimaryColorA; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<13, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<13>
+struct StormReflTypeInfo<UIElementTextData>::field_data<14, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<14>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -340,19 +362,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<13, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<14>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<15>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_SecondaryColorR"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAEE8788B; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 14; }
+  static constexpr auto GetFieldIndex() { return 15; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorR; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<14, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<14>
+struct StormReflTypeInfo<UIElementTextData>::field_data<15, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<15>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -362,19 +384,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<14, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<15>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<16>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_SecondaryColorG"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC3359C60; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 15; }
+  static constexpr auto GetFieldIndex() { return 16; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorG; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<15, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<15>
+struct StormReflTypeInfo<UIElementTextData>::field_data<16, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<16>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -384,19 +406,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<15, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<16>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<17>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_SecondaryColorB"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB35F68EF; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 16; }
+  static constexpr auto GetFieldIndex() { return 17; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorB; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<16, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<16>
+struct StormReflTypeInfo<UIElementTextData>::field_data<17, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<17>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -406,19 +428,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<16, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<17>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<18>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_SecondaryColorA"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2A563955; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 17; }
+  static constexpr auto GetFieldIndex() { return 18; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorA; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<17, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<17>
+struct StormReflTypeInfo<UIElementTextData>::field_data<18, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<18>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -428,19 +450,19 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<17, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UIElementTextData>::field_data_static<18>
+struct StormReflTypeInfo<UIElementTextData>::field_data_static<19>
 {
   using member_type = float; // float
   static constexpr auto GetName() { return "m_Active"; }
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0621ABCA; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
-  static constexpr auto GetFieldIndex() { return 18; }
+  static constexpr auto GetFieldIndex() { return 19; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Active; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementTextData>::field_data<18, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<18>
+struct StormReflTypeInfo<UIElementTextData>::field_data<19, Self> : public StormReflTypeInfo<UIElementTextData>::field_data_static<19>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

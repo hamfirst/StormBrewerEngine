@@ -20,7 +20,7 @@ struct ServerObjectResetHandleClass<T, true>
   {
     auto visitor = [&](auto f)
     {
-      using MemberType = typename decltype(f)::MemberType;
+      using MemberType = typename decltype(f)::member_type;
       ServerObjectResetHandle<MemberType>::Process(f.Get(), object_manager);
     };
 

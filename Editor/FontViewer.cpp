@@ -13,7 +13,6 @@
 #include "Engine/Settings/EngineSettings.refl.h"
 
 
-
 static const char * kFontViewerVertexShader = SHADER_LITERAL(
   attribute vec2 a_Position;
   attribute vec2 a_TexCoord;
@@ -78,7 +77,7 @@ void FontViewer::initializeGL()
   m_RenderState.InitRenderState(width(), height());
   m_RenderUtil.LoadShaders();
 
-  g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 15);
+  g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 8);
 
   m_Shader = MakeQuickShaderProgram(kFontViewerVertexShader, kFontViewerFragmentShader);
 
@@ -99,6 +98,7 @@ void FontViewer::initializeGL()
 void FontViewer::resizeGL(int w, int h)
 {
   m_RenderState.SetScreenSize(Vector2(w, h));
+  m_RenderState.SetRenderSize(Vector2(w, h));
 
   m_LineEdit->setGeometry(0, h - m_LineEdit->height(), w, m_LineEdit->height());
 }
@@ -124,7 +124,7 @@ void FontViewer::paintGL()
   RenderVec2 tex_center = RenderVec2{ g_EngineSettings.m_FontCacheSize, g_EngineSettings.m_FontCacheSize } * 0.5f;
   RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
 
-  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetRenderScreenSize());
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (RenderVec2)(m_RenderState.GetScreenSize()));
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), window_center - (tex_center - m_Center) * m_Magnification.Get());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -159,6 +159,8 @@ void FontViewer::paintGL()
 
   m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), m_RenderState.GetScreenSize());
 
+  g_TextManager.SetPrimaryColor();
+  g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kShadowed);
   g_TextManager.SetTextPos(text_start);
   g_TextManager.RenderText(info.data(), m_FontId, m_RenderState);

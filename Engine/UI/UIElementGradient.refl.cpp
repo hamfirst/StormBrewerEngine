@@ -18,21 +18,25 @@ UIElementGradient::UIElementGradient(const UIElementGradientInitData & init_data
 void UIElementGradient::Update()
 {
   UIElement::Update();
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
 }
 
-void UIElementGradient::Render(RenderState & render_state, RenderUtil & render_util)
+void UIElementGradient::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   if (m_RenderDelegate)
   {
-    m_RenderDelegate(*this, render_state);
+    m_RenderDelegate(*this, render_state, offset);
   }
   else
   {
-    RenderDefault(render_state, render_util);
+    RenderDefault(render_state, render_util, offset);
   }
+
+  UIElement::Render(render_state, render_util, offset);
 }
 
-void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & render_util)
+void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   auto bl = Color(m_Data.m_BLColorR, m_Data.m_BLColorG, m_Data.m_BLColorB, m_Data.m_BLColorA);
   auto tl = Color(m_Data.m_TLColorR, m_Data.m_TLColorG, m_Data.m_TLColorB, m_Data.m_TLColorA);
@@ -49,8 +53,8 @@ void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & r
   verts[2].m_Color = tr;
   verts[2].m_Position = RenderVec2{ m_Data.m_EndX, m_Data.m_EndY };
   verts[2].m_TexCoord = {};
-  verts[3].m_Color = tl;
-  verts[3].m_Position = RenderVec2{ m_Data.m_StartX, m_Data.m_EndY };
+  verts[3].m_Color = bl;
+  verts[3].m_Position = RenderVec2{ m_Data.m_StartX, m_Data.m_StartY };
   verts[3].m_TexCoord = {};
   verts[4].m_Color = tr;
   verts[4].m_Position = RenderVec2{ m_Data.m_EndX, m_Data.m_EndY };
@@ -64,6 +68,7 @@ void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & r
 
   auto & shader = g_ShaderManager.GetDefaultShader();
   shader.Bind();
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
 
   render_util.GetDefaultTexture().BindTexture(0);
 
@@ -82,7 +87,7 @@ UIElementGradientData & UIElementGradient::GetData()
   return m_Data;
 }
 
-void UIElementGradient::SetCustomRenderCallback(Delegate<void, UIElementGradient &, RenderState &> && render_callback)
+void UIElementGradient::SetCustomRenderCallback(Delegate<void, UIElementGradient &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }

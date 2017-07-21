@@ -3,11 +3,13 @@
 #include "Foundation/Common.h"
 
 #include "Game/GameNetworkData.refl.h"
+#include "Game/GameLevelListAsset.refl.h"
 #include "Game/GameStage.h"
 
 #include "Runtime/Map/MapResource.h"
+#include "Runtime/GenericResource/GenericResource.h"
 
-#include "Shared/AssetBundle/AssetBundle.h"
+using LevelListPtr = GenericResourcePtr<GameLevelListAsset>;
 
 class GameLevelList
 {
@@ -24,7 +26,7 @@ public:
 
 private:
 
-  Any m_LevelListResource;
-  AssetBundle m_PreloadedAssets;
+  LevelListPtr m_LevelListResource;
+  std::vector<Map> m_PreloadedMaps;
 };
 

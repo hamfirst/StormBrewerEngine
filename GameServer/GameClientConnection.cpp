@@ -5,6 +5,7 @@
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
+#include "Game/GameValidation.h"
 
 GameClientConnection::GameClientConnection(GameServer & server, uint32_t connection_id, ServerProtocol & protocol) :
   m_Server(server),
@@ -75,6 +76,12 @@ void GameClientConnection::HandlePing(const PingMessage & request)
 void GameClientConnection::HandleJoinGame(const JoinGameMessage & request)
 {
   if (m_GameInstance != nullptr)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  if (ValidUserName(request.m_UserName.data()) == false)
   {
     m_Server.DisconnectClient(m_ConnectionId);
     return;

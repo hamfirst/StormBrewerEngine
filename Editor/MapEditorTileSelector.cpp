@@ -44,8 +44,7 @@ void MapEditorTileSelector::LoadManualTileLayer(std::size_t index)
 
 void MapEditorTileSelector::Clear()
 {
-  m_TileSheet = {};
-  UpdateScroll();
+  m_TileSheet.Clear();  UpdateScroll();
   repaint();
 }
 

@@ -1,18 +1,63 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElement.h"
+#include "Engine/UI/UIManager.h"
 
 void UIElement::Update()
 {
+  m_OnUpdate(this);
+
   for (auto elem : m_Children)
   {
     elem->Update();
   }
 }
 
-void UIElement::Render(RenderState & render_state, RenderUtil & render_util)
+void UIElement::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
+  auto child_offset = offset + m_Offset;
+  for (auto child : m_Children)
+  {
+    child->Render(render_state, render_util, child_offset);
+  }
+}
 
+void UIElement::SetActive()
+{
+  if (m_State == UIElementState::kInactive)
+  {
+    m_OnStateChange(m_State, UIElementState::kActive);
+    m_State = UIElementState::kActive;
+  }
+}
+
+void UIElement::SetInactive()
+{
+  if (m_State != UIElementState::kInactive)
+  {
+    m_OnStateChange(m_State, UIElementState::kInactive);
+    m_State = UIElementState::kInactive;
+  }
+}
+
+void UIElement::SetEnabled()
+{
+  m_Enabled = true;
+}
+
+void UIElement::SetDisabled()
+{
+  m_Enabled = false;
+  if (m_State == UIElementState::kPressed || m_State == UIElementState::kHover)
+  {
+    m_OnStateChange(m_State, UIElementState::kActive);
+    m_State = UIElementState::kActive;
+  }
+}
+
+void UIElement::Destroy()
+{
+  m_Handle.m_UIManager->UnlinkElement(this);
 }
 
 UIElementHandle UIElement::GetHandle()
@@ -20,14 +65,19 @@ UIElementHandle UIElement::GetHandle()
   return m_Handle;
 }
 
+UIElementState UIElement::GetState()
+{
+  return m_State;
+}
+
 Optional<Box> UIElement::GetActiveArea()
 {
-  if (m_Active)
+  if (m_State == UIElementState::kInactive)
   {
-    return m_ActiveArea;
+    return{};
   }
 
-  return{};
+  return m_ActiveArea;
 }
 
 NullOptPtr<UIElement> UIElement::GetChild(uint32_t child_name_hash)
@@ -48,14 +98,29 @@ NullOptPtr<UIElement> UIElement::GetParent()
   return m_Parent;
 }
 
+void UIElement::SetOnUpdateHandler(UIOnUpdateHandler && handler)
+{
+  m_OnUpdate = std::move(handler);
+}
+
 void UIElement::SetOnClickHandler(UIOnClickHandler && handler)
 {
   m_OnClick = std::move(handler);
 }
 
-void UIElement::SetOnActivationChangeHandler(UIOnActivationChangeHandler && handler)
+void UIElement::SetOnStateChangeHandler(UIOnStateChangeHandler && handler)
 {
-  m_OnActivationChanged = std::move(handler);
+  m_OnStateChange = std::move(handler);
+}
+
+void UIElement::SetActiveArea(const Box & box)
+{
+  m_ActiveArea = box;
+}
+
+void UIElement::SetOffset(const Vector2 & offset)
+{
+  m_Offset = offset;
 }
 
 void UIElement::SetHandle(Handle & handle)

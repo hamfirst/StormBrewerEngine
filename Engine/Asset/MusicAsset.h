@@ -9,8 +9,8 @@ class ENGINE_EXPORT MusicAsset : public Asset
 {
 protected:
 
-  virtual int PreProcessLoadedData(Buffer & buffer) override;
-  virtual void OnDataLoadComplete(Buffer & buffer) override;
+  virtual int PreProcessLoadedData(Buffer & buffer, bool load_deps) override;
+  virtual void OnDataLoadComplete(Buffer & buffer, bool load_deps) override;
 
 protected:
   friend class AudioManager;

@@ -44,6 +44,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
   m_ManualTileLayerMirror(m_Editor),
   m_EntityLayerMirror(m_Editor),
   m_ParalaxLayerMirror(m_Editor),
+  m_EffectLayerMirror(m_Editor),
   m_VolumeLayerMirror(m_Editor),
   m_PathLayerMirror(m_Editor)
 {
@@ -130,6 +131,26 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
     this
     );
 
+  CreateMirrorList<RMergeList, MapEffectLayer, RString, MapEditorLayerListElement, MapEditorLayerList>(
+    m_EffectLayerMirror,
+    m_Map.m_EffectLayers,
+    ".m_Name",
+    [](MapEffectLayer & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
+      {
+        label.m_LayerList = ptr;
+        label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kEffectLayer, index };
+        ptr->UpdateScroll();
+
+        if (ptr->m_SelectNewLayers)
+        {
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+        }
+      },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
+    this
+    );
+
   CreateMirrorList<RMergeList, MapPath, RString, MapEditorLayerListElement, MapEditorLayerList>(
     m_PathLayerMirror,
     m_Map.m_Paths,
@@ -139,6 +160,26 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
       {
         label.m_LayerList = ptr;
         label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kPath, index };
+        ptr->UpdateScroll();
+
+        if (ptr->m_SelectNewLayers)
+        {
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+        }
+      },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
+    this
+    );
+
+  CreateMirrorList<RMergeList, MapVolume, RString, MapEditorLayerListElement, MapEditorLayerList>(
+    m_VolumeLayerMirror,
+    m_Map.m_Volumes,
+    ".m_Name",
+    [](MapVolume & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
+      {
+        label.m_LayerList = ptr;
+        label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kVolume, index };
         ptr->UpdateScroll();
 
         if (ptr->m_SelectNewLayers)
@@ -195,6 +236,11 @@ bool MapEditorLayerList::IsLayerHidden(const MapEditorLayerSelection & layer)
       auto layer_ptr = m_Editor->GetParalaxManager().GetLayerManager(layer.m_Index);
       return layer_ptr ? layer_ptr->IsHidden() : false;
     }
+  case MapEditorLayerItemType::kEffectLayer:
+    {
+      auto layer_ptr = m_Editor->GetEffectManager().GetLayerManager(layer.m_Index);
+      return layer_ptr ? layer_ptr->IsHidden() : false;
+    }
   }
 
   return false;
@@ -219,6 +265,12 @@ void MapEditorLayerList::SetHideLayer(const MapEditorLayerSelection & layer, boo
   case MapEditorLayerItemType::kParalaxLayer:
     {
       auto layer_ptr = m_Editor->GetParalaxManager().GetLayerManager(layer.m_Index);
+      if (layer_ptr) layer_ptr->SetHidden(hidden);
+      break;
+    }
+  case MapEditorLayerItemType::kEffectLayer:
+    {
+      auto layer_ptr = m_Editor->GetEffectManager().GetLayerManager(layer.m_Index);
       if (layer_ptr) layer_ptr->SetHidden(hidden);
       break;
     }
@@ -250,6 +302,11 @@ void MapEditorLayerList::DeleteLayer(const MapEditorLayerSelection & layer)
   case MapEditorLayerItemType::kParalaxLayer:
     {
       m_Map.m_ParalaxLayers.RemoveAt(layer.m_Index);
+      break;
+    }
+  case MapEditorLayerItemType::kEffectLayer:
+    {
+      m_Map.m_EffectLayers.RemoveAt(layer.m_Index);
       break;
     }
   case MapEditorLayerItemType::kVolume:
@@ -355,6 +412,32 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
     {
       MapEditorLayerSelection elem = {};
       elem.m_Type = MapEditorLayerItemType::kParalaxLayer;
+      elem.m_Index = layer.first;
+
+      if (visitor(elem, y_pos) == false)
+      {
+        return y_pos;
+      }
+
+      y_pos += layer_height;
+    }
+  }
+
+  elem = {};
+  elem.m_Type = MapEditorLayerItemType::kEffectLayerParent;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
+  if (m_EffectParentExpanded)
+  {
+    for (auto layer : m_Map.m_EffectLayers)
+    {
+      MapEditorLayerSelection elem = {};
+      elem.m_Type = MapEditorLayerItemType::kEffectLayer;
       elem.m_Index = layer.first;
 
       if (visitor(elem, y_pos) == false)
@@ -580,6 +663,19 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_ParalaxLayers[layer.m_Index].m_Name.data());
           break;
         }
+      case MapEditorLayerItemType::kEffectLayerParent:
+        {
+          QStyleOption option;
+          option.rect = QRect(2, y_pos, layer_height, layer_height);
+          style()->drawPrimitive(m_EffectParentExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Effect Layers");
+          break;
+        }
+      case MapEditorLayerItemType::kEffectLayer:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_EffectLayers[layer.m_Index].m_Name.data());
+          break;
+        }
       case MapEditorLayerItemType::kVolumeParent:
         {
           QStyleOption option;
@@ -691,6 +787,13 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
       }
       break;
 
+    case MapEditorLayerItemType::kEffectLayerParent:
+      if (ev->x() < 15)
+      {
+        m_EffectParentExpanded = !m_EffectParentExpanded;
+      }
+      break;
+
     case MapEditorLayerItemType::kVolumeParent:
       if (ev->x() < 15)
       {
@@ -740,6 +843,13 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
+    case MapEditorLayerItemType::kEffectLayerParent:
+      {
+        QMenu menu(this);
+        connect(menu.addAction("Add"), &QAction::triggered, this, &MapEditorLayerList::addEffectLayer);
+        menu.exec(mapToGlobal(ev->pos()));
+        break;
+      }
     case MapEditorLayerItemType::kEntityLayer:
       {
         QMenu menu(this);
@@ -751,6 +861,13 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
       {
         QMenu menu(this);
         connect(menu.addAction("Remove"), &QAction::triggered, this, &MapEditorLayerList::removeParalaxLayer);
+        menu.exec(mapToGlobal(ev->pos()));
+        break;
+      }
+    case MapEditorLayerItemType::kEffectLayer:
+      {
+        QMenu menu(this);
+        connect(menu.addAction("Remove"), &QAction::triggered, this, &MapEditorLayerList::removeEffectLayer);
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
@@ -846,3 +963,25 @@ void MapEditorLayerList::removeParalaxLayer()
   m_Map.m_ParalaxLayers.RemoveAt(m_Selection->m_Index);
 }
 
+void MapEditorLayerList::addEffectLayer()
+{
+  MapEffectLayer effect_layer;
+  effect_layer.m_Name = "Effect Layer";
+
+  m_Map.m_EffectLayers.EmplaceBack(std::move(effect_layer));
+}
+
+void MapEditorLayerList::removeEffectLayer()
+{
+  if (m_Selection == false)
+  {
+    return;
+  }
+
+  if (m_Selection->m_Type != MapEditorLayerItemType::kEffectLayer)
+  {
+    return;
+  }
+
+  m_Map.m_EffectLayers.RemoveAt(m_Selection->m_Index);
+}

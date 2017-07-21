@@ -1,10 +1,6 @@
 #pragma once
 
-
-#include "Server/ServerObject/ServerObjectMetaFuncs.h"
-#include "Server/ServerObject/ServerObjectSystem.h"
-#include "Server/ServerObject/ServerObjectUpdate.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Foundation/Update/UpdateRegistrationTemplates.h"
 
 #define DECLARE_SERVER_OBJECT                                                                                                   \
   static czstr TypeName;                                                                                                        \
@@ -64,39 +60,40 @@ void ServerObjectName::RegisterServerObject()                                   
                                                                                                                                 \
   type_info.m_ObjectDuplicate = [](NotNullPtr<const ServerObject> rhs) -> ServerObject *                                        \
   {                                                                                                                             \
-    auto ptr = s_##ServerObjectName##Allocator.Allocate(*rhs);                                                                  \
-    StormReflCopy(*ptr, *rhs);                                                                                                  \
+    auto ptr = s_##ServerObjectName##Allocator.Allocate(*static_cast<const ServerObjectName *>(rhs));                           \
+    StormReflCopy(*ptr, *static_cast<const ServerObjectName *>(rhs));                                                           \
     return ptr;                                                                                                                 \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectInit = [](NotNullPtr<ServerObject> object, NullOptPtr<ServerObjectInitData> init_data)                      \
   {                                                                                                                             \
-    InitFunc;                                                                                                                   \
+    auto obj = static_cast<ServerObjectName *>(object);                                                                         \
+    InitFunc                                                                                                                    \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectCopy = [](NotNullPtr<ServerObject> object, NullOptPtr<const ServerObject> rhs)                              \
   {                                                                                                                             \
-    StormReflCopy(*object, *(ServerObjectName *)rhs);                                                                           \
+    StormReflCopy(*static_cast<ServerObjectName *>(object), *static_cast<const ServerObjectName *>(rhs));                       \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectResetHandles = [](NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager)                 \
   {                                                                                                                             \
-    ServerObjectResetHandle<ServerObjectName>::Process(*object, obj_manager);                                                   \
+    ServerObjectResetHandle<ServerObjectName>::Process(*static_cast<ServerObjectName *>(object), obj_manager);                  \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectDestroy = [](NotNullPtr<ServerObject> object)                                                               \
   {                                                                                                                             \
-    s_##ServerObjectName##Allocator.Release(object);                                                                            \
+    s_##ServerObjectName##Allocator.Release(static_cast<ServerObjectName *>(object));                                           \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectSerialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitWriter & writer)                          \
   {                                                                                                                             \
-    SerializeServerObject(*object, writer);                                                                                     \
+    SerializeServerObject(*static_cast<ServerObjectName *>(object), writer);                                                    \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectDeserialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitReader & reader)                        \
   {                                                                                                                             \
-    DeserializeServerObject(*object, reader);                                                                                   \
+    DeserializeServerObject(*static_cast<ServerObjectName *>(object), reader);                                                  \
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_AddToUpdateList = [](NotNullPtr<ServerObject> object, ServerObjectUpdateList & l)                                 \
@@ -131,7 +128,7 @@ bool ServerObjectName::CastToInternal(uint32_t type_index) const                
 #define SERVER_OBJECT_CONSTRUCT_NOBASE          0
 #define SERVER_OBJECT_CONSTRUCT_BASE(BaseClass) COMPILE_TIME_CRC32_STR(#BaseClass)
 
-#define SERVER_OBJECT_INIT_DATA(InitData)       object->Init(static_cast<InitData *>(init_data));
+#define SERVER_OBJECT_INIT_DATA(InitData)       obj->Init(*static_cast<InitData *>(init_data));
 #define SERVER_OBJECT_NOINIT_DATA   
 
 #define REGISTER_BASE_SERVER_OBJECT(ServerObjectName) \
@@ -141,4 +138,4 @@ bool ServerObjectName::CastToInternal(uint32_t type_index) const                
   REGISTER_SERVER_OBJECT_CODE(ServerObjectName, ServerObjectInitData, SERVER_OBJECT_NOINIT_DATA, SERVER_OBJECT_CONSTRUCT_BASE(BaseClass))
 
 #define REGISTER_SERVER_OBJECT_WITH_INIT_DATA(ServerObjectName, InitData, BaseClass) \
-  REGISTER_SERVER_OBJECT_CODE(ServerObjectName, InitData, SERVER_OBJECT_NOINIT_DATA(InitData), SERVER_OBJECT_CONSTRUCT_BASE(BaseClass))
+  REGISTER_SERVER_OBJECT_CODE(ServerObjectName, InitData, SERVER_OBJECT_INIT_DATA(InitData), SERVER_OBJECT_CONSTRUCT_BASE(BaseClass))

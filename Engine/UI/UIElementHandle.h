@@ -22,7 +22,7 @@ public:
   template <typename UIElement>
   NullOptPtr<UIElement> ResolveTo()
   {
-    if (m_Type != UIElement::TypeIndex)
+    if (m_Type != UIElement::Type)
     {
       return nullptr;
     }
@@ -30,11 +30,23 @@ public:
     return static_cast<UIElement *>(Resolve());
   }
 
+  template <typename UIElement>
+  NullOptPtr<const UIElement> ResolveTo() const
+  {
+    if (m_Type != UIElement::Type)
+    {
+      return nullptr;
+    }
+
+    return static_cast<const UIElement *>(Resolve());
+  }
+
   NullOptPtr<UIElement> Resolve();
 
 protected:
 
   friend class UIManager;
+  friend class UIElement;
 
 private:
 

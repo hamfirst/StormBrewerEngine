@@ -31,6 +31,7 @@ TextRenderer::TextRenderer(const AssetReference<FontAsset> & asset_ref, int font
   *buffer.GetPixelPtr<uint8_t>() = 255;
 
   m_Texture.SetTextureSubData(buffer, 0, 0);
+  m_Texture.SetLinearFilter();
 }
 
 TextRenderer::~TextRenderer()

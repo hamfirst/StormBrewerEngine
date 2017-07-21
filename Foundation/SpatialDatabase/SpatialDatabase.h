@@ -66,6 +66,34 @@ public:
   }
 
   template <typename Visitor>
+  void VisitGrid(const Box & b, Visitor && v) const
+  {
+    int start_x = GetGridModulo(b.m_Start.x);
+    int start_y = GetGridModulo(b.m_Start.y);
+    int end_x = GetGridModulo(b.m_End.x);
+    int end_y = GetGridModulo(b.m_End.y);
+
+    for (int y = start_y; y <= end_y; y++)
+    {
+      for (int x = start_x; x <= end_x; x++)
+      {
+        uint32_t grid_id = GetGridId(x, y);
+
+        auto node_itr = m_Nodes.find(grid_id);
+        if (node_itr == m_Nodes.end())
+        {
+          continue;
+        }
+
+        if (v(grid_id, node_itr->second) == false)
+        {
+          return;
+        }
+      }
+    }
+  }
+
+  template <typename Visitor>
   void VisitGridIds(const Box & b, Visitor && v)
   {
     int start_x = GetGridModulo(b.m_Start.x);
@@ -88,7 +116,38 @@ public:
   }
 
   template <typename Visitor>
+  void VisitGridIds(const Box & b, Visitor && v) const
+  {
+    int start_x = GetGridModulo(b.m_Start.x);
+    int start_y = GetGridModulo(b.m_Start.y);
+    int end_x = GetGridModulo(b.m_End.x);
+    int end_y = GetGridModulo(b.m_End.y);
+
+    for (int y = start_y; y <= end_y; y++)
+    {
+      for (int x = start_x; x <= end_x; x++)
+      {
+        uint32_t grid_id = GetGridId(x, y);
+
+        if (v(grid_id) == false)
+        {
+          return;
+        }
+      }
+    }
+  }
+
+  template <typename Visitor>
   void VisitAll(Visitor && v)
+  {
+    for (auto & elem : m_Nodes)
+    {
+      v(elem.first, elem.second);
+    }
+  }
+
+  template <typename Visitor>
+  void VisitAll(Visitor && v) const
   {
     for (auto & elem : m_Nodes)
     {
@@ -120,12 +179,12 @@ public:
   }
 
 protected:
-  int GetGridModulo(int value)
+  static int GetGridModulo(int value)
   {
     return value >= 0 ? value / 1024 : (value + 1) / 1024 - 1;
   }
 
-  uint32_t GetGridId(int x, int y)
+  static uint32_t GetGridId(int x, int y)
   {
     uint32_t grid_id = y & 0xFFFF;
     grid_id <<= 16;
@@ -155,9 +214,9 @@ public:
   void Remove(const Box & b, uint32_t elem_id);
   void RemoveBatch(const Box & b, const std::vector<std::size_t> & elem_ids);
 
-  void Query(const Box & b, std::vector<std::size_t> & outp_elem_ids);
-  bool QueryAny(const Box & b);
-  bool QueryAny(const Box & b, std::size_t & outp_elem);
+  void Query(const Box & b, std::vector<std::size_t> & outp_elem_ids) const;
+  bool QueryAny(const Box & b) const;
+  bool QueryAny(const Box & b, std::size_t & outp_elem) const;
 
 private:
 

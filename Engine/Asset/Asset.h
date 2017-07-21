@@ -49,8 +49,8 @@ private:
 class ENGINE_EXPORT Asset
 {
 public:
-  bool IsLoaded();
-  bool IsError();
+  bool IsLoaded() const;
+  bool IsError() const;
 
   const std::string & GetFileName() const;
 
@@ -73,8 +73,8 @@ protected:
 public:
 
 protected:
-  virtual int PreProcessLoadedData(Buffer & file_data); // This is called from the loader thread
-  virtual void OnDataLoadComplete(Buffer & file_data);
+  virtual int PreProcessLoadedData(Buffer & file_data, bool load_deps); // This is called from the loader thread
+  virtual void OnDataLoadComplete(Buffer & file_data, bool load_deps);
   virtual void CallAssetLoadCallbacks();
 
 protected:
@@ -90,6 +90,7 @@ protected:
   std::atomic_int m_RefCount;
   AssetState m_State = AssetState::kLoading;
   int m_LoadError = 0;
+  bool m_LoadedDeps = false;
 
   AssetHandle m_Handle;
   void * m_AssetManager = nullptr;

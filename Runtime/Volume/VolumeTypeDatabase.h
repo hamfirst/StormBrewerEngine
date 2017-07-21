@@ -21,7 +21,7 @@ extern template class StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>;
 class VolumeTypeDatabase : public StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>
 {
 public:
-  template <typename Component, typename InitData, typename ... BaseTypes>
+  template <typename DataType, typename ... BaseTypes>
   static void RegisterType();
 };
 

@@ -19,6 +19,10 @@ AudioManager g_AudioManager;
 AudioManager::AudioManager() :
   m_PlayingAudio(128)
 {
+  for (int index = 0; index < (int)VolumeCategory::kCount; ++index)
+  {
+    m_VolumeCategories[index] = 0.85f;
+  }
 }
 
 AudioManager::~AudioManager()
@@ -75,15 +79,20 @@ void AudioManager::ShutDown()
   }
 }
 
-AudioHandle AudioManager::PlayAudio(const AssetReference<AudioAsset> & asset_ref, float volume, float pan, bool looping)
+AudioHandle AudioManager::PlayAudio(const AssetReference<AudioAsset> & asset_ref, VolumeCategory cat, float volume, float pan, bool looping)
 {
   if (m_DeviceId == 0)
   {
     return kInvalidHandle;
   }
 
+  if (asset_ref.Resolve() == nullptr)
+  {
+    return kInvalidHandle;
+  }
+
   std::lock_guard<std::mutex> l(m_AudioMutex);
-  return m_PlayingAudio.AllocateElem(asset_ref, volume, pan, looping);
+  return m_PlayingAudio.AllocateElem(asset_ref, cat, volume, pan, looping);
 }
 
 void AudioManager::StopAudio(AudioHandle handle)
@@ -113,7 +122,7 @@ void AudioManager::SetAudioPaused(AudioHandle handle, bool pause)
   audio_spec->m_Paused = pause;
 }
 
-MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref, float volume, float pan, bool looping)
+MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref, VolumeCategory cat, float volume, float pan, bool looping)
 {
   if (m_DeviceId == 0)
   {
@@ -121,7 +130,7 @@ MusicHandle AudioManager::PlayMusic(const AssetReference<MusicAsset> & asset_ref
   }
 
   std::lock_guard<std::mutex> l(m_AudioMutex);
-  return m_PlayingMusic.AllocateElem(std::make_unique<MusicSpec>(asset_ref, volume, pan, looping));
+  return m_PlayingMusic.AllocateElem(std::make_unique<MusicSpec>(asset_ref, cat, volume, pan, looping));
 }
 
 void AudioManager::StopMusic(MusicHandle handle)
@@ -149,6 +158,16 @@ void AudioManager::SetMusicPaused(MusicHandle handle, bool pause)
   auto music_spec = m_PlayingMusic.Resolve(handle);
   if (music_spec == nullptr) return;
   (*music_spec)->m_Paused = pause;
+}
+
+float AudioManager::GetVolumeForCategory(VolumeCategory cat)
+{
+  return m_VolumeCategories[(int)cat];
+}
+
+void AudioManager::SetVolumeCategory(VolumeCategory cat, float val)
+{
+  m_VolumeCategories[(int)cat] = val;
 }
 
 void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
@@ -194,9 +213,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
       uint8_t * audio_start = audio_spec.m_AudioBuffer.get() + audio_spec.m_AudioPos;
       float * output_ptr = write_stream;
 
-      float volume = audio_spec.m_Volume;
-      float l_pan = audio_spec.m_Pan > 0 ? 1.0f - audio_spec.m_Pan : 1.0f;
-      float r_pan = audio_spec.m_Pan < 0 ? 1.0f + audio_spec.m_Pan : 1.0f;
+      float volume = audio_spec.m_Volume * p_this->m_VolumeCategories[(int)audio_spec.m_Category];
+      float l_vol = (audio_spec.m_Pan > 0 ? 1.0f - audio_spec.m_Pan : 1.0f) * volume;
+      float r_vol = (audio_spec.m_Pan < 0 ? 1.0f + audio_spec.m_Pan : 1.0f) * volume;
 
       if (audio_spec.m_AudioChannels == 2)
       {
@@ -208,9 +227,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           float * sample_ptr = (float *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += *sample_ptr * volume * l_pan;
+            *output_ptr += *sample_ptr * l_vol;
             sample_ptr++; output_ptr++;
-            *output_ptr += *sample_ptr * volume * r_pan;
+            *output_ptr += *sample_ptr * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -226,9 +245,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           int16_t * sample_ptr = (int16_t *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * l_vol;
             sample_ptr++; output_ptr++;
-            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -244,9 +263,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           int8_t * sample_ptr = (int8_t *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * l_vol;
             sample_ptr++; output_ptr++;
-            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -265,9 +284,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           float * sample_ptr = (float *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += *sample_ptr * volume * l_pan;
+            *output_ptr += *sample_ptr * l_vol;
             output_ptr++;
-            *output_ptr += *sample_ptr * volume * r_pan;
+            *output_ptr += *sample_ptr * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -283,9 +302,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           int16_t * sample_ptr = (int16_t *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * l_pan;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * l_vol;
             output_ptr++;
-            *output_ptr += ((float)*sample_ptr) / 32768.0f * volume * r_pan;
+            *output_ptr += ((float)*sample_ptr) / 32768.0f * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -301,9 +320,9 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
           int8_t * sample_ptr = (int8_t *)audio_start;
           for (int sample = 0; sample < (int)output_samples; sample++)
           {
-            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * l_pan;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * l_vol;
             output_ptr++;
-            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * volume * r_pan;
+            *output_ptr += (((float)*sample_ptr) / 127.0f - 1.0f) * r_vol;
             sample_ptr++; output_ptr++;
           }
 
@@ -320,14 +339,14 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 
   auto music_callback = [&](Handle audio_handle, std::unique_ptr<MusicSpec> & music_spec)
   {
-    return music_spec->FillBuffer(stream, len) == false;
+    return music_spec->FillBuffer(stream, len, p_this->m_VolumeCategories) == false;
   };
 
   p_this->m_PlayingAudio.Filter(audio_callback);
   p_this->m_PlayingMusic.Filter(music_callback);
 }
 
-void PlayAssetBundleSound(Any & load_data, float volume, float pan)
+void PlayAssetBundleSound(Any & load_data, VolumeCategory cat, float volume, float pan)
 {
   auto load_link = load_data.Get<AudioAsset::LoadCallbackLink>();
   if (load_link == nullptr)
@@ -341,5 +360,5 @@ void PlayAssetBundleSound(Any & load_data, float volume, float pan)
     return;
   }
 
-  g_AudioManager.PlayAudio(audio, volume, pan, false);
+  g_AudioManager.PlayAudio(audio, cat, volume, pan, false);
 }

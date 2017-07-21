@@ -3,6 +3,7 @@
 #include "GameClient/GameModeOnlineGameplay.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
+#include "GameClient/GameModeEndGame.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -14,28 +15,52 @@
 #include "Engine/EngineState.h"
 
 
-void GameModeOnlineGameplay::Initialize(GameContainer & container)
+GameModeOnlineGameplay::GameModeOnlineGameplay(GameContainer & game) :
+  GameMode(game)
 {
 
 }
 
-void GameModeOnlineGameplay::OnAssetsLoaded(GameContainer & container)
+GameModeOnlineGameplay::~GameModeOnlineGameplay()
+{
+  m_ClientSystems.Clear();
+}
+
+void GameModeOnlineGameplay::Initialize()
+{
+  auto & container = GetContainer();
+  container.SetInstanceData(container.GetClient().GetClientInstanceData());
+  m_ClientSystems.Emplace(container);
+
+  container.SetClientSystems(&m_ClientSystems.Value());
+}
+
+void GameModeOnlineGameplay::OnAssetsLoaded()
 {
 
 }
 
-void GameModeOnlineGameplay::Update(GameContainer & container)
+void GameModeOnlineGameplay::Update()
 {
+  auto & container = GetContainer();
   auto & client = container.GetClient();
+  auto instance_data = client.GetClientInstanceData();
   if (client.GetConnectionState() != ClientConnectionState::kConnected)
   {
     container.SwitchMode(GameModeDef<GameModeConnecting>{});
     return;
   }
 
-  if (client.GetGlobalData()->m_Started == false)
+  if (instance_data->GetGameState().m_Started == false)
   {
     container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    return;
+  }
+
+  if (instance_data->GetGameState().m_WiningTeam != -1)
+  {
+    auto instance_container = container.GetClient().ConvertToOffline();
+    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(instance_container));
     return;
   }
 
@@ -61,12 +86,26 @@ void GameModeOnlineGameplay::Update(GameContainer & container)
   }
 
   comp_system->FinalizeComponentDestroys();
+
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
+  ui_manager.Update();
+  input_manager.Update();
 }
 
-void GameModeOnlineGameplay::Render(GameContainer & container)
+void GameModeOnlineGameplay::Render()
 {
+  auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+  auto & camera = container.GetClientSystems()->GetCamera();
+
+  render_state.SetRenderSize(camera.GetGameResolution());
+
+  render_util.SetClearColor(Color(100, 149, 237, 255));
   render_util.Clear();
 
   auto & engine_state = container.GetEngineState();
@@ -74,14 +113,15 @@ void GameModeOnlineGameplay::Render(GameContainer & container)
   auto map_system = engine_state.GetMapSystem();
 
   auto screen_resolution = container.GetWindow().GetSize();
-  m_GameCamera.Update(container, screen_resolution);
 
-  m_EngineCamera.SetPosition(m_GameCamera.GetCameraPosition());
-  m_EngineCamera.SetGameResolution(m_GameCamera.GetGameResolution());
-  m_EngineCamera.SetScreenResolution(screen_resolution);
+  camera.SetScreenResolution(screen_resolution);
+  camera.Update();
 
-  auto viewport_bounds = Box::FromFrameCenterAndSize(m_GameCamera.GetCameraPosition(), m_GameCamera.GetGameResolution());
+  auto viewport_bounds = Box::FromFrameCenterAndSize(camera.GetPosition(), camera.GetGameResolution());
 
-  m_EngineCamera.Draw(&engine_state, container.GetRenderState());
+  camera.Draw(container, &engine_state, render_state, render_util);
+  
+  input_manager.Render();
+  ui_manager.Render();
 }
 

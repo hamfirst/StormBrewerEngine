@@ -48,13 +48,13 @@ public:
   static int Type;
 
   void Update() override;
-  void Render(RenderState & render_state, RenderUtil & render_util) override;
-  void RenderDefault(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
+  void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementSpriteFrameInitData & GetInitData();
   UIElementSpriteFrameData & GetData();
 
-  void SetCustomRenderCallback(Delegate<void, UIElementSpriteFrame &, RenderState &> && render_callback);
+  void SetCustomRenderCallback(Delegate<void, UIElementSpriteFrame &, RenderState &, const Vector2 &> && render_callback);
   
   SpritePtr & GetSprite();
 
@@ -65,7 +65,7 @@ private:
   UIElementSpriteFrameInitData m_InitData;
   UIElementSpriteFrameData m_Data;
 
-  Delegate<void, UIElementSpriteFrame &, RenderState &> m_RenderDelegate;
+  Delegate<void, UIElementSpriteFrame &, RenderState &, const Vector2 &> m_RenderDelegate;
   SpritePtr m_Sprite;
 };
 

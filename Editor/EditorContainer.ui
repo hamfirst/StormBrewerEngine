@@ -49,8 +49,7 @@
     <property name="title">
      <string>Run</string>
     </property>
-    <addaction name="action_StartServer"/>
-    <addaction name="action_LaunchClients"/>
+    <addaction name="action_TestBuild"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -95,6 +94,11 @@
   <action name="action_LaunchClients">
    <property name="text">
     <string>Launch Clients</string>
+   </property>
+  </action>
+  <action name="action_TestBuild">
+   <property name="text">
+    <string>Test Build</string>
    </property>
   </action>
  </widget>

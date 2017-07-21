@@ -28,11 +28,21 @@ public:
   Vector2 GetScreenSize();
   void SetScreenSize(Vector2 screen_size);
 
-  RenderVec2 GetRenderScreenSize();
+  int GetRenderWidth();
+  int GetRenderHeight();
+
+  Vector2 GetRenderSize();
+  void SetRenderSize(Vector2 render_size);
+
+  RenderVec2 ScreenPixelsToRenderPixels(const RenderVec2 & screen_pixels);
+  RenderVec2 RenderPixelsToScreenPixels(const RenderVec2 & render_pixels);
 
 private:
   int m_ScreenWidth = 1;
   int m_ScreenHeight = 1;
+
+  int m_RenderWidth = 1;
+  int m_RenderHeight = 1;
 
   bool m_BlendEnabled = false;
   bool m_ScissorEnabled = false;

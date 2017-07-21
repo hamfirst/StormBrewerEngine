@@ -4,22 +4,22 @@
 
 class GameContainer;
 
-static const int kDefaultResolutionWidth = 320;
-static const int kDefaultResolutionHeight = 180;
+static const int kDefaultResolutionWidth = 360;
+static const int kDefaultResolutionHeight = 640;
 
-class GameCamera
+class GameCamera : public Camera
 {
 public:
-  GameCamera();
+  GameCamera(GameContainer & container);
 
-  void Update(GameContainer & container, const Vector2 & screen_resolution);
+  void Update();
 
-  Vector2 GetGameResolution();
-  Vector2 GetCameraPosition();
+  void TransformWorldSpaceToGameplaySpace(int & x, int & y);
+  Vector2 TransformWorldSpaceToGameplaySpace(const Vector2 & vec);
+  Box TransformWorldSpaceToGameplaySpace(const Box & box);
 
 private:
 
-  Vector2 m_GameResolution;
-  Vector2 m_CameraPosition;
+  GameContainer & m_GameContainer;
 };
 

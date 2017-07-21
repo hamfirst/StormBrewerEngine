@@ -3,6 +3,7 @@
 #include "Foundation/Document/Document.h"
 #include "Foundation/Document/DocumentCompiler.h"
 #include "Foundation/FileSystem/File.h"
+#include "Foundation/FileSystem/Path.h"
 
 #include "Foundation/Document/DocumentTypes.refl.meta.h"
 
@@ -123,9 +124,10 @@ void Document::FileError()
   SetFileError();
 }
 
-void Document::Save()
+void Document::Save(const std::string & root_path)
 {
-  File file = FileOpen(m_Path.data(), FileOpenMode::kWrite);
+  auto full_path = GetFullPath(m_Path, root_path);
+  File file = FileOpen(full_path.data(), FileOpenMode::kWrite);
   if (file.GetFileOpenError() > 0)
   {
     return;

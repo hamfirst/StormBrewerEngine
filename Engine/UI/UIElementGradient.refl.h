@@ -40,6 +40,37 @@ struct UIElementGradientData
   float m_TRColorB = 1.0f;
   float m_TRColorA = 1.0f;
 
+  void SetBounds(const Box & b)
+  {
+    m_StartX = (float)b.m_Start.x;
+    m_StartY = (float)b.m_Start.y;
+    m_EndX = (float)b.m_End.x;
+    m_EndY = (float)b.m_End.y;
+  }
+
+  void SetColor(const Color & c)
+  {
+    m_BLColorR = c.r;
+    m_BLColorG = c.g;
+    m_BLColorB = c.b;
+    m_BLColorA = c.a;
+
+    m_BRColorR = c.r;
+    m_BRColorG = c.g;
+    m_BRColorB = c.b;
+    m_BRColorA = c.a;
+
+    m_TLColorR = c.r;
+    m_TLColorG = c.g;
+    m_TLColorB = c.b;
+    m_TLColorA = c.a;
+
+    m_TRColorR = c.r;
+    m_TRColorG = c.g;
+    m_TRColorB = c.b;
+    m_TRColorA = c.a;
+  }
+
   float m_Active = 0.0f;
 };
 
@@ -54,20 +85,20 @@ public:
   static int Type;
 
   void Update() override;
-  void Render(RenderState & render_state, RenderUtil & render_util) override;
-  void RenderDefault(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
+  void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementGradientInitData & GetInitData();
   UIElementGradientData & GetData();
 
-  void SetCustomRenderCallback(Delegate<void, UIElementGradient &, RenderState &> && render_callback);
+  void SetCustomRenderCallback(Delegate<void, UIElementGradient &, RenderState &, const Vector2 &> && render_callback);
 
 private:
 
   UIElementGradientInitData m_InitData;
   UIElementGradientData m_Data;
 
-  Delegate<void, UIElementGradient &, RenderState &> m_RenderDelegate;
+  Delegate<void, UIElementGradient &, RenderState &, const Vector2 &> m_RenderDelegate;
 
   VertexBuffer m_VertexBuffer;
 };

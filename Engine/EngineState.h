@@ -5,6 +5,8 @@
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Any/Any.h"
 
+#include "Server/ServerObject/ServerObjectHandle.h"
+
 class CollisionSystem;
 class EntitySystem;
 class Entity;
@@ -42,7 +44,6 @@ public:
   NotNullPtr<EntitySystem> GetEntitySystem();
   NotNullPtr<ComponentSystem> GetComponentSystem();
   NotNullPtr<MapSystem> GetMapSystem();
-
 
 private:
 

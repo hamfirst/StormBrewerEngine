@@ -2,11 +2,14 @@
 
 #include "Foundation/Delegate/DelegateLink.h"
 
+#include "Engine/EngineCommon.h"
 #include "Engine/Input/KeyboardState.h"
 #include "Engine/Input/MouseState.h"
 #include "Engine/Input/GamepadState.h"
 
 class Window;
+
+using KeyboardPassthroughCallbackLink = DelegateLink<void, bool, ControlId>;
 
 class ENGINE_EXPORT InputState
 {
@@ -27,13 +30,14 @@ public:
   bool GetKeyState(int scan_code);
   bool GetKeyPressedThisFrame(int scan_code);
   bool GetMouseButtonState(int button);
+  bool GetMousePressedThisFrame(int button);
   PointerState GetPointerState();
   bool GetGamepadConnected(int gamepad_idx);
   bool GetGamepadButtonState(int gamepad_idx, GamepadButton button);
   bool GetGamepadButtonPressedThisFrame(int gamepad_idx, GamepadButton button);
   float GetGamepadAxis(int gamepad_idx, GamepadAxis axis);
 
-  DelegateLink<void, bool, ControlId> RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del);
+  KeyboardPassthroughCallbackLink RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del);
 
 private:
 

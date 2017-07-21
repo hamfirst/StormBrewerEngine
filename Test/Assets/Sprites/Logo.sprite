@@ -1,0 +1,54 @@
+[]
+
+{
+    "m_Textures": {
+        "0": {
+            "m_Filename": ".\/Images\/stormbrewers_logo_anim.png",
+            "m_FrameWidth": 64,
+            "m_FrameHeight": 64
+        }
+    },
+    "m_Animations": {
+        "0": {
+            "m_Name": "Animation",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "6802604632037130240",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "6802604632037130241",
+                    "m_FrameDuration": 5
+                },
+                "8": {
+                    "m_FrameId": "6802604632037130248",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "6802604632037130243",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "6802604632037130242",
+                    "m_FrameDuration": 5
+                },
+                "4": {
+                    "m_FrameId": "6802604632037130244",
+                    "m_FrameDuration": 5
+                },
+                "5": {
+                    "m_FrameId": "6802604632037130245",
+                    "m_FrameDuration": 5
+                },
+                "7": {
+                    "m_FrameId": "6802604632037130247",
+                    "m_FrameDuration": 5
+                },
+                "6": {
+                    "m_FrameId": "6802604632037130246",
+                    "m_FrameDuration": 5
+                }
+            }
+        }
+    }
+}

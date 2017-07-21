@@ -8,6 +8,9 @@
     <ClCompile Include="GameLevelList.cpp" />
     <ClCompile Include="GameLogicContainer.cpp" />
     <ClCompile Include="GameController.refl.cpp" />
+    <ClCompile Include="GameSharedGlobalResources.cpp" />
+    <ClCompile Include="GameSharedInstanceResources.cpp" />
+    <ClCompile Include="GameValidation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMessages.refl.h" />
@@ -30,5 +33,23 @@
     <ClInclude Include="GameController.refl.meta.h" />
     <ClInclude Include="GameLevelListAsset.refl.h" />
     <ClInclude Include="GameLevelListAsset.refl.meta.h" />
+    <ClInclude Include="GameServerTypes.h" />
+    <ClInclude Include="GameSharedGlobalResources.h" />
+    <ClInclude Include="GameSharedInstanceResources.h" />
+    <ClInclude Include="GameValidation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{9fb4ed09-f485-45b7-8297-a741cf230488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configs">
+      <UniqueIdentifier>{91500a31-cdd3-4f0f-bf47-11e7eb3dfbaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerObjects">
+      <UniqueIdentifier>{512fa304-a5c3-4cf1-aef6-62ad302a4a1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{c7a1eb28-f8e4-4cbe-8dda-3174d3ddd9e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

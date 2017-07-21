@@ -113,7 +113,39 @@ void RenderState::SetScreenSize(Vector2 screen_size)
   m_ScreenHeight = screen_size.y;
 }
 
-RenderVec2 RenderState::GetRenderScreenSize()
+int RenderState::GetRenderWidth()
 {
-  return RenderVec2{ m_ScreenWidth, m_ScreenHeight };
+  return m_RenderWidth;
+}
+
+int RenderState::GetRenderHeight()
+{
+  return m_RenderHeight;
+}
+
+Vector2 RenderState::GetRenderSize()
+{
+  return Vector2(m_RenderWidth, m_RenderHeight);
+}
+
+void RenderState::SetRenderSize(Vector2 render_size)
+{
+  m_RenderWidth = render_size.x;
+  m_RenderHeight = render_size.y;
+}
+
+RenderVec2 RenderState::ScreenPixelsToRenderPixels(const RenderVec2 & screen_pixels)
+{
+  auto half_screen = RenderVec2{ m_ScreenWidth, m_ScreenHeight } * 0.5f;
+  auto half_render = RenderVec2{ m_RenderWidth, m_RenderHeight } * 0.5f;
+  auto clip_space = (screen_pixels - half_screen) / half_screen;
+  return (clip_space * half_render) + half_render;
+}
+
+RenderVec2 RenderState::RenderPixelsToScreenPixels(const RenderVec2 & render_pixels)
+{
+  auto half_screen = RenderVec2{ m_ScreenWidth, m_ScreenHeight } *0.5f;
+  auto half_render = RenderVec2{ m_RenderWidth, m_RenderHeight } *0.5f;
+  auto clip_space = (render_pixels - half_render) / half_render;
+  return (clip_space * half_screen) + half_screen;
 }

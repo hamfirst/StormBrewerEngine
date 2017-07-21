@@ -185,15 +185,36 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameClientGlobalResources.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientInputManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientInstanceContainer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientInstanceData.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientInstanceResources.cpp" />
     <ClCompile Include="GameClientLevelLoader.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameContainer.cpp">
+    <ClCompile Include="GameClientSystems.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameGlobalResources.cpp">
+    <ClCompile Include="GameClientUIManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameContainer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -205,11 +226,23 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameModeDebugOffline.cpp">
+    <ClCompile Include="GameModeEndGame.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeLoadingGlobal.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="GameModeLogo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeMainMenu.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameModeNameSelect.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -231,15 +264,36 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameClientEventSender.h" />
+    <ClInclude Include="GameClientGlobalResources.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientInputManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientInstanceContainer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientInstanceData.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientInstanceResources.h" />
     <ClInclude Include="GameClientLevelLoader.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameContainer.h">
+    <ClInclude Include="GameClientSystems.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameGlobalResources.h">
+    <ClInclude Include="GameClientUIManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameContainer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -251,11 +305,23 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameModeDebugOffline.h">
+    <ClInclude Include="GameModeEndGame.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeLoadingGlobal.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="GameModeLogo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeMainMenu.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameModeNameSelect.h">
       <SubType>
       </SubType>
     </ClInclude>

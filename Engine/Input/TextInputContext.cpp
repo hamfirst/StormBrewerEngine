@@ -47,6 +47,11 @@ void TextInputContext::SetTabDelegate(const Delegate<void, const char *> & del)
   m_TabDelegate = del;
 }
 
+void TextInputContext::SetValidator(const Delegate<bool, const char *> & del)
+{
+  m_ValidatorDelegate = del;
+}
+
 
 bool TextInputContext::IsTextInputActive()
 {
@@ -150,13 +155,21 @@ void TextInputContext::CommitInput(czstr input)
     new_char_pos += new_char_len;
   }
 
+  auto text = m_Text;
+  text.insert(text.begin() + insert_pos, input, input + insert_len);
+
+  if (m_ValidatorDelegate && m_ValidatorDelegate(text.data()) == false)
+  {
+    return;
+  }
+
   for (auto itr = m_CharacterPositions.begin() + m_CursorPos, end = m_CharacterPositions.end(); itr != end; ++itr)
   {
     itr->first += insert_len;
     itr->second += insert_len;
   }
 
-  m_Text.insert(m_Text.begin() + insert_pos, input, input + insert_len);
+  m_Text = std::move(text);
   m_CharacterPositions.insert(m_CharacterPositions.begin() + m_CursorPos, new_chars.begin(), new_chars.end());
   m_CursorPos += num_characters;
 }
@@ -170,7 +183,9 @@ void TextInputContext::HandleKeyPressEvent(int key_sym)
 {
   m_LastModification = GetTimeSeconds();
 
-  if (key_sym == SDLK_RETURN)
+  if (key_sym == SDLK_RETURN ||
+      key_sym == SDLK_RETURN2 ||
+      key_sym == SDLK_KP_ENTER)
   {
     HandleEnterPressed();
   }
@@ -255,12 +270,21 @@ void TextInputContext::HandleBackspacePressed()
     return;
   }
 
-  m_CursorPos--;
 
-  auto slice = m_CharacterPositions[m_CursorPos];
+  auto slice = m_CharacterPositions[m_CursorPos - 1];
+
+  auto text = m_Text;
+  text.erase(text.begin() + slice.first, text.begin() + slice.second);
+
+  if (m_ValidatorDelegate && m_ValidatorDelegate(text.data()) == false)
+  {
+    return;
+  }
+
+  m_CursorPos--;
   m_CharacterPositions.erase(m_CharacterPositions.begin() + m_CursorPos);
 
-  m_Text.erase(m_Text.begin() + slice.first, m_Text.begin() + slice.second);
+  m_Text = std::move(text);
 
   auto character_len = slice.second - slice.first;
 
@@ -269,6 +293,7 @@ void TextInputContext::HandleBackspacePressed()
     itr->first -= character_len;
     itr->second -= character_len;
   }
+
 }
 
 void TextInputContext::HandleDeletePressed()
@@ -289,9 +314,17 @@ void TextInputContext::HandleDeletePressed()
   }
 
   auto slice = m_CharacterPositions[m_CursorPos];
-  m_CharacterPositions.erase(m_CharacterPositions.begin() + m_CursorPos);
 
-  m_Text.erase(m_Text.begin() + slice.first, m_Text.begin() + slice.second);
+  auto text = m_Text;
+  text.erase(text.begin() + slice.first, text.begin() + slice.second);
+
+  if (m_ValidatorDelegate && m_ValidatorDelegate(text.data()) == false)
+  {
+    return;
+  }
+
+  m_CharacterPositions.erase(m_CharacterPositions.begin() + m_CursorPos);
+  m_Text = std::move(text);
 
   auto character_len = slice.second - slice.first;
 

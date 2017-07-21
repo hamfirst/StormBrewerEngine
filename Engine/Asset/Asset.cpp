@@ -33,12 +33,12 @@ void Asset::CallAssetLoadCallbacksWithFailure()
   CallAssetLoadCallbacks();
 }
 
-bool Asset::IsLoaded()
+bool Asset::IsLoaded() const
 {
   return m_State == AssetState::kLoaded;
 }
 
-bool Asset::IsError()
+bool Asset::IsError() const
 {
   return m_State == AssetState::kLoadError;
 }
@@ -63,12 +63,12 @@ GenericLoadCallbackLink Asset::AddLoadCallback(GenericLoadCallback del)
     m_GenericLoadCallbackList.AddDelegate(del), AssetReferenceBase(this) };
 }
 
-int Asset::PreProcessLoadedData(Buffer & file_data)
+int Asset::PreProcessLoadedData(Buffer & file_data, bool load_deps)
 {
   return 0;
 }
 
-void Asset::OnDataLoadComplete(Buffer & file_data)
+void Asset::OnDataLoadComplete(Buffer & file_data, bool load_deps)
 {
 
 }

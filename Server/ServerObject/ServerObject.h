@@ -26,6 +26,17 @@ public:
 
   bool IsDestroyed();
 
+  template <typename Type>
+  NullOptPtr<Type> CastTo()
+  {
+    if (CastToInternal((uint32_t)Type::TypeIndex))
+    {
+      return static_cast<Type *>(this);
+    }
+
+    return nullptr;
+  }
+
 private:
 
   template <typename Type>

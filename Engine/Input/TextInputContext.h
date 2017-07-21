@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 class ENGINE_EXPORT TextInputContext : public std::enable_shared_from_this<TextInputContext>
 {
 public:
@@ -19,6 +21,7 @@ public:
   void SetEnterDelegate(const Delegate<void, const char *> & del);
   void SetEscapeDelegate(const Delegate<void, const char *> & del);
   void SetTabDelegate(const Delegate<void, const char *> & del);
+  void SetValidator(const Delegate<bool, const char *> & del);
 
   bool IsTextInputActive();
   double GetTimeSinceLastUpdate();
@@ -71,4 +74,5 @@ private:
   Delegate<void, const char *> m_EnterDelegate;
   Delegate<void, const char *> m_EscapeDelegate;
   Delegate<void, const char *> m_TabDelegate;
+  Delegate<bool, const char *> m_ValidatorDelegate;
 };

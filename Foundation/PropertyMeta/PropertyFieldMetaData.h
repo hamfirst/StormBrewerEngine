@@ -14,6 +14,7 @@ enum class PropertyFieldType
   kSignedNumber,
   kUnsignedNumber,
   kFloatNumber,
+  kFloatNumberDeterministic,
   kString,
   kFile,
   kEnum,
@@ -80,6 +81,14 @@ struct PropertyField
       float m_Min;
       float m_Max;
     } m_FloatNumber;
+
+    struct
+    {
+      czstr(*Get)(void *);
+      void(*Set)(void *, czstr);
+      float m_Min;
+      float m_Max;
+    } m_FloatNumberDeterministic;
 
     struct
     {

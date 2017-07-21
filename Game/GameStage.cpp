@@ -1,8 +1,13 @@
 
-#include "GameStage.h"
+#include "Game/GameStage.h"
 
 GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127)
+{
+
+}
+
+GameStage::~GameStage()
 {
 
 }

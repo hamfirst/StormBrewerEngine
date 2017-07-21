@@ -95,6 +95,17 @@ public:
     return m_Data;
   }
 
+  bool IsLoaded() const
+  {
+    return m_Resource && m_Resource->IsLoaded();
+  }
+
+  void Clear()
+  {
+    m_Data = nullptr;
+    m_Resource.Clear();
+  }
+
 protected:
   NotNullPtr<DataType> m_Data;
   DocumentResourceReference<ResourceType> m_Resource;
@@ -131,16 +142,22 @@ public:
 
   DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs)
   {
-    DocumentResourcePtr<DataType, ResourceType>::operator = (rhs);
     m_Link = rhs.m_Link;
+    DocumentResourcePtr<DataType, ResourceType>::operator = (rhs);
     return *this;
   }
 
   DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs)
   {
-    DocumentResourcePtr<DataType, ResourceType>::operator = (std::move(rhs));
     m_Link = std::move(rhs.m_Link);
+    DocumentResourcePtr<DataType, ResourceType>::operator = (std::move(rhs));
     return *this;
+  }
+
+  void Clear()
+  {
+    m_Link.Clear();
+    DocumentResourcePtr<DataType, ResourceType>::Clear();
   }
 
 private:

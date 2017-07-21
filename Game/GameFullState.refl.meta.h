@@ -42,11 +42,11 @@ struct StormReflTypeInfo<GameFullState>::field_data<0, Self> : public StormReflT
 template <>
 struct StormReflTypeInfo<GameFullState>::field_data_static<1>
 {
-  using member_type = GameGlobalData; // GameGlobalData
+  using member_type = GameInstanceData; // GameInstanceData
   static constexpr auto GetName() { return "m_GlobalData"; }
-  static constexpr auto GetType() { return "GameGlobalData"; }
+  static constexpr auto GetType() { return "GameInstanceData"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4652C62B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD1E834F1; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameFullState::m_GlobalData; }
 };
@@ -56,8 +56,8 @@ struct StormReflTypeInfo<GameFullState>::field_data<1, Self> : public StormReflT
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameGlobalData> & Get() { return self.m_GlobalData; }
-  std::add_const_t<std::remove_reference_t<GameGlobalData>> & Get() const { return self.m_GlobalData; }
+  match_const_t<Self, GameInstanceData> & Get() { return self.m_GlobalData; }
+  std::add_const_t<std::remove_reference_t<GameInstanceData>> & Get() const { return self.m_GlobalData; }
 };
 
 namespace StormReflFileInfo

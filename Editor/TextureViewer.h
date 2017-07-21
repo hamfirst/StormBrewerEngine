@@ -10,7 +10,7 @@
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 
-#include "QTUtil/LerpVar.h"
+#include "QTUtil/QtLerpVar.h"
 
 class TextureViewer : public QOpenGLWidget
 {
@@ -47,7 +47,7 @@ private:
   VertexArray m_VertexArray;
 
   RenderVec2 m_Center = {};
-  LerpVar m_Magnification;
+  QtLerpVar m_Magnification;
 
   bool m_Dragging = false;
   QPoint m_CursorPos;

@@ -12,10 +12,12 @@
 
 extern DelegateList<void> g_GlobalUpdate;
 
-GameClientWidget::GameClientWidget(EditorContainer *parent) :
-  m_Editor(parent)
+GameClientWidget::GameClientWidget(int client_index, QWidget *parent) :
+  QOpenGLWidget(parent),
+  m_ClientIndex(client_index)
 {
   setFocusPolicy(Qt::ClickFocus);
+  setAttribute(Qt::WA_InputMethodEnabled);
   setMouseTracking(true);
 }
 
@@ -26,14 +28,11 @@ GameClientWidget::~GameClientWidget()
 
 void GameClientWidget::initializeGL()
 {
-  m_RenderState.InitRenderState(width(), height());
-  m_RenderUtil.LoadShaders();
+
 }
 
 void GameClientWidget::resizeGL(int w, int h)
 {
-  m_RenderState.SetScreenSize(Vector2(w, h));
-
   if (m_FakeWindow)
   {
     m_FakeWindow->SetWindowSize(Vector2(w, h));
@@ -60,8 +59,8 @@ void GameClientWidget::showEvent(QShowEvent * ev)
     [this] {},
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { close(); },
-    [this](NullOptPtr<Box> box) {},
-    [this] {}
+    [this](NullOptPtr<Box> box) { m_ImeMode = true; },
+    [this] { m_ImeMode = false; }
   );
 
   auto cursor_pos = mapFromGlobal(QCursor::pos());
@@ -76,17 +75,23 @@ void GameClientWidget::showEvent(QShowEvent * ev)
     m_FakeWindow->SetWindowKeyboardFocused(true);
   }
 
+  auto init_settings = std::make_unique<GameContainerInitSettings>();
+  init_settings->m_AutoConnect = true;
+  init_settings->m_UserName = "Player" + std::to_string(m_ClientIndex + 1);
+
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
-  m_GameContainer.Emplace(m_FakeWindow->GetWindow());
+  m_GameContainer.Emplace(m_FakeWindow->GetWindow(), std::move(init_settings));
 
   g_GlobalUpdate.AddDelegate();
 
   m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this] { Update(); });
+
+  setFocus();
 }
 
 void GameClientWidget::closeEvent(QCloseEvent * ev)
 {
-  m_Editor->NotifyClientWindowClosed(this);
+
 }
 
 void GameClientWidget::keyPressEvent(QKeyEvent * event)
@@ -94,6 +99,13 @@ void GameClientWidget::keyPressEvent(QKeyEvent * event)
   if (!m_FakeWindow)
   {
     return;
+  }
+
+  if (m_ImeMode)
+  {
+    auto text = event->text().toStdString();
+    m_FakeWindow->HandleTextInputCommit(text.data());
+    event->text();
   }
 
   auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
@@ -239,4 +251,5 @@ void GameClientWidget::Update()
   m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
 
   m_GameContainer->Update();
+  repaint();
 }

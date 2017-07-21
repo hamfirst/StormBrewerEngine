@@ -53,6 +53,16 @@ public:
     return m_Ptr != nullptr;
   }
 
+  void * GetRaw()
+  {
+    return m_Ptr;
+  }
+
+  const void * GetRaw() const
+  {
+    return m_Ptr;
+  }
+
 private:
   void * m_Ptr;
   void(*m_Deleter)(void *);

@@ -19,6 +19,7 @@ public:
   Optional<Box> GetPreviewBox();
 
   void Draw(GeometryVertexBufferBuilder & builder, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification);
+  void DrawControls(GeometryVertexBufferBuilder & builder, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification);
 
   void SetPreviewPointOffset(Vector2 offset);
   void SetPreviewEdgeOffset(int offset);

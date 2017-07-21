@@ -15,8 +15,6 @@ class IntersectionFuncs
 {
 public:
 
-  using LengthType = float;
-
   static auto Sqrt(const VecCompType & c)
   {
     return sqrtf((float)c);
@@ -39,12 +37,12 @@ public:
 
   static auto Floor(const VecCompType & a)
   {
-    return floorf(a, b);
+    return floorf(a);
   }
 
   static auto Ceil(const VecCompType & a)
   {
-    return ceilf(a, b);
+    return ceilf(a);
   }
 
   static auto Reciprocal(const VecCompType & c)
@@ -61,7 +59,7 @@ public:
 template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
 class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
 {
-  using LengthType = NetFixedPoint<StorageType, NumBits, FractionalBits>;
+public:
 
   static auto Sqrt(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
   {
@@ -85,7 +83,7 @@ class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
 
   static auto Floor(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a)
   {
-    return a.Floor()
+    return a.Floor();
   }
 
   static auto Ceil(const NetFixedPoint<StorageType, NumBits, FractionalBits> & a)
@@ -95,17 +93,14 @@ class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
 
   static auto Reciprocal(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
   {
-    return VecCompType(1) / c;
+    return NetFixedPoint<StorageType, NumBits, FractionalBits>(1) / c;
   }
 
   static auto Inverse(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
   {
-    return c.Inverse();
+    return c.Invert();
   }
 };
-
-template <typename VecType>
-using LengthType = typename IntersectionFuncs<VecType>::LengthType;
 
 template <typename VecType>
 class IntersectionVecFuncs
@@ -144,12 +139,114 @@ public:
   }
 };
 
-template <typename VecType>
+template <typename VecCompType>
+struct IntersectionVecType
+{
+  VecCompType x;
+  VecCompType y;
+
+  using VecType = IntersectionVecType<VecCompType>;
+
+  IntersectionVecType() = default;
+
+  template <typename VecInitType>
+  IntersectionVecType(VecInitType ix, VecInitType iy) : x(ix), y(iy) { }
+
+  IntersectionVecType(const VecType & rhs) = default;
+  IntersectionVecType(VecType && rhs) = default;
+
+  VecType & operator = (const VecType & rhs) = default;
+  VecType & operator = (VecType && rhs) = default;
+
+  operator Vector2() const
+  {
+    return Vector2((int)x, (int)y);
+  }
+
+  VecType operator + (const VecType & rhs) const
+  {
+    return VecType(x + rhs.x, y + rhs.y);
+  }
+
+  VecType & operator += (const VecType & rhs)
+  {
+    x += rhs.x; y += rhs.y;
+    return *this;
+  }
+
+  VecType operator - (const VecType & rhs) const
+  {
+    return VecType(x - rhs.x, y - rhs.y);
+  }
+
+  VecType & operator -= (const VecType & rhs)
+  {
+    x -= rhs.x; y -= rhs.y;
+    return *this;
+  }
+
+  VecType operator * (const VecType & rhs) const
+  {
+    return VecType(x * rhs.x, y * rhs.y);
+  }
+
+  VecType operator * (VecCompType rhs) const
+  {
+    return VecType(x * rhs, y * rhs);
+  }
+
+  VecType & operator *= (const VecType & rhs)
+  {
+    x *= rhs.x; y *= rhs.y;
+    return *this;
+  }
+
+  VecType operator *= (VecCompType rhs)
+  {
+    x *= rhs; y *= rhs;
+    return *this;
+  }
+
+  VecType operator / (const VecType & rhs) const
+  {
+    return VecType(x / rhs.x, y / rhs.y);
+  }
+
+  VecType operator / (VecCompType factor) const
+  {
+    return VecType(x / factor, y / factor);
+  }
+
+  VecType & operator /= (const VecType & rhs)
+  {
+    x /= rhs.x; y /= rhs.y;
+    return *this;
+  }
+
+  VecType operator /= (VecCompType factor)
+  {
+    x /= factor; y /= factor;
+    return *this;
+  }
+
+  bool operator == (const VecType & rhs) const
+  {
+    return x == rhs.x && y == rhs.y;
+  }
+
+  bool operator != (const VecType & rhs) const
+  {
+    return x != rhs.x || y != rhs.y;
+  }
+};
+
+template <typename VecCompType>
 struct IntersectionResult
 {
+  using VecType = IntersectionVecType<VecCompType>;
   bool m_Intersected = false;
 
-  LengthType<VecType> m_T;
+  VecCompType m_T;
   VecType m_HitPos;
   VecType m_HitNormal;
 };
@@ -158,98 +255,7 @@ template <typename VecCompType>
 class Intersection
 {
 public:
-  struct VecType
-  {
-    VecCompType x;
-    VecCompType y;
-
-    VecType() = default;
-
-    template <typename VecInitType>
-    VecType(VecInitType ix, VecInitType iy) : x(ix), y(iy) { }
-
-    VecType(const VecType & rhs) = default;
-    VecType(VecType && rhs) = default;
-
-    VecType & operator = (const VecType & rhs) = default;
-    VecType & operator = (VecType && rhs) = default;
-
-    VecType operator + (const VecType & rhs) const
-    {
-      return VecType(x + rhs.x, y + rhs.y);
-    }
-
-    VecType & operator += (const VecType & rhs)
-    {
-      x += rhs.x; y += rhs.y;
-      return *this;
-    }
-
-    VecType operator - (const VecType & rhs) const
-    {
-      return VecType(x - rhs.x, y - rhs.y);
-    }
-
-    VecType & operator -= (const VecType & rhs)
-    {
-      x -= rhs.x; y -= rhs.y;
-      return *this;
-    }
-
-    VecType operator * (const VecType & rhs) const
-    {
-      return VecType(x * rhs.x, y * rhs.y);
-    }
-
-    VecType operator * (VecCompType rhs) const
-    {
-      return VecType(x * rhs, y * rhs);
-    }
-
-    VecType & operator *= (const VecType & rhs)
-    {
-      x *= rhs.x; y *= rhs.y;
-      return *this;
-    }
-
-    VecType operator *= (VecCompType rhs)
-    {
-      x *= rhs; y *= rhs;
-      return *this;
-    }
-
-    VecType operator / (const VecType & rhs) const
-    {
-      return VecType(x / rhs.x, y / rhs.y);
-    }
-
-    VecType operator / (VecCompType factor) const
-    {
-      return VecType(x / factor, y / factor);
-    }
-
-    VecType & operator /= (const VecType & rhs)
-    {
-      x /= rhs.x; y /= rhs.y;
-      return *this;
-    }
-
-    VecType operator /= (VecCompType factor)
-    {
-      x /= factor; y /= factor;
-      return *this;
-    }
-
-    bool operator == (const VecType & rhs) const
-    {
-      return x == rhs.x && y == rhs.y;
-    }
-
-    bool operator != (const VecType & rhs) const
-    {
-      return x != rhs.x || y != rhs.y;
-    }
-  };
+  using VecType = IntersectionVecType<VecCompType>;
 
   struct CollisionBoundingBox
   {
@@ -262,8 +268,8 @@ public:
       b.m_Start.x = IntersectionFuncs<VecCompType>::Floor(m_Start.x);
       b.m_Start.y = IntersectionFuncs<VecCompType>::Floor(m_Start.y);
 
-      b.m_End.x = IntersectionFuncs<VecCompType>::Ceil(m_Start.x);
-      b.m_End.y = IntersectionFuncs<VecCompType>::Ceil(m_Start.y);
+      b.m_End.x = IntersectionFuncs<VecCompType>::Ceil(m_End.x);
+      b.m_End.y = IntersectionFuncs<VecCompType>::Ceil(m_End.y);
       return b;
     }
   };
@@ -294,7 +300,7 @@ public:
       m_RadiusSquared = radius_squared;
     }
 
-    CollisionBoundingBox GetBoundingBox()
+    CollisionBoundingBox GetBoundingBox() const
     {
       CollisionBoundingBox box;
       box.m_Start.x = m_Center.x - m_Radius;
@@ -329,7 +335,16 @@ public:
       m_Offset = m_End - m_Start;
 
       m_Length = IntersectionVecFuncs<VecType>::Mag(m_Offset);
-      m_Dir = m_Offset / m_Length;
+      if (m_Length == VecCompType(0))
+      {
+        m_Dir.x = VecCompType(1);
+        m_Dir.y = VecCompType(0);
+      }
+      else
+      {
+        m_Dir = m_Offset / m_Length;
+      }
+
       m_Normal = IntersectionVecFuncs<VecType>::GetPerpVec(m_Dir);
 
       m_StartD = IntersectionVecFuncs<VecType>::Dot(m_Start, m_Dir);
@@ -337,7 +352,7 @@ public:
       m_NormalD = IntersectionVecFuncs<VecType>::Dot(m_Start, m_Normal);
     }
 
-    CollisionBoundingBox GetBoundingBox()
+    CollisionBoundingBox GetBoundingBox() const
     {
       CollisionBoundingBox box;
       box.m_Start.x = IntersectionFuncs<VecCompType>::Min(m_Start.x, m_End.x);
@@ -348,7 +363,7 @@ public:
     }
   };
 
-  static bool SweptPointToLineTest(const CollisionLine & sweep, const CollisionLine & line, IntersectionResult<VecType> & result)
+  static bool SweptPointToLineTest(const CollisionLine & sweep, const CollisionLine & line, IntersectionResult<VecCompType> & result)
   {
     const VecCompType zero = VecCompType(0);
 
@@ -378,7 +393,7 @@ public:
     }
 
     auto denom = (other_normal_start_d - other_normal_end_d);
-    if (denom == 0)
+    if (denom == zero)
     {
       if ((d1 > line.m_StartD) && (d1 < line.m_EndD))
       {
@@ -415,11 +430,13 @@ public:
     result.m_Intersected = true;
     result.m_T = other_normal_start_d / denom;
     result.m_HitNormal = line.m_Normal;
-    result.m_HitPos = sweep.m_Start + sweep.m_Dir * (result.m_T * sweep.m_Length);
+
+    auto hit_pos_offset = result.m_T * sweep.m_Length;
+    result.m_HitPos = sweep.m_Start + (sweep.m_Dir * hit_pos_offset);
     return true;
   }
 
-  static bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult<VecType> & result)
+  static bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult<VecCompType> & result)
   {
     auto offset = sweep.m_Start - circle.m_Center;
 
@@ -431,13 +448,13 @@ public:
     {
       result.m_Intersected = true;
       result.m_T = zero;
-      result.m_HitNormal = start_dist_sqrd == 0 ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) : 
-        offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd));
+      result.m_HitNormal = (start_dist_sqrd == zero ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) :
+        offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd)));
       result.m_HitPos = sweep.m_Start;
       return true;
     }
 
-    if (sweep.m_Length == 0)
+    if (sweep.m_Length == zero)
     {
       return false;
     }
@@ -475,7 +492,7 @@ public:
     return true;
   }
 
-  static bool SweptCircleToLineTest(const CollisionLine & sweep, VecCompType radius, const CollisionLine & line, bool check_start, bool check_end, IntersectionResult<VecType> & result)
+  static bool SweptCircleToLineTest(const CollisionLine & sweep, VecCompType radius, const CollisionLine & line, bool check_start, bool check_end, IntersectionResult<VecCompType> & result)
   {
     auto start_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_Start);
     if (IntersectionFuncs<VecCompType>::Abs(start_d - line.m_NormalD) < radius)
@@ -501,14 +518,14 @@ public:
       moved_line.m_NormalD -= radius;
     }
 
-    IntersectionResult<VecType> test_result;
+    IntersectionResult<VecCompType> test_result;
     SweptPointToLineTest(sweep, moved_line, test_result);
 
     auto radius_squared = radius * radius;
 
     if (check_start)
     {
-      IntersectionResult<VecType> circle_result;
+      IntersectionResult<VecCompType> circle_result;
       auto test_circle = CollisionCircle(line.m_Start, radius, radius_squared);
       SweptPointToCircleTest(sweep, test_circle, circle_result);
 
@@ -523,7 +540,7 @@ public:
 
     if (check_end)
     {
-      IntersectionResult<VecType> circle_result;
+      IntersectionResult<VecCompType> circle_result;
       auto test_circle = CollisionCircle(line.m_End, radius, radius_squared);
       SweptPointToCircleTest(sweep, test_circle, circle_result);
 
@@ -545,7 +562,7 @@ public:
     return false;
   }
 
-  static bool SweptCircleToSweptCircleTest(const CollisionLine & sweep1, const CollisionLine & sweep2, VecCompType radius, IntersectionResult<VecType> & result)
+  static bool SweptCircleToSweptCircleTest(const CollisionLine & sweep1, const CollisionLine & sweep2, VecCompType radius, IntersectionResult<VecCompType> & result)
   {
     const auto zero = VecCompType(0);
     const auto one = VecCompType(1);
@@ -640,6 +657,8 @@ public:
 template <typename VecType>
 auto LineToPointDistance(const VecType & a, const VecType & b, const VecType & p)
 {
+  using LengthType = decltype(IntersectionVecFuncs<VecType>::Dist(a, b));
+
   auto line_offset_a = b - a;
   auto line_offset_b = a - b;
 
@@ -662,7 +681,7 @@ auto LineToPointDistance(const VecType & a, const VecType & b, const VecType & p
   auto perp_vec = IntersectionVecFuncs<VecType>::GetPerpVec(line_offset_a);
   auto offset = IntersectionVecFuncs<VecType>::Dot(perp_vec, offset_a) / IntersectionVecFuncs<VecType>::Mag(perp_vec);
 
-  return IntersectionFuncs<LengthType<VecType>>::Abs(offset);
+  return IntersectionFuncs<LengthType>::Abs(offset);
 }
 
 

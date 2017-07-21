@@ -107,9 +107,9 @@ void SpatialDatabase::RemoveBatch(const Box & b, const std::vector<std::size_t> 
   }, false);
 }
 
-void SpatialDatabase::Query(const Box & b, std::vector<std::size_t> & outp_elem_ids)
+void SpatialDatabase::Query(const Box & b, std::vector<std::size_t> & outp_elem_ids) const
 {
-  VisitGrid(b, [&](uint32_t grid_id, SpatialDatabaseNode & node)
+  VisitGrid(b, [&](uint32_t grid_id, const SpatialDatabaseNode & node)
   {
     for (auto & elem : node.m_Elements)
     {
@@ -123,13 +123,13 @@ void SpatialDatabase::Query(const Box & b, std::vector<std::size_t> & outp_elem_
     }
 
     return true;
-  }, false);
+  });
 }
 
-bool SpatialDatabase::QueryAny(const Box & b)
+bool SpatialDatabase::QueryAny(const Box & b) const
 {
   bool found = false;
-  VisitGrid(b, [&](uint32_t grid_id, SpatialDatabaseNode & node)
+  VisitGrid(b, [&](uint32_t grid_id, const SpatialDatabaseNode & node)
   {
     for (auto & elem : node.m_Elements)
     {
@@ -140,15 +140,15 @@ bool SpatialDatabase::QueryAny(const Box & b)
     }
 
     return true;
-  }, false);
+  });
 
   return found;
 }
 
-bool SpatialDatabase::QueryAny(const Box & b, std::size_t & outp_elem)
+bool SpatialDatabase::QueryAny(const Box & b, std::size_t & outp_elem) const
 {
   bool found = false;
-  VisitGrid(b, [&](uint32_t grid_id, SpatialDatabaseNode & node)
+  VisitGrid(b, [&](uint32_t grid_id, const SpatialDatabaseNode & node)
   {
     for (auto & elem : node.m_Elements)
     {
@@ -160,7 +160,7 @@ bool SpatialDatabase::QueryAny(const Box & b, std::size_t & outp_elem)
     }
 
     return true;
-  }, false);
+  });
 
   return found;
 }

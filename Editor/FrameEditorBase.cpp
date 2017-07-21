@@ -186,6 +186,7 @@ void FrameEditorBase::initializeGL()
 void FrameEditorBase::resizeGL(int w, int h)
 {
   m_RenderState.SetScreenSize(Vector2(w, h));
+  m_RenderState.SetRenderSize(Vector2(w, h));
 }
 
 void FrameEditorBase::paintGL()

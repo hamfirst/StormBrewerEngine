@@ -20,7 +20,7 @@ class GameClientWidget : public QOpenGLWidget
   Q_OBJECT
 public:
 
-  GameClientWidget(EditorContainer *parent);
+  GameClientWidget(int client_index, QWidget *parent = Q_NULLPTR);
   ~GameClientWidget();
 
 protected:
@@ -55,6 +55,6 @@ private:
   Optional<GameContainer> m_GameContainer;
   DelegateLink<void> m_UpdateDelegate;
 
-  RenderState m_RenderState;
-  RenderUtil m_RenderUtil;
+  int m_ClientIndex;
+  bool m_ImeMode = false;
 };

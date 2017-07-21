@@ -7,6 +7,7 @@
 #include "Runtime/Entity/EntityDef.refl.meta.h"
 #include "Runtime/Path/PathDef.refl.meta.h"
 #include "Runtime/Volume/VolumeDef.refl.meta.h"
+#include "Runtime/Map/MapEffectLayerDef.refl.meta.h"
 
 
 template <>
@@ -536,6 +537,85 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data<6, Self> : public StormRef
 };
 
 template <>
+struct StormReflTypeInfo<MapEffectLayer>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 3;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapEffectLayer"; }
+  static constexpr auto GetNameHash() { return 0xD5960B85; }
+  static MapEffectLayer & GetDefault() { static MapEffectLayer def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapEffectLayer>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Name"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_Name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapEffectLayer>::field_data<0, Self> : public StormReflTypeInfo<MapEffectLayer>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Name; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Name; }
+  void SetDefault() { self.m_Name = StormReflTypeInfo<MapEffectLayer>::GetDefault().m_Name; }
+};
+
+template <>
+struct StormReflTypeInfo<MapEffectLayer>::field_data_static<1>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_LayerOrder"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3741FE10; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_LayerOrder; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapEffectLayer>::field_data<1, Self> : public StormReflTypeInfo<MapEffectLayer>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_LayerOrder; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_LayerOrder; }
+  void SetDefault() { self.m_LayerOrder = StormReflTypeInfo<MapEffectLayer>::GetDefault().m_LayerOrder; }
+};
+
+template <>
+struct StormReflTypeInfo<MapEffectLayer>::field_data_static<2>
+{
+  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>; // RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>
+  static constexpr auto GetName() { return "m_EffectLayerData"; }
+  static constexpr auto GetType() { return "RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xE1AE0B1F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xAA22286A; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_EffectLayerData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapEffectLayer>::field_data<2, Self> : public StormReflTypeInfo<MapEffectLayer>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>> & Get() { return self.m_EffectLayerData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>>> & Get() const { return self.m_EffectLayerData; }
+  void SetDefault() { self.m_EffectLayerData = StormReflTypeInfo<MapEffectLayer>::GetDefault().m_EffectLayerData; }
+};
+
+template <>
 struct StormReflTypeInfo<MapPathPoint>
 {
   using MyBase = void;
@@ -820,7 +900,7 @@ template <>
 struct StormReflTypeInfo<MapDef>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 6;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -898,17 +978,39 @@ struct StormReflTypeInfo<MapDef>::field_data<2, Self> : public StormReflTypeInfo
 template <>
 struct StormReflTypeInfo<MapDef>::field_data_static<3>
 {
+  using member_type = RMergeList<MapEffectLayer>; // RMergeList<MapEffectLayer>
+  static constexpr auto GetName() { return "m_EffectLayers"; }
+  static constexpr auto GetType() { return "RMergeList<MapEffectLayer>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x086F5213; }
+  static constexpr unsigned GetTypeNameHash() { return 0x6700788B; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &MapDef::m_EffectLayers; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo<MapDef>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<MapEffectLayer>> & Get() { return self.m_EffectLayers; }
+  std::add_const_t<std::remove_reference_t<RMergeList<MapEffectLayer>>> & Get() const { return self.m_EffectLayers; }
+  void SetDefault() { self.m_EffectLayers = StormReflTypeInfo<MapDef>::GetDefault().m_EffectLayers; }
+};
+
+template <>
+struct StormReflTypeInfo<MapDef>::field_data_static<4>
+{
   using member_type = RMergeList<MapPath>; // RMergeList<MapPath>
   static constexpr auto GetName() { return "m_Paths"; }
   static constexpr auto GetType() { return "RMergeList<MapPath>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x068C1671; }
   static constexpr unsigned GetTypeNameHash() { return 0x65F883E4; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Paths; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo<MapDef>::field_data_static<3>
+struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -918,19 +1020,19 @@ struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<4>
+struct StormReflTypeInfo<MapDef>::field_data_static<5>
 {
   using member_type = RMergeList<MapVolume>; // RMergeList<MapVolume>
   static constexpr auto GetName() { return "m_Volumes"; }
   static constexpr auto GetType() { return "RMergeList<MapVolume>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xEF2EDFC0; }
   static constexpr unsigned GetTypeNameHash() { return 0x1352869E; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Volumes; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
+struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo<MapDef>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -943,7 +1045,7 @@ namespace StormReflFileInfo
 {
   struct MapDef
   {
-    static const int types_n = 8;
+    static const int types_n = 9;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -974,23 +1076,29 @@ namespace StormReflFileInfo
   template <>
   struct MapDef::type_info<4>
   {
-    using type = ::MapPathPoint;
+    using type = ::MapEffectLayer;
   };
 
   template <>
   struct MapDef::type_info<5>
   {
-    using type = ::MapPath;
+    using type = ::MapPathPoint;
   };
 
   template <>
   struct MapDef::type_info<6>
   {
-    using type = ::MapVolume;
+    using type = ::MapPath;
   };
 
   template <>
   struct MapDef::type_info<7>
+  {
+    using type = ::MapVolume;
+  };
+
+  template <>
+  struct MapDef::type_info<8>
   {
     using type = ::MapDef;
   };

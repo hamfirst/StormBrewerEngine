@@ -10,6 +10,10 @@
 class ENGINE_EXPORT RenderUtil
 {
 public:
+  RenderUtil();
+  RenderUtil(const RenderUtil & rhs) = delete;
+  RenderUtil(RenderUtil && rhs) = delete;
+
   void LoadShaders();
   void CleanupShaders();
 
@@ -23,11 +27,13 @@ public:
   void DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, const RenderVec2 & screen_size);
 
   const Texture & GetDefaultTexture() const;
+  VertexBuffer & GetScratchBuffer();
 
 private:
   ShaderProgram m_QuadShader;
   ShaderProgram m_QuadTextureShader;
 
-  VertexBuffer m_VertexBuffer;
+  VertexBuffer m_QuadVertexBuffer;
+  VertexBuffer m_ScratchVertexBuffer;
   Texture m_DefaultTexture;
 };

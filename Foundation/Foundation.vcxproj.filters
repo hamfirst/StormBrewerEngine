@@ -76,6 +76,21 @@
     <Filter Include="Update">
       <UniqueIdentifier>{60f7918f-ea49-49bf-ba3f-1875581ce573}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sequencer">
+      <UniqueIdentifier>{3465164e-3134-4d21-8ff0-373de844cf09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lerp">
+      <UniqueIdentifier>{cf436209-11db-40bb-bdc7-f8f9b3a9952b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Waveform">
+      <UniqueIdentifier>{07088701-9a0c-4883-9922-7cd90ffa806e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pathfinding">
+      <UniqueIdentifier>{d4fc0f65-56f5-4eb0-805c-c8258947106b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bitset">
+      <UniqueIdentifier>{74146337-c319-4b7c-a442-b72fcddbc353}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -229,6 +244,30 @@
     <ClInclude Include="Update\UpdateRegistrationTemplates.h">
       <Filter>Update</Filter>
     </ClInclude>
+    <ClInclude Include="FileSystem\Directory.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequencer\Sequencer.h">
+      <Filter>Sequencer</Filter>
+    </ClInclude>
+    <ClInclude Include="Lerp\LerpVar.h">
+      <Filter>Lerp</Filter>
+    </ClInclude>
+    <ClInclude Include="Lerp\LerpFuncs.h">
+      <Filter>Lerp</Filter>
+    </ClInclude>
+    <ClInclude Include="Waveform\Waveform.h">
+      <Filter>Waveform</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding\Pathfinding.h">
+      <Filter>Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitset\Bitset.h">
+      <Filter>Bitset</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding\GridPathfinding.h">
+      <Filter>Pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -306,6 +345,21 @@
     </ClCompile>
     <ClCompile Include="Math\Util.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem\Directory.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequencer\Sequencer.cpp">
+      <Filter>Sequencer</Filter>
+    </ClCompile>
+    <ClCompile Include="Lerp\LerpVar.cpp">
+      <Filter>Lerp</Filter>
+    </ClCompile>
+    <ClCompile Include="Lerp\LerpFuncs.cpp">
+      <Filter>Lerp</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitset\Bitset.cpp">
+      <Filter>Bitset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

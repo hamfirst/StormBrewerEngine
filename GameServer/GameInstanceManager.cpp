@@ -6,9 +6,10 @@
 #include "Game/GameMessages.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
 
-GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager) :
+GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager, GameSharedGlobalResources & shared_global_resources) :
   m_Server(game_server),
-  m_StageManager(stage_manager)
+  m_StageManager(stage_manager),
+  m_SharedGlobalResources(shared_global_resources)
 {
 
 }
@@ -43,7 +44,7 @@ bool GameInstanceManager::JoinPlayer(GameClientConnection * client, const JoinGa
     }
 
     auto game_id = GetRandomNumber64();
-    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, message.m_Settings, *stage)));
+    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, message.m_Settings, *stage, m_SharedGlobalResources)));
 
     auto game = result.first->second.get();
 

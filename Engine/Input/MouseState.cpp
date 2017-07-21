@@ -38,6 +38,16 @@ void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus, bool que
     {
       bool pressed = ((1 << (index - 1)) & button_mask) != 0 && in_focus;
 
+      if (m_PressedLastFrame[index] == 0 && pressed)
+      {
+        m_PressedThisFrame[index] = true;
+      }
+      else if (m_PressedThisFrame[index])
+      {
+        m_PressedThisFrame[index] = false;
+      }
+
+      m_PressedLastFrame[index] = pressed;
       m_ButtonControls[index].SetControlValue(pressed);
 
       if (m_PressedState[index] == 0 && pressed && in_window && in_focus)
@@ -62,6 +72,20 @@ void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus, bool que
 
       m_PointerBinding.SetControlValue(pointer_state);
       m_PointerState = pointer_state;
+    }
+
+    for (int index = 1; index < kNumMouseButtons; index++)
+    {
+      if (m_PressedLastFrame[index] == false && m_PressedState[index] == true)
+      {
+        m_PressedThisFrame[index] = true;
+      }
+      else
+      {
+        m_PressedThisFrame[index] = false;
+      }
+
+      m_PressedLastFrame[index] = m_PressedState[index];
     }
   }
 }
@@ -131,6 +155,16 @@ bool MouseState::GetButtonState(int button)
   }
 
   return m_PressedState[button];
+}
+
+bool MouseState::GetButtonPressedThisFrame(int button)
+{
+  if (button >= kNumMouseButtons)
+  {
+    return false;
+  }
+
+  return m_PressedThisFrame[button];
 }
 
 PointerState MouseState::GetPointerState()

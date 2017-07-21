@@ -9,19 +9,29 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameMessages.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
+#include "Game/GameProtocol.h"
 
 #include "GameClient/GameNetworkClient.h"
 #include "GameClient/GameContainer.h"
 
 #include <SDL2/SDL.h>
 
-GameNetworkClient::GameNetworkClient(GameContainer & game, const char * remote_ip, int remote_port) :
+#include "StormNet/NetProtocolFuncs.h"
+
+#undef SendMessage
+
+GameNetworkClient::GameNetworkClient(GameContainer & game, const GameNetworkClientInitSettings & init_settings) :
   ClientBase(&m_Backend),
-  m_Backend(this, remote_ip, remote_port),
+
+#ifdef NET_USE_WEBRTC
+  m_Backend(this, init_settings.m_RemoteHost, init_settings.m_RemotePort, init_settings.m_Fingerprint.data(), NetGetProtocolPipeModes(ServerProtocolDef{}), NetGetProtocolPipeModes(ClientProtocolDef{})),
+#else
+  m_Backend(this, init_settings.m_RemoteHost, init_settings.m_RemotePort),
+#endif
+
   m_GameContainer(game),
-  m_ClientController(game),
-  m_LevelLoader(game),
-  m_EntitySync(game),
+  m_InstanceContainer(std::make_unique<GameClientInstanceContainer>(game)),
+  m_InitSettings(init_settings),
   m_LastPingSent(0),
   m_Ping(0)
 {
@@ -31,11 +41,7 @@ void GameNetworkClient::Update()
 {
   if (m_GotInitialSim)
   {
-    int send_timer = 0;
-    GameLogicContainer logic_container(m_Sim->m_GlobalData, m_Sim->m_ServerObjectManager, m_ClientController, m_ClientController, *m_Stage.get(), true, send_timer);
-    m_GameController.Update(logic_container);
-
-    m_EntitySync.Sync(m_Sim->m_ServerObjectManager);
+    m_InstanceContainer->Update();
   }
 
   ClientBase::Update();
@@ -46,13 +52,29 @@ void GameNetworkClient::Update()
     if (m_SendTimer <= cur_time)
     {
       m_SendTimer = cur_time + 0.12;
-      m_Protocol->GetSenderChannel<2>().SyncState(m_ClientAuthData);
+      m_Protocol->GetSenderChannel<2>().SyncState(m_InstanceContainer->GetClientAuthData());
 
       if (cur_time - m_LastPingSent > 5)
       {
         SendPing();
       }
     }
+  }
+
+  if (m_State == ClientConnectionState::kLoading && m_InstanceContainer->IsLoaded())
+  {
+    m_State = ClientConnectionState::kWaitingForInitialSync;
+
+    m_Loading = false;
+    m_Loaded = true;
+
+    FinishLoadingMessage load_msg;
+    load_msg.m_LoadToken = m_LoadToken;
+
+    m_Protocol->GetSenderChannel<0>().SendMessage(load_msg);
+    m_Protocol->GetReceiverChannel<3>().SetDefault(&m_InstanceContainer->GetDefaultSim());
+
+    CheckFinalizeConnect();
   }
 }
 
@@ -63,7 +85,10 @@ ClientConnectionState GameNetworkClient::GetConnectionState()
 
 void GameNetworkClient::SendJoinGame()
 {
-  m_Protocol->GetSenderChannel<0>().SendMessage(JoinGameMessage{});
+  JoinGameMessage join_msg = {};
+  join_msg.m_UserName = m_InitSettings.m_UserName;
+
+  m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
 }
 
 void GameNetworkClient::UpdateInput(ClientInput & input, bool send_immediate)
@@ -83,7 +108,7 @@ void GameNetworkClient::UpdateInput(ClientInput & input, bool send_immediate)
     m_FutureInput[index] = input;
   }
 #else
-  m_ClientAuthData.m_Input = input;
+  m_InstanceContainer->GetClientAuthData().m_Input = input;
 #endif
 
   if (send_immediate)
@@ -94,7 +119,7 @@ void GameNetworkClient::UpdateInput(ClientInput & input, bool send_immediate)
 
 ClientLocalData & GameNetworkClient::GetLocalData()
 {
-  return m_ClientData;
+  return m_InstanceContainer->GetClientData();
 }
 
 ClientInput GameNetworkClient::GetNextInput()
@@ -112,21 +137,44 @@ ClientInput GameNetworkClient::GetNextInput()
 
   return m_FutureInput[m_Sim.m_FrameCount - m_FutureFrameBase];
 #else
-  return m_ClientAuthData.m_Input;
+  return m_InstanceContainer->GetClientAuthData().m_Input;
 #endif
 }
 
-NullOptPtr<GameGlobalData> GameNetworkClient::GetGlobalData()
+NullOptPtr<GameClientInstanceData> GameNetworkClient::GetClientInstanceData()
 {
-  return m_Sim ? &m_Sim->m_GlobalData : nullptr;
+  return m_ClientInstanceData.GetPtr();
 }
 
-void GameNetworkClient::FinalizeConnect()
+std::unique_ptr<GameClientInstanceContainer> GameNetworkClient::ConvertToOffline()
 {
-  m_State = ClientConnectionState::kConnected;
-  m_SendTimer = GetTimeSeconds();
+  Disconnect();
+  m_State = ClientConnectionState::kDisconnected;
 
-  m_ClientController.Connected();
+  m_Loading = false;
+  m_Loaded = false;
+  m_GotInitialSim = false;
+  m_GotInitialClientData = false;
+  m_GotInitialPing = false;
+
+  auto old_instance_container = std::move(m_InstanceContainer);
+  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(m_GameContainer);
+  m_LastPingSent = 0;
+  m_Ping = 0;
+
+  return old_instance_container;
+}
+
+void GameNetworkClient::CheckFinalizeConnect()
+{
+  if (m_GotInitialClientData && m_GotInitialSim && m_GotInitialPing && m_State == ClientConnectionState::kWaitingForInitialSync)
+  {
+    m_State = ClientConnectionState::kConnected;
+    m_SendTimer = GetTimeSeconds();
+
+    m_InstanceContainer->GetClientController().Connected();
+    m_ClientInstanceData.Emplace(m_InstanceContainer->GetInstanceData(*this));
+  }
 }
 
 void GameNetworkClient::HandlePong(const PongMessage & msg)
@@ -136,18 +184,13 @@ void GameNetworkClient::HandlePong(const PongMessage & msg)
   if (m_GotInitialPing == false)
   {
     m_GotInitialPing = true;
-    if (m_GotInitialClientData && m_GotInitialSim && m_GotInitialPing)
-    {
-      FinalizeConnect();
-    }
+    CheckFinalizeConnect();
   }
 }
 
 void GameNetworkClient::HandleLoadLevel(const LoadLevelMessage & load)
 {
   m_State = ClientConnectionState::kLoading;
-
-  m_InitSettings = load.m_Settings;
 
   m_Loading = true;
   m_Loaded = false;
@@ -156,25 +199,8 @@ void GameNetworkClient::HandleLoadLevel(const LoadLevelMessage & load)
   m_GotInitialClientData = false;
 
   m_Protocol->GetReceiverChannel<3>().SetDefault(nullptr);
-
-  m_ClientController.PreloadLevel();
-  m_LevelLoader.LoadLevel(load.m_Settings, load.m_LoadToken, LevelLoadCallback(&GameNetworkClient::HandleLevelLoadComplete, this));
-}
-
-void GameNetworkClient::HandleLevelLoadComplete(uint64_t load_token, const Map & map)
-{
-  m_Loading = false;
-  m_Loaded = true;
-
-  FinishLoadingMessage load_msg;
-  load_msg.m_LoadToken = load_token;
-
-  m_Protocol->GetSenderChannel<0>().SendMessage(load_msg);
-  m_Stage = std::make_unique<GameStage>(map);
-  m_Sim = m_Stage->CreateDefaultGameState();
-
-  m_DefaultSim = m_Sim;
-  m_Protocol->GetReceiverChannel<3>().SetDefault(&m_DefaultSim.Value());
+  m_InstanceContainer->Load(load.m_Settings, load.m_LoadToken);
+  m_LoadToken = load.m_LoadToken;
 }
 
 void GameNetworkClient::HandleSimUpdate(const GameFullState & sim)
@@ -184,22 +210,19 @@ void GameNetworkClient::HandleSimUpdate(const GameFullState & sim)
     return;
   }
 
-  m_Sim = sim;
+  m_InstanceContainer->GetSim() = sim;
   if (m_GotInitialSim == false)
   {
     m_GotInitialSim = true;
-    if (m_GotInitialClientData && m_GotInitialSim && m_GotInitialPing)
-    {
-      FinalizeConnect();
-    }
+    CheckFinalizeConnect();
   }
 
-  m_EntitySync.Sync(m_Sim->m_ServerObjectManager);
+  m_InstanceContainer->GetEntitySync().Sync(m_InstanceContainer->GetSim().m_ServerObjectManager);
 }
 
 void GameNetworkClient::HandleGlobalEvent(std::size_t event_class_id, void * event_ptr)
 {
-  m_ClientController.HandleGlobalEvent(event_class_id, event_ptr);
+  m_InstanceContainer->GetClientController().HandleGlobalEvent(event_class_id, event_ptr);
 }
 
 void GameNetworkClient::HandleEntityEvent(std::size_t event_class_id, void * event_ptr)
@@ -207,7 +230,7 @@ void GameNetworkClient::HandleEntityEvent(std::size_t event_class_id, void * eve
   TargetNetworkEvent * target_ev = static_cast<TargetNetworkEvent *>(event_ptr);
   
   auto & type_info = TargetNetworkEvent::__s_TypeDatabase.GetTypeInfo(event_class_id);
-  m_EntitySync.SendEntityEvent(target_ev->m_Target, type_info.m_TypeNameHash, event_ptr);
+  m_InstanceContainer->GetEntitySync().SendEntityEvent(target_ev->m_Target, type_info.m_TypeNameHash, event_ptr);
 }
 
 void GameNetworkClient::HandleClientDataUpdate(ClientLocalData && client_data)
@@ -217,14 +240,11 @@ void GameNetworkClient::HandleClientDataUpdate(ClientLocalData && client_data)
     return;
   }
 
-  m_ClientData = client_data;
+  m_InstanceContainer->GetClientData() = client_data;
   if (m_GotInitialClientData == false)
   {
     m_GotInitialClientData = true;
-    if (m_GotInitialClientData && m_GotInitialSim && m_GotInitialPing)
-    {
-      FinalizeConnect();
-    }
+    CheckFinalizeConnect();
   }
 }
 
@@ -264,6 +284,5 @@ void GameNetworkClient::ConnectionFailed()
 void GameNetworkClient::Disconnected()
 {
   m_State = ClientConnectionState::kDisconnected;
-
-  m_ClientController.Disconnected();
+  m_InstanceContainer->GetClientController().Disconnected();
 }

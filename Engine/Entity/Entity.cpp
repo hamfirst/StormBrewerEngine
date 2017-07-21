@@ -11,12 +11,16 @@
 
 #include "Runtime/Event/EventSystem.h"
 
+#include "Server/ServerObject/ServerObjectManager.h"
+
 #include <sb/vector.h>
 
 template class EventSystem<Entity, EntityHandle>;
 template class EventDispatch<Entity, ComponentHandle>;
 
-Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, NullOptPtr<ServerObject> server_object, NotNullPtr<GameContainer> game) :
+NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game);
+
+Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, const ServerObjectHandle & server_object, NotNullPtr<GameContainer> game) :
   m_EngineState(engine_state),
   m_EventSystem(event_system),
   m_ServerObject(server_object),
@@ -53,6 +57,11 @@ SpritePtr & Entity::GetSprite()
 Vector2 & Entity::GetPosition()
 {
   return m_MoverState.m_Position;
+}
+
+void Entity::SetPosition(const Vector2 & position)
+{
+  m_MoverState.m_Position = position;
 }
 
 MoverState & Entity::GetMoverState()
@@ -119,7 +128,8 @@ void Entity::SetParent(NullOptPtr<Entity> entity)
 
 NullOptPtr<ServerObject> Entity::GetServerObject()
 {
-  return m_ServerObject;
+  auto server_object_manager = GetServerObjectManager(m_GameContainer);
+  return server_object_manager ? m_ServerObject.Resolve(*server_object_manager) : nullptr;
 }
 
 void Entity::SetRotation(bool flip_x, bool flip_y, float rotation)
@@ -128,6 +138,16 @@ void Entity::SetRotation(bool flip_x, bool flip_y, float rotation)
   m_RenderState.m_Matrix.y = 0;
   m_RenderState.m_Matrix.z = 0;
   m_RenderState.m_Matrix.w = flip_y ? -1.0f : 1.0f;
+}
+
+void Entity::SetCustomDrawingCallback(EntityCustomDraw && draw_callback)
+{
+  m_CustomDraw = std::move(draw_callback);
+}
+
+void Entity::ClearCustomDrawingCallback()
+{
+  m_CustomDraw.Clear();
 }
 
 void Entity::Destroy()

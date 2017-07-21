@@ -37,6 +37,7 @@ NetClientBackendWebrtc::~NetClientBackendWebrtc()
 
 void NetClientBackendWebrtc::Update()
 {
+  m_Host->Update();
   if (m_Connected == false)
   {
     if (m_Host->IsConnected())

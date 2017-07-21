@@ -4,6 +4,10 @@
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
+class RenderState;
+class RenderUtil;
+class ShaderProgram;
+
 class ENGINE_EXPORT GeometryVertexBufferBuilder
 {
 public:
@@ -14,14 +18,21 @@ public:
   void Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c);
   void Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c);
   void Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs);
+  void Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs);
   void Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs);
   void Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c);
+  void Rectangle(const Box & box, float thickness, const Color & c);
   void FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs);
+  void FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs);
   void FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c);
   void FilledRectangle(const Box & box, const Color & c);
 
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
+
+  void DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<const ShaderProgram> shader = nullptr);
+
+  bool HasGeo() const;
 
 private:
 

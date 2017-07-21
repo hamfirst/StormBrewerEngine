@@ -54,13 +54,13 @@ public:
   static int Type;
 
   void Update() override;
-  void Render(RenderState & render_state, RenderUtil & render_util) override;
-  void RenderDefault(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
+  void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementTextureSliceInitData & GetInitData();
   UIElementTextureSliceData & GetData();
 
-  void SetCustomRenderCallback(Delegate<void, UIElementTextureSlice &, RenderState &> && render_callback);
+  void SetCustomRenderCallback(Delegate<void, UIElementTextureSlice &, RenderState &, const Vector2 &> && render_callback);
 
   AssetReference<TextureAsset> & GetTextureAsset();
 
@@ -69,7 +69,7 @@ private:
   UIElementTextureSliceInitData m_InitData;
   UIElementTextureSliceData m_Data;
 
-  Delegate<void, UIElementTextureSlice &, RenderState &> m_RenderDelegate;
+  Delegate<void, UIElementTextureSlice &, RenderState &, const Vector2 &> m_RenderDelegate;
   AssetReference<TextureAsset> m_Texture;
 
   VertexBuffer m_VertexBuffer;

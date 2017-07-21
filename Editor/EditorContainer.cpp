@@ -30,16 +30,20 @@
 
 #include "Engine/Component/ComponentSystem.h"
 #include "Runtime/Runtime.h"
+#include "Runtime/Config/ConfigManager.h"
 
 #include "DocumentServer/DocumentServerMessages.refl.meta.h"
 
 #include "EditorContainer.h"
+#include "SelectFromListDialog.h"
 #include "TextureViewer.h"
 #include "FontViewer.h"
 #include "AudioViewer.h"
 #include "DocumentEditorWidgetBase.h"
+#include "DocumentEditorConfig.h"
 #include "GameServerWidget.h"
 #include "GameClientWidget.h"
+#include "GameHostWidget.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
@@ -73,6 +77,9 @@ EditorContainer::EditorContainer(QWidget *parent) :
     connect(action, &QAction::triggered, this, &EditorContainer::newFile);
   }
 
+  auto new_config = ui.menu_New->addAction("Config");
+  connect(new_config, &QAction::triggered, this, &EditorContainer::newConfigFile);
+
   connect(ui.action_Open, &QAction::triggered, this, &EditorContainer::open);
   ui.action_Open->setShortcut(QKeySequence::Open);
   connect(ui.action_Save, &QAction::triggered, this, &EditorContainer::save);
@@ -85,10 +92,8 @@ EditorContainer::EditorContainer(QWidget *parent) :
   connect(ui.action_Redo, &QAction::triggered, this, &EditorContainer::redo);
   ui.action_Redo->setShortcut(QKeySequence::Redo);
 
-  connect(ui.action_StartServer, &QAction::triggered, this, &EditorContainer::startServer);
-  ui.action_StartServer->setShortcut(QKeySequence(Qt::Key_F7));
-  connect(ui.action_LaunchClients, &QAction::triggered, this, &EditorContainer::launchClients);
-  ui.action_LaunchClients->setShortcut(QKeySequence(Qt::Key_F8));
+  connect(ui.action_TestBuild, &QAction::triggered, this, &EditorContainer::testBuild);
+  ui.action_TestBuild->setShortcut(QKeySequence(Qt::Key_F7));
 
   m_RecentFileSeparator = ui.menuFile->addSeparator();
   for (int index = 0; index < kNumRecentFiles; index++)
@@ -118,7 +123,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
   timer->start(16);
-
 
   if (ProbePort(doc_server_host, 27800, 100) == false)
   {
@@ -150,9 +154,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
   RuntimeRegisterTypes(m_PropertyDatabase);
 
   QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
-  exec_path += "/editor/OpenSans-Regular.ttf";
-
-  g_TextManager.LoadFont(exec_path.toStdString().data(), -1, 12);
+  g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
 
   m_EngineInitialized = true;
   m_NextDocumentId = 1;
@@ -275,8 +277,7 @@ void EditorContainer::CloseEditor(QWidget * editor, bool send_message)
 void EditorContainer::closeEvent(QCloseEvent * ev)
 {
   m_Closing = true;
-  m_ClientWidgets.clear();
-  m_ServerWidget.reset();
+  m_HostWidgets.clear();
 
   closeAllTabs();
 
@@ -430,6 +431,72 @@ void EditorContainer::newFile()
   }
 }
 
+void EditorContainer::newConfigFile()
+{
+  QStringList config_options;
+
+  auto visitor = [&](ConfigRegistrationInfo & elem)
+  {
+    auto option = elem.m_ConfigType + " (*." + elem.m_ConfigExtension + ")";
+    config_options.append(option.data());
+  };
+
+  g_ConfigTypeManager.VisistTypes(std::move(visitor));
+
+  auto dialog = new SelectFromListDialog(config_options);
+  auto result = dialog->exec();
+
+  if (result == QDialog::Rejected)
+  {
+    return;
+  }
+
+  if (dialog->GetSelectedIndex() == -1)
+  {
+    return;
+  }
+
+  auto & elem = g_ConfigTypeManager.GetTypeForIndex(dialog->GetSelectedIndex());
+
+
+  auto caption = std::string("New ") + elem.m_ConfigType + " File";
+  auto filter = elem.m_ConfigType + " (*." + elem.m_ConfigExtension.c_str() + ")";
+  auto dir = GetCanonicalRootPath() + elem.m_DefaultDirectory + "/";
+  auto filename = QFileDialog::getSaveFileName(this, caption.data(), dir.data(), filter.data());
+
+  if (filename.length() == 0)
+  {
+    return;
+  }
+
+  auto canonical_filename = filename.toStdString();
+  if (ConvertToCanonicalPath(canonical_filename, m_RootPath) == false)
+  {
+    QMessageBox::warning(this, "Error creating file", "File is not inside the document root path", QMessageBox::Ok);
+    return;
+  }
+
+  auto file_name = GetFileNameForCanonicalPath(std::string(canonical_filename));
+
+  auto extension = GetFileExtensionForCanonicalPath(canonical_filename);
+
+  auto extension_hash = crc32(extension);
+  auto editor = CreateEditorForFile(canonical_filename.data(), extension_hash);
+  if (editor.first == nullptr)
+  {
+    QMessageBox::warning(this, "Error creating file", QString("Could not find proper editor for file: ") + QString(filename));
+    return;
+  }
+
+  m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kNew ") + std::to_string(editor.second) + ' ' + canonical_filename);
+
+  AddRecentFile(file_name.data());
+  UpdateRecentFiles();
+
+  m_TabWidget->addTab(editor.first, file_name.data());
+  m_TabWidget->setCurrentWidget(editor.first);
+}
+
 void EditorContainer::open()
 {
   auto filename = QFileDialog::getOpenFileName(this, tr("Open File"), m_RootPath.data(), tr("All Files (*.*)"));
@@ -507,40 +574,24 @@ void EditorContainer::redo()
   }
 }
 
-void EditorContainer::startServer()
+void EditorContainer::testBuild()
 {
-  if (m_ServerWidget)
-  {
-    return;
-  }
-
-  m_ServerWidget = std::make_unique<GameServerWidget>();
-  m_ServerWidget->show();
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this));
+  m_HostWidgets.back()->show();
 }
 
-void EditorContainer::launchClients()
-{
-  startServer();
-
-  m_ClientWidgets.emplace_back(std::make_unique<GameClientWidget>(this));
-  m_ClientWidgets.back()->show();
-
-  m_ClientWidgets.emplace_back(std::make_unique<GameClientWidget>(this));
-  m_ClientWidgets.back()->show();
-}
-
-void EditorContainer::NotifyClientWindowClosed(NotNullPtr<GameClientWidget> client)
+void EditorContainer::NotifyClientWindowClosed(NotNullPtr<GameHostWidget> host_widget)
 {
   if (m_Closing)
   {
     return;
   }
 
-  for (auto itr = m_ClientWidgets.begin(), end = m_ClientWidgets.end(); itr != end; ++itr)
+  for (auto itr = m_HostWidgets.begin(), end = m_HostWidgets.end(); itr != end; ++itr)
   {
-    if (itr->get() == client)
+    if (itr->get() == host_widget)
     {
-      m_ClientWidgets.erase(itr);
+      m_HostWidgets.erase(itr);
       return;
     }
   }
@@ -737,7 +788,24 @@ std::pair<QWidget *, int> EditorContainer::CreateEditorForFile(czstr file, uint3
   auto itr = m_DocumentEditorCreationCallbacks.find(extension_hash);
   if (itr == m_DocumentEditorCreationCallbacks.end())
   {
-    return{};
+    auto config_info = g_ConfigTypeManager.GetConfigRegistrationInfoByExtensionHash(extension_hash);
+   
+    if (config_info == nullptr)
+    {
+      return{};
+    }
+
+    DocumentOutputDelegate del = [this, doc_id = m_NextDocumentId](DocumentServerMessageType type, const std::string & args)
+    {
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string(StormReflGetEnumAsString(type)) + ' ' + std::to_string(doc_id) + ' ' + args);
+    };
+
+    auto editor = new DocumentEditorConfig(*config_info, m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
+
+    m_DocumentEditors.emplace(std::make_pair(m_NextDocumentId, DocumentEditorData{ editor, file }));
+    m_NextDocumentId++;
+
+    return std::make_pair(editor, m_NextDocumentId - 1);
   }
 
   DocumentOutputDelegate del = [this, doc_id = m_NextDocumentId](DocumentServerMessageType type, const std::string & args)

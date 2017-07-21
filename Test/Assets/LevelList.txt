@@ -2,6 +2,6 @@
 
 {
   "m_Levels": [
-    "./Maps/Test.map"
+
   ]
 }

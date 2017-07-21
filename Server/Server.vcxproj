@@ -39,12 +39,16 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.h" />
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.meta.h" />
     <ClInclude Include="ServerObject\ServerObjectManager.h" />
     <ClInclude Include="ServerObject\ServerObjectMetaFuncs.h" />
     <ClInclude Include="ServerObject\ServerObjectRegistrationMacros.h" />
     <ClInclude Include="ServerObject\ServerObjectSerialzie.h" />
     <ClInclude Include="ServerObject\ServerObjectSystem.h" />
     <ClInclude Include="ServerObject\ServerObjectUpdate.h" />
+    <ClInclude Include="ServerTypesJson.h" />
+    <ClInclude Include="ServerTypesNet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerCommon.cpp">
@@ -65,6 +69,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp" />
     <ClCompile Include="ServerObject\ServerObjectManager.cpp" />
     <ClCompile Include="ServerObject\ServerObjectSerialize.cpp" />
     <ClCompile Include="ServerObject\ServerObjectSystem.cpp" />
@@ -179,6 +184,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

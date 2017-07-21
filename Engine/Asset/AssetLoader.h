@@ -22,7 +22,7 @@ public:
   void Init();
   void ShutDown();
 
-  void RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload);
+  void RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps);
   void ProcessResponses();
 
   Optional<Buffer> LoadFullFile(czstr file_path);
@@ -39,6 +39,7 @@ private:
     std::string m_FilePath;
     bool m_AsDocument;
     bool m_AsReload;
+    bool m_LoadDeps;
   };
 
   struct AssetLoadResponse
@@ -46,6 +47,7 @@ private:
     Asset * m_Asset;
     bool m_AsDocument;
     bool m_AsReload;
+    bool m_LoadDeps;
     Buffer m_FileData;
   };
 

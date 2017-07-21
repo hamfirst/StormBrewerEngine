@@ -82,7 +82,6 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
-
   void SetBucket(int bucket);
 
 private:

@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 
 static const float kPi = 3.14159265359f;
+static const float kHalfPi = 1.57079632679f;
 static const float k2Pi = 6.28318530718f;
+static const float kSqrt2 = 1.41421356237f;
 
 using zstr = gsl::zstring<>;
 using czstr = gsl::czstring<>;

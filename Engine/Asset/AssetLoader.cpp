@@ -99,11 +99,11 @@ void AssetLoader::ShutDown()
 #endif
 }
 
-void AssetLoader::RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload)
+void AssetLoader::RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps)
 {
   asset->IncRef();
 
-  AssetLoadRequest req_data{ asset, file_path, as_document, as_reload };
+  AssetLoadRequest req_data{ asset, file_path, as_document, as_reload, load_deps };
 
 #ifndef _WEB
   while (m_LoadRequests.Enqueue(std::move(req_data)) == false)
@@ -612,7 +612,7 @@ void AssetLoader::LoadThread()
 
       if (!buffer)
       {
-        while (m_LoadResponses.Enqueue(AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload }) == false)
+        while (m_LoadResponses.Enqueue(AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps }) == false)
         {
           std::this_thread::yield();
         }
@@ -620,9 +620,9 @@ void AssetLoader::LoadThread()
         return;
       }
 
-      asset->m_LoadError = asset->PreProcessLoadedData(*buffer);
+      asset->m_LoadError = asset->PreProcessLoadedData(*buffer, req_data.m_LoadDeps);
 
-      while (m_LoadResponses.Enqueue(AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, std::move(*buffer) }) == false)
+      while (m_LoadResponses.Enqueue(AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps, std::move(*buffer) }) == false)
       {
         std::this_thread::yield();
       }
@@ -682,7 +682,8 @@ void AssetLoader::FinalizeAssetResponse(AssetLoadResponse & resp)
   if (resp.m_Asset->m_LoadError == 0)
   {
     resp.m_Asset->m_State = AssetState::kFinalizing;
-    resp.m_Asset->OnDataLoadComplete(resp.m_FileData);
+    resp.m_Asset->m_LoadedDeps = resp.m_LoadDeps;
+    resp.m_Asset->OnDataLoadComplete(resp.m_FileData, resp.m_LoadDeps);
 
     if (resp.m_AsReload && resp.m_Asset->m_State == AssetState::kFinalizing)
     {

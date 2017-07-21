@@ -104,8 +104,7 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
       }
 
       auto ptr = g_ServerObjectSystem.DuplicateObject(rhs.m_DynamicObjects[index].m_ServerObject);
-      m_DynamicObjects[index].m_ServerObject = ptr;
-      m_DynamicObjects[index].m_TypeIndex = rhs.m_DynamicObjects[index].m_TypeIndex;
+      m_DynamicObjects.EmplaceAt(index, DynamicObjectInfo{ ptr, rhs.m_DynamicObjects[index].m_TypeIndex });
     }
     else
     {
@@ -149,6 +148,11 @@ void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
     {
       return a.first < b.first;
     });
+
+  for (auto & elem : update_objs)
+  {
+    g_ServerObjectSystem.m_ObjectTypes[elem.first].m_AddToUpdateList(elem.second, update_list);
+  }
 }
 
 int ServerObjectManager::GetHandleBits()
@@ -213,7 +217,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
         obj->m_ServerObject->Destroy(*this);
       }
 
-      auto ptr = CreateDynamicObjectInternal(type_index, index);
+      auto ptr = CreateDynamicObjectInternal(type_index, index, nullptr);
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
     }
     else if(obj)
@@ -227,7 +231,7 @@ int ServerObjectManager::GetNewDynamicObjectId()
 {
   for (std::size_t index = m_ReservedSlots, end = m_DynamicObjects.Size(); index < end; index++)
   {
-    if (m_DynamicObjects.HasAt(index))
+    if (m_DynamicObjects.HasAt(index) == false)
     {
       return (int)index;
     }
@@ -236,7 +240,7 @@ int ServerObjectManager::GetNewDynamicObjectId()
   return -1;
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index)
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, NullOptPtr<ServerObjectInitData> init_data)
 {
   auto slot_index = GetNewDynamicObjectId();
   if (slot_index == -1)
@@ -244,10 +248,10 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
     return nullptr;
   }
 
-  return CreateDynamicObjectInternal(type_index, slot_index);
+  return CreateDynamicObjectInternal(type_index, slot_index, init_data);
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index)
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index, NullOptPtr<ServerObjectInitData> init_data)
 {
   auto ptr = g_ServerObjectSystem.AllocateObject(type_index, nullptr);
   ptr->m_IsStatic = false;

@@ -88,6 +88,24 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
 #endif
 }
 
+std::string JoinPath(const std::string & path_part1, const std::string & path_part2)
+{
+#ifdef _WEB
+
+  if (path_part1.size() > 0 && path_part1.back() != '/')
+  {
+    return path_part1 + '/' + path_part2;
+  }
+  else
+  {
+    return path_part1 + path_part2;
+  }
+#else
+
+  return (std::experimental::filesystem::path(path_part1) / path_part2).string();
+#endif
+}
+
 std::string GetFileNameForCanonicalPath(const std::string & path)
 {
   auto index = path.rfind('/');

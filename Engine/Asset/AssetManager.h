@@ -20,7 +20,7 @@ public:
     g_AssetLoader.RegisterAssetLoadCallback(&reload_info);
   }
 
-  NotNullPtr<AssetType> LoadAsset(czstr file_path)
+  NotNullPtr<AssetType> LoadAsset(czstr file_path, bool load_deps)
   {
     static_assert(sizeof(Asset::AssetHandle) >= sizeof(typename plf::colony<AssetType>::iterator), "Invalid iterator size");
 
@@ -35,7 +35,7 @@ public:
     auto itr = m_Assets.emplace();
     auto & asset = *itr;
 
-    g_AssetLoader.RequestFileLoad(&asset, file_path, std::is_same<AssetType, DocumentAsset>::value, false);
+    g_AssetLoader.RequestFileLoad(&asset, file_path, std::is_same<AssetType, DocumentAsset>::value, false, load_deps);
 
     Asset::AssetHandle handle;
     new (handle.m_Buffer) typename plf::colony<AssetType>::iterator(itr);
@@ -72,7 +72,7 @@ public:
     }
 
     auto & asset = *existing_asset_itr->second;
-    g_AssetLoader.RequestFileLoad(&asset, path, std::is_same<AssetType, DocumentAsset>::value, true);
+    g_AssetLoader.RequestFileLoad(&asset, path, std::is_same<AssetType, DocumentAsset>::value, true, asset.m_LoadedDeps);
   }
 
 private:

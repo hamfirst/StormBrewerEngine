@@ -31,9 +31,14 @@ void DocumentResourceBase::DecRef()
   }
 }
 
-bool DocumentResourceBase::IsLoaded()
+bool DocumentResourceBase::IsLoaded() const
 {
   return m_Loaded;
+}
+
+uint64_t DocumentResourceBase::GetFileNameHash() const
+{
+  return m_FileNameHash;
 }
 
 NotNullPtr<DocumentResourceBase> DocumentResourceBase::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint64_t))

@@ -5,7 +5,8 @@
 
 #include "Engine/Shader/ShaderManager.h"
 
-GameMode::GameMode() :
+GameMode::GameMode(GameContainer & game) :
+  m_GameContainer(game),
   m_Loaded(false)
 {
 
@@ -16,22 +17,22 @@ GameMode::~GameMode()
 
 }
 
-void GameMode::Initialize(GameContainer & container)
+void GameMode::Initialize()
 {
 
 }
 
-void GameMode::OnAssetsLoaded(GameContainer & container)
+void GameMode::OnAssetsLoaded()
 {
 
 }
 
-void GameMode::Update(GameContainer & container)
+void GameMode::Update()
 {
 
 }
 
-void GameMode::Render(GameContainer & container)
+void GameMode::Render()
 {
 
 }
@@ -41,18 +42,23 @@ bool GameMode::IsLoaded()
   return m_Loaded;
 }
 
-void GameMode::Step(GameContainer & container)
+void GameMode::Step()
 {
   if (m_Loaded == false)
   {
     if (m_Assets.LoadingComplete())
     {
-      OnAssetsLoaded(container);
+      OnAssetsLoaded();
       m_Loaded = true;
     }
   }
 
-  Update(container);
+  Update();
+}
+
+GameContainer & GameMode::GetContainer()
+{
+  return m_GameContainer;
 }
 
 AssetBundle & GameMode::GetAssets()

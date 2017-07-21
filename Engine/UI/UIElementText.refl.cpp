@@ -17,24 +17,40 @@ UIElementText::UIElementText(const UIElementTextInitData & init_data, const UIEl
 void UIElementText::Update()
 {
   UIElement::Update();
-}
+  auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
+  auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
-void UIElementText::Render(RenderState & render_state, RenderUtil & render_util)
-{
-  if (m_RenderDelegate)
+  if (m_Data.m_Centered)
   {
-    m_RenderDelegate(*this, render_state);
+    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_PositionX, m_Data.m_PositionY), size.Size()));
   }
   else
   {
-    RenderDefault(render_state, render_util);
+    size.m_Start += pos;
+    size.m_End += pos;
+    SetActiveArea(size);
   }
+
+  SetOffset(Vector2(m_Data.m_PositionX, m_Data.m_PositionY));
 }
 
-void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & render_util)
+void UIElementText::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
+{
+  if (m_RenderDelegate)
+  {
+    m_RenderDelegate(*this, render_state, offset);
+  }
+  else
+  {
+    RenderDefault(render_state, render_util, offset);
+  }
+
+  UIElement::Render(render_state, render_util, offset);
+}
+
+void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   g_TextManager.SetTextMode((TextRenderMode)(int)m_Data.m_TextMode);
-  g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY));
   g_TextManager.SetPrimaryColor(Color(m_Data.m_PrimaryColorR, m_Data.m_PrimaryColorB, m_Data.m_PrimaryColorG, m_Data.m_PrimaryColorA));
   g_TextManager.SetShadowColor(Color(m_Data.m_SecondaryColorR, m_Data.m_SecondaryColorB, m_Data.m_SecondaryColorG, m_Data.m_SecondaryColorA));
 
@@ -45,6 +61,18 @@ void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & rende
   else
   {
     g_TextManager.ClearTextBounds();
+  }
+
+  auto real_offset = offset + render_state.GetRenderSize() / 2;
+
+  if (m_Data.m_Centered)
+  {
+    auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
+    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) - (size.Size() / 2) + real_offset - size.m_Start);
+  }
+  else
+  {
+    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + real_offset);
   }
 
   g_TextManager.RenderText(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, render_state);
@@ -60,7 +88,7 @@ UIElementTextData & UIElementText::GetData()
   return m_Data;
 }
 
-void UIElementText::SetCustomRenderCallback(Delegate<void, UIElementText &, RenderState &> && render_callback)
+void UIElementText::SetCustomRenderCallback(Delegate<void, UIElementText &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }

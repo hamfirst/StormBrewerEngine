@@ -113,8 +113,13 @@ void MapEditorPath::Draw(GeometryVertexBufferBuilder & buffer, const Box & viewp
       DrawUtil::DrawLine(buffer, start, end, magnification);
     }
   }
+}
 
+void MapEditorPath::DrawControls(GeometryVertexBufferBuilder & buffer, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification)
+{
+  auto points = GetPreviewPath();
   auto sel_points = GetSelectedPreviewPath();
+
   for (int point = 0; point < points->size(); point++)
   {
     auto pos = points->at(point);
@@ -122,7 +127,7 @@ void MapEditorPath::Draw(GeometryVertexBufferBuilder & buffer, const Box & viewp
     {
       DrawUtil::DrawHighlightedCornerControl(buffer, pos, magnification);
     }
-    else if(vfind(sel_points.Value(), point))
+    else if (vfind(sel_points.Value(), point))
     {
       DrawUtil::DrawSelectedCornerControl(buffer, pos, magnification);
     }

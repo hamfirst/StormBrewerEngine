@@ -31,16 +31,16 @@ public:
   ServerObjectManager & operator = (ServerObjectManager && rhs);
 
   template <typename T>
-  NullOptPtr<T> CreateDynamicObject()
+  NullOptPtr<T> CreateDynamicObject(NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal(T::TypeIndex);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, init_data);
     return static_cast<T *>(ptr);
   }
 
   template <typename T>
-  NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot)
+  NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal(T::TypeIndex, reserved_slot);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, reserved_slot, init_data);
     return static_cast<T *>(ptr);
   }
 
@@ -72,8 +72,8 @@ protected:
   friend class ServerObjectHandle;
 
   int GetNewDynamicObjectId();
-  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index);
-  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, int slot_index);
+  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, NullOptPtr<ServerObjectInitData> init_data);
+  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, int slot_index, NullOptPtr<ServerObjectInitData> init_data);
   void DestroyDynamicObjectInternal(NotNullPtr<ServerObject> ptr);
 
   void FinalizeHandles();

@@ -40,7 +40,7 @@ struct JoinGameMessage : public ToServerMessage
 {
   NET_REFL;
   uint64_t m_GameId;
-  std::string m_Name;
+  std::string m_UserName;
   GameInitSettings m_Settings;
 };
 

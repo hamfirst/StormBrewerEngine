@@ -25,11 +25,12 @@ MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & ro
   DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
   DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_Map(map),
-  m_ManualTileLayers(this, m_Map),
-  m_EntityLayers(this, m_Map),
-  m_ParalaxLayers(this, m_Map),
-  m_Volumes(this, m_Map),
-  m_Paths(this, m_Map),
+  m_ManualTileLayers(".m_ManualTileLayers", this, m_Map, m_Map.m_ManualTileLayers),
+  m_EntityLayers(".m_EntityLayers", this, m_Map, m_Map.m_EntityLayers),
+  m_ParalaxLayers(".m_ParalaxLayers", this, m_Map, m_Map.m_ParalaxLayers),
+  m_EffectLayers(".m_EffectLayers", this, m_Map, m_Map.m_EffectLayers),
+  m_Volumes(".m_Volumes", this, m_Map, m_Map.m_Volumes),
+  m_Paths(".m_Paths", this, m_Map, m_Map.m_Paths),
   m_Layout(std::make_unique<QGridLayout>()),
   m_Properties(std::make_unique<GenericFrame>("Properties", this)),
   m_Selector(std::make_unique<MapEditorSelector>(this, m_Map)),
@@ -101,10 +102,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     break;
   case MapEditorLayerItemType::kEntity:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
+    ClearSelectors();
     
     m_PropertyEditor->LoadStruct(this, m_Map.m_EntityLayers[layer.m_Index].m_Entities[layer.m_SubIndex], 
       [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
@@ -123,20 +121,20 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   case MapEditorLayerItemType::kParalaxLayer:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
-    m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index], 
+    ClearSelectors();
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index],
       [this, index = layer.m_Index]() -> void * { return m_Map.m_ParalaxLayers.TryGet(index); }, true);
     break;
 
-  case MapEditorLayerItemType::kCreateVolume:
+  case MapEditorLayerItemType::kEffectLayer:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
+    ClearSelectors();
+    m_PropertyEditor->LoadStruct(this, m_Map.m_EffectLayers[layer.m_Index], 
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_EffectLayers.TryGet(index); }, true);
+    break;
+
+  case MapEditorLayerItemType::kCreateVolume:
+    ClearSelectors();
 
     {
       auto property_data = GetProperyMetaData<RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>>(GetPropertyFieldDatabase());
@@ -147,10 +145,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   case MapEditorLayerItemType::kVolume:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
+    ClearSelectors();
 
     m_PropertyEditor->LoadStruct(this, m_Map.m_Volumes[layer.m_Index],
       [this, index = layer.m_Index]() -> void * { return m_Map.m_Volumes.TryGet(index); }, true);
@@ -163,10 +158,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   case MapEditorLayerItemType::kCreatePath:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
+    ClearSelectors();
 
     {
       auto property_data = GetProperyMetaData<RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>>(GetPropertyFieldDatabase());
@@ -177,10 +169,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   case MapEditorLayerItemType::kPath:
 
-    m_Selector->GetTileSelector()->hide();
-    m_Selector->GetTileSelector()->Clear();
-    m_Selector->GetEntitySelector()->hide();
-    m_Selector->GetEntitySelector()->Clear();
+    ClearSelectors();
 
     m_PropertyEditor->LoadStruct(this, m_Map.m_Paths[layer.m_Index],
       [this, index = layer.m_Index]() -> void * { return m_Map.m_Paths.TryGet(index); }, true);
@@ -239,27 +228,32 @@ void MapEditor::ClearLayerSelection()
   m_Selector->GetEntitySelector()->hide();
 }
 
-MapEditorTileLayerManager & MapEditor::GetManualTileManager()
+MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & MapEditor::GetManualTileManager()
 {
   return m_ManualTileLayers;
 }
 
-MapEditorEntityLayerManager & MapEditor::GetEntityManager()
+MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & MapEditor::GetEntityManager()
 {
   return m_EntityLayers;
 }
 
-MapEditorParalaxLayerManager & MapEditor::GetParalaxManager()
+MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & MapEditor::GetParalaxManager()
 {
   return m_ParalaxLayers;
 }
 
-MapEditorVolumeManager & MapEditor::GetVolumeManager()
+MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & MapEditor::GetEffectManager()
+{
+  return m_EffectLayers;
+}
+
+MapEditorLayerManager<MapVolume, MapEditorVolume> & MapEditor::GetVolumeManager()
 {
   return m_Volumes;
 }
 
-MapEditorPathManager & MapEditor::GetPathManager()
+MapEditorLayerManager<MapPath, MapEditorPath> & MapEditor::GetPathManager()
 {
   return m_Paths;
 }
@@ -294,6 +288,14 @@ void MapEditor::SetSelectedEntity(int layer_index, czstr entity_file)
 void MapEditor::ClearPropertyPanel()
 {
   m_PropertyEditor->Unload();
+}
+
+void MapEditor::ClearSelectors()
+{
+  m_Selector->GetTileSelector()->hide();
+  m_Selector->GetTileSelector()->Clear();
+  m_Selector->GetEntitySelector()->hide();
+  m_Selector->GetEntitySelector()->Clear();
 }
 
 const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & MapEditor::GetVolumeInitData() const

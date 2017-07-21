@@ -31,7 +31,7 @@ struct AudioInfo
   int m_Channels;
 };
 
-int AudioAsset::PreProcessLoadedData(Buffer & buffer)
+int AudioAsset::PreProcessLoadedData(Buffer & buffer, bool load_deps)
 {
   std::size_t file_size = buffer.GetSize();
   if (file_size < sizeof(WAVE_HEADER))
@@ -82,7 +82,7 @@ int AudioAsset::PreProcessLoadedData(Buffer & buffer)
   return 0;
 }
 
-void AudioAsset::OnDataLoadComplete(Buffer & buffer)
+void AudioAsset::OnDataLoadComplete(Buffer & buffer, bool load_deps)
 {
   AudioInfo info = MoveFromBuffer<AudioInfo>(buffer);
 

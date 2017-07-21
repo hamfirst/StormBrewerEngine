@@ -26,9 +26,19 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
   std::size_t last_index = 0;
   auto visitor = [&] (std::size_t index, NotNullPtr<ServerObject> obj)
   {
+    EntityHandle cur_handle;
+    if (m_Entities.HasAt(index))
+    {
+      cur_handle = m_Entities[index];
+    }
+
     while (index != last_index)
     {
-      m_Entities[last_index].Destroy();
+      if (m_Entities.HasAt(last_index))
+      {
+        m_Entities[last_index].Destroy();
+      }
+
       last_index++;
     }
 
@@ -37,7 +47,7 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
     auto entity_asset = obj->GetEntityBinding();
     if (entity_asset)
     {
-      auto entity = m_Entities[index].Resolve();
+      auto entity = cur_handle.Resolve();
       if (entity)
       {
         auto asset_hash = crc64(entity_asset);
@@ -46,7 +56,7 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
           return;
         }
 
-        m_Entities[index].Destroy();
+        cur_handle.Destroy();
       }
 
       auto entity_resource = EntityResource::Load(entity_asset);
@@ -57,11 +67,11 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
       }
 
       auto new_entity = engine_state.CreateEntity(entity_resource.GetResource(), obj);
-      m_Entities[index] = new_entity->GetHandle();
+      m_Entities.InsertAt(index, new_entity->GetHandle());
     }
     else
     {
-      m_Entities[index].Destroy();
+      cur_handle.Destroy();
     }
   };
 
@@ -69,7 +79,11 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
 
   while ((int)last_index <= m_Entities.HighestIndex())
   {
-    m_Entities[last_index].Destroy();
+    if (m_Entities.HasAt(last_index))
+    {
+      m_Entities[last_index].Destroy();
+    }
+
     last_index++;
   }
 }

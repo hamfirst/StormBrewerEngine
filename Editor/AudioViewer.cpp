@@ -100,14 +100,14 @@ void AudioViewer::play(bool)
   {
     if (m_AudioAsset.Resolve()->IsLoaded())
     {
-      m_AudioHandle = g_AudioManager.PlayAudio(m_AudioAsset, volume, pan);
+      m_AudioHandle = g_AudioManager.PlayAudio(m_AudioAsset, VolumeCategory::kSoundEffects, volume, pan);
     }
   }
   else
   {
     if (m_MusicAsset.Resolve()->IsLoaded())
     {
-      m_MusicHandle = g_AudioManager.PlayMusic(m_MusicAsset, volume, pan);
+      m_MusicHandle = g_AudioManager.PlayMusic(m_MusicAsset, VolumeCategory::kMusic, volume, pan);
     }
   }
 

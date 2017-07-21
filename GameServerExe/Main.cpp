@@ -9,16 +9,17 @@
 #include "Foundation/Buffer/BufferUtil.h"
 #include "Foundation/Time/FrameClock.h"
 
-#include "Shared/AssetBundle/AssetBundle.h"
-
 #include "Runtime/Runtime.h"
 #include "Runtime/Entity/EntityResource.h"
 #include "Runtime/Map/MapResource.h"
 
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
+#include "Game/GameSharedGlobalResources.h"
+#include "Game/GameNetworkSettings.h"
 
 #include "GameServer/GameServer.h"
+#include "GameServer/GameServerGlobalResources.h"
 
 #ifdef _MSC_VER
 #pragma comment(lib, "Winmm.lib")
@@ -31,6 +32,9 @@
 double send_time;
 
 extern int g_LagSim;
+
+void StormWebrtcStaticInit();
+void StormWebrtcStaticCleanup();
 
 int main(int argc, char ** argv)
 {
@@ -46,6 +50,10 @@ int main(int argc, char ** argv)
 
   RuntimeInit();
 
+#ifdef NET_USE_WEBRTC
+  StormWebrtcStaticInit();
+#endif
+
   printf("  Loading assets...\n");
 
   GameLevelList level_list;
@@ -57,13 +65,27 @@ int main(int argc, char ** argv)
     return 0;
   }
 
+  GameServerGlobalResources server_global_resources;
+  if (server_global_resources.IsLoaded() == false)
+  {
+    printf("  Failed to load assets...\n");
+    return 0;
+  }
+
+  GameSharedGlobalResources shared_global_resources;
+  if (shared_global_resources.IsLoaded() == false)
+  {
+    printf("  Failed to load assets...\n");
+    return 0;
+  }
+
   printf("  Assets loaded...\n");
   GameStageManager stage_manager(level_list);
 
   printf("  Starting server...\n");
   NetworkInit();
 
-  GameServer game_server(256, 47815, stage_manager);
+  GameServer game_server(256, 47815, stage_manager, shared_global_resources);
   printf("  Server started!\n");
 
   FrameClock frame_clock(1.0 / 60.0);
@@ -83,5 +105,9 @@ int main(int argc, char ** argv)
   }
 
   NetworkShutdown();
+
+#ifdef NET_USE_WEBRTC
+  StormWebrtcStaticCleanup();
+#endif
 }
 

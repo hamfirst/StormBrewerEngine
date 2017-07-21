@@ -15,7 +15,7 @@ struct GameFullState
   STORM_REFL_NODEFAULT;
 
   ServerObjectManager m_ServerObjectManager;
-  GameGlobalData m_GlobalData;
+  GameInstanceData m_GlobalData;
 
 };
 

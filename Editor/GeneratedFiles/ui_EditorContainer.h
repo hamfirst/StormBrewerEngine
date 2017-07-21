@@ -33,6 +33,7 @@ public:
     QAction *action_Redo;
     QAction *action_StartServer;
     QAction *action_LaunchClients;
+    QAction *action_TestBuild;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -62,6 +63,8 @@ public:
         action_StartServer->setObjectName(QStringLiteral("action_StartServer"));
         action_LaunchClients = new QAction(EditorContainerClass);
         action_LaunchClients->setObjectName(QStringLiteral("action_LaunchClients"));
+        action_TestBuild = new QAction(EditorContainerClass);
+        action_TestBuild->setObjectName(QStringLiteral("action_TestBuild"));
         centralWidget = new QWidget(EditorContainerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         EditorContainerClass->setCentralWidget(centralWidget);
@@ -91,8 +94,7 @@ public:
         menuFile->addAction(action_Quit);
         menuEdit->addAction(action_Undo);
         menuEdit->addAction(action_Redo);
-        menuRun->addAction(action_StartServer);
-        menuRun->addAction(action_LaunchClients);
+        menuRun->addAction(action_TestBuild);
 
         retranslateUi(EditorContainerClass);
 
@@ -110,6 +112,7 @@ public:
         action_Redo->setText(QApplication::translate("EditorContainerClass", "Redo", Q_NULLPTR));
         action_StartServer->setText(QApplication::translate("EditorContainerClass", "Start Server", Q_NULLPTR));
         action_LaunchClients->setText(QApplication::translate("EditorContainerClass", "Launch Clients", Q_NULLPTR));
+        action_TestBuild->setText(QApplication::translate("EditorContainerClass", "Test Build", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("EditorContainerClass", "&File", Q_NULLPTR));
         menu_New->setTitle(QApplication::translate("EditorContainerClass", "&New", Q_NULLPTR));
         menuEdit->setTitle(QApplication::translate("EditorContainerClass", "Edit", Q_NULLPTR));

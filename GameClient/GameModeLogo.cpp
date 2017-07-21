@@ -1,39 +1,53 @@
 
 #include "GameClient/GameModeLogo.h"
-#include "GameClient/GameModeConnecting.h"
+#include "GameClient/GameModeNameSelect.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 
-
-void GameModeLogo::Initialize(GameContainer & container)
+GameModeLogo::GameModeLogo(GameContainer & game) :
+  GameMode(game)
 {
+
+}
+
+GameModeLogo::~GameModeLogo()
+{
+
+}
+
+void GameModeLogo::Initialize()
+{
+  auto & container = GetContainer();
   auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(0, 0, 0, 255));
+  render_util.SetClearColor(Color(255, 255, 255, 255));
 
   GetAssets().LoadAsset<TextureAsset>("./Images/stormbrewers_logo.png", "logo");
 }
 
-void GameModeLogo::OnAssetsLoaded(GameContainer & container)
+void GameModeLogo::OnAssetsLoaded()
 {
   m_Timer.Start();
 }
 
-void GameModeLogo::Update(GameContainer & container)
+void GameModeLogo::Update()
 {
+  auto & container = GetContainer();
   if (m_Timer.GetTimeSinceStart() > 1.0 && container.AllGlobalResourcesLoaded())
   {
-    container.StartNetworkClient("127.0.0.1", 47815);
-    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    container.SwitchMode(GameModeDef<GameModeNameSelect>{});
     return;
   }
 }
 
-void GameModeLogo::Render(GameContainer & container)
+void GameModeLogo::Render()
 {
+  auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
+
+  render_util.SetClearColor(Color(255, 255, 255, 255));
   render_util.Clear();
   
   render_state.EnableBlendMode();

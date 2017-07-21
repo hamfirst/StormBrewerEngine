@@ -104,7 +104,9 @@ void PropertyEditorNumber::HandleTextUpdate()
   case PropertyFieldType::kFloatNumber:
     {
       float val;
-      if (StormReflParseJson(val, m_Input->text().toStdString().data()))
+      auto str = m_Input->text().toStdString();
+
+      if (StormReflParseJson(val, str.data()))
       {
         auto original_val = val;
 
@@ -123,6 +125,33 @@ void PropertyEditorNumber::HandleTextUpdate()
         }
 
         m_Property->m_FloatNumber.Set(property_ptr, val);
+      }
+    }
+    break;
+  case PropertyFieldType::kFloatNumberDeterministic:
+    {
+      float val;
+      auto str = m_Input->text().toStdString();
+
+      if (StormReflParseJson(val, str.data()))
+      {
+        auto original_val = val;
+
+        if (val < m_Property->m_FloatNumber.m_Min)
+        {
+          val = m_Property->m_FloatNumber.m_Min;
+        }
+        else if (val > m_Property->m_FloatNumber.m_Max)
+        {
+          val = m_Property->m_FloatNumber.m_Max;
+        }
+
+        if (val != original_val)
+        {
+          m_Input->RemoteUpdate(std::to_string(val).data());
+        }
+
+        m_Property->m_FloatNumberDeterministic.Set(property_ptr, std::to_string(val).data());
       }
     }
     break;

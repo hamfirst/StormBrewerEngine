@@ -46,6 +46,9 @@
     <Filter Include="GenericResource">
       <UniqueIdentifier>{231f4049-7435-4b79-b9a7-c65e1d58fd28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{296e042c-7913-4a32-9058-3bdb6743c781}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
@@ -112,6 +115,15 @@
     </ClCompile>
     <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Config\ConfigManager.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerDef.refl.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerTypeDatabase.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,11 +261,32 @@
     <ClInclude Include="Event\EventDispatcher.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="IntersectionDatabase.h">
+    <ClInclude Include="GenericResource\GenericResource.h">
+      <Filter>GenericResource</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\IntersectionDatabase.h">
       <Filter>Collision</Filter>
     </ClInclude>
-    <ClInclude Include="GenericResource.h">
-      <Filter>GenericResource</Filter>
+    <ClInclude Include="Config\ConfigRegistrationMacros.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Config\ConfigManager.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Config\ConfigList.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerDef.refl.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerDef.refl.meta.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerTypeDatabase.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerTypeRegister.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

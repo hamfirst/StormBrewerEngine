@@ -26,6 +26,7 @@ public:
   void HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus);
 
   bool GetButtonState(int button);
+  bool GetButtonPressedThisFrame(int button);
   PointerState GetPointerState();
 
   static bool GetCursorVisibility();
@@ -41,6 +42,8 @@ protected:
 private:
   InputState * m_InputState;
   bool m_PressedState[kNumMouseButtons] = {};
+  bool m_PressedThisFrame[kNumMouseButtons] = {};
+  bool m_PressedLastFrame[kNumMouseButtons] = {};
   PointerState m_PointerState = {};
   ControlBindingList<BinaryControlBinding> m_ButtonControls[kNumMouseButtons];
   ControlBindingList<PointerControlBinding> m_PointerBinding;

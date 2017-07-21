@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "LerpVar.h"
+#include "QtLerpVar.h"
 
 #include <QWidget>
 #include <QFrame>
@@ -48,11 +48,11 @@ protected:
   int transformDragIndex(int index);
 
   std::vector<QWidget *> m_Widgets;
-  std::vector<std::unique_ptr<LerpVar>> m_WidgetPositions;
+  std::vector<std::unique_ptr<QtLerpVar>> m_WidgetPositions;
   std::vector<bool> m_IsSelected;
   QScrollBar * m_Scroll;
   QFrame * m_Frame;
-  std::unique_ptr<LerpVar> m_ScrollVal;
+  std::unique_ptr<QtLerpVar> m_ScrollVal;
 
   Qt::Orientation m_Orientation;
 

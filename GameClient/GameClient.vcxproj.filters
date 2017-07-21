@@ -7,12 +7,21 @@
     <ClCompile Include="GameNetworkClient.cpp" />
     <ClCompile Include="GameClientController.refl.cpp" />
     <ClCompile Include="GameClientLevelLoader.cpp" />
-    <ClCompile Include="GameGlobalResources.cpp" />
     <ClCompile Include="GameModeLogo.cpp" />
     <ClCompile Include="GameModeConnecting.cpp" />
     <ClCompile Include="GameModeOnlineGameplay.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="GameModeDebugOffline.cpp" />
+    <ClCompile Include="GameClientGlobalResources.cpp" />
+    <ClCompile Include="GameClientInstanceResources.cpp" />
+    <ClCompile Include="GameClientInputManager.cpp" />
+    <ClCompile Include="GameClientUIManager.cpp" />
+    <ClCompile Include="GameClientInstanceData.cpp" />
+    <ClCompile Include="GameClientSystems.cpp" />
+    <ClCompile Include="GameClientInstanceContainer.cpp" />
+    <ClCompile Include="GameModeEndGame.cpp" />
+    <ClCompile Include="GameModeMainMenu.cpp" />
+    <ClCompile Include="GameModeNameSelect.cpp" />
+    <ClCompile Include="GameModeLoadingGlobal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameContainer.h" />
@@ -23,11 +32,28 @@
     <ClInclude Include="GameClientController.refl.meta.h" />
     <ClInclude Include="GameClientController.refl.h" />
     <ClInclude Include="GameClientLevelLoader.h" />
-    <ClInclude Include="GameGlobalResources.h" />
     <ClInclude Include="GameModeLogo.h" />
     <ClInclude Include="GameModeConnecting.h" />
     <ClInclude Include="GameModeOnlineGameplay.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="GameModeDebugOffline.h" />
+    <ClInclude Include="GameClientGlobalResources.h" />
+    <ClInclude Include="GameClientInstanceResources.h" />
+    <ClInclude Include="GameClientInputManager.h" />
+    <ClInclude Include="GameClientUIManager.h" />
+    <ClInclude Include="GameClientInstanceData.h" />
+    <ClInclude Include="GameClientSystems.h" />
+    <ClInclude Include="GameClientInstanceContainer.h" />
+    <ClInclude Include="GameModeEndGame.h" />
+    <ClInclude Include="GameModeMainMenu.h" />
+    <ClInclude Include="GameModeNameSelect.h" />
+    <ClInclude Include="GameModeLoadingGlobal.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Components">
+      <UniqueIdentifier>{2ba61d10-553d-46d5-819d-9b10bf8ce19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EffectLayers">
+      <UniqueIdentifier>{f74c7d0d-4c1a-4790-b61d-5d963fa42cd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

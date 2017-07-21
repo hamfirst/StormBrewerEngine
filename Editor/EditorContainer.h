@@ -18,7 +18,7 @@ class QTabWidget;
 class QOpenGLContext;
 class QOffscreenSurface;
 
-class GameServerWidget;
+class GameHostWidget;
 
 using DocumentEditorCreationDelegate = Delegate<DocumentEditorBase *, PropertyFieldDatabase &, const std::string &, DocumentOutputDelegate &&, QWidget *>;
 
@@ -51,6 +51,7 @@ public slots:
   void engineUpdate();
 
   void newFile();
+  void newConfigFile();
   void open();
   void save();
   void close();
@@ -60,14 +61,13 @@ public slots:
   void undo();
   void redo();
 
-  void startServer();
-  void launchClients();
+  void testBuild();
 
 protected:
 
-  friend class GameClientWidget;
+  friend class GameHostWidget;
 
-  void NotifyClientWindowClosed(NotNullPtr<GameClientWidget> client);
+  void NotifyClientWindowClosed(NotNullPtr<GameHostWidget> host_widget);
 
 private:
 
@@ -118,6 +118,5 @@ private:
   std::string m_RootPath;
   PropertyFieldDatabase m_PropertyDatabase;
 
-  std::unique_ptr<GameServerWidget> m_ServerWidget;
-  std::vector<std::unique_ptr<GameClientWidget>> m_ClientWidgets;
+  std::vector<std::unique_ptr<GameHostWidget>> m_HostWidgets;
 };

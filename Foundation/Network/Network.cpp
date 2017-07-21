@@ -23,6 +23,8 @@
 #include <netdb.h>
 #endif
 
+#include "StormWebrtc/StormWebrtcServer.h"
+
 void NetworkInit()
 {
 #ifdef _MSC_VER

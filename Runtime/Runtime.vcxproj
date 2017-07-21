@@ -33,6 +33,7 @@
     </ClCompile>
     <ClCompile Include="Component\ComponentInitData.refl.cpp" />
     <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp" />
+    <ClCompile Include="Config\ConfigManager.cpp" />
     <ClCompile Include="DocumentResource\DocumentResourceBase.cpp" />
     <ClCompile Include="DocumentResource\DocumentResourceManager.cpp">
       <SubType>
@@ -43,6 +44,8 @@
     <ClCompile Include="Entity\EntityResource.cpp" />
     <ClCompile Include="FrameData\FrameData.refl.cpp" />
     <ClCompile Include="Map\MapDef.refl.cpp" />
+    <ClCompile Include="Map\MapEffectLayerDef.refl.cpp" />
+    <ClCompile Include="Map\MapEffectLayerTypeDatabase.cpp" />
     <ClCompile Include="Map\MapResource.cpp">
       <SubType>
       </SubType>
@@ -85,6 +88,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Collision\IntersectionDatabase.h" />
     <ClInclude Include="Component\ComponentInitData.refl.h">
       <SubType>
       </SubType>
@@ -95,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="Component\ComponentInitDataTypeDatabase.h" />
     <ClInclude Include="Component\ComponentInitDataTypeDatabaseRegister.h" />
+    <ClInclude Include="Config\ConfigList.h" />
+    <ClInclude Include="Config\ConfigManager.h" />
+    <ClInclude Include="Config\ConfigRegistrationMacros.h" />
     <ClInclude Include="DocumentResource\DocumentResourceBase.h" />
     <ClInclude Include="DocumentResource\DocumentResourceLoader.h">
       <SubType>
@@ -127,8 +134,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GenericResource.h" />
-    <ClInclude Include="IntersectionDatabase.h" />
+    <ClInclude Include="GenericResource\GenericResource.h" />
     <ClInclude Include="Map\MapDef.refl.h">
       <SubType>
       </SubType>
@@ -137,6 +143,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerDef.refl.h" />
+    <ClInclude Include="Map\MapEffectLayerDef.refl.meta.h" />
+    <ClInclude Include="Map\MapEffectLayerTypeDatabase.h" />
+    <ClInclude Include="Map\MapEffectLayerTypeRegister.h" />
     <ClInclude Include="Map\MapMetaExtractor.h" />
     <ClInclude Include="Map\MapResource.h">
       <SubType>

@@ -14,11 +14,13 @@
 #include "MapEditorLayerList.h"
 #include "MapEditorViewer.h"
 #include "MapEditorSelector.h"
-#include "MapEditorTileLayerManager.h"
-#include "MapEditorEntityLayerManager.h"
-#include "MapEditorParalaxLayerManager.h"
-#include "MapEditorVolumeManager.h"
-#include "MapEditorPathManager.h"
+#include "MapEditorLayerManager.h"
+#include "MapEditorEntityManager.h"
+#include "MapEditorTileManager.h"
+#include "MapEditorParalaxLayer.h"
+#include "MapEditorEffectLayer.h"
+#include "MapEditorVolume.h"
+#include "MapEditorPath.h"
 
 
 static const uint64_t kInvalidFrameId = ~0;
@@ -33,11 +35,12 @@ public:
   void ChangeLayerSelection(const MapEditorLayerSelection & layer, bool change_viewer_position = true);
   void ClearLayerSelection();
 
-  MapEditorTileLayerManager & GetManualTileManager();
-  MapEditorEntityLayerManager & GetEntityManager();
-  MapEditorParalaxLayerManager & GetParalaxManager();
-  MapEditorVolumeManager & GetVolumeManager();
-  MapEditorPathManager & GetPathManager();
+  MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & GetManualTileManager();
+  MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & GetEntityManager();
+  MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & GetParalaxManager();
+  MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & GetEffectManager();
+  MapEditorLayerManager<MapVolume, MapEditorVolume> & GetVolumeManager();
+  MapEditorLayerManager<MapPath, MapEditorPath> & GetPathManager();
 
   MapEditorSelector & GetSelector();
   MapEditorLayerList & GetLayerList();
@@ -46,6 +49,7 @@ public:
   void SelectManualTile(int layer_index, uint64_t frame_id);
   void SetSelectedEntity(int layer_index, czstr entity_file);
   void ClearPropertyPanel();
+  void ClearSelectors();
 
   const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & GetVolumeInitData() const;
   void CreateNewVolume(const Box & box);
@@ -60,11 +64,12 @@ public:
 private:
 
   MapDef & m_Map;
-  MapEditorTileLayerManager m_ManualTileLayers;
-  MapEditorEntityLayerManager m_EntityLayers;
-  MapEditorParalaxLayerManager m_ParalaxLayers;
-  MapEditorVolumeManager m_Volumes;
-  MapEditorPathManager m_Paths;
+  MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> m_ManualTileLayers;
+  MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager>  m_EntityLayers;
+  MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> m_ParalaxLayers;
+  MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> m_EffectLayers;
+  MapEditorLayerManager<MapVolume, MapEditorVolume> m_Volumes;
+  MapEditorLayerManager<MapPath, MapEditorPath> m_Paths;
 
   std::unique_ptr<QGridLayout> m_Layout;
   std::unique_ptr<GenericFrame> m_Properties;

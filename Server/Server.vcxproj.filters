@@ -25,6 +25,9 @@
     <ClCompile Include="ServerObject\ServerObjectSerialize.cpp">
       <Filter>ServerObject</Filter>
     </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerObject\ServerObject.h">
@@ -52,5 +55,13 @@
     <ClInclude Include="ServerObject\ServerObjectSerialzie.h">
       <Filter>ServerObject</Filter>
     </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.meta.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerTypesJson.h" />
+    <ClInclude Include="ServerTypesNet.h" />
   </ItemGroup>
 </Project>

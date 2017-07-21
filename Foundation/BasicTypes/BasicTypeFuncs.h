@@ -89,3 +89,13 @@ inline Box BoxUnion(const Box & a, const Box & b)
   BoxUnionInPlace(r, b);
   return r;
 }
+
+inline Color LerpColor(const Color & a, const Color & b, float val)
+{
+  auto one_minus_v = 1.0f - val;
+  return Color(
+    a.r * one_minus_v + b.r * val,
+    a.g * one_minus_v + b.g * val,
+    a.b * one_minus_v + b.b * val,
+    a.a * one_minus_v + b.a * val);
+}

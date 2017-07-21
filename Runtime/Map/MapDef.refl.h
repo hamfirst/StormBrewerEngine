@@ -11,6 +11,8 @@
 #include "Runtime/Path/PathTypeDatabase.h"
 #include "Runtime/Volume/VolumeDef.refl.h"
 #include "Runtime/Volume/VolumeTypeDatabase.h"
+#include "Runtime/Map/MapEffectLayerDef.refl.h"
+#include "Runtime/Map/MapEffectLayerTypeDatabase.h"
 #include "Runtime/Map/MapTile.h"
 
 
@@ -60,12 +62,24 @@ struct RUNTIME_EXPORT MapParalaxLayer
   RFloat m_ParalaxY;
 };
 
+struct RUNTIME_EXPORT MapEffectLayer
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapEffectLayer);
+
+  RString m_Name;
+  RInt m_LayerOrder;
+
+  RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo> m_EffectLayerData;
+};
+
 struct RUNTIME_EXPORT MapPathPoint
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPathPoint);
 
   RInt m_X;
   RInt m_Y;
+
+  Vector2 GetPoint() const;
 };
 
 struct RUNTIME_EXPORT MapPath
@@ -85,6 +99,8 @@ struct RUNTIME_EXPORT MapVolume
   RInt m_YStart;
   RInt m_XEnd;
   RInt m_YEnd;
+
+  Box GetBox() const;
 };
 
 struct RUNTIME_EXPORT MapDef
@@ -94,6 +110,7 @@ struct RUNTIME_EXPORT MapDef
   RMergeList<MapManualTileLayer> m_ManualTileLayers;
   RMergeList<MapEntityLayer> m_EntityLayers;
   RMergeList<MapParalaxLayer> m_ParalaxLayers;
+  RMergeList<MapEffectLayer> m_EffectLayers;
   RMergeList<MapPath> m_Paths;
   RMergeList<MapVolume> m_Volumes;
 };

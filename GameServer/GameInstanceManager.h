@@ -11,7 +11,7 @@ class GameStageManager;
 class GameInstanceManager
 {
 public:
-  GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager);
+  GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager, GameSharedGlobalResources & shared_global_resources);
 
   void Update();
 
@@ -22,5 +22,6 @@ public:
 private:
   GameServer & m_Server;
   GameStageManager & m_StageManager;
+  GameSharedGlobalResources & m_SharedGlobalResources;
   std::map<uint64_t, std::unique_ptr<GameInstance>> m_Games;
 };

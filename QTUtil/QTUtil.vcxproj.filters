@@ -34,6 +34,16 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Generated Files\FinalStatic">
+      <UniqueIdentifier>{66331974-a320-44b3-810b-54c759a1420e}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\CoreOpt">
+      <UniqueIdentifier>{cbb53ab3-673e-4666-a83b-4843b95886ad}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QTUtil.cpp">
@@ -66,14 +76,20 @@
     <ClCompile Include="GeneratedFiles\Release\moc_FocusWatcher.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="LerpVar.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_QtLerpVar.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_LerpVar.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_QtLerpVar.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_LerpVar.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_QtLerpVar.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_QtLerpVar.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="QtLerpVar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +115,7 @@
     <CustomBuild Include="FocusWatcher.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="LerpVar.h">
+    <CustomBuild Include="QtLerpVar.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

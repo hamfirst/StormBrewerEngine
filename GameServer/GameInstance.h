@@ -11,6 +11,8 @@
 #include "Game/GameController.refl.h"
 #include "Game/GameLogicContainer.h"
 #include "Game/GameServerEventSender.h"
+#include "Game/GameSharedGlobalResources.h"
+#include "Game/GameSharedInstanceResources.h"
 
 #include "GameServer/GameEventReconciler.h"
 
@@ -25,7 +27,7 @@ class GameInstance : public GameSimulationEventCallbacks, public GameServerEvent
 {
 public:
 
-  GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage);
+  GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage, GameSharedGlobalResources & global_resources);
 
   void Update();
   void Reset();
@@ -78,6 +80,9 @@ private:
 
   GameServer & m_Server;
   uint64_t m_GameId;
+
+  GameSharedGlobalResources & m_SharedGlobalResources;
+  GameSharedInstanceResources m_SharedInstanceResources;
 
   GameInitSettings m_InitSettings;
   GameController m_Controller;

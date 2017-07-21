@@ -18,6 +18,7 @@ public:
   void AddVert(const VertexInfo & vert);
   VertexInfo & AddVert();
 
+  bool HasVerts() const;
 private:
 
   void Grow();

@@ -37,6 +37,7 @@ private:
   PropertyField m_BasicUInt64;
   PropertyField m_BasicFloat;
   PropertyField m_BasicDouble;
+  PropertyField m_BasicFloatDeterministic;
   PropertyField m_BasicString;
 
   std::vector<std::unique_ptr<PropertyField>> m_PropertyAlloc;

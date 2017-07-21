@@ -75,6 +75,14 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{dc544c31-4ca5-47cc-86f7-c8ab327c59c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generated Files\FinalStatic">
+      <UniqueIdentifier>{9a379078-9891-4c1f-8217-a28ffb6f999b}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\DocumentEditors\ConfigEditor">
+      <UniqueIdentifier>{457caee8-0507-4c64-b9eb-5f1fac740aae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -575,9 +583,6 @@
     <ClCompile Include="DocumentListValueWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapEditorTileLayerManager.cpp">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClCompile>
     <ClCompile Include="MapEditorEntitySelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -602,9 +607,6 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorSelector.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
-    <ClCompile Include="MapEditorEntityLayerManager.cpp">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClCompile>
     <ClCompile Include="MapEditorEntityManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -622,9 +624,6 @@
     </ClCompile>
     <ClCompile Include="MapEditorToolEntityLayerSelect.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="MapEditorParalaxLayerManager.cpp">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
     <ClCompile Include="MapEditorParalaxLayer.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
@@ -680,9 +679,6 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorSingleLine.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
-    <ClCompile Include="MapEditorVolumeManager.cpp">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClCompile>
     <ClCompile Include="MapEditorVolume.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -696,9 +692,6 @@
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClCompile>
     <ClCompile Include="MapEditorPath.cpp">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="MapEditorPathManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
     <ClCompile Include="MapEditorToolPathCreate.cpp">
@@ -742,6 +735,57 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameServerWidget.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHostWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_GameHostWidget.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GameHostWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GameHostWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameHostWidget.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectFromListDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SelectFromListDialog.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SelectFromListDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SelectFromListDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SelectFromListDialog.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigEditor.cpp">
+      <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_ConfigEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_ConfigEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentEditorConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorEffectLayer.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +954,18 @@
     <CustomBuild Include="GameServerWidget.h">
       <Filter>Source Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="GameHostWidget.h">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectFromListDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectFromListDialog.h">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ConfigEditor.h">
+      <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -957,12 +1013,6 @@
     <ClInclude Include="DocumentListValueWatcher.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapEditorTileLayerManager.h">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="MapEditorEntityLayerManager.h">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClInclude>
     <ClInclude Include="MapEditorEntityManager.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClInclude>
@@ -981,17 +1031,11 @@
     <ClInclude Include="MapEditorToolEntityLayerSelect.h">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="MapEditorParalaxLayerManager.h">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClInclude>
     <ClInclude Include="MapEditorParalaxLayer.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClInclude>
     <ClInclude Include="FrameEditorUtil.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="MapEditorVolumeManager.h">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClInclude>
     <ClInclude Include="MapEditorVolume.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
@@ -1008,14 +1052,23 @@
     <ClInclude Include="MapEditorPath.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClInclude>
-    <ClInclude Include="MapEditorPathManager.h">
-      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </ClInclude>
     <ClInclude Include="MapEditorToolPathCreate.h">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
     <ClInclude Include="MapEditorToolPathEditor.h">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SelectFromListDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentEditorConfig.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorLayerManager.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorEffectLayer.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

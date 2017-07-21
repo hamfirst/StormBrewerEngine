@@ -51,6 +51,8 @@ void StormWebrtcStaticInit()
 #else
   usrsctp_init_nothreads(0, sctp_send_cb, debug_printf);
 #endif
+
+  usrsctp_sysctl_set_sctp_blackhole(2);
 }
 
 void StormWebrtcStaticCleanup()
@@ -179,9 +181,6 @@ StormWebrtcServerImpl::StormWebrtcServerImpl(const StormWebrtcServerSettings & s
   {
     return 0;
   };
-
-  //usrsctp_sysctl_set_sctp_debug_on(SCTP_DEBUG_ALL);
-  usrsctp_sysctl_set_sctp_blackhole(2);
 
   m_SctpListenSocket = usrsctp_socket(AF_CONN, SOCK_STREAM, IPPROTO_SCTP, sctp_receive_cb, send_thresh_cb, usrsctp_sysctl_get_sctp_sendspace() / 2, this);
   if (m_SctpListenSocket == nullptr)

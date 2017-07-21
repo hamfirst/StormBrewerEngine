@@ -28,19 +28,19 @@ public:
   static int Type;
 
   void Update() override;
-  void Render(RenderState & render_state, RenderUtil & render_util) override;
-  void RenderDefault(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
+  void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementContainerInitData & GetInitData();
   UIElementContainerData & GetData();
 
-  void SetCustomRenderCallback(Delegate<void, UIElementContainer &, RenderState &> && render_callback);
+  void SetCustomRenderCallback(Delegate<void, UIElementContainer &, RenderState &, const Vector2 &> && render_callback);
 
 private:
 
   UIElementContainerInitData m_InitData;
   UIElementContainerData m_Data;
 
-  Delegate<void, UIElementContainer &, RenderState &> m_RenderDelegate;
+  Delegate<void, UIElementContainer &, RenderState &, const Vector2 &> m_RenderDelegate;
 };
 

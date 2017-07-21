@@ -178,6 +178,11 @@ MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t
 
 }
 
+void MapManualTileLayerInstance::Update()
+{
+
+}
+
 void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
 {
   m_DrawInfo.VisitGrid(viewport_bounds, [&](uint32_t grid_id, std::vector<GridDrawElement> & grid_elems)

@@ -2,6 +2,7 @@
 
 #include "Foundation/Common.h"
 
+class GameContainer;
 class EngineState;
 class RenderState;
 class RenderUtil;
@@ -18,15 +19,15 @@ public:
 
   void BootstrapShader(const ShaderProgram & shader);
 
-  const RenderVec2 & GetGameResolution();
-  const RenderVec2 & GetScreenResolution();
-  const RenderVec2 & GetPosition();
+  const RenderVec2 & GetGameResolution() const;
+  const RenderVec2 & GetScreenResolution() const;
+  const RenderVec2 & GetPosition() const;
 
   RenderVec2 TransformFromScreenSpaceToClipSpace(const RenderVec2 & pos);
   RenderVec2 TransformFromScreenSpaceToWorldSpace(const RenderVec2 & pos);
   RenderVec2 TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos);
 
-  void Draw(NotNullPtr<EngineState> engine_state, RenderState & render_state);
+  void Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state, RenderUtil & render_util);
   void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color);
   void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Vector2 & offset, const Color & color);
 

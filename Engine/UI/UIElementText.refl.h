@@ -18,7 +18,8 @@ struct UIElementTextData
   float m_PositionY = 0.0f;
 
   float m_TextMode = 0;
-  float m_FontId = 0;
+  float m_FontId = -1.0f;
+  float m_Centered = 0;
 
   float m_EnableTextBounds = 0.0f;
   float m_TextBoundsStartX = 0.0f;
@@ -31,12 +32,28 @@ struct UIElementTextData
   float m_PrimaryColorB = 1.0f;
   float m_PrimaryColorA = 1.0f;
 
-  float m_SecondaryColorR = 1.0f;
-  float m_SecondaryColorG = 1.0f;
-  float m_SecondaryColorB = 1.0f;
+  float m_SecondaryColorR = 0.0f;
+  float m_SecondaryColorG = 0.0f;
+  float m_SecondaryColorB = 0.0f;
   float m_SecondaryColorA = 1.0f;
 
   float m_Active = 0.0f;
+
+  void SetColor(const Color & c)
+  {
+    m_PrimaryColorR = c.r;
+    m_PrimaryColorG = c.g;
+    m_PrimaryColorB = c.b;
+    m_PrimaryColorA = c.a;
+  }
+
+  void SetSecondaryColor(const Color & c)
+  {
+    m_SecondaryColorR = c.r;
+    m_SecondaryColorG = c.g;
+    m_SecondaryColorB = c.b;
+    m_SecondaryColorA = c.a;
+  }
 };
 
 class UIElementText : public UIElement
@@ -47,19 +64,19 @@ public:
   static int Type;
 
   void Update() override;
-  void Render(RenderState & render_state, RenderUtil & render_util) override;
-  void RenderDefault(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
+  void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementTextInitData & GetInitData();
   UIElementTextData & GetData();
 
-  void SetCustomRenderCallback(Delegate<void, UIElementText &, RenderState &> && render_callback);
+  void SetCustomRenderCallback(Delegate<void, UIElementText &, RenderState &, const Vector2 &> && render_callback);
 
 private:
 
   UIElementTextInitData m_InitData;
   UIElementTextData m_Data;
 
-  Delegate<void, UIElementText &, RenderState &> m_RenderDelegate;
+  Delegate<void, UIElementText &, RenderState &, const Vector2 &> m_RenderDelegate;
 };
 

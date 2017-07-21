@@ -118,7 +118,7 @@ void DocumentServer::Run()
 
               if (doc_itr->second.m_Connections.size() == 0)
               {
-                doc_itr->second.m_Document->Save();
+                doc_itr->second.m_Document->Save(m_RootPath);
                 doc_itr->second.m_Document->DecRef();
                 m_OpenDocuments.erase(doc_itr);
               }
@@ -844,7 +844,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       if (document->m_Connections.size() == 0)
       {
         auto file_id = document->m_Document->GetFileId();
-        document->m_Document->Save();
+        document->m_Document->Save(m_RootPath);
         document->m_Document->DecRef();
         m_OpenDocuments.erase(file_id);
       }
@@ -868,7 +868,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       auto document = GetDocumentForClient(document_id, client_id);
       if (document)
       {
-        document->m_Document->Save();
+        document->m_Document->Save(m_RootPath);
         document->m_LastModifiedTime = std::chrono::system_clock::now();
       }
     }

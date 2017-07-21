@@ -211,8 +211,17 @@
     </ClCompile>
     <ClCompile Include="GameMessages.refl.cpp" />
     <ClCompile Include="GameNetworkEvents.refl.cpp" />
+    <ClCompile Include="GameSharedGlobalResources.cpp" />
+    <ClCompile Include="GameSharedInstanceResources.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameStage.cpp" />
     <ClCompile Include="GameStageManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameValidation.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -253,9 +262,19 @@
     <ClInclude Include="GameNetworkSettings.h" />
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameServerEventSender.h" />
+    <ClInclude Include="GameServerTypes.h" />
+    <ClInclude Include="GameSharedGlobalResources.h" />
+    <ClInclude Include="GameSharedInstanceResources.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameSimulationEventCallbacks.h" />
     <ClInclude Include="GameStage.h" />
     <ClInclude Include="GameStageManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameValidation.h">
       <SubType>
       </SubType>
     </ClInclude>

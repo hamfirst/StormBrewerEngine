@@ -3,6 +3,11 @@
 #include "Server/ServerObject/ServerObject.h"
 #include "Server/ServerObject/ServerObjectManager.h"
 #include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectRegistrationMacros.h"
+#include "Server/ServerObject/ServerObjectMetaFuncs.h"
+#include "Server/ServerObject/ServerObjectSystem.h"
+#include "Server/ServerObject/ServerObjectUpdate.h"
+#include "Server/ServerObject/ServerObjectSerialzie.h"
 
 #include "Foundation/SkipField/SkipField.h"
 #include "Foundation/Update/UpdateRegistrationTemplates.h"

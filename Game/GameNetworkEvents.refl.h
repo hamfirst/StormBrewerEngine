@@ -47,4 +47,5 @@ struct EndTurnEvent : public ClientNetworkEvent
   NET_REFL;
 };
 
+
 #endif

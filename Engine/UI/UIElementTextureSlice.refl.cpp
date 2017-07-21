@@ -19,21 +19,25 @@ UIElementTextureSlice::UIElementTextureSlice(const UIElementTextureSliceInitData
 void UIElementTextureSlice::Update()
 {
   UIElement::Update();
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
 }
 
-void UIElementTextureSlice::Render(RenderState & render_state, RenderUtil & render_util)
+void UIElementTextureSlice::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   if (m_RenderDelegate)
   {
-    m_RenderDelegate(*this, render_state);
+    m_RenderDelegate(*this, render_state, offset);
   }
   else
   {
-    RenderDefault(render_state, render_util);
+    RenderDefault(render_state, render_util, offset);
   }
+
+  UIElement::Render(render_state, render_util, offset);
 }
 
-void UIElementTextureSlice::RenderDefault(RenderState & render_state, RenderUtil & render_util)
+void UIElementTextureSlice::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
 
   if (m_Texture == false || m_Texture->IsLoaded() == false)
@@ -190,6 +194,7 @@ void UIElementTextureSlice::RenderDefault(RenderState & render_state, RenderUtil
 
   auto & shader = g_ShaderManager.GetDefaultShader();
   shader.Bind();
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
 
   m_Texture->GetTexture().BindTexture(0);
 
@@ -208,7 +213,7 @@ UIElementTextureSliceData & UIElementTextureSlice::GetData()
   return m_Data;
 }
 
-void UIElementTextureSlice::SetCustomRenderCallback(Delegate<void, UIElementTextureSlice &, RenderState &> && render_callback)
+void UIElementTextureSlice::SetCustomRenderCallback(Delegate<void, UIElementTextureSlice &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }

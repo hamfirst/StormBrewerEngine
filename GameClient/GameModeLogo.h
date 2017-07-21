@@ -7,12 +7,14 @@
 class GameModeLogo : public GameMode
 {
 public:
+  GameModeLogo(GameContainer & game);
+  ~GameModeLogo();
 
-  virtual void Initialize(GameContainer & container) override;
-  virtual void OnAssetsLoaded(GameContainer & container) override;
+  virtual void Initialize() override;
+  virtual void OnAssetsLoaded() override;
 
-  virtual void Update(GameContainer & container) override;
-  virtual void Render(GameContainer & container) override;
+  virtual void Update() override;
+  virtual void Render() override;
 
 protected:
 

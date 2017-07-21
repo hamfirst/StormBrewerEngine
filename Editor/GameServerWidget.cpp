@@ -1,11 +1,18 @@
 
 #include <QTimer>
+#include <QTemporaryFile>
+
+#include <corecrt_stdio_config.h>
 
 #include "GameServerWidget.h"
 
 GameServerWidget::GameServerWidget(QWidget *parent) :
   m_FrameClock(1.0 / 60.0)
 {
+  m_TextEdit = std::make_unique<QTextEdit>(this);
+  m_TextEdit->setEnabled(false);
+  m_TextEdit->append(QString("Server starting..."));
+
   m_LevelList.PreloadAllLevels();
 
   m_FrameClock.Start();
@@ -18,6 +25,11 @@ GameServerWidget::GameServerWidget(QWidget *parent) :
 GameServerWidget::~GameServerWidget()
 {
 
+}
+
+void GameServerWidget::resizeEvent(QResizeEvent * ev)
+{
+  m_TextEdit->setGeometry(0, 0, width() - 1, height() - 1);
 }
 
 void GameServerWidget::tick()
@@ -36,9 +48,11 @@ void GameServerWidget::tick()
   {
     if (m_StageManager)
     {
-      if (m_LevelList.IsPreloadComplete())
+      if (m_LevelList.IsPreloadComplete() && m_SharedGlobalResources.IsLoaded() && m_ServerGlobalResources.IsLoaded())
       {
-        m_GameServer.Emplace(256, 47815, m_StageManager.Value());
+        m_GameServer.Emplace(256, 47815, m_StageManager.Value(), m_SharedGlobalResources);
+
+        m_TextEdit->append(QString("Server started!\n"));
       }
     }
     else

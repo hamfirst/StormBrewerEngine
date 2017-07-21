@@ -4,6 +4,11 @@ class StopWatch
 {
 public:
   StopWatch();
+  StopWatch(const StopWatch & rhs) = default;
+  StopWatch(StopWatch && rhs) = default;
+
+  StopWatch & operator =(const StopWatch & rhs) = default;
+  StopWatch & operator =(StopWatch && rhs) = default;
 
   void Start();
 

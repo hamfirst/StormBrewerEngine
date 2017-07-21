@@ -3,9 +3,10 @@
 #include "Engine/Audio/MusicSpec.h"
 
 
-MusicSpec::MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan, bool looping)
+MusicSpec::MusicSpec(const AssetReference<MusicAsset> & audio_ref, VolumeCategory cat, float volume, float pan, bool looping)
 {
   m_AudioAsset = audio_ref;
+  m_Category = cat;
   m_Volume = volume;
   m_Pan = pan;
   m_Looping = looping;
@@ -155,7 +156,7 @@ void MusicSpec::FreeResources()
   }
 }
 
-bool MusicSpec::FillBuffer(void * data, std::size_t length)
+bool MusicSpec::FillBuffer(void * data, std::size_t length, float * volume_categories)
 {
   if (!m_SyncState)
   {
@@ -173,9 +174,9 @@ bool MusicSpec::FillBuffer(void * data, std::size_t length)
   std::size_t write_samples = length / (sizeof(float) * 2);
   float * output_ptr = (float *)data;
 
-  float volume = m_Volume;
-  float l_pan = m_Pan > 0 ? 1.0f - m_Pan : 1.0f;
-  float r_pan = m_Pan < 0 ? 1.0f + m_Pan : 1.0f;
+  float volume = m_Volume * volume_categories[(int)m_Category];
+  float l_vol = (m_Pan > 0 ? 1.0f - m_Pan : 1.0f) * volume;
+  float r_vol = (m_Pan < 0 ? 1.0f + m_Pan : 1.0f) * volume;
 
   while (write_samples)
   {
@@ -195,9 +196,9 @@ bool MusicSpec::FillBuffer(void * data, std::size_t length)
     {
       for (std::size_t index = m_SamplePos; index < sample_end; index++)
       {
-        *output_ptr += m_Samples[0][index] * m_Volume * l_pan;
+        *output_ptr += m_Samples[0][index] * l_vol;
         output_ptr++;
-        *output_ptr += m_Samples[0][index] * m_Volume * r_pan;
+        *output_ptr += m_Samples[0][index] * r_vol;
         output_ptr++;
       }
 
@@ -208,9 +209,9 @@ bool MusicSpec::FillBuffer(void * data, std::size_t length)
     {
       for (std::size_t index = m_SamplePos; index < sample_end; index++)
       {
-        *output_ptr += m_Samples[0][index] * m_Volume * l_pan;
+        *output_ptr += m_Samples[0][index] * l_vol;
         output_ptr++;
-        *output_ptr += m_Samples[1][index] * m_Volume * r_pan;
+        *output_ptr += m_Samples[1][index] * r_vol;
         output_ptr++;
       }
 

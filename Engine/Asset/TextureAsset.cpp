@@ -10,7 +10,7 @@
 #include <upng/upng.h>
 
 
-int TextureAsset::PreProcessLoadedData(Buffer & buffer)
+int TextureAsset::PreProcessLoadedData(Buffer & buffer, bool load_deps)
 {
   upng_t * png_data = upng_new_from_bytes(buffer.Get(), (unsigned long)buffer.GetSize());
   if (png_data == nullptr)
@@ -51,7 +51,7 @@ int TextureAsset::PreProcessLoadedData(Buffer & buffer)
   return 0;
 }
 
-void TextureAsset::OnDataLoadComplete(Buffer & buffer)
+void TextureAsset::OnDataLoadComplete(Buffer & buffer, bool load_deps)
 {
   m_PixelBuffer = MoveFromBuffer<PixelBuffer>(buffer);
 
@@ -107,6 +107,11 @@ Vector2 TextureAsset::GetSize() const
 NullOptPtr<const PixelBuffer> TextureAsset::GetPixelBuffer() const
 {
   return m_PixelBuffer.GetPtr();
+}
+
+bool TextureAsset::IsValid() const
+{
+  return IsLoaded() && GetWidth() > 0 && GetHeight() > 0;
 }
 
 ASSET_SOURCE_FUNCS(TextureAsset)

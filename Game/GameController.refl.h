@@ -28,6 +28,8 @@ public:
   void ApplyInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input);
   void Update(GameLogicContainer & game);
 
+  void EndGame(int winning_team, GameLogicContainer & game);
+
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game);
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
@@ -43,5 +45,6 @@ private:
 
   std::vector<Delegate<void, void *, std::size_t, GameLogicContainer &>> m_EventCallbacks;
 
+  // There should be no state in this class since it's desinged to only respond to events using the GameLogicContainer
 };
 

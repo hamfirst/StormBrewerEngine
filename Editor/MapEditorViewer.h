@@ -15,7 +15,7 @@
 #include "Runtime/Map/MapDef.refl.h"
 #include "Runtime/Entity/EntityResource.h"
 
-#include "QTUtil/LerpVar.h"
+#include "QTUtil/QtLerpVar.h"
 
 #include "MapEditorLayer.h"
 
@@ -142,7 +142,7 @@ private:
   bool m_DrawGrid = true;
 
   RenderVec2 m_Center = {};
-  LerpVar m_Magnification;
+  QtLerpVar m_Magnification;
 
   bool m_PlayMode = false;
   bool m_Dragging = false;

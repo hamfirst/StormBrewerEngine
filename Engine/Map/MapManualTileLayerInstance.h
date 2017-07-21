@@ -13,6 +13,7 @@ public:
 
   MapManualTileLayerInstance(MapDef & map, std::size_t layer_index);
 
+  void Update();
   void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center);
 
   int GetLayerOrder() const;

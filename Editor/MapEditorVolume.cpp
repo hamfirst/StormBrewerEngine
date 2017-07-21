@@ -70,6 +70,15 @@ void MapEditorVolume::Draw(GeometryVertexBufferBuilder & buffer, const Box & vie
       DrawUtil::DrawLine(buffer, line.m_Start, line.m_End, magnification);
     }
   }
+}
+
+void MapEditorVolume::DrawControls(GeometryVertexBufferBuilder & buffer, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification)
+{
+  auto box = GetPreviewBox();
+  if (box == false)
+  {
+    return;
+  }
 
   for (int point = 0; point < 4; point++)
   {

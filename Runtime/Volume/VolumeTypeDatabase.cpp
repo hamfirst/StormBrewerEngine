@@ -4,6 +4,8 @@
 #include "StormData/StormDataTypeDatabase.h"
 #include "StormData/StormDataTypeDatabaseRegister.h"
 
+#include "Foundation/CallList/CallList.h"
+
 #include "Runtime/Volume/VolumeTypeDatabase.h"
 
 #ifdef _MSC_VER
@@ -11,3 +13,5 @@ std::unordered_map<uint32_t, VolumeDataTypeInfo> StormDataTypeDatabase<VolumeDat
 #endif
 
 template class StormDataTypeDatabase<VolumeDataBase, VolumeDataTypeInfo>;
+
+PreMainCallList g_VolumeRegisterCallList;

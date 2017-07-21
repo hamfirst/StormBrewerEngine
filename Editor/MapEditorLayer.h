@@ -11,6 +11,8 @@ enum class MapEditorLayerItemType
   kEntity,
   kParalaxLayerParent,
   kParalaxLayer,
+  kEffectLayerParent,
+  kEffectLayer,
   kVolumeParent,
   kCreateVolume,
   kVolume,

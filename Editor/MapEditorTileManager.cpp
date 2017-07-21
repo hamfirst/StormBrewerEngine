@@ -311,7 +311,7 @@ void MapEditorTileManager::ClearSelection()
 
 void MapEditorTileManager::DeleteSelectedTiles()
 {
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false || m_SelectedTiles.size() == 0)
   {
     return;
   }

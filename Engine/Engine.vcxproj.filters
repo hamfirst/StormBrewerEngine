@@ -46,6 +46,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{392b9505-2d93-4d20-a538-b8ffb00ec54a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Prototype">
+      <UniqueIdentifier>{c5f5c33d-6b10-4e9c-b8bd-312f7edc75c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -319,9 +322,6 @@
     <ClInclude Include="UI\UIElementGradient.refl.meta.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIElementContainer.ref.meta.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\UIElementContainer.refl.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -333,6 +333,57 @@
     </ClInclude>
     <ClInclude Include="UI\UIElementText.refl.meta.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\AssetBundle.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementPtr.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerInstance.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerRenderer.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapParalaxLayerInstance.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeButton.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementShape.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementShape.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementFullTexture.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementFullTexture.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\VolumeCategory.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeTextInput.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTextInput.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTextInput.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UISoundPrototypeEffects.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeSlider.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeConfirmPopup.h">
+      <Filter>UI\Prototype</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -539,6 +590,39 @@
     </ClCompile>
     <ClCompile Include="UI\UIElementText.refl.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\AssetBundle.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerInstance.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerRenderer.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapParalaxLayerInstance.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeButton.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementShape.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementFullTexture.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeTextInput.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementTextInput.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeSlider.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeConfirmPopup.cpp">
+      <Filter>UI\Prototype</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

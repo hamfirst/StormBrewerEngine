@@ -20,7 +20,7 @@ ExpandableList::ExpandableList(Qt::Orientation orientation, QWidget *parent) : Q
   m_Frame->setFrameStyle(QFrame::Panel | QFrame::Sunken);
   m_Frame->setAttribute(Qt::WA_TransparentForMouseEvents);
 
-  m_ScrollVal = std::make_unique<LerpVar>(false);
+  m_ScrollVal = std::make_unique<QtLerpVar>(false);
 
   QTimer * updater = new QTimer(this);
   connect(updater, &QTimer::timeout, this, &ExpandableList::updateAnimations);
@@ -34,8 +34,8 @@ void ExpandableList::SetInitialWidgets(std::vector<QWidget *> && widgets)
 
   for (int index = 0; index < (int)m_Widgets.size(); index++)
   {
-    m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<LerpVar>(false, 0.5f));
-    m_WidgetSizes.emplace(m_WidgetSizes.begin() + index, std::make_unique<LerpVar>(false, 0.5f));
+    m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<QtLerpVar>(false, 0.5f));
+    m_WidgetSizes.emplace(m_WidgetSizes.begin() + index, std::make_unique<QtLerpVar>(false, 0.5f));
   }
 
   updateContent();
@@ -58,8 +58,8 @@ void ExpandableList::AddWidget(int index, QWidget * widget)
   }
 
   m_Widgets.insert(m_Widgets.begin() + index, widget);
-  m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<LerpVar>(false, 0.5f));
-  m_WidgetSizes.emplace(m_WidgetSizes.begin() + index, std::make_unique<LerpVar>(false, 0.5f));
+  m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<QtLerpVar>(false, 0.5f));
+  m_WidgetSizes.emplace(m_WidgetSizes.begin() + index, std::make_unique<QtLerpVar>(false, 0.5f));
   updateContent();
 
   m_WidgetPositions[index]->Complete();

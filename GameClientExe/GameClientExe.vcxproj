@@ -231,9 +231,6 @@
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{20ce5c06-23ad-46f5-842d-065d07457c7f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\External\asio\asio.vcxproj">
-      <Project>{eecddcd2-6ae2-441e-9919-4a53fc1b56f4}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\External\binpack\binpack.vcxproj">
       <Project>{d16dd340-97f1-4045-a353-2907054ffc9c}</Project>
     </ProjectReference>
@@ -278,9 +275,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Server\Server.vcxproj">
       <Project>{bedfeb11-3655-4e60-b161-29fb34d814c4}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Shared\Shared.vcxproj">
-      <Project>{eff76349-a880-4523-aff2-d442cd3758c0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\StormData\StormData.vcxproj">
       <Project>{cbedcf5b-d149-46b4-b83c-7363ceb0b455}</Project>

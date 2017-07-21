@@ -5,8 +5,7 @@
 #include "Engine/Rendering/Shader.h"
 #include "Engine/Rendering/ShaderLiteral.h"
 #include "Engine/Asset/TextureAsset.h"
-
-#include "Shared/AssetBundle/AssetBundle.h"
+#include "Engine/Asset/AssetBundle.h"
 
 
 #include <gl3w/gl3w.h>
@@ -63,6 +62,13 @@ static const char * kQuadTextureFragmentShader = SHADER_LITERAL(
   }
 );
 
+RenderUtil::RenderUtil() :
+  m_QuadVertexBuffer(false),
+  m_ScratchVertexBuffer(true)
+{
+
+}
+
 void RenderUtil::LoadShaders()
 {
   Shader vert_shader;
@@ -87,7 +93,7 @@ void RenderUtil::LoadShaders()
   quad.m_Color = Color(1.0f, 1.0f, 1.0f, 1.0f);
 
   builder.AddQuad(quad);
-  builder.FillVertexBuffer(m_VertexBuffer);
+  builder.FillVertexBuffer(m_QuadVertexBuffer);
 
   uint32_t default_pixel = 0xFFFFFFFF;
   PixelBuffer default_pixel_buffer((uint8_t *)&default_pixel, 1, 1);
@@ -113,7 +119,7 @@ void RenderUtil::SetClearColor(const Color & color)
 
 void RenderUtil::CleanupShaders()
 {
-  m_VertexBuffer.Destroy();
+  m_QuadVertexBuffer.Destroy();
 
   m_QuadShader.Destroy();
   m_QuadTextureShader.Destroy();
@@ -122,25 +128,25 @@ void RenderUtil::CleanupShaders()
 void RenderUtil::DrawQuad(const Box & box, const Color & color, const RenderVec2 & screen_size)
 {
   m_QuadShader.Bind();
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
+  m_QuadVertexBuffer.Bind();
+  m_QuadVertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
 
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)box.m_Start);
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)(box.m_End + Vector2(1, 1)));
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  m_VertexBuffer.Draw();
+  m_QuadVertexBuffer.Draw();
 
-  m_VertexBuffer.Unbind();
+  m_QuadVertexBuffer.Unbind();
   m_QuadShader.Unbind();
 }
 
 void RenderUtil::DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, const RenderVec2 & screen_size)
 {
   m_QuadTextureShader.Bind();
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
+  m_QuadVertexBuffer.Bind();
+  m_QuadVertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
 
   texture.BindTexture(0);
 
@@ -149,17 +155,17 @@ void RenderUtil::DrawTexturedQuad(const Box & box, const Color & color, const Te
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)box.m_End);
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  m_VertexBuffer.Draw();
+  m_QuadVertexBuffer.Draw();
 
-  m_VertexBuffer.Unbind();
+  m_QuadVertexBuffer.Unbind();
   m_QuadTextureShader.Unbind();
 }
 
 void RenderUtil::DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, const RenderVec2 & screen_size)
 {
   m_QuadTextureShader.Bind();
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
+  m_QuadVertexBuffer.Bind();
+  m_QuadVertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
 
   texture.BindTexture(0);
 
@@ -168,15 +174,20 @@ void RenderUtil::DrawTexturedQuad(const Vector2 & start, const Color & color, co
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)(start + texture.GetSize()));
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  m_VertexBuffer.Draw();
+  m_QuadVertexBuffer.Draw();
 
-  m_VertexBuffer.Unbind();
+  m_QuadVertexBuffer.Unbind();
   m_QuadTextureShader.Unbind();
 }
 
 const Texture & RenderUtil::GetDefaultTexture() const
 {
   return m_DefaultTexture;
+}
+
+VertexBuffer & RenderUtil::GetScratchBuffer()
+{
+  return m_ScratchVertexBuffer;
 }
 
 void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_state, RenderUtil & render_util)
@@ -193,7 +204,7 @@ void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_s
     return;
   }
 
-  render_util.DrawTexturedQuad(pos, Color(255, 255, 255, 255), texture->GetTexture(), render_state.GetRenderScreenSize());
+  render_util.DrawTexturedQuad(pos, Color(255, 255, 255, 255), texture->GetTexture(), render_state.GetScreenSize());
 }
 
 NullOptPtr<TextureAsset> GetAssetBundleTexture(Any & load_data)

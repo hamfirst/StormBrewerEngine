@@ -166,12 +166,12 @@ template <>
 struct StormReflTypeInfo<JoinGameMessage>::field_data_static<1 + StormReflTypeInfo<ToServerMessage>::fields_n>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_Name"; }
+  static constexpr auto GetName() { return "m_UserName"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
+  static constexpr unsigned GetFieldNameHash() { return 0xAE407D67; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ToServerMessage>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_Name; }
+  static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_UserName; }
 };
 
 template <typename Self>
@@ -179,9 +179,9 @@ struct StormReflTypeInfo<JoinGameMessage>::field_data<1 + StormReflTypeInfo<ToSe
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_Name; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_Name; }
-  void SetDefault() { self.m_Name = StormReflTypeInfo<JoinGameMessage>::GetDefault().m_Name; }
+  match_const_t<Self, std::string> & Get() { return self.m_UserName; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_UserName; }
+  void SetDefault() { self.m_UserName = StormReflTypeInfo<JoinGameMessage>::GetDefault().m_UserName; }
 };
 
 template <>

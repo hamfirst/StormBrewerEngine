@@ -32,7 +32,7 @@ DraggableList::DraggableList(Qt::Orientation orientation, bool invert, QWidget *
   m_Frame->setFrameStyle(QFrame::Panel | QFrame::Sunken);
   m_Frame->setAttribute(Qt::WA_TransparentForMouseEvents);
 
-  m_ScrollVal = std::make_unique<LerpVar>(false);
+  m_ScrollVal = std::make_unique<QtLerpVar>(false);
 
   QTimer * updater = new QTimer(this);
   connect(updater, &QTimer::timeout, this, &DraggableList::updateAnimations);
@@ -48,7 +48,7 @@ void DraggableList::SetInitialWidgets(const std::vector<QWidget *> & widgets)
     widget->setParent(this);
     widget->show();
 
-    m_WidgetPositions.emplace_back(std::make_unique<LerpVar>(false, 0.5f));
+    m_WidgetPositions.emplace_back(std::make_unique<QtLerpVar>(false, 0.5f));
     m_IsSelected.emplace_back(false);
   }
 
@@ -76,7 +76,7 @@ void DraggableList::AddWidget(QWidget * widget, int index)
   }
 
   m_Widgets.insert(m_Widgets.begin() + index, widget);
-  m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<LerpVar>(false, 0.5f));
+  m_WidgetPositions.emplace(m_WidgetPositions.begin() + index, std::make_unique<QtLerpVar>(false, 0.5f));
   m_IsSelected.emplace(m_IsSelected.begin() + index, false);
 
   updateScrolls();

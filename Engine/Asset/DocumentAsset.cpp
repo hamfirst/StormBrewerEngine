@@ -167,28 +167,31 @@ bool DocumentRefParseOverValue(const char * str, const char *& result, std::vect
   return false;
 }
 
-int DocumentAsset::PreProcessLoadedData(Buffer & buffer)
+int DocumentAsset::PreProcessLoadedData(Buffer & buffer, bool load_deps)
 {
   DocumentData data;
 
   data.m_JsonData = BufferToString(buffer);
-  const char * ptr = data.m_JsonData.data();
-  if (DocumentRefParseOverValue(ptr, ptr, data.m_AssetRefs) == false)
+
+  if (load_deps)
   {
-    return 1;
+    const char * ptr = data.m_JsonData.data();
+    if (DocumentRefParseOverValue(ptr, ptr, data.m_AssetRefs) == false)
+    {
+      return 1;
+    }
   }
 
   buffer = MoveToBuffer(std::move(data));
   return 0;
 }
 
-void DocumentAsset::OnDataLoadComplete(Buffer & buffer)
+void DocumentAsset::OnDataLoadComplete(Buffer & buffer, bool load_deps)
 {
   m_ReferencedAssets.clear();
   m_SetupReferences = false;
 
   DocumentData data = MoveFromBuffer<DocumentData>(buffer);
-
 
   m_ReferencedAssets.reserve(data.m_AssetRefs.size());
   for (auto & ref : data.m_AssetRefs)

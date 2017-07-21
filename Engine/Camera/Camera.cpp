@@ -37,22 +37,22 @@ void Camera::BootstrapShader(const ShaderProgram & shader)
 {
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 1.0f, 1.0f, 1.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 }
 
-const RenderVec2 & Camera::GetGameResolution()
+const RenderVec2 & Camera::GetGameResolution() const
 {
   return m_GameResolution;
 }
 
-const RenderVec2 & Camera::GetScreenResolution()
+const RenderVec2 & Camera::GetScreenResolution() const
 {
   return m_ScreenResolution;
 }
 
-const RenderVec2 & Camera::GetPosition()
+const RenderVec2 & Camera::GetPosition() const
 {
   return m_Position;
 }
@@ -81,7 +81,7 @@ RenderVec2 Camera::TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos)
   return transformed_pos;
 }
 
-void Camera::Draw(NotNullPtr<EngineState> engine_state, RenderState & render_state)
+void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state, RenderUtil & render_util)
 {
   Box viewport;
 
@@ -99,7 +99,7 @@ void Camera::Draw(NotNullPtr<EngineState> engine_state, RenderState & render_sta
 
   engine_state->GetMapSystem()->DrawAllMaps(draw_list);
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
-  draw_list.Draw(viewport, m_Position);
+  draw_list.Draw(game_container, viewport, m_Position, render_state, render_util);
   default_shader.Unbind();
 }
 

@@ -14,7 +14,8 @@ class DocumentResourceManager;
 class RUNTIME_EXPORT DocumentResourceBase
 {
 public:
-  bool IsLoaded();
+  bool IsLoaded() const;
+  uint64_t GetFileNameHash() const;
 
   virtual ~DocumentResourceBase();
 

@@ -17,6 +17,16 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
     m_ManualTileLayers.emplace_back(map_def, elem.first);
   }
 
+  for (auto elem : map_def.m_EffectLayers)
+  {
+    m_EffectLayers.emplace_back(map_def, elem.first);
+  }
+
+  for (auto elem : map_def.m_ParalaxLayers)
+  {
+    m_ParalaxLayers.emplace_back(map_def, elem.first);
+  }
+
   std::vector<std::vector<Box>> collision_list;
   collision_list.emplace_back();
 
@@ -83,17 +93,37 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
   }
 }
 
+void MapInstance::Update(GameContainer & game_container)
+{
+
+}
+
 void MapInstance::Draw(DrawList & draw_list)
 {
+  for (auto & layer : m_ParalaxLayers)
+  {
+    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    {
+      layer.Draw(viewport_bounds, screen_center, render_state, render_util);
+    });
+  }
+
   for (auto & layer : m_ManualTileLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), [&](const Box & viewport_bounds, const RenderVec2 & screen_center)
+    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
       layer.Draw(viewport_bounds, screen_center);
     });
   }
-}
 
+  for (auto & layer : m_EffectLayers)
+  {
+    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    {
+      layer.Draw(game_container, viewport_bounds, screen_center, render_state, render_util);
+    });
+  }
+}
 
 void MapInstance::RemoveCollision(NotNullPtr<EngineState> engine_state)
 {

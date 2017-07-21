@@ -129,6 +129,11 @@ void ServerObjectSystem::FinalizeTypes()
       dep_list.erase(elem.first);
       rev_list.erase(elem.second);
     }
+
+    if (nodep_types.size() == 0)
+    {
+      break;
+    }
   }
 
   m_ObjectDependencies.clear();
@@ -156,7 +161,7 @@ void ServerObjectSystem::FinalizeType(ServerObjectTypeInfo & type)
   {
     if (base_type.m_TypeNameHash == base_class)
     {
-      FinalizeType(type);
+      FinalizeType(base_type);
 
       auto base_class_list = static_cast<uint32_t *>(malloc(sizeof(uint32_t) * (*base_type.m_NumBaseClassesPtr + 1)));
       *base_class_list = type.m_TypeIndex;

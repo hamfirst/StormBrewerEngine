@@ -11,8 +11,6 @@
 #include "Runtime/Map/MapDef.refl.h"
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
 
-#include "Shared/AssetBundle/AssetBundle.h"
-
 #include <experimental/filesystem>
 
 class DefaultDocumentAssetLoader : public DocumentLoader
@@ -98,21 +96,6 @@ void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 &
 Any CreateMapEngineData(MapDef & map_def)
 {
   return{};
-}
-
-NullOptPtr<TextureAsset> GetAssetBundleTexture(Any & load_data)
-{
-  return nullptr;
-}
-
-void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_state, RenderUtil & render_util)
-{
-
-}
-
-void PlayAssetBundleSound(Any & load_data, float volume, float pan)
-{
-
 }
 
 DefaultDocumentResourceLoader g_DefaultLoader;

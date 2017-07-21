@@ -10,9 +10,11 @@
 
 #include <sb/vector.h>
 
-GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage) :
+GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage, GameSharedGlobalResources & global_resources) :
   m_Server(server),
   m_GameId(game_id),
+  m_SharedGlobalResources(global_resources),
+  m_SharedInstanceResources(settings),
   m_InitSettings(settings),
   m_Stage(stage),
 #if NET_MODE == NET_MODE_GGPO
@@ -86,8 +88,7 @@ void GameInstance::Update()
   }
 #elif NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 
-  GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
-  m_Controller.CheckEndTurnTimer(game);
+  GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
 
 #ifdef NET_MODE_TURN_BASED_REGULAR_UPDATES
   m_SendTimer--;
@@ -116,10 +117,7 @@ void GameInstance::Update()
   }
 #endif
 
-  while (m_GameState.m_GlobalData.m_Running)
-  {
-    m_Controller.Update(game);
-  }
+  m_Controller.Update(game);
 #endif
 
 
@@ -182,8 +180,9 @@ bool GameInstance::JoinPlayer(GameClientConnection * client, const JoinGameMessa
 #else
 
   ::GamePlayer player;
-  player.m_Name = join_game.m_Name;
+  player.m_UserName = join_game.m_UserName;
   player.m_Team = GetRandomTeam();
+  player.m_Health = kMaxHealth;
 
   m_Input.m_PlayerInput[player_id] = {};
   m_GameState.m_GlobalData.m_Players.EmplaceAt(player_id, std::move(player));
@@ -220,7 +219,7 @@ void GameInstance::RemovePlayer(GameClientConnection * client)
 
       if (itr->m_Loaded)
       {
-        GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
+        GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
         m_Controller.PlayerLeft(itr->m_PlayerIndex, game);
       }
 
@@ -245,7 +244,7 @@ void GameInstance::HandlePlayerLoaded(GameClientConnection * client, const Finis
 
       itr->m_Loaded = true;
 
-      GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
+      GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
       m_Controller.PlayerJoined(itr->m_PlayerIndex, game);
 
       ClientLocalData client_data;
@@ -304,7 +303,7 @@ void GameInstance::HandleClientEvent(GameClientConnection * client, std::size_t 
 
     if (itr->m_Client == client)
     {
-      GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
+      GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
       m_Controller.HandleClientEvent(itr->m_PlayerIndex, game, class_id, event_ptr);
       return;
     }
@@ -413,7 +412,7 @@ void GameInstance::Rewind(const ClientAuthData & auth_data, int player_index)
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 void GameInstance::HandleTimeExpired()
 {
-  GameLogicContainer game(m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_Stage, true, m_SendTimer);
+  GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
   m_Controller.EndTurn(game);
 }
 #endif

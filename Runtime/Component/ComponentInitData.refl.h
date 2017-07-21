@@ -9,6 +9,4 @@ class RUNTIME_EXPORT ComponentInitData
 {
 public:
   STORM_DATA_DEFAULT_CONSTRUCTION(ComponentInitData);
-
-  RInt m_Test;
 };

@@ -8,8 +8,6 @@
 
 #include "Runtime/Map/MapResource.h"
 
-#include "Shared/AssetBundle/AssetBundle.h"
-
 class GameStageManager
 {
 public:

@@ -137,10 +137,10 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   RenderVec4 screen_bounds = { -1, -1, 1, 1 };
   if (m_Settings.m_TextBounds)
   {
-    screen_bounds.x = (float)m_Settings.m_TextBounds->m_Start.x / (float)render_state.GetScreenWidth();
-    screen_bounds.y = (float)m_Settings.m_TextBounds->m_Start.y / (float)render_state.GetScreenHeight();
-    screen_bounds.w = (float)m_Settings.m_TextBounds->m_End.x / (float)render_state.GetScreenWidth();
-    screen_bounds.z = (float)m_Settings.m_TextBounds->m_End.y / (float)render_state.GetScreenHeight();
+    screen_bounds.x = (float)m_Settings.m_TextBounds->m_Start.x / (float)render_state.GetRenderWidth();
+    screen_bounds.y = (float)m_Settings.m_TextBounds->m_Start.y / (float)render_state.GetRenderHeight();
+    screen_bounds.w = (float)m_Settings.m_TextBounds->m_End.x / (float)render_state.GetRenderWidth();
+    screen_bounds.z = (float)m_Settings.m_TextBounds->m_End.y / (float)render_state.GetRenderHeight();
 
     screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
     screen_bounds *= 2.0f;
@@ -157,7 +157,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   font->BindGlyphTexture(0);
 
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_GlyphTexture"), 0);
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetScreenWidth(), (float)render_state.GetScreenHeight());
+  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetRenderWidth(), (float)render_state.GetRenderHeight());
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
 
   m_TextVertexBuffer.Draw();
@@ -195,6 +195,31 @@ Box TextManager::GetTextSize(czstr text, int font_id)
   }
 
   return font->GetTextSize(text, strlen(text));
+}
+
+Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, const char * prompt)
+{
+  std::string text = prompt;
+  std::size_t prompt_length = TextInputContext::GetMultibyteLength(prompt);
+  text += context->GetCurrentInput();
+
+  int cursor_pos = (int)(context->GetCursorPos() + prompt_length);
+
+  auto & compo = context->GetCurrentComposition();
+  std::size_t compo_size = context->GetMultibyteLength(compo.data());
+
+  double s;
+  bool show_cursor = std::modf(context->GetTimeSinceLastUpdate(), &s) <= 0.5;
+
+  if (compo_size)
+  {
+    text.insert(text.begin() + prompt_length + context->GetCharacterByteOffset(context->GetCursorPos()), compo.begin(), compo.end());
+    return GetTextSize(text.data(), font_id);
+  }
+  else
+  {
+    return GetTextSize(text.data(), font_id);
+  }
 }
 
 bool TextManager::BindGlyphTexture(int font_id, int texture_stage)

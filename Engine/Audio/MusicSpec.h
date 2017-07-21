@@ -2,6 +2,7 @@
 
 #include "Engine/Asset/MusicAsset.h"
 #include "Engine/Asset/AssetReference.h"
+#include "Engine/Audio/VolumeCategory.h"
 
 #include "Foundation/Optional/Optional.h"
 
@@ -12,7 +13,7 @@ class ENGINE_EXPORT MusicSpec
 {
 public:
 
-  MusicSpec(const AssetReference<MusicAsset> & audio_ref, float volume, float pan, bool looping);
+  MusicSpec(const AssetReference<MusicAsset> & audio_ref, VolumeCategory cat, float volume, float pan, bool looping);
   ~MusicSpec();
 
   MusicSpec(const MusicSpec & rhs) = default;
@@ -26,7 +27,7 @@ private:
   bool LoadFile();
   void Restart();
   void FreeResources();
-  bool FillBuffer(void * data, std::size_t length);
+  bool FillBuffer(void * data, std::size_t length, float * volume_categories);
   bool Decode();
 
 private:
@@ -35,6 +36,7 @@ private:
 
   AssetReference<MusicAsset> m_AudioAsset;
 
+  VolumeCategory m_Category;
   float m_Volume;
   float m_Pan;
   bool m_Looping;

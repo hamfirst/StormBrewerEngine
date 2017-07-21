@@ -12,6 +12,7 @@
 
 static const int kMaxPlayers = 10;
 static const int kMaxTeams = 2;
+static const int kMaxHealth = 1;
 static const int kServerUpdateRate = 8;
 
 #if (NET_MODE == NET_MODE_GGPO)
@@ -20,6 +21,7 @@ static const int kMaxRewindFrames = 10;
 
 #if (NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC)
 static const int kTurnMaxTime = 60 * 50;
+static const int kTurnUpdateTime = 60 * 2;
 #endif
 
 class GameStage;
@@ -63,15 +65,17 @@ struct GamePlayer
 {
   NET_REFL;
 
-  std::string m_Name;
+  std::string m_UserName;
   NetRangedNumber<int, 0, kMaxTeams - 1> m_Team;
+  NetRangedNumber<int, 0, kMaxHealth> m_Health;
 };
 
-struct GameGlobalData
+struct GameInstanceData
 {
   NET_REFL;
 
   bool m_Started = false;
+  NetRangedNumber<int, -1, kMaxTeams - 1> m_WiningTeam = -1;
 
 #if NET_MODE == NET_MODE_GGPO
   int m_FrameCount = 0;

@@ -9,6 +9,8 @@
 #include "Foundation/FileSystem/File.h"
 #include "Foundation/Buffer/BufferUtil.h"
 
+#include "Game/GameNetworkSettings.h"
+
 #include "Runtime/FrameData/FrameData.refl.meta.h"
 
 FrameDataDef g_FrameData;
@@ -20,6 +22,10 @@ FrameDataDef g_FrameData;
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #endif
+
+void StormWebrtcStaticInit();
+void StormWebrtcStaticCleanup();
+
 
 int main(int argc, char *argv[])
 {
@@ -33,11 +39,20 @@ int main(int argc, char *argv[])
 
   StormReflParseJson(g_FrameData, settings.data());
 
+
+#ifdef NET_USE_WEBRTC
+  StormWebrtcStaticInit();
+#endif
   NetworkInit();
   //QApplication::setAttribute(Qt::AA_UseOpenGLES);
   QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   QApplication a(argc, argv);
   EditorContainer w;
-  return a.exec();
+
+  auto ret = a.exec();
+
+#ifdef NET_USE_WEBRTC
+  StormWebrtcStaticCleanup();
+#endif
 }

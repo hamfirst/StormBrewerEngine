@@ -21,7 +21,7 @@ extern template class StormDataTypeDatabase<PathDataBase, PathDataTypeInfo>;
 class PathTypeDatabase : public StormDataTypeDatabase<PathDataBase, PathDataTypeInfo>
 {
 public:
-  template <typename Component, typename InitData, typename ... BaseTypes>
+  template <typename DataType, typename ... BaseTypes>
   static void RegisterType();
 };
 

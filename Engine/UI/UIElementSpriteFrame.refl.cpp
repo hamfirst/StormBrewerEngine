@@ -21,21 +21,25 @@ void UIElementSpriteFrame::Update()
   m_Sprite.GetResource()->FrameAdvance(anim_hash, m_State, true, (int)m_Data.m_FrameAdvance);
 
   UIElement::Update();
+  SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_CenterX, m_Data.m_CenterY), Vector2(m_State.m_FrameWidth, m_State.m_FrameHeight)));
+  SetOffset(Vector2(m_Data.m_CenterX, m_Data.m_CenterY) - Vector2(m_State.m_FrameWidth, m_State.m_FrameHeight));
 }
 
-void UIElementSpriteFrame::Render(RenderState & render_state, RenderUtil & render_util)
+void UIElementSpriteFrame::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   if (m_RenderDelegate)
   {
-    m_RenderDelegate(*this, render_state);
+    m_RenderDelegate(*this, render_state, offset);
   }
   else
   {
-    RenderDefault(render_state, render_util);
+    RenderDefault(render_state, render_util, offset);
   }
+
+  UIElement::Render(render_state, render_util, offset);
 }
 
-void UIElementSpriteFrame::RenderDefault(RenderState & render_state, RenderUtil & render_util)
+void UIElementSpriteFrame::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   if (m_Sprite.GetResource() == nullptr)
   {
@@ -55,7 +59,7 @@ void UIElementSpriteFrame::RenderDefault(RenderState & render_state, RenderUtil 
   m_State.m_Matrix.z = -sc.x * m_Data.m_HeightScale;
   m_State.m_Matrix.w = sc.y * m_Data.m_HeightScale;
 
-  m_Sprite.GetResource()->Render(m_State, Vector2((int)m_Data.m_CenterX, (int)m_Data.m_CenterY));
+  m_Sprite.GetResource()->Render(m_State, Vector2((int)m_Data.m_CenterX, (int)m_Data.m_CenterY) + offset);
 }
 
 const UIElementSpriteFrameInitData & UIElementSpriteFrame::GetInitData()
@@ -68,7 +72,7 @@ UIElementSpriteFrameData & UIElementSpriteFrame::GetData()
   return m_Data;
 }
 
-void UIElementSpriteFrame::SetCustomRenderCallback(Delegate<void, UIElementSpriteFrame &, RenderState &> && render_callback)
+void UIElementSpriteFrame::SetCustomRenderCallback(Delegate<void, UIElementSpriteFrame &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }

@@ -20,6 +20,7 @@ public:
   Optional<std::vector<int>> GetSelectedPreviewPath();
 
   void Draw(GeometryVertexBufferBuilder & builder, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification);
+  void DrawControls(GeometryVertexBufferBuilder & builder, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification);
 
   void SetPreviewOffset(Vector2 offset);
   void SetPreviewPoint(int preview_point);

@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "LerpVar.h"
+#include "QtLerpVar.h"
 
 #include <QWidget>
 #include <QScrollBar>
@@ -32,12 +32,12 @@ protected:
   void finalizePositions(bool force);
 
   std::vector<QWidget *> m_Widgets;
-  std::vector<std::unique_ptr<LerpVar>> m_WidgetPositions;
-  std::vector<std::unique_ptr<LerpVar>> m_WidgetSizes;
+  std::vector<std::unique_ptr<QtLerpVar>> m_WidgetPositions;
+  std::vector<std::unique_ptr<QtLerpVar>> m_WidgetSizes;
 
   QScrollBar * m_Scroll;
   QFrame * m_Frame;
-  std::unique_ptr<LerpVar> m_ScrollVal;
+  std::unique_ptr<QtLerpVar> m_ScrollVal;
 
   Qt::Orientation m_Orientation;
   int m_SelectedItem;

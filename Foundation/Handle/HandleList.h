@@ -5,7 +5,8 @@
 
 #include <sb/vector.h>
 
-#include "Handle.h"
+#include "Foundation/Handle/Handle.h"
+#include "Foundation/Optional/NullOpt.h"
 
 template <class T>
 class HandleList

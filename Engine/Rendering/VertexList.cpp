@@ -60,6 +60,11 @@ VertexInfo & VertexList::AddVert()
   return m_Verts[m_Size++];
 }
 
+bool VertexList::HasVerts() const
+{
+  return m_Size > 0;
+}
+
 void VertexList::Grow()
 {
   auto new_size = m_Capacity == 0 ? 1 : m_Capacity * 2;

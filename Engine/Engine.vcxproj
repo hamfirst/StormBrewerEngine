@@ -257,6 +257,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Asset\Asset.h" />
+    <ClInclude Include="Asset\AssetBundle.h" />
     <ClInclude Include="Asset\AssetLoad.h">
       <SubType>
       </SubType>
@@ -293,6 +294,7 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioSpec.h" />
     <ClInclude Include="Audio\MusicSpec.h" />
+    <ClInclude Include="Audio\VolumeCategory.h" />
     <ClInclude Include="Camera\Camera.h">
       <SubType>
       </SubType>
@@ -351,8 +353,20 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerInstance.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map\MapEffectLayerRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Map\MapInstance.h" />
     <ClInclude Include="Map\MapManualTileLayerInstance.h" />
+    <ClInclude Include="Map\MapParalaxLayerInstance.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Map\MapSystem.h" />
     <ClInclude Include="Rendering\GeometryVertexBufferBuilder.h">
       <SubType>
@@ -410,6 +424,20 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Text\TextShaders.h" />
+    <ClInclude Include="UI\Prototype\UIPrototypeButton.h" />
+    <ClInclude Include="UI\Prototype\UIPrototypeConfirmPopup.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeSlider.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeTextInput.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UISoundPrototypeEffects.h" />
     <ClInclude Include="UI\UICustomPropertyData.refl.h">
       <SubType>
       </SubType>
@@ -419,9 +447,16 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UI\UIElement.h" />
-    <ClInclude Include="UI\UIElementContainer.ref.meta.h" />
     <ClInclude Include="UI\UIElementContainer.refl.h" />
     <ClInclude Include="UI\UIElementContainer.refl.meta.h" />
+    <ClInclude Include="UI\UIElementFullTexture.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementFullTexture.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI\UIElementGradient.refl.h">
       <SubType>
       </SubType>
@@ -431,6 +466,9 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UI\UIElementHandle.h" />
+    <ClInclude Include="UI\UIElementPtr.h" />
+    <ClInclude Include="UI\UIElementShape.refl.h" />
+    <ClInclude Include="UI\UIElementShape.refl.meta.h" />
     <ClInclude Include="UI\UIElementSpriteFrame.refl.h">
       <SubType>
       </SubType>
@@ -441,6 +479,8 @@
     </ClInclude>
     <ClInclude Include="UI\UIElementText.refl.h" />
     <ClInclude Include="UI\UIElementText.refl.meta.h" />
+    <ClInclude Include="UI\UIElementTextInput.refl.h" />
+    <ClInclude Include="UI\UIElementTextInput.refl.meta.h" />
     <ClInclude Include="UI\UIElementTextureSlice.refl.h" />
     <ClInclude Include="UI\UIElementTextureSlice.refl.meta.h" />
     <ClInclude Include="UI\UIManager.h">
@@ -459,6 +499,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asset\Asset.cpp" />
+    <ClCompile Include="Asset\AssetBundle.cpp" />
     <ClCompile Include="Asset\AssetLoad.cpp">
       <SubType>
       </SubType>
@@ -557,8 +598,20 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerInstance.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Map\MapEffectLayerRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Map\MapInstance.cpp" />
     <ClCompile Include="Map\MapManualTileLayerInstance.cpp" />
+    <ClCompile Include="Map\MapParalaxLayerInstance.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Map\MapSystem.cpp" />
     <ClCompile Include="Rendering\GeometryVertexBufferBuilder.cpp">
       <SubType>
@@ -609,12 +662,28 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeButton.cpp" />
+    <ClCompile Include="UI\Prototype\UIPrototypeConfirmPopup.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeSlider.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeTextInput.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UI\UIElementContainer.refl.cpp" />
+    <ClCompile Include="UI\UIElementFullTexture.refl.cpp" />
     <ClCompile Include="UI\UIElementGradient.refl.cpp" />
     <ClCompile Include="UI\UIElementHandle.cpp" />
+    <ClCompile Include="UI\UIElementShape.refl.cpp" />
     <ClCompile Include="UI\UIElementSpriteFrame.refl.cpp" />
     <ClCompile Include="UI\UIElementText.refl.cpp" />
+    <ClCompile Include="UI\UIElementTextInput.refl.cpp" />
     <ClCompile Include="UI\UIElementTextureSlice.refl.cpp" />
     <ClCompile Include="UI\UIManager.cpp">
       <SubType>

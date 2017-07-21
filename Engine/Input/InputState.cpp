@@ -105,6 +105,11 @@ bool InputState::GetMouseButtonState(int button)
   return m_MouseState.GetButtonState(button);
 }
 
+bool InputState::GetMousePressedThisFrame(int button)
+{
+  return m_MouseState.GetButtonPressedThisFrame(button);
+}
+
 PointerState InputState::GetPointerState()
 {
   return m_MouseState.GetPointerState();
@@ -130,7 +135,7 @@ float InputState::GetGamepadAxis(int gamepad_idx, GamepadAxis axis)
   return m_GamepadState.GetAxis(gamepad_idx, axis);
 }
 
-DelegateLink<void, bool, ControlId> InputState::RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del)
+KeyboardPassthroughCallbackLink InputState::RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del)
 {
   return m_KeyboardState.RegisterPassThroughDelegate(del);
 }

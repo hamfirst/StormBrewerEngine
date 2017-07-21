@@ -1,6 +1,9 @@
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Shader/ShaderManager.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
+#include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Rendering/RenderState.h"
 
 
 GeometryVertexBufferBuilder::GeometryVertexBufferBuilder()
@@ -142,6 +145,45 @@ void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, flo
   }
 }
 
+void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs)
+{
+  float angle_inc = k2Pi / num_segs;
+  float angle = angle_inc;
+
+  auto ab = radius_x * radius_y;
+
+  Vector2f start_far = pos + Vector2f(radius_x + thickness, 0);
+  Vector2f start_near = pos + Vector2f(radius_x - thickness, 0);
+
+  for (int index = 1; index < num_segs + 1; index++)
+  {
+    auto dir = SinCosf(angle);
+
+    auto den_x = dir.x * radius_x;
+    auto den_y = dir.y * radius_y;
+
+    auto radius = ab / sqrtf(den_x * den_x + den_y * den_y);
+
+    float offset_far = radius + thickness / 2.0f;
+    float offset_near = radius - thickness / 2.0f;
+
+    auto cur_far = pos + dir * offset_far;
+    auto cur_near = pos + dir * offset_near;
+
+    AddVert(start_far, c);
+    AddVert(cur_far, c);
+    AddVert(cur_near, c);
+    AddVert(start_far, c);
+    AddVert(cur_near, c);
+    AddVert(start_near, c);
+
+    start_far = cur_far;
+    start_near = cur_near;
+
+    angle += angle_inc;
+  }
+}
+
 void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs)
 {
   float offset_far = radius + thickness / 2.0f;
@@ -190,6 +232,19 @@ void GeometryVertexBufferBuilder::Rectangle(const Vector2f & a, const Vector2f &
   Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
 }
 
+void GeometryVertexBufferBuilder::Rectangle(const Box & box, float thickness, const Color & c)
+{
+  float sx = (float)(box.m_Start.x);
+  float sy = (float)(box.m_Start.y);
+  float ex = (float)(box.m_End.x + 1);
+  float ey = (float)(box.m_End.y + 1);
+
+  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
+  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
+  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
+  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
+}
+
 void GeometryVertexBufferBuilder::FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs)
 {
   float angle_inc = k2Pi / num_segs;
@@ -200,6 +255,35 @@ void GeometryVertexBufferBuilder::FilledCircle(const Vector2f & pos, float radiu
   for (int index = 1; index < num_segs + 1; index++)
   {
     auto cur_pos = SinCosf(angle) * radius;
+
+    AddVert(pos, c);
+    AddVert(pos + cur_pos, c);
+    AddVert(pos + prev_pos, c);
+
+    prev_pos = cur_pos;
+    angle += angle_inc;
+  }
+}
+
+void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs)
+{
+  float angle_inc = k2Pi / num_segs;
+  float angle = angle_inc;
+
+  auto ab = radius_x * radius_y;
+
+  Vector2f prev_pos = { radius_x, 0 };
+
+  for (int index = 1; index < num_segs + 1; index++)
+  {
+    auto dir = SinCosf(angle);
+
+    auto den_x = dir.x * radius_x;
+    auto den_y = dir.y * radius_y;
+
+    auto radius = ab / sqrtf(den_x * den_x + den_y * den_y);
+
+    auto cur_pos = dir * radius;
 
     AddVert(pos, c);
     AddVert(pos + cur_pos, c);
@@ -235,6 +319,30 @@ VertexBuffer GeometryVertexBufferBuilder::CreateVertexBuffer()
 void GeometryVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
   vertex_buffer.SetBufferData(m_List, VertexBufferType::kTriangles);
+}
+
+void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<const ShaderProgram> shader)
+{
+  if (shader == nullptr)
+  {
+    shader = &g_ShaderManager.GetDefaultShader();
+  }
+
+  shader->Bind();
+
+  auto & vertex_buffer = render_util.GetScratchBuffer();
+  FillVertexBuffer(vertex_buffer);
+
+  vertex_buffer.Bind();
+  render_util.GetDefaultTexture().BindTexture(0);
+
+  vertex_buffer.CreateDefaultBinding(*shader);
+  vertex_buffer.Draw();
+}
+
+bool GeometryVertexBufferBuilder::HasGeo() const
+{
+  return m_List.HasVerts();
 }
 
 void GeometryVertexBufferBuilder::AddVert(const Vector2f & pos, const Color & c)

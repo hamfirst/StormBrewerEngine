@@ -17,21 +17,25 @@ UIElementContainer::UIElementContainer(const UIElementContainerInitData & init_d
 void UIElementContainer::Update()
 {
   UIElement::Update();
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
 }
 
-void UIElementContainer::Render(RenderState & render_state, RenderUtil & render_util)
+void UIElementContainer::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   if (m_RenderDelegate)
   {
-    m_RenderDelegate(*this, render_state);
+    m_RenderDelegate(*this, render_state, offset);
   }
   else
   {
-    RenderDefault(render_state, render_util);
+    RenderDefault(render_state, render_util, offset);
   }
+
+  UIElement::Render(render_state, render_util, offset);
 }
 
-void UIElementContainer::RenderDefault(RenderState & render_state, RenderUtil & render_util)
+void UIElementContainer::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
 
 }
@@ -46,7 +50,7 @@ UIElementContainerData & UIElementContainer::GetData()
   return m_Data;
 }
 
-void UIElementContainer::SetCustomRenderCallback(Delegate<void, UIElementContainer &, RenderState &> && render_callback)
+void UIElementContainer::SetCustomRenderCallback(Delegate<void, UIElementContainer &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }
