@@ -4,8 +4,8 @@
 
 class GameContainer;
 
-static const int kDefaultResolutionWidth = 360;
-static const int kDefaultResolutionHeight = 640;
+static const int kDefaultResolutionWidth = 640;
+static const int kDefaultResolutionHeight = 360;
 
 class GameCamera : public Camera
 {
