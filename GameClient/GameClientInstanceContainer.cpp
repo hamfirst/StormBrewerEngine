@@ -2,6 +2,7 @@
 #include "GameClient/GameClientInstanceContainer.h"
 #include "GameClient/GameContainer.h"
 
+int s_BogusSendTimer = 0;
 
 GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_container) :
   m_GameContainer(game_container),
@@ -48,8 +49,7 @@ bool GameClientInstanceContainer::IsLoaded()
 
 void GameClientInstanceContainer::Update()
 {
-  int send_timer = 0;
-  auto logic_container = GetLogicContainer(m_GameContainer.GetSharedGlobalResources(), false, send_timer);
+  auto logic_container = GetLogicContainer();
 
   GetGameController().Update(logic_container);
   GetEntitySync().Sync(GetSim().m_ServerObjectManager);
@@ -57,10 +57,19 @@ void GameClientInstanceContainer::Update()
 
 GameClientInstanceData GameClientInstanceContainer::GetInstanceData(GameClientEventSender & event_sender)
 {
-  return GameClientInstanceData(m_Sim.Value(), m_ClientData, *m_Stage.get(), m_SharedResources.Value(), m_ClientResources.Value(), event_sender);
+  return GameClientInstanceData(
+    m_GameContainer, 
+    m_GameController, 
+    m_ClientController, 
+    m_Sim.Value(), 
+    m_ClientData, 
+    *m_Stage.get(), 
+    m_SharedResources.Value(), 
+    m_ClientResources.Value(), 
+    event_sender);
 }
 
-GameLogicContainer GameClientInstanceContainer::GetLogicContainer(GameSharedGlobalResources & shared_resources, bool authority, int & send_timer)
+GameLogicContainer GameClientInstanceContainer::GetLogicContainer(bool authority, int & send_timer)
 {
   return GameLogicContainer(
     GetGameController(),
@@ -68,7 +77,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(GameSharedGlob
     GetSim().m_ServerObjectManager,
     GetClientController(),
     GetClientController(),
-    shared_resources,
+    m_GameContainer.GetSharedGlobalResources(),
     GetSharedResources(),
     GetStage(),
     authority, send_timer);

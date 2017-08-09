@@ -17,7 +17,7 @@ class GameHostWidget : public QWidget
   Q_OBJECT
 public:
 
-  GameHostWidget(EditorContainer * editor, QWidget *parent = Q_NULLPTR);
+  GameHostWidget(EditorContainer * editor, bool exclude_one, QWidget *parent = Q_NULLPTR);
 
 protected:
 

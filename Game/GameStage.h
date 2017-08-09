@@ -2,15 +2,13 @@
 
 #include "Runtime/Map/MapResource.h"
 
+#include "Foundation/Pathfinding/GraphPathfinding.h"
+#include "Foundation/Pathfinding/PathfindingPath.h"
+
 #include "Game/GameFullState.refl.h"
 #include "Game/GameServerTypes.h"
 
 #include "Runtime/Collision/IntersectionDatabase.h"
-
-struct GameStaticCollision : public CollisionDatabaseData<GameNetVal>
-{
-
-};
 
 class GameStage
 {
@@ -25,5 +23,4 @@ private:
 
   std::vector<ServerObjectStaticInitData> m_StaticObjects;
   int m_DynamicObjectCount;
-
 };

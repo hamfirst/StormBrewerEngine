@@ -1,11 +1,17 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementSpriteFrame.refl.h"
+#include "Engine/UI/UIElementSpriteFrame.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementSpriteFrame::Type = 4;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementSpriteFrameInitData);
+REGISTER_UIELEMENT_DATA(UIElementSpriteFrame, UIElementSpriteFrameInitData, UIElementSpriteFrameData);
+
+UIElementType UIElementSpriteFrame::Type = UIElementType::kSpriteFrame;
 
 UIElementSpriteFrame::UIElementSpriteFrame(const UIElementSpriteFrameInitData & init_data, const UIElementSpriteFrameData & data) :
   m_InitData(init_data),
@@ -17,8 +23,12 @@ UIElementSpriteFrame::UIElementSpriteFrame(const UIElementSpriteFrameInitData & 
 
 void UIElementSpriteFrame::Update()
 {
+
   auto anim_hash = crc32(m_Data.m_Animation);
   m_Sprite.GetResource()->FrameAdvance(anim_hash, m_State, true, (int)m_Data.m_FrameAdvance);
+
+  SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_CenterX, m_Data.m_CenterY), Vector2(m_State.m_FrameWidth, m_State.m_FrameHeight)));
+  SetOffset(Vector2(m_Data.m_CenterX, m_Data.m_CenterY) - Vector2(m_State.m_FrameWidth, m_State.m_FrameHeight));
 
   UIElement::Update();
   SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_CenterX, m_Data.m_CenterY), Vector2(m_State.m_FrameWidth, m_State.m_FrameHeight)));
@@ -81,3 +91,21 @@ SpritePtr & UIElementSpriteFrame::GetSprite()
 {
   return m_Sprite;
 }
+
+StormExprValueInitBlock UIElementSpriteFrame::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementSpriteFrame::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementSpriteFrame::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}
+
+
+

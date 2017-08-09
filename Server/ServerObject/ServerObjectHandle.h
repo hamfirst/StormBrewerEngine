@@ -15,7 +15,7 @@ public:
   ServerObjectHandle();
 
   template <typename T>
-  NullOptPtr<ServerObject> ResolveTo(const ServerObjectManager & object_manager);
+  NullOptPtr<T> ResolveTo(const ServerObjectManager & object_manager);
 
   NullOptPtr<ServerObject> Resolve(const ServerObjectManager & object_manager);
 

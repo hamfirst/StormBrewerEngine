@@ -15,7 +15,8 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     auto ptr = g_ServerObjectSystem.AllocateObject(obj.m_TypeIndex, obj.m_InitData);
     ptr->m_IsStatic = true;
     ptr->m_TypeIndex = obj.m_TypeIndex;
-    ptr->m_ServerObjectHandle.m_SlotId = slot_index;
+    ptr->m_SlotIndex = -1;
+    ptr->m_ServerObjectHandle.m_SlotId = -1;
     ptr->m_ServerObjectHandle.m_Gen = 0;
     m_StaticObjects.emplace_back(ptr);
 
@@ -35,6 +36,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
   for (auto & obj : rhs.m_StaticObjects)
   {
     auto ptr = g_ServerObjectSystem.DuplicateObject(obj);
+    ptr->m_SlotIndex = -1;
     m_StaticObjects.emplace_back(ptr);
   }
 
@@ -49,6 +51,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
   for (auto obj : rhs.m_DynamicObjects)
   {
     auto ptr = g_ServerObjectSystem.DuplicateObject(obj.second.m_ServerObject);
+    ptr->m_SlotIndex = obj.first;
     m_DynamicObjects.EmplaceAt(obj.first, DynamicObjectInfo{ ptr, obj.second.m_TypeIndex });
   }
 
@@ -104,6 +107,7 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
       }
 
       auto ptr = g_ServerObjectSystem.DuplicateObject(rhs.m_DynamicObjects[index].m_ServerObject);
+      ptr->m_SlotIndex = index;
       m_DynamicObjects.EmplaceAt(index, DynamicObjectInfo{ ptr, rhs.m_DynamicObjects[index].m_TypeIndex });
     }
     else
@@ -125,6 +129,17 @@ ServerObjectManager & ServerObjectManager::operator = (ServerObjectManager && rh
   m_DynamicObjects = std::move(rhs.m_DynamicObjects);
   m_ReservedSlots = rhs.m_ReservedSlots;
   return *this;
+}
+
+NullOptPtr<ServerObject>ServerObjectManager::GetReservedSlotObject(std::size_t slot_index)
+{
+  if (slot_index >= m_ReservedSlots)
+  {
+    return nullptr;
+  }
+
+  auto dynamic_object_info = m_DynamicObjects.TryGet(slot_index);
+  return dynamic_object_info ? dynamic_object_info->m_ServerObject : nullptr;
 }
 
 void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
@@ -256,6 +271,7 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
   auto ptr = g_ServerObjectSystem.AllocateObject(type_index, nullptr);
   ptr->m_IsStatic = false;
   ptr->m_TypeIndex = type_index;
+  ptr->m_SlotIndex = slot_index;
   ptr->m_ServerObjectHandle.m_SlotId = slot_index + m_StaticObjects.size();
   ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
 
@@ -318,4 +334,15 @@ NullOptPtr<ServerObject> ServerObjectManager::ResolveHandle(int slot_index, int 
 
   auto ptr = m_DynamicObjects.TryGet(slot_index);
   return ptr ? const_cast<ServerObject *>(ptr->m_ServerObject) : nullptr;
+}
+
+NullOptPtr<ServerObject> ServerObjectManager::GetReservedSlotObjectInternal(std::size_t slot_index, std::size_t type_index)
+{
+  if (slot_index >= m_ReservedSlots)
+  {
+    return nullptr;
+  }
+
+  auto dynamic_object_info = m_DynamicObjects.TryGet(slot_index);
+  return dynamic_object_info && dynamic_object_info->m_TypeIndex == type_index ? dynamic_object_info->m_ServerObject : nullptr;
 }

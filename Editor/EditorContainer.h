@@ -61,13 +61,16 @@ public slots:
   void undo();
   void redo();
 
-  void testBuild();
+  void testBuildOnline();
+  void testBuildOnlineWithoutOneClient();
+  void testBuildBots();
 
 protected:
 
   friend class GameHostWidget;
+  friend class GameClientWidget;
 
-  void NotifyClientWindowClosed(NotNullPtr<GameHostWidget> host_widget);
+  void NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget);
 
 private:
 
@@ -118,5 +121,5 @@ private:
   std::string m_RootPath;
   PropertyFieldDatabase m_PropertyDatabase;
 
-  std::vector<std::unique_ptr<GameHostWidget>> m_HostWidgets;
+  std::vector<std::unique_ptr<QWidget>> m_HostWidgets;
 };

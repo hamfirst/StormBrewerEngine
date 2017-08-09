@@ -25,6 +25,7 @@ public:
   void SendEntityEvent(std::size_t class_id, void * event_ptr);
 
   void ForceDisconnect();
+  void RemoveFromGame();
 
   GameInstance * GetGameInstance();
   uint64_t GetGameId();

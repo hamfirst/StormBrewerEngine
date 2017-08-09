@@ -15,7 +15,6 @@ struct StormReflJson<MapTile, void>
 
     uint64_t p = (x << 32) | (y & 0xFFFFFFFF);
     uint64_t h = (uint64_t)t.m_TextureHash;
-
     uint64_t d = (h << 32) | t.m_FrameId;
 
     char val[512];

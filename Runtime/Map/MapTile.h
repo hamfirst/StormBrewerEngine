@@ -15,5 +15,11 @@ struct MapTile
   {
     return x == rhs.x && y == rhs.y && m_TextureHash == rhs.m_TextureHash && m_FrameId == rhs.m_FrameId;
   }
+
+  uint64_t GetTileId() const
+  {
+    uint64_t h = m_TextureHash;
+    return (h << 32) | (uint64_t)m_FrameId;
+  }
 };
 

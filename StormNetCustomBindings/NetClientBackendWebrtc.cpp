@@ -26,7 +26,7 @@ NetClientBackendWebrtc::NetClientBackendWebrtc(NetClientInterface * iface, const
     client_out_types.push_back(pipe == NetPipeMode::kReliable ? StormWebrtcClientStreamType::kReliable : StormWebrtcClientStreamType::kUnreliable);
   }
 
-  m_Host = std::make_unique<StormWebrtcClient>(client_inc_types, client_out_types, host_addr, port, fingerprint);
+  m_Host = CreateStormWebrtcClient(client_inc_types, client_out_types, host_addr, port, fingerprint);
   m_Transmitter.m_Client = this;
 }
 

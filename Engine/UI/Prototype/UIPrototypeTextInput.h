@@ -18,7 +18,7 @@ class UIPrototypeTextInput
 {
 public:
 
-  UIPrototypeTextInput(UIManager & manager, std::shared_ptr<TextInputContext> && input_contex, czstr name, NullOptPtr<UIElement> parent, const Box & box, czstr prompt, NullOptPtr<UISoundPrototypeEffects> sfx = nullptr);
+  UIPrototypeTextInput(UIManager & manager, czstr name, NullOptPtr<UIElement> parent, const Box & box, czstr prompt, NullOptPtr<UISoundPrototypeEffects> sfx = nullptr);
 
   void SetOnClickCallback(Delegate<void> && rhs);
   void MakeCurrent();

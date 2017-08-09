@@ -79,6 +79,27 @@ int SpriteResource::GetAnimationLength(uint32_t animation_name_hash)
   return 0;
 }
 
+void SpriteResource::GetDefaultFrame(AnimationState & anim_state)
+{
+  if (m_AnimationFrameSizes.size() == 0)
+  {
+    anim_state.m_AnimIndex = -1;
+    anim_state.m_AnimFrame = 0;
+    anim_state.m_AnimDelay = 0;
+    anim_state.m_FrameWidth = 0;
+    anim_state.m_FrameHeight = 0;
+    anim_state.m_LowerEdge = 0;
+    return;
+  }
+
+  anim_state.m_AnimIndex = 0;
+  anim_state.m_AnimFrame = 0;
+  anim_state.m_AnimDelay = 0;
+  anim_state.m_FrameWidth = m_AnimationFrameSizes[0].x;
+  anim_state.m_FrameHeight = m_AnimationFrameSizes[0].y;
+  anim_state.m_LowerEdge = m_AnimationLowerEdges[0];
+}
+
 bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop, int frames)
 {
   bool would_loop = false;
@@ -156,6 +177,7 @@ bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState &
   {
     anim_state.m_FrameWidth = 0;
     anim_state.m_FrameHeight = 0;
+    anim_state.m_LowerEdge = 0;
   }
   else
   {
@@ -163,13 +185,16 @@ bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState &
     if (anim_state.m_AnimFrame < (int)m_AnimLengths[animation_index])
     {
       auto & frame = m_AnimationFrameSizes[frame_start + anim_state.m_AnimFrame];
+      auto & lower_edge = m_AnimationLowerEdges[frame_start + anim_state.m_AnimFrame];
       anim_state.m_FrameWidth = frame.x;
       anim_state.m_FrameHeight = frame.y;
+      anim_state.m_LowerEdge = lower_edge;
     }
     else
     {
       anim_state.m_FrameWidth = 0;
       anim_state.m_FrameHeight = 0;
+      anim_state.m_LowerEdge = 0;
     }
   }
 
@@ -209,6 +234,16 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
   m_AnimNameHashes.clear();
   m_AnimLengths.clear();
 
+  auto lower_edge = 0;
+  for (auto elem : m_Data.m_GlobalData.m_LowerEdgeData)
+  {
+    if (elem.second.m_FrameDataName == "LowerEdge")
+    {
+      lower_edge = elem.second.m_Data->m_OffsetPixels;
+      break;
+    }
+  }
+
   int total_frames = 0;
   for (auto elem : m_Data.m_Animations)
   {
@@ -230,8 +265,24 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
         }
       }
 
+      auto frame_lower_edge = lower_edge;
+
+      auto frame_data = m_Data.m_FrameData.TryGet(frame.second.m_FrameId);
+      if (frame_data)
+      {
+        for (auto elem : frame_data->m_LowerEdgeData)
+        {
+          if (elem.second.m_FrameDataName == "LowerEdge")
+          {
+            frame_lower_edge = elem.second.m_Data->m_OffsetPixels;
+            break;
+          }
+        }
+      }
+
       m_AnimationFrameSizes.push_back(frame_size);
       m_AnimationFrameDurations.push_back(frame.second.m_FrameDuration);
+      m_AnimationLowerEdges.push_back(frame_lower_edge);
       num_frames++;
     }
 

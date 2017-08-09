@@ -5,6 +5,7 @@
 #include "PropertyEditorBool.h"
 #include "PropertyEditorString.h"
 #include "PropertyEditorFile.h"
+#include "PropertyEditorEnum.h"
 #include "PropertyEditorNumber.h"
 #include "PropertyEditorStruct.h"
 #include "PropertyEditorList.h"
@@ -21,6 +22,8 @@ std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBas
     return std::make_unique<PropertyEditorString>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kFile:
     return std::make_unique<PropertyEditorFile>(editor, prop, create_callback, std::move(data_ptr), path, parent);
+  case PropertyFieldType::kEnum:
+    return std::make_unique<PropertyEditorEnum>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kSignedNumber:
   case PropertyFieldType::kUnsignedNumber:
   case PropertyFieldType::kFloatNumber:

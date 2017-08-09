@@ -23,13 +23,23 @@
 #include <netdb.h>
 #endif
 
-#include "StormWebrtc/StormWebrtcServer.h"
+
+//#define FOUNDATION_USE_WEBRTC
+
+#ifdef FOUNDATION_USE_WEBRTC
+#include "StormWebrtc/StormWebrtc.h"
+#endif
 
 void NetworkInit()
 {
 #ifdef _MSC_VER
   WSADATA wsaData = {};
   WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+#ifdef FOUNDATION_USE_WEBRTC
+  StormWebrtcStaticInit();
+#endif
+
 #endif
 }
 
@@ -37,6 +47,10 @@ void NetworkShutdown()
 {
 #ifdef _MSC_VER
   WSACleanup();
+#ifdef FOUNDATION_USE_WEBRTC
+  StormWebrtcStaticCleanup();
+#endif
+
 #endif
 }
 

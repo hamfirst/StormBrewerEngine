@@ -54,7 +54,12 @@ czstr ServerObject::GetEntityBinding()
   return GetDefaultEntityBinding();
 }
 
-bool ServerObject::IsDestroyed()
+bool ServerObject::IsDestroyed() const
 {
   return false;
+}
+
+int ServerObject::GetSlotIndex() const
+{
+  return m_SlotIndex;
 }

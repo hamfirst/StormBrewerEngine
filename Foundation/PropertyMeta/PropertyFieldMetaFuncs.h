@@ -327,6 +327,8 @@ struct PropertyMetaData<REnum<T>>
       enum_data.second->m_Enum.Get = [](void * en) -> czstr { REnum<T> * elem = static_cast<REnum<T> *>(en); return StormReflGetEnumAsString(*(T *)(en)); };
       enum_data.second->m_Enum.Set = [](void * en, czstr val) { REnum<T> * elem = static_cast<REnum<T> *>(en); T t; if (StormReflGetEnumFromHash(t, crc32(val))) { *elem = t; }};
     }
+
+    return enum_data.second;
   }
 
   template <typename SurroundingType, typename FieldData>

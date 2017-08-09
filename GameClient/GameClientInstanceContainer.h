@@ -16,6 +16,8 @@
 #include "GameClient/GameClientInstanceResources.h"
 #include "GameClient/GameClientInstanceData.h"
 
+extern int s_BogusSendTimer;
+
 class GameClientInstanceContainer
 {
 public:
@@ -29,7 +31,7 @@ public:
   void Update();
 
   GameClientInstanceData GetInstanceData(GameClientEventSender & event_sender);
-  GameLogicContainer GetLogicContainer(GameSharedGlobalResources & shared_resources, bool authority, int & send_timer);
+  GameLogicContainer GetLogicContainer(bool authority = false, int & send_timer = s_BogusSendTimer);
 
   GameController & GetGameController();
   GameClientController & GetClientController();
@@ -53,6 +55,7 @@ private:
   GameClientLevelLoader m_LevelLoader;
   GameClientEntitySync m_EntitySync;
   bool m_Loaded;
+  int m_SendTimer;
 
   GameInitSettings m_InitSettings;
   ClientLocalData m_ClientData;

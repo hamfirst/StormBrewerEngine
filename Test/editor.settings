@@ -1,6 +1,18 @@
 {
   "m_SpriteGlobalData": [
     { "m_Type": "kSingleBox", "m_Name": "MoveBox" },
-    { "m_Type": "kMultiBox", "m_Name": "Test" }
+    { "m_Type": "kLowerEdge", "m_Name": "LowerEdge" }
+  ],
+  
+  "m_SpriteFrameData": [
+    { "m_Type": "kLowerEdge", "m_Name": "LowerEdge" }
+  ], 
+  
+  "m_TileGlobalData": [
+    { "m_Type": "kLowerEdge", "m_Name": "LowerEdge" }
+  ],
+  
+  "m_TileFrameData": [
+    { "m_Type": "kLowerEdge", "m_Name": "LowerEdge" }
   ]
 }

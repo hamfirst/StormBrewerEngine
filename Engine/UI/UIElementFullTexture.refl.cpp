@@ -1,12 +1,18 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementFullTexture.refl.h"
+#include "Engine/UI/UIElementFullTexture.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementFullTexture::Type = 7;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementFullTextureInitData);
+REGISTER_UIELEMENT_DATA(UIElementFullTexture, UIElementFullTextureInitData, UIElementFullTextureData);
+
+UIElementType UIElementFullTexture::Type = UIElementType::kFullTexture;
 
 UIElementFullTexture::UIElementFullTexture(const UIElementFullTextureInitData & init_data, const UIElementFullTextureData & data) :
   m_InitData(init_data),
@@ -18,6 +24,15 @@ UIElementFullTexture::UIElementFullTexture(const UIElementFullTextureInitData & 
 
 void UIElementFullTexture::Update()
 {
+  if (m_Texture->IsValid())
+  {
+    auto width = m_Texture->GetWidth();
+    auto height = m_Texture->GetHeight();
+
+    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_CenterX, m_Data.m_CenterY), Vector2(width, height)));
+    SetOffset(Vector2(m_Data.m_CenterX, m_Data.m_CenterY) - Vector2(width, height) / 2);
+  }
+
   UIElement::Update();
 
   if (m_Texture->IsValid())
@@ -26,7 +41,7 @@ void UIElementFullTexture::Update()
     auto height = m_Texture->GetHeight();
 
     SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_CenterX, m_Data.m_CenterY), Vector2(width, height)));
-    SetOffset(Vector2(m_Data.m_CenterX, m_Data.m_CenterY) - Vector2(width, height));
+    SetOffset(Vector2(m_Data.m_CenterX, m_Data.m_CenterY) - Vector2(width, height) / 2);
   }
 }
 
@@ -94,4 +109,19 @@ void UIElementFullTexture::SetCustomRenderCallback(Delegate<void, UIElementFullT
 AssetReference<TextureAsset> & UIElementFullTexture::GetTextureAsset()
 {
   return m_Texture;
+}
+
+StormExprValueInitBlock UIElementFullTexture::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementFullTexture::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementFullTexture::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
 }

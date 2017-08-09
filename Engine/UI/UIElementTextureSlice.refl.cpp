@@ -1,11 +1,17 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementTextureSlice.refl.h"
+#include "Engine/UI/UIElementTextureSlice.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementTextureSlice::Type = 3;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementTextureSliceInitData);
+REGISTER_UIELEMENT_DATA(UIElementTextureSlice, UIElementTextureSliceInitData, UIElementTextureSliceData);
+
+UIElementType UIElementTextureSlice::Type = UIElementType::kTextureSlice;
 
 UIElementTextureSlice::UIElementTextureSlice(const UIElementTextureSliceInitData & init_data, const UIElementTextureSliceData & data) :
   m_InitData(init_data),
@@ -18,6 +24,8 @@ UIElementTextureSlice::UIElementTextureSlice(const UIElementTextureSliceInitData
 
 void UIElementTextureSlice::Update()
 {
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
   UIElement::Update();
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
@@ -222,3 +230,20 @@ AssetReference<TextureAsset> & UIElementTextureSlice::GetTextureAsset()
 {
   return m_Texture;
 }
+
+StormExprValueInitBlock UIElementTextureSlice::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementTextureSlice::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementTextureSlice::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}
+
+

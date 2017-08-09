@@ -17,8 +17,14 @@
 #include "MapEditorToolEntityLayerDraw.h"
 #include "MapEditorToolVolumeCreate.h"
 #include "MapEditorToolVolumeEditor.h"
+#include "MapEditorToolVolumeMultiEditor.h"
 #include "MapEditorToolPathCreate.h"
 #include "MapEditorToolPathEditor.h"
+#include "MapEditorToolPathMultiEditor.h"
+#include "MapEditorToolAnchorCreate.h"
+#include "MapEditorToolAnchorEditor.h"
+#include "MapEditorToolAnchorMultiEditor.h"
+
 
 
 MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & root_path, MapDef & map, DocumentChangeLinkDelegate && change_link_callback,
@@ -31,6 +37,7 @@ MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & ro
   m_EffectLayers(".m_EffectLayers", this, m_Map, m_Map.m_EffectLayers),
   m_Volumes(".m_Volumes", this, m_Map, m_Map.m_Volumes),
   m_Paths(".m_Paths", this, m_Map, m_Map.m_Paths),
+  m_Anchors(".m_Anchors", this, m_Map, m_Map.m_Anchors),
   m_Layout(std::make_unique<QGridLayout>()),
   m_Properties(std::make_unique<GenericFrame>("Properties", this)),
   m_Selector(std::make_unique<MapEditorSelector>(this, m_Map)),
@@ -79,6 +86,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
   case MapEditorLayerItemType::kEntityLayerParent:
   case MapEditorLayerItemType::kVolumeParent:
   case MapEditorLayerItemType::kPathParent:
+  case MapEditorLayerItemType::kAnchorParent:
     ClearLayerSelection();
     break;
   case MapEditorLayerItemType::kManualTileLayer:
@@ -143,6 +151,12 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
     break;
 
+  case MapEditorLayerItemType::kAllVolumes:
+
+    ClearSelectors();
+    m_PropertyEditor->Unload();
+    break;
+
   case MapEditorLayerItemType::kVolume:
 
     ClearSelectors();
@@ -167,6 +181,12 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
     break;
 
+  case MapEditorLayerItemType::kAllPaths:
+
+    ClearSelectors();
+    m_PropertyEditor->Unload();
+    break;
+
   case MapEditorLayerItemType::kPath:
 
     ClearSelectors();
@@ -177,6 +197,36 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     if (change_viewer_position)
     {
       m_Viewer->ZoomToPath(layer.m_Index);
+    }
+    break;
+
+  case MapEditorLayerItemType::kCreateAnchor:
+
+    ClearSelectors();
+
+    {
+      auto property_data = GetProperyMetaData<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>(GetPropertyFieldDatabase());
+      m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_AnchorInitData; }, "");
+    }
+
+    break;
+
+  case MapEditorLayerItemType::kAllAnchors:
+
+    ClearSelectors();
+    m_PropertyEditor->Unload();
+    break;
+
+  case MapEditorLayerItemType::kAnchor:
+
+    ClearSelectors();
+
+    m_PropertyEditor->LoadStruct(this, m_Map.m_Anchors[layer.m_Index],
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_Anchors.TryGet(index); }, true);
+
+    if (change_viewer_position)
+    {
+      m_Viewer->ZoomToAnchor(layer.m_Index);
     }
     break;
   }
@@ -199,14 +249,29 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
   case MapEditorLayerItemType::kCreateVolume:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolVolumeCreate>{});
     break;
+  case MapEditorLayerItemType::kAllVolumes:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolVolumeMultiEditor>{});
+    break;
   case MapEditorLayerItemType::kVolume:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolVolumeEditor>{}, (int)layer.m_Index);
     break;
   case MapEditorLayerItemType::kCreatePath:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolPathCreate>{});
     break;
+  case MapEditorLayerItemType::kAllPaths:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolPathMultiEditor>{});
+    break;
   case MapEditorLayerItemType::kPath:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolPathEditor>{}, (int)layer.m_Index);
+    break;
+  case MapEditorLayerItemType::kCreateAnchor:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorCreate>{});
+    break;
+  case MapEditorLayerItemType::kAllAnchors:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorMultiEditor>{});
+    break;
+  case MapEditorLayerItemType::kAnchor:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorEditor>{}, (int)layer.m_Index);
     break;
   }
 }
@@ -256,6 +321,11 @@ MapEditorLayerManager<MapVolume, MapEditorVolume> & MapEditor::GetVolumeManager(
 MapEditorLayerManager<MapPath, MapEditorPath> & MapEditor::GetPathManager()
 {
   return m_Paths;
+}
+
+MapEditorLayerManager<MapAnchor, MapEditorAnchor> & MapEditor::GetAnchorManager()
+{
+  return m_Anchors;
 }
 
 MapEditorSelector & MapEditor::GetSelector()
@@ -357,6 +427,31 @@ void MapEditor::CreateNewPath(const Line & line)
   }
 
   m_Map.m_Paths.EmplaceBack(path);
+}
+
+const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & MapEditor::GetAnchorInitData() const
+{
+  return m_AnchorInitData;
+}
+
+void MapEditor::CreateNewAnchor(const Vector2 & point)
+{
+  MapAnchor anchor;
+  anchor.m_AnchorData = m_AnchorInitData;
+  anchor.m_X = point.x;
+  anchor.m_Y = point.y;
+
+  auto type_info = m_PathInitData.GetTypeInfo();
+  if (type_info)
+  {
+    anchor.m_Name = type_info->m_Name;
+  }
+  else
+  {
+    anchor.m_Name = "Anchor";
+  }
+
+  m_Map.m_Anchors.EmplaceBack(anchor);
 }
 
 void MapEditor::AboutToClose()

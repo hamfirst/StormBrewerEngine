@@ -1,11 +1,17 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementGradient.refl.h"
+#include "Engine/UI/UIElementGradient.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementGradient::Type = 2;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementGradientInitData);
+REGISTER_UIELEMENT_DATA(UIElementGradient, UIElementGradientInitData, UIElementGradientData);
+
+UIElementType UIElementGradient::Type = UIElementType::kGradient;
 
 UIElementGradient::UIElementGradient(const UIElementGradientInitData & init_data, const UIElementGradientData & data) :
   m_InitData(init_data),
@@ -17,6 +23,9 @@ UIElementGradient::UIElementGradient(const UIElementGradientInitData & init_data
 
 void UIElementGradient::Update()
 {
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
+
   UIElement::Update();
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
@@ -92,3 +101,17 @@ void UIElementGradient::SetCustomRenderCallback(Delegate<void, UIElementGradient
   m_RenderDelegate = std::move(render_callback);
 }
 
+StormExprValueInitBlock UIElementGradient::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementGradient::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementGradient::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}

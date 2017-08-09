@@ -4,7 +4,7 @@
 #include "Engine/UI/Prototype/UIPrototypeTextInput.h"
 #include "Engine/Audio/AudioManager.h"
 
-UIPrototypeTextInput::UIPrototypeTextInput(UIManager & manager, std::shared_ptr<TextInputContext> && input_contex, czstr name, 
+UIPrototypeTextInput::UIPrototypeTextInput(UIManager & manager, czstr name, 
                                            NullOptPtr<UIElement> parent, const Box & box, czstr prompt, NullOptPtr<UISoundPrototypeEffects> sfx) :
   m_Sfx(sfx),
   m_BkgColor(245, 245, 245, 255),
@@ -36,7 +36,7 @@ UIPrototypeTextInput::UIPrototypeTextInput(UIManager & manager, std::shared_ptr<
   auto & border_data = border->GetData();
   border_data.SetBounds(Box{ Vector2{ 0, 0 }, size });
 
-  m_Text = manager.AllocateTextInput("text", std::move(input_contex), bkg, {}, {});
+  m_Text = manager.AllocateTextInput("text", bkg, {}, {});
   auto text = m_Text.Get();
   auto & text_data = text->GetData();
   text_data.m_Centered = 1.0f;

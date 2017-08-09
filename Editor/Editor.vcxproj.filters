@@ -83,6 +83,9 @@
     <Filter Include="Source Files\DocumentEditors\ConfigEditor">
       <UniqueIdentifier>{457caee8-0507-4c64-b9eb-5f1fac740aae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DocumentEditors\UIEditor">
+      <UniqueIdentifier>{df206de4-3bc4-48a6-8882-9ad3a79441d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -787,6 +790,159 @@
     <ClCompile Include="MapEditorEffectLayer.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
+    <ClCompile Include="MapEditorToolPathMultiEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolVolumeMultiEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameEditorLowerEdge.cpp">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_FrameEditorLowerEdge.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorLowerEdge.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorLowerEdge.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorLowerEdge.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorAnchor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolAnchorCreate.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolAnchorEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolAnchorMultiEditor.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditor.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditorNodeList.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorNodeList.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorNodeList.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorNodeList.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorNodeList.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditorViewer.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorViewer.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorViewer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorViewer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorViewer.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEquationEditor.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEquationEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEquationEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEquationEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEquationEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditorPropertyContainer.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorPropertyContainer.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorPropertyContainer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorPropertyContainer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorPropertyContainer.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditorEquationList.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorEquationList.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorEquationList.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorEquationList.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorEquationList.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditorOutputEquationList.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorOutputEquationList.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorOutputEquationList.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorOutputEquationList.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorOutputEquationList.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="UIOutputEquationEditor.cpp">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIOutputEquationEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UIOutputEquationEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UIOutputEquationEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIOutputEquationEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -966,6 +1122,33 @@
     <CustomBuild Include="ConfigEditor.h">
       <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
     </CustomBuild>
+    <CustomBuild Include="FrameEditorLowerEdge.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditor.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditorNodeList.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditorViewer.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEquationEditor.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditorPropertyContainer.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditorEquationList.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIEditorOutputEquationList.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UIOutputEquationEditor.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -1069,6 +1252,27 @@
     </ClInclude>
     <ClInclude Include="MapEditorEffectLayer.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolPathMultiEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolVolumeMultiEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorAnchor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolAnchorCreate.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolAnchorEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolAnchorMultiEditor.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEditorNode.h">
+      <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

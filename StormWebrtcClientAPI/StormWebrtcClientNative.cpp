@@ -2,6 +2,7 @@
 
 #ifdef _MSC_VER
 #define SECURITY_WIN32
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -34,9 +35,9 @@ StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelL
   m_Connecting(false),
   m_State(StormWebrtcClientNativeState::kDisconnected),
   m_InChannels(in_channels),
-  m_OutChannels(out_channels),
-  m_SctpSocket(nullptr)
+  m_OutChannels(out_channels)
 {
+
 
   mbedtls_entropy_init(&m_Entropy);
   mbedtls_ctr_drbg_init(&m_CtrDrbg);
@@ -181,6 +182,10 @@ void StormWebrtcClientNative::StartConnect(const char * ipaddr, int port, const 
     return;
   }
 
+  m_Connection.m_RemoteIp = inet_addr(ipaddr);
+  m_Connection.m_RemotePort = port;
+
+
   if (connect(m_Socket, addr_list->ai_addr, (int)addr_list->ai_addrlen) == -1)
   {
     closesocket(m_Socket);
@@ -188,19 +193,19 @@ void StormWebrtcClientNative::StartConnect(const char * ipaddr, int port, const 
     return;
   }
 
-  mbedtls_ssl_init(&m_SSLContext);
-  int error = mbedtls_ssl_setup(&m_SSLContext, &m_SSLConfig);
+  mbedtls_ssl_init(&m_Connection.m_SSLContext);
+  int error = mbedtls_ssl_setup(&m_Connection.m_SSLContext, &m_SSLConfig);
   if (error != 0)
   {
     closesocket(m_Socket);
 
-    mbedtls_ssl_free(&m_SSLContext);
+    mbedtls_ssl_free(&m_Connection.m_SSLContext);
     m_Socket = (int)INVALID_SOCKET;
     return;
   }
 
-  mbedtls_ssl_set_timer_cb(&m_SSLContext, &m_Timer, mbedtls_timing_set_delay, mbedtls_timing_get_delay);
-  mbedtls_ssl_session_reset(&m_SSLContext);
+  mbedtls_ssl_set_timer_cb(&m_Connection.m_SSLContext, &m_Connection.m_Timer, mbedtls_timing_set_delay, mbedtls_timing_get_delay);
+  mbedtls_ssl_session_reset(&m_Connection.m_SSLContext);
 
   auto send_callback = [](void * ctx, const unsigned char * data, size_t size) -> int
   {
@@ -242,7 +247,7 @@ void StormWebrtcClientNative::StartConnect(const char * ipaddr, int port, const 
     return (int)recv(client->m_Socket, (char *)data, (int)size, 0);
   };
 
-  mbedtls_ssl_set_bio(&m_SSLContext,
+  mbedtls_ssl_set_bio(&m_Connection.m_SSLContext,
     this,
     send_callback,
     recv_callback,
@@ -259,11 +264,11 @@ void StormWebrtcClientNative::Update()
 
   if (m_State == StormWebrtcClientNativeState::kInitialHello)
   {
-    auto result = mbedtls_ssl_handshake_step(&m_SSLContext);
+    auto result = mbedtls_ssl_handshake_step(&m_Connection.m_SSLContext);
 
     if (result == 0)
     {
-      if (m_SSLContext.state == MBEDTLS_SSL_HANDSHAKE_OVER)
+      if (m_Connection.m_SSLContext.state == MBEDTLS_SSL_HANDSHAKE_OVER)
       {
         StartSctpConnect();
       }
@@ -296,14 +301,14 @@ void StormWebrtcClientNative::Close()
     return;
   }
 
-  if (m_SctpSocket != nullptr)
+  if (m_Connection.m_SctpSocket != nullptr)
   {
-    usrsctp_close(m_SctpSocket);
-    m_SctpSocket = nullptr;
+    usrsctp_close(m_Connection.m_SctpSocket);
+    m_Connection.m_SctpSocket = nullptr;
   }
 
   closesocket(m_Socket);
-  mbedtls_ssl_free(&m_SSLContext);
+  mbedtls_ssl_free(&m_Connection.m_SSLContext);
 }
 
 void StormWebrtcClientNative::SendPacket(int stream, bool sender_channel, const void * data, std::size_t data_len)
@@ -370,13 +375,13 @@ void StormWebrtcClientNative::StartSctpConnect()
     return 0;
   };
 
-  m_SctpSocket = usrsctp_socket(AF_CONN, SOCK_STREAM, IPPROTO_SCTP, sctp_receive_cb, send_thresh_cb, usrsctp_sysctl_get_sctp_sendspace() / 2, this);
-  if (m_SctpSocket == nullptr)
+  m_Connection.m_SctpSocket = usrsctp_socket(AF_CONN, SOCK_STREAM, IPPROTO_SCTP, sctp_receive_cb, send_thresh_cb, usrsctp_sysctl_get_sctp_sendspace() / 2, this);
+  if (m_Connection.m_SctpSocket == nullptr)
   {
     throw std::runtime_error(std::string("Could not create sctp socket"));
   }
 
-  if (usrsctp_set_non_blocking(m_SctpSocket, 1) < 0)
+  if (usrsctp_set_non_blocking(m_Connection.m_SctpSocket, 1) < 0)
   {
     throw std::runtime_error(std::string("Could not set sctp socket non blocking"));
   }
@@ -384,7 +389,7 @@ void StormWebrtcClientNative::StartSctpConnect()
   linger linger_opt;
   linger_opt.l_onoff = 1;
   linger_opt.l_linger = 0;
-  if (usrsctp_setsockopt(m_SctpSocket, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt)))
+  if (usrsctp_setsockopt(m_Connection.m_SctpSocket, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt)))
   {
     throw std::runtime_error(std::string("Could not set sctp socket linger"));
   }
@@ -392,13 +397,13 @@ void StormWebrtcClientNative::StartSctpConnect()
   struct sctp_assoc_value stream_rst;
   stream_rst.assoc_id = SCTP_ALL_ASSOC;
   stream_rst.assoc_value = 1;
-  if (usrsctp_setsockopt(m_SctpSocket, IPPROTO_SCTP, SCTP_ENABLE_STREAM_RESET, &stream_rst, sizeof(stream_rst)))
+  if (usrsctp_setsockopt(m_Connection.m_SctpSocket, IPPROTO_SCTP, SCTP_ENABLE_STREAM_RESET, &stream_rst, sizeof(stream_rst)))
   {
     throw std::runtime_error(std::string("Could not set sctp socket stream reset"));
   }
 
   uint32_t nodelay = 1;
-  if (usrsctp_setsockopt(m_SctpSocket, IPPROTO_SCTP, SCTP_NODELAY, &nodelay, sizeof(nodelay)))
+  if (usrsctp_setsockopt(m_Connection.m_SctpSocket, IPPROTO_SCTP, SCTP_NODELAY, &nodelay, sizeof(nodelay)))
   {
     throw std::runtime_error(std::string("Could not set sctp socket nodelay"));
   }
@@ -418,27 +423,20 @@ void StormWebrtcClientNative::StartSctpConnect()
   for (size_t index = 0; index < 5; index++)
   {
     event.se_type = event_types[index];
-    if (usrsctp_setsockopt(m_SctpSocket, IPPROTO_SCTP, SCTP_EVENT, &event, sizeof(event)) < 0)
+    if (usrsctp_setsockopt(m_Connection.m_SctpSocket, IPPROTO_SCTP, SCTP_EVENT, &event, sizeof(event)) < 0)
     {
       throw std::runtime_error(std::string("Could not set sctp socket event sub"));
     }
   }
 
-  sockaddr_in sctp_listen_addr;
-  memset((void *)&sctp_listen_addr, 0, sizeof(sctp_listen_addr));
-  sctp_listen_addr.sin_family = AF_INET;
-  sctp_listen_addr.sin_port = htons(5000);
-  sctp_listen_addr.sin_addr.s_addr = INADDR_ANY;
+  sockaddr_conn connect_addr;
+  connect_addr.sconn_addr = &m_Connection;
+  connect_addr.sconn_family = AF_CONN;
+  connect_addr.sconn_port = htons(5000);
 
-  if (usrsctp_bind(m_SctpSocket, (struct sockaddr *)&sctp_listen_addr, sizeof(struct sockaddr_in)) < 0)
+  if (usrsctp_connect(m_Connection.m_SctpSocket, (struct sockaddr *)&connect_addr, sizeof(struct sockaddr_conn)) < 0)
   {
     throw std::runtime_error(std::string("sctp bind error"));
   }
-
-  //sockaddr_conn target_addr;
-  //if (usrsctp_connect(m_SctpListenSocket, 1) < 0)
-  //{
-  //  throw std::runtime_error(std::string("sctp listen error"));
-  //}
 }
 

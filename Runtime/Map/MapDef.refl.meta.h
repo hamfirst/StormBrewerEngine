@@ -5,6 +5,7 @@
 #include "MapDef.refl.h"
 #include "Foundation/BasicTypes/BasicTypes.refl.meta.h"
 #include "Runtime/Entity/EntityDef.refl.meta.h"
+#include "Runtime/Anchor/AnchorDef.refl.meta.h"
 #include "Runtime/Path/PathDef.refl.meta.h"
 #include "Runtime/Volume/VolumeDef.refl.meta.h"
 #include "Runtime/Map/MapEffectLayerDef.refl.meta.h"
@@ -616,6 +617,107 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<2, Self> : public StormRefl
 };
 
 template <>
+struct StormReflTypeInfo<MapAnchor>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 4;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapAnchor"; }
+  static constexpr auto GetNameHash() { return 0xE8C23518; }
+  static MapAnchor & GetDefault() { static MapAnchor def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Name"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapAnchor::m_Name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapAnchor>::field_data<0, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Name; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Name; }
+  void SetDefault() { self.m_Name = StormReflTypeInfo<MapAnchor>::GetDefault().m_Name; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<1>
+{
+  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>
+  static constexpr auto GetName() { return "m_AnchorData"; }
+  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x73BF9C78; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1AB33B8D; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapAnchor::m_AnchorData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapAnchor>::field_data<1, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>> & Get() { return self.m_AnchorData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>> & Get() const { return self.m_AnchorData; }
+  void SetDefault() { self.m_AnchorData = StormReflTypeInfo<MapAnchor>::GetDefault().m_AnchorData; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<2>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_X"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xE7DD193C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapAnchor::m_X; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_X; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_X; }
+  void SetDefault() { self.m_X = StormReflTypeInfo<MapAnchor>::GetDefault().m_X; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<3>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_Y"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x90DA29AA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &MapAnchor::m_Y; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapAnchor>::field_data<3, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_Y; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_Y; }
+  void SetDefault() { self.m_Y = StormReflTypeInfo<MapAnchor>::GetDefault().m_Y; }
+};
+
+template <>
 struct StormReflTypeInfo<MapPathPoint>
 {
   using MyBase = void;
@@ -900,7 +1002,7 @@ template <>
 struct StormReflTypeInfo<MapDef>
 {
   using MyBase = void;
-  static constexpr int fields_n = 6;
+  static constexpr int fields_n = 7;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -1000,17 +1102,39 @@ struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo
 template <>
 struct StormReflTypeInfo<MapDef>::field_data_static<4>
 {
+  using member_type = RMergeList<MapAnchor>; // RMergeList<MapAnchor>
+  static constexpr auto GetName() { return "m_Anchors"; }
+  static constexpr auto GetType() { return "RMergeList<MapAnchor>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA02FE64E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x5C53BF10; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &MapDef::m_Anchors; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<MapAnchor>> & Get() { return self.m_Anchors; }
+  std::add_const_t<std::remove_reference_t<RMergeList<MapAnchor>>> & Get() const { return self.m_Anchors; }
+  void SetDefault() { self.m_Anchors = StormReflTypeInfo<MapDef>::GetDefault().m_Anchors; }
+};
+
+template <>
+struct StormReflTypeInfo<MapDef>::field_data_static<5>
+{
   using member_type = RMergeList<MapPath>; // RMergeList<MapPath>
   static constexpr auto GetName() { return "m_Paths"; }
   static constexpr auto GetType() { return "RMergeList<MapPath>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x068C1671; }
   static constexpr unsigned GetTypeNameHash() { return 0x65F883E4; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Paths; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
+struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo<MapDef>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1020,19 +1144,19 @@ struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<5>
+struct StormReflTypeInfo<MapDef>::field_data_static<6>
 {
   using member_type = RMergeList<MapVolume>; // RMergeList<MapVolume>
   static constexpr auto GetName() { return "m_Volumes"; }
   static constexpr auto GetType() { return "RMergeList<MapVolume>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xEF2EDFC0; }
   static constexpr unsigned GetTypeNameHash() { return 0x1352869E; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Volumes; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo<MapDef>::field_data_static<5>
+struct StormReflTypeInfo<MapDef>::field_data<6, Self> : public StormReflTypeInfo<MapDef>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1045,7 +1169,7 @@ namespace StormReflFileInfo
 {
   struct MapDef
   {
-    static const int types_n = 9;
+    static const int types_n = 10;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -1082,23 +1206,29 @@ namespace StormReflFileInfo
   template <>
   struct MapDef::type_info<5>
   {
-    using type = ::MapPathPoint;
+    using type = ::MapAnchor;
   };
 
   template <>
   struct MapDef::type_info<6>
   {
-    using type = ::MapPath;
+    using type = ::MapPathPoint;
   };
 
   template <>
   struct MapDef::type_info<7>
   {
-    using type = ::MapVolume;
+    using type = ::MapPath;
   };
 
   template <>
   struct MapDef::type_info<8>
+  {
+    using type = ::MapVolume;
+  };
+
+  template <>
+  struct MapDef::type_info<9>
   {
     using type = ::MapDef;
   };

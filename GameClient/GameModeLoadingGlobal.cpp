@@ -2,6 +2,7 @@
 #include "GameClient/GameModeLoadingGlobal.h"
 #include "GameClient/GameModeLogo.h"
 #include "GameClient/GameModeConnecting.h"
+#include "GameClient/GameModeSinglePlayerBots.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
 
@@ -35,13 +36,20 @@ void GameModeLoadingGlobal::Update()
      container.GetSharedGlobalResources().IsLoaded())
   {
     auto init_settings = container.GetInitSettings();
-    if (init_settings && init_settings->m_AutoConnect)
+    if (init_settings)
     {
-      auto & net_settings = container.GetNetworkInitSettings();
-      net_settings.m_UserName = init_settings->m_UserName;
+      if (init_settings->m_AutoConnect)
+      {
+        auto & net_settings = container.GetNetworkInitSettings();
+        net_settings.m_UserName = init_settings->m_UserName;
 
-      container.StartNetworkClient();
-      container.SwitchMode(GameModeDef<GameModeConnecting>{});
+        container.StartNetworkClient();
+        container.SwitchMode(GameModeDef<GameModeConnecting>{});
+      }
+      else if (init_settings->m_AutoBotGame)
+      {
+        container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, init_settings->m_UserName, GameInitSettings{});
+      }
     }
     else
     {

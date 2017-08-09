@@ -4,9 +4,11 @@
 #include "Engine/UI/UIElement.h"
 #include "Engine/Input/TextInputContext.h"
 
-struct UIElementTextInputInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementTextInputInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementTextInputInitData);
 };
 
 struct UIElementTextInputData
@@ -88,7 +90,7 @@ class UIElementTextInput : public UIElement
 public:
   UIElementTextInput(const UIElementTextInputInitData & init_data, const UIElementTextInputData & data, std::shared_ptr<TextInputContext> && input_context);
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -99,6 +101,12 @@ public:
   TextInputContext & GetInputContext();
 
   void SetCustomRenderCallback(Delegate<void, UIElementTextInput &, RenderState &, const Vector2 &> && render_callback);
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

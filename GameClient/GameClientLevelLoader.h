@@ -18,6 +18,7 @@ public:
   ~GameClientLevelLoader();
 
   void LoadLevel(const GameInitSettings & init_settings, uint64_t load_token, LevelLoadCallback && load_complete);
+  void FinalizeLevel();
   void CancelLoading();
 
 protected:

@@ -51,7 +51,14 @@ protected:
   struct GridDrawElement
   {
     AssetReference<TextureAsset> m_Texture;
+    int m_StartIndex;
+    int m_EndIndex;
+  };
+
+  struct GridDrawList
+  {
     VertexBuffer m_VertexBuffer;
+    std::vector<GridDrawElement> m_DrawElems;
   };
 
   struct TextureInfo
@@ -88,6 +95,7 @@ private:
   int m_LayerIndex;
 
   TileSheetLoadLink m_TileSheet;
+  VertexBuffer m_DrawVertexBuffer;
 
   bool m_InitialSyncComplete;
   Optional<SpatialDatabase> m_SpatialDatabase;
@@ -96,7 +104,7 @@ private:
 
   bool m_RecreateDrawInfo;
   Optional<std::vector<uint32_t>> m_DirtyGrids;
-  Optional<SpatialDatabaseGrid<std::vector<GridDrawElement>>> m_DrawInfo;
+  Optional<SpatialDatabaseGrid<GridDrawList>> m_DrawInfo;
 
   bool m_IgnoreTextureReloads;
   std::vector<TextureInfo> m_Textures;

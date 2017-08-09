@@ -2,7 +2,7 @@
 
 #include "StormNet/NetServerBackend.h"
 #include "StormNet/NetServerInterface.h"
-#include "StormWebrtc/StormWebrtcServer.h"
+#include "StormWebrtcServerAPI/StormWebrtcServer.h"
 
 #include <sb/static_sized_array_alloc.h>
 

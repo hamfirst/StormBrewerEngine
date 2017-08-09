@@ -1,11 +1,17 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementTextInput.refl.h"
+#include "Engine/UI/UIElementTextInput.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Text/TextManager.h"
 
-int UIElementTextInput::Type = 8;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementTextInputInitData);
+REGISTER_UIELEMENT_DATA(UIElementTextInput, UIElementTextInputInitData, UIElementTextInputData);
+
+UIElementType UIElementTextInput::Type = UIElementType::kTextInput;
 
 UIElementTextInput::UIElementTextInput(const UIElementTextInputInitData & init_data, const UIElementTextInputData & data, std::shared_ptr<TextInputContext> && input_context) :
   m_InitData(init_data),
@@ -17,9 +23,25 @@ UIElementTextInput::UIElementTextInput(const UIElementTextInputInitData & init_d
 
 void UIElementTextInput::Update()
 {
-  UIElement::Update();
   auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
   auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+
+  if (m_Data.m_Centered)
+  {
+    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_PositionX, m_Data.m_PositionY), size.Size()));
+  }
+  else
+  {
+    size.m_Start += pos;
+    size.m_End += pos;
+    SetActiveArea(size);
+  }
+
+  UIElement::Update();
+
+
+  size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
+  pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
   {
@@ -100,4 +122,21 @@ void UIElementTextInput::SetCustomRenderCallback(Delegate<void, UIElementTextInp
 {
   m_RenderDelegate = std::move(render_callback);
 }
+
+StormExprValueInitBlock UIElementTextInput::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementTextInput::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementTextInput::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}
+
+
 

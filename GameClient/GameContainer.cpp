@@ -5,6 +5,7 @@
 #include "GameClient/GameCamera.h"
 
 #include "Engine/Text/TextManager.h"
+#include "Engine/Component/ComponentSystem.h"
 
 NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game)
 {
@@ -141,6 +142,10 @@ void GameContainer::Update()
   {
     m_Mode->Step();
   }
+
+
+  auto comp_system = m_EngineState.GetComponentSystem();
+  comp_system->FinalizeComponentDestroys();
 }
 
 void GameContainer::Render()

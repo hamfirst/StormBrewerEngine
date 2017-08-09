@@ -15,6 +15,7 @@ class ComponentSystem;
 class Component;
 class MapSystem;
 class MapResource;
+class MapInstance;
 
 class ComponentUpdateBucketList;
 class ServerObject;
@@ -32,6 +33,7 @@ public:
   void DestroyAllEntities();
 
   std::size_t LoadMap(NotNullPtr<MapResource> map);
+  NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);
   void UnloadMap(std::size_t map_id);
 
   uint32_t CheckCollision(const Box & box, uint32_t collision_layer_mask);

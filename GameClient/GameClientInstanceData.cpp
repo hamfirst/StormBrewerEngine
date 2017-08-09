@@ -1,8 +1,16 @@
 
 #include "GameClient/GameClientInstanceData.h"
+#include "GameClient/GameClientInstanceContainer.h"
+#include "GameClient/GameContainer.h"
 
-GameClientInstanceData::GameClientInstanceData(GameFullState & net_state, ClientLocalData & local_data, GameStage & stage,
+
+
+GameClientInstanceData::GameClientInstanceData(GameContainer & game_container, GameController & game_controller, GameClientController & client_controller,
+                                               GameFullState & net_state, ClientLocalData & local_data, GameStage & stage,
                                                GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, GameClientEventSender & event_sender) :
+  m_GameContainer(game_container),
+  m_GameController(game_controller),
+  m_ClientController(client_controller),
   m_NetState(net_state), 
   m_LocalData(local_data),
   m_Stage(stage),
@@ -51,4 +59,18 @@ GameClientInstanceResources & GameClientInstanceData::GetClientInstanceResources
 GameClientEventSender & GameClientInstanceData::GetEventSender()
 {
   return m_EventSender;
+}
+
+GameLogicContainer GameClientInstanceData::GetLogicContainer()
+{
+  return GameLogicContainer(
+    m_GameController,
+    m_NetState.m_GlobalData,
+    m_NetState.m_ServerObjectManager,
+    m_ClientController,
+    m_ClientController,
+    m_GameContainer.GetSharedGlobalResources(),
+    m_GameContainer.GetInstanceData()->GetSharedInstanceResources(),
+    m_Stage,
+    false, m_SendTimer);
 }

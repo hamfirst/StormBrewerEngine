@@ -385,6 +385,30 @@
     <ClInclude Include="UI\Prototype\UIPrototypeConfirmPopup.h">
       <Filter>UI\Prototype</Filter>
     </ClInclude>
+    <ClInclude Include="UI\UIClickable.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIClickablePtr.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderSettings.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprBlock.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprTypes.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprTypes.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprBinding.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprFuncs.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -623,6 +647,21 @@
     </ClCompile>
     <ClCompile Include="UI\Prototype\UIPrototypeConfirmPopup.cpp">
       <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIClickable.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIClickablePtr.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementExprBlock.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementExprBinding.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementExprFuncs.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

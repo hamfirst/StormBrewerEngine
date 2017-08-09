@@ -163,6 +163,8 @@ void PropertyEditorList::HandleServerChange(const ReflectionChangeNotification &
       get_child_delegate, child_path, [=] { HandleChildSizeChanged(index); }, nullptr, elem.m_FrameLabel.get());
     elem.m_Widget->show();
 
+    connect(elem.m_RemoveButton.get(), &QPushButton::pressed, this, &PropertyEditorList::handleRemoveButtonClicked);
+
     m_ChildElements.emplace(std::make_pair(index, std::move(elem)));
     RespositionChildren();
     m_SizeChangedCallback();

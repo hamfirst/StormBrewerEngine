@@ -21,6 +21,7 @@ public:
 
   void AddQuad(const QuadVertexBuilderInfo & quad);
   void AddRepeatingQuad(const QuadVertexBuilderInfo & quad);
+  bool AddSlicedQuad(const QuadVertexBuilderInfo & quad, const Box & bounds);
 
   void AddFrame(const Box & position, const Vector2 & texture_size, const Vector2 & frame_size, int frame_index, const Color & color);
 
@@ -28,7 +29,6 @@ public:
   VertexBuffer SliceVertexBuffer(const Box & bounds);
 
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
-
 
 private:
 

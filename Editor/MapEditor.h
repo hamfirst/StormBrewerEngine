@@ -21,6 +21,7 @@
 #include "MapEditorEffectLayer.h"
 #include "MapEditorVolume.h"
 #include "MapEditorPath.h"
+#include "MapEditorAnchor.h"
 
 
 static const uint64_t kInvalidFrameId = ~0;
@@ -41,6 +42,7 @@ public:
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & GetEffectManager();
   MapEditorLayerManager<MapVolume, MapEditorVolume> & GetVolumeManager();
   MapEditorLayerManager<MapPath, MapEditorPath> & GetPathManager();
+  MapEditorLayerManager<MapAnchor, MapEditorAnchor> & GetAnchorManager();
 
   MapEditorSelector & GetSelector();
   MapEditorLayerList & GetLayerList();
@@ -57,6 +59,9 @@ public:
   const RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> & GetPathInitData() const;
   void CreateNewPath(const Line & line);
 
+  const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & GetAnchorInitData() const;
+  void CreateNewAnchor(const Vector2 & point);
+
 public:
 
   void AboutToClose() override;
@@ -70,6 +75,7 @@ private:
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> m_EffectLayers;
   MapEditorLayerManager<MapVolume, MapEditorVolume> m_Volumes;
   MapEditorLayerManager<MapPath, MapEditorPath> m_Paths;
+  MapEditorLayerManager<MapAnchor, MapEditorAnchor> m_Anchors;
 
   std::unique_ptr<QGridLayout> m_Layout;
   std::unique_ptr<GenericFrame> m_Properties;
@@ -80,6 +86,7 @@ private:
 
   RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeInitData;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathInitData;
+  RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorInitData;
 
   PropertyEditor * m_PropertyEditor;
   bool m_IgnoreSelectionChanges;

@@ -27,7 +27,8 @@ public:
   void SetWindowPos(const Vector2 & pos);
   void SetWindowSize(const Vector2 & size);
 
-  const Window & GetWindow() { return m_Window; }
+  Window & GetWindow() { return m_Window; }
+  const Window & GetWindow() const { return m_Window; }
 
 private:
   friend class WindowManager;

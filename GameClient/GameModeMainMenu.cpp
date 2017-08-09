@@ -8,7 +8,8 @@
 
 
 GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
-  GameMode(game)
+  GameMode(game),
+  m_UIManager(game.GetWindow())
 {
 
 }
@@ -38,7 +39,7 @@ void GameModeMainMenu::OnAssetsLoaded()
 
   m_TitleImage = m_UIManager.AllocateFullTexture("logo", nullptr, logo_init, logo_data);
 
-  m_PlayOnline.Emplace(m_UIManager, "playonline", nullptr, Box::FromFrameCenterAndSize(Vector2(85, 300), Vector2(150, 50)), "Play", &container.GetClientGlobalResources().UISoundEffects);
+  m_PlayOnline.Emplace(m_UIManager, "playonline", nullptr, Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 30), Vector2(150, 50)), "Play", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayOnline->SetOnClickCallback([this] { PlayOnline(); });
 
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);

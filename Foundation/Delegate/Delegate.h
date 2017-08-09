@@ -3,6 +3,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "Foundation/Optional/NullOpt.h"
+
 static const int kMaxDelegateSize = 32;
 
 template <typename Callable, typename Enable=void>
@@ -44,143 +46,136 @@ struct DelegateReturnEmpty<void>
   }
 };
 
+template <typename T, bool Copyable>
+struct DelegateCopy
+{
+  static void Process(const void * src, void * dst)
+  {
+    const T * src_ptr = static_cast<const T *>(src);
+    T * dst_ptr = static_cast<T *>(dst);
+
+    new(dst_ptr) T(*src_ptr);
+  }
+};
+
+template <typename T>
+struct DelegateCopy<T, false>
+{
+  static void Process(const void * src, void * dst)
+  {
+    ASSERT(false, "Attempting to copy a noncopyable delegate");
+  }
+};
+
+template <typename T, bool Copyable>
+struct DelegateMove
+{
+  static void Process(void * src, void * dst)
+  {
+    T * src_ptr = static_cast<T *>(src);
+    T * dst_ptr = static_cast<T *>(dst);
+
+    new(dst_ptr) T(std::move(*src_ptr));
+  }
+};
+
+template <typename T>
+struct DelegateMove<T, false>
+{
+  static void Process(const void * src, void * dst)
+  {
+    ASSERT(false, "Attempting to move a nonmovable delegate");
+  }
+};
+
+
+template <typename ReturnType, typename ... Args>
+struct DelegateCallbacks
+{
+  DelegateCallbacks() = default;
+
+  template <typename Callable>
+  DelegateCallbacks(const Callable & callable, ReturnType(*caller)(void * obj, Args ... args)) :
+    m_Caller(caller)
+  {
+    m_Deleter = [](void * obj) { Callable * callable = static_cast<Callable *>(obj); callable->~Callable(); };
+    m_Copier = [](const void * src, void * dst) { DelegateCopy<Callable, std::is_copy_constructible<Callable>::value>::Process(src, dst); };
+    m_Mover = [](void * src, void * dst) { DelegateMove<Callable, std::is_move_constructible<Callable>::value>::Process(src, dst); };
+    m_HasCopy = std::is_copy_constructible<Callable>::value;
+    m_HasMove = std::is_move_constructible<Callable>::value;
+  }
+
+  ReturnType(*m_Caller)(void * obj, Args ... args);
+  void(*m_Deleter)(void * obj);
+  void(*m_Copier)(const void * src, void * dst);
+  void(*m_Mover)(void * src, void * dst);
+
+  bool m_HasCopy;
+  bool m_HasMove;
+};
+
 template <typename ReturnType, typename ... Args>
 class Delegate
 {
 public:
   Delegate() :
-    m_Valid(false)
+    m_Callbacks(nullptr)
   {
     
   }
 
   Delegate(const Delegate<ReturnType, Args...> & rhs) noexcept
   {
-    m_Valid = rhs.m_Valid;
-    if (m_Valid)
-    {
-      m_Caller = rhs.m_Caller;
-      m_Deleter = rhs.m_Deleter;
-      m_Copier = rhs.m_Copier;
+    m_Callbacks = rhs.m_Callbacks;
 
-      m_Copier(rhs.m_Buffer, m_Buffer);
-    }
-    else
+    if (m_Callbacks)
     {
-      m_Caller = nullptr;
-      m_Deleter = nullptr;
-      m_Copier = nullptr;
+      m_Callbacks->m_Copier(rhs.m_Buffer, m_Buffer);
     }
   }
 
   Delegate(Delegate<ReturnType, Args...> && rhs) noexcept
   {
-    m_Valid = rhs.m_Valid;
-    if (m_Valid)
-    {
-      m_Caller = rhs.m_Caller;
-      m_Deleter = rhs.m_Deleter;
-      m_Copier = rhs.m_Copier;
+    m_Callbacks = rhs.m_Callbacks;
 
-      m_Copier(rhs.m_Buffer, m_Buffer);
-      if (m_Deleter)
+    if (m_Callbacks)
+    {
+      if (m_Callbacks->m_Mover)
       {
-        m_Deleter(rhs.m_Buffer);
+        m_Callbacks->m_Mover(rhs.m_Buffer, m_Buffer);
+      }
+      else
+      {
+        m_Callbacks->m_Copier(rhs.m_Buffer, m_Buffer);
       }
 
-      rhs.m_Valid = false;
-    }
-    else
-    {
-      m_Caller = nullptr;
-      m_Deleter = nullptr;
-      m_Copier = nullptr;
+      m_Callbacks->m_Deleter(rhs.m_Buffer);
+      rhs.m_Callbacks = nullptr;
     }
   }
-
 
   template <typename Callable, typename std::enable_if_t<
     !std::is_same<std::decay_t<Callable>, Delegate<ReturnType, Args...>>::value &&
-     std::is_class<std::remove_reference_t<Callable>>::value> * Enable = nullptr>
+     std::is_class<std::decay_t<Callable>>::value> * Enable = nullptr>
   Delegate(Callable && callable)
   {
     static_assert(sizeof(Callable) < kMaxDelegateSize, "Delegate cannot fit this callable");
-    new (m_Buffer) std::remove_reference_t<Callable>(callable);
+    new (m_Buffer) std::decay_t<Callable>(std::move(callable));
 
-    m_Caller = [](void * obj, Args ... args) 
+    static DelegateCallbacks<ReturnType, Args...> callbacks(callable, [](void * obj, Args ... args) -> ReturnType 
     { 
-      std::remove_reference_t<Callable> * callable = static_cast<std::remove_reference_t<Callable> *>(obj);
-      return (*callable)(std::forward<Args>(args)...);
-    };
+      typename std::decay_t<Callable> * c = static_cast<typename std::decay_t<Callable> *>(obj);
+      return (*c)(std::forward<Args>(args)...); 
+    });
 
-    m_Copier = [](const void * src, void * dst)
-    {
-      const std::remove_reference_t<Callable> * callable = static_cast<const std::remove_reference_t<Callable> *>(src);
-      new (dst) std::remove_reference_t<Callable>(*callable);
-    };
-
-    m_Deleter = &DelegateDeleter<Callable>::DeleteObj;
-    m_Valid = true;
-  }
-
-  Delegate(ReturnType(*func)(Args ... args))
-  {
-    struct DelData
-    {
-      ReturnType(*m_Func)(Args ... args);
-    };
-
-    DelData * func_buffer = reinterpret_cast<DelData *>(m_Buffer);
-    func_buffer->m_Func = func;
-
-    m_Copier = [](const void * src, void * dst)
-    {
-      const DelData * func_buffer_src = static_cast<const DelData *>(src);
-      DelData * func_buffer_dst = static_cast<DelData *>(dst);
-      *func_buffer_dst = *func_buffer_src;
-    };
-
-    m_Caller = [](void * obj, Args ... args)
-    {
-      DelData * func_buffer = static_cast<DelData *>(obj);
-      return func_buffer->m_Func(args...);
-    };
-
-    m_Deleter = nullptr;
-    m_Valid = true;
+    m_Callbacks = &callbacks;
   }
 
   template <typename C>
-  Delegate(ReturnType(C::*func)(Args ... args), C * c)
+  Delegate(ReturnType(C::*func)(Args ... args), C * c) :
+    Delegate([=](Args ... args) -> ReturnType { return (c->*func)(std::forward<Args>(args)...); })
   {
-    struct DelData
-    {
-      ReturnType(C::*m_Func)(Args ... args);
-      C * m_C;
-    };
-    
-    DelData * func_buffer = reinterpret_cast<DelData *>(m_Buffer);
-    func_buffer->m_Func = func;
-    func_buffer->m_C = c;
 
-    m_Copier = [](const void * src, void * dst)
-    {
-      const DelData * func_buffer_src = static_cast<const DelData *>(src);
-      DelData * func_buffer_dst = static_cast<DelData *>(dst);
-      *func_buffer_dst = *func_buffer_src;
-    };
-
-    m_Caller = [](void * obj, Args ... args)
-    {
-      DelData * func_buffer = static_cast<DelData *>(obj);
-
-      auto func = func_buffer->m_Func;
-      auto c = func_buffer->m_C;
-      return (c->*func)(std::forward<Args>(args)...);
-    };
-
-    m_Deleter = nullptr;
-    m_Valid = true;
   }
 
   ~Delegate()
@@ -192,14 +187,11 @@ public:
   {
     Clear();
 
-    m_Valid = rhs.m_Valid;
-    if (m_Valid)
-    {
-      m_Caller = rhs.m_Caller;
-      m_Deleter = rhs.m_Deleter;
-      m_Copier = rhs.m_Copier;
+    m_Callbacks = rhs.m_Callbacks;
 
-      m_Copier(rhs.m_Buffer, m_Buffer);
+    if (m_Callbacks)
+    {
+      m_Callbacks->m_Copier(rhs.m_Buffer, m_Buffer);
     }
 
     return *this;
@@ -209,20 +201,20 @@ public:
   {
     Clear();
 
-    m_Valid = rhs.m_Valid;
-    if (m_Valid)
+    m_Callbacks = rhs.m_Callbacks;
+    if (m_Callbacks)
     {
-      m_Caller = rhs.m_Caller;
-      m_Deleter = rhs.m_Deleter;
-      m_Copier = rhs.m_Copier;
-
-      m_Copier(rhs.m_Buffer, m_Buffer);
-      if (m_Deleter)
+      if (m_Callbacks->m_Mover)
       {
-        m_Deleter(rhs.m_Buffer);
+        m_Callbacks->m_Mover(rhs.m_Buffer, m_Buffer);
+      }
+      else
+      {
+        m_Callbacks->m_Copier(rhs.m_Buffer, m_Buffer);
       }
 
-      rhs.m_Valid = false;
+      m_Callbacks->m_Deleter(rhs.m_Buffer);
+      rhs.m_Callbacks = nullptr;
     }
 
     return *this;
@@ -230,52 +222,46 @@ public:
 
   ReturnType Call(Args ... args)
   {
-    if (m_Valid == false)
+    if (m_Callbacks == nullptr)
     {
       return DelegateReturnEmpty<ReturnType>::Process();
     }
 
-    return m_Caller(m_Buffer, std::forward<Args>(args)...);
+    return m_Callbacks->m_Caller(m_Buffer, std::forward<Args>(args)...);
   }
 
   ReturnType operator ()(Args ... args)
   {
-    if (m_Valid == false)
+    if (m_Callbacks == nullptr)
     {
       return DelegateReturnEmpty<ReturnType>::Process();
     }
 
-    return m_Caller(m_Buffer, std::forward<Args>(args)...);
+    return m_Callbacks->m_Caller(m_Buffer, std::forward<Args>(args)...);
   }
 
   void Clear()
   {
-    if (m_Valid && m_Deleter != nullptr)
+    if (m_Callbacks != nullptr)
     {
-      m_Deleter(m_Buffer);
+      m_Callbacks->m_Deleter(m_Buffer);
     }
 
-    m_Caller = nullptr;
-    m_Copier = nullptr;
-    m_Deleter = nullptr;
-    m_Valid = false;
+    m_Callbacks = nullptr;
   }
 
   bool IsValid()
   {
-    return m_Valid;
+    return m_Callbacks != nullptr;
   }
 
   operator bool()
   {
-    return m_Valid;
+    return m_Callbacks != nullptr;
   }
   
 private:
 
   unsigned char m_Buffer[kMaxDelegateSize];
-  ReturnType(*m_Caller)(void * obj, Args ... args) = nullptr;
-  void (*m_Deleter)(void * obj) = nullptr;
-  void (*m_Copier)(const void * src, void * dst) = nullptr;
-  bool m_Valid = false;
+  NullOptPtr<DelegateCallbacks<ReturnType, Args...>> m_Callbacks;
 };

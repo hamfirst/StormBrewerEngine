@@ -20,7 +20,7 @@ public:
   virtual void Update();
   virtual void Render();
 
-  bool IsLoaded();
+  virtual bool IsLoaded();
   void Step();
 
 protected:

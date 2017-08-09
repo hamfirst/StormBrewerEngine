@@ -2,6 +2,8 @@
 
 #include "Engine/EngineCommon.h"
 
+#include "Runtime/UI/UIDef.refl.h"
+
 class UIElement;
 class UIManager;
 
@@ -18,6 +20,8 @@ public:
 
   bool operator == (const UIElementHandle && rhs);
   bool operator != (const UIElementHandle && rhs);
+
+  UIElementType GetType() const;
 
   template <typename UIElement>
   NullOptPtr<UIElement> ResolveTo()
@@ -50,7 +54,7 @@ protected:
 
 private:
 
-  uint32_t m_Type;
+  UIElementType m_Type;
   NotNullPtr<UIManager> m_UIManager = nullptr;
 };
 

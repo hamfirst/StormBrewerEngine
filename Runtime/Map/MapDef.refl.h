@@ -7,6 +7,8 @@
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Entity/EntityDef.refl.h"
+#include "Runtime/Anchor/AnchorDef.refl.h"
+#include "Runtime/Anchor/AnchorTypeDatabase.h"
 #include "Runtime/Path/PathDef.refl.h"
 #include "Runtime/Path/PathTypeDatabase.h"
 #include "Runtime/Volume/VolumeDef.refl.h"
@@ -72,6 +74,19 @@ struct RUNTIME_EXPORT MapEffectLayer
   RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo> m_EffectLayerData;
 };
 
+struct RUNTIME_EXPORT MapAnchor
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapAnchor);
+  RString m_Name;
+  RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorData;
+
+  RInt m_X;
+  RInt m_Y;
+
+  Vector2 GetPoint() const;
+  operator Vector2() const;
+};
+
 struct RUNTIME_EXPORT MapPathPoint
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPathPoint);
@@ -80,6 +95,7 @@ struct RUNTIME_EXPORT MapPathPoint
   RInt m_Y;
 
   Vector2 GetPoint() const;
+  operator Vector2() const;
 };
 
 struct RUNTIME_EXPORT MapPath
@@ -111,6 +127,7 @@ struct RUNTIME_EXPORT MapDef
   RMergeList<MapEntityLayer> m_EntityLayers;
   RMergeList<MapParalaxLayer> m_ParalaxLayers;
   RMergeList<MapEffectLayer> m_EffectLayers;
+  RMergeList<MapAnchor> m_Anchors;
   RMergeList<MapPath> m_Paths;
   RMergeList<MapVolume> m_Volumes;
 };

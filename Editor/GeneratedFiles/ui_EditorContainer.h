@@ -34,6 +34,8 @@ public:
     QAction *action_StartServer;
     QAction *action_LaunchClients;
     QAction *action_TestBuild;
+    QAction *action_TestBuildWithoutOneClient;
+    QAction *action_TestBuildWithBots;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -65,6 +67,10 @@ public:
         action_LaunchClients->setObjectName(QStringLiteral("action_LaunchClients"));
         action_TestBuild = new QAction(EditorContainerClass);
         action_TestBuild->setObjectName(QStringLiteral("action_TestBuild"));
+        action_TestBuildWithoutOneClient = new QAction(EditorContainerClass);
+        action_TestBuildWithoutOneClient->setObjectName(QStringLiteral("action_TestBuildWithoutOneClient"));
+        action_TestBuildWithBots = new QAction(EditorContainerClass);
+        action_TestBuildWithBots->setObjectName(QStringLiteral("action_TestBuildWithBots"));
         centralWidget = new QWidget(EditorContainerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         EditorContainerClass->setCentralWidget(centralWidget);
@@ -95,6 +101,8 @@ public:
         menuEdit->addAction(action_Undo);
         menuEdit->addAction(action_Redo);
         menuRun->addAction(action_TestBuild);
+        menuRun->addAction(action_TestBuildWithoutOneClient);
+        menuRun->addAction(action_TestBuildWithBots);
 
         retranslateUi(EditorContainerClass);
 
@@ -113,6 +121,8 @@ public:
         action_StartServer->setText(QApplication::translate("EditorContainerClass", "Start Server", Q_NULLPTR));
         action_LaunchClients->setText(QApplication::translate("EditorContainerClass", "Launch Clients", Q_NULLPTR));
         action_TestBuild->setText(QApplication::translate("EditorContainerClass", "Test Build", Q_NULLPTR));
+        action_TestBuildWithoutOneClient->setText(QApplication::translate("EditorContainerClass", "Test Build Without One Client", Q_NULLPTR));
+        action_TestBuildWithBots->setText(QApplication::translate("EditorContainerClass", "Test Build With Bots", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("EditorContainerClass", "&File", Q_NULLPTR));
         menu_New->setTitle(QApplication::translate("EditorContainerClass", "&New", Q_NULLPTR));
         menuEdit->setTitle(QApplication::translate("EditorContainerClass", "Edit", Q_NULLPTR));

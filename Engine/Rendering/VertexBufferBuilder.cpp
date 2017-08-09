@@ -49,6 +49,26 @@ void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & qua
   }
 }
 
+bool QuadVertexBufferBuilder::AddSlicedQuad(const QuadVertexBuilderInfo & quad, const Box & bounds)
+{
+  Optional<Box> clipped_box = ClipBox(quad.m_Position, bounds);
+
+  if (clipped_box)
+  {
+    Vector2 start_offset = clipped_box->m_Start - quad.m_Position.m_Start;
+    Vector2 end_offset = clipped_box->m_End - quad.m_Position.m_End;
+    QuadVertexBuilderInfo clipped_vert_data = quad;
+    clipped_vert_data.m_Position = *clipped_box;
+    clipped_vert_data.m_TexCoords.m_Start += start_offset;
+    clipped_vert_data.m_TexCoords.m_End += start_offset;
+
+    AddQuad(clipped_vert_data);
+    return true;
+  }
+
+  return false;
+}
+
 void QuadVertexBufferBuilder::AddFrame(const Box & position, const Vector2 & texture_size, const Vector2 & frame_size, int frame_index, const Color & color)
 {
   if (frame_size.x == 0 || frame_size.y == 0 || texture_size.x == 0 || texture_size.y == 0)

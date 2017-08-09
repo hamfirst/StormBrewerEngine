@@ -15,10 +15,16 @@ enum class MapEditorLayerItemType
   kEffectLayer,
   kVolumeParent,
   kCreateVolume,
+  kAllVolumes,
   kVolume,
   kPathParent,
   kCreatePath,
+  kAllPaths,
   kPath,
+  kAnchorParent,
+  kCreateAnchor,
+  kAllAnchors,
+  kAnchor,
 };
 
 class MapEditorLayerSelection

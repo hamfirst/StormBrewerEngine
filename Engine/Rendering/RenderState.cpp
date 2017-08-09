@@ -14,13 +14,13 @@ void BootstrapContext()
 
 void RenderState::InitRenderState(int screen_width, int screen_height)
 {
-  glDisable(GL_BLEND); CHECK_GL_RENDER_ERROR;
+  glEnable(GL_BLEND); CHECK_GL_RENDER_ERROR;
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); CHECK_GL_RENDER_ERROR;
   glBlendEquation(GL_FUNC_ADD); CHECK_GL_RENDER_ERROR;
 
   BootstrapContext();
 
-  m_BlendEnabled = false;
+  m_BlendEnabled = true;
   m_BlendMode = RenderingBlendMode::kAlpha;
 
   m_ScreenWidth = screen_width;
@@ -139,13 +139,13 @@ RenderVec2 RenderState::ScreenPixelsToRenderPixels(const RenderVec2 & screen_pix
   auto half_screen = RenderVec2{ m_ScreenWidth, m_ScreenHeight } * 0.5f;
   auto half_render = RenderVec2{ m_RenderWidth, m_RenderHeight } * 0.5f;
   auto clip_space = (screen_pixels - half_screen) / half_screen;
-  return (clip_space * half_render) + half_render;
+  return (clip_space * half_render);
 }
 
 RenderVec2 RenderState::RenderPixelsToScreenPixels(const RenderVec2 & render_pixels)
 {
   auto half_screen = RenderVec2{ m_ScreenWidth, m_ScreenHeight } *0.5f;
   auto half_render = RenderVec2{ m_RenderWidth, m_RenderHeight } *0.5f;
-  auto clip_space = (render_pixels - half_render) / half_render;
+  auto clip_space = (render_pixels) / half_render;
   return (clip_space * half_screen) + half_screen;
 }

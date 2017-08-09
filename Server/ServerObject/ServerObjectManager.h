@@ -40,7 +40,7 @@ public:
   template <typename T>
   NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, reserved_slot, init_data);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, (int)reserved_slot, init_data);
     return static_cast<T *>(ptr);
   }
 
@@ -57,6 +57,15 @@ public:
     {
       visitor(elem.first + object_index, elem.second.m_ServerObject);
     }
+  }
+
+  NullOptPtr<ServerObject> GetReservedSlotObject(std::size_t slot_index);
+
+  template <typename T>
+  NullOptPtr<T> GetReservedSlotObjectAs(std::size_t slot_index)
+  {
+    static_assert(std::is_base_of<ServerObject, T>::value, "Must resolve to server object type");
+    return static_cast<NullOptPtr<T>>(GetReservedSlotObjectInternal(slot_index, T::TypeIndex));
   }
 
   void CreateUpdateList(ServerObjectUpdateList & update_list);
@@ -78,6 +87,7 @@ protected:
 
   void FinalizeHandles();
   NullOptPtr<ServerObject> ResolveHandle(int slot_index, int gen) const;
+  NullOptPtr<ServerObject> GetReservedSlotObjectInternal(std::size_t slot_index, std::size_t type_index);
 
   struct DynamicObjectInfo
   {

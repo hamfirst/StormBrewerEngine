@@ -92,8 +92,13 @@ EditorContainer::EditorContainer(QWidget *parent) :
   connect(ui.action_Redo, &QAction::triggered, this, &EditorContainer::redo);
   ui.action_Redo->setShortcut(QKeySequence::Redo);
 
-  connect(ui.action_TestBuild, &QAction::triggered, this, &EditorContainer::testBuild);
+  connect(ui.action_TestBuild, &QAction::triggered, this, &EditorContainer::testBuildOnline);
   ui.action_TestBuild->setShortcut(QKeySequence(Qt::Key_F7));
+
+  connect(ui.action_TestBuildWithoutOneClient, &QAction::triggered, this, &EditorContainer::testBuildOnlineWithoutOneClient);
+
+  connect(ui.action_TestBuildWithBots, &QAction::triggered, this, &EditorContainer::testBuildBots);
+  ui.action_TestBuildWithBots->setShortcut(QKeySequence(Qt::Key_F6));
 
   m_RecentFileSeparator = ui.menuFile->addSeparator();
   for (int index = 0; index < kNumRecentFiles; index++)
@@ -155,6 +160,8 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
+  g_TextManager.LoadFont("./Fonts/Furore.otf", -2, 25);
+  g_TextManager.LoadFont("./Fonts/Arial.ttf", -3, 12);
 
   m_EngineInitialized = true;
   m_NextDocumentId = 1;
@@ -207,6 +214,7 @@ void EditorContainer::OpenEditorForFile(czstr file)
     widget = new TextureViewer(file);
     break;
   case COMPILE_TIME_CRC32_STR("ttf"):
+  case COMPILE_TIME_CRC32_STR("otf"):
     widget = new FontViewer(file);
     break;
   case COMPILE_TIME_CRC32_STR("wav"):
@@ -574,13 +582,25 @@ void EditorContainer::redo()
   }
 }
 
-void EditorContainer::testBuild()
+void EditorContainer::testBuildOnline()
 {
-  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this));
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, false));
   m_HostWidgets.back()->show();
 }
 
-void EditorContainer::NotifyClientWindowClosed(NotNullPtr<GameHostWidget> host_widget)
+void EditorContainer::testBuildOnlineWithoutOneClient()
+{
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, true));
+  m_HostWidgets.back()->show();
+}
+
+void EditorContainer::testBuildBots()
+{
+  m_HostWidgets.emplace_back(std::make_unique<GameClientWidget>(this, 0, true));
+  m_HostWidgets.back()->show();
+}
+
+void EditorContainer::NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget)
 {
   if (m_Closing)
   {

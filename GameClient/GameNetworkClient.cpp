@@ -165,6 +165,11 @@ std::unique_ptr<GameClientInstanceContainer> GameNetworkClient::ConvertToOffline
   return old_instance_container;
 }
 
+void GameNetworkClient::FinalizeMapLoad()
+{
+  m_InstanceContainer->GetLevelLoader().FinalizeLevel();
+}
+
 void GameNetworkClient::CheckFinalizeConnect()
 {
   if (m_GotInitialClientData && m_GotInitialSim && m_GotInitialPing && m_State == ClientConnectionState::kWaitingForInitialSync)

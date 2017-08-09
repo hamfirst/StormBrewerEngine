@@ -31,11 +31,17 @@ void MapSystem::UnloadMap(std::size_t map_id)
   m_Maps.erase(itr);
 }
 
-void MapSystem::DrawAllMaps(DrawList & draw_list)
+NullOptPtr<MapInstance> MapSystem::GetMapInstance(std::size_t map_id)
+{
+  auto itr = m_Maps.find(map_id);
+  return (itr == m_Maps.end()) ? nullptr : itr->second.get();
+}
+
+void MapSystem::DrawAllMaps(const Box & viewport_bounds, DrawList & draw_list)
 {
   for (auto & map : m_Maps)
   {
     MapInstance * inst = map.second.get();
-    inst->Draw(draw_list);
+    inst->Draw(viewport_bounds, draw_list);
   }
 }

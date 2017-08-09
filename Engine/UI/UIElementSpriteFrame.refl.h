@@ -6,10 +6,11 @@
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Animation/AnimationState.h"
 
+#include "Runtime/UI/UIDef.refl.h"
 
-struct UIElementSpriteFrameInitData
+struct UIElementSpriteFrameInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementSpriteFrameInitData);
 
   RString STORM_REFL_ATTR_VAL(file, tilesheet) m_SpriteFile;
   RString m_Animation;
@@ -45,7 +46,7 @@ class UIElementSpriteFrame : public UIElement
 public:
   UIElementSpriteFrame(const UIElementSpriteFrameInitData & init_data, const UIElementSpriteFrameData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -57,6 +58,12 @@ public:
   void SetCustomRenderCallback(Delegate<void, UIElementSpriteFrame &, RenderState &, const Vector2 &> && render_callback);
   
   SpritePtr & GetSprite();
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

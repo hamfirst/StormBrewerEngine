@@ -11,6 +11,9 @@
     <ClCompile Include="GameSharedGlobalResources.cpp" />
     <ClCompile Include="GameSharedInstanceResources.cpp" />
     <ClCompile Include="GameValidation.cpp" />
+    <ClCompile Include="AI\PlayerAI.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMessages.refl.h" />
@@ -37,6 +40,9 @@
     <ClInclude Include="GameSharedGlobalResources.h" />
     <ClInclude Include="GameSharedInstanceResources.h" />
     <ClInclude Include="GameValidation.h" />
+    <ClInclude Include="AI\PlayerAI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">
@@ -50,6 +56,9 @@
     </Filter>
     <Filter Include="Data">
       <UniqueIdentifier>{c7a1eb28-f8e4-4cbe-8dda-3174d3ddd9e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{a4e860f9-13bc-4749-acee-ff403ee548c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

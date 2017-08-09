@@ -126,6 +126,16 @@ void MapEditorViewer::ClearPreviewLine()
   m_PreviewLine.Clear();
 }
 
+void MapEditorViewer::SetPreviewPoint(const Vector2 & point)
+{
+  m_PreviewPoint = point;
+}
+
+void MapEditorViewer::ClearPreviewPoint()
+{
+  m_PreviewPoint.Clear();
+}
+
 void MapEditorViewer::SetTool(std::unique_ptr<MapEditorToolBase> && tool)
 {
   ClearTool();
@@ -209,6 +219,15 @@ void MapEditorViewer::ZoomToPath(std::size_t layer_index)
 
     pos /= points;
     m_Center = pos;
+  }
+}
+
+void MapEditorViewer::ZoomToAnchor(std::size_t layer_index)
+{
+  auto anchor = m_Map.m_Anchors.TryGet(layer_index);
+  if (anchor)
+  {
+    m_Center = anchor->GetPoint();
   }
 }
 
@@ -469,6 +488,7 @@ void MapEditorViewer::paintGL()
   auto & entity_manager = m_Editor->GetEntityManager();
   auto & volume_manager = m_Editor->GetVolumeManager();
   auto & path_manager = m_Editor->GetPathManager();
+  auto & anchor_manager = m_Editor->GetAnchorManager();
 
   std::map<int, std::vector<Delegate<void>>> draw_callbacks;
 
@@ -611,6 +631,17 @@ void MapEditorViewer::paintGL()
     layer->Draw(builder, viewport_bounds, m_Center, m_Magnification);
   }
 
+  for (auto elem : m_Map.m_Anchors)
+  {
+    auto layer = anchor_manager.GetLayerManager(elem.first);
+    if (layer == nullptr || layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->Draw(builder, viewport_bounds, m_Center, m_Magnification);
+  }
+
   for (auto elem : m_Map.m_Volumes)
   {
     auto layer = volume_manager.GetLayerManager(elem.first);
@@ -633,11 +664,27 @@ void MapEditorViewer::paintGL()
     layer->DrawControls(builder, viewport_bounds, m_Center, m_Magnification);
   }
 
+  for (auto elem : m_Map.m_Anchors)
+  {
+    auto layer = anchor_manager.GetLayerManager(elem.first);
+    if (layer == nullptr || layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->DrawControls(builder, viewport_bounds, m_Center, m_Magnification);
+  }
+
   if (m_PreviewLine)
   {
     DrawUtil::DrawLine(builder, m_PreviewLine->m_Start, m_PreviewLine->m_End, m_Magnification);
     DrawUtil::DrawCornerControl(builder, m_PreviewLine->m_Start, m_Magnification);
     DrawUtil::DrawCornerControl(builder, m_PreviewLine->m_End, m_Magnification);
+  }
+
+  if (m_PreviewPoint)
+  {
+    DrawUtil::DrawCornerControl(builder, m_PreviewPoint.Value(), m_Magnification);
   }
 
   if (builder.HasGeo())

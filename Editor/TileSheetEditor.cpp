@@ -14,6 +14,23 @@ TileSheetEditor::TileSheetEditor(PropertyFieldDatabase & property_db, const std:
 {
   FrameEditorContainer::CreateFrameEditorTabs(this, m_Sprite, m_TextureAccess, m_TabWidget.get(),
     &m_GlobalFrameDataCallback, 0, g_FrameData.m_TileGlobalData);
+
+  m_FrameList->SetFrameSelectionCallback([this](uint64_t frame_id)
+  {
+    auto getter = [this, frame_id]() 
+    { 
+      auto frame_data = m_Sprite.m_FrameData.TryGet(frame_id);
+      if (frame_data == nullptr)
+      {
+        frame_data = &m_Sprite.m_FrameData.EmplaceAt(frame_id);
+      }
+
+      return frame_data;
+    };
+
+    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, getter, frame_id, g_FrameData.m_TileFrameData);
+    frame_editor->exec();
+  });
 }
 
 REGISTER_EDITOR("Tile Sheet", TileSheetEditor, TileSheetDef, ".tilesheet", "TileSheets");

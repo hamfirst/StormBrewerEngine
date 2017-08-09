@@ -24,11 +24,11 @@ public:
  
   void Clear();
 
-  void PushDraw(int layer_order, DrawListRenderCall && cb);
+  void PushDraw(int layer_order, int draw_key, DrawListRenderCall && cb);
   void Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
 
 private:
 
-  std::map<int, std::vector<DrawListRenderCall>> m_DrawCallbacks;
+  std::map<int, std::vector<std::pair<int, DrawListRenderCall>>> m_DrawCallbacks;
 };
 

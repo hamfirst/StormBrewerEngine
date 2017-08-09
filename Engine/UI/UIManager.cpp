@@ -1,9 +1,20 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIManager.h"
+#include "Engine/UI/UIElementExprFuncs.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Window/Window.h"
+
+#include "Engine/UI/UIElementContainer.refl.meta.h"
+#include "Engine/UI/UIElementGradient.refl.meta.h"
+#include "Engine/UI/UIElementTextureSlice.refl.meta.h"
+#include "Engine/UI/UIElementSpriteFrame.refl.meta.h"
+#include "Engine/UI/UIElementText.refl.meta.h"
+#include "Engine/UI/UIElementShape.refl.meta.h"
+#include "Engine/UI/UIElementFullTexture.refl.meta.h"
+#include "Engine/UI/UIElementTextInput.refl.meta.h"
 
 #include "Foundation/SkipField/SkipField.h"
 
@@ -17,10 +28,23 @@ SkipField<UIElementText> s_UITextAllocator;
 SkipField<UIElementShape> s_UIShapeAllocator;
 SkipField<UIElementFullTexture> s_UIFullTextureAllocator;
 SkipField<UIElementTextInput> s_UITextInputAllocator;
+SkipField<UIClickable> s_UIClickableAllocator;
 
-void UIManager::Update(InputState & input_state, RenderState & render_state)
+
+UIManager::UIManager(Window & container_window) :
+  m_ContainerWindow(container_window),
+  m_FuncList(UICreateFunctionList())
+{
+
+}
+
+void UIManager::Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
 {
   //std::sort(m_RootElements.begin(), m_RootElements.end(), [](NotNullPtr<const UIElement> a, NotNullPtr<const UIElement> b) { return a->m_Layer > b->m_Layer; });
+
+  m_GlobalBlock.m_Time = (float)GetTimeSeconds();
+  m_GlobalBlock.m_ScreenWidth = (float)render_state.GetRenderWidth();
+  m_GlobalBlock.m_ScreenHeight = (float)render_state.GetRenderHeight();
 
   for (auto elem : m_RootElements)
   {
@@ -37,7 +61,7 @@ void UIManager::Update(InputState & input_state, RenderState & render_state)
     }
   }
 
-  ProcessActiveAreas(active_elements, input_state, render_state);
+  ProcessActiveAreas(active_elements, input_state, render_state, clickable_offset);
 }
 
 void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
@@ -112,11 +136,170 @@ UIElementPtr<UIElementFullTexture> UIManager::AllocateFullTexture(czstr name, Nu
   return parent == nullptr ? UIElementPtr<UIElementFullTexture>(ptr) : UIElementPtr<UIElementFullTexture>(ptr->m_Handle);
 }
 
-UIElementPtr<UIElementTextInput> UIManager::AllocateTextInput(czstr name, std::shared_ptr<TextInputContext> && input_context, NullOptPtr<UIElement> parent,
+UIElementPtr<UIElementTextInput> UIManager::AllocateTextInput(czstr name, NullOptPtr<UIElement> parent,
   const UIElementTextInputInitData & init_data, const UIElementTextInputData & data)
 {
-  auto ptr = AllocateUIElement(name, s_UITextInputAllocator, parent, init_data, data, std::move(input_context));
+  auto ptr = AllocateUIElement(name, s_UITextInputAllocator, parent, init_data, data, m_ContainerWindow.CreateTextInputContext(true));
   return parent == nullptr ? UIElementPtr<UIElementTextInput>(ptr) : UIElementPtr<UIElementTextInput>(ptr->m_Handle);
+}
+
+UIElementHandle UIManager::AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent)
+{
+  auto handle = AllocateElementFromInitData(name, parent, def.m_InitData.GetTypeNameHash(), def.m_InitData.GetValue());
+  auto elem = handle.Resolve();
+
+  if (elem == nullptr)
+  {
+    return handle;
+  }
+
+  std::vector<std::string> errors;
+  elem->InitializeExprBlock(def, nullptr, *this, errors);
+  return handle;
+}
+
+uint32_t UIManager::GetElementTypeNameHashForEnum(UIElementType type)
+{
+  switch (type)
+  {
+  default:
+  case UIElementType::kContainer:
+    return StormReflTypeInfo<UIElementContainerInitData>::GetNameHash();
+  case UIElementType::kGradient:
+    return StormReflTypeInfo<UIElementGradientInitData>::GetNameHash();
+  case UIElementType::kTextureSlice:
+    return StormReflTypeInfo<UIElementTextureSliceInitData>::GetNameHash();
+  case UIElementType::kSpriteFrame:
+    return StormReflTypeInfo<UIElementSpriteFrameInitData>::GetNameHash();
+  case UIElementType::kText:
+    return StormReflTypeInfo<UIElementTextInitData>::GetNameHash();
+  case UIElementType::kShape:
+    return StormReflTypeInfo<UIElementShapeInitData>::GetNameHash();
+  case UIElementType::kFullTexture:
+    return StormReflTypeInfo<UIElementFullTextureInitData>::GetNameHash();
+  case UIElementType::kTextInput:
+    return StormReflTypeInfo<UIElementTextInputInitData>::GetNameHash();
+  }
+}
+
+std::vector<std::string> UIManager::GetVariablesForElementType(uint32_t element_type_hash)
+{
+  std::vector<std::string> variables;
+  switch (element_type_hash)
+  {
+  default:
+    StormReflVisitStatic<UIElementContainerData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementContainerInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementContainerData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementGradientInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementGradientData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementTextureSliceInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementTextureSliceData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementSpriteFrameInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementSpriteFrameData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementTextInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementTextData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementShapeInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementShapeData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementFullTextureInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementFullTextureData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  case StormReflTypeInfo<UIElementTextInputInitData>::GetNameHash():
+    StormReflVisitStatic<UIElementTextInputData>::VisitEach([&](auto f) { variables.emplace_back(f.GetName()); });
+    break;
+  }
+
+  return variables;
+}
+
+UIClickablePtr UIManager::AllocateClickable(const Box & active_area)
+{
+  UIClickable::UIClickableConstructorTag crap;
+
+  auto ptr = s_UIClickableAllocator.Allocate(crap);
+  ptr->m_ActiveArea = active_area;
+  ptr->m_Manager = this;
+
+  m_Clickables.push_back(ptr);
+  return UIClickablePtr(ptr);
+}
+
+UIElementHandle UIManager::GetElementByPath(czstr path)
+{
+  if (*path != '.')
+  {
+    return UIElementHandle{};
+  }
+
+  path++;
+
+  auto hash = crc32begin();
+  while (true)
+  {
+    if (*path == 0 || *path == '.')
+    {
+      break;
+    }
+
+    hash = crc32additive(hash, *path);
+    path++;
+  }
+
+  hash = crc32end(hash);
+
+  NullOptPtr<UIElement> cur_elem = nullptr;
+  for (auto elem : m_RootElements)
+  {
+    if (elem->m_NameHash == hash)
+    {
+      cur_elem = elem;
+      break;
+    }
+  }
+
+  if (cur_elem == nullptr)
+  {
+    return UIElementHandle();
+  }
+
+  while (true)
+  {
+    if (*path == 0)
+    {
+      return cur_elem->GetHandle();
+    }
+
+    if (*path != '.')
+    {
+      return cur_elem->GetHandle();
+    }
+
+    hash = crc32begin();
+    while (true)
+    {
+      if (*path == 0 || *path == '.')
+      {
+        break;
+      }
+
+      hash = crc32additive(hash, *path);
+      path++;
+    }
+    hash = crc32end(hash);
+
+    cur_elem = cur_elem->GetChild(hash);
+    if (cur_elem == nullptr)
+    {
+      return UIElementHandle();
+    }
+  }
 }
 
 bool UIManager::HasSelectedElement() const
@@ -170,25 +353,63 @@ NotNullPtr<ElementType> UIManager::AllocateUIElement(czstr name, SkipField<Eleme
   return elem;
 }
 
-NotNullPtr<UIElement> UIManager::ResolveHandle(uint32_t type, Handle & handle)
+UIElementHandle UIManager::AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementDataBase * init_data)
+{
+  UIElementHandle handle;
+  switch (type_name_hash)
+  {
+  default:
+    handle = AllocateUIElement(name, s_UIContainerAllocator, parent, UIElementContainerInitData{}, UIElementContainerData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementContainerInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UIContainerAllocator, parent, *static_cast<const UIElementContainerInitData *>(init_data), UIElementContainerData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementGradientInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UIGradientAllocator, parent, *static_cast<const UIElementGradientInitData *>(init_data), UIElementGradientData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementTextureSliceInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UITextureSliceAllocator, parent, *static_cast<const UIElementTextureSliceInitData *>(init_data), UIElementTextureSliceData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementSpriteFrameInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UISpriteFrameAllocator, parent, *static_cast<const UIElementSpriteFrameInitData *>(init_data), UIElementSpriteFrameData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementTextInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UITextAllocator, parent, *static_cast<const UIElementTextInitData *>(init_data), UIElementTextData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementShapeInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UIShapeAllocator, parent, *static_cast<const UIElementShapeInitData *>(init_data), UIElementShapeData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementFullTextureInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UIFullTextureAllocator, parent, *static_cast<const UIElementFullTextureInitData *>(init_data), UIElementFullTextureData{})->GetHandle();
+    break;
+  case StormReflTypeInfo<UIElementTextInputInitData>::GetNameHash():
+    handle = AllocateUIElement(name, s_UITextInputAllocator, parent, *static_cast<const UIElementTextInputInitData *>(init_data), UIElementTextInputData{},
+      m_ContainerWindow.CreateTextInputContext(true))->GetHandle();
+    break;
+  }
+
+  return handle;
+}
+
+NotNullPtr<UIElement> UIManager::ResolveHandle(UIElementType type, Handle & handle)
 {
   switch (type)
   {
-  case 1:
+  case UIElementType::kContainer:
     return s_UIContainerAllocator.ResolveHandle(handle);
-  case 2:
+  case UIElementType::kGradient:
     return s_UIGradientAllocator.ResolveHandle(handle);
-  case 3:
+  case UIElementType::kTextureSlice:
     return s_UITextureSliceAllocator.ResolveHandle(handle);
-  case 4:
+  case UIElementType::kSpriteFrame:
     return s_UISpriteFrameAllocator.ResolveHandle(handle);
-  case 5:
+  case UIElementType::kText:
     return s_UITextAllocator.ResolveHandle(handle);
-  case 6:
+  case UIElementType::kShape:
     return s_UIShapeAllocator.ResolveHandle(handle);
-  case 7:
+  case UIElementType::kFullTexture:
     return s_UIFullTextureAllocator.ResolveHandle(handle);
-  case 8:
+  case UIElementType::kTextInput:
     return s_UITextInputAllocator.ResolveHandle(handle);
   }
 
@@ -232,23 +453,28 @@ void UIManager::ReleaseElement(NotNullPtr<UIElement> element)
   
   switch (element->m_Handle.m_Type)
   {
-  case 1:
+  case UIElementType::kContainer:
     return s_UIContainerAllocator.Release(static_cast<NotNullPtr<UIElementContainer>>(element));
-  case 2:
+  case UIElementType::kGradient:
     return s_UIGradientAllocator.Release(static_cast<NotNullPtr<UIElementGradient>>(element));
-  case 3:
+  case UIElementType::kTextureSlice:
     return s_UITextureSliceAllocator.Release(static_cast<NotNullPtr<UIElementTextureSlice>>(element));
-  case 4:
+  case UIElementType::kSpriteFrame:
     return s_UISpriteFrameAllocator.Release(static_cast<NotNullPtr<UIElementSpriteFrame>>(element));
-  case 5:
+  case UIElementType::kText:
     return s_UITextAllocator.Release(static_cast<NotNullPtr<UIElementText>>(element));
-  case 6:
+  case UIElementType::kShape:
     return s_UIShapeAllocator.Release(static_cast<NotNullPtr<UIElementShape>>(element));
-  case 7:
+  case UIElementType::kFullTexture:
     return s_UIFullTextureAllocator.Release(static_cast<NotNullPtr<UIElementFullTexture>>(element));
-  case 8:
+  case UIElementType::kTextInput:
     return s_UITextInputAllocator.Release(static_cast<NotNullPtr<UIElementTextInput>>(element));
   }
+}
+
+void UIManager::ReleaseClickable(NotNullPtr<UIClickable> clickable)
+{
+  s_UIClickableAllocator.Release(clickable);
 }
 
 void UIManager::SetupActiveElementsList(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, NotNullPtr<UIElement> elem, const Vector2 & offset)
@@ -272,100 +498,208 @@ void UIManager::SetupActiveElementsList(std::vector<std::pair<NotNullPtr<UIEleme
   }
 }
 
-void UIManager::ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, InputState & input_state, RenderState & render_state)
+void UIManager::ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
 {
   m_HasSelectedElement = false;
 
-  UIElement * cur_pressed = nullptr;
+  NullOptPtr<UIElement> cur_pressed_element = nullptr;
   for (auto elem : elements)
   {
     if (elem.first->m_State == UIElementState::kPressed)
     {
-      if (cur_pressed)
+      if (cur_pressed_element)
       {
         elem.first->m_OnStateChange(elem.first->m_State, UIElementState::kActive);
         elem.first->m_State = UIElementState::kActive;
       }
       else
       {
-        cur_pressed = elem.first;
+        cur_pressed_element = elem.first;
+      }
+    }
+  }
+
+  NullOptPtr<UIClickable> cur_pressed_clickable = nullptr;
+  for (auto elem : m_Clickables)
+  {
+    if (elem->m_State == UIClickableState::kPressed)
+    {
+      if (cur_pressed_element || cur_pressed_element)
+      {
+        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
+        elem->m_State = UIClickableState::kActive;
+      }
+      else
+      {
+        cur_pressed_clickable = elem;
       }
     }
   }
 
   auto pointer_state = input_state.GetPointerState();
-  if (pointer_state.m_InFocus == false)
-  {
-    if (cur_pressed)
-    {
-      cur_pressed->m_OnStateChange(cur_pressed->m_State, UIElementState::kActive);
-      cur_pressed->m_State = UIElementState::kActive;
-      cur_pressed = nullptr;
-    }
-  }
-
   auto pointer_pos = (Vector2)render_state.ScreenPixelsToRenderPixels(pointer_state.m_Pos);
 
-  UIElement * cur_hover = nullptr;
-  for (auto elem : elements)
+  Vector2 ui_pos = pointer_pos;
+  ui_pos += render_state.GetRenderSize() / 2;
+
+  UIElement * cur_hover_element = nullptr;
+  UIClickable * cur_hover_clickable = nullptr;
+  if (pointer_state.m_InFocus)
   {
-    if (PointInBox(elem.second, pointer_pos) && pointer_state.m_InFocus)
+    for (auto elem : elements)
     {
-      cur_hover = elem.first;
-      break;
+      if (PointInBox(elem.second, ui_pos))
+      {
+        cur_hover_element = elem.first;
+        break;
+      }
+    }
+
+    for (auto elem : m_Clickables)
+    {
+      auto box = elem->m_ActiveArea;
+      box.m_Start -= clickable_offset;
+      box.m_End -= clickable_offset;
+
+      if (PointInBox(box, pointer_pos))
+      {
+        cur_hover_clickable = elem;
+        break;
+      }
     }
   }
 
-  if (input_state.GetMousePressedThisFrame(kMouseLeftButton))
+  if (cur_pressed_element || cur_pressed_clickable)
   {
-    if (cur_hover)
+    for (auto elem : elements)
     {
-      cur_hover->m_OnStateChange(cur_hover->m_State, UIElementState::kPressed);
-      cur_hover->m_State = UIElementState::kPressed;
+      if (elem.first->m_State == UIElementState::kHover)
+      {
+        elem.first->m_OnStateChange(elem.first->m_State, UIElementState::kActive);
+        elem.first->m_State = UIElementState::kActive;
+      }
     }
-  }
-  else if (input_state.GetMouseButtonState(kMouseLeftButton))
-  {
-    cur_hover = nullptr;
+
+    for (auto elem : m_Clickables)
+    {
+      if (elem->m_State == UIClickableState::kHover)
+      {
+        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
+        elem->m_State = UIClickableState::kActive;
+      }
+    }
+
+    if (pointer_state.m_InFocus == false)
+    {
+      if (cur_pressed_element)
+      {
+        cur_pressed_element->m_OnStateChange(cur_pressed_element->m_State, UIElementState::kActive);
+        cur_pressed_element->m_State = UIElementState::kActive;
+      }
+      else if (cur_pressed_clickable)
+      {
+        cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
+        cur_pressed_clickable->m_State = UIClickableState::kActive;
+      }
+    }
+    else if (input_state.GetMouseButtonState(kMouseLeftButton) == false)
+    {
+      if (cur_hover_element != nullptr)
+      {
+        if (cur_hover_element == cur_pressed_element)
+        {
+          cur_pressed_element->m_OnClick(cur_pressed_element);
+          cur_pressed_element->m_OnStateChange(cur_pressed_element->m_State, UIElementState::kHover);
+          cur_pressed_element->m_State = UIElementState::kHover;
+        }
+        else
+        {
+          cur_pressed_element->m_OnStateChange(cur_pressed_element->m_State, UIElementState::kActive);
+          cur_pressed_element->m_State = UIElementState::kActive;
+        }
+      }
+      else if(cur_pressed_element)
+      {
+        cur_pressed_element->m_OnStateChange(cur_pressed_element->m_State, UIElementState::kActive);
+        cur_pressed_element->m_State = UIElementState::kActive;
+      }
+      
+      if (cur_hover_clickable != nullptr)
+      {
+        if (cur_hover_clickable == cur_pressed_clickable)
+        {
+          cur_pressed_clickable->m_OnClick();
+          cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kHover);
+          cur_pressed_clickable->m_State = UIClickableState::kHover;
+        }
+        else
+        {
+          cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
+          cur_pressed_clickable->m_State = UIClickableState::kActive;
+        }
+      }
+      else if(cur_pressed_clickable)
+      {
+        cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
+        cur_pressed_clickable->m_State = UIClickableState::kActive;
+      }
+    }
   }
   else
   {
-    if (cur_pressed && cur_pressed == cur_hover)
+    if (input_state.GetMouseButtonState(kMouseLeftButton) && input_state.GetMousePressedThisFrame(kMouseLeftButton) == false)
     {
-      cur_pressed->m_OnClick(cur_pressed);
-
-      cur_pressed->m_OnStateChange(cur_pressed->m_State, UIElementState::kHover);
-      cur_pressed->m_State = UIElementState::kHover;
+      cur_hover_element = nullptr;
+      cur_hover_clickable = nullptr;
     }
-    else
+
+    for (auto elem : elements)
     {
-      if (cur_hover)
+      if (elem.first != cur_hover_element && elem.first->m_State == UIElementState::kHover)
       {
-        if (cur_hover->m_State != UIElementState::kHover)
-        {
-          cur_hover->m_OnStateChange(cur_hover->m_State, UIElementState::kHover);
-          cur_hover->m_State = UIElementState::kHover;
-        }
+        elem.first->m_OnStateChange(elem.first->m_State, UIElementState::kActive);
+        elem.first->m_State = UIElementState::kActive;
+      }
+    }
+
+    for (auto elem : m_Clickables)
+    {
+      if (elem != cur_hover_clickable && elem->m_State == UIClickableState::kHover)
+      {
+        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
+        elem->m_State = UIClickableState::kActive;
+      }
+    }
+
+    if (cur_hover_element != nullptr && cur_hover_element->m_State != UIElementState::kHover)
+    {
+      cur_hover_element->m_OnStateChange(cur_hover_element->m_State, UIElementState::kHover);
+      cur_hover_element->m_State = UIElementState::kHover;
+    }
+
+    if (cur_hover_clickable != nullptr && cur_hover_clickable->m_State != UIClickableState::kHover)
+    {
+      cur_hover_clickable->m_OnStateChange(cur_hover_clickable->m_State, UIClickableState::kHover);
+      cur_hover_clickable->m_State = UIClickableState::kHover;
+    }
+
+    if (input_state.GetMousePressedThisFrame(kMouseLeftButton))
+    {
+      if (cur_hover_element != nullptr)
+      {
+        cur_hover_element->m_OnStateChange(cur_hover_element->m_State, UIElementState::kPressed);
+        cur_hover_element->m_State = UIElementState::kPressed;
       }
 
-      if (cur_pressed)
+      if (cur_hover_clickable != nullptr)
       {
-        cur_pressed->m_OnStateChange(cur_pressed->m_State, UIElementState::kActive);
-        cur_pressed->m_State = UIElementState::kActive;
+        cur_hover_clickable->m_OnStateChange(cur_hover_clickable->m_State, UIClickableState::kPressed);
+        cur_hover_clickable->m_State = UIClickableState::kPressed;
       }
     }
   }
 
-  for (auto elem : elements)
-  {
-    if (elem.first->m_State == UIElementState::kHover && elem.first != cur_hover)
-    {
-      elem.first->m_OnStateChange(elem.first->m_State, UIElementState::kActive);
-      elem.first->m_State = UIElementState::kActive;
-    }
-  }
-
-  if (cur_hover || cur_pressed)
+  if (cur_hover_element || cur_pressed_element || cur_hover_clickable || cur_pressed_clickable)
   {
     m_HasSelectedElement = true;
   }

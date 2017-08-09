@@ -41,6 +41,7 @@ protected:
   void keyPressEvent(QKeyEvent * ev) override;
 
   void mousePressEvent(QMouseEvent * ev) override;
+  void wheelEvent(QWheelEvent * ev) override;
 
 public slots:
 
@@ -71,6 +72,7 @@ private:
   bool m_EffectParentExpanded = true;
   bool m_VolumeExpanded = true;
   bool m_PathExpanded = true;
+  bool m_AnchorExpanded = true;
 
   DocumentSubValueListMirror m_ManualTileLayerMirror;
   DocumentSubValueListMirror m_EntityLayerMirror;
@@ -78,4 +80,5 @@ private:
   DocumentSubValueListMirror m_EffectLayerMirror;
   DocumentSubValueListMirror m_VolumeLayerMirror;
   DocumentSubValueListMirror m_PathLayerMirror;
+  DocumentSubValueListMirror m_AnchorLayerMirror;
 };

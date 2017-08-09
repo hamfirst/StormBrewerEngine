@@ -12,9 +12,9 @@ GameClientGlobalResources::GameClientGlobalResources()
 
 bool GameClientGlobalResources::IsLoaded() const
 {
-  return 
-    m_Assets.AllLoadedSuccessfully() && 
-    TitleImage->IsLoaded() && 
+  return
+    m_Assets.AllLoadedSuccessfully() &&
+    TitleImage->IsLoaded() &&
     UISoundEffects.m_ButtonHoverSfx->IsLoaded() &&
     UISoundEffects.m_ButtonPressedSfx->IsLoaded();
 }

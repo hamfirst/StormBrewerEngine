@@ -81,8 +81,11 @@ void DocumentEditorBase::BeginTransaction()
 
 void DocumentEditorBase::CommitQueuedChanges()
 {
-  m_OutputDelegate(DocumentServerMessageType::kChange, StormReflEncodeJson(m_PendingChanges));
-  m_PendingChanges.clear();
+  if (m_PendingChanges.size() != 0)
+  {
+    m_OutputDelegate(DocumentServerMessageType::kChange, StormReflEncodeJson(m_PendingChanges));
+    m_PendingChanges.clear();
+  }
 
   m_TransactionEnabled = false;
 }

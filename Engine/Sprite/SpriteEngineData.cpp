@@ -165,7 +165,8 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
   return m_FrameTextureCoords[frame_index];
 }
 
-Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)
@@ -179,10 +180,15 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
     return{};
   }
 
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
+
   return sprite_data->Render(animation_index, animation_frame, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();
   if (resource == nullptr)
@@ -195,6 +201,10 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int ani
   {
     return{};
   }
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
   return sprite_data->Render(animation_index, animation_frame, shader);
 }

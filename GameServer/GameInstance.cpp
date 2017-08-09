@@ -10,9 +10,15 @@
 
 #include <sb/vector.h>
 
+#include <ctime>
+
+static const int kTimeToWaitForPlayers = 5 * 60;
+static const int kTimeToWaitForLoad = 10 * 60;
+
 GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage, GameSharedGlobalResources & global_resources) :
   m_Server(server),
   m_GameId(game_id),
+  m_State(GameInstanceState::kWaitingForPlayers),
   m_SharedGlobalResources(global_resources),
   m_SharedInstanceResources(settings),
   m_InitSettings(settings),
@@ -25,13 +31,22 @@ GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInit
 #endif
   m_PlayerIdAllocator(kMaxPlayers, false),
   m_SendTimer(8),
-  m_Completed(false)
+  m_LoadTimer(kTimeToWaitForPlayers)
 {
+
 #if NET_MODE == NET_MODE_GGPO
   m_SimHistory.Push(SimHistory{});
   auto sim_data = m_SimHistory.Get();
 
   sim_data->m_Sim.Init(m_Stage);
+#endif
+
+#ifdef NET_USE_RANDOM
+  m_GameState.m_GlobalData.m_Random = NetRandom((uint32_t)time(nullptr));
+  m_GameState.m_GlobalData.m_Random.GetRandom();
+  m_GameState.m_GlobalData.m_Random.GetRandom();
+  m_GameState.m_GlobalData.m_Random.GetRandom();
+  m_GameState.m_GlobalData.m_Random.GetRandom();
 #endif
 }
 
@@ -88,7 +103,7 @@ void GameInstance::Update()
   }
 #elif NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 
-  GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
+  auto game = GetLogicContainer();
 
 #ifdef NET_MODE_TURN_BASED_REGULAR_UPDATES
   m_SendTimer--;
@@ -120,7 +135,70 @@ void GameInstance::Update()
   m_Controller.Update(game);
 #endif
 
+#elif NET_MODE == NET_MODE_SERVER_AUTH
 
+  auto game = GetLogicContainer();
+
+  if (m_State == GameInstanceState::kWaitingForPlayers)
+  {
+    if (m_LoadTimer > 0)
+    {
+      m_LoadTimer--;
+    }
+    else
+    {
+      FillGameWithBots(GetRandomNumber());
+    }
+
+    if (m_Controller.NeedsMorePlayersToStartGame(game) == false)
+    {
+      StartWaitForLoad();
+    }
+  }
+  else if (m_State == GameInstanceState::kWaitingForLoad)
+  {
+    if (m_LoadTimer > 0)
+    {
+      m_LoadTimer--;
+    }
+    else
+    {
+      RemovePlayersWhoHaventLoaded();
+      FillGameWithBots(GetRandomNumber());
+    }
+
+    if (m_Controller.IsReadyToStartGame(game))
+    {
+      m_Controller.StartGame(game);
+      m_State = GameInstanceState::kPlaying;
+    }
+  }
+
+  if (m_State != GameInstanceState::kPlaying && m_State == GameInstanceState::kVictory)
+  {
+    return;
+  }
+
+  m_SendTimer--;
+  if (m_SendTimer <= 0)
+  {
+    for (auto & player : m_Players)
+    {
+      if (player.m_Loaded)
+      {
+        player.m_Client->SyncState(m_GameState);
+      }
+    }
+
+    m_SendTimer = kServerUpdateRate;
+  }
+
+  for (auto & player : m_Players)
+  {
+    m_Controller.ApplyInput(player.m_PlayerIndex, game, m_Input.m_PlayerInput[player.m_PlayerIndex]);
+  }
+
+  m_Controller.Update(game);
 
 #endif
 }
@@ -138,9 +216,16 @@ bool GameInstance::JoinPlayer(GameClientConnection * client, const JoinGameMessa
     return false;
   }
 
-
 #if NET_MODE == NET_MODE_GGPO
   auto sim_data = m_SimHistory.Get();
+
+#ifndef NET_ALLOW_LATE_JOIN
+
+  if (sim_data.m_Started)
+  {
+    return false;
+  }
+#endif
 
   auto team = GetRandomTeam();
   auto seed = GetRandomNumber();
@@ -179,13 +264,20 @@ bool GameInstance::JoinPlayer(GameClientConnection * client, const JoinGameMessa
 
 #else
 
-  ::GamePlayer player;
-  player.m_UserName = join_game.m_UserName;
-  player.m_Team = GetRandomTeam();
-  player.m_Health = kMaxHealth;
+#ifndef NET_ALLOW_LATE_JOIN
+
+  if (m_GameState.m_GlobalData.m_Started)
+  {
+    return false;
+  }
+
+#endif
+
+  auto game = GetLogicContainer();
+  auto team = m_Controller.GetRandomTeam(game.GetGlobalData(), GetRandomNumber());
+  m_Controller.ConstructPlayer(player_id, game, join_game.m_UserName, team);
 
   m_Input.m_PlayerInput[player_id] = {};
-  m_GameState.m_GlobalData.m_Players.EmplaceAt(player_id, std::move(player));
 
   auto load_token = GetRandomNumber64();
 
@@ -215,14 +307,14 @@ void GameInstance::RemovePlayer(GameClientConnection * client)
 
       itr->m_Client->RemoveFromSenderList(m_EventSenderList);
 #else
-      m_GameState.m_GlobalData.m_Players.RemoveAt(itr->m_PlayerIndex);
 
       if (itr->m_Loaded)
       {
-        GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
+        auto game = GetLogicContainer();
         m_Controller.PlayerLeft(itr->m_PlayerIndex, game);
       }
 
+      m_GameState.m_GlobalData.m_Players.RemoveAt(itr->m_PlayerIndex);
 #endif
 
       m_Players.erase(itr);
@@ -244,8 +336,8 @@ void GameInstance::HandlePlayerLoaded(GameClientConnection * client, const Finis
 
       itr->m_Loaded = true;
 
-      GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
-      m_Controller.PlayerJoined(itr->m_PlayerIndex, game);
+      auto game = GetLogicContainer();
+      m_Controller.PlayerReady(itr->m_PlayerIndex, game);
 
       ClientLocalData client_data;
       client_data.m_PlayerIndex = itr->m_PlayerIndex;
@@ -253,6 +345,29 @@ void GameInstance::HandlePlayerLoaded(GameClientConnection * client, const Finis
       client->SyncClientData(client_data);
       client->SyncState(m_GameState);
       return;
+    }
+  }
+}
+
+void GameInstance::FillGameWithBots(uint32_t random_number)
+{
+  auto game = GetLogicContainer();
+  m_Controller.FillWithBots(game, random_number);
+}
+
+void GameInstance::StartWaitForLoad()
+{
+  m_State = GameInstanceState::kWaitingForLoad;
+  m_LoadTimer = kTimeToWaitForLoad;
+}
+
+void GameInstance::RemovePlayersWhoHaventLoaded()
+{
+  for (int index = (int)m_Players.size() - 1; index >= 0; --index)
+  {
+    if (m_Players[index].m_Loaded == false)
+    {
+      m_Players[index].m_Client->ForceDisconnect();
     }
   }
 }
@@ -303,55 +418,11 @@ void GameInstance::HandleClientEvent(GameClientConnection * client, std::size_t 
 
     if (itr->m_Client == client)
     {
-      GameLogicContainer game(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
+      auto game = GetLogicContainer();
       m_Controller.HandleClientEvent(itr->m_PlayerIndex, game, class_id, event_ptr);
       return;
     }
   }
-}
-
-std::vector<int> GameInstance::GetTeamCounts()
-{
-  std::vector<int> teams(kMaxTeams);
-
-#if NET_MODE == NET_MODE_GGPO
-  auto sim_data = m_SimHistory.Get();
-  for (auto & hero : sim_data->m_Sim.m_Players)
-  {
-    teams[(int)hero.second.m_Team]++;
-  }
-#else
-  for (auto & hero : m_GameState.m_GlobalData.m_Players)
-  {
-    teams[(int)hero.second.m_Team]++;
-  }
-#endif
-
-  return teams;
-}
-
-int GameInstance::GetRandomTeam()
-{
-  auto team_counts = GetTeamCounts();
-
-  std::vector<int> best_teams;
-  int best_team_count = 100000;
-
-  for (std::size_t index = 0, end = team_counts.size(); index < end; ++index)
-  {
-    if (team_counts[index] < best_team_count)
-    {
-      best_teams.clear();
-      best_teams.push_back((int)index);
-      best_team_count = team_counts[index];
-    }
-    else if (team_counts[index] == best_team_count)
-    {
-      best_teams.push_back((int)index);
-    }
-  }
-
-  return best_teams[GetRandomNumber() % best_teams.size()];
 }
 
 std::size_t GameInstance::GetNumPlayers()
@@ -427,6 +498,12 @@ std::vector<GameClientConnection *> GameInstance::GetConnectedPlayers() const
 
   return list;
 }
+
+GameLogicContainer GameInstance::GetLogicContainer()
+{
+  return GameLogicContainer(m_Controller, m_GameState.m_GlobalData, m_GameState.m_ServerObjectManager, *this, *this, m_SharedGlobalResources, m_SharedInstanceResources, m_Stage, true, m_SendTimer);
+}
+
 
 void GameInstance::SendGlobalEvent(std::size_t class_id, void * event_ptr)
 {

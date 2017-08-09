@@ -16,9 +16,21 @@ GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageMana
 
 void GameInstanceManager::Update()
 {
-  for (auto & game : m_Games)
+  std::vector<std::map<uint64_t, std::unique_ptr<GameInstance>>::iterator> dead_games;
+
+  for (auto itr = m_Games.begin(), end = m_Games.end(); itr != end; ++itr)
   {
-    game.second->Update();
+    itr->second->Update();
+
+    if (itr->second->GetNumPlayers() == 0)
+    {
+      dead_games.emplace_back(itr);
+    }
+  }
+
+  for (auto & elem : dead_games)
+  {
+    m_Games.erase(elem);
   }
 }
 
@@ -77,12 +89,6 @@ void GameInstanceManager::RemovePlayer(GameClientConnection * client)
   if (client->GetGameInstance() != nullptr)
   {
     client->GetGameInstance()->RemovePlayer(client);
-
-    if (client->GetGameInstance()->GetNumPlayers() == 0)
-    {
-      auto game_itr = m_Games.find(client->GetGameId());
-      m_Games.erase(game_itr);
-    }
   }
 }
 

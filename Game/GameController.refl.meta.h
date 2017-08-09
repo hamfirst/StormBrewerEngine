@@ -22,7 +22,7 @@ struct StormReflTypeInfo<GameController>
 template <>
 struct StormReflFuncInfo<GameController>
 {
-  static constexpr int funcs_n = 2;
+  static constexpr int funcs_n = 1;
   template <int N> struct func_data_static {};
 };
 
@@ -63,51 +63,6 @@ struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<1>
 
 template <>
 struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<2>
-{
-  using param_type = GameLogicContainer &;
-  static constexpr auto GetName() { return "game"; }
-  static constexpr auto GetType() { return "GameLogicContainer &"; }
-  static constexpr unsigned GetNameHash() { return 0x232B318C; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBFBDFC4E; }
-};
-
-template <>
-struct StormReflFuncInfo<GameController>::func_data_static<1>
-{
-  using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleEndTurnEvent"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x96D58A45; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 1; }
-  static constexpr auto GetFunctionPtr() { return &GameController::HandleEndTurnEvent; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<0>
-{
-  using param_type = const EndTurnEvent &;
-  static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "const EndTurnEvent &"; }
-  static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0x614BA8FF; }
-};
-
-template <>
-struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<1>
-{
-  using param_type = size_t;
-  static constexpr auto GetName() { return "player_index"; }
-  static constexpr auto GetType() { return "size_t"; }
-  static constexpr unsigned GetNameHash() { return 0x3F011C47; }
-  static constexpr unsigned GetTypeNameHash() { return 0x8883767D; }
-};
-
-template <>
-struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<2>
 {
   using param_type = GameLogicContainer &;
   static constexpr auto GetName() { return "game"; }

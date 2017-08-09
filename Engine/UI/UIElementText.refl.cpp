@@ -1,11 +1,17 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementText.refl.h"
+#include "Engine/UI/UIElementText.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Text/TextManager.h"
 
-int UIElementText::Type = 5;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementTextInitData);
+REGISTER_UIELEMENT_DATA(UIElementText, UIElementTextInitData, UIElementTextData);
+
+UIElementType UIElementText::Type = UIElementType::kText;
 
 UIElementText::UIElementText(const UIElementTextInitData & init_data, const UIElementTextData & data) :
   m_InitData(init_data),
@@ -16,9 +22,26 @@ UIElementText::UIElementText(const UIElementTextInitData & init_data, const UIEl
 
 void UIElementText::Update()
 {
-  UIElement::Update();
   auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
   auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+
+  if (m_Data.m_Centered)
+  {
+    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_PositionX, m_Data.m_PositionY), size.Size()));
+  }
+  else
+  {
+    size.m_Start += pos;
+    size.m_End += pos;
+    SetActiveArea(size);
+  }
+
+  SetOffset(Vector2(m_Data.m_PositionX, m_Data.m_PositionY));
+
+  UIElement::Update();
+
+  size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
+  pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
   {
@@ -51,8 +74,8 @@ void UIElementText::Render(RenderState & render_state, RenderUtil & render_util,
 void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   g_TextManager.SetTextMode((TextRenderMode)(int)m_Data.m_TextMode);
-  g_TextManager.SetPrimaryColor(Color(m_Data.m_PrimaryColorR, m_Data.m_PrimaryColorB, m_Data.m_PrimaryColorG, m_Data.m_PrimaryColorA));
-  g_TextManager.SetShadowColor(Color(m_Data.m_SecondaryColorR, m_Data.m_SecondaryColorB, m_Data.m_SecondaryColorG, m_Data.m_SecondaryColorA));
+  g_TextManager.SetPrimaryColor(Color(m_Data.m_PrimaryColorR, m_Data.m_PrimaryColorG, m_Data.m_PrimaryColorB, m_Data.m_PrimaryColorA));
+  g_TextManager.SetShadowColor(Color(m_Data.m_SecondaryColorR, m_Data.m_SecondaryColorG, m_Data.m_SecondaryColorB, m_Data.m_SecondaryColorA));
 
   if (m_Data.m_EnableTextBounds)
   {
@@ -92,4 +115,23 @@ void UIElementText::SetCustomRenderCallback(Delegate<void, UIElementText &, Rend
 {
   m_RenderDelegate = std::move(render_callback);
 }
+
+StormExprValueInitBlock UIElementText::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementText::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementText::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}
+
+
+
+
 

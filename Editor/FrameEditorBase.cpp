@@ -28,6 +28,8 @@ FrameEditorBase::FrameEditorBase(
 {
   setFocusPolicy(Qt::ClickFocus);
   setMouseTracking(true);
+
+  UpdateFrameSize();
 }
 
 void FrameEditorBase::SyncMouse()
@@ -65,6 +67,35 @@ void FrameEditorBase::SyncDraw()
       (QApplication::keyboardModifiers() & Qt::ControlModifier) != 0);
   }
 }
+
+void FrameEditorBase::UpdateFrameSize()
+{
+  m_FrameWidth = 0;
+  m_FrameHeight = 0;
+
+  if (m_Sprite.m_Textures.HighestIndex() == -1)
+  {
+    return;
+  }
+
+  auto default_texture = m_Sprite.m_Textures.begin();
+  SpriteBaseDefTexture * texture_info = &default_texture->second;
+
+  uint32_t texture_hash = m_FrameId >> 32;
+
+  for (auto texture : m_Sprite.m_Textures)
+  {
+    if (texture_hash == crc32(texture.second.m_Filename))
+    {
+
+      texture_info = &texture.second;
+    }
+  }
+
+  m_FrameWidth = texture_info->m_FrameWidth;
+  m_FrameHeight = texture_info->m_FrameHeight;
+};
+
 
 Vector2 FrameEditorBase::TransformScreenToFrame(const Vector2 & pos)
 {
@@ -118,6 +149,11 @@ void FrameEditorBase::DrawHighlightedEdge(const FrameEditorEdge & edge)
 void FrameEditorBase::DrawLine(const Vector2 & a, const Vector2 & b)
 {
   DrawUtil::DrawLine(m_GeometryBuidler.Value(), a, b, m_Magnification);
+}
+
+void FrameEditorBase::DrawHighlightedLine(const Vector2 & a, const Vector2 & b)
+{
+  DrawUtil::DrawHighlightedLine(m_GeometryBuidler.Value(), a, b, m_Magnification);
 }
 
 void FrameEditorBase::DrawCornerControl(const Vector2 & pos)
@@ -202,15 +238,29 @@ void FrameEditorBase::paintGL()
     return;
   }
 
-  auto & first_texture = m_Sprite.m_Textures.begin();
-  auto texture = m_TextureAccess.GetTexture(first_texture->first);
+  uint32_t texture_hash = m_FrameId >> 32;
+
+  auto default_texture = m_Sprite.m_Textures.begin();
+  SpriteBaseDefTexture * texture_info = &default_texture->second;
+  std::size_t texture_index = default_texture->first;
+
+  for (auto texture : m_Sprite.m_Textures)
+  {
+    if (texture_hash == crc32(texture.second.m_Filename))
+    {
+      texture_index = texture.first;
+      texture_info = &texture.second;
+    }
+  }
+
+  auto texture = m_TextureAccess.GetTexture(texture_index);
 
   if (texture == nullptr)
   {
     return;
   }
 
-  Vector2 frame_size = { first_texture->second.m_FrameWidth, first_texture->second.m_FrameHeight };
+  Vector2 frame_size = { texture_info->m_FrameWidth, texture_info->m_FrameHeight };
   Vector2 texture_size = texture->GetSize();
 
   if (frame_size.x == 0 || frame_size.y == 0 || texture_size.x == 0 || texture_size.y == 0)
@@ -308,7 +358,6 @@ void FrameEditorBase::paintGL()
       line_builder.AddLine(line);
     }
 
-
     m_RenderUtil.GetDefaultTexture().BindTexture(0);
 
     line_builder.FillVertexBuffer(m_VertexBuffer);
@@ -342,6 +391,8 @@ void FrameEditorBase::paintGL()
 void FrameEditorBase::tick()
 {
   repaint();
+
+  UpdateFrameSize();
 }
 
 void FrameEditorBase::keyPressEvent(QKeyEvent * event)

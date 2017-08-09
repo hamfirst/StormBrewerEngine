@@ -18,6 +18,6 @@ public:
   std::size_t GetNumStages() const;
 
 private:
-  std::vector<GameStage> m_Stages;
+  std::vector<std::unique_ptr<GameStage>> m_Stages;
 };
 

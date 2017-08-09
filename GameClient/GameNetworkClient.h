@@ -70,6 +70,7 @@ public:
   NullOptPtr<GameClientInstanceData> GetClientInstanceData();
 
   std::unique_ptr<GameClientInstanceContainer> ConvertToOffline();
+  void FinalizeMapLoad();
 
 private:
 

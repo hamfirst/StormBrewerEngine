@@ -10,6 +10,7 @@ enum STORM_REFL_ENUM class UICustomPropertyDataType
 
 struct UICustomProperty
 {
+  STORM_REFL;
   UICustomPropertyDataType m_Type;
   std::string m_Data;
 };

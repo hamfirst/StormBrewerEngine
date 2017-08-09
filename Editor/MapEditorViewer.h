@@ -48,6 +48,9 @@ public:
   void SetPreviewLine(const Line & line);
   void ClearPreviewLine();
 
+  void SetPreviewPoint(const Vector2 & point);
+  void ClearPreviewPoint();
+
   template <typename ToolType, typename ... InitArgs>
   void SetTool(const MapEditorTool<ToolType> &, InitArgs && ... init_args)
   {
@@ -63,6 +66,7 @@ public:
   void ZoomToEntity(std::size_t layer_index, std::size_t entity_index);
   void ZoomToVolume(std::size_t layer_index);
   void ZoomToPath(std::size_t layer_index);
+  void ZoomToAnchor(std::size_t layer_index);
 
   RenderVec2 TransformFromMapSpaceToClipSpace(RenderVec2 map_space);
   RenderVec2 TransformFromClipSpaceToMapSpace(RenderVec2 clip_space);
@@ -124,6 +128,7 @@ private:
   Optional<MapEditorLayerSelection> m_SelectedLayer;
   Optional<Box> m_SelectionBox;
   Optional<Line> m_PreviewLine;
+  Optional<Vector2> m_PreviewPoint;
 
   std::unique_ptr<MapEditorToolBase> m_Tool;
   VertexBuffer m_DrawBuffer;

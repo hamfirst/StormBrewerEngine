@@ -19,6 +19,7 @@ void MapEditorToolBase::Cleanup()
 
 }
 
+
 void MapEditorToolBase::DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
 

@@ -24,6 +24,7 @@ void MapEditorToolPathEditor::Cleanup()
   if (path)
   {
     path->ClearPreview();
+    path->ClearSelectedPoints();
   }
 
   m_MapEditor.GetViewer().ClearSelectionBox();

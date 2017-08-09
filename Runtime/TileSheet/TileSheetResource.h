@@ -27,6 +27,8 @@ public:
   int GetAnimationIndex(uint32_t animation_name_hash);
   void FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state);
 
+  int GetLowerEdgeOffset(uint64_t tile_id);
+
 protected:
   virtual void OnDataLoadComplete(const std::string & resource_data) override;
   virtual void CallAssetLoadCallbacks() override;
@@ -42,4 +44,7 @@ private:
 
   std::vector<uint32_t> m_AnimNameHashes;
   std::vector<uint32_t> m_AnimLengths;
+
+  std::unordered_map<uint64_t, int> m_LowerEdgeLookup;
+  int m_StandardLowerEdge;
 };

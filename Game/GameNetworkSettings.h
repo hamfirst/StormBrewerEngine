@@ -5,7 +5,7 @@
 #define NET_MODE_GGPO                       3
 #define NET_MODE_LOCKSTEP                   4
 
-#define NET_MODE NET_MODE_TURN_BASED_DETERMINISTIC
+#define NET_MODE NET_MODE_SERVER_AUTH
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 
@@ -14,10 +14,14 @@
 //#define NET_MODE_TURN_BASED_REGULAR_UPDATES
 
 
-//#define NET_USE_WEBRTC
 
 #endif
 
+//#define NET_USE_WEBRTC
+#define NET_USE_COUNTDOWN
+#define NET_USE_ROUND_TIMER
+#define NET_USE_RANDOM
+//#define NET_ALLOW_LATE_JOIN
 
 
 

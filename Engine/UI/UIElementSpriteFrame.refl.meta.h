@@ -3,35 +3,39 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "UIElementSpriteFrame.refl.h"
+#include "Runtime/UI/UIDef.refl.meta.h"
 
 
 template <>
 struct StormReflTypeInfo<UIElementSpriteFrameInitData>
 {
-  using MyBase = void;
-  static constexpr int fields_n = 3;
-  template <int N> struct field_data_static {};
-  template <int N, typename Self> struct field_data {};
-  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  using MyBase = UIElementDataBase;
+  static constexpr int fields_n = 3 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "UIElementSpriteFrameInitData"; }
   static constexpr auto GetNameHash() { return 0xCE39C546; }
   static UIElementSpriteFrameInitData & GetDefault() { static UIElementSpriteFrameInitData def; return def; }
 };
 
 template <>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<0>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_SpriteFile"; }
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB83D12F6; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameInitData::m_SpriteFile; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<0, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<0>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<0 + StormReflTypeInfo<UIElementDataBase>::fields_n, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -41,33 +45,33 @@ struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<0, Self> : pu
 };
 
 template <>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::annotations<0>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::annotations<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   static constexpr int annotations_n = 1;
   template <int A> struct annoation { };
 };
 
 template <>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::annotations<0>::annoation<0>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::annotations<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>::annoation<0>
 {
   static constexpr const char * GetAnnotation() { return "file: tilesheet"; }
   static constexpr uint32_t GetAnnotationHash() { return 0x03667DA4; }
 };
 
 template <>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<1>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<1 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_Animation"; }
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5172A5C7; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameInitData::m_Animation; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<1, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<1>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<1 + StormReflTypeInfo<UIElementDataBase>::fields_n, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<1 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -77,19 +81,19 @@ struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<1, Self> : pu
 };
 
 template <>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<2>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<2 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_AnimationFrame"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA16C1E1E; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameInitData::m_AnimationFrame; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<2, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<2>
+struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data<2 + StormReflTypeInfo<UIElementDataBase>::fields_n, Self> : public StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<2 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

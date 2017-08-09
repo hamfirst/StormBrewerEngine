@@ -5,9 +5,9 @@
 #include <vector>
 #include <cstdlib>
 
-#include "StormWebrtcClientTypes.h"
+#include "StormWebrtcClientAPI/StormWebrtcClient.h"
 
-class StormWebrtcClientWeb
+class StormWebrtcClientWeb : public StormWebrtcClient
 {
 public:
   StormWebrtcClientWeb(const StormWebrtcClientChannelList & in_channels, const StormWebrtcClientChannelList & out_channels);
@@ -19,15 +19,15 @@ public:
   StormWebrtcClientWeb & operator = (const StormWebrtcClientWeb & rhs) = delete;
   StormWebrtcClientWeb & operator = (StormWebrtcClientWeb && rhs) noexcept;
 
-  void StartConnect(const char * ipaddr, int port, const char * fingerprint);
-  void Update();
+  virtual void StartConnect(const char * ipaddr, int port, const char * fingerprint) override;
+  virtual void Update() override;
 
-  bool IsConnected();
-  bool IsConnecting();
-  void Close();
+  virtual bool IsConnected() override;
+  virtual bool IsConnecting() override;
+  virtual void Close() override;
 
-  void SendPacket(int stream, bool sender_channel, const void * data, std::size_t data_len);
-  bool PollPacket(StormWebrtcClientPacket & out_packet);
+  virtual void SendPacket(int stream, bool sender_channel, const void * data, std::size_t data_len) override;
+  virtual bool PollPacket(StormWebrtcClientPacket & out_packet) override;
 
 private:
   int m_Socket;

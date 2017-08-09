@@ -135,7 +135,7 @@ public:
 
   static auto Reverse(const VecType & a)
   {
-    return VecType{ IntersectionFuncs<VecCompType>::Inverse(a.y), IntersectionFuncs<VecCompType>::Inverse(a.x) };
+    return VecType{ IntersectionFuncs<VecCompType>::Inverse(a.x), IntersectionFuncs<VecCompType>::Inverse(a.y) };
   }
 };
 
@@ -151,6 +151,7 @@ struct IntersectionVecType
 
   template <typename VecInitType>
   IntersectionVecType(VecInitType ix, VecInitType iy) : x(ix), y(iy) { }
+  IntersectionVecType(Vector2 & v) : x(v.x), y(v.y) { }
 
   IntersectionVecType(const VecType & rhs) = default;
   IntersectionVecType(VecType && rhs) = default;

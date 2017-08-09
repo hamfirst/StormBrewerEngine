@@ -4,14 +4,18 @@
 
 
 
-GameHostWidget::GameHostWidget(EditorContainer * editor, QWidget *parent) :
+GameHostWidget::GameHostWidget(EditorContainer * editor, bool exclude_one, QWidget *parent) :
   QWidget(parent),
   m_Editor(editor)
 {
   m_Layout = std::make_unique<QGridLayout>();
 
-  m_Client1 = std::make_unique<GameClientWidget>(0, this);
-  m_Client2 = std::make_unique<GameClientWidget>(1, this);
+  if (exclude_one == false)
+  {
+    m_Client1 = std::make_unique<GameClientWidget>(editor, 0, false, this);
+  }
+
+  m_Client2 = std::make_unique<GameClientWidget>(editor, 1, false, this);
   m_Server = std::make_unique<GameServerWidget>(this);
 
 #if WIDGET_MODE == WIDGET_MODE_HORIZONTAL
@@ -24,8 +28,8 @@ GameHostWidget::GameHostWidget(EditorContainer * editor, QWidget *parent) :
 
 #elif WIDGET_MODE == WIDGET_MODE_4X4
 
-  m_Client3 = std::make_unique<GameClientWidget>(2, this);
-  m_Client4 = std::make_unique<GameClientWidget>(3, this);
+  m_Client3 = std::make_unique<GameClientWidget>(editor, 2, false, this);
+  m_Client4 = std::make_unique<GameClientWidget>(editor, 3, false, this);
 
 
   m_Layout->setColumnStretch(0, 2);

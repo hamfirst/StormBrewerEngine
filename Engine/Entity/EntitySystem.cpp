@@ -14,6 +14,7 @@
 #include "Engine/EngineState.h"
 #include "Engine/Entity/Entity.h"
 #include "Engine/Entity/EntitySystem.h"
+#include "Engine/Rendering/RenderSettings.h"
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
@@ -57,6 +58,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, 
   if (entity_def->m_Sprite.length() > 0)
   {
     ptr->m_Sprite = SpriteResource::Load(entity_def->m_Sprite.data());
+    ptr->SetDefaultFrame();
   }
 
   AddComponentsToEntity(entity_def, ptr);
@@ -76,6 +78,8 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_
 
   ptr->m_Sprite = entity_resource->m_Sprite;
   ptr->m_AssetHash = entity_resource->m_FileNameHash;
+  ptr->SetDefaultFrame();
+
   AddComponentsToEntity(entity_resource->GetData(), ptr);
 
   if (activate)
@@ -157,36 +161,43 @@ void EntitySystem::DrawAllEntities(const Box & viewport_bounds, DrawList & draw_
     }
 
     if (pos.x + render_state.m_FrameWidth / 2 < viewport_bounds.m_Start.x ||
-        pos.y + render_state.m_FrameHeight / 2 < viewport_bounds.m_Start.y ||
-        pos.x - render_state.m_FrameWidth / 2 > viewport_bounds.m_End.x ||
-        pos.y - render_state.m_FrameHeight / 2 > viewport_bounds.m_End.y)
+      pos.y + render_state.m_FrameHeight / 2 < viewport_bounds.m_Start.y ||
+      pos.x - render_state.m_FrameWidth / 2 > viewport_bounds.m_End.x ||
+      pos.y - render_state.m_FrameHeight / 2 > viewport_bounds.m_End.y)
     {
       return;
     }
 
-    draw_list.PushDraw(entity.GetLayer(), [e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+#ifdef USE_Z_ORDERING
+    int draw_order = pos.y - render_state.m_FrameHeight / 2 + render_state.m_LowerEdge;
+#else
+    int draw_order = 0;
+#endif
+
+    draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
-      if (e->m_CustomDraw)
-      {
-        e->m_CustomDraw(viewport_bounds, screen_center, render_state, render_util);
-      }
-      else
-      {
-        DefaultDrawEntity(e, viewport_bounds, screen_center);
-      }
+      DrawEntity(e, viewport_bounds, screen_center, render_state, render_util);
     });
   });
+}
+
+void EntitySystem::DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+{
+  if (entity->m_CustomDraw)
+  {
+    entity->m_CustomDraw(viewport_bounds, screen_center, render_state, render_util);
+  }
+  else
+  {
+    DefaultDrawEntity(entity, viewport_bounds, screen_center);
+  }
 }
 
 void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center)
 {
   auto & sprite = entity->GetSprite();
   auto & render_state = entity->GetRenderState();
-  auto & shader = g_ShaderManager.GetDefaultShader();
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ entity->GetPosition() } - screen_center);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), render_state.m_Matrix);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), render_state.m_Color);
-
-  SpriteEngineData::RenderSprite(sprite, render_state.m_AnimIndex, render_state.m_AnimFrame, shader);
+  SpriteEngineData::RenderSprite(sprite, render_state.m_AnimIndex, render_state.m_AnimFrame,
+    RenderVec2{ entity->GetPosition() } - screen_center, render_state.m_Matrix, render_state.m_Color);
 }

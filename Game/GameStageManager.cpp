@@ -9,7 +9,7 @@ GameStageManager::GameStageManager(GameLevelList & level_list)
   for (std::size_t index = 0; index < level_count; ++index)
   {
     auto map = level_list.LoadLevel(index);
-    m_Stages.emplace_back(map);
+    m_Stages.emplace_back(std::make_unique<GameStage>(map));
   }
 }
 
@@ -20,7 +20,7 @@ const GameStage * GameStageManager::GetStage(const GameInitSettings & settings) 
     return nullptr;
   }
   
-  return &m_Stages[settings.m_StageIndex];
+  return m_Stages[settings.m_StageIndex].get();
 }
 
 std::size_t GameStageManager::GetNumStages() const

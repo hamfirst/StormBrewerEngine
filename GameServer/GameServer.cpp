@@ -47,5 +47,5 @@ GameClientConnection * GameServer::ConstructClient(void * client_mem, uint32_t c
 
 void GameServer::CleanupClient(GameClientConnection & client, ProtocolType & proto)
 {
-  m_GameInstanceManager.RemovePlayer(&client);
+  client.RemoveFromGame();
 }

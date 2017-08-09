@@ -200,6 +200,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI\PlayerAI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameController.refl.cpp" />
     <ClCompile Include="GameLevelList.cpp">
       <SubType>
@@ -227,6 +231,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI\PlayerAI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameController.refl.h" />
     <ClInclude Include="GameController.refl.meta.h" />
     <ClInclude Include="GameFullState.refl.h" />

@@ -55,7 +55,17 @@ void GameClientConnection::SendEntityEvent(std::size_t class_id, void * event_pt
 
 void GameClientConnection::ForceDisconnect()
 {
+  RemoveFromGame();
   m_Server.DisconnectClient(m_ConnectionId);
+}
+
+void GameClientConnection::RemoveFromGame()
+{
+  if (m_GameInstance)
+  {
+    m_Server.GetGameInstanceManager().RemovePlayer(this);
+    m_GameInstance = nullptr;
+  }
 }
 
 GameInstance * GameClientConnection::GetGameInstance()

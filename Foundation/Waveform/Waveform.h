@@ -7,17 +7,25 @@
 
 struct SinWaveformCalculator
 {
-  static float operator(float f)
+  float operator()(float f) const
   {
-    return sinf(f * k2Pi);
+    return 0.5f * sinf(f * k2Pi) + 0.5f;
   }
 };
 
 struct StepWaveformCalculator
 {
-  static float operator(float f)
+  float operator()(float f) const
   {
-    return f < 0.5f : 1.0f : 0.0f;
+    return f < 0.5f ? 1.0f : 0.0f;
+  }
+};
+
+struct SawWaveformCalculator
+{
+  float operator()(float f) const
+  {
+    return f;
   }
 };
 
@@ -42,9 +50,23 @@ public:
     return m_Calculator(value) * m_Range + m_LowVal;
   }
 
+  float Get(float phase_offset) const
+  {
+    auto time_passed = (float)GetTimeSeconds() - m_Start + phase_offset;
+    auto value = fmodf(time_passed, m_Period);
+
+    return m_Calculator(value) * m_Range + m_LowVal;
+  }
+
   operator float() const
   {
     return Get();
+  }
+
+  float operator ()(float f) const
+  {
+    auto value = fmodf(f, m_Period);
+    return m_Calculator(value) * m_Range + m_LowVal;
   }
 
 private:
@@ -58,3 +80,4 @@ private:
 
 using SinWaveform = Waveform<SinWaveformCalculator>;
 using StepWaveform = Waveform<StepWaveformCalculator>;
+using SawWaveform = Waveform<SawWaveformCalculator>;

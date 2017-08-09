@@ -43,6 +43,7 @@
     <ClInclude Include="Any\Any.h" />
     <ClInclude Include="Assert\Assert.h" />
     <ClInclude Include="BasicTypes\BasicTypeFuncs.h" />
+    <ClInclude Include="BasicTypes\BasicTypeHash.h" />
     <ClInclude Include="BasicTypes\BasicTypes.refl.h" />
     <ClInclude Include="BasicTypes\BasicTypes.refl.meta.h" />
     <ClInclude Include="Bitset\Bitset.h">
@@ -109,11 +110,13 @@
     <ClInclude Include="Network\WebSocket.h" />
     <ClInclude Include="Optional\NullOpt.h" />
     <ClInclude Include="Optional\Optional.h" />
+    <ClInclude Include="Pathfinding\GraphPathfinding.h" />
     <ClInclude Include="Pathfinding\GridPathfinding.h" />
     <ClInclude Include="Pathfinding\Pathfinding.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Pathfinding\PathfindingPath.h" />
     <ClInclude Include="PropertyMeta\PropertyFieldDatabase.h" />
     <ClInclude Include="PropertyMeta\PropertyFieldMetaData.h" />
     <ClInclude Include="PropertyMeta\PropertyFieldMetaFuncs.h" />

@@ -4,7 +4,7 @@
 #include "StormNet/NetPipeMode.h"
 #include "StormNet/NetBitWriterVector.h"
 
-#include "StormWebrtc/StormWebrtcServer.h"
+#include "StormWebrtcServerAPI/StormWebrtcServer.h"
 
 struct NetTransmitterServerWebrtc : public NetTransmitter
 {

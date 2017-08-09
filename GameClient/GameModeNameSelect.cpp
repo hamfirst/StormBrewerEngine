@@ -9,7 +9,8 @@
 #include "Engine/Text/TextManager.h"
 
 GameModeNameSelect::GameModeNameSelect(GameContainer & game) :
-  GameMode(game)
+  GameMode(game),
+  m_UIManager(game.GetWindow())
 {
   
 }
@@ -40,7 +41,7 @@ void GameModeNameSelect::OnAssetsLoaded()
   caption_data.m_Text = "Enter Your Name";
   caption_data.m_TextMode = 2.0f;
 
-  m_Input.Emplace(m_UIManager, container.GetWindow().CreateTextInputContext(true), "input", nullptr, 
+  m_Input.Emplace(m_UIManager, "input", nullptr, 
     Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2, Vector2(200, 25)), "", &container.GetClientGlobalResources().UISoundEffects);
   m_Input->MakeCurrent();
   m_Input->GetInputContext().SetEnterDelegate([this](const char *) { Submit(); });

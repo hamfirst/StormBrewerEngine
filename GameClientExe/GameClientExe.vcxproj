@@ -279,6 +279,9 @@
     <ProjectReference Include="..\StormData\StormData.vcxproj">
       <Project>{cbedcf5b-d149-46b4-b83c-7363ceb0b455}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\StormExpr\StormExpr.vcxproj">
+      <Project>{fb0c8e5d-8c78-4e8a-85d6-260de4376ad1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\StormNet\StormNet.vcxproj">
       <Project>{24b20138-31a9-4262-bbcf-eb2341371e14}</Project>
     </ProjectReference>

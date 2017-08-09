@@ -5,9 +5,11 @@
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
-struct UIElementTextureSliceInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementTextureSliceInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementTextureSliceInitData);
 
   RString STORM_REFL_ATTR_VAL(file, image) m_SpriteFile;
 
@@ -51,7 +53,7 @@ class UIElementTextureSlice : public UIElement
 public:
   UIElementTextureSlice(const UIElementTextureSliceInitData & init_data, const UIElementTextureSliceData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -63,6 +65,12 @@ public:
   void SetCustomRenderCallback(Delegate<void, UIElementTextureSlice &, RenderState &, const Vector2 &> && render_callback);
 
   AssetReference<TextureAsset> & GetTextureAsset();
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

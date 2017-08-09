@@ -20,7 +20,7 @@ class GameClientWidget : public QOpenGLWidget
   Q_OBJECT
 public:
 
-  GameClientWidget(int client_index, QWidget *parent = Q_NULLPTR);
+  GameClientWidget(EditorContainer * editor, int client_index, bool bot_game, QWidget *parent = Q_NULLPTR);
   ~GameClientWidget();
 
 protected:
@@ -56,5 +56,6 @@ private:
   DelegateLink<void> m_UpdateDelegate;
 
   int m_ClientIndex;
+  bool m_BotGame;
   bool m_ImeMode = false;
 };

@@ -3,9 +3,11 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElement.h"
 
-struct UIElementContainerInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementContainerInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementContainerInitData);
 };
 
 struct UIElementContainerData
@@ -25,7 +27,7 @@ class UIElementContainer : public UIElement
 public:
   UIElementContainer(const UIElementContainerInitData & init_data, const UIElementContainerData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -35,6 +37,12 @@ public:
   UIElementContainerData & GetData();
 
   void SetCustomRenderCallback(Delegate<void, UIElementContainer &, RenderState &, const Vector2 &> && render_callback);
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

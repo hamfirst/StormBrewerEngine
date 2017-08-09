@@ -3,6 +3,7 @@
 #include "FrameEditorSingleBox.h"
 #include "FrameEditorMultiBox.h"
 #include "FrameEditorSingleLine.h"
+#include "FrameEditorLowerEdge.h"
 
 
 FrameEditorContainer::FrameEditorContainer(
@@ -17,6 +18,8 @@ FrameEditorContainer::FrameEditorContainer(
   m_Getter(std::move(get_frame_data)),
   m_TabWidget(std::make_unique<QTabWidget>(this))
 {
+  setMinimumSize(500, 500);
+
   CreateFrameEditorTabs(editor, sprite, texture_access, m_TabWidget.get(), &m_Getter, frame_id, frame_data_def);
 }
 
@@ -53,6 +56,13 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             [get_frame_data] { auto data = get_frame_data->Call(); return data ? &data->m_SingleLineData : nullptr; }, frame_id, frame_data.m_Name.data(), nullptr);
         }
         break;
+      case FrameDataDefType::kLowerEdge:
+        {
+          widget = new FrameEditorLowerEdge(editor, sprite, texture_access,
+            [get_frame_data] { auto data = get_frame_data->Call(); return data ? &data->m_LowerEdgeData : nullptr; }, frame_id, frame_data.m_Name.data(), nullptr);
+        }
+        break;
+
     }
 
     if (widget)

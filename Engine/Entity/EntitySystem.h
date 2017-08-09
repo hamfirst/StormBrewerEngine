@@ -26,6 +26,7 @@ public:
   void FinalizeEvents();
 
   void DrawAllEntities(const Box & viewport_bounds, DrawList & draw_list);
+  void DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
   static void DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center);
 
 private:

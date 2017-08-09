@@ -6,6 +6,7 @@
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Entity/Entity.h"
+#include "Engine/Shader/ShaderManager.h"
 
 #include "Runtime/SpriteBase/SpriteBaseDef.refl.h"
 #include "Runtime/Sprite/SpriteResource.h"
@@ -25,8 +26,10 @@ public:
   void BuildVertexBuffer();
   Optional<Box> Render(int animation_index, int animation_frame, const ShaderProgram & shader) const;
 
-  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, const ShaderProgram & shader);
-  static Optional<Box> RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame, const ShaderProgram & shader);
+  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, 
+    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+  static Optional<Box> RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame, 
+    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
 
   static NullOptPtr<TextureAsset> GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
 private:

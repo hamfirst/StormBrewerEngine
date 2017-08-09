@@ -372,6 +372,11 @@ Optional<std::string> DocumentEditorWidgetBase::GetFileNameForAssetType(czstr as
     auto path = GetRootPath() + "Entities";
     file_name = QFileDialog::getOpenFileName(this, tr("Open Entity"), path.data(), tr("Entity Files (*.entity)")).toStdString();
   }
+  else if (!strcmp(asset_type, "ui"))
+  {
+    auto path = GetRootPath() + "UIs";
+    file_name = QFileDialog::getOpenFileName(this, tr("Open UI"), path.data(), tr("UI Files (*.ui)")).toStdString();
+  }
 
   if (ConvertToCanonicalPath(file_name, root_path))
   {

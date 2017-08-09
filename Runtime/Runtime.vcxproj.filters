@@ -49,6 +49,12 @@
     <Filter Include="Config">
       <UniqueIdentifier>{296e042c-7913-4a32-9058-3bdb6743c781}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Anchor">
+      <UniqueIdentifier>{d96cb076-330c-428e-b500-26747902612d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{b77d9298-d7af-447e-a914-8aeced9d1a52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
@@ -124,6 +130,18 @@
     </ClCompile>
     <ClCompile Include="Map\MapEffectLayerTypeDatabase.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Anchor\AnchorDef.refl.cpp">
+      <Filter>Anchor</Filter>
+    </ClCompile>
+    <ClCompile Include="Anchor\AnchorTypeDatabase.cpp">
+      <Filter>Anchor</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIDef.refl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementTypeDatabase.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +305,36 @@
     </ClInclude>
     <ClInclude Include="Map\MapEffectLayerTypeRegister.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Anchor\AnchorDef.refl.h">
+      <Filter>Anchor</Filter>
+    </ClInclude>
+    <ClInclude Include="Anchor\AnchorDef.refl.meta.h">
+      <Filter>Anchor</Filter>
+    </ClInclude>
+    <ClInclude Include="Anchor\AnchorTypeDatabase.h">
+      <Filter>Anchor</Filter>
+    </ClInclude>
+    <ClInclude Include="Anchor\AnchorTypeRegister.h">
+      <Filter>Anchor</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIDef.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIDef.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTypeDatabase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTypeRegister.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UITypes.refl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UITypes.refl.meta.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,35 +3,39 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "UIElementFullTexture.refl.h"
+#include "Runtime/UI/UIDef.refl.meta.h"
 
 
 template <>
 struct StormReflTypeInfo<UIElementFullTextureInitData>
 {
-  using MyBase = void;
-  static constexpr int fields_n = 1;
-  template <int N> struct field_data_static {};
-  template <int N, typename Self> struct field_data {};
-  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  using MyBase = UIElementDataBase;
+  static constexpr int fields_n = 1 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "UIElementFullTextureInitData"; }
   static constexpr auto GetNameHash() { return 0x79CAB921; }
   static UIElementFullTextureInitData & GetDefault() { static UIElementFullTextureInitData def; return def; }
 };
 
 template <>
-struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0>
+struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_TextureFile"; }
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x300D4BA3; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureInitData::m_TextureFile; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data<0, Self> : public StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0>
+struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data<0 + StormReflTypeInfo<UIElementDataBase>::fields_n, Self> : public StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -41,14 +45,14 @@ struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data<0, Self> : pu
 };
 
 template <>
-struct StormReflTypeInfo<UIElementFullTextureInitData>::annotations<0>
+struct StormReflTypeInfo<UIElementFullTextureInitData>::annotations<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>
 {
   static constexpr int annotations_n = 1;
   template <int A> struct annoation { };
 };
 
 template <>
-struct StormReflTypeInfo<UIElementFullTextureInitData>::annotations<0>::annoation<0>
+struct StormReflTypeInfo<UIElementFullTextureInitData>::annotations<0 + StormReflTypeInfo<UIElementDataBase>::fields_n>::annoation<0>
 {
   static constexpr const char * GetAnnotation() { return "file: image"; }
   static constexpr uint32_t GetAnnotationHash() { return 0xD4E8122A; }

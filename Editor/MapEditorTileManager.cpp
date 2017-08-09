@@ -545,14 +545,21 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
   std::vector<uint32_t> dead_grids;
   for (auto grid_id : m_DirtyGrids.Value())
   {
-    m_DrawInfo->VisitNode(grid_id, [&](const Box & bounding_box, std::vector<GridDrawElement> & grid_elems) {
+    m_DrawInfo->VisitNode(grid_id, [&](const Box & bounding_box, GridDrawList & grid_draw_elems) {
       
-      grid_elems.clear();
+      grid_draw_elems.m_DrawElems.clear();
 
       std::vector<std::size_t> tile_indices;
       m_SpatialDatabase->Query(bounding_box, tile_indices);
 
-      std::vector<MapTile> tiles;
+      struct TileSortInfo
+      {
+        MapTile m_Tile;
+        int m_LowerEdge;
+        int m_X;
+      };
+
+      std::vector<TileSortInfo> tiles;
       for (auto tile_index : tile_indices)
       {
         auto & tile = layer.m_Tiles[tile_index].Value();
@@ -567,28 +574,59 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
           continue;
         }
 
-        tiles.push_back(tile);
+        auto tile_bounds = GetTileBounds(tile);
+        auto lower_edge_offset = m_TileSheet.GetResource()->GetLowerEdgeOffset(tile.GetTileId());
+
+        tiles.push_back(TileSortInfo{ tile, tile_bounds.m_Start.y + lower_edge_offset, tile_bounds.m_Start.x });
       }
 
-      std::sort(tiles.begin(), tiles.end(), [](const MapTile & a, const MapTile & b) { return a.m_TextureHash < b.m_TextureHash; });
+      std::sort(tiles.begin(), tiles.end(), [](const TileSortInfo & a, const TileSortInfo & b)
+      { 
+        if (a.m_LowerEdge < b.m_LowerEdge)
+        {
+          return false;
+        }
+
+        if (a.m_LowerEdge > b.m_LowerEdge)
+        {
+          return true;
+        }
+
+        if (a.m_X > b.m_X)
+        {
+          return false;
+        }
+
+        if (a.m_X < b.m_X)
+        {
+          return true;
+        }
+
+        return a.m_Tile.m_TextureHash < b.m_Tile.m_TextureHash;
+      });
+
       std::vector<std::pair<uint32_t, std::vector<MapTile>>> draw_buckets;
 
       uint32_t last_texture = 0;
       for (auto & tile : tiles)
       {
-        if (tile.m_TextureHash == 0)
+        if (tile.m_Tile.m_TextureHash == 0)
         {
           continue;
         }
 
-        if (tile.m_TextureHash != last_texture)
+        if (tile.m_Tile.m_TextureHash != last_texture)
         {
-          draw_buckets.emplace_back(std::make_pair(tile.m_TextureHash, std::vector<MapTile>{}));
-          last_texture = tile.m_TextureHash;
+          draw_buckets.emplace_back(std::make_pair(tile.m_Tile.m_TextureHash, std::vector<MapTile>{}));
+          last_texture = tile.m_Tile.m_TextureHash;
         }
 
-        draw_buckets.back().second.emplace_back(tile);
+        draw_buckets.back().second.emplace_back(tile.m_Tile);
       }
+
+      QuadVertexBufferBuilder builder;
+      Box slice_box = { Vector2{ 0, 0 }, Vector2{ 1023, 1023 } };
+      int start_index = 0;
 
       for (auto & bucket : draw_buckets)
       {
@@ -616,8 +654,7 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
         auto & texture_data = m_Textures[texture_index];
         int width_in_frames = (texture->GetWidth() + texture_data.m_FrameWidth - 1) / texture_data.m_FrameWidth;
 
-        GridDrawElement draw_element{ texture };
-        QuadVertexBufferBuilder builder;
+        GridDrawElement draw_element{ texture, start_index };
 
         for (auto & tile : bucket.second)
         {
@@ -634,21 +671,25 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
           quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
           quad.m_TextureSize = Vector2(texture->GetWidth(), texture->GetHeight());
           quad.m_Color = Color(255, 255, 255, 255);
-          builder.AddQuad(quad);
+          
+          if (builder.AddSlicedQuad(quad, slice_box))
+          {
+            start_index += 6;
+          }
         }
 
-        builder.SliceVertexBuffer(Box{ Vector2{0, 0}, Vector2{1023, 1023} });
-        builder.FillVertexBuffer(draw_element.m_VertexBuffer);
-
-        grid_elems.emplace_back(std::move(draw_element));
+        draw_element.m_EndIndex = start_index;
+        grid_draw_elems.m_DrawElems.emplace_back(std::move(draw_element));
       }
+
+      builder.FillVertexBuffer(grid_draw_elems.m_VertexBuffer);
 
     }, true);
   }
 
   m_DirtyGrids->clear();
 
-  m_DrawInfo->VisitGrid(viewport_bounds, [&](uint32_t grid_id, std::vector<GridDrawElement> & grid_elems)
+  m_DrawInfo->VisitGrid(viewport_bounds, [&](uint32_t grid_id, GridDrawList & grid_draw_list)
   {
     auto & shader = g_ShaderManager.GetDefaultShader();
     auto grid_box = m_DrawInfo->GetGridBoxForGridId(grid_id);
@@ -657,15 +698,16 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-    for (auto & draw : grid_elems)
+    grid_draw_list.m_VertexBuffer.Bind();
+    grid_draw_list.m_VertexBuffer.CreateDefaultBinding(shader);
+
+    for (auto & draw : grid_draw_list.m_DrawElems)
     {
       draw.m_Texture->GetTexture().BindTexture(0);
-      draw.m_VertexBuffer.Bind();
-      
-      draw.m_VertexBuffer.CreateDefaultBinding(shader);
-      draw.m_VertexBuffer.Draw();
-      draw.m_VertexBuffer.Unbind();
+      grid_draw_list.m_VertexBuffer.Draw(draw.m_StartIndex, draw.m_EndIndex);
     }
+
+    grid_draw_list.m_VertexBuffer.Unbind();
 
     return true;
   }, false);

@@ -46,7 +46,8 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
   m_ParalaxLayerMirror(m_Editor),
   m_EffectLayerMirror(m_Editor),
   m_VolumeLayerMirror(m_Editor),
-  m_PathLayerMirror(m_Editor)
+  m_PathLayerMirror(m_Editor),
+  m_AnchorLayerMirror(m_Editor)
 {
   setFocusPolicy(Qt::ClickFocus);
   setMaximumWidth(220);
@@ -140,6 +141,26 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
       {
         label.m_LayerList = ptr;
         label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kEffectLayer, index };
+        ptr->UpdateScroll();
+
+        if (ptr->m_SelectNewLayers)
+        {
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+        }
+      },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
+    this
+    );
+
+  CreateMirrorList<RMergeList, MapAnchor, RString, MapEditorLayerListElement, MapEditorLayerList>(
+    m_AnchorLayerMirror,
+    m_Map.m_Anchors,
+    ".m_Name",
+    [](MapAnchor & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
+    [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
+      {
+        label.m_LayerList = ptr;
+        label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kAnchor, index };
         ptr->UpdateScroll();
 
         if (ptr->m_SelectNewLayers)
@@ -319,6 +340,11 @@ void MapEditorLayerList::DeleteLayer(const MapEditorLayerSelection & layer)
       m_Map.m_Paths.RemoveAt(layer.m_Index);
       break;
     }
+  case MapEditorLayerItemType::kAnchor:
+    {
+      m_Map.m_Anchors.RemoveAt(layer.m_Index);
+      break;
+    }
   }
 }
 
@@ -469,6 +495,15 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
 
     y_pos += layer_height;
 
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kAllVolumes;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
     for (auto layer : m_Map.m_Volumes)
     {
       MapEditorLayerSelection elem = {};
@@ -504,6 +539,15 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
 
     y_pos += layer_height;
 
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kAllPaths;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
     for (auto layer : m_Map.m_Paths)
     {
       MapEditorLayerSelection elem = {};
@@ -519,6 +563,51 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
     }
   }
 
+  elem = {};
+  elem.m_Type = MapEditorLayerItemType::kAnchorParent;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
+  if (m_AnchorExpanded)
+  {
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kCreateAnchor;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
+    elem = {};
+    elem.m_Type = MapEditorLayerItemType::kAllAnchors;
+    if (visitor(elem, y_pos) == false)
+    {
+      return y_pos;
+    }
+
+    y_pos += layer_height;
+
+    for (auto layer : m_Map.m_Anchors)
+    {
+      MapEditorLayerSelection elem = {};
+      elem.m_Type = MapEditorLayerItemType::kAnchor;
+      elem.m_Index = layer.first;
+
+      if (visitor(elem, y_pos) == false)
+      {
+        return y_pos;
+      }
+
+      y_pos += layer_height;
+    }
+  }
+
+  y_pos += 4;
   return y_pos;
 }
 
@@ -689,6 +778,11 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, "Create Volume");
           break;
         }
+      case MapEditorLayerItemType::kAllVolumes:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "All Volumes");
+          break;
+        }
       case MapEditorLayerItemType::kVolume:
         {
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_Volumes[layer.m_Index].m_Name.data());
@@ -707,9 +801,37 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, "Create Path");
           break;
         }
+      case MapEditorLayerItemType::kAllPaths:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "All Paths");
+          break;
+        }
       case MapEditorLayerItemType::kPath:
         {
           p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_Paths[layer.m_Index].m_Name.data());
+          break;
+        }
+      case MapEditorLayerItemType::kAnchorParent:
+        {
+          QStyleOption option;
+          option.rect = QRect(2, y_pos, layer_height, layer_height);
+          style()->drawPrimitive(m_AnchorExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Anchors");
+          break;
+        }
+      case MapEditorLayerItemType::kCreateAnchor:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "Create Anchor");
+          break;
+        }
+      case MapEditorLayerItemType::kAllAnchors:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, "All Anchors");
+          break;
+        }
+      case MapEditorLayerItemType::kAnchor:
+        {
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_Anchors[layer.m_Index].m_Name.data());
           break;
         }
 
@@ -807,6 +929,13 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
         m_PathExpanded = !m_PathExpanded;
       }
       break;
+
+    case MapEditorLayerItemType::kAnchorParent:
+      if (ev->x() < 15)
+      {
+        m_AnchorExpanded = !m_AnchorExpanded;
+      }
+      break;
     }
 
     m_Editor->ChangeLayerSelection(selection.Value());
@@ -872,6 +1001,18 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
         break;
       }
     }
+  }
+}
+
+void MapEditorLayerList::wheelEvent(QWheelEvent * ev)
+{
+  if (ev->delta() > 0)
+  {
+    m_ScrollBar->setValue(m_ScrollBar->value() - 120);
+  }
+  else
+  {
+    m_ScrollBar->setValue(m_ScrollBar->value() + 120);
   }
 }
 

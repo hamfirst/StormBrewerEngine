@@ -18,7 +18,8 @@
 
 #include "usrsctplib/usrsctp.h"
 
-#include "StormWebrtcClientTypes.h"
+#include "StormWebrtc/StormWebrtcConnection.h"
+#include "StormWebrtcClientAPI/StormWebrtcClient.h"
 
 enum class StormWebrtcClientNativeState
 {
@@ -29,7 +30,7 @@ enum class StormWebrtcClientNativeState
   kChannelInit,
 };
 
-class StormWebrtcClientNative
+class StormWebrtcClientNative : public StormWebrtcClient
 {
 public:
   StormWebrtcClientNative(const StormWebrtcClientChannelList & in_channels, const StormWebrtcClientChannelList & out_channels);
@@ -41,15 +42,15 @@ public:
   StormWebrtcClientNative & operator = (const StormWebrtcClientNative & rhs) = delete;
   StormWebrtcClientNative & operator = (StormWebrtcClientNative && rhs) = delete;
 
-  void StartConnect(const char * ipaddr, int port, const char * fingerprint);
-  void Update();
+  virtual void StartConnect(const char * ipaddr, int port, const char * fingerprint) override;
+  virtual void Update() override;
 
-  bool IsConnected();
-  bool IsConnecting();
-  void Close();
+  virtual bool IsConnected() override;
+  virtual bool IsConnecting() override;
+  virtual void Close() override;
 
-  void SendPacket(int stream, bool sender_channel, const void * data, std::size_t data_len);
-  bool PollPacket(StormWebrtcClientPacket & out_packet);
+  virtual void SendPacket(int stream, bool sender_channel, const void * data, std::size_t data_len) override;
+  virtual bool PollPacket(StormWebrtcClientPacket & out_packet) override;
 
 private:
 
@@ -72,12 +73,9 @@ private:
   mbedtls_x509_crt m_CA;
   mbedtls_entropy_context m_Entropy;
   mbedtls_ctr_drbg_context m_CtrDrbg;
-  mbedtls_timing_delay_context m_Timer;
 
   mbedtls_ssl_config m_SSLConfig;
-  mbedtls_ssl_context m_SSLContext;
-
-  struct socket * m_SctpSocket;
+  StormWebrtcConnection m_Connection;
 };
 
 

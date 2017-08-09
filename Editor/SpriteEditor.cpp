@@ -14,6 +14,12 @@ SpriteEditor::SpriteEditor(PropertyFieldDatabase & property_db, const std::strin
 {
   FrameEditorContainer::CreateFrameEditorTabs(this, m_Sprite, m_TextureAccess, m_TabWidget.get(),
     &m_GlobalFrameDataCallback, 0, g_FrameData.m_SpriteGlobalData);
+
+  m_FrameList->SetFrameSelectionCallback([this](uint64_t frame_id)
+  {
+    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, [this]() { return m_GlobalFrameDataCallback(); }, frame_id, g_FrameData.m_SpriteFrameData);
+    frame_editor->exec();
+  });
 }
 
 REGISTER_EDITOR("Sprite", SpriteEditor, SpriteDef, ".sprite", "Sprites");

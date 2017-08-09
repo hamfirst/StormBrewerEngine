@@ -16,7 +16,7 @@ class GameLevelList
 public:
 
   GameLevelList();
-  bool IsLevelListLoaded();
+  bool IsLevelListLoaded() const;
 
   void PreloadAllLevels();
   bool IsPreloadComplete();

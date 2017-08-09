@@ -77,7 +77,7 @@ void FontViewer::initializeGL()
   m_RenderState.InitRenderState(width(), height());
   m_RenderUtil.LoadShaders();
 
-  g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 8);
+  g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 25);
 
   m_Shader = MakeQuickShaderProgram(kFontViewerVertexShader, kFontViewerFragmentShader);
 

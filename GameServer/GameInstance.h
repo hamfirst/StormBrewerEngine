@@ -23,6 +23,14 @@ class GameServer;
 
 using GameSimulationActionList = std::vector<Delegate<void, GameFullState &, const GameStage &>>;
 
+enum class GameInstanceState
+{
+  kWaitingForPlayers,
+  kWaitingForLoad,
+  kPlaying,
+  kVictory,
+};
+
 class GameInstance : public GameSimulationEventCallbacks, public GameServerEventSender
 {
 public:
@@ -36,18 +44,20 @@ public:
   void RemovePlayer(GameClientConnection * client);
 
   void HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading);
+  void FillGameWithBots(uint32_t random_number);
+  void StartWaitForLoad();
+  void RemovePlayersWhoHaventLoaded();
 
   void UpdatePlayer(GameClientConnection * client, const ClientAuthData & auth_data);
   void HandleClientEvent(GameClientConnection * client, std::size_t class_id, void * event_ptr);
-
-  std::vector<int> GetTeamCounts();
-  int GetRandomTeam();
 
   std::size_t GetNumPlayers();
 
   std::vector<GameClientConnection *> GetConnectedPlayers() const;
 
 protected:
+
+  GameLogicContainer GetLogicContainer();
 
 #if NET_MODE == NET_MODE_GGPO
   void Rewind(const ClientAuthData & auth_data, int player_index);
@@ -61,6 +71,7 @@ protected:
   virtual void SendGlobalEvent(std::size_t class_id, void * event_ptr, std::size_t connection_id) override;
   virtual void SendEntityEvent(std::size_t class_id, void * event_ptr, ServerObjectHandle object_handle) override;
   virtual void SendEntityEvent(std::size_t class_id, void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) override;
+
 
 private:
 
@@ -80,6 +91,8 @@ private:
 
   GameServer & m_Server;
   uint64_t m_GameId;
+
+  GameInstanceState m_State;
 
   GameSharedGlobalResources & m_SharedGlobalResources;
   GameSharedInstanceResources m_SharedInstanceResources;
@@ -109,8 +122,8 @@ private:
   std::vector<GamePlayer> m_Players;
   IdAllocator m_PlayerIdAllocator;
 
-  bool m_Completed;
   int m_SendTimer;
+  int m_LoadTimer;
 };
 
 

@@ -91,7 +91,8 @@ void ScrollingPanel::scrollChanged()
   }
   else
   {
-    m_Widget->setGeometry(0, 0, width(), widget_height);
+    auto w = width();
+    m_Widget->setGeometry(0, 0, w, widget_height);
   }
 }
 

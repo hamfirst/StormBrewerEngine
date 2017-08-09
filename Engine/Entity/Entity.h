@@ -87,14 +87,24 @@ public:
   void SetPosition(const Vector2 & position);
   MoverState & GetMoverState();
   int & GetLayer();
+  void SetLayer(int layer);
   std::string & GetName();
   uint64_t GetAssetNameHash();
   AnimationState & GetAnimationState();
   EntityRenderState & GetRenderState();
 
+  void SetDefaultFrame();
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true);
+  Box GetDrawingFrame() const;
   void SetParent(NullOptPtr<Entity> entity);
   NullOptPtr<ServerObject> GetServerObject();
+
+  template <typename ServerObjectType>
+  NullOptPtr<ServerObjectType> GetServerObjectAs()
+  {
+    auto obj_manager = GetServerObjectManager();
+    return obj_manager ? m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager) : nullptr;
+  }
 
   void SetRotation(bool flip_x, bool flip_y, float rotation = 0);
   void SetCustomDrawingCallback(EntityCustomDraw && draw_callback);
@@ -136,6 +146,8 @@ protected:
   void RemoveEventHandler(uint32_t handler_key);
 
   void TriggerEventHandler(uint32_t event_type, void * ev, NullOptPtr<Entity> src);
+
+  NullOptPtr<ServerObjectManager> GetServerObjectManager();
   
 private:
   NotNullPtr<EngineState> m_EngineState;

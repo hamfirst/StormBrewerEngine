@@ -27,26 +27,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StormWebrtcServer.cpp">
+    <ClCompile Include="StormWebrtc.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="StormWebrtcServerImpl.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="StormWebrtcStun.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StormWebrtcServer.h">
+    <ClInclude Include="StormWebrtc.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="StormWebrtcServerImpl.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="StormWebrtcStun.h" />
+    <ClInclude Include="StormWebrtcConnection.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ECA7470A-8118-43E8-A9FF-3D9748D92EE7}</ProjectGuid>

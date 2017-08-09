@@ -2,14 +2,17 @@
 
 #include "Game/GameSharedInstanceResources.h"
 #include "Game/GameFullState.refl.h"
+#include "Game/GameLogicContainer.h"
 
 #include "GameClient/GameClientInstanceResources.h"
 #include "GameClient/GameClientEventSender.h"
+#include "GameClient/GameClientController.refl.h"
 
 class GameClientInstanceData
 {
 public:
-  GameClientInstanceData(GameFullState & net_state, ClientLocalData & local_data, GameStage & stage,
+  GameClientInstanceData(GameContainer & game_container, GameController & game_controller, GameClientController & client_controller, 
+    GameFullState & net_state, ClientLocalData & local_data, GameStage & stage,
     GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, GameClientEventSender & event_sender);
 
   GameClientInstanceData(const GameClientInstanceData & rhs) = default;
@@ -30,7 +33,13 @@ public:
   GameClientInstanceResources & GetClientInstanceResources();
 
   GameClientEventSender & GetEventSender();
+
+  GameLogicContainer GetLogicContainer();
 private:
+
+  GameContainer & m_GameContainer;
+  GameController & m_GameController;
+  GameClientController & m_ClientController;
 
   GameFullState & m_NetState;
   ClientLocalData & m_LocalData;
@@ -41,4 +50,5 @@ private:
   GameClientInstanceResources & m_ClientInstanceResources;
 
   GameClientEventSender & m_EventSender;
+  int m_SendTimer;
 };

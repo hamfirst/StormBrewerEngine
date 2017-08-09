@@ -173,7 +173,14 @@ public:
 
     if (m_HandleList.ReleaseHandle(handle))
     {
-      m_Colony.erase(*itr);
+      if (m_Iterating)
+      {
+        m_DeadIterators.emplace_back(*itr);
+      }
+      else
+      {
+        m_Colony.erase(*itr);
+      }
     }
   }
 
@@ -185,9 +192,21 @@ public:
   template <typename Callable>
   void VisitAll(Callable && callable)
   {
+    m_Iterating++;
     for (auto & elem : m_Colony)
     {
       callable(elem);
+    }
+    m_Iterating--;
+
+    if (m_Iterating == 0)
+    {
+      for (auto & elem : m_DeadIterators)
+      {
+        m_Colony.erase(elem);
+      }
+
+      m_DeadIterators.clear();
     }
   }
 
@@ -196,4 +215,7 @@ private:
 
   plf::colony<Type> m_Colony;
   SkipFieldHandleList<Type> m_HandleList;
+
+  int m_Iterating = 0;
+  std::vector<typename plf::colony<Type>::iterator> m_DeadIterators;
 };

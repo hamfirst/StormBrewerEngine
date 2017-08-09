@@ -17,6 +17,7 @@ PropertyEditorEnum::PropertyEditorEnum(DocumentEditorWidgetBase * editor, Proper
   m_WriteBack(false)
 {
   m_Input = std::make_unique<QComboBox>(this);
+  m_Input->show();
 
   QStringList potential_options;
   for (auto & enum_option : prop->m_Enum.m_EnumData->m_PossibleValues)
@@ -74,7 +75,7 @@ void PropertyEditorEnum::UpdateValue()
 
 void PropertyEditorEnum::UpdateChildPosition()
 {
-  auto input_height = m_Input->minimumHeight();
+  auto input_height = std::max(m_Input->minimumHeight(), 20);
 
   m_Input->setGeometry(0, 0, width(), input_height);
   setMinimumHeight(input_height);

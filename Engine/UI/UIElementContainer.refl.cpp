@@ -1,11 +1,19 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementContainer.refl.h"
+#include "Engine/UI/UIElementContainer.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementContainer::Type = 1;
+#include "StormData/StormDataJson.h"
+
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementContainerInitData);
+REGISTER_UIELEMENT_DATA(UIElementContainer, UIElementContainerInitData, UIElementContainerData);
+
+UIElementType UIElementContainer::Type = UIElementType::kContainer;
 
 UIElementContainer::UIElementContainer(const UIElementContainerInitData & init_data, const UIElementContainerData & data) :
   m_InitData(init_data),
@@ -16,6 +24,9 @@ UIElementContainer::UIElementContainer(const UIElementContainerInitData & init_d
 
 void UIElementContainer::Update()
 {
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
+
   UIElement::Update();
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
@@ -55,3 +66,17 @@ void UIElementContainer::SetCustomRenderCallback(Delegate<void, UIElementContain
   m_RenderDelegate = std::move(render_callback);
 }
 
+StormExprValueInitBlock UIElementContainer::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementContainer::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementContainer::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}

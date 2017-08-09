@@ -41,6 +41,15 @@ public:
     return m_Managers[layer_index].get();
   }
 
+  template <typename Visitor>
+  void VisitLayers(Visitor && visitor)
+  {
+    for (auto elem : m_Managers)
+    {
+      visitor(elem.first, elem.second);
+    }
+  }
+
 protected:
   void Resync()
   {

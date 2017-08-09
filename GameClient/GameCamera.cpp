@@ -12,6 +12,7 @@ GameCamera::GameCamera(GameContainer & container) :
 void GameCamera::Update()
 {
   SetGameResolution(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
+  SetPosition(Vector2(0, 20));
 }
 
 void GameCamera::TransformWorldSpaceToGameplaySpace(int & x, int & y)

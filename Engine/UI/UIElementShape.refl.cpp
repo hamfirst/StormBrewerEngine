@@ -1,12 +1,18 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementShape.refl.h"
+#include "Engine/UI/UIElementShape.refl.meta.h"
+#include "Engine/UI/UIElementExprBlock.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Shader/ShaderManager.h"
 
-int UIElementShape::Type = 6;
+#include "Runtime/UI/UIElementTypeRegister.h"
+
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UIElementShapeInitData);
+REGISTER_UIELEMENT_DATA(UIElementShape, UIElementShapeInitData, UIElementShapeData);
+
+UIElementType UIElementShape::Type = UIElementType::kShape;
 
 UIElementShape::UIElementShape(const UIElementShapeInitData & init_data, const UIElementShapeData & data) :
   m_InitData(init_data),
@@ -17,6 +23,9 @@ UIElementShape::UIElementShape(const UIElementShapeInitData & init_data, const U
 
 void UIElementShape::Update()
 {
+  SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
+  SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
+
   UIElement::Update();
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
@@ -93,4 +102,20 @@ void UIElementShape::SetCustomRenderCallback(Delegate<void, UIElementShape &, Re
 {
   m_RenderDelegate = std::move(render_callback);
 }
+
+StormExprValueInitBlock UIElementShape::GetLocalBlock()
+{
+  return UICreateInitBlockForDataType(m_Data);
+}
+
+StormExprValueInitBlock UIElementShape::GetAsParentBlock()
+{
+  return UICreateInitBlockForDataType(m_Data, "p.");
+}
+
+UIElementExprBindingList UIElementShape::CreateBindingList()
+{
+  return UICreateBindingList(m_Data);
+}
+
 

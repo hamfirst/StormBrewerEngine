@@ -58,7 +58,11 @@ void ServerObjectSystem::FinalizeTypes()
     auto & type = m_ObjectTypes[index];
     type.m_TypeIndex = index;
     *type.m_TypeIndexPtr = index;
+  }
 
+  for (std::size_t index = 0, end = m_ObjectTypes.size(); index < end; ++index)
+  {
+    auto & type = m_ObjectTypes[index];
     FinalizeType(type);
   }
 

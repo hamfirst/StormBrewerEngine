@@ -7,7 +7,9 @@
 #include "Engine/EngineState.h"
 #include "Engine/Map/MapInstance.h"
 #include "Engine/Entity/Entity.h"
+#include "Engine/Entity/EntityHandle.h"
 #include "Engine/Entity/EntitySystem.h"
+#include "Engine/Rendering/RenderSettings.h"
 
 MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def, std::size_t map_id) :
   m_MapId(map_id)
@@ -89,7 +91,7 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
 
   for (auto entity : entities)
   {
-    entity->Activate();
+    m_MapEntities.push_back(entity->GetHandle());
   }
 }
 
@@ -98,11 +100,11 @@ void MapInstance::Update(GameContainer & game_container)
 
 }
 
-void MapInstance::Draw(DrawList & draw_list)
+void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 {
   for (auto & layer : m_ParalaxLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
       layer.Draw(viewport_bounds, screen_center, render_state, render_util);
     });
@@ -110,18 +112,35 @@ void MapInstance::Draw(DrawList & draw_list)
 
   for (auto & layer : m_ManualTileLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
       layer.Draw(viewport_bounds, screen_center);
     });
+
+#ifdef USE_Z_ORDERING
+    layer.DrawDynamic(viewport_bounds, draw_list);
+#endif
   }
 
   for (auto & layer : m_EffectLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
     {
       layer.Draw(game_container, viewport_bounds, screen_center, render_state, render_util);
     });
+  }
+}
+
+
+void MapInstance::ActivateEntities()
+{
+  for (auto & elem : m_MapEntities)
+  {
+    auto entity = elem.Resolve();
+    if (entity)
+    {
+      entity->Activate();
+    }
   }
 }
 

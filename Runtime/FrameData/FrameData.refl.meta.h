@@ -9,7 +9,7 @@
 template <>
 struct StormReflEnumInfo<FrameDataDefType>
 {
-  static constexpr int elems_n = 3;
+  static constexpr int elems_n = 4;
   static constexpr auto GetName() { return "FrameDataDefType"; }
   static constexpr auto GetNameHash() { return 0xCD6F2DAB; }
   template <int N> struct elems { };
@@ -37,6 +37,14 @@ struct StormReflEnumInfo<FrameDataDefType>::elems<2>
   static constexpr auto GetName() { return "kSingleLine"; }
   static constexpr auto GetNameHash() { return 0x4F67990E; }
   static constexpr auto GetValue() { return FrameDataDefType::kSingleLine; }
+};
+
+template <>
+struct StormReflEnumInfo<FrameDataDefType>::elems<3>
+{
+  static constexpr auto GetName() { return "kLowerEdge"; }
+  static constexpr auto GetNameHash() { return 0xFD74B552; }
+  static constexpr auto GetValue() { return FrameDataDefType::kLowerEdge; }
 };
 
 template <>
@@ -268,10 +276,102 @@ struct StormReflTypeInfo<FrameDataSingleLine>::field_data<1, Self> : public Stor
 };
 
 template <>
+struct StormReflTypeInfo<FrameDataLowerEdgeInfo>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "FrameDataLowerEdgeInfo"; }
+  static constexpr auto GetNameHash() { return 0xBED4CEA6; }
+  static FrameDataLowerEdgeInfo & GetDefault() { static FrameDataLowerEdgeInfo def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataLowerEdgeInfo>::field_data_static<0>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_OffsetPixels"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD3745995; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &FrameDataLowerEdgeInfo::m_OffsetPixels; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataLowerEdgeInfo>::field_data<0, Self> : public StormReflTypeInfo<FrameDataLowerEdgeInfo>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_OffsetPixels; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_OffsetPixels; }
+  void SetDefault() { self.m_OffsetPixels = StormReflTypeInfo<FrameDataLowerEdgeInfo>::GetDefault().m_OffsetPixels; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataLowerEdge>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "FrameDataLowerEdge"; }
+  static constexpr auto GetNameHash() { return 0xCBE12067; }
+  static FrameDataLowerEdge & GetDefault() { static FrameDataLowerEdge def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataLowerEdge>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_FrameDataName"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x05708CE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &FrameDataLowerEdge::m_FrameDataName; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataLowerEdge>::field_data<0, Self> : public StormReflTypeInfo<FrameDataLowerEdge>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_FrameDataName; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_FrameDataName; }
+  void SetDefault() { self.m_FrameDataName = StormReflTypeInfo<FrameDataLowerEdge>::GetDefault().m_FrameDataName; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataLowerEdge>::field_data_static<1>
+{
+  using member_type = ROpaque<FrameDataLowerEdgeInfo>; // ROpaque<FrameDataLowerEdgeInfo>
+  static constexpr auto GetName() { return "m_Data"; }
+  static constexpr auto GetType() { return "ROpaque<FrameDataLowerEdgeInfo>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4FF4E6DB; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &FrameDataLowerEdge::m_Data; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataLowerEdge>::field_data<1, Self> : public StormReflTypeInfo<FrameDataLowerEdge>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ROpaque<FrameDataLowerEdgeInfo>> & Get() { return self.m_Data; }
+  std::add_const_t<std::remove_reference_t<ROpaque<FrameDataLowerEdgeInfo>>> & Get() const { return self.m_Data; }
+  void SetDefault() { self.m_Data = StormReflTypeInfo<FrameDataLowerEdge>::GetDefault().m_Data; }
+};
+
+template <>
 struct StormReflTypeInfo<FrameData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -344,6 +444,28 @@ struct StormReflTypeInfo<FrameData>::field_data<2, Self> : public StormReflTypeI
   match_const_t<Self, RMergeList<FrameDataSingleLine>> & Get() { return self.m_SingleLineData; }
   std::add_const_t<std::remove_reference_t<RMergeList<FrameDataSingleLine>>> & Get() const { return self.m_SingleLineData; }
   void SetDefault() { self.m_SingleLineData = StormReflTypeInfo<FrameData>::GetDefault().m_SingleLineData; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameData>::field_data_static<3>
+{
+  using member_type = RMergeList<FrameDataLowerEdge>; // RMergeList<FrameDataLowerEdge>
+  static constexpr auto GetName() { return "m_LowerEdgeData"; }
+  static constexpr auto GetType() { return "RMergeList<FrameDataLowerEdge>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2D2D13BC; }
+  static constexpr unsigned GetTypeNameHash() { return 0x21B378C9; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &FrameData::m_LowerEdgeData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameData>::field_data<3, Self> : public StormReflTypeInfo<FrameData>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<FrameDataLowerEdge>> & Get() { return self.m_LowerEdgeData; }
+  std::add_const_t<std::remove_reference_t<RMergeList<FrameDataLowerEdge>>> & Get() const { return self.m_LowerEdgeData; }
+  void SetDefault() { self.m_LowerEdgeData = StormReflTypeInfo<FrameData>::GetDefault().m_LowerEdgeData; }
 };
 
 template <>
@@ -508,7 +630,7 @@ namespace StormReflFileInfo
 {
   struct FrameData
   {
-    static const int types_n = 7;
+    static const int types_n = 9;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -539,17 +661,29 @@ namespace StormReflFileInfo
   template <>
   struct FrameData::type_info<4>
   {
-    using type = ::FrameData;
+    using type = ::FrameDataLowerEdgeInfo;
   };
 
   template <>
   struct FrameData::type_info<5>
   {
-    using type = ::FrameDataDefElem;
+    using type = ::FrameDataLowerEdge;
   };
 
   template <>
   struct FrameData::type_info<6>
+  {
+    using type = ::FrameData;
+  };
+
+  template <>
+  struct FrameData::type_info<7>
+  {
+    using type = ::FrameDataDefElem;
+  };
+
+  template <>
+  struct FrameData::type_info<8>
   {
     using type = ::FrameDataDef;
   };

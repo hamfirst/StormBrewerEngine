@@ -27,6 +27,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Anchor\AnchorDef.refl.cpp" />
+    <ClCompile Include="Anchor\AnchorTypeDatabase.cpp" />
     <ClCompile Include="Collision\CollisionSystem.cpp">
       <SubType>
       </SubType>
@@ -79,10 +81,16 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI\UIDef.refl.cpp" />
+    <ClCompile Include="UI\UIElementTypeDatabase.cpp" />
     <ClCompile Include="Volume\VolumeDef.refl.cpp" />
     <ClCompile Include="Volume\VolumeTypeDatabase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Anchor\AnchorDef.refl.h" />
+    <ClInclude Include="Anchor\AnchorDef.refl.meta.h" />
+    <ClInclude Include="Anchor\AnchorTypeDatabase.h" />
+    <ClInclude Include="Anchor\AnchorTypeRegister.h" />
     <ClInclude Include="Animation\AnimationState.h" />
     <ClInclude Include="Collision\CollisionSystem.h">
       <SubType>
@@ -188,6 +196,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UI\UIDef.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIDef.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementTypeDatabase.h" />
+    <ClInclude Include="UI\UIElementTypeRegister.h" />
+    <ClInclude Include="UI\UITypes.refl.h" />
+    <ClInclude Include="UI\UITypes.refl.meta.h" />
     <ClInclude Include="Volume\VolumeDef.refl.h" />
     <ClInclude Include="Volume\VolumeDef.refl.meta.h" />
     <ClInclude Include="Volume\VolumeTypeDatabase.h" />

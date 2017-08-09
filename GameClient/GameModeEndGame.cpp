@@ -8,7 +8,8 @@
 
 GameModeEndGame::GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container) :
   GameMode(game),
-  m_InstanceContainer(std::move(instance_container))
+  m_InstanceContainer(std::move(instance_container)),
+  m_UIManager(game.GetWindow())
 {
 
 }

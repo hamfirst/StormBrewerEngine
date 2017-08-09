@@ -4,9 +4,11 @@
 #include "Engine/UI/UIElement.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
-struct UIElementGradientInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementGradientInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementGradientInitData);
 };
 
 struct UIElementGradientData
@@ -82,7 +84,7 @@ class UIElementGradient : public UIElement
 public:
   UIElementGradient(const UIElementGradientInitData & init_data, const UIElementGradientData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -92,6 +94,12 @@ public:
   UIElementGradientData & GetData();
 
   void SetCustomRenderCallback(Delegate<void, UIElementGradient &, RenderState &, const Vector2 &> && render_callback);
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

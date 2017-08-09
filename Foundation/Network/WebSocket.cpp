@@ -562,9 +562,12 @@ Optional<WebsocketPacket> WebSocket::RecvPacket()
   }
 
   Buffer packet_buffer((std::size_t)len);
-  if (RecvData(packet_buffer.Get(), (std::size_t)len) == false)
+  if (len > 0)
   {
-    return{};
+    if (RecvData(packet_buffer.Get(), (std::size_t)len) == false)
+    {
+      return{};
+    }
   }
 
   if (mask != 0)

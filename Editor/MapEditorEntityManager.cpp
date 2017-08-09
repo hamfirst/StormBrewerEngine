@@ -288,10 +288,7 @@ void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 
         RenderVec2 draw_pos = pos;
         draw_pos -= screen_center;
 
-        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), draw_pos);
-        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
-
-        SpriteEngineData::RenderSprite(data->m_Sprite, 0, 0, shader);
+        SpriteEngineData::RenderSprite(data->m_Sprite, 0, 0, draw_pos);
       }
     }
   }
@@ -310,11 +307,7 @@ void MapEditorEntityManager::DrawPreviewEntity(const RenderVec2 & screen_center)
   RenderVec2 draw_pos = RenderVec2{ m_PreviewEntityPosition.Value() };
   draw_pos -= screen_center;
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), draw_pos);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
-
-  SpriteEngineData::RenderSprite(sprite, 0, 0, shader);
+  SpriteEngineData::RenderSprite(sprite, 0, 0, draw_pos);
 }
 
 void MapEditorEntityManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util)

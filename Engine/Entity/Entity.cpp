@@ -74,6 +74,11 @@ int & Entity::GetLayer()
   return m_Layer;
 }
 
+void Entity::SetLayer(int layer)
+{
+  m_Layer = layer;
+}
+
 std::string & Entity::GetName()
 {
   return m_Name;
@@ -94,6 +99,19 @@ EntityRenderState & Entity::GetRenderState()
   return m_RenderState;
 }
 
+void Entity::SetDefaultFrame()
+{
+  if (m_Sprite.GetResource() != nullptr)
+  {
+    m_Sprite.GetResource()->GetDefaultFrame(m_RenderState);
+  }
+  else
+  {
+    AnimationState & cur_state = m_RenderState;
+    cur_state = AnimationState{};
+  }
+}
+
 bool Entity::FrameAdvance(uint32_t anim_name_hash, bool loop)
 {
   if (m_Sprite.GetResource() != nullptr)
@@ -102,6 +120,11 @@ bool Entity::FrameAdvance(uint32_t anim_name_hash, bool loop)
   }
 
   return false;
+}
+
+Box Entity::GetDrawingFrame() const
+{
+  return Box::FromFrameCenterAndSize(m_MoverState.m_Position, Vector2(m_RenderState.m_FrameWidth, m_RenderState.m_FrameHeight));
 }
 
 void Entity::SetParent(NullOptPtr<Entity> entity)
@@ -128,7 +151,7 @@ void Entity::SetParent(NullOptPtr<Entity> entity)
 
 NullOptPtr<ServerObject> Entity::GetServerObject()
 {
-  auto server_object_manager = GetServerObjectManager(m_GameContainer);
+  auto server_object_manager = ::GetServerObjectManager(m_GameContainer);
   return server_object_manager ? m_ServerObject.Resolve(*server_object_manager) : nullptr;
 }
 
@@ -302,4 +325,9 @@ void Entity::RemoveEventHandler(uint32_t handler_key)
 void Entity::TriggerEventHandler(uint32_t event_type, void * ev, NullOptPtr<Entity> src)
 {
   m_EventDispatch.TriggerEvent(event_type, ev, src);
+}
+
+NullOptPtr<ServerObjectManager> Entity::GetServerObjectManager()
+{
+  return ::GetServerObjectManager(m_GameContainer);
 }

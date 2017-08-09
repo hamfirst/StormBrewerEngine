@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
+#include "Engine/UI/UIClickable.h"
+#include "Engine/UI/UIClickablePtr.h"
 #include "Engine/UI/UIElementPtr.h"
 #include "Engine/UI/UIElementContainer.refl.h"
 #include "Engine/UI/UIElementGradient.refl.h"
@@ -11,14 +13,19 @@
 #include "Engine/UI/UIElementFullTexture.refl.h"
 #include "Engine/UI/UIElementTextInput.refl.h"
 
+#include "StormExpr/StormExprFunctionList.h"
+
 class UIElement;
 class InputState;
+class Window;
 
 class UIManager
 {
 public:
 
-  void Update(InputState & input_state, RenderState & render_state);
+  UIManager(Window & container_window);
+
+  void Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset = Vector2(0, 0));
   void Render(RenderState & render_state, RenderUtil & render_util);
 
   UIElementPtr<UIElementContainer> AllocateContainer(czstr name, NullOptPtr<UIElement> parent = nullptr,
@@ -42,10 +49,17 @@ public:
   UIElementPtr<UIElementFullTexture> AllocateFullTexture(czstr name, NullOptPtr<UIElement> parent = nullptr,
     const UIElementFullTextureInitData & init_data = {}, const UIElementFullTextureData & data = {});
 
-  UIElementPtr<UIElementTextInput> AllocateTextInput(czstr name, std::shared_ptr<TextInputContext> && input_context, NullOptPtr<UIElement> parent = nullptr,
+  UIElementPtr<UIElementTextInput> AllocateTextInput(czstr name, NullOptPtr<UIElement> parent = nullptr,
     const UIElementTextInputInitData & init_data = {}, const UIElementTextInputData & data = {});
 
-  
+  UIElementHandle AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent = nullptr);
+
+  static uint32_t GetElementTypeNameHashForEnum(UIElementType type);
+  static std::vector<std::string> GetVariablesForElementType(uint32_t element_type_hash);
+
+  UIClickablePtr AllocateClickable(const Box & active_area);
+
+  UIElementHandle GetElementByPath(czstr path);
 
   bool HasSelectedElement() const;
 
@@ -53,6 +67,7 @@ protected:
 
   friend class UIElementHandle;
   friend class UIElement;
+  friend class UIClickable;
 
   template <typename ElementType, typename InitData, typename BlockData>
   NotNullPtr<ElementType> AllocateUIElement(czstr name, SkipField<ElementType> & alloc, NullOptPtr<UIElement> parent, const InitData & init_data, const BlockData & data);
@@ -60,16 +75,25 @@ protected:
   template <typename ElementType, typename InitData, typename BlockData, typename Param>
   NotNullPtr<ElementType> AllocateUIElement(czstr name, SkipField<ElementType> & alloc, NullOptPtr<UIElement> parent, const InitData & init_data, const BlockData & data, Param && param);
 
-  NotNullPtr<UIElement> ResolveHandle(uint32_t type, Handle & handle);
+  UIElementHandle AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementDataBase * init_data);
+
+  NotNullPtr<UIElement> ResolveHandle(UIElementType type, Handle & handle);
   void UnlinkElement(NotNullPtr<UIElement> element);
   void ReleaseElement(NotNullPtr<UIElement> element);
 
+  void ReleaseClickable(NotNullPtr<UIClickable> clickable);
+
   void SetupActiveElementsList(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, NotNullPtr<UIElement>, const Vector2 & offset);
-  void ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, InputState & input_state, RenderState & render_state);
+  void ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, Box>> & elements, InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset);
 
 private:
+  Window & m_ContainerWindow;
 
   std::vector<NotNullPtr<UIElement>> m_RootElements;
+  std::vector<NotNullPtr<UIClickable>> m_Clickables;
   bool m_HasSelectedElement = false;
+
+  UIGlobalBlock m_GlobalBlock;
+  StormExprFunctionList m_FuncList;
 };
 

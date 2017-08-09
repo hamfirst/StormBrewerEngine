@@ -9,6 +9,8 @@
 #include "Engine/Map/MapEffectLayerInstance.h"
 #include "Engine/Map/MapParalaxLayerInstance.h"
 #include "Engine/DrawList/DrawList.h"
+#include "Engine/Entity/EntityHandle.h"
+#include "Engine/Rendering/RenderSettings.h"
 
 class GameContainer;
 
@@ -21,7 +23,9 @@ public:
   void RemoveCollision(NotNullPtr<EngineState> engine_state);
 
   void Update(GameContainer & game_container);
-  void Draw(DrawList & draw_list);
+  void Draw(const Box & viewport_bounds, DrawList & draw_list);
+
+  void ActivateEntities();
 
 private:
   friend class MapRenderer;
@@ -29,5 +33,7 @@ private:
   std::vector<MapManualTileLayerInstance> m_ManualTileLayers;
   std::vector<MapParalaxLayerInstance> m_ParalaxLayers;
   std::vector<MapEffectLayerInstance> m_EffectLayers;
+  std::vector<EntityHandle> m_MapEntities;
+
   std::size_t m_MapId;
 };

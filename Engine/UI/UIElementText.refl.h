@@ -3,9 +3,11 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElement.h"
 
-struct UIElementTextInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementTextInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementTextInitData);
 };
 
 struct UIElementTextData
@@ -61,7 +63,7 @@ class UIElementText : public UIElement
 public:
   UIElementText(const UIElementTextInitData & init_data, const UIElementTextData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -71,6 +73,12 @@ public:
   UIElementTextData & GetData();
 
   void SetCustomRenderCallback(Delegate<void, UIElementText &, RenderState &, const Vector2 &> && render_callback);
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

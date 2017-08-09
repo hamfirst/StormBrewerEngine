@@ -3,6 +3,6 @@
 
 bool GameSharedGlobalResources::IsLoaded() const
 {
-  return true;
+  return m_LevelList.IsLevelListLoaded();
 }
 

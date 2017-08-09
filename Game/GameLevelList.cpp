@@ -14,7 +14,7 @@ GameLevelList::GameLevelList()
   m_LevelListResource = LevelList::Load("./LevelList.txt");
 }
 
-bool GameLevelList::IsLevelListLoaded()
+bool GameLevelList::IsLevelListLoaded() const
 {
   return m_LevelListResource.IsLoaded();
 }

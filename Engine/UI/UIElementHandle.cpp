@@ -14,6 +14,11 @@ bool UIElementHandle::operator != (const UIElementHandle && rhs)
   return m_Type != rhs.m_Type || *static_cast<const Handle *>(this) != *static_cast<const Handle *>(&rhs) || m_UIManager != rhs.m_UIManager;
 }
 
+UIElementType UIElementHandle::GetType() const
+{
+  return m_Type;
+}
+
 NullOptPtr<UIElement> UIElementHandle::Resolve()
 {
   if (m_UIManager == nullptr)

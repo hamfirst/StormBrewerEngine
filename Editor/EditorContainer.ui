@@ -50,6 +50,8 @@
      <string>Run</string>
     </property>
     <addaction name="action_TestBuild"/>
+    <addaction name="action_TestBuildWithoutOneClient"/>
+    <addaction name="action_TestBuildWithBots"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -99,6 +101,16 @@
   <action name="action_TestBuild">
    <property name="text">
     <string>Test Build</string>
+   </property>
+  </action>
+  <action name="action_TestBuildWithoutOneClient">
+   <property name="text">
+    <string>Test Build Without One Client</string>
+   </property>
+  </action>
+  <action name="action_TestBuildWithBots">
+   <property name="text">
+    <string>Test Build With Bots</string>
    </property>
   </action>
  </widget>

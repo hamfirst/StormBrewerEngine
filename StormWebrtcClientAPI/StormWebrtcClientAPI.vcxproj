@@ -36,6 +36,7 @@
     <ClInclude Include="StormWebrtcClientWeb.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="StormWebrtcClient.cpp" />
     <ClCompile Include="StormWebrtcClientNative.cpp">
       <SubType>
       </SubType>

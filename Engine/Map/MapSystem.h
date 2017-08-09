@@ -6,6 +6,7 @@
 #include "Runtime/Map/MapDef.refl.h"
 
 class EngineState;
+class MapInstance;
 
 class MapSystem
 {
@@ -14,8 +15,9 @@ public:
 
   std::size_t InstantiateMap(MapDef & map_def);
   void UnloadMap(std::size_t map_id);
+  NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);
 
-  void DrawAllMaps(DrawList & draw_list);
+  void DrawAllMaps(const Box & viewport_bounds, DrawList & draw_list);
 private:
 
   NotNullPtr<EngineState> m_EngineState;

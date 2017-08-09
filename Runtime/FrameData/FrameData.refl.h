@@ -46,6 +46,26 @@ public:
   ROpaque<FrameDataSingleLineInfo> m_Data;
 };
 
+struct RUNTIME_EXPORT FrameDataLowerEdgeInfo
+{
+  STORM_REFL;
+  int m_OffsetPixels;
+
+  bool operator == (const FrameDataLowerEdgeInfo & rhs) const
+  {
+    return m_OffsetPixels == rhs.m_OffsetPixels;
+  }
+};
+
+struct RUNTIME_EXPORT FrameDataLowerEdge
+{
+public:
+  STORM_DATA_DEFAULT_CONSTRUCTION(FrameDataLowerEdge);
+
+  RString m_FrameDataName;
+  ROpaque<FrameDataLowerEdgeInfo> m_Data;
+};
+
 struct RUNTIME_EXPORT FrameData
 {
 public:
@@ -54,6 +74,7 @@ public:
   RMergeList<FrameDataSingleBox> m_SingleBoxData;
   RMergeList<FrameDataMultiBox> m_MultiBoxData;
   RMergeList<FrameDataSingleLine> m_SingleLineData;
+  RMergeList<FrameDataLowerEdge> m_LowerEdgeData;
 };
 
 enum STORM_REFL_ENUM class FrameDataDefType
@@ -61,6 +82,7 @@ enum STORM_REFL_ENUM class FrameDataDefType
   kSingleBox,
   kMultiBox,
   kSingleLine,
+  kLowerEdge
 };
 
 struct RUNTIME_EXPORT FrameDataDefElem

@@ -33,6 +33,7 @@ void GameModeOnlineGameplay::Initialize()
   m_ClientSystems.Emplace(container);
 
   container.SetClientSystems(&m_ClientSystems.Value());
+  container.GetClient().FinalizeMapLoad();
 }
 
 void GameModeOnlineGameplay::OnAssetsLoaded()
@@ -84,8 +85,6 @@ void GameModeOnlineGameplay::Update()
     update_list.CallLast(index);
     entity_system->FinalizeEvents();
   }
-
-  comp_system->FinalizeComponentDestroys();
 
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();

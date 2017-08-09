@@ -24,7 +24,8 @@ public:
   virtual czstr GetDefaultEntityBinding();
   virtual czstr GetEntityBinding();
 
-  bool IsDestroyed();
+  bool IsDestroyed() const;
+  int GetSlotIndex() const;
 
   template <typename Type>
   NullOptPtr<Type> CastTo()
@@ -54,6 +55,7 @@ private:
 private:
   bool m_IsStatic = false;
   int m_TypeIndex = 0;
+  int m_SlotIndex = 0;
 
   SkipFieldIterator m_Iterator;
   Handle m_Handle;
@@ -61,15 +63,17 @@ private:
 };
 
 template <typename T>
-NullOptPtr<ServerObject> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_manager)
+NullOptPtr<T> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_manager)
 {
-  auto ptr = Resolve();
+  static_assert(std::is_base_of<ServerObject, T>::value, "Must resolve to server object type");
+
+  auto ptr = Resolve(object_manager);
   if (ptr == nullptr)
   {
     return nullptr;
   }
 
-  if (ptr->CastToInternal(T::TypeNameHash))
+  if (ptr->CastToInternal((uint32_t)T::TypeIndex))
   {
     return static_cast<T *>(ptr);
   }

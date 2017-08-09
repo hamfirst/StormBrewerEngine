@@ -168,8 +168,8 @@ struct Box
 struct Color
 {
   Color() = default;
-  Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) { }
-  Color(int r, int g, int b, int a) : r((float)r / 255.0f), g((float)g / 255.0f), b((float)b / 255.0f), a((float)a / 255.0f) { }
+  Color(float r, float g, float b, float a = 1.0f) : r(r), g(g), b(b), a(a) { }
+  Color(int r, int g, int b, int a = 255) : r((float)r / 255.0f), g((float)g / 255.0f), b((float)b / 255.0f), a((float)a / 255.0f) { }
 
   operator RenderVec4() const
   {

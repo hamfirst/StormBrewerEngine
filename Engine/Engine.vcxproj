@@ -378,6 +378,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Rendering\Rendering.h" />
+    <ClInclude Include="Rendering\RenderSettings.h" />
     <ClInclude Include="Rendering\RenderState.h">
       <SubType>
       </SubType>
@@ -438,6 +439,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UI\Prototype\UISoundPrototypeEffects.h" />
+    <ClInclude Include="UI\UIClickable.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIClickablePtr.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI\UICustomPropertyData.refl.h">
       <SubType>
       </SubType>
@@ -449,6 +458,23 @@
     <ClInclude Include="UI\UIElement.h" />
     <ClInclude Include="UI\UIElementContainer.refl.h" />
     <ClInclude Include="UI\UIElementContainer.refl.meta.h" />
+    <ClInclude Include="UI\UIElementExprBinding.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprBlock.h" />
+    <ClInclude Include="UI\UIElementExprFuncs.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprTypes.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UI\UIElementExprTypes.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI\UIElementFullTexture.refl.h">
       <SubType>
       </SubType>
@@ -675,8 +701,25 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI\UIClickable.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UI\UIClickablePtr.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UI\UIElementContainer.refl.cpp" />
+    <ClCompile Include="UI\UIElementExprBinding.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UI\UIElementExprBlock.cpp" />
+    <ClCompile Include="UI\UIElementExprFuncs.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI\UIElementFullTexture.refl.cpp" />
     <ClCompile Include="UI\UIElementGradient.refl.cpp" />
     <ClCompile Include="UI\UIElementHandle.cpp" />

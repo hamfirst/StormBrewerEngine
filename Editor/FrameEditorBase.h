@@ -41,6 +41,7 @@ protected:
 
   void SyncMouse();
   void SyncDraw();
+  void UpdateFrameSize();
 
   Vector2 TransformScreenToFrame(const Vector2 & pos);
   Vector2 TransformFrameToScreen(const Vector2 & pos);
@@ -51,6 +52,7 @@ protected:
   void DrawHighlightedEdge(const FrameEditorEdge & edge);
 
   void DrawLine(const Vector2 & a, const Vector2 & b);
+  void DrawHighlightedLine(const Vector2 & a, const Vector2 & b);
   void DrawCornerControl(const Vector2 & pos);
   void DrawHighlightedCornerControl(const Vector2 & pos);
 
@@ -89,6 +91,8 @@ protected:
   Optional<GeometryVertexBufferBuilder> m_GeometryBuidler;
 
   uint64_t m_FrameId;
+  int m_FrameWidth;
+  int m_FrameHeight;
 
   RenderVec2 m_Center = {};
   int m_Magnification = 4;

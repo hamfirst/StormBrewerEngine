@@ -5,9 +5,11 @@
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
-struct UIElementFullTextureInitData
+#include "Runtime/UI/UIDef.refl.h"
+
+struct UIElementFullTextureInitData : public UIElementDataBase
 {
-  STORM_REFL;
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementFullTextureInitData);
 
   RString STORM_REFL_ATTR_VAL(file, image) m_TextureFile;
 };
@@ -38,7 +40,7 @@ class UIElementFullTexture : public UIElement
 public:
   UIElementFullTexture(const UIElementFullTextureInitData & init_data, const UIElementFullTextureData & data = {});
 
-  static int Type;
+  static UIElementType Type;
 
   void Update() override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
@@ -50,6 +52,12 @@ public:
   void SetCustomRenderCallback(Delegate<void, UIElementFullTexture &, RenderState &, const Vector2 &> && render_callback);
 
   AssetReference<TextureAsset> & GetTextureAsset();
+
+protected:
+
+  virtual StormExprValueInitBlock GetLocalBlock() override;
+  virtual StormExprValueInitBlock GetAsParentBlock() override;
+  virtual UIElementExprBindingList CreateBindingList() override;
 
 private:
 

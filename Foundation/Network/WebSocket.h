@@ -9,7 +9,7 @@ enum class WebSocketPacketType
   kBinary,
   kClose = 0x08,
   kPing = 0x09,
-  kPong = 0x10,
+  kPong = 0x0A,
 };
 
 struct WebsocketPacket

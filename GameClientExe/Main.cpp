@@ -58,7 +58,7 @@ void StormWebrtcStaticCleanup();
 
 int main(int argc, char *argv[])
 {
-  int multiplier = 1;
+  int multiplier = 2;
   for (int index = 0; index < argc; index++)
   {
     if (!strcmp(argv[index], "-native"))
@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
   EngineRenderInit();
 
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
+  g_TextManager.LoadFont("./Fonts/Arial.ttf", -2, 25);
   s_GameContainer = std::make_unique<GameContainer>(window);
 
 #ifdef _WEB

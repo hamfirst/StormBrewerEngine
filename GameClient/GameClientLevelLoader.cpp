@@ -3,6 +3,8 @@
 
 #include "GameClient/GameContainer.h"
 
+#include "Engine/Map/MapInstance.h"
+
 GameClientLevelLoader::GameClientLevelLoader(GameContainer & game) :
   m_GameContainer(game)
 {
@@ -23,10 +25,20 @@ void GameClientLevelLoader::LoadLevel(const GameInitSettings & init_settings, ui
   {
     m_GameContainer.GetEngineState().UnloadMap(m_LoadedMapId.Value());
   }
+
   m_LoadCallback = std::move(load_complete);
   m_LoadToken = load_token;
   m_PendingLoadLevel = m_GameContainer.GetLevelList().LoadLevel(init_settings.m_StageIndex);
   m_PendingLoadLink = m_PendingLoadLevel.GetResource()->AddLoadCallback([this](NotNullPtr<MapResource> map_resource) { HandleLevelLoadComplete(); });
+}
+
+void GameClientLevelLoader::FinalizeLevel()
+{
+  auto map_instance = m_GameContainer.GetEngineState().GetMapInstance(m_LoadedMapId.Value());
+  if (map_instance)
+  {
+    map_instance->ActivateEntities();
+  }
 }
 
 void GameClientLevelLoader::CancelLoading()

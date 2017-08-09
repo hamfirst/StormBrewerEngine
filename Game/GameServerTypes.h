@@ -5,6 +5,8 @@
 
 #include "Foundation/Math/Intersection.h"
 
+#include "Game/GameNetworkData.refl.h"
+
 using GameNetVal = NetFixedPoint<int64_t, 32, 16>;
 using GameNetVec2 = Intersection<GameNetVal>::VecType;
 

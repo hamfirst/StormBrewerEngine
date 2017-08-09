@@ -11,14 +11,30 @@ STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapEntityLayer);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapParalaxLayer);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapEffectLayer);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPathPoint);
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapAnchor);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPath);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapVolume);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapDef);
 
 
+Vector2 MapAnchor::GetPoint() const
+{
+  return Vector2(m_X, m_Y);
+}
+
+MapAnchor::operator Vector2() const
+{
+  return GetPoint();
+}
+
 Vector2 MapPathPoint::GetPoint() const
 {
   return Vector2(m_X, m_Y);
+}
+
+MapPathPoint::operator Vector2() const
+{
+  return GetPoint();
 }
 
 Box MapVolume::GetBox() const

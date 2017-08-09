@@ -73,6 +73,17 @@ void TileSheetResource::FrameAdvance(uint32_t animation_name_hash, AnimationStat
   }
 }
 
+int TileSheetResource::GetLowerEdgeOffset(uint64_t tile_id)
+{
+  auto itr = m_LowerEdgeLookup.find(tile_id);
+  if (itr == m_LowerEdgeLookup.end())
+  {
+    return m_StandardLowerEdge;
+  }
+
+  return itr->second;
+}
+
 void TileSheetResource::OnDataLoadComplete(const std::string & resource_data)
 {
   StormReflParseJson(m_Data, resource_data.data());
@@ -98,6 +109,29 @@ void TileSheetResource::OnDataLoadComplete(const std::string & resource_data)
   }
 
   UpdateSpriteEngineData(m_EngineData);
+
+  m_StandardLowerEdge = 0;
+  for (auto elem : m_Data.m_GlobalData.m_LowerEdgeData)
+  {
+    if (elem.second.m_FrameDataName == "LowerEdge")
+    {
+      m_StandardLowerEdge = elem.second.m_Data->m_OffsetPixels;
+      break;
+    }
+  }
+
+  for (auto frame : m_Data.m_FrameData)
+  {
+    for (auto elem : frame.second.m_LowerEdgeData)
+    {
+      if (elem.second.m_FrameDataName == "LowerEdge")
+      {
+        m_LowerEdgeLookup.emplace(std::make_pair(frame.first, elem.second.m_Data->m_OffsetPixels));
+        break;
+      }
+    }
+  }
+
   m_Loaded = true;
 }
 

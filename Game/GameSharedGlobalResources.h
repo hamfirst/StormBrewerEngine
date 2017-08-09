@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/GameLevelList.h"
 
 class GameSharedGlobalResources
 {
@@ -9,5 +10,6 @@ public:
 
 private:
 
+  GameLevelList m_LevelList;
 };
 

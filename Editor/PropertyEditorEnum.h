@@ -20,7 +20,6 @@ public:
 
   ~PropertyEditorEnum();
 
-
   void HandleServerUpdate(const ReflectionChangeNotification & change);
 
   void UpdateValue();

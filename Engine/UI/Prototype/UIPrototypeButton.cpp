@@ -34,6 +34,7 @@ UIPrototypeButton::UIPrototypeButton(UIManager & manager, czstr name, NullOptPtr
   m_Border = manager.AllocateShape("border", bkg, {}, {});
   auto border = m_Border.Get();
   auto & border_data = border->GetData();
+  border_data.m_Shape = kUIElementShapeRectangle;
   border_data.SetBounds(Box{ Vector2{0, 0}, size });
 
   m_Text = manager.AllocateText("caption", bkg, {}, {});

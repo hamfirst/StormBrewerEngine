@@ -8,17 +8,25 @@
 #include "EditorContainer.h"
 
 #include "Engine/Input/KeyboardState.h"
+#include "GameClient/GameCamera.h"
 
 
 extern DelegateList<void> g_GlobalUpdate;
 
-GameClientWidget::GameClientWidget(int client_index, QWidget *parent) :
+GameClientWidget::GameClientWidget(EditorContainer * editor, int client_index, bool bot_game, QWidget *parent) :
   QOpenGLWidget(parent),
-  m_ClientIndex(client_index)
+  m_Editor(editor),
+  m_ClientIndex(client_index),
+  m_BotGame(bot_game)
 {
   setFocusPolicy(Qt::ClickFocus);
   setAttribute(Qt::WA_InputMethodEnabled);
   setMouseTracking(true);
+
+  if (m_BotGame)
+  {
+    resize(kDefaultResolutionWidth * 2, kDefaultResolutionHeight * 2);
+  }
 }
 
 GameClientWidget::~GameClientWidget()
@@ -76,13 +84,19 @@ void GameClientWidget::showEvent(QShowEvent * ev)
   }
 
   auto init_settings = std::make_unique<GameContainerInitSettings>();
-  init_settings->m_AutoConnect = true;
   init_settings->m_UserName = "Player" + std::to_string(m_ClientIndex + 1);
+
+  if (m_BotGame)
+  {
+    init_settings->m_AutoBotGame = true;
+  }
+  else
+  {
+    init_settings->m_AutoConnect = true;
+  }
 
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
   m_GameContainer.Emplace(m_FakeWindow->GetWindow(), std::move(init_settings));
-
-  g_GlobalUpdate.AddDelegate();
 
   m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this] { Update(); });
 
@@ -91,7 +105,7 @@ void GameClientWidget::showEvent(QShowEvent * ev)
 
 void GameClientWidget::closeEvent(QCloseEvent * ev)
 {
-
+  m_Editor->NotifyClientWindowClosed(this);
 }
 
 void GameClientWidget::keyPressEvent(QKeyEvent * event)

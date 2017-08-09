@@ -5,6 +5,8 @@
 
 #include <StormNet/NetReflection.h>
 
+#include "Game/GameNetworkSettings.h"
+
 struct GlobalNetworkEvent
 {
   NET_DECLARE_BASE_TYPE;
@@ -39,6 +41,11 @@ struct PlaceholderClientEvent : public ClientNetworkEvent
   NET_REFL;
 };
 
+struct GoToTownEvent : public ClientNetworkEvent
+{
+  NET_REFL;
+  uint8_t m_Town;
+};
 
 #if (NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC)
 
