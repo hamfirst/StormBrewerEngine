@@ -83,6 +83,10 @@
     </ClCompile>
     <ClCompile Include="UI\UIDef.refl.cpp" />
     <ClCompile Include="UI\UIElementTypeDatabase.cpp" />
+    <ClCompile Include="UI\UIResource.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Volume\VolumeDef.refl.cpp" />
     <ClCompile Include="Volume\VolumeTypeDatabase.cpp" />
   </ItemGroup>
@@ -206,6 +210,10 @@
     </ClInclude>
     <ClInclude Include="UI\UIElementTypeDatabase.h" />
     <ClInclude Include="UI\UIElementTypeRegister.h" />
+    <ClInclude Include="UI\UIResource.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI\UITypes.refl.h" />
     <ClInclude Include="UI\UITypes.refl.meta.h" />
     <ClInclude Include="Volume\VolumeDef.refl.h" />

@@ -143,6 +143,9 @@
     <ClCompile Include="UI\UIElementTypeDatabase.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI\UIResource.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\EntityDef.refl.h">
@@ -334,6 +337,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\UITypes.refl.meta.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIResource.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
