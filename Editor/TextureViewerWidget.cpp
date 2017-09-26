@@ -31,7 +31,7 @@ static const char * kTextureViewerWidgetVertexShader = SHADER_LITERAL(
     position *= 2.0;
 
     gl_Position = vec4(position, 0, 1);
-    v_TexCoord = a_TexCoord;
+    v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
     v_Color = a_Color;
   }
 );
@@ -264,13 +264,13 @@ void TextureViewerWidget::paintGL()
       auto x_end = (floorf(window_end.x / m_GridWidth) + 1) * m_GridWidth;
 
       x_start = std::max(x_start, 0.0f);
-      x_end = std::min(x_end, (float)asset->GetWidth() + 1);
+      x_end = std::min(x_end, (float)asset->GetWidth());
       
       auto y_start = floorf(window_start.y / m_GridHeight) * m_GridHeight;
       auto y_end = (floorf(window_end.y / m_GridHeight) + 1) * m_GridHeight;
 
       y_start = std::max(y_start, 0.0f);
-      y_end = std::min(y_end, (float)asset->GetHeight() + 1); 
+      y_end = std::min(y_end, (float)asset->GetHeight()); 
 
       for (float x = x_start; x <= x_end; x += m_GridWidth)
       {
@@ -281,7 +281,7 @@ void TextureViewerWidget::paintGL()
         vertex_builder.Line(start, end, 2.0f / width(), Color(1.0f, 1.0f, 1.0f, 1.0f));
       }
 
-      for (float y = y_start; y < y_end; y += m_GridHeight)
+      for (float y = y_start; y <= y_end; y += m_GridHeight)
       {
         auto start = TransformFromTextureSpaceToClipSpace(RenderVec2{ x_start, y });
         auto end = TransformFromTextureSpaceToClipSpace(RenderVec2{ x_end, y });

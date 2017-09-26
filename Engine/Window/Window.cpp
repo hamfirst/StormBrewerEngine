@@ -101,6 +101,25 @@ void Window::SetVsyncEnabled(bool enabled) const
   g_WindowManager.SetVsyncEnabled(m_WindowId, enabled);
 }
 
+void Window::SetFullscreen(bool fullscreen) const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.SetFullscreen(m_WindowId, fullscreen);
+}
+
+bool Window::IsFullScreen() const
+{
+  if (m_WindowId == 0)
+  {
+    return false;
+  }
+
+  return g_WindowManager.IsFullScreen(m_WindowId);
+}
 
 Vector2 Window::GetSize() const
 {
@@ -135,6 +154,11 @@ NullOptPtr<InputState> Window::GetInputState() const
 std::shared_ptr<TextInputContext> Window::CreateTextInputContext(bool allow_first_input)
 {
   return std::shared_ptr<TextInputContext>(new TextInputContext(m_WindowId, allow_first_input));
+}
+
+uint32_t Window::GetWindowId() const
+{
+  return m_WindowId;
 }
 
 void Window::AddRef()

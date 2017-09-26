@@ -4,8 +4,6 @@
 
 #include "Foundation/Common.h"
 
-#include "upng/upng.h"
-
 class PixelBuffer
 {
 public:
@@ -36,6 +34,8 @@ public:
   }
 
   PixelBuffer Rotate();
+
+  static PixelBuffer CreateFromInvertedData(NotNullPtr<uint8_t> buffer, int width, int height, int pixel_size = 4);
 
   int GetWidth() const { return m_Width; }
   int GetHeight() const { return m_Height; }

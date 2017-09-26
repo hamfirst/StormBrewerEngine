@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.0)
+
+include_directories(. ../. .././External)
+set(CMAKE_CXX_STANDARD 14)
+
+if (WEB)
+  add_definitions(-D_WEB)
+elseif (MSVC)
+  add_definitions(-D_WINDOWS)
+elseif (APPLE)
+  add_definitions(-D_MACOS)
+elseif (UNIX)
+  add_definitions(-D_LINUX)
+endif()
+
+if(WEB)
+  set(GENERIC_SRC_StormNetCustomBindings
+              ./NetClientBackendWebrtc.cpp
+              ./NetClientBackendWebsocket.cpp
+              ./NetTransmitterClientWebrtc.cpp
+              ./NetTransmitterClientWebsocket.cpp
+              )
+else()
+  set(GENERIC_SRC_StormNetCustomBindings
+              ./NetClientBackendWebrtc.cpp
+              ./NetClientBackendWebsocket.cpp
+              ./NetServerBackendWebrtc.cpp
+              ./NetServerBackendWebsocket.cpp
+              ./NetTransmitterClientWebrtc.cpp
+              ./NetTransmitterClientWebsocket.cpp
+              ./NetTransmitterServerWebrtc.cpp
+              ./NetTransmitterServerWebsocket.cpp
+              )
+endif()            
+            
+add_library(StormNetCustomBindings ${GENERIC_SRC_StormNetCustomBindings} )

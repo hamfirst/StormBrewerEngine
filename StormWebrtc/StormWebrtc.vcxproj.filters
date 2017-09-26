@@ -6,5 +6,6 @@
   <ItemGroup>
     <ClInclude Include="StormWebrtc.h" />
     <ClInclude Include="StormWebrtcConnection.h" />
+    <ClInclude Include="StormWebrtcDataChannel.h" />
   </ItemGroup>
 </Project>

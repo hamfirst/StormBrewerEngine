@@ -3,6 +3,7 @@
 #include "StormData/StormDataTypeDatabaseRegister.h"
 
 #include "Foundation/CallList/CallList.h"
+#include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 
 #include "Runtime/Anchor/AnchorTypeDatabase.h"
 
@@ -32,8 +33,8 @@ void AnchorTypeDatabase::RegisterType()
 
 extern RUNTIME_EXPORT PreMainCallList g_AnchorRegisterCallList;
 
-#define REGISTER_Anchor_DATA(AnchorDataType) \
+#define REGISTER_ANCHOR_DATA(AnchorDataType) \
   ADD_PREMAIN_CALL(g_AnchorRegisterCallList, AnchorDataType, ([]() { AnchorTypeDatabase::RegisterType<AnchorDataType, AnchorDataBase>(); }));   
 
-#define REGISTER_DERIVED_Anchor_DATA(AnchorDataType, BaseType) \
+#define REGISTER_DERIVED_ANCHOR_DATA(AnchorDataType, BaseType) \
   ADD_PREMAIN_CALL(g_AnchorRegisterCallList, AnchorDataType, ([]() { AnchorTypeDatabase::RegisterType<AnchorDataType, BaseType>(); }));   

@@ -43,6 +43,6 @@ public:
   RMergeList<SpriteBaseDefTexture> m_Textures;
   RMergeList<SpriteBaseDefAnimation> m_Animations;
 
-  FrameData m_GlobalData;
+  FrameData m_InstanceData;
   RMap<uint64_t, FrameData> m_FrameData;
 };

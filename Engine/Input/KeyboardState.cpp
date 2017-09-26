@@ -39,7 +39,7 @@ void KeyboardState::CheckDeltaState(bool in_focus, bool text_input_active, bool 
       m_PressedLastFrame[index] = pressed;
       m_KeyboardControls[index].SetControlValue(pressed);
 
-      if (m_PressedState[index] = pressed)
+      if (m_PressedState[index] != pressed)
       {
         if (m_InputState->m_BinaryControlCallback)
         {

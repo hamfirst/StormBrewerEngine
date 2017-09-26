@@ -38,6 +38,11 @@ float LerpVar::Get() const
   return (v * m_Target) + (1.0f - v) * m_Start;
 }
 
+float LerpVar::GetTarget() const
+{
+  return m_Target;
+}
+
 void LerpVar::LerpTo(float val, float time)
 {
   m_Start = Get();

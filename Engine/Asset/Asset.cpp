@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Asset/Asset.h"
 
+
 Asset::Asset()
 {
 
@@ -17,6 +18,7 @@ void Asset::DecRef()
   int val = --m_RefCount;
   if (val == 0)
   {
+    CleanupAsset();
     m_Deleter(m_AssetManager, m_Handle);
   }
 }
@@ -77,3 +79,9 @@ void Asset::CallAssetLoadCallbacks()
 { 
   m_GenericLoadCallbackList.Call(this); 
 }
+
+void Asset::CleanupAsset()
+{
+
+}
+

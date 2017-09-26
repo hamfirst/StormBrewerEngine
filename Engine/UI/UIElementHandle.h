@@ -46,6 +46,13 @@ public:
   }
 
   NullOptPtr<UIElement> Resolve();
+  NullOptPtr<const UIElement> Resolve() const;
+
+  void Destroy();
+
+  void SetInput(uint32_t name_hash, float val);
+  void SetInput(uint32_t name_hash, czstr val);
+  void SetInput(uint32_t name_hash, const std::string & val);
 
 protected:
 

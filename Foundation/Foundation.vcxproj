@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="CoreOpt|Win32">
       <Configuration>CoreOpt</Configuration>
@@ -61,6 +61,8 @@
     </ClInclude>
     <ClInclude Include="Buffer\BufferUtil.h" />
     <ClInclude Include="CallList\CallList.h" />
+    <ClInclude Include="CircularBuffer\CircularBuffer.h" />
+    <ClInclude Include="CircularBuffer\CircularQueue.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Delegate\Delegate.h" />
     <ClInclude Include="Delegate\DelegateLink.h" />
@@ -90,7 +92,16 @@
     <ClInclude Include="FileSystem\Path.h" />
     <ClInclude Include="Handle\Handle.h" />
     <ClInclude Include="Handle\HandleList.h" />
+    <ClInclude Include="HistoryList\HistoryList.h" />
     <ClInclude Include="Json\Json.h" />
+    <ClInclude Include="Json\JsonArray.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Json\JsonDictionary.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Json\JsonType.h" />
     <ClInclude Include="Lerp\LerpFuncs.h">
       <SubType>
@@ -117,6 +128,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Pathfinding\PathfindingPath.h" />
+    <ClInclude Include="Profiling\Profiling.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PropertyMeta\PropertyFieldDatabase.h" />
     <ClInclude Include="PropertyMeta\PropertyFieldMetaData.h" />
     <ClInclude Include="PropertyMeta\PropertyFieldMetaFuncs.h" />
@@ -132,6 +147,10 @@
     <ClInclude Include="SpatialDatabase\SpatialDatabase.h" />
     <ClInclude Include="Thread\MessageQueue.h" />
     <ClInclude Include="Thread\Semaphore.h" />
+    <ClInclude Include="Time\FPSClock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Time\FrameClock.h" />
     <ClInclude Include="Time\StopWatch.h">
       <SubType>
@@ -191,6 +210,14 @@
     <ClCompile Include="FileSystem\File.cpp" />
     <ClCompile Include="FileSystem\Path.cpp" />
     <ClCompile Include="Json\Json.cpp" />
+    <ClCompile Include="Json\JsonArray.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Json\JsonDictionary.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Lerp\LerpFuncs.cpp">
       <SubType>
       </SubType>
@@ -199,12 +226,15 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Math\Util.cpp" />
     <ClCompile Include="Network\Network.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="Network\WebSocket.cpp" />
+    <ClCompile Include="Profiling\Profiling.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PropertyMeta\PropertyFieldDatabase.cpp" />
     <ClCompile Include="Random\Random.cpp" />
     <ClCompile Include="Random\RandomGenerator.cpp" />
@@ -214,6 +244,10 @@
     </ClCompile>
     <ClCompile Include="SpatialDatabase\SpatialDatabase.cpp" />
     <ClCompile Include="Thread\Semaphore.cpp" />
+    <ClCompile Include="Time\FPSClock.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Time\FrameClock.cpp" />
     <ClCompile Include="Time\StopWatch.cpp">
       <SubType>
@@ -227,60 +261,60 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{39856B1A-B463-4D99-9859-74912E1C6D00}</ProjectGuid>
     <RootNamespace>Foundation</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FinalStatic|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CoreOpt|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -354,6 +388,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -372,6 +407,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -407,6 +443,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -425,6 +462,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

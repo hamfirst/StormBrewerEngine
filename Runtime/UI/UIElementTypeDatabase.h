@@ -4,7 +4,7 @@
 
 #include "Runtime/UI/UITypes.refl.h"
 
-struct UIElementDataBase;
+struct UIElementInitDataBase;
 struct UIRuntimeFieldDesc;
 
 struct PropertyField;
@@ -17,10 +17,10 @@ struct UIElementDataTypeInfo : public StormDataTypeInfo
 };
 
 extern template
-std::unordered_map<uint32_t, UIElementDataTypeInfo> StormDataTypeDatabase<UIElementDataBase, UIElementDataTypeInfo>::m_TypeList;
-extern template class StormDataTypeDatabase<UIElementDataBase, UIElementDataTypeInfo>;
+std::unordered_map<uint32_t, UIElementDataTypeInfo> StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>::m_TypeList;
+extern template class StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>;
 
-class UIElementTypeDatabase : public StormDataTypeDatabase<UIElementDataBase, UIElementDataTypeInfo>
+class UIElementTypeDatabase : public StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>
 {
 public:
   template <typename RuntimeClass, typename InitDataType, typename RuntimeDataType>

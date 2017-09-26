@@ -1,5 +1,8 @@
 #pragma once
 
+
+#ifndef _WEB
+
 #include <memory>
 #include <queue>
 #include <vector>
@@ -19,6 +22,7 @@
 #include "usrsctplib/usrsctp.h"
 
 #include "StormWebrtc/StormWebrtcConnection.h"
+#include "StormWebrtc/StormWebrtcDataChannel.h"
 #include "StormWebrtcClientAPI/StormWebrtcClient.h"
 
 enum class StormWebrtcClientNativeState
@@ -28,6 +32,7 @@ enum class StormWebrtcClientNativeState
   kSecondHello,
   kSCTPConnect,
   kChannelInit,
+  kConnected,
 };
 
 class StormWebrtcClientNative : public StormWebrtcClient
@@ -55,6 +60,14 @@ public:
 private:
 
   void StartSctpConnect();
+  void SendInitialDataChannels();
+  void CheckConnectedState();
+  void NotifySocketConnected();
+
+  void SendData(DataMessageType type, int sid, bool reliable, const void * data, std::size_t length);
+
+  void HandleSctpPacket(void * buffer, std::size_t length, int stream, int ppid);
+  void HandleSctpAssociationChange(const sctp_assoc_change & change);
 
 private:
   int m_Socket;
@@ -78,4 +91,4 @@ private:
   StormWebrtcConnection m_Connection;
 };
 
-
+#endif

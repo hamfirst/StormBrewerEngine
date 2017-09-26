@@ -4,6 +4,8 @@
 #include "Foundation/FileSystem/File.h"
 #include "Foundation/Buffer/BufferUtil.h"
 
+#include <cwctype>
+
 #ifndef _WEB
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
@@ -52,6 +54,11 @@ std::string GetCanonicalRootPath()
   {
     auto asset_dir_data = asset_dir_file.ReadFileFull();
     auto asset_dir = BufferToString(asset_dir_data);
+
+    while(asset_dir.size() > 0 && iswspace(asset_dir.back()))
+    {
+      asset_dir.pop_back();
+    }
 
     canonical_path = fs::canonical(asset_dir);
     root_path = canonical_path.string();
@@ -103,6 +110,18 @@ std::string JoinPath(const std::string & path_part1, const std::string & path_pa
 #else
 
   return (std::experimental::filesystem::path(path_part1) / path_part2).string();
+#endif
+}
+
+bool CreateDirectory(const std::string & path)
+{
+#ifdef _WEB
+  return false;
+#else
+  std::error_code ec;
+  std::experimental::filesystem::create_directories(path.data(), ec);
+
+  return !ec;
 #endif
 }
 

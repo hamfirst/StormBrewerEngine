@@ -2,38 +2,31 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElement.h"
+#include "Engine/UI/UICustomPropertyData.refl.h"
 #include "Engine/Input/TextInputContext.h"
 
 #include "Runtime/UI/UIDef.refl.h"
 
-struct UIElementTextInputInitData : public UIElementDataBase
+struct UIElementTextInputInitData : public UIElementInitDataBase
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UIElementTextInputInitData);
 };
 
-struct UIElementTextInputData
+struct UIElementTextInputData : public UIElementDataFrameCenter
 {
   STORM_REFL;
-
-  float m_PositionX = 0.0f;
-  float m_PositionY = 0.0f;
 
   std::string m_Prompt;
 
   float m_TextMode = 0;
-  float m_FontId = 0;
-  float m_Centered = 0;
+  float m_FontId = -1;
+  float m_Centered = 1;
 
   float m_EnableTextBounds = 0.0f;
   float m_TextBoundsStartX = 0.0f;
   float m_TextBoundsStartY = 0.0f;
   float m_TextBoundsEndX = 0.0f;
   float m_TextBoundsEndY = 0.0f;
-
-  float m_PrimaryColorR = 1.0f;
-  float m_PrimaryColorG = 1.0f;
-  float m_PrimaryColorB = 1.0f;
-  float m_PrimaryColorA = 1.0f;
 
   float m_SecondaryColorR = 0.0f;
   float m_SecondaryColorG = 0.0f;
@@ -51,14 +44,6 @@ struct UIElementTextInputData
   float m_SelectionBkgColorA = 1.0f;
 
   float m_Active = 0.0f;
-
-  void SetColor(const Color & c)
-  {
-    m_PrimaryColorR = c.r;
-    m_PrimaryColorG = c.g;
-    m_PrimaryColorB = c.b;
-    m_PrimaryColorA = c.a;
-  }
 
   void SetSecondaryColor(const Color & c)
   {
@@ -89,24 +74,29 @@ class UIElementTextInput : public UIElement
 {
 public:
   UIElementTextInput(const UIElementTextInputInitData & init_data, const UIElementTextInputData & data, std::shared_ptr<TextInputContext> && input_context);
+  ~UIElementTextInput();
 
   static UIElementType Type;
 
-  void Update() override;
+  void Update(float dt) override;
   void Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset) override;
   void RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset);
 
   const UIElementTextInputInitData & GetInitData();
   UIElementTextInputData & GetData();
-  TextInputContext & GetInputContext();
 
+  virtual NotNullPtr<UIElementDataBase> GetBaseData() override;
+  virtual NullOptPtr<UIElementDataFrameCenter> GetFrameCenterData() override;
+  virtual NullOptPtr<UIElementDataStartEnd> GetStartEndData() override;
+
+  TextInputContext & GetInputContext();
   void SetCustomRenderCallback(Delegate<void, UIElementTextInput &, RenderState &, const Vector2 &> && render_callback);
 
 protected:
 
-  virtual StormExprValueInitBlock GetLocalBlock() override;
-  virtual StormExprValueInitBlock GetAsParentBlock() override;
-  virtual UIElementExprBindingList CreateBindingList() override;
+  virtual StormExprValueInitBlock & GetLocalInitBlock() override;
+  virtual StormExprValueInitBlock & GetAsParentInitBlock() override;
+  virtual StormExprBindingList & GetBindingList() override;
 
 private:
 

@@ -30,6 +30,7 @@ set(GENERIC_SRC_QTUtil
             ./ExpandableList.cpp
             ./FocusWatcher.cpp
             ./LerpVar.cpp
+            ./QtLerpVar.cpp
             ./QTUtil.cpp
             )
 add_library(QTUtil ${GENERIC_SRC_QTUtil} ${PLATFORM_SRC_QTUtil} )

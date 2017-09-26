@@ -24,5 +24,7 @@ public:
   static void DrawCornerControl(GeometryVertexBufferBuilder & builder, const Vector2 & pos, float magnification);
   static void DrawSelectedCornerControl(GeometryVertexBufferBuilder & builder, const Vector2 & pos, float magnification);
   static void DrawHighlightedCornerControl(GeometryVertexBufferBuilder & builder, const Vector2 & pos, float magnification);
+
+
 };
 

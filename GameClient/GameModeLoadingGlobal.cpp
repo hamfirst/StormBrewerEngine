@@ -33,7 +33,8 @@ void GameModeLoadingGlobal::Update()
 {
   auto & container = GetContainer();
   if(container.GetClientGlobalResources().IsLoaded() &&
-     container.GetSharedGlobalResources().IsLoaded())
+     container.GetSharedGlobalResources().IsLoaded() &&
+     container.GetSave().IsLoaded())
   {
     auto init_settings = container.GetInitSettings();
     if (init_settings)
@@ -48,12 +49,12 @@ void GameModeLoadingGlobal::Update()
       }
       else if (init_settings->m_AutoBotGame)
       {
-        container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, init_settings->m_UserName, GameInitSettings{});
+        container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, false);
       }
-    }
-    else
-    {
-      container.SwitchMode(GameModeDef<GameModeLogo>{});
+      else
+      {
+        container.SwitchMode(GameModeDef<GameModeLogo>{});
+      }
     }
   }
 }

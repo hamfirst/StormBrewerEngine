@@ -7,13 +7,15 @@
 #include "GameClient/GameClientInstanceResources.h"
 #include "GameClient/GameClientEventSender.h"
 #include "GameClient/GameClientController.refl.h"
+#include "GameClient/GameServerEventResponder.h"
 
 class GameClientInstanceData
 {
 public:
   GameClientInstanceData(GameContainer & game_container, GameController & game_controller, GameClientController & client_controller, 
-    GameFullState & net_state, ClientLocalData & local_data, GameStage & stage,
-    GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, GameClientEventSender & event_sender);
+    GameFullState & net_state, NotNullPtr<ClientLocalData> local_data, std::size_t num_local_clients, GameStage & stage,
+    GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, GameClientEventSender & event_sender, 
+    GameServerEventResponder & server_event_responder);
 
   GameClientInstanceData(const GameClientInstanceData & rhs) = default;
   GameClientInstanceData(GameClientInstanceData && rhs) = default;
@@ -25,7 +27,8 @@ public:
   GameInstanceData & GetGameState();
   ServerObjectManager & GetServerObjectManager();
 
-  ClientLocalData & GetLocalData();
+  ClientLocalData & GetLocalData(std::size_t player_index);
+  std::size_t GetLocalDataCount();
 
   GameStage & GetStage();
 
@@ -42,7 +45,8 @@ private:
   GameClientController & m_ClientController;
 
   GameFullState & m_NetState;
-  ClientLocalData & m_LocalData;
+  NotNullPtr<ClientLocalData> m_LocalData;
+  std::size_t m_LocalDataCount;
 
   GameStage & m_Stage;
 
@@ -50,5 +54,6 @@ private:
   GameClientInstanceResources & m_ClientInstanceResources;
 
   GameClientEventSender & m_EventSender;
+  GameServerEventResponder & m_EventResponder;
   int m_SendTimer;
 };

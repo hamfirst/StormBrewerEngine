@@ -14,6 +14,7 @@
 #include "GameClient/GameClientGlobalResources.h"
 #include "GameClient/GameClientInstanceData.h"
 #include "GameClient/GameClientSystems.h"
+#include "GameClient/GameClientSave.h"
 
 class GameMode;
 class GameNetworkClient;
@@ -31,7 +32,7 @@ struct GameContainerInitSettings
 class GameContainer
 {
 public:
-  GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings = nullptr);
+  GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings = std::make_unique<GameContainerInitSettings>());
   ~GameContainer();
 
   void SetInitialMode();
@@ -45,6 +46,7 @@ public:
   GameLevelList & GetLevelList();
   GameSharedGlobalResources & GetSharedGlobalResources();
   GameClientGlobalResources & GetClientGlobalResources();
+  GameClientSave & GetSave();
 
   NullOptPtr<GameClientInstanceData> GetInstanceData();
   void SetInstanceData(NullOptPtr<GameClientInstanceData> instance_data);
@@ -57,6 +59,7 @@ public:
   
   void StartNetworkClient();
   void StopNetworkClient();
+  bool HasClient() const;
   GameNetworkClient & GetClient();
   GameNetworkClientInitSettings & GetNetworkInitSettings();
 
@@ -64,12 +67,21 @@ public:
 
   void Update();
   void Render();
+  void InputEvent();
 
   template <typename Mode, typename ... Args>
   void SwitchMode(const GameModeDef<Mode> & def, Args && ... args)
   {
-    m_Mode = std::make_unique<Mode>(*this, std::forward<Args>(args)...);
-    m_Mode->Initialize();
+    if (m_Updating)
+    {
+      m_NextMode = std::make_unique<Mode>(*this, std::forward<Args>(args)...);
+      m_NextMode->Initialize();
+    }
+    else
+    {
+      m_Mode = std::make_unique<Mode>(*this, std::forward<Args>(args)...);
+      m_Mode->Initialize();
+    }
   }
 
 private:
@@ -77,21 +89,25 @@ private:
 
   Window m_Window;
   std::unique_ptr<GameMode> m_Mode;
+  std::unique_ptr<GameMode> m_NextMode;
   std::unique_ptr<GameNetworkClient> m_Client;
   std::unique_ptr<GameContainerInitSettings> m_InitSettings;
 
   GameNetworkClientInitSettings m_NetInitSettings;
 
-  GameSharedGlobalResources m_SharedGlobalResources;
-  GameClientGlobalResources m_ClientGlobalResources;
+  Optional<GameSharedGlobalResources> m_SharedGlobalResources;
+  Optional<GameClientGlobalResources> m_ClientGlobalResources;
 
   NullOptPtr<GameClientInstanceData> m_ClientInstanceData;
   NullOptPtr<GameClientSystems> m_ClientSystems;
 
   GameLevelList m_LevelList;
+  GameClientSave m_Save;
 
   RenderState m_RenderState;
   RenderUtil m_RenderUtil;
+
+  bool m_Updating;
 };
 
 

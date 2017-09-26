@@ -15,10 +15,12 @@
 #include "Engine/Entity/Entity.h"
 #include "Engine/Entity/EntitySystem.h"
 #include "Engine/Rendering/RenderSettings.h"
+#include "Engine/Rendering/RenderState.h"
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/DrawList/DrawList.h"
+#include "Engine/Profiler/Profiler.h"
 
 
 SkipField<Entity> s_EntityAllocator;
@@ -74,7 +76,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, 
 NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_resource, NullOptPtr<ServerObject> server_object, bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), server_object->GetObjectHandle(), m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), server_object ? server_object->GetObjectHandle() : ServerObjectHandle{}, m_GameContainer);
 
   ptr->m_Sprite = entity_resource->m_Sprite;
   ptr->m_AssetHash = entity_resource->m_FileNameHash;
@@ -94,15 +96,23 @@ void EntitySystem::AddComponentsToEntity(NotNullPtr<EntityDef> entity_def, NotNu
 {
   for (auto elem : entity_def->m_Components)
   {
+    if (elem.second.GetTypeInfo() == nullptr)
+    {
+      printf("Could not find component type hash 0x%08X\n", elem.second.GetTypeNameHash());
+      continue;
+    }
+
     auto & init_data = elem.second;
     if (init_data.GetValue() == nullptr)
     {
+      printf("Could not find component type %s\n", elem.second.GetTypeInfo()->m_Name.data());
       continue;
     }
 
     auto comp = m_EngineState->m_ComponentSystem->CreateComponentFromTypeNameHash(init_data.GetTypeNameHash(), init_data.GetValue());
     if (comp == nullptr)
     {
+      printf("Could not create component\n");
       continue;
     }
 
@@ -141,6 +151,15 @@ void EntitySystem::DestroyAllEntities()
   });
 }
 
+void EntitySystem::BeginFrame()
+{
+  auto visitor = [&](auto & entity)
+  {
+    entity.m_PrevPosition = entity.m_Position;
+  };
+
+  s_EntityAllocator.VisitAll(visitor);
+}
 
 void EntitySystem::FinalizeEvents()
 {
@@ -169,13 +188,14 @@ void EntitySystem::DrawAllEntities(const Box & viewport_bounds, DrawList & draw_
     }
 
 #ifdef USE_Z_ORDERING
-    int draw_order = pos.y - render_state.m_FrameHeight / 2 + render_state.m_LowerEdge;
+    int draw_order = ((int)pos.y - render_state.m_FrameHeight / 2 + render_state.m_LowerEdge);
 #else
     int draw_order = 0;
 #endif
 
     draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
-    {
+    {      
+      PROFILE_SCOPE("Draw Entity");
       DrawEntity(e, viewport_bounds, screen_center, render_state, render_util);
     });
   });
@@ -189,15 +209,24 @@ void EntitySystem::DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bo
   }
   else
   {
-    DefaultDrawEntity(entity, viewport_bounds, screen_center);
+    DefaultDrawEntity(entity, viewport_bounds, screen_center, render_state, render_util);
   }
 }
 
-void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center)
+void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
-  auto & sprite = entity->GetSprite();
-  auto & render_state = entity->GetRenderState();
+  auto position = entity->GetPosition();
+  if (entity->m_PrevPosition)
+  {
+    position = glm::mix(position, entity->m_PrevPosition.Value(), render_state.GetFramePct());
+  }
 
-  SpriteEngineData::RenderSprite(sprite, render_state.m_AnimIndex, render_state.m_AnimFrame,
-    RenderVec2{ entity->GetPosition() } - screen_center, render_state.m_Matrix, render_state.m_Color);
+  DefaultDrawEntity(entity->GetSprite(), position, entity->GetRenderState(), viewport_bounds, screen_center, render_state, render_util);
+}
+
+void EntitySystem::DefaultDrawEntity(SpritePtr & sprite, const Vector2f & pos, const EntityRenderState & entity_render_state, 
+                                     const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+{
+  SpriteEngineData::RenderSprite(sprite, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame,
+    pos - screen_center, entity_render_state.m_Matrix, entity_render_state.m_Color);
 }

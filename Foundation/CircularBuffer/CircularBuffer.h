@@ -7,18 +7,29 @@ class CircularBuffer
 {
 public:
   
-  CircularBuffer() :
+  template <typename ... Args>
+  CircularBuffer(Args && ... args) :
     m_Count(0),
-    m_Head(-1)
+    m_Head(-1),
+    m_Array(reinterpret_cast<T *>(&m_Buffer[0]))
+  {
+    for (int index = 0; index < MaxSize; ++index)
+    {
+      auto * elem = (&m_Buffer[sizeof(T) * index]);
+      new(&m_Array[index]) T(std::forward<Args>(args)...);
+    }
+  }
+
+  CircularBuffer(const CircularBuffer & rhs) = delete;
+  CircularBuffer(CircularBuffer && rhs) = delete;
+
+  CircularBuffer & operator = (const CircularBuffer & rhs) = delete;
+  CircularBuffer & operator = (CircularBuffer && rhs) = delete;
+
+  ~CircularBuffer()
   {
 
   }
-
-  CircularBuffer(const CircularBuffer & rhs) = default;
-  CircularBuffer(CircularBuffer && rhs) = default;
-
-  CircularBuffer & operator = (const CircularBuffer & rhs) = default;
-  CircularBuffer & operator = (CircularBuffer && rhs) = default;
 
   void Push(const T & t)
   {
@@ -108,10 +119,12 @@ public:
     return &m_Array[history_index];
   }
 
+
 private:
 
   int m_Count;
   int m_Head;
 
-  T m_Array[MaxSize];
+  alignas(alignof(T)) unsigned char m_Buffer[sizeof(T[MaxSize])];
+  T * m_Array;
 };

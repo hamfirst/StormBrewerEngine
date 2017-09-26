@@ -111,7 +111,7 @@ void TileSheetResource::OnDataLoadComplete(const std::string & resource_data)
   UpdateSpriteEngineData(m_EngineData);
 
   m_StandardLowerEdge = 0;
-  for (auto elem : m_Data.m_GlobalData.m_LowerEdgeData)
+  for (auto elem : m_Data.m_InstanceData.m_LowerEdgeData)
   {
     if (elem.second.m_FrameDataName == "LowerEdge")
     {

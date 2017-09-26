@@ -16,6 +16,7 @@ public:
   Vector2 GetSize() const;
 
   NullOptPtr<const PixelBuffer> GetPixelBuffer() const;
+  void SetLinearFilter();
 
   bool IsValid() const;
 
@@ -28,6 +29,7 @@ protected:
 protected:
   Optional<PixelBuffer> m_PixelBuffer;
   Texture m_Texture;
+  bool m_LinearFilter = false;
 
 public:
   ASSET_HEADER_FUNCS(TextureAsset);

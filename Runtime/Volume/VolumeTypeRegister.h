@@ -3,6 +3,7 @@
 #include "StormData/StormDataTypeDatabaseRegister.h"
 
 #include "Foundation/CallList/CallList.h"
+#include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 
 #include "Runtime/Volume/VolumeTypeDatabase.h"
 

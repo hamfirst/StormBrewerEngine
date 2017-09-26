@@ -201,6 +201,47 @@ bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState &
   return would_loop;
 }
 
+bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames)
+{
+  int animation_index = GetAnimationIndex(animation_name_hash);
+
+  anim_state.m_AnimIndex = animation_index;
+  if (animation_index == -1 || m_AnimTotalLengths[animation_index] == 0)
+  {
+    anim_state.m_FrameWidth = 0;
+    anim_state.m_FrameHeight = 0;
+    anim_state.m_LowerEdge = 0;
+    return false;
+  }
+
+  frames %= m_AnimTotalLengths[animation_index];
+
+  int anim_frame_index = 0;
+  auto frame_start = m_AnimStart[anim_state.m_AnimIndex];
+
+  while (true)
+  {
+    auto duration = m_AnimationFrameDurations[frame_start + anim_frame_index];
+    if (frames < (int)duration)
+    {
+      break;
+    }
+
+    frames -= duration;
+    anim_frame_index++;
+  }
+
+  anim_state.m_AnimFrame = anim_frame_index;
+
+  auto & frame = m_AnimationFrameSizes[frame_start + anim_state.m_AnimFrame];
+  auto & lower_edge = m_AnimationLowerEdges[frame_start + anim_state.m_AnimFrame];
+
+  anim_state.m_FrameWidth = frame.x;
+  anim_state.m_FrameHeight = frame.y;
+  anim_state.m_LowerEdge = lower_edge;
+  return true;
+}
+
 void SpriteResource::Render(EntityRenderState & render_state, Vector2 position)
 {
   RenderSprite(m_EngineData, render_state, position);
@@ -233,9 +274,10 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
 
   m_AnimNameHashes.clear();
   m_AnimLengths.clear();
+  m_AnimTotalLengths.clear();
 
   auto lower_edge = 0;
-  for (auto elem : m_Data.m_GlobalData.m_LowerEdgeData)
+  for (auto elem : m_Data.m_InstanceData.m_LowerEdgeData)
   {
     if (elem.second.m_FrameDataName == "LowerEdge")
     {
@@ -251,6 +293,7 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
     m_AnimStart.push_back(total_frames);
 
     int num_frames = 0;
+    int total_length = 0;
     for (auto frame : elem.second.m_Frames)
     {
       uint32_t tex_hash = (uint32_t)((uint64_t)frame.second.m_FrameId >> 32);
@@ -284,9 +327,11 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
       m_AnimationFrameDurations.push_back(frame.second.m_FrameDuration);
       m_AnimationLowerEdges.push_back(frame_lower_edge);
       num_frames++;
+      total_length += frame.second.m_FrameDuration;
     }
 
     m_AnimLengths.push_back(num_frames);
+    m_AnimTotalLengths.push_back(total_length);
     total_frames += num_frames;
   }
 

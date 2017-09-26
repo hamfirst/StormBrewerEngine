@@ -8,7 +8,9 @@
 #include "Engine/DrawList/DrawList.h"
 #include "Engine/Entity/EntitySystem.h"
 #include "Engine/Map/MapSystem.h"
+#include "Engine/VisualEffect/VisualEffectManager.h"
 #include "Engine/EngineState.h"
+#include "Engine/Profiler/Profiler.h"
 
 #include "Runtime/Collision/CollisionSystem.h"
 
@@ -35,6 +37,7 @@ void Camera::SetPosition(const RenderVec2 & position)
 
 void Camera::BootstrapShader(const ShaderProgram & shader)
 {
+  shader.Bind();
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
@@ -99,6 +102,7 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
 
   engine_state->GetMapSystem()->DrawAllMaps(viewport, draw_list);
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
+  engine_state->GetVisualEffectManager()->DrawAllEffects(viewport, draw_list);
   draw_list.Draw(game_container, viewport, m_Position, render_state, render_util);
   default_shader.Unbind();
 }

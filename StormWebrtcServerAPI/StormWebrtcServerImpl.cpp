@@ -246,8 +246,9 @@ void StormWebrtcServerImpl::Update()
     PrepareToRecv();
   }
 
-#ifndef STORMWEBRTC_USE_THREADS
   auto now = std::chrono::system_clock::now();
+
+#ifndef STORMWEBRTC_USE_THREADS
   auto time_passed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_LastUpdate).count();
 
   if (time_passed_ms > 1)
@@ -258,11 +259,22 @@ void StormWebrtcServerImpl::Update()
 #endif
 
   std::size_t connection_slot = 0;
+
+  auto timeout = std::chrono::seconds(15);
   for (auto connection = &m_Connections[0], end = &m_Connections[m_NumConnections]; connection != end; ++connection, ++connection_slot)
   {
-    if (connection->m_Allocated && connection->m_SSLContext.state != MBEDTLS_SSL_HANDSHAKE_OVER)
+    if (connection->m_Allocated)
     {
-      UpdateHandshake(*connection, connection_slot);
+      if (connection->m_SSLContext.state != MBEDTLS_SSL_HANDSHAKE_OVER)
+      {
+        UpdateHandshake(*connection, connection_slot);
+      }
+
+      auto time_passed_seconds = std::chrono::duration_cast<std::chrono::seconds>(now - connection->m_LastMessage);
+      if (time_passed_seconds > timeout)
+      {
+        NotifySocketDisconnected(*connection);
+      }
     }
   }
 }
@@ -291,11 +303,6 @@ void StormWebrtcServerImpl::SendPacket(const StormWebrtcConnectionHandle & handl
   if (connection.m_Allocated == false ||
       connection.m_Connected == false || 
       connection.m_Generation != handle.m_Generation)
-  {
-    return;
-  }
-
-  if (stream >= m_OutStreams.size())
   {
     return;
   }
@@ -340,13 +347,13 @@ void StormWebrtcServerImpl::ForceDisconnect(const StormWebrtcConnectionHandle & 
   auto & connection = m_Connections[handle.m_SlotId];
 
   if (connection.m_Allocated == false ||
-    connection.m_Connected == false ||
-    connection.m_Generation != handle.m_Generation)
+      connection.m_Connected == false ||
+      connection.m_Generation != handle.m_Generation)
   {
     return;
   }
 
-  CleanupConnection(connection, connection.m_SlotIndex);
+  NotifySocketDisconnected(connection);
 }
 
 std::string StormWebrtcServerImpl::LoadCertificateFile(const char * filename)
@@ -453,13 +460,14 @@ void StormWebrtcServerImpl::InitConnection(StormWebrtcConnection & connection, s
   connection.m_RemotePort = remote_port;
   connection.m_ServerImpl = this;
   connection.m_SctpSocket = nullptr;
+  connection.m_LastMessage = std::chrono::system_clock::now();
 
-  for (auto & str : connection.m_IncStreamCreated)
+  for (auto && str : connection.m_IncStreamCreated)
   {
     str = false;
   }
 
-  for (auto & str : connection.m_OutStreamCreated)
+  for (auto && str : connection.m_OutStreamCreated)
   {
     str = false;
   }
@@ -549,7 +557,7 @@ void StormWebrtcServerImpl::HandleSctpPacket(StormWebrtcConnection & connection,
   if (stream % 2 == 0)
   {
     // Client stream
-    auto stream_index = stream /= 2;
+    auto stream_index = stream / 2;
     if (stream_index >= (int)m_InStreams.size())
     {
       return;
@@ -571,13 +579,13 @@ void StormWebrtcServerImpl::HandleSctpPacket(StormWebrtcConnection & connection,
       if (header->m_MessageType == 0x3) // DATA_CHANNEL_OPEN 
       {
         uint8_t ack = 0x2; //DATA_CHANNEL_ACK
-        SendData(connection, DataMessageType::kControl, stream_index, true, &ack, 1);
+        SendData(connection, DataMessageType::kControl, stream, true, &ack, 1);
 
         connection.m_IncStreamCreated[stream_index] = true;
         CheckConnectedState(connection);
       }
     }
-    else
+    else if(connection.m_Connected)
     {
       StormWebrtcEvent ev;
       ev.m_Type = StormWebrtcEventType::kData;
@@ -596,6 +604,10 @@ void StormWebrtcServerImpl::HandleSctpPacket(StormWebrtcConnection & connection,
   {
     // Server stream
     auto stream_index = stream / 2;
+    if (stream_index >= (int)m_OutStreams.size())
+    {
+      return;
+    }
 
     if (connection.m_OutStreamCreated[stream_index] == false)
     {
@@ -616,7 +628,7 @@ void StormWebrtcServerImpl::HandleSctpPacket(StormWebrtcConnection & connection,
         CheckConnectedState(connection);
       }
     }
-    else
+    else if (connection.m_Connected)
     {
       StormWebrtcEvent ev;
       ev.m_Type = StormWebrtcEventType::kData;
@@ -645,6 +657,7 @@ void StormWebrtcServerImpl::HandleSctpAssociationChange(StormWebrtcConnection & 
     }
     else
     {
+      connection.m_SctpSocket = nullptr;
       NotifySocketDisconnected(connection);
     }
   }
@@ -710,7 +723,7 @@ void StormWebrtcServerImpl::CheckConnectedState(StormWebrtcConnection & connecti
     return;
   }
 
-  for (auto & str : connection.m_IncStreamCreated)
+  for (auto && str : connection.m_IncStreamCreated)
   {
     if (str == false)
     {
@@ -718,7 +731,7 @@ void StormWebrtcServerImpl::CheckConnectedState(StormWebrtcConnection & connecti
     }
   }
 
-  for (auto & str : connection.m_OutStreamCreated)
+  for (auto && str : connection.m_OutStreamCreated)
   {
     if (str == false)
     {
@@ -747,7 +760,6 @@ void StormWebrtcServerImpl::PrepareToRecv()
 
         StunCreateResponse(req, resp, remote_ip, remote_port);
         m_ServerSocket.send_to(asio::buffer(resp.m_Buffer, resp.m_Len), m_RecvEndpoint);
-
       }
       return;
     }
@@ -790,6 +802,7 @@ void StormWebrtcServerImpl::PrepareToRecv()
     }
 
     auto & connection = m_Connections[connection_slot];
+    connection.m_LastMessage = std::chrono::system_clock::now();
 
 #ifdef STORMWEBRTC_USE_THREADS
     std::unique_lock<std::recursive_mutex> connection_lock(connection.m_Mutex);

@@ -8,6 +8,7 @@
 #include "Game/GameFullState.refl.h"
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameSharedInstanceResources.h"
+#include "Game/GameEventReconciler.h"
 
 #ifdef NET_USE_WEBRTC
 #include <StormNetCustomBindings/NetClientBackendWebrtc.h>
@@ -28,16 +29,18 @@ using GameNetClientBackend = NetClientBackendEnet;
 
 #include "Engine/Window/Window.h"
 
+#include "Foundation/HistoryList/HistoryList.h"
+
 using ClientBase = NetClient<ServerProtocolDef, ClientProtocolDef>;
 
 enum class ClientConnectionState
 {
   kConnecting,
   kJoining,
+  kStaging,
   kLoading,
-  kWaitingForInitialSync,
-  kDisconnected,
   kConnected,
+  kDisconnected,
 };
 
 class RenderUtil;
@@ -47,8 +50,10 @@ class GameState;
 
 struct GameNetworkClientInitSettings
 {
-  const char * m_RemoteHost = "127.0.0.1";
-  int m_RemotePort = 47815;
+  const char * m_RemoteHost = "52.161.102.44";
+  //const char * m_RemoteHost = "192.168.56.1";
+
+  int m_RemotePort = 47816;
   std::string m_UserName = "User";
   std::string m_Fingerprint = "78:0A:DC:3D:8D:75:D6:A8:D3:93:E9:2D:3C:78:6C:7E:E8:DB:A5:7F:7F:FD:3E:4F:09:05:93:7E:6D:60:15:67";
 };
@@ -56,7 +61,7 @@ struct GameNetworkClientInitSettings
 class GameNetworkClient : public ClientBase, public GameClientEventSender
 {
 public:
-  GameNetworkClient(GameContainer & game, const GameNetworkClientInitSettings & init_settings);
+  GameNetworkClient(GameContainer & game);
 
   virtual void Update() override;
 
@@ -64,27 +69,36 @@ public:
 
   void SendJoinGame();
 
-  void UpdateInput(ClientInput & input, bool send_immediate);
-  ClientLocalData & GetLocalData();
-  ClientInput GetNextInput();
+  void UpdateInput(ClientInput && input, bool send_immediate);
   NullOptPtr<GameClientInstanceData> GetClientInstanceData();
 
-  std::unique_ptr<GameClientInstanceContainer> ConvertToOffline();
-  void FinalizeMapLoad();
+  NullOptPtr<const GameStateStaging> GetStagingState() const;
+  NullOptPtr<const GameStateLoading> GetLoadingState() const;
+
+  std::pair<std::unique_ptr<GameClientInstanceContainer>, std::unique_ptr<GameClientInstanceData>> ConvertToOffline();
+  void FinalizeLevelLoad();
+
 
 private:
 
-  void CheckFinalizeConnect();
-
   void HandlePong(const PongMessage & msg);
-
   void HandleLoadLevel(const LoadLevelMessage & load);
+
+  void HandleStagingUpdate(const GameStateStaging & state);
+  void HandleLoadingUpdate(const GameStateLoading & state);
+
+#if NET_MODE == NET_MODE_GGPO
+  void HandleSimUpdate(const GameGGPOServerGameState & game_state);
+#else
   void HandleSimUpdate(const GameFullState & sim);
-  void HandleGlobalEvent(std::size_t event_class_id, void * event_ptr);
-  void HandleEntityEvent(std::size_t event_class_id, void * event_ptr);
   void HandleClientDataUpdate(ClientLocalData && client_data);
 
+  void HandleGlobalEvent(std::size_t event_class_id, void * event_ptr);
+  void HandleEntityEvent(std::size_t event_class_id, void * event_ptr);
+#endif
+
   void SendPing();
+  void SendClientUpdate();
 
   virtual void SendClientEvent(std::size_t class_id, const void * event_ptr) override;
 
@@ -92,31 +106,41 @@ private:
   virtual void ConnectionFailed() override;
   virtual void Disconnected() override;
 
+#if NET_MODE == NET_MODE_GGPO
+  int GetFutureFrames();
+#endif
+
 private:
 
   GameNetClientBackend m_Backend;
   ClientConnectionState m_State = ClientConnectionState::kConnecting;
 
   GameContainer & m_GameContainer;
+  Optional<GameStateStaging> m_StagingState;
+  Optional<GameStateLoading> m_LoadingState;
+
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
-  Optional<GameClientInstanceData> m_ClientInstanceData;
+  std::unique_ptr<GameClientInstanceContainer> m_LoadingInstanceContainer;
+  std::unique_ptr<GameClientInstanceData> m_ClientInstanceData;
 
   ProtocolType * m_Protocol = nullptr;
   uint64_t m_LoadToken;
 
-  GameNetworkClientInitSettings m_InitSettings;
-
 #if NET_MODE == NET_MODE_GGPO
-  static const int kNumFutureFrames = 128;
-  int m_FutureFrameBase;
-  ClientInput m_FutureInput[kNumFutureFrames];
+
+  Optional<GameGGPOServerGameState> m_DefaultServerUpdate;
+
+  HistoryList<ClientInput> m_InputHistory;
+  HistoryList<NetPolymorphic<ClientNetworkEvent>> m_EventHistory;
+  int m_AckFrame;
+  int m_LastServerFrame;
+  int m_LastClientSendFrame;
+
+  GameEventReconciler m_Reconciler;
+  int m_ReconcileFrame;
 #endif
 
-  bool m_Loading = false;
-  bool m_Loaded = false;
-  bool m_GotInitialSim = false;
-  bool m_GotInitialClientData = false;
-  bool m_GotInitialPing = false;
+  bool m_FinalizedLoad;
 
   double m_SendTimer;
 

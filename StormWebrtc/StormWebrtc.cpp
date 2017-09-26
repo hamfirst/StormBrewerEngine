@@ -1,20 +1,20 @@
 
 #include <cstdio>
+#include <cstdarg>
 
 #include "StormWebrtc/StormWebrtcConnection.h"
 
+static void debug_printf(const char *format, ...)
+{
+  va_list ap;
+
+  va_start(ap, format);
+  vprintf(format, ap);
+  va_end(ap);
+};
 
 void StormWebrtcStaticInit()
 {
-  auto debug_printf = [](const char *format, ...)
-  {
-    va_list ap;
-
-    va_start(ap, format);
-    vprintf(format, ap);
-    va_end(ap);
-  };
-
   auto sctp_send_cb = [](void * addr, void * buffer, std::size_t length, uint8_t tos, uint8_t df) -> int
   {
     auto & connection = *static_cast<StormWebrtcConnection *>(addr);

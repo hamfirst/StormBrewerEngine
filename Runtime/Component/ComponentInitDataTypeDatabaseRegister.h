@@ -11,6 +11,7 @@
 
 #include "Runtime/Component/ComponentInitData.refl.h"
 
+class Component;
 
 template <typename TypeInfo, typename Class, typename ... BaseTypes>
 struct ComponentInitBaseClass

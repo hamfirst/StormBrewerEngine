@@ -1,7 +1,8 @@
 
 #include "GameClient/GameModeLogo.h"
-#include "GameClient/GameModeNameSelect.h"
+#include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
+#include "GameClient/GameModeSinglePlayerBots.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -34,9 +35,13 @@ void GameModeLogo::OnAssetsLoaded()
 void GameModeLogo::Update()
 {
   auto & container = GetContainer();
-  if (m_Timer.GetTimeSinceStart() > 1.0 && container.AllGlobalResourcesLoaded())
+
+  bool timer_allowed = m_Timer.GetTimeSinceStart() > 1.0;
+  bool global_loaded = container.AllGlobalResourcesLoaded();
+
+  if (timer_allowed && global_loaded)
   {
-    container.SwitchMode(GameModeDef<GameModeNameSelect>{});
+    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
     return;
   }
 }

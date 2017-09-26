@@ -1,5 +1,8 @@
 #pragma once
 
+
+#include "Foundation/Common.h"
+
 #include <StormNet/NetReflectionStruct.h>
 #include <StormNet/NetReflectionTypeDatabase.h>
 
@@ -7,15 +10,11 @@
 #include <StormNet/NetMessageSender.h>
 
 #include "Game/GameNetworkSettings.h"
-
-#include "Foundation/Common.h"
-
-static const int kMaxPlayers = 4;
-static const int kMaxTeams = 4;
-static const int kServerUpdateRate = 8;
+#include "Game/GameServerTypes.h"
 
 #if (NET_MODE == NET_MODE_GGPO)
-static const int kMaxRewindFrames = 10;
+static const int kMaxRewindFrames = 20;
+static const int kMaxHistoryFrames = 30;
 #endif
 
 #if (NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC)
@@ -43,11 +42,19 @@ struct GameInitSettings
 struct ClientLocalData
 {
   NET_REFL;
-  NetRangedNumber<int, 0, kMaxPlayers> m_PlayerIndex;
+  NetRangedNumber<int, -1, kMaxPlayers> m_PlayerIndex = -1;
+
+#ifdef NET_ALLOW_OBSERVERS
+  NetRangedNumber<int, -1, kMaxPlayers> m_ObserverIndex = -1;
+#endif
 };
 
 struct ClientInput
 {
+  uint8_t m_Controls;
+  GameNetVal m_Angle;
+  GameNetVal m_Strength;
+
   NET_REFL;
 };
 
@@ -63,25 +70,6 @@ struct ClientAuthData
   ClientInput m_Input;
 };
 
-struct GameInput
-{
-  ClientInput m_PlayerInput[kMaxPlayers];
-};
-
-struct PackageInfo
-{
-  NET_REFL;
-  uint8_t m_Town;
-  bool m_PickedUp;
-};
-
-struct DeliveryInfo
-{
-  NET_REFL;
-  uint8_t m_Town;
-  uint8_t m_Reward;
-};
-
 struct AIPlayerInfo
 {
   NET_REFL;
@@ -94,8 +82,15 @@ struct GamePlayer
   std::string m_UserName;
   NetRangedNumber<int, 0, kMaxTeams - 1> m_Team;
   NetOptional<AIPlayerInfo> m_AIPlayerInfo;
-  bool m_Ready;
 };
+
+#ifdef NET_ALLOW_OBSERVERS
+struct GameObserver
+{
+  NET_REFL;
+  std::string m_UserName;
+};
+#endif
 
 struct GameInstanceData
 {
@@ -103,8 +98,12 @@ struct GameInstanceData
 
   NetSparseList<GamePlayer, kMaxPlayers> m_Players;
 
-  bool m_Started = false;
-  NetRangedNumber<int, -1, kMaxTeams> m_WiningTeam = -1;
+#ifdef NET_ALLOW_OBSERVERS
+  NetSparseList<GameObserver, 128> m_Observers;
+#endif
+
+  NetRangedNumber<int, 0, kMaxScore> m_Score[kMaxTeams];
+  NetOptional<NetRangedNumber<int, -1, kMaxTeams>> m_WiningTeam;
 
 #ifdef NET_USE_COUNTDOWN
   NetRangedNumber<int, 0, kMaxCountdown> m_Countdown = 0;

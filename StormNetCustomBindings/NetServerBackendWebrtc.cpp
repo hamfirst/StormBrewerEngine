@@ -67,7 +67,7 @@ void NetServerBackendWebrtc::Update()
         trans->m_OutSeqs.emplace_back(std::make_pair(0, str == NetPipeMode::kUnreliableSequenced));
       }
 
-      m_Interface->GotNewConnection(event.m_ConnectionHandle.GetRaw(), event.m_RemoteAddr, event.m_RemotePort, trans);
+      m_Interface->GotNewConnection(event.m_ConnectionHandle.m_SlotId, event.m_RemoteAddr, event.m_RemotePort, trans);
       break;
     case StormWebrtcEventType::kData:
       trans = m_Transmitters.GetElementForId(event.m_ConnectionHandle.m_SlotId);
@@ -85,22 +85,23 @@ void NetServerBackendWebrtc::Update()
           }
 
           NetBitReaderBuffer reader(event.m_Buffer.get() + 1, event.m_DataSize - 1);
-          m_Interface->GotMessage(event.m_ConnectionHandle.GetRaw(), reader, event.m_SenderChannel, event.m_StreamIndex);
+          m_Interface->GotMessage(event.m_ConnectionHandle.m_SlotId, reader, event.m_SenderChannel, event.m_StreamIndex);
 
           trans->m_IncSeqs[event.m_StreamIndex].first = seq;
         }
         else
         {
           NetBitReaderBuffer reader(event.m_Buffer.get(), event.m_DataSize);
-          m_Interface->GotMessage(event.m_ConnectionHandle.GetRaw(), reader, event.m_SenderChannel, event.m_StreamIndex);
+          m_Interface->GotMessage(event.m_ConnectionHandle.m_SlotId, reader, event.m_SenderChannel, event.m_StreamIndex);
         }
 
       }
       break;
     case StormWebrtcEventType::kDisconnected:
+      printf("A client disconnected from %x:%u.\n", event.m_RemoteAddr, event.m_RemotePort);
 
       trans = m_Transmitters.GetElementForId(event.m_ConnectionHandle.m_SlotId);
-      m_Interface->ConnectionLost(event.m_ConnectionHandle.GetRaw());
+      m_Interface->ConnectionLost(event.m_ConnectionHandle.m_SlotId);
 
       m_Transmitters.Free(trans);
       break;

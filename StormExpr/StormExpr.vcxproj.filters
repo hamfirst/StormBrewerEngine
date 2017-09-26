@@ -18,6 +18,10 @@
     <ClInclude Include="StormExprFunctionList.h" />
     <ClInclude Include="StormExprValueProvider.h" />
     <ClInclude Include="StormExprLiteralBlock.h" />
+    <ClInclude Include="StormExprBinding.h" />
+    <ClInclude Include="StormExprDynamicBlock.h" />
+    <ClInclude Include="StormExprReflBlock.h" />
+    <ClInclude Include="StormExprFunctionReg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StormExprValue.cpp" />
@@ -37,5 +41,7 @@
     <ClCompile Include="StormExprFunctionList.cpp" />
     <ClCompile Include="StormExprValueProvider.cpp" />
     <ClCompile Include="StormExprLiteralBlock.cpp" />
+    <ClCompile Include="StormExprBinding.cpp" />
+    <ClCompile Include="StormExprDynamicBlock.cpp" />
   </ItemGroup>
 </Project>

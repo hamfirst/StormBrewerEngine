@@ -222,6 +222,8 @@ void DocumentServer::Run()
         char * path = recv_buffer.data();
         auto path_hash = crc64(path);
 
+        printf("Got compiler server request: %s\n", path);
+
         Document * document = nullptr;
 
         auto client_info = m_CompileServerClients.find(event_info.ConnectionId);

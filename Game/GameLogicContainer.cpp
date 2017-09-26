@@ -13,7 +13,7 @@ GameLogicContainer::GameLogicContainer(
   bool is_authority,
   int & send_timer) :
   m_GameController(game_controller),
-  m_GlobalData(global_data),
+  m_InstanceData(global_data),
   m_ObjectManager(object_manager),
   m_ServerEventSender(server_event_sender),
   m_SimEventSender(sim_event_sender),
@@ -31,9 +31,9 @@ GameController & GameLogicContainer::GetGameController()
   return m_GameController;
 }
 
-GameInstanceData & GameLogicContainer::GetGlobalData()
+GameInstanceData & GameLogicContainer::GetInstanceData()
 {
-  return m_GlobalData;
+  return m_InstanceData;
 }
 
 ServerObjectManager & GameLogicContainer::GetObjectManager()

@@ -27,7 +27,7 @@ private:
   bool LoadFile();
   void Restart();
   void FreeResources();
-  bool FillBuffer(void * data, std::size_t length, float * volume_categories);
+  bool FillBuffer(void * data, std::size_t length, float * volume_categories, float global_volume);
   bool Decode();
 
 private:

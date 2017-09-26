@@ -46,13 +46,11 @@ function FoundationCreateWebsocket(index, host_ptr, port, uri_ptr) {
         _websocket_array.push(null);
     }
 
-    let websocket_index = index;
-
     _websocket_array[index] = new WebSocket(full_url);
     _websocket_array[index].binaryType = "arraybuffer";
-    _websocket_array[index].onopen = function() { FoundationHandleWebsocketOpen(websocket_index); }
-    _websocket_array[index].onmessage = function(msg) { FoundationHandleWebsocketData(websocket_index, msg); }
-    _websocket_array[index].onclose = function() { FoundationHandleWebsocketClose(websocket_index); }
+    _websocket_array[index].onopen = function(websocket_index) { FoundationHandleWebsocketOpen(websocket_index); }.bind(null, index);
+    _websocket_array[index].onmessage = function(websocket_index, msg) { FoundationHandleWebsocketData(websocket_index, msg); }.bind(null, index);
+    _websocket_array[index].onclose = function(websocket_index) { FoundationHandleWebsocketClose(websocket_index); }.bind(null, index);
 }
 
 function FoundationDestroyWebsocket(index) {

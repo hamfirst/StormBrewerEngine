@@ -3,6 +3,7 @@
 #include <memory>
 #include <queue>
 #include <vector>
+#include <chrono>
 #include <cstdlib>
 
 #include "StormWebrtcClientAPI/StormWebrtcClient.h"
@@ -33,6 +34,8 @@ private:
   int m_Socket;
   bool m_Connected;
   bool m_Connecting;
+
+  std::chrono::system_clock::time_point m_LastMessage;
 
   StormWebrtcClientChannelList m_InChannels;
   StormWebrtcClientChannelList m_OutChannels;

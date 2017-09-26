@@ -2,12 +2,11 @@
 #include "StormExprEval.h"
 #include "StormExprEvalBuilder.h"
 
-StormExprEval::StormExprEval(StormExprEvalBuilder && eval_builder) :
-  m_LiteralBlock(std::move(eval_builder.m_LiteralBlockBuilder)),
-  m_LiteralValues(m_LiteralBlock)
-{
-  m_BlockList.m_Blocks.push_back(&m_LiteralValues);
+#include <cstring>
 
+StormExprEval::StormExprEval(StormExprEvalBuilder && eval_builder) :
+  m_BlockList(std::move(eval_builder.m_LiteralBlockBuilder), *eval_builder.m_InitBlockList)
+{
   int num_ops = 0;
   for (auto & expr : eval_builder.m_Expressions)
   {
@@ -34,6 +33,12 @@ StormExprEval::StormExprEval(StormExprEvalBuilder && eval_builder) :
 bool StormExprEval::EvalFloat(std::size_t function_index, float & outp_val)
 {
   StormExprStack stack;
+  return EvalFloat(function_index, outp_val, stack);
+}
+
+bool StormExprEval::EvalFloat(std::size_t function_index, float & outp_val, StormExprStack & stack)
+{
+  stack.Clear();
   if (Eval(function_index, stack) == false)
   {
     return false;
@@ -57,6 +62,12 @@ bool StormExprEval::EvalFloat(std::size_t function_index, float & outp_val)
 bool StormExprEval::EvalString(std::size_t function_index, std::string & outp_val)
 {
   StormExprStack stack;
+  return EvalString(function_index, outp_val, stack);
+}
+
+bool StormExprEval::EvalString(std::size_t function_index, std::string & outp_val, StormExprStack & stack)
+{
+  stack.Clear();
   if (Eval(function_index, stack) == false)
   {
     return false;
@@ -77,12 +88,14 @@ bool StormExprEval::EvalString(std::size_t function_index, std::string & outp_va
   return true;
 }
 
-void StormExprEval::SetBlockList(const StormExprValueBlockList & block_list)
+void StormExprEval::SetBlockBasePtr(std::size_t block_index, void * base_ptr)
 {
-  m_BlockList.m_Blocks.clear();
-  m_BlockList.m_Blocks.push_back(&m_LiteralValues);
+  m_BlockList.SetBlockBasePtr(block_index + 1, base_ptr);
+}
 
-  m_BlockList.m_Blocks.insert(m_BlockList.m_Blocks.end(), block_list.m_Blocks.begin(), block_list.m_Blocks.end());
+std::size_t StormExprEval::GetNumFuncs() const
+{
+  return m_NumFuncs;
 }
 
 bool StormExprEval::Eval(std::size_t function_index, StormExprStack & stack)

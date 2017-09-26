@@ -7,6 +7,9 @@
 
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/Prototype/UIPrototypeButton.h"
+#include "Engine/UI/Prototype/UIPrototypeMuteButton.h"
+#include "Engine/UI/Prototype/UIPrototypeFullscreenButton.h"
+#include "Engine/UI/Prototype/UIPrototypeConfirmPopup.h"
 
 class GameModeMainMenu : public GameMode
 {
@@ -19,10 +22,14 @@ public:
 
   virtual void Update() override;
   virtual void Render() override;
+  virtual void InputEvent() override;
 
 protected:
 
   void PlayOnline();
+  void PlayOffline();
+  void Tutorial();
+  void PlaySingleplayer();
 
 private:
 
@@ -31,7 +38,14 @@ private:
 
   UIElementPtr<UIElementFullTexture> m_TitleImage;
   UIElementPtr<UIElementShape> m_Fader;
+  Optional<UIPrototypeMuteButton> m_MuteButton;
+  Optional<UIPrototypeMuteButton> m_MusicButton;
+  Optional<UIPrototypeFullscreenButton> m_FullscreenButton;
+  Optional<UIPrototypeConfirmPopup> m_TutorialPrompt;
   Optional<UIPrototypeButton> m_PlayOnline;
+  Optional<UIPrototypeButton> m_PlayOffline;
+  Optional<UIPrototypeButton> m_PlaySingleplayer;
+  Optional<UIPrototypeButton> m_Tutorial;
   Optional<UIPrototypeButton> m_Host;
   Optional<UIPrototypeButton> m_Join;
   Optional<UIPrototypeButton> m_Settings;

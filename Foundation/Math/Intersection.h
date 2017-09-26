@@ -137,6 +137,30 @@ public:
   {
     return VecType{ IntersectionFuncs<VecCompType>::Inverse(a.x), IntersectionFuncs<VecCompType>::Inverse(a.y) };
   }
+
+  static auto Normalize(const VecType & v, const VecType & default_val = VecType(VecCompType(1), VecCompType(0)))
+  {
+    auto mag = Mag(v);
+    if (mag == VecCompType(0))
+    {
+      return default_val;
+    }
+
+    return v / mag;
+  }
+
+  static auto NormalizeInPlace(VecType & v, const VecType & default_val = VecType(VecCompType(1), VecCompType(0)))
+  {
+    auto mag = Mag(v);
+    if (mag == VecCompType(0))
+    {
+      v = default_val;
+      return mag;
+    }
+
+    v /= mag;
+    return mag;
+  }
 };
 
 template <typename VecCompType>
@@ -437,7 +461,7 @@ public:
     return true;
   }
 
-  static bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult<VecCompType> & result)
+  static bool SweptPointToCircleTest(const CollisionLine & sweep, const CollisionCircle & circle, IntersectionResult<VecCompType> & result, bool alllow_depen = false)
   {
     auto offset = sweep.m_Start - circle.m_Center;
 
@@ -447,12 +471,31 @@ public:
     auto start_dist_sqrd = IntersectionVecFuncs<VecType>::MagSquared(offset);
     if (start_dist_sqrd <= circle.m_RadiusSquared)
     {
-      result.m_Intersected = true;
-      result.m_T = zero;
-      result.m_HitNormal = (start_dist_sqrd == zero ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) :
-        offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd)));
-      result.m_HitPos = sweep.m_Start;
-      return true;
+      if (alllow_depen == false)
+      {
+        result.m_Intersected = true;
+        result.m_T = zero;
+        result.m_HitNormal = (start_dist_sqrd == zero ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) :
+          offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd)));
+        result.m_HitPos = sweep.m_Start;
+        return true;
+      }
+      else
+      {
+        if (IntersectionVecFuncs<VecType>::Dot(sweep.m_Dir, offset) <= zero)
+        {
+          result.m_Intersected = true;
+          result.m_T = zero;
+          result.m_HitNormal = (start_dist_sqrd == zero ? IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir) :
+            offset * IntersectionFuncs<VecCompType>::Reciprocal(IntersectionFuncs<VecCompType>::Sqrt(start_dist_sqrd)));
+          result.m_HitPos = sweep.m_Start;
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
     }
 
     if (sweep.m_Length == zero)
@@ -472,19 +515,21 @@ public:
       return false;
     }
 
-    auto circle_d = IntersectionVecFuncs<VecType>::Dot(circle.m_Center, sweep.m_Dir);
-    if (circle_d >= sweep.m_EndD + circle.m_Radius)
+    auto circle_size_sqrd = circle.m_RadiusSquared - (perp_offset * perp_offset);
+    if (circle_size_sqrd < zero)
     {
       return false;
     }
 
-    auto dist_from_offset = IntersectionFuncs<VecCompType>::Sqrt(circle.m_RadiusSquared - perp_offset * perp_offset);
+    auto circle_size = IntersectionFuncs<VecCompType>::Sqrt(circle_size_sqrd);
+    auto travel_dist = IntersectionFuncs<VecCompType>::Inverse(dist_from_line_start) - circle_size;
 
-    auto t = (dist_from_line_start - dist_from_offset) / sweep.m_Length;
-    if (t >= one)
+    if (sweep.m_Length < travel_dist)
     {
       return false;
     }
+
+    auto t = travel_dist / sweep.m_Length;
 
     result.m_Intersected = true;
     result.m_T = t;
@@ -495,18 +540,23 @@ public:
 
   static bool SweptCircleToLineTest(const CollisionLine & sweep, VecCompType radius, const CollisionLine & line, bool check_start, bool check_end, IntersectionResult<VecCompType> & result)
   {
-    auto start_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_Start);
-    if (IntersectionFuncs<VecCompType>::Abs(start_d - line.m_NormalD) < radius)
+    auto start_normal_d = IntersectionVecFuncs<VecType>::Dot(line.m_Normal, sweep.m_Start);
+    if (IntersectionFuncs<VecCompType>::Abs(start_normal_d - line.m_NormalD) < radius)
     {
-      result.m_Intersected = true;
-      result.m_T = VecCompType(0);
-      result.m_HitPos = sweep.m_Start;
-      result.m_HitNormal = IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir);
-      return true;
+      auto start_d = IntersectionVecFuncs<VecType>::Dot(line.m_Dir, sweep.m_Start);
+      
+      if (start_d >= line.m_StartD && start_d <= line.m_EndD)
+      {
+        result.m_Intersected = true;
+        result.m_T = VecCompType(0);
+        result.m_HitPos = sweep.m_Start;
+        result.m_HitNormal = IntersectionVecFuncs<VecType>::Reverse(sweep.m_Dir);
+        return true;
+      }
     }
 
     auto moved_line = line;
-    if (start_d > line.m_NormalD)
+    if (start_normal_d > line.m_NormalD)
     {
       moved_line.m_Start += line.m_Normal * radius;
       moved_line.m_End += line.m_Normal * radius;

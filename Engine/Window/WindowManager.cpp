@@ -7,6 +7,10 @@
 
 #include <SDL2/SDL.h>
 
+#ifdef _WEB
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
 
 WindowManager g_WindowManager;
 static std::unordered_map<uint32_t, std::unique_ptr<WindowState>> s_Windows;
@@ -21,6 +25,8 @@ struct ENGINE_EXPORT  WindowState
   int m_RefCount;
   bool m_KeyboardFocus;
   bool m_MouseFocus;
+
+  bool m_FullScreen;
 
   Box m_WindowGeo;
 
@@ -44,6 +50,11 @@ Window WindowManager::CreateNewWindow(czstr title, int width, int height, bool f
   }
 
   auto context = SDL_GL_CreateContext(sdl_window);
+  if(context == nullptr)
+  {
+    printf("Could not create context: %s\n", SDL_GetError());
+  }
+
   uint32_t id = SDL_GetWindowID(sdl_window);
 
   auto result = s_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowState>(new WindowState{ sdl_window, context, nullptr, 1, false, false })));
@@ -56,6 +67,7 @@ Window WindowManager::CreateNewWindow(czstr title, int width, int height, bool f
   window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + Vector2(x, y);
 
   window.m_InputState = std::make_unique<InputState>();
+  window.m_FullScreen = fullscreen;
 
   return Window(id);
 }
@@ -65,7 +77,7 @@ Window WindowManager::CreateFakeWindow(FakeWindow * window, const Box & window_g
   uint32_t id = m_NextFakeWindowId;
   m_NextFakeWindowId++;
 
-  auto result = s_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowState>(new WindowState{ nullptr, nullptr, window, 1, false, false, window_geo, std::make_unique<InputState>() })));
+  auto result = s_Windows.emplace(std::make_pair(id, std::unique_ptr<WindowState>(new WindowState{ nullptr, nullptr, window, 1, false, false, false, window_geo, std::make_unique<InputState>() })));
   return Window(id);
 }
 
@@ -94,6 +106,15 @@ void WindowManager::UpdateInput()
 #endif
 
     window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo, update);
+
+    if (window.m_SDLWindow)
+    {
+      int x, y;
+      SDL_GetWindowPosition(window.m_SDLWindow, &x, &y);
+      window.m_WindowGeo.m_Start = Vector2(x, y);
+      SDL_GetWindowSize(window.m_SDLWindow, &x, &y);
+      window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + Vector2(x, y);
+    }
   }
 }
 
@@ -150,6 +171,28 @@ void WindowManager::HandleTextInputComposition(uint32_t window_id, czstr composi
   if (window.m_TextInputContext)
   {
     window.m_TextInputContext->SetComposition(composition);
+  }
+}
+
+void WindowManager::HandleFullscreenChanged(uint32_t window_id, bool enabled)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end())
+  {
+    printf("Couldn't find window\n");
+    return;
+  }
+
+  WindowState & window = *itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    printf("Setting fullscreen to %d\n", enabled ? 1 : 0);
+    window.m_FullScreen = enabled;
+  }
+  else
+  {
+    printf("Not SDL window\n");
   }
 }
 
@@ -252,6 +295,41 @@ void WindowManager::SetVsyncEnabled(uint32_t window_id, bool enabled)
     SDL_GL_MakeCurrent(window.m_SDLWindow, window.m_Context);
     SDL_GL_SetSwapInterval(enabled);
   }
+}
+
+void WindowManager::SetFullscreen(uint32_t window_id, bool enabled)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    printf("Changing full screen state to %d\n", enabled ? 1 : 0);
+    SDL_SetWindowFullscreen(window.m_SDLWindow, enabled ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+
+    window.m_FullScreen = enabled;
+
+    int x, y;
+    SDL_GetWindowPosition(window.m_SDLWindow, &x, &y);
+    window.m_WindowGeo.m_Start = Vector2(x, y);
+    SDL_GetWindowSize(window.m_SDLWindow, &x, &y);
+    window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + Vector2(x, y);
+  }
+}
+
+bool WindowManager::IsFullScreen(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return false;
+  WindowState & window = *itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    return window.m_FullScreen;
+  }
+
+  return false;
 }
 
 void WindowManager::MakeCurrent(uint32_t window_id)

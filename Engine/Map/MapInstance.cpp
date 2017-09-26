@@ -95,9 +95,29 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
   }
 }
 
+void MapInstance::Init(GameContainer & game_container)
+{
+  for (auto & layer : m_EffectLayers)
+  {
+    layer.Init(game_container);
+  }
+
+  for (auto & elem : m_MapEntities)
+  {
+    auto entity = elem.Resolve();
+    if (entity)
+    {
+      entity->Activate();
+    }
+  }
+}
+
 void MapInstance::Update(GameContainer & game_container)
 {
-
+  for (auto & layer : m_EffectLayers)
+  {
+    layer.Update(game_container);
+  }
 }
 
 void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
@@ -128,19 +148,6 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
     {
       layer.Draw(game_container, viewport_bounds, screen_center, render_state, render_util);
     });
-  }
-}
-
-
-void MapInstance::ActivateEntities()
-{
-  for (auto & elem : m_MapEntities)
-  {
-    auto entity = elem.Resolve();
-    if (entity)
-    {
-      entity->Activate();
-    }
   }
 }
 

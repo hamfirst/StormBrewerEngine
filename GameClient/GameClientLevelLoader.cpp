@@ -37,7 +37,7 @@ void GameClientLevelLoader::FinalizeLevel()
   auto map_instance = m_GameContainer.GetEngineState().GetMapInstance(m_LoadedMapId.Value());
   if (map_instance)
   {
-    map_instance->ActivateEntities();
+    map_instance->Init(m_GameContainer);
   }
 }
 

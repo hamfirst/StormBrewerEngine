@@ -29,7 +29,8 @@ void SequenceElement::Complete()
 }
 
 Sequencer::Sequencer() :
-  m_CurElem(0)
+  m_CurElem(0),
+  m_Paused(false)
 {
   m_Timer.Start();
 }
@@ -37,7 +38,13 @@ Sequencer::Sequencer() :
 void Sequencer::Update()
 {
   auto time_passed = (float)m_Timer.GetTimeSinceLastCheck();
-  while (m_CurElem < m_Elems.size())
+  Update(time_passed);
+}
+
+void Sequencer::Update(float dt)
+{
+  auto time_passed = dt;
+  while (m_CurElem < m_Elems.size() && m_Paused == false)
   {
     if (time_passed == 0)
     {
@@ -50,6 +57,11 @@ void Sequencer::Update()
       m_CurElem++;
     }
   }
+}
+
+void Sequencer::Skip()
+{
+  m_Timer.GetTimeSinceLastCheck();
 }
 
 void Sequencer::Push(float time, Delegate<void, float> && del)
@@ -75,4 +87,14 @@ void Sequencer::Clear()
 {
   m_Elems.clear();
   m_CurElem = 0;
+}
+
+void Sequencer::Pause()
+{
+  m_Paused = true;
+}
+
+void Sequencer::Unpause()
+{
+  m_Paused = false;
 }

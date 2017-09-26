@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="filtering.c" />
+    <ClCompile Include="multi_stage.c" />
+    <ClCompile Include="polyfilt.c" />
+    <ClCompile Include="remez_lp.c" />
+    <ClCompile Include="smarc.c" />
+    <ClCompile Include="stage_impl.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="filtering.h" />
+    <ClInclude Include="multi_stage.h" />
+    <ClInclude Include="polyfilt.h" />
+    <ClInclude Include="remez_lp.h" />
+    <ClInclude Include="smarc.h" />
+    <ClInclude Include="stage_impl.h" />
+  </ItemGroup>
+</Project>

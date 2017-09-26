@@ -56,7 +56,11 @@ struct StormReflJson<IntersectionVecType<VecCompType>, void>
   template <class StringBuilder>
   static void EncodePretty(const IntersectionVecType<VecCompType> & t, StringBuilder & sb, int indent)
   {
-    StormReflJson<StorageType>::Encode(t, sb);
+    sb += '[';
+    StormReflJson<VecCompType>::Encode(t.x, sb);
+    sb += ',';
+    StormReflJson<VecCompType>::Encode(t.y, sb);
+    sb += ']';
   }
 
   template <class StringBuilder>

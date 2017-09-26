@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -29,46 +29,46 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{34F1D758-2F75-42B4-9E13-8672CD9D17D3}</ProjectGuid>
     <RootNamespace>GameClient</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FinalStatic|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -124,6 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -154,6 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -169,6 +172,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -176,6 +180,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\PlayerComponent.refl.cpp" />
+    <ClCompile Include="Components\PlayerComponent.refl.reg.cpp" />
+    <ClCompile Include="EffectLayers\CollisionDrawer.refl.cpp" />
+    <ClCompile Include="EffectLayers\CollisionDrawer.refl.reg.cpp" />
     <ClCompile Include="GameCamera.cpp">
       <SubType>
       </SubType>
@@ -203,6 +211,10 @@
     </ClCompile>
     <ClCompile Include="GameClientInstanceResources.cpp" />
     <ClCompile Include="GameClientLevelLoader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameClientSave.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -234,6 +246,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameModeLocalMultiplayer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameModeLogo.cpp">
       <SubType>
       </SubType>
@@ -246,6 +262,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameModeOfflineStaging.cpp" />
     <ClCompile Include="GameModeOnlineGameplay.cpp">
       <SubType>
       </SubType>
@@ -254,9 +271,18 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameModeTutorial.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameNetworkClient.cpp" />
+    <ClCompile Include="GameServerEventResponder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\PlayerComponent.refl.h" />
+    <ClInclude Include="Components\PlayerComponent.refl.meta.h" />
+    <ClInclude Include="EffectLayers\CollisionDrawer.refl.h" />
+    <ClInclude Include="EffectLayers\CollisionDrawer.refl.meta.h" />
     <ClInclude Include="GameCamera.h">
       <SubType>
       </SubType>
@@ -289,6 +315,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameClientSave.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientSaveFileData.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameClientSaveFileData.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameClientSystems.h">
       <SubType>
       </SubType>
@@ -317,6 +355,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameModeLocalMultiplayer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameModeLogo.h">
       <SubType>
       </SubType>
@@ -329,6 +371,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameModeOfflineStaging.h" />
     <ClInclude Include="GameModeOnlineGameplay.h">
       <SubType>
       </SubType>
@@ -337,7 +380,12 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameModeTutorial.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameNetworkClient.h" />
+    <ClInclude Include="GameServerEventResponder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />

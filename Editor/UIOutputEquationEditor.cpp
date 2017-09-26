@@ -6,9 +6,10 @@
 #include "StormData/StormDataJson.h"
 
 
-UIOutputEquationEditor::UIOutputEquationEditor(NotNullPtr<UIEditor> editor, std::size_t child_index, czstr child_name, czstr var_name, czstr path,
+UIOutputEquationEditor::UIOutputEquationEditor(NotNullPtr<UIEditor> editor, NotNullPtr<UIEditorOutputEquationList> parent_list, std::size_t child_index, czstr child_name, czstr var_name, czstr path,
                                                Delegate<NullOptPtr<RMergeList<UIDefOutputEquation>>> && getter, QWidget * parent) :
   QWidget(parent),
+  m_ParentList(parent_list),
   m_Label(std::make_unique<QLabel>(QString(child_name) + "." + QString(var_name), this)),
   m_Input(std::make_unique<GenericInput>(this)),
   m_ChildIndex(child_index),
@@ -52,11 +53,14 @@ void UIOutputEquationEditor::WriteValue()
     return;
   }
 
+  m_ParentList->SetIgnoreChanges(true);
+
   for (auto elem : *list)
   {
-    if (elem.second.m_VariableName == m_VariableName)
+    if (elem.second.m_ChildIndex == (int)m_ChildIndex && elem.second.m_VariableName == m_VariableName)
     {
       elem.second.m_Equation = m_Input->GetText();
+      m_ParentList->SetIgnoreChanges(false);
       return;
     }
   }
@@ -66,6 +70,7 @@ void UIOutputEquationEditor::WriteValue()
   new_val.m_Equation = m_Input->GetText();
   new_val.m_ChildIndex = m_ChildIndex;
   list->EmplaceBack(std::move(new_val));
+  m_ParentList->SetIgnoreChanges(false);
 }
 
 void UIOutputEquationEditor::resizeEvent(QResizeEvent * ev)

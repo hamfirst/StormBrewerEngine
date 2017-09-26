@@ -6,10 +6,13 @@
 
 #include "Engine/Camera/Camera.h"
 
+#include "Foundation/Time/FrameClock.h"
+#include "Foundation/Time/FPSClock.h"
+
 class GameModeSinglePlayerBots : public GameMode, public GameClientEventSender
 {
 public:
-  GameModeSinglePlayerBots(GameContainer & game, const std::string & player_name, const GameInitSettings game_settings);
+  GameModeSinglePlayerBots(GameContainer & game, const GameInitSettings game_settings, bool show_tutorial);
   ~GameModeSinglePlayerBots();
 
   virtual void Initialize() override;
@@ -22,14 +25,20 @@ public:
 
 protected:
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr);
+  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr) override;
 
 private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
-  Optional<GameClientInstanceData> m_InstanceData;
-  Optional<GameClientSystems> m_ClientSystems;
+  std::unique_ptr<GameClientInstanceData> m_InstanceData;
+  std::unique_ptr<GameClientSystems> m_ClientSystems;
 
-  std::string m_PlayerName;
+  UIElementPtr<UIElementShape> m_Fader;
+  Sequencer m_Sequencer;
+
+  FrameClock m_FrameClock;
+  FPSClock m_FPSClock;
+  bool m_ShowTutorial;
+
 };
 
 

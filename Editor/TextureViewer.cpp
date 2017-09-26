@@ -32,7 +32,7 @@ static const char * kTextureViewerVertexShader = SHADER_LITERAL(
     position *= 2.0;
 
     gl_Position = vec4(position, 0, 1);
-    v_TexCoord = a_TexCoord;
+    v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
     v_Color = a_Color;
   }
 );

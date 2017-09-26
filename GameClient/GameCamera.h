@@ -4,8 +4,22 @@
 
 class GameContainer;
 
-static const int kDefaultResolutionWidth = 640;
-static const int kDefaultResolutionHeight = 360;
+static const int kDefaultResolutionWidth = 768;
+static const int kDefaultResolutionHeight = 480;
+
+static const Color kDefaultClearColor = Color(200, 210, 230, 255);
+
+
+struct CameraShakeInfo
+{
+  float m_StartTime;
+  float m_Duration;
+  float m_Amplitute;
+  float m_Frequency;
+
+  std::unique_ptr<float[]> m_Samples;
+  int m_NumSamples;
+};
 
 class GameCamera : public Camera
 {
@@ -18,8 +32,16 @@ public:
   Vector2 TransformWorldSpaceToGameplaySpace(const Vector2 & vec);
   Box TransformWorldSpaceToGameplaySpace(const Box & box);
 
+  void Shake(float duration, float amplitute, float frequency = 60.0f);
+
+protected:
+
+  RenderVec2 EvalShake(const CameraShakeInfo & shake_info, float t);
+
 private:
 
   GameContainer & m_GameContainer;
+
+  std::vector<CameraShakeInfo> m_ShakeInfo;
 };
 

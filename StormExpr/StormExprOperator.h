@@ -4,6 +4,7 @@
 enum class StormExprOperatorType
 {
   kNeg,
+  kCat,
   kAdd,
   kSub,
   kMul,

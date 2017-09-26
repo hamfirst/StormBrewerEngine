@@ -105,6 +105,7 @@ endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	add_definitions(-D_GNU_SOURCE)
+	
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
@@ -130,7 +131,6 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
 	add_definitions(-DHAVE_SCONN_LEN)
 	add_definitions(-U__OpenBSD__)
 endif()
-
 
 #################################################
 # CHECK OPTIONS
@@ -196,7 +196,7 @@ if (SCTP_KAME)
 	add_definitions(-DSCTP_KAME)
 endif()
 
-option(WERROR "Warning as error" ON)
+option(WERROR "Warning as error" OFF)
 
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/netinet ${PROJECT_SOURCE_DIR}/netinet6)
 
@@ -243,8 +243,8 @@ SET_TARGET_PROPERTIES (usrsctp PROPERTIES IMPORT_SUFFIX "_import.lib")
 SET_TARGET_PROPERTIES (usrsctp PROPERTIES SOVERSION 1 VERSION 1.0.0)
 
 IF ("x${CMAKE_C_COMPILER_ID}" STREQUAL "xClang" OR "x${CMAKE_C_COMPILER_ID}" STREQUAL "xGNU")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -pedantic -Wall -std=c99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -std=c99")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -pedantic -Wall -std=c99 -Wno-address-of-packed-member")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -std=c99 -Wno-address-of-packed-member")
 	if (WERROR)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")

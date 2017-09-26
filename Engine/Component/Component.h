@@ -3,6 +3,10 @@
 #include "Foundation/SkipField/SkipFieldIterator.h"
 #include "Foundation/Optional/NullOpt.h"
 
+#include "Engine/Entity/Entity.h"
+#include "Engine/Audio/VolumeCategory.h"
+#include "Engine/Audio/AudioHandle.h"
+
 #include "Engine/Component/ComponentHandle.h"
 #include "Engine/Component/ComponentRegistrationMacros.h"
 
@@ -10,6 +14,19 @@ class Entity;
 class ComponentSystem;
 class ComponentUpdateBucketList;
 class ComponentInitData;
+
+template <class AssetType>
+class AssetReference;
+
+class AudioAsset;
+
+class VisualEffectInstance;
+class VisualEffectDef;
+class VisualEffectResource;
+using VisualEffectResourcePtr = DocumentResourcePtr<VisualEffectDef, VisualEffectResource>;
+
+class GameSharedGlobalResources;
+class GameClientGlobalResources;
 
 typedef NullOptPtr<Component> (*ComponentResolver)(const ComponentHandle & handle, void * comp_store);
 
@@ -61,6 +78,14 @@ public:
   int GetBucket() const;
   ComponentHandle GetHandle() const;
 
+  GameSharedGlobalResources & GetSharedGlobalResources();
+  GameClientGlobalResources & GetClientGlobalResources();
+
+  AudioHandle PlayAudio(const AssetReference<AudioAsset> & asset_ref, VolumeCategory cat = VolumeCategory::kSoundEffects, float volume = 1.0f, float pan = 0.0f, bool looping = false);
+
+  NotNullPtr<VisualEffectInstance> CreateVisualEffect(const VisualEffectResourcePtr & fx_resource);
+  NotNullPtr<VisualEffectInstance> CreateVisualEffect(const VisualEffectResourcePtr & fx_resource, int layer, const Vector2f & pos);
+
 protected:
 
   void InitComponentStore(void * comp_store);
@@ -77,6 +102,8 @@ private:
   void SetOwner(NotNullPtr<Entity> entity);
   virtual void OnActivate();
   virtual void OnDestroy();
+  virtual void ServerUpdate();
+  virtual void ServerDestroy();
 
   void SetHandle(Handle & handle);
   void SetIterator(const SkipFieldIterator & itr);

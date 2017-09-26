@@ -6,7 +6,7 @@
 
 UIPrototypeConfirmPopup::UIPrototypeConfirmPopup(UIManager & manager, czstr name, NullOptPtr<UIElement> parent, const Box & box, czstr prompt, NullOptPtr<UISoundPrototypeEffects> sfx) :
   m_Sfx(sfx),
-  m_BkgColor(245, 245, 245, 255),
+  m_BkgColor(210, 210, 210, 255),
   m_BorderColor(150, 150, 150, 255),
   m_TextColor(255, 255, 255, 255)
 {
@@ -16,27 +16,26 @@ UIPrototypeConfirmPopup::UIPrototypeConfirmPopup(UIManager & manager, czstr name
   m_Fader->SetOnUpdateHandler([this](NotNullPtr<UIElement>) { Update(); });
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
-  fader_data.SetColor(Color(0, 0, 0, 0));
+  fader_data.SetColor(Color(255, 255, 255, 0));
   fader_data.m_StartX = 0;
   fader_data.m_StartY = 0;
   fader_data.m_EndX = 10000;
   fader_data.m_EndY = 10000;
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
-  m_Bkg = manager.AllocateGradient(name, m_Fader, {}, {});
+  m_Bkg = manager.AllocateGradient("bkg", m_Fader, {}, {});
 
   auto bkg = m_Bkg.Get();
   auto & bkg_data = bkg->GetData();
-  bkg_data.m_Active = true;
   bkg_data.SetColor(m_BkgColor);
   bkg_data.SetBounds(box);
-  bkg->SetActive();
 
   m_Border = manager.AllocateShape("border", bkg, {}, {});
   auto border = m_Border.Get();
   auto & border_data = border->GetData();
   border_data.SetBounds(Box{ Vector2{ 0, 0 }, size });
   border_data.SetColor(m_BorderColor);
+  border_data.m_Shape = kUIElementShapeRectangle;
 
   m_Text = manager.AllocateText("caption", bkg, {}, {});
   auto text = m_Text.Get();
@@ -53,20 +52,43 @@ UIPrototypeConfirmPopup::UIPrototypeConfirmPopup(UIManager & manager, czstr name
 
   m_OkayButton.Emplace(manager, "okay", bkg, Box{ Vector2(20, 10), Vector2(90, 35) }, "Okay", sfx);
   m_OkayButton->SetOnClickCallback([this]() { m_OnOkay(); });
-  m_CancelButton.Emplace(manager, "cancel", bkg, Box{ Vector2(size.x - 90, 10), Vector2(size.x - 20, 35) }, "Cancel", sfx);
-  m_CancelButton->SetOnClickCallback([this]() { Hide(); });
+  m_CancelButton.Emplace(manager, "cancel", bkg, Box{ Vector2(size.x - 90, 10), Vector2(size.x - 20, 35) }, "Cancel", sfx, true);
+  m_CancelButton->SetOnClickCallback([this]() { Cancel(); });
 
-  Show();
+  Hide();
 }
 
 void UIPrototypeConfirmPopup::Show()
 {
-  m_FaderLerp.LerpTo(1.0f, 0.3f);
+  m_FaderLerp.LerpTo(0.9f, 0.3f);
 }
 
 void UIPrototypeConfirmPopup::Hide()
 {
   m_FaderLerp.LerpTo(0.0f, 0.3f);
+}
+
+void UIPrototypeConfirmPopup::Toggle()
+{
+  if (m_FaderLerp.GetTarget() != 0)
+  {
+    Hide();
+  }
+  else
+  {
+    Show();
+  }
+}
+
+void UIPrototypeConfirmPopup::Cancel()
+{
+  m_OnCancel();
+  Hide();
+}
+
+bool UIPrototypeConfirmPopup::IsShown() const
+{
+  return m_FaderLerp.GetTarget() != 0;
 }
 
 void UIPrototypeConfirmPopup::Update()
@@ -80,7 +102,7 @@ void UIPrototypeConfirmPopup::Update()
   else
   {
     m_Fader->SetEnabled();
-    m_Fader->GetData().m_ColorA = fade_val * 0.3f;
+    m_Fader->GetData().m_ColorA = fade_val;
 
     auto bkg_color = m_BkgColor;
     bkg_color.a *= fade_val;
@@ -98,11 +120,20 @@ void UIPrototypeConfirmPopup::Update()
     m_OkayButton->SetAlpha(fade_val);
     m_CancelButton->SetAlpha(fade_val);
   }
+
+  bool active = m_FaderLerp.GetTarget() != 0;
+  m_OkayButton->SetActive(active);
+  m_CancelButton->SetActive(active);
 }
 
 void UIPrototypeConfirmPopup::SetOnOkayCallback(Delegate<void> && rhs)
 {
   m_OnOkay = std::move(rhs);
+}
+
+void UIPrototypeConfirmPopup::SetOnCancelCallback(Delegate<void> && rhs)
+{
+  m_OnCancel = std::move(rhs);
 }
 
 void UIPrototypeConfirmPopup::SetBkgColor(const Color & color)

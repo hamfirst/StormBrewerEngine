@@ -87,6 +87,7 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
   auto & buffer = render_util.GetScratchBuffer();
   buffer.SetBufferData(verts, VertexBufferType::kTriangles);
   auto & shader = g_ShaderManager.GetDefaultShader();
+  shader.Bind();
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });

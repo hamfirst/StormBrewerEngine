@@ -6,15 +6,36 @@
 #include "GameClient/GameClientSystems.h"
 
 #include "Game/GameNetworkEvents.refl.h"
+#include "Game/ServerObjects/PlayerServerObject.refl.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Input/ControlId.h"
+#include "Engine/Audio/AudioManager.h"
 
 GameClientUIManager::GameClientUIManager(GameContainer & container) :
   m_GameContainer(container),
-  m_UIManager(container.GetWindow())
+  m_UIManager(container.GetWindow()),
+  m_WantsToQuit(false),
+  m_DisabledPopup(false)
 {
   auto & render_state = container.GetRenderState();
+
+  m_QuitPopup.Emplace(m_UIManager, "quit", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() * 0.5f, Vector2(250, 100)),
+    "Quit To Main Menu?", &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+  m_QuitPopup->SetOnOkayCallback([this] { Quit(); });
+  m_QuitPopup->SetOnCancelCallback([this] 
+  { 
+    if (m_Tutorial)
+    {
+      m_Tutorial->Destroy();
+      m_Tutorial.Clear();
+      m_TutorialOkay.Clear();
+    }
+
+    m_MuteButton.Clear();
+    m_MusicButton.Clear();
+    m_FullscreenButton.Clear();
+  });
 
 #ifdef NET_USE_COUNTDOWN
   m_CountdownCaption = m_UIManager.AllocateText("countdown_caption");
@@ -63,9 +84,7 @@ GameClientUIManager::~GameClientUIManager()
 
 void GameClientUIManager::Update()
 {
-  auto & local_data = m_GameContainer.GetInstanceData()->GetLocalData();
   auto & game_state = m_GameContainer.GetInstanceData()->GetGameState();
-  auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
 
   auto resolution = camera.GetGameResolution();
@@ -104,7 +123,14 @@ void GameClientUIManager::Update()
   round_timer_data.m_Text = std::to_string((int)game_state.m_RoundTimer / 60);
 #endif
 
-  m_UIManager.Update(*m_GameContainer.GetWindow().GetInputState(), m_GameContainer.GetRenderState(), camera.GetPosition());
+  auto input_state = m_GameContainer.GetWindow().GetInputState();
+
+  if (input_state->GetKeyPressedThisFrame(SDL_SCANCODE_ESCAPE))
+  {
+    TogglePopup();
+  }
+
+  m_UIManager.Update(*input_state, m_GameContainer.GetRenderState(), camera.GetPosition());
 }
 
 void GameClientUIManager::Render()
@@ -112,12 +138,95 @@ void GameClientUIManager::Render()
   m_UIManager.Render(m_GameContainer.GetRenderState(), m_GameContainer.GetRenderUtil());
 }
 
+void GameClientUIManager::ShowTutorial()
+{
+  auto & resources = m_GameContainer.GetClientGlobalResources();
+  auto & render_state = m_GameContainer.GetRenderState();
+
+  m_Tutorial = m_UIManager.AllocateElementFromDef("tutorial", *resources.Tutorial.GetData());
+  m_Tutorial->SetInput(COMPILE_TIME_CRC32_STR("Low"), 0.0f);
+
+  auto okay_box = Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() / 2, render_state.GetRenderHeight() / 2 - 40), Vector2(150, 30));
+  m_TutorialOkay.Emplace(m_UIManager, "tutorial_okay", nullptr, okay_box, "Okay", &resources.UISoundEffects);
+  m_TutorialOkay->SetOnClickCallback([this] { TogglePopup(); });
+}
+
+bool GameClientUIManager::IsPopupOpen()
+{
+  return m_Tutorial || m_QuitPopup->IsShown();
+}
+
+void GameClientUIManager::DisablePopup()
+{
+  m_DisabledPopup = true;
+
+  if (m_QuitPopup->IsShown())
+  {
+    m_QuitPopup->Toggle();
+  }
+}
+
 bool GameClientUIManager::IsBlocking()
 {
   return m_UIManager.HasSelectedElement();
 }
 
+bool GameClientUIManager::WantsToQuit()
+{
+  return m_WantsToQuit;
+}
+
 UIClickablePtr GameClientUIManager::CreateClickable(const Box & active_area)
 {
   return m_UIManager.AllocateClickable(active_area);
+}
+
+UIManager & GameClientUIManager::GetUIManager()
+{
+  return m_UIManager;
+}
+
+void GameClientUIManager::Quit()
+{
+  m_WantsToQuit = true;
+}
+
+void GameClientUIManager::TogglePopup()
+{
+  if (m_QuitPopup->IsShown())
+  {
+    m_QuitPopup->Toggle();
+
+    if (m_Tutorial)
+    {
+      m_Tutorial->Destroy();
+      m_TutorialOkay.Clear();
+      m_Tutorial.Clear();
+    }
+
+    m_MuteButton.Clear();
+    m_MusicButton.Clear();
+    m_FullscreenButton.Clear();
+  }
+  else if (m_Tutorial)
+  {
+    m_Tutorial->Destroy();
+    m_TutorialOkay.Clear();
+    m_Tutorial.Clear();
+  }
+  else if(m_DisabledPopup == false)
+  {
+    m_QuitPopup->Toggle();
+
+    auto & resources = m_GameContainer.GetClientGlobalResources();
+    m_Tutorial = m_UIManager.AllocateElementFromDef("tutorial", *resources.Tutorial.GetData());
+    m_Tutorial->SetInput(COMPILE_TIME_CRC32_STR("Low"), 1.0f);
+
+    auto & render_state = m_GameContainer.GetRenderState();
+
+    m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), 
+      m_GameContainer.GetWindow(), &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+  }
 }

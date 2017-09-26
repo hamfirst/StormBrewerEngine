@@ -16,13 +16,13 @@ static void UICreateRuntimeDesc(czstr name, std::vector<UIRuntimeFieldDesc> & de
 }
 
 template <>
-static void UICreateRuntimeDesc<float>(czstr name, std::vector<UIRuntimeFieldDesc> & desc_list)
+void UICreateRuntimeDesc<float>(czstr name, std::vector<UIRuntimeFieldDesc> & desc_list)
 {
   desc_list.push_back(UIRuntimeFieldDesc{ UIVariableType::kFloat, name });
 }
 
 template <>
-static void UICreateRuntimeDesc<std::string>(czstr name, std::vector<UIRuntimeFieldDesc> & desc_list)
+void UICreateRuntimeDesc<std::string>(czstr name, std::vector<UIRuntimeFieldDesc> & desc_list)
 {
   desc_list.push_back(UIRuntimeFieldDesc{ UIVariableType::kString, name });
 }
@@ -42,7 +42,7 @@ void UICreateRuntimeInfo(std::vector<UIRuntimeFieldDesc> & desc_list)
 template <typename RuntimeClass, typename InitDataType, typename RuntimeDataType>
 void UIElementTypeDatabase::RegisterType()
 {
-  static_assert(std::is_base_of<UIElementDataBase, InitDataType>::value, "Registering type that is not of the right base class");
+  static_assert(std::is_base_of<UIElementInitDataBase, InitDataType>::value, "Registering type that is not of the right base class");
 
   UIElementDataTypeInfo type_info;
   InitTypeInfo<InitDataType>(type_info);

@@ -29,6 +29,6 @@ SpriteBaseEditor::SpriteBaseEditor(PropertyFieldDatabase & property_db, const st
   m_Layout->addWidget(m_TabWidget.get());
   setLayout(m_Layout.get());
 
-  m_GlobalFrameDataCallback = [this] { return &m_Sprite.m_GlobalData; };
+  m_GlobalFrameDataCallback = [this] { return &m_Sprite.m_InstanceData; };
 }
 

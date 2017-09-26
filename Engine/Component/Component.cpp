@@ -5,13 +5,19 @@
 #include "Runtime/Component/ComponentInitDataTypeDatabase.h"
 #include "Runtime/Component/ComponentInitDataTypeDatabaseRegister.h"
 
+#include "Engine/EngineState.h"
+#include "Engine/Entity/Entity.h"
 #include "Engine/Component/Component.h"
 #include "Engine/Component/ComponentSystem.h"
+#include "Engine/Audio/AudioManager.h"
+#include "Engine/VisualEffect/VisualEffectManager.h"
 
 #include "Engine/Component/ComponentList.h"
 #include "Engine/Component/ComponentUpdateBucketList.h"
 #include "Engine/Component/ComponentUpdateRegistrationTemplates.h"
-#include "Engine/Entity/Entity.h"
+
+GameSharedGlobalResources & GetSharedGlobalResourcesFromContainer(NotNullPtr<GameContainer> container);
+GameClientGlobalResources & GetClientGlobalResourcesFromContainer(NotNullPtr<GameContainer> container);
 
 REGISTER_BASE_COMPONENT(Component);
 
@@ -82,6 +88,34 @@ ComponentHandle Component::GetHandle() const
   return m_Handle;
 }
 
+GameSharedGlobalResources & Component::GetSharedGlobalResources()
+{
+  auto container = GetEntity()->GetGameContainer();
+  return GetSharedGlobalResourcesFromContainer(container);
+}
+
+GameClientGlobalResources & Component::GetClientGlobalResources()
+{
+  auto container = GetEntity()->GetGameContainer();
+  return GetClientGlobalResourcesFromContainer(container);
+}
+
+AudioHandle Component::PlayAudio(const AssetReference<AudioAsset> & asset_ref, VolumeCategory cat, float volume, float pan, bool looping)
+{
+  return g_AudioManager.PlayAudio(asset_ref, cat, volume, pan, looping);
+}
+
+NotNullPtr<VisualEffectInstance> Component::CreateVisualEffect(const VisualEffectResourcePtr & fx_resource)
+{
+  return CreateVisualEffect(fx_resource, GetEntity()->GetLayer(), GetEntity()->GetPosition());
+}
+
+NotNullPtr<VisualEffectInstance> Component::CreateVisualEffect(const VisualEffectResourcePtr & fx_resource, int layer, const Vector2f & pos)
+{
+  auto engine_state = GetEntity()->GetEngineState();
+  return engine_state->GetVisualEffectManager()->CreateVisualEffect(fx_resource, layer, pos);
+}
+
 void Component::InitComponentStore(void * comp_store)
 {
   m_Handle.m_ComponentStore = comp_store;
@@ -103,6 +137,16 @@ void Component::OnActivate()
 }
 
 void Component::OnDestroy()
+{
+
+}
+
+void Component::ServerUpdate()
+{
+
+}
+
+void Component::ServerDestroy()
 {
 
 }

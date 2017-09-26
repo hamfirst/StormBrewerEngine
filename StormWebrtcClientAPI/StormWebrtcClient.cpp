@@ -1,7 +1,7 @@
 
 #include "StormWebrtcClientAPI/StormWebrtcClient.h"
 
-#ifdef EMSCRIPTEN
+#ifdef _WEB
 
 #include "StormWebrtcClientWeb.h"
 using StormWebrtcClientClass = StormWebrtcClientWeb;

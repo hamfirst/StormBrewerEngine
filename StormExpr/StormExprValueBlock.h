@@ -12,10 +12,13 @@
 class StormExprValueBlock
 {
 public:
+  StormExprValueBlock();
   StormExprValueBlock(const StormExprValueInitBlock & init_block);
   StormExprValueBlock(const StormExprLiteralBlock & literal_block);
 
-  StormExprValue GetValue(std::size_t value_index) const;
+  StormExprValueBlock & operator = (StormExprValueBlock && rhs) = default;
+
+  StormExprValue GetValue(void * base_ptr, std::size_t value_index) const;
   std::size_t GetNumValues() const;
 
 private:

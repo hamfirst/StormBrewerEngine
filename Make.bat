@@ -1,0 +1,1 @@
+CALL E:\Mingw\bin\mingw32-make.exe -j 8

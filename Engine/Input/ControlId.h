@@ -45,6 +45,11 @@ enum class GamepadAxis
   kCount,
 };
 
+enum class GamepadJoystick
+{
+  kLeft,
+  kRight,
+};
 
 struct ControlId
 {

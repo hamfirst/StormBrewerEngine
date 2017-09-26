@@ -15,6 +15,11 @@ protected:
   virtual void OnDataLoadComplete(Buffer & buffer, bool load_deps) override;
 
 protected:
+
+  int DecodeVorbisFile(Buffer & buffer);
+  int DecodeWavFile(Buffer & buffer);
+
+protected:
   friend class AudioManager;
   friend class AudioSpec;
 

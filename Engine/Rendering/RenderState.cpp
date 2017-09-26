@@ -27,6 +27,16 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
   m_ScreenHeight = screen_height;
 }
 
+void RenderState::SetFramePct(float frame_pct)
+{
+  m_FramePct = frame_pct;
+}
+
+float RenderState::GetFramePct() const
+{
+  return m_FramePct;
+}
+
 void RenderState::EnableBlendMode(RenderingBlendMode mode)
 {
   if (m_BlendEnabled == false)
@@ -109,8 +119,12 @@ Vector2 RenderState::GetScreenSize()
 
 void RenderState::SetScreenSize(Vector2 screen_size)
 {
-  m_ScreenWidth = screen_size.x;
-  m_ScreenHeight = screen_size.y;
+  if (screen_size.x != m_ScreenWidth || screen_size.y != m_ScreenHeight)
+  {
+    glViewport(0, 0, screen_size.x, screen_size.y);
+    m_ScreenWidth = screen_size.x;
+    m_ScreenHeight = screen_size.y;
+  }
 }
 
 int RenderState::GetRenderWidth()

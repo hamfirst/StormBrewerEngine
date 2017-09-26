@@ -15,11 +15,13 @@
 
 #include "Engine/Asset/AssetLoader.h"
 #include "Engine/Audio/AudioManager.h"
+#include "Engine/Audio/MusicManager.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Window/WindowManager.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Input/GamepadState.h"
+#include "Engine/Entity/Entity.h"
 #include "Engine/Component/ComponentSystem.h"
 
 static bool s_Quit = false;
@@ -59,6 +61,7 @@ bool EngineInit(bool egl_mode)
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
   }
 
+  SDL_SetHintWithPriority(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1", SDL_HINT_OVERRIDE);
 #endif
 
   SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
@@ -71,6 +74,7 @@ bool EngineInit(bool egl_mode)
 
   g_AssetLoader.Init();
   g_AudioManager.Init();
+  g_MusicManager.Init();
 
   GamepadState::Init();
 
@@ -93,6 +97,8 @@ void EngineUpdate()
 {
   g_AssetLoader.ProcessResponses();
   g_WindowManager.UpdateInput();
+
+  g_MusicManager.Update();
 
   SDL_Event e;
   while (SDL_PollEvent(&e))

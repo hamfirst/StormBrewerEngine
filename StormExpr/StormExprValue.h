@@ -33,18 +33,22 @@ public:
 
   void Clear();
 
-  StormExprValueType GetType();
-  float GetFloatVal();
-  const char * GetStringVal();
-  std::size_t GetStringLength();
+  void CopyQuick(const StormExprValue & value);
+  StormExprValue DuplicateQuick() const;
 
-  void GetValueProvider(StormExprValueProvider & value_provider);
+  StormExprValueType GetType() const;
+  float GetFloatVal() const;
+  const char * GetStringVal() const;
+  std::size_t GetStringLength() const;
 
   operator float();
   operator const char *();
   operator std::string();
 
 private:
+
+
+  StormExprValue(StormExprValueType type, float val);
 
   StormExprValueType m_Type;
 

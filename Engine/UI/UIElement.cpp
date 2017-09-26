@@ -2,7 +2,6 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElement.h"
 #include "Engine/UI/UIManager.h"
-#include "Engine/UI/UIElementExprBlock.h"
 #include "Engine/UI/UIElementExprFuncs.h"
 #include "Engine/UI/UIElementExprTypes.refl.meta.h"
 
@@ -10,6 +9,9 @@
 
 #include "StormExpr/StormExprEvalBuilder.h"
 
+static auto s_GlobalInitBlock = StormExprCreateInitBlockForDataType<UIGlobalBlock>();
+static auto s_AutoInitBlock = StormExprCreateInitBlockForDataType<UIAutoCalculatedBlock>();
+static auto s_AsParentAutoInitBlock = StormExprCreateInitBlockForDataType<UIAutoCalculatedBlock>("p.");
 
 UIElement::UIElement() :
   m_TimeCreated((float)GetTimeSeconds())
@@ -22,20 +24,22 @@ UIElement::~UIElement()
 
 }
 
-void UIElement::Update()
+void UIElement::Update(float dt)
 {
-  m_AutoBlock.m_TimeAlive = (float)GetTimeSeconds() - m_TimeCreated;
+  m_AutoBlock.m_TimeAlive += dt;
 
   for (auto & elem : m_BindingList)
   {
-    elem.m_Binding.Update(elem.m_FunctionIndex, m_Eval.Value());
+    UIResetLerpVals(m_AutoBlock.m_TimeAlive);
+    elem.m_Binding.Update(elem.m_FunctionIndex, m_Eval.Value(), elem.m_BasePtr);
   }
 
   for (auto & elem : m_ChildBindingList)
   {
     if (elem.m_Handle.Resolve())
     {
-      elem.m_Binding.Update(elem.m_FunctionIndex, m_Eval.Value());
+      UIResetLerpVals(m_AutoBlock.m_TimeAlive);
+      elem.m_Binding.Update(elem.m_FunctionIndex, m_Eval.Value(), elem.m_BasePtr);
     }
   }
 
@@ -43,7 +47,19 @@ void UIElement::Update()
 
   for (auto elem : m_Children)
   {
-    elem->Update();
+    elem->Update(dt);
+  }
+
+  auto data = GetBaseData();
+  if (data->m_Enabled != 0.0f && data->m_Active != 0.0f && m_State == UIElementState::kInactive)
+  {
+    m_OnStateChange(m_State, UIElementState::kActive);
+    m_State = UIElementState::kActive;
+  }
+  else if ((data->m_Enabled == 0.0f || data->m_Active == 0.0f) && m_State != UIElementState::kInactive)
+  {
+    m_OnStateChange(m_State, UIElementState::kInactive);
+    m_State = UIElementState::kInactive;
   }
 }
 
@@ -52,46 +68,32 @@ void UIElement::Render(RenderState & render_state, RenderUtil & render_util, con
   auto child_offset = offset + m_Offset;
   for (auto child : m_Children)
   {
-    if (child->m_Enabled)
-    {
-      child->Render(render_state, render_util, child_offset);
-    }
+    child->Render(render_state, render_util, child_offset);
   }
 }
 
-void UIElement::SetActive()
+void UIElement::SetActive(bool active)
 {
-  if (m_State == UIElementState::kInactive)
+  if (active)
   {
-    m_OnStateChange(m_State, UIElementState::kActive);
-    m_State = UIElementState::kActive;
+    GetBaseData()->m_Active = 1.0f;
+  }
+  else
+  {
+    SetInactive();
   }
 }
 
 void UIElement::SetInactive()
 {
-  if (m_State != UIElementState::kInactive)
-  {
-    m_OnStateChange(m_State, UIElementState::kInactive);
-    m_State = UIElementState::kInactive;
-  }
-}
-
-void UIElement::SetEnabled()
-{
-  m_Enabled = true;
-  if (m_State == UIElementState::kInactive)
-  {
-    m_OnStateChange(m_State, UIElementState::kActive);
-    m_State = UIElementState::kActive;
-  }
+  GetBaseData()->m_Active = 0.0f;
 }
 
 void UIElement::SetEnabled(bool enabled)
 {
   if (enabled)
   {
-    SetEnabled();
+    GetBaseData()->m_Enabled = 1.0f;
   }
   else
   {
@@ -99,14 +101,10 @@ void UIElement::SetEnabled(bool enabled)
   }
 }
 
+
 void UIElement::SetDisabled()
 {
-  m_Enabled = false;
-  if (m_State == UIElementState::kPressed || m_State == UIElementState::kHover)
-  {
-    m_OnStateChange(m_State, UIElementState::kActive);
-    m_State = UIElementState::kActive;
-  }
+  GetBaseData()->m_Enabled = 0.0f;
 }
 
 void UIElement::Destroy()
@@ -117,6 +115,11 @@ void UIElement::Destroy()
 UIElementHandle UIElement::GetHandle()
 {
   return m_Handle;
+}
+
+NotNullPtr<UIManager> UIElement::GetManager()
+{
+  return m_Handle.m_UIManager;
 }
 
 UIElementState UIElement::GetState()
@@ -203,42 +206,104 @@ void UIElement::SetInput(uint32_t variable_name, czstr val)
   }
 }
 
-UIElementExprBindingList UIElement::InitializeExprBlock(
-  const UIDef & def, NullOptPtr<StormExprValueInitBlock> parent_block, UIManager & manager, std::vector<std::string> & errors)
+std::vector<std::pair<std::string, StormExprDynamicBlockVariable>> UIElement::InitializeExprBlock(const UIDef & def,
+  NullOptPtr<StormExprValueInitBlock> parent_init_block, void * parent_data,
+  NullOptPtr<StormExprValueInitBlock> parent_auto_init_block, void * parent_auto_data,
+  UIManager & manager, std::vector<std::string> & errors, bool use_default_inputs)
 {
-  UIElementExprBindingList input_values;
+  std::vector<std::pair<std::string, StormExprDynamicBlockVariable>> input_values;
 
-  auto local_block = GetLocalBlock();
-  auto as_parent_block = GetAsParentBlock();
-  UIAddInitBlockForDataType(m_AutoBlock, as_parent_block, "p.");
+  auto base_data_ptr = GetBaseData();
 
-  auto auto_block = GetAutoBlock();
-  auto global_block = UICreateInitBlockForDataType(manager.m_GlobalBlock);
-  
-  StormExprValueInitBlock input_block;
+  auto & local_init_block = GetLocalInitBlock();
+  auto & as_parent_init_block = GetAsParentInitBlock();
+
+  auto & auto_init_block = s_AutoInitBlock;
+  auto & global_init_block = s_GlobalInitBlock;
+
+  StormExprValueInitBlock input_float_block, input_string_block;
+  std::vector<StormExprDynamicBlockVariable> input_vars;
+
   for (auto input : def.m_Inputs)
   {
-    auto var = m_InputBlock.AddVariable(input.second, input_block);
-    input_values.emplace_back(UIElementExprBindingInfo{ input.second.m_VariableName, m_InputBlock.GetBinding(var) });
+    StormExprValueType type;
+    switch ((UIVariableType)input.second.m_Type)
+    {
+    default:
+    case UIVariableType::kFloat:
+      type = StormExprValueType::kFloat;
+      break;
+    case UIVariableType::kString:
+      type = StormExprValueType::kString;
+      break;
+    }
+
+    auto var = m_InputBlock.AddVariable(type);
+    input_vars.push_back(var);
+  }
+
+  int input_var_index = 0;
+  for(auto input : def.m_Inputs)
+  {
+    auto & var = input_vars[input_var_index];
+    m_InputBlock.Link(var, input.second.m_VariableName.data(), input_float_block, input_string_block);
+
+    input_values.emplace_back(std::make_pair(input.second.m_VariableName, var));
     m_InputLookup.emplace_back(std::make_pair(crc32(input.second.m_VariableName), var));
+    input_var_index++;
   }
 
-  std::vector<StormExprValueInitBlock *> value_blocks = { &input_block, &local_block, &auto_block, &global_block };
-  if (parent_block)
+  m_FloatInputValueBlock.Emplace(input_float_block);
+  m_StringInputValueBlock.Emplace(input_string_block);
+
+  std::vector<StormExprValueInitBlock *> value_init_blocks = { &input_float_block, &input_string_block, &local_init_block, &auto_init_block, &global_init_block };
+  std::vector<void *> block_base_ptrs = { m_InputBlock.GetBaseFloatPtr(), m_InputBlock.GetBaseStringPtr(), base_data_ptr, &m_AutoBlock, &manager.m_GlobalBlock };
+
+  if (parent_init_block)
   {
-    value_blocks.push_back(parent_block);
+    value_init_blocks.push_back(parent_init_block);
+    block_base_ptrs.push_back(parent_data);
   }
 
-  for (auto block : value_blocks)
+  if (parent_auto_init_block)
   {
-    m_BlockList.emplace_back(*block);
+    value_init_blocks.push_back(parent_auto_init_block);
+    block_base_ptrs.push_back(parent_auto_data);
   }
 
-  StormExprValueInitBlockList block_list(std::move(value_blocks));
+
+  StormExprValueInitBlockList block_list(std::move(value_init_blocks));
   StormExprEvalBuilder eval_builder(manager.m_FuncList);
   eval_builder.SetBlockList(block_list);
 
-  auto binding_list = CreateBindingList();
+  if (use_default_inputs)
+  {
+    input_var_index = 0;
+    for (auto input : def.m_Inputs)
+    {
+      if (input.second.m_DefaultEquation.size() != 0)
+      {
+        auto & var = input_vars[input_var_index];
+
+        czstr error, error_desc;
+        auto function_index = eval_builder.ParseExpression(input.second.m_DefaultEquation.data(), error, error_desc);
+        if (function_index == -1)
+        {
+          std::string error_msg = m_Name + "." + input.second.m_VariableName.ToString() + ": " + error_desc + " at " + error;
+          errors.emplace_back(std::move(error_msg));
+
+          input_var_index++;
+          continue;
+        }
+
+        m_BindingList.emplace_back(BindingEvalInfo{ m_InputBlock.GetBinding(var), m_InputBlock.GetBasePtr(var), function_index });
+      }
+
+      input_var_index++;
+    }
+  }
+
+  auto binding_list = GetBindingList();
 
   for (auto binding : binding_list)
   {
@@ -246,7 +311,7 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
     for (auto elem : def.m_Equations)
     {
       auto equation_name_hash = crc32(elem.second.m_VariableName.data());
-      if (equation_name_hash == var_name_hash)
+      if (equation_name_hash == var_name_hash && elem.second.m_Equation.size() > 0)
       {
         czstr error, error_desc;
         auto function_index = eval_builder.ParseExpression(elem.second.m_Equation.data(), error, error_desc);
@@ -257,13 +322,13 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
           break;
         }
 
-        m_BindingList.emplace_back(BindingEvalInfo{ binding.m_Value, function_index });
+        m_BindingList.emplace_back(BindingEvalInfo{ binding.m_Value, base_data_ptr, function_index });
         break;
       }
     }
   }
 
-  SparseList<std::pair<UIElementHandle, UIElementExprBindingList>> handle_list;
+  SparseList<std::pair<UIElementHandle, std::vector<std::pair<std::string, StormExprDynamicBlockVariable>>>> handle_list;
   for (auto child : def.m_Children)
   {
     auto handle = 
@@ -272,11 +337,15 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
     auto ui_element = handle.Resolve();
     if (ui_element == nullptr)
     {
-      handle_list.EmplaceAt(child.first, std::make_pair(handle, UIElementExprBindingList{}));
+      handle_list.EmplaceAt(child.first, std::make_pair(handle, std::vector<std::pair<std::string, StormExprDynamicBlockVariable>>{}));
       continue;
     }
 
-    auto child_blindings = ui_element->InitializeExprBlock(child.second.m_UI, &as_parent_block, manager, errors);
+    auto child_blindings = ui_element->InitializeExprBlock(child.second.m_UI,
+      &as_parent_init_block, base_data_ptr, 
+      &s_AsParentAutoInitBlock, &m_AutoBlock, 
+      manager, errors, false);
+
     handle_list.EmplaceAt(child.first, std::make_pair(handle, std::move(child_blindings)));
   }
 
@@ -306,7 +375,7 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
           continue;
         }
 
-        if (child_val.m_Name == output.second.m_VariableName.ToString())
+        if (child_val.first == output.second.m_VariableName.ToString() && output.second.m_Equation.size() > 0)
         {
           created_binding = true;
 
@@ -314,12 +383,14 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
           auto function_index = eval_builder.ParseExpression(output.second.m_Equation.data(), error, error_desc);
           if (function_index == -1)
           {
-            std::string error_msg = m_Name + "." + child->GetName() + "." + child_val.m_Name + ": " + error_desc + " at " + error;
+            std::string error_msg = m_Name + "." + child->GetName() + "." + child_val.first + ": " + error_desc + " at " + error;
             errors.emplace_back(std::move(error_msg));
             break;
           }
 
-          m_ChildBindingList.emplace_back(ChildBindingEvalInfo{ child_val.m_Value, child->GetHandle(), function_index });
+          auto binding = child->m_InputBlock.GetBinding(child_val.second);
+          auto base_ptr = child->m_InputBlock.GetBasePtr(child_val.second);
+          m_ChildBindingList.emplace_back(ChildBindingEvalInfo{ binding, base_ptr, child->GetHandle(), function_index });
           break;
         }
       }
@@ -328,7 +399,7 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
       {
         for (auto input : child_def.second.m_UI.m_Inputs)
         {
-          if (input.second.m_VariableName == child_val.m_Name)
+          if (input.second.m_VariableName == child_val.first)
           {
             if (input.second.m_DefaultEquation.size() > 0)
             {
@@ -336,12 +407,14 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
               auto function_index = eval_builder.ParseExpression(input.second.m_DefaultEquation.data(), error, error_desc);
               if (function_index == -1)
               {
-                std::string error_msg = m_Name + "." + child->GetName() + "." + child_val.m_Name + ": " + error_desc + " at " + error;
+                std::string error_msg = m_Name + "." + child->GetName() + "." + child_val.first + ": " + error_desc + " at " + error;
                 errors.emplace_back(std::move(error_msg));
                 break;
               }
 
-              m_ChildBindingList.emplace_back(ChildBindingEvalInfo{ child_val.m_Value, child->GetHandle(), function_index });
+              auto binding = child->m_InputBlock.GetBinding(child_val.second);
+              auto base_ptr = child->m_InputBlock.GetBasePtr(child_val.second);
+              m_ChildBindingList.emplace_back(ChildBindingEvalInfo{ binding, base_ptr, child->GetHandle(), function_index });
             }
             break;
           }
@@ -351,14 +424,11 @@ UIElementExprBindingList UIElement::InitializeExprBlock(
   }
 
   m_Eval.Emplace(std::move(eval_builder));
-
-  std::vector<StormExprValueBlock *> eval_block_list;
-  for (auto & elem : m_BlockList)
+  for (std::size_t index = 0; index < block_base_ptrs.size(); ++index)
   {
-    eval_block_list.push_back(&elem);
+    m_Eval->SetBlockBasePtr(index, block_base_ptrs[index]);
   }
 
-  m_Eval->SetBlockList(std::move(eval_block_list));
   return input_values;
 }
 
@@ -381,11 +451,6 @@ void UIElement::SetActiveArea(const Box & box)
 void UIElement::SetOffset(const Vector2 & offset)
 {
   m_Offset = offset;
-}
-
-StormExprValueInitBlock UIElement::GetAutoBlock()
-{
-  return UICreateInitBlockForDataType(m_AutoBlock);
 }
 
 void UIElement::SetHandle(Handle & handle)

@@ -79,7 +79,7 @@ void UIEditorViewer::Refresh()
 
   m_UIManager.Emplace(m_FakeWindow->GetWindow());
   m_RootReference = m_UIManager->AllocateContainer("container", nullptr, {}, container_data);
-  m_UIManager->AllocateElementFromDef("root", m_UI, m_RootReference->Get());
+  m_UIManager->AllocateElementFromDef("root", m_UI, m_RootReference->Get(), true);
   m_UIManager->Update(*m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 }
 
@@ -215,6 +215,11 @@ void UIEditorViewer::mousePressEvent(QMouseEvent * event)
   if (!m_FakeWindow)
   {
     return;
+  }
+
+  if (event->button() == Qt::RightButton)
+  {
+    Refresh();
   }
 
   //int button;

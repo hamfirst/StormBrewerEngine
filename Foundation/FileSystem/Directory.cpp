@@ -17,7 +17,7 @@ std::vector<std::string> GetFilesInDirectory(czstr path)
 
   WIN32_FIND_DATAA ffd;
 
-  auto hfind = FindFirstFile(path, &ffd);
+  auto hfind = FindFirstFileA(path, &ffd);
   if (hfind == INVALID_HANDLE_VALUE)
   {
     return files;
@@ -27,7 +27,7 @@ std::vector<std::string> GetFilesInDirectory(czstr path)
   {
     files.emplace_back(JoinPath(path, ffd.cFileName));
 
-    if (FindNextFile(hfind, &ffd) != 0)
+    if (FindNextFileA(hfind, &ffd) != 0)
     {
       break;
     }

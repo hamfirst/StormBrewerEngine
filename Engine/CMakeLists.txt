@@ -29,7 +29,9 @@ set(GENERIC_SRC_Engine
             ./Engine.cpp
             ./EngineCommon.cpp
             ./EngineCommonPCH.cpp
+            ./EngineState.cpp
             ./Asset/Asset.cpp
+            ./Asset/AssetBundle.cpp
             ./Asset/AssetLoad.cpp
             ./Asset/AssetLoader.cpp
             ./Asset/AssetReferenceBase.cpp
@@ -40,10 +42,17 @@ set(GENERIC_SRC_Engine
             ./Asset/MusicAsset.cpp
             ./Asset/TextureAsset.cpp
             ./Audio/AudioManager.cpp
+            ./Audio/MusicManager.cpp
             ./Audio/MusicSpec.cpp
             ./Camera/Camera.cpp
+            ./Component/Component.cpp
+            ./Component/ComponentHandle.cpp
+            ./Component/ComponentSystem.cpp
+            ./Component/ComponentUpdateBucketList.cpp
             ./DrawList/DrawList.cpp
-            ./Entity/EntityRender.cpp
+            ./Entity/Entity.cpp
+            ./Entity/EntityHandle.cpp
+            ./Entity/EntitySystem.cpp
             ./Input/BinaryControlBinding.cpp
             ./Input/ControlBindingHandleList.cpp
             ./Input/ControlBindingSet.cpp
@@ -57,9 +66,13 @@ set(GENERIC_SRC_Engine
             ./Input/ScalarControlBinding.cpp
             ./Input/TextInputContext.cpp
             ./Input/VectorControlBinding.cpp
-            ./Map/MapEngineInstance.cpp
+            ./Map/MapEffectLayerInstance.cpp
+            ./Map/MapEffectLayerRenderer.cpp
+            ./Map/MapInstance.cpp
             ./Map/MapManualTileLayerInstance.cpp
-            ./Map/MapRender.cpp
+            ./Map/MapParalaxLayerInstance.cpp
+            ./Map/MapSystem.cpp
+            ./Profiler/Profiler.cpp
             ./Rendering/GeometryVertexBufferBuilder.cpp
             ./Rendering/RenderException.cpp
             ./Rendering/RenderState.cpp
@@ -72,6 +85,7 @@ set(GENERIC_SRC_Engine
             ./Rendering/VertexBuffer.cpp
             ./Rendering/VertexBufferBuilder.cpp
             ./Rendering/VertexList.cpp
+            ./SaveFile/SaveFile.cpp
             ./Settings/EngineSettings.refl.cpp
             ./Shader/ShaderManager.cpp
             ./Sprite/SpriteEngineData.cpp
@@ -79,6 +93,32 @@ set(GENERIC_SRC_Engine
             ./Text/TextBufferBuilder.cpp
             ./Text/TextManager.cpp
             ./Text/TextRenderer.cpp
+            ./UI/UIClickable.cpp
+            ./UI/UIClickablePtr.cpp
+            ./UI/UIElement.cpp
+            ./UI/UIElementContainer.refl.cpp
+            ./UI/UIElementExprFuncs.cpp
+            ./UI/UIElementFullTexture.refl.cpp
+            ./UI/UIElementGradient.refl.cpp
+            ./UI/UIElementHandle.cpp
+            ./UI/UIElementShape.refl.cpp
+            ./UI/UIElementSpriteFrame.refl.cpp
+            ./UI/UIElementText.refl.cpp
+            ./UI/UIElementTextInput.refl.cpp
+            ./UI/UIElementTextureSlice.refl.cpp
+            ./UI/UIManager.cpp
+            ./UI/Prototype/UIPrototypeButton.cpp
+            ./UI/Prototype/UIPrototypeConfirmPopup.cpp
+            ./UI/Prototype/UIPrototypeFullscreenButton.cpp
+            ./UI/Prototype/UIPrototypeMuteButton.cpp
+            ./UI/Prototype/UIPrototypeSlider.cpp
+            ./UI/Prototype/UIPrototypeTextInput.cpp
+            ./UI/Prototype/UIPrototypeTutorialPopup.cpp
+            ./VisualEffect/VisualEffect.cpp
+            ./VisualEffect/VisualEffectFuncs.cpp
+            ./VisualEffect/VisualEffectHandle.cpp
+            ./VisualEffect/VisualEffectInstance.cpp
+            ./VisualEffect/VisualEffectManager.cpp
             ./Window/FakeWindow.cpp
             ./Window/Window.cpp
             ./Window/WindowManager.cpp

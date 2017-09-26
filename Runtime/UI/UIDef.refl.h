@@ -9,9 +9,9 @@
 #include "Runtime/UI/UITypes.refl.h"
 
 
-struct RUNTIME_EXPORT UIElementDataBase
+struct RUNTIME_EXPORT UIElementInitDataBase
 {
-  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementDataBase);
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIElementInitDataBase);
 };
 
 struct RUNTIME_EXPORT UIDefInputVariable
@@ -43,7 +43,7 @@ struct RUNTIME_EXPORT UIDef
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UIDef);
 
-  RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo> m_InitData;
+  RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo> m_InitData;
 
   RMergeList<UIDefInputVariable> m_Inputs;
   RMergeList<UIDefEquation> m_Equations;

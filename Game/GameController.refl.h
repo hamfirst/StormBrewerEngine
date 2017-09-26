@@ -5,6 +5,8 @@
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameNetworkEvents.refl.h"
+#include "Game/GameNetworkExternals.refl.h"
+#include "Game/GameFullState.refl.h"
 
 class GameLogicContainer;
 
@@ -17,31 +19,44 @@ public:
 
   GameController();
 
+  void BootstrapGame(GameLogicContainer & game, uint32_t seed);
+
   void ConstructPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team);
-  void PlayerReady(std::size_t player_index, GameLogicContainer & game);
-  void PlayerLeft(std::size_t player_index, GameLogicContainer & game);
+  void DestroyPlayer(std::size_t player_index, GameLogicContainer & game);
+
+  void ConstructBot(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team);
+  void DestroyBot(std::size_t player_index, GameLogicContainer & game);
+
+#ifdef NET_ALLOW_OBSERVERS
+  void ConstructObserver(std::size_t player_index, GameLogicContainer & game, const std::string & name);
+  void DestroyObserver(std::size_t player_index, GameLogicContainer & game);
+#endif
+
+  void ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game);
 
   void InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player);
-  void CleanupPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player);
+  void CleanupPlayer(GameLogicContainer & game, std::size_t player_index);
   int AddAIPlayer(GameLogicContainer & game, uint32_t random_number);
   void FillWithBots(GameLogicContainer & game, uint32_t random_number);
 
-  std::vector<int> GetTeamCounts(GameInstanceData & game_data);
-  int GetRandomTeam(GameInstanceData & game_data, uint32_t random_number);
-  bool DoAllTeamsHavePlayers(GameLogicContainer & game);
+  static std::vector<int> GetTeamCounts(GameInstanceData & game_data);
+  static std::vector<int> GetTeamCounts(GameStateStaging & game_data);
+  static std::vector<int> GetTeamCounts(GameStateLoading & game_data);
+  static int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number);
+  static bool DoAllTeamsHavePlayers(const std::vector<int> & team_counts);
   Optional<int> GetOnlyTeamWithPlayers(GameLogicContainer & game);
   Optional<int> GetDefaultWinningTeam();
 
   void HandleClientEvent(std::size_t player_index, GameLogicContainer & game, std::size_t event_class_id, const void * event_ptr);
 
-  void ApplyInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input);
+  bool ValidateInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input);
+  void ApplyInput(std::size_t player_index, GameLogicContainer & game, const ClientInput & input);
   void Update(GameLogicContainer & game);
 
-  bool NeedsMorePlayersToStartGame(GameLogicContainer & game);
-  bool IsReadyToStartGame(GameLogicContainer & game);
   void StartGame(GameLogicContainer & game);
   void EndGame(int winning_team, GameLogicContainer & game);
 
+  void AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos);
 
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game);
 

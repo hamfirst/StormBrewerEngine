@@ -1,0 +1,1 @@
+CALL git -C %~dp0 pull

@@ -17,25 +17,38 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandlePing, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleJoinGame, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleFinishLoading, this);
+
+#if NET_MODE == NET_MODE_GGPO
+  m_Protocol.GetReceiverChannel<1>().RegisterCallback(&GameClientConnection::HandleClientDataUpdate, this);
+#else
   m_Protocol.GetReceiverChannel<1>().RegisterGenericCallback(&GameClientConnection::HandleClientEvent, this);
   m_Protocol.GetReceiverChannel<2>().RegisterCallback(&GameClientConnection::HandleClientDataUpdate, this);
+#endif
+}
+
+void GameClientConnection::SyncStagingState(const GameStateStaging & state)
+{
+#if NET_MODE == NET_MODE_GGPO
+  m_Protocol.GetSenderChannel<1>().SendMessage(state);
+#endif
+}
+
+void GameClientConnection::SyncLoadingState(const GameStateLoading & state)
+{
+#if NET_MODE == NET_MODE_GGPO
+  m_Protocol.GetSenderChannel<1>().SendMessage(state);
+#endif
 }
 
 #if NET_MODE == NET_MODE_GGPO
-void GameClientConnection::SyncState(const std::shared_ptr<GameFullState> & sim)
+void GameClientConnection::SyncGameState(const GameGGPOServerGameState & state)
 {
-  m_Protocol.GetSenderChannel<3>().SyncState(sim);
+  m_Protocol.GetSenderChannel<1>().SendMessage(state);
 }
 #else
 void GameClientConnection::SyncState(const GameFullState & sim)
 {
   m_Protocol.GetSenderChannel<3>().SyncState(sim);
-}
-#endif
-
-void GameClientConnection::SendLoadLevel(const LoadLevelMessage & load_msg)
-{
-  m_Protocol.GetSenderChannel<0>().SendMessage(load_msg);
 }
 
 void GameClientConnection::SyncClientData(const ClientLocalData & client_data)
@@ -43,14 +56,20 @@ void GameClientConnection::SyncClientData(const ClientLocalData & client_data)
   m_Protocol.GetSenderChannel<4>().SyncState(client_data);
 }
 
-void GameClientConnection::SendGlobalEvent(std::size_t class_id, void * event_ptr)
+void GameClientConnection::SendGlobalEvent(std::size_t class_id, const void * event_ptr)
 {
   m_Protocol.GetSenderChannel<1>().SendMessage(class_id, event_ptr);
 }
 
-void GameClientConnection::SendEntityEvent(std::size_t class_id, void * event_ptr)
+void GameClientConnection::SendEntityEvent(std::size_t class_id, const void * event_ptr)
 {
   m_Protocol.GetSenderChannel<2>().SendMessage(class_id, event_ptr);
+}
+#endif
+
+void GameClientConnection::SendLoadLevel(const LoadLevelMessage & load_msg)
+{
+  m_Protocol.GetSenderChannel<0>().SendMessage(load_msg);
 }
 
 void GameClientConnection::ForceDisconnect()
@@ -104,6 +123,17 @@ void GameClientConnection::HandleJoinGame(const JoinGameMessage & request)
   }
 }
 
+void GameClientConnection::HandleReady(const ReadyMessage & request)
+{
+  if (m_GameInstance == nullptr)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  m_GameInstance->HandlePlayerReady(this, request);
+}
+
 void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & request)
 {
   if (m_GameInstance == nullptr)
@@ -114,6 +144,22 @@ void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & requ
 
   m_GameInstance->HandlePlayerLoaded(this, request);
 }
+
+
+#if NET_MODE == NET_MODE_GGPO
+
+void GameClientConnection::HandleClientDataUpdate(GameGGPOClientUpdate && update_data)
+{
+  if (m_GameInstance == nullptr)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  m_GameInstance->UpdatePlayer(this, update_data);
+}
+
+#else
 
 void GameClientConnection::HandleClientEvent(std::size_t class_id, void * event_ptr)
 {
@@ -136,3 +182,4 @@ void GameClientConnection::HandleClientDataUpdate(ClientAuthData && client_data)
 
   m_GameInstance->UpdatePlayer(this, client_data);
 }
+#endif

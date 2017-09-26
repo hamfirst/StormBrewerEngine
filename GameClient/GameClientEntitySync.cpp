@@ -19,6 +19,20 @@ GameClientEntitySync::~GameClientEntitySync()
   DestroyAll();
 }
 
+void GameClientEntitySync::ActivateEntities()
+{
+  for (auto ent : m_Entities)
+  {
+    auto entity = ent.second.Resolve();
+    if (entity)
+    {
+      entity->Activate();
+    }
+  }
+
+  m_ActivateEntities = true;
+}
+
 void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
 {
   auto & engine_state = m_GameContainer.GetEngineState();
@@ -36,7 +50,12 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
     {
       if (m_Entities.HasAt(last_index))
       {
-        m_Entities[last_index].Destroy();
+        auto entity = m_Entities[last_index].Resolve();
+        if (entity)
+        {
+          entity->ServerDestroy();
+          entity->Destroy();
+        }
       }
 
       last_index++;
@@ -45,18 +64,21 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
     last_index++;
 
     auto entity_asset = obj->GetEntityBinding();
+    auto entity = cur_handle.Resolve();
+
     if (entity_asset)
     {
-      auto entity = cur_handle.Resolve();
       if (entity)
       {
         auto asset_hash = crc64(entity_asset);
         if (asset_hash == entity->GetAssetNameHash())
         {
+          entity->ServerUpdate();
           return;
         }
 
-        cur_handle.Destroy();
+        entity->ServerDestroy();
+        entity->Destroy();
       }
 
       auto entity_resource = EntityResource::Load(entity_asset);
@@ -66,12 +88,17 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
         return;
       }
 
-      auto new_entity = engine_state.CreateEntity(entity_resource.GetResource(), obj);
+      auto new_entity = engine_state.CreateEntity(entity_resource.GetResource(), obj, m_ActivateEntities);
       m_Entities.InsertAt(index, new_entity->GetHandle());
+      new_entity->ServerUpdate();
     }
     else
     {
-      cur_handle.Destroy();
+      if (entity)
+      {
+        entity->ServerDestroy();
+        entity->Destroy();
+      }
     }
   };
 
@@ -81,7 +108,12 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
   {
     if (m_Entities.HasAt(last_index))
     {
-      m_Entities[last_index].Destroy();
+      auto entity = m_Entities[last_index].Resolve();
+      if (entity)
+      {
+        entity->ServerDestroy();
+        entity->Destroy();
+      }
     }
 
     last_index++;

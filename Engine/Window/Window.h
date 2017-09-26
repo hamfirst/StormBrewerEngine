@@ -24,6 +24,8 @@ public:
 
   void SetMousePos(int x, int y) const;
   void SetVsyncEnabled(bool enabled) const;
+  void SetFullscreen(bool fullscreen) const;
+  bool IsFullScreen() const;
 
   Vector2 GetSize() const;
   Box GetGeometry() const;
@@ -31,6 +33,7 @@ public:
   NullOptPtr<InputState> GetInputState() const;
   std::shared_ptr<TextInputContext> CreateTextInputContext(bool allow_first_input = false);
 
+  uint32_t GetWindowId() const;
 private:
 
   friend class WindowManager;

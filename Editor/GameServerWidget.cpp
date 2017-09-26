@@ -38,7 +38,7 @@ void GameServerWidget::tick()
   {
     m_GameServer->Update();
 
-    if (m_FrameClock.ShouldStartFrame())
+    if (m_FrameClock.ShouldSkipFrameUpdate() == false)
     {
       m_FrameClock.BeginFrame();
       m_GameServer->GetGameInstanceManager().Update();

@@ -6,9 +6,17 @@
 #include "StormExprValueProvider.h"
 
 StormExprValue::StormExprValue() :
-  m_Type(StormExprValueType::kNothing)
+  m_Type(StormExprValueType::kNothing),
+  m_Float(0)
 {
 
+}
+
+StormExprValue::StormExprValue(StormExprValueType type, float val) :
+  m_Type(type),
+  m_Float(val)
+{
+  
 }
 
 StormExprValue::StormExprValue(float val) :
@@ -155,40 +163,35 @@ void StormExprValue::Clear()
   m_Type = StormExprValueType::kNothing;
 }
 
-StormExprValueType StormExprValue::GetType()
+void StormExprValue::CopyQuick(const StormExprValue & value)
+{
+  m_Type = value.m_Type;
+  m_Float = value.m_Float;
+}
+
+StormExprValue StormExprValue::DuplicateQuick() const
+{
+  return StormExprValue(m_Type, m_Float);
+}
+
+StormExprValueType StormExprValue::GetType() const
 {
   return m_Type;
 }
 
-float StormExprValue::GetFloatVal()
+float StormExprValue::GetFloatVal() const
 {
   return m_Float;
 }
 
-const char * StormExprValue::GetStringVal()
+const char * StormExprValue::GetStringVal() const
 {
   return m_String;
 }
 
-std::size_t StormExprValue::GetStringLength()
+std::size_t StormExprValue::GetStringLength() const
 {
   return m_StrLen;
-}
-
-void StormExprValue::GetValueProvider(StormExprValueProvider & value_provider)
-{
-  switch (m_Type)
-  {
-  case StormExprValueType::kNothing:
-    value_provider = StormExprValueProvider{};
-    return;
-  case StormExprValueType::kFloat:
-    value_provider = StormExprValueProvider(&m_Float);
-    return;
-  case StormExprValueType::kString:
-    value_provider = StormExprValueProvider(&m_String);
-    return;
-  }
 }
 
 StormExprValue::operator float()

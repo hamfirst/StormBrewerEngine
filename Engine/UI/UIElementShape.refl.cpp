@@ -1,7 +1,6 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElementShape.refl.meta.h"
-#include "Engine/UI/UIElementExprBlock.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 
 #include "Engine/Rendering/RenderUtil.h"
@@ -14,6 +13,10 @@ REGISTER_UIELEMENT_DATA(UIElementShape, UIElementShapeInitData, UIElementShapeDa
 
 UIElementType UIElementShape::Type = UIElementType::kShape;
 
+static auto s_LocalInitBlock = StormExprCreateInitBlockForDataType<UIElementShapeData>();
+static auto s_AsParentInitBlock = StormExprCreateInitBlockForDataType<UIElementShapeData>("p.");
+static auto s_BindingList = StormExprGetBindingList<UIElementShapeData>();
+
 UIElementShape::UIElementShape(const UIElementShapeInitData & init_data, const UIElementShapeData & data) :
   m_InitData(init_data),
   m_Data(data)
@@ -21,12 +24,12 @@ UIElementShape::UIElementShape(const UIElementShapeInitData & init_data, const U
 
 }
 
-void UIElementShape::Update()
+void UIElementShape::Update(float dt)
 {
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
 
-  UIElement::Update();
+  UIElement::Update(dt);
   SetActiveArea(Box::FromPoints(Vector2(m_Data.m_StartX, m_Data.m_StartY), Vector2(m_Data.m_EndX, m_Data.m_EndY)));
   SetOffset(Vector2(m_Data.m_StartX, m_Data.m_StartY));
 }
@@ -47,6 +50,11 @@ void UIElementShape::Render(RenderState & render_state, RenderUtil & render_util
 
 void UIElementShape::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
+  if (m_Data.m_Enabled == 0)
+  {
+    return;
+  }
+
   GeometryVertexBufferBuilder builder;
   auto c = Color(m_Data.m_ColorR, m_Data.m_ColorG, m_Data.m_ColorB, m_Data.m_ColorA);
 
@@ -66,7 +74,7 @@ void UIElementShape::RenderDefault(RenderState & render_state, RenderUtil & rend
     auto size_x = m_Data.m_EndX - m_Data.m_StartX;
     auto size_y = m_Data.m_EndY - m_Data.m_StartY;
 
-    builder.Ellipse(Vector2f(center_x, center_y), size_x, size_y, m_Data.m_EdgeWidth, c, 20);
+    builder.Ellipse(Vector2f(center_x, center_y), size_x / 2.0f, size_y / 2.0f, m_Data.m_EdgeWidth, c, 50);
   }
   else if (m_Data.m_Shape == kUIElementShapeFilledCircle)
   {
@@ -76,12 +84,13 @@ void UIElementShape::RenderDefault(RenderState & render_state, RenderUtil & rend
     auto size_x = m_Data.m_EndX - m_Data.m_StartX;
     auto size_y = m_Data.m_EndY - m_Data.m_StartY;
 
-    builder.FilledEllipse(Vector2f(center_x, center_y), size_x, size_y, c, 20);
+    builder.FilledEllipse(Vector2f(center_x, center_y), size_x / 2.0f, size_y / 2.0f, c, 50);
   }
 
   auto & shader = g_ShaderManager.GetDefaultShader();
   shader.Bind();
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
   render_util.GetDefaultTexture().BindTexture(0);
 
@@ -98,24 +107,39 @@ UIElementShapeData & UIElementShape::GetData()
   return m_Data;
 }
 
+NotNullPtr<UIElementDataBase> UIElementShape::GetBaseData()
+{
+  return &m_Data;
+}
+
+NullOptPtr<UIElementDataFrameCenter> UIElementShape::GetFrameCenterData()
+{
+  return nullptr;
+}
+
+NullOptPtr<UIElementDataStartEnd> UIElementShape::GetStartEndData()
+{
+  return &m_Data;
+}
+
 void UIElementShape::SetCustomRenderCallback(Delegate<void, UIElementShape &, RenderState &, const Vector2 &> && render_callback)
 {
   m_RenderDelegate = std::move(render_callback);
 }
 
-StormExprValueInitBlock UIElementShape::GetLocalBlock()
+StormExprValueInitBlock & UIElementShape::GetLocalInitBlock()
 {
-  return UICreateInitBlockForDataType(m_Data);
+  return s_LocalInitBlock;
 }
 
-StormExprValueInitBlock UIElementShape::GetAsParentBlock()
+StormExprValueInitBlock & UIElementShape::GetAsParentInitBlock()
 {
-  return UICreateInitBlockForDataType(m_Data, "p.");
+  return s_AsParentInitBlock;
 }
 
-UIElementExprBindingList UIElementShape::CreateBindingList()
+StormExprBindingList & UIElementShape::GetBindingList()
 {
-  return UICreateBindingList(m_Data);
+  return s_BindingList;
 }
 
 

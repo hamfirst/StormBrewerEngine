@@ -13,6 +13,8 @@ public:
 
   Window CreateNewWindow(czstr title, int width, int height, bool fullscreen = false);
 
+  void HandleFullscreenChanged(uint32_t window_id, bool enabled);
+
 private:
 
   Window CreateFakeWindow(FakeWindow * window, const Box & window_geo);
@@ -43,6 +45,8 @@ private:
   void Swap(uint32_t window_id);
   void SetMousePos(uint32_t window_id, int x, int y);
   void SetVsyncEnabled(uint32_t window_id, bool enabled);
+  void SetFullscreen(uint32_t window_id, bool enabled);
+  bool IsFullScreen(uint32_t window_id);
   void CloseWindow(uint32_t window_id);
 
   Vector2 GetWindowSize(uint32_t window_id);

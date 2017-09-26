@@ -15,6 +15,7 @@ enum EasingType
   kQuartic,
   kQuintic,
   kBounce,
+  kElastic,
 };
 
 enum EasingCurve

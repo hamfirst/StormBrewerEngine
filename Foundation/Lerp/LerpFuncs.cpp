@@ -70,6 +70,61 @@ struct Bounce
   }
 };
 
+struct Elastic
+{
+  static float EaseIn(float s)
+  {
+    if (s <= 0.0f)
+    {
+      return 0.0f;
+    }
+
+    if (s >= 1.0f)
+    {
+      return 1.0f;
+    }
+
+    return powf(2, 10.0f * (s - 1.0f)) * sinf((s - 1.1f) * 5.0f * kPi);
+  }
+
+  static float EaseOut(float s)
+  {
+    if (s <= 0.0f)
+    {
+      return 0.0f;
+    }
+
+    if (s >= 1.0f)
+    {
+      return 1.0f;
+    }
+
+    return powf(2, -10.0f * s) * sinf((s - 0.1f) * 5.0f * kPi) + 1;
+  }
+
+  static float EaseInOut(float s)
+  {
+    if (s <= 0.0f)
+    {
+      return 0.0f;
+    }
+
+    if (s >= 1.0f)
+    {
+      return 1.0f;
+    }
+
+    s *= 2;
+
+    if (s < 1) 
+    {
+      return -0.5f * powf(2, 10.0f * (s - 1.0f)) * sinf((s - 1.1f) * 5.0f * kPi);
+    }
+
+    return 0.5f * powf(2, -10.0f * (s - 1.0f)) * sinf((s - 1.1f) * 5.0f * kPi) + 1;
+  }
+};
+
 float Easing::Ease(float t, EasingType type, EasingCurve curve)
 {
   switch (curve)
@@ -96,6 +151,7 @@ float Easing::EaseIn(float t, EasingType type)
   case EasingType::kQuartic: return Power::EaseIn(t, 4);
   case EasingType::kQuintic: return Power::EaseIn(t, 5);
   case EasingType::kBounce: return Bounce::EaseIn(t);
+  case EasingType::kElastic: return Elastic::EaseIn(t);
   default: return Power::EaseIn(t, 2);
   }
 }
@@ -112,6 +168,7 @@ float Easing::EaseOut(float t, EasingType type)
   case EasingType::kQuartic: return Power::EaseOut(t, 4);
   case EasingType::kQuintic: return Power::EaseOut(t, 5);
   case EasingType::kBounce: return Bounce::EaseOut(t);
+  case EasingType::kElastic: return Elastic::EaseOut(t);
   default: return Power::EaseOut(t, 2);
   }
 }
@@ -133,6 +190,7 @@ float Easing::EaseInOut(float t, EasingType type)
   case EasingType::kQuartic: return Power::EaseInOut(t, 4);
   case EasingType::kQuintic: return Power::EaseInOut(t, 5);
   case EasingType::kBounce: return Bounce::EaseInOut(t);
+  case EasingType::kElastic: return Elastic::EaseInOut(t);
   default: return Power::EaseInOut(t, 2);
   }
 }

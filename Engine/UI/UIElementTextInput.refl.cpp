@@ -1,7 +1,6 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIElementTextInput.refl.meta.h"
-#include "Engine/UI/UIElementExprBlock.h"
 
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Text/TextManager.h"
@@ -13,6 +12,10 @@ REGISTER_UIELEMENT_DATA(UIElementTextInput, UIElementTextInputInitData, UIElemen
 
 UIElementType UIElementTextInput::Type = UIElementType::kTextInput;
 
+static auto s_LocalInitBlock = StormExprCreateInitBlockForDataType<UIElementTextInputData>();
+static auto s_AsParentInitBlock = StormExprCreateInitBlockForDataType<UIElementTextInputData>("p.");
+static auto s_BindingList = StormExprGetBindingList<UIElementTextInputData>();
+
 UIElementTextInput::UIElementTextInput(const UIElementTextInputInitData & init_data, const UIElementTextInputData & data, std::shared_ptr<TextInputContext> && input_context) :
   m_InitData(init_data),
   m_Data(data),
@@ -21,7 +24,15 @@ UIElementTextInput::UIElementTextInput(const UIElementTextInputInitData & init_d
 
 }
 
-void UIElementTextInput::Update()
+UIElementTextInput::~UIElementTextInput()
+{
+  if (m_TextInput)
+  {
+    m_TextInput->Unbind();
+  }
+}
+
+void UIElementTextInput::Update(float dt)
 {
   auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
   auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
@@ -37,8 +48,7 @@ void UIElementTextInput::Update()
     SetActiveArea(size);
   }
 
-  UIElement::Update();
-
+  UIElement::Update(dt);
 
   size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
   pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
@@ -59,6 +69,11 @@ void UIElementTextInput::Update()
 
 void UIElementTextInput::Render(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
+  if (m_Data.m_Enabled == 0)
+  {
+    return;
+  }
+
   if (m_RenderDelegate)
   {
     m_RenderDelegate(*this, render_state, offset);
@@ -74,7 +89,7 @@ void UIElementTextInput::Render(RenderState & render_state, RenderUtil & render_
 void UIElementTextInput::RenderDefault(RenderState & render_state, RenderUtil & render_util, const Vector2 & offset)
 {
   g_TextManager.SetTextMode((TextRenderMode)(int)m_Data.m_TextMode);
-  g_TextManager.SetPrimaryColor(Color(m_Data.m_PrimaryColorR, m_Data.m_PrimaryColorB, m_Data.m_PrimaryColorG, m_Data.m_PrimaryColorA));
+  g_TextManager.SetPrimaryColor(Color(m_Data.m_ColorR, m_Data.m_ColorB, m_Data.m_ColorG, m_Data.m_ColorA));
   g_TextManager.SetShadowColor(Color(m_Data.m_SecondaryColorR, m_Data.m_SecondaryColorB, m_Data.m_SecondaryColorG, m_Data.m_SecondaryColorA));
   g_TextManager.SetSelectionColor(Color(m_Data.m_SelectionColorR, m_Data.m_SelectionColorB, m_Data.m_SelectionColorG, m_Data.m_SelectionColorA));
   g_TextManager.SetSelectionBkgColor(Color(m_Data.m_SelectionBkgColorR, m_Data.m_SelectionBkgColorG, m_Data.m_SelectionBkgColorB, m_Data.m_SelectionBkgColorA));
@@ -113,6 +128,21 @@ UIElementTextInputData & UIElementTextInput::GetData()
   return m_Data;
 }
 
+NotNullPtr<UIElementDataBase> UIElementTextInput::GetBaseData()
+{
+  return &m_Data;
+}
+
+NullOptPtr<UIElementDataFrameCenter> UIElementTextInput::GetFrameCenterData()
+{
+  return &m_Data;
+}
+
+NullOptPtr<UIElementDataStartEnd> UIElementTextInput::GetStartEndData()
+{
+  return nullptr;
+}
+
 TextInputContext & UIElementTextInput::GetInputContext()
 {
   return *m_TextInput.get();
@@ -123,19 +153,19 @@ void UIElementTextInput::SetCustomRenderCallback(Delegate<void, UIElementTextInp
   m_RenderDelegate = std::move(render_callback);
 }
 
-StormExprValueInitBlock UIElementTextInput::GetLocalBlock()
+StormExprValueInitBlock & UIElementTextInput::GetLocalInitBlock()
 {
-  return UICreateInitBlockForDataType(m_Data);
+  return s_LocalInitBlock;
 }
 
-StormExprValueInitBlock UIElementTextInput::GetAsParentBlock()
+StormExprValueInitBlock & UIElementTextInput::GetAsParentInitBlock()
 {
-  return UICreateInitBlockForDataType(m_Data, "p.");
+  return s_AsParentInitBlock;
 }
 
-UIElementExprBindingList UIElementTextInput::CreateBindingList()
+StormExprBindingList & UIElementTextInput::GetBindingList()
 {
-  return UICreateBindingList(m_Data);
+  return s_BindingList;
 }
 
 

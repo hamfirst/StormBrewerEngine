@@ -1,6 +1,7 @@
 
 #include "GameClient/GameModeNameSelect.h"
 #include "GameClient/GameModeMainMenu.h"
+#include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameContainer.h"
 
 #include "Game/GameValidation.h"
@@ -41,15 +42,33 @@ void GameModeNameSelect::OnAssetsLoaded()
   caption_data.m_Text = "Enter Your Name";
   caption_data.m_TextMode = 2.0f;
 
+
+  m_Instructions = m_UIManager.AllocateText("instructions");
+  auto & instructions_data = m_Instructions->GetData();
+  instructions_data.m_Centered = 1.0f;
+  instructions_data.m_FontId = -1.0f;
+  instructions_data.m_PositionX = render_state.GetRenderWidth() / 2.0f;
+  instructions_data.m_PositionY = render_state.GetRenderHeight() / 2.0f - 60;
+  instructions_data.m_Text = "Must be 3-16 characters\nOnly letters and numbers allowed";
+  instructions_data.m_TextMode = 2.0f;
+
   m_Input.Emplace(m_UIManager, "input", nullptr, 
     Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2, Vector2(200, 25)), "", &container.GetClientGlobalResources().UISoundEffects);
-  m_Input->MakeCurrent();
+
   m_Input->GetInputContext().SetEnterDelegate([this](const char *) { Submit(); });
   m_Input->GetInputContext().SetValidator([](const char * val) { return ValidUserName(val, true); });
 
   m_Okay.Emplace(m_UIManager, "okay", nullptr,
     Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2 + Vector2(70, -30), Vector2(60, 25)), "Submit", &container.GetClientGlobalResources().UISoundEffects);
   m_Okay->SetOnClickCallback([this]() { Submit(); });
+
+  m_Back.Emplace(m_UIManager, "back", nullptr,
+    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 35, 30), Vector2(60, 25)), "Back", &container.GetClientGlobalResources().UISoundEffects, true);
+  m_Back->SetOnClickCallback([this]() { Back(); });
+
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
@@ -69,17 +88,14 @@ void GameModeNameSelect::OnAssetsLoaded()
 void GameModeNameSelect::Update()
 {
   m_Sequencer.Update();
+  
+  m_Input->MakeCurrent();
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
 
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);
-
-  if (m_Finished)
-  {
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
-  }
 }
 
 void GameModeNameSelect::Render()
@@ -103,13 +119,25 @@ void GameModeNameSelect::Submit()
     return;
   }
 
+  auto & container = GetContainer();
+  auto & input_text = m_Input->GetInputContext().GetCurrentInput();
+  auto & net_init_settings = container.GetNetworkInitSettings();
+
+  net_init_settings.m_UserName = input_text.data();
+  container.StartNetworkClient();
+  container.SwitchMode(GameModeDef<GameModeConnecting>{});
+}
+
+void GameModeNameSelect::Back()
+{
   m_Sequencer.Push(0.5f, [this](float val) {
     m_Fader->SetActive();
     auto & fader_data = m_Fader->GetData();
     fader_data.m_ColorA = val;
   });
 
-  m_Sequencer.Push(0.0f, [this](float val) {  
-    m_Finished = true;
+  m_Sequencer.Push(0.0f, [this](float val) {
+    auto & container = GetContainer();
+    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
   });
 }

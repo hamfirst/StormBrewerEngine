@@ -15,7 +15,7 @@ GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manag
   m_StageManager(stage_manager),
   m_SharedGlobalResources(shared_global_resource),
 #ifdef NET_USE_WEBRTC
-  m_Backend(this, NetServerBackendWebrtcSettings{ (uint16_t)port, (uint16_t)max_clients, "localhost.key", "localhost.crt", NetGetProtocolPipeModes(ClientProtocolDef{}), NetGetProtocolPipeModes(ServerProtocolDef{}) }),
+  m_Backend(this, NetServerBackendWebrtcSettings{ (uint16_t)port, (uint16_t)max_clients, "localhost.key", "localhost.crt", NetGetProtocolPipeModes(ServerProtocolDef{}), NetGetProtocolPipeModes(ClientProtocolDef{}) }),
 #else
   m_Backend(this, NetServerSettingsEnet(port, 0, max_clients)),
 #endif

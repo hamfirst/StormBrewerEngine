@@ -24,6 +24,8 @@ public:
   void ChangeSelection(const UIEditorNodeSelection & selection);
   void ClearSelection();
 
+  void SetIgnoreChanges(bool ignore) { m_IgnoreChanges = ignore; }
+
 protected:
   void RefreshElements();
   void RepositionChildren();
@@ -43,5 +45,7 @@ private:
 
   Optional<UIEditorNodeSelection> m_Selection;
   std::vector<std::unique_ptr<UIOutputEquationEditor>> m_Editors;
+
+  bool m_IgnoreChanges;
 };
 

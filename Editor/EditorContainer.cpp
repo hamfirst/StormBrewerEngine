@@ -152,6 +152,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   Component comp;
 
+  InitServerTypes();
   EngineInit(false);
   EngineRenderInit();
 
@@ -584,13 +585,13 @@ void EditorContainer::redo()
 
 void EditorContainer::testBuildOnline()
 {
-  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, false));
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, 1));
   m_HostWidgets.back()->show();
 }
 
 void EditorContainer::testBuildOnlineWithoutOneClient()
 {
-  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, true));
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, 3));
   m_HostWidgets.back()->show();
 }
 

@@ -27,8 +27,10 @@ endif()
 
 set(GENERIC_SRC_Editor 
             ./AudioViewer.cpp
+            ./ConfigEditor.cpp
             ./ConnectingDialog.cpp
             ./DocumentEditorBase.cpp
+            ./DocumentEditorConfig.cpp
             ./DocumentEditorWidgetBase.cpp
             ./DocumentListValueWatcher.cpp
             ./DocumentServerThread.cpp
@@ -40,10 +42,14 @@ set(GENERIC_SRC_Editor
             ./FontViewer.cpp
             ./FrameEditorBase.cpp
             ./FrameEditorContainer.cpp
+            ./FrameEditorLowerEdge.cpp
             ./FrameEditorMultiBox.cpp
             ./FrameEditorSingleBox.cpp
             ./FrameEditorSingleLine.cpp
             ./FrameEditorUtil.cpp
+            ./GameClientWidget.cpp
+            ./GameHostWidget.cpp
+            ./GameServerWidget.cpp
             ./GenericCheckbox.cpp
             ./GenericFrame.cpp
             ./GenericInput.cpp
@@ -51,6 +57,8 @@ set(GENERIC_SRC_Editor
             ./GenericListFrame.cpp
             ./main.cpp
             ./MapEditor.cpp
+            ./MapEditorAnchor.cpp
+            ./MapEditorEffectLayer.cpp
             ./MapEditorEntityLayerManager.cpp
             ./MapEditorEntityManager.cpp
             ./MapEditorEntitySelector.cpp
@@ -63,6 +71,9 @@ set(GENERIC_SRC_Editor
             ./MapEditorTileLayerManager.cpp
             ./MapEditorTileManager.cpp
             ./MapEditorTileSelector.cpp
+            ./MapEditorToolAnchorCreate.cpp
+            ./MapEditorToolAnchorEditor.cpp
+            ./MapEditorToolAnchorMultiEditor.cpp
             ./MapEditorToolBase.cpp
             ./MapEditorToolEntityLayerDraw.cpp
             ./MapEditorToolEntityLayerSelect.cpp
@@ -70,8 +81,10 @@ set(GENERIC_SRC_Editor
             ./MapEditorToolManualTileLayerSelect.cpp
             ./MapEditorToolPathCreate.cpp
             ./MapEditorToolPathEditor.cpp
+            ./MapEditorToolPathMultiEditor.cpp
             ./MapEditorToolVolumeCreate.cpp
             ./MapEditorToolVolumeEditor.cpp
+            ./MapEditorToolVolumeMultiEditor.cpp
             ./MapEditorViewer.cpp
             ./MapEditorVolume.cpp
             ./MapEditorVolumeManager.cpp
@@ -86,6 +99,7 @@ set(GENERIC_SRC_Editor
             ./PropertyEditorStruct.cpp
             ./PropertyEditorWidget.cpp
             ./ScrollingPanel.cpp
+            ./SelectFromListDialog.cpp
             ./SimpleLabelListElement.cpp
             ./SpriteBaseAnimationEditor.cpp
             ./SpriteBaseAnimationFrameListEditorDialog.cpp
@@ -103,6 +117,20 @@ set(GENERIC_SRC_Editor
             ./TextureViewer.cpp
             ./TextureViewerWidget.cpp
             ./TileSheetEditor.cpp
+            ./UIEditor.cpp
+            ./UIEditorEquationList.cpp
+            ./UIEditorNodeList.cpp
+            ./UIEditorOutputEquationList.cpp
+            ./UIEditorPropertyContainer.cpp
+            ./UIEditorViewer.cpp
+            ./UIEquationEditor.cpp
+            ./UIOutputEquationEditor.cpp
+            ./VisualEffectEditor.cpp
+            ./VisualEffectEditorEquationList.cpp
+            ./VisualEffectEditorNodeList.cpp
+            ./VisualEffectEditorPropertyContainer.cpp
+            ./VisualEffectEditorViewer.cpp
+            ./VisualEffectEquationEditor.cpp
             ./GeneratedFiles/qrc_EditorContainer.cpp
             )
 add_library(Editor ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor} )

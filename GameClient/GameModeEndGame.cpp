@@ -1,14 +1,30 @@
 
 #include "GameClient/GameModeEndGame.h"
+#include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeConnecting.h"
+#include "GameClient/GameModeSinglePlayerBots.h"
+#include "GameClient/GameModeOfflineStaging.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
+#include "Engine/Entity/EntitySystem.h"
+#include "Engine/Component/ComponentSystem.h"
+#include "Engine/Component/ComponentUpdateBucketList.h"
+#include "Engine/Map/MapSystem.h"
+#include "Engine/VisualEffect/VisualEffectManager.h"
+#include "Engine/DrawList/DrawList.h"
+#include "Engine/EngineState.h"
+#include "Engine/Audio/MusicManager.h"
 
-GameModeEndGame::GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container) :
+GameModeEndGame::GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container,
+                                                       std::unique_ptr<GameClientInstanceData> && instance_data, 
+                                                       std::unique_ptr<GameClientSystems> && client_systems, EndGamePlayAgainMode mode) :
   GameMode(game),
   m_InstanceContainer(std::move(instance_container)),
+  m_InstanceData(std::move(instance_data)),
+  m_ClientSystems(std::move(client_systems)),
+  m_Mode(mode),
   m_UIManager(game.GetWindow())
 {
 
@@ -21,13 +37,22 @@ GameModeEndGame::~GameModeEndGame()
 
 void GameModeEndGame::Initialize()
 {
-  auto instance_data = m_InstanceContainer->GetInstanceData(m_DefaultSender);
+  m_Victory = false;
 
-  auto & local_data = instance_data.GetLocalData();
+  auto instance_data = m_InstanceContainer->GetClientInstanceData(m_DefaultSender);
   auto & game_state = instance_data.GetGameState();
-  auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
 
-  m_Victory = (game_state.m_WiningTeam == local_player.m_Team);
+  auto num_local_players = instance_data.GetLocalDataCount();
+  for (std::size_t client_index = 0; client_index < num_local_players; ++client_index)
+  {
+    auto & local_data = instance_data.GetLocalData(client_index);
+    auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
+
+    if (game_state.m_WiningTeam && game_state.m_WiningTeam.Value() == local_player.m_Team)
+    {
+      m_Victory = true;
+    }
+  }
 }
 
 void GameModeEndGame::OnAssetsLoaded()
@@ -35,10 +60,21 @@ void GameModeEndGame::OnAssetsLoaded()
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(255, 255, 255, 255));
 
-  m_PlayAgain.Emplace(m_UIManager, "playonline", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2, Vector2(150, 50)), "Play Again", &container.GetClientGlobalResources().UISoundEffects);
-  m_PlayAgain->SetOnClickCallback([this] { PlayOnline(); });
+  m_Fader = m_UIManager.AllocateShape("fader", nullptr);
+  m_Fader->SetActive();
+  auto & fader_data = m_Fader->GetData();
+  fader_data.SetColor(Color(255, 255, 255, 0));
+  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.m_Shape = kUIElementShapeFilledRectangle;
+
+  m_PlayAgain.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2, Vector2(150, 50)), 
+    "Play Again", &container.GetClientGlobalResources().UISoundEffects);
+  m_PlayAgain->SetOnClickCallback([this] { PlayAgain(); });
+
+  m_Quit.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2 + Vector2(0, -50), Vector2(150, 25)),
+    "Quit To Main Menu", &container.GetClientGlobalResources().UISoundEffects);
+  m_Quit->SetOnClickCallback([this] { Quit(); });
 
   m_Result = m_UIManager.AllocateText("result");
   auto & result_data = m_Result->GetData();
@@ -49,19 +85,25 @@ void GameModeEndGame::OnAssetsLoaded()
   result_data.m_Text = m_Victory ? "Victory" : "Defeat";
   result_data.m_TextMode = 2.0f;
 
-  m_Fader = m_UIManager.AllocateShape("fader", nullptr);
-  m_Fader->SetActive();
-  auto & fader_data = m_Fader->GetData();
-  fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
-  fader_data.m_Shape = kUIElementShapeFilledRectangle;
+  g_MusicManager.FadeOut(0.1f);
+  if (m_Victory)
+  {
+    g_MusicManager.PlayClip(container.GetClientGlobalResources().VictoryMusic, 0.5f, true);
+  }
+  else
+  {
+    g_MusicManager.PlayClip(container.GetClientGlobalResources().DefeatMusic, 0.5f, true);
+  }
 
+  m_Sequencer.Push(0.5f, [this](float val) { });
   m_Sequencer.Push(0.5f, [this](float val) {
     auto & fader_data = m_Fader->GetData();
-    fader_data.m_ColorA = 1.0f - val;
+    fader_data.m_ColorA = val;
   });
 
   m_Sequencer.Push(0.0f, [this](float val) { m_Fader->SetInactive(); });
+
+  m_FrameClock.Start();
 }
 
 void GameModeEndGame::Update()
@@ -74,6 +116,53 @@ void GameModeEndGame::Update()
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);
 
+  auto & engine_state = container.GetEngineState();
+  auto comp_system = engine_state.GetComponentSystem();
+  auto entity_system = engine_state.GetEntitySystem();
+  auto visual_effects = engine_state.GetVisualEffectManager();
+  auto map_system = engine_state.GetMapSystem();
+
+  if (m_FrameClock.ShouldSkipFrameUpdate() == false && m_Fader->GetData().m_ColorA != 1.0f)
+  {
+    m_FrameClock.BeginFrame();
+
+    if (m_Sequencer.IsComplete() == false)
+    {
+      entity_system->BeginFrame();
+      m_InstanceContainer->Update();
+
+      map_system->UpdateAllMaps(container);
+
+      ComponentUpdateBucketList update_list;
+      comp_system->CreateUpdateBucketList(update_list);
+
+      for (int index = 0, end = update_list.GetNumBuckets(); index < end; ++index)
+      {
+        update_list.CallFirst(index);
+        entity_system->FinalizeEvents();
+
+        update_list.CallMiddle(index);
+        entity_system->FinalizeEvents();
+
+        update_list.CallLast(index);
+        entity_system->FinalizeEvents();
+      }
+    }
+  }
+
+  visual_effects->Update();
+
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
+  ui_manager.Update();
+  input_manager.Update();
+
+  if (ui_manager.WantsToQuit())
+  {
+    auto & container = GetContainer();
+    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  }
 }
 
 void GameModeEndGame::Render()
@@ -81,20 +170,60 @@ void GameModeEndGame::Render()
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+  auto & camera = container.GetClientSystems()->GetCamera();
 
-  render_util.SetClearColor(Color(255, 255, 255, 255));
+  render_state.SetRenderSize(camera.GetGameResolution());
+
+  render_util.SetClearColor(kDefaultClearColor);
   render_util.Clear();
 
-  render_state.EnableBlendMode();
+  auto & engine_state = container.GetEngineState();
+  auto entity_system = engine_state.GetEntitySystem();
+  auto map_system = engine_state.GetMapSystem();
+
+  auto screen_resolution = container.GetWindow().GetSize();
+
+  camera.SetScreenResolution(screen_resolution);
+  camera.Update();
+
+  auto viewport_bounds = Box::FromFrameCenterAndSize(camera.GetPosition(), camera.GetGameResolution());
+
+  camera.Draw(container, &engine_state, render_state, render_util);
+
+  input_manager.Render();
+  ui_manager.Render();
 
   m_UIManager.Render(render_state, render_util);
 }
 
-void GameModeEndGame::PlayOnline()
+void GameModeEndGame::PlayAgain()
 {
   m_Fader->SetActive();
 
   auto & container = GetContainer();
-  container.StartNetworkClient();
-  container.SwitchMode(GameModeDef<GameModeConnecting>{});
+
+  switch (m_Mode)
+  {
+  case EndGamePlayAgainMode::kOnlineGameplay:
+    container.StartNetworkClient();
+    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    g_MusicManager.CutTo(GetContainer().GetClientGlobalResources().MainMenuMusic, 0.5f);
+    break;
+  case EndGamePlayAgainMode::kOfflineMultiplayer:
+    container.SwitchMode(GameModeDef<GameModeOfflineStaging>{});
+    break;
+  case EndGamePlayAgainMode::kOfflineSingleplayer:
+    container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, false);
+    break;
+  }
+}
+
+void GameModeEndGame::Quit()
+{
+  m_Fader->SetActive();
+
+  auto & container = GetContainer();
+  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
 }

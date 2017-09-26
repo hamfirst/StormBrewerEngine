@@ -28,3 +28,9 @@ uint64_t GetRandomNumberRange64(uint64_t low, uint64_t high)
   std::uniform_int_distribution<uint64_t> dist(low, high);
   return dist(s_RandomEngine64);
 }
+
+float GetRandomUnitFloat()
+{
+  uint32_t val = GetRandomNumber();
+  return (float)val / (float)UINT_MAX;
+}

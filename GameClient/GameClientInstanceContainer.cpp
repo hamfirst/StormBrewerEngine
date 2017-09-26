@@ -4,14 +4,19 @@
 
 int s_BogusSendTimer = 0;
 
-GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_container) :
+GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_container, int num_local_clients, bool authority,
+                                                         NullOptPtr<GameEventReconciler> reconciler, NullOptPtr<int> reconcile_frame) :
   m_GameContainer(game_container),
   m_ClientController(game_container),
   m_LevelLoader(game_container),
   m_EntitySync(game_container),
-  m_Loaded(false)
+  m_ServerEventResponder(&m_ClientController, reconciler, reconcile_frame),
+  m_Loaded(false),
+  m_NumLocalClients(num_local_clients),
+  m_Authority(authority)
 {
-
+  m_ClientData.resize(num_local_clients);
+  m_ClientAuthData.resize(num_local_clients);
 }
 
 GameClientInstanceContainer::~GameClientInstanceContainer()
@@ -49,33 +54,34 @@ bool GameClientInstanceContainer::IsLoaded()
 
 void GameClientInstanceContainer::Update()
 {
-  auto logic_container = GetLogicContainer();
+  auto logic_container = GetLogicContainer(m_Authority);
 
   GetGameController().Update(logic_container);
-  GetEntitySync().Sync(GetSim().m_ServerObjectManager);
+  GetEntitySync().Sync(GetState().m_ServerObjectManager);
 }
 
-GameClientInstanceData GameClientInstanceContainer::GetInstanceData(GameClientEventSender & event_sender)
+GameClientInstanceData GameClientInstanceContainer::GetClientInstanceData(GameClientEventSender & event_sender)
 {
   return GameClientInstanceData(
     m_GameContainer, 
     m_GameController, 
     m_ClientController, 
     m_Sim.Value(), 
-    m_ClientData, 
+    m_ClientData.data(), m_NumLocalClients,
     *m_Stage.get(), 
     m_SharedResources.Value(), 
     m_ClientResources.Value(), 
-    event_sender);
+    event_sender,
+    m_ServerEventResponder);
 }
 
 GameLogicContainer GameClientInstanceContainer::GetLogicContainer(bool authority, int & send_timer)
 {
   return GameLogicContainer(
     GetGameController(),
-    GetSim().m_GlobalData,
-    GetSim().m_ServerObjectManager,
-    GetClientController(),
+    GetState().m_InstanceData,
+    GetState().m_ServerObjectManager,
+    m_ServerEventResponder,
     GetClientController(),
     m_GameContainer.GetSharedGlobalResources(),
     GetSharedResources(),
@@ -108,24 +114,29 @@ GameInitSettings & GameClientInstanceContainer::GetInitSettings()
   return m_InitSettings;
 }
 
-ClientLocalData & GameClientInstanceContainer::GetClientData()
+ClientLocalData & GameClientInstanceContainer::GetClientLocalData(std::size_t client_index)
 {
-  return m_ClientData;
+  return m_ClientData[client_index];
 }
 
-ClientAuthData & GameClientInstanceContainer::GetClientAuthData()
+ClientAuthData & GameClientInstanceContainer::GetClientAuthData(std::size_t client_index)
 {
-  return m_ClientAuthData;
+  return m_ClientAuthData[client_index];
 }
 
-GameFullState & GameClientInstanceContainer::GetSim()
+GameFullState & GameClientInstanceContainer::GetState()
 {
   return m_Sim.Value();
 }
 
-GameFullState & GameClientInstanceContainer::GetDefaultSim()
+GameFullState & GameClientInstanceContainer::GetDefaultState()
 {
   return m_DefaultSim.Value();
+}
+
+GameInstanceData & GameClientInstanceContainer::GetInstanceData()
+{
+  return m_Sim.Value().m_InstanceData;
 }
 
 GameSharedInstanceResources & GameClientInstanceContainer::GetSharedResources()

@@ -34,12 +34,12 @@ public:
       [](EventDelegateBuffer & handler, const void * event, NullOptPtr<Source> source)
       { 
         auto del = handler.Get<Delegate<void, const EventType &, NullOptPtr<Source>>>();
-        del->Call(*static_cast<const T *>(event), source);
+        del->Call(*static_cast<const EventType *>(event), source);
       },
       false
     });
 
-    return m_EventHanders.back().m_HandlerKey;
+    return m_EventHandlers.back().m_HandlerKey;
   }
 
   void RemoveEvent(uint32_t event_handler_key)

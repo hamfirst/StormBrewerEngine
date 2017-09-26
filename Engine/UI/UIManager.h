@@ -13,20 +13,29 @@
 #include "Engine/UI/UIElementFullTexture.refl.h"
 #include "Engine/UI/UIElementTextInput.refl.h"
 
+#include "Foundation/Time/StopWatch.h"
+
 #include "StormExpr/StormExprFunctionList.h"
 
 class UIElement;
 class InputState;
 class Window;
 
+template <typename Type>
+class SkipField;
+
 class UIManager
 {
 public:
 
   UIManager(Window & container_window);
+  ~UIManager();
 
   void Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset = Vector2(0, 0));
   void Render(RenderState & render_state, RenderUtil & render_util);
+
+  void Pause();
+  void Unpause();
 
   UIElementPtr<UIElementContainer> AllocateContainer(czstr name, NullOptPtr<UIElement> parent = nullptr,
     const UIElementContainerInitData & init_data = {}, const UIElementContainerData & data = {});
@@ -52,7 +61,7 @@ public:
   UIElementPtr<UIElementTextInput> AllocateTextInput(czstr name, NullOptPtr<UIElement> parent = nullptr,
     const UIElementTextInputInitData & init_data = {}, const UIElementTextInputData & data = {});
 
-  UIElementHandle AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent = nullptr);
+  UIElementHandle AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent = nullptr, bool use_default_inputs = false);
 
   static uint32_t GetElementTypeNameHashForEnum(UIElementType type);
   static std::vector<std::string> GetVariablesForElementType(uint32_t element_type_hash);
@@ -75,9 +84,9 @@ protected:
   template <typename ElementType, typename InitData, typename BlockData, typename Param>
   NotNullPtr<ElementType> AllocateUIElement(czstr name, SkipField<ElementType> & alloc, NullOptPtr<UIElement> parent, const InitData & init_data, const BlockData & data, Param && param);
 
-  UIElementHandle AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementDataBase * init_data);
+  UIElementHandle AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementInitDataBase * init_data);
 
-  NotNullPtr<UIElement> ResolveHandle(UIElementType type, Handle & handle);
+  NotNullPtr<UIElement> ResolveHandle(UIElementType type, const Handle & handle);
   void UnlinkElement(NotNullPtr<UIElement> element);
   void ReleaseElement(NotNullPtr<UIElement> element);
 
@@ -95,5 +104,8 @@ private:
 
   UIGlobalBlock m_GlobalBlock;
   StormExprFunctionList m_FuncList;
+
+  StopWatch m_UpdateTimer;
+  bool m_Paused;
 };
 

@@ -32,7 +32,7 @@ void MapEditorToolVolumeCreate::DrawPreview(const Vector2 & pos, bool alt, bool 
 bool MapEditorToolVolumeCreate::DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
   auto snapped_pos = pos;
-  m_MapEditor.GetViewer().SnapToGrid(snapped_pos);
+  m_MapEditor.GetViewer().SnapToGrid(snapped_pos, false);
 
   m_Start = snapped_pos;
 
@@ -43,7 +43,7 @@ bool MapEditorToolVolumeCreate::DrawStart(const Vector2 & pos, bool alt, bool sh
 void MapEditorToolVolumeCreate::DrawMove(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
   auto snapped_pos = pos;
-  m_MapEditor.GetViewer().SnapToGrid(snapped_pos);
+  m_MapEditor.GetViewer().SnapToGrid(snapped_pos, false);
 
   auto selection_box = Box::FromPoints(m_Start, snapped_pos);
   m_MapEditor.GetViewer().SetSelectionBox(selection_box);
@@ -52,7 +52,7 @@ void MapEditorToolVolumeCreate::DrawMove(const Vector2 & pos, bool alt, bool shi
 void MapEditorToolVolumeCreate::DrawEnd(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
   auto snapped_pos = pos;
-  m_MapEditor.GetViewer().SnapToGrid(snapped_pos);
+  m_MapEditor.GetViewer().SnapToGrid(snapped_pos, false);
   m_MapEditor.GetViewer().ClearSelectionBox();
   m_MapEditor.CreateNewVolume(Box::FromPoints(m_Start, snapped_pos));
 }

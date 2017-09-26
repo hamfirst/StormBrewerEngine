@@ -4,16 +4,23 @@
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="GameInstanceManager.cpp" />
-    <ClCompile Include="GameEventReconciler.cpp" />
     <ClCompile Include="GameClientConnection.cpp" />
     <ClCompile Include="GameServerGlobalResources.cpp" />
+    <ClCompile Include="GameInstanceStateStaging.cpp" />
+    <ClCompile Include="GameInstanceStateData.cpp" />
+    <ClCompile Include="GameInstanceStateLoading.cpp" />
+    <ClCompile Include="GameInstanceStateGameplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameInstanceManager.h" />
-    <ClInclude Include="GameEventReconciler.h" />
     <ClInclude Include="GameClientConnection.h" />
     <ClInclude Include="GameServerGlobalResources.h" />
+    <ClInclude Include="GameInstanceStateBase.h" />
+    <ClInclude Include="GameInstanceStateStaging.h" />
+    <ClInclude Include="GameInstanceStateData.h" />
+    <ClInclude Include="GameInstanceStateLoading.h" />
+    <ClInclude Include="GameInstanceStateGameplay.h" />
   </ItemGroup>
 </Project>

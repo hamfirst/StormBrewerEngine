@@ -441,7 +441,7 @@ void MapEditor::CreateNewAnchor(const Vector2 & point)
   anchor.m_X = point.x;
   anchor.m_Y = point.y;
 
-  auto type_info = m_PathInitData.GetTypeInfo();
+  auto type_info = m_AnchorInitData.GetTypeInfo();
   if (type_info)
   {
     anchor.m_Name = type_info->m_Name;

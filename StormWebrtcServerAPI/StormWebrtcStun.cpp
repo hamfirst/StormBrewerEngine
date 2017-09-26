@@ -3,10 +3,16 @@
 
 #include "mbedtls/md.h"
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #ifdef _MSC_VER
 #include <winsock.h>
+#else
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 #endif
 
 static unsigned int StunCRCTable[] = {

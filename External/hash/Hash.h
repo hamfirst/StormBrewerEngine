@@ -65,7 +65,8 @@ using Hash = uint32_t;
 template<size_t idx>
 constexpr Hash crc32(czstr str)
 {
-  return (crc32<idx - 1>(str) >> 8) ^ crc_table[(crc32<idx - 1>(str) ^ str[idx]) & 0x000000FF];
+  auto hash = crc32<idx - 1>(str);
+  return (hash >> 8) ^ crc_table[(hash ^ str[idx]) & 0x000000FF];
 }
 
 // This is the stop-recursion function

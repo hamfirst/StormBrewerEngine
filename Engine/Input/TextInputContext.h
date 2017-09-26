@@ -10,6 +10,8 @@ public:
   TextInputContext(const TextInputContext & rhs) = delete;
   TextInputContext(TextInputContext && rhs) = delete;
 
+  ~TextInputContext();
+
   TextInputContext & operator = (const TextInputContext & rhs) = delete;
   TextInputContext & operator = (TextInputContext && rhs) = delete;
 

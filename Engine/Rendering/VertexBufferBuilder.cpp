@@ -17,6 +17,11 @@ void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & qua
 {
   auto start_x = quad.m_Position.m_Start.x;
   auto tile_size = quad.m_TexCoords.m_End - quad.m_TexCoords.m_Start;
+
+  if (tile_size.x < 0 || tile_size.y < 0)
+  {
+    return;
+  }
   
   int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x;
   int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y;
@@ -60,7 +65,7 @@ bool QuadVertexBufferBuilder::AddSlicedQuad(const QuadVertexBuilderInfo & quad, 
     QuadVertexBuilderInfo clipped_vert_data = quad;
     clipped_vert_data.m_Position = *clipped_box;
     clipped_vert_data.m_TexCoords.m_Start += start_offset;
-    clipped_vert_data.m_TexCoords.m_End += start_offset;
+    clipped_vert_data.m_TexCoords.m_End += end_offset;
 
     AddQuad(clipped_vert_data);
     return true;
@@ -140,7 +145,7 @@ VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
       QuadVertexBuilderInfo clipped_vert_data = quad;
       clipped_vert_data.m_Position = *clipped_box;
       clipped_vert_data.m_TexCoords.m_Start += start_offset;
-      clipped_vert_data.m_TexCoords.m_End += start_offset;
+      clipped_vert_data.m_TexCoords.m_End += end_offset;
 
       for (uint32_t vert = 0; vert < 6; vert++)
       {
@@ -176,7 +181,7 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 
       VertexInfo vert_info;
       vert_info.m_Position = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, index < 2 ? index : 5 - index);
-      vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index) ^ 0b10);
+      vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index));
       vert_info.m_TexCoord /= static_cast<RenderVec2>(quad.m_TextureSize);
       vert_info.m_Color = quad.m_Color;
 

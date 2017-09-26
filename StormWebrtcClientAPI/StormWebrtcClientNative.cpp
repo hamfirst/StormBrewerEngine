@@ -1,5 +1,7 @@
 
 
+#ifndef _WEB
+
 #ifdef _MSC_VER
 #define SECURITY_WIN32
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -16,7 +18,13 @@
 #else
 
 #include <cstdio>
+#include <unistd.h>
 #include <dirent.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
 #define INVALID_SOCKET -1
 
@@ -26,8 +34,12 @@
 
 #include "StormWebrtcClientNative.h"
 
+#include "StormWebrtc/StormWebrtc.h"
+#include "StormWebrtc/StormWebrtcDataChannel.h"
+
 #include <vector>
 #include <string>
+#include <cstring>
 
 StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelList & in_channels, const StormWebrtcClientChannelList & out_channels) :
   m_Socket((int)INVALID_SOCKET),
@@ -37,8 +49,6 @@ StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelL
   m_InChannels(in_channels),
   m_OutChannels(out_channels)
 {
-
-
   mbedtls_entropy_init(&m_Entropy);
   mbedtls_ctr_drbg_init(&m_CtrDrbg);
 
@@ -112,7 +122,7 @@ StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelL
 
           buffer[len] = 0;
 
-          mbedtls_x509_crt_parse(&ssl_data.m_CA, buffer.get(), len + 1);
+          mbedtls_x509_crt_parse(&m_CA, buffer.get(), len + 1);
         }
       }
     }
@@ -123,6 +133,9 @@ StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelL
 
   mbedtls_ssl_conf_dbg(&m_SSLConfig, debug_func, stdout);
   mbedtls_ssl_conf_authmode(&m_SSLConfig, MBEDTLS_SSL_VERIFY_NONE);
+
+  m_Connection.m_IncStreamCreated.resize(m_InChannels.size());
+  m_Connection.m_OutStreamCreated.resize(m_OutChannels.size());
 }
 
 StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelList & in_channels, const StormWebrtcClientChannelList & out_channels, const char * ipaddr, int port, const char * fingerprint) :
@@ -239,12 +252,17 @@ void StormWebrtcClientNative::StartConnect(const char * ipaddr, int port, const 
     tv.tv_usec = timeout;
 
     int ret = select(client->m_Socket + 1, &readfds, NULL, NULL, &tv);
-    if (ret == -1)
+    if (ret < 0)
     {
       return MBEDTLS_ERR_SSL_WANT_READ;
     }
 
-    return (int)recv(client->m_Socket, (char *)data, (int)size, 0);
+    if (FD_ISSET(client->m_Socket, &readfds))
+    {
+      return (int)recv(client->m_Socket, (char *)data, (int)size, 0);
+    }
+
+    return MBEDTLS_ERR_SSL_WANT_READ;
   };
 
   mbedtls_ssl_set_bio(&m_Connection.m_SSLContext,
@@ -254,14 +272,12 @@ void StormWebrtcClientNative::StartConnect(const char * ipaddr, int port, const 
     recv_timeout_callback);
 
   m_State = StormWebrtcClientNativeState::kInitialHello;
+  m_Connection.m_Allocated = true;
   m_Connecting = true;
 }
 
 void StormWebrtcClientNative::Update()
 {
-  //static const int kRecvBufferSize = 4096;
-  //uint8_t packet[kRecvBufferSize];
-
   if (m_State == StormWebrtcClientNativeState::kInitialHello)
   {
     auto result = mbedtls_ssl_handshake_step(&m_Connection.m_SSLContext);
@@ -274,6 +290,30 @@ void StormWebrtcClientNative::Update()
       }
     }
     else if (result != MBEDTLS_ERR_SSL_WANT_READ && result != MBEDTLS_ERR_SSL_WANT_WRITE)
+    {
+      Close();
+    }
+  }
+  else
+  {
+    static const int kRecvBufferSize = 2000;
+    uint8_t packet[kRecvBufferSize];
+    auto packet_size = mbedtls_ssl_read(&m_Connection.m_SSLContext, packet, kRecvBufferSize);
+
+    if (packet_size > 0)
+    {
+      usrsctp_conninput(&m_Connection, packet, packet_size, 0);
+
+      if (m_State == StormWebrtcClientNativeState::kSCTPConnect)
+      {
+        if (m_Connection.m_HasAssoc)
+        {
+          m_State = StormWebrtcClientNativeState::kChannelInit;
+          SendInitialDataChannels();
+        }
+      }
+    }
+    else if (packet_size != MBEDTLS_ERR_SSL_WANT_READ && packet_size != MBEDTLS_ERR_SSL_WANT_WRITE)
     {
       Close();
     }
@@ -304,6 +344,7 @@ void StormWebrtcClientNative::Close()
   if (m_Connection.m_SctpSocket != nullptr)
   {
     usrsctp_close(m_Connection.m_SctpSocket);
+    usrsctp_deregister_address(&m_Connection);
     m_Connection.m_SctpSocket = nullptr;
   }
 
@@ -318,7 +359,34 @@ void StormWebrtcClientNative::SendPacket(int stream, bool sender_channel, const 
     return;
   }
 
+  if (sender_channel)
+  {
+    int stream_id = (int)stream * 2 + 1;
 
+    switch (m_InChannels[stream])
+    {
+    case StormWebrtcClientStreamType::kReliable:
+      SendData(DataMessageType::kBinary, stream_id, true, data, data_len);
+      break;
+    case StormWebrtcClientStreamType::kUnreliable:
+      SendData(DataMessageType::kBinary, stream_id, false, data, data_len);
+      break;
+    }
+  }
+  else
+  {
+    int stream_id = (int)stream * 2;
+
+    switch (m_OutChannels[stream])
+    {
+    case StormWebrtcClientStreamType::kReliable:
+      SendData(DataMessageType::kBinary, stream_id, true, data, data_len);
+      break;
+    case StormWebrtcClientStreamType::kUnreliable:
+      SendData(DataMessageType::kBinary, stream_id, false, data, data_len);
+      break;
+    }
+  }
 }
 
 bool StormWebrtcClientNative::PollPacket(StormWebrtcClientPacket & out_packet)
@@ -338,7 +406,7 @@ void StormWebrtcClientNative::StartSctpConnect()
   auto sctp_receive_cb = [](struct socket *sock, union sctp_sockstore addr, void *data,
     size_t datalen, struct sctp_rcvinfo rcv, int flags, void *ulp_info) -> int
   {
-    auto & connection = *static_cast<StormWebrtcClientNative *>(addr.sconn.sconn_addr);
+    StormWebrtcClientNative * client = static_cast<StormWebrtcClientNative *>(ulp_info);
 
 #ifdef STORMWEBRTC_USE_THREADS
     std::unique_lock<std::recursive_mutex> connection_lock(connection.m_Mutex);
@@ -350,7 +418,7 @@ void StormWebrtcClientNative::StartSctpConnect()
       switch (notification->sn_header.sn_type)
       {
       case SCTP_ASSOC_CHANGE:
-        //connection.m_ServerImpl->HandleSctpAssociationChange(connection, notification->sn_assoc_change);
+        client->HandleSctpAssociationChange(notification->sn_assoc_change);
         break;
       case SCTP_SENDER_DRY_EVENT:
         //SetReadyToSendData();
@@ -362,9 +430,8 @@ void StormWebrtcClientNative::StartSctpConnect()
     }
     else
     {
-      //connection.m_ServerImpl->HandleSctpPacket(connection, data, datalen, rcv.rcv_sid, rcv.rcv_ppid);
+      client->HandleSctpPacket(data, datalen, rcv.rcv_sid, rcv.rcv_ppid);
     }
-
 
     free(data);
     return 1;
@@ -434,9 +501,236 @@ void StormWebrtcClientNative::StartSctpConnect()
   connect_addr.sconn_family = AF_CONN;
   connect_addr.sconn_port = htons(5000);
 
-  if (usrsctp_connect(m_Connection.m_SctpSocket, (struct sockaddr *)&connect_addr, sizeof(struct sockaddr_conn)) < 0)
+  usrsctp_register_address(&m_Connection);
+  if (usrsctp_bind(m_Connection.m_SctpSocket, (struct sockaddr *)&connect_addr, sizeof(struct sockaddr_conn)) < 0)
   {
     throw std::runtime_error(std::string("sctp bind error"));
   }
+
+  if (usrsctp_connect(m_Connection.m_SctpSocket, (struct sockaddr *)&connect_addr, sizeof(struct sockaddr_conn)) < 0)
+  {
+    if (errno != EINPROGRESS)
+    {
+      throw std::runtime_error(std::string("sctp connect error"));
+    }
+  }
+
+  m_State = StormWebrtcClientNativeState::kSCTPConnect;
 }
 
+void StormWebrtcClientNative::SendInitialDataChannels()
+{
+  if (m_Connection.m_CreatedDataChannels == false)
+  {
+    for (std::size_t index = 0; index < m_OutChannels.size(); index++)
+    {
+      // Create the data channel
+      auto data_channel_name = std::to_string(index);
+      auto data_channel_name_len = data_channel_name.size();
+
+      uint8_t data_channel_packet_buffer[128];
+      auto data_channel_header = (DataChannelOpenHeader *)data_channel_packet_buffer;
+      data_channel_header->m_MessageType = 0x03; // DATA_CHANNEL_OPEN 
+      data_channel_header->m_Priority = 0;
+
+      switch (m_OutChannels[index])
+      {
+      default:
+      case StormWebrtcClientStreamType::kReliable:
+        data_channel_header->m_ChannelType = 0x00; // DATA_CHANNEL_RELIABLE
+        data_channel_header->m_ReliabilityParameter = 0;
+        break;
+      case StormWebrtcClientStreamType::kUnreliable:
+        data_channel_header->m_ChannelType = 0x82; // DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED
+        data_channel_header->m_ReliabilityParameter = 0;
+        break;
+      }
+
+      data_channel_header->m_LabelLength = htons((uint16_t)data_channel_name_len);
+      data_channel_header->m_ProtocolLength = 0;
+      char * data_channel_name_buffer = (char *)(data_channel_header + 1);
+      memcpy(data_channel_name_buffer, data_channel_name.data(), data_channel_name.size());
+
+      SendData(DataMessageType::kControl, (int)(index * 2), true, &data_channel_packet_buffer, sizeof(DataChannelOpenHeader) + (int)data_channel_name_len);
+    }
+
+    m_Connection.m_CreatedDataChannels = true;
+  }
+}
+
+void StormWebrtcClientNative::CheckConnectedState()
+{
+  if (m_Connection.m_Connected)
+  {
+    return;
+  }
+
+  for (auto && str : m_Connection.m_IncStreamCreated)
+  {
+    if (str == false)
+    {
+      return;
+    }
+  }
+
+  for (auto && str : m_Connection.m_OutStreamCreated)
+  {
+    if (str == false)
+    {
+      return;
+    }
+  }
+
+  NotifySocketConnected();
+}
+
+void StormWebrtcClientNative::NotifySocketConnected()
+{
+  m_Connected = true;
+  m_Connecting = false;
+  m_Connection.m_Connected = true;
+
+  m_State = StormWebrtcClientNativeState::kConnected;
+}
+
+void StormWebrtcClientNative::SendData(DataMessageType type, int sid, bool reliable, const void * data, std::size_t length)
+{
+  struct sctp_sendv_spa spa = { 0 };
+  spa.sendv_flags |= SCTP_SEND_SNDINFO_VALID;
+  spa.sendv_sndinfo.snd_sid = sid;
+
+  if (m_Connection.m_SctpSocket == nullptr)
+  {
+    return;
+  }
+
+  switch (type)
+  {
+  default:
+  case DataMessageType::kNone:
+    spa.sendv_sndinfo.snd_ppid = 0;
+    break;
+  case DataMessageType::kControl:
+    spa.sendv_sndinfo.snd_ppid = htonl(50);
+    break;
+  case DataMessageType::kBinary:
+    spa.sendv_sndinfo.snd_ppid = htonl(53);
+    break;
+  case DataMessageType::kText:
+    spa.sendv_sndinfo.snd_ppid = htonl(51);
+    break;
+  }
+
+  if (!reliable)
+  {
+    spa.sendv_sndinfo.snd_flags |= SCTP_UNORDERED;
+  }
+
+  usrsctp_sendv(m_Connection.m_SctpSocket, data, length, nullptr, 0, &spa, sizeof(spa), SCTP_SENDV_SPA, 0);
+}
+
+void StormWebrtcClientNative::HandleSctpPacket(void * buffer, std::size_t length, int stream, int ppid)
+{
+  if (stream % 2 == 1)
+  {
+    // Server stream
+    auto stream_index = stream / 2;
+    if (stream_index >= (int)m_InChannels.size())
+    {
+      return;
+    }
+
+    if (m_Connection.m_IncStreamCreated[stream_index] == false)
+    {
+      if (length < sizeof(DataChannelOpenHeader))
+      {
+        return;
+      }
+
+      if (ppid != htonl(50))
+      {
+        return;
+      }
+
+      auto header = (DataChannelOpenHeader *)buffer;
+      if (header->m_MessageType == 0x3) // DATA_CHANNEL_OPEN 
+      {
+        uint8_t ack = 0x2; //DATA_CHANNEL_ACK
+        SendData(DataMessageType::kControl, stream, true, &ack, 1);
+
+        m_Connection.m_IncStreamCreated[stream_index] = true;
+        CheckConnectedState();
+      }
+    }
+    else if (m_Connection.m_Connected)
+    {
+      StormWebrtcClientPacket packet;
+      packet.m_Buffer = std::unique_ptr<uint8_t[], StormWebrtcPacketDeleter>((uint8_t *)malloc(length));
+      memcpy(packet.m_Buffer.get(), buffer, length);
+      packet.m_Length = (int)length;
+      packet.m_Stream = stream_index;
+      packet.m_SenderChannel = false;
+
+      m_PendingPackets.push(std::move(packet));
+    }
+  }
+  else
+  {
+    // Client stream
+    auto stream_index = stream / 2;
+    if (stream_index >= (int)m_OutChannels.size())
+    {
+      return;
+    }
+
+    if (m_Connection.m_OutStreamCreated[stream_index] == false)
+    {
+      if (length == 0)
+      {
+        return;
+      }
+
+      if (ppid != htonl(50))
+      {
+        return;
+      }
+
+      auto header = (DataChannelOpenHeader *)buffer;
+      if (header->m_MessageType == 0x2)  // DATA_CHANNEL_ACK
+      {
+        m_Connection.m_OutStreamCreated[stream_index] = true;
+        CheckConnectedState();
+      }
+    }
+    else if(m_Connection.m_Connected)
+    {
+      StormWebrtcClientPacket packet;
+      packet.m_Buffer = std::unique_ptr<uint8_t[], StormWebrtcPacketDeleter>((uint8_t *)malloc(length));
+      memcpy(packet.m_Buffer.get(), buffer, length);
+      packet.m_Length = (int)length;
+      packet.m_Stream = stream_index;
+      packet.m_SenderChannel = true;
+
+      m_PendingPackets.push(std::move(packet));
+    }
+  }
+}
+
+void StormWebrtcClientNative::HandleSctpAssociationChange(const sctp_assoc_change & change)
+{
+  if (change.sac_type == SCTP_ASSOC_CHANGE)
+  {
+    if (change.sac_state == SCTP_COMM_UP)
+    {
+      m_Connection.m_SctpAssoc = change.sac_assoc_id;
+      m_Connection.m_HasAssoc = true;
+      CheckConnectedState();
+    }
+    else
+    {
+      //NotifySocketDisconnected(connection);
+    }
+  }
+}
+
+#endif

@@ -1,24 +1,30 @@
-clang_tablegen(AttrTemplateInstantiate.inc -gen-clang-attr-template-instantiate
-  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
-  SOURCE ../Basic/Attr.td
-  TARGET ClangAttrTemplateInstantiate)
-  
-clang_tablegen(AttrParsedAttrList.inc -gen-clang-attr-parsed-attr-list
-  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
-  SOURCE ../Basic/Attr.td
-  TARGET ClangAttrParsedAttrList)
+cmake_minimum_required(VERSION 3.0)
 
-clang_tablegen(AttrParsedAttrKinds.inc -gen-clang-attr-parsed-attr-kinds
-  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
-  SOURCE ../Basic/Attr.td
-  TARGET ClangAttrParsedAttrKinds)
+include_directories(. ../../../. ../../.././External)
+set(CMAKE_CXX_STANDARD 14)
 
-clang_tablegen(AttrSpellingListIndex.inc -gen-clang-attr-spelling-index
-  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
-  SOURCE ../Basic/Attr.td
-  TARGET ClangAttrSpellingListIndex)
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(../../.././External/Web)
+  set(PLATFORM_SRC_ClangAttrParsedAttrImpl 
+            )
+elseif (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(../../.././External/Windows)
+  set(PLATFORM_SRC_ClangAttrParsedAttrImpl 
+            )
+elseif (APPLE)
+  add_definitions(-D_MACOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_ClangAttrParsedAttrImpl 
+            )
+elseif (UNIX)
+  add_definitions(-D_LINUX)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_ClangAttrParsedAttrImpl 
+            )
+endif()
 
-clang_tablegen(AttrParsedAttrImpl.inc -gen-clang-attr-parsed-attr-impl
-  -I ${CMAKE_CURRENT_SOURCE_DIR}/../../
-  SOURCE ../Basic/Attr.td
-  TARGET ClangAttrParsedAttrImpl)
+set(GENERIC_SRC_ClangAttrParsedAttrImpl 
+            )
+add_library(ClangAttrParsedAttrImpl ${GENERIC_SRC_ClangAttrParsedAttrImpl} ${PLATFORM_SRC_ClangAttrParsedAttrImpl} )

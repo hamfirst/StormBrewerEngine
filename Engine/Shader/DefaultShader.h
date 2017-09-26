@@ -25,7 +25,7 @@ static const char * kDefaultVertexShader = SHADER_LITERAL(
 
     gl_Position = vec4(position, 0, 1);
     v_Position = position;
-    v_TexCoord = a_TexCoord;
+    v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
     v_Color = a_Color;
   }
 );

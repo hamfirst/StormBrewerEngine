@@ -15,6 +15,9 @@ class ENGINE_EXPORT RenderState
 public:
   void InitRenderState(int screen_width, int screen_height);
 
+  void SetFramePct(float frame_pct);
+  float GetFramePct() const;
+
   void EnableBlendMode(RenderingBlendMode mode = RenderingBlendMode::kAlpha);
   void DisableBlendMode();
   void SyncBlendMode();
@@ -47,6 +50,8 @@ private:
   bool m_BlendEnabled = false;
   bool m_ScissorEnabled = false;
   RenderingBlendMode m_BlendMode = RenderingBlendMode::kAlpha;
+
+  float m_FramePct = 0;
 };
 
 

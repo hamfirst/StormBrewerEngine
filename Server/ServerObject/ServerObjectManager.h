@@ -21,14 +21,11 @@ class ServerObjectManager
 public:
 
   ServerObjectManager(const std::vector<ServerObjectStaticInitData> & static_objects, int max_dynamic_objects, int num_reserved_slots);
-
   ServerObjectManager(const ServerObjectManager & rhs);
-  ServerObjectManager(ServerObjectManager && rhs);
 
   ~ServerObjectManager();
 
   ServerObjectManager & operator = (const ServerObjectManager & rhs);
-  ServerObjectManager & operator = (ServerObjectManager && rhs);
 
   template <typename T>
   NullOptPtr<T> CreateDynamicObject(NullOptPtr<ServerObjectInitData> init_data = nullptr)
@@ -101,5 +98,6 @@ private:
   std::vector<int> m_DynamicObjectGen;
   SparseList<DynamicObjectInfo> m_DynamicObjects;
   int m_ReservedSlots;
+  int m_MaxDynamicObjects;
 };
 

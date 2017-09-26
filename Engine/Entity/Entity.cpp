@@ -54,19 +54,14 @@ SpritePtr & Entity::GetSprite()
   return m_Sprite;
 }
 
-Vector2 & Entity::GetPosition()
+Vector2f & Entity::GetPosition()
 {
-  return m_MoverState.m_Position;
+  return m_Position;
 }
 
-void Entity::SetPosition(const Vector2 & position)
+void Entity::SetPosition(const Vector2f & position)
 {
-  m_MoverState.m_Position = position;
-}
-
-MoverState & Entity::GetMoverState()
-{
-  return m_MoverState;
+  m_Position = position;
 }
 
 int & Entity::GetLayer()
@@ -122,9 +117,19 @@ bool Entity::FrameAdvance(uint32_t anim_name_hash, bool loop)
   return false;
 }
 
+bool Entity::SyncToFrame(uint32_t anim_name_hash, int frame)
+{
+  if (m_Sprite.GetResource() != nullptr)
+  {
+    return m_Sprite.GetResource()->SyncToFrame(anim_name_hash, GetAnimationState(), frame);
+  }
+
+  return false;
+}
+
 Box Entity::GetDrawingFrame() const
 {
-  return Box::FromFrameCenterAndSize(m_MoverState.m_Position, Vector2(m_RenderState.m_FrameWidth, m_RenderState.m_FrameHeight));
+  return Box::FromFrameCenterAndSize(m_Position, Vector2(m_RenderState.m_FrameWidth, m_RenderState.m_FrameHeight));
 }
 
 void Entity::SetParent(NullOptPtr<Entity> entity)
@@ -220,6 +225,32 @@ void Entity::Activate()
   for (auto & comp : m_Components)
   {
     comp.second->OnActivate();
+  }
+}
+
+void Entity::ServerUpdate()
+{
+  if (m_Activated == false)
+  {
+    return;
+  }
+
+  for (auto & comp : m_Components)
+  {
+    comp.second->ServerUpdate();
+  }
+}
+
+void Entity::ServerDestroy()
+{
+  if (m_Activated == false)
+  {
+    return;
+  }
+
+  for (auto & comp : m_Components)
+  {
+    comp.second->ServerDestroy();
   }
 }
 

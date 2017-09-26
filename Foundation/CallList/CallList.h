@@ -42,5 +42,6 @@ private:
   void __declspec(dllexport) s_Reg_##Prefix##CallListFunc() { printf("%p", &sv_Reg_##Prefix##CallList); }
 #else
 #define ADD_PREMAIN_CALL(CallList, Prefix, Call) \
-  struct s_Reg_##Prefix##CallList { s_Reg_##Prefix##CallList(){ CallList.AddCall(Call); } } sv_Reg_##Prefix##CallList;
+  static struct s_Reg_##Prefix##CallList { s_Reg_##Prefix##CallList(){ CallList.AddCall(Call); } } sv_Reg_##Prefix##CallList __attribute__((used)); \
+  void __attribute__((used)) s_Reg_##Prefix##CallListFunc() { printf("%p", &sv_Reg_##Prefix##CallList); }
 #endif

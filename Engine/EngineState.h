@@ -16,6 +16,7 @@ class Component;
 class MapSystem;
 class MapResource;
 class MapInstance;
+class VisualEffectManager;
 
 class ComponentUpdateBucketList;
 class ServerObject;
@@ -29,7 +30,7 @@ public:
   ~EngineState();
 
   NotNullPtr<Entity> CreateEntity();
-  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object = nullptr);
+  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object = nullptr, bool activate = true);
   void DestroyAllEntities();
 
   std::size_t LoadMap(NotNullPtr<MapResource> map);
@@ -46,6 +47,7 @@ public:
   NotNullPtr<EntitySystem> GetEntitySystem();
   NotNullPtr<ComponentSystem> GetComponentSystem();
   NotNullPtr<MapSystem> GetMapSystem();
+  NotNullPtr<VisualEffectManager> GetVisualEffectManager();
 
 private:
 
@@ -60,5 +62,6 @@ private:
   std::unique_ptr<EntitySystem> m_EntitySystem;
   std::unique_ptr<ComponentSystem> m_ComponentSystem;
   std::unique_ptr<MapSystem> m_MapSystem;
+  std::unique_ptr<VisualEffectManager> m_VisualEffectManager;
 };
 

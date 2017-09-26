@@ -16,14 +16,14 @@ void FrameClock::Start()
   m_LastFrame = GetTimeSeconds();
 }
 
-bool FrameClock::ShouldSkipFrame()
+bool FrameClock::ShouldSkipFrameRender()
 {
-  return GetTimeSeconds() - m_LastFrame > m_FrameInterval * 2;
+  return GetTimeSeconds() - m_LastFrame > m_FrameInterval;
 }
 
-bool FrameClock::ShouldStartFrame()
+bool FrameClock::ShouldSkipFrameUpdate()
 {
-  return GetTimeSeconds() - m_LastFrame > m_FrameInterval / 2;
+  return GetTimeSeconds() - m_LastFrame < m_FrameInterval;
 }
 
 void FrameClock::WaitUntilNextFrame()
@@ -47,8 +47,14 @@ void FrameClock::BeginFrame()
 
 double FrameClock::GetTimeUntilNextFrame()
 {
-  double t = m_FrameInterval - (GetTimeSeconds() - m_LastFrame);
+  double cur_time = GetTimeSeconds();
+  double t = m_LastFrame + m_FrameInterval - cur_time;
   return t;
+}
+
+double FrameClock::GetFramePercent()
+{
+  return std::max(std::min(1.0 - GetTimeUntilNextFrame() / m_FrameInterval, 1.0), 0.0);
 }
 
 int FrameClock::GetFrameCount()

@@ -26,10 +26,14 @@ elseif (UNIX)
 endif()
 
 set(GENERIC_SRC_GameServer 
-            ./GameClient.cpp
-            ./GameEventReconciler.cpp
+            ./GameClientConnection.cpp
             ./GameInstance.cpp
             ./GameInstanceManager.cpp
+            ./GameInstanceStateData.cpp
+            ./GameInstanceStateGameplay.cpp
+            ./GameInstanceStateLoading.cpp
+            ./GameInstanceStateStaging.cpp
             ./GameServer.cpp
+            ./GameServerGlobalResources.cpp
             )
 add_library(GameServer ${GENERIC_SRC_GameServer} ${PLATFORM_SRC_GameServer} )

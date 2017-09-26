@@ -13,7 +13,7 @@ class GameContainer;
 
 using LevelLoadCallback = Delegate<void, uint64_t, const Map &>;
 
-class GameClientController : public StormRelfEmptyBase, public GameSimulationEventCallbacks, public GameServerEventSender
+class GameClientController : public StormRelfEmptyBase, public GameSimulationEventCallbacks
 {
 public:
   STORM_REFL;
@@ -27,14 +27,14 @@ public:
   void PreloadLevel();
   void CatastrophicFailure();
 
-  void HandleGlobalEvent(std::size_t event_class_id, void * event_ptr);
-
+  void HandleGlobalEvent(std::size_t event_class_id, const void * event_ptr);
+  
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderGlobalEvent & ev);
 
 private:
   GameContainer & m_GameContainer;
 
-  std::vector<Delegate<void, void *>> m_EventCallbacks;
+  std::vector<Delegate<void, const void *>> m_EventCallbacks;
 
 };
 

@@ -5,11 +5,11 @@
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/RenderState.h"
 
+#include "Foundation/Math/Intersection.h"
 
 GeometryVertexBufferBuilder::GeometryVertexBufferBuilder()
 {
   m_TexCoord = { 0, 0 };
-  Begin();
 }
 
 GeometryVertexBufferBuilder::GeometryVertexBufferBuilder(const Vector2 & texture_pos, const Vector2 & texture_pos_size)
@@ -23,49 +23,6 @@ GeometryVertexBufferBuilder::GeometryVertexBufferBuilder(const Vector2 & texture
     m_TexCoord.x = (float)texture_pos.x / (float)texture_pos_size.x;
     m_TexCoord.y = (float)texture_pos.y / (float)texture_pos_size.y;
   }
-
-  Begin();
-}
-
-
-void GeometryVertexBufferBuilder::Begin()
-{
-  m_HasCurPos = false;
-  m_HasPrevPos = false;
-}
-
-void GeometryVertexBufferBuilder::LineTo(const Vector2f & pos, float thickness, const Color & c)
-{
-  if (m_HasPrevPos == false)
-  {
-    m_PrevPos = pos;
-    m_PrevThickness = thickness;
-    m_PrevColor = c;
-    m_HasPrevPos = true;
-    return;
-  }
-
-  if (m_HasCurPos == false)
-  {
-    auto offset = pos - m_PrevPos;
-    auto len = glm::length(offset);
-
-    if (len == 0)
-    {
-      return;
-    }
-
-    m_CurPos = pos;
-    m_CurDir = offset / len;
-    m_CurThickness = thickness;
-    m_CurColor = c;
-    return;
-  }
-}
-
-void GeometryVertexBufferBuilder::End()
-{
-
 }
 
 void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c)
@@ -150,7 +107,7 @@ void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, 
   float angle_inc = k2Pi / num_segs;
   float angle = angle_inc;
 
-  auto ab = radius_x * radius_y;
+  auto ab = radius_x * radius_y; 
 
   Vector2f start_far = pos + Vector2f(radius_x + thickness, 0);
   Vector2f start_near = pos + Vector2f(radius_x - thickness, 0);
@@ -159,8 +116,8 @@ void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, 
   {
     auto dir = SinCosf(angle);
 
-    auto den_x = dir.x * radius_x;
-    auto den_y = dir.y * radius_y;
+    auto den_x = dir.y * radius_x;
+    auto den_y = dir.x * radius_y;
 
     auto radius = ab / sqrtf(den_x * den_x + den_y * den_y);
 
@@ -278,8 +235,8 @@ void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radi
   {
     auto dir = SinCosf(angle);
 
-    auto den_x = dir.x * radius_x;
-    auto den_y = dir.y * radius_y;
+    auto den_x = dir.y * radius_x;
+    auto den_y = dir.x * radius_y;
 
     auto radius = ab / sqrtf(den_x * den_x + den_y * den_y);
 
@@ -308,6 +265,142 @@ void GeometryVertexBufferBuilder::FilledRectangle(const Box & box, const Color &
 {
   FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), c);
 }
+
+void GeometryVertexBufferBuilder::Trail(const std::vector<TrailInfo> & points, const Color & c)
+{
+  if (points.size() <= 1)
+  {
+    return;
+  }
+
+  if (points.size() == 2)
+  {
+    Line(points[0].m_Position, points[1].m_Position, points[0].m_Thickness, points[1].m_Thickness, c);
+    return;
+  }
+
+  int prev_index = 0;
+  int cur_index = 1;
+  int next_index = 2;
+  int num_points = (int)points.size();
+
+  Vector2f prev_point = points[0].m_Position;
+  Vector2f cur_point = points[1].m_Position;
+  Vector2f next_point = points[2].m_Position;
+
+  Vector2f prev_dir;
+  float prev_len;
+
+  Vector2f cur_dir;
+  float cur_len;
+
+  Optional<std::pair<Vector2f, Vector2>> last_offset_points;
+
+  while (true)
+  {
+    while (cur_index < num_points - 1)
+    {
+      cur_point = points[cur_index].m_Position;
+      prev_dir = cur_point - prev_point;
+      prev_len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(prev_dir);
+
+      if (prev_len > 0)
+      {
+        break;
+      }
+
+      cur_index++;
+    }
+
+    next_index = cur_index + 1;
+    while (next_index < num_points)
+    {
+      next_point = points[next_index].m_Position;
+      cur_dir = next_point - cur_point;
+      cur_len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(cur_dir);
+
+      if (cur_len > 0)
+      {
+        break;
+      }
+
+      next_index++;
+    }
+
+    if (next_index >= num_points)
+    {
+      break;
+    }
+
+    auto prev_dir_perp = IntersectionVecFuncs<Vector2f>::GetPerpVec(prev_dir);
+    auto cur_dir_perp = IntersectionVecFuncs<Vector2f>::GetPerpVec(cur_dir);
+    if (last_offset_points == false)
+    {
+      auto & point = points[prev_index];
+      auto t = point.m_Thickness / 2.0f;
+
+      Vector2f first_point = point.m_Position + t * prev_dir_perp;
+      Vector2f second_point = point.m_Position - t * prev_dir_perp;
+      
+      last_offset_points.Emplace(std::make_pair(first_point, second_point));
+    }
+
+    auto dp = IntersectionVecFuncs<Vector2f>::Dot(prev_dir_perp, cur_dir_perp);
+    auto angle_between = acos(dp);
+
+    if (angle_between == 0)
+    {
+      auto & point = points[cur_index];
+      auto t = point.m_Thickness / 2.0f;
+
+      Vector2f first_point = point.m_Position + t * cur_dir_perp;
+      Vector2f second_point = point.m_Position - t * cur_dir_perp;
+
+      AddVert(first_point, c);
+      AddVert(second_point, c);
+      AddVert(last_offset_points->first, c);
+      AddVert(second_point, c);
+      AddVert(last_offset_points->first, c);
+      AddVert(last_offset_points->second, c);
+
+      last_offset_points.Emplace(std::make_pair(first_point, second_point));
+    }
+    else
+    {
+
+    }
+
+    prev_index = cur_index;
+    cur_index = next_index + 1;
+
+    prev_point = cur_point;
+  }
+
+  if (last_offset_points)
+  {
+    auto & point = points[num_points - 1];
+    auto t = point.m_Thickness / 2.0f;
+
+    auto dir = point.m_Position - cur_point;
+    auto len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(dir);
+
+    if (len > 0)
+    {
+      auto perp_dir = IntersectionVecFuncs<Vector2f>::GetPerpVec(dir);
+
+      Vector2f first_point = point.m_Position + t * perp_dir;
+      Vector2f second_point = point.m_Position - t * perp_dir;
+
+      AddVert(first_point, c);
+      AddVert(second_point, c);
+      AddVert(last_offset_points->first, c);
+      AddVert(second_point, c);
+      AddVert(last_offset_points->first, c);
+      AddVert(last_offset_points->second, c);
+    }
+  }
+}
+
 
 VertexBuffer GeometryVertexBufferBuilder::CreateVertexBuffer()
 {

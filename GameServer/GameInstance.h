@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Foundation/Common.h"
-#include "Foundation/Allocator/IdAllocator.h"
+#include "Foundation/CircularBuffer/CircularBuffer.h"
 
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameMessages.refl.h"
@@ -10,18 +10,16 @@
 #include "Game/GameFullState.refl.h"
 #include "Game/GameController.refl.h"
 #include "Game/GameLogicContainer.h"
-#include "Game/GameServerEventSender.h"
 #include "Game/GameSharedGlobalResources.h"
 #include "Game/GameSharedInstanceResources.h"
-
-#include "GameServer/GameEventReconciler.h"
-
-#include "Foundation/CircularBuffer/CircularBuffer.h"
+#include "Game/GameEventReconciler.h"
+#include "GameServer/GameInstanceStateData.h"
 
 class GameClientConnection;
 class GameServer;
+class GameInstanceStateBase;
 
-using GameSimulationActionList = std::vector<Delegate<void, GameFullState &, const GameStage &>>;
+using GameSimulationActionList = std::vector<Delegate<void, GameLogicContainer &>>;
 
 enum class GameInstanceState
 {
@@ -31,11 +29,14 @@ enum class GameInstanceState
   kVictory,
 };
 
-class GameInstance : public GameSimulationEventCallbacks, public GameServerEventSender
+class GameInstance
 {
 public:
 
-  GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, const GameStage & stage, GameSharedGlobalResources & global_resources);
+  GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, 
+    GameSharedGlobalResources & global_resources, GameStageManager & stage_manager);
+
+  ~GameInstance();
 
   void Update();
   void Reset();
@@ -43,87 +44,38 @@ public:
   bool JoinPlayer(GameClientConnection * client, const JoinGameMessage & join_game);
   void RemovePlayer(GameClientConnection * client);
 
+  void HandlePlayerReady(GameClientConnection * client, const ReadyMessage & ready);
   void HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading);
-  void FillGameWithBots(uint32_t random_number);
-  void StartWaitForLoad();
-  void RemovePlayersWhoHaventLoaded();
+
+#if NET_MODE == NET_MODE_GGPO
+
+  void UpdatePlayer(GameClientConnection * client, GameGGPOClientUpdate & update_data);
+
+#else
 
   void UpdatePlayer(GameClientConnection * client, const ClientAuthData & auth_data);
   void HandleClientEvent(GameClientConnection * client, std::size_t class_id, void * event_ptr);
 
-  std::size_t GetNumPlayers();
+#endif
 
+  std::size_t GetNumPlayers();
   std::vector<GameClientConnection *> GetConnectedPlayers() const;
 
 protected:
+  friend class GameInstanceStateData;
 
-  GameLogicContainer GetLogicContainer();
-
-#if NET_MODE == NET_MODE_GGPO
-  void Rewind(const ClientAuthData & auth_data, int player_index);
-#endif
-
-#if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
-  virtual void HandleTimeExpired() override;
-#endif
-
-  virtual void SendGlobalEvent(std::size_t class_id, void * event_ptr) override;
-  virtual void SendGlobalEvent(std::size_t class_id, void * event_ptr, std::size_t connection_id) override;
-  virtual void SendEntityEvent(std::size_t class_id, void * event_ptr, ServerObjectHandle object_handle) override;
-  virtual void SendEntityEvent(std::size_t class_id, void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) override;
-
+  std::size_t GetPlayerIndex(NotNullPtr<GameClientConnection> client);
+  void SetNewState(std::unique_ptr<GameInstanceStateBase> && state);
 
 private:
-
-  struct GamePlayer
-  {
-    GameClientConnection * m_Client;
-    int m_PlayerIndex;
-    uint64_t m_LoadToken;
-
-#if NET_MODE == NET_MODE_GGPO
-    int m_LastInputFrame;
-    std::vector<ClientAuthData> m_PendingInput;
-#endif
-
-    bool m_Loaded;
-  };
 
   GameServer & m_Server;
   uint64_t m_GameId;
 
-  GameInstanceState m_State;
+  GameInstanceStateData m_StateData;
+  std::unique_ptr<GameInstanceStateBase> m_State;
+  std::unique_ptr<GameInstanceStateBase> m_NewState;
 
-  GameSharedGlobalResources & m_SharedGlobalResources;
-  GameSharedInstanceResources m_SharedInstanceResources;
-
-  GameInitSettings m_InitSettings;
-  GameController m_Controller;
-
-#if NET_MODE == NET_MODE_GGPO
-  struct SimHistory
-  {
-    GameFullState m_Sim;
-    GameInput m_Input;
-    GameSimulationActionList m_Actions;
-  };
-
-  CircularBuffer<SimHistory, kMaxRewindFrames> m_SimHistory;
-
-  int m_ReconcileFrame;
-  GameEventReconciler m_EventReconciler;
-#else
-  GameFullState m_GameState;
-  GameInput m_Input;
-#endif
-
-  const GameStage & m_Stage;
-
-  std::vector<GamePlayer> m_Players;
-  IdAllocator m_PlayerIdAllocator;
-
-  int m_SendTimer;
-  int m_LoadTimer;
 };
 
 

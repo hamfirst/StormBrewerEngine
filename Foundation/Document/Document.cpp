@@ -655,15 +655,13 @@ void Document::SetFileError()
     return;
   }
 
+  auto prev_state = m_State;
   m_State = DocumentState::kLoadFailure;
 
   for (auto & dep : m_Dependencies)
   {
     dep.m_Document->HandleLinkFailed(this, dep.m_Path.data());
   }
-
-  auto prev_state = m_State;
-  m_State = DocumentState::kLoadFailure;
 
   for (auto & link : m_Links)
   {

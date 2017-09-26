@@ -18,6 +18,14 @@ MapEffectLayerInstance::MapEffectLayerInstance(MapDef & map, std::size_t layer_i
   }
 }
 
+void MapEffectLayerInstance::Init(GameContainer & game_container)
+{
+  if (m_Renderer)
+  {
+    m_Renderer->Init(game_container);
+  }
+}
+
 void MapEffectLayerInstance::Update(GameContainer & game_container)
 {
   if (m_Renderer)

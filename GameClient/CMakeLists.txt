@@ -26,9 +26,46 @@ elseif (UNIX)
 endif()
 
 set(GENERIC_SRC_GameClient 
+            ./GameCamera.cpp
+            ./GameClientController.refl.cpp
+            ./GameClientEntitySync.cpp
+            ./GameClientGlobalResources.cpp
+            ./GameClientInputManager.cpp
+            ./GameClientInstanceContainer.cpp
+            ./GameClientInstanceData.cpp
+            ./GameClientInstanceResources.cpp
+            ./GameClientLevelLoader.cpp
+            ./GameClientSave.cpp
+            ./GameClientSystems.cpp
+            ./GameClientUIManager.cpp
             ./GameContainer.cpp
+            ./GameGlobalResources.cpp
             ./GameMode.cpp
-            ./GameModeTestSprite.cpp
-            ./GameRender.cpp
+            ./GameModeConnecting.cpp
+            ./GameModeEndGame.cpp
+            ./GameModeLoadingGlobal.cpp
+            ./GameModeLocalMultiplayer.cpp
+            ./GameModeLogo.cpp
+            ./GameModeMainMenu.cpp
+            ./GameModeNameSelect.cpp
+            ./GameModeOfflineStaging.cpp
+            ./GameModeOnlineGameplay.cpp
+            ./GameModeSinglePlayerBots.cpp
+            ./GameModeTutorial.cpp
+            ./GameNetworkClient.cpp
+            ./GameServerEventResponder.cpp
+            ./Components/BallComponent.refl.cpp
+            ./Components/BallComponent.refl.reg.cpp
+            ./Components/FireComponent.refl.cpp
+            ./Components/FireComponent.refl.reg.cpp
+            ./Components/PlayerComponent.refl.cpp
+            ./Components/PlayerComponent.refl.reg.cpp
+            ./Components/PlayerExplodeComponent.refl.cpp
+            ./Components/PlayerExplodeComponent.refl.reg.cpp
+            ./Components/SwipeComponent.refl.cpp
+            ./Components/SwipeComponent.refl.reg.cpp
+            ./EffectLayers/CollisionDrawer.refl.cpp
+            ./EffectLayers/CollisionDrawer.refl.reg.cpp
+            ./UI/QuitGamePopup.cpp
             )
 add_library(GameClient ${GENERIC_SRC_GameClient} ${PLATFORM_SRC_GameClient} )

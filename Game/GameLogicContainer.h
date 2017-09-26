@@ -31,7 +31,7 @@ public:
   GameLogicContainer & operator = (GameLogicContainer && rhs) = default;
 
   GameController & GetGameController();
-  GameInstanceData & GetGlobalData();
+  GameInstanceData & GetInstanceData();
   ServerObjectManager & GetObjectManager();
   GameServerEventSender & GetEventSender();
   GameSimulationEventCallbacks & GetSimEventCallbacks();
@@ -43,7 +43,7 @@ public:
 
 private:
   GameController & m_GameController;
-  GameInstanceData & m_GlobalData;
+  GameInstanceData & m_InstanceData;
   ServerObjectManager & m_ObjectManager;
   GameServerEventSender & m_ServerEventSender;
   GameSimulationEventCallbacks & m_SimEventSender;

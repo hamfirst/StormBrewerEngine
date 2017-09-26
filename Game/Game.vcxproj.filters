@@ -3,16 +3,43 @@
   <ItemGroup>
     <ClCompile Include="GameMessages.refl.cpp" />
     <ClCompile Include="GameStage.cpp" />
-    <ClCompile Include="GameStageManager.cpp" />
     <ClCompile Include="GameNetworkEvents.refl.cpp" />
-    <ClCompile Include="GameLevelList.cpp" />
-    <ClCompile Include="GameLogicContainer.cpp" />
     <ClCompile Include="GameController.refl.cpp" />
     <ClCompile Include="GameSharedGlobalResources.cpp" />
     <ClCompile Include="GameSharedInstanceResources.cpp" />
-    <ClCompile Include="GameValidation.cpp" />
     <ClCompile Include="AI\PlayerAI.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\PlayerSpawn.refl.reg.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\PlayerServerObject.refl.cpp">
+      <Filter>ServerObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\PlayerServerObject.refl.reg.cpp">
+      <Filter>ServerObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServerTypes.cpp" />
+    <ClCompile Include="GameEventReconciler.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLevelList.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogicContainer.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNetworkExternals.refl.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStageManager.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameValidation.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWebrtc.cpp">
+      <Filter>Shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -20,28 +47,61 @@
     <ClInclude Include="GameMessages.refl.meta.h" />
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameStage.h" />
-    <ClInclude Include="GameStageManager.h" />
     <ClInclude Include="GameNetworkEvents.refl.h" />
     <ClInclude Include="GameNetworkEvents.refl.meta.h" />
     <ClInclude Include="GameNetworkData.refl.meta.h" />
     <ClInclude Include="GameSimulationEventCallbacks.h" />
-    <ClInclude Include="GameLevelList.h" />
     <ClInclude Include="GameNetworkData.refl.h" />
     <ClInclude Include="GameNetworkSettings.h" />
     <ClInclude Include="GameFullState.refl.h" />
     <ClInclude Include="GameFullState.refl.meta.h" />
     <ClInclude Include="GameServerEventSender.h" />
-    <ClInclude Include="GameLogicContainer.h" />
     <ClInclude Include="GameController.refl.h" />
     <ClInclude Include="GameController.refl.meta.h" />
-    <ClInclude Include="GameLevelListAsset.refl.h" />
-    <ClInclude Include="GameLevelListAsset.refl.meta.h" />
     <ClInclude Include="GameServerTypes.h" />
     <ClInclude Include="GameSharedGlobalResources.h" />
     <ClInclude Include="GameSharedInstanceResources.h" />
-    <ClInclude Include="GameValidation.h" />
     <ClInclude Include="AI\PlayerAI.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\PlayerSpawn.refl.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\PlayerSpawn.refl.meta.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\PlayerServerObject.refl.h">
+      <Filter>ServerObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\PlayerServerObject.refl.meta.h">
+      <Filter>ServerObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEventReconciler.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevelList.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevelListAsset.refl.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevelListAsset.refl.meta.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogicContainer.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNetworkExternals.refl.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNetworkExternals.refl.meta.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStageManager.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameValidation.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +119,9 @@
     </Filter>
     <Filter Include="AI">
       <UniqueIdentifier>{a4e860f9-13bc-4749-acee-ff403ee548c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{955f69d9-8cd6-494a-bb03-8d84763820c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

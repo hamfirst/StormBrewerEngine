@@ -6,3 +6,4 @@ ConnectingDialog::ConnectingDialog(QWidget *parent)
   ui.setupUi(this);
   setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 }
+

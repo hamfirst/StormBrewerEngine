@@ -49,6 +49,15 @@
     <Filter Include="UI\Prototype">
       <UniqueIdentifier>{c5f5c33d-6b10-4e9c-b8bd-312f7edc75c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualEffect">
+      <UniqueIdentifier>{61c4bb87-eadf-45e7-b34e-7afced3971df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Profiler">
+      <UniqueIdentifier>{cfb6d3f5-c2ce-4dea-9968-02742f359bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SaveFile">
+      <UniqueIdentifier>{f579bf5f-f43f-4596-b051-017bf0c71b01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\VertexBuffer.h">
@@ -394,20 +403,59 @@
     <ClInclude Include="Rendering\RenderSettings.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIElementExprBlock.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\UIElementExprTypes.refl.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\UIElementExprTypes.refl.meta.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIElementExprBinding.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\UIElementExprFuncs.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectManager.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectTypes.refl.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectTypes.refl.meta.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffect.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectInstance.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectFuncs.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectHandle.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Profiler\Profiler.h">
+      <Filter>Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeTutorialPopup.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioHandle.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeMuteButton.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Prototype\UIPrototypeFullscreenButton.h">
+      <Filter>UI\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveFile\SaveFile.h">
+      <Filter>SaveFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveFile\SaveFileMetaFuncs.h">
+      <Filter>SaveFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\MusicManager.h">
+      <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -654,14 +702,41 @@
     <ClCompile Include="UI\UIClickablePtr.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UIElementExprBlock.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UIElementExprBinding.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="UI\UIElementExprFuncs.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectManager.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffect.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectInstance.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectFuncs.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectHandle.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Profiler\Profiler.cpp">
+      <Filter>Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeTutorialPopup.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeMuteButton.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Prototype\UIPrototypeFullscreenButton.cpp">
+      <Filter>UI\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFile\SaveFile.cpp">
+      <Filter>SaveFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\MusicManager.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

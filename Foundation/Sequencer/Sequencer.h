@@ -32,18 +32,22 @@ public:
   Sequencer();
 
   void Update();
+  void Update(float dt);
+  void Skip();
   void Push(float time, Delegate<void, float> && del);
   void Complete();
   bool IsComplete() const;
 
-
   void Clear();
+
+  void Pause();
+  void Unpause();
 
 private:
   std::vector<SequenceElement> m_Elems;
   std::size_t m_CurElem;
 
   StopWatch m_Timer;
-
+  bool m_Paused;
 };
 

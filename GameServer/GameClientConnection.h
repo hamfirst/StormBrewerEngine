@@ -13,16 +13,19 @@ class GameClientConnection
 public:
   GameClientConnection(GameServer & server, uint32_t connection_id, ServerProtocol & protocol);
 
-#if NET_MODE == NET_MODE_GGPO
-  void SyncState(const std::shared_ptr<GameFullState> & sim);
-#else
-  void SyncState(const GameFullState & sim);
-#endif
-  void SendLoadLevel(const LoadLevelMessage & load_msg);
-  void SyncClientData(const ClientLocalData & client_data);
+  void SyncStagingState(const GameStateStaging & state);
+  void SyncLoadingState(const GameStateLoading & state);
 
-  void SendGlobalEvent(std::size_t class_id, void * event_ptr);
-  void SendEntityEvent(std::size_t class_id, void * event_ptr);
+#if NET_MODE == NET_MODE_GGPO
+  void SyncGameState(const GameGGPOServerGameState & state);
+#else
+
+  void SyncClientData(const ClientLocalData & client_data);
+  void SendGlobalEvent(std::size_t class_id, const void * event_ptr);
+  void SendEntityEvent(std::size_t class_id, const void * event_ptr);
+#endif
+
+  void SendLoadLevel(const LoadLevelMessage & load_msg);
 
   void ForceDisconnect();
   void RemoveFromGame();
@@ -34,10 +37,20 @@ private:
 
   void HandlePing(const PingMessage & request);
   void HandleJoinGame(const JoinGameMessage & request);
+  void HandleReady(const ReadyMessage & request);
   void HandleFinishLoading(const FinishLoadingMessage & request);
-  void HandleClientEvent(std::size_t class_id, void * event_ptr);
+
+#if NET_MODE == NET_MODE_GGPO
+
+  void HandleClientDataUpdate(GameGGPOClientUpdate && update_data);
+
+#else
 
   void HandleClientDataUpdate(ClientAuthData && client_data);
+  void HandleClientEvent(std::size_t class_id, void * event_ptr);
+
+#endif
+
 
 private:
   friend class GameInstanceManager;

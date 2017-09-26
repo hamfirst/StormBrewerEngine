@@ -13,6 +13,8 @@
 #include "Engine/Asset/Asset.h"
 #include "Engine/Asset/AssetReloadCallback.h"
 
+//#define USE_WEBSOCKET_LOADING
+
 class ENGINE_EXPORT AssetLoader : public DocumentLoader
 {
 public:
@@ -89,9 +91,14 @@ private:
   Semaphore m_LoadSemaphore;
 
   std::unique_ptr<std::thread[]> m_LoaderThreads;
-
+ 
+#ifdef USE_WEBSOCKET_LOADING
   std::unique_ptr<WebSocket> m_ReloadServerSocket;
   std::thread m_ReloadThread;
+#endif
+
+  std::mutex m_AssetSocketMutex;
+  std::mutex m_CompilerSocketMutex;
 #else
 
   int m_DelayRequests = true;
@@ -99,9 +106,11 @@ private:
   std::queue<AssetLoadRequest> m_PendingLoads;
   std::queue<AssetLoadRequest> m_PendingCompiles;
 
+#ifdef USE_WEBSOCKET_LOADING
   std::unique_ptr<WebSocket> m_LoaderSocket;
   std::unique_ptr<WebSocket> m_CompilerSocket;
   std::unique_ptr<WebSocket> m_ReloadServerSocket;
+#endif
 #endif
 
   std::mutex m_DocumentCompilerMutex;

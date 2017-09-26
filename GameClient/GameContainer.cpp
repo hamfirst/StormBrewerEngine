@@ -7,6 +7,16 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Component/ComponentSystem.h"
 
+GameSharedGlobalResources & GetSharedGlobalResourcesFromContainer(NotNullPtr<GameContainer> container)
+{
+  return container->GetSharedGlobalResources();
+}
+
+GameClientGlobalResources & GetClientGlobalResourcesFromContainer(NotNullPtr<GameContainer> container)
+{
+  return container->GetClientGlobalResources();
+}
+
 NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game)
 {
   auto instance_data = game->GetInstanceData();
@@ -19,7 +29,8 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_Window(window),
   m_InitSettings(std::move(init_settings)),
   m_ClientInstanceData(nullptr),
-  m_ClientSystems(nullptr)
+  m_ClientSystems(nullptr),
+  m_Updating(false)
 {
   auto resolution = m_Window.GetSize();
   m_RenderState.InitRenderState(resolution.x, resolution.y);
@@ -28,12 +39,16 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_RenderUtil.SetClearColor(Color(100, 149, 237, 255));
   m_RenderUtil.LoadShaders();
 
+  m_SharedGlobalResources.Emplace();
+  m_ClientGlobalResources.Emplace();
+
   SetInitialMode();
 }
 
 GameContainer::~GameContainer()
 {
-
+  m_SharedGlobalResources.Clear();
+  m_ClientGlobalResources.Clear();
 }
 
 void GameContainer::SetInitialMode()
@@ -69,12 +84,17 @@ GameLevelList & GameContainer::GetLevelList()
 
 GameSharedGlobalResources & GameContainer::GetSharedGlobalResources()
 {
-  return m_SharedGlobalResources;
+  return m_SharedGlobalResources.Value();
 }
 
 GameClientGlobalResources & GameContainer::GetClientGlobalResources()
 {
-  return m_ClientGlobalResources;
+  return m_ClientGlobalResources.Value();
+}
+
+GameClientSave & GameContainer::GetSave()
+{
+  return m_Save;
 }
 
 NullOptPtr<GameClientInstanceData> GameContainer::GetInstanceData()
@@ -109,12 +129,17 @@ RenderUtil & GameContainer::GetRenderUtil()
 
 void GameContainer::StartNetworkClient()
 {
-  m_Client = std::make_unique<GameNetworkClient>(*this, m_NetInitSettings);
+  m_Client = std::make_unique<GameNetworkClient>(*this);
 }
 
 void GameContainer::StopNetworkClient()
 {
   m_Client.reset();
+}
+
+bool GameContainer::HasClient() const
+{
+  return m_Client.get() != nullptr;
 }
 
 GameNetworkClient & GameContainer::GetClient()
@@ -130,22 +155,30 @@ GameNetworkClientInitSettings & GameContainer::GetNetworkInitSettings()
 
 bool GameContainer::AllGlobalResourcesLoaded()
 {
-  return m_LevelList.IsLevelListLoaded() && m_ClientGlobalResources.IsLoaded() && m_SharedGlobalResources.IsLoaded();
+  return m_LevelList.IsLevelListLoaded() && m_ClientGlobalResources->IsLoaded() && m_SharedGlobalResources->IsLoaded();
 }
 
 void GameContainer::Update()
 {
+  m_Updating = true;
   m_RenderState.SetScreenSize(m_Window.GetSize());
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
+
+  m_Save.Update();
 
   if (m_Mode)
   {
     m_Mode->Step();
   }
 
-
   auto comp_system = m_EngineState.GetComponentSystem();
   comp_system->FinalizeComponentDestroys();
+
+  if (m_NextMode)
+  {
+    m_Mode = std::move(m_NextMode);
+  }
+  m_Updating = false;
 }
 
 void GameContainer::Render()
@@ -162,4 +195,21 @@ void GameContainer::Render()
   }
 
   m_Window.Swap();
+}
+
+void GameContainer::InputEvent()
+{
+  m_Updating = true;
+
+  if (m_Mode)
+  {
+    m_Mode->InputEvent();
+  }
+
+  if (m_NextMode)
+  {
+    m_Mode = std::move(m_NextMode);
+  }
+
+  m_Updating = false;
 }

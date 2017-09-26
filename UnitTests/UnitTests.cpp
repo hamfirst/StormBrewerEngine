@@ -99,6 +99,81 @@ void TestWebsocket()
   NetworkShutdown();
 }
 
+void TestHistoryList()
+{
+  std::vector<HistoryListData> inp_lists[10];
+  for (int index = 0; index < 10; ++index)
+  {
+    int time = 0;
+    for (int sample = 0; sample < 50; sample++)
+    {
+      HistoryListData data;
+      data.m_List = index;
+      data.m_Frame = time;
+      data.m_Data = sample;
+      inp_lists[index].emplace_back(data);
+
+      time += rand() % 7;
+    }
+  }
+
+  HistoryList<HistoryListData> history_list;
+
+  int indices[10] = {};
+
+  while (true)
+  {
+    bool has_elems = false;
+    for (int index = 0; index < 10; index++)
+    {
+      int start_index = indices[index];
+      if (start_index >= 50)
+      {
+        continue;
+      }
+
+      has_elems = true;
+      int end_index = std::min(start_index + 1 + (int)(rand() % 3), 50);
+
+      auto start_itr = inp_lists[index].begin() + start_index;
+      auto end_itr = inp_lists[index].begin() + end_index;
+
+      history_list.MergeList(start_itr, end_itr, end_index - start_index, [](auto & f) { return f.m_Frame; }, [](auto & f) {return f; });
+      indices[index] = end_index;
+    }
+
+    if (has_elems == false)
+    {
+      break;
+    }
+  }
+
+  int test_indices[10] = {};
+  auto history_itr = history_list.IterateElementsSince(0);
+
+  while (history_itr.IsComplete() == false)
+  {
+    auto visitor = [&](auto & f)
+    {
+      auto test_index = test_indices[f.m_List];
+      if (test_index != f.m_Data)
+      {
+        ASSERT(false, "bad");
+      }
+
+      if (inp_lists[f.m_List][test_index].m_Data != f.m_Data)
+      {
+        ASSERT(false, "bad");
+      }
+
+      test_indices[f.m_List]++;
+    };
+
+    history_itr.VisitElementsForCurrentTime(visitor);
+    history_itr.Advance();
+  }
+}
+
 void TestJson()
 {
   Json json;

@@ -6,7 +6,7 @@
 template <typename VecCompType>
 struct CollisionDatabaseData
 {
-
+  uint8_t m_CollisionMask = 0xFF;
 };
 
 template <typename VecCompType, typename CollisionData = CollisionDatabaseData<VecCompType>>
@@ -30,7 +30,7 @@ public:
     return (uint32_t)data_index;
   }
 
-  bool SweptPointTest(const Line & l, Result & out_result, CollisionData & out_collision_data)
+  bool SweptPointTest(const Line & l, Result & out_result, CollisionData & out_collision_data, uint8_t collision_mask = 0xFF)
   {
     auto bounding_box = l.GetBoundingBox();
     auto box = bounding_box.ToNormalBox();
@@ -45,6 +45,11 @@ public:
       Result test_result;
 
       auto & collision_data = m_CollisionData[index];
+      if ((collision_data.m_CollisionDataa.m_CollisionMask & collision_mask) == 0)
+      {
+        continue;
+      }
+
       if (Intersection<VecCompType>::SweptPointToLineTest(l, collision_data.m_Line, test_result))
       {
         if (intersected == false || test_result.m_T < out_result.m_T)
@@ -58,7 +63,7 @@ public:
     return intersected;
   }
 
-  bool SweptCircleTest(const Line & l, const VecCompType & radius, Result & out_result, CollisionData & out_collision_data) const
+  bool SweptCircleTest(const Line & l, const VecCompType & radius, Result & out_result, CollisionData & out_collision_data, uint8_t collision_mask = 0xFF) const
   {
     auto bounding_box = l.GetBoundingBox();
     auto box = bounding_box.ToNormalBox();
@@ -78,6 +83,11 @@ public:
       Result test_result;
 
       auto & collision_data = m_CollisionData[index];
+      if ((collision_data.m_CollisionData.m_CollisionMask & collision_mask) == 0)
+      {
+        continue;
+      }
+
       if (Intersection<VecCompType>::SweptCircleToLineTest(l, radius, collision_data.m_Line, collision_data.m_CheckStart, collision_data.m_CheckEnd, test_result))
       {
         if (intersected == false || test_result.m_T < out_result.m_T)

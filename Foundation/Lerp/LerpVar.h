@@ -13,6 +13,8 @@ public:
   operator float() const;
   float Get() const;
 
+  float GetTarget() const;
+
   void LerpTo(float val, float time);
   void Set(float val);
 

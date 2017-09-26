@@ -274,12 +274,12 @@ template <>
 struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<2>
 {
   using member_type = FrameData; // FrameData
-  static constexpr auto GetName() { return "m_GlobalData"; }
+  static constexpr auto GetName() { return "m_InstanceData"; }
   static constexpr auto GetType() { return "FrameData"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x4652C62B; }
+  static constexpr unsigned GetFieldNameHash() { return 0xEFC069F9; }
   static constexpr unsigned GetTypeNameHash() { return 0x4108D867; }
   static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_GlobalData; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_InstanceData; }
 };
 
 template <typename Self>
@@ -287,9 +287,9 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data<2, Self> : public StormReflT
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, FrameData> & Get() { return self.m_GlobalData; }
-  std::add_const_t<std::remove_reference_t<FrameData>> & Get() const { return self.m_GlobalData; }
-  void SetDefault() { self.m_GlobalData = StormReflTypeInfo<SpriteBaseDef>::GetDefault().m_GlobalData; }
+  match_const_t<Self, FrameData> & Get() { return self.m_InstanceData; }
+  std::add_const_t<std::remove_reference_t<FrameData>> & Get() const { return self.m_InstanceData; }
+  void SetDefault() { self.m_InstanceData = StormReflTypeInfo<SpriteBaseDef>::GetDefault().m_InstanceData; }
 };
 
 template <>

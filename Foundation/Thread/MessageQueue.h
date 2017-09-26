@@ -5,6 +5,65 @@
 
 #include "Foundation/Optional/Optional.h"
 
+
+#if 1
+
+#include <queue>
+#include <mutex>
+
+template <typename T>
+class MessageQueue
+{
+public:
+  MessageQueue(int size)
+  {
+
+  }
+
+  ~MessageQueue()
+  {
+
+  }
+
+  bool Enqueue(const T & message)
+  {
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    m_Queue.push(message);
+    return true;
+  }
+
+  bool Enqueue(T && message)
+  {
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    m_Queue.push(std::move(message));
+    return true;
+  } 
+
+  bool HasData()
+  {
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    return m_Queue.size() > 0;
+  }
+
+  Optional<T> TryDequeue()
+  {
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    if(m_Queue.size() > 0) 
+    {
+      auto val = Optional<T>(std::move(m_Queue.front()));
+      m_Queue.pop();
+      return val;
+    }
+
+    return Optional<T>();
+  }
+
+private:
+  std::queue<T> m_Queue;
+  std::mutex m_Mutex;
+};
+
+#else
 template <typename T>
 class MessageQueue
 {
@@ -173,3 +232,5 @@ private:
   std::unique_ptr<QueueData[]> m_Array;
   int m_Length;
 };
+
+#endif

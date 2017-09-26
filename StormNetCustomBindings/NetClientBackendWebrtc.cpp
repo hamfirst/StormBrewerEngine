@@ -3,6 +3,7 @@
 #include "NetClientBackendWebrtc.h"
 
 #include <stdexcept>
+#include <cstdio>
 
 
 NetClientBackendWebrtc::NetClientBackendWebrtc(NetClientInterface * iface, const char * host_addr, uint16_t port, const char * fingerprint,

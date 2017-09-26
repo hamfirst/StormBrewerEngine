@@ -55,6 +55,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{b77d9298-d7af-447e-a914-8aeced9d1a52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VisualEffect">
+      <UniqueIdentifier>{dacad1a1-716a-4c52-b89f-8651f099b7ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
@@ -145,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="UI\UIResource.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectDef.refl.cpp">
+      <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffect\VisualEffectResource.cpp">
+      <Filter>VisualEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +350,15 @@
     </ClInclude>
     <ClInclude Include="UI\UIResource.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectDef.refl.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectDef.refl.meta.h">
+      <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffect\VisualEffectResource.h">
+      <Filter>VisualEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -67,7 +67,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
           if(ptr->m_SelectNewLayers)
           {
-            ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+            ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
           }
         },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -105,7 +105,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
           if (ptr->m_SelectNewLayers)
           {
-            ptr->m_Editor->ChangeLayerSelection(data.m_LayerInfo);
+            ptr->m_Editor->ChangeLayerSelection(data.m_LayerInfo, false);
           }
         },
     [](RString & name, MapEditorLayerListEntityData & data, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -125,7 +125,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -145,7 +145,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -165,7 +165,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -185,7 +185,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
@@ -205,7 +205,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
 
         if (ptr->m_SelectNewLayers)
         {
-          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo);
+          ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }
       },
     [](RString & filename, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },

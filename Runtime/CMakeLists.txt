@@ -28,29 +28,23 @@ endif()
 set(GENERIC_SRC_Runtime 
             ./Runtime.cpp
             ./RuntimeCommon.cpp
-            ./RuntimeState.cpp
+            ./Anchor/AnchorDef.refl.cpp
+            ./Anchor/AnchorTypeDatabase.cpp
             ./Collision/CollisionSystem.cpp
-            ./Component/Component.cpp
-            ./Component/ComponentHandle.cpp
             ./Component/ComponentInitData.refl.cpp
             ./Component/ComponentInitDataTypeDatabase.cpp
-            ./Component/ComponentSystem.cpp
-            ./Component/ComponentUpdateBucketList.cpp
+            ./Config/ConfigManager.cpp
             ./DocumentResource/DocumentResourceBase.cpp
             ./DocumentResource/DocumentResourceManager.cpp
             ./DocumentResource/DocumentResourceReference.cpp
             ./DocumentResource/DocumentResourceReferenceBase.cpp
-            ./Entity/Entity.cpp
             ./Entity/EntityDef.refl.cpp
-            ./Entity/EntityHandle.cpp
             ./Entity/EntityResource.cpp
-            ./Entity/EntitySystem.cpp
-            ./Event/EventSystem.cpp
             ./FrameData/FrameData.refl.cpp
             ./Map/MapDef.refl.cpp
-            ./Map/MapInstance.cpp
+            ./Map/MapEffectLayerDef.refl.cpp
+            ./Map/MapEffectLayerTypeDatabase.cpp
             ./Map/MapResource.cpp
-            ./Map/MapSystem.cpp
             ./Mover/Mover.cpp
             ./Path/PathDef.refl.cpp
             ./Path/PathTypeDatabase.cpp
@@ -59,6 +53,11 @@ set(GENERIC_SRC_Runtime
             ./SpriteBase/SpriteBaseDef.refl.cpp
             ./TileSheet/TileSheetDef.refl.cpp
             ./TileSheet/TileSheetResource.cpp
+            ./UI/UIDef.refl.cpp
+            ./UI/UIElementTypeDatabase.cpp
+            ./UI/UIResource.cpp
+            ./VisualEffect/VisualEffectDef.refl.cpp
+            ./VisualEffect/VisualEffectResource.cpp
             ./Volume/VolumeDef.refl.cpp
             ./Volume/VolumeTypeDatabase.cpp
             )

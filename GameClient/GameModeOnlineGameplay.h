@@ -5,6 +5,8 @@
 
 #include "Engine/Camera/Camera.h"
 
+#include "Foundation/Time/FrameClock.h"
+
 class GameModeOnlineGameplay : public GameMode
 {
 public:
@@ -21,7 +23,9 @@ protected:
 
 private:
 
-  Optional<GameClientSystems> m_ClientSystems;
+  std::unique_ptr<GameClientSystems> m_ClientSystems;
+
+  FrameClock m_FrameClock;
 };
 
 

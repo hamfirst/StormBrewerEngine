@@ -13,6 +13,8 @@ NetBitWriter & NetTransmitterServerWebrtc::CreateWriter(NetPipeMode mode, int ch
   m_StreamIndex = channel_index;
   m_SenderChannel = ack;
 
+  m_Writer.Reset();
+
   if (ack == false && m_OutSeqs[channel_index].second)
   {
     m_Writer.WriteBits(m_OutSeqs[channel_index].first, 8);

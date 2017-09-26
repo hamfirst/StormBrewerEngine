@@ -3,8 +3,12 @@
 #include "StormExprOperator.h"
 #include "StormExprHash.h"
 
-StormExprEvalBuilder::StormExprEvalBuilder(StormExprFunctionList & funcs) :
+#include <cstdlib>
+#include <cwctype>
+
+StormExprEvalBuilder::StormExprEvalBuilder(StormExprFunctionList & funcs, bool quick_version) :
   m_Functions(funcs),
+  m_QuickVersion(quick_version),
   m_InitBlockList(nullptr)
 {
 
@@ -186,7 +190,7 @@ bool StormExprEvalBuilder::ParseString(const char * str, const char * & result, 
 
   while (true)
   {
-    if (*str == '0')
+    if (*str == 0)
     {
       error = str_start;
       error_desc = "String literal has no end quote";
@@ -296,6 +300,13 @@ bool StormExprEvalBuilder::ParseBasicOperation(const char * str, const char * & 
     return true;
   }
 
+  if (*str == '#')
+  {
+    op = StormExprOperatorType::kCat;
+    result = str + 1;
+    return true;
+  }
+
   if (*str == '+')
   {
     op = StormExprOperatorType::kAdd;
@@ -334,7 +345,7 @@ bool StormExprEvalBuilder::ParseBasicOperation(const char * str, const char * & 
   if (*str == '=' && *(str + 1) == '=')
   {
     op = StormExprOperatorType::kEq;
-    result = str + 1;
+    result = str + 2;
     return true;
   }
 
@@ -438,6 +449,8 @@ bool StormExprEvalBuilder::ParseStatementElement(const char * str, const char * 
     if (*str == ']')
     {
       elem = StormExprStatementBlockElement(start_str, func_name_hash, {});
+      result = str + 1;
+      return true;
     }
     else
     {
@@ -463,6 +476,12 @@ bool StormExprEvalBuilder::ParseStatementElement(const char * str, const char * 
         {
           error = ident_start;
           error_desc = "Could not parse function parameter";
+
+          for(auto elem : sub_blocks)
+          {
+            delete elem;
+          }
+          
           return false;
         }
 
@@ -711,8 +730,16 @@ bool StormExprEvalBuilder::CompileOperand(StormExprStatementBlock & statement_bl
         }
       }
 
-      op_list.push_back(StormExprOp{ StormExprLoadLit, func_info.m_SubBlockCount });
-      op_list.push_back(StormExprOp{ func_cb, (ptrdiff_t)user_data });
+      if (m_QuickVersion)
+      {
+        op_list.push_back(StormExprOp{ StormExprLoadLitQuick, func_info.m_SubBlockCount });
+        op_list.push_back(StormExprOp{ func_cb, (ptrdiff_t)user_data });
+      }
+      else
+      {
+        op_list.push_back(StormExprOp{ StormExprLoadLit, func_info.m_SubBlockCount });
+        op_list.push_back(StormExprOp{ func_cb, (ptrdiff_t)user_data });
+      }
       return true;
     }
   }
@@ -720,21 +747,28 @@ bool StormExprEvalBuilder::CompileOperand(StormExprStatementBlock & statement_bl
 
 void StormExprEvalBuilder::CompileOperator(const StormExprStatementBlockElement & op, StormExprOpList & op_list)
 {
-  op_list.emplace_back(StormExprGetOpForOperator(op.GetOperatorType()));
+  op_list.emplace_back(StormExprGetOpForOperator(op.GetOperatorType(), m_QuickVersion));
 }
 
 void StormExprEvalBuilder::CompileOperatorFlush(std::vector<StormExprStatementBlockElement> & operator_stack, StormExprOpList & op_list)
 {
   while (operator_stack.size() > 0)
   {
-    op_list.emplace_back(StormExprGetOpForOperator(operator_stack.back().GetOperatorType()));
+    op_list.emplace_back(StormExprGetOpForOperator(operator_stack.back().GetOperatorType(), m_QuickVersion));
     operator_stack.pop_back();
   }
 }
 
 void StormExprEvalBuilder::CompileLoad(const StormExprStatementBlockElement & op, StormExprOpList & op_list)
 {
-  op_list.emplace_back(StormExprOp{ StormExprLoad, op.GetValueId() });
+  if (m_QuickVersion)
+  {
+    op_list.emplace_back(StormExprOp{ StormExprLoadQuick, op.GetValueId() });
+  }
+  else
+  {
+    op_list.emplace_back(StormExprOp{ StormExprLoad, op.GetValueId() });
+  }
 }
 
 bool StormExprEvalBuilder::CompileStatement(StormExprStatementBlock & statement_block, StormExprOpList & op_list, std::size_t & index,
@@ -789,7 +823,7 @@ bool StormExprEvalBuilder::CompileStatement(StormExprStatementBlock & statement_
         return false;
       }
 
-      op_list.emplace_back(StormExprGetOpForOperator(StormExprOperatorType::kTernaryEnd));
+      op_list.emplace_back(StormExprGetOpForOperator(StormExprOperatorType::kTernaryEnd, m_QuickVersion));
       return true;
     }
 

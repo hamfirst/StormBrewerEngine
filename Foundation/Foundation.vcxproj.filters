@@ -91,6 +91,18 @@
     <Filter Include="Bitset">
       <UniqueIdentifier>{74146337-c319-4b7c-a442-b72fcddbc353}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CircularBuffer">
+      <UniqueIdentifier>{9701b7f0-22e5-4524-80a6-2bf1844d5826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Profiling">
+      <UniqueIdentifier>{dfcdeba3-adc6-4e46-ae58-2d638fb3c9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HistoryList">
+      <UniqueIdentifier>{fa6f8ff2-e810-47d1-b9e3-c704480cc1ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FutureList">
+      <UniqueIdentifier>{846ae72b-6f47-4265-8e50-0ab9d513250a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -277,6 +289,27 @@
     <ClInclude Include="Pathfinding\PathfindingPath.h">
       <Filter>Pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="CircularBuffer\CircularBuffer.h">
+      <Filter>CircularBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Profiling\Profiling.h">
+      <Filter>Profiling</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer\CircularQueue.h">
+      <Filter>CircularBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryList\HistoryList.h">
+      <Filter>HistoryList</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonArray.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\JsonDictionary.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\FPSClock.h">
+      <Filter>Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">
@@ -352,9 +385,6 @@
     <ClCompile Include="Random\RandomGenerator.cpp">
       <Filter>Random</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Util.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="FileSystem\Directory.cpp">
       <Filter>FileSystem</Filter>
     </ClCompile>
@@ -369,6 +399,18 @@
     </ClCompile>
     <ClCompile Include="Bitset\Bitset.cpp">
       <Filter>Bitset</Filter>
+    </ClCompile>
+    <ClCompile Include="Profiling\Profiling.cpp">
+      <Filter>Profiling</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\JsonArray.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\JsonDictionary.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\FPSClock.cpp">
+      <Filter>Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

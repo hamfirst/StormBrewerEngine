@@ -135,9 +135,53 @@ float InputState::GetGamepadAxis(int gamepad_idx, GamepadAxis axis)
   return m_GamepadState.GetAxis(gamepad_idx, axis);
 }
 
+Vector2f InputState::GetGamepadJoystick(int gamepad_idx, GamepadJoystick joystick)
+{
+  float x = 0;
+  float y = 0;
+
+  switch (joystick)
+  {
+  case GamepadJoystick::kLeft:
+    x = GetGamepadAxis(gamepad_idx, GamepadAxis::kLeftHorz);
+    y = GetGamepadAxis(gamepad_idx, GamepadAxis::kLeftVert);
+    break;
+  case GamepadJoystick::kRight:
+    x = GetGamepadAxis(gamepad_idx, GamepadAxis::kRightHorz);
+    y = GetGamepadAxis(gamepad_idx, GamepadAxis::kRightVert);
+    break;
+  }
+
+  return Vector2f{ x, y };
+}
+
 KeyboardPassthroughCallbackLink InputState::RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del)
 {
   return m_KeyboardState.RegisterPassThroughDelegate(del);
+}
+
+void InputState::ApplyDeadZone(Vector2f & input, float dead_zone)
+{
+  auto input_str = glm::length(input);
+
+  if (input_str > 1.0f)
+  {
+    input /= input_str;
+    input_str = 1.0f;
+  }
+
+  if (input_str < dead_zone)
+  {
+    input = {};
+    return;
+  }
+
+  auto alive_zone = 1.0f - dead_zone;
+  input /= input_str;
+  
+  input_str -= dead_zone;
+  input_str /= alive_zone;
+  input *= input_str;
 }
 
 void InputState::HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active)

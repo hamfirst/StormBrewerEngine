@@ -76,6 +76,7 @@ protected:
   virtual int PreProcessLoadedData(Buffer & file_data, bool load_deps); // This is called from the loader thread
   virtual void OnDataLoadComplete(Buffer & file_data, bool load_deps);
   virtual void CallAssetLoadCallbacks();
+  virtual void CleanupAsset();
 
 protected:
 

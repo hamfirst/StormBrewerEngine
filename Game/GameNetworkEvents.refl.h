@@ -6,6 +6,7 @@
 #include <StormNet/NetReflection.h>
 
 #include "Game/GameNetworkSettings.h"
+#include "Game/GameServerTypes.h"
 
 struct GlobalNetworkEvent
 {
@@ -14,6 +15,17 @@ struct GlobalNetworkEvent
 };
 
 struct PlaceholderGlobalEvent : public GlobalNetworkEvent
+{
+  NET_REFL;
+};
+
+struct ServerAuthNetworkEvent
+{
+  NET_DECLARE_BASE_TYPE;
+  NET_REFL;
+};
+
+struct PlaceholderServerAuthEvent : public ServerAuthNetworkEvent
 {
   NET_REFL;
 };
@@ -41,18 +53,11 @@ struct PlaceholderClientEvent : public ClientNetworkEvent
   NET_REFL;
 };
 
-struct GoToTownEvent : public ClientNetworkEvent
-{
-  NET_REFL;
-  uint8_t m_Town;
-};
-
 #if (NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC)
 
 struct EndTurnEvent : public ClientNetworkEvent
 {
   NET_REFL;
 };
-
 
 #endif

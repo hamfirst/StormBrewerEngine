@@ -61,6 +61,22 @@ PixelBuffer PixelBuffer::Rotate()
   return buffer;
 }
 
+PixelBuffer PixelBuffer::CreateFromInvertedData(NotNullPtr<uint8_t> buffer, int width, int height, int pixel_size)
+{
+  auto new_buffer = std::make_unique<uint8_t[]>(width * height * pixel_size);
+  auto line_size = width * pixel_size;
+
+  auto src_offset = 0;
+  auto dst_offset = line_size * (height - 1);
+  
+  for (int y = 0; y < height; ++y, src_offset += line_size, dst_offset -= line_size)
+  {
+    memcpy(&new_buffer[dst_offset], &buffer[src_offset], line_size);
+  }
+
+  return PixelBuffer(std::move(new_buffer), width, height, pixel_size);
+}
+
 NotNullPtr<uint8_t> PixelBuffer::GetPixelBuffer()
 {
   return m_Memory;

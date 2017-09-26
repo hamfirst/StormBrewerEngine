@@ -7,16 +7,16 @@
 
 
 template <>
-struct StormReflTypeInfo<UIElementDataBase>
+struct StormReflTypeInfo<UIElementInitDataBase>
 {
   using MyBase = void;
   static constexpr int fields_n = 0;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "UIElementDataBase"; }
-  static constexpr auto GetNameHash() { return 0xC8F14E8A; }
-  static UIElementDataBase & GetDefault() { static UIElementDataBase def; return def; }
+  static constexpr auto GetName() { return "UIElementInitDataBase"; }
+  static constexpr auto GetNameHash() { return 0x17C45A05; }
+  static UIElementInitDataBase & GetDefault() { static UIElementInitDataBase def; return def; }
 };
 
 template <>
@@ -250,11 +250,11 @@ struct StormReflTypeInfo<UIDef>
 template <>
 struct StormReflTypeInfo<UIDef>::field_data_static<0>
 {
-  using member_type = RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>
+  using member_type = RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x218B2ECC; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1FA8A29E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_InitData; }
 };
@@ -264,8 +264,8 @@ struct StormReflTypeInfo<UIDef>::field_data<0, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>> & Get() { return self.m_InitData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<UIElementDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>>> & Get() const { return self.m_InitData; }
+  match_const_t<Self, RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>> & Get() { return self.m_InitData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>>> & Get() const { return self.m_InitData; }
   void SetDefault() { self.m_InitData = StormReflTypeInfo<UIDef>::GetDefault().m_InitData; }
 };
 
@@ -425,7 +425,7 @@ namespace StormReflFileInfo
   template <>
   struct UIDef::type_info<0>
   {
-    using type = ::UIElementDataBase;
+    using type = ::UIElementInitDataBase;
   };
 
   template <>

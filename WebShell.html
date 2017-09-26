@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Game!</title>
+    <style>
+      @font-face {
+        font-family: DownloadingFont;
+        src: url(DownloadingFont.ttf);
+      }
+
+      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      canvas.emscripten { border: 0px none; background-color: white; width: 768px; height: 480px; }
+      .emscripten_border { border: 1px solid lightgray; display: block; margin:auto; width:770px; }
+
+      #logo {
+        position: absolute; 
+        top: 150px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        left:50%; 
+        transform: translate(-50%); 
+      }
+
+      #loading {
+        position: absolute; 
+        top: 100px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        left:50%; 
+        transform: translate(-50%); 
+        font-family: "DownloadingFont", Georgia, Serif; font-size:30px; 
+        text-shadow: -1px 0 darkgray, 0 1px darkgray, 1px 0 darkgray, 0 -1px darkgray;
+        color:rgba(233, 255, 124, 1);
+      }
+
+      #error {
+        display: none;
+        position: absolute; 
+        top: 100px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        left:50%; 
+        transform: translate(-50%); 
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        text-shadow: -1px 0 darkgray, 0 1px darkgray, 1px 0 darkgray, 0 -1px darkgray;
+        color:darkslateblue;        
+      }
+    </style>
+  </head>
+  <body>
+    <img id="logo" src="Logo.png" />
+    <div class="loading" id="loading">
+      Downloading...
+    </div>
+    <div class="error" id="error">
+      Appologies, but your browser is not supported by this game<br />
+      Please try a recent version of Chrome, Firefox or Safari.
+    </div>
+  
+    <div class="emscripten_border">
+      <canvas tabindex="0" class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+
+    <script type='text/javascript'>
+
+      if(window.AudioContext == null || window.WebAssembly == null || window.RTCPeerConnection == null) {
+        var loading = document.getElementById('loading');
+        loading.style.display = "none";
+        var logo = document.getElementById('logo');
+        logo.style.display = "none";
+
+        var error = document.getElementById('error');
+        error.style.display = "block";
+      } else {
+
+        var dataFolder="{{{PROJECT_NAME}}}";
+        var version = "{{{PROJECT_VERSION}}}";
+        var host = "";
+        var username = null;
+
+        console.log(window.location.hostname);
+        if(window.location.hostname == "stormbrewers.com") {
+          var host = "https://s3.amazonaws.com/static-content-www/"+dataFolder+"/v"+version+"/";
+        }
+
+        var Module = {
+          
+          filePackagePrefixURL: host,
+          wasmBinaryFile: host + "ClientExe.wasm",
+          preRun: [],
+          postRun: [],
+          print: (function() {
+            return function(text) {
+              if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+              console.log(text);
+            };
+          })(),
+          printErr: function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.error(text);
+          },
+          canvas: (function() {
+            var canvas = document.getElementById('canvas');
+            canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+            return canvas;
+          })()
+        };
+
+        function EmscriptenLoadComplete() {
+          var loading = document.getElementById('loading');
+          loading.style.display = "none";
+          var logo = document.getElementById('logo');
+          logo.style.display = "none";
+          var canvas = document.getElementById('canvas');
+          canvas.focus();
+          canvas.onclick = function() {
+            canvas.focus();
+          }
+
+          if(username != null) {
+            var l = Module.lengthBytesUTF8(username) + 1;
+            var ptr = Module._malloc(l);          
+            Module.stringToUTF8(username, ptr, l);
+            
+            Module.ccall('SetAccountName', 'null', ['number'], [ptr]);
+          }
+        }
+
+        function PageLoadComplete() {
+          var script = document.createElement('script');
+          script.src = host + "ClientExe.js";
+          document.head.appendChild(script); 
+        }
+
+        function KongregateScriptLoaded() {
+          kongregateAPI.loadAPI(function(){
+            window.kongregate = kongregateAPI.getAPI();
+
+            if(window.kongregate.services.isGuest() == false) {
+              username = window.kongregate.services.getUsername();
+            } else {
+              window.kongregate.services.addEventListener("login", function(event) {
+                username = window.kongregate.services.getUsername();
+                var l = Module.lengthBytesUTF8(username) + 1;
+                var ptr = Module._malloc(l);          
+                Module.stringToUTF8(username, ptr, l);
+                
+                Module.ccall('SetAccountName', 'null', ['number'], [ptr]);
+              });
+            }
+            PageLoadComplete();
+          });
+        }
+
+        if(window.location.hostname.search("konggames.com") != -1) {
+          var script = document.createElement('script');
+          script.src = "https://cdn1.kongregate.com/javascripts/kongregate_api.js";
+          script.onload = function() { KongregateScriptLoaded(); };
+          document.head.appendChild(script); 
+        } else {
+          PageLoadComplete();
+        }
+      }
+    </script>
+
+  </body>
+</html>

@@ -102,7 +102,7 @@ bool MusicSpec::LoadFile()
   if (vorbis_synthesis_init(&m_VorbisDSP.Value(), &m_VorbisInfo.Value()) == 1)
   {
     fprintf(stderr, "Error initializing vorbis decoder\n");
-    return 0;
+    return false;
   }
 
   m_VorbisBlock = vorbis_block{};
@@ -156,7 +156,7 @@ void MusicSpec::FreeResources()
   }
 }
 
-bool MusicSpec::FillBuffer(void * data, std::size_t length, float * volume_categories)
+bool MusicSpec::FillBuffer(void * data, std::size_t length, float * volume_categories, float global_volume)
 {
   if (!m_SyncState)
   {
@@ -174,7 +174,7 @@ bool MusicSpec::FillBuffer(void * data, std::size_t length, float * volume_categ
   std::size_t write_samples = length / (sizeof(float) * 2);
   float * output_ptr = (float *)data;
 
-  float volume = m_Volume * volume_categories[(int)m_Category];
+  float volume = m_Volume * volume_categories[(int)m_Category] * global_volume;
   float l_vol = (m_Pan > 0 ? 1.0f - m_Pan : 1.0f) * volume;
   float r_vol = (m_Pan < 0 ? 1.0f + m_Pan : 1.0f) * volume;
 

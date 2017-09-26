@@ -12,6 +12,10 @@ MapEffectLayerRenderer::~MapEffectLayerRenderer()
 
 }
 
+void MapEffectLayerRenderer::Init(GameContainer & game_container)
+{
+
+}
 
 void MapEffectLayerRenderer::Update(GameContainer & game_container)
 {

@@ -27,6 +27,14 @@ public:
   void FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c);
   void FilledRectangle(const Box & box, const Color & c);
 
+  struct TrailInfo
+  {
+    Vector2f m_Position;
+    float m_Thickness;
+  };
+
+  void Trail(const std::vector<TrailInfo> & points, const Color & c);
+
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
 
@@ -35,10 +43,6 @@ public:
   bool HasGeo() const;
 
 private:
-
-  void Begin();
-  void LineTo(const Vector2f & pos, float thickness, const Color & c);
-  void End();
 
   void AddVert(const Vector2f & pos, const Color & c);
 

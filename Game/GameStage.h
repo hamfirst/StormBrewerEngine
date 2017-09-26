@@ -10,6 +10,13 @@
 
 #include "Runtime/Collision/IntersectionDatabase.h"
 
+struct CollisionLine
+{
+  Vector2 m_Start;
+  Vector2 m_End;
+  int m_Team;
+};
+
 class GameStage
 {
 public:
@@ -18,9 +25,19 @@ public:
 
   GameFullState CreateDefaultGameState() const;
 
+  const CollisionDatabase<GameNetVal> & GetCollision() const;
+  const std::vector<CollisionLine> GetCollisionLines() const;
+
+  const std::vector<std::vector<Vector2>> & GetPlayerSpawns() const;
+
 private:
   friend class GameInstance;
 
   std::vector<ServerObjectStaticInitData> m_StaticObjects;
   int m_DynamicObjectCount;
+
+  CollisionDatabase<GameNetVal> m_Collision;
+  std::vector<CollisionLine> m_CollisionLines;
+
+  std::vector<std::vector<Vector2>> m_PlayerSpawns;
 };

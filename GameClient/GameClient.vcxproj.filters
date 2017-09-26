@@ -1,54 +1,132 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameContainer.cpp" />
-    <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="GameClientEntitySync.cpp" />
     <ClCompile Include="GameNetworkClient.cpp" />
     <ClCompile Include="GameClientController.refl.cpp" />
-    <ClCompile Include="GameClientLevelLoader.cpp" />
     <ClCompile Include="GameModeLogo.cpp" />
     <ClCompile Include="GameModeConnecting.cpp" />
     <ClCompile Include="GameModeOnlineGameplay.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClientGlobalResources.cpp" />
     <ClCompile Include="GameClientInstanceResources.cpp" />
-    <ClCompile Include="GameClientInputManager.cpp" />
-    <ClCompile Include="GameClientUIManager.cpp" />
-    <ClCompile Include="GameClientInstanceData.cpp" />
-    <ClCompile Include="GameClientSystems.cpp" />
-    <ClCompile Include="GameClientInstanceContainer.cpp" />
     <ClCompile Include="GameModeEndGame.cpp" />
     <ClCompile Include="GameModeMainMenu.cpp" />
     <ClCompile Include="GameModeNameSelect.cpp" />
     <ClCompile Include="GameModeLoadingGlobal.cpp" />
     <ClCompile Include="GameModeSinglePlayerBots.cpp" />
+    <ClCompile Include="EffectLayers\CollisionDrawer.refl.cpp">
+      <Filter>EffectLayers</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectLayers\CollisionDrawer.refl.reg.cpp">
+      <Filter>EffectLayers</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayerComponent.refl.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayerComponent.refl.reg.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameModeOfflineStaging.cpp" />
+    <ClCompile Include="GameModeLocalMultiplayer.cpp" />
+    <ClCompile Include="GameClientUIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientInputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServerEventResponder.cpp" />
+    <ClCompile Include="GameModeTutorial.cpp" />
+    <ClCompile Include="GameClientEntitySync.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientInstanceContainer.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientInstanceData.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientLevelLoader.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientSave.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContainer.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClientSystems.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameContainer.h" />
-    <ClInclude Include="GameMode.h" />
-    <ClInclude Include="GameClientEntitySync.h" />
-    <ClInclude Include="GameClientEventSender.h" />
     <ClInclude Include="GameNetworkClient.h" />
     <ClInclude Include="GameClientController.refl.meta.h" />
     <ClInclude Include="GameClientController.refl.h" />
-    <ClInclude Include="GameClientLevelLoader.h" />
     <ClInclude Include="GameModeLogo.h" />
     <ClInclude Include="GameModeConnecting.h" />
     <ClInclude Include="GameModeOnlineGameplay.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClientGlobalResources.h" />
     <ClInclude Include="GameClientInstanceResources.h" />
-    <ClInclude Include="GameClientInputManager.h" />
-    <ClInclude Include="GameClientUIManager.h" />
-    <ClInclude Include="GameClientInstanceData.h" />
-    <ClInclude Include="GameClientSystems.h" />
-    <ClInclude Include="GameClientInstanceContainer.h" />
     <ClInclude Include="GameModeEndGame.h" />
     <ClInclude Include="GameModeMainMenu.h" />
     <ClInclude Include="GameModeNameSelect.h" />
     <ClInclude Include="GameModeLoadingGlobal.h" />
     <ClInclude Include="GameModeSinglePlayerBots.h" />
+    <ClInclude Include="EffectLayers\CollisionDrawer.refl.h">
+      <Filter>EffectLayers</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectLayers\CollisionDrawer.refl.meta.h">
+      <Filter>EffectLayers</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayerComponent.refl.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayerComponent.refl.meta.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModeOfflineStaging.h" />
+    <ClInclude Include="GameModeLocalMultiplayer.h" />
+    <ClInclude Include="GameClientUIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientInputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServerEventResponder.h" />
+    <ClInclude Include="GameModeTutorial.h" />
+    <ClInclude Include="GameClientSaveFileData.refl.h" />
+    <ClInclude Include="GameClientSaveFileData.refl.meta.h" />
+    <ClInclude Include="GameClientEntitySync.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientEventSender.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientInstanceContainer.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientInstanceData.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientLevelLoader.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientSave.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContainer.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClientSystems.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -56,6 +134,15 @@
     </Filter>
     <Filter Include="EffectLayers">
       <UniqueIdentifier>{f74c7d0d-4c1a-4790-b61d-5d963fa42cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{8fb1c3e2-aaf1-4513-bdd8-ed7de9dd7edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{13309ba2-f663-4b28-a6ff-251f91e5e751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{bb922838-065b-4ec9-9107-cb69f937ad12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

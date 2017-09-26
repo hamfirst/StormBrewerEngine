@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstddef>
 
 #include "StormExprValue.h"
 
@@ -9,9 +10,10 @@ class StormExprValueProvider
 public:
 
   StormExprValueProvider();
-  StormExprValueProvider(float * float_ptr);
-  StormExprValueProvider(std::string * str);
-  StormExprValueProvider(const char * const * czstr);
+  StormExprValueProvider(const void * base_ptr, const float * float_ptr);
+  StormExprValueProvider(const void * base_ptr, const std::string * str);
+  StormExprValueProvider(const void * base_ptr, const char * const * czstr);
+  StormExprValueProvider(const void * base_ptr, const StormExprValue * val_ptr);
 
   StormExprValueProvider(const StormExprValueProvider & rhs) = default;
   StormExprValueProvider(StormExprValueProvider && rhs) = default;
@@ -19,14 +21,8 @@ public:
   StormExprValueProvider & operator = (const StormExprValueProvider & rhs) = default;
   StormExprValueProvider & operator = (StormExprValueProvider && rhs) = default;
 
-  StormExprValue GetValue();
-
-  StormExprValueType GetValueType();
-
-  float GetFloatValue();
-  const char * GetStringValue();
-
-  void SetValue(StormExprValue val);
+  StormExprValue GetValue(const void * base_ptr) const;
+  StormExprValueType GetValueType(const void * base_ptr) const;
 
 private:
 
@@ -35,17 +31,12 @@ private:
     kNone,
     kFloat,
     kStdString,
+    kValue,
     kCzstr
   };
 
 private:
 
   ProviderType m_Type;
-
-  union
-  {
-    float * m_Float;
-    std::string * m_String;
-    const char * const * m_Czstr;
-  };
+  ptrdiff_t m_BaseOffset;
 };

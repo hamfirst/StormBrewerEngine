@@ -30,6 +30,7 @@ public:
   int GetAnimationLength(uint32_t animation_name_hash);
   void GetDefaultFrame(AnimationState & anim_state);
   bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1);
+  bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames);
 
   void Render(EntityRenderState & render_state, Vector2 position);
 
@@ -52,6 +53,7 @@ private:
   std::vector<uint32_t> m_AnimNameHashes;
   std::vector<uint32_t> m_AnimStart;
   std::vector<uint32_t> m_AnimLengths;
+  std::vector<uint32_t> m_AnimTotalLengths;
   std::vector<Vector2> m_AnimationFrameSizes;
   std::vector<uint32_t> m_AnimationFrameDurations;
   std::vector<int> m_AnimationLowerEdges;

@@ -27,7 +27,7 @@ void GamepadState::Cleanup()
     if (m_OpenGamePads[index] != nullptr)
     {
       SDL_GameControllerClose((SDL_GameController *)m_OpenGamePads[index]);
-      return;
+      m_OpenGamePads[index] = nullptr;
     }
   }
 }

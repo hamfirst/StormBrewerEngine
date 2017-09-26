@@ -21,8 +21,12 @@ public:
 
   void Show();
   void Hide();
+  void Toggle();
+  void Cancel();
+  bool IsShown() const;
 
   void SetOnOkayCallback(Delegate<void> && rhs);
+  void SetOnCancelCallback(Delegate<void> && rhs);
 
   void SetBkgColor(const Color & color);
   void SetBorderColor(const Color & color);
@@ -44,6 +48,7 @@ private:
   NullOptPtr<UISoundPrototypeEffects> m_Sfx;
 
   Delegate<void> m_OnOkay;
+  Delegate<void> m_OnCancel;
 
   Color m_BkgColor;
   Color m_BorderColor;

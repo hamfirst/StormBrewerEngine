@@ -32,23 +32,31 @@ set(GENERIC_SRC_Foundation
             ./Any/Any.cpp
             ./Assert/Assert.cpp
             ./BasicTypes/BasicTypes.refl.cpp
+            ./Bitset/Bitset.cpp
             ./Blit/Blit.cpp
             ./Blit/PixelBuffer.cpp
             ./Buffer/Buffer.cpp
             ./Buffer/BufferUtil.cpp
             ./Document/Document.cpp
             ./Document/DocumentCompiler.cpp
+            ./FileSystem/Directory.cpp
             ./FileSystem/File.cpp
             ./FileSystem/Path.cpp
             ./Json/Json.cpp
-            ./Math/Util.cpp
+            ./Json/JsonArray.cpp
+            ./Json/JsonDictionary.cpp
+            ./Lerp/LerpFuncs.cpp
+            ./Lerp/LerpVar.cpp
             ./Network/Network.cpp
             ./Network/WebSocket.cpp
+            ./Profiling/Profiling.cpp
             ./PropertyMeta/PropertyFieldDatabase.cpp
             ./Random/Random.cpp
             ./Random/RandomGenerator.cpp
+            ./Sequencer/Sequencer.cpp
             ./SpatialDatabase/SpatialDatabase.cpp
             ./Thread/Semaphore.cpp
+            ./Time/FPSClock.cpp
             ./Time/FrameClock.cpp
             ./Time/StopWatch.cpp
             ./Time/Time.cpp

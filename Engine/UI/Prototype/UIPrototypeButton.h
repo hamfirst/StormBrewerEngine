@@ -16,7 +16,7 @@ class UIPrototypeButton
 {
 public:
 
-  UIPrototypeButton(UIManager & manager, czstr name, NullOptPtr<UIElement> parent, const Box & box, czstr caption, NullOptPtr<UISoundPrototypeEffects> sfx = nullptr);
+  UIPrototypeButton(UIManager & manager, czstr name, NullOptPtr<UIElement> parent, const Box & box, czstr caption, NullOptPtr<UISoundPrototypeEffects> sfx = nullptr, bool back_button = false);
 
   void SetOnClickCallback(Delegate<void> && rhs);
 
@@ -33,6 +33,7 @@ public:
   void SetTextPressedColor(const Color & color);
 
   void SetAlpha(float alpha);
+  void SetActive(bool active);
 
 protected:
 
@@ -64,5 +65,6 @@ private:
   Color m_TextPressedColor;
 
   float m_Alpha;
+  bool m_BackButton;
 };
 

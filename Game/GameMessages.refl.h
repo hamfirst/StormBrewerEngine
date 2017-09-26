@@ -5,6 +5,7 @@
 
 #include <StormNet/NetReflection.h>
 
+#include "Game/GameNetworkSettings.h"
 #include "Game/GameNetworkData.refl.h"
 
 struct FromServerMessage
@@ -42,6 +43,11 @@ struct JoinGameMessage : public ToServerMessage
   uint64_t m_GameId;
   std::string m_UserName;
   GameInitSettings m_Settings;
+};
+
+struct ReadyMessage : public ToServerMessage
+{
+  NET_REFL;
 };
 
 struct FinishLoadingMessage : public ToServerMessage

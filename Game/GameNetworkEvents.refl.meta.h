@@ -35,6 +35,35 @@ struct StormReflTypeInfo<PlaceholderGlobalEvent>
 };
 
 template <>
+struct StormReflTypeInfo<ServerAuthNetworkEvent>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 0;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "ServerAuthNetworkEvent"; }
+  static constexpr auto GetNameHash() { return 0xE24857C1; }
+  static ServerAuthNetworkEvent & GetDefault() { static ServerAuthNetworkEvent def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaceholderServerAuthEvent>
+{
+  using MyBase = ServerAuthNetworkEvent;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "PlaceholderServerAuthEvent"; }
+  static constexpr auto GetNameHash() { return 0x29691225; }
+  static PlaceholderServerAuthEvent & GetDefault() { static PlaceholderServerAuthEvent def; return def; }
+};
+
+template <>
 struct StormReflTypeInfo<TargetNetworkEvent>
 {
   using MyBase = void;
@@ -114,49 +143,11 @@ struct StormReflTypeInfo<PlaceholderClientEvent>
   static PlaceholderClientEvent & GetDefault() { static PlaceholderClientEvent def; return def; }
 };
 
-template <>
-struct StormReflTypeInfo<GoToTownEvent>
-{
-  using MyBase = ClientNetworkEvent;
-  static constexpr int fields_n = 1 + StormReflTypeInfo<MyBase>::fields_n;
-  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
-  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
-  {
-    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
-  };
-  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
-  static constexpr auto GetName() { return "GoToTownEvent"; }
-  static constexpr auto GetNameHash() { return 0x7CCE230F; }
-  static GoToTownEvent & GetDefault() { static GoToTownEvent def; return def; }
-};
-
-template <>
-struct StormReflTypeInfo<GoToTownEvent>::field_data_static<0 + StormReflTypeInfo<ClientNetworkEvent>::fields_n>
-{
-  using member_type = uint8_t; // unsigned char
-  static constexpr auto GetName() { return "m_Town"; }
-  static constexpr auto GetType() { return "unsigned char"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x727B52BB; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
-  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ClientNetworkEvent>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &GoToTownEvent::m_Town; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GoToTownEvent>::field_data<0 + StormReflTypeInfo<ClientNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<GoToTownEvent>::field_data_static<0 + StormReflTypeInfo<ClientNetworkEvent>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint8_t> & Get() { return self.m_Town; }
-  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_Town; }
-  void SetDefault() { self.m_Town = StormReflTypeInfo<GoToTownEvent>::GetDefault().m_Town; }
-};
-
 namespace StormReflFileInfo
 {
   struct GameNetworkEvents
   {
-    static const int types_n = 7;
+    static const int types_n = 8;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -175,31 +166,37 @@ namespace StormReflFileInfo
   template <>
   struct GameNetworkEvents::type_info<2>
   {
-    using type = ::TargetNetworkEvent;
+    using type = ::ServerAuthNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<3>
   {
-    using type = ::PlaceholderTargetEvent;
+    using type = ::PlaceholderServerAuthEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<4>
   {
-    using type = ::ClientNetworkEvent;
+    using type = ::TargetNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<5>
   {
-    using type = ::PlaceholderClientEvent;
+    using type = ::PlaceholderTargetEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<6>
   {
-    using type = ::GoToTownEvent;
+    using type = ::ClientNetworkEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<7>
+  {
+    using type = ::PlaceholderClientEvent;
   };
 
 }

@@ -1,8 +1,9 @@
 #include "StormWebrtcClientWeb.h"
 
 #include <vector>
+#include <cstdio>
 
-#ifdef EMSCRIPTEN
+#ifdef _WEB
 #include <emscripten/html5.h>
 #include <emscripten/emscripten.h>
 #else
@@ -129,7 +130,16 @@ void StormWebrtcClientWeb::StartConnect(const char * ipaddr, int port, const cha
 
 void StormWebrtcClientWeb::Update()
 {
+  if (m_Connected)
+  {
+    auto now = std::chrono::system_clock::now();
+    auto time_passed_seconds = std::chrono::duration_cast<std::chrono::seconds>(now - m_LastMessage).count();
 
+    if (time_passed_seconds > 15)
+    {
+      Close();
+    }
+  }
 }
 
 bool StormWebrtcClientWeb::IsConnected()
@@ -191,11 +201,14 @@ void StormWebrtcClientWeb::SetConnected(bool connected)
 {
   m_Connected = connected;
   m_Connecting = false;
+
+  m_LastMessage = std::chrono::system_clock::now();
 }
 
 void StormWebrtcClientWeb::GotMessage(int stream, bool sender, void * data, int length)
 {
   auto ptr = std::unique_ptr<uint8_t[], StormWebrtcPacketDeleter>((uint8_t *)data);
   m_PendingPackets.emplace(StormWebrtcClientPacket{ std::move(ptr), length, stream, sender });
+  m_LastMessage = std::chrono::system_clock::now();
 }
 

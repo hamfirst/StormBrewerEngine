@@ -1,0 +1,1 @@
+start cmd.exe /k "%~dp0\SetBuildVars.bat"

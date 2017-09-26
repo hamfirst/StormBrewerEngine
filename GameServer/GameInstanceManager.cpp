@@ -42,10 +42,12 @@ bool GameInstanceManager::JoinPlayer(GameClientConnection * client, const JoinGa
     {
       if (CanJoinGame(game.second.get(), message.m_Settings))
       {
-        client->m_GameId = game.first;
-        client->m_GameInstance = game.second.get();
-        game.second->JoinPlayer(client, message);
-        return true;
+        if (game.second->JoinPlayer(client, message))
+        {
+          client->m_GameId = game.first;
+          client->m_GameInstance = game.second.get();
+          return true;
+        }
       }
     }
 
@@ -56,7 +58,7 @@ bool GameInstanceManager::JoinPlayer(GameClientConnection * client, const JoinGa
     }
 
     auto game_id = GetRandomNumber64();
-    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, message.m_Settings, *stage, m_SharedGlobalResources)));
+    auto result = m_Games.emplace(std::make_pair(game_id, std::make_unique<GameInstance>(m_Server, game_id, message.m_Settings, m_SharedGlobalResources, m_StageManager)));
 
     auto game = result.first->second.get();
 

@@ -30,3 +30,56 @@ NullOptPtr<UIElement> UIElementHandle::Resolve()
 }
 
 
+NullOptPtr<const UIElement> UIElementHandle::Resolve() const
+{
+  if (m_UIManager == nullptr)
+  {
+    return nullptr;
+  }
+
+  return m_UIManager->ResolveHandle(m_Type, *this);
+}
+
+void UIElementHandle::Destroy()
+{
+  auto elem = Resolve();
+  if (elem == nullptr)
+  {
+    return;
+  }
+
+  elem->Destroy();
+}
+
+void UIElementHandle::SetInput(uint32_t name_hash, float val)
+{
+  auto elem = Resolve();
+  if (elem == nullptr)
+  {
+    return;
+  }
+
+  elem->SetInput(name_hash, val);
+}
+
+void UIElementHandle::SetInput(uint32_t name_hash, czstr val)
+{
+  auto elem = Resolve();
+  if (elem == nullptr)
+  {
+    return;
+  }
+
+  elem->SetInput(name_hash, val);
+}
+
+void UIElementHandle::SetInput(uint32_t name_hash, const std::string & val)
+{
+  auto elem = Resolve();
+  if (elem == nullptr)
+  {
+    return;
+  }
+
+  elem->SetInput(name_hash, val);
+}

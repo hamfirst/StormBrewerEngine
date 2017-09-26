@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <chrono>
 
 #include "mbedtls/entropy.h"
 #include "mbedtls/ctr_drbg.h"
@@ -17,22 +18,7 @@
 #include "mbedtls/ssl_cache.h"
 #endif
 
-#define SCTP_DEBUG
-#define SCTP_SIMPLE_ALLOCATOR
-#define SCTP_PROCESS_LEVEL_LOCKS
-#define INET
-#define INET6
-
 #include "usrsctplib/usrsctp.h"
-
-#define SCTP_DEBUG
-#define SCTP_SIMPLE_ALLOCATOR
-#define SCTP_PROCESS_LEVEL_LOCKS
-#define INET
-#define INET6
-
-#include "usrsctplib/usrsctp.h"
-
 
 //#define STORMWEBRTC_USE_THREADS
 
@@ -58,6 +44,7 @@ struct StormWebrtcConnection
   StormWebrtcServerImpl * m_ServerImpl;
   struct socket * m_SctpSocket;
   sctp_assoc_t m_SctpAssoc;
+  std::chrono::system_clock::time_point m_LastMessage;
 
   std::vector<bool> m_IncStreamCreated;
   std::vector<bool> m_OutStreamCreated;

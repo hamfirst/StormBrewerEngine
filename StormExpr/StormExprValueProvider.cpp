@@ -7,45 +7,51 @@ StormExprValueProvider::StormExprValueProvider() :
 
 }
 
-StormExprValueProvider::StormExprValueProvider(float * float_ptr) :
-  m_Type(ProviderType::kFloat),
-  m_Float(float_ptr)
+StormExprValueProvider::StormExprValueProvider(const void * base_ptr, const float * float_ptr) :
+  m_Type(ProviderType::kFloat)
 {
-
+  m_BaseOffset = (const char *)float_ptr - (const char *)base_ptr;
 }
 
-StormExprValueProvider::StormExprValueProvider(std::string * str) :
-  m_Type(ProviderType::kStdString),
-  m_String(str)
+StormExprValueProvider::StormExprValueProvider(const void * base_ptr, const std::string * str) :
+  m_Type(ProviderType::kStdString)
 {
-
+  m_BaseOffset = (const char *)str - (const char *)base_ptr;
 }
 
-StormExprValueProvider::StormExprValueProvider(const char * const * czstr) :
-  m_Type(ProviderType::kCzstr),
-  m_Czstr(czstr)
+StormExprValueProvider::StormExprValueProvider(const void * base_ptr, const char * const * czstr) :
+  m_Type(ProviderType::kCzstr)
 {
-
+  m_BaseOffset = (const char *)czstr - (const char *)base_ptr;
 }
 
-StormExprValue StormExprValueProvider::GetValue()
+StormExprValueProvider::StormExprValueProvider(const void * base_ptr, const StormExprValue * val_ptr) :
+  m_Type(ProviderType::kValue)
 {
+  m_BaseOffset = (const char *)val_ptr - (const char *)base_ptr;
+}
+
+StormExprValue StormExprValueProvider::GetValue(const void * base_ptr) const
+{
+  const char * ptr = (const char *)base_ptr + m_BaseOffset;
+
   switch (m_Type)
   {
   default:
   case ProviderType::kNone:
     return StormExprValue();
   case ProviderType::kFloat:
-    return StormExprValue(*m_Float);
+    return StormExprValue(*(const float *)ptr);
   case ProviderType::kStdString:
-    return StormExprValue(m_String->data());
+    return StormExprValue(((const std::string *)ptr)->data());
   case ProviderType::kCzstr:
-    return StormExprValue(*m_Czstr);
+    return StormExprValue(*(const char * const *)ptr);
+  case ProviderType::kValue:
+    return StormExprValue(*(const StormExprValue *)ptr);
   }
-
 }
 
-StormExprValueType StormExprValueProvider::GetValueType()
+StormExprValueType StormExprValueProvider::GetValueType(const void * base_ptr) const
 {
   switch (m_Type)
   {
@@ -58,42 +64,10 @@ StormExprValueType StormExprValueProvider::GetValueType()
     return StormExprValueType::kString;
   case ProviderType::kCzstr:
     return StormExprValueType::kString;
-  }
-}
-
-float StormExprValueProvider::GetFloatValue()
-{
-  return *m_Float;
-}
-
-const char * StormExprValueProvider::GetStringValue()
-{
-  switch (m_Type)
-  {
-  case ProviderType::kStdString:
-    return m_String->data();
-  case ProviderType::kCzstr:
-    return *m_Czstr;
-  }
-
-  return nullptr;
-}
-
-void StormExprValueProvider::SetValue(StormExprValue val)
-{
-  switch (val.GetType())
-  {
-  case StormExprValueType::kFloat:
-    if (m_Type == ProviderType::kFloat)
+  case ProviderType::kValue:
     {
-      *m_Float = val.GetFloatVal();
+      const char * ptr = (const char *)base_ptr + m_BaseOffset;
+      return ((const StormExprValue *)ptr)->GetType();
     }
-    break;
-  case StormExprValueType::kString:
-    if (m_Type == ProviderType::kStdString)
-    {
-      *m_String = val.GetStringVal();
-    }
-    break;
   }
 }

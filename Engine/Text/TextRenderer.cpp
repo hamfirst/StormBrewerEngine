@@ -152,7 +152,7 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
     if (*wide_buffer == '\n')
     {
       x = settings.m_TextPos.x;
-      y -= m_FontSize;
+      y -= line_height + 2;
 
       glyph_positions.emplace_back();
       continue;
@@ -330,7 +330,7 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len)
     if (*wide_buffer == '\n')
     {
       line_x = 0;
-      size.m_Start.y -= m_FontSize;
+      size.m_Start.y -= line_height + 2;
       continue;
     }
 

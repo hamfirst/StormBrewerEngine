@@ -26,10 +26,29 @@ elseif (UNIX)
 endif()
 
 set(GENERIC_SRC_Game 
+            ./GameController.refl.cpp
+            ./GameEventReconciler.cpp
+            ./GameLevelList.cpp
+            ./GameLogicContainer.cpp
             ./GameMessages.refl.cpp
-            ./GameSimulation.refl.cpp
+            ./GameNetworkEvents.refl.cpp
+            ./GameNetworkExternals.refl.cpp
+            ./GameServerTypes.cpp
+            ./GameSharedGlobalResources.cpp
+            ./GameSharedInstanceResources.cpp
             ./GameStage.cpp
             ./GameStageManager.cpp
-            ./GameState.cpp
+            ./GameValidation.cpp
+            ./GameWebrtc.cpp
+            ./AI/PlayerAI.cpp
+            ./Data/BallSpawn.refl.reg.cpp
+            ./Data/PlayerGoal.refl.reg.cpp
+            ./Data/PlayerGoalBarrier.refl.reg.cpp
+            ./Data/PlayerSpawn.refl.reg.cpp
+            ./Data/PlayField.refl.reg.cpp
+            ./ServerObjects/BallServerObject.refl.cpp
+            ./ServerObjects/BallServerObject.refl.reg.cpp
+            ./ServerObjects/PlayerServerObject.refl.cpp
+            ./ServerObjects/PlayerServerObject.refl.reg.cpp
             )
 add_library(Game ${GENERIC_SRC_Game} ${PLATFORM_SRC_Game} )

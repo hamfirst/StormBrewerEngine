@@ -16,6 +16,11 @@ TextInputContext::TextInputContext(uint32_t window_id, bool allow_first_input) :
 #endif
 }
 
+TextInputContext::~TextInputContext()
+{
+  Unbind();
+}
+
 void TextInputContext::MakeCurrent(NullOptPtr<Box> input_box)
 {
   g_WindowManager.SetTextInputContext(m_WindowId, shared_from_this(), input_box);

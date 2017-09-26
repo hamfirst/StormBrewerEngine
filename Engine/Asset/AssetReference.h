@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AssetReferenceBase.h"
+#include "Engine/Asset/AssetReferenceBase.h"
 
 template <class AssetType>
 class AssetReference : public AssetReferenceBase
@@ -19,6 +19,11 @@ public:
 
   AssetReference & operator = (const AssetReference & rhs) = default;
   AssetReference & operator = (AssetReference && rhs) = default;
+
+  bool operator == (const AssetReference<AssetType> & rhs) const
+  {
+    return m_Asset == rhs.m_Asset;
+  }
 
   NullOptPtr<AssetType> Resolve()
   {

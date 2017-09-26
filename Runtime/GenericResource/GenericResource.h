@@ -6,9 +6,7 @@
 #include "Runtime/DocumentResource/DocumentResourceBase.h"
 #include "Runtime/DocumentResource/DocumentResourcePtr.h"
 
-
-template <class T>
-bool StormReflParseJson(T & t, const char * str, const char *& result, bool additive);
+#include "StormRefl/StormReflJson.h"
 
 template <typename ResourceData>
 class GenericResource : public DocumentResourceBase

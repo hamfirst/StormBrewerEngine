@@ -7,6 +7,8 @@
 #include "Engine/Input/MouseState.h"
 #include "Engine/Input/GamepadState.h"
 
+#include <SDL2/SDL_keycode.h>
+
 class Window;
 
 using KeyboardPassthroughCallbackLink = DelegateLink<void, bool, ControlId>;
@@ -36,9 +38,11 @@ public:
   bool GetGamepadButtonState(int gamepad_idx, GamepadButton button);
   bool GetGamepadButtonPressedThisFrame(int gamepad_idx, GamepadButton button);
   float GetGamepadAxis(int gamepad_idx, GamepadAxis axis);
+  Vector2f GetGamepadJoystick(int gamepad_idx, GamepadJoystick joystick);
 
   KeyboardPassthroughCallbackLink RegisterKeyboardPassThroughCallback(const Delegate<void, bool, ControlId> & del);
 
+  static void ApplyDeadZone(Vector2f & input, float dead_zone = 0.30f);
 private:
 
   friend class ControlHandle;

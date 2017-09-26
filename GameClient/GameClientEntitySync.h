@@ -14,6 +14,7 @@ public:
   GameClientEntitySync(GameContainer & game);
   ~GameClientEntitySync();
 
+  void ActivateEntities();
   void Sync(ServerObjectManager & obj_manager);
   void DestroyAll();
 
@@ -22,5 +23,7 @@ public:
 private:
   GameContainer & m_GameContainer;
   SparseList<EntityHandle> m_Entities;
+
+  bool m_ActivateEntities = false;
 };
 

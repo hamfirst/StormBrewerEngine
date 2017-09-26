@@ -205,7 +205,7 @@ public:
 
   operator bool() const
   {
-    return m_Type != nullptr;
+    return m_Type != 0;
   }
 
 private:

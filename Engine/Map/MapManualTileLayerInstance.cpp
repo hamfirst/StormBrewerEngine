@@ -3,10 +3,9 @@
 #include "Engine/Map/MapManualTileLayerInstance.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Profiler/Profiler.h"
 
 #include "Runtime/TileSheet/TileSheetResource.h"
-
-
 
 MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t layer_index)
 {
@@ -366,12 +365,16 @@ void MapManualTileLayerInstance::Update()
 
 void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
 {
+  PROFILE_SCOPE("Draw Map");
+
+
   m_DrawInfo.VisitGrid(viewport_bounds, [&](uint32_t grid_id, std::vector<GridDrawElement> & grid_elems)
   {
-    auto & shader = g_ShaderManager.GetDefaultShader();
     auto grid_box = m_DrawInfo.GetGridBoxForGridId(grid_id);
 
     auto grid_start = RenderVec2{ grid_box.m_Start };
+    auto & shader = g_ShaderManager.GetDefaultShader();
+    shader.Bind();
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 

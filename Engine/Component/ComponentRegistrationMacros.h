@@ -51,7 +51,8 @@ void ComponentName::RegisterComponent()                                         
   ComponentTypeCreationInfo type_info;                                                                                          \
   type_info.m_ComponentTypeNameHash = ComponentName::TypeNameHash;                                                              \
   type_info.m_BaseClassTypeNameHash = BaseClassHash;                                                                            \
-  type_info.m_InitDataTypeNameHash = COMPILE_TIME_CRC32_STR(#InitData);                                                         \
+  constexpr Hash type_name_hash = COMPILE_TIME_CRC32_STR(#InitData);                                                            \
+  type_info.m_InitDataTypeNameHash = type_name_hash;                                                                            \
   type_info.m_BaseListClassesPtr = &ComponentName::BaseTypes;                                                                   \
   type_info.m_NumBaseClassesPtr = &ComponentName::NumBaseTypes;                                                                 \
                                                                                                                                 \
@@ -163,7 +164,7 @@ ComponentResolver ComponentName::GetResolver()                                  
 #define COMPONENT_CONSTRUCT_NOINIT_DEFAULT auto comp = store->AllocateComponent();
 #define COMPONENT_CONSTRUCT_NOINIT_DATA    auto comp = store->AllocateComponent();
 
-#define COMPONENT_CONSTRUCT_INIT_DEFAULT(InitData) InitData init_data = {}; auto comp = store->AllocateComponent(init_data);
+#define COMPONENT_CONSTRUCT_INIT_DEFAULT(InitData) InitData init_data = {}; auto comp = store->AllocateComponent(std::move(init_data));
 #define COMPONENT_CONSTRUCT_INIT_DATA(InitData)    auto comp = store->AllocateComponent(*((InitData *)init_data));
 
 #define REGISTER_BASE_COMPONENT(ComponentName) \

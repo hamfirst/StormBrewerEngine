@@ -114,7 +114,7 @@ void SpriteEngineData::BuildVertexBuffer()
       auto frames_per_line = (texture_asset->GetWidth() + texture_data.m_FrameWidth - 1) / texture_data.m_FrameWidth;
       
       int src_x = (frame_index % frames_per_line) * texture_data.m_FrameWidth;
-      int src_y = (frame_index / frames_per_line) * texture_data.m_FrameHeight;
+      int src_y = texture_asset->GetHeight() - texture_data.m_FrameHeight - (frame_index / frames_per_line) * texture_data.m_FrameHeight;
 
       Vector2 texture_size = Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
       Vector2 half_texture_size = texture_size / 2;
@@ -180,7 +180,12 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
     return{};
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position);
+  auto rounded_pos = position;
+  rounded_pos.x = floorf(rounded_pos.x);
+  rounded_pos.y = floorf(rounded_pos.y);
+
+  shader.Bind();
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), rounded_pos);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
@@ -202,6 +207,7 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int ani
     return{};
   }
 
+  shader.Bind();
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);

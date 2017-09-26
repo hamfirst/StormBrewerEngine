@@ -10,6 +10,7 @@ GameGlobalResources::GameGlobalResources()
 
 bool GameGlobalResources::AreAllAssetsLoaded()
 {
-  return m_AssetBundle.AllLoadedSuccessfully();
+  return true;
+  //return m_AssetBundle.AllLoadedSuccessfully();
 }
 

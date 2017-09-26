@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <cstdlib>
 
 enum class StormWebrtcClientStreamType : uint8_t
 {

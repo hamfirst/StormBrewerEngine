@@ -4,6 +4,7 @@
 */
 #ifndef _WIN32
 
+#include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -14,7 +15,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-#include <time.h>
 
 #define ENET_BUILDING_LIB 1
 #include "enet/enet.h"
@@ -41,6 +41,7 @@
 #endif
 
 #ifdef HAS_FCNTL
+#include </usr/include/time.h>
 #include <fcntl.h>
 #endif
 

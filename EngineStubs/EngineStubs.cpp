@@ -9,6 +9,7 @@
 #include "Runtime/Sprite/SpriteDef.refl.h"
 #include "Runtime/Animation/AnimationState.h"
 #include "Runtime/Map/MapDef.refl.h"
+#include "Runtime/VisualEffect/VisualEffectDef.refl.h"
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
 
 #include <experimental/filesystem>
@@ -94,6 +95,11 @@ void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 &
 }
 
 Any CreateMapEngineData(MapDef & map_def)
+{
+  return{};
+}
+
+Any CreateVisualEffectEngineData(VisualEffectDef & visual_effect)
 {
   return{};
 }

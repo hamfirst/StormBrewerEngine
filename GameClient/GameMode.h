@@ -16,11 +16,14 @@ public:
 
   virtual void Initialize();
   virtual void OnAssetsLoaded();
+  virtual void InputEvent();
 
   virtual void Update();
   virtual void Render();
 
   virtual bool IsLoaded();
+
+  bool AssetLoadingComplete();
   void Step();
 
 protected:

@@ -4,6 +4,8 @@
 #include "Foundation/Common.h"
 #include "Foundation/Variant/Variant.h"
 #include "Foundation/Json/JsonType.h"
+#include "Foundation/Json/JsonArray.h"
+#include "Foundation/Json/JsonDictionary.h"
 
 
 #include <StormRefl/StormReflMetaFuncs.h>
@@ -52,13 +54,19 @@ public:
 
 protected:
 
-  using ObjectType = std::unordered_map<uint32_t, std::pair<std::string, Json>>;
-  using ArrayType = std::vector<Json>;
+  using ObjectType = JsonDictionary;
+  using ArrayType = JsonArray;
 
   JsonParseResult Parse(czstr data, czstr & result, bool allow_null);
 
-  std::tuple<NullOptPtr<Json>, NullOptPtr<Json>, Optional<ObjectType::iterator>>  GetJsonAndParentAtPath(
-    czstr path, NullOptPtr<Json> parent, czstr & created_node_path_end);
+  struct ParentAndPath
+  {
+    NullOptPtr<Json> m_Json;
+    NullOptPtr<Json> m_Parent;
+    Optional<ObjectType::iterator> m_Iterator;
+  };
+
+  ParentAndPath GetJsonAndParentAtPath(czstr path, NullOptPtr<Json> parent, czstr & created_node_path_end);
 
   void ApplyChangeDirect(const ReflectionChangeNotification & change, NullOptPtr<ReflectionChangeNotification> reverse_change, 
     Json * parent_node, ObjectType::iterator * itr, const std::string & created_node_path);

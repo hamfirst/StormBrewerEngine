@@ -14,6 +14,8 @@ public:
 
 private:
 
+  friend class StormExprValueBlockList;
+
   std::vector<StormExprValueInitBlock *> m_ValueBlocks;
 };
 

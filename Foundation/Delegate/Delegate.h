@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "Foundation/Assert/Assert.h"
 #include "Foundation/Optional/NullOpt.h"
 
 static const int kMaxDelegateSize = 32;
@@ -33,7 +34,7 @@ struct DelegateReturnEmpty
 {
   static ReturnType Process()
   {
-    throw std::runtime_error("Calling unset delegate");
+    throw false;
   }
 };
 

@@ -5,6 +5,8 @@
 #include "GameController.refl.h"
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/GameNetworkEvents.refl.meta.h"
+#include "Game/GameNetworkExternals.refl.meta.h"
+#include "Game/GameFullState.refl.meta.h"
 
 
 template <>

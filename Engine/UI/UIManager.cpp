@@ -33,9 +33,18 @@ SkipField<UIClickable> s_UIClickableAllocator;
 
 UIManager::UIManager(Window & container_window) :
   m_ContainerWindow(container_window),
-  m_FuncList(UICreateFunctionList())
+  m_FuncList(UICreateFunctionList()),
+  m_Paused(false)
 {
+  m_UpdateTimer.Start();
+}
 
+UIManager::~UIManager()
+{
+  while (m_RootElements.size())
+  {
+    m_RootElements.back()->Destroy();
+  }
 }
 
 void UIManager::Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
@@ -46,16 +55,22 @@ void UIManager::Update(InputState & input_state, RenderState & render_state, con
   m_GlobalBlock.m_ScreenWidth = (float)render_state.GetRenderWidth();
   m_GlobalBlock.m_ScreenHeight = (float)render_state.GetRenderHeight();
 
+  auto update_time = m_UpdateTimer.GetTimeSinceLastCheck();
+  if (m_Paused)
+  {
+    update_time = 0;
+  }
+
   for (auto elem : m_RootElements)
   {
-    elem->Update();
+    elem->Update((float)update_time);
   }
 
   std::vector<std::pair<NotNullPtr<UIElement>, Box>> active_elements;
   for (auto itr = m_RootElements.rbegin(), end = m_RootElements.rend(); itr != end; ++itr)
   {
     auto & elem = *itr;
-    if (elem->m_Enabled)
+    if (elem->GetBaseData()->m_Enabled != 0.0f)
     {
       SetupActiveElementsList(active_elements, elem, {});
     }
@@ -80,11 +95,21 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
 
   for (auto elem : m_RootElements)
   {
-    if (elem->m_Enabled)
+    if (elem->GetBaseData()->m_Enabled != 0.0f)
     {
       elem->Render(render_state, render_util, base_offset);
     }
   }
+}
+
+void UIManager::Pause()
+{
+  m_Paused = true;
+}
+
+void UIManager::Unpause()
+{
+  m_Paused = false;
 }
 
 UIElementPtr<UIElementContainer> UIManager::AllocateContainer(czstr name, NullOptPtr<UIElement> parent,
@@ -143,7 +168,7 @@ UIElementPtr<UIElementTextInput> UIManager::AllocateTextInput(czstr name, NullOp
   return parent == nullptr ? UIElementPtr<UIElementTextInput>(ptr) : UIElementPtr<UIElementTextInput>(ptr->m_Handle);
 }
 
-UIElementHandle UIManager::AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent)
+UIElementHandle UIManager::AllocateElementFromDef(czstr name, const UIDef & def, NullOptPtr<UIElement> parent, bool use_default_inputs)
 {
   auto handle = AllocateElementFromInitData(name, parent, def.m_InitData.GetTypeNameHash(), def.m_InitData.GetValue());
   auto elem = handle.Resolve();
@@ -154,7 +179,7 @@ UIElementHandle UIManager::AllocateElementFromDef(czstr name, const UIDef & def,
   }
 
   std::vector<std::string> errors;
-  elem->InitializeExprBlock(def, nullptr, *this, errors);
+  elem->InitializeExprBlock(def, nullptr, nullptr, nullptr, nullptr, *this, errors, use_default_inputs);
   return handle;
 }
 
@@ -353,7 +378,7 @@ NotNullPtr<ElementType> UIManager::AllocateUIElement(czstr name, SkipField<Eleme
   return elem;
 }
 
-UIElementHandle UIManager::AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementDataBase * init_data)
+UIElementHandle UIManager::AllocateElementFromInitData(czstr name, NullOptPtr<UIElement> parent, uint32_t type_name_hash, const UIElementInitDataBase * init_data)
 {
   UIElementHandle handle;
   switch (type_name_hash)
@@ -391,7 +416,7 @@ UIElementHandle UIManager::AllocateElementFromInitData(czstr name, NullOptPtr<UI
   return handle;
 }
 
-NotNullPtr<UIElement> UIManager::ResolveHandle(UIElementType type, Handle & handle)
+NotNullPtr<UIElement> UIManager::ResolveHandle(UIElementType type, const Handle & handle)
 {
   switch (type)
   {
@@ -482,7 +507,7 @@ void UIManager::SetupActiveElementsList(std::vector<std::pair<NotNullPtr<UIEleme
   for (auto itr = elem->m_Children.rbegin(), end = elem->m_Children.rend(); itr != end; ++itr)
   {
     auto & child = *itr;
-    if (child->m_Enabled)
+    if (child->GetBaseData()->m_Enabled != 0.0f)
     {
       SetupActiveElementsList(elements, child, elem->m_Offset);
     }

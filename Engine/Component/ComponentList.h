@@ -15,9 +15,9 @@ public:
   }
 
   template <typename InitData>
-  NotNullPtr<ComponentType> AllocateComponent(InitData & init_data)
+  NotNullPtr<ComponentType> AllocateComponent(InitData && init_data)
   {
-    auto ptr = m_ComponentAllocator.Allocate(init_data);
+    auto ptr = m_ComponentAllocator.Allocate(std::forward<InitData>(init_data));
     return ptr;
   }
 

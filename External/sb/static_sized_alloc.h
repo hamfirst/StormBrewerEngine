@@ -34,6 +34,7 @@ public:
   }
 
   StaticSizedAlloc(std::size_t max_allocs, const StaticSizedAlloc<Type> & to_copy) :
+    m_MaxAllocs(max_allocs)
   {
     if (max_allocs == 0)
     {

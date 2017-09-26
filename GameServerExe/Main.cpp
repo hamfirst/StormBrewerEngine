@@ -27,6 +27,7 @@
 
 #ifdef _LINUX
 #include <unistd.h>
+#include <sys/types.h>
 #endif
 
 double send_time;
@@ -44,10 +45,20 @@ int main(int argc, char ** argv)
     printf("Entering Daemon Mode");
     daemon(1, 0);
   }
+
+  FILE * fp = fopen("ServerExe.pid", "wt");
+  auto pid = std::to_string(getpid());
+  fprintf(fp, "%s", pid.data());
+  fclose(fp);
+#endif
+
+#ifdef _DEBUG
+  g_LagSim = 100;
 #endif
 
   printf("Game Server\n");
 
+  InitServerTypes();
   RuntimeInit();
 
 #ifdef NET_USE_WEBRTC
@@ -85,7 +96,7 @@ int main(int argc, char ** argv)
   printf("  Starting server...\n");
   NetworkInit();
 
-  GameServer game_server(256, 47815, stage_manager, shared_global_resources);
+  GameServer game_server(256, 47816, stage_manager, shared_global_resources);
   printf("  Server started!\n");
 
   FrameClock frame_clock(1.0 / 60.0);
@@ -95,7 +106,7 @@ int main(int argc, char ** argv)
   {
     game_server.Update();
 
-    if (frame_clock.ShouldStartFrame())
+    if (frame_clock.ShouldSkipFrameUpdate() == false)
     {
       frame_clock.BeginFrame();
       game_server.GetGameInstanceManager().Update();

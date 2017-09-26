@@ -24,6 +24,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
   }
 
   m_ReservedSlots = num_reserved_slots;
+  m_MaxDynamicObjects = max_dynamic_objects;
 
   m_DynamicObjectGen.resize(max_dynamic_objects);
   m_DynamicObjects.Reserve(max_dynamic_objects);
@@ -40,12 +41,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
     m_StaticObjects.emplace_back(ptr);
   }
 
-  m_DynamicObjectGen.resize(rhs.m_DynamicObjectGen.size());
-  for (auto & gen : rhs.m_DynamicObjectGen)
-  {
-    m_DynamicObjectGen.push_back(gen);
-  }
-
+  m_DynamicObjectGen = rhs.m_DynamicObjectGen;
   m_DynamicObjects.Reserve(rhs.m_DynamicObjects.Size());
 
   for (auto obj : rhs.m_DynamicObjects)
@@ -56,15 +52,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
   }
 
   m_ReservedSlots = rhs.m_ReservedSlots;
-}
-
-ServerObjectManager::ServerObjectManager(ServerObjectManager && rhs) :
-  m_StaticObjects(std::move(rhs.m_StaticObjects)),
-  m_DynamicObjectGen(std::move(rhs.m_DynamicObjectGen)),
-  m_DynamicObjects(std::move(rhs.m_DynamicObjects)),
-  m_ReservedSlots(rhs.m_ReservedSlots)
-{
-
+  m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
 }
 
 ServerObjectManager::~ServerObjectManager()
@@ -83,7 +71,7 @@ ServerObjectManager::~ServerObjectManager()
 ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager & rhs)
 {
   ASSERT(m_StaticObjects.size() == rhs.m_StaticObjects.size(), "Bad copy of ServerObjectManager");
-  ASSERT(m_DynamicObjects.Size() == rhs.m_DynamicObjects.Size(), "Bad copy of ServerObjectManager");
+  ASSERT(m_MaxDynamicObjects == rhs.m_MaxDynamicObjects, "Bad copy of ServerObjectManager");
   ASSERT(m_ReservedSlots == rhs.m_ReservedSlots, "Bad copy of ServerObjectManager");
 
   for(std::size_t index = 0, end = m_StaticObjects.size(); index < end; ++index)
@@ -91,7 +79,7 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
     g_ServerObjectSystem.CopyObject(m_StaticObjects[index], rhs.m_StaticObjects[index]);
   }
 
-  for (std::size_t index = 0, end = m_DynamicObjects.Size(); index < end; ++index)
+  for (std::size_t index = 0, end = m_MaxDynamicObjects; index < end; ++index)
   {
     if (rhs.m_DynamicObjects.HasAt(index))
     {
@@ -119,15 +107,9 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
     }
   }
 
-  return *this;
-}
-
-ServerObjectManager & ServerObjectManager::operator = (ServerObjectManager && rhs)
-{
-  m_StaticObjects = std::move(rhs.m_StaticObjects);
-  m_DynamicObjectGen = std::move(rhs.m_DynamicObjectGen);
-  m_DynamicObjects = std::move(rhs.m_DynamicObjects);
   m_ReservedSlots = rhs.m_ReservedSlots;
+  m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
+
   return *this;
 }
 
@@ -184,7 +166,7 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectSerialize(obj, so_writer);
   }
 
-  for (std::size_t index = 0, end = m_DynamicObjects.Size(); index < end; ++index)
+  for (std::size_t index = 0; index < m_MaxDynamicObjects; ++index)
   {
     auto obj = m_DynamicObjects.TryGet(index);
     if (obj)
@@ -211,7 +193,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj, so_reader);
   }
 
-  for (std::size_t index = 0, end = m_DynamicObjects.Size(); index < end; ++index)
+  for (std::size_t index = 0; index < m_MaxDynamicObjects; ++index)
   {
     auto valid = so_reader.ReadUBits(1);
     auto obj = m_DynamicObjects.TryGet(index);
@@ -244,7 +226,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
 
 int ServerObjectManager::GetNewDynamicObjectId()
 {
-  for (std::size_t index = m_ReservedSlots, end = m_DynamicObjects.Size(); index < end; index++)
+  for (std::size_t index = m_ReservedSlots, end = m_MaxDynamicObjects; index < end; index++)
   {
     if (m_DynamicObjects.HasAt(index) == false)
     {

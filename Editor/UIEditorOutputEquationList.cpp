@@ -18,7 +18,8 @@ UIEditorOutputEquationList::UIEditorOutputEquationList(NotNullPtr<UIEditor> edit
   m_UI(ui),
   m_SizeChanged(std::move(size_change_cb)),
   m_ChildWatcher(editor),
-  m_OutputWatcher(editor)
+  m_OutputWatcher(editor),
+  m_IgnoreChanges(false)
 {
   setFocusPolicy(Qt::ClickFocus);
 }
@@ -35,11 +36,11 @@ void UIEditorOutputEquationList::ChangeSelection(const UIEditorNodeSelection & s
 
   auto path = StormDataGetPath(ui->m_Children);
   m_ChildWatcher.SetPath(path.data(), true, true, [this]() { return m_Selection && UIEditor::GetUIForPath(m_UI, m_Selection->m_NodePath.data()); });
-  m_ChildWatcher.SetAllUpdateCallbacks([this]() { RefreshElements(); });
+  m_ChildWatcher.SetAllUpdateCallbacks([this]() { if (m_IgnoreChanges == false) RefreshElements(); });
 
   path = StormDataGetPath(ui->m_Outputs);
   m_OutputWatcher.SetPath(path.data(), true, true, [this]() { return m_Selection && UIEditor::GetUIForPath(m_UI, m_Selection->m_NodePath.data()); });
-  m_OutputWatcher.SetAllUpdateCallbacks([this]() { RefreshElements(); });
+  m_OutputWatcher.SetAllUpdateCallbacks([this]() { if(m_IgnoreChanges == false) RefreshElements(); });
 
   m_Selection = selection;
   RefreshElements();
@@ -74,7 +75,7 @@ void UIEditorOutputEquationList::RefreshElements()
           return ui ? &ui->m_Outputs : nullptr;
         };
 
-        m_Editors.emplace_back(std::make_unique<UIOutputEquationEditor>(m_Editor, child.first, child.second.m_Name.data(), 
+        m_Editors.emplace_back(std::make_unique<UIOutputEquationEditor>(m_Editor, this, child.first, child.second.m_Name.data(), 
           var.second.m_VariableName.data(), path.data(), std::move(data_ptr), this));
         m_Editors.back()->show();
       }

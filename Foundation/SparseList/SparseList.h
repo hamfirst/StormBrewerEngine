@@ -175,6 +175,21 @@ public:
     }
   }
 
+  template <typename ... InitArgs>
+  std::size_t Emplace(InitArgs && ... args)
+  {
+    for (std::size_t index = 0; index < m_Capacity; ++index)
+    {
+      if (m_Values[index].m_Valid == false)
+      {
+        EmplaceAt(index, std::forward<InitArgs>(args)...);
+        return index;
+      }
+    }
+    EmplaceBack(std::forward<InitArgs>(args)...);
+    return (std::size_t)m_HighestIndex;
+  }
+
   T & PushBack(const T & val)
   {
     if (m_HighestIndex + 1 == m_Capacity)
@@ -276,11 +291,6 @@ public:
   int HighestIndex() const
   {
     return m_HighestIndex;
-  }
-
-  std::size_t Size() const
-  {
-    return m_Capacity;
   }
 
   void Compress()
@@ -448,6 +458,25 @@ public:
     }
 
     return &m_Values[index].m_Value;
+  }
+
+  std::size_t Size() const
+  {
+    std::size_t count = 0;
+    for (int index = 0; index <= m_HighestIndex; ++index)
+    {
+      if (m_Values[index].m_Valid)
+      {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  std::size_t Capacity() const
+  {
+    return m_Capacity;
   }
 
   iterator begin()

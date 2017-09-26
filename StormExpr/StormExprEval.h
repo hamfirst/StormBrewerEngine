@@ -18,8 +18,12 @@ public:
   StormExprEval(StormExprEvalBuilder && eval_builder);
 
   bool EvalFloat(std::size_t function_index, float & outp_val);
+  bool EvalFloat(std::size_t function_index, float & outp_val, StormExprStack & stack);
   bool EvalString(std::size_t function_index, std::string & outp_val);
-  void SetBlockList(const StormExprValueBlockList & block_list);
+  bool EvalString(std::size_t function_index, std::string & outp_val, StormExprStack & stack);
+  void SetBlockBasePtr(std::size_t block_index, void * base_ptr);
+
+  std::size_t GetNumFuncs() const;
 
 private:
 
@@ -31,8 +35,6 @@ private:
 
   std::size_t m_NumFuncs;
 
-  StormExprLiteralBlock m_LiteralBlock;
-  StormExprValueBlock m_LiteralValues;
   StormExprValueBlockList m_BlockList;
 };
 

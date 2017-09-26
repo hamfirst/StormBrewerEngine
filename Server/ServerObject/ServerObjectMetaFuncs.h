@@ -3,6 +3,8 @@
 #include "StormRefl/StormReflMetaFuncs.h"
 #include "Server/ServerObject/ServerObjectHandle.h"
 
+template <typename T>
+struct ServerObjectResetHandle;
 
 template <typename T, bool IsReflectable>
 struct ServerObjectResetHandleClass

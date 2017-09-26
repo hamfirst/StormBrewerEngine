@@ -70,7 +70,7 @@ public:
   template <typename Event, typename ... InitArgs>
   NotNullPtr<Event> PushEvent(const Box & box, InitArgs && ... init_args)
   {
-    m_EventSystem->PushEvent(box, std::forward<InitArgs>(init_args)...);
+    m_EventSystem->PushEventSource(box, EventDef<Event>{}, std::forward<InitArgs>(init_args)...);
   }
 
   template <typename Event>
@@ -83,9 +83,8 @@ public:
   NotNullPtr<GameContainer> GetGameContainer();
 
   SpritePtr & GetSprite();
-  Vector2 & GetPosition();
-  void SetPosition(const Vector2 & position);
-  MoverState & GetMoverState();
+  Vector2f & GetPosition();
+  void SetPosition(const Vector2f & position);
   int & GetLayer();
   void SetLayer(int layer);
   std::string & GetName();
@@ -95,6 +94,7 @@ public:
 
   void SetDefaultFrame();
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true);
+  bool SyncToFrame(uint32_t anim_name_hash, int frame);
   Box GetDrawingFrame() const;
   void SetParent(NullOptPtr<Entity> entity);
   NullOptPtr<ServerObject> GetServerObject();
@@ -132,6 +132,9 @@ protected:
   void Activate();
   bool IsActivated() const;
 
+  void ServerUpdate();
+  void ServerDestroy();
+
   void AddToChildList(NotNullPtr<Entity> entity);
   void RemoveFromChildList(NotNullPtr<Entity> entity);
   void UpdateChildListBucket();
@@ -161,7 +164,8 @@ private:
   SpritePtr m_Sprite;
   EntityCustomDraw m_CustomDraw;
 
-  MoverState m_MoverState;
+  Vector2f m_Position;
+  Optional<Vector2f> m_PrevPosition;
   int m_Layer;
   EntityRenderState m_RenderState;
   std::string m_Name;

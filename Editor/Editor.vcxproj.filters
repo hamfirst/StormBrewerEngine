@@ -86,6 +86,9 @@
     <Filter Include="Source Files\DocumentEditors\UIEditor">
       <UniqueIdentifier>{df206de4-3bc4-48a6-8882-9ad3a79441d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DocumentEditors\VisualEffectEditor">
+      <UniqueIdentifier>{46f787ad-8b6f-4ac3-a253-5d58cc19289f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -943,6 +946,96 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIOutputEquationEditor.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
+    <ClCompile Include="VisualEffectEditor.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffectEditorNodeList.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorNodeList.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorNodeList.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorNodeList.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorNodeList.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffectEditorViewer.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffectEditorPropertyContainer.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffectEditorEquationList.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualEffectEquationEditor.cpp">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEquationEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorEquationList.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorPropertyContainer.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorViewer.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEquationEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEquationEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEquationEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorEquationList.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorEquationList.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorEquationList.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorPropertyContainer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorPropertyContainer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorPropertyContainer.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorViewer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorViewer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorViewer.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -1149,6 +1242,24 @@
     <CustomBuild Include="UIOutputEquationEditor.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </CustomBuild>
+    <CustomBuild Include="VisualEffectEditor.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VisualEffectEditorNodeList.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VisualEffectEquationEditor.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VisualEffectEditorEquationList.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VisualEffectEditorPropertyContainer.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VisualEffectEditorViewer.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -1273,6 +1384,9 @@
     </ClInclude>
     <ClInclude Include="UIEditorNode.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualEffectEditorNodeSelection.h">
+      <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

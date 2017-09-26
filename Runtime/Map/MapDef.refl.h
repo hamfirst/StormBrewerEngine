@@ -104,6 +104,40 @@ struct RUNTIME_EXPORT MapPath
   RString m_Name;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathData;
   RMergeList<MapPathPoint> m_Points;
+
+  template <typename Visitor>
+  void VisitLines(Visitor && visitor, bool connect_to_start = false) const
+  {
+    auto start = m_Points.begin();
+    if (start == m_Points.end())
+    {
+      return;
+    }
+
+    auto next = m_Points.begin();
+    ++next;
+
+    while (next != m_Points.end())
+    {
+      auto p1 = start->second.GetPoint();
+      auto p2 = next->second.GetPoint();
+
+      visitor(p1, p2);
+
+      ++next;
+      ++start;
+    }
+
+    if (connect_to_start)
+    {
+      next = m_Points.begin();
+
+      auto p1 = start->second.GetPoint();
+      auto p2 = next->second.GetPoint();
+
+      visitor(p1, p2);
+    }
+  }
 };
 
 struct RUNTIME_EXPORT MapVolume

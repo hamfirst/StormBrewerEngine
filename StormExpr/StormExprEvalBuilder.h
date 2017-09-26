@@ -19,7 +19,7 @@ class StormExprEvalBuilder
 {
 public:
 
-  StormExprEvalBuilder(StormExprFunctionList & funcs);
+  StormExprEvalBuilder(StormExprFunctionList & funcs, bool quick_version = false);
 
   int ParseExpression(const char * str, const char *&error, const char *& error_desc);
   void SetBlockList(StormExprValueInitBlockList & init_block_list);
@@ -57,7 +57,7 @@ private:
 
   StormExprFunctionList & m_Functions;
   std::vector<StormExprOpList> m_Expressions;
-
+  bool m_QuickVersion;
 
   StormExprLiteralBlockBuilder m_LiteralBlockBuilder;
   StormExprValueInitBlockList * m_InitBlockList;

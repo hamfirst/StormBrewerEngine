@@ -13,7 +13,7 @@
 #include <experimental/filesystem>
 #endif
 
-#define USE_WEBSOCKET_LOADING
+
 
 
 AssetLoader g_AssetLoader;
@@ -88,19 +88,22 @@ void AssetLoader::ShutDown()
     m_LoaderThreads[index].join();
   }
 
+#ifdef USE_WEBSOCKET_LOADING
   m_ReloadServerSocket->Close();
   m_ReloadThread.join();
-#else
 
   m_LoaderSocket->Close();
   m_CompilerSocket->Close();
   m_ReloadServerSocket->Close();
+#endif
 
 #endif
 }
 
 void AssetLoader::RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps)
 {
+  //printf("Requesting file load %s (%s)\n", file_path, as_document ? "doc" : "asset");
+  
   asset->IncRef();
 
   AssetLoadRequest req_data{ asset, file_path, as_document, as_reload, load_deps };
@@ -123,6 +126,7 @@ void AssetLoader::ProcessResponses()
 {
 #ifdef _WEB
 
+#ifdef USE_WEBSOCKET_LOADING
   if (m_ReloadServerSocket->IsConnected() == false)
   {
     if (m_ReloadServerSocket->IsConnecting() == false)
@@ -158,13 +162,13 @@ void AssetLoader::ProcessResponses()
         if (packet->m_Type == WebSocketPacketType::kText)
         {
           req_data.m_Asset->m_LoadError = 1;
-          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload };
+          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps };
         }
         else
         {
           //printf("Got remote asset file: %s (%d)\n", req_data.m_FilePath.data(), packet->m_Buffer.GetSize());
-          req_data.m_Asset->m_LoadError = req_data.m_Asset->PreProcessLoadedData(packet->m_Buffer);
-          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, std::move(packet->m_Buffer) };
+          req_data.m_Asset->m_LoadError = req_data.m_Asset->PreProcessLoadedData(packet->m_Buffer, req_data.m_LoadDeps);
+          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps, std::move(packet->m_Buffer) };
         }
 
         FinalizeAssetResponse(resp);
@@ -198,13 +202,13 @@ void AssetLoader::ProcessResponses()
         if (packet->m_Type == WebSocketPacketType::kText)
         {
           req_data.m_Asset->m_LoadError = 1;
-          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload };
+          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps };
         }
         else
         {
           //printf("Got remote document file: %s (%d)\n", req_data.m_FilePath.data(), packet->m_Buffer.GetSize());
-          req_data.m_Asset->m_LoadError = req_data.m_Asset->PreProcessLoadedData(packet->m_Buffer);
-          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, std::move(packet->m_Buffer) };
+          req_data.m_Asset->m_LoadError = req_data.m_Asset->PreProcessLoadedData(packet->m_Buffer, req_data.m_LoadDeps);
+          resp = AssetLoadResponse{ req_data.m_Asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps, std::move(packet->m_Buffer) };
         }
 
         FinalizeAssetResponse(resp);
@@ -224,7 +228,6 @@ void AssetLoader::ProcessResponses()
     }
   }
 
-#ifdef USE_WEBSOCKET_LOADING
   if (m_LoaderSocket->IsConnected() && m_CompilerSocket->IsConnected())
   {
     m_DelayRequests = false;
@@ -262,16 +265,16 @@ void AssetLoader::ProcessResponses()
     if (req_data.m_AsDocument)
     {
 #ifdef USE_WEBSOCKET_LOADING
-        if (s_DisableNetworkLoading == false)
+      if (s_DisableNetworkLoading == false)
+      {
+        if (m_CompilerSocket->IsConnected())
         {
-          if (m_CompilerSocket->IsConnected())
-          {
-            //printf("Requesting remote document: %s\n", req_data.m_FilePath.data());
-            m_CompilerSocket->SendString(req_data.m_FilePath);
-            m_PendingCompiles.push(std::move(req_data));
-            continue;
-          }
+          //printf("Requesting remote document: %s\n", req_data.m_FilePath.data());
+          m_CompilerSocket->SendString(req_data.m_FilePath);
+          m_PendingCompiles.push(std::move(req_data));
+          continue;
         }
+      }
 #endif
 
       buffer = LoadFullDocumentRaw(req_data.m_FilePath.data(), req_data.m_Asset->m_LoadError);
@@ -298,13 +301,13 @@ void AssetLoader::ProcessResponses()
     if (!buffer)
     {
       //printf("Failed loading asset %s\n", req_data.m_FilePath.data());
-      resp = AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload };
+      resp = AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps };
     }
     else
     {
       //printf("Successfully loaded asset %s\n", req_data.m_FilePath.data());
-      asset->m_LoadError = asset->PreProcessLoadedData(*buffer);
-      resp = AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, std::move(*buffer) };
+      asset->m_LoadError = asset->PreProcessLoadedData(*buffer, req_data.m_LoadDeps);
+      resp = AssetLoadResponse{ asset, req_data.m_AsDocument, req_data.m_AsReload, req_data.m_LoadDeps, std::move(*buffer) };
     }
 
     FinalizeAssetResponse(resp);
@@ -367,6 +370,10 @@ Optional<Buffer> AssetLoader::LoadFullFile(czstr file_path, int & file_open_erro
 
 Optional<Buffer> AssetLoader::LoadFullFileWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket)
 {
+#ifndef _WEB
+  std::unique_lock<std::mutex> lock(m_AssetSocketMutex);
+#endif
+
   file_open_error = 0;
   if (websocket.IsConnected() == false)
   {
@@ -435,6 +442,10 @@ Optional<Buffer> AssetLoader::LoadFullFileInternal(czstr file_path, int & file_o
 
 Optional<Buffer> AssetLoader::LoadFullDocumentWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket)
 {
+#ifndef _WEB
+  std::unique_lock<std::mutex> lock(m_CompilerSocketMutex);
+#endif
+
   file_open_error = 0;
   if (websocket.IsConnected() == false)
   {
@@ -461,6 +472,7 @@ Optional<Buffer> AssetLoader::LoadFullDocumentWebsocket(czstr file_path, int & f
 
 Optional<Buffer> AssetLoader::LoadFullDocumentRaw(czstr file_path, int & file_open_error)
 {
+  //printf("Loading document asset: %s\n", file_path);
   std::unique_lock<std::mutex> lock(m_DocumentCompilerMutex);
   auto document = m_DocumentCompiler.GetDocument(file_path);
   document->AddRef();
@@ -600,6 +612,8 @@ void AssetLoader::LoadThread()
       auto & req_data = req.Value();
       auto asset = req_data.m_Asset;
 
+      //printf("Processing file load %s (%s)\n", req_data.m_FilePath.data(), req_data.m_AsDocument ? "doc" : "asset");
+
       Optional<Buffer> buffer;
       if (req_data.m_AsDocument)
       {
@@ -617,7 +631,7 @@ void AssetLoader::LoadThread()
           std::this_thread::yield();
         }
 
-        return;
+        break;
       }
 
       asset->m_LoadError = asset->PreProcessLoadedData(*buffer, req_data.m_LoadDeps);
@@ -635,9 +649,10 @@ void AssetLoader::LoadThread()
 void AssetLoader::ReloadThread()
 {
 #ifndef _WEB
+#ifdef USE_WEBSOCKET_LOADING
   while (m_Running)
   {
-    if (m_ReloadServerSocket->IsConnected())
+    if (m_ReloadServerSocket->IsConnected() == false)
     {
       if (m_ReloadServerSocket->IsConnecting() == false)
       {
@@ -662,6 +677,7 @@ void AssetLoader::ReloadThread()
       }
     }
   }
+#endif
 #endif
 }
 

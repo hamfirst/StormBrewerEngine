@@ -24,14 +24,14 @@ public:
     event_data.m_EventData = Any(Event(std::forward<InitArgs>(init_args)...));
     event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<ObjectType> obj)
     {
-      TriggerEventHandler(obj, src_data->m_Type, src_data->m_EventData.Get<Event>());
+      TriggerEventHandler(obj, src_data->m_Type, src_data->m_EventData.template Get<Event>());
     };
 
     auto id = m_Events.size();
     m_Events.emplace_back(std::move(event_data));
 
     m_EventDatabase.Insert(box, id);
-    return m_Events.back().m_EventData.Get<Event>();
+    return m_Events.back().m_EventData.template Get<Event>();
   }
 
 

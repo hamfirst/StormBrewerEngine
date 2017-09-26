@@ -207,6 +207,22 @@ struct StormReflTypeInfo<JoinGameMessage>::field_data<2 + StormReflTypeInfo<ToSe
 };
 
 template <>
+struct StormReflTypeInfo<ReadyMessage>
+{
+  using MyBase = ToServerMessage;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "ReadyMessage"; }
+  static constexpr auto GetNameHash() { return 0xE2CFDB46; }
+  static ReadyMessage & GetDefault() { static ReadyMessage def; return def; }
+};
+
+template <>
 struct StormReflTypeInfo<FinishLoadingMessage>
 {
   using MyBase = ToServerMessage;
@@ -248,7 +264,7 @@ namespace StormReflFileInfo
 {
   struct GameMessages
   {
-    static const int types_n = 7;
+    static const int types_n = 8;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -290,6 +306,12 @@ namespace StormReflFileInfo
 
   template <>
   struct GameMessages::type_info<6>
+  {
+    using type = ::ReadyMessage;
+  };
+
+  template <>
+  struct GameMessages::type_info<7>
   {
     using type = ::FinishLoadingMessage;
   };

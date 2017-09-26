@@ -6,8 +6,11 @@
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/GameNetworkEvents.refl.meta.h"
 #include "Game/GameSimulationEventCallbacks.h"
+#include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
 #include "Game/AI/PlayerAI.h"
+
+#include "Game/ServerObjects/PlayerServerObject.refl.meta.h"
 
 #include "Server/ServerObject/ServerObjectManager.h"
 
@@ -21,7 +24,7 @@ GameController::GameController()
   auto visitor = [&](auto f)
   {
     using FuncType = decltype(f);
-    using ParamType = typename std::decay_t<FuncType::template param_info<0>::param_type>;
+    using ParamType = typename std::decay_t<typename FuncType::template param_info<0>::param_type>;
 
     static_assert(std::is_base_of<ClientNetworkEvent, ParamType>::value, "Client event handlers must have a parameter that inherits from ClientNetworkEvent");
 
@@ -35,31 +38,119 @@ GameController::GameController()
   StormReflVisitFuncs(*this, visitor);
 }
 
+void GameController::BootstrapGame(GameLogicContainer & game, uint32_t seed)
+{
+#ifdef NET_USE_RANDOM
+  auto & sim_data = game.GetInstanceData();
+  sim_data.m_Random = NetRandom(seed);
+  sim_data.m_Random.GetRandom();
+  sim_data.m_Random.GetRandom();
+  sim_data.m_Random.GetRandom();
+  sim_data.m_Random.GetRandom();
+#endif
+}
+
 void GameController::ConstructPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team)
 {
   GamePlayer player;
   player.m_UserName = name;
   player.m_Team = team;
-  player.m_Ready = false;
 
-  auto & global_data = game.GetGlobalData();
+  auto & global_data = game.GetInstanceData();
   global_data.m_Players.EmplaceAt(player_index, std::move(player));
 }
 
-void GameController::PlayerReady(std::size_t player_index, GameLogicContainer & game)
+void GameController::DestroyPlayer(std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
-  global_data.m_Players[player_index].m_Ready = true;
+  CleanupPlayer(game, player_index);
 }
 
-void GameController::PlayerLeft(std::size_t player_index, GameLogicContainer & game)
+void GameController::ConstructBot(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team)
 {
-  auto & global_data = game.GetGlobalData();
+  GamePlayer player;
+  player.m_UserName = name;
+  player.m_Team = team;
+  player.m_AIPlayerInfo.Emplace();
 
-  if (global_data.m_Started)
+  auto & global_data = game.GetInstanceData();
+  global_data.m_Players.EmplaceAt(player_index, std::move(player));
+}
+
+void GameController::DestroyBot(std::size_t player_index, GameLogicContainer & game)
+{
+  auto & global_data = game.GetInstanceData();
+  global_data.m_Players.RemoveAt(player_index);
+}
+
+#ifdef NET_ALLOW_OBSERVERS
+void GameController::ConstructObserver(std::size_t player_index, GameLogicContainer & game, const std::string & name)
+{
+  GameObserver player;
+  player.m_UserName = name;
+
+  auto & global_data = game.GetInstanceData();
+  global_data.m_Observers.EmplaceAt(player_index, std::move(player));
+}
+
+void GameController::DestroyObserver(std::size_t player_index, GameLogicContainer & game)
+{
+  auto & global_data = game.GetInstanceData();
+  global_data.m_Observers.RemoveAt(player_index);
+}
+#endif
+
+void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game)
+{
+  if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerJoinedEvent>())
   {
-    CleanupPlayer(game, player_index, global_data.m_Players[player_index]);
+    auto ev = ext.Get<PlayerJoinedEvent>();
+
+    auto team_counts = GetTeamCounts(game.GetInstanceData());
+    auto team = GetRandomTeam(team_counts, ev->m_RandomSeed);
+    ConstructPlayer(ev->m_PlayerIndex, game, ev->m_UserName, team);
   }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerLeaveEvent>())
+  {
+    auto ev = ext.Get<PlayerLeaveEvent>();
+    DestroyPlayer(ev->m_PlayerIndex, game);
+  }
+#ifdef NET_ALLOW_OBSERVERS
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ObserverJoinedEvent>())
+  {
+    auto ev = ext.Get<ObserverJoinedEvent>();
+    ConstructObserver(ev->m_PlayerIndex, game, ev->m_UserName);
+  }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ObserverLeaveEvent>())
+  {
+    auto ev = ext.Get<ObserverLeaveEvent>();
+    DestroyObserver(ev->m_PlayerIndex, game);
+  }
+#endif
+}
+
+void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player)
+{
+  auto & obj_manager = game.GetObjectManager();
+
+  auto & stage = game.GetStage();
+  auto & spawns = stage.GetPlayerSpawns();
+
+  auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index);
+  StormReflSefDefault(*player_obj);
+
+  auto & spawn = spawns[(int)player.m_Team][0];
+  player_obj->m_Position = GameNetVec2(spawn.x, spawn.y);
+
+  if (player.m_AIPlayerInfo)
+  {
+    PlayerAI::InitAI(game, player_index);
+  }
+}
+
+void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player_index)
+{
+  auto & global_data = game.GetInstanceData();
+  global_data.m_Players.RemoveAt(player_index);
 
   if (global_data.m_Players.HighestIndex() == -1)
   {
@@ -67,7 +158,7 @@ void GameController::PlayerLeft(std::size_t player_index, GameLogicContainer & g
     return;
   }
 
-  if (kMaxTeams > 1 && global_data.m_Started == false)
+  if (kMaxTeams > 1 && global_data.m_WiningTeam)
   {
     auto winning_team = GetOnlyTeamWithPlayers(game);
     if (winning_team)
@@ -76,27 +167,7 @@ void GameController::PlayerLeft(std::size_t player_index, GameLogicContainer & g
       return;
     }
   }
-}
 
-
-void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player)
-{
-  auto & obj_manager = game.GetObjectManager();
-
-  auto & stage = game.GetStage();
-  //auto spawn_id = stage.GetSpawn(player.m_Team);
-
-  //auto player_obj = obj_manager.CreateDynamicObject<TruckServerObject>(player_index);
-  //StormReflSefDefault(*player_obj);
-  //player_obj->m_CurrentTown = spawn_id;
-
-  //player.m_Cash = 200;
-  //player.m_Deliveries.clear();
-  //player.m_Capacity = 3;
-}
-
-void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player)
-{
   auto & obj_manager = game.GetObjectManager();
   auto player_obj = obj_manager.GetReservedSlotObject(player_index);
 
@@ -108,15 +179,16 @@ void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player
 
 int GameController::AddAIPlayer(GameLogicContainer & game, uint32_t random_number)
 {
-  auto & game_data = game.GetGlobalData();
+  auto & game_data = game.GetInstanceData();
   for (int index = 0; index < kMaxPlayers; index++)
   {
     if (game_data.m_Players.HasAt(index) == false)
     {
-      ConstructPlayer(index, game, "AI", GetRandomTeam(game.GetGlobalData(), random_number));
+      auto team_counts = GetTeamCounts(game.GetInstanceData());
+      ConstructPlayer(index, game, "AI", GetRandomTeam(team_counts, random_number));
 
-      game_data.m_Players[index].m_AIPlayerInfo.Emplace();
-      game_data.m_Players[index].m_Ready = true;
+      auto & player = game_data.m_Players[index];
+      player.m_AIPlayerInfo.Emplace();
       return index;
     }
   }
@@ -126,37 +198,70 @@ int GameController::AddAIPlayer(GameLogicContainer & game, uint32_t random_numbe
 
 void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_number)
 {
-  NetRandom r(random_number);
-  while (NeedsMorePlayersToStartGame(game))
+  while (true)
   {
-    AddAIPlayer(game, r.GetRandom());
+    auto team_counts = GetTeamCounts(game.GetInstanceData());
+    if (DoAllTeamsHavePlayers(team_counts))
+    {
+      break;
+    }
+
+    int slot = -1;
+    for (int index = 0; index < kMaxPlayers; ++index)
+    {
+      if (game.GetInstanceData().m_Players.HasAt(index) == false)
+      {
+        slot = index;
+        break;
+      }
+    }
+
+    auto team = GetRandomTeam(team_counts, random_number);
+    ConstructBot(slot, game, "AI", team);
   }
 }
 
 std::vector<int> GameController::GetTeamCounts(GameInstanceData & game_data)
 {
   std::vector<int> teams(kMaxTeams);
-
-#if NET_MODE == NET_MODE_GGPO
-  auto sim_data = m_SimHistory.Get();
-  for (auto & hero : sim_data->m_Sim.m_Players)
+  for (auto hero : game_data.m_Players)
   {
     teams[(int)hero.second.m_Team]++;
   }
-#else
-  for (auto & hero : game_data.m_Players)
-  {
-    teams[(int)hero.second.m_Team]++;
-  }
-#endif
 
   return teams;
 }
 
-int GameController::GetRandomTeam(GameInstanceData & game_data, uint32_t random_number)
+std::vector<int> GameController::GetTeamCounts(GameStateStaging & game_data)
 {
-  auto team_counts = GetTeamCounts(game_data);
+  std::vector<int> teams(kMaxTeams);
+  for (auto hero : game_data.m_Players)
+  {
+    if (hero.second.m_Team >= 0)
+    {
+      teams[(int)hero.second.m_Team]++;
+    }
+  }
 
+  return teams;
+}
+
+std::vector<int> GameController::GetTeamCounts(GameStateLoading & game_data)
+{
+  std::vector<int> teams(kMaxTeams);
+  for (auto hero : game_data.m_Players)
+  {
+    if (hero.second.m_Team >= 0)
+    {
+      teams[(int)hero.second.m_Team]++;
+    }
+  }
+
+  return teams;
+}
+
+int GameController::GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number)
+{
   std::vector<int> best_teams;
   int best_team_count = 100000;
 
@@ -177,21 +282,11 @@ int GameController::GetRandomTeam(GameInstanceData & game_data, uint32_t random_
   return best_teams[random_number % best_teams.size()];
 }
 
-bool GameController::DoAllTeamsHavePlayers(GameLogicContainer & game)
+bool GameController::DoAllTeamsHavePlayers(const std::vector<int> & team_counts)
 {
   for (int team = 0; team < kMaxTeams; ++team)
   {
-    bool team_has_players = false;
-    for (auto player : game.GetGlobalData().m_Players)
-    {
-      if (player.second.m_Team == team)
-      {
-        team_has_players = true;
-        break;
-      }
-    }
-
-    if (team_has_players == false)
+    if (team_counts[team] == 0)
     {
       return false;
     }
@@ -203,7 +298,7 @@ bool GameController::DoAllTeamsHavePlayers(GameLogicContainer & game)
 Optional<int> GameController::GetOnlyTeamWithPlayers(GameLogicContainer & game)
 {
   Optional<int> team_with_players;
-  for (auto player : game.GetGlobalData().m_Players)
+  for (auto player : game.GetInstanceData().m_Players)
   {
     if (team_with_players)
     {
@@ -238,25 +333,39 @@ void GameController::HandleClientEvent(std::size_t player_index, GameLogicContai
   m_EventCallbacks[event_class_id].Call(event_ptr, player_index, game);
 }
 
-void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input)
+bool GameController::ValidateInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input)
 {
+  auto one = GameNetVal(1);
 
+  if (input.m_Strength > one)
+  {
+    input.m_Strength = one;
+  }
+  return true;
+}
+
+void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & game, const ClientInput & input)
+{
+  auto server_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
+  auto player_obj = game.GetInstanceData().m_Players.TryGet(player_index);
+
+  if (player_obj && player_obj->m_AIPlayerInfo)
+  {
+    return;
+  }
+
+  if (server_obj)
+  {
+    server_obj->m_InputAngle = input.m_Angle;
+    server_obj->m_InputStrength = input.m_Strength;
+    server_obj->m_Controls = input.m_Controls;
+  }
 }
 
 void GameController::Update(GameLogicContainer & game)
 {
-  auto & game_data = game.GetGlobalData();
-  if (game_data.m_Started == false)
-  {
-
-#ifdef NET_MODE_TURN_BASED_RUN
-    game_data.m_Running = false;
-#endif
-
-    return;
-  }
-
-  if (game_data.m_WiningTeam != -1)
+  auto & game_data = game.GetInstanceData();
+  if (game_data.m_WiningTeam)
   {
     return;
   }
@@ -320,38 +429,16 @@ void GameController::Update(GameLogicContainer & game)
     auto winning_team = GetDefaultWinningTeam();
     EndGame(winning_team ? winning_team.Value() : kMaxTeams, game);
   }
-
 #endif
-}
 
-bool GameController::NeedsMorePlayersToStartGame(GameLogicContainer & game)
-{
-  return DoAllTeamsHavePlayers(game) == false;
-}
-
-bool GameController::IsReadyToStartGame(GameLogicContainer & game)
-{
-  if (NeedsMorePlayersToStartGame(game))
-  {
-    return false;
-  }
-
-  auto & global_data = game.GetGlobalData();
-  for (auto && player : global_data.m_Players)
-  {
-    if (player.second.m_Ready == false)
-    {
-      return false;
-    }
-  }
-
-  return true;
+#if NET_MODE == NET_MODE_GGPO
+  game_data.m_FrameCount++;
+#endif
 }
 
 void GameController::StartGame(GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
-  global_data.m_Started = true;
+  auto & global_data = game.GetInstanceData();
 
 #ifdef NET_USE_COUNTDOWN
   global_data.m_Countdown = kMaxCountdown;
@@ -369,30 +456,76 @@ void GameController::StartGame(GameLogicContainer & game)
     InitPlayer(game, player.first, player.second);
   }
 
+  auto & stage = game.GetStage();
+  auto slot = kMaxPlayers;
+
   game.TriggerImmediateSend();
 }
 
 void GameController::EndGame(int winning_team, GameLogicContainer & game)
 {
-  game.GetGlobalData().m_WiningTeam = winning_team;
+  game.GetInstanceData().m_WiningTeam.Emplace(winning_team);
 
   auto & sim_events = game.GetSimEventCallbacks();
   sim_events.HandleWinGame(winning_team);
 }
 
+void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos)
+{
+  auto & game_data = game.GetInstanceData();
+
+  if (game.IsAuthority())
+  {
+    ++game_data.m_Score[team];
+
+    if (game_data.m_Score[team] >= kMaxScore)
+    {
+      for (auto player : game_data.m_Players)
+      {
+        if (player.second.m_Team == team)
+        {
+          auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player.first);
+          if (player_obj)
+          {
+            player_obj->Destroy(game.GetObjectManager());
+          }
+        }
+      }
+    }
+
+    auto winning_team = -1;
+    for (auto team = 0; team < kMaxTeams; ++team)
+    {
+      if (game_data.m_Score[team] < kMaxScore)
+      {
+        if (winning_team == -1)
+        {
+          winning_team = team;
+        }
+        else
+        {
+          winning_team = -1;
+          break;
+        }
+      }
+    }
+
+    if (winning_team != -1)
+    {
+      EndGame(winning_team, game);
+    }
+  }
+}
+
 void GameController::HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
-  if (!global_data.m_Started)
-  {
-    return;
-  }
+  auto & global_data = game.GetInstanceData();
 }
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 bool GameController::IsPlayerActive(std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
+  auto & global_data = game.GetInstanceData();
   if (global_data.m_Players.HasAt(player_index) == false)
   {
     return false;
@@ -404,7 +537,7 @@ bool GameController::IsPlayerActive(std::size_t player_index, GameLogicContainer
 
 void GameController::CheckEndTurnTimer(GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
+  auto & global_data = game.GetInstanceData();
 
   if (global_data.m_Started == false)
   {
@@ -431,7 +564,7 @@ void GameController::CheckEndTurnTimer(GameLogicContainer & game)
 
 void GameController::EndTurn(GameLogicContainer & game)
 {
-  auto & global_data = game.GetGlobalData();
+  auto & global_data = game.GetInstanceData();
 
   if (global_data.m_Running)
   {

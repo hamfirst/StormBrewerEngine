@@ -11,6 +11,7 @@
 #include "Runtime/Entity/EntityDef.refl.meta.h"
 #include "Runtime/Map/MapDef.refl.meta.h"
 #include "Runtime/UI/UIDef.refl.meta.h"
+#include "Runtime/VisualEffect/VisualEffectDef.refl.meta.h"
 #include "Runtime/Map/MapTileJson.h"
 #include "Runtime/Map/MapEffectLayerTypeRegister.h"
 #include "Runtime/Volume/VolumeTypeRegister.h"
@@ -47,6 +48,7 @@ void RuntimeRegisterTypes(PropertyFieldDatabase & property_db)
   GetProperyMetaData<MapEntity>(property_db);
   GetProperyMetaData<MapDef>(property_db);
   GetProperyMetaData<UIDef>(property_db);
+  GetProperyMetaData<VisualEffectDef>(property_db);
 
   g_ConfigTypeManager.RegisterConfigProperties(property_db);
   g_UIElementTypeDatabase.RegisterTypes(property_db);

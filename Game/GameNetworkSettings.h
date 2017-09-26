@@ -5,7 +5,7 @@
 #define NET_MODE_GGPO                       3
 #define NET_MODE_LOCKSTEP                   4
 
-#define NET_MODE NET_MODE_SERVER_AUTH
+#define NET_MODE NET_MODE_GGPO
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
 
@@ -13,16 +13,24 @@
 //#define NET_MODE_TURN_BASED_INPUT
 //#define NET_MODE_TURN_BASED_REGULAR_UPDATES
 
-
-
 #endif
 
-//#define NET_USE_WEBRTC
-#define NET_USE_COUNTDOWN
-#define NET_USE_ROUND_TIMER
+#if NET_MODE == NET_MODE_GGPO
+//#define NET_MODE_GGPO_SLIDING_WINDOW
+#endif
+
+#ifdef _WEB
+#define NET_USE_WEBRTC
+#else
+#define NET_USE_WEBRTC
+#endif
+
+//#define NET_USE_COUNTDOWN
+//#define NET_USE_ROUND_TIMER
 #define NET_USE_RANDOM
 //#define NET_ALLOW_LATE_JOIN
-
-
+#define NET_ALLOW_OBSERVERS
+#define NET_FILL_WITH_BOTS
+//#define NET_USE_READY
 
 

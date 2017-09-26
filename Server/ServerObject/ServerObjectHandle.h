@@ -64,22 +64,20 @@ struct NetSerializer<ServerObjectHandle, NetBitWriter>
 template <class NetBitReader>
 struct NetDeserializer<ServerObjectHandle, NetBitReader>
 {
-  void operator()(ServerObjectHandle & val, NetBitReader & reader)
+  void operator()(ServerObjectHandle & h, NetBitReader & reader)
   {
     auto val = reader.ReadBits(1);
     if (val)
     {
       auto server_manager = reader.GetServerManager();
 
-      val.m_ServerObjectManager = server_manager;
-      val.m_Gen = 0;
-      val.m_SlotId = reader.ReadBits(server_manager->GetHandleBits());
+      h.m_Gen = 0;
+      h.m_SlotId = reader.ReadBits(server_manager->GetHandleBits());
     }
     else
     {
-      val.m_SlotId = -1;
-      val.m_Gen = 0;
-      val.m_ServerObjectManager = nullptr;
+      h.m_SlotId = -1;
+      h.m_Gen = 0;
     }
   }
 };

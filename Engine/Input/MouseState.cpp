@@ -18,7 +18,7 @@ void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus, bool que
   int x, y;
   const uint32_t button_mask = SDL_GetGlobalMouseState(&x, &y);
 
-  if (query_state)
+  if (query_state && false)
   {
     bool in_window = PointInBox(window_geo, Vector2(x, y));
 

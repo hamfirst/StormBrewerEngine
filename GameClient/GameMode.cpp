@@ -27,6 +27,11 @@ void GameMode::OnAssetsLoaded()
 
 }
 
+void GameMode::InputEvent()
+{
+
+}
+
 void GameMode::Update()
 {
 
@@ -39,14 +44,14 @@ void GameMode::Render()
 
 bool GameMode::IsLoaded()
 {
-  return m_Loaded;
+  return m_Assets.LoadingComplete();
 }
 
 void GameMode::Step()
 {
   if (m_Loaded == false)
   {
-    if (m_Assets.LoadingComplete())
+    if (IsLoaded())
     {
       OnAssetsLoaded();
       m_Loaded = true;
@@ -54,6 +59,11 @@ void GameMode::Step()
   }
 
   Update();
+}
+
+bool GameMode::AssetLoadingComplete()
+{
+  return m_Loaded;
 }
 
 GameContainer & GameMode::GetContainer()

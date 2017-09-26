@@ -5,6 +5,7 @@
 #include "Engine/Entity/EntitySystem.h"
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Map/MapSystem.h"
+#include "Engine/VisualEffect/VisualEffectManager.h"
 
 #include "Runtime/Collision/CollisionSystem.h"
 #include "Runtime/Map/MapResource.h"
@@ -13,7 +14,8 @@ EngineState::EngineState(NotNullPtr<GameContainer> game) :
   m_CollisionSystem(std::make_unique<CollisionSystem>()),
   m_EntitySystem(std::make_unique<EntitySystem>(this, game)),
   m_ComponentSystem(std::make_unique<ComponentSystem>()),
-  m_MapSystem(std::make_unique<MapSystem>(this))
+  m_MapSystem(std::make_unique<MapSystem>(this)),
+  m_VisualEffectManager(std::make_unique<VisualEffectManager>())
 {
 
 }
@@ -28,9 +30,9 @@ NotNullPtr<Entity> EngineState::CreateEntity()
   return m_EntitySystem->CreateEntity(true);
 }
 
-NotNullPtr<Entity> EngineState::CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object)
+NotNullPtr<Entity> EngineState::CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object, bool activate)
 {
-  return m_EntitySystem->CreateEntity(resource, server_object, true);
+  return m_EntitySystem->CreateEntity(resource, server_object, activate);
 }
 
 void EngineState::DestroyAllEntities()
@@ -81,4 +83,9 @@ NotNullPtr<ComponentSystem> EngineState::GetComponentSystem()
 NotNullPtr<MapSystem> EngineState::GetMapSystem()
 {
   return m_MapSystem.get();
+}
+
+NotNullPtr<VisualEffectManager> EngineState::GetVisualEffectManager()
+{
+  return m_VisualEffectManager.get();
 }

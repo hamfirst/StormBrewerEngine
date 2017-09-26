@@ -66,7 +66,11 @@ public:
   {
     if (m_Ptr)
     {
-      m_Ptr->Destroy();
+      if (m_Owning)
+      {
+        m_Ptr->Destroy();
+      }
+
       m_Ptr = nullptr;
       m_Owning = true;
     }
