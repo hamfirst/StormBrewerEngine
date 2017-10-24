@@ -85,11 +85,12 @@ void MapEditorTileSelector::SetSelectedAnimation(uint64_t frame_id)
 
 void MapEditorTileSelector::LoadTileSheet(czstr file_name)
 {
-  m_TileSheet = TileSheetResource::LoadWithCallback(file_name, [this](NotNullPtr<TileSheetResource> r) { HandleTileSheetReload(r); });
   m_SelectedAnimation = false;
   m_SelectedFrame = kInvalidFrameId;
   m_HighlightedAnimation = false;
   m_HighlightedFrame = kInvalidFrameId;
+
+  TileSheetResource::LoadWithCallback(file_name, [this](NotNullPtr<TileSheetResource> r) { HandleTileSheetReload(r); }, m_TileSheet);
 
   UpdateScroll();
   repaint();
@@ -100,7 +101,14 @@ void MapEditorTileSelector::HandleTileSheetReload(NotNullPtr<TileSheetResource> 
   std::vector<TextureAsset::LoadCallbackLink> old_links = std::move(m_Textures);
   for (auto elem : resource->GetData()->m_Textures)
   {
-    m_Textures.emplace_back(TextureAsset::LoadWithCallback(elem.second.m_Filename.data(), [this](NullOptPtr<TextureAsset>) { UpdateScroll(); repaint(); }));
+    m_Textures.emplace_back();
+  }
+
+  int texture_index = 0;
+  for (auto elem : resource->GetData()->m_Textures)
+  {
+    TextureAsset::LoadWithCallback(elem.second.m_Filename.data(), [this](NullOptPtr<TextureAsset>) { UpdateScroll(); repaint(); }, m_Textures[texture_index]);
+    texture_index++;
   }
 
   UpdateScroll();

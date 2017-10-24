@@ -33,6 +33,18 @@ DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> TileSheetResou
     DocumentResourceReference<TileSheetResource>(this), m_LoadCallbacks.AddDelegate(std::move(callback)));
 }
 
+void TileSheetResource::AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback, 
+  DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> & load_link)
+{
+  load_link = DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource>(
+    DocumentResourceReference<TileSheetResource>(this), m_LoadCallbacks.AddDelegate(callback));
+
+  if (m_Loaded)
+  {
+    callback(this);
+  }
+}
+
 TileSheetPtr TileSheetResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path,
@@ -48,6 +60,15 @@ TileSheetLoadLink TileSheetResource::LoadWithCallback(czstr file_path, Delegate<
   auto p_this = static_cast<TileSheetResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
+}
+
+void TileSheetResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback, TileSheetLoadLink & load_link)
+{
+  auto resource = LoadDocumentResource(file_path,
+    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
+  auto p_this = static_cast<TileSheetResource *>(resource);
+
+  p_this->AddLoadCallback(std::move(callback), load_link);
 }
 
 bool TileSheetResource::InitAnimation(uint32_t animation_name_hash, uint32_t frame_offset, AnimationState & anim_state)

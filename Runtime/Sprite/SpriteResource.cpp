@@ -38,6 +38,17 @@ DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> SpriteResource::AddL
     DocumentResourceReference<SpriteResource>(this), m_LoadCallbacks.AddDelegate(std::move(callback)));
 }
 
+void SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback, DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> & load_link)
+{
+  load_link = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource>(
+    DocumentResourceReference<SpriteResource>(this), m_LoadCallbacks.AddDelegate(callback));
+
+  if (m_Loaded)
+  {
+    callback(this);
+  }
+}
+
 SpritePtr SpriteResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path, 
@@ -53,6 +64,15 @@ SpriteLoadLink SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, 
   auto p_this = static_cast<SpriteResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
+}
+
+void SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback, SpriteLoadLink & load_link)
+{
+  auto resource = LoadDocumentResource(file_path,
+    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+  auto p_this = static_cast<SpriteResource *>(resource);
+
+  p_this->AddLoadCallback(std::move(callback), load_link);
 }
 
 int SpriteResource::GetAnimationIndex(uint32_t animation_name_hash)

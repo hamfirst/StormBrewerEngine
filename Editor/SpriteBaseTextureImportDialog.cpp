@@ -25,7 +25,7 @@ SpriteBaseTextureImportDialog::SpriteBaseTextureImportDialog(const std::string &
   m_TextureView->LoadTexture(file.data());
   m_TextureView->setGeometry(0, 0, width() - 1, height() - 100);
 
-  m_TextureReference = TextureAsset::LoadWithCallback(file.data(), TextureAsset::LoadCallback(&SpriteBaseTextureImportDialog::TextureLoaded, this));
+  TextureAsset::LoadWithCallback(file.data(), TextureAsset::LoadCallback(&SpriteBaseTextureImportDialog::TextureLoaded, this), m_TextureReference);
 }
 
 SpriteBaseDefTexture & SpriteBaseTextureImportDialog::GetData()

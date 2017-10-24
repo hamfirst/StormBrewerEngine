@@ -27,6 +27,7 @@ protected:
 private:
   GameContainer & m_GameContainer;
 
+  bool m_LoadComplete;
   Map m_PendingLoadLevel;
   MapLoadLink m_PendingLoadLink;
   LevelLoadCallback m_LoadCallback;

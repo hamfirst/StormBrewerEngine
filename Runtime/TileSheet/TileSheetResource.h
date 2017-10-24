@@ -20,9 +20,11 @@ public:
 
   NotNullPtr<TileSheetDef> GetData();
   DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback);
+  void AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback, DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> & load_link);
 
   static TileSheetPtr Load(czstr file_path);
   static TileSheetLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback);
+  static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback, TileSheetLoadLink & load_link);
 
   bool InitAnimation(uint32_t animation_name_hash, uint32_t frame_offset, AnimationState & anim_state);
   void UpdateFrameInfo(AnimationState & anim_state);

@@ -90,6 +90,15 @@ public:
     m_Valid[m_Head] = true;
   }
 
+  template <typename ... InitArgs>
+  void ReplaceTop(InitArgs && ... args)
+  {
+    ASSERT(m_Count > 0, "Can't replace top on empty list");
+    auto v = Val(m_Head);
+
+    *v = T(std::forward<InitArgs>(args)...);
+  }
+
   void SetAt(const T & t, int history_index)
   {
     if (history_index < 0 || history_index >= m_Count || history_index >= MaxSize)

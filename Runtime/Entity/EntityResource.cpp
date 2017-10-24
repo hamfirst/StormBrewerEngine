@@ -18,7 +18,7 @@ NotNullPtr<EntityDef> EntityResource::GetData()
   return &m_Data;
 }
 
-DocumentResourceLoadCallbackLink<EntityDef, EntityResource> EntityResource::AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback)
+EntityLoadLink EntityResource::AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback)
 {
   if (m_Loaded)
   {
@@ -29,6 +29,17 @@ DocumentResourceLoadCallbackLink<EntityDef, EntityResource> EntityResource::AddL
     DocumentResourceReference<EntityResource>(this), m_LoadCallbacks.AddDelegate(std::move(callback)));
 }
 
+void EntityResource::AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link)
+{
+  link = DocumentResourceLoadCallbackLink<EntityDef, EntityResource>(
+    DocumentResourceReference<EntityResource>(this), m_LoadCallbacks.AddDelegate(callback));
+
+  if (m_Loaded)
+  {
+    callback(this);
+  }
+}
+
 EntityResourcePtr EntityResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path,
@@ -37,13 +48,22 @@ EntityResourcePtr EntityResource::Load(czstr file_path)
   return EntityResourcePtr(DocumentResourceReference<EntityResource>(p_this));
 }
 
-DocumentResourceLoadCallbackLink<EntityDef, EntityResource> EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback)
+EntityLoadLink EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback)
 {
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
+}
+
+void EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link)
+{
+  auto resource = LoadDocumentResource(file_path,
+    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
+  auto p_this = static_cast<EntityResource *>(resource);
+
+  p_this->AddLoadCallback(std::move(callback), link);
 }
 
 const SpritePtr & EntityResource::GetSprite() const

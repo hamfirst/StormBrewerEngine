@@ -19,10 +19,12 @@ public:
   EntityResource(Any && load_data, uint64_t path_hash);
 
   NotNullPtr<EntityDef> GetData();
-  DocumentResourceLoadCallbackLink<EntityDef, EntityResource> AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback);
+  EntityLoadLink AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback);
+  void AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link);
 
   static EntityResourcePtr Load(czstr file_path);
-  static DocumentResourceLoadCallbackLink<EntityDef, EntityResource> LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback);
+  static EntityLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback);
+  static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link);
 
   const SpritePtr & GetSprite() const;
 

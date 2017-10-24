@@ -33,6 +33,11 @@ class GameContainer
 {
 public:
   GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings = std::make_unique<GameContainerInitSettings>());
+  GameContainer(const GameContainer & rhs) = delete;
+  GameContainer(GameContainer && rhs) = delete;
+  GameContainer & operator =(const GameContainer & rhs) = delete;
+  GameContainer & operator =(GameContainer && rhs) = delete;
+
   ~GameContainer();
 
   void SetInitialMode();

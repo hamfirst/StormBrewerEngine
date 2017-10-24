@@ -28,8 +28,10 @@ using LoadCallback = Delegate<void, NullOptPtr<AssetType>>;                     
                                                                                                                     \
 static AssetReference<AssetType> Load(czstr file_path, bool load_deps = true);                                      \
 static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback && del, bool load_deps = true);              \
+static void LoadWithCallback(czstr file_path, LoadCallback && del, LoadCallbackLink & link, bool load_deps = true); \
                                                                                                                     \
 LoadCallbackLink AddLoadCallback(LoadCallback && del);                                                              \
+void AddLoadCallback(LoadCallback && del, LoadCallbackLink & link);                                                 \
                                                                                                                     \
 private:                                                                                                            \
                                                                                                                     \
@@ -52,6 +54,13 @@ AssetType::LoadCallbackLink AssetType::LoadWithCallback(                        
   return asset->AddLoadCallback(std::move(del));                                                                    \
 }                                                                                                                   \
                                                                                                                     \
+void AssetType::LoadWithCallback(                                                                                   \
+  czstr file_path, LoadCallback && del, LoadCallbackLink & link, bool deps)                                         \
+{                                                                                                                   \
+  AssetType * asset = s_##AssetType##Manager.LoadAsset(file_path, deps);                                            \
+  asset->AddLoadCallback(std::move(del), link);                                                                     \
+}                                                                                                                   \
+                                                                                                                    \
 AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback && del)                                         \
 {                                                                                                                   \
   if (m_State == AssetState::kLoadError)                                                                            \
@@ -67,6 +76,20 @@ AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback && del)     
     m_LoadCallbackList.AddDelegate(std::move(del)), AssetReference<AssetType>(this) };                              \
 }                                                                                                                   \
                                                                                                                     \
+void AssetType::AddLoadCallback(LoadCallback && del, AssetType::LoadCallbackLink & link)                            \
+{                                                                                                                   \
+  link = AssetType::LoadCallbackLink{                                                                               \
+    m_LoadCallbackList.AddDelegate(std::move(del)), AssetReference<AssetType>(this) };                              \
+                                                                                                                    \
+  if (m_State == AssetState::kLoadError)                                                                            \
+  {                                                                                                                 \
+    del.Call(this);                                                                                                 \
+  }                                                                                                                 \
+  else if (m_State == AssetState::kLoaded)                                                                          \
+  {                                                                                                                 \
+    del.Call(this);                                                                                                 \
+  }                                                                                                                 \
+}                                                                                                                   \
                                                                                                                     \
 void AssetType::CallAssetLoadCallbacks()                                                                            \
 {                                                                                                                   \

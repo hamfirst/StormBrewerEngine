@@ -35,7 +35,7 @@ void MapEditorEntitySelector::SetLayer(int layer_index)
 void MapEditorEntitySelector::SetSelectEntity(czstr entity_file)
 {
   m_EntityFile = entity_file;
-  m_Entity = EntityResource::LoadWithCallback(entity_file, [this](NotNullPtr<EntityResource>) { repaint(); });
+  EntityResource::LoadWithCallback(entity_file, [this](NotNullPtr<EntityResource>) { repaint(); }, m_Entity);
 }
 
 void MapEditorEntitySelector::paintEvent(QPaintEvent * ev)

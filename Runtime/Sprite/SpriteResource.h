@@ -23,9 +23,11 @@ public:
 
   NotNullPtr<SpriteDef> GetData();
   DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
+  void AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback, DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> & load_link);
 
   static SpritePtr Load(czstr file_path);
   static SpriteLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback);
+  static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback, SpriteLoadLink & load_link);
 
   int GetAnimationIndex(uint32_t animation_name_hash);
   int GetAnimationLength(uint32_t animation_name_hash);

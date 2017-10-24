@@ -18,7 +18,6 @@ GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_co
   m_SendTimer(0),
   m_NumLocalClients(num_local_clients)
 {
-
   m_ClientData.resize(num_local_clients);
 }
 
@@ -58,12 +57,14 @@ bool GameClientInstanceContainer::IsLoaded()
 
 void GameClientInstanceContainer::Update()
 {
-  auto new_state = std::make_shared<GameFullState>(*m_CurrentSim.get());
-  auto frame = new_state->m_InstanceData.m_FrameCount;
+  auto old_state = std::make_shared<GameFullState>(*m_CurrentSim.get());
+  m_SimHistory.ReplaceTop(std::move(old_state));
+
+  auto frame = m_CurrentSim->m_InstanceData.m_FrameCount;
 
   auto & controller = GetGameController();
 
-  GameLogicContainer logic_container(GetGameController(), new_state->m_InstanceData, new_state->m_ServerObjectManager, m_ServerObjectEventSystem,
+  GameLogicContainer logic_container(GetGameController(), m_CurrentSim->m_InstanceData, m_CurrentSim->m_ServerObjectManager, m_ServerObjectEventSystem,
     m_ServerEventResponder, GetClientController(), m_GameContainer.GetSharedGlobalResources(), GetSharedResources(), GetStage(), m_Authority, s_BogusSendTimer);
 
   auto remote_input_visitor = [&](int frame_count, HistoryInput & elem)
@@ -131,9 +132,7 @@ void GameClientInstanceContainer::Update()
   m_ExternalsHistory.IterateElementsSince(frame).VisitElementsForCurrentTime(externals_visitor);
 
   controller.Update(logic_container);
-
-  m_SimHistory.Push(new_state);
-  m_CurrentSim = new_state;
+  m_SimHistory.Push(m_CurrentSim);
 
   if (m_ReconcileFrame > 0)
   {

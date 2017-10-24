@@ -64,7 +64,7 @@ void MapEditorTileManager::Update()
   }
 }
 
-void MapEditorTileManager::SyncTiles()
+void MapEditorTileManager::SyncTiles(NotNullPtr<TileSheetResource> tile_sheet)
 {
   m_SelectedTileOffset = {};
   m_SelectedAnimOffset = {};
@@ -127,7 +127,7 @@ void MapEditorTileManager::SyncTiles()
     AnimationInfo anim_info;
     anim_info.m_Position = Vector2(elem.second->x, elem.second->y);
     anim_info.m_Bounds = tile_box;
-    m_TileSheet.GetResource()->InitAnimation(elem.second->m_Animation, elem.second->m_FrameOffset + m_NumFrames, anim_info.m_State);
+    tile_sheet->InitAnimation(elem.second->m_Animation, elem.second->m_FrameOffset + m_NumFrames, anim_info.m_State);
 
     m_AnimInfo->EmplaceAt(elem.first, anim_info);
     used_anim_indices.push_back(elem.first);
@@ -161,8 +161,8 @@ void MapEditorTileManager::SyncTileSheet()
     return;
   }
 
-  m_TileSheet = TileSheetResource::LoadWithCallback(m_Map.m_ManualTileLayers[m_LayerIndex].m_TileSheet.data(),
-    [this](NotNullPtr<TileSheetResource> resource) { HandleTileSheetReload(resource); });
+  TileSheetResource::LoadWithCallback(m_Map.m_ManualTileLayers[m_LayerIndex].m_TileSheet.data(),
+    [this](NotNullPtr<TileSheetResource> resource) { HandleTileSheetReload(resource); }, m_TileSheet);
 }
 
 void MapEditorTileManager::InsertTile(const MapTile & tile)
@@ -1589,15 +1589,17 @@ void MapEditorTileManager::HandleTileSheetReload(NotNullPtr<TileSheetResource> t
       continue;
     }
 
-    m_Textures.emplace_back(TextureInfo{ crc32(elem.second.m_Filename.data()), elem.second.m_FrameWidth, elem.second.m_FrameHeight,
-      TextureAsset::LoadWithCallback(elem.second.m_Filename.data(), [this, load_index](NullOptPtr<TextureAsset> tex) {HandleTextureReload(tex, load_index); }) });
+    m_Textures.emplace_back(TextureInfo{ crc32(elem.second.m_Filename.data()), elem.second.m_FrameWidth, elem.second.m_FrameHeight });
 
+    TextureAsset::LoadWithCallback(elem.second.m_Filename.data(),
+      [this, load_index](NullOptPtr<TextureAsset> tex) { HandleTextureReload(tex, load_index); }, m_Textures.back().m_AssetLink);
+    
     load_index++;
   }
 
   m_IgnoreTextureReloads = false;
 
-  SyncTiles();
+  SyncTiles(tile_sheet);
 }
 
 void MapEditorTileManager::HandleTextureReload(NullOptPtr<TextureAsset> textur, int texture_index)
@@ -1654,7 +1656,7 @@ void MapEditorTileManager::HandleTileListChange(const ReflectionChangeNotificati
   }
   else
   {
-    SyncTiles();
+    SyncTiles(m_TileSheet.GetResource());
   }
 }
 
@@ -1709,7 +1711,7 @@ void MapEditorTileManager::HandleAnimListChange(const ReflectionChangeNotificati
   }
   else
   {
-    SyncTiles();
+    SyncTiles(m_TileSheet.GetResource());
   }
 }
 

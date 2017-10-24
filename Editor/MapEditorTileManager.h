@@ -24,7 +24,7 @@ public:
 
   void Update();
 
-  void SyncTiles();
+  void SyncTiles(NotNullPtr<TileSheetResource> tile_sheet);
   void SyncTileSheet();
 
   void InsertTile(const MapTile & tile);

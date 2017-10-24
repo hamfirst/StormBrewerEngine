@@ -6,7 +6,8 @@
 #include "Engine/Map/MapInstance.h"
 
 GameClientLevelLoader::GameClientLevelLoader(GameContainer & game) :
-  m_GameContainer(game)
+  m_GameContainer(game),
+  m_LoadComplete(false)
 {
   
 }
@@ -26,6 +27,7 @@ void GameClientLevelLoader::LoadLevel(const GameInitSettings & init_settings, ui
     m_GameContainer.GetEngineState().UnloadMap(m_LoadedMapId.Value());
   }
 
+  m_LoadComplete = false;
   m_LoadCallback = std::move(load_complete);
   m_LoadToken = load_token;
   m_PendingLoadLevel = m_GameContainer.GetLevelList().LoadLevel(init_settings.m_StageIndex);
@@ -51,7 +53,13 @@ void GameClientLevelLoader::CancelLoading()
 
 void GameClientLevelLoader::HandleLevelLoadComplete()
 {
+  if (m_LoadComplete)
+  {
+    return;
+  }
+
   m_LoadCallback(m_LoadToken, m_PendingLoadLevel);
   m_LoadedMapId = m_GameContainer.GetEngineState().LoadMap(m_PendingLoadLevel.GetResource());
+  m_LoadComplete = true;
 }
 
