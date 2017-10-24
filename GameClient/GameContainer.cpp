@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameModeLoadingGlobal.h"
 #include "GameClient/GameNetworkClient.h"
@@ -6,6 +6,8 @@
 
 #include "Engine/Text/TextManager.h"
 #include "Engine/Component/ComponentSystem.h"
+
+#include "Runtime/Asset/Asset.h"
 
 GameSharedGlobalResources & GetSharedGlobalResourcesFromContainer(NotNullPtr<GameContainer> container)
 {
@@ -21,6 +23,12 @@ NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer>
 {
   auto instance_data = game->GetInstanceData();
   return instance_data ? &instance_data->GetFullState().m_ServerObjectManager : nullptr;
+}
+
+NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game, int history_index)
+{
+  auto instance_data = game->GetInstanceData();
+  return instance_data ? &instance_data->GetHistoryState(history_index).m_ServerObjectManager : nullptr;
 }
 
 GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings) :
@@ -42,6 +50,8 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_SharedGlobalResources.Emplace();
   m_ClientGlobalResources.Emplace();
 
+  g_GlobalAssetList.BeginAssetLoad();
+
   SetInitialMode();
 }
 
@@ -49,6 +59,8 @@ GameContainer::~GameContainer()
 {
   m_SharedGlobalResources.Clear();
   m_ClientGlobalResources.Clear();
+
+  g_GlobalAssetList.UnloadAllAssets();
 }
 
 void GameContainer::SetInitialMode()
@@ -97,12 +109,12 @@ GameClientSave & GameContainer::GetSave()
   return m_Save;
 }
 
-NullOptPtr<GameClientInstanceData> GameContainer::GetInstanceData()
+NullOptPtr<GameClientInstanceContainer> GameContainer::GetInstanceData()
 {
   return m_ClientInstanceData;
 }
 
-void GameContainer::SetInstanceData(NullOptPtr<GameClientInstanceData> instance_data)
+void GameContainer::SetInstanceData(NullOptPtr<GameClientInstanceContainer> instance_data)
 {
   m_ClientInstanceData = instance_data;
 }
@@ -169,6 +181,10 @@ void GameContainer::Update()
   if (m_Mode)
   {
     m_Mode->Step();
+  }
+  else
+  {
+    GetWindow().Update();
   }
 
   auto comp_system = m_EngineState.GetComponentSystem();

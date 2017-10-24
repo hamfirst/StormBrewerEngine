@@ -53,6 +53,11 @@ struct PlaceholderClientEvent : public ClientNetworkEvent
   NET_REFL;
 };
 
+struct JumpEvent : public ClientNetworkEvent
+{
+  NET_REFL;
+};
+
 #if (NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC)
 
 struct EndTurnEvent : public ClientNetworkEvent

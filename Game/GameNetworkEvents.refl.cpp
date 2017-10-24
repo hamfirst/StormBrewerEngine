@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "StormNet/NetReflectionTypeDatabaseRegister.h"
 
 #include "Game/GameNetworkEvents.refl.meta.h"

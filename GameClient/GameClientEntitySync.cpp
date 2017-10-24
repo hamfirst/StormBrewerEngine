@@ -1,3 +1,4 @@
+#include "GameClient/GameClientCommon.h"
 
 #include "Engine/Entity/Entity.h"
 #include "Engine/EngineState.h"
@@ -33,7 +34,7 @@ void GameClientEntitySync::ActivateEntities()
   m_ActivateEntities = true;
 }
 
-void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
+void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container)
 {
   auto & engine_state = m_GameContainer.GetEngineState();
 
@@ -102,6 +103,7 @@ void GameClientEntitySync::Sync(ServerObjectManager & obj_manager)
     }
   };
 
+  auto & obj_manager = instance_container.GetFullState().m_ServerObjectManager;
   obj_manager.VisitObjects(visitor);
 
   while ((int)last_index <= m_Entities.HighestIndex())
@@ -136,7 +138,7 @@ void GameClientEntitySync::SendEntityEvent(int entity_index, uint32_t type_name_
 
   if (entity)
   {
-    entity->TriggerEventHandler(type_name_hash, ev, nullptr);
+    entity->TriggerEventHandler(type_name_hash, ev);
   }
 }
 

@@ -104,6 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -117,6 +119,8 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -133,6 +137,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -153,6 +159,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -173,6 +181,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -193,6 +203,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -209,6 +221,16 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Data\PlayerSpawn.refl.reg.cpp" />
+    <ClCompile Include="GameCommon.cpp">
+      <SubType>
+      </SubType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FinalStatic|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="GameController.refl.cpp" />
     <ClCompile Include="GameEventReconciler.cpp" />
     <ClCompile Include="GameLevelList.cpp">
@@ -238,8 +260,9 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameWebrtc.cpp" />
-    <ClCompile Include="ServerObjects\PlayerServerObject.refl.cpp" />
-    <ClCompile Include="ServerObjects\PlayerServerObject.refl.reg.cpp" />
+    <ClCompile Include="ServerObjects\Player\PlayerServerObject.refl.cpp" />
+    <ClCompile Include="ServerObjects\Player\PlayerServerObject.refl.reg.cpp" />
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateDefault.refl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\PlayerAI.h">
@@ -248,6 +271,10 @@
     </ClInclude>
     <ClInclude Include="Data\PlayerSpawn.refl.h" />
     <ClInclude Include="Data\PlayerSpawn.refl.meta.h" />
+    <ClInclude Include="GameCommon.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameController.refl.h" />
     <ClInclude Include="GameController.refl.meta.h" />
     <ClInclude Include="GameEventReconciler.h" />
@@ -290,6 +317,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameNetworkSettings.h" />
+    <ClInclude Include="GameplayEvents\PlaceholderEvent.h" />
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameServerEventSender.h" />
     <ClInclude Include="GameServerTypes.h" />
@@ -308,8 +336,17 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="ServerObjects\PlayerServerObject.refl.h" />
-    <ClInclude Include="ServerObjects\PlayerServerObject.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.h" />
+    <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />

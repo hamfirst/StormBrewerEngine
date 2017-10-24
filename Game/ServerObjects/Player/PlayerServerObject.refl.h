@@ -1,14 +1,22 @@
 
 #pragma once
 
-#include "Foundation/Common.h"
-
+#include "Game/GameCommon.h"
 #include "Game/GameServerTypes.h"
 #include "Game/GameLogicContainer.h"
+#include "Game/GameNetworkData.refl.h"
+
+#include "Game/ServerObjects/Player/States/PlayerStateDefault.refl.h"
+
+#include "Game/GameplayEvents/PlaceholderEvent.h"
 
 #include "Server/ServerObject/ServerObject.h"
 #include "Server/ServerObject/ServerObjectInitData.refl.h"
 #include "Server/ServerObject/ServerObjectRegistrationMacros.h"
+
+#include "StormNet/NetReflectionPolymorphic.h"
+
+class PlayerStateDefault;
 
 struct PlayerServerObjectInitData : public ServerObjectInitData
 {
@@ -19,7 +27,6 @@ class PlayerServerObject : public ServerObject
 {
 public:
   DECLARE_SERVER_OBJECT;
-  STORM_REFL;
 
   PlayerServerObject() = default;
   PlayerServerObject(const PlayerServerObject & rhs) = default;
@@ -31,13 +38,25 @@ public:
   void Init(const PlayerServerObjectInitData & init_data);
   void UpdateFirst(GameLogicContainer & game_container);
 
+  void Jump(GameLogicContainer & game_container);
+
+  MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container);
+  void MoveCheckIntersectionDatabase(GameLogicContainer & game_container);
+
+  void SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, GameLogicContainer & game_container);
+
   virtual czstr GetEntityBinding() override;
 
 public:
   GameNetVec2 m_Position = {};
   GameNetVec2 m_Velocity = {};
 
-  GameNetVal m_InputAngle = GameNetVal(0);
-  GameNetVal m_InputStrength = GameNetVal(0);
-  uint8_t m_Controls = 0;
+  bool m_OnGround = false;
+
+  ClientInput m_Input;
+
+  NetPolymorphic<PlayerStateDefault> m_State;
+
+private:
+  Box m_MoveBox;
 };

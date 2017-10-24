@@ -37,13 +37,9 @@ public:
   NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);
   void UnloadMap(std::size_t map_id);
 
-  uint32_t CheckCollision(const Box & box, uint32_t collision_layer_mask);
-  uint32_t CheckCollisionAny(const Box & box, uint32_t collision_layer_mask);
-
   template <typename T>
   void VisitComponents(Delegate<void, NotNullPtr<T>> & cb);
 
-  NotNullPtr<CollisionSystem> GetCollisionSystem();
   NotNullPtr<EntitySystem> GetEntitySystem();
   NotNullPtr<ComponentSystem> GetComponentSystem();
   NotNullPtr<MapSystem> GetMapSystem();
@@ -58,7 +54,6 @@ private:
   friend class MapInstance;
   friend class Camera;
 
-  std::unique_ptr<CollisionSystem> m_CollisionSystem;
   std::unique_ptr<EntitySystem> m_EntitySystem;
   std::unique_ptr<ComponentSystem> m_ComponentSystem;
   std::unique_ptr<MapSystem> m_MapSystem;

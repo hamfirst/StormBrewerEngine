@@ -7,6 +7,7 @@ DocumentResourceBase::DocumentResourceBase(Any && load_data, uint64_t file_name_
   m_LoadData(std::move(load_data)),
   m_RefCount(0),
   m_Loaded(false),
+  m_Error(false),
   m_FileNameHash(file_name_hash)
 {
 
@@ -34,6 +35,11 @@ void DocumentResourceBase::DecRef()
 bool DocumentResourceBase::IsLoaded() const
 {
   return m_Loaded;
+}
+
+bool DocumentResourceBase::IsError() const
+{
+  return m_Error;
 }
 
 uint64_t DocumentResourceBase::GetFileNameHash() const

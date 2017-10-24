@@ -8,9 +8,10 @@
 #include "Game/GameFullState.refl.h"
 #include "Game/GameServerTypes.h"
 
+#include "Runtime/Collision/CollisionDatabase.h"
 #include "Runtime/Collision/IntersectionDatabase.h"
 
-struct CollisionLine
+struct GameCollisionLine
 {
   Vector2 m_Start;
   Vector2 m_End;
@@ -25,8 +26,10 @@ public:
 
   GameFullState CreateDefaultGameState() const;
 
-  const CollisionDatabase<GameNetVal> & GetCollision() const;
-  const std::vector<CollisionLine> GetCollisionLines() const;
+  const CollisionDatabase & GetCollisionDatabase() const;
+
+  const IntersectionDatabase<GameNetVal> & GetIntersectionDatabase() const;
+  const std::vector<GameCollisionLine> GetCollisionLines() const;
 
   const std::vector<std::vector<Vector2>> & GetPlayerSpawns() const;
 
@@ -36,8 +39,10 @@ private:
   std::vector<ServerObjectStaticInitData> m_StaticObjects;
   int m_DynamicObjectCount;
 
-  CollisionDatabase<GameNetVal> m_Collision;
-  std::vector<CollisionLine> m_CollisionLines;
+  CollisionDatabase m_CollisionDatabase;
+
+  IntersectionDatabase<GameNetVal> m_IntersectionDatabase;
+  std::vector<GameCollisionLine> m_CollisionLines;
 
   std::vector<std::vector<Vector2>> m_PlayerSpawns;
 };

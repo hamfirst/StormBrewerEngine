@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeSinglePlayerBots.h"
 #include "GameClient/GameModeMainMenu.h"
@@ -27,7 +27,7 @@ GameModeSinglePlayerBots::GameModeSinglePlayerBots(GameContainer & game, const G
   GameMode(game)
 {
   auto & container = GetContainer();
-  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, 1, true, nullptr, nullptr);
+  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, *this, 1, true);
   m_InstanceContainer->Load(game_settings);
 
   m_ShowTutorial = show_tutorial;
@@ -46,11 +46,10 @@ void GameModeSinglePlayerBots::Initialize()
 
 void GameModeSinglePlayerBots::OnAssetsLoaded()
 {
-  m_InstanceData = std::make_unique<GameClientInstanceData>(m_InstanceContainer->GetClientInstanceData(*this));
   m_ClientSystems = std::make_unique<GameClientSystems>(GetContainer());
 
   auto & container = GetContainer();
-  container.SetInstanceData(m_InstanceData.get());
+  container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
   auto game_logic = m_InstanceContainer->GetLogicContainer(true);
@@ -98,20 +97,20 @@ void GameModeSinglePlayerBots::Update()
   }
 
   auto & container = GetContainer();
-  auto & instance_data = *m_InstanceData.get();
-  auto & game_data = instance_data.GetGameState();
+  auto & instance_data = *m_InstanceContainer.get();
+  auto & game_data = instance_data.GetGlobalInstanceData();
 
   if (game_data.m_WiningTeam)
   {
     container.SwitchMode(GameModeDef<GameModeEndGame>{}, 
-      std::move(m_InstanceContainer), std::move(m_InstanceData), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
+      std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
     return;
   }
 
   if (game_data.m_Score[0] >= kMaxScore)
   {
     container.SwitchMode(GameModeDef<GameModeEndGame>{}, 
-      std::move(m_InstanceContainer), std::move(m_InstanceData), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
+      std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
     return;
   }
 
@@ -127,16 +126,23 @@ void GameModeSinglePlayerBots::Update()
   auto visual_effects = engine_state.GetVisualEffectManager();
   auto map_system = engine_state.GetMapSystem();
 
-  while(m_FrameClock.ShouldSkipFrameUpdate() == false)
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
+  for (int index = 0; index < 3 && m_FrameClock.ShouldSkipFrameUpdate() == false; ++index)
   {
     m_FrameClock.BeginFrame();
     m_Sequencer.Update();
+
+    container.GetWindow().Update();
 
     if (m_ClientSystems->GetUIManager().IsPopupOpen() == false)
     {
       PROFILE_SCOPE("Server update");
 
       entity_system->BeginFrame();
+
+      input_manager.Update();
       m_InstanceContainer->Update();
 
       map_system->UpdateAllMaps(container);
@@ -158,32 +164,23 @@ void GameModeSinglePlayerBots::Update()
           entity_system->FinalizeEvents();
         }
       }
+
+      m_InstanceContainer->SyncEntities();
     }
   }
+
+  m_FrameClock.RemoveExtra();
 
   {
     PROFILE_SCOPE("VFX update");
     visual_effects->Update();
   }
 
-  auto & ui_manager = container.GetClientSystems()->GetUIManager();
-  auto & input_manager = container.GetClientSystems()->GetInputManager();
-
   {
     PROFILE_SCOPE("UI update");
     ui_manager.Update();
   }
 
-  {
-    PROFILE_SCOPE("Input update");
-    input_manager.Update();
-  }
-
-  auto window = container.GetWindow();
-  if (window.GetInputState()->GetKeyPressedThisFrame(SDL_SCANCODE_F11))
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(45));
-  }
 }
 
 void GameModeSinglePlayerBots::Render()
@@ -246,19 +243,14 @@ void GameModeSinglePlayerBots::Render()
 
   //RenderProfilerData(render_state);
 
-  //static int frame = 0;
-  //frame++;
-
-  //m_FPSClock.Update();
-  //std::string fps_data = 
-  //  std::to_string(container.GetWindow().GetInputState()->GetGamepadAxis(0, GamepadAxis::kLeftVert)) + " " +
-  //  std::to_string(container.GetWindow().GetInputState()->GetGamepadAxis(0, GamepadAxis::kLeftHorz));
-  //g_TextManager.SetTextPos(Vector2(40, 40));
-  //g_TextManager.SetPrimaryColor();
-  //g_TextManager.SetShadowColor();
-  //g_TextManager.SetTextMode(TextRenderMode::kOutlined);
-  //g_TextManager.ClearTextBounds();
-  //g_TextManager.RenderText(fps_data.data(), -1, render_state);
+  m_FPSClock.Update();
+  std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
+  g_TextManager.SetTextPos(Vector2(40, 40));
+  g_TextManager.SetPrimaryColor();
+  g_TextManager.SetShadowColor();
+  g_TextManager.SetTextMode(TextRenderMode::kOutlined);
+  g_TextManager.ClearTextBounds();
+  g_TextManager.RenderText(fps_data.data(), -1, render_state);
 }
 
 bool GameModeSinglePlayerBots::IsLoaded()
@@ -271,8 +263,9 @@ bool GameModeSinglePlayerBots::IsLoaded()
   return GameMode::IsLoaded();
 }
 
-void GameModeSinglePlayerBots::SendClientEvent(std::size_t class_id, const void * event_ptr)
+void GameModeSinglePlayerBots::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
   auto game = m_InstanceContainer->GetLogicContainer(true);
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);
 }
+

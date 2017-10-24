@@ -1,10 +1,11 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameLogicContainer.h"
 
 GameLogicContainer::GameLogicContainer(
   GameController & game_controller,
   GameInstanceData & global_data,
   ServerObjectManager & object_manager,
+  ServerObjectEventSystem & server_object_event_system,
   GameServerEventSender & server_event_sender,
   GameSimulationEventCallbacks & sim_event_sender,
   GameSharedGlobalResources & shared_global_resources,
@@ -15,6 +16,7 @@ GameLogicContainer::GameLogicContainer(
   m_GameController(game_controller),
   m_InstanceData(global_data),
   m_ObjectManager(object_manager),
+  m_ObjectEventSystem(server_object_event_system),
   m_ServerEventSender(server_event_sender),
   m_SimEventSender(sim_event_sender),
   m_SharedGlobalResources(shared_global_resources),
@@ -39,6 +41,11 @@ GameInstanceData & GameLogicContainer::GetInstanceData()
 ServerObjectManager & GameLogicContainer::GetObjectManager()
 {
   return m_ObjectManager;
+}
+
+ServerObjectEventSystem & GameLogicContainer::GetServerObjectEventSystem()
+{
+  return m_ObjectEventSystem;
 }
 
 GameServerEventSender & GameLogicContainer::GetEventSender()

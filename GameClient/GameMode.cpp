@@ -1,5 +1,4 @@
-
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameMode.h"
 #include "GameClient/GameContainer.h"
 

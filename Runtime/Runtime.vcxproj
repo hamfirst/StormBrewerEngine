@@ -29,10 +29,11 @@
   <ItemGroup>
     <ClCompile Include="Anchor\AnchorDef.refl.cpp" />
     <ClCompile Include="Anchor\AnchorTypeDatabase.cpp" />
-    <ClCompile Include="Collision\CollisionSystem.cpp">
+    <ClCompile Include="Asset\Asset.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Collision\CollisionDatabase.cpp" />
     <ClCompile Include="Component\ComponentInitData.refl.cpp" />
     <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp" />
     <ClCompile Include="Config\ConfigManager.cpp" />
@@ -45,6 +46,11 @@
     <ClCompile Include="Entity\EntityDef.refl.cpp" />
     <ClCompile Include="Entity\EntityResource.cpp" />
     <ClCompile Include="FrameData\FrameData.refl.cpp" />
+    <ClCompile Include="FrameData\FrameDataExtract.cpp" />
+    <ClCompile Include="Map\MapCollision.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Map\MapDef.refl.cpp" />
     <ClCompile Include="Map\MapEffectLayerDef.refl.cpp" />
     <ClCompile Include="Map\MapEffectLayerTypeDatabase.cpp" />
@@ -73,6 +79,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SpriteBase\SpriteAnimationEventDef.refl.cpp" />
+    <ClCompile Include="SpriteBase\SpriteAnimationEventTypeDatabase.cpp" />
     <ClCompile Include="SpriteBase\SpriteBaseDef.refl.cpp" />
     <ClCompile Include="Sprite\SpriteDef.refl.cpp" />
     <ClCompile Include="Sprite\SpriteResource.cpp" />
@@ -101,10 +109,11 @@
     <ClInclude Include="Anchor\AnchorTypeDatabase.h" />
     <ClInclude Include="Anchor\AnchorTypeRegister.h" />
     <ClInclude Include="Animation\AnimationState.h" />
-    <ClInclude Include="Collision\CollisionSystem.h">
+    <ClInclude Include="Asset\Asset.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Collision\CollisionDatabase.h" />
     <ClInclude Include="Collision\IntersectionDatabase.h" />
     <ClInclude Include="Component\ComponentInitData.refl.h">
       <SubType>
@@ -138,6 +147,7 @@
     <ClInclude Include="Entity\EntityDef.refl.h" />
     <ClInclude Include="Entity\EntityDef.refl.meta.h" />
     <ClInclude Include="Entity\EntityResource.h" />
+    <ClInclude Include="Event\Event.h" />
     <ClInclude Include="Event\EventDispatcher.h" />
     <ClInclude Include="Event\EventSystem.h">
       <SubType>
@@ -151,7 +161,12 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FrameData\FrameDataExtract.h" />
     <ClInclude Include="GenericResource\GenericResource.h" />
+    <ClInclude Include="Map\MapCollision.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Map\MapDef.refl.h">
       <SubType>
       </SubType>
@@ -175,7 +190,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Mover\MoverState.h" />
     <ClInclude Include="Path\PathDef.refl.h">
       <SubType>
       </SubType>
@@ -194,6 +208,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RuntimeCommon.h" />
+    <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.h" />
+    <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.meta.h" />
+    <ClInclude Include="SpriteBase\SpriteAnimationEventRegister.h" />
+    <ClInclude Include="SpriteBase\SpriteAnimationEventTypeDatabase.h" />
     <ClInclude Include="SpriteBase\SpriteBaseDef.refl.h" />
     <ClInclude Include="SpriteBase\SpriteBaseDef.refl.meta.h" />
     <ClInclude Include="Sprite\SpriteDef.refl.h" />

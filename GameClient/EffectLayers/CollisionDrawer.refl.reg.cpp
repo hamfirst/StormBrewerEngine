@@ -1,5 +1,5 @@
 
-#include "Foundation/Common.h"
+#include "GameClient/GameClientCommon.h"
 #include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 
 #include "StormData/StormData.h"

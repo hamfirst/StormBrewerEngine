@@ -10,11 +10,14 @@
 
 #include "GameServer/GameInstanceStateBase.h"
 
+#include "Server/ServerObject/ServerObjectEventSystem.h"
+
 struct GameInstanceStateGameplayPlayer
 {
   int m_PlayerIndex;
   bool m_Loaded;
   uint64_t m_LoadToken;
+
 
 #ifdef NET_ALLOW_OBSERVERS
   int m_ObserverIndex;
@@ -22,6 +25,8 @@ struct GameInstanceStateGameplayPlayer
 
 #if NET_MODE == NET_MODE_GGPO
   int m_ClientFrame;
+  int m_InputFrame;
+  int m_LastAuthCommitFrame;
   HistoryList<ClientLocalData> m_LocalDataHistory;
 #endif
 };
@@ -30,6 +35,7 @@ class GameInstanceStateGameplay : public GameInstanceStateBase, public GameSimul
 {
 public:
   GameInstanceStateGameplay(GameInstanceStateData & state_data, const GameStateLoading & loading_data, std::unique_ptr<GameSharedInstanceResources> && resources);
+  ~GameInstanceStateGameplay();
 
   virtual bool JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game) override;
   virtual void RemovePlayer(std::size_t client_index) override;
@@ -41,9 +47,14 @@ public:
 
 #if NET_MODE == NET_MODE_GGPO
 
+  void ProcessExternals();
+  void BatchUpdate(int frames_to_rewind, int frames_to_update);
+  void ComputeMaxRewind();
   virtual void UpdatePlayer(std::size_t client_index, GameGGPOClientUpdate & update_data) override;
 
+  virtual void SendAuthEvent(std::size_t class_id, const void * event_ptr) override;
   virtual bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) override;
+  virtual void BlockRewind(std::size_t connection) override;
 
 #else
 
@@ -102,11 +113,17 @@ private:
     ClientLocalData m_Data;
   };
 
+  int m_FramesToRewind;
+  int m_FramesToUpdate;
+
   GameFullState m_InitialState;
   std::vector<NetPolymorphic<GameNetworkExternalEvent>> m_PendingExternals;
 
   int m_ReconcileFrame;
+  int m_FurthestRewind;
+  int m_LastAuthCommit;
   GameEventReconciler m_Reconciler;
+  ServerObjectEventSystem m_ServerObjectEventSystem;
 
   CircularBuffer<std::shared_ptr<GameFullState>, kMaxHistoryFrames> m_SimHistory;
   HistoryList<HistoryInput> m_Inputistory;

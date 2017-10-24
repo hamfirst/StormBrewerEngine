@@ -143,11 +143,27 @@ struct StormReflTypeInfo<PlaceholderClientEvent>
   static PlaceholderClientEvent & GetDefault() { static PlaceholderClientEvent def; return def; }
 };
 
+template <>
+struct StormReflTypeInfo<JumpEvent>
+{
+  using MyBase = ClientNetworkEvent;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "JumpEvent"; }
+  static constexpr auto GetNameHash() { return 0x940BF099; }
+  static JumpEvent & GetDefault() { static JumpEvent def; return def; }
+};
+
 namespace StormReflFileInfo
 {
   struct GameNetworkEvents
   {
-    static const int types_n = 8;
+    static const int types_n = 9;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -197,6 +213,12 @@ namespace StormReflFileInfo
   struct GameNetworkEvents::type_info<7>
   {
     using type = ::PlaceholderClientEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<8>
+  {
+    using type = ::JumpEvent;
   };
 
 }

@@ -17,8 +17,6 @@
 #include "Runtime/Map/MapEffectLayerTypeDatabase.h"
 #include "Runtime/Map/MapTile.h"
 
-
-
 struct RUNTIME_EXPORT MapManualTileLayer
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapManualTileLayer);
@@ -29,6 +27,7 @@ struct RUNTIME_EXPORT MapManualTileLayer
   RBool m_CollisionLayer = true;
 
   RSparseList<ROpaque<MapTile>> STORM_REFL_ATTR(noui) m_Tiles;
+  RSparseList<ROpaque<MapAnimatedTile>> STORM_REFL_ATTR(noui) m_Animations;
 };
 
 struct RUNTIME_EXPORT MapEntity
@@ -60,8 +59,14 @@ struct RUNTIME_EXPORT MapParalaxLayer
   RBool m_RepeatX = true;
   RBool m_RepeatY = true;
 
+  RFloat m_OffsetX;
+  RFloat m_OffsetY;
+
   RFloat m_ParalaxX;
   RFloat m_ParalaxY;
+
+  RFloat m_VelocityX;
+  RFloat m_VelocityY;
 };
 
 struct RUNTIME_EXPORT MapEffectLayer

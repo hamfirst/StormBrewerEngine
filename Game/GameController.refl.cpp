@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Foundation/Pathfinding/Pathfinding.h"
 
 #include "Game/GameController.refl.meta.h"
@@ -10,29 +10,58 @@
 #include "Game/GameStage.h"
 #include "Game/AI/PlayerAI.h"
 
-#include "Game/ServerObjects/PlayerServerObject.refl.meta.h"
+#include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
 #include "Server/ServerObject/ServerObjectManager.h"
 
 #include "StormRefl/StormReflMetaCall.h"
 
+struct GameControllerRegister
+{
+  template <typename ParamType>
+  static void Register(
+    GameController * ptr, 
+    std::vector<Delegate<void, const void *, std::size_t, GameLogicContainer &>> & client_events,
+    std::vector<Delegate<void, const void *, GameLogicContainer &>> & auth_events,
+    void (GameController::*func_ptr)(const ParamType &, std::size_t, GameLogicContainer &))
+  {
+    static_assert(std::is_base_of<ClientNetworkEvent, ParamType>::value, "Client event handlers must have a parameter that inherits from ClientNetworkEvent");
+
+    auto class_id = ClientNetworkEvent::__s_TypeDatabase.GetClassId<ParamType>();
+    client_events[class_id] = Delegate<void, const void *, std::size_t, GameLogicContainer &>(
+      [=](const void * ev, std::size_t player_index, GameLogicContainer & game) { (ptr->*func_ptr)(*(const ParamType *)ev, player_index, game); });
+  }
+
+  template <typename ParamType>
+  static void Register(
+    GameController * ptr,
+    std::vector<Delegate<void, const void *, std::size_t, GameLogicContainer &>> & client_events,
+    std::vector<Delegate<void, const void *, GameLogicContainer &>> & auth_events,
+    void (GameController::*func_ptr)(const ParamType &, GameLogicContainer &))
+  {
+    static_assert(std::is_base_of<ServerAuthNetworkEvent, ParamType>::value, "Auth event handlers must have a parameter that inherits from ServerAuthNetworkEvent");
+
+    auto class_id = ServerAuthNetworkEvent::__s_TypeDatabase.GetClassId<ParamType>();
+    auth_events[class_id] = Delegate<void, const void *, GameLogicContainer &>(
+      [=](const void * ev, GameLogicContainer & game) { (ptr->*func_ptr)(*(const ParamType *)ev, game); });
+  }
+};
+
 GameController::GameController()
 {
-  auto num_types = ClientNetworkEvent::__s_TypeDatabase.GetNumTypes();
-  m_EventCallbacks.resize(num_types);
+  auto num_client_types = ClientNetworkEvent::__s_TypeDatabase.GetNumTypes();
+  m_ClientEventCallbacks.resize(num_client_types);
+
+  auto num_auth_types = ServerAuthNetworkEvent::__s_TypeDatabase.GetNumTypes();
+  m_AuthEventCallbacks.resize(num_auth_types);
 
   auto visitor = [&](auto f)
   {
     using FuncType = decltype(f);
     using ParamType = typename std::decay_t<typename FuncType::template param_info<0>::param_type>;
 
-    static_assert(std::is_base_of<ClientNetworkEvent, ParamType>::value, "Client event handlers must have a parameter that inherits from ClientNetworkEvent");
-
-    auto class_id = ClientNetworkEvent::__s_TypeDatabase.GetClassId<ParamType>();
     auto func_ptr = FuncType::GetFunctionPtr();
-
-    m_EventCallbacks[class_id] = Delegate<void, const void *, std::size_t, GameLogicContainer &>(
-      [=](const void * ev, std::size_t player_index, GameLogicContainer & game) { (this->*func_ptr)(*(const ParamType *)ev, player_index, game); });
+    GameControllerRegister::Register(this, m_ClientEventCallbacks, m_AuthEventCallbacks, func_ptr);
   };
 
   StormReflVisitFuncs(*this, visitor);
@@ -65,6 +94,33 @@ void GameController::DestroyPlayer(std::size_t player_index, GameLogicContainer 
   CleanupPlayer(game, player_index);
 }
 
+bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicContainer & game)
+{
+  auto & global_data = game.GetInstanceData();
+  auto player = global_data.m_Players.TryGet(player_index);
+
+  if (player == nullptr)
+  {
+    return true;
+  }
+
+  if (global_data.m_Score[(int)player->m_Team] > kMaxScore / 2)
+  {
+    return false;
+  }
+
+  return true;
+}
+
+void GameController::ConvertBotToPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name)
+{
+  auto & global_data = game.GetInstanceData();
+  auto player = global_data.m_Players.TryGet(player_index);
+
+  player->m_UserName = name;
+  player->m_AIPlayerInfo.Clear();
+}
+
 void GameController::ConstructBot(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team)
 {
   GamePlayer player;
@@ -80,6 +136,15 @@ void GameController::DestroyBot(std::size_t player_index, GameLogicContainer & g
 {
   auto & global_data = game.GetInstanceData();
   global_data.m_Players.RemoveAt(player_index);
+}
+
+void GameController::ConvertPlayerToBot(std::size_t player_index, GameLogicContainer & game, const std::string & name)
+{
+  auto & global_data = game.GetInstanceData();
+  auto player = global_data.m_Players.TryGet(player_index);
+
+  player->m_UserName = name;
+  player->m_AIPlayerInfo.Emplace();
 }
 
 #ifdef NET_ALLOW_OBSERVERS
@@ -138,8 +203,15 @@ void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_in
   auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index);
   StormReflSefDefault(*player_obj);
 
-  auto & spawn = spawns[(int)player.m_Team][0];
-  player_obj->m_Position = GameNetVec2(spawn.x, spawn.y);
+  if (spawns[(int)player.m_Team].size() == 0)
+  {
+    player_obj->m_Position = {};
+  }
+  else
+  {
+    auto & spawn = spawns[(int)player.m_Team][0];
+    player_obj->m_Position = GameNetVec2(spawn.x, spawn.y);
+  }
 
   if (player.m_AIPlayerInfo)
   {
@@ -330,17 +402,17 @@ void GameController::HandleClientEvent(std::size_t player_index, GameLogicContai
   }
 #endif
 
-  m_EventCallbacks[event_class_id].Call(event_ptr, player_index, game);
+  m_ClientEventCallbacks[event_class_id].Call(event_ptr, player_index, game);
+}
+
+void GameController::HandleAuthEvent(GameLogicContainer & game, std::size_t event_class_id, const void * event_ptr)
+{
+  m_AuthEventCallbacks[event_class_id].Call(event_ptr, game);
 }
 
 bool GameController::ValidateInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input)
 {
-  auto one = GameNetVal(1);
-
-  if (input.m_Strength > one)
-  {
-    input.m_Strength = one;
-  }
+  input.m_XInput.Clamp(1, -1);
   return true;
 }
 
@@ -356,9 +428,7 @@ void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & g
 
   if (server_obj)
   {
-    server_obj->m_InputAngle = input.m_Angle;
-    server_obj->m_InputStrength = input.m_Strength;
-    server_obj->m_Controls = input.m_Controls;
+    server_obj->m_Input = input;
   }
 }
 
@@ -383,6 +453,7 @@ void GameController::Update(GameLogicContainer & game)
   auto & obj_manager = game.GetObjectManager();
 
   ServerObjectUpdateList update_list;
+  obj_manager.IncrementTimeAlive();
   obj_manager.CreateUpdateList(update_list);
 
 #ifdef NET_MODE_TURN_BASED_RUN
@@ -405,9 +476,14 @@ void GameController::Update(GameLogicContainer & game)
 
 #endif
 
+  auto & event_system = game.GetServerObjectEventSystem();
+
   update_list.CallFirst(game);
+  event_system.FinalizeEvents(game, game.GetObjectManager());
   update_list.CallMiddle(game);
+  event_system.FinalizeEvents(game, game.GetObjectManager());
   update_list.CallLast(game);
+  event_system.FinalizeEvents(game, game.GetObjectManager());
 
   for (auto player : game_data.m_Players)
   {
@@ -520,6 +596,20 @@ void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 &
 void GameController::HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game)
 {
   auto & global_data = game.GetInstanceData();
+}
+
+void GameController::HandleJumpEvent(const JumpEvent & ev, std::size_t player_index, GameLogicContainer & game)
+{
+  auto server_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
+  if (server_obj)
+  {
+    server_obj->Jump(game);
+  }
+}
+
+void GameController::HandlePlaceholderAuthEvent(const PlaceholderServerAuthEvent & ev, GameLogicContainer & game)
+{
+
 }
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC

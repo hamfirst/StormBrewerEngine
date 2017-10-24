@@ -1,44 +1,18 @@
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Mover/Mover.h"
-#include "Runtime/Mover/MoverState.h"
 
-void Mover::UpdateMoverNoCollision(MoverState & mover_state)
-{
-  mover_state.m_SubPixel += mover_state.m_Velocity;
 
-  while (mover_state.m_SubPixel.x < 0)
-  {
-    mover_state.m_SubPixel.x += 128;
-    mover_state.m_Position.x--;
-  }
-
-  while (mover_state.m_SubPixel.x >= 128)
-  {
-    mover_state.m_SubPixel.x -= 128;
-    mover_state.m_Position.x++;
-  }
-
-  while (mover_state.m_SubPixel.y < 0)
-  {
-    mover_state.m_SubPixel.y += 128;
-    mover_state.m_Position.y--;
-  }
-
-  while (mover_state.m_SubPixel.y >= 128)
-  {
-    mover_state.m_SubPixel.y -= 128;
-    mover_state.m_Position.y++;
-  }
-}
-
-MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & collision, const Vector2 & position, const Box & move_box, uint32_t collision_mask, bool check_initial)
+MoverResult Mover::UpdateMover(const CollisionDatabase & collision, const MoveRequest & req, uint32_t collision_mask, bool check_initial)
 {
   MoverResult result = {};
 
-  auto coll_box = move_box;
-  coll_box.m_Start += position;
-  coll_box.m_End += position;
+  auto coll_box = req.m_MoveBox;
+  coll_box.m_Start += req.m_StartPosition;
+  coll_box.m_End += req.m_StartPosition;
+
+  auto cur_pos = req.m_StartPosition;
+  auto end_pos = req.m_EndPosition;
 
   if (check_initial)
   {
@@ -51,9 +25,7 @@ MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & colli
     }
   }
 
-  mover_state.m_SubPixel += mover_state.m_Velocity;
-
-  while (mover_state.m_SubPixel.x < 0)
+  while(cur_pos.x > end_pos.x)
   {
     coll_box.m_Start.x--;
     coll_box.m_End.x--;
@@ -61,19 +33,18 @@ MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & colli
     auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
-      mover_state.m_SubPixel.x = 0;
-      mover_state.m_Velocity.x = 0;
+      coll_box.m_Start.x++;
+      coll_box.m_End.x++;
       result.m_HitLeft = coll_result;
       break;
     }
     else
     {
-      mover_state.m_SubPixel.x += 128;
-      mover_state.m_Position.x--;
+      cur_pos.x--;
     }
   }
 
-  while (mover_state.m_SubPixel.x >= 128)
+  while (cur_pos.x < end_pos.x)
   {
     coll_box.m_Start.x++;
     coll_box.m_End.x++;
@@ -81,19 +52,18 @@ MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & colli
     auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
-      mover_state.m_SubPixel.x = 127;
-      mover_state.m_Velocity.x = 0;
+      coll_box.m_Start.x--;
+      coll_box.m_End.x--;
       result.m_HitRight = coll_result;
       break;
     }
     else
     {
-      mover_state.m_SubPixel.x -= 128;
-      mover_state.m_Position.x++;
+      cur_pos.x++;
     }
   }
 
-  while (mover_state.m_SubPixel.y < 0)
+  while(cur_pos.y > end_pos.y)
   {
     coll_box.m_Start.y--;
     coll_box.m_End.y--;
@@ -101,19 +71,18 @@ MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & colli
     auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
-      mover_state.m_SubPixel.y = 0;
-      mover_state.m_Velocity.y = 0;
+      coll_box.m_Start.y++;
+      coll_box.m_End.y++;
       result.m_HitBottom = coll_result;
       break;
     }
     else
     {
-      mover_state.m_SubPixel.y += 128;
-      mover_state.m_Position.y--;
+      cur_pos.y--;
     }
   }
 
-  while (mover_state.m_SubPixel.y >= 128)
+  while (cur_pos.y < end_pos.y)
   {
     coll_box.m_Start.y++;
     coll_box.m_End.y++;
@@ -121,19 +90,19 @@ MoverResult Mover::UpdateMover(MoverState & mover_state, CollisionSystem & colli
     auto coll_result = collision.CheckCollision(coll_box, collision_mask);
     if (coll_result != 0)
     {
-      mover_state.m_SubPixel.y = 127;
-      mover_state.m_Velocity.y = 0;
+      coll_box.m_Start.y--;
+      coll_box.m_End.y--;
       result.m_HitTop = coll_result;
       break;
     }
     else
     {
-      mover_state.m_SubPixel.y -= 128;
-      mover_state.m_Position.y++;
+      cur_pos.y++;
     }
   }
 
   result.m_HitCombined = result.m_HitLeft | result.m_HitRight | result.m_HitTop | result.m_HitBottom;
+  result.m_ResultPos = cur_pos;
   return result;
 }
 

@@ -8,6 +8,16 @@
 
 class RenderState;
 class RenderUtil;
+class PlayerServerObject;
+
+struct PlayerServerObjectInfo
+{
+  NotNullPtr<PlayerServerObject> m_CurrentObject;
+  NotNullPtr<PlayerServerObject> m_HistoryObject;
+  bool m_IsLocal;
+  Vector2f m_CurrentPos;
+  Vector2f m_HistoryPos;
+};
 
 struct PlayerComponentInitData : public ComponentInitData
 {
@@ -29,11 +39,16 @@ public:
 
   void UpdateFirst();
 
+  PlayerServerObjectInfo GetServerObjectInfo();
+
   static Color GetTeamColor(int team);
 
 private:
 
+
   RenderVec2 m_DeadReckonOffset;
   RenderVec2 m_DeadReckonDec;
   RenderVec2 m_DeadReckonPos;
+
+  int m_LastFrame;
 };

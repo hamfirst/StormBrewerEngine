@@ -23,9 +23,12 @@ public:
 
   void ConstructPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team);
   void DestroyPlayer(std::size_t player_index, GameLogicContainer & game);
+  bool AllowConversionToBot(std::size_t player_index, GameLogicContainer & game);
+  void ConvertBotToPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name);
 
   void ConstructBot(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team);
   void DestroyBot(std::size_t player_index, GameLogicContainer & game);
+  void ConvertPlayerToBot(std::size_t player_index, GameLogicContainer & game, const std::string & name);
 
 #ifdef NET_ALLOW_OBSERVERS
   void ConstructObserver(std::size_t player_index, GameLogicContainer & game, const std::string & name);
@@ -48,6 +51,7 @@ public:
   Optional<int> GetDefaultWinningTeam();
 
   void HandleClientEvent(std::size_t player_index, GameLogicContainer & game, std::size_t event_class_id, const void * event_ptr);
+  void HandleAuthEvent(GameLogicContainer & game, std::size_t event_class_id, const void * event_ptr);
 
   bool ValidateInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input);
   void ApplyInput(std::size_t player_index, GameLogicContainer & game, const ClientInput & input);
@@ -59,6 +63,10 @@ public:
   void AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos);
 
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game);
+  void STORM_REFL_FUNC HandleJumpEvent(const JumpEvent & ev, std::size_t player_index, GameLogicContainer & game);
+
+  void STORM_REFL_FUNC HandlePlaceholderAuthEvent(const PlaceholderServerAuthEvent & ev, GameLogicContainer & game);
+
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
   bool IsPlayerActive(std::size_t player_index, GameLogicContainer & game);
@@ -69,7 +77,8 @@ public:
 #endif
 private:
 
-  std::vector<Delegate<void, const void *, std::size_t, GameLogicContainer &>> m_EventCallbacks;
+  std::vector<Delegate<void, const void *, std::size_t, GameLogicContainer &>> m_ClientEventCallbacks;
+  std::vector<Delegate<void, const void *, GameLogicContainer &>> m_AuthEventCallbacks;
 
   // There should be no state in this class since it's desinged to only respond to events using the GameLogicContainer
 };

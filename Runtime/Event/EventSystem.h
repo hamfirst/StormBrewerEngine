@@ -11,7 +11,7 @@ struct EventDef
 
 };
 
-template <typename ObjectType, typename HandleType>
+template <typename ObjectType, typename HandleType, typename ... HandlerArgs>
 class EventSystem
 {
 public:
@@ -22,35 +22,35 @@ public:
     EventSrc event_data;
     event_data.m_Type = Event::TypeNameHash;
     event_data.m_EventData = Any(Event(std::forward<InitArgs>(init_args)...));
-    event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<ObjectType> obj)
+    event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<ObjectType> dst, HandlerArgs ... handler_args)
     {
-      TriggerEventHandler(obj, src_data->m_Type, src_data->m_EventData.template Get<Event>());
+      dst->TriggerEventHandler(src_data->m_Type, src_data->m_EventData.template Get<Event>(), handler_args...);
     };
 
     auto id = m_Events.size();
     m_Events.emplace_back(std::move(event_data));
 
-    m_EventDatabase.Insert(box, id);
+    m_EventDatabase.Insert(box, (uint32_t)id);
     return m_Events.back().m_EventData.template Get<Event>();
   }
 
-
   template <typename Event>
-  void PushEventReceiver(const HandleType & handle, const Box & box, uint32_t type)
+  void PushEventReceiver(const HandleType & handle, const Box & box)
   {
     EventDest dest;
     dest.m_Handle = handle;
     dest.m_Box = box;
-    dest.m_Type = type;
+    dest.m_Type = Event::TypeNameHash;
     m_EventReceivers.emplace_back(std::move(dest));
   }
 
-  void FinalizeEvents()
+  template <typename ... ResolveArgs>
+  void FinalizeEvents(HandlerArgs ... handler_args, ResolveArgs && ... resolve_args)
   {
     std::vector<std::size_t> event_ids;
     for (auto & r : m_EventReceivers)
     {
-      auto obj = r.m_Handle.Resolve();
+      auto obj = r.m_Handle.Resolve(std::forward<ResolveArgs>(resolve_args)...);
       if (obj == nullptr)
       {
         continue;
@@ -61,7 +61,7 @@ public:
 
       for (auto id : event_ids)
       {
-        m_Events[id].m_Callback(&m_Events[id], &r, obj);
+        m_Events[id].m_Callback(&m_Events[id], &r, obj, handler_args...);
       }
     }
 
@@ -80,10 +80,9 @@ private:
   {
     uint32_t m_Type;
     Any m_EventData;
-    Delegate<void, NotNullPtr<EventSrc>, NotNullPtr<EventDest>, NotNullPtr<ObjectType>> m_Callback;
+    void (*m_Callback)(NotNullPtr<EventSrc>, NotNullPtr<EventDest>, NotNullPtr<ObjectType>, HandlerArgs ...);
   };
 
-  
   struct EventDest
   {
     HandleType m_Handle;

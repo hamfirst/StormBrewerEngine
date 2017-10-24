@@ -34,7 +34,7 @@ public:
 
     while (m_Current != m_Last && m_Current->m_Frame == m_CurrentFrame)
     {
-      visitor(m_Current->m_Value);
+      visitor(m_Current->m_Frame, m_Current->m_Value);
       m_Current++;
     }
   }
@@ -47,6 +47,11 @@ public:
   bool IsComplete() const
   {
     return m_Current == m_Last;
+  }
+
+  TimeValue GetCurrentFrame() const
+  {
+    return m_CurrentFrame;
   }
 
 protected:
@@ -85,6 +90,12 @@ public:
   {
     if (m_Values)
     {
+      while (m_Size > 0)
+      {
+        m_Size--;
+        m_Values[m_Size].~ValueContainer();
+      }
+
       free(m_Values);
     }
   }
@@ -280,18 +291,27 @@ public:
     }
 
     auto elem = &m_Values[m_Size - 1];
-    while (elem != m_Values)
+    auto end = &m_Values[m_Size];
+    auto start = &m_Values[-1];
+    while (true)
     {
-      if (elem->m_Frame < frame)
+      if (elem == start)
       {
         elem++;
         break;
       }
 
-      elem--;
+      if (elem->m_Frame >= frame)
+      {
+        elem--;
+      }
+      else
+      {
+        elem++;
+        break;
+      }
     }
 
-    auto end = &m_Values[m_Size];
     while (elem != end)
     {
       visitor(elem->m_Frame, elem->m_Value);
@@ -333,8 +353,9 @@ public:
       return;
     }
 
-    auto elem = m_Values[m_Size - 1];
-    while (elem != m_Values)
+    auto elem = &m_Values[m_Size - 1];
+    auto end = &m_Values[-1];
+    while (elem != end)
     {
       if (elem->m_Frame < frame)
       {

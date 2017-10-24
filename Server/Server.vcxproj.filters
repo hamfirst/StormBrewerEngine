@@ -28,6 +28,12 @@
     <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp">
       <Filter>ServerObject</Filter>
     </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventDispatch.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventSystem.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerObject\ServerObject.h">
@@ -52,9 +58,6 @@
     <ClInclude Include="ServerObject\ServerObjectUpdate.h">
       <Filter>ServerObject</Filter>
     </ClInclude>
-    <ClInclude Include="ServerObject\ServerObjectSerialzie.h">
-      <Filter>ServerObject</Filter>
-    </ClInclude>
     <ClInclude Include="ServerObject\ServerObjectInitData.refl.h">
       <Filter>ServerObject</Filter>
     </ClInclude>
@@ -63,5 +66,17 @@
     </ClInclude>
     <ClInclude Include="ServerTypesJson.h" />
     <ClInclude Include="ServerTypesNet.h" />
+    <ClInclude Include="ServerObject\ServerObjectEventRegister.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventDispatch.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectSerialize.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventSystem.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -51,6 +51,8 @@ public:
   LineVertexBufferBuilder() = default;
   explicit LineVertexBufferBuilder(std::size_t reserve_points);
 
+  bool HasData() const;
+
   void AddLine(const LineVertexBuilderInfo & line);
   void AddBox(const QuadVertexBuilderInfo & quad);
 

@@ -23,6 +23,7 @@ SpriteBaseAnimationListElement::SpriteBaseAnimationListElement(NotNullPtr<Sprite
   m_FrameListContainer(std::make_unique<GenericListFrame>("Frames", false, false, this)),
   m_AnimNameLabel(std::make_unique<QLabel>("Name:", this)),
   m_EditFrames(std::make_unique<QPushButton>("Edit Frame List", this)),
+  m_EditEvents(std::make_unique<QPushButton>("Edit Events", this)),
   m_Delete(std::make_unique<QPushButton>("Delete", this)),
   m_ShowFrameList(false),
   m_Timer(std::make_unique<QTimer>()),
@@ -57,6 +58,9 @@ SpriteBaseAnimationListElement::SpriteBaseAnimationListElement(NotNullPtr<Sprite
   m_EditFrames->setGeometry(155, 40, 100, 20);
   connect(m_EditFrames.get(), &QPushButton::pressed, this, &SpriteBaseAnimationListElement::editFrames);
 
+  m_EditEvents->setGeometry(155, 80, 100, 20);
+  connect(m_EditEvents.get(), &QPushButton::pressed, this, &SpriteBaseAnimationListElement::editEvents);
+
   m_Delete->setGeometry(455, 40, 100, 20);
   connect(m_Delete.get(), &QPushButton::pressed, this, &SpriteBaseAnimationListElement::remove);
 
@@ -83,6 +87,11 @@ void SpriteBaseAnimationListElement::SetSizeChangeCallback(Delegate<void> && cal
 void SpriteBaseAnimationListElement::SetOpenEditorCallback(Delegate<void> && callback)
 {
   m_EditCallback = std::move(callback);
+}
+
+void SpriteBaseAnimationListElement::SetOpenEventCallback(Delegate<void> && callback)
+{
+  m_EventCallback = std::move(callback);
 }
 
 void SpriteBaseAnimationListElement::SetRemoveCallback(Delegate<void> && callback)
@@ -159,6 +168,11 @@ void SpriteBaseAnimationListElement::mousePressEvent(QMouseEvent * ev)
 void SpriteBaseAnimationListElement::editFrames()
 {
   m_EditCallback();
+}
+
+void SpriteBaseAnimationListElement::editEvents()
+{
+  m_EventCallback();
 }
 
 void SpriteBaseAnimationListElement::remove()

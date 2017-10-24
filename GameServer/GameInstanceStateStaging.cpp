@@ -8,7 +8,7 @@
 #include "Game/GameNetworkSettings.h"
 
 
-static const int kTimeToWaitForPlayers = 90 * 60;
+static const int kTimeToWaitForPlayers = 5 * 60;
 static const int kSendInterval = 2 * 60;
 
 GameInstanceStateStaging::GameInstanceStateStaging(GameInstanceStateData & state_data) :

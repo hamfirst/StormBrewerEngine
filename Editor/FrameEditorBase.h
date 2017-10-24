@@ -28,6 +28,9 @@ public:
     uint64_t frame_id,
     QWidget * parent = nullptr);
 
+protected:
+
+  void SetFrame(uint64_t frame_id);
 
   void initializeGL() override;
   void resizeGL(int w, int h) override;

@@ -49,6 +49,7 @@ public:
   MapEditorViewer & GetViewer();
 
   void SelectManualTile(int layer_index, uint64_t frame_id);
+  void SelectManualAnimation(int layer_index, uint64_t frame_id);
   void SetSelectedEntity(int layer_index, czstr entity_file);
   void ClearPropertyPanel();
   void ClearSelectors();

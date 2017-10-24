@@ -6,6 +6,7 @@
 #include <StormRefl/StormRefl.h>
 #include <StormData/StormDataTypes.h>
 
+
 struct RUNTIME_EXPORT SpriteDef : public SpriteBaseDef
 {
 public:

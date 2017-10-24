@@ -1,7 +1,8 @@
 
+#include "Game/GameCommon.h"
 #include "Game/AI/PlayerAI.h"
 #include "Game/GameStage.h"
-#include "Game/ServerObjects/PlayerServerObject.refl.h"
+#include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
 #include "Server/ServerObject/ServerObjectManager.h"
 

@@ -25,6 +25,9 @@ public:
 
   NotNullPtr<const ServerObjectManager> GetServerManager();
 
+  operator NetBitWriter & ();
+  operator const NetBitWriter & () const;
+
 private:
   NetBitWriter & m_Writer;
   NotNullPtr<const ServerObjectManager> m_ServerObjectManager;
@@ -41,6 +44,9 @@ public:
   void ReadBuffer(void * buffer, std::size_t num_bytes);
 
   NotNullPtr<ServerObjectManager> GetServerManager();
+
+  operator NetBitReader & ();
+  operator const NetBitReader & () const;
 
 private:
   NetBitReader & m_Reader;

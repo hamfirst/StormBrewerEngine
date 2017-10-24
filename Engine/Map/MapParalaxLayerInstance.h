@@ -17,7 +17,7 @@ public:
   MapParalaxLayerInstance(MapDef & map, std::size_t layer_index);
 
   void Update();
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util);
 
   int GetLayerOrder() const;
 
@@ -29,6 +29,12 @@ private:
   bool m_RepeatX;
   bool m_RepeatY;
 
+  float m_OffsetX;
+  float m_OffsetY;
+
   float m_ParalaxX;
   float m_ParalaxY;
+
+  float m_VelocityX;
+  float m_VelocityY;
 };

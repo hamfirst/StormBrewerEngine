@@ -54,10 +54,16 @@ public:
   template <typename ToolType, typename ... InitArgs>
   void SetTool(const MapEditorTool<ToolType> &, InitArgs && ... init_args)
   {
-    SetTool(std::make_unique<ToolType>(*m_Editor, std::forward<InitArgs>(init_args)...));
+    SetTool(std::make_unique<ToolType>(*m_Editor, std::forward<InitArgs>(init_args)...), false);
   }
 
-  void SetTool(std::unique_ptr<MapEditorToolBase> && tool);
+  template <typename ToolType, typename ... InitArgs>
+  void SetToolMidDraw(const MapEditorTool<ToolType> &, InitArgs && ... init_args)
+  {
+    SetTool(std::make_unique<ToolType>(*m_Editor, std::forward<InitArgs>(init_args)...), true);
+  }
+
+  void SetTool(std::unique_ptr<MapEditorToolBase> && tool, bool mid_draw);
   void ClearTool();
 
   void ChangeLayerSelection(const MapEditorLayerSelection & layer);
@@ -76,16 +82,19 @@ public:
   RenderVec2 TransformFromMapSpaceToScreenSpace(RenderVec2 map_space);
   RenderVec2 TransformFromScreenSpaceToMapSpace(RenderVec2 screen_space);
 
-  void SnapToGrid(Vector2 & pos, bool cell_center = true);
+  void SnapToGrid(Vector2 & pos, bool cell_center = true, bool force = false);
 
   void SetTileFrameInfo(MapTile & tile, uint64_t frame_id);
+  void SetAnimFrameInfo(MapAnimatedTile & tile, uint64_t frame_id);
   uint64_t GetFrameIdForMapTile(const MapTile & tile);
+  uint64_t GetFrameIdForMapAnimation(const MapAnimatedTile & tile);
 
   void StartPlayMode();
   void StopPlayMode();
 
 protected:
 
+  Vector2 GetScreenCenterPos();
   Vector2 GetCursorPos();
   Vector2 GetSnappedCursorPos();
 

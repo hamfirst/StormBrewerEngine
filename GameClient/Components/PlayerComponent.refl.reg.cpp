@@ -1,5 +1,5 @@
 
-#include "Foundation/Common.h"
+#include "GameClient/GameClientCommon.h"
 
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Component/ComponentList.h"

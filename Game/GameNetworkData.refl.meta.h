@@ -44,7 +44,7 @@ template <>
 struct StormReflTypeInfo<ClientLocalData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -76,32 +76,10 @@ struct StormReflTypeInfo<ClientLocalData>::field_data<0, Self> : public StormRef
 };
 
 template <>
-struct StormReflTypeInfo<ClientLocalData>::field_data_static<1>
-{
-  using member_type = NetRangedNumber<int, -1, kMaxPlayers>; // NetRangedNumber<int, -1, 4>
-  static constexpr auto GetName() { return "m_ObserverIndex"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 4>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xBA780578; }
-  static constexpr unsigned GetTypeNameHash() { return 0x7CCB5820; }
-  static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &ClientLocalData::m_ObserverIndex; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ClientLocalData>::field_data<1, Self> : public StormReflTypeInfo<ClientLocalData>::field_data_static<1>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetRangedNumber<int, -1, kMaxPlayers>> & Get() { return self.m_ObserverIndex; }
-  std::add_const_t<std::remove_reference_t<NetRangedNumber<int, -1, kMaxPlayers>>> & Get() const { return self.m_ObserverIndex; }
-  void SetDefault() { self.m_ObserverIndex = StormReflTypeInfo<ClientLocalData>::GetDefault().m_ObserverIndex; }
-};
-
-template <>
 struct StormReflTypeInfo<ClientInput>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -113,13 +91,13 @@ struct StormReflTypeInfo<ClientInput>
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<0>
 {
-  using member_type = uint8_t; // unsigned char
-  static constexpr auto GetName() { return "m_Controls"; }
-  static constexpr auto GetType() { return "unsigned char"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x0CC15811; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "m_JumpHeld"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xB2E64C00; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &ClientInput::m_Controls; }
+  static constexpr auto GetMemberPtr() { return &ClientInput::m_JumpHeld; }
 };
 
 template <typename Self>
@@ -127,21 +105,21 @@ struct StormReflTypeInfo<ClientInput>::field_data<0, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint8_t> & Get() { return self.m_Controls; }
-  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_Controls; }
-  void SetDefault() { self.m_Controls = StormReflTypeInfo<ClientInput>::GetDefault().m_Controls; }
+  match_const_t<Self, bool> & Get() { return self.m_JumpHeld; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_JumpHeld; }
+  void SetDefault() { self.m_JumpHeld = StormReflTypeInfo<ClientInput>::GetDefault().m_JumpHeld; }
 };
 
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<1>
 {
   using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
-  static constexpr auto GetName() { return "m_Angle"; }
+  static constexpr auto GetName() { return "m_XInput"; }
   static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x8DB7D569; }
+  static constexpr unsigned GetFieldNameHash() { return 0xC4479309; }
   static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &ClientInput::m_Angle; }
+  static constexpr auto GetMemberPtr() { return &ClientInput::m_XInput; }
 };
 
 template <typename Self>
@@ -149,31 +127,9 @@ struct StormReflTypeInfo<ClientInput>::field_data<1, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameNetVal> & Get() { return self.m_Angle; }
-  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_Angle; }
-  void SetDefault() { self.m_Angle = StormReflTypeInfo<ClientInput>::GetDefault().m_Angle; }
-};
-
-template <>
-struct StormReflTypeInfo<ClientInput>::field_data_static<2>
-{
-  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
-  static constexpr auto GetName() { return "m_Strength"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x209535F6; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
-  static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &ClientInput::m_Strength; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ClientInput>::field_data<2, Self> : public StormReflTypeInfo<ClientInput>::field_data_static<2>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameNetVal> & Get() { return self.m_Strength; }
-  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_Strength; }
-  void SetDefault() { self.m_Strength = StormReflTypeInfo<ClientInput>::GetDefault().m_Strength; }
+  match_const_t<Self, GameNetVal> & Get() { return self.m_XInput; }
+  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_XInput; }
+  void SetDefault() { self.m_XInput = StormReflTypeInfo<ClientInput>::GetDefault().m_XInput; }
 };
 
 template <>
@@ -326,45 +282,10 @@ struct StormReflTypeInfo<GamePlayer>::field_data<2, Self> : public StormReflType
 };
 
 template <>
-struct StormReflTypeInfo<GameObserver>
-{
-  using MyBase = void;
-  static constexpr int fields_n = 1;
-  template <int N> struct field_data_static {};
-  template <int N, typename Self> struct field_data {};
-  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "GameObserver"; }
-  static constexpr auto GetNameHash() { return 0x9BA2631B; }
-  static GameObserver & GetDefault() { static GameObserver def; return def; }
-};
-
-template <>
-struct StormReflTypeInfo<GameObserver>::field_data_static<0>
-{
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_UserName"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xAE407D67; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-  static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &GameObserver::m_UserName; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameObserver>::field_data<0, Self> : public StormReflTypeInfo<GameObserver>::field_data_static<0>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_UserName; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_UserName; }
-  void SetDefault() { self.m_UserName = StormReflTypeInfo<GameObserver>::GetDefault().m_UserName; }
-};
-
-template <>
 struct StormReflTypeInfo<GameInstanceData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 6;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -398,39 +319,17 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<0, Self> : public StormRe
 template <>
 struct StormReflTypeInfo<GameInstanceData>::field_data_static<1>
 {
-  using member_type = NetSparseList<GameObserver, 128>; // NetSparseList<GameObserver, 128>
-  static constexpr auto GetName() { return "m_Observers"; }
-  static constexpr auto GetType() { return "NetSparseList<GameObserver, 128>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xF9DBF68F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD5700489; }
-  static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Observers; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameInstanceData>::field_data<1, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<1>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetSparseList<GameObserver, 128>> & Get() { return self.m_Observers; }
-  std::add_const_t<std::remove_reference_t<NetSparseList<GameObserver, 128>>> & Get() const { return self.m_Observers; }
-  void SetDefault() { self.m_Observers = StormReflTypeInfo<GameInstanceData>::GetDefault().m_Observers; }
-};
-
-template <>
-struct StormReflTypeInfo<GameInstanceData>::field_data_static<2>
-{
   using member_type = NetRangedNumber<int, 0, kMaxScore> [4]; // NetRangedNumber<int, 0, 5> [4]
   static constexpr auto GetName() { return "m_Score"; }
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 5> [4]"; }
   static constexpr unsigned GetFieldNameHash() { return 0xBFAFA731; }
   static constexpr unsigned GetTypeNameHash() { return 0xA33D0C88; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Score; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameInstanceData>::field_data<2, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<2>
+struct StormReflTypeInfo<GameInstanceData>::field_data<1, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -440,19 +339,19 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<2, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameInstanceData>::field_data_static<3>
+struct StormReflTypeInfo<GameInstanceData>::field_data_static<2>
 {
   using member_type = NetOptional<NetRangedNumber<int, -1, kMaxTeams> >; // NetOptional<NetRangedNumber<int, -1, 4> >
   static constexpr auto GetName() { return "m_WiningTeam"; }
   static constexpr auto GetType() { return "NetOptional<NetRangedNumber<int, -1, 4> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0A538050; }
   static constexpr unsigned GetTypeNameHash() { return 0x2DFAB6DD; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_WiningTeam; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameInstanceData>::field_data<3, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<3>
+struct StormReflTypeInfo<GameInstanceData>::field_data<2, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -462,19 +361,19 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<3, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameInstanceData>::field_data_static<4>
+struct StormReflTypeInfo<GameInstanceData>::field_data_static<3>
 {
   using member_type = NetRandom; // NetRandom
   static constexpr auto GetName() { return "m_Random"; }
   static constexpr auto GetType() { return "NetRandom"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5B048D1D; }
   static constexpr unsigned GetTypeNameHash() { return 0xD020E89C; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Random; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameInstanceData>::field_data<4, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<4>
+struct StormReflTypeInfo<GameInstanceData>::field_data<3, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -484,19 +383,19 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<4, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameInstanceData>::field_data_static<5>
+struct StormReflTypeInfo<GameInstanceData>::field_data_static<4>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_FrameCount"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x47BC914D; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_FrameCount; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameInstanceData>::field_data<5, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<5>
+struct StormReflTypeInfo<GameInstanceData>::field_data<4, Self> : public StormReflTypeInfo<GameInstanceData>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -509,7 +408,7 @@ namespace StormReflFileInfo
 {
   struct GameNetworkData
   {
-    static const int types_n = 8;
+    static const int types_n = 7;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -551,12 +450,6 @@ namespace StormReflFileInfo
 
   template <>
   struct GameNetworkData::type_info<6>
-  {
-    using type = ::GameObserver;
-  };
-
-  template <>
-  struct GameNetworkData::type_info<7>
   {
     using type = ::GameInstanceData;
   };

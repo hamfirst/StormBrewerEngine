@@ -16,7 +16,8 @@ void UpdateSpriteEngineData(Any & engine_data);
 void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 & position);
 
 SpriteResource::SpriteResource(Any && load_data, uint64_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+  DocumentResourceBase(std::move(load_data), path_hash),
+  FrameDataExtract(m_Data)
 {
 
 }
@@ -275,6 +276,9 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
   m_AnimNameHashes.clear();
   m_AnimLengths.clear();
   m_AnimTotalLengths.clear();
+  m_AnimEventInfo.clear();
+  m_AnimEvents.clear();
+  m_AnimEventBoxes.clear();
 
   auto lower_edge = 0;
   for (auto elem : m_Data.m_InstanceData.m_LowerEdgeData)
@@ -294,6 +298,8 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
 
     int num_frames = 0;
     int total_length = 0;
+    int start_events = (int)m_AnimEvents.size();
+
     for (auto frame : elem.second.m_Frames)
     {
       uint32_t tex_hash = (uint32_t)((uint64_t)frame.second.m_FrameId >> 32);
@@ -330,8 +336,26 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
       total_length += frame.second.m_FrameDuration;
     }
 
+    for (auto & ev : elem.second.m_Events)
+    {
+      AnimEventInfo event_info;
+      event_info.m_EventData = ev.second.m_EventData;
+      event_info.m_FrameIndex = ev.second.m_Frame;
+      event_info.m_FrameDelay = ev.second.m_FrameDelay;
+      event_info.m_EventBoxStart = (int)m_AnimEventBoxes.size();
+
+      for (auto & elem : ev.second.m_EventArea.Value())
+      {
+        m_AnimEventBoxes.push_back(elem);
+      }
+
+      event_info.m_EventBoxEnd = (int)m_AnimEventBoxes.size();
+      m_AnimEvents.emplace_back(std::move(event_info));
+    }
+
     m_AnimLengths.push_back(num_frames);
     m_AnimTotalLengths.push_back(total_length);
+    m_AnimEventInfo.push_back(std::make_pair(start_events, (int)m_AnimEvents.size()));
     total_frames += num_frames;
   }
 

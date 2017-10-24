@@ -1,9 +1,9 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameClientInputManager.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameClientEventSender.h"
 
-#include "Game/ServerObjects/PlayerServerObject.refl.h"
+#include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Input/ControlId.h"
@@ -45,24 +45,14 @@ void GameClientInputManager::Update()
 {
   m_UIBlocking = m_GameContainer.GetClientSystems()->GetUIManager().IsBlocking();
 
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGameState();
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
-  auto num_local_player = m_GameContainer.GetInstanceData()->GetLocalDataCount();
+  auto num_local_player = m_GameContainer.GetInstanceData()->GetNumLocalData();
 
   auto input_state = m_GameContainer.GetWindow().GetInputState();
 
   for (std::size_t client_index = 0; client_index < num_local_player; ++client_index)
   {
-    auto & local_data = m_GameContainer.GetInstanceData()->GetLocalData(client_index);
-    if (local_data.m_PlayerIndex == -1)
-    {
-      continue;
-    }
-
-    auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
-
     uint8_t controls = 0;
-
     auto gamepad_index = m_GamepadBindings[client_index];
 
     float x = 0;
@@ -102,27 +92,15 @@ void GameClientInputManager::Update()
 
     auto input_str = glm::length(input_vec);
 
+    if (input_state->GetKeyPressedThisFrame(SDL_SCANCODE_SPACE) || input_state->GetGamepadButtonPressedThisFrame(gamepad_index, GamepadButton::kA))
+    {
+      SendEvent(client_index, JumpEvent{});
+    }
+
     ClientInput input;
-    input.m_Controls = controls;
-    input.m_Angle = GameNetVal::CreateFromFloat(atan2f(input_vec.y, input_vec.x));
-    input.m_Strength = GameNetVal::CreateFromFloat(input_str);
-
-    if (m_GameContainer.HasClient())
-    {
-      m_GameContainer.GetClient().UpdateInput(std::move(input), false);
-    }
-    else
-    {
-      auto & obj_manager = m_GameContainer.GetInstanceData()->GetServerObjectManager();
-      auto player = obj_manager.GetReservedSlotObjectAs<PlayerServerObject>((int)local_data.m_PlayerIndex);
-
-      if (player)
-      {
-        player->m_Controls = controls;
-        player->m_InputAngle = input.m_Angle;
-        player->m_InputStrength = input.m_Strength;
-      }
-    }
+    input.m_JumpHeld = input_state->GetKeyState(SDL_SCANCODE_SPACE) || input_state->GetGamepadButtonState(gamepad_index, GamepadButton::kA);
+    input.m_XInput = GameNetVal::CreateFromFloat(input_vec.x);
+    SendInput(client_index, input);
 
     if (client_index == 0)
     {
@@ -143,18 +121,18 @@ void GameClientInputManager::BindGamepad(int local_player_index, int gamepad_ind
 
 void GameClientInputManager::HandleMouseMove(PointerState & pointer_state)
 {
-  if (m_GameContainer.GetInstanceData()->GetLocalDataCount() == 0)
+  if (m_GameContainer.GetInstanceData()->GetNumLocalData() == 0)
   {
     return;
   }
 
-  auto & local_data = m_GameContainer.GetInstanceData()->GetLocalData(0);
+  auto & local_data = m_GameContainer.GetInstanceData()->GetClientLocalData(0);
   if (local_data.m_PlayerIndex == -1)
   {
     return;
   }
 
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGameState();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
   auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
   auto & stage = m_GameContainer.GetInstanceData()->GetStage();
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
@@ -165,18 +143,18 @@ void GameClientInputManager::HandleMouseMove(PointerState & pointer_state)
 
 void GameClientInputManager::HandleClick(bool state)
 {
-  if (m_GameContainer.GetInstanceData()->GetLocalDataCount() == 0)
+  if (m_GameContainer.GetInstanceData()->GetNumLocalData() == 0)
   {
     return;
   }
 
-  auto & local_data = m_GameContainer.GetInstanceData()->GetLocalData(0);
+  auto & local_data = m_GameContainer.GetInstanceData()->GetClientLocalData(0);
   if (local_data.m_PlayerIndex == -1)
   {
     return;
   }
 
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGameState();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
   auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
 
@@ -185,4 +163,31 @@ void GameClientInputManager::HandleClick(bool state)
 void GameClientInputManager::HandleButtonPress(bool state, int button)
 {
   
+}
+
+void GameClientInputManager::SendInput(std::size_t client_index, ClientInput & input)
+{
+  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
+  auto & local_data = m_GameContainer.GetInstanceData()->GetClientLocalData(client_index);
+  if (local_data.m_PlayerIndex == -1)
+  {
+    return;
+  }
+
+  auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
+
+  if (m_GameContainer.HasClient())
+  {
+    m_GameContainer.GetClient().UpdateInput(std::move(input), false);
+  }
+  else
+  {
+    m_GameContainer.GetInstanceData()->PushLocalInput(client_index, input, 0);
+  }
+}
+
+template <typename EventType>
+void GameClientInputManager::SendEvent(std::size_t client_index, const EventType & event)
+{
+  m_GameContainer.GetInstanceData()->GetEventSender().SendClientEvent(event, client_index);
 }

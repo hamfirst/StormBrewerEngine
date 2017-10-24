@@ -30,10 +30,10 @@ bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const JoinGa
     return false;
 }
 
-#if NET_ALLOW_LATE_JOIN
+#ifdef NET_ALLOW_LATE_JOIN
 
   auto team_counts = GameController::GetTeamCounts(m_State);
-  auto team = GameController::GetRandomTeam(team_counts, player_data.m_RandomSeed);
+  auto team = GameController::GetRandomTeam(team_counts, GetRandomNumber());
 
   AddPlayer(client_index, team);
   return true;

@@ -345,14 +345,20 @@ MapEditorViewer & MapEditor::GetViewer()
 
 void MapEditor::SelectManualTile(int layer_index, uint64_t frame_id)
 {
+  m_Viewer->SetTool(MapEditorTool<MapEditorToolManualTileLayerDraw>{}, layer_index, false, frame_id);
   m_Selector->GetTileSelector()->SetSelectedTile(frame_id);
-  m_Viewer->SetTool(MapEditorTool<MapEditorToolManualTileLayerDraw>{}, layer_index, frame_id);
+}
+
+void MapEditor::SelectManualAnimation(int layer_index, uint64_t frame_id)
+{
+  m_Viewer->SetTool(MapEditorTool<MapEditorToolManualTileLayerDraw>{}, layer_index, true, frame_id);
+  m_Selector->GetTileSelector()->SetSelectedAnimation(frame_id);
 }
 
 void MapEditor::SetSelectedEntity(int layer_index, czstr entity_file)
 {
-  m_Selector->GetEntitySelector()->SetSelectEntity(entity_file);
   m_Viewer->SetTool(MapEditorTool<MapEditorToolEntityLayerDraw>{}, layer_index, entity_file);
+  m_Selector->GetEntitySelector()->SetSelectEntity(entity_file);
 }
 
 void MapEditor::ClearPropertyPanel()

@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameNetworkSettings.h"
 
 #ifdef NET_USE_WEBRTC

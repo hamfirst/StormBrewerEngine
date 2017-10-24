@@ -4,6 +4,7 @@
 #include <QTextEdit>
 
 #include "Foundation/Time/FrameClock.h"
+#include "Foundation/Time/FPSClock.h"
 
 #include "Game/GameLevelList.h"
 #include "Game/GameSharedGlobalResources.h"
@@ -34,6 +35,8 @@ private:
   std::unique_ptr<QTextEdit> m_TextEdit;
 
   FrameClock m_FrameClock;
+  FPSClock m_FPSClock;
+  int m_LastFPS = 0;
 
   GameLevelList m_LevelList;
   Optional<GameStageManager> m_StageManager;

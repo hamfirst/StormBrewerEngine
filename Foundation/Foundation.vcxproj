@@ -90,6 +90,7 @@
     </ClInclude>
     <ClInclude Include="FileSystem\File.h" />
     <ClInclude Include="FileSystem\Path.h" />
+    <ClInclude Include="Frame\Frame.h" />
     <ClInclude Include="Handle\Handle.h" />
     <ClInclude Include="Handle\HandleList.h" />
     <ClInclude Include="HistoryList\HistoryList.h" />

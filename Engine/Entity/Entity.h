@@ -8,7 +8,6 @@
 #include "Runtime/Event/EventDispatcher.h"
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Animation/AnimationState.h"
-#include "Runtime/Mover/MoverState.h"
 
 #include "Engine/Entity/EntityHandle.h"
 #include "Engine/Component/ComponentHandle.h"
@@ -79,6 +78,8 @@ public:
     m_EventSystem->PushEventReceiver(this, box, Event::TypeNameHash);
   }
 
+  void TriggerEventHandler(uint32_t event_type, const void * ev);
+
   NotNullPtr<EngineState> GetEngineState();
   NotNullPtr<GameContainer> GetGameContainer();
 
@@ -97,14 +98,29 @@ public:
   bool SyncToFrame(uint32_t anim_name_hash, int frame);
   Box GetDrawingFrame() const;
   void SetParent(NullOptPtr<Entity> entity);
-  NullOptPtr<ServerObject> GetServerObject();
+  NullOptPtr<ServerObject> GetServerObject(int history_index = 0);
 
   template <typename ServerObjectType>
-  NullOptPtr<ServerObjectType> GetServerObjectAs()
+  NullOptPtr<ServerObjectType> GetServerObjectAs(int history_index = 0)
   {
     auto obj_manager = GetServerObjectManager();
-    return obj_manager ? m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager) : nullptr;
+    auto obj = obj_manager ? m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager) : nullptr;
+
+    if (history_index == 0)
+    {
+      return obj;
+    }
+
+    if (obj == nullptr)
+    {
+      return nullptr;
+    }
+
+    history_index = std::min(history_index, obj->GetLifetime());
+    obj_manager = GetServerObjectManager(history_index);
+    return m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager);
   }
+
 
   void SetRotation(bool flip_x, bool flip_y, float rotation = 0);
   void SetCustomDrawingCallback(EntityCustomDraw && draw_callback);
@@ -148,9 +164,8 @@ protected:
   
   void RemoveEventHandler(uint32_t handler_key);
 
-  void TriggerEventHandler(uint32_t event_type, void * ev, NullOptPtr<Entity> src);
-
   NullOptPtr<ServerObjectManager> GetServerObjectManager();
+  NullOptPtr<ServerObjectManager> GetServerObjectManager(int history_index);
   
 private:
   NotNullPtr<EngineState> m_EngineState;

@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeEndGame.h"
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeConnecting.h"
@@ -18,11 +18,9 @@
 #include "Engine/Audio/MusicManager.h"
 
 GameModeEndGame::GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container,
-                                                       std::unique_ptr<GameClientInstanceData> && instance_data, 
                                                        std::unique_ptr<GameClientSystems> && client_systems, EndGamePlayAgainMode mode) :
   GameMode(game),
   m_InstanceContainer(std::move(instance_container)),
-  m_InstanceData(std::move(instance_data)),
   m_ClientSystems(std::move(client_systems)),
   m_Mode(mode),
   m_UIManager(game.GetWindow())
@@ -39,13 +37,12 @@ void GameModeEndGame::Initialize()
 {
   m_Victory = false;
 
-  auto instance_data = m_InstanceContainer->GetClientInstanceData(m_DefaultSender);
-  auto & game_state = instance_data.GetGameState();
+  auto & game_state = m_InstanceContainer->GetGlobalInstanceData();
 
-  auto num_local_players = instance_data.GetLocalDataCount();
+  auto num_local_players = m_InstanceContainer->GetNumLocalData();
   for (std::size_t client_index = 0; client_index < num_local_players; ++client_index)
   {
-    auto & local_data = instance_data.GetLocalData(client_index);
+    auto & local_data = m_InstanceContainer->GetClientLocalData(client_index);
     auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
 
     if (game_state.m_WiningTeam && game_state.m_WiningTeam.Value() == local_player.m_Team)
@@ -116,6 +113,9 @@ void GameModeEndGame::Update()
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);
 
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
   auto & engine_state = container.GetEngineState();
   auto comp_system = engine_state.GetComponentSystem();
   auto entity_system = engine_state.GetEntitySystem();
@@ -125,6 +125,9 @@ void GameModeEndGame::Update()
   if (m_FrameClock.ShouldSkipFrameUpdate() == false && m_Fader->GetData().m_ColorA != 1.0f)
   {
     m_FrameClock.BeginFrame();
+    container.GetWindow().Update();
+
+    input_manager.Update();
 
     if (m_Sequencer.IsComplete() == false)
     {
@@ -152,11 +155,7 @@ void GameModeEndGame::Update()
 
   visual_effects->Update();
 
-  auto & ui_manager = container.GetClientSystems()->GetUIManager();
-  auto & input_manager = container.GetClientSystems()->GetInputManager();
-
   ui_manager.Update();
-  input_manager.Update();
 
   if (ui_manager.WantsToQuit())
   {

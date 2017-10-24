@@ -13,9 +13,6 @@
 #include <experimental/filesystem>
 #endif
 
-
-
-
 AssetLoader g_AssetLoader;
 static AssetReloadInfo * s_AssetReloadList = nullptr;
 static bool s_DisableNetworkLoading = false;
@@ -92,11 +89,16 @@ void AssetLoader::ShutDown()
   m_ReloadServerSocket->Close();
   m_ReloadThread.join();
 
-  m_LoaderSocket->Close();
-  m_CompilerSocket->Close();
   m_ReloadServerSocket->Close();
 #endif
 
+#else
+#ifdef USE_WEBSOCKET_LOADING
+  m_LoaderSocket->Close();
+  m_CompilerSocket->Close();
+
+  m_ReloadServerSocket->Close();
+#endif
 #endif
 }
 

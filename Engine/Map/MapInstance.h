@@ -19,8 +19,7 @@ class EngineState;
 class MapInstance
 {
 public:
-  MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def, std::size_t map_id);
-  void RemoveCollision(NotNullPtr<EngineState> engine_state);
+  MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def, std::size_t map_id, const Vector2 & offset);
 
   void Init(GameContainer & game_container);
   void Update(GameContainer & game_container);
@@ -35,4 +34,5 @@ private:
   std::vector<EntityHandle> m_MapEntities;
 
   std::size_t m_MapId;
+  Vector2 m_Offset;
 };

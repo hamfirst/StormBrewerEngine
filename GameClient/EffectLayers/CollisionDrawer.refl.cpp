@@ -1,6 +1,6 @@
 
 
-#include "Foundation/Common.h"
+#include "GameClient/GameClientCommon.h"
 
 #include "Engine/EngineState.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
@@ -10,7 +10,6 @@
 
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameClientEventSender.h"
-#include "GameClient/GameClientInstanceData.h"
 
 #include "GameClient/EffectLayers/CollisionDrawer.refl.h"
 #include "GameClient/EffectLayers/CollisionDrawer.refl.meta.h"
@@ -33,15 +32,16 @@ void CollisionDrawer::Init(GameContainer & game_container)
 void CollisionDrawer::Update(GameContainer & game_container)
 {
   auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGameState();
+  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
 
   auto mask = GetCollisionMask(game_container);
 }
 
-void CollisionDrawer::Render(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void CollisionDrawer::Render(GameContainer & game_container, const Box & viewport_bounds, 
+  const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util)
 {
   auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGameState();
+  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
 
   auto & shader = g_ShaderManager.GetDefaultShader();
   shader.Bind();
@@ -68,7 +68,7 @@ void CollisionDrawer::Render(GameContainer & game_container, const Box & viewpor
 uint32_t CollisionDrawer::GetCollisionMask(GameContainer & game_container)
 {
   auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGameState();
+  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
 
   uint8_t collision_mask = 0;
   for (auto team = 0; team < kMaxTeams; ++team)

@@ -25,6 +25,7 @@ public:
 
   void SetLayer(int layer_index);
   void SetSelectedTile(uint64_t frame_id);
+  void SetSelectedAnimation(uint64_t frame_id);
 
 protected:
 
@@ -32,7 +33,7 @@ protected:
 
   void HandleTileSheetReload(NotNullPtr<TileSheetResource> resource);
   void UpdateScroll();
-  int VisitElements(Delegate<void, QImage *, int, int, int, int, int, int, int, int, uint64_t> && callback);
+  Vector2 VisitElements(Delegate<void, QImage *, int, int, int, int, int, int, int, int, uint64_t, bool> && callback);
 
 protected:
 
@@ -46,17 +47,24 @@ protected:
 public slots:
 
   void handleScrollChanged();
+  void tick();
 
 private:
   NotNullPtr<MapEditor> m_Editor;
   MapDef & m_Map;
 
   int m_LayerIndex;
+  int m_NumFrames;
 
-  std::unique_ptr<QScrollBar> m_Scroll;
-  bool m_ShowScroll;
+  std::unique_ptr<QScrollBar> m_ScrollX;
+  std::unique_ptr<QScrollBar> m_ScrollY;
+  bool m_ShowScrollX;
+  bool m_ShowScrollY;
 
+  bool m_SelectedAnimation;
   uint64_t m_SelectedFrame;
+
+  bool m_HighlightedAnimation;
   uint64_t m_HighlightedFrame;
 
   TileSheetLoadLink m_TileSheet;

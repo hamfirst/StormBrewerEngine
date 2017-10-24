@@ -51,10 +51,8 @@ struct ClientLocalData
 
 struct ClientInput
 {
-  uint8_t m_Controls;
-  GameNetVal m_Angle;
-  GameNetVal m_Strength;
-
+  bool m_JumpHeld;
+  GameNetVal m_XInput;
   NET_REFL;
 };
 
@@ -130,3 +128,4 @@ struct GameInstanceData
 
 #endif
 };
+

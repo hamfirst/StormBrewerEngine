@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameClientInstanceData.h"
 #include "GameClient/GameClientInstanceContainer.h"
 #include "GameClient/GameContainer.h"
@@ -8,7 +8,8 @@
 GameClientInstanceData::GameClientInstanceData(GameContainer & game_container, GameController & game_controller, GameClientController & client_controller,
                                                GameFullState & net_state, NotNullPtr<ClientLocalData> local_data, std::size_t num_local_clients, GameStage & stage,
                                                GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, 
-                                               GameClientEventSender & event_sender, GameServerEventResponder & server_event_responder) :
+                                               GameClientEventSender & event_sender, GameServerEventResponder & server_event_responder,
+                                               ServerObjectEventSystem & server_object_event_system) :
   m_GameContainer(game_container),
   m_GameController(game_controller),
   m_ClientController(client_controller),
@@ -19,9 +20,15 @@ GameClientInstanceData::GameClientInstanceData(GameContainer & game_container, G
   m_SharedInstanceResources(shared_resources), 
   m_ClientInstanceResources(client_resources),
   m_EventSender(event_sender),
-  m_EventResponder(server_event_responder)
+  m_EventResponder(server_event_responder),
+  m_ServerObjectEventSystem(server_object_event_system)
 {
 
+}
+
+GameController & GameClientInstanceData::GetGameController()
+{
+  return m_GameController;
 }
 
 GameFullState & GameClientInstanceData::GetFullState()
@@ -69,12 +76,18 @@ GameClientEventSender & GameClientInstanceData::GetEventSender()
   return m_EventSender;
 }
 
+ServerObjectEventSystem & GameClientInstanceData::GetServerObjectEventSystem()
+{
+  return m_ServerObjectEventSystem;
+}
+
 GameLogicContainer GameClientInstanceData::GetLogicContainer()
 {
   return GameLogicContainer(
     m_GameController,
     m_NetState.m_InstanceData,
     m_NetState.m_ServerObjectManager,
+    m_ServerObjectEventSystem,
     m_EventResponder,
     m_ClientController,
     m_GameContainer.GetSharedGlobalResources(),

@@ -15,6 +15,7 @@ class RUNTIME_EXPORT DocumentResourceBase
 {
 public:
   bool IsLoaded() const;
+  bool IsError() const;
   uint64_t GetFileNameHash() const;
 
   virtual ~DocumentResourceBase();
@@ -42,6 +43,7 @@ protected:
 
   std::atomic_int m_RefCount;
   bool m_Loaded;
+  bool m_Error;
 
   NotNullPtr<DocumentResourceManager> m_ResourceManager;
   uint64_t m_FileNameHash;

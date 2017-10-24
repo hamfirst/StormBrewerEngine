@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeOfflineStaging.h"
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeLocalMultiplayer.h"
@@ -55,9 +55,9 @@ void GameModeOfflineStaging::OnAssetsLoaded()
 
   m_StagingUI = m_UIManager.AllocateElementFromDef("staging", *container.GetClientGlobalResources().Staging.GetData());
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
@@ -80,6 +80,8 @@ void GameModeOfflineStaging::Update()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
+
+  container.GetWindow().Update();
 
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);

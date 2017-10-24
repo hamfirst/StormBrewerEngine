@@ -2,10 +2,12 @@
 
 #include "Engine/Asset/AssetReferenceBase.h"
 
-template <class AssetType>
+template <class AssetDataType>
 class AssetReference : public AssetReferenceBase
 {
 public:
+  using AssetType = AssetDataType;
+
   AssetReference() = default;
 
   AssetReference(AssetType * asset) :

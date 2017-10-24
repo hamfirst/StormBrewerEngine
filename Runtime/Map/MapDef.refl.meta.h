@@ -15,7 +15,7 @@ template <>
 struct StormReflTypeInfo<MapManualTileLayer>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 6;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -157,6 +157,42 @@ struct StormReflTypeInfo<MapManualTileLayer>::annotations<4>
 
 template <>
 struct StormReflTypeInfo<MapManualTileLayer>::annotations<4>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
+};
+
+template <>
+struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<5>
+{
+  using member_type = RSparseList<ROpaque<MapAnimatedTile> >; // RSparseList<ROpaque<MapAnimatedTile> >
+  static constexpr auto GetName() { return "m_Animations"; }
+  static constexpr auto GetType() { return "RSparseList<ROpaque<MapAnimatedTile> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x1E5FEABD; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3B9D9349; }
+  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_Animations; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapManualTileLayer>::field_data<5, Self> : public StormReflTypeInfo<MapManualTileLayer>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RSparseList<ROpaque<MapAnimatedTile> >> & Get() { return self.m_Animations; }
+  std::add_const_t<std::remove_reference_t<RSparseList<ROpaque<MapAnimatedTile> >>> & Get() const { return self.m_Animations; }
+  void SetDefault() { self.m_Animations = StormReflTypeInfo<MapManualTileLayer>::GetDefault().m_Animations; }
+};
+
+template <>
+struct StormReflTypeInfo<MapManualTileLayer>::annotations<5>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapManualTileLayer>::annotations<5>::annoation<0>
 {
   static constexpr const char * GetAnnotation() { return "noui"; }
   static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
@@ -360,7 +396,7 @@ template <>
 struct StormReflTypeInfo<MapParalaxLayer>
 {
   using MyBase = void;
-  static constexpr int fields_n = 7;
+  static constexpr int fields_n = 11;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -497,16 +533,60 @@ template <>
 struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<5>
 {
   using member_type = RFloat; // RNumber<float>
-  static constexpr auto GetName() { return "m_ParalaxX"; }
+  static constexpr auto GetName() { return "m_OffsetX"; }
   static constexpr auto GetType() { return "RNumber<float>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x4A94EC25; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA4CA9B80; }
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 5; }
-  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_ParalaxX; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_OffsetX; }
 };
 
 template <typename Self>
 struct StormReflTypeInfo<MapParalaxLayer>::field_data<5, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RFloat> & Get() { return self.m_OffsetX; }
+  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_OffsetX; }
+  void SetDefault() { self.m_OffsetX = StormReflTypeInfo<MapParalaxLayer>::GetDefault().m_OffsetX; }
+};
+
+template <>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<6>
+{
+  using member_type = RFloat; // RNumber<float>
+  static constexpr auto GetName() { return "m_OffsetY"; }
+  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD3CDAB16; }
+  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_OffsetY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data<6, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RFloat> & Get() { return self.m_OffsetY; }
+  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_OffsetY; }
+  void SetDefault() { self.m_OffsetY = StormReflTypeInfo<MapParalaxLayer>::GetDefault().m_OffsetY; }
+};
+
+template <>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<7>
+{
+  using member_type = RFloat; // RNumber<float>
+  static constexpr auto GetName() { return "m_ParalaxX"; }
+  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x4A94EC25; }
+  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_ParalaxX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data<7, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -516,25 +596,69 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data<5, Self> : public StormRef
 };
 
 template <>
-struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<6>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<8>
 {
   using member_type = RFloat; // RNumber<float>
   static constexpr auto GetName() { return "m_ParalaxY"; }
   static constexpr auto GetType() { return "RNumber<float>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3D93DCB3; }
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_ParalaxY; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapParalaxLayer>::field_data<6, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<6>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data<8, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, RFloat> & Get() { return self.m_ParalaxY; }
   std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_ParalaxY; }
   void SetDefault() { self.m_ParalaxY = StormReflTypeInfo<MapParalaxLayer>::GetDefault().m_ParalaxY; }
+};
+
+template <>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<9>
+{
+  using member_type = RFloat; // RNumber<float>
+  static constexpr auto GetName() { return "m_VelocityX"; }
+  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xC426D4CA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_VelocityX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data<9, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<9>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RFloat> & Get() { return self.m_VelocityX; }
+  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_VelocityX; }
+  void SetDefault() { self.m_VelocityX = StormReflTypeInfo<MapParalaxLayer>::GetDefault().m_VelocityX; }
+};
+
+template <>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<10>
+{
+  using member_type = RFloat; // RNumber<float>
+  static constexpr auto GetName() { return "m_VelocityY"; }
+  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xB321E45C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_VelocityY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapParalaxLayer>::field_data<10, Self> : public StormReflTypeInfo<MapParalaxLayer>::field_data_static<10>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RFloat> & Get() { return self.m_VelocityY; }
+  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_VelocityY; }
+  void SetDefault() { self.m_VelocityY = StormReflTypeInfo<MapParalaxLayer>::GetDefault().m_VelocityY; }
 };
 
 template <>

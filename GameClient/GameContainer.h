@@ -12,12 +12,12 @@
 
 #include "GameClient/GameMode.h"
 #include "GameClient/GameClientGlobalResources.h"
-#include "GameClient/GameClientInstanceData.h"
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientSave.h"
 
 class GameMode;
 class GameNetworkClient;
+class GameClientInstanceContainer;
 
 template <typename GameMode>
 struct GameModeDef {};
@@ -48,8 +48,8 @@ public:
   GameClientGlobalResources & GetClientGlobalResources();
   GameClientSave & GetSave();
 
-  NullOptPtr<GameClientInstanceData> GetInstanceData();
-  void SetInstanceData(NullOptPtr<GameClientInstanceData> instance_data);
+  NullOptPtr<GameClientInstanceContainer> GetInstanceData();
+  void SetInstanceData(NullOptPtr<GameClientInstanceContainer> instance_data);
 
   NullOptPtr<GameClientSystems> GetClientSystems();
   void SetClientSystems(NullOptPtr<GameClientSystems> client_systems);
@@ -98,7 +98,7 @@ private:
   Optional<GameSharedGlobalResources> m_SharedGlobalResources;
   Optional<GameClientGlobalResources> m_ClientGlobalResources;
 
-  NullOptPtr<GameClientInstanceData> m_ClientInstanceData;
+  NullOptPtr<GameClientInstanceContainer> m_ClientInstanceData;
   NullOptPtr<GameClientSystems> m_ClientSystems;
 
   GameLevelList m_LevelList;

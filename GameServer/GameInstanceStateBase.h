@@ -30,6 +30,8 @@ public:
 
   }
 
+  virtual ~GameInstanceStateBase() {};
+
   virtual bool JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game) { return false; };
   virtual void RemovePlayer(std::size_t client_index) {};
 

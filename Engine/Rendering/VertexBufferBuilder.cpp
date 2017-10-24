@@ -198,6 +198,12 @@ LineVertexBufferBuilder::LineVertexBufferBuilder(std::size_t reserve_points)
   m_Lines.reserve(reserve_points);
 }
 
+
+bool LineVertexBufferBuilder::HasData() const
+{
+  return m_Lines.size() > 0;
+}
+
 void LineVertexBufferBuilder::AddLine(const LineVertexBuilderInfo & line)
 {
   m_Lines.push_back(line);

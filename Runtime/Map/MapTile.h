@@ -23,3 +23,17 @@ struct MapTile
   }
 };
 
+struct MapAnimatedTile
+{
+  RInt x;
+  RInt y;
+
+  RUInt m_Animation;
+  RUInt m_FrameOffset;
+
+  bool operator == (const MapAnimatedTile & rhs) const
+  {
+    return x == rhs.x && y == rhs.y && m_Animation == rhs.m_Animation;
+  }
+};
+

@@ -34,11 +34,12 @@ void MapEffectLayerInstance::Update(GameContainer & game_container)
   }
 }
 
-void MapEffectLayerInstance::Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEffectLayerInstance::Draw(GameContainer & game_container, const Box & viewport_bounds, 
+  const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_Renderer)
   {
-    m_Renderer->Render(game_container, viewport_bounds, screen_center, render_state, render_util);
+    m_Renderer->Render(game_container, viewport_bounds, screen_center, offset, render_state, render_util);
   }
 }
 

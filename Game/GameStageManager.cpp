@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameStageManager.h"
 #include "Game/GameLevelList.h"
 

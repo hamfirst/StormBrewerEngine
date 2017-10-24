@@ -87,7 +87,6 @@ void FrameEditorBase::UpdateFrameSize()
   {
     if (texture_hash == crc32(texture.second.m_Filename))
     {
-
       texture_info = &texture.second;
     }
   }
@@ -211,6 +210,13 @@ void FrameEditorBase::StopDrawing()
   }
 }
 
+void FrameEditorBase::SetFrame(uint64_t frame_id)
+{
+  m_FrameId = frame_id;
+  UpdateFrameSize();
+  repaint();
+}
+
 void FrameEditorBase::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
@@ -303,9 +309,8 @@ void FrameEditorBase::paintGL()
   texture->GetTexture().BindTexture(0);
 
   QuadVertexBufferBuilder builder;
-  builder.AddFrame(frame_box, texture_size, frame_size, 0, Color(255, 255, 255, 255));
+  builder.AddFrame(frame_box, texture_size, frame_size, m_FrameId & 0xFFFF, Color(255, 255, 255, 255));
   builder.FillVertexBuffer(m_VertexBuffer);
-
 
   m_VertexBuffer.Bind();
   m_VertexBuffer.CreateDefaultBinding(default_shader);

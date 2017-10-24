@@ -19,6 +19,8 @@
 #include "Runtime/Anchor/AnchorTypeRegister.h"
 #include "Runtime/Config/ConfigManager.h"
 #include "Runtime/UI/UIElementTypeRegister.h"
+#include "Runtime/SpriteBase/SpriteAnimationEventRegister.h"
+#include "Runtime/Asset/Asset.h"
 
 #include "Server/ServerObject/ServerObjectSystem.h"
 
@@ -32,6 +34,8 @@ void RuntimeInit()
   g_PathRegisterCallList.CallAll();
   g_MapEffectLayerRegisterCallList.CallAll();
   g_UIElementRegisterCallList.CallAll();
+  g_GlobalAssetListRegister.CallAll();
+  g_SpriteAnimationEventRegisterCallList.CallAll();
 
   g_ServerObjectSystem.FinalizeTypes();
 }

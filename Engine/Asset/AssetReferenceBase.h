@@ -14,6 +14,9 @@ public:
   AssetReferenceBase & operator = (const AssetReferenceBase & rhs) noexcept;
   AssetReferenceBase & operator = (AssetReferenceBase && rhs) noexcept;
 
+  bool IsLoaded() const;
+  bool IsError() const;
+  bool LoadingFinished() const;
   void Clear();
 
 protected:

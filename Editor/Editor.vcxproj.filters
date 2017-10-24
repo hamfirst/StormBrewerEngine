@@ -1036,6 +1036,42 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorViewer.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
+    <ClCompile Include="DrawUtilQt.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolManualTileLayerPreview.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBaseAnimationEventEditorDialog.cpp">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseAnimationEventEditorDialog.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationEventEditorDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationEventEditorDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationEventEditorDialog.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBaseFrameDisplay.cpp">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseFrameDisplay.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseFrameDisplay.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseFrameDisplay.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseFrameDisplay.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -1260,6 +1296,12 @@
     <CustomBuild Include="VisualEffectEditorViewer.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </CustomBuild>
+    <CustomBuild Include="SpriteBaseAnimationEventEditorDialog.h">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SpriteBaseFrameDisplay.h">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -1387,6 +1429,12 @@
     </ClInclude>
     <ClInclude Include="VisualEffectEditorNodeSelection.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawUtilQt.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolManualTileLayerPreview.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

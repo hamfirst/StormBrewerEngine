@@ -4,10 +4,11 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Profiler/Profiler.h"
+#include "Engine/Sprite/SpriteEngineData.h"
 
 #include "Runtime/TileSheet/TileSheetResource.h"
 
-MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t layer_index)
+MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t layer_index, const Vector2 & offset)
 {
   auto & layer = map.m_ManualTileLayers[(int)layer_index];
   m_LayerOrder = layer.m_LayerOrder;
@@ -25,7 +26,23 @@ MapManualTileLayerInstance::MapManualTileLayerInstance(MapDef & map, std::size_t
 
   for (auto tile : layer.m_Tiles)
   {
+    auto tile_copy = tile.second.Value();
+    tile_copy.x += offset.x;
+    tile_copy.y += offset.y;
+
     m_Tiles.push_back(tile.second.Value());
+  }
+
+  for (auto anim : layer.m_Animations)
+  {
+    auto & tile_info = anim.second;
+   
+    AnimatedTile anim_tile;
+    if (tile_sheet.GetResource()->InitAnimation(anim.second->m_Animation, anim.second->m_FrameOffset, anim_tile.m_State))
+    {
+      anim_tile.m_Position = Vector2(anim.second->x, anim.second->y) + offset;
+      m_AnimatedTiles.push_back(anim_tile);
+    }
   }
 
   m_TileSheet = tile_sheet.GetResource()->AddLoadCallback([this](NotNullPtr<TileSheetResource>) { CreateVertexBuffers(); });
@@ -44,8 +61,9 @@ void MapManualTileLayerInstance::LoadTextures()
   m_Initializing = true;
 
   auto prev_texutres = std::move(m_Textures);
+  auto tile_sheet_data = m_TileSheet->GetData();
 
-  for (auto elem : m_TileSheet->m_Textures)
+  for (auto elem : tile_sheet_data->m_Textures)
   {
     if (elem.second.m_FrameWidth <= 0 || elem.second.m_FrameHeight <= 0)
     {
@@ -360,10 +378,17 @@ void MapManualTileLayerInstance::CreateVertexBuffers()
 
 void MapManualTileLayerInstance::Update()
 {
-
+  auto tile_sheet = m_TileSheet.GetResource();
+  if (tile_sheet != nullptr)
+  {
+    for (auto & anim : m_AnimatedTiles)
+    {
+      tile_sheet->FrameAdvance(anim.m_State);
+    }
+  }
 }
 
-void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   PROFILE_SCOPE("Draw Map");
 
@@ -390,6 +415,15 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
 
     return true;
   }, false);
+
+  for (auto & anim : m_AnimatedTiles)
+  {
+    auto anim_box = Box::FromFrameCenterAndSize(anim.m_Position, Vector2(anim.m_State.m_FrameWidth, anim.m_State.m_FrameHeight));
+    if (BoxIntersect(viewport_bounds, anim_box))
+    {
+      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, anim.m_Position);
+    }
+  }
 }
 
 

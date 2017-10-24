@@ -1,5 +1,5 @@
+#include "GameClient/GameClientCommon.h"
 
-#include "Foundation/Common.h"
 #include "Foundation/Time/FrameClock.h"
 
 #include "Engine/Text/TextManager.h"
@@ -10,6 +10,7 @@
 #include "Game/GameMessages.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameProtocol.h"
+#include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
 #include "GameClient/GameNetworkClient.h"
 #include "GameClient/GameContainer.h"
@@ -35,19 +36,15 @@ GameNetworkClient::GameNetworkClient(GameContainer & game) :
   m_Ping(0)
 {
 #if NET_MODE == NET_MODE_GGPO
-  m_AckFrame = 0;
+  m_LastAckFrame = 0;
   m_LastServerFrame = 0;
-  m_LastClientSendFrame = 0;
-  m_ReconcileFrame = 0;
+  m_FrameSkip = 0;
 #endif
 }
 
 void GameNetworkClient::Update()
 {
-  m_ReconcileFrame = 0;
-
   ClientBase::Update();
-  m_Reconciler.AdvanceFrame();
 
   double cur_time = GetTimeSeconds();      
   if (cur_time - m_LastPingSent > 5)
@@ -61,7 +58,7 @@ void GameNetworkClient::Update()
 
     if (m_SendTimer <= cur_time)
     {
-      m_SendTimer = cur_time + 0.12;
+      m_SendTimer = cur_time + 0.05;
       SendClientUpdate();
     }
   }
@@ -83,6 +80,22 @@ void GameNetworkClient::Update()
     m_DefaultServerUpdate->m_State = std::make_shared<GameFullState>(m_LoadingInstanceContainer->GetDefaultState());
     m_Protocol->GetReceiverChannel<1>().SetDefault(&m_DefaultServerUpdate.Value());
   }
+}
+
+bool GameNetworkClient::SkipUpdate()
+{
+  if (m_State != ClientConnectionState::kConnected)
+  {
+    return false;
+  }
+
+  if (m_FrameSkip > 2)
+  {
+    m_FrameSkip -= 2;
+    return true;
+  }
+
+  return false;
 }
 
 ClientConnectionState GameNetworkClient::GetConnectionState()
@@ -107,16 +120,9 @@ void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
 
 #if NET_MODE == NET_MODE_GGPO
 
-  auto last_input = m_InputHistory.GetTailElement();
-  if (last_input && StormReflCompare(*last_input, input))
-  {
-    return;
-  }
-
   auto future_frames = GetFutureFrames();
+  m_InstanceContainer->PushLocalInput(0, input, future_frames);
 
-  auto input_frame = m_InstanceContainer->GetInstanceData().m_FrameCount + future_frames;
-  m_InputHistory.Push(input_frame, std::move(input));
 
 #endif
 
@@ -126,9 +132,9 @@ void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
   }
 }
 
-NullOptPtr<GameClientInstanceData> GameNetworkClient::GetClientInstanceData()
+NullOptPtr<GameClientInstanceContainer> GameNetworkClient::GetClientInstanceData()
 {
-  return m_ClientInstanceData.get();
+  return m_InstanceContainer.get();
 }
 
 NullOptPtr<const GameStateStaging> GameNetworkClient::GetStagingState() const
@@ -141,20 +147,20 @@ NullOptPtr<const GameStateLoading> GameNetworkClient::GetLoadingState() const
   return m_LoadingState.GetPtr();
 }
 
-std::pair<std::unique_ptr<GameClientInstanceContainer>, std::unique_ptr<GameClientInstanceData>> GameNetworkClient::ConvertToOffline()
+std::unique_ptr<GameClientInstanceContainer> GameNetworkClient::ConvertToOffline()
 {
   Disconnect();
   m_State = ClientConnectionState::kDisconnected;
 
   auto old_instance_container = std::move(m_InstanceContainer);
-  auto old_instance_data = std::move(m_ClientInstanceData);
 
   m_FinalizedLoad = false;
   m_LastPingSent = 0;
   m_Ping = 0;
-  m_AckFrame = 0;
+  m_LastAckFrame = 0;
+  m_LastServerFrame = 0;
 
-  return std::make_pair(std::move(old_instance_container), std::move(old_instance_data));
+  return old_instance_container;
 }
 
 void GameNetworkClient::FinalizeLevelLoad()
@@ -170,7 +176,7 @@ void GameNetworkClient::HandlePong(const PongMessage & msg)
 
 void GameNetworkClient::HandleLoadLevel(const LoadLevelMessage & load)
 {
-  m_LoadingInstanceContainer = std::make_unique<GameClientInstanceContainer>(m_GameContainer, 1, false, &m_Reconciler, &m_ReconcileFrame);
+  m_LoadingInstanceContainer = std::make_unique<GameClientInstanceContainer>(m_GameContainer, *this, 1, false);
   m_LoadingInstanceContainer->Load(load.m_Settings, load.m_LoadToken);
   m_FinalizedLoad = false;
 
@@ -182,9 +188,6 @@ void GameNetworkClient::HandleStagingUpdate(const GameStateStaging & state)
   m_State = ClientConnectionState::kStaging;
   m_StagingState = state;
   m_LoadingState.Clear();
-
-  m_InputHistory.Clear();
-  m_EventHistory.Clear();
 }
 
 void GameNetworkClient::HandleLoadingUpdate(const GameStateLoading & state)
@@ -192,15 +195,12 @@ void GameNetworkClient::HandleLoadingUpdate(const GameStateLoading & state)
   m_State = ClientConnectionState::kLoading;
   m_StagingState.Clear();
   m_LoadingState = state;
-
-  m_InputHistory.Clear();
-  m_EventHistory.Clear();
 }
 
 #if NET_MODE == NET_MODE_GGPO
-void GameNetworkClient::HandleSimUpdate(const GameGGPOServerGameState & game_state)
+void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
 {
-  m_AckFrame = game_state.m_AckFrame;
+  m_LastAckFrame = game_state.m_AckFrame;
   if (m_State != ClientConnectionState::kConnected)
   {
     if (m_FinalizedLoad == false)
@@ -212,144 +212,75 @@ void GameNetworkClient::HandleSimUpdate(const GameGGPOServerGameState & game_sta
     m_StagingState.Clear();
 
     m_InstanceContainer = std::move(m_LoadingInstanceContainer);
+    m_InstanceContainer->InitializeFromRemoteState(std::make_shared<GameFullState>(*game_state.m_State.get()));
     m_FinalizedLoad = false;
 
     m_State = ClientConnectionState::kConnected;
-    m_ClientInstanceData = std::make_unique<GameClientInstanceData>(m_InstanceContainer->GetClientInstanceData(*this));
   }
 
-  m_InstanceContainer->GetState() = *game_state.m_State.get();
-  auto start_frame = game_state.m_State->m_InstanceData.m_FrameCount;
-  auto frames_to_rewind = game_state.m_ServerFrame - start_frame;
+  auto current_frame = m_InstanceContainer->GetGlobalInstanceData().m_FrameCount;
+  auto dest_frame = std::max(game_state.m_ServerFrame, current_frame);
 
-  const GameHistoryInput * input_history_cur = nullptr;
-  const GameHistoryInput * input_history_end = nullptr;
+  if (current_frame > game_state.m_ServerFrame)
+  {
+    m_FrameSkip += current_frame - game_state.m_ServerFrame;
+  }
 
-  const GameHistoryEvent * event_history_cur = nullptr;
-  const GameHistoryEvent * event_history_end = nullptr;
+  m_LastServerFrame = game_state.m_ServerFrame;
 
-  const GameHistoryExternal * external_history_cur = nullptr;
-  const GameHistoryExternal * external_history_end = nullptr;
+  auto frames_to_rewind = current_frame - game_state.m_State->m_InstanceData.m_FrameCount;
 
-  const GameHistoryAuthEvent * auth_history_cur = nullptr;
-  const GameHistoryAuthEvent * auth_history_end = nullptr;
-
-  const GameHistoryClientLocal * local_history_cur = nullptr;
-  const GameHistoryClientLocal * local_history_end = nullptr;
+  m_InstanceContainer->Rewind(game_state.m_State->m_InstanceData.m_FrameCount, std::make_shared<GameFullState>(*game_state.m_State.get()));
+  m_InstanceContainer->PurgeLocalData(game_state.m_AckFrame);
+  m_InstanceContainer->PurgeRemoteData(game_state.m_EventStartFrame);
 
   if (game_state.m_Inputs)
   {
-    input_history_cur = game_state.m_Inputs.Value().data();
-    input_history_end = input_history_cur + game_state.m_Inputs.Value().size();
+    for (auto & elem : game_state.m_Inputs.Value())
+    {
+      m_InstanceContainer->PushRemoteInput(elem.m_PlayerIndex, elem.m_Input, elem.m_Frame);
+    }
   }
 
   if (game_state.m_Events)
   {
-    event_history_cur = game_state.m_Events.Value().data();
-    event_history_end = event_history_cur + game_state.m_Events.Value().size();
+    for (auto & elem : game_state.m_Events.Value())
+    {
+      m_InstanceContainer->PushRemoteEvent(elem.m_PlayerIndex, std::move(elem.m_Event), elem.m_Frame);
+    }
+  }
+
+  if (game_state.m_LocalData)
+  {
+    for (auto & elem : game_state.m_LocalData.Value())
+    {
+      m_InstanceContainer->PushClientLocalDataChange(0, elem.m_Data, elem.m_Frame);
+    }
   }
 
   if (game_state.m_Externals)
   {
-    external_history_cur = game_state.m_Externals.Value().data();
-    external_history_end = external_history_cur + game_state.m_Externals.Value().size();
+    for (auto & elem : game_state.m_Externals.Value())
+    {
+      m_InstanceContainer->PushExternalEvent(std::move(elem.m_Event), elem.m_Frame);
+    }
   }
 
   if (game_state.m_ServerAuthEvents)
   {
-    auth_history_cur = game_state.m_ServerAuthEvents.Value().data();
-    auth_history_end = auth_history_cur + game_state.m_ServerAuthEvents.Value().size();
+    for (auto & elem : game_state.m_ServerAuthEvents.Value())
+    {
+      m_InstanceContainer->GetClientController().HandleAuthEvent(elem.m_Event.GetClassId(), elem.m_Event.GetBase());
+      m_InstanceContainer->PushAuthorityEvent(std::move(elem.m_Event), elem.m_Frame);
+    }
   }
-    
-  if (game_state.m_LocalData)
+
+  for(int index = 0; index < frames_to_rewind; ++index)
   {
-    local_history_cur = game_state.m_LocalData.Value().data();
-    local_history_end = local_history_cur + game_state.m_LocalData.Value().size();
-
-    const GameHistoryClientLocal * previous_client_local = nullptr;
-    while (local_history_cur->m_Frame < start_frame)
-    {
-      previous_client_local = local_history_cur;
-      local_history_cur++;
-
-      if (local_history_cur == local_history_end)
-      {
-        break;
-      }
-    }
-
-    if (previous_client_local)
-    {
-      m_InstanceContainer->GetClientLocalData(0) = previous_client_local->m_Data;
-    }
+    m_InstanceContainer->Update();
   }
 
-
-  auto input_iter = m_InputHistory.IterateElementsSince(start_frame);
-  auto event_iter = m_EventHistory.IterateElementsSince(start_frame);
-
-  int local_player_index = m_InstanceContainer->GetClientLocalData(0).m_PlayerIndex;
-
-  while (frames_to_rewind)
-  {
-    m_ReconcileFrame = frames_to_rewind;
-
-    auto logic_container = m_InstanceContainer->GetLogicContainer();
-    auto cur_frame = m_InstanceContainer->GetInstanceData().m_FrameCount;
-
-    auto & controller = m_InstanceContainer->GetGameController();
-
-    while (local_history_cur != local_history_end && local_history_cur->m_Frame == cur_frame)
-    {
-      m_InstanceContainer->GetClientLocalData(0) = local_history_cur->m_Data;
-      local_history_cur++;
-    }
-
-    while (input_history_cur != input_history_end && input_history_cur->m_Frame == cur_frame)
-    {
-      controller.ApplyInput(input_history_cur->m_PlayerIndex, logic_container, input_history_cur->m_Input);
-      input_history_cur++;
-    }
-
-    if (local_player_index != -1)
-    {
-      auto input_visitor = [&](ClientInput & elem)
-      {
-        controller.ApplyInput(local_player_index, logic_container, elem);
-      };
-
-      input_iter.VisitElementsForCurrentTime(input_visitor);
-      input_iter.Advance();
-    }
-
-    while (event_history_cur != event_history_end && event_history_cur->m_Frame == cur_frame)
-    {
-      controller.HandleClientEvent(event_history_cur->m_PlayerIndex, logic_container, 
-        event_history_cur->m_Event.GetClassId(), event_history_cur->m_Event.GetBase());
-
-      event_history_cur++;
-    }
-
-    if (local_player_index != -1)
-    {
-      auto event_visitor = [&](NetPolymorphic<ClientNetworkEvent> & elem)
-      {
-        controller.HandleClientEvent(local_player_index, logic_container, elem.GetClassId(), elem.GetBase());
-      };
-
-      event_iter.VisitElementsForCurrentTime(event_visitor);
-      event_iter.Advance();
-    }
-
-    while (external_history_cur != external_history_end && external_history_cur->m_Frame == cur_frame)
-    {
-      controller.ProcessExternal(external_history_cur->m_Event, logic_container);
-      external_history_cur++;
-    }
-
-    controller.Update(logic_container);
-    frames_to_rewind--;
-  }
+  m_InstanceContainer->SyncEntities();
 }
 
 #else
@@ -361,14 +292,14 @@ void GameNetworkClient::HandleSimUpdate(const GameFullState & sim)
     return;
   }
 
-  m_InstanceContainer->GetState() = sim;
+  m_InstanceContainer->GetFullState() = sim;
   if (m_GotInitialSim == false)
   {
     m_GotInitialSim = true;
     CheckFinalizeConnect();
   }
 
-  m_InstanceContainer->GetEntitySync().Sync(m_InstanceContainer->GetState().m_ServerObjectManager);
+  m_InstanceContainer->GetEntitySync().Sync(m_InstanceContainer->GetFullState().m_ServerObjectManager);
 }
 
 void GameNetworkClient::HandleClientDataUpdate(ClientLocalData && client_data)
@@ -416,10 +347,8 @@ void GameNetworkClient::SendClientUpdate()
 
   GameGGPOClientUpdate update;
   update.m_AckFrame = m_LastServerFrame;
-  update.m_ClientFrame = m_InstanceContainer->GetInstanceData().m_FrameCount;
+  update.m_ClientFrame = m_InstanceContainer->GetGlobalInstanceData().m_FrameCount;
 
-  m_LastClientSendFrame = m_InstanceContainer->GetInstanceData().m_FrameCount;
-  
   auto input_visitor = [&](int frame, ClientInput & elem)
   {
     if (update.m_Inputs == false)
@@ -430,8 +359,10 @@ void GameNetworkClient::SendClientUpdate()
     update.m_Inputs->emplace_back(ClientAuthData{ frame, elem });
   };
 
-  m_InputHistory.VisitElementsSince(m_AckFrame, input_visitor);
+  m_InstanceContainer->VisitLocalInput(m_LastAckFrame, input_visitor);
 
+  static int send = 0;
+  send++;
   auto event_visitor = [&](int frame, NetPolymorphic<ClientNetworkEvent> & elem)
   {
     if (update.m_Events == false)
@@ -442,7 +373,7 @@ void GameNetworkClient::SendClientUpdate()
     update.m_Events->emplace_back(GameHistoryClientEvent{ frame, elem });
   };
 
-  m_EventHistory.VisitElementsSince(m_AckFrame, event_visitor);
+  m_InstanceContainer->VisitLocalEvents(m_LastAckFrame, event_visitor);
 
   m_Protocol->GetSenderChannel<1>().SyncState(update);
 #else
@@ -450,13 +381,11 @@ void GameNetworkClient::SendClientUpdate()
 #endif
 }
 
-void GameNetworkClient::SendClientEvent(std::size_t class_id, const void * event_ptr)
+void GameNetworkClient::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
 #if NET_MODE == NET_MODE_GGPO
   auto future_frames = GetFutureFrames();
-
-  auto input_frame = m_InstanceContainer->GetInstanceData().m_FrameCount + future_frames;
-  m_EventHistory.Push(input_frame, NetPolymorphic<ClientNetworkEvent>(class_id, event_ptr));
+  m_InstanceContainer->PushLocalEvent(0, NetPolymorphic<ClientNetworkEvent>(class_id, event_ptr), future_frames);
 
 #else
   m_Protocol->GetSenderChannel<1>().SendMessage(class_id, event_ptr);
@@ -512,12 +441,6 @@ int GameNetworkClient::GetFutureFrames()
 #else
   int future_frames = 0;
 #endif
-
-  auto frame_count = m_InstanceContainer->GetInstanceData().m_FrameCount;
-  if (frame_count + future_frames < m_LastClientSendFrame)
-  {
-    future_frames = m_LastClientSendFrame - frame_count + 1;
-  }
 
   return future_frames;
 }

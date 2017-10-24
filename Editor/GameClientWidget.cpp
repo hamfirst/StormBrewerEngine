@@ -8,6 +8,9 @@
 #include "EditorContainer.h"
 
 #include "Engine/Input/KeyboardState.h"
+
+#include "Foundation/Profiling/Profiling.h"
+
 #include "GameClient/GameCamera.h"
 
 
@@ -260,6 +263,8 @@ void GameClientWidget::Update()
   {
     return;
   }
+
+  ResetProfiler();
 
   auto pos = mapToGlobal(QPoint(0, 0));
   m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));

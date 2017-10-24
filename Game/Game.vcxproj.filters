@@ -13,12 +13,6 @@
     <ClCompile Include="Data\PlayerSpawn.refl.reg.cpp">
       <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="ServerObjects\PlayerServerObject.refl.cpp">
-      <Filter>ServerObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerObjects\PlayerServerObject.refl.reg.cpp">
-      <Filter>ServerObjects</Filter>
-    </ClCompile>
     <ClCompile Include="GameServerTypes.cpp" />
     <ClCompile Include="GameEventReconciler.cpp">
       <Filter>Shared</Filter>
@@ -40,6 +34,16 @@
     </ClCompile>
     <ClCompile Include="GameWebrtc.cpp">
       <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCommon.cpp" />
+    <ClCompile Include="ServerObjects\Player\PlayerServerObject.refl.cpp">
+      <Filter>ServerObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\PlayerServerObject.refl.reg.cpp">
+      <Filter>ServerObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateDefault.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,12 +74,6 @@
     <ClInclude Include="Data\PlayerSpawn.refl.meta.h">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="ServerObjects\PlayerServerObject.refl.h">
-      <Filter>ServerObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObjects\PlayerServerObject.refl.meta.h">
-      <Filter>ServerObjects</Filter>
-    </ClInclude>
     <ClInclude Include="GameEventReconciler.h">
       <Filter>Shared</Filter>
     </ClInclude>
@@ -103,6 +101,25 @@
     <ClInclude Include="GameValidation.h">
       <Filter>Shared</Filter>
     </ClInclude>
+    <ClInclude Include="GameCommon.h" />
+    <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.h">
+      <Filter>ServerObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.meta.h">
+      <Filter>ServerObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayEvents\PlaceholderEvent.h">
+      <Filter>GameplayEvents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">
@@ -122,6 +139,15 @@
     </Filter>
     <Filter Include="Shared">
       <UniqueIdentifier>{955f69d9-8cd6-494a-bb03-8d84763820c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerObjects\Player">
+      <UniqueIdentifier>{81d77cb7-5ce4-470f-a021-cfffe62b3e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerObjects\Player\States">
+      <UniqueIdentifier>{51aec00b-e512-41c7-b100-9ea91b93f3b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameplayEvents">
+      <UniqueIdentifier>{4df865c3-8017-4113-a781-263cd43edc70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

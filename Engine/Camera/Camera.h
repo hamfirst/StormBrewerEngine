@@ -31,8 +31,6 @@ public:
   void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color);
   void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Vector2 & offset, const Color & color);
 
-  void DebugDrawCollision(NotNullPtr<EngineState> engine_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color);
-
 private:
   RenderVec2 m_ScreenResolution;
   RenderVec2 m_GameResolution;

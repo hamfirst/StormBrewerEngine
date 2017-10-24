@@ -2,6 +2,8 @@
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/FrameData/FrameData.refl.h"
+#include "Runtime/SpriteBase/SpriteAnimationEventDef.refl.h"
+#include "Runtime/SpriteBase/SpriteAnimationEventTypeDatabase.h"
 
 #include <StormRefl/StormRefl.h>
 #include <StormData/StormDataTypes.h>
@@ -26,6 +28,17 @@ public:
   RInt m_FrameDuration = 5;
 };
 
+struct RUNTIME_EXPORT SpriteBaseAnimationEvent
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteBaseAnimationEvent);
+  RInt m_Frame;
+  RInt m_FrameDelay;
+
+  RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
+  ROpaque<std::vector<Box>> m_EventArea;
+};
+
+
 struct RUNTIME_EXPORT SpriteBaseDefAnimation
 {
 public:
@@ -33,6 +46,7 @@ public:
 
   RString m_Name;
   RMergeList<SpriteBaseDefAnimFrame> m_Frames;
+  RMergeList<SpriteBaseAnimationEvent> m_Events;
 };
 
 struct RUNTIME_EXPORT SpriteBaseDef

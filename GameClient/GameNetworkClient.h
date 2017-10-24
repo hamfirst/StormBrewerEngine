@@ -24,7 +24,6 @@ using GameNetClientBackend = NetClientBackendEnet;
 #include "GameClient/GameClientEntitySync.h"
 #include "GameClient/GameClientEventSender.h"
 #include "GameClient/GameClientInstanceResources.h"
-#include "GameClient/GameClientInstanceData.h"
 #include "GameClient/GameClientInstanceContainer.h"
 
 #include "Engine/Window/Window.h"
@@ -50,8 +49,8 @@ class GameState;
 
 struct GameNetworkClientInitSettings
 {
-  const char * m_RemoteHost = "52.161.102.44";
-  //const char * m_RemoteHost = "192.168.56.1";
+  //const char * m_RemoteHost = "52.161.102.44";
+  const char * m_RemoteHost = "192.168.56.1";
 
   int m_RemotePort = 47816;
   std::string m_UserName = "User";
@@ -64,18 +63,19 @@ public:
   GameNetworkClient(GameContainer & game);
 
   virtual void Update() override;
+  bool SkipUpdate();
 
   ClientConnectionState GetConnectionState();
 
   void SendJoinGame();
 
   void UpdateInput(ClientInput && input, bool send_immediate);
-  NullOptPtr<GameClientInstanceData> GetClientInstanceData();
+  NullOptPtr<GameClientInstanceContainer> GetClientInstanceData();
 
   NullOptPtr<const GameStateStaging> GetStagingState() const;
   NullOptPtr<const GameStateLoading> GetLoadingState() const;
 
-  std::pair<std::unique_ptr<GameClientInstanceContainer>, std::unique_ptr<GameClientInstanceData>> ConvertToOffline();
+  std::unique_ptr<GameClientInstanceContainer> ConvertToOffline();
   void FinalizeLevelLoad();
 
 
@@ -88,7 +88,7 @@ private:
   void HandleLoadingUpdate(const GameStateLoading & state);
 
 #if NET_MODE == NET_MODE_GGPO
-  void HandleSimUpdate(const GameGGPOServerGameState & game_state);
+  void HandleSimUpdate(GameGGPOServerGameState && game_state);
 #else
   void HandleSimUpdate(const GameFullState & sim);
   void HandleClientDataUpdate(ClientLocalData && client_data);
@@ -100,7 +100,7 @@ private:
   void SendPing();
   void SendClientUpdate();
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr) override;
+  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
   virtual void InitConnection(ProtocolType & protocol) override;
   virtual void ConnectionFailed() override;
@@ -121,7 +121,6 @@ private:
 
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
   std::unique_ptr<GameClientInstanceContainer> m_LoadingInstanceContainer;
-  std::unique_ptr<GameClientInstanceData> m_ClientInstanceData;
 
   ProtocolType * m_Protocol = nullptr;
   uint64_t m_LoadToken;
@@ -130,14 +129,10 @@ private:
 
   Optional<GameGGPOServerGameState> m_DefaultServerUpdate;
 
-  HistoryList<ClientInput> m_InputHistory;
-  HistoryList<NetPolymorphic<ClientNetworkEvent>> m_EventHistory;
-  int m_AckFrame;
+  int m_LastAckFrame;
   int m_LastServerFrame;
-  int m_LastClientSendFrame;
 
-  GameEventReconciler m_Reconciler;
-  int m_ReconcileFrame;
+  int m_FrameSkip;
 #endif
 
   bool m_FinalizedLoad;

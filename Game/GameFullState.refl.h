@@ -11,7 +11,7 @@
 
 #include "Game/GameNetworkSettings.h"
 #include "Server/ServerObject/ServerObjectManager.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectSerialize.h"
 
 struct GameFullState
 {
@@ -112,14 +112,15 @@ struct GameGGPOServerGameState
 
   int m_AckFrame;
   int m_ServerFrame;
+  int m_EventStartFrame;
 
   std::shared_ptr<GameFullState> m_State;
 
-  NetOptional<NetArrayList<GameHistoryInput, 127>> m_Inputs;
-  NetOptional<NetArrayList<GameHistoryEvent, 127>> m_Events;
-  NetOptional<NetArrayList<GameHistoryExternal, 127>> m_Externals;
-  NetOptional<NetArrayList<GameHistoryClientLocal, 127>> m_LocalData;
-  NetOptional<NetArrayList<GameHistoryAuthEvent, 127>> m_ServerAuthEvents;
+  NetOptional<NetArrayList<GameHistoryInput, 1023>> m_Inputs;
+  NetOptional<NetArrayList<GameHistoryEvent, 1023>> m_Events;
+  NetOptional<NetArrayList<GameHistoryExternal, 1023>> m_Externals;
+  NetOptional<NetArrayList<GameHistoryClientLocal, 1023>> m_LocalData;
+  NetOptional<NetArrayList<GameHistoryAuthEvent, 1023>> m_ServerAuthEvents;
 };
 
 struct GameGGPOClientUpdate

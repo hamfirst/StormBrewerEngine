@@ -36,6 +36,14 @@ Box Box::FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & fr
   return b;
 }
 
+Box Box::FromBaselineAndOffset(const Box & baseline, const Vector2 & offset)
+{
+  Box b = baseline;
+  b.m_Start += offset;
+  b.m_End += offset;
+  return b;
+}
+
 Box Box::FromPoint(const Vector2 & pos)
 {
   return Box{ pos, pos };

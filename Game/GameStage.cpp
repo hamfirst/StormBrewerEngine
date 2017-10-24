@@ -1,15 +1,20 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameStage.h"
 
 #include "Foundation/BasicTypes/BasicTypeHash.h"
 #include "Foundation/Pathfinding/Pathfinding.h"
+
+#include "Runtime/Map/MapCollision.h"
 
 #include "Game/Data/PlayerSpawn.refl.meta.h"
 
 GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127)
 {
-  for (auto path : map->m_Paths)
+  m_CollisionDatabase.PushMapCollision(0, ExtractMapCollision(*map.GetData(), {}));
+
+  auto map_data = map.GetData();
+  for (auto path : map_data->m_Paths)
   {
     auto collision_mask = 0x1;
     auto team = -1;
@@ -20,9 +25,9 @@ GameStage::GameStage(const Map & map) :
       coll_data.m_CollisionMask = collision_mask;
 
       Intersection<GameNetVal>::CollisionLine line(GameNetVec2(start.x, start.y), GameNetVec2(end.x, end.y));
-      m_Collision.AddLine(line, coll_data, true, true);
+      m_IntersectionDatabase.AddLine(line, coll_data, true, true);
 
-      m_CollisionLines.emplace_back(CollisionLine{ start, end, team });
+      m_CollisionLines.emplace_back(GameCollisionLine{ start, end, team });
     };
 
     path.second.VisitLines(visitor);
@@ -33,7 +38,7 @@ GameStage::GameStage(const Map & map) :
     m_PlayerSpawns.emplace_back();
   }
 
-  for (auto anchor : map->m_Anchors)
+  for (auto anchor : map_data->m_Anchors)
   {
     auto player_spawn_info = anchor.second.m_AnchorData.GetAs<PlayerSpawn>();
 
@@ -43,7 +48,7 @@ GameStage::GameStage(const Map & map) :
     }
   }
 
-  for (auto volume : map->m_Volumes)
+  for (auto volume : map_data->m_Volumes)
   {
 
   }
@@ -59,12 +64,17 @@ GameFullState GameStage::CreateDefaultGameState() const
   return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjectCount, kMaxPlayers) };
 }
 
-const CollisionDatabase<GameNetVal> & GameStage::GetCollision() const
+const CollisionDatabase & GameStage::GetCollisionDatabase() const
 {
-  return m_Collision;
+  return m_CollisionDatabase;
 }
 
-const std::vector<CollisionLine> GameStage::GetCollisionLines() const
+const IntersectionDatabase<GameNetVal> & GameStage::GetIntersectionDatabase() const
+{
+  return m_IntersectionDatabase;
+}
+
+const std::vector<GameCollisionLine> GameStage::GetCollisionLines() const
 {
   return m_CollisionLines;
 }

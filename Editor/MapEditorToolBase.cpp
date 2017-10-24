@@ -35,6 +35,21 @@ void MapEditorToolBase::Delete()
 
 }
 
+void MapEditorToolBase::Copy()
+{
+
+}
+
+void MapEditorToolBase::Cut()
+{
+
+}
+
+void MapEditorToolBase::Paste(const Vector2 & pos)
+{
+
+}
+
 bool MapEditorToolBase::DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
   return true;

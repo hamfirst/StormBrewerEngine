@@ -35,13 +35,14 @@ GameHostWidget::GameHostWidget(EditorContainer * editor, int number_of_clients, 
 
     for (int index = 0; index < number_of_clients; ++index)
     {
-      m_Layout->addWidget(m_Clients[index].get(), index / 2, index % 2);
+      m_Layout->addWidget(m_Clients[index].get(), index % 2, index / 2);
     }
 
-    m_Layout->addWidget(m_Server.get(), 0, cols, 2, 1);
+    m_Layout->setColumnStretch(cols, 1);
+    m_Layout->addWidget(m_Server.get(), 0, cols, 1, 2);
   }
 
-  setMinimumSize(1066, 600);
+  setMinimumSize(1266, 800);
   setLayout(m_Layout.get());
 }
 

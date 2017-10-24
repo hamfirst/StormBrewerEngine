@@ -5,6 +5,8 @@
 
 #include "Server/ServerObject/ServerObjectHandle.h"
 #include "Server/ServerObject/ServerObjectRegistrationMacros.h"
+#include "Server/ServerObject/ServerObjectEventDispatch.h"
+#include "Server/ServerObject/ServerObjectEventSystem.h"
 
 #include "StormRefl/StormReflMetaInfoBase.h"
 
@@ -12,11 +14,12 @@ class ServerObjectManager;
 class ServerComponent;
 class ServerGameState;
 
+class GameLogicContainer;
+
 class ServerObject
 {
 public:
   DECLARE_BASE_SERVER_OBJECT;
-  STORM_REFL;
 
   ServerObjectHandle GetObjectHandle() const;
   void Destroy(ServerObjectManager & obj_manager);
@@ -26,6 +29,8 @@ public:
 
   bool IsDestroyed() const;
   int GetSlotIndex() const;
+
+  int GetLifetime() const;
 
   template <typename Type>
   NullOptPtr<Type> CastTo()
@@ -38,10 +43,23 @@ public:
     return nullptr;
   }
 
+  template <typename EventType>
+  void SendEvent(const EventType & ev, GameLogicContainer & game_container)
+  {
+    TriggerEventHandler(EventType::TypeNameHash, &ev, game_container);
+  }
+
+protected:
+
+  void SetEventDispatch(NotNullPtr<ServerObjectEventDispatch> event_dispatch);
+
 private:
 
   template <typename Type>
   friend class SkipField;
+
+  template <typename ObjectType, typename HandleType, typename ... HandlerArgs>
+  friend class EventSystem;
 
   friend class ServerObjectSystem;
   friend class ServerObjectManager;
@@ -52,14 +70,19 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
+  void TriggerEventHandler(uint32_t event_type, const void * ev, GameLogicContainer & game_container);
+
 private:
   bool m_IsStatic = false;
   int m_TypeIndex = 0;
   int m_SlotIndex = 0;
+  int m_FramesAlive = 0;
 
   SkipFieldIterator m_Iterator;
   Handle m_Handle;
   ServerObjectHandle m_ServerObjectHandle;
+
+  NullOptPtr<ServerObjectEventDispatch> m_EventDispatch = nullptr;
 };
 
 template <typename T>
@@ -95,4 +118,12 @@ struct StormReflTypeInfo<ServerObject>
   static constexpr auto GetName() { return "ServerObject"; }
   static constexpr auto GetNameHash() { return COMPILE_TIME_CRC32_STR("ServerObject"); }
   static ServerObject & GetDefault() { static ServerObject def; return def; }
+};
+
+template <>
+struct StormReflFuncInfo<ServerObject>
+{
+  using MyBase = StormRelfEmptyBase;
+  static constexpr int funcs_n = 0 + StormReflFuncInfo<MyBase>::funcs_n;
+  template <int N> struct func_data_static : public StormReflFuncInfo<MyBase>::func_data_static<N> {};
 };

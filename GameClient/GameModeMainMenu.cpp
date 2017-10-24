@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeNameSelect.h"
@@ -48,24 +48,24 @@ void GameModeMainMenu::OnAssetsLoaded()
   m_TitleImage = m_UIManager.AllocateFullTexture("logo", nullptr, logo_init, logo_data);
 
   m_PlayOnline.Emplace(m_UIManager, "playonline", nullptr, 
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 160), Vector2(150, 50)), "Play Online", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 85), Vector2(100, 25)), "Play Online", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayOnline->SetOnClickCallback([this] { PlayOnline(); });
 
   m_Tutorial.Emplace(m_UIManager, "tutorial", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 100), Vector2(150, 30)), "Tutorial", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 55), Vector2(100, 18)), "Tutorial", &container.GetClientGlobalResources().UISoundEffects);
   m_Tutorial->SetOnClickCallback([this] { Tutorial(); });
 
   m_PlayOffline.Emplace(m_UIManager, "playoffline", nullptr, 
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 65), Vector2(150, 30)), "Local Multiplayer", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 35), Vector2(100, 18)), "Local Multiplayer", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayOffline->SetOnClickCallback([this] { PlayOffline(); });
 
   m_PlaySingleplayer.Emplace(m_UIManager, "playsingleplayer", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 30), Vector2(150, 30)), "Single Player", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 15), Vector2(100, 18)), "Single Player", &container.GetClientGlobalResources().UISoundEffects);
   m_PlaySingleplayer->SetOnClickCallback([this] { PlaySingleplayer(); });
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   if (container.GetSave().GetSaveData().m_WatchedTutorial == false)
   {
@@ -108,6 +108,8 @@ void GameModeMainMenu::Update()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
+
+  container.GetWindow().Update();
 
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);

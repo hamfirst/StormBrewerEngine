@@ -17,115 +17,89 @@ FrameEditorMultiBox::FrameEditorMultiBox(
   NotNullPtr<SpriteBaseEditor> editor, 
   SpriteBaseDef & sprite, 
   SpriteBaseTextureLoadList & texture_access,
-  Delegate<NullOptPtr<RMergeList<FrameDataMultiBox>>> && getter,
-  uint64_t frame_id,
-  czstr data_name,
+  Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && getter,
+  Delegate<void, std::vector<Box> &&> && new_element,
+  uint64_t frame_id, 
+  bool use_default_data,
   QWidget * parent) :
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
   m_Watcher(editor),
   m_Getter(std::move(getter)),
-  m_FrameDataName(data_name),
+  m_NewElement(std::move(new_element)),
   m_LocalChange(false),
+  m_UseDefault(use_default_data),
   m_EditMode(FrameEditorMultiBoxMode::kNone)
 {
   setFocusPolicy(Qt::ClickFocus);
   setMouseTracking(true);
 
-  FindDataIndex();
+  RefreshWatcher();
+}
+
+void FrameEditorMultiBox::ChangeFrame(uint64_t frame_id, Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && getter, Delegate<void, std::vector<Box> &&> && new_element)
+{
+  m_Getter = std::move(getter);
+  m_NewElement = std::move(new_element);
+  SetFrame(frame_id);
 }
 
 void FrameEditorMultiBox::HandleDataUpdate()
 {
   auto data_list = m_Getter();
+  if (data_list == nullptr)
+  {
+    return;
+  }
 
   if (m_LocalChange)
   {
     return;
   }
 
-  if (data_list == nullptr)
-  {
-    m_FrameDataIndex = -1;
-    return;
-  }
+  RefreshWatcher();
 
   if (m_Dragging)
   {
     StopDrawing();
   }
 
-  if (m_FrameDataIndex != -1)
-  {
-    if(data_list->HasAt(m_FrameDataIndex) == false || (*data_list)[m_FrameDataIndex].m_FrameDataName.ToString() != m_FrameDataName)
-    {
-      FindDataIndex();
-    }
-  }
-  else
-  {
-    FindDataIndex();
-  }
-
   repaint();
 }
 
-void FrameEditorMultiBox::FindDataIndex()
+void FrameEditorMultiBox::RefreshWatcher()
 {
-  m_FrameDataIndex = -1;
+  m_Watcher.Clear();
 
   auto data_list = m_Getter();
   if (data_list)
   {
-    for (auto elem : (*data_list))
-    {
-      if (elem.second.m_FrameDataName == m_FrameDataName)
-      {
-        m_FrameDataIndex = (int)elem.first;
-      }
-    }
-  }
-
-  m_Watcher.Clear();
-  if (m_FrameDataIndex != -1)
-  {
     m_Watcher.Emplace(m_Editor);
-    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, 
-      [this, frame_index = m_FrameDataIndex] { auto data_list = m_Getter(); return data_list ? data_list->TryGet(frame_index) != nullptr : false; });
+    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, [this] { return m_Getter(); });
     m_Watcher->SetChangeCallback([this](const ReflectionChangeNotification &) { HandleDataUpdate(); });
     m_Watcher->SetParentChangeCallback([this] { HandleDataUpdate(); });
     m_Watcher->SetChildChangeCallback([this] { HandleDataUpdate(); });
   }
-
-  repaint();
 }
 
 void FrameEditorMultiBox::WriteData(const std::vector<Box> & boxes)
 {
-  auto data_list = m_Getter();
-  if (data_list == nullptr)
-  {
-    return;
-  }
-
-
   FrameEditorByteArray byte_array(boxes);
   auto new_box_list = byte_array.ConvertToMaximalBoxes();
 
   m_LocalChange = true;
-  if (m_FrameDataIndex != -1)
+
+  auto data_list = m_Getter();
+  if (data_list == nullptr)
   {
-    (*data_list)[m_FrameDataIndex].m_Data = new_box_list;
+    m_NewElement(std::move(new_box_list));
+    RefreshWatcher();
   }
   else
   {
-    FrameDataMultiBox new_box;
-    new_box.m_FrameDataName = m_FrameDataName;
-    new_box.m_Data = new_box_list;
-    data_list->EmplaceBack(new_box);
-
-    FindDataIndex();
+    *data_list = std::move(new_box_list);
   }
 
+  repaint();
   m_LocalChange = false;
 }
 
@@ -134,11 +108,11 @@ std::vector<Box> FrameEditorMultiBox::GetPreviewData(Optional<FrameEditorEdge> &
   std::vector<Box> boxes;
 
   auto data_list = m_Getter();
-  if (m_FrameDataIndex != -1 && data_list)
+  if (data_list)
   {
-    boxes = (*data_list)[m_FrameDataIndex].m_Data.Value();
+    boxes = data_list->Value();
   }
-  else
+  else if(m_UseDefault)
   {
     boxes.push_back(SpriteResource::GetDefaultSingleBox());
   }

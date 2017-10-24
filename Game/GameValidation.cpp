@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameValidation.h"
 
 static const int kMinCharacters = 3;

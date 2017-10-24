@@ -22,6 +22,8 @@ NotNullPtr<ServerObject> ServerObjectSystem::DuplicateObject(NotNullPtr<const Se
   auto type_index = rhs->m_TypeIndex;
   auto object = m_ObjectTypes[type_index].m_ObjectDuplicate(rhs);
   object->m_TypeIndex = type_index;
+  object->m_EventDispatch = rhs->m_EventDispatch;
+  object->m_FramesAlive = rhs->m_FramesAlive;
   return object;
 }
 
@@ -31,6 +33,8 @@ void ServerObjectSystem::CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<
 
   auto type_index = rhs->m_TypeIndex;
   m_ObjectTypes[type_index].m_ObjectCopy(object, rhs);
+  object->m_EventDispatch = rhs->m_EventDispatch;
+  object->m_FramesAlive = rhs->m_FramesAlive;
 }
 
 void ServerObjectSystem::FreeObject(NotNullPtr<ServerObject> object)

@@ -2,6 +2,7 @@
 #include "SpriteBaseAnimationEditor.h"
 #include "SpriteBaseAnimationListElement.h"
 #include "SpriteBaseAnimationFrameListEditorDialog.h"
+#include "SpriteBaseAnimationEventEditorDialog.h"
 #include "SpriteBaseEditor.h"
 
 #include "Runtime/Sprite/SpriteDef.refl.meta.h"
@@ -23,6 +24,7 @@ SpriteBaseAnimationEditor::SpriteBaseAnimationEditor(NotNullPtr<SpriteBaseEditor
       auto ptr = std::make_unique<SpriteBaseAnimationListElement>(parent->m_Editor, parent->m_Sprite, parent->m_TextureAccess, index);
       ptr->SetSizeChangeCallback([=] { list->ChildSizeChanged((int)index); });
       ptr->SetOpenEditorCallback([=] { parent->OpenAnimEditorDialog(index); });
+      ptr->SetOpenEventCallback([=] { parent->OpenAnimEventDialog(index); });
       ptr->SetRemoveCallback([=] { parent->m_Sprite.m_Animations.RemoveAt(index); });
       return std::move(ptr);
     }, this,
@@ -52,6 +54,16 @@ void SpriteBaseAnimationEditor::OpenAnimEditorDialog(int animation_index)
   m_EditorDialogs.emplace_back(std::move(dialog));
 }
 
+void SpriteBaseAnimationEditor::OpenAnimEventDialog(int animation_index)
+{
+  auto dialog = std::make_unique<SpriteBaseAnimationEventEditorDialog>(m_Editor, m_Sprite, m_TextureAccess, animation_index);
+  dialog->show();
+
+  connect(dialog.get(), &SpriteBaseAnimationEventEditorDialog::closed, this, &SpriteBaseAnimationEditor::handleEventDialogClosed);
+
+  m_EventDialogs.emplace_back(std::move(dialog));
+}
+
 void SpriteBaseAnimationEditor::handleAnimDialogAccepted()
 {
   auto dialog = static_cast<SpriteBaseAnimationFrameListEditorDialog *>(QObject::sender());
@@ -67,6 +79,19 @@ void SpriteBaseAnimationEditor::handleAnimDialogClosed()
     if (m_EditorDialogs[index].get() == dialog)
     {
       vremove_index_quick(m_EditorDialogs, index);
+      return;
+    }
+  }
+}
+
+void SpriteBaseAnimationEditor::handleEventDialogClosed()
+{
+  auto dialog = static_cast<SpriteBaseAnimationEventEditorDialog *>(QObject::sender());
+  for (std::size_t index = 0, end = m_EventDialogs.size(); index < end; ++index)
+  {
+    if (m_EventDialogs[index].get() == dialog)
+    {
+      vremove_index_quick(m_EventDialogs, index);
       return;
     }
   }

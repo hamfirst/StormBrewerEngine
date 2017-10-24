@@ -100,8 +100,8 @@
     <Filter Include="HistoryList">
       <UniqueIdentifier>{fa6f8ff2-e810-47d1-b9e3-c704480cc1ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FutureList">
-      <UniqueIdentifier>{846ae72b-6f47-4265-8e50-0ab9d513250a}</UniqueIdentifier>
+    <Filter Include="Frame">
+      <UniqueIdentifier>{89deb1c2-7bdb-47ca-9efe-e5d82e69269b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +309,9 @@
     </ClInclude>
     <ClInclude Include="Time\FPSClock.h">
       <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Frame\Frame.h">
+      <Filter>Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

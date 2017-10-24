@@ -65,9 +65,11 @@ public:
     return static_cast<NullOptPtr<T>>(GetReservedSlotObjectInternal(slot_index, T::TypeIndex));
   }
 
+  void IncrementTimeAlive();
   void CreateUpdateList(ServerObjectUpdateList & update_list);
 
-  int GetHandleBits();
+  int GetHandleBits() const;
+  int GetMaxDynamicObjects() const;
 
   void Serialize(NetBitWriter & writer) const;
   void Deserialize(NetBitReader & reader);

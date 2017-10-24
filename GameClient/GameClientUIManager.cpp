@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameClientUIManager.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameClientEventSender.h"
@@ -6,7 +6,7 @@
 #include "GameClient/GameClientSystems.h"
 
 #include "Game/GameNetworkEvents.refl.h"
-#include "Game/ServerObjects/PlayerServerObject.refl.h"
+#include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Input/ControlId.h"
@@ -84,7 +84,7 @@ GameClientUIManager::~GameClientUIManager()
 
 void GameClientUIManager::Update()
 {
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGameState();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
 
   auto resolution = camera.GetGameResolution();
@@ -224,9 +224,9 @@ void GameClientUIManager::TogglePopup()
 
     auto & render_state = m_GameContainer.GetRenderState();
 
-    m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
-    m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
-    m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), 
+    m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), 
       m_GameContainer.GetWindow(), &m_GameContainer.GetClientGlobalResources().UISoundEffects);
   }
 }

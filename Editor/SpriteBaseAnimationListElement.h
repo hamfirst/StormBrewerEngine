@@ -26,6 +26,7 @@ public:
 
   void SetSizeChangeCallback(Delegate<void> && callback);
   void SetOpenEditorCallback(Delegate<void> && callback);
+  void SetOpenEventCallback(Delegate<void> && callback);
   void SetRemoveCallback(Delegate<void> && callback);
 protected:
 
@@ -38,6 +39,7 @@ protected:
 public slots:
 
   void editFrames();
+  void editEvents();
   void remove();
   void updateTimer();
 
@@ -49,6 +51,7 @@ private:
 
   Delegate<void> m_SizeChangedCallback;
   Delegate<void> m_EditCallback;
+  Delegate<void> m_EventCallback;
   Delegate<void> m_RemoveCallback;
 
   std::unique_ptr<GenericListFrame> m_FrameListContainer;
@@ -58,6 +61,7 @@ private:
   std::unique_ptr<QWidget> m_AnimName;
 
   std::unique_ptr<QPushButton> m_EditFrames;
+  std::unique_ptr<QPushButton> m_EditEvents;
   std::unique_ptr<QPushButton> m_Delete;
 
   DelegateLink<void> m_UpdateDelegateLink;

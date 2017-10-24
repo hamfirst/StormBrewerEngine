@@ -1,10 +1,10 @@
 
 #include "Runtime/RuntimeCommon.h"
-#include "Runtime/Collision/CollisionSystem.h"
+#include "Runtime/Collision/CollisionDatabase.h"
 
 #include <sb/vector.h>
 
-CollisionSystem::CollisionSystem(std::size_t num_collision_layers) :
+CollisionDatabase::CollisionDatabase(std::size_t num_collision_layers) :
   m_CollisionLayers(num_collision_layers)
 {
   for (auto & elem : m_CollisionLayers)
@@ -13,7 +13,7 @@ CollisionSystem::CollisionSystem(std::size_t num_collision_layers) :
   }
 }
 
-uint32_t CollisionSystem::CheckCollision(const Box & box, uint32_t collision_layer_mask)
+uint32_t CollisionDatabase::CheckCollision(const Box & box, uint32_t collision_layer_mask) const
 {
   uint32_t result = 0;
   for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
@@ -32,7 +32,7 @@ uint32_t CollisionSystem::CheckCollision(const Box & box, uint32_t collision_lay
   return result;
 }
 
-uint32_t CollisionSystem::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask)
+uint32_t CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const
 {
   uint32_t result = 0;
   for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
@@ -51,7 +51,7 @@ uint32_t CollisionSystem::CheckCollisionAny(const Box & box, uint32_t collision_
   return 0;
 }
 
-void CollisionSystem::PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> & collision_boxes)
+void CollisionDatabase::PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> && collision_boxes)
 {
   for(std::size_t index = 0, end = std::min(collision_boxes.size(), m_CollisionLayers.size()); index < end; ++index)
   {
@@ -73,7 +73,7 @@ void CollisionSystem::PushMapCollision(std::size_t map_id, std::vector<std::vect
   }
 }
 
-void CollisionSystem::RemoveMapCollision(std::size_t map_id)
+void CollisionDatabase::RemoveMapCollision(std::size_t map_id)
 {
   for (auto & elem : m_CollisionLayers)
   {

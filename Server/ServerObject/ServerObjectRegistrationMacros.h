@@ -3,30 +3,38 @@
 #include "Foundation/Update/UpdateRegistrationTemplates.h"
 
 #define DECLARE_SERVER_OBJECT                                                                                                   \
+  STORM_REFL;                                                                                                                   \
+  STORM_REFL_FUNCS;                                                                                                             \
   static czstr TypeName;                                                                                                        \
   static uint32_t TypeNameHash;                                                                                                 \
   static std::size_t TypeIndex;                                                                                                 \
   static const uint32_t * BaseTypes;                                                                                            \
   static uint32_t NumBaseTypes;                                                                                                 \
+  static ServerObjectEventDispatch EventDispatch;                                                                               \
                                                                                                                                 \
   virtual uint32_t GetTypeNameHash() const override;                                                                            \
   static void RegisterServerObject();                                                                                           \
                                                                                                                                 \
   static bool CanCastToType(uint32_t type_name_hash);                                                                           \
   virtual bool CastToInternal(uint32_t type_name_hash) const override;                                                          \
+  virtual NotNullPtr<ServerObjectEventDispatch> GetEventDispatch() override;                                                    \
 
 #define DECLARE_BASE_SERVER_OBJECT                                                                                              \
+  STORM_REFL;                                                                                                                   \
+  STORM_REFL_FUNCS;                                                                                                             \
   static czstr TypeName;                                                                                                        \
   static uint32_t TypeNameHash;                                                                                                 \
   static std::size_t TypeIndex;                                                                                                 \
   static const uint32_t * BaseTypes;                                                                                            \
   static uint32_t NumBaseTypes;                                                                                                 \
+  static ServerObjectEventDispatch EventDispatch;                                                                               \
                                                                                                                                 \
   virtual uint32_t GetTypeNameHash() const;                                                                                     \
   static void RegisterServerObject();                                                                                           \
                                                                                                                                 \
   static bool CanCastToType(uint32_t type_name_hash);                                                                           \
   virtual bool CastToInternal(uint32_t type_name_hash) const;                                                                   \
+  virtual NotNullPtr<ServerObjectEventDispatch> GetEventDispatch();                                                             \
 
 
 #define REGISTER_SERVER_OBJECT_CODE(ServerObjectName, InitData, InitFunc, BaseClassHash)                                        \
@@ -35,6 +43,7 @@ uint32_t ServerObjectName::TypeNameHash = COMPILE_TIME_CRC32_STR(#ServerObjectNa
 std::size_t ServerObjectName::TypeIndex = 0;                                                                                    \
 const uint32_t * ServerObjectName::BaseTypes = nullptr;                                                                         \
 uint32_t ServerObjectName::NumBaseTypes = 0;                                                                                    \
+ServerObjectEventDispatch ServerObjectName::EventDispatch;                                                                      \
 SkipField<ServerObjectName> s_##ServerObjectName##Allocator;                                                                    \
                                                                                                                                 \
 uint32_t ServerObjectName::GetTypeNameHash() const                                                                              \
@@ -102,6 +111,7 @@ void ServerObjectName::RegisterServerObject()                                   
   };                                                                                                                            \
                                                                                                                                 \
   g_ServerObjectSystem.RegisterType(type_info);                                                                                 \
+  RegisterServerObjectEvents<ServerObjectName>();                                                                               \
 }                                                                                                                               \
                                                                                                                                 \
 ADD_PREMAIN_CALL(g_ServerObjectRegisterCallList, ServerObjectName, []() { ServerObjectName::RegisterServerObject(); });         \
@@ -123,6 +133,11 @@ bool ServerObjectName::CastToInternal(uint32_t type_index) const                
 {                                                                                                                               \
   return ServerObjectName::CanCastToType(type_index);                                                                           \
 }                                                                                                                               \
+                                                                                                                                \
+NotNullPtr<ServerObjectEventDispatch> ServerObjectName::GetEventDispatch()                                                      \
+{                                                                                                                               \
+  return &EventDispatch;                                                                                                        \
+}                                                                                                                               \
 
 
 #define SERVER_OBJECT_CONSTRUCT_NOBASE          0
@@ -139,3 +154,5 @@ bool ServerObjectName::CastToInternal(uint32_t type_index) const                
 
 #define REGISTER_SERVER_OBJECT_WITH_INIT_DATA(ServerObjectName, InitData, BaseClass) \
   REGISTER_SERVER_OBJECT_CODE(ServerObjectName, InitData, SERVER_OBJECT_INIT_DATA(InitData), SERVER_OBJECT_CONSTRUCT_BASE(BaseClass))
+
+#define SERVER_OBJECT_EVENT_HANDLER STORM_REFL_FUNC

@@ -7,6 +7,7 @@
 #include "Server/ServerObject/ServerObjectManager.h"
 
 class GameContainer;
+class GameClientInstanceContainer;
 
 class GameClientEntitySync
 {
@@ -15,7 +16,7 @@ public:
   ~GameClientEntitySync();
 
   void ActivateEntities();
-  void Sync(ServerObjectManager & obj_manager);
+  void Sync(GameClientInstanceContainer & instance_container);
   void DestroyAll();
 
   void SendEntityEvent(int entity_index, uint32_t type_name_hash, void * ev);

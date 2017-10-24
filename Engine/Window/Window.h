@@ -18,6 +18,8 @@ public:
   Window & operator = (const Window & rhs);
   Window & operator = (Window && rhs);
 
+  void Update() const;
+
   void MakeCurrent() const;
   void Swap() const;
   void Close() const;

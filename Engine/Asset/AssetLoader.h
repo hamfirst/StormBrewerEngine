@@ -13,7 +13,7 @@
 #include "Engine/Asset/Asset.h"
 #include "Engine/Asset/AssetReloadCallback.h"
 
-//#define USE_WEBSOCKET_LOADING
+#define USE_WEBSOCKET_LOADING
 
 class ENGINE_EXPORT AssetLoader : public DocumentLoader
 {

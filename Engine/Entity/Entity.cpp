@@ -19,6 +19,7 @@ template class EventSystem<Entity, EntityHandle>;
 template class EventDispatch<Entity, ComponentHandle>;
 
 NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game);
+NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game, int history_index);
 
 Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, const ServerObjectHandle & server_object, NotNullPtr<GameContainer> game) :
   m_EngineState(engine_state),
@@ -37,6 +38,11 @@ Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSyste
 Entity::~Entity()
 {
 
+}
+
+void Entity::TriggerEventHandler(uint32_t event_type, const void * ev)
+{
+  m_EventDispatch.TriggerEvent(event_type, ev);
 }
 
 NotNullPtr<EngineState> Entity::GetEngineState()
@@ -154,10 +160,24 @@ void Entity::SetParent(NullOptPtr<Entity> entity)
   }
 }
 
-NullOptPtr<ServerObject> Entity::GetServerObject()
+NullOptPtr<ServerObject> Entity::GetServerObject(int history_index)
 {
   auto server_object_manager = ::GetServerObjectManager(m_GameContainer);
-  return server_object_manager ? m_ServerObject.Resolve(*server_object_manager) : nullptr;
+  auto obj = server_object_manager ? m_ServerObject.Resolve(*server_object_manager) : nullptr;
+
+  if (history_index == 0)
+  {
+    return obj;
+  }
+
+  if (server_object_manager == nullptr)
+  {
+    return nullptr;
+  }
+
+  history_index = std::min(history_index, obj->GetLifetime());
+  server_object_manager = GetServerObjectManager(history_index);
+  return m_ServerObject.Resolve(*server_object_manager);
 }
 
 void Entity::SetRotation(bool flip_x, bool flip_y, float rotation)
@@ -353,12 +373,12 @@ void Entity::RemoveEventHandler(uint32_t handler_key)
   m_EventDispatch.RemoveEvent(handler_key);
 }
 
-void Entity::TriggerEventHandler(uint32_t event_type, void * ev, NullOptPtr<Entity> src)
-{
-  m_EventDispatch.TriggerEvent(event_type, ev, src);
-}
-
 NullOptPtr<ServerObjectManager> Entity::GetServerObjectManager()
 {
   return ::GetServerObjectManager(m_GameContainer);
+}
+
+NullOptPtr<ServerObjectManager> Entity::GetServerObjectManager(int history_index)
+{
+  return ::GetServerObjectManager(m_GameContainer, history_index);
 }

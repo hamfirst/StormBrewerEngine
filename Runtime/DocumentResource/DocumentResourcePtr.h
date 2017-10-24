@@ -9,6 +9,8 @@ template <typename DataType, typename ResourceType>
 class DocumentResourcePtr
 {
 public:
+  using AssetType = ResourceType;
+
   DocumentResourcePtr() :
     m_Data(nullptr)
   {
@@ -75,29 +77,39 @@ public:
     return m_Data;
   }
 
-  NotNullPtr<DataType> operator *()
+  NotNullPtr<ResourceType> operator *()
   {
-    return m_Data;
+    return m_Resource.Resolve();
   }
 
-  NotNullPtr<const DataType> operator *() const
+  NotNullPtr<const ResourceType> operator *() const
   {
-    return m_Data;
+    return m_Resource.Resolve();
   }
 
-  NotNullPtr<DataType> operator ->()
+  NotNullPtr<ResourceType> operator ->()
   {
-    return m_Data;
+    return m_Resource.Resolve();
   }
 
-  NotNullPtr<const DataType> operator ->() const
+  NotNullPtr<const ResourceType> operator ->() const
   {
-    return m_Data;
+    return m_Resource.Resolve();
   }
 
   bool IsLoaded() const
   {
     return m_Resource && m_Resource->IsLoaded();
+  }
+
+  bool IsError() const
+  {
+    return m_Resource && m_Resource->IsError();
+  }
+
+  bool LoadingFinished() const
+  {
+    return m_Resource && (m_Resource->IsError() || m_Resource->IsLoaded());
   }
 
   void Clear()

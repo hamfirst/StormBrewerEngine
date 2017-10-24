@@ -96,7 +96,6 @@ bool EngineRenderInit()
 void EngineUpdate()
 {
   g_AssetLoader.ProcessResponses();
-  g_WindowManager.UpdateInput();
 
   g_MusicManager.Update();
 

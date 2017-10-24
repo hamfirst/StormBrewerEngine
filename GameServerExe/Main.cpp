@@ -12,6 +12,7 @@
 #include "Runtime/Runtime.h"
 #include "Runtime/Entity/EntityResource.h"
 #include "Runtime/Map/MapResource.h"
+#include "Runtime/Asset/Asset.h"
 
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
@@ -53,7 +54,7 @@ int main(int argc, char ** argv)
 #endif
 
 #ifdef _DEBUG
-  g_LagSim = 100;
+  g_LagSim = 0;
 #endif
 
   printf("Game Server\n");
@@ -90,6 +91,8 @@ int main(int argc, char ** argv)
     return 0;
   }
 
+  g_GlobalAssetList.BeginAssetLoad();
+
   printf("  Assets loaded...\n");
   GameStageManager stage_manager(level_list);
 
@@ -114,6 +117,8 @@ int main(int argc, char ** argv)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
+
+  g_GlobalAssetList.UnloadAllAssets();
 
   NetworkShutdown();
 

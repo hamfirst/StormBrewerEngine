@@ -54,6 +54,16 @@ public:
   {
     return -c;
   }
+
+  static auto NextHighest(const VecCompType & c)
+  {
+    return nextafterf(c, c + 1.0f);
+  }
+
+  static auto NextLowest(const VecCompType & c)
+  {
+    return nextafterf(c, c - 1.0f);
+  }
 };
 
 template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
@@ -99,6 +109,16 @@ public:
   static auto Inverse(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
   {
     return c.Invert();
+  }
+
+  static auto NextHighest(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return c - NetFixedPoint<StorageType, NumBits, FractionalBits>::Epsilon();
+  }
+
+  static auto NextLowest(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
+  {
+    return c - NetFixedPoint<StorageType, NumBits, FractionalBits>::Epsilon();
   }
 };
 
@@ -185,7 +205,7 @@ struct IntersectionVecType
 
   operator Vector2() const
   {
-    return Vector2((int)x, (int)y);
+    return Vector2((int)IntersectionFuncs<VecCompType>::Floor(x), (int)IntersectionFuncs<VecCompType>::Floor(y));
   }
 
   VecType operator + (const VecType & rhs) const

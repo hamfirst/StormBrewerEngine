@@ -14,7 +14,7 @@ struct EventHandler
   uint32_t m_HandlerKey;
 
   EventDelegateBuffer m_Handler;
-  void(*m_Caller)(EventDelegateBuffer &, const void *, NullOptPtr<Source>);
+  void(*m_Caller)(EventDelegateBuffer &, const void *);
   bool m_Dead;
 };
 
@@ -24,17 +24,17 @@ class EventDispatch
 public:
 
   template <typename EventType>
-  uint32_t AddEventHandler(Delegate<void, const EventType &, NullOptPtr<Source>> && handler, const UserData & user_data)
+  uint32_t AddEventHandler(Delegate<void, const EventType &> && handler, const UserData & user_data)
   {
     m_EventHandlers.emplace_back(EventHandler<Source, UserData> {
       user_data,
       EventType::TypeNameHash,
       GetRandomNumber(),
       EventDelegateBuffer(std::move(handler)),
-      [](EventDelegateBuffer & handler, const void * event, NullOptPtr<Source> source)
+      [](EventDelegateBuffer & handler, const void * event)
       { 
-        auto del = handler.Get<Delegate<void, const EventType &, NullOptPtr<Source>>>();
-        del->Call(*static_cast<const EventType *>(event), source);
+        auto del = handler.Get<Delegate<void, const EventType &>>();
+        del->Call(*static_cast<const EventType *>(event));
       },
       false
     });
@@ -65,13 +65,13 @@ public:
     }
   }
 
-  void TriggerEvent(uint32_t type_name_hash, const void * event, NullOptPtr<Source> source)
+  void TriggerEvent(uint32_t type_name_hash, const void * event)
   {
     for (auto & handler : m_EventHandlers)
     {
       if (handler.m_EventType == type_name_hash && handler.m_Dead == false)
       {
-        handler.m_Caller(handler.m_Handler, event, source);
+        handler.m_Caller(handler.m_Handler, event);
       }
     }
   }

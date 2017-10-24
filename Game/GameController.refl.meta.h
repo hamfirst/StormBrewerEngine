@@ -24,7 +24,7 @@ struct StormReflTypeInfo<GameController>
 template <>
 struct StormReflFuncInfo<GameController>
 {
-  static constexpr int funcs_n = 1;
+  static constexpr int funcs_n = 3;
   template <int N> struct func_data_static {};
 };
 
@@ -65,6 +65,86 @@ struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<1>
 
 template <>
 struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<2>
+{
+  using param_type = GameLogicContainer &;
+  static constexpr auto GetName() { return "game"; }
+  static constexpr auto GetType() { return "GameLogicContainer &"; }
+  static constexpr unsigned GetNameHash() { return 0x232B318C; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBFBDFC4E; }
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<1>
+{
+  using return_type = void;
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "HandleJumpEvent"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x03307427; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 1; }
+  static constexpr auto GetFunctionPtr() { return &GameController::HandleJumpEvent; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<0>
+{
+  using param_type = const JumpEvent &;
+  static constexpr auto GetName() { return "ev"; }
+  static constexpr auto GetType() { return "const JumpEvent &"; }
+  static constexpr unsigned GetNameHash() { return 0xE0355914; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75ED4460; }
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<1>
+{
+  using param_type = size_t;
+  static constexpr auto GetName() { return "player_index"; }
+  static constexpr auto GetType() { return "size_t"; }
+  static constexpr unsigned GetNameHash() { return 0x3F011C47; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8883767D; }
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<2>
+{
+  using param_type = GameLogicContainer &;
+  static constexpr auto GetName() { return "game"; }
+  static constexpr auto GetType() { return "GameLogicContainer &"; }
+  static constexpr unsigned GetNameHash() { return 0x232B318C; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBFBDFC4E; }
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<2>
+{
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandlePlaceholderAuthEvent"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x872AEDE1; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 2; }
+  static constexpr auto GetFunctionPtr() { return &GameController::HandlePlaceholderAuthEvent; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<2>::param_info<0>
+{
+  using param_type = const PlaceholderServerAuthEvent &;
+  static constexpr auto GetName() { return "ev"; }
+  static constexpr auto GetType() { return "const PlaceholderServerAuthEvent &"; }
+  static constexpr unsigned GetNameHash() { return 0xE0355914; }
+  static constexpr unsigned GetTypeNameHash() { return 0x87E001A3; }
+};
+
+template <>
+struct StormReflFuncInfo<GameController>::func_data_static<2>::param_info<1>
 {
   using param_type = GameLogicContainer &;
   static constexpr auto GetName() { return "game"; }

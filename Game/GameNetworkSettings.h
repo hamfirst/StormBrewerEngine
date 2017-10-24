@@ -22,15 +22,17 @@
 #ifdef _WEB
 #define NET_USE_WEBRTC
 #else
-#define NET_USE_WEBRTC
+//#define NET_USE_WEBRTC
 #endif
 
 //#define NET_USE_COUNTDOWN
 //#define NET_USE_ROUND_TIMER
 #define NET_USE_RANDOM
-//#define NET_ALLOW_LATE_JOIN
-#define NET_ALLOW_OBSERVERS
-#define NET_FILL_WITH_BOTS
+#define NET_ALLOW_LATE_JOIN
+#define NET_LATE_JOIN_REMOVE_BOT
+#define NET_LATE_JOIN_ADD_BOT
+//#define NET_ALLOW_OBSERVERS
+//#define NET_FILL_WITH_BOTS
 //#define NET_USE_READY
 
 

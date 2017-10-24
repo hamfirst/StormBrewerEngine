@@ -453,6 +453,13 @@ void FrameEditorByteArray::OffsetEdge(FrameEditorEdge & edge, int offset, Option
       auto test_point = test;
       for (int v = len; v > 0; v--, test_point += check_direction)
       {
+        if(test_point.x < 0 || test_point.x >= m_Size.x ||
+           test_point.y < 0 || test_point.y >= m_Size.y)
+        {
+          all_good = false;
+          break;
+        }
+
         int this_index = test_point.y * m_Size.x + test_point.x;
         if (m_Data[this_index] != 1)
         {

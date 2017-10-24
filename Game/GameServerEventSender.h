@@ -51,6 +51,16 @@ public:
   }
 
   template <typename T>
+  void BroadcastServerAuthEvent(const T & event)
+  {
+    static_assert(std::is_base_of<ServerAuthNetworkEvent, T>::value, "Sending auth event of the wrong class");
+
+    auto & type_db = ServerAuthNetworkEvent::__s_TypeDatabase;
+    auto class_id = type_db.template GetClassId<T>();
+    SendAuthEvent(class_id, &event);
+  }
+
+  template <typename T>
   bool ReconcileEvent(uint64_t event_id = 0)
   {
     return ReconcileEvent(typeid(T).hash_code(), event_id, {});
@@ -72,10 +82,13 @@ public:
     return ReconcileEvent(typeid(T).hash_code(), event_id, pos);
   }
 
+  virtual void BlockRewind(std::size_t connection) {};
+
 protected:
   virtual void SendGlobalEvent(std::size_t class_id, const void * event_ptr) {}
   virtual void SendGlobalEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id) {}
   virtual void SendEntityEvent(std::size_t class_id, const void * event_ptr, ServerObjectHandle object_handle) {}
   virtual void SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) {}
+  virtual void SendAuthEvent(std::size_t class_id, const void * event_ptr) {}
   virtual bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) { return true; }
 };

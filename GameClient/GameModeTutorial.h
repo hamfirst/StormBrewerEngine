@@ -27,14 +27,13 @@ public:
 
 protected:
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr) override;
+  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
   void Pause();
   void Resume();
 
 private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
-  std::unique_ptr<GameClientInstanceData> m_InstanceData;
   std::unique_ptr<GameClientSystems> m_ClientSystems;
 
   UIElementPtr<UIElementShape> m_Fader;

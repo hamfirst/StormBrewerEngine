@@ -67,7 +67,7 @@ public:
   NullOptPtr<const Component> CastTo(uint32_t type_name_hash) const;
 
   template <typename EventType>
-  uint32_t AddEventHandler(Delegate<void, const EventType &, NullOptPtr<Entity>> && handler)
+  uint32_t AddEventHandler(Delegate<void, const EventType &> && handler)
   {
     return GetEntity()->m_EventDispatch.AddEventHandler<EventType>(std::move(handler), GetHandle());
   }

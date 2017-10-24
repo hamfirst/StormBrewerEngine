@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeLoadingGlobal.h"
 #include "GameClient/GameModeLogo.h"
 #include "GameClient/GameModeConnecting.h"
@@ -8,6 +8,8 @@
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
+
+#include "Runtime/Asset/Asset.h"
 
 GameModeLoadingGlobal::GameModeLoadingGlobal(GameContainer & game) :
   GameMode(game)
@@ -32,9 +34,12 @@ void GameModeLoadingGlobal::OnAssetsLoaded()
 void GameModeLoadingGlobal::Update()
 {
   auto & container = GetContainer();
+  container.GetWindow().Update();
+
   if(container.GetClientGlobalResources().IsLoaded() &&
      container.GetSharedGlobalResources().IsLoaded() &&
-     container.GetSave().IsLoaded())
+     container.GetSave().IsLoaded() &&
+     g_GlobalAssetList.AllAssetsLoaded())
   {
     auto init_settings = container.GetInitSettings();
     if (init_settings)

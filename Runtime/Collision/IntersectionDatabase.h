@@ -10,7 +10,7 @@ struct CollisionDatabaseData
 };
 
 template <typename VecCompType, typename CollisionData = CollisionDatabaseData<VecCompType>>
-class CollisionDatabase
+class IntersectionDatabase
 {
 public:
 

@@ -1,6 +1,6 @@
+#include "Game/GameCommon.h"
 
-
-#include <StormNet/NetReflectionTypeDatabaseRegister.h>
+#include "StormNet/NetReflectionTypeDatabaseRegister.h"
 
 #include "GameMessages.refl.meta.h"
 

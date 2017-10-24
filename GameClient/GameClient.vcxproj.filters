@@ -42,9 +42,6 @@
     <ClCompile Include="GameClientInstanceContainer.cpp">
       <Filter>Shared</Filter>
     </ClCompile>
-    <ClCompile Include="GameClientInstanceData.cpp">
-      <Filter>Shared</Filter>
-    </ClCompile>
     <ClCompile Include="GameClientLevelLoader.cpp">
       <Filter>Shared</Filter>
     </ClCompile>
@@ -60,6 +57,7 @@
     <ClCompile Include="GameClientSystems.cpp">
       <Filter>Shared</Filter>
     </ClCompile>
+    <ClCompile Include="GameClientCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNetworkClient.h" />
@@ -109,9 +107,6 @@
     <ClInclude Include="GameClientInstanceContainer.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="GameClientInstanceData.h">
-      <Filter>Shared</Filter>
-    </ClInclude>
     <ClInclude Include="GameClientLevelLoader.h">
       <Filter>Shared</Filter>
     </ClInclude>
@@ -127,6 +122,7 @@
     <ClInclude Include="GameClientSystems.h">
       <Filter>Shared</Filter>
     </ClInclude>
+    <ClInclude Include="GameClientCommon.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

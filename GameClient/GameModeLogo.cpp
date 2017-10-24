@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeLogo.h"
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
@@ -35,6 +35,7 @@ void GameModeLogo::OnAssetsLoaded()
 void GameModeLogo::Update()
 {
   auto & container = GetContainer();
+  container.GetWindow().Update();
 
   bool timer_allowed = m_Timer.GetTimeSinceStart() > 1.0;
   bool global_loaded = container.AllGlobalResourcesLoaded();

@@ -20,3 +20,19 @@ Optional<Allocator2DResult> Allocator2D::Allocate(int width, int height)
   return Allocator2DResult{ result.x, result.y, result.width == height };
 }
 
+Allocator2DShelf::Allocator2DShelf(int width) :
+  m_BinPacker(width, INT_MAX, false)
+{
+
+}
+
+Optional<Allocator2DResult> Allocator2DShelf::Allocate(int width, int height)
+{
+  auto result = m_BinPacker.Insert(width, height, rbp::ShelfBinPack::ShelfChoiceHeuristic::ShelfNextFit);
+  if (result.height == 0)
+  {
+    return{};
+  }
+
+  return Allocator2DResult{ result.x, result.y, result.width == height };
+}

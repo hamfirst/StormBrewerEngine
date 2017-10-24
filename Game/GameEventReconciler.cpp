@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Foundation/Math/Util.h"
 
 #include "Game/GameEventReconciler.h"

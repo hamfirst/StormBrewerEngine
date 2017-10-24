@@ -1,5 +1,5 @@
 
-
+#include "Game/GameCommon.h"
 #include "StormData/StormData.h"
 #include "StormData/StormDataTypeDatabase.h"
 #include "StormData/StormDataParent.h"

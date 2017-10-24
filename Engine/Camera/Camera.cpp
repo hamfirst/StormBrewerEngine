@@ -12,8 +12,6 @@
 #include "Engine/EngineState.h"
 #include "Engine/Profiler/Profiler.h"
 
-#include "Runtime/Collision/CollisionSystem.h"
-
 Camera::Camera(const Vector2 & game_resolution, const Vector2 & screen_resolution, const RenderVec2 & initial_position) :
   m_GameResolution(game_resolution), m_ScreenResolution(screen_resolution), m_Position(initial_position)
 {
@@ -122,25 +120,4 @@ void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, con
   b.m_Start += offset;
   b.m_End += offset;
   DebugDraw(render_state, render_util, b, color);
-}
-
-void Camera::DebugDrawCollision(NotNullPtr<EngineState> engine_state, std::size_t collision_layer, RenderState & render_state, RenderUtil & render_util, const Color & color)
-{
-  Box viewport;
-  viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
-  viewport.m_End = viewport.m_Start + m_GameResolution;
-
-  auto collision = engine_state->m_CollisionSystem.get();
-  if (collision_layer >= collision->m_CollisionLayers.size())
-  {
-    return;
-  }
-
-  collision->m_CollisionLayers[collision_layer].VisitAll([&](uint32_t grid_id, SpatialDatabaseNode & node)
-  {
-    for (auto & elem : node.m_Elements)
-    {
-      DebugDraw(render_state, render_util, elem.second, color);
-    }
-  });
 }

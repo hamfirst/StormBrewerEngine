@@ -14,5 +14,6 @@ public:
   
   virtual void Init(GameContainer & game_container);
   virtual void Update(GameContainer & game_container);
-  virtual void Render(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  virtual void Render(GameContainer & game_container, const Box & viewport_bounds, 
+                      const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util);
 };

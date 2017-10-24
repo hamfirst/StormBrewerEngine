@@ -35,6 +35,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventDispatch.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventRegister.h" />
+    <ClInclude Include="ServerObject\ServerObjectEventSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ServerObject\ServerObjectHandle.h">
       <SubType>
       </SubType>
@@ -44,7 +53,7 @@
     <ClInclude Include="ServerObject\ServerObjectManager.h" />
     <ClInclude Include="ServerObject\ServerObjectMetaFuncs.h" />
     <ClInclude Include="ServerObject\ServerObjectRegistrationMacros.h" />
-    <ClInclude Include="ServerObject\ServerObjectSerialzie.h" />
+    <ClInclude Include="ServerObject\ServerObjectSerialize.h" />
     <ClInclude Include="ServerObject\ServerObjectSystem.h" />
     <ClInclude Include="ServerObject\ServerObjectUpdate.h" />
     <ClInclude Include="ServerTypesJson.h" />
@@ -62,6 +71,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ServerObject\ServerObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventDispatch.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventSystem.cpp">
       <SubType>
       </SubType>
     </ClCompile>

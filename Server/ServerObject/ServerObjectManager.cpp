@@ -3,7 +3,7 @@
 #include "Server/ServerObject/ServerObjectManager.h"
 #include "Server/ServerObject/ServerObjectSystem.h"
 #include "Server/ServerObject/ServerObject.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectSerialize.h"
 
 #include "StormNet/NetBitUtil.h"
 
@@ -16,8 +16,10 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_IsStatic = true;
     ptr->m_TypeIndex = obj.m_TypeIndex;
     ptr->m_SlotIndex = -1;
-    ptr->m_ServerObjectHandle.m_SlotId = -1;
+    ptr->m_FramesAlive = 0;
+    ptr->m_ServerObjectHandle.m_SlotId = -slot_index;
     ptr->m_ServerObjectHandle.m_Gen = 0;
+    ptr->m_EventDispatch = ptr->GetEventDispatch();
     m_StaticObjects.emplace_back(ptr);
 
     ++slot_index;
@@ -124,6 +126,19 @@ NullOptPtr<ServerObject>ServerObjectManager::GetReservedSlotObject(std::size_t s
   return dynamic_object_info ? dynamic_object_info->m_ServerObject : nullptr;
 }
 
+void ServerObjectManager::IncrementTimeAlive()
+{
+  for (auto & obj : m_StaticObjects)
+  {
+    obj->m_FramesAlive++;
+  }
+
+  for (auto obj : m_DynamicObjects)
+  {
+    obj.second.m_ServerObject->m_FramesAlive++;
+  }
+}
+
 void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
 {
   std::vector<std::pair<int, NotNullPtr<ServerObject>>> update_objs;
@@ -152,9 +167,14 @@ void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
   }
 }
 
-int ServerObjectManager::GetHandleBits()
+int ServerObjectManager::GetHandleBits() const
 {
   return GetRequiredBits(m_StaticObjects.size() + m_DynamicObjects.Size());
+}
+
+int ServerObjectManager::GetMaxDynamicObjects() const
+{
+  return m_MaxDynamicObjects;
 }
 
 void ServerObjectManager::Serialize(NetBitWriter & writer) const
@@ -175,6 +195,10 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
 
       auto type_index = obj->m_TypeIndex;
       so_writer.WriteBits(type_index, GetRequiredBits(g_ServerObjectSystem.m_ObjectTypes.size() - 1));
+
+      auto lifetime = std::min(7, obj->m_ServerObject->m_FramesAlive);
+      so_writer.WriteBits((uint64_t)lifetime, 3);
+
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectSerialize(obj->m_ServerObject, so_writer);
     }
     else
@@ -201,6 +225,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
     if (valid)
     {
       auto type_index = so_reader.ReadUBits(GetRequiredBits(g_ServerObjectSystem.m_ObjectTypes.size() - 1));
+      auto lifetime = so_reader.ReadUBits(3);
 
       if (obj)
       {
@@ -208,6 +233,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
         if (obj->m_TypeIndex == type_index)
         {
           g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj->m_ServerObject, so_reader);
+          obj->m_ServerObject->m_FramesAlive = lifetime;
           continue;
         }
         
@@ -216,6 +242,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
 
       auto ptr = CreateDynamicObjectInternal(type_index, index, nullptr);
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
+      ptr->m_FramesAlive = lifetime;
     }
     else if(obj)
     {
@@ -256,6 +283,7 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
   ptr->m_SlotIndex = slot_index;
   ptr->m_ServerObjectHandle.m_SlotId = slot_index + m_StaticObjects.size();
   ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
+  ptr->m_EventDispatch = ptr->GetEventDispatch();
 
   m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index});
   return ptr;

@@ -3,6 +3,8 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "PlayerServerObject.refl.h"
+#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/ServerObjects/Player/States/PlayerStateDefault.refl.meta.h"
 #include "Server/ServerObject/ServerObjectInitData.refl.meta.h"
 
 
@@ -85,13 +87,13 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<1 + StormReflTypeInfo<S
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<2 + StormReflTypeInfo<ServerObject>::fields_n>
 {
-  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
-  static constexpr auto GetName() { return "m_InputAngle"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x55B148EC; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "m_OnGround"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x50DDA915; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<ServerObject>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_InputAngle; }
+  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_OnGround; }
 };
 
 template <typename Self>
@@ -99,21 +101,21 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<2 + StormReflTypeInfo<S
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameNetVal> & Get() { return self.m_InputAngle; }
-  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_InputAngle; }
-  void SetDefault() { self.m_InputAngle = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_InputAngle; }
+  match_const_t<Self, bool> & Get() { return self.m_OnGround; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_OnGround; }
+  void SetDefault() { self.m_OnGround = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_OnGround; }
 };
 
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<3 + StormReflTypeInfo<ServerObject>::fields_n>
 {
-  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
-  static constexpr auto GetName() { return "m_InputStrength"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEAE7BD27; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
+  using member_type = ClientInput; // ClientInput
+  static constexpr auto GetName() { return "m_Input"; }
+  static constexpr auto GetType() { return "ClientInput"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x551EA2B7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x13CC217D; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<ServerObject>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_InputStrength; }
+  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_Input; }
 };
 
 template <typename Self>
@@ -121,21 +123,21 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<3 + StormReflTypeInfo<S
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameNetVal> & Get() { return self.m_InputStrength; }
-  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_InputStrength; }
-  void SetDefault() { self.m_InputStrength = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_InputStrength; }
+  match_const_t<Self, ClientInput> & Get() { return self.m_Input; }
+  std::add_const_t<std::remove_reference_t<ClientInput>> & Get() const { return self.m_Input; }
+  void SetDefault() { self.m_Input = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_Input; }
 };
 
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<4 + StormReflTypeInfo<ServerObject>::fields_n>
 {
-  using member_type = uint8_t; // unsigned char
-  static constexpr auto GetName() { return "m_Controls"; }
-  static constexpr auto GetType() { return "unsigned char"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x0CC15811; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
+  using member_type = NetPolymorphic<PlayerStateDefault>; // NetPolymorphic<PlayerStateDefault>
+  static constexpr auto GetName() { return "m_State"; }
+  static constexpr auto GetType() { return "NetPolymorphic<PlayerStateDefault>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2EA5429B; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF45D28F9; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<ServerObject>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_Controls; }
+  static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_State; }
 };
 
 template <typename Self>
@@ -143,9 +145,52 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<4 + StormReflTypeInfo<S
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint8_t> & Get() { return self.m_Controls; }
-  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_Controls; }
-  void SetDefault() { self.m_Controls = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_Controls; }
+  match_const_t<Self, NetPolymorphic<PlayerStateDefault>> & Get() { return self.m_State; }
+  std::add_const_t<std::remove_reference_t<NetPolymorphic<PlayerStateDefault>>> & Get() const { return self.m_State; }
+  void SetDefault() { self.m_State = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_State; }
+};
+
+template <>
+struct StormReflFuncInfo<PlayerServerObject>
+{
+  using MyBase = ServerObject;
+  static constexpr int funcs_n = 1 + StormReflFuncInfo<MyBase>::funcs_n;
+  template <int N> struct func_data_static : public StormReflFuncInfo<MyBase>::func_data_static<N> {};
+};
+
+template <>
+struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>
+{
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandlePlaceholderEvent"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xB51A771F; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 0 + StormReflFuncInfo<ServerObject>::funcs_n; }
+  static constexpr auto GetFunctionPtr() { return &PlayerServerObject::HandlePlaceholderEvent; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>::param_info<0>
+{
+  using param_type = const PlaceholderEvent &;
+  static constexpr auto GetName() { return "ev"; }
+  static constexpr auto GetType() { return "const PlaceholderEvent &"; }
+  static constexpr unsigned GetNameHash() { return 0xE0355914; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB0413EBA; }
+};
+
+template <>
+struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>::param_info<1>
+{
+  using param_type = GameLogicContainer &;
+  static constexpr auto GetName() { return "game_container"; }
+  static constexpr auto GetType() { return "GameLogicContainer &"; }
+  static constexpr unsigned GetNameHash() { return 0x15042D19; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBFBDFC4E; }
 };
 
 namespace StormReflFileInfo

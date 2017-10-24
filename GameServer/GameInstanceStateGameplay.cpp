@@ -13,9 +13,14 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_Stage(state_data.GetStage()),
   m_InstanceResources(std::move(resources)),
   m_SendTimer(0),
+  m_FramesToRewind(0),
+  m_FramesToUpdate(0),
+  m_ReconcileFrame(0),
+  m_FurthestRewind(0),
+  m_LastAuthCommit(0),
   m_InitialState(m_Stage.CreateDefaultGameState())
 {
-  GameLogicContainer logic_container(m_Controller, m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, 
+  GameLogicContainer logic_container(m_Controller, m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, 
     *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, m_SendTimer);
 
   for (auto elem : loading_data.m_Players)
@@ -24,6 +29,8 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
     player_info.m_Loaded = true;
     player_info.m_LoadToken = 0;
     player_info.m_ClientFrame = 0;
+    player_info.m_InputFrame = 0;
+    player_info.m_LastAuthCommitFrame = 0;
 
     if (elem.second.m_Team >= 0)
     {
@@ -78,6 +85,11 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_SimHistory.Push(std::shared_ptr<GameFullState>(m_CurrentState));
 }
 
+GameInstanceStateGameplay::~GameInstanceStateGameplay()
+{
+
+}
+
 bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game)
 {
 #ifdef NET_ALLOW_LATE_JOIN
@@ -85,7 +97,38 @@ bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const JoinG
   auto & state = GetCurrentInstanceData();
   if (state.m_Players.Size() >= kMaxPlayers)
   {
+#ifdef NET_LATE_JOIN_REMOVE_BOT
+
+    auto logic_container = GetLogicContainer();
+
+    int num_bot_slots = 0;
+    for (auto player_info : m_CurrentState->m_InstanceData.m_Players)
+    {
+      if (player_info.second.m_AIPlayerInfo && m_Controller.AllowConversionToBot(player_info.first, logic_container))
+      {
+        num_bot_slots++;
+      }
+    }
+
+    int num_loading_players = 0;
+    for (auto player_info : m_PlayerInfo)
+    {
+      if (player_info.second.m_Loaded == false)
+      {
+        num_loading_players++;
+      }
+    }
+
+    if (num_bot_slots <= num_loading_players)
+    {
+      return false;
+    }
+
+#else
+
     return false;
+#endif
+
   }
 
   auto load_token = GetRandomNumber64();
@@ -133,57 +176,25 @@ void GameInstanceStateGameplay::RemovePlayer(std::size_t client_index)
 #endif
 
   m_PlayerInfo.RemoveAt(client_index);
+  ComputeMaxRewind();
 }
 
 void GameInstanceStateGameplay::Update()
 {
-  auto new_state = std::make_shared<GameFullState>(*m_CurrentState.get());
-  auto frame = new_state->m_InstanceData.m_FrameCount;
-
-  GameLogicContainer logic_container(m_Controller, new_state->m_InstanceData, new_state->m_ServerObjectManager,
-    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, m_SendTimer);
-
-  m_ReconcileFrame = 0;
-
-  for (auto & elem : m_PendingExternals)
-  {
-    m_Controller.ProcessExternal(elem, logic_container);
-    m_ExternalsHistory.Push(frame, std::move(elem));
-  }
-
-  auto input_iter = m_Inputistory.IterateElementsSince(frame);
-  auto input_visitor = [&](HistoryInput & elem)
-  {
-    m_Controller.ApplyInput(elem.m_PlayerIndex, logic_container, elem.m_Input);
-  };
-
-  input_iter.VisitElementsForCurrentTime(input_visitor);
-  input_iter.Advance();
-
-  auto event_iter = m_EventHistory.IterateElementsSince(frame);
-  auto event_visitor = [&](HistoryEvent & elem)
-  {
-    m_Controller.HandleClientEvent(elem.m_PlayerIndex, logic_container, elem.m_Event.GetClassId(), elem.m_Event.GetBase());
-  };
-
-  event_iter.VisitElementsForCurrentTime(event_visitor);
-  event_iter.Advance();
-
-  m_Controller.Update(logic_container);
-  m_Reconciler.AdvanceFrame();
-
-  m_SimHistory.Push(new_state);
-  m_CurrentState = new_state;
-
   m_SendTimer--;
+  m_FramesToUpdate++;
+
   if (m_SendTimer <= 0)
   {
+    BatchUpdate(m_FramesToRewind, m_FramesToUpdate);
     for (auto player_info : m_PlayerInfo)
     {
       SendPacketToPlayer(player_info.first, player_info.second);
     }
-  
+
     m_SendTimer = kServerUpdateRate;
+    m_FramesToUpdate = 0;
+    m_FramesToRewind = 0;
   }
 
   //
@@ -366,10 +377,26 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
 
   player_info.m_Loaded = true;
   player_info.m_ClientFrame = m_CurrentState->m_InstanceData.m_FrameCount;
+  player_info.m_InputFrame = m_CurrentState->m_InstanceData.m_FrameCount;
+  player_info.m_LastAuthCommitFrame = m_CurrentState->m_InstanceData.m_FrameCount;
 
   auto player_id = m_PlayerIdAllocator.Allocate();
+#ifdef NET_LATE_JOIN_REMOVE_BOT
+
+  for (auto player_info : m_CurrentState->m_InstanceData.m_Players)
+  {
+    if (player_info.second.m_AIPlayerInfo)
+    {
+      player_id = player_info.first;
+      break;
+    }
+  }
+
+#endif
+
   if (player_id >= kMaxPlayers)
   {
+    m_PlayerIdAllocator.Release(player_id);
 
 #ifdef NET_ALLOW_OBSERVERS
     player_info.m_PlayerIndex = -1;
@@ -547,19 +574,192 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
 
 #if NET_MODE == NET_MODE_GGPO
 
+void GameInstanceStateGameplay::ProcessExternals()
+{
+  auto frame = m_CurrentState->m_InstanceData.m_FrameCount;
+  auto logic_container = GetLogicContainer();
+
+  for (auto & elem : m_PendingExternals)
+  {
+    m_ExternalsHistory.Push(frame, std::move(elem));
+  }
+}
+
+void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_update)
+{
+  auto current_frame = m_CurrentState->m_InstanceData.m_FrameCount;
+  auto auth_check_visitor = [&](int frame_count, NetPolymorphic<ServerAuthNetworkEvent> & elem)
+  {
+    if (frame_count < m_FurthestRewind)
+    {
+      frames_to_rewind = std::max(frames_to_rewind, current_frame - frame_count);
+    }
+  };
+
+  m_AuthEventHistory.VisitElementsSince(m_LastAuthCommit, auth_check_visitor);
+
+  auto update_frames = frames_to_rewind + frames_to_update;
+  auto rewind_frame = frames_to_rewind > 0 ? current_frame - frames_to_rewind : current_frame;
+
+  auto input_iter = m_Inputistory.IterateElementsSince(rewind_frame);
+  auto event_iter = m_EventHistory.IterateElementsSince(rewind_frame);
+  auto external_iter = m_ExternalsHistory.IterateElementsSince(rewind_frame);
+
+  auto sim = *m_SimHistory.Get(frames_to_rewind);
+
+  m_ReconcileFrame = frames_to_rewind;
+  m_AuthEventHistory.PurgeElementsSince(rewind_frame);
+
+  while (update_frames > 0)
+  {
+    auto new_state = std::make_shared<GameFullState>(*sim.get());
+
+    int fake_send_timer = 0;
+    GameLogicContainer logic_container(m_Controller, new_state->m_InstanceData, new_state->m_ServerObjectManager, m_ServerObjectEventSystem,
+      *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, fake_send_timer);
+
+    auto input_visitor = [&](int frame_count, HistoryInput & elem)
+    {   
+      m_Controller.ApplyInput(elem.m_PlayerIndex, logic_container, elem.m_Input);
+    };
+
+    input_iter.VisitElementsForCurrentTime(input_visitor);
+    input_iter.Advance();
+
+    auto event_visitor = [&](int frame_count, HistoryEvent & elem)
+    {
+      m_Controller.HandleClientEvent(elem.m_PlayerIndex, logic_container, elem.m_Event.GetClassId(), elem.m_Event.GetBase());
+    };
+
+    event_iter.VisitElementsForCurrentTime(event_visitor);
+    event_iter.Advance();
+
+    auto external_visitor = [&](int frame_count, NetPolymorphic<GameNetworkExternalEvent> & elem)
+    {
+      m_Controller.ProcessExternal(elem, logic_container);
+    };
+
+    external_iter.VisitElementsForCurrentTime(external_visitor);
+    external_iter.Advance();
+
+
+    m_Controller.Update(logic_container);
+
+    if (m_ReconcileFrame > 0)
+    {
+      m_ReconcileFrame--;
+      m_SimHistory.SetAt(new_state, m_ReconcileFrame);
+    }
+    else
+    {
+      m_Reconciler.AdvanceFrame();
+      m_SimHistory.Push(new_state);
+    }
+
+    --update_frames;
+    sim = new_state;
+    m_CurrentState = new_state;
+  }
+
+  m_LastAuthCommit = m_FurthestRewind;
+  ComputeMaxRewind();
+}
+
+void GameInstanceStateGameplay::ComputeMaxRewind()
+{
+  auto min_frame = m_CurrentState->m_InstanceData.m_FrameCount - kMaxRewindFrames;
+  min_frame = std::max(min_frame, 0);
+
+  m_FurthestRewind = m_CurrentState->m_InstanceData.m_FrameCount;
+
+  for (auto & elem : m_PlayerInfo)
+  {
+    auto frame = std::max(min_frame, elem.second.m_InputFrame);
+    m_FurthestRewind = std::min(m_FurthestRewind, frame);
+  }
+}
+
 void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOClientUpdate & update_data)
 {
   auto & client_info = m_StateData.GetClient(client_index);
   auto & player_info = m_PlayerInfo[client_index];
 
-  if (update_data.m_ClientFrame <= player_info.m_ClientFrame)
-  {
-    update_data.m_ClientFrame = player_info.m_ClientFrame + 1;
-  }
+  auto current_frame = m_CurrentState->m_InstanceData.m_FrameCount;
+  int latest_input = -1;
 
   if (player_info.m_PlayerIndex == -1)
   {
     return;
+  }
+
+  // Make sure inputs are in order and don't happen too far in the future
+  if (update_data.m_Inputs)
+  {
+    auto & input_list = update_data.m_Inputs.Value();
+    auto cur = input_list.begin();
+    auto end = input_list.end();
+
+    if (cur != end)
+    {
+      auto prev = cur->m_Frame;
+      ++cur;
+
+      while (cur != end)
+      {
+        if (cur->m_Frame <= prev)
+        {
+          return;
+        }
+
+        prev = cur->m_Frame;
+        ++cur;
+      }
+    }
+
+    for (auto & inp : input_list)
+    {
+      if (inp.m_Frame >= current_frame + kMaxHistoryFrames)
+      {
+        return;
+      }
+
+      latest_input = std::max(latest_input, inp.m_Frame);
+    }
+  }
+
+  // Make sure events happen in sequence and don't happen too far in the future
+  if (update_data.m_Events)
+  {
+    auto & input_list = update_data.m_Events.Value();
+    auto cur = input_list.begin();
+    auto end = input_list.end();
+
+    if (cur != end)
+    {
+      auto prev = cur->m_Frame;
+      ++cur;
+
+      while (cur != end)
+      {
+        if (cur->m_Frame <= prev) // For now only allow one event per frame
+        {
+          return;
+        }
+
+        prev = cur->m_Frame;
+        ++cur;
+      }
+    }
+
+    for (auto & inp : input_list)
+    {
+      if (inp.m_Frame >= current_frame + kMaxHistoryFrames)
+      {
+        return;
+      }
+
+      latest_input = std::max(latest_input, inp.m_Frame);
+    }
   }
 
   int max_rewind_frame = m_CurrentState->m_InstanceData.m_FrameCount - kMaxRewindFrames;
@@ -574,10 +774,14 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
 
     while (cur != end)
     {
-      if (cur->m_Frame < player_info.m_ClientFrame || cur->m_Frame < max_rewind_frame)
+      if (cur->m_Frame <= player_info.m_InputFrame)
       {
         ++cur;
         --size;
+      }
+      else if (cur->m_Frame < max_rewind_frame)
+      {
+        cur->m_Frame = max_rewind_frame;
       }
       else
       {
@@ -589,7 +793,7 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
     {
       rewind_frame = cur->m_Frame;
       m_Inputistory.MergeList(cur, end, (int)size, [](ClientAuthData & v) { return v.m_Frame; }, 
-        [&](ClientAuthData & v) { return HistoryInput{ player_info.m_PlayerIndex, v.m_Input}; });
+        [&](ClientAuthData & v) { return HistoryInput{ player_info.m_PlayerIndex, v.m_Input }; });
     }
   }
 
@@ -602,10 +806,14 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
 
     while (cur != end)
     {
-      if (cur->m_Frame < player_info.m_ClientFrame || cur->m_Frame < max_rewind_frame)
+      if (cur->m_Frame <= player_info.m_InputFrame)
       {
         ++cur;
         --size;
+      }
+      else if (cur->m_Frame < max_rewind_frame)
+      {
+        cur->m_Frame = max_rewind_frame;
       }
       else
       {
@@ -622,93 +830,13 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
   }
 
   player_info.m_ClientFrame = update_data.m_ClientFrame;
-
-  //if (update_data.m_Events)
-  //{
-  //  auto & event_list = update_data.m_Events.Value();
-  //  auto cur = event_list.begin();
-  //  auto end = event_list.end();
-  //  auto size = event_list.size();
-
-  //  while (cur != end)
-  //  {
-  //    if (cur->m_Frame < player_info.m_ClientFrame || cur->m_Frame < max_rewind_frame)
-  //    {
-  //      ++cur;
-  //      --size;
-  //    }
-  //    else
-  //    {
-  //      break;
-  //    }
-  //  }
-
-  //  if (size > 0)
-  //  {
-  //    rewind_frame = (rewind_frame == -1) ? cur->m_Frame : std::min(rewind_frame, cur->m_Frame);
-  //    m_Inputistory.MergeList(cur, end, (int)size, [](auto & v) { return v.m_Frame; }, [](auto & v) { return v.m_Event; });
-  //  }
-  //}
+  player_info.m_InputFrame = std::max(player_info.m_InputFrame, latest_input);
+  ComputeMaxRewind();
 
   if (rewind_frame != -1)
   {
     auto frames_to_rewind = m_CurrentState->m_InstanceData.m_FrameCount - rewind_frame;
-
-    if (frames_to_rewind > 0)
-    {
-      auto input_iter = m_Inputistory.IterateElementsSince(rewind_frame);
-      auto event_iter = m_EventHistory.IterateElementsSince(rewind_frame);
-      auto external_iter = m_ExternalsHistory.IterateElementsSince(rewind_frame);
-
-      auto sim = *m_SimHistory.Get(frames_to_rewind);
-
-      while (frames_to_rewind > 0)
-      {
-        m_ReconcileFrame = frames_to_rewind;
-
-        auto new_state = std::make_shared<GameFullState>(*sim.get());
-
-        int fake_send_timer = 0;
-        GameLogicContainer logic_container(m_Controller, new_state->m_InstanceData, new_state->m_ServerObjectManager,
-          *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, fake_send_timer);
-
-        auto input_visitor = [&](HistoryInput & elem)
-        {
-          m_Controller.ApplyInput(elem.m_PlayerIndex, logic_container, elem.m_Input);
-        };
-
-        input_iter.VisitElementsForCurrentTime(input_visitor);
-        input_iter.Advance();
-
-        auto event_visitor = [&](HistoryEvent & elem)
-        {
-          m_Controller.HandleClientEvent(elem.m_PlayerIndex, logic_container, elem.m_Event.GetClassId(), elem.m_Event.GetBase());
-        };
-
-        event_iter.VisitElementsForCurrentTime(event_visitor);
-        event_iter.Advance();
-
-        auto external_visitor = [&](NetPolymorphic<GameNetworkExternalEvent> & elem)
-        {
-          m_Controller.ProcessExternal(elem, logic_container);
-        };
-
-        external_iter.VisitElementsForCurrentTime(external_visitor);
-        external_iter.Advance();
-
-        m_Controller.Update(logic_container);
-        --frames_to_rewind;
-
-        m_SimHistory.SetAt(new_state, frames_to_rewind);
-
-        if (frames_to_rewind == 0)
-        {
-          m_CurrentState = new_state;
-        }
-
-        sim = new_state;
-      }
-    }
+    m_FramesToRewind = std::max(m_FramesToRewind, frames_to_rewind);
   }
 
 //  for (auto itr = m_Players.begin(), end = m_Players.end(); itr != end; ++itr)
@@ -747,9 +875,32 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
 //  }
 }
 
+void GameInstanceStateGameplay::SendAuthEvent(std::size_t class_id, const void * event_ptr)
+{
+  auto current_frame = m_CurrentState->m_InstanceData.m_FrameCount - m_ReconcileFrame;
+  m_AuthEventHistory.Push(current_frame, NetPolymorphic<ServerAuthNetworkEvent>(class_id, event_ptr));
+
+  if (current_frame < m_FurthestRewind)
+  {
+    m_Controller.HandleAuthEvent(GetLogicContainer(m_ReconcileFrame), class_id, event_ptr);
+  }
+}
+
 bool GameInstanceStateGameplay::ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos)
 {
   return m_Reconciler.PushEvent(event_type_name_hash, event_id, pos, m_ReconcileFrame);
+}
+
+void GameInstanceStateGameplay::BlockRewind(std::size_t connection)
+{
+  auto player = m_PlayerInfo.TryGet(connection);
+  if (player == nullptr)
+  {
+    return;
+  }
+
+  player->m_InputFrame = m_CurrentState->m_InstanceData.m_FrameCount;
+  ComputeMaxRewind();
 }
 
 #else
@@ -839,9 +990,20 @@ void GameInstanceStateGameplay::SendEntityEvent(std::size_t class_id, const void
 
 #endif
 
+
+GameFullState & GameInstanceStateGameplay::GetCurrentState()
+{
+  return *m_CurrentState.get();
+}
+
+GameInstanceData & GameInstanceStateGameplay::GetCurrentInstanceData()
+{
+  return m_CurrentState->m_InstanceData;
+}
+
 GameLogicContainer GameInstanceStateGameplay::GetLogicContainer(int history_index)
 {
-  return GameLogicContainer(m_Controller, m_CurrentState->m_InstanceData, m_CurrentState->m_ServerObjectManager,
+  return GameLogicContainer(m_Controller, m_CurrentState->m_InstanceData, m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
     *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, m_SendTimer);
 }
 
@@ -890,34 +1052,23 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
     return;
   }
 
+  auto current_frame = m_CurrentState->m_InstanceData.m_FrameCount;
+  auto packet_frame = player.m_ClientFrame;
+
+  if (current_frame - packet_frame >= kMaxHistoryFrames)
+  {
+    packet_frame = current_frame - (kMaxHistoryFrames - 1);
+  }
+
   GameGGPOServerGameState packet;
-  packet.m_AckFrame = player.m_ClientFrame;
-  packet.m_ServerFrame = m_CurrentState->m_InstanceData.m_FrameCount;
+  packet.m_AckFrame = packet_frame;
+  packet.m_ServerFrame = current_frame;
+  packet.m_EventStartFrame = current_frame - m_FramesToRewind - m_FramesToUpdate;
 
-  if (player.m_ClientFrame >= m_CurrentState->m_InstanceData.m_FrameCount)
-  {
-    packet.m_State = m_CurrentState;
-  }
-  else
-  {
-    auto ack_history = m_CurrentState->m_InstanceData.m_FrameCount - player.m_ClientFrame;
-    if (ack_history >= kMaxHistoryFrames)
-    {
-      ack_history = kMaxHistoryFrames - 1;
-    }
-
-    packet.m_State = *m_SimHistory.Get(ack_history);
-  }
-;
-  auto packet_frame = packet.m_State->m_InstanceData.m_FrameCount;
-
+  auto history_frame = std::max(m_FramesToRewind + m_FramesToUpdate, current_frame - packet_frame);
+  packet.m_State = *m_SimHistory.Get(history_frame);
   auto input_visitor = [&](int time, HistoryInput & inp)
   {
-    if (inp.m_PlayerIndex == player.m_PlayerIndex)
-    {
-      return;
-    }
-
     if (packet.m_Inputs == false)
     {
       packet.m_Inputs.Emplace();
@@ -925,15 +1076,10 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
     packet.m_Inputs->EmplaceBack(GameHistoryInput{ inp.m_PlayerIndex, time, inp.m_Input });
   };
-  m_Inputistory.VisitElementsSince(packet_frame, input_visitor);
+  m_Inputistory.VisitElementsSince(packet.m_EventStartFrame, input_visitor);
 
   auto event_visitor = [&](int time, HistoryEvent & inp)
   {
-    if (inp.m_PlayerIndex == player.m_PlayerIndex)
-    {
-      return;
-    }
-
     if (packet.m_Events == false)
     {
       packet.m_Events.Emplace();
@@ -941,7 +1087,7 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
     packet.m_Events->EmplaceBack(GameHistoryEvent{ inp.m_PlayerIndex, time, inp.m_Event });
   };
-  m_EventHistory.VisitElementsSince(packet_frame, event_visitor);
+  m_EventHistory.VisitElementsSince(packet.m_EventStartFrame, event_visitor);
 
   auto external_visitor = [&](int time, NetPolymorphic<GameNetworkExternalEvent> & inp)
   {
@@ -952,10 +1098,16 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
     packet.m_Externals->EmplaceBack(GameHistoryExternal{ time, inp });
   };
-  m_ExternalsHistory.VisitElementsSince(packet_frame, external_visitor);
+
+  m_ExternalsHistory.VisitElementsSince(packet.m_EventStartFrame, external_visitor);
 
   auto auth_visitor = [&](int time, NetPolymorphic<ServerAuthNetworkEvent> & inp)
   {
+    if (time > m_FurthestRewind)
+    {
+      return;
+    }
+
     if (packet.m_ServerAuthEvents == false)
     {
       packet.m_ServerAuthEvents.Emplace();
@@ -963,7 +1115,8 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
     packet.m_ServerAuthEvents->EmplaceBack(GameHistoryAuthEvent{ time, inp });
   };
-  m_AuthEventHistory.VisitElementsSince(packet_frame, auth_visitor);
+  m_AuthEventHistory.VisitElementsSince(player.m_LastAuthCommitFrame, auth_visitor);
+  player.m_LastAuthCommitFrame = m_FurthestRewind;
 
   auto local_data_visitor = [&](int time, ClientLocalData & inp)
   {
@@ -974,7 +1127,7 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
     packet.m_LocalData->EmplaceBack(GameHistoryClientLocal{ time, inp });
   };
-  player.m_LocalDataHistory.VisitElementsSince(player.m_ClientFrame, local_data_visitor);
+  player.m_LocalDataHistory.VisitElementsSince(packet.m_EventStartFrame, local_data_visitor);
 
   client_info.m_Client->SyncGameState(packet);
 }

@@ -10,12 +10,12 @@ MapSystem::MapSystem(NotNullPtr<EngineState> engine_state) :
 
 }
 
-std::size_t MapSystem::InstantiateMap(MapDef & map_def)
+std::size_t MapSystem::InstantiateMap(MapDef & map_def, const Vector2 & offset)
 {
   auto map_id = m_NextMapId;
   m_NextMapId++;
 
-  m_Maps.emplace(map_id, std::make_unique<MapInstance>(m_EngineState, map_def, map_id));
+  m_Maps.emplace(map_id, std::make_unique<MapInstance>(m_EngineState, map_def, map_id, offset));
   return map_id;
 }
 
@@ -27,7 +27,6 @@ void MapSystem::UnloadMap(std::size_t map_id)
     return;
   }
 
-  itr->second->RemoveCollision(m_EngineState);
   m_Maps.erase(itr);
 }
 

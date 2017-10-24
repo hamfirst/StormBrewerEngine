@@ -1,6 +1,7 @@
 
 #include "MapEditorToolManualTileLayerSelect.h"
 #include "MapEditorToolManualTileLayerDraw.h"
+#include "MapEditorToolManualTileLayerPreview.h"
 #include "MapEditor.h"
 
 MapEditorToolManualTileLayerSelect::MapEditorToolManualTileLayerSelect(MapEditor & map_editor, int layer_index) :
@@ -31,7 +32,38 @@ void MapEditorToolManualTileLayerSelect::Delete()
   auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
   if (layer != nullptr)
   {
-    layer->DeleteSelectedTiles();
+    layer->DeleteSelection();
+  }
+}
+
+void MapEditorToolManualTileLayerSelect::Copy()
+{
+  auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
+  if (layer != nullptr)
+  {
+    layer->CopySelection();
+  }
+}
+
+void MapEditorToolManualTileLayerSelect::Cut()
+{
+  auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
+  if (layer != nullptr)
+  {
+    layer->CopySelection();
+    layer->DeleteSelection();
+  }
+}
+
+void MapEditorToolManualTileLayerSelect::Paste(const Vector2 & pos)
+{
+  auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
+  if (layer != nullptr)
+  {
+    layer->ClearSelection();
+    layer->PasteSelection(pos);
+
+    m_MapEditor.GetViewer().SetTool(MapEditorTool<MapEditorToolManualTileLayerPreview>{}, m_LayerIndex);
   }
 }
 
@@ -45,11 +77,32 @@ bool MapEditorToolManualTileLayerSelect::DrawStart(const Vector2 & pos, bool alt
 
   if (alt)
   {
-    auto tile = layer->FindTile(pos);
-    if (tile)
+    if (layer->IsOnSelectedTile(pos))
     {
-      auto frame_id = m_MapEditor.GetViewer().GetFrameIdForMapTile(tile.Value());
-      m_MapEditor.SelectManualTile(m_LayerIndex, frame_id);
+      layer->CommitPreviewTiles();
+      layer->CommitPreviewAnimations();
+
+      layer->DuplicateSelectedToPreview();
+      layer->ClearSelection();
+      m_MapEditor.GetViewer().SetToolMidDraw(MapEditorTool<MapEditorToolManualTileLayerPreview>{}, m_LayerIndex);
+    }
+    else
+    {
+      auto anim = layer->FindAnim(pos);
+      if (anim)
+      {
+        auto frame_id = m_MapEditor.GetViewer().GetFrameIdForMapAnimation(anim.Value());
+        m_MapEditor.SelectManualAnimation(m_LayerIndex, frame_id);
+      }
+      else
+      {
+        auto tile = layer->FindTile(pos);
+        if (tile)
+        {
+          auto frame_id = m_MapEditor.GetViewer().GetFrameIdForMapTile(tile.Value());
+          m_MapEditor.SelectManualTile(m_LayerIndex, frame_id);
+        }
+      }
     }
 
     return false;
@@ -81,7 +134,7 @@ void MapEditorToolManualTileLayerSelect::DrawMove(const Vector2 & pos, bool alt,
     auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
     if (layer != nullptr)
     {
-      layer->SetSelectedTileOffset(snapped_pos - m_Start);
+      layer->SetSelectionOffset(snapped_pos - m_Start);
     }
   }
   else
@@ -92,6 +145,7 @@ void MapEditorToolManualTileLayerSelect::DrawMove(const Vector2 & pos, bool alt,
     if (layer != nullptr)
     {
       layer->SelectTiles(selection_box);
+      layer->SelectAnimations(selection_box);
     }
 
     m_MapEditor.GetViewer().SetSelectionBox(selection_box);
@@ -105,7 +159,7 @@ void MapEditorToolManualTileLayerSelect::DrawEnd(const Vector2 & pos, bool alt, 
     auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
     if (layer != nullptr)
     {
-      layer->CommitSelectedTileOffset();
+      layer->CommitSelectedOffset();
     }
   }
   else
@@ -121,7 +175,7 @@ void MapEditorToolManualTileLayerSelect::DrawCancel()
   {
     if (m_MoveMode)
     {
-      layer->SetSelectedTileOffset(Vector2(0, 0));
+      layer->SetSelectionOffset(Vector2(0, 0));
     }
     else
     {

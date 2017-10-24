@@ -57,6 +57,12 @@ DelegateList<void> g_GlobalUpdate;
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
 {
+#ifdef _MSC_VER
+  AllocConsole();
+  AttachConsole(GetCurrentProcessId());
+  freopen("CON", "w", stdout);
+#endif
+
   setDockOptions(QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AnimatedDocks | QMainWindow::GroupedDragging);
   setDockNestingEnabled(true);
 
@@ -127,7 +133,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
-  timer->start(16);
+  timer->start(10);
 
   if (ProbePort(doc_server_host, 27800, 100) == false)
   {
@@ -161,8 +167,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
-  g_TextManager.LoadFont("./Fonts/Furore.otf", -2, 25);
-  g_TextManager.LoadFont("./Fonts/Arial.ttf", -3, 12);
 
   m_EngineInitialized = true;
   m_NextDocumentId = 1;
@@ -585,7 +589,7 @@ void EditorContainer::redo()
 
 void EditorContainer::testBuildOnline()
 {
-  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, 1));
+  m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, 2));
   m_HostWidgets.back()->show();
 }
 

@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeLocalMultiplayer.h"
 #include "GameClient/GameModeMainMenu.h"
@@ -34,7 +34,7 @@ GameModeLocalMultiplayer::GameModeLocalMultiplayer(GameContainer & game, const s
   }
 
   auto & container = GetContainer();
-  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, num_local_players, true, nullptr, nullptr);
+  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, *this, num_local_players, true);
   m_InstanceContainer->Load(game_settings);
 }
 
@@ -50,11 +50,10 @@ void GameModeLocalMultiplayer::Initialize()
 
 void GameModeLocalMultiplayer::OnAssetsLoaded()
 {
-  m_InstanceData = std::make_unique<GameClientInstanceData>(m_InstanceContainer->GetClientInstanceData(*this));
   m_ClientSystems = std::make_unique<GameClientSystems>(GetContainer());
 
   auto & container = GetContainer();
-  container.SetInstanceData(m_InstanceData.get());
+  container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
   auto game_logic = m_InstanceContainer->GetLogicContainer(true);
@@ -97,12 +96,12 @@ void GameModeLocalMultiplayer::Update()
   }
 
   auto & container = GetContainer();
-  auto & instance_data = *m_InstanceData.get();
-  auto & game_data = instance_data.GetGameState();
+  auto & instance_data = *m_InstanceContainer.get();
+  auto & game_data = instance_data.GetGlobalInstanceData();
 
   if (game_data.m_WiningTeam)
   {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_InstanceData), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
+    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
     return;
   }
 
@@ -117,7 +116,7 @@ void GameModeLocalMultiplayer::Update()
 
   if (num_local_players_alive == 0)
   {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_InstanceData), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
+    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
     return;
   }
 
@@ -127,11 +126,16 @@ void GameModeLocalMultiplayer::Update()
   auto visual_effects = engine_state.GetVisualEffectManager();
   auto map_system = engine_state.GetMapSystem();
 
-  if (m_FrameClock.ShouldSkipFrameUpdate() == false)
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
+  for (int index = 0; index < 3 && m_FrameClock.ShouldSkipFrameUpdate() == false; ++index)
   {
     m_FrameClock.BeginFrame();
+    container.GetWindow().Update();
 
     entity_system->BeginFrame();
+    input_manager.Update();
     m_InstanceContainer->Update();
 
     map_system->UpdateAllMaps(container);
@@ -152,13 +156,11 @@ void GameModeLocalMultiplayer::Update()
     }
   }
 
+  m_FrameClock.RemoveExtra();
+
   visual_effects->Update();
 
-  auto & ui_manager = container.GetClientSystems()->GetUIManager();
-  auto & input_manager = container.GetClientSystems()->GetInputManager();
-
   ui_manager.Update();
-  input_manager.Update();
 
   if (ui_manager.WantsToQuit())
   {
@@ -214,7 +216,7 @@ bool GameModeLocalMultiplayer::IsLoaded()
   return GameMode::IsLoaded();
 }
 
-void GameModeLocalMultiplayer::SendClientEvent(std::size_t class_id, const void * event_ptr)
+void GameModeLocalMultiplayer::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
   auto game = m_InstanceContainer->GetLogicContainer(true);
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);

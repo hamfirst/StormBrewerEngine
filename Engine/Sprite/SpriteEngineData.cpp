@@ -192,7 +192,7 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
   return sprite_data->Render(animation_index, animation_frame, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderTile(const TileSheet & tile_sheet, int animation_index, int animation_frame,
+Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();

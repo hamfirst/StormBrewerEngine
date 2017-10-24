@@ -59,6 +59,21 @@ AssetReferenceBase & AssetReferenceBase::operator = (AssetReferenceBase && rhs) 
   return *this;
 }
 
+bool AssetReferenceBase::IsLoaded() const
+{
+  return m_Asset && m_Asset->IsLoaded();
+}
+
+bool AssetReferenceBase::IsError() const
+{
+  return m_Asset && m_Asset->IsError();
+}
+
+bool AssetReferenceBase::LoadingFinished() const
+{
+  return m_Asset && (m_Asset->IsError() || m_Asset->IsLoaded());
+}
+
 void AssetReferenceBase::Clear()
 {
   if (m_Asset)

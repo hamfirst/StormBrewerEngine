@@ -14,7 +14,7 @@ class MapSystem
 public:
   MapSystem(NotNullPtr<EngineState> engine_state);
 
-  std::size_t InstantiateMap(MapDef & map_def);
+  std::size_t InstantiateMap(MapDef & map_def, const Vector2 & offset);
   void UnloadMap(std::size_t map_id);
   NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);
 

@@ -2,12 +2,13 @@
 #include "Server/ServerCommon.h"
 #include "Server/ServerObject/ServerObject.h"
 #include "Server/ServerObject/ServerObjectManager.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectSerialize.h"
+#include "Server/ServerObject/ServerObjectEventRegister.h"
 #include "Server/ServerObject/ServerObjectRegistrationMacros.h"
 #include "Server/ServerObject/ServerObjectMetaFuncs.h"
 #include "Server/ServerObject/ServerObjectSystem.h"
 #include "Server/ServerObject/ServerObjectUpdate.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectEventDispatch.h"
 
 #include "Foundation/SkipField/SkipField.h"
 #include "Foundation/Update/UpdateRegistrationTemplates.h"
@@ -62,4 +63,24 @@ bool ServerObject::IsDestroyed() const
 int ServerObject::GetSlotIndex() const
 {
   return m_SlotIndex;
+}
+
+int ServerObject::GetLifetime() const
+{
+  return std::min(m_FramesAlive, 7);
+}
+
+void ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, GameLogicContainer & game_container)
+{
+  if (m_EventDispatch == nullptr)
+  {
+    return;
+  }
+
+  m_EventDispatch->TriggerEventHandler(this, event_type, ev, game_container);
+}
+
+void ServerObject::SetEventDispatch(NotNullPtr<ServerObjectEventDispatch> event_dispatch)
+{
+  m_EventDispatch = event_dispatch;
 }

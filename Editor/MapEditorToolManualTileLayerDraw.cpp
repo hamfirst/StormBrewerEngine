@@ -3,9 +3,10 @@
 #include "MapEditorToolManualTileLayerSelect.h"
 #include "MapEditor.h"
 
-MapEditorToolManualTileLayerDraw::MapEditorToolManualTileLayerDraw(MapEditor & map_editor, int layer_index, uint64_t frame_id) :
+MapEditorToolManualTileLayerDraw::MapEditorToolManualTileLayerDraw(MapEditor & map_editor, int layer_index, bool animation, uint64_t frame_id) :
   MapEditorToolBase(map_editor),
   m_LayerIndex(layer_index),
+  m_Animation(animation),
   m_FrameId(frame_id)
 {
 
@@ -54,10 +55,26 @@ void MapEditorToolManualTileLayerDraw::DrawPreview(const Vector2 & pos, bool alt
     return;
   }
 
-  std::vector<MapTile> map_tile_list;
-  map_tile_list.push_back(GetPreviewTile(snapped_pos));
+  auto preview_tile = GetPreviewTile(snapped_pos);
+  if (preview_tile)
+  {
+    std::vector<MapTile> map_tile_list;
+    map_tile_list.push_back(preview_tile.Value());
 
-  layer->SetPreviewTiles(map_tile_list);
+    layer->SetPreviewTiles(map_tile_list);
+    layer->SetPreviewAnimations({});
+  }
+
+  auto preview_anim = GetPreviewAnimation(snapped_pos);
+  if (preview_anim)
+  {
+    std::vector<MapAnimatedTile> map_tile_list;
+    map_tile_list.push_back(preview_anim.Value());
+
+    layer->SetPreviewTiles({});
+    layer->SetPreviewAnimations(map_tile_list);
+  }
+
   m_LastPreview = snapped_pos;
 }
 
@@ -88,6 +105,7 @@ bool MapEditorToolManualTileLayerDraw::DrawStart(const Vector2 & pos, bool alt, 
   m_LastDraw = snapped_pos;
   m_DrawPositions.clear();
   m_DrawTiles.clear();
+  m_DrawAnims.clear();
 
   DrawMove(pos, alt, shift, ctrl);
   return true;
@@ -104,12 +122,29 @@ void MapEditorToolManualTileLayerDraw::DrawMove(const Vector2 & pos, bool alt, b
   }
 
   m_DrawPositions.push_back(snapped_pos);
-  m_DrawTiles.push_back(GetPreviewTile(snapped_pos));
 
-  auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
-  if (layer)
+  auto preview_tile = GetPreviewTile(snapped_pos);
+  if (preview_tile)
   {
-    layer->SetPreviewTiles(m_DrawTiles);
+    m_DrawTiles.push_back(preview_tile.Value());
+
+    auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
+    if (layer)
+    {
+      layer->SetPreviewTiles(m_DrawTiles);
+    }
+  }
+
+  auto preview_anim = GetPreviewAnimation(snapped_pos);
+  if (preview_anim)
+  {
+    m_DrawAnims.push_back(preview_anim.Value());
+
+    auto layer = m_MapEditor.GetManualTileManager().GetLayerManager(m_LayerIndex);
+    if (layer)
+    {
+      layer->SetPreviewAnimations(m_DrawAnims);
+    }
   }
 }
 
@@ -119,6 +154,7 @@ void MapEditorToolManualTileLayerDraw::DrawEnd(const Vector2 & pos, bool alt, bo
   if (layer)
   {
     layer->CommitPreviewTiles();
+    layer->CommitPreviewAnimations();
   }
 }
 
@@ -133,11 +169,30 @@ void MapEditorToolManualTileLayerDraw::DrawCancel()
   }
 }
 
-MapTile MapEditorToolManualTileLayerDraw::GetPreviewTile(const Vector2 & pos)
+Optional<MapTile> MapEditorToolManualTileLayerDraw::GetPreviewTile(const Vector2 & pos)
 {
-  MapTile preview_tile;
-  preview_tile.x = pos.x;
-  preview_tile.y = pos.y;
-  m_MapEditor.GetViewer().SetTileFrameInfo(preview_tile, m_FrameId);
-  return preview_tile;
+  if (m_Animation == false)
+  {
+    MapTile preview_tile;
+    preview_tile.x = pos.x;
+    preview_tile.y = pos.y;
+    m_MapEditor.GetViewer().SetTileFrameInfo(preview_tile, m_FrameId);
+    return preview_tile;
+  }
+
+  return {};
+}
+
+Optional<MapAnimatedTile> MapEditorToolManualTileLayerDraw::GetPreviewAnimation(const Vector2 & pos)
+{
+  if (m_Animation)
+  {
+    MapAnimatedTile preview_tile;
+    preview_tile.x = pos.x;
+    preview_tile.y = pos.y;
+    m_MapEditor.GetViewer().SetAnimFrameInfo(preview_tile, m_FrameId);
+    return preview_tile;
+  }
+
+  return {};
 }

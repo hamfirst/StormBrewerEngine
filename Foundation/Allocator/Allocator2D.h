@@ -3,6 +3,7 @@
 #include "Foundation/Common.h"
 
 #include <binpack/GuillotineBinPack.h>
+#include <binpack/ShelfBinPack.h>
 
 struct Allocator2DResult
 {
@@ -19,4 +20,15 @@ public:
 
 private:
   rbp::GuillotineBinPack m_BinPacker;
+};
+
+class Allocator2DShelf
+{
+public:
+  Allocator2DShelf(int width);
+
+  Optional<Allocator2DResult> Allocate(int width, int height);
+
+private:
+  rbp::ShelfBinPack m_BinPacker;
 };

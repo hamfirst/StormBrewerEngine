@@ -91,6 +91,21 @@
     <ClCompile Include="QtLerpVar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationTrack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_AnimationTrack.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AnimationTrack.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AnimationTrack.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_AnimationTrack.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QTUtil.h">
@@ -116,6 +131,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QtLerpVar.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AnimationTrack.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

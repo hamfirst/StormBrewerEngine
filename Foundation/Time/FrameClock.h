@@ -11,6 +11,7 @@ public:
 
   void WaitUntilNextFrame();
   void BeginFrame();
+  void RemoveExtra();
 
   double GetTimeUntilNextFrame();
   double GetFramePercent();

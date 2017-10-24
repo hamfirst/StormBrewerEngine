@@ -15,7 +15,7 @@ public:
   GameClientInstanceData(GameContainer & game_container, GameController & game_controller, GameClientController & client_controller, 
     GameFullState & net_state, NotNullPtr<ClientLocalData> local_data, std::size_t num_local_clients, GameStage & stage,
     GameSharedInstanceResources & shared_resources, GameClientInstanceResources & client_resources, GameClientEventSender & event_sender, 
-    GameServerEventResponder & server_event_responder);
+    GameServerEventResponder & server_event_responder, ServerObjectEventSystem & server_object_event_system);
 
   GameClientInstanceData(const GameClientInstanceData & rhs) = default;
   GameClientInstanceData(GameClientInstanceData && rhs) = default;
@@ -23,6 +23,7 @@ public:
   GameClientInstanceData & operator =(const GameClientInstanceData & rhs) = default;
   GameClientInstanceData & operator =(GameClientInstanceData && rhs) = default;
 
+  GameController & GetGameController();
   GameFullState & GetFullState();
   GameInstanceData & GetGameState();
   ServerObjectManager & GetServerObjectManager();
@@ -36,6 +37,7 @@ public:
   GameClientInstanceResources & GetClientInstanceResources();
 
   GameClientEventSender & GetEventSender();
+  ServerObjectEventSystem & GetServerObjectEventSystem();
 
   GameLogicContainer GetLogicContainer();
 private:
@@ -55,5 +57,6 @@ private:
 
   GameClientEventSender & m_EventSender;
   GameServerEventResponder & m_EventResponder;
+  ServerObjectEventSystem & m_ServerObjectEventSystem;
   int m_SendTimer;
 };

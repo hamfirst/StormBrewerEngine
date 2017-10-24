@@ -65,7 +65,7 @@
 
     <script type='text/javascript'>
 
-      if(window.AudioContext == null || window.WebAssembly == null || window.RTCPeerConnection == null) {
+      if((window.AudioContext || window.webkitAudioContext) == null  || window.WebAssembly == null || window.RTCPeerConnection == null) {
         var loading = document.getElementById('loading');
         loading.style.display = "none";
         var logo = document.getElementById('logo');

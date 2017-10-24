@@ -1,7 +1,8 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameClientGlobalResources.h"
 #include "Engine/UI/Prototype/UISoundPrototypeEffects.h"
 #include "Runtime/Entity/EntityResource.h"
+#include "Runtime/Asset/Asset.h"
 
 GameClientGlobalResources::GameClientGlobalResources()
 {
@@ -27,12 +28,12 @@ bool GameClientGlobalResources::IsLoaded() const
 {
   return
     m_Assets.AllLoadedSuccessfully() &&
-    TitleImage->IsLoaded() &&
+    TitleImage.IsLoaded() &&
     PlayerEntity.IsLoaded() &&
     Staging.IsLoaded() &&
     Tutorial.IsLoaded() &&
-    (MainMenuMusic->IsLoaded() || MainMenuMusic->IsError()) &&
-    UISoundEffects.m_ButtonHoverSfx->IsLoaded() &&
-    UISoundEffects.m_ButtonPressedSfx->IsLoaded() &&
-    UISoundEffects.m_MenuBackSfx->IsLoaded();
+    MainMenuMusic.LoadingFinished() &&
+    UISoundEffects.m_ButtonHoverSfx.IsLoaded() &&
+    UISoundEffects.m_ButtonPressedSfx.IsLoaded() &&
+    UISoundEffects.m_MenuBackSfx.IsLoaded();
 }

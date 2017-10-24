@@ -4,6 +4,7 @@
 
 #include "SpriteBaseDef.refl.h"
 #include "Runtime/FrameData/FrameData.refl.meta.h"
+#include "Runtime/SpriteBase/SpriteAnimationEventDef.refl.meta.h"
 
 
 template <>
@@ -157,10 +158,111 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>::field_data<1, Self> : public S
 };
 
 template <>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 4;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "SpriteBaseAnimationEvent"; }
+  static constexpr auto GetNameHash() { return 0x89FDF2FA; }
+  static SpriteBaseAnimationEvent & GetDefault() { static SpriteBaseAnimationEvent def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<0>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_Frame"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x38CEACAD; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_Frame; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<0, Self> : public StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_Frame; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_Frame; }
+  void SetDefault() { self.m_Frame = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_Frame; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<1>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_FrameDelay"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x70FF55B4; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_FrameDelay; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_FrameDelay; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_FrameDelay; }
+  void SetDefault() { self.m_FrameDelay = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_FrameDelay; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
+{
+  using member_type = RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>
+  static constexpr auto GetName() { return "m_EventData"; }
+  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF18D6131; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<2, Self> : public StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>> & Get() { return self.m_EventData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>>> & Get() const { return self.m_EventData; }
+  void SetDefault() { self.m_EventData = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_EventData; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<3>
+{
+  using member_type = ROpaque<std::vector<Box> >; // ROpaque<std::vector<Box, std::allocator<Box> > >
+  static constexpr auto GetName() { return "m_EventArea"; }
+  static constexpr auto GetType() { return "ROpaque<std::vector<Box, std::allocator<Box> > >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF7226F64; }
+  static constexpr unsigned GetTypeNameHash() { return 0x69BF77B3; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventArea; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<3, Self> : public StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ROpaque<std::vector<Box> >> & Get() { return self.m_EventArea; }
+  std::add_const_t<std::remove_reference_t<ROpaque<std::vector<Box> >>> & Get() const { return self.m_EventArea; }
+  void SetDefault() { self.m_EventArea = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_EventArea; }
+};
+
+template <>
 struct StormReflTypeInfo<SpriteBaseDefAnimation>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -211,6 +313,28 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data<1, Self> : public S
   match_const_t<Self, RMergeList<SpriteBaseDefAnimFrame>> & Get() { return self.m_Frames; }
   std::add_const_t<std::remove_reference_t<RMergeList<SpriteBaseDefAnimFrame>>> & Get() const { return self.m_Frames; }
   void SetDefault() { self.m_Frames = StormReflTypeInfo<SpriteBaseDefAnimation>::GetDefault().m_Frames; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data_static<2>
+{
+  using member_type = RMergeList<SpriteBaseAnimationEvent>; // RMergeList<SpriteBaseAnimationEvent>
+  static constexpr auto GetName() { return "m_Events"; }
+  static constexpr auto GetType() { return "RMergeList<SpriteBaseAnimationEvent>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x1EB80082; }
+  static constexpr unsigned GetTypeNameHash() { return 0xAE386DE0; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimation::m_Events; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data<2, Self> : public StormReflTypeInfo<SpriteBaseDefAnimation>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<SpriteBaseAnimationEvent>> & Get() { return self.m_Events; }
+  std::add_const_t<std::remove_reference_t<RMergeList<SpriteBaseAnimationEvent>>> & Get() const { return self.m_Events; }
+  void SetDefault() { self.m_Events = StormReflTypeInfo<SpriteBaseDefAnimation>::GetDefault().m_Events; }
 };
 
 template <>
@@ -318,7 +442,7 @@ namespace StormReflFileInfo
 {
   struct SpriteBaseDef
   {
-    static const int types_n = 4;
+    static const int types_n = 5;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -337,11 +461,17 @@ namespace StormReflFileInfo
   template <>
   struct SpriteBaseDef::type_info<2>
   {
-    using type = ::SpriteBaseDefAnimation;
+    using type = ::SpriteBaseAnimationEvent;
   };
 
   template <>
   struct SpriteBaseDef::type_info<3>
+  {
+    using type = ::SpriteBaseDefAnimation;
+  };
+
+  template <>
+  struct SpriteBaseDef::type_info<4>
   {
     using type = ::SpriteBaseDef;
   };

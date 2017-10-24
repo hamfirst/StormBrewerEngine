@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeTutorial.h"
 #include "GameClient/GameModeMainMenu.h"
@@ -25,7 +25,7 @@ GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings 
   m_Paused(false)
 {
   auto & container = GetContainer();
-  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, 0, true, nullptr, nullptr);
+  m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, *this, 0, true);
   m_InstanceContainer->Load(game_settings);
 }
 
@@ -43,11 +43,10 @@ void GameModeTutorial::Initialize()
 
 void GameModeTutorial::OnAssetsLoaded()
 {
-  m_InstanceData = std::make_unique<GameClientInstanceData>(m_InstanceContainer->GetClientInstanceData(*this));
   m_ClientSystems = std::make_unique<GameClientSystems>(GetContainer());
 
   auto & container = GetContainer();
-  container.SetInstanceData(m_InstanceData.get());
+  container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
   auto game_logic = m_InstanceContainer->GetLogicContainer(true);
@@ -57,11 +56,11 @@ void GameModeTutorial::OnAssetsLoaded()
 #endif
 
   m_InstanceContainer->GetGameController().FillWithBots(game_logic, 0);
-  m_InstanceContainer->GetInstanceData().m_Players[0].m_AIPlayerInfo.Clear();
+  m_InstanceContainer->GetGlobalInstanceData().m_Players[0].m_AIPlayerInfo.Clear();
 
   m_InstanceContainer->GetGameController().StartGame(game_logic);
 
-  m_InstanceContainer->GetInstanceData().m_Score[2] = 4;
+  m_InstanceContainer->GetGlobalInstanceData().m_Score[2] = 4;
 
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();
@@ -125,8 +124,10 @@ void GameModeTutorial::Update()
   }
 
   auto & container = GetContainer();
-  auto & instance_data = *m_InstanceData.get();
-  auto & game_data = instance_data.GetGameState();
+  auto & instance_data = *m_InstanceContainer.get();
+  auto & game_data = instance_data.GetGlobalInstanceData();
+
+  container.GetWindow().Update();
 
   auto & engine_state = container.GetEngineState();
   auto comp_system = engine_state.GetComponentSystem();
@@ -134,13 +135,18 @@ void GameModeTutorial::Update()
   auto visual_effects = engine_state.GetVisualEffectManager();
   auto map_system = engine_state.GetMapSystem();
 
-  if (m_FrameClock.ShouldSkipFrameUpdate() == false)
+  auto & ui_manager = container.GetClientSystems()->GetUIManager();
+  auto & input_manager = container.GetClientSystems()->GetInputManager();
+
+  for (int index = 0; index < 3 && m_FrameClock.ShouldSkipFrameUpdate() == false; ++index)
   {
     m_FrameClock.BeginFrame();
     m_Sequencer.Update(1.0f / 60.0f);
 
     if (m_Paused == false)
     {
+      input_manager.Update();
+
       PROFILE_SCOPE("Server update");
 
       entity_system->BeginFrame();
@@ -168,22 +174,16 @@ void GameModeTutorial::Update()
     }
   }
 
+  m_FrameClock.RemoveExtra();
+
   {
     PROFILE_SCOPE("VFX update");
     visual_effects->Update();
   }
 
-  auto & ui_manager = container.GetClientSystems()->GetUIManager();
-  auto & input_manager = container.GetClientSystems()->GetInputManager();
-
   {
     PROFILE_SCOPE("UI update");
     ui_manager.Update();
-  }
-
-  {
-    PROFILE_SCOPE("Input update");
-    input_manager.Update();
   }
 }
 
@@ -250,7 +250,7 @@ bool GameModeTutorial::IsLoaded()
   return GameMode::IsLoaded();
 }
 
-void GameModeTutorial::SendClientEvent(std::size_t class_id, const void * event_ptr)
+void GameModeTutorial::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
   auto game = m_InstanceContainer->GetLogicContainer(true);
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);

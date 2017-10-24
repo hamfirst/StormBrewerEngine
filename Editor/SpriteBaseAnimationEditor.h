@@ -8,6 +8,7 @@
 class SpriteBaseEditor;
 class SpriteBaseTextureLoadList;
 class SpriteBaseAnimationFrameListEditorDialog;
+class SpriteBaseAnimationEventEditorDialog;
 
 class SpriteBaseAnimationEditor : public GenericListFrame
 {
@@ -19,11 +20,14 @@ public:
 protected:
 
   void OpenAnimEditorDialog(int animation_index = -1);
+  void OpenAnimEventDialog(int animation_index);
 
 public slots:
 
   void handleAnimDialogAccepted();
   void handleAnimDialogClosed();
+
+  void handleEventDialogClosed();
 
 private:
 
@@ -32,5 +36,6 @@ private:
   SpriteBaseTextureLoadList & m_TextureAccess;
 
   std::vector<std::unique_ptr<SpriteBaseAnimationFrameListEditorDialog>> m_EditorDialogs;
+  std::vector<std::unique_ptr<SpriteBaseAnimationEventEditorDialog>> m_EventDialogs;
 };
 

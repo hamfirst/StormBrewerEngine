@@ -28,13 +28,16 @@ public:
   void CatastrophicFailure();
 
   void HandleGlobalEvent(std::size_t event_class_id, const void * event_ptr);
+  void HandleAuthEvent(std::size_t event_class_id, const void * event_ptr);
   
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderGlobalEvent & ev);
+  void STORM_REFL_FUNC HandlePlaceholderAuthEvent(const PlaceholderServerAuthEvent & ev);
 
 private:
   GameContainer & m_GameContainer;
 
-  std::vector<Delegate<void, const void *>> m_EventCallbacks;
+  std::vector<Delegate<void, const void *>> m_GlobalEventCallbacks;
+  std::vector<Delegate<void, const void *>> m_AuthEventCallbacks;
 
 };
 

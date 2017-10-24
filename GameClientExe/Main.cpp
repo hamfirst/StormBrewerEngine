@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef _DEBUG
-  g_LagSim = 100;
+  g_LagSim = 0;
 #endif
 
 #ifdef _WEB
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #else
 
-  int multiplier = 2;
+  int multiplier = 3;
 #endif
   for (int index = 0; index < argc; index++)
   {
@@ -125,7 +125,10 @@ int main(int argc, char *argv[])
   EngineRenderInit();
 
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
-  s_GameContainer = std::make_unique<GameContainer>(window);
+
+  auto init_settings = std::make_unique<GameContainerInitSettings>();
+  //init_settings->m_AutoBotGame = true;
+  s_GameContainer = std::make_unique<GameContainer>(window, std::move(init_settings));
 
 #ifdef _WEB
 

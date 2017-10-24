@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeOnlineGameplay.h"
 #include "GameClient/GameModeMainMenu.h"
@@ -42,9 +42,9 @@ void GameModeConnecting::OnAssetsLoaded()
     Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 35, 30), Vector2(60, 25)), "Back", &container.GetClientGlobalResources().UISoundEffects, true);
   m_Back->SetOnClickCallback([this]() { Back(); });
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_FrameClock.Start();
 }
@@ -52,6 +52,7 @@ void GameModeConnecting::OnAssetsLoaded()
 void GameModeConnecting::Update()
 {
   auto & container = GetContainer();
+  container.GetWindow().Update();
 
   if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
@@ -89,8 +90,8 @@ void GameModeConnecting::Render()
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
-  render_util.Clear();
 
+  render_util.Clear();
   render_state.EnableBlendMode();
 
   auto texture = GetAssets().GetTexture("logo");
@@ -169,7 +170,7 @@ void GameModeConnecting::Render()
         auto text_size = g_TextManager.GetTextSize(text, -1);
 
         auto text_pos = window_size / 2;
-        text_pos.y -= 200;
+        text_pos.y -= 120;
         text_pos.x -= text_size.Size().x / 2;
 
         g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));

@@ -50,6 +50,15 @@ Window & Window::operator = (Window && rhs)
   return *this;
 }
 
+void Window::Update() const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.UpdateWindow(m_WindowId);
+}
 
 void Window::MakeCurrent() const
 {

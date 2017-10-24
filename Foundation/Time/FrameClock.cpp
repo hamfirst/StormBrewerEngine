@@ -23,7 +23,7 @@ bool FrameClock::ShouldSkipFrameRender()
 
 bool FrameClock::ShouldSkipFrameUpdate()
 {
-  return GetTimeSeconds() - m_LastFrame < m_FrameInterval;
+  return GetTimeSeconds() - m_LastFrame < m_FrameInterval * 1.2f;
 }
 
 void FrameClock::WaitUntilNextFrame()
@@ -43,6 +43,14 @@ void FrameClock::BeginFrame()
 {
   m_LastFrame += m_FrameInterval;
   m_FrameCount++;
+}
+
+void FrameClock::RemoveExtra()
+{
+  while (ShouldSkipFrameUpdate() == false)
+  {
+    m_LastFrame += m_FrameInterval;
+  }
 }
 
 double FrameClock::GetTimeUntilNextFrame()

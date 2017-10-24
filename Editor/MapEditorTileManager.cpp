@@ -1,5 +1,9 @@
 
 
+#include <QApplication>
+#include <QClipboard>
+
+#include "StormRefl/StormReflJsonStd.h"
 #include "StormData/StormDataJson.h"
 
 #include "Foundation/BasicTypes/BasicTypeFuncs.h"
@@ -8,6 +12,7 @@
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
 
 #include "MapEditorTileManager.h"
@@ -21,22 +26,50 @@ MapEditorTileManager::MapEditorTileManager(NotNullPtr<MapEditor> editor, MapDef 
   m_InitialSyncComplete(false),
   m_RecreateDrawInfo(false),
   m_IgnoreTextureReloads(false),
-  m_Watcher(m_Editor),
+  m_TileWatcher(m_Editor),
+  m_AnimWatcher(m_Editor),
   m_LocalChange(false),
   m_Hidden(false)
 {
-  auto layer_path = ".m_ManualTileLayers[" + std::to_string(m_LayerIndex) + "].m_Tiles";
-  m_Watcher.SetPath(layer_path.data(), false, true, [=] { return m_Map.m_ManualTileLayers.HasAt(layer_index); });
-  m_Watcher.SetChangeCallback([=](const ReflectionChangeNotification & change) { HandleListChange(change); });
-  m_Watcher.SetChildChangeCallback([=](const ReflectionChangeNotification & change, std::size_t index) { HandleChildChange(change, index); });
+  auto layer_tile_path = ".m_ManualTileLayers[" + std::to_string(m_LayerIndex) + "].m_Tiles";
+  m_TileWatcher.SetPath(layer_tile_path.data(), false, true, [=] { return m_Map.m_ManualTileLayers.HasAt(layer_index); });
+  m_TileWatcher.SetChangeCallback([=](const ReflectionChangeNotification & change) { HandleTileListChange(change); });
+  m_TileWatcher.SetChildChangeCallback([=](const ReflectionChangeNotification & change, std::size_t index) { HandleTileChildChange(change, index); });
+
+  auto layer_anim_path = ".m_ManualTileLayers[" + std::to_string(m_LayerIndex) + "].m_Animations";
+  m_AnimWatcher.SetPath(layer_anim_path.data(), false, true, [=] { return m_Map.m_ManualTileLayers.HasAt(layer_index); });
+  m_AnimWatcher.SetChangeCallback([=](const ReflectionChangeNotification & change) { HandleAnimListChange(change); });
+  m_AnimWatcher.SetChildChangeCallback([=](const ReflectionChangeNotification & change, std::size_t index) { HandleAnimChildChange(change, index); });
 
   SyncTileSheet();
+}
+
+void MapEditorTileManager::Update()
+{
+  auto tile_sheet = m_TileSheet.GetResource();
+  if (tile_sheet == nullptr)
+  {
+    return;
+  }
+
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  m_NumFrames++;
+  for (auto & elem : m_AnimInfo.Value())
+  {
+    tile_sheet->FrameAdvance(elem.second.m_State);
+  }
 }
 
 void MapEditorTileManager::SyncTiles()
 {
   m_SelectedTileOffset = {};
+  m_SelectedAnimOffset = {};
   m_SelectedTiles.clear();
+  m_SelectedAnimations.clear();
 
   if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false)
   {
@@ -46,39 +79,76 @@ void MapEditorTileManager::SyncTiles()
   m_TileLocations.Emplace();
   m_TileLocations->Reserve((m_Map.m_ManualTileLayers[m_LayerIndex].m_Tiles.HighestIndex() + 2) * 2);
 
-  m_SpatialDatabase.Emplace();
+  m_TileSpatialDatabase.Emplace();
 
-  Optional<Box> map_extents;
+  m_AnimInfo.Emplace();
+  m_AnimInfo->Reserve((m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations.HighestIndex() + 2) * 2);
+  m_AnimSpatialDatabase.Emplace();
 
-  std::vector<std::size_t> used_indices;
+  Optional<Box> tile_map_extents;
+
+  std::vector<std::size_t> used_tile_indices;
   std::vector<std::pair<std::size_t, Box>> tiles;
   for (auto elem : m_Map.m_ManualTileLayers[m_LayerIndex].m_Tiles)
   {
     Box tile_box = GetTileBounds(elem.second.Value());
 
-    if (map_extents == false)
+    if (tile_map_extents == false)
     {
-      map_extents.Emplace(tile_box);
+      tile_map_extents.Emplace(tile_box);
     }
     else
     {
-      BoxUnionInPlace(map_extents.Value(), tile_box);
+      BoxUnionInPlace(tile_map_extents.Value(), tile_box);
     }
 
     m_TileLocations->EmplaceAt(elem.first, tile_box);
-    used_indices.push_back(elem.first);
+    used_tile_indices.push_back(elem.first);
     tiles.emplace_back(std::make_pair(elem.first, tile_box));
   }
 
-  if (map_extents)
+  Optional<Box> anim_map_extents;
+
+  std::vector<std::size_t> used_anim_indices;
+  std::vector<std::pair<std::size_t, Box>> anims;
+  for (auto elem : m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations)
   {
-    m_SpatialDatabase->InsertBatch(map_extents.Value(), tiles);
+    Box tile_box = GetAnimBounds(elem.second.Value());
+
+    if (anim_map_extents == false)
+    {
+      anim_map_extents.Emplace(tile_box);
+    }
+    else
+    {
+      BoxUnionInPlace(anim_map_extents.Value(), tile_box);
+    }
+
+    AnimationInfo anim_info;
+    anim_info.m_Position = Vector2(elem.second->x, elem.second->y);
+    anim_info.m_Bounds = tile_box;
+    m_TileSheet.GetResource()->InitAnimation(elem.second->m_Animation, elem.second->m_FrameOffset + m_NumFrames, anim_info.m_State);
+
+    m_AnimInfo->EmplaceAt(elem.first, anim_info);
+    used_anim_indices.push_back(elem.first);
+    anims.emplace_back(std::make_pair(elem.first, tile_box));
   }
 
-  m_IdAllocator.Emplace(used_indices.size() * 2, used_indices);
+  if (tile_map_extents)
+  {
+    m_TileSpatialDatabase->InsertBatch(tile_map_extents.Value(), tiles);
+  }
+
+  if (anim_map_extents)
+  {
+    m_AnimSpatialDatabase->InsertBatch(anim_map_extents.Value(), anims);
+  }
+
+  m_TileIdAllocator.Emplace(used_tile_indices.size() * 2, used_tile_indices);
+  m_AnimIdAllocator.Emplace(used_anim_indices.size() * 2, used_anim_indices);
 
   m_DirtyGrids.Emplace();
-  m_SpatialDatabase->VisitAll([&](uint32_t grid_id, auto & node) { m_DirtyGrids->push_back(grid_id); });
+  m_TileSpatialDatabase->VisitAll([&](uint32_t grid_id, auto & node) { m_DirtyGrids->push_back(grid_id); });
 
   m_RecreateDrawInfo = true;
   m_InitialSyncComplete = true;
@@ -107,7 +177,7 @@ void MapEditorTileManager::InsertTile(const MapTile & tile)
 
   std::vector<std::size_t> existing_tiles;
   Box check_box = { {tile.x, tile.y}, {tile.x, tile.y} };
-  m_SpatialDatabase->Query(check_box, existing_tiles);
+  m_TileSpatialDatabase->Query(check_box, existing_tiles);
 
   for (auto tile_index : existing_tiles)
   {
@@ -130,7 +200,7 @@ void MapEditorTileManager::InsertTile(const MapTile & tile)
     }
   }
 
-  auto id = m_IdAllocator->Allocate();
+  auto id = m_TileIdAllocator->Allocate();
 
   m_LocalChange = true;
   m_Editor->DisableChangeCallbacks();
@@ -140,7 +210,7 @@ void MapEditorTileManager::InsertTile(const MapTile & tile)
 
   m_TileLocations->EmplaceAt(id, box);
 
-  m_SpatialDatabase->Insert(box, id);
+  m_TileSpatialDatabase->Insert(box, id);
   m_DrawInfo->VisitGridIds(box, [this](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
 }
 
@@ -164,7 +234,7 @@ void MapEditorTileManager::CommitPreviewTiles()
   }
 
   std::vector<std::size_t> existing_tiles;
-  m_SpatialDatabase->Query(bounds, existing_tiles);
+  m_TileSpatialDatabase->Query(bounds, existing_tiles);
 
   auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
 
@@ -231,7 +301,6 @@ void MapEditorTileManager::CommitPreviewTiles()
   }
 
   std::vector<std::pair<std::size_t, Box>> new_tile_boxes;
-  m_SpatialDatabase->InsertBatch(bounds, new_tile_boxes);
 
   if (new_tiles.size() > 0)
   {
@@ -240,7 +309,7 @@ void MapEditorTileManager::CommitPreviewTiles()
     for (auto tile_index : new_tiles)
     {
       auto & new_tile = m_PreviewTiles[tile_index];
-      auto id = m_IdAllocator->Allocate();
+      auto id = m_TileIdAllocator->Allocate();
       layer.m_Tiles.EmplaceAt(id, new_tile);
 
       auto box = GetTileBounds(new_tile);
@@ -258,14 +327,13 @@ void MapEditorTileManager::CommitPreviewTiles()
       }
     }
 
-    m_SpatialDatabase->InsertBatch(new_tile_bounds.Value(), new_tile_boxes);
+    m_TileSpatialDatabase->InsertBatch(new_tile_bounds.Value(), new_tile_boxes);
     AddToDirtyGridList(new_tile_bounds);
   }
 
   m_Editor->EnableChangeCallbacks();
   m_Editor->CommitChanges();
   m_LocalChange = false;
-
 }
 
 void MapEditorTileManager::SelectTiles(const Box & box)
@@ -275,19 +343,19 @@ void MapEditorTileManager::SelectTiles(const Box & box)
     return;
   }
 
-  auto old_bounds = GetTileBounds(m_SelectedTiles);
+  auto old_bounds = GetMultiTileBounds(m_SelectedTiles);
   if (old_bounds)
   {
     AddToDirtyGridList(old_bounds.Value());
   }
 
   m_SelectedTiles.clear();
-  m_SpatialDatabase->Query(box, m_SelectedTiles);
+  m_TileSpatialDatabase->Query(box, m_SelectedTiles);
   m_SelectedTileOffset = {};
 
   if (m_SelectedTiles.size() > 0)
   {
-    auto bounds = GetTileBounds(m_SelectedTiles).Value();
+    auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
     if (old_bounds)
     {
       BoxUnionInPlace(bounds, old_bounds.Value());
@@ -295,192 +363,6 @@ void MapEditorTileManager::SelectTiles(const Box & box)
 
     AddToDirtyGridList(bounds);
   }
-}
-
-void MapEditorTileManager::ClearSelection()
-{
-  if (m_SelectedTiles.size() > 0)
-  {
-    auto bounds = GetTileBounds(m_SelectedTiles).Value();
-    AddToDirtyGridList(bounds);
-
-    m_SelectedTiles.clear();
-    m_SelectedTileOffset = {};
-  }
-}
-
-void MapEditorTileManager::DeleteSelectedTiles()
-{
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false || m_SelectedTiles.size() == 0)
-  {
-    return;
-  }
-
-  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
-  auto bounds = GetTileBounds(m_SelectedTiles).Value();
-
-  m_LocalChange = true;
-  m_Editor->BeginTransaction();
-  m_Editor->DisableChangeCallbacks();
-
-  for (auto sel_tile : m_SelectedTiles)
-  {
-    layer.m_Tiles.RemoveAt(sel_tile);
-    m_TileLocations->RemoveAt(sel_tile);
-  }
-
-  m_SpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
-  m_SelectedTiles.clear();
-
-  m_Editor->EnableChangeCallbacks();
-  m_Editor->CommitChanges();
-  m_LocalChange = false;
-
-  AddToDirtyGridList(bounds);
-}
-
-void MapEditorTileManager::SetSelectedTileOffset(const Vector2 & offset)
-{
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
-  {
-    return;
-  }
-
-  m_SelectedTileOffset = offset;
-}
-
-void MapEditorTileManager::CommitSelectedTileOffset()
-{
-  if (m_SelectedTiles.size() == 0)
-  {
-    return;
-  }
-
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
-  {
-    return;
-  }
-
-  if (m_SelectedTileOffset.x == 0 && m_SelectedTileOffset.y == 0)
-  {
-    return;
-  }
-
-  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
-
-  auto bounds = GetTileBounds(m_SelectedTiles).Value();
-
-  std::vector<std::size_t> existing_tiles;
-  m_SpatialDatabase->Query(bounds, existing_tiles);
-
-  std::sort(m_SelectedTiles.begin(), m_SelectedTiles.end());
-  std::sort(existing_tiles.begin(), existing_tiles.end());
-
-  std::vector<std::size_t> non_selected;
-  std::set_difference(existing_tiles.begin(), existing_tiles.end(), m_SelectedTiles.begin(), m_SelectedTiles.end(),
-    std::inserter(non_selected, non_selected.begin()));
-
-  std::vector<MapTile> non_selected_tiles;
-  non_selected_tiles.reserve(non_selected.size());
-
-  for (auto index : non_selected)
-  {
-    non_selected_tiles.push_back(layer.m_Tiles[index].Value());
-  }
-
-  m_LocalChange = true;
-  m_Editor->BeginTransaction();
-  m_Editor->DisableChangeCallbacks();
-
-  std::vector<std::pair<std::size_t, Box>> tile_locations;
-  std::vector<std::size_t> removed_tiles;
-
-  for (auto index : m_SelectedTiles)
-  {
-    auto tile = layer.m_Tiles[index].Value();
-
-    for (std::size_t non_selected_index = 0, end = non_selected_tiles.size(); non_selected_index < end; ++non_selected_index)
-    {
-      auto & non_selected_tile = non_selected_tiles[non_selected_index];
-      if (tile.x == non_selected_tile.x && tile.y == non_selected_tile.y && tile.m_TextureHash == non_selected_tile.m_TextureHash)
-      {
-        layer.m_Tiles.RemoveAt(non_selected[non_selected_index]);
-        m_TileLocations->RemoveAt(non_selected[non_selected_index]);
-
-        removed_tiles.push_back(non_selected[non_selected_index]);
-      }
-    }
-
-    tile.x += m_SelectedTileOffset.x;
-    tile.y += m_SelectedTileOffset.y;
-
-    layer.m_Tiles[index] = tile;
-
-    auto box = GetTileBounds(tile);
-    tile_locations.push_back(std::make_pair(index, box));
-
-    (*m_TileLocations)[index] = box;
-  }
-
-  m_Editor->EnableChangeCallbacks();
-  m_Editor->CommitChanges();
-  m_LocalChange = false;
-
-  auto new_bounds = GetTileBounds(m_SelectedTiles).Value();
-  m_SpatialDatabase->RemoveBatch(bounds, removed_tiles);
-  m_SpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
-  m_SpatialDatabase->InsertBatch(new_bounds, tile_locations);
-  BoxUnionInPlace(bounds, new_bounds);
-
-  AddToDirtyGridList(bounds);
-
-  m_SelectedTileOffset = {};
-}
-
-Optional<MapTile> MapEditorTileManager::FindTile(const Vector2 & pos)
-{
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
-  {
-    return{};
-  }
-
-  Box b = { pos, pos };
-
-  std::size_t outp_index;
-  if (m_SpatialDatabase->QueryAny(b, outp_index))
-  {
-    return m_Map.m_ManualTileLayers[m_LayerIndex].m_Tiles[outp_index].Value();
-  }
-
-  return{};
-}
-
-bool MapEditorTileManager::IsOnSelectedTile(const Vector2 & pos)
-{
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
-  {
-    return false;
-  }
-
-  if (m_SelectedTiles.size() == 0)
-  {
-    return false;
-  }
-
-  Box b = { pos, pos };
-
-  std::vector<std::size_t> outp_indices;
-  m_SpatialDatabase->Query(b, outp_indices);
-
-  for (auto & index : m_SelectedTiles)
-  {
-    if (vfind(outp_indices, index))
-    {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 void MapEditorTileManager::RemoveTiles(const std::vector<std::size_t> & tiles)
@@ -517,9 +399,690 @@ void MapEditorTileManager::RemoveTiles(const std::vector<std::size_t> & tiles)
 
   if (dead_tiles_box)
   {
-    m_SpatialDatabase->RemoveBatch(dead_tiles_box.Value(), tiles);
+    m_TileSpatialDatabase->RemoveBatch(dead_tiles_box.Value(), tiles);
     m_DrawInfo->VisitGridIds(dead_tiles_box.Value(), [this](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
   }
+}
+
+Optional<MapTile> MapEditorTileManager::FindTile(const Vector2 & pos)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return{};
+  }
+
+  Box b = { pos, pos };
+
+  std::size_t outp_index;
+  if (m_TileSpatialDatabase->QueryAny(b, outp_index))
+  {
+    return m_Map.m_ManualTileLayers[m_LayerIndex].m_Tiles[outp_index].Value();
+  }
+
+  return{};
+}
+
+void MapEditorTileManager::InsertAnimation(const MapAnimatedTile & anim)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+  auto box = GetAnimBounds(anim);
+
+  std::vector<std::size_t> existing_tiles;
+  Box check_box = { { anim.x, anim.y },{ anim.x, anim.y } };
+  m_AnimSpatialDatabase->Query(check_box, existing_tiles);
+
+  for (auto tile_index : existing_tiles)
+  {
+    if (m_AnimInfo->GetAt(tile_index).m_Bounds == box)
+    {
+      if (layer.m_Animations[tile_index]->m_Animation == anim.m_Animation)
+      {
+        return;
+      }
+
+      m_LocalChange = true;
+      m_Editor->DisableChangeCallbacks();
+      layer.m_Animations[tile_index] = anim;
+      m_Editor->EnableChangeCallbacks();
+      m_LocalChange = false;
+
+      RefreshAnimation(tile_index);
+      return;
+    }
+  }
+
+  auto id = m_AnimIdAllocator->Allocate();
+
+  m_LocalChange = true;
+  m_Editor->DisableChangeCallbacks();
+  layer.m_Animations.EmplaceAt(id, anim);
+  m_Editor->EnableChangeCallbacks();
+  m_LocalChange = false;
+
+  AnimationInfo anim_info;
+  anim_info.m_Bounds = box;
+  anim_info.m_Position = Vector2(anim.x, anim.y);
+  m_TileSheet.GetResource()->InitAnimation(anim.m_Animation, anim.m_FrameOffset + m_NumFrames, anim_info.m_State);
+
+  m_AnimInfo->EmplaceAt(id, anim_info);
+  m_AnimSpatialDatabase->Insert(box, id);
+}
+
+void MapEditorTileManager::CommitPreviewAnimations()
+{
+  if (m_PreviewAnims.size() == 0)
+  {
+    return;
+  }
+
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  Box bounds = Box::FromPoint(Vector2(m_PreviewAnims[0].x, m_PreviewAnims[0].y));
+
+  for (auto & tile : m_PreviewAnims)
+  {
+    BoxUnionInPlace(bounds, Box::FromPoint(Vector2(tile.x, tile.y)));
+  }
+
+  std::vector<std::size_t> existing_tiles;
+  m_AnimSpatialDatabase->Query(bounds, existing_tiles);
+
+  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+
+  std::vector<std::size_t> new_tiles;
+  std::vector<std::pair<std::size_t, std::size_t>> replace_tiles;
+
+  for (std::size_t preview_index = 0, preview_end = m_PreviewAnims.size(); preview_index < preview_end; ++preview_index)
+  {
+    bool found = false;
+
+    auto & preview = m_PreviewAnims[preview_index];
+    for (std::size_t existing_index = 0, existing_end = existing_tiles.size(); existing_index < existing_end; ++existing_index)
+    {
+      auto & existing = layer.m_Animations[existing_tiles[existing_index]].Value();
+
+      if (existing.x == preview.x && existing.y == preview.y && existing.m_Animation == preview.m_Animation)
+      {
+        found = true;
+        replace_tiles.push_back(std::make_pair(preview_index, existing_index));
+        break;
+      }
+    }
+
+    if (found == false)
+    {
+      new_tiles.push_back(preview_index);
+    }
+  }
+
+  if (replace_tiles.size() == 0 && new_tiles.size() == 0)
+  {
+    return;
+  }
+
+  m_LocalChange = true;
+  m_Editor->BeginTransaction();
+  m_Editor->DisableChangeCallbacks();
+
+  if (replace_tiles.size() > 0)
+  {
+    for (auto & replace_tile : replace_tiles)
+    {
+      auto & tile = m_PreviewAnims[replace_tile.first];
+      layer.m_Animations[existing_tiles[replace_tile.second]] = tile;
+    }
+  }
+
+  std::vector<std::pair<std::size_t, Box>> new_tile_boxes;
+
+  if (new_tiles.size() > 0)
+  {
+    Optional<Box> new_tile_bounds;
+
+    for (auto tile_index : new_tiles)
+    {
+      auto & new_tile = m_PreviewAnims[tile_index];
+      auto id = m_AnimIdAllocator->Allocate();
+      layer.m_Animations.EmplaceAt(id, new_tile);
+
+      auto box = GetAnimBounds(new_tile);
+
+      AnimationInfo anim_info;
+      anim_info.m_Bounds = box;
+      anim_info.m_Position = Vector2(new_tile.x, new_tile.y);
+      m_TileSheet.GetResource()->InitAnimation(new_tile.m_Animation, new_tile.m_FrameOffset + m_NumFrames, anim_info.m_State);
+
+      m_AnimInfo->EmplaceAt(id, anim_info);
+
+      new_tile_boxes.emplace_back(std::make_pair(id, box));
+
+      if (new_tile_bounds)
+      {
+        BoxUnionInPlace(new_tile_bounds.Value(), box);
+      }
+      else
+      {
+        new_tile_bounds = box;
+      }
+    }
+
+    m_AnimSpatialDatabase->InsertBatch(new_tile_bounds.Value(), new_tile_boxes);
+  }
+
+  m_Editor->EnableChangeCallbacks();
+  m_Editor->CommitChanges();
+  m_LocalChange = false;
+}
+
+void MapEditorTileManager::SelectAnimations(const Box & box)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  m_SelectedAnimations.clear();
+  m_AnimSpatialDatabase->Query(box, m_SelectedAnimations);
+  m_SelectedAnimOffset = {};
+
+  if (m_SelectedAnimations.size() > 0)
+  {
+    printf("asdf");
+  }
+}
+
+void MapEditorTileManager::RemoveAnimations(const std::vector<std::size_t> & anims)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  m_LocalChange = true;
+  m_Editor->DisableChangeCallbacks();
+  m_Editor->BeginTransaction();
+  for (auto tile_index : anims)
+  {
+    m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations.RemoveAt(tile_index);
+    m_AnimInfo->RemoveAt(tile_index);
+  }
+  m_Editor->EnableChangeCallbacks();
+  m_Editor->CommitChanges();
+  m_LocalChange = false;
+}
+
+Optional<MapAnimatedTile> MapEditorTileManager::FindAnim(const Vector2 & pos)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return{};
+  }
+
+  Box b = { pos, pos };
+
+  std::size_t outp_index;
+  if (m_AnimSpatialDatabase->QueryAny(b, outp_index))
+  {
+    return m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations[outp_index].Value();
+  }
+
+  return{};
+}
+
+bool MapEditorTileManager::HasSelection()
+{
+  return m_SelectedTiles.size() > 0 || m_SelectedAnimations.size() > 0;
+}
+
+void MapEditorTileManager::ClearSelection()
+{
+  if (m_SelectedTiles.size() > 0)
+  {
+    auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
+    AddToDirtyGridList(bounds);
+
+    m_SelectedTiles.clear();
+    m_SelectedTileOffset = {};
+  }
+
+  m_SelectedAnimations.clear();
+  m_SelectedAnimOffset = {};
+}
+
+void MapEditorTileManager::DeleteSelection()
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false || m_SelectedTiles.size() == 0)
+  {
+    return;
+  }
+
+  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+  auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
+
+  m_LocalChange = true;
+  m_Editor->BeginTransaction();
+  m_Editor->DisableChangeCallbacks();
+
+  for (auto sel_tile : m_SelectedTiles)
+  {
+    layer.m_Tiles.RemoveAt(sel_tile);
+    m_TileLocations->RemoveAt(sel_tile);
+  }
+
+  m_TileSpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
+  m_SelectedTiles.clear();
+
+  for (auto sel_tile : m_SelectedAnimations)
+  {
+    layer.m_Animations.RemoveAt(sel_tile);
+    m_AnimInfo->RemoveAt(sel_tile);
+  }
+
+  m_AnimSpatialDatabase->RemoveBatch(bounds, m_SelectedAnimations);
+  m_SelectedAnimations.clear();
+
+  m_Editor->EnableChangeCallbacks();
+  m_Editor->CommitChanges();
+  m_LocalChange = false;
+
+  AddToDirtyGridList(bounds);
+}
+
+void MapEditorTileManager::SetSelectionOffset(const Vector2 & offset)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  m_SelectedTileOffset = offset;
+  m_SelectedAnimOffset = offset;
+}
+
+void MapEditorTileManager::CommitSelectedOffset()
+{
+  if (m_SelectedTiles.size() == 0 && m_SelectedAnimations.size() == 0)
+  {
+    return;
+  }
+
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  m_LocalChange = true;
+  m_Editor->BeginTransaction();
+  m_Editor->DisableChangeCallbacks();
+
+  if ((m_SelectedTileOffset.x != 0 || m_SelectedTileOffset.y != 0) && m_SelectedTiles.size() != 0)
+  {
+    auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+
+    auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
+
+    std::vector<std::size_t> existing_tiles;
+    m_TileSpatialDatabase->Query(bounds, existing_tiles);
+
+    std::sort(m_SelectedTiles.begin(), m_SelectedTiles.end());
+    std::sort(existing_tiles.begin(), existing_tiles.end());
+
+    std::vector<std::size_t> non_selected;
+    std::set_difference(existing_tiles.begin(), existing_tiles.end(), m_SelectedTiles.begin(), m_SelectedTiles.end(),
+      std::inserter(non_selected, non_selected.begin()));
+
+    std::vector<MapTile> non_selected_tiles;
+    non_selected_tiles.reserve(non_selected.size());
+
+    for (auto index : non_selected)
+    {
+      non_selected_tiles.push_back(layer.m_Tiles[index].Value());
+    }
+
+    std::vector<std::pair<std::size_t, Box>> tile_locations;
+    std::vector<std::size_t> removed_tiles;
+
+    for (auto index : m_SelectedTiles)
+    {
+      auto tile = layer.m_Tiles[index].Value();
+
+      for (std::size_t non_selected_index = 0, end = non_selected_tiles.size(); non_selected_index < end; ++non_selected_index)
+      {
+        auto & non_selected_tile = non_selected_tiles[non_selected_index];
+        if (tile.x == non_selected_tile.x && tile.y == non_selected_tile.y && tile.m_TextureHash == non_selected_tile.m_TextureHash)
+        {
+          layer.m_Tiles.RemoveAt(non_selected[non_selected_index]);
+          m_TileLocations->RemoveAt(non_selected[non_selected_index]);
+
+          removed_tiles.push_back(non_selected[non_selected_index]);
+        }
+      }
+
+      tile.x += m_SelectedTileOffset.x;
+      tile.y += m_SelectedTileOffset.y;
+
+      layer.m_Tiles[index] = tile;
+
+      auto box = GetTileBounds(tile);
+      tile_locations.push_back(std::make_pair(index, box));
+
+      (*m_TileLocations)[index] = box;
+    }
+
+    auto new_bounds = GetMultiTileBounds(m_SelectedTiles).Value();
+    m_TileSpatialDatabase->RemoveBatch(bounds, removed_tiles);
+    m_TileSpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
+    m_TileSpatialDatabase->InsertBatch(new_bounds, tile_locations);
+    BoxUnionInPlace(bounds, new_bounds);
+
+    AddToDirtyGridList(bounds);
+
+    m_SelectedTileOffset = {};
+  }
+
+  if ((m_SelectedAnimOffset.x != 0 || m_SelectedAnimOffset.y != 0) && m_SelectedAnimations.size() != 0)
+  {
+    auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+
+    auto bounds = GetMultiAnimBounds(m_SelectedAnimations).Value();
+
+    std::vector<std::size_t> existing_tiles;
+    m_TileSpatialDatabase->Query(bounds, existing_tiles);
+
+    std::sort(m_SelectedAnimations.begin(), m_SelectedAnimations.end());
+    std::sort(existing_tiles.begin(), existing_tiles.end());
+
+    std::vector<std::size_t> non_selected;
+    std::set_difference(existing_tiles.begin(), existing_tiles.end(), m_SelectedTiles.begin(), m_SelectedTiles.end(),
+      std::inserter(non_selected, non_selected.begin()));
+
+    std::vector<MapAnimatedTile> non_selected_tiles;
+    non_selected_tiles.reserve(non_selected.size());
+
+    for (auto index : non_selected)
+    {
+      non_selected_tiles.push_back(layer.m_Animations[index].Value());
+    }
+
+    std::vector<std::pair<std::size_t, Box>> tile_locations;
+    std::vector<std::size_t> removed_tiles;
+
+    for (auto index : m_SelectedAnimations)
+    {
+      auto tile = layer.m_Animations[index].Value();
+
+      for (std::size_t non_selected_index = 0, end = non_selected_tiles.size(); non_selected_index < end; ++non_selected_index)
+      {
+        auto & non_selected_tile = non_selected_tiles[non_selected_index];
+        if (tile.x == non_selected_tile.x && tile.y == non_selected_tile.y && tile.m_Animation == non_selected_tile.m_Animation)
+        {
+          layer.m_Animations.RemoveAt(non_selected[non_selected_index]);
+          m_AnimInfo->RemoveAt(non_selected[non_selected_index]);
+
+          removed_tiles.push_back(non_selected[non_selected_index]);
+        }
+      }
+
+      tile.x += m_SelectedAnimOffset.x;
+      tile.y += m_SelectedAnimOffset.y;
+
+      layer.m_Animations[index] = tile;
+
+      auto box = GetAnimBounds(tile);
+      tile_locations.push_back(std::make_pair(index, box));
+
+      AnimationInfo anim_info;
+      anim_info.m_Bounds = box;
+      anim_info.m_Position = Vector2(tile.x, tile.y);
+      m_TileSheet.GetResource()->InitAnimation(tile.m_Animation, tile.m_FrameOffset + m_NumFrames, anim_info.m_State);
+
+      (*m_AnimInfo)[index] = anim_info;
+    }
+
+    auto new_bounds = GetMultiAnimBounds(m_SelectedAnimations).Value();
+    m_AnimSpatialDatabase->RemoveBatch(bounds, removed_tiles);
+    m_AnimSpatialDatabase->RemoveBatch(bounds, m_SelectedAnimations);
+    m_AnimSpatialDatabase->InsertBatch(new_bounds, tile_locations);
+
+    m_SelectedAnimOffset = {};
+  }
+
+  m_Editor->EnableChangeCallbacks();
+  m_Editor->CommitChanges();
+  m_LocalChange = false;
+}
+
+bool MapEditorTileManager::IsOnSelectedTile(const Vector2 & pos)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return false;
+  }
+
+  if (m_SelectedTiles.size() != 0)
+  {
+    Box b = { pos, pos };
+
+    std::vector<std::size_t> outp_indices;
+    m_TileSpatialDatabase->Query(b, outp_indices);
+
+    for (auto & index : m_SelectedTiles)
+    {
+      if (vfind(outp_indices, index))
+      {
+        return true;
+      }
+    }
+  }
+
+  if (m_SelectedAnimations.size() != 0)
+  {
+    Box b = { pos, pos };
+
+    std::vector<std::size_t> outp_indices;
+    m_AnimSpatialDatabase->Query(b, outp_indices);
+
+    for (auto & index : m_SelectedAnimations)
+    {
+      if (vfind(outp_indices, index))
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool MapEditorTileManager::IsOnPreviewTile(const Vector2 & pos)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return false;
+  }
+
+  if (m_PreviewTiles.size() != 0)
+  {
+    for (auto & tile : m_PreviewTiles)
+    {
+      auto box = GetTileBounds(tile);
+      if (PointInBox(box, pos))
+      {
+        return true;
+      }
+    }
+  }
+
+  if (m_PreviewAnims.size() != 0)
+  {
+    for (auto & tile : m_PreviewAnims)
+    {
+      auto box = GetAnimBounds(tile);
+      if (PointInBox(box, pos))
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+void MapEditorTileManager::DuplicateSelectedToPreview()
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  auto bounds = m_PreviewTileBounds;
+
+  m_PreviewTiles.clear();
+  m_PreviewTileBounds.Clear();
+
+  m_PreviewAnims.clear();
+  m_PreviewAnimBounds.Clear();
+
+  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+
+  for (auto tile_index : m_SelectedTiles)
+  {
+    auto & tile = layer.m_Tiles[tile_index].Value();
+    m_PreviewTiles.push_back(tile);
+
+    if (bounds)
+    {
+      BoxUnionInPlace(bounds.Value(), m_TileLocations->GetAt(tile_index));
+    }
+    else
+    {
+      bounds = m_TileLocations->GetAt(tile_index);
+    }
+  }
+
+
+  for (auto tile_index : m_SelectedAnimations)
+  {
+    auto & tile = layer.m_Animations[tile_index].Value();
+    m_PreviewAnims.push_back(tile);
+
+    if (m_PreviewAnimBounds)
+    {
+      BoxUnionInPlace(bounds.Value(), GetAnimBounds(tile));
+    }
+    else
+    {
+      m_PreviewAnimBounds = GetAnimBounds(tile);
+    }
+  }
+
+  if (bounds)
+  {
+    m_PreviewTileBounds = bounds;
+    AddToDirtyGridList(bounds.Value());
+  }
+}
+
+void MapEditorTileManager::CopySelection()
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  if (m_SelectedTiles.size() == 0 && m_SelectedAnimations.size() == 0)
+  {
+    return;
+  }
+
+  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
+
+  int64_t avg_x = 0;
+  int64_t avg_y = 0;
+  int64_t avg_num = 0;
+
+  for (auto tile_index : m_SelectedTiles)
+  {
+    auto & tile = layer.m_Tiles[tile_index].Value();
+    avg_x += tile.x;
+    avg_y += tile.y;
+    avg_num++;
+  }
+
+  for (auto tile_index : m_SelectedAnimations)
+  {
+    auto & tile = layer.m_Animations[tile_index].Value();
+    avg_x += tile.x;
+    avg_y += tile.y;
+    avg_num++;
+  }
+
+  avg_x /= avg_num;
+  avg_y /= avg_num;
+
+  Vector2 avg_pos = Vector2((int)avg_x, (int)avg_y);
+  m_Editor->GetViewer().SnapToGrid(avg_pos, false, true);
+
+  std::pair<std::vector<MapTile>, std::vector<MapAnimatedTile>> clipboard_info;
+
+  for (auto tile_index : m_SelectedTiles)
+  {
+    auto tile = layer.m_Tiles[tile_index].Value();
+    tile.x -= avg_pos.x;
+    tile.y -= avg_pos.y;
+
+    clipboard_info.first.push_back(tile);
+  }
+
+  for (auto tile_index : m_SelectedAnimations)
+  {
+    auto tile = layer.m_Animations[tile_index].Value();
+    tile.x -= avg_pos.x;
+    tile.y -= avg_pos.y;
+
+    clipboard_info.second.push_back(tile);
+  }
+
+  QString clipboard_data;
+  StormReflEncodeJson(clipboard_info, clipboard_data);
+
+  QClipboard *clipboard = QApplication::clipboard();
+  clipboard->setText(clipboard_data);
+}
+
+void MapEditorTileManager::PasteSelection(const Vector2 & screen_center)
+{
+  auto target_pos = screen_center;
+  m_Editor->GetViewer().SnapToGrid(target_pos, false, true);
+
+  QClipboard *clipboard = QApplication::clipboard();
+  auto clipboard_data = clipboard->text();
+
+  std::pair<std::vector<MapTile>, std::vector<MapAnimatedTile>> clipboard_info;
+  StormReflParseJson(clipboard_info, clipboard_data.toStdString().data());
+
+  for (auto & tile : clipboard_info.first)
+  {
+    tile.x += target_pos.x;
+    tile.y += target_pos.y;
+  }
+
+  for (auto & tile : clipboard_info.second)
+  {
+    tile.x += target_pos.x;
+    tile.y += target_pos.y;
+  }
+
+  SetPreviewTiles(clipboard_info.first);
+  SetPreviewAnimations(clipboard_info.second);
 }
 
 void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
@@ -550,7 +1113,7 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
       grid_draw_elems.m_DrawElems.clear();
 
       std::vector<std::size_t> tile_indices;
-      m_SpatialDatabase->Query(bounding_box, tile_indices);
+      m_TileSpatialDatabase->Query(bounding_box, tile_indices);
 
       struct TileSortInfo
       {
@@ -711,6 +1274,18 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
 
     return true;
   }, false);
+
+  std::vector<std::size_t> anim_ids;
+  m_AnimSpatialDatabase->Query(viewport_bounds, anim_ids);
+
+  for (auto id : anim_ids)
+  {
+    auto anim = m_AnimInfo->TryGet(id);
+    if (anim && vfind(m_SelectedAnimations, id) == false)
+    {
+      SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, anim->m_Position - screen_center);
+    }
+  }
 }
 
 void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center)
@@ -752,6 +1327,7 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
     auto & shader = g_ShaderManager.GetDefaultShader();
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 160));
     texture->GetTexture().BindTexture(0);
 
     vertex_buffer.Bind();
@@ -759,6 +1335,15 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
     vertex_buffer.CreateDefaultBinding(shader);
     vertex_buffer.Draw();
     vertex_buffer.Unbind();
+  }
+
+  for (auto & tile : m_PreviewAnims)
+  {
+    AnimationState anim_state;
+    m_TileSheet.GetResource()->InitAnimation(tile.m_Animation, tile.m_FrameOffset + m_NumFrames, anim_state);
+
+    SpriteEngineData::RenderTile(m_TileSheet, anim_state.m_AnimIndex, anim_state.m_AnimFrame, Vector2(tile.x, tile.y) - screen_center,
+      RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
   }
 }
 
@@ -769,58 +1354,92 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
     return;
   }
 
-  if (m_SelectedTiles.size() == 0)
-  {
-    return;
-  }
-
-  auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
-
   LineVertexBufferBuilder line_builder;
-
   QuadVertexBuilderInfo quad;
 
-  for (auto & texture_data : m_Textures)
+  if (m_SelectedTiles.size() != 0)
   {
-    QuadVertexBufferBuilder builder;
+    auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
 
-    auto texture = texture_data.m_AssetLink.Get();
-    if (texture == nullptr || texture->IsLoaded() == false || texture->GetWidth() <= 0 || texture->GetHeight() <= 0)
+    for (auto & texture_data : m_Textures)
     {
-      continue;
-    }
+      QuadVertexBufferBuilder builder;
 
-    int width_in_frames = (texture->GetWidth() + texture_data.m_FrameWidth - 1) / texture_data.m_FrameWidth;
-
-    for (auto & tile_index : m_SelectedTiles)
-    {
-      auto & tile = layer.m_Tiles[tile_index].Value();
-      if (texture_data.m_TextureNameHash == tile.m_TextureHash)
+      auto texture = texture_data.m_AssetLink.Get();
+      if (texture == nullptr || texture->IsLoaded() == false || texture->GetWidth() <= 0 || texture->GetHeight() <= 0)
       {
-        int src_x = (tile.m_FrameId % width_in_frames) * texture_data.m_FrameWidth;
-        int src_y = (tile.m_FrameId / width_in_frames) * texture_data.m_FrameHeight;
+        continue;
+      }
 
-        int dst_x = tile.x - texture_data.m_FrameWidth / 2 + m_SelectedTileOffset.x;
-        int dst_y = tile.y - texture_data.m_FrameHeight / 2 + m_SelectedTileOffset.y;
+      int width_in_frames = (texture->GetWidth() + texture_data.m_FrameWidth - 1) / texture_data.m_FrameWidth;
 
-        quad.m_Position.m_Start = Vector2(dst_x, dst_y);
-        quad.m_Position.m_End = quad.m_Position.m_Start + Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
-        quad.m_TexCoords.m_Start = Vector2(src_x, src_y);
-        quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
-        quad.m_TextureSize = Vector2(texture->GetWidth(), texture->GetHeight());
+      for (auto & tile_index : m_SelectedTiles)
+      {
+        auto & tile = layer.m_Tiles[tile_index].Value();
+        if (texture_data.m_TextureNameHash == tile.m_TextureHash)
+        {
+          int src_x = (tile.m_FrameId % width_in_frames) * texture_data.m_FrameWidth;
+          int src_y = (tile.m_FrameId / width_in_frames) * texture_data.m_FrameHeight;
+
+          int dst_x = tile.x - texture_data.m_FrameWidth / 2 + m_SelectedTileOffset.x;
+          int dst_y = tile.y - texture_data.m_FrameHeight / 2 + m_SelectedTileOffset.y;
+
+          quad.m_Position.m_Start = Vector2(dst_x, dst_y);
+          quad.m_Position.m_End = quad.m_Position.m_Start + Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
+          quad.m_TexCoords.m_Start = Vector2(src_x, src_y);
+          quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2(texture_data.m_FrameWidth, texture_data.m_FrameHeight);
+          quad.m_TextureSize = Vector2(texture->GetWidth(), texture->GetHeight());
+          quad.m_Color = Color(255, 255, 255, 255);
+          builder.AddQuad(quad);
+
+          line_builder.AddBox(quad);
+        }
+      }
+
+      builder.FillVertexBuffer(vertex_buffer);
+      auto & shader = g_ShaderManager.GetDefaultShader();
+      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
+      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+      texture->GetTexture().BindTexture(0);
+
+      vertex_buffer.Bind();
+
+      vertex_buffer.CreateDefaultBinding(shader);
+      vertex_buffer.Draw();
+      vertex_buffer.Unbind();
+    }
+  }
+
+  if (m_SelectedAnimations.size() != 0)
+  {
+    for (auto id : m_SelectedAnimations)
+    {
+      auto anim = m_AnimInfo->TryGet(id);
+      if (anim)
+      {
+        SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, anim->m_Position + m_SelectedAnimOffset - screen_center);
+
+        auto anim_size = m_TileSheet.GetResource()->GetAnimationMaxSize(anim->m_State);
+        auto box = Box::FromFrameCenterAndSize(anim->m_Position, anim_size);
+
+        quad.m_Position = box;
+        quad.m_Position.m_Start += m_SelectedAnimOffset;
+        quad.m_Position.m_End += m_SelectedAnimOffset;
         quad.m_Color = Color(255, 255, 255, 255);
-        builder.AddQuad(quad);
-
         line_builder.AddBox(quad);
       }
     }
+  }
 
-    builder.FillVertexBuffer(vertex_buffer);
+  if (line_builder.HasData())
+  {
+    line_builder.FillVertexBuffer(vertex_buffer);
     auto & shader = g_ShaderManager.GetDefaultShader();
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
-    texture->GetTexture().BindTexture(0);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
+    render_util.GetDefaultTexture().BindTexture(0);
 
     vertex_buffer.Bind();
 
@@ -828,19 +1447,6 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
     vertex_buffer.Draw();
     vertex_buffer.Unbind();
   }
-
-  line_builder.FillVertexBuffer(vertex_buffer);
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
-  render_util.GetDefaultTexture().BindTexture(0);
-
-  vertex_buffer.Bind();
-
-  vertex_buffer.CreateDefaultBinding(shader);
-  vertex_buffer.Draw();
-  vertex_buffer.Unbind();
 }
 
 void MapEditorTileManager::SetPreviewTiles(const std::vector<MapTile> & tiles)
@@ -876,6 +1482,68 @@ void MapEditorTileManager::SetPreviewTiles(const std::vector<MapTile> & tiles)
   }
 }
 
+void MapEditorTileManager::SetPreviewAnimations(const std::vector<MapAnimatedTile> & anims)
+{
+  m_PreviewAnims = anims;
+
+  Optional<Box> dirty_box = m_PreviewAnimBounds;
+  auto tile_resource = m_TileSheet.GetResource();
+
+  for (auto & tile : anims)
+  {
+    auto anim_size = tile_resource->GetAnimationMaxSize(tile.m_Animation);
+
+    Box tile_box = Box::FromFrameCenterAndSize(Vector2(tile.x, tile.y), anim_size);
+
+    if (dirty_box)
+    {
+      BoxUnionInPlace(dirty_box.Value(), tile_box);
+    }
+    else
+    {
+      dirty_box = tile_box;
+    }
+  }
+
+  m_PreviewAnimBounds = dirty_box;
+}
+
+void MapEditorTileManager::OffsetPreview(const Vector2 & offset)
+{
+  if (m_PreviewTiles.size() == 0 && m_PreviewAnims.size() == 0)
+  {
+    return;
+  }
+
+  for (auto & tile : m_PreviewTiles)
+  {
+    tile.x += offset.x;
+    tile.y += offset.y;
+  }
+
+  for (auto & tile : m_PreviewAnims)
+  {
+    tile.x += offset.x;
+    tile.y += offset.y;
+  }
+
+  if (m_PreviewTileBounds)
+  {
+    auto box = m_PreviewTileBounds;
+    m_PreviewTileBounds->m_Start += offset;
+    m_PreviewTileBounds->m_End += offset;
+    BoxUnionInPlace(box.Value(), m_PreviewTileBounds.Value());
+
+    AddToDirtyGridList(box.Value());
+  }
+
+  if (m_PreviewAnimBounds)
+  {
+    m_PreviewAnimBounds->m_Start += offset;
+    m_PreviewAnimBounds->m_End += offset;
+  }
+}
+
 void MapEditorTileManager::ClearPreviewTiles()
 {
   m_PreviewTiles.clear();
@@ -887,6 +1555,9 @@ void MapEditorTileManager::ClearPreviewTiles()
 
     m_PreviewTileBounds.Clear();
   }
+
+  m_PreviewAnims.clear();
+  m_PreviewAnimBounds.Clear();
 }
 
 void MapEditorTileManager::ToggleHidden()
@@ -945,7 +1616,7 @@ void MapEditorTileManager::HandleTextureReload(NullOptPtr<TextureAsset> textur, 
   AddAllToDirtyGridList();
 }
 
-void MapEditorTileManager::HandleListChange(const ReflectionChangeNotification & change)
+void MapEditorTileManager::HandleTileListChange(const ReflectionChangeNotification & change)
 {
   if (m_LocalChange)
   {
@@ -969,7 +1640,7 @@ void MapEditorTileManager::HandleListChange(const ReflectionChangeNotification &
     auto box = GetTileBounds(tile.Value());
 
     m_TileLocations->EmplaceAt(change.m_SubIndex, box);
-    m_SpatialDatabase->Insert(box, change.m_SubIndex);
+    m_TileSpatialDatabase->Insert(box, change.m_SubIndex);
     m_DrawInfo->VisitGridIds(box, [this](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
   }
   else if (change.m_Type == ReflectionNotifyChangeType::kRemove)
@@ -978,7 +1649,7 @@ void MapEditorTileManager::HandleListChange(const ReflectionChangeNotification &
 
     auto box = m_TileLocations->GetAt(change.m_SubIndex);
     m_TileLocations->RemoveAt(change.m_SubIndex);
-    m_SpatialDatabase->Remove(box, change.m_SubIndex);
+    m_TileSpatialDatabase->Remove(box, change.m_SubIndex);
     m_DrawInfo->VisitGridIds(box, [this](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
   }
   else
@@ -987,7 +1658,7 @@ void MapEditorTileManager::HandleListChange(const ReflectionChangeNotification &
   }
 }
 
-void MapEditorTileManager::HandleChildChange(const ReflectionChangeNotification & change, std::size_t index)
+void MapEditorTileManager::HandleTileChildChange(const ReflectionChangeNotification & change, std::size_t index)
 {
   if (m_LocalChange)
   {
@@ -995,6 +1666,61 @@ void MapEditorTileManager::HandleChildChange(const ReflectionChangeNotification 
   }
 
   RefreshTile(index);
+}
+
+void MapEditorTileManager::HandleAnimListChange(const ReflectionChangeNotification & change)
+{
+  if (m_LocalChange)
+  {
+    return;
+  }
+
+  auto layer = m_Map.m_ManualTileLayers.TryGet(m_LayerIndex);
+  if (layer == nullptr || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  if (change.m_Type == ReflectionNotifyChangeType::kInsert)
+  {
+    if (layer->m_Animations.HasAt(change.m_SubIndex) == false)
+    {
+      return;
+    }
+
+    auto & tile = layer->m_Animations[change.m_SubIndex];
+    auto box = GetAnimBounds(tile.Value());
+
+    AnimationInfo anim_info;
+    anim_info.m_Bounds = box;
+    anim_info.m_Position = Vector2(tile->x, tile->y);
+    m_TileSheet.GetResource()->InitAnimation(tile->m_Animation, tile->m_FrameOffset + m_NumFrames, anim_info.m_State);
+
+    m_AnimInfo->EmplaceAt(change.m_SubIndex, anim_info);
+    m_AnimSpatialDatabase->Insert(box, change.m_SubIndex);
+  }
+  else if (change.m_Type == ReflectionNotifyChangeType::kRemove)
+  {
+    vremove_quick(m_SelectedAnimations, change.m_SubIndex);
+
+    auto box = m_AnimInfo->GetAt(change.m_SubIndex).m_Bounds;
+    m_AnimInfo->RemoveAt(change.m_SubIndex);
+    m_AnimSpatialDatabase->Remove(box, change.m_SubIndex);
+  }
+  else
+  {
+    SyncTiles();
+  }
+}
+
+void MapEditorTileManager::HandleAnimChildChange(const ReflectionChangeNotification & change, std::size_t index)
+{
+  if (m_LocalChange)
+  {
+    return;
+  }
+
+  RefreshAnimation(index);
 }
 
 void MapEditorTileManager::RefreshTile(std::size_t index)
@@ -1020,8 +1746,8 @@ void MapEditorTileManager::RefreshTile(std::size_t index)
         return;
       }
 
-      m_SpatialDatabase->Remove(old_box, index);
-      m_SpatialDatabase->Insert(new_box, index);
+      m_TileSpatialDatabase->Remove(old_box, index);
+      m_TileSpatialDatabase->Insert(new_box, index);
 
       m_TileLocations->GetAt(index) = new_box;
 
@@ -1096,12 +1822,31 @@ void MapEditorTileManager::RefreshTiles(uint32_t texture_hash)
 
   if (dead_tiles.size() > 0)
   {
-    m_SpatialDatabase->RemoveBatch(dead_tiles_box.Value(), dead_tiles);
-    m_SpatialDatabase->InsertBatch(new_tiles_box.Value(), new_tiles);
+    m_TileSpatialDatabase->RemoveBatch(dead_tiles_box.Value(), dead_tiles);
+    m_TileSpatialDatabase->InsertBatch(new_tiles_box.Value(), new_tiles);
   }
 }
 
-Optional<Box> MapEditorTileManager::GetTileBounds(const std::vector<std::size_t> & tiles)
+void MapEditorTileManager::RefreshAnimation(std::size_t index)
+{
+  if (m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations.HasAt(index) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  auto & tile = m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations[index];
+  Box new_box = GetAnimBounds(tile.Value());
+
+  auto & tile_info = m_AnimInfo->GetAt(index);
+  m_TileSheet.GetResource()->InitAnimation(tile->m_Animation, tile->m_FrameOffset, tile_info.m_State);
+
+  m_AnimSpatialDatabase->Remove(tile_info.m_Bounds, index);
+  m_AnimSpatialDatabase->Insert(new_box, index);
+
+  tile_info.m_Bounds = new_box;
+}
+
+Optional<Box> MapEditorTileManager::GetMultiTileBounds(const std::vector<std::size_t> & tiles)
 {
   if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
   {
@@ -1128,6 +1873,33 @@ Optional<Box> MapEditorTileManager::GetTileBounds(const std::vector<std::size_t>
   return bounds;
 }
 
+Optional<Box> MapEditorTileManager::GetMultiAnimBounds(const std::vector<std::size_t> & tiles)
+{
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return{};
+  }
+
+  Optional<Box> bounds;
+
+  for (auto index : tiles)
+  {
+    auto & tile = m_Map.m_ManualTileLayers[m_LayerIndex].m_Animations[index].Value();
+    Box tile_box = GetAnimBounds(tile);
+
+    if (bounds == false)
+    {
+      bounds.Emplace(tile_box);
+    }
+    else
+    {
+      BoxUnionInPlace(bounds.Value(), tile_box);
+    }
+  }
+
+  return bounds;
+}
+
 void MapEditorTileManager::AddToDirtyGridList(const Box & box)
 {
   if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
@@ -1135,7 +1907,7 @@ void MapEditorTileManager::AddToDirtyGridList(const Box & box)
     return;
   }
 
-  m_SpatialDatabase->VisitGridIds(box, [&](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
+  m_TileSpatialDatabase->VisitGridIds(box, [&](uint32_t grid_id) { AddToDirtyGridList(grid_id); return true; });
 }
 
 void MapEditorTileManager::AddToDirtyGridList(uint32_t grid_id)
@@ -1159,7 +1931,7 @@ void MapEditorTileManager::AddAllToDirtyGridList()
   }
 
   m_DirtyGrids->clear();
-  m_SpatialDatabase->VisitAll([&](uint32_t grid_id, auto & node) { m_DirtyGrids->push_back(grid_id); });
+  m_TileSpatialDatabase->VisitAll([&](uint32_t grid_id, auto & node) { m_DirtyGrids->push_back(grid_id); });
 }
 
 bool MapEditorTileManager::IsTileInPreview(const MapTile & tile)
@@ -1191,4 +1963,9 @@ Box MapEditorTileManager::GetTileBounds(const MapTile & tile)
 Box MapEditorTileManager::GetTileBounds(const MapTile & tile, TextureInfo & tex)
 {
   return Box::FromFrameCenterAndSize(Vector2(tile.x, tile.y), Vector2(tex.m_FrameWidth, tex.m_FrameHeight));
+}
+
+Box MapEditorTileManager::GetAnimBounds(const MapAnimatedTile & tile)
+{
+  return Box::FromFrameCenterAndSize(Vector2(tile.x, tile.y), m_TileSheet.GetResource()->GetAnimationMaxSize(tile.m_Animation));
 }

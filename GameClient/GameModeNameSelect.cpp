@@ -1,4 +1,4 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameModeNameSelect.h"
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeConnecting.h"
@@ -66,9 +66,9 @@ void GameModeNameSelect::OnAssetsLoaded()
     Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 35, 30), Vector2(60, 25)), "Back", &container.GetClientGlobalResources().UISoundEffects, true);
   m_Back->SetOnClickCallback([this]() { Back(); });
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(80, 40), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(120, 40), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(40, 40), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
@@ -93,6 +93,8 @@ void GameModeNameSelect::Update()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
+
+  container.GetWindow().Update();
 
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);

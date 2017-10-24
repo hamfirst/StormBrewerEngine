@@ -1,4 +1,4 @@
-
+#include "Game/GameCommon.h"
 #include "Game/GameServerTypes.h"
 
 template struct NetFixedPointVals<int64_t, 32, 16>;

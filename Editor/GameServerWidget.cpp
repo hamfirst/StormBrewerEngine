@@ -6,6 +6,8 @@
 
 #include "GameServerWidget.h"
 
+#include "Runtime/Asset/Asset.h"
+
 GameServerWidget::GameServerWidget(QWidget *parent) :
   m_FrameClock(1.0 / 60.0)
 {
@@ -20,11 +22,13 @@ GameServerWidget::GameServerWidget(QWidget *parent) :
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &GameServerWidget::tick);
   timer->start(10);
+
+  g_GlobalAssetList.BeginAssetLoad();
 }
 
 GameServerWidget::~GameServerWidget()
 {
-
+  g_GlobalAssetList.UnloadAllAssets();
 }
 
 void GameServerWidget::resizeEvent(QResizeEvent * ev)
@@ -38,11 +42,22 @@ void GameServerWidget::tick()
   {
     m_GameServer->Update();
 
-    if (m_FrameClock.ShouldSkipFrameUpdate() == false)
+    for (int index = 0; index < 3 && m_FrameClock.ShouldSkipFrameUpdate() == false; ++index)
     {
       m_FrameClock.BeginFrame();
       m_GameServer->GetGameInstanceManager().Update();
+
+      m_FPSClock.Update();
+
+      auto fps = m_FPSClock.GetFrameCount();
+      if (fps != m_LastFPS)
+      {
+        m_TextEdit->setText(QString::number(fps));
+        m_LastFPS = fps;
+      }
     }
+
+    m_FrameClock.RemoveExtra();
   }
   else
   {
@@ -50,7 +65,7 @@ void GameServerWidget::tick()
     {
       if (m_LevelList.IsPreloadComplete() && m_SharedGlobalResources.IsLoaded() && m_ServerGlobalResources.IsLoaded())
       {
-        m_GameServer.Emplace(256, 47815, m_StageManager.Value(), m_SharedGlobalResources);
+        m_GameServer.Emplace(256, 47816, m_StageManager.Value(), m_SharedGlobalResources);
 
         m_TextEdit->append(QString("Server started!\n"));
       }

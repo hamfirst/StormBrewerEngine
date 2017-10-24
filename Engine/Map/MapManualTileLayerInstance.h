@@ -3,6 +3,7 @@
 #include "Foundation/SpatialDatabase/SpatialDatabase.h"
 
 #include "Runtime/Map/MapDef.refl.h"
+#include "Runtime/Animation/AnimationState.h"
 #include "Runtime/TileSheet/TileSheetResource.h"
 
 #include "Engine/Asset/TextureAsset.h"
@@ -17,13 +18,13 @@ class MapManualTileLayerInstance
 {
 public:
 
-  MapManualTileLayerInstance(MapDef & map, std::size_t layer_index);
+  MapManualTileLayerInstance(MapDef & map, std::size_t layer_index, const Vector2 & offset);
 
   void LoadTextures();
   void CreateVertexBuffers();
 
   void Update();
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
 
 #ifdef USE_Z_ORDERING
   void DrawDynamic(const Box & viewport_bounds, DrawList & draw_list);
@@ -68,6 +69,14 @@ private:
 #ifdef USE_Z_ORDERING
   SpatialDatabaseGrid<std::vector<GridDrawDynamicElement>> m_DynamicDrawInfo;
 #endif
+
+  struct AnimatedTile
+  {
+    Vector2 m_Position;
+    AnimationState m_State;
+  };
+
+  std::vector<AnimatedTile> m_AnimatedTiles;
 
   TileSheetLoadLink m_TileSheet;
 

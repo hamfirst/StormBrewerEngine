@@ -22,7 +22,6 @@ class GameModeEndGame : public GameMode
 {
 public:
   GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container, 
-                                        std::unique_ptr<GameClientInstanceData> && instance_data, 
                                         std::unique_ptr<GameClientSystems> && client_systems, EndGamePlayAgainMode mode);
   ~GameModeEndGame();
 
@@ -41,7 +40,6 @@ private:
 
   bool m_Victory;
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
-  std::unique_ptr<GameClientInstanceData> m_InstanceData;
   std::unique_ptr<GameClientSystems> m_ClientSystems;
   EndGamePlayAgainMode m_Mode;
   GameClientEventSender m_DefaultSender;

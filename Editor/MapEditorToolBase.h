@@ -14,6 +14,9 @@ public:
   virtual void DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl);
   virtual void RightClick();
   virtual void Delete();
+  virtual void Copy();
+  virtual void Cut();
+  virtual void Paste(const Vector2 & pos);
 
   virtual bool DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl);
   virtual void DrawMove(const Vector2 & pos, bool alt, bool shift, bool ctrl);

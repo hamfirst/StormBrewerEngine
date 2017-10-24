@@ -81,43 +81,6 @@ Window WindowManager::CreateFakeWindow(FakeWindow * window, const Box & window_g
   return Window(id);
 }
 
-void WindowManager::UpdateInput()
-{
-  for (auto & window_info : s_Windows)
-  {
-    auto & window = *window_info.second;
-
-    if (window.m_TextInputContext && window.m_SDLWindow && window.m_KeyboardFocus)
-    {
-      if (SDL_IsTextInputActive() == false)
-      {
-        SDL_StartTextInput();
-      }
-    }
-    else if(window.m_KeyboardFocus)
-    {
-      SDL_StopTextInput();
-    }
-
-#ifdef _WEB
-    bool update = false;
-#else
-    bool update = window.m_FakeWindow == nullptr;
-#endif
-
-    window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo, update);
-
-    if (window.m_SDLWindow)
-    {
-      int x, y;
-      SDL_GetWindowPosition(window.m_SDLWindow, &x, &y);
-      window.m_WindowGeo.m_Start = Vector2(x, y);
-      SDL_GetWindowSize(window.m_SDLWindow, &x, &y);
-      window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + Vector2(x, y);
-    }
-  }
-}
-
 void WindowManager::HandleKeyPressMessage(uint32_t window_id, int key_code, int scan_code, bool pressed)
 {
   auto itr = s_Windows.find(window_id);
@@ -330,6 +293,42 @@ bool WindowManager::IsFullScreen(uint32_t window_id)
   }
 
   return false;
+}
+
+void WindowManager::UpdateWindow(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+
+  if (window.m_TextInputContext && window.m_SDLWindow && window.m_KeyboardFocus)
+  {
+    if (SDL_IsTextInputActive() == false)
+    {
+      SDL_StartTextInput();
+    }
+  }
+  else if (window.m_KeyboardFocus)
+  {
+    SDL_StopTextInput();
+  }
+
+#ifdef _WEB
+  bool update = false;
+#else
+  bool update = window.m_FakeWindow == nullptr;
+#endif
+
+  window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo, update);
+
+  if (window.m_SDLWindow)
+  {
+    int x, y;
+    SDL_GetWindowPosition(window.m_SDLWindow, &x, &y);
+    window.m_WindowGeo.m_Start = Vector2(x, y);
+    SDL_GetWindowSize(window.m_SDLWindow, &x, &y);
+    window.m_WindowGeo.m_End = window.m_WindowGeo.m_Start + Vector2(x, y);
+  }
 }
 
 void WindowManager::MakeCurrent(uint32_t window_id)

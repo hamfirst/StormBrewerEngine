@@ -43,8 +43,10 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
   int width = layer->m_RepeatX ? texture->GetWidth() : viewport_size.x;
   int height = layer->m_RepeatY ? texture->GetHeight() : viewport_size.y;
 
-  float offset_x = layer->m_ParalaxX == 0.0f ? 0.0f : (screen_center.x / -layer->m_ParalaxX.AsFloat());
-  float offset_y = layer->m_ParalaxY == 0.0f ? 0.0f : (screen_center.y / -layer->m_ParalaxY.AsFloat());
+  auto time = (float)GetTimeSeconds();
+
+  float offset_x = (layer->m_ParalaxX == 0.0f ? 0.0f : (screen_center.x / -layer->m_ParalaxX.AsFloat())) + time * layer->m_VelocityX.AsFloat() + layer->m_OffsetX.AsFloat();
+  float offset_y = (layer->m_ParalaxY == 0.0f ? 0.0f : (screen_center.y / -layer->m_ParalaxY.AsFloat())) + time * layer->m_VelocityY.AsFloat() + layer->m_OffsetY.AsFloat();
 
   offset_x *= (float)texture->GetWidth() / (float)width;
   offset_y *= (float)texture->GetHeight() / (float)height;

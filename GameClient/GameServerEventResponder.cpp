@@ -1,9 +1,13 @@
-
+#include "GameClient/GameClientCommon.h"
 #include "GameClient/GameServerEventResponder.h"
+#include "GameClient/GameClientInstanceContainer.h"
 
 
-GameServerEventResponder::GameServerEventResponder(NullOptPtr<GameClientController> client_controller, 
+GameServerEventResponder::GameServerEventResponder(bool authority, NullOptPtr<GameClientInstanceContainer> instance_container,
+                                                   NullOptPtr<GameClientController> client_controller,
                                                    NullOptPtr<GameEventReconciler> reconciler, NullOptPtr<int> reconcile_frame) :
+  m_Authority(authority),
+  m_InstanceContainer(instance_container),
   m_ClientController(client_controller),
   m_Reconciler(reconciler),
   m_ReconcileFrame(reconcile_frame)
@@ -35,6 +39,11 @@ void GameServerEventResponder::SendEntityEvent(std::size_t class_id, const void 
 void GameServerEventResponder::SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle)
 {
 
+}
+
+void GameServerEventResponder::SendAuthEvent(std::size_t class_id, const void * event_ptr)
+{
+  m_InstanceContainer->HandleLocalServerAuthorityEvent(class_id, event_ptr);
 }
 
 bool GameServerEventResponder::ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos)

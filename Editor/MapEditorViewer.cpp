@@ -136,11 +136,26 @@ void MapEditorViewer::ClearPreviewPoint()
   m_PreviewPoint.Clear();
 }
 
-void MapEditorViewer::SetTool(std::unique_ptr<MapEditorToolBase> && tool)
+void MapEditorViewer::SetTool(std::unique_ptr<MapEditorToolBase> && tool, bool mid_draw)
 {
   ClearTool();
   m_Tool = std::move(tool);
   m_Tool->Init();
+
+  if (mid_draw)
+  {
+    m_CursorPos = QCursor::pos();
+    bool alt = (bool)(QApplication::keyboardModifiers() & Qt::AltModifier);
+    bool shift = (bool)(QApplication::keyboardModifiers() & Qt::ShiftModifier);
+    bool ctrl = (bool)(QApplication::keyboardModifiers() & Qt::ControlModifier);
+
+    if (m_Tool->DrawStart(GetCursorPos(), alt, shift, ctrl))
+    {
+      m_Dragging = true;
+
+      SyncMouse();
+    }
+  }
 }
 
 void MapEditorViewer::ClearTool()
@@ -280,14 +295,14 @@ RenderVec2 MapEditorViewer::TransformFromScreenSpaceToMapSpace(RenderVec2 screen
   return TransformFromClipSpaceToMapSpace(clip_space);
 }
 
-void MapEditorViewer::SnapToGrid(Vector2 & pos, bool cell_center)
+void MapEditorViewer::SnapToGrid(Vector2 & pos, bool cell_center, bool force)
 {
   if (m_GridWidth <= 0 || m_GridHeight <= 0)
   {
     return;
   }
 
-  if (QGuiApplication::keyboardModifiers() & (QApplication::keyboardModifiers() & Qt::ControlModifier))
+  if ((QGuiApplication::keyboardModifiers() & (QApplication::keyboardModifiers() & Qt::ControlModifier)) && force == false)
   {
     return;
   }
@@ -313,11 +328,25 @@ void MapEditorViewer::SetTileFrameInfo(MapTile & tile, uint64_t frame_id)
   tile.m_TextureHash = (uint32_t)(frame_id >> 32);
 }
 
+void MapEditorViewer::SetAnimFrameInfo(MapAnimatedTile & tile, uint64_t frame_id)
+{
+  tile.m_Animation = frame_id >> 32;
+  tile.m_FrameOffset = 0;
+}
+
 uint64_t MapEditorViewer::GetFrameIdForMapTile(const MapTile & tile)
 {
   uint64_t frame_id = tile.m_TextureHash;
   frame_id <<= 32;
   frame_id |= tile.m_FrameId;
+  return frame_id;
+}
+
+uint64_t MapEditorViewer::GetFrameIdForMapAnimation(const MapAnimatedTile & tile)
+{
+  uint64_t frame_id = tile.m_Animation;
+  frame_id <<= 32;
+  frame_id += tile.m_FrameOffset;
   return frame_id;
 }
 
@@ -380,6 +409,12 @@ void MapEditorViewer::StopPlayMode()
   m_PlayMode = false;
   m_GameContainer.reset();
   m_FakeWindow.reset();
+}
+
+Vector2 MapEditorViewer::GetScreenCenterPos()
+{
+  auto map_center_pos = TransformFromScreenSpaceToMapSpace(RenderVec2{ width() / 2, height() / 2 });
+  return map_center_pos;
 }
 
 Vector2 MapEditorViewer::GetCursorPos()
@@ -569,7 +604,6 @@ void MapEditorViewer::paintGL()
     }
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 160));
 
   for (auto elem : m_Map.m_ManualTileLayers)
   {
@@ -827,6 +861,27 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
   {
     m_Editor->GetLayerList().ToggleSelectedLayer();
   }
+  else if (event->key() == Qt::Key_X && (event->modifiers() & Qt::ControlModifier))
+  {
+    if (m_Tool)
+    {
+      m_Tool->Cut();
+    }
+  }
+  else if (event->key() == Qt::Key_C && (event->modifiers() & Qt::ControlModifier))
+  {
+    if (m_Tool)
+    {
+      m_Tool->Copy();
+    }
+  }
+  else if (event->key() == Qt::Key_V && (event->modifiers() & Qt::ControlModifier))
+  {
+    if (m_Tool)
+    {
+      m_Tool->Paste(GetScreenCenterPos());
+    }
+  }
 }
 
 void MapEditorViewer::keyReleaseEvent(QKeyEvent * event)
@@ -1051,6 +1106,18 @@ void MapEditorViewer::leaveEvent(QEvent * event)
 
 void MapEditorViewer::tick()
 {
+  auto & tile_manager = m_Editor->GetManualTileManager();
+  for (auto elem : m_Map.m_ManualTileLayers)
+  {
+    auto layer = tile_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    layer->Update();
+  }
+
   repaint();
 }
 

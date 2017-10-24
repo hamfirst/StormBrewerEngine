@@ -7,9 +7,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{ff19f355-3323-4f25-93a9-064ba7f2c02c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{d6e72b1c-c4a6-43d0-a958-d46772d40c7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DocumentResource">
       <UniqueIdentifier>{bfdd6c21-980d-414d-8ae9-d0ac10748e88}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,12 @@
     <Filter Include="VisualEffect">
       <UniqueIdentifier>{dacad1a1-716a-4c52-b89f-8651f099b7ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{8526fa30-9bf4-42a2-a07b-087098e45315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{d6e72b1c-c4a6-43d0-a958-d46772d40c7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
@@ -97,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="Map\MapResource.cpp">
       <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision\CollisionSystem.cpp">
-      <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="Mover\Mover.cpp">
       <Filter>Mover</Filter>
@@ -154,6 +154,24 @@
     </ClCompile>
     <ClCompile Include="VisualEffect\VisualEffectResource.cpp">
       <Filter>VisualEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapCollision.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\CollisionDatabase.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\Asset.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameData\FrameDataExtract.cpp">
+      <Filter>FrameData</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBase\SpriteAnimationEventDef.refl.cpp">
+      <Filter>SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBase\SpriteAnimationEventTypeDatabase.cpp">
+      <Filter>SpriteBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -237,13 +255,7 @@
     <ClInclude Include="Map\MapResource.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\CollisionSystem.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Mover\Mover.h">
-      <Filter>Mover</Filter>
-    </ClInclude>
-    <ClInclude Include="Mover\MoverState.h">
       <Filter>Mover</Filter>
     </ClInclude>
     <ClInclude Include="Event\EventSystem.h">
@@ -359,6 +371,33 @@
     </ClInclude>
     <ClInclude Include="VisualEffect\VisualEffectResource.h">
       <Filter>VisualEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapCollision.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\CollisionDatabase.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset\Asset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameData\FrameDataExtract.h">
+      <Filter>FrameData</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\Event.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.h">
+      <Filter>SpriteBase</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.meta.h">
+      <Filter>SpriteBase</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBase\SpriteAnimationEventRegister.h">
+      <Filter>SpriteBase</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBase\SpriteAnimationEventTypeDatabase.h">
+      <Filter>SpriteBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

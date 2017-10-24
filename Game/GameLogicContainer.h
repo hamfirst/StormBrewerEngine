@@ -3,6 +3,7 @@
 struct GameInstanceData;
 class GameController;
 class ServerObjectManager;
+class ServerObjectEventSystem;
 class GameServerEventSender;
 class GameSimulationEventCallbacks;
 class GameStage;
@@ -16,6 +17,7 @@ public:
     GameController & game_controller,
     GameInstanceData & global_data,
     ServerObjectManager & object_manager,
+    ServerObjectEventSystem & server_object_event_system,
     GameServerEventSender & server_event_sender,
     GameSimulationEventCallbacks & sim_event_sender,
     GameSharedGlobalResources & shared_global_resources,
@@ -33,6 +35,7 @@ public:
   GameController & GetGameController();
   GameInstanceData & GetInstanceData();
   ServerObjectManager & GetObjectManager();
+  ServerObjectEventSystem & GetServerObjectEventSystem();
   GameServerEventSender & GetEventSender();
   GameSimulationEventCallbacks & GetSimEventCallbacks();
   GameSharedGlobalResources & GetSharedGlobalResources();
@@ -45,6 +48,7 @@ private:
   GameController & m_GameController;
   GameInstanceData & m_InstanceData;
   ServerObjectManager & m_ObjectManager;
+  ServerObjectEventSystem & m_ObjectEventSystem;
   GameServerEventSender & m_ServerEventSender;
   GameSimulationEventCallbacks & m_SimEventSender;
   GameSharedGlobalResources & m_SharedGlobalResources;

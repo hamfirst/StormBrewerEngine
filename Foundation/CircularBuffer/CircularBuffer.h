@@ -7,31 +7,65 @@ class CircularBuffer
 {
 public:
   
-  template <typename ... Args>
-  CircularBuffer(Args && ... args) :
+  CircularBuffer() :
     m_Count(0),
-    m_Head(-1),
-    m_Array(reinterpret_cast<T *>(&m_Buffer[0]))
+    m_Head(-1)
   {
     for (int index = 0; index < MaxSize; ++index)
     {
-      auto * elem = (&m_Buffer[sizeof(T) * index]);
-      new(&m_Array[index]) T(std::forward<Args>(args)...);
+      m_Valid[index] = false;
     }
   }
 
-  CircularBuffer(const CircularBuffer & rhs) = delete;
-  CircularBuffer(CircularBuffer && rhs) = delete;
+  CircularBuffer(const CircularBuffer<T, MaxSize> & rhs) = delete;
+  CircularBuffer(CircularBuffer<T, MaxSize> && rhs) = delete;
 
-  CircularBuffer & operator = (const CircularBuffer & rhs) = delete;
-  CircularBuffer & operator = (CircularBuffer && rhs) = delete;
+  CircularBuffer & operator = (const CircularBuffer<T, MaxSize> & rhs) = delete;
+  CircularBuffer & operator = (CircularBuffer<T, MaxSize> && rhs) = delete;
 
   ~CircularBuffer()
   {
-
+    Clear();
   }
 
-  void Push(const T & t)
+  void Clear()
+  {
+    if (m_Count >= MaxSize)
+    {
+      for (int index = 0; index < MaxSize; ++index)
+      {
+        auto v = Val(index);
+        v->~T();
+      }
+    }
+    else
+    {
+      while (m_Count)
+      {
+        auto v = Val(m_Head);
+        v->~T();
+
+        m_Head--;
+        m_Count--;
+
+        if (m_Head < 0)
+        {
+          m_Head += MaxSize;
+        }
+      }
+    }
+
+    for (int index = 0; index < MaxSize; ++index)
+    {
+      m_Valid[index] = false;
+    }
+
+    m_Count = 0;
+    m_Head = -1;
+  }
+
+  template <typename ... InitArgs>
+  void Push(InitArgs && ... args)
   {
     m_Head++;
     if (m_Head >= MaxSize)
@@ -39,20 +73,21 @@ public:
       m_Head = 0;
     }
 
-    m_Array[m_Head] = t;
-    m_Count++;
-  }
+    auto v = Val(m_Head);
 
-  void Push(T && t)
-  {
-    m_Head++;
-    if (m_Head >= MaxSize)
+    m_Count++;
+    if (m_Count > MaxSize)
     {
-      m_Head = 0;
+      ASSERT(m_Valid[m_Head], "Assigning element that wasn't allocated");
+      *v = T(std::forward<InitArgs>(args)...);
+    }
+    else
+    {
+      ASSERT(!m_Valid[m_Head], "Constructing element that was allocated");
+      new (v) T(std::forward<InitArgs>(args)...);
     }
 
-    m_Array[m_Head] = std::move(t);
-    m_Count++;
+    m_Valid[m_Head] = true;
   }
 
   void SetAt(const T & t, int history_index)
@@ -68,7 +103,7 @@ public:
       history_index += MaxSize;
     }
 
-    m_Array[history_index] = t;
+    *Val(history_index) = t;
   }
 
   void SetAt(T && t, int history_index)
@@ -84,7 +119,7 @@ public:
       history_index += MaxSize;
     }
 
-    m_Array[history_index] = std::move(t);
+    *Val(history_index) = std::move(t);
   }
 
   NullOptPtr<T> Get(int history_index = 0)
@@ -100,7 +135,7 @@ public:
       history_index += MaxSize;
     }
 
-    return &m_Array[history_index];
+    return Val(history_index);
   }
 
   NullOptPtr<const T> Get(int history_index = 0) const
@@ -116,15 +151,55 @@ public:
       history_index += MaxSize;
     }
 
-    return &m_Array[history_index];
+    return Val(history_index);
   }
 
+  void Purge(int count)
+  {
+    if (count >= m_Count)
+    {
+      Clear();
+      return;
+    }
+
+    ASSERT(m_Head != -1, "Invalid state");
+
+    m_Count = std::min(m_Count, MaxSize);
+    while (count)
+    {
+      ASSERT(m_Valid[m_Head], "Purging non allocated element");
+      auto v = Val(m_Head);
+      v->~T();
+
+      m_Valid[m_Head] = false;
+
+      m_Head--;
+      m_Count--;
+      count--;
+
+      if (m_Head < 0)
+      {
+        m_Head += MaxSize;
+      }
+    }
+  }
+
+  std::size_t Count() const
+  {
+    return (std::size_t)std::min(MaxSize, m_Count);
+  }
 
 private:
+
+  inline T * Val(int index)
+  {
+    auto arr = reinterpret_cast<T *>(&m_Buffer[0]);
+    return &arr[index];
+  }
 
   int m_Count;
   int m_Head;
 
   alignas(alignof(T)) unsigned char m_Buffer[sizeof(T[MaxSize])];
-  T * m_Array;
+  bool m_Valid[MaxSize];
 };

@@ -1,6 +1,6 @@
 
 #include "Server/ServerCommon.h"
-#include "Server/ServerObject/ServerObjectSerialzie.h"
+#include "Server/ServerObject/ServerObjectSerialize.h"
 
 ServerObjectNetBitWriter::ServerObjectNetBitWriter(NetBitWriter & writer, NotNullPtr<const ServerObjectManager> server_object_manager) :
   m_Writer(writer),
@@ -49,6 +49,16 @@ NotNullPtr<const ServerObjectManager> ServerObjectNetBitWriter::GetServerManager
   return m_ServerObjectManager;
 }
 
+ServerObjectNetBitWriter::operator NetBitWriter & ()
+{
+  return m_Writer;
+}
+
+ServerObjectNetBitWriter::operator const NetBitWriter & () const
+{
+  return m_Writer;
+}
+
 ServerObjectNetBitReader::ServerObjectNetBitReader(NetBitReader & reader, NotNullPtr<ServerObjectManager> server_object_manager) :
   m_Reader(reader),
   m_ServerObjectManager(server_object_manager)
@@ -74,4 +84,14 @@ void ServerObjectNetBitReader::ReadBuffer(void * buffer, std::size_t num_bytes)
 NotNullPtr<ServerObjectManager> ServerObjectNetBitReader::GetServerManager()
 {
   return m_ServerObjectManager;
+}
+
+ServerObjectNetBitReader::operator NetBitReader & ()
+{
+  return m_Reader;
+}
+
+ServerObjectNetBitReader::operator const NetBitReader & () const
+{
+  return m_Reader;
 }
