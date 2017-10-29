@@ -14,6 +14,8 @@ STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPathPoint);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapAnchor);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPath);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapVolume);
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPathfindingInfo);
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapPropertiesInfo);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(MapDef);
 
 
@@ -40,4 +42,9 @@ MapPathPoint::operator Vector2() const
 Box MapVolume::GetBox() const
 {
   return Box::FromPoints(Vector2(m_XStart, m_YStart), Vector2(m_XEnd, m_YEnd));
+}
+
+bool MapPathfindingCalculatedInfo::operator == (const MapPathfindingCalculatedInfo & rhs) const
+{
+  return m_Id == rhs.m_Id;
 }

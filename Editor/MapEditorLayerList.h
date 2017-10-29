@@ -46,6 +46,8 @@ protected:
 public slots:
 
   void scrollChanged();
+  void buildPathfinding();
+  void clearPathfinding();
   void addManualTileLayer();
   void removeManualTileLayer();
   void addEntityLayer();

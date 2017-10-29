@@ -313,6 +313,12 @@
     <ClInclude Include="Frame\Frame.h">
       <Filter>Frame</Filter>
     </ClInclude>
+    <ClInclude Include="Pathfinding\PlatformerPathfinding.h">
+      <Filter>Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding\PathfindingPathCache.h">
+      <Filter>Pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\File.cpp">

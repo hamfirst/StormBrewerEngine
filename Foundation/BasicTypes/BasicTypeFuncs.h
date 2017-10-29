@@ -90,6 +90,25 @@ inline Box BoxUnion(const Box & a, const Box & b)
   return r;
 }
 
+inline Optional<Box> BoxUnionList(const std::vector<Box> & box_list)
+{
+  Optional<Box> result;
+
+  for (auto & elem : box_list)
+  {
+    if (result)
+    {
+      BoxUnionInPlace(result.Value(), elem);
+    }
+    else
+    {
+      result = elem;
+    }
+  }
+
+  return result;
+}
+
 inline Color LerpColor(const Color & a, const Color & b, float val)
 {
   auto one_minus_v = 1.0f - val;

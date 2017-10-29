@@ -51,8 +51,44 @@ uint32_t CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collisio
   return 0;
 }
 
-void CollisionDatabase::PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> && collision_boxes)
+uint32_t CollisionDatabase::CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const
 {
+  Box box = { pos, pos };
+  box.m_End.y += maximum_clearance;
+
+  uint32_t clearance = maximum_clearance;
+
+  std::vector<Box> query_boxes;
+
+  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
+  {
+    if (((1 << index) & collision_layer_mask) == 0)
+    {
+      continue;
+    }
+
+    m_CollisionLayers[index].QueryBoxes(box, query_boxes);
+    for (auto & elem : query_boxes)
+    {
+      if (elem.m_Start.y <= pos.y)
+      {
+        return 0;
+      }
+
+      uint32_t box_clearance = (uint32_t)(elem.m_Start.y - pos.y);
+      clearance = std::min(box_clearance, clearance);
+    }
+
+    query_boxes.clear();
+  }
+
+  return clearance;
+}
+
+Optional<Box> CollisionDatabase::PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> && collision_boxes)
+{
+  Optional<Box> bounds;
+
   for(std::size_t index = 0, end = std::min(collision_boxes.size(), m_CollisionLayers.size()); index < end; ++index)
   {
     if (collision_boxes[index].size() == 0)
@@ -63,14 +99,26 @@ void CollisionDatabase::PushMapCollision(std::size_t map_id, std::vector<std::ve
     Box bounding_box = collision_boxes[index][0];
     std::vector<std::pair<std::size_t, Box>> box_list;
 
+    if (bounds.IsValid())
+    {
+      BoxUnionInPlace(bounds.Value(), bounding_box);
+    }
+    else
+    {
+      bounds = bounding_box;
+    }
+
     for (auto & box : collision_boxes[index])
     {
       box_list.emplace_back(std::make_pair(map_id, box));
       BoxUnionInPlace(bounding_box, box);
+      BoxUnionInPlace(bounds.Value(), box);
     }
 
     m_CollisionLayers[index].InsertBatch(bounding_box, box_list);
   }
+
+  return bounds;
 }
 
 void CollisionDatabase::RemoveMapCollision(std::size_t map_id)

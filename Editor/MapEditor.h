@@ -36,6 +36,9 @@ public:
   void ChangeLayerSelection(const MapEditorLayerSelection & layer, bool change_viewer_position = true);
   void ClearLayerSelection();
 
+  void CalculatePathfindingInfo();
+  void ClearPathfindingInfo();
+
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & GetManualTileManager();
   MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & GetEntityManager();
   MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & GetParalaxManager();

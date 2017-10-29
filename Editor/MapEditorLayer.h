@@ -4,6 +4,8 @@
 
 enum class MapEditorLayerItemType
 {
+  kMapProperties,
+  kPathfinding,
   kManualTileLayerParent,
   kManualTileLayer,
   kEntityLayerParent,

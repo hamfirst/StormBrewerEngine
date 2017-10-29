@@ -14,8 +14,18 @@
 #include "Runtime/Volume/VolumeDef.refl.h"
 #include "Runtime/Volume/VolumeTypeDatabase.h"
 #include "Runtime/Map/MapEffectLayerDef.refl.h"
+#include "Runtime/Map/MapPropertiesDef.refl.h"
 #include "Runtime/Map/MapEffectLayerTypeDatabase.h"
+#include "Runtime/Map/MapPropertiesTypeDatabase.h"
 #include "Runtime/Map/MapTile.h"
+
+#define MAP_PLATFORMER_PATHFINDING
+
+struct RUNTIME_EXPORT MapPropertiesInfo
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapPropertiesInfo);
+  RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true> m_MapProperties;
+};
 
 struct RUNTIME_EXPORT MapManualTileLayer
 {
@@ -158,10 +168,75 @@ struct RUNTIME_EXPORT MapVolume
   Box GetBox() const;
 };
 
+struct RUNTIME_EXPORT MapPathfindingSurface
+{
+  STORM_REFL;
+  Vector2 m_P1;
+  Vector2 m_P2;
+
+  int m_Clearance;
+
+  int m_StartConnections1;
+  int m_EndConnections1;
+  int m_StartConnections2;
+  int m_EndConnections2;
+};
+
+struct RUNTIME_EXPORT MapPathfindingSurfaceConnection
+{
+  STORM_REFL;
+  uint32_t m_SurfaceIndex;
+  bool m_P1;
+};
+
+struct RUNTIME_EXPORT MapPathfindingCalculatedInfo
+{
+  STORM_REFL;
+
+  uint32_t m_Id = 0;
+
+#ifndef MAP_PLATFORMER_PATHFINDING
+
+  int m_GridWidth;
+  int m_GridHeight;
+  int m_StartX;
+  int m_StartY;
+  int m_SizeX;
+  int m_SizeY;
+  std::vector<uint8_t> m_GridInfo;
+
+#else
+
+  std::vector<MapPathfindingSurface> m_Surfaces;
+  std::vector<MapPathfindingSurfaceConnection> m_Connections;
+
+#endif
+
+  bool operator == (const MapPathfindingCalculatedInfo & rhs) const;
+};
+
+struct RUNTIME_EXPORT MapPathfindingInfo
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapPathfindingInfo);
+
+#ifndef MAP_PLATFORMER_PATHFINDING
+  RInt m_GridWidth = 8;
+  RInt m_GridHeight = 8;
+#else
+  RInt m_MinimumClearance = 24;
+  RInt m_MaximumClearance = 200;
+#endif
+
+  RMergeList<RString> m_CollisionMask = { "Collision" };
+  ROpaque<MapPathfindingCalculatedInfo> STORM_REFL_ATTR(noui) m_CalculatedInfo;
+};
+
 struct RUNTIME_EXPORT MapDef
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapDef);
 
+  MapPropertiesInfo m_PropertiesInfo;
+  MapPathfindingInfo m_PathfingindInfo;
   RMergeList<MapManualTileLayer> m_ManualTileLayers;
   RMergeList<MapEntityLayer> m_EntityLayers;
   RMergeList<MapParalaxLayer> m_ParalaxLayers;

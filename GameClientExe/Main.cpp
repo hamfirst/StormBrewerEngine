@@ -35,6 +35,8 @@
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameCamera.h"
 
+#include "Foundation/Pathfinding/Pathfinding.h"
+#include "Foundation/Pathfinding/GraphPathfinding.h"
 #include "Foundation/Pathfinding/GridPathfinding.h"
 
 #ifdef _WEB
@@ -86,6 +88,22 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
   g_LagSim = 0;
 #endif
+
+  struct Heuristic
+  {
+    float operator()(const int & a, const int & b) const
+    {
+      return 0;
+    }
+  };
+
+  using GraphType = PathfindingBasicGrid2D<int, float, Heuristic>;
+
+  GraphType graph(Vector2(10, 10));
+
+  auto scratch_data = graph.CreateScratchData();
+  auto path = Pathfinding<GraphType>::FindPath(0, 2, graph, scratch_data);
+
 
 #ifdef _WEB
   int multiplier = 1;

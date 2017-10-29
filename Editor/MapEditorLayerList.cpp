@@ -354,6 +354,22 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
   int layer_height = fontMetrics().height();
 
   MapEditorLayerSelection elem = {};
+  elem.m_Type = MapEditorLayerItemType::kMapProperties;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
+  elem.m_Type = MapEditorLayerItemType::kPathfinding;
+  if (visitor(elem, y_pos) == false)
+  {
+    return y_pos;
+  }
+
+  y_pos += layer_height;
+
   elem.m_Type = MapEditorLayerItemType::kManualTileLayerParent;
   if (visitor(elem, y_pos) == false)
   {
@@ -703,6 +719,16 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
 
       switch (layer.m_Type)
       {
+      case MapEditorLayerItemType::kMapProperties:
+        {
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Map Properties");
+          break;
+        }
+      case MapEditorLayerItemType::kPathfinding:
+        {
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Pathfinding");
+          break;
+        }
       case MapEditorLayerItemType::kManualTileLayerParent:
         {
           QStyleOption option;
@@ -944,6 +970,14 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
   {
     switch (selection->m_Type)
     {
+    case MapEditorLayerItemType::kPathfinding:
+      {
+        QMenu menu(this);
+        connect(menu.addAction("Build Pathfinding Database"), &QAction::triggered, this, &MapEditorLayerList::buildPathfinding);
+        connect(menu.addAction("Clear Pathfinding Database"), &QAction::triggered, this, &MapEditorLayerList::clearPathfinding);
+        menu.exec(mapToGlobal(ev->pos()));
+        break;
+      }
     case MapEditorLayerItemType::kManualTileLayerParent:
       {
         QMenu menu(this);
@@ -1019,6 +1053,16 @@ void MapEditorLayerList::wheelEvent(QWheelEvent * ev)
 void MapEditorLayerList::scrollChanged()
 {
   repaint();
+}
+
+void MapEditorLayerList::buildPathfinding()
+{
+  m_Editor->CalculatePathfindingInfo();
+}
+
+void MapEditorLayerList::clearPathfinding()
+{
+  m_Editor->ClearPathfindingInfo();
 }
 
 void MapEditorLayerList::addManualTileLayer()

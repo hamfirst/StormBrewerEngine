@@ -173,6 +173,12 @@
     <ClCompile Include="SpriteBase\SpriteAnimationEventTypeDatabase.cpp">
       <Filter>SpriteBase</Filter>
     </ClCompile>
+    <ClCompile Include="Map\MapPropertiesTypeDatabase.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapPropertiesDef.refl.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\EntityDef.refl.h">
@@ -398,6 +404,18 @@
     </ClInclude>
     <ClInclude Include="SpriteBase\SpriteAnimationEventTypeDatabase.h">
       <Filter>SpriteBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapPropertiesTypeDatabase.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapPropertiesTypeRegister.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapPropertiesDef.refl.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapPropertiesDef.refl.meta.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

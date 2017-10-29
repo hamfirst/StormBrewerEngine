@@ -10,6 +10,37 @@ public:
   using CostType = CostVar;
   static const NodeId kInvalidNodeId = -1;
 
+  struct NodeInfo
+  {
+    NodeId m_NodeId;
+    CostVar m_Cost;
+
+    bool operator < (const NodeInfo & rhs) const { return m_Cost < rhs.m_Cost; }
+    bool operator > (const NodeInfo & rhs) const { return m_Cost > rhs.m_Cost; }
+  };
+
+  struct PerNodeData
+  {
+    NodeId m_PrevNode;
+    CostVar m_Cost;
+  };
+
+  struct ScratchData
+  {
+    ScratchData(std::size_t num_nodes) :
+      m_NodeData(num_nodes),
+      m_OpenList(num_nodes),
+      m_ClosedList(num_nodes)
+    {
+
+    }
+
+    std::priority_queue<NodeInfo, std::vector<NodeInfo>, std::greater<NodeInfo>> m_Queue;
+    std::vector<PerNodeData> m_NodeData;
+    Bitset m_OpenList;
+    Bitset m_ClosedList;
+  };
+
   PathfindingSymmetricGraph()
   {
 
@@ -54,17 +85,17 @@ public:
     return m_Graph[node_id].m_Data;
   }
 
-  void LinkNode(NodeId node_id, NodeId src_node, CostVar cost)
+  void LinkNode(NodeId node_id, NodeId src_node, CostVar cost, ScratchData & scratch_data) const
   {
-    auto & graph_data = m_Graph[node_id];
+    auto & graph_data = scratch_data.m_NodeData[node_id];
 
     graph_data.m_PrevNode = src_node;
     graph_data.m_Cost = cost;
   }
 
-  bool LinkNodeCheck(NodeId node_id, NodeId src_node, CostVar cost)
+  bool LinkNodeCheck(NodeId node_id, NodeId src_node, CostVar cost, ScratchData & scratch_data) const
   {
-    auto & graph_data = m_Graph[node_id];
+    auto & graph_data = scratch_data.m_NodeData[node_id];
 
     if (cost < graph_data.m_Cost)
     {
@@ -76,9 +107,9 @@ public:
     return false;
   }
 
-  NodeId GetLinkedNode(NodeId node_id)
+  NodeId GetLinkedNode(NodeId node_id, ScratchData & scratch_data) const
   {
-    auto & graph_data = m_Graph[node_id];
+    auto & graph_data = scratch_data.m_NodeData[node_id];
     return graph_data.m_PrevNode;
   }
 
@@ -125,13 +156,16 @@ public:
     }
   }
 
+  ScratchData CreateScratchData() const
+  {
+    return ScratchData(GetNumNodes());
+  }
+
 private:
   struct GraphContainerData
   {
     GraphData m_Data;
     std::vector<std::pair<NodeId, CostVar>> m_Connections;
-    NodeId m_PrevNode;
-    CostVar m_Cost;
   };
 
   std::vector<GraphContainerData> m_Graph;

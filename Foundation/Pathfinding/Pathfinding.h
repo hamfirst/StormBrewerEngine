@@ -13,17 +13,10 @@ class Pathfinding
 public:
 
   using NodeId = typename Graph::NodeId;
+  using NodeInfo = typename Graph::NodeInfo;
   using CostVar = typename Graph::CostType;
+  using ScratchData = typename Graph::ScratchData;
   static const NodeId kInvalidNodeId = Graph::kInvalidNodeId;
-
-  struct NodeInfo
-  {
-    NodeId m_NodeId;
-    CostVar m_Cost;
-
-    bool operator < (const NodeInfo & rhs) const { return m_Cost < rhs.m_Cost; }
-    bool operator > (const NodeInfo & rhs) const { return m_Cost > rhs.m_Cost; }
-  };
 
   static NodeId GetRandomNode(uint32_t random_number, const Graph & graph_ref)
   {
@@ -86,67 +79,70 @@ public:
     return possible_nodes[random_number % possible_nodes.size()];
   }
 
-  static std::vector<NodeId> FindPath(NodeId start, NodeId end, const Graph & graph_ref)
+  static std::vector<NodeId> FindPath(NodeId start, NodeId end, const Graph & graph, ScratchData & scratch_data)
   {
-    Graph & graph = const_cast<Graph &>(graph_ref);
+    while (scratch_data.m_Queue.empty() == false)
+    {
+      scratch_data.m_Queue.pop();
+    }
 
-    std::priority_queue<NodeInfo, std::vector<NodeInfo>, std::greater<NodeInfo>> q;
-    Bitset open_list(graph.GetNumNodes());
-    Bitset closed_list(graph.GetNumNodes());
+    scratch_data.m_OpenList.Clear();
+    scratch_data.m_ClosedList.Clear();
 
-    graph.LinkNode(end, kInvalidNodeId, CostVar(0));
-    q.emplace(NodeInfo{ end, CostVar(0) });
-    open_list.Set(end);
+    graph.LinkNode(end, kInvalidNodeId, CostVar(0), scratch_data);
+    scratch_data.m_Queue.emplace(NodeInfo{ start, CostVar(0) });
+    scratch_data.m_OpenList.Set(start);
 
     CostVar cur_cost = CostVar(0);
 
     auto visitor = [&](NodeId dst_node_id, NodeId src_node_id, CostVar cost)
     {
-      if (closed_list.Get(dst_node_id))
+      if (scratch_data.m_ClosedList.Get(dst_node_id))
       {
         return;
       }
 
       cost += cur_cost;
-      auto guess = graph.EvalHeuristic(dst_node_id, start);
+      auto guess = graph.EvalHeuristic(dst_node_id, end);
 
-      if (open_list.Get(dst_node_id))
+      if (scratch_data.m_OpenList.Get(dst_node_id))
       {
-        if (graph.LinkNodeCheck(dst_node_id, src_node_id, cost))
+        if (graph.LinkNodeCheck(dst_node_id, src_node_id, cost, scratch_data))
         {
-          q.emplace(NodeInfo{ dst_node_id, cost + guess });
+          scratch_data.m_Queue.emplace(NodeInfo{ dst_node_id, cost + guess });
         }
       }
       else
       {
-        graph.LinkNode(dst_node_id, src_node_id, cost);
-        open_list.Set(dst_node_id);
+        graph.LinkNode(dst_node_id, src_node_id, cost, scratch_data);
+        scratch_data.m_OpenList.Set(dst_node_id);
 
-        q.emplace(NodeInfo{ dst_node_id, cost + guess });
+        scratch_data.m_Queue.emplace(NodeInfo{ dst_node_id, cost + guess });
       }
     };
 
-    while (q.size() > 0)
+    while (scratch_data.m_Queue.size() > 0)
     {
-      auto best = q.top();
+      auto best = scratch_data.m_Queue.top();
 
-      if (best.m_NodeId == start)
+      if (best.m_NodeId == end)
       {
         std::vector<NodeId> nodes;
-        auto node = start;
+        auto node = end;
 
         while (node != kInvalidNodeId)
         {
           nodes.push_back(node);
-          node = graph.GetLinkedNode(node);
+          node = graph.GetLinkedNode(node, scratch_data);
         }
 
+        std::reverse(nodes.begin(), nodes.end());
         return nodes;
       }
 
-      q.pop();
-      open_list.Unset(best.m_NodeId);
-      closed_list.Set(best.m_NodeId);
+      scratch_data.m_Queue.pop();
+      scratch_data.m_OpenList.Unset(best.m_NodeId);
+      scratch_data.m_ClosedList.Set(best.m_NodeId);
 
       cur_cost = best.m_Cost;
       graph.VisitNeighbors(best.m_NodeId, visitor);
@@ -154,4 +150,6 @@ public:
 
     return{};
   }
+
+  
 };

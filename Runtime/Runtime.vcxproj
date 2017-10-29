@@ -54,6 +54,8 @@
     <ClCompile Include="Map\MapDef.refl.cpp" />
     <ClCompile Include="Map\MapEffectLayerDef.refl.cpp" />
     <ClCompile Include="Map\MapEffectLayerTypeDatabase.cpp" />
+    <ClCompile Include="Map\MapPropertiesDef.refl.cpp" />
+    <ClCompile Include="Map\MapPropertiesTypeDatabase.cpp" />
     <ClCompile Include="Map\MapResource.cpp">
       <SubType>
       </SubType>
@@ -180,6 +182,10 @@
     <ClInclude Include="Map\MapEffectLayerTypeDatabase.h" />
     <ClInclude Include="Map\MapEffectLayerTypeRegister.h" />
     <ClInclude Include="Map\MapMetaExtractor.h" />
+    <ClInclude Include="Map\MapPropertiesDef.refl.h" />
+    <ClInclude Include="Map\MapPropertiesDef.refl.meta.h" />
+    <ClInclude Include="Map\MapPropertiesTypeDatabase.h" />
+    <ClInclude Include="Map\MapPropertiesTypeRegister.h" />
     <ClInclude Include="Map\MapResource.h">
       <SubType>
       </SubType>

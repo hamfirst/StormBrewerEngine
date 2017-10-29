@@ -5,6 +5,8 @@
 
 #include "Runtime/Map/MapTileJson.h"
 #include "Runtime/Map/MapDef.refl.meta.h"
+#include "Runtime/Map/MapCollision.h"
+#include "Runtime/Collision/CollisionDatabase.h"
 
 #include "EditorContainer.h"
 #include "DocumentEditor.h"
@@ -24,6 +26,8 @@
 #include "MapEditorToolAnchorCreate.h"
 #include "MapEditorToolAnchorEditor.h"
 #include "MapEditorToolAnchorMultiEditor.h"
+
+#include <unordered_set>
 
 
 
@@ -82,6 +86,16 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   switch (layer.m_Type)
   {
+  case MapEditorLayerItemType::kMapProperties:
+    ClearLayerSelection();
+    m_PropertyEditor->LoadStruct(this, m_Map.m_PropertiesInfo,
+      [this, index = layer.m_Index]() -> void * { return &m_Map.m_PropertiesInfo; }, true);
+    break;
+  case MapEditorLayerItemType::kPathfinding:
+    ClearLayerSelection();
+    m_PropertyEditor->LoadStruct(this, m_Map.m_PathfingindInfo,
+      [this, index = layer.m_Index]() -> void * { return &m_Map.m_PathfingindInfo; }, true);
+    break;
   case MapEditorLayerItemType::kManualTileLayerParent:
   case MapEditorLayerItemType::kEntityLayerParent:
   case MapEditorLayerItemType::kVolumeParent:
@@ -291,6 +305,209 @@ void MapEditor::ClearLayerSelection()
   m_Selector->GetTileSelector()->hide();
   m_Selector->GetEntitySelector()->Clear();
   m_Selector->GetEntitySelector()->hide();
+}
+
+void MapEditor::CalculatePathfindingInfo()
+{
+  std::vector<uint32_t> collision_hashes;
+  for (auto elem : m_Map.m_PathfingindInfo.m_CollisionMask)
+  {
+    collision_hashes.push_back(crc32(elem.second.ToString()));
+  }
+
+  auto box_multi_list = ExtractMapCollision(m_Map, Vector2{}, collision_hashes);
+  CollisionDatabase coll_database(box_multi_list.size());
+  auto bounds = coll_database.PushMapCollision(0, std::move(box_multi_list));
+
+  std::vector<Box> all_boxes_list;
+  for (auto & list : box_multi_list)
+  {
+    all_boxes_list.insert(all_boxes_list.end(), list.begin(), list.end());
+  }
+
+  if (bounds.IsValid() == false)
+  {
+    ClearPathfindingInfo();
+    return;
+  }
+
+  auto vector_hash = [](const Vector2 & v)
+  {
+    uint64_t val = (uint64_t)v.x;
+    val <<= 32;
+    val |= ((uint64_t)v.y) & 0xFFFFFFFF;
+    return val;
+  };
+
+  auto hash_to_vector = [](const uint64_t & v)
+  {
+    int x = (int)(v >> 32);
+    int y = (int)(v);
+    return Vector2(x, y);
+  };
+
+  MapPathfindingCalculatedInfo info;
+  info.m_Id = GetRandomNumber();
+
+#ifndef MAP_PLATFORMER_PATHFINDING
+
+  info.m_GridWidth = m_Map.m_PathfingindInfo.m_GridWidth;
+  info.m_GridHeight = m_Map.m_PathfingindInfo.m_GridHeight;
+
+  auto size = bounds.Value().Size();
+
+  info.m_StartX = bounds->m_Start.x - info.m_GridWidth * 3;
+  info.m_StartY = bounds->m_Start.y - info.m_GridHeight * 3;
+  info.m_SizeX = (size.x + info.m_GridWidth * 6 + info.m_GridWidth - 1) / info.m_GridWidth;
+  info.m_SizeY = (size.y + info.m_GridHeight * 6 + info.m_GridHeight - 1) / info.m_GridHeight;
+  info.m_GridInfo.reserve(info.m_SizeX * info.m_SizeY);
+
+  for (int y = 0; y < info.m_SizeY; ++y)
+  {
+    for (int x = 0; x < info.m_SizeX; ++x)
+    {
+      Box box;
+      box.m_Start.x = info.m_StartX + x * info.m_GridWidth;
+      box.m_Start.y = info.m_StartY + y * info.m_GridHeight;
+      box.m_End.x = box.m_Start.x + info.m_GridWidth - 1;
+      box.m_End.y = box.m_Start.y + info.m_GridHeight - 1;
+
+      uint8_t grid_val = (uint8_t)(coll_database.CheckCollisionAny(box, 0xFFFFFFFF) != 0);
+      info.m_GridInfo.push_back(grid_val);
+    }
+  }
+
+#else
+
+  std::unordered_set<uint64_t> positions;
+  for (auto & b : all_boxes_list)
+  {
+    auto y = b.m_End.y + 1;
+    auto start_x = b.m_Start.x;
+    auto end_x = b.m_End.x;
+
+    Optional<MapPathfindingSurface> surface;
+
+    for (int x = start_x; x <= end_x; ++x)
+    {
+      auto pos = Vector2(x, y);
+      auto hash = vector_hash(pos);
+
+      auto result = positions.insert(hash);
+      if (result.second == false)
+      {
+        break;
+      }
+
+      auto clearance = coll_database.CheckClearance(pos, m_Map.m_PathfingindInfo.m_MaximumClearance, 0xFFFFFFFF);
+      if (clearance < m_Map.m_PathfingindInfo.m_MinimumClearance)
+      {
+        break;
+      }
+      else
+      {
+        if (surface)
+        {
+          if (surface->m_Clearance != clearance)
+          {
+            info.m_Surfaces.push_back(surface.Value());
+
+            surface.Emplace();
+            surface->m_P1 = Vector2(x, y);
+            surface->m_P2 = Vector2(x, y);
+            surface->m_Clearance = (int)clearance;
+          }
+          else
+          {
+            surface->m_P2 = Vector2(x, y);
+          }
+        }
+        else
+        {
+          surface.Emplace();
+          surface->m_P1 = Vector2(x, y);
+          surface->m_P2 = Vector2(x, y);
+          surface->m_Clearance = (int)clearance;
+        }
+      }
+    }
+
+    if (surface)
+    {
+      info.m_Surfaces.push_back(surface.Value());
+    }
+  }
+
+  std::unordered_map<uint64_t, std::vector<std::pair<std::size_t, bool>>> endpoints;
+  for (std::size_t index = 0, end = info.m_Surfaces.size(); index < end; ++index)
+  {
+    auto & surface = info.m_Surfaces[index];
+    
+    auto p1_hash = vector_hash(surface.m_P1);
+    auto p2_hash = vector_hash(surface.m_P2);
+
+    auto p1_itr = endpoints.emplace(std::make_pair(p1_hash, std::vector<std::pair<std::size_t, bool>>()));
+    p1_itr.first->second.emplace_back(std::make_pair(index, true));
+
+    auto p2_itr = endpoints.emplace(std::make_pair(p2_hash, std::vector<std::pair<std::size_t, bool>>()));
+    p2_itr.first->second.emplace_back(std::make_pair(index, false));
+  }
+
+  for (std::size_t index = 0, end = info.m_Surfaces.size(); index < end; ++index)
+  {
+    auto & surface = info.m_Surfaces[index];
+
+    surface.m_StartConnections1 = info.m_Connections.size();
+
+    auto p1_connection = surface.m_P1;
+    p1_connection.x--;
+
+    auto p1_hash = vector_hash(p1_connection);
+    auto p1_itr = endpoints.find(p1_hash);
+
+    if (p1_itr != endpoints.end())
+    {
+      for (auto & elem : p1_itr->second)
+      {
+        MapPathfindingSurfaceConnection connection;
+        connection.m_SurfaceIndex = elem.first;
+        connection.m_P1 = elem.second;
+        info.m_Connections.emplace_back(connection);
+      }
+    }
+
+    surface.m_EndConnections1 = info.m_Connections.size();
+
+    surface.m_StartConnections2 = info.m_Connections.size();
+
+    auto p2_connection = surface.m_P2;
+    p2_connection.x++;
+
+    auto p2_hash = vector_hash(p2_connection);
+    auto p2_itr = endpoints.find(p2_hash);
+
+    if (p2_itr != endpoints.end())
+    {
+      for (auto & elem : p2_itr->second)
+      {
+        MapPathfindingSurfaceConnection connection;
+        connection.m_SurfaceIndex = elem.first;
+        connection.m_P1 = elem.second;
+        info.m_Connections.emplace_back(connection);
+      }
+    }
+
+    surface.m_EndConnections2 = info.m_Connections.size();
+  }
+#endif
+
+  m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
+}
+
+void MapEditor::ClearPathfindingInfo()
+{
+  MapPathfindingCalculatedInfo info = {};
+  m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
 }
 
 MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & MapEditor::GetManualTileManager()

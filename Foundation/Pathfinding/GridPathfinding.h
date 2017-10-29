@@ -2,8 +2,6 @@
 
 #include "Foundation/Pathfinding/Pathfinding.h"
 
-
-
 template <typename GridData, typename CostVar, typename MoveEvaluator, bool AllowDiagonals = false, bool DiagonalCostIncrease = true>
 class PathfindingBasicGrid2D
 {
@@ -12,8 +10,39 @@ public:
   using CostType = CostVar;
   static const NodeId kInvalidNodeId = -1;
 
+  struct NodeInfo
+  {
+    NodeId m_NodeId;
+    CostVar m_Cost;
+
+    bool operator < (const NodeInfo & rhs) const { return m_Cost < rhs.m_Cost; }
+    bool operator > (const NodeInfo & rhs) const { return m_Cost > rhs.m_Cost; }
+  };
+
+  struct PerNodeData
+  {
+    NodeId m_PrevNode;
+    CostVar m_Cost;
+  };
+
+  struct ScratchData
+  {
+    ScratchData(std::size_t num_nodes) :
+      m_NodeData(num_nodes),
+      m_OpenList(num_nodes),
+      m_ClosedList(num_nodes)
+    {
+
+    }
+
+    std::priority_queue<NodeInfo, std::vector<NodeInfo>, std::greater<NodeInfo>> m_Queue;
+    std::vector<PerNodeData> m_NodeData;
+    Bitset m_OpenList;
+    Bitset m_ClosedList;
+  };
+
   PathfindingBasicGrid2D(const Vector2 & size) :
-    m_Grid(std::make_unique<GridContainerData[]>(size.x * size.y)),
+    m_Grid(std::make_unique<GridData[]>(size.x * size.y)),
     m_Width(size.x),
     m_Height(size.y)
   {
@@ -43,25 +72,25 @@ public:
 
   void SetGridData(int x, int y, const GridData & data)
   {
-    m_Grid[x + y * m_Width].m_Data = data;
+    m_Grid[x + y * m_Width] = data;
   }
 
   const GridData & GetGridData(int x, int y) const
   {
-    return m_Grid[x + y * m_Width].m_Data;
+    return m_Grid[x + y * m_Width];
   }
 
-  void LinkNode(NodeId node_id, NodeId src_node, CostVar cost)
+  void LinkNode(NodeId node_id, NodeId src_node, CostVar cost, ScratchData & scratch_data) const
   {
-    auto & grid_data = m_Grid[node_id];
+    auto & grid_data = scratch_data.m_NodeData[node_id];
 
     grid_data.m_PrevNode = src_node;
     grid_data.m_Cost = cost;
   }
 
-  bool LinkNodeCheck(NodeId node_id, NodeId src_node, CostVar cost)
+  bool LinkNodeCheck(NodeId node_id, NodeId src_node, CostVar cost, ScratchData & scratch_data) const
   {
-    auto & grid_data = m_Grid[node_id];
+    auto & grid_data = scratch_data.m_NodeData[node_id];
 
     if (cost < grid_data.m_Cost)
     {
@@ -73,9 +102,9 @@ public:
     return false;
   }
 
-  NodeId GetLinkedNode(NodeId node_id)
+  NodeId GetLinkedNode(NodeId node_id, ScratchData & scratch_data) const
   {
-    auto & grid_data = m_Grid[node_id];
+    auto & grid_data = scratch_data.m_NodeData[node_id];
     return grid_data.m_PrevNode;
   }
 
@@ -109,7 +138,7 @@ public:
   }
 
   template <typename Visitor>
-  void VisitNeighbors(NodeId node_id, Visitor && visitor)
+  void VisitNeighbors(NodeId node_id, Visitor && visitor) const
   {
     auto location = NodeIdToLocation(node_id);
     auto target_location = NodeIdToLocation(node_id);
@@ -238,29 +267,27 @@ public:
   }
 
   template <typename Visitor>
-  void VisitNodes(Visitor && visitor)
+  void VisitNodes(Visitor && visitor) const
   {
     int num_nodes = (int)m_Width * m_Height;
     for (int node = 0; node < num_nodes; ++node)
     {
-      visitor(node, m_Grid[node].m_Data);
+      visitor(node, m_Grid[node]);
     }
   }
 
-private:
-  struct GridContainerData
+  ScratchData CreateScratchData() const
   {
-    GridData m_Data = {};
-    NodeId m_PrevNode;
-    CostVar m_Cost;
-  };
+    return ScratchData(GetNumNodes());
+  }
 
-  std::unique_ptr<GridContainerData[]> m_Grid;
+private:
+
+  std::unique_ptr<GridData[]> m_Grid;
   std::size_t m_Width;
   std::size_t m_Height;
 
   MoveEvaluator m_Eval;
-
 };
 
 template <typename CostVar>

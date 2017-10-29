@@ -215,6 +215,7 @@ public:
   void RemoveBatch(const Box & b, const std::vector<std::size_t> & elem_ids);
 
   void Query(const Box & b, std::vector<std::size_t> & outp_elem_ids) const;
+  void QueryBoxes(const Box & b, std::vector<Box> & outp_boxes) const;
   bool QueryAny(const Box & b) const;
   bool QueryAny(const Box & b, std::size_t & outp_elem) const;
 

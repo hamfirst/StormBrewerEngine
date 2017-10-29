@@ -129,6 +129,8 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Pathfinding\PathfindingPath.h" />
+    <ClInclude Include="Pathfinding\PathfindingPathCache.h" />
+    <ClInclude Include="Pathfinding\PlatformerPathfinding.h" />
     <ClInclude Include="Profiling\Profiling.h">
       <SubType>
       </SubType>

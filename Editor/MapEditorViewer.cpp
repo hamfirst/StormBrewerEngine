@@ -604,7 +604,6 @@ void MapEditorViewer::paintGL()
     }
   }
 
-
   for (auto elem : m_Map.m_ManualTileLayers)
   {
     auto layer = tile_manager.GetLayerManager(elem.first);
@@ -674,6 +673,40 @@ void MapEditorViewer::paintGL()
     }
 
     layer->Draw(builder, viewport_bounds, m_Center, m_Magnification);
+  }
+
+  if (m_SelectedLayer && m_SelectedLayer->m_Type == MapEditorLayerItemType::kPathfinding)
+  {
+    auto & info = m_Map.m_PathfingindInfo.m_CalculatedInfo.Value();
+    
+#ifndef MAP_PLATFORMER_PATHFINDING
+    
+    int value_index = 0;
+    for (int y = 0; y < info.m_SizeY; ++y)
+    {
+      for (int x = 0; x < info.m_SizeX; ++x)
+      {
+        Box box;
+        box.m_Start.x = info.m_StartX + x * info.m_GridWidth;
+        box.m_Start.y = info.m_StartY + y * info.m_GridHeight;
+        box.m_End.x = box.m_Start.x + info.m_GridWidth - 1;
+        box.m_End.y = box.m_Start.y + info.m_GridHeight - 1;
+
+        auto color = info.m_GridInfo[value_index] ? Color(255, 0, 0, 200) : Color(0, 0, 255, 200);
+        builder.FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), color);
+
+        ++value_index;
+      }
+    }
+#else
+    for (auto & surface : info.m_Surfaces)
+    {
+      auto p2 = surface.m_P2;
+      p2.x++;
+
+      DrawUtil::DrawLine(builder, surface.m_P1, p2, m_Magnification);
+    }
+#endif
   }
 
   for (auto elem : m_Map.m_Volumes)

@@ -9,7 +9,43 @@
 #include "Runtime/Path/PathDef.refl.meta.h"
 #include "Runtime/Volume/VolumeDef.refl.meta.h"
 #include "Runtime/Map/MapEffectLayerDef.refl.meta.h"
+#include "Runtime/Map/MapPropertiesDef.refl.meta.h"
 
+
+template <>
+struct StormReflTypeInfo<MapPropertiesInfo>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapPropertiesInfo"; }
+  static constexpr auto GetNameHash() { return 0x3D3EA581; }
+  static MapPropertiesInfo & GetDefault() { static MapPropertiesInfo def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPropertiesInfo>::field_data_static<0>
+{
+  using member_type = RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>; // RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>
+  static constexpr auto GetName() { return "m_MapProperties"; }
+  static constexpr auto GetType() { return "RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x841C9243; }
+  static constexpr unsigned GetTypeNameHash() { return 0xFD5B17FA; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapPropertiesInfo::m_MapProperties; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPropertiesInfo>::field_data<0, Self> : public StormReflTypeInfo<MapPropertiesInfo>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>> & Get() { return self.m_MapProperties; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>>> & Get() const { return self.m_MapProperties; }
+  void SetDefault() { self.m_MapProperties = StormReflTypeInfo<MapPropertiesInfo>::GetDefault().m_MapProperties; }
+};
 
 template <>
 struct StormReflTypeInfo<MapManualTileLayer>
@@ -721,11 +757,11 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<1, Self> : public StormRefl
 template <>
 struct StormReflTypeInfo<MapEffectLayer>::field_data_static<2>
 {
-  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>; // RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>
+  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>; // RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>
   static constexpr auto GetName() { return "m_EffectLayerData"; }
-  static constexpr auto GetType() { return "RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1AE0B1F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xAA22286A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB5F26F00; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_EffectLayerData; }
 };
@@ -778,11 +814,11 @@ struct StormReflTypeInfo<MapAnchor>::field_data<0, Self> : public StormReflTypeI
 template <>
 struct StormReflTypeInfo<MapAnchor>::field_data_static<1>
 {
-  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>
+  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>
   static constexpr auto GetName() { return "m_AnchorData"; }
-  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x73BF9C78; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1AB33B8D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x07A3C796; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_AnchorData; }
 };
@@ -936,11 +972,11 @@ struct StormReflTypeInfo<MapPath>::field_data<0, Self> : public StormReflTypeInf
 template <>
 struct StormReflTypeInfo<MapPath>::field_data_static<1>
 {
-  using member_type = RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>; // RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>
+  using member_type = RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>; // RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>
   static constexpr auto GetName() { return "m_PathData"; }
-  static constexpr auto GetType() { return "RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x07EB2D9C; }
-  static constexpr unsigned GetTypeNameHash() { return 0xA5143125; }
+  static constexpr unsigned GetTypeNameHash() { return 0x556A64B3; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_PathData; }
 };
@@ -1015,11 +1051,11 @@ struct StormReflTypeInfo<MapVolume>::field_data<0, Self> : public StormReflTypeI
 template <>
 struct StormReflTypeInfo<MapVolume>::field_data_static<1>
 {
-  using member_type = RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>; // RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>
+  using member_type = RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>; // RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>
   static constexpr auto GetName() { return "m_VolumeData"; }
-  static constexpr auto GetType() { return "RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1971791; }
-  static constexpr unsigned GetTypeNameHash() { return 0x252416A8; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEA7AD4B2; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_VolumeData; }
 };
@@ -1123,10 +1159,428 @@ struct StormReflTypeInfo<MapVolume>::field_data<5, Self> : public StormReflTypeI
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>
+struct StormReflTypeInfo<MapPathfindingSurface>
 {
   using MyBase = void;
   static constexpr int fields_n = 7;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapPathfindingSurface"; }
+  static constexpr auto GetNameHash() { return 0x98EE40AC; }
+  static MapPathfindingSurface & GetDefault() { static MapPathfindingSurface def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<0>
+{
+  using member_type = Vector2; // Vector2
+  static constexpr auto GetName() { return "m_P1"; }
+  static constexpr auto GetType() { return "Vector2"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x648DC421; }
+  static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_P1; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<0, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, Vector2> & Get() { return self.m_P1; }
+  std::add_const_t<std::remove_reference_t<Vector2>> & Get() const { return self.m_P1; }
+  void SetDefault() { self.m_P1 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_P1; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<1>
+{
+  using member_type = Vector2; // Vector2
+  static constexpr auto GetName() { return "m_P2"; }
+  static constexpr auto GetType() { return "Vector2"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xFD84959B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_P2; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<1, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, Vector2> & Get() { return self.m_P2; }
+  std::add_const_t<std::remove_reference_t<Vector2>> & Get() const { return self.m_P2; }
+  void SetDefault() { self.m_P2 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_P2; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<2>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_Clearance"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF36CEACD; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_Clearance; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<2, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_Clearance; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_Clearance; }
+  void SetDefault() { self.m_Clearance = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_Clearance; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<3>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_StartConnections1"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF1F70C29; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_StartConnections1; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<3, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_StartConnections1; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_StartConnections1; }
+  void SetDefault() { self.m_StartConnections1 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_StartConnections1; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<4>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_EndConnections1"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x132DE55F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_EndConnections1; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<4, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_EndConnections1; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_EndConnections1; }
+  void SetDefault() { self.m_EndConnections1 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_EndConnections1; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<5>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_StartConnections2"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x68FE5D93; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_StartConnections2; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<5, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_StartConnections2; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_StartConnections2; }
+  void SetDefault() { self.m_StartConnections2 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_StartConnections2; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<6>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_EndConnections2"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8A24B4E5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_EndConnections2; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurface>::field_data<6, Self> : public StormReflTypeInfo<MapPathfindingSurface>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_EndConnections2; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_EndConnections2; }
+  void SetDefault() { self.m_EndConnections2 = StormReflTypeInfo<MapPathfindingSurface>::GetDefault().m_EndConnections2; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurfaceConnection>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapPathfindingSurfaceConnection"; }
+  static constexpr auto GetNameHash() { return 0x412196E6; }
+  static MapPathfindingSurfaceConnection & GetDefault() { static MapPathfindingSurfaceConnection def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<0>
+{
+  using member_type = uint32_t; // unsigned int
+  static constexpr auto GetName() { return "m_SurfaceIndex"; }
+  static constexpr auto GetType() { return "unsigned int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA485689B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurfaceConnection::m_SurfaceIndex; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data<0, Self> : public StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint32_t> & Get() { return self.m_SurfaceIndex; }
+  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_SurfaceIndex; }
+  void SetDefault() { self.m_SurfaceIndex = StormReflTypeInfo<MapPathfindingSurfaceConnection>::GetDefault().m_SurfaceIndex; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<1>
+{
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "m_P1"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x648DC421; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingSurfaceConnection::m_P1; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data<1, Self> : public StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, bool> & Get() { return self.m_P1; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_P1; }
+  void SetDefault() { self.m_P1 = StormReflTypeInfo<MapPathfindingSurfaceConnection>::GetDefault().m_P1; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 3;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapPathfindingCalculatedInfo"; }
+  static constexpr auto GetNameHash() { return 0x68B8A4ED; }
+  static MapPathfindingCalculatedInfo & GetDefault() { static MapPathfindingCalculatedInfo def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<0>
+{
+  using member_type = uint32_t; // unsigned int
+  static constexpr auto GetName() { return "m_Id"; }
+  static constexpr auto GetType() { return "unsigned int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xE48CC842; }
+  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_Id; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data<0, Self> : public StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint32_t> & Get() { return self.m_Id; }
+  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_Id; }
+  void SetDefault() { self.m_Id = StormReflTypeInfo<MapPathfindingCalculatedInfo>::GetDefault().m_Id; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<1>
+{
+  using member_type = std::vector<MapPathfindingSurface>; // std::vector<MapPathfindingSurface, std::allocator<MapPathfindingSurface> >
+  static constexpr auto GetName() { return "m_Surfaces"; }
+  static constexpr auto GetType() { return "std::vector<MapPathfindingSurface, std::allocator<MapPathfindingSurface> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x479416E4; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4B28CF03; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_Surfaces; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data<1, Self> : public StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::vector<MapPathfindingSurface>> & Get() { return self.m_Surfaces; }
+  std::add_const_t<std::remove_reference_t<std::vector<MapPathfindingSurface>>> & Get() const { return self.m_Surfaces; }
+  void SetDefault() { self.m_Surfaces = StormReflTypeInfo<MapPathfindingCalculatedInfo>::GetDefault().m_Surfaces; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<2>
+{
+  using member_type = std::vector<MapPathfindingSurfaceConnection>; // std::vector<MapPathfindingSurfaceConnection, std::allocator<MapPathfindingSurfaceConnection> >
+  static constexpr auto GetName() { return "m_Connections"; }
+  static constexpr auto GetType() { return "std::vector<MapPathfindingSurfaceConnection, std::allocator<MapPathfindingSurfaceConnection> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x5AA9FBF1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x937B4295; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_Connections; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data<2, Self> : public StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::vector<MapPathfindingSurfaceConnection>> & Get() { return self.m_Connections; }
+  std::add_const_t<std::remove_reference_t<std::vector<MapPathfindingSurfaceConnection>>> & Get() const { return self.m_Connections; }
+  void SetDefault() { self.m_Connections = StormReflTypeInfo<MapPathfindingCalculatedInfo>::GetDefault().m_Connections; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 4;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapPathfindingInfo"; }
+  static constexpr auto GetNameHash() { return 0xD6EED399; }
+  static MapPathfindingInfo & GetDefault() { static MapPathfindingInfo def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<0>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_MinimumClearance"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x7493AAD6; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_MinimumClearance; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data<0, Self> : public StormReflTypeInfo<MapPathfindingInfo>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_MinimumClearance; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_MinimumClearance; }
+  void SetDefault() { self.m_MinimumClearance = StormReflTypeInfo<MapPathfindingInfo>::GetDefault().m_MinimumClearance; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<1>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_MaximumClearance"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x256A118B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_MaximumClearance; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data<1, Self> : public StormReflTypeInfo<MapPathfindingInfo>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_MaximumClearance; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_MaximumClearance; }
+  void SetDefault() { self.m_MaximumClearance = StormReflTypeInfo<MapPathfindingInfo>::GetDefault().m_MaximumClearance; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<2>
+{
+  using member_type = RMergeList<RString>; // RMergeList<RString>
+  static constexpr auto GetName() { return "m_CollisionMask"; }
+  static constexpr auto GetType() { return "RMergeList<RString>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3E60CA75; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8C9238EC; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_CollisionMask; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data<2, Self> : public StormReflTypeInfo<MapPathfindingInfo>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<RString>> & Get() { return self.m_CollisionMask; }
+  std::add_const_t<std::remove_reference_t<RMergeList<RString>>> & Get() const { return self.m_CollisionMask; }
+  void SetDefault() { self.m_CollisionMask = StormReflTypeInfo<MapPathfindingInfo>::GetDefault().m_CollisionMask; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<3>
+{
+  using member_type = ROpaque<MapPathfindingCalculatedInfo>; // ROpaque<MapPathfindingCalculatedInfo>
+  static constexpr auto GetName() { return "m_CalculatedInfo"; }
+  static constexpr auto GetType() { return "ROpaque<MapPathfindingCalculatedInfo>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xDC57C505; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3AAC98AB; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_CalculatedInfo; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapPathfindingInfo>::field_data<3, Self> : public StormReflTypeInfo<MapPathfindingInfo>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ROpaque<MapPathfindingCalculatedInfo>> & Get() { return self.m_CalculatedInfo; }
+  std::add_const_t<std::remove_reference_t<ROpaque<MapPathfindingCalculatedInfo>>> & Get() const { return self.m_CalculatedInfo; }
+  void SetDefault() { self.m_CalculatedInfo = StormReflTypeInfo<MapPathfindingInfo>::GetDefault().m_CalculatedInfo; }
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::annotations<3>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapPathfindingInfo>::annotations<3>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
+};
+
+template <>
+struct StormReflTypeInfo<MapDef>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 9;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -1138,17 +1592,61 @@ struct StormReflTypeInfo<MapDef>
 template <>
 struct StormReflTypeInfo<MapDef>::field_data_static<0>
 {
+  using member_type = MapPropertiesInfo; // MapPropertiesInfo
+  static constexpr auto GetName() { return "m_PropertiesInfo"; }
+  static constexpr auto GetType() { return "MapPropertiesInfo"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2CFDF744; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3D3EA581; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapDef::m_PropertiesInfo; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapDef>::field_data<0, Self> : public StormReflTypeInfo<MapDef>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, MapPropertiesInfo> & Get() { return self.m_PropertiesInfo; }
+  std::add_const_t<std::remove_reference_t<MapPropertiesInfo>> & Get() const { return self.m_PropertiesInfo; }
+  void SetDefault() { self.m_PropertiesInfo = StormReflTypeInfo<MapDef>::GetDefault().m_PropertiesInfo; }
+};
+
+template <>
+struct StormReflTypeInfo<MapDef>::field_data_static<1>
+{
+  using member_type = MapPathfindingInfo; // MapPathfindingInfo
+  static constexpr auto GetName() { return "m_PathfingindInfo"; }
+  static constexpr auto GetType() { return "MapPathfindingInfo"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF4DE5BC7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xD6EED399; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &MapDef::m_PathfingindInfo; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapDef>::field_data<1, Self> : public StormReflTypeInfo<MapDef>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, MapPathfindingInfo> & Get() { return self.m_PathfingindInfo; }
+  std::add_const_t<std::remove_reference_t<MapPathfindingInfo>> & Get() const { return self.m_PathfingindInfo; }
+  void SetDefault() { self.m_PathfingindInfo = StormReflTypeInfo<MapDef>::GetDefault().m_PathfingindInfo; }
+};
+
+template <>
+struct StormReflTypeInfo<MapDef>::field_data_static<2>
+{
   using member_type = RMergeList<MapManualTileLayer>; // RMergeList<MapManualTileLayer>
   static constexpr auto GetName() { return "m_ManualTileLayers"; }
   static constexpr auto GetType() { return "RMergeList<MapManualTileLayer>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x64A8921A; }
   static constexpr unsigned GetTypeNameHash() { return 0xBEE03213; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ManualTileLayers; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<0, Self> : public StormReflTypeInfo<MapDef>::field_data_static<0>
+struct StormReflTypeInfo<MapDef>::field_data<2, Self> : public StormReflTypeInfo<MapDef>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1158,19 +1656,19 @@ struct StormReflTypeInfo<MapDef>::field_data<0, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<1>
+struct StormReflTypeInfo<MapDef>::field_data_static<3>
 {
   using member_type = RMergeList<MapEntityLayer>; // RMergeList<MapEntityLayer>
   static constexpr auto GetName() { return "m_EntityLayers"; }
   static constexpr auto GetType() { return "RMergeList<MapEntityLayer>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x606A4865; }
   static constexpr unsigned GetTypeNameHash() { return 0x0F0562FD; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_EntityLayers; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<1, Self> : public StormReflTypeInfo<MapDef>::field_data_static<1>
+struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo<MapDef>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1180,19 +1678,19 @@ struct StormReflTypeInfo<MapDef>::field_data<1, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<2>
+struct StormReflTypeInfo<MapDef>::field_data_static<4>
 {
   using member_type = RMergeList<MapParalaxLayer>; // RMergeList<MapParalaxLayer>
   static constexpr auto GetName() { return "m_ParalaxLayers"; }
   static constexpr auto GetType() { return "RMergeList<MapParalaxLayer>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x131DDD15; }
   static constexpr unsigned GetTypeNameHash() { return 0xA01CA52C; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ParalaxLayers; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<2, Self> : public StormReflTypeInfo<MapDef>::field_data_static<2>
+struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1202,19 +1700,19 @@ struct StormReflTypeInfo<MapDef>::field_data<2, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<3>
+struct StormReflTypeInfo<MapDef>::field_data_static<5>
 {
   using member_type = RMergeList<MapEffectLayer>; // RMergeList<MapEffectLayer>
   static constexpr auto GetName() { return "m_EffectLayers"; }
   static constexpr auto GetType() { return "RMergeList<MapEffectLayer>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x086F5213; }
   static constexpr unsigned GetTypeNameHash() { return 0x6700788B; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_EffectLayers; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo<MapDef>::field_data_static<3>
+struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo<MapDef>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1224,19 +1722,19 @@ struct StormReflTypeInfo<MapDef>::field_data<3, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<4>
+struct StormReflTypeInfo<MapDef>::field_data_static<6>
 {
   using member_type = RMergeList<MapAnchor>; // RMergeList<MapAnchor>
   static constexpr auto GetName() { return "m_Anchors"; }
   static constexpr auto GetType() { return "RMergeList<MapAnchor>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA02FE64E; }
   static constexpr unsigned GetTypeNameHash() { return 0x5C53BF10; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Anchors; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo<MapDef>::field_data_static<4>
+struct StormReflTypeInfo<MapDef>::field_data<6, Self> : public StormReflTypeInfo<MapDef>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1246,19 +1744,19 @@ struct StormReflTypeInfo<MapDef>::field_data<4, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<5>
+struct StormReflTypeInfo<MapDef>::field_data_static<7>
 {
   using member_type = RMergeList<MapPath>; // RMergeList<MapPath>
   static constexpr auto GetName() { return "m_Paths"; }
   static constexpr auto GetType() { return "RMergeList<MapPath>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x068C1671; }
   static constexpr unsigned GetTypeNameHash() { return 0x65F883E4; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Paths; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo<MapDef>::field_data_static<5>
+struct StormReflTypeInfo<MapDef>::field_data<7, Self> : public StormReflTypeInfo<MapDef>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1268,19 +1766,19 @@ struct StormReflTypeInfo<MapDef>::field_data<5, Self> : public StormReflTypeInfo
 };
 
 template <>
-struct StormReflTypeInfo<MapDef>::field_data_static<6>
+struct StormReflTypeInfo<MapDef>::field_data_static<8>
 {
   using member_type = RMergeList<MapVolume>; // RMergeList<MapVolume>
   static constexpr auto GetName() { return "m_Volumes"; }
   static constexpr auto GetType() { return "RMergeList<MapVolume>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xEF2EDFC0; }
   static constexpr unsigned GetTypeNameHash() { return 0x1352869E; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Volumes; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapDef>::field_data<6, Self> : public StormReflTypeInfo<MapDef>::field_data_static<6>
+struct StormReflTypeInfo<MapDef>::field_data<8, Self> : public StormReflTypeInfo<MapDef>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1293,66 +1791,96 @@ namespace StormReflFileInfo
 {
   struct MapDef
   {
-    static const int types_n = 10;
+    static const int types_n = 15;
     template <int i> struct type_info { using type = void; };
   };
 
   template <>
   struct MapDef::type_info<0>
   {
-    using type = ::MapManualTileLayer;
+    using type = ::MapPropertiesInfo;
   };
 
   template <>
   struct MapDef::type_info<1>
   {
-    using type = ::MapEntity;
+    using type = ::MapManualTileLayer;
   };
 
   template <>
   struct MapDef::type_info<2>
   {
-    using type = ::MapEntityLayer;
+    using type = ::MapEntity;
   };
 
   template <>
   struct MapDef::type_info<3>
   {
-    using type = ::MapParalaxLayer;
+    using type = ::MapEntityLayer;
   };
 
   template <>
   struct MapDef::type_info<4>
   {
-    using type = ::MapEffectLayer;
+    using type = ::MapParalaxLayer;
   };
 
   template <>
   struct MapDef::type_info<5>
   {
-    using type = ::MapAnchor;
+    using type = ::MapEffectLayer;
   };
 
   template <>
   struct MapDef::type_info<6>
   {
-    using type = ::MapPathPoint;
+    using type = ::MapAnchor;
   };
 
   template <>
   struct MapDef::type_info<7>
   {
-    using type = ::MapPath;
+    using type = ::MapPathPoint;
   };
 
   template <>
   struct MapDef::type_info<8>
   {
-    using type = ::MapVolume;
+    using type = ::MapPath;
   };
 
   template <>
   struct MapDef::type_info<9>
+  {
+    using type = ::MapVolume;
+  };
+
+  template <>
+  struct MapDef::type_info<10>
+  {
+    using type = ::MapPathfindingSurface;
+  };
+
+  template <>
+  struct MapDef::type_info<11>
+  {
+    using type = ::MapPathfindingSurfaceConnection;
+  };
+
+  template <>
+  struct MapDef::type_info<12>
+  {
+    using type = ::MapPathfindingCalculatedInfo;
+  };
+
+  template <>
+  struct MapDef::type_info<13>
+  {
+    using type = ::MapPathfindingInfo;
+  };
+
+  template <>
+  struct MapDef::type_info<14>
   {
     using type = ::MapDef;
   };

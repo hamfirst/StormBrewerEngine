@@ -126,6 +126,22 @@ void SpatialDatabase::Query(const Box & b, std::vector<std::size_t> & outp_elem_
   });
 }
 
+void SpatialDatabase::QueryBoxes(const Box & b, std::vector<Box> & outp_boxes) const
+{
+  VisitGrid(b, [&](uint32_t grid_id, const SpatialDatabaseNode & node)
+  {
+    for (auto & elem : node.m_Elements)
+    {
+      if (BoxIntersect(b, elem.second))
+      {
+        outp_boxes.emplace_back(elem.second);
+      }
+    }
+
+    return true;
+  });
+}
+
 bool SpatialDatabase::QueryAny(const Box & b) const
 {
   bool found = false;
