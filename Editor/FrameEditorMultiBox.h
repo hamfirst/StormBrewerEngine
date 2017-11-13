@@ -22,6 +22,7 @@ public:
     SpriteBaseDef & sprite, 
     SpriteBaseTextureLoadList & texture_access,
     Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && getter,
+    Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && default_val,
     Delegate<void, std::vector<Box> &&> && new_element,
     uint64_t frame_id, 
     bool use_default_data,
@@ -53,6 +54,7 @@ protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
   Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> m_Default;
   Delegate<void, std::vector<Box> &&> m_NewElement;
 
   bool m_UseDefault;

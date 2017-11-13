@@ -89,6 +89,9 @@
     <Filter Include="Source Files\DocumentEditors\VisualEffectEditor">
       <UniqueIdentifier>{46f787ad-8b6f-4ac3-a253-5d58cc19289f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DocumentEditors\ServerObjectEditor">
+      <UniqueIdentifier>{77d751b7-c22c-4e55-8237-d4b4e31687f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -1072,6 +1075,111 @@
     <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseFrameDisplay.cpp">
       <Filter>Generated Files\CoreOpt</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteBaseSkinEditor.cpp">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBaseSkinListElement.cpp">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBaseSkinListTextureElement.cpp">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinListTextureElement.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinListTextureElement.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinListTextureElement.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinListTextureElement.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinListElement.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinListElement.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinListElement.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinListElement.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorServerObjectManager.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolServerObjectLayerDraw.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolServerObjectLayerSelect.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorServerObjectSelector.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_MapEditorServerObjectSelector.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorServerObjectSelector.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorServerObjectSelector.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorServerObjectSelector.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjectEditor.cpp">
+      <Filter>Source Files\DocumentEditors\ServerObjectEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_ServerObjectEditor.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ServerObjectEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ServerObjectEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_ServerObjectEditor.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorParalaxObjectSelector.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\FinalStatic\moc_MapEditorParalaxObjectSelector.cpp">
+      <Filter>Generated Files\FinalStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorParalaxObjectSelector.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorParalaxObjectSelector.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorParalaxObjectSelector.cpp">
+      <Filter>Generated Files\CoreOpt</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolParalaxObjectLayerDraw.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorToolParalaxObjectLayerSelect.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -1302,6 +1410,24 @@
     <CustomBuild Include="SpriteBaseFrameDisplay.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </CustomBuild>
+    <CustomBuild Include="SpriteBaseSkinListTextureElement.h">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SpriteBaseSkinListElement.h">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SpriteBaseSkinEditor.h">
+      <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorServerObjectSelector.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ServerObjectEditor.h">
+      <Filter>Source Files\DocumentEditors\ServerObjectEditor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorParalaxObjectSelector.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -1434,6 +1560,21 @@
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="MapEditorToolManualTileLayerPreview.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorServerObjectManager.h">
+      <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolServerObjectLayerDraw.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolServerObjectLayerSelect.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolParalaxObjectLayerDraw.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolParalaxObjectLayerSelect.h">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
   </ItemGroup>

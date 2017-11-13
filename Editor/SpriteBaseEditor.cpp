@@ -18,10 +18,12 @@ SpriteBaseEditor::SpriteBaseEditor(PropertyFieldDatabase & property_db, const st
   m_TabWidget(std::make_unique<QTabWidget>()),
   m_Layout(std::make_unique<QHBoxLayout>()),
   m_TextureEditor(std::make_unique<SpriteBaseTextureEditor>(this, sprite)),
+  m_SkinEditor(std::make_unique<SpriteBaseSkinEditor>(this, sprite, m_TextureAccess)),
   m_FrameList(std::make_unique<SpriteBaseTextureFrameList>(this, sprite)),
   m_AnimationEditor(std::make_unique<SpriteBaseAnimationEditor>(this, sprite, m_TextureAccess))
 {
   m_TabWidget->addTab(m_TextureEditor.get(), "Textures");
+  m_TabWidget->addTab(m_SkinEditor.get(), "Skins");
   m_TabWidget->addTab(m_FrameList.get(), "Frames");
   m_TabWidget->addTab(m_AnimationEditor.get(), "Animations");
   m_TabWidget->setTabPosition(QTabWidget::West);
@@ -30,5 +32,6 @@ SpriteBaseEditor::SpriteBaseEditor(PropertyFieldDatabase & property_db, const st
   setLayout(m_Layout.get());
 
   m_GlobalFrameDataCallback = [this] { return &m_Sprite.m_InstanceData; };
+  m_EmptyFrameDataCallback = [this]() -> NullOptPtr<FrameData> { return nullptr; };
 }
 

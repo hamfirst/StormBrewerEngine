@@ -9,11 +9,11 @@
 #endif
 
 
+
 File::File()
 {
   m_FileData = {};
 }
-
 
 File::File(File && rhs) noexcept
 {
@@ -44,6 +44,8 @@ File::File(czstr path, FileOpenMode mode)
     break;
   }
 
+#if !defined(_ANDROID)
+
 #ifdef PEDANTIC_BULLSHIT
   m_FileData.m_File = nullptr;
   m_FileData.m_FileOpenError = fopen_s(&m_FileData.m_File, path, mode_str);
@@ -64,6 +66,27 @@ File::File(czstr path, FileOpenMode mode)
   {
     m_FileData.m_FileLength = 0;
   }
+#else
+  if(path[0] != '.' || path[1] != '/')
+  {
+    m_FileData.m_File = {};
+    printf("Failed to open file %s: error - %s\n", path, SDL_GetError());
+    m_FileData.m_FileOpenError = 1;
+  }
+
+  m_FileData.m_File = SDL_RWFromFile(path + 2, mode_str);
+
+  if(m_FileData.m_File != nullptr)
+  {
+    m_FileData.m_FileOpenError = 0;
+    m_FileData.m_FileLength = SDL_RWsize(m_FileData.m_File);
+  }
+  else
+  {
+    printf("Failed to open file %s: error - %s\n", path + 2, SDL_GetError());
+    m_FileData.m_FileOpenError = 1;
+  }
+#endif
 }
 
 File::~File()
@@ -98,10 +121,14 @@ void File::Read(const gsl::span<uint8_t> & buffer, std::size_t read_amount)
     return;
   }
 
+#if !defined(_ANDROID)
 #ifdef PEDANTIC_BULLSHIT
   fread_s(buffer.data(), buffer.size(), 1, read_amount, m_FileData.m_File);
 #else
   fread(buffer.data(), 1, read_amount, m_FileData.m_File);
+#endif
+#else
+  SDL_RWread(m_FileData.m_File, buffer.data(), 1, read_amount);
 #endif
 }
 
@@ -112,7 +139,11 @@ void File::Write(const gsl::span<const uint8_t> & buffer, std::size_t write_amou
     return;
   }
 
+#if !defined(_ANDROID)
   fwrite(buffer.data(), 1, write_amount, m_FileData.m_File);
+#else
+  SDL_RWwrite(m_FileData.m_File, buffer.data(), 1, write_amount);
+#endif
 }
 
 void File::Write(const std::string & str)
@@ -122,7 +153,11 @@ void File::Write(const std::string & str)
     return;
   }
 
+#if !defined(_ANDROID)
   fwrite(str.data(), 1, str.length(), m_FileData.m_File);
+#else
+  SDL_RWwrite(m_FileData.m_File, str.data(), 1, str.length());
+#endif
 }
 
 Buffer File::ReadFileFull()
@@ -146,13 +181,19 @@ void FileClose(File & file)
 {
   if (file.m_FileData.m_File != nullptr)
   {
+#if !defined(_ANDROID)
     fclose(file.m_FileData.m_File);
+#else
+    SDL_RWclose(file.m_FileData.m_File);
+#endif
+
     file.m_FileData = {};
   }
 }
 
 bool FileExists(czstr path)
 {
+#if !defined(_ANDROID)
 #ifdef PEDANTIC_BULLSHIT
   FILE * fp = nullptr;
   if (fopen_s(&fp, path, "rb"))
@@ -170,6 +211,21 @@ bool FileExists(czstr path)
   }
 
   fclose(fp);
+  return true;
+#endif
+#else
+  if(path[0] != '.' || path[1] != '/')
+  {
+    return false;
+  }
+
+  auto fp = SDL_RWFromFile(path + 2, "rb");
+  if(fp == nullptr)
+  {
+    return false;
+  }
+
+  SDL_RWclose(fp);
   return true;
 #endif
 }

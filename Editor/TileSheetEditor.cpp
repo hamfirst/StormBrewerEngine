@@ -13,7 +13,7 @@ TileSheetEditor::TileSheetEditor(PropertyFieldDatabase & property_db, const std:
   SpriteBaseEditor(property_db, root_path, tile_sheet, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent)
 {
   FrameEditorContainer::CreateFrameEditorTabs(this, m_Sprite, m_TextureAccess, m_TabWidget.get(),
-    &m_GlobalFrameDataCallback, 0, g_FrameData.m_TileGlobalData);
+    &m_GlobalFrameDataCallback, nullptr, 0, g_FrameData.m_TileGlobalData);
 
   m_FrameList->SetFrameSelectionCallback([this](uint64_t frame_id)
   {
@@ -28,7 +28,10 @@ TileSheetEditor::TileSheetEditor(PropertyFieldDatabase & property_db, const std:
       return frame_data;
     };
 
-    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, getter, frame_id, g_FrameData.m_TileFrameData);
+    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, 
+      getter, 
+      [this]() { return m_GlobalFrameDataCallback(); },
+      frame_id, g_FrameData.m_TileFrameData);
     frame_editor->exec();
   });
 }

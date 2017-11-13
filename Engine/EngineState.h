@@ -5,7 +5,7 @@
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Any/Any.h"
 
-#include "Server/ServerObject/ServerObjectHandle.h"
+#include "Runtime/ServerObject/ServerObjectHandle.h"
 
 class CollisionSystem;
 class EntitySystem;

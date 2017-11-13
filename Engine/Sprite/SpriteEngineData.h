@@ -12,6 +12,8 @@
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/TileSheet/TileSheetResource.h"
 
+#define kSpriteDefaultSkin 0
+
 class SpriteEngineData
 {
 public:
@@ -24,22 +26,32 @@ public:
   void Load();
 
   void BuildVertexBuffer();
-  Optional<Box> Render(int animation_index, int animation_frame, const ShaderProgram & shader) const;
+  Optional<Box> Render(int animation_index, int animation_frame, uint32_t skin_name, const ShaderProgram & shader) const;
 
-  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, 
-    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
-  static Optional<Box> RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame, 
-    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
+    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+  static Optional<Box> RenderSprite(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
+    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 },
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+
+  static Optional<Box> RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
+    const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
 
   static NullOptPtr<TextureAsset> GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
+  static NullOptPtr<TextureAsset> GetSpriteFrame(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords);
 private:
   SpriteBaseDef & m_Sprite;
   bool m_Reloading;
+
+  int m_TexturesPerSkin;
 
   std::vector<std::pair<int, int>> m_Frames;
   std::vector<int> m_FrameTextures;
   std::vector<Box> m_FrameTextureCoords;
   std::vector<TextureAsset::LoadCallbackLink> m_Textures;
+  std::vector<uint32_t> m_SkinNameHashes;
 
   VertexBuffer m_VertexBuffer;
 };

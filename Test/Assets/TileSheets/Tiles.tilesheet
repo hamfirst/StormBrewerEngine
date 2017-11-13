@@ -1,0 +1,81 @@
+[]
+
+{
+    "m_Textures": {
+        "0": {
+            "m_Filename": ".\/Images\/TestTiles.png",
+            "m_FrameWidth": 16,
+            "m_FrameHeight": 16
+        },
+        "1": {
+            "m_Filename": ".\/Images\/TestAnimatedTiles.png",
+            "m_FrameWidth": 16,
+            "m_FrameHeight": 16
+        }
+    },
+    "m_Animations": {
+        "0": {
+            "m_Name": "Animation",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "1310695955699335168",
+                    "m_FrameDuration": 30
+                },
+                "1": {
+                    "m_FrameId": "1310695955699335169",
+                    "m_FrameDuration": 10
+                },
+                "3": {
+                    "m_FrameId": "1310695955699335171",
+                    "m_FrameDuration": 10
+                },
+                "2": {
+                    "m_FrameId": "1310695955699335170",
+                    "m_FrameDuration": 10
+                }
+            }
+        }
+    },
+    "m_FrameData": {
+        "1310695955699335168": {
+            "m_MultiBoxData": {
+                "0": {
+                    "m_FrameDataName": "Collision",
+                    "m_Data": []
+                }
+            }
+        },
+        "1310695955699335169": {
+            "m_MultiBoxData": {
+                "0": {
+                    "m_FrameDataName": "Collision",
+                    "m_Data": []
+                }
+            }
+        },
+        "1310695955699335170": {
+            "m_MultiBoxData": {
+                "0": {
+                    "m_FrameDataName": "Collision",
+                    "m_Data": []
+                }
+            }
+        },
+        "1310695955699335171": {
+            "m_MultiBoxData": {
+                "0": {
+                    "m_FrameDataName": "Collision",
+                    "m_Data": []
+                }
+            }
+        }
+    },
+    "m_InstanceData": {
+        "m_MultiBoxData": {
+            "0": {
+                "m_FrameDataName": "Collision",
+                "m_Data": [{"m_Start":{"x":-8,"y":-8},"m_End":{"x":7,"y":7}}]
+            }
+        }
+    }
+}

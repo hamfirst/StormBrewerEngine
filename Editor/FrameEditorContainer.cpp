@@ -14,16 +14,18 @@ FrameEditorContainer::FrameEditorContainer(
   SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
   Delegate<NullOptPtr<FrameData>> && get_frame_data,
+  Delegate<NullOptPtr<FrameData>> && get_default_data,
   uint64_t frame_id,
   const std::vector<FrameDataDefElem> & frame_data_def,
   QWidget * parent) :
   QDialog(parent),
   m_Getter(std::move(get_frame_data)),
+  m_Default(std::move(get_default_data)),
   m_TabWidget(std::make_unique<QTabWidget>(this))
 {
   setMinimumSize(500, 500);
 
-  CreateFrameEditorTabs(editor, sprite, texture_access, m_TabWidget.get(), &m_Getter, frame_id, frame_data_def);
+  CreateFrameEditorTabs(editor, sprite, texture_access, m_TabWidget.get(), &m_Getter, &m_Default, frame_id, frame_data_def);
 }
 
 void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
@@ -32,6 +34,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
   SpriteBaseTextureLoadList & texture_access,
   NotNullPtr<QTabWidget> tab_widget,
   NotNullPtr<Delegate<NullOptPtr<FrameData>>> get_frame_data,
+  NullOptPtr<Delegate<NullOptPtr<FrameData>>> default_data,
   uint64_t frame_id,
   const std::vector<FrameDataDefElem> & frame_data_def)
 {
@@ -41,8 +44,10 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
 
     std::unique_ptr<char[]> name_copy1 = std::make_unique<char[]>(frame_data.m_Name.size() + 1);
     std::unique_ptr<char[]> name_copy2 = std::make_unique<char[]>(frame_data.m_Name.size() + 1);
+    std::unique_ptr<char[]> name_copy3 = std::make_unique<char[]>(frame_data.m_Name.size() + 1);
     strncpy(name_copy1.get(), frame_data.m_Name.data(), frame_data.m_Name.size());
     strncpy(name_copy2.get(), frame_data.m_Name.data(), frame_data.m_Name.size());
+    strncpy(name_copy3.get(), frame_data.m_Name.data(), frame_data.m_Name.size());
 
     switch (frame_data.m_Type)
     {
@@ -67,7 +72,31 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             return nullptr;
           };
 
-          auto new_element = [get_frame_data, name = std::move(name_copy2)](const Box & box)
+          auto default_getter = [default_data, name = std::move(name_copy2)]() -> NullOptPtr<ROpaque<Box>>
+          {
+            if (default_data == nullptr)
+            {
+              return nullptr;
+            }
+
+            auto data = default_data->Call();
+            if (data == nullptr)
+            {
+              return nullptr;
+            }
+
+            for (auto & elem : data->m_SingleBoxData)
+            {
+              if (elem.second.m_FrameDataName.ToString() == name.get())
+              {
+                return &elem.second.m_Data;
+              }
+            }
+
+            return nullptr;
+          };
+
+          auto new_element = [get_frame_data, name = std::move(name_copy3)](const Box & box)
           {
             auto data = get_frame_data->Call();
             if (data == nullptr)
@@ -82,7 +111,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             data->m_SingleBoxData.EmplaceBack(std::move(info));
           };
 
-          widget = new FrameEditorSingleBox(editor, sprite, texture_access, getter, new_element, frame_id, nullptr);
+          widget = new FrameEditorSingleBox(editor, sprite, texture_access, getter, default_getter, new_element, frame_id, nullptr);
         }
         break;
       case FrameDataDefType::kMultiBox:
@@ -106,7 +135,31 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             return nullptr;
           };
 
-          auto new_element = [get_frame_data, name = std::move(name_copy2)](std::vector<Box> && list)
+          auto default_getter = [default_data, name = std::move(name_copy2)]()->NullOptPtr<ROpaque<std::vector<Box>>>
+          {
+            if (default_data == nullptr)
+            {
+              return nullptr;
+            }
+
+            auto data = default_data->Call();
+            if (data == nullptr)
+            {
+              return nullptr;
+            }
+
+            for (auto & elem : data->m_MultiBoxData)
+            {
+              if (elem.second.m_FrameDataName.ToString() == name.get())
+              {
+                return &elem.second.m_Data;
+              }
+            }
+
+            return nullptr;
+          };
+
+          auto new_element = [get_frame_data, name = std::move(name_copy3)](std::vector<Box> && list)
           {
             auto data = get_frame_data->Call();
             if (data == nullptr)
@@ -121,7 +174,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             data->m_MultiBoxData.EmplaceBack(std::move(info));
           };
 
-          widget = new FrameEditorMultiBox(editor, sprite, texture_access, getter, new_element, frame_id, true, nullptr);
+          widget = new FrameEditorMultiBox(editor, sprite, texture_access, getter, default_getter, new_element, frame_id, true, nullptr);
         }
         break;
       case FrameDataDefType::kSingleLine:
@@ -145,7 +198,31 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             return nullptr;
           };
 
-          auto new_element = [get_frame_data, name = std::move(name_copy2)](const FrameDataSingleLineInfo & line)
+          auto default_getter = [default_data, name = std::move(name_copy2)]() -> NullOptPtr<ROpaque<FrameDataSingleLineInfo>>
+          {
+            if (default_data == nullptr)
+            {
+              return nullptr;
+            }
+
+            auto data = default_data->Call();
+            if (data == nullptr)
+            {
+              return nullptr;
+            }
+
+            for (auto & elem : data->m_SingleLineData)
+            {
+              if (elem.second.m_FrameDataName.ToString() == name.get())
+              {
+                return &elem.second.m_Data;
+              }
+            }
+
+            return nullptr;
+          };
+
+          auto new_element = [get_frame_data, name = std::move(name_copy3)](const FrameDataSingleLineInfo & line)
           {
             auto data = get_frame_data->Call();
             if (data == nullptr)
@@ -160,7 +237,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             data->m_SingleLineData.EmplaceBack(std::move(info));
           };
 
-          widget = new FrameEditorSingleLine(editor, sprite, texture_access, getter, new_element, frame_id, nullptr);
+          widget = new FrameEditorSingleLine(editor, sprite, texture_access, getter, default_getter, new_element, frame_id, nullptr);
         }
         break;
       case FrameDataDefType::kLowerEdge:
@@ -184,7 +261,31 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             return nullptr;
           };
 
-          auto new_element = [get_frame_data, name = std::move(name_copy2)](const FrameDataLowerEdgeInfo & line)
+          auto default_getter = [default_data, name = std::move(name_copy2)]() -> NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>
+          {
+            if (default_data == nullptr)
+            {
+              return nullptr;
+            }
+
+            auto data = default_data->Call();
+            if (data == nullptr)
+            {
+              return nullptr;
+            }
+
+            for (auto & elem : data->m_LowerEdgeData)
+            {
+              if (elem.second.m_FrameDataName.ToString() == name.get())
+              {
+                return &elem.second.m_Data;
+              }
+            }
+
+            return nullptr;
+          };
+
+          auto new_element = [get_frame_data, name = std::move(name_copy3)](const FrameDataLowerEdgeInfo & line)
           {
             auto data = get_frame_data->Call();
             if (data == nullptr)
@@ -199,7 +300,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
             data->m_LowerEdgeData.EmplaceBack(std::move(info));
           };
 
-          widget = new FrameEditorLowerEdge(editor, sprite, texture_access, getter, new_element, frame_id, nullptr);
+          widget = new FrameEditorLowerEdge(editor, sprite, texture_access, getter, default_getter, new_element, frame_id, nullptr);
         }
         break;
 

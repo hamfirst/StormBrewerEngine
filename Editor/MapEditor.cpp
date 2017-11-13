@@ -16,7 +16,10 @@
 #include "MapEditorToolManualTileLayerSelect.h"
 #include "MapEditorToolEntityLayerDraw.h"
 #include "MapEditorToolEntityLayerSelect.h"
-#include "MapEditorToolEntityLayerDraw.h"
+#include "MapEditorToolServerObjectLayerDraw.h"
+#include "MapEditorToolServerObjectLayerSelect.h"
+#include "MapEditorToolParalaxObjectLayerDraw.h"
+#include "MapEditorToolParalaxObjectLayerSelect.h"
 #include "MapEditorToolVolumeCreate.h"
 #include "MapEditorToolVolumeEditor.h"
 #include "MapEditorToolVolumeMultiEditor.h"
@@ -37,6 +40,7 @@ MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & ro
   m_Map(map),
   m_ManualTileLayers(".m_ManualTileLayers", this, m_Map, m_Map.m_ManualTileLayers),
   m_EntityLayers(".m_EntityLayers", this, m_Map, m_Map.m_EntityLayers),
+  m_ServerObjectLayers(".m_ServerObjectLayers", this, m_Map, m_Map.m_ServerObjectLayers),
   m_ParalaxLayers(".m_ParalaxLayers", this, m_Map, m_Map.m_ParalaxLayers),
   m_EffectLayers(".m_EffectLayers", this, m_Map, m_Map.m_EffectLayers),
   m_Volumes(".m_Volumes", this, m_Map, m_Map.m_Volumes),
@@ -70,6 +74,12 @@ MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & ro
   m_Layout->addWidget(m_Properties.get(), 0, 2);
   m_Layout->addWidget(m_Selector.get(), 1, 1, 1, 2);
 
+  SetNotifyCallback(m_ParalaxInitData, [](void * this_ptr, const ReflectionChangeNotification & change)
+  {
+    MapEditor * editor = static_cast<MapEditor *>(this_ptr);
+    editor->m_ParalaxInitObject = MapEditorParalaxLayer::CreateObjectFromPath(editor->m_ParalaxInitData.m_File.data(), [] {});
+  }, this);
+
   m_PropertyEditor = m_Properties->CreateWidget<PropertyEditor>();
   setLayout(m_Layout.get());
 }
@@ -83,6 +93,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
   m_Selector->GetTileSelector()->SetLayer(-1);
   m_Selector->GetEntitySelector()->SetLayer(-1);
+  m_Selector->GetServerObjectSelector()->SetLayer(-1);
 
   switch (layer.m_Type)
   {
@@ -98,6 +109,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     break;
   case MapEditorLayerItemType::kManualTileLayerParent:
   case MapEditorLayerItemType::kEntityLayerParent:
+  case MapEditorLayerItemType::kServerObjectLayerParent:
   case MapEditorLayerItemType::kVolumeParent:
   case MapEditorLayerItemType::kPathParent:
   case MapEditorLayerItemType::kAnchorParent:
@@ -111,6 +123,11 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetTileSelector()->SetLayer((int)layer.m_Index);
     m_Selector->GetEntitySelector()->Clear();
     m_Selector->GetEntitySelector()->hide();
+    m_Selector->GetServerObjectSelector()->Clear();
+    m_Selector->GetServerObjectSelector()->hide();
+    m_Selector->GetParalaxObjectSelector()->Clear();
+    m_Selector->GetParalaxObjectSelector()->hide();
+
     m_Selector->GetTileSelector()->LoadManualTileLayer(layer.m_Index);
     break;
   case MapEditorLayerItemType::kEntityLayer:
@@ -119,8 +136,25 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetTileSelector()->Clear();
     m_Selector->GetEntitySelector()->show();
     m_Selector->GetEntitySelector()->SetLayer((int)layer.m_Index);
+    m_Selector->GetServerObjectSelector()->Clear();
+    m_Selector->GetServerObjectSelector()->hide();
+    m_Selector->GetParalaxObjectSelector()->Clear();
+    m_Selector->GetParalaxObjectSelector()->hide();
     m_PropertyEditor->LoadStruct(this, m_Map.m_EntityLayers[layer.m_Index], 
       [this, index = layer.m_Index]() -> void * { return m_Map.m_EntityLayers.TryGet(index); }, true);
+    break;
+  case MapEditorLayerItemType::kServerObjectLayer:
+
+    m_Selector->GetTileSelector()->hide();
+    m_Selector->GetTileSelector()->Clear();
+    m_Selector->GetEntitySelector()->Clear();
+    m_Selector->GetEntitySelector()->hide();
+    m_Selector->GetServerObjectSelector()->show();
+    m_Selector->GetServerObjectSelector()->SetLayer((int)layer.m_Index);
+    m_Selector->GetParalaxObjectSelector()->Clear();
+    m_Selector->GetParalaxObjectSelector()->hide();
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ServerObjectLayers[layer.m_Index],
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_ServerObjectLayers.TryGet(index); }, true);
     break;
   case MapEditorLayerItemType::kEntity:
 
@@ -140,12 +174,66 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
       m_Viewer->ZoomToEntity(layer.m_Index, layer.m_SubIndex);
     }
     break;
+  case MapEditorLayerItemType::kServerObject:
+
+    ClearSelectors();
+    
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ServerObjectLayers[layer.m_Index].m_Objects[layer.m_SubIndex], 
+      [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
+      { 
+        auto layer = m_Map.m_ServerObjectLayers.TryGet(index); 
+        auto server_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr; 
+        return server_object;
+      }, true
+    );
+
+    if (change_viewer_position)
+    {
+      m_Viewer->ZoomToServerObject(layer.m_Index, layer.m_SubIndex);
+    }
+    break;
 
   case MapEditorLayerItemType::kParalaxLayer:
 
     ClearSelectors();
     m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index],
       [this, index = layer.m_Index]() -> void * { return m_Map.m_ParalaxLayers.TryGet(index); }, true);
+    break;
+
+  case MapEditorLayerItemType::kCreateParalaxObject:
+    m_Selector->GetTileSelector()->hide();
+    m_Selector->GetTileSelector()->Clear();
+    m_Selector->GetEntitySelector()->Clear();
+    m_Selector->GetEntitySelector()->hide();
+    m_Selector->GetServerObjectSelector()->Clear();
+    m_Selector->GetServerObjectSelector()->hide();
+    m_Selector->GetParalaxObjectSelector()->show();
+    m_Selector->GetParalaxObjectSelector()->SetLayer((int)layer.m_Index);
+
+    {
+      auto property_data = GetProperyMetaData<MapParalaxLayerObject>(GetPropertyFieldDatabase());
+      m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParalaxInitData; }, "");
+    }
+
+    break;
+
+  case MapEditorLayerItemType::kParalaxObject:
+
+    ClearSelectors();
+    
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex], 
+      [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
+      { 
+        auto layer = m_Map.m_ParalaxLayers.TryGet(index); 
+        auto paralax_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr; 
+        return paralax_object;
+      }, true
+    );
+
+    if (change_viewer_position)
+    {
+      m_Viewer->ZoomToParalaxObject(layer.m_Index, layer.m_SubIndex);
+    }
     break;
 
   case MapEditorLayerItemType::kEffectLayer:
@@ -260,6 +348,21 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
   case MapEditorLayerItemType::kEntityLayer:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolEntityLayerSelect>{}, (int)layer.m_Index);
     break;
+  case MapEditorLayerItemType::kServerObject:
+    m_ServerObjectLayers.GetLayerManager(layer.m_Index)->SetSingleSelection(layer.m_SubIndex);
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolServerObjectLayerSelect>{}, (int)layer.m_Index);
+    break;
+  case MapEditorLayerItemType::kServerObjectLayer:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolServerObjectLayerSelect>{}, (int)layer.m_Index);
+    break;
+  case MapEditorLayerItemType::kParalaxLayer:
+  case MapEditorLayerItemType::kCreateParalaxObject:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerSelect>{}, (int)layer.m_Index);
+    break;
+  case MapEditorLayerItemType::kParalaxObject:
+    m_ParalaxLayers.GetLayerManager(layer.m_Index)->SetSingleSelection(layer.m_SubIndex);
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerSelect>{}, (int)layer.m_Index);
+    break;
   case MapEditorLayerItemType::kCreateVolume:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolVolumeCreate>{});
     break;
@@ -305,6 +408,8 @@ void MapEditor::ClearLayerSelection()
   m_Selector->GetTileSelector()->hide();
   m_Selector->GetEntitySelector()->Clear();
   m_Selector->GetEntitySelector()->hide();
+  m_Selector->GetServerObjectSelector()->Clear();
+  m_Selector->GetServerObjectSelector()->hide();
 }
 
 void MapEditor::CalculatePathfindingInfo()
@@ -520,6 +625,11 @@ MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & MapEditor::GetEn
   return m_EntityLayers;
 }
 
+MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> & MapEditor::GetServerObjectManager()
+{
+  return m_ServerObjectLayers;
+}
+
 MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & MapEditor::GetParalaxManager()
 {
   return m_ParalaxLayers;
@@ -575,7 +685,24 @@ void MapEditor::SelectManualAnimation(int layer_index, uint64_t frame_id)
 void MapEditor::SetSelectedEntity(int layer_index, czstr entity_file)
 {
   m_Viewer->SetTool(MapEditorTool<MapEditorToolEntityLayerDraw>{}, layer_index, entity_file);
-  m_Selector->GetEntitySelector()->SetSelectEntity(entity_file);
+  m_Selector->GetEntitySelector()->SetSelectedEntity(entity_file);
+}
+
+void MapEditor::SetSelectedServerObject(int layer_index, czstr server_object_file)
+{
+  m_Viewer->SetTool(MapEditorTool<MapEditorToolServerObjectLayerDraw>{}, layer_index, server_object_file);
+  m_Selector->GetServerObjectSelector()->SetSelectedServerObject(server_object_file);
+}
+
+void MapEditor::SetSelectedParalaxObject(int layer_index, const MapParalaxLayerObject & paralax_object_data)
+{
+  m_ParalaxInitData = paralax_object_data;
+
+  auto property_data = GetProperyMetaData<MapParalaxLayerObject>(GetPropertyFieldDatabase());
+  m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParalaxInitData; }, "");
+
+  m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerDraw>{}, layer_index);
+  m_Selector->GetParalaxObjectSelector()->SetSelectedParalaxObject(paralax_object_data.m_File.data());
 }
 
 void MapEditor::ClearPropertyPanel()
@@ -589,6 +716,8 @@ void MapEditor::ClearSelectors()
   m_Selector->GetTileSelector()->Clear();
   m_Selector->GetEntitySelector()->hide();
   m_Selector->GetEntitySelector()->Clear();
+  m_Selector->GetServerObjectSelector()->hide();
+  m_Selector->GetServerObjectSelector()->Clear();
 }
 
 const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & MapEditor::GetVolumeInitData() const
@@ -675,6 +804,23 @@ void MapEditor::CreateNewAnchor(const Vector2 & point)
   }
 
   m_Map.m_Anchors.EmplaceBack(anchor);
+}
+
+const MapParalaxLayerObject & MapEditor::GetParalaxObjectInitData() const
+{
+  return m_ParalaxInitData;
+}
+
+const MapEditorParalaxObjectType & MapEditor::GetParalaxObject() const
+{
+  return m_ParalaxInitObject;
+}
+
+void MapEditor::CreateNewParalaxObject(int layer_index, const Vector2 & point)
+{
+  m_ParalaxInitData.m_XPosition = point.x;
+  m_ParalaxInitData.m_YPosition = point.y;
+  m_ParalaxLayers.GetLayerManager(layer_index)->AddParalaxObject(m_ParalaxInitData);
 }
 
 void MapEditor::AboutToClose()

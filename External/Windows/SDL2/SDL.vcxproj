@@ -321,6 +321,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="audio\wasapi\SDL_wasapi.h" />
     <ClInclude Include="begin_code.h" />
     <ClInclude Include="close_code.h" />
     <ClInclude Include="SDL.h" />
@@ -451,6 +452,7 @@
     <ClInclude Include="thread\SDL_thread_c.h" />
     <ClInclude Include="timer\SDL_timer_c.h" />
     <ClInclude Include="events\SDL_touch_c.h" />
+    <ClInclude Include="video\SDL_vulkan_internal.h" />
     <ClInclude Include="video\windows\SDL_vkeys.h" />
     <ClInclude Include="audio\SDL_wave.h" />
     <ClInclude Include="events\SDL_windowevents_c.h" />
@@ -467,6 +469,7 @@
     <ClInclude Include="video\windows\SDL_windowsopengl.h" />
     <ClInclude Include="video\windows\SDL_windowsshape.h" />
     <ClInclude Include="video\windows\SDL_windowsvideo.h" />
+    <ClInclude Include="video\windows\SDL_windowsvulkan.h" />
     <ClInclude Include="video\windows\SDL_windowswindow.h" />
     <ClInclude Include="audio\winmm\SDL_winmm.h" />
     <ClInclude Include="core\windows\SDL_xinput.h" />
@@ -476,6 +479,7 @@
     <ClInclude Include="video\windows\wmmsg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio\wasapi\SDL_wasapi.c" />
     <ClCompile Include="libm\e_atan2.c" />
     <ClCompile Include="libm\e_log.c" />
     <ClCompile Include="libm\e_pow.c" />
@@ -584,6 +588,7 @@
     <ClCompile Include="audio\SDL_wave.c" />
     <ClCompile Include="events\SDL_windowevents.c" />
     <ClCompile Include="core\windows\SDL_windows.c" />
+    <ClCompile Include="video\SDL_vulkan_utils.c" />
     <ClCompile Include="video\windows\SDL_windowsclipboard.c" />
     <ClCompile Include="video\windows\SDL_windowsevents.c" />
     <ClCompile Include="video\windows\SDL_windowsframebuffer.c" />
@@ -597,6 +602,7 @@
     <ClCompile Include="video\windows\SDL_windowsopengles.c" />
     <ClCompile Include="video\windows\SDL_windowsshape.c" />
     <ClCompile Include="video\windows\SDL_windowsvideo.c" />
+    <ClCompile Include="video\windows\SDL_windowsvulkan.c" />
     <ClCompile Include="video\windows\SDL_windowswindow.c" />
     <ClCompile Include="audio\winmm\SDL_winmm.c" />
     <ClCompile Include="audio\xaudio2\SDL_xaudio2.c" />

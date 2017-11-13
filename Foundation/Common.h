@@ -51,3 +51,11 @@
 
 #include "Foundation/BasicTypes/BasicTypeFuncs.h"
 #include "Foundation/BasicTypes/BasicTypes.refl.h"
+
+#ifdef _ANDROID
+
+#include <android/log.h>
+#define printf(...) __android_log_print(ANDROID_LOG_DEBUG, "SB", __VA_ARGS__);
+
+#endif
+

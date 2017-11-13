@@ -421,7 +421,7 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
     auto anim_box = Box::FromFrameCenterAndSize(anim.m_Position, Vector2(anim.m_State.m_FrameWidth, anim.m_State.m_FrameHeight));
     if (BoxIntersect(viewport_bounds, anim_box))
     {
-      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, anim.m_Position);
+      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, kSpriteDefaultSkin, anim.m_Position);
     }
   }
 }

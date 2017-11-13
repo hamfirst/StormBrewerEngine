@@ -4,6 +4,11 @@
 
 #include "Foundation/CallList/CallList.h"
 
+class GlobalAssetList;
+
+extern GlobalAssetList g_GlobalAssetList;
+extern PreMainCallList g_GlobalAssetListRegister;
+
 class GlobalAssetList
 {
 public:
@@ -75,8 +80,6 @@ private:
   int m_RefCount = 0;
 };
 
-extern GlobalAssetList g_GlobalAssetList;
-extern PreMainCallList g_GlobalAssetListRegister;
 
 #define GLOBAL_ASSET(AssetType, AssetPath, AssetVar) \
   AssetType AssetVar; \

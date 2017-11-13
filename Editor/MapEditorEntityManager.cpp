@@ -288,7 +288,7 @@ void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 
         RenderVec2 draw_pos = pos;
         draw_pos -= screen_center;
 
-        SpriteEngineData::RenderSprite(data->m_Sprite, 0, 0, draw_pos);
+        SpriteEngineData::RenderSprite(data->m_Sprite, 0, 0, kSpriteDefaultSkin, draw_pos);
       }
     }
   }
@@ -307,7 +307,7 @@ void MapEditorEntityManager::DrawPreviewEntity(const RenderVec2 & screen_center)
   RenderVec2 draw_pos = RenderVec2{ m_PreviewEntityPosition.Value() };
   draw_pos -= screen_center;
 
-  SpriteEngineData::RenderSprite(sprite, 0, 0, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
+  SpriteEngineData::RenderSprite(sprite, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
 }
 
 void MapEditorEntityManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util)

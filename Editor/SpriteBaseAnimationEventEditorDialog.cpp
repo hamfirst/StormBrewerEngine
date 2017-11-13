@@ -181,6 +181,11 @@ void SpriteBaseAnimationEventEditorDialog::UpdateFrame()
     return &event->m_EventArea;
   };
 
+  auto default_val = [this]() -> NullOptPtr<ROpaque<std::vector<Box>>>
+  {
+    return nullptr;
+  };
+
   auto new_element = [this](std::vector<Box> && box_list)
   {
 
@@ -188,7 +193,7 @@ void SpriteBaseAnimationEventEditorDialog::UpdateFrame()
 
   if (m_FrameDisplay == nullptr)
   {
-    m_FrameDisplay = std::make_unique<FrameEditorMultiBox>(m_Editor, m_Sprite, m_TextureAccess, getter, new_element, frame_id, false, this);
+    m_FrameDisplay = std::make_unique<FrameEditorMultiBox>(m_Editor, m_Sprite, m_TextureAccess, getter, default_val, new_element, frame_id, false, this);
     m_FrameDisplay->show();
   }
   else

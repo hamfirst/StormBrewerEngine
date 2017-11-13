@@ -592,11 +592,6 @@ void MapEditorTileManager::SelectAnimations(const Box & box)
   m_SelectedAnimations.clear();
   m_AnimSpatialDatabase->Query(box, m_SelectedAnimations);
   m_SelectedAnimOffset = {};
-
-  if (m_SelectedAnimations.size() > 0)
-  {
-    printf("asdf");
-  }
 }
 
 void MapEditorTileManager::RemoveAnimations(const std::vector<std::size_t> & anims)
@@ -659,41 +654,55 @@ void MapEditorTileManager::ClearSelection()
 
 void MapEditorTileManager::DeleteSelection()
 {
-  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false || m_SelectedTiles.size() == 0)
+  if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
+  {
+    return;
+  }
+
+  if (m_SelectedTiles.size() == 0 && m_SelectedAnimations.size() == 0)
   {
     return;
   }
 
   auto & layer = m_Map.m_ManualTileLayers[m_LayerIndex];
-  auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
 
   m_LocalChange = true;
   m_Editor->BeginTransaction();
   m_Editor->DisableChangeCallbacks();
 
-  for (auto sel_tile : m_SelectedTiles)
+  if (m_SelectedTiles.size() > 0)
   {
-    layer.m_Tiles.RemoveAt(sel_tile);
-    m_TileLocations->RemoveAt(sel_tile);
+    auto bounds = GetMultiTileBounds(m_SelectedTiles).Value();
+
+    for (auto sel_tile : m_SelectedTiles)
+    {
+      layer.m_Tiles.RemoveAt(sel_tile);
+      m_TileLocations->RemoveAt(sel_tile);
+    }
+
+    m_TileSpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
+    m_SelectedTiles.clear();
+
+    AddToDirtyGridList(bounds);
   }
 
-  m_TileSpatialDatabase->RemoveBatch(bounds, m_SelectedTiles);
-  m_SelectedTiles.clear();
-
-  for (auto sel_tile : m_SelectedAnimations)
+  if (m_SelectedAnimations.size() > 0)
   {
-    layer.m_Animations.RemoveAt(sel_tile);
-    m_AnimInfo->RemoveAt(sel_tile);
-  }
+    auto bounds = GetMultiAnimBounds(m_SelectedAnimations).Value();
 
-  m_AnimSpatialDatabase->RemoveBatch(bounds, m_SelectedAnimations);
-  m_SelectedAnimations.clear();
+    for (auto sel_tile : m_SelectedAnimations)
+    {
+      layer.m_Animations.RemoveAt(sel_tile);
+      m_AnimInfo->RemoveAt(sel_tile);
+    }
+
+    m_AnimSpatialDatabase->RemoveBatch(bounds, m_SelectedAnimations);
+    m_SelectedAnimations.clear();
+  }
 
   m_Editor->EnableChangeCallbacks();
   m_Editor->CommitChanges();
   m_LocalChange = false;
-
-  AddToDirtyGridList(bounds);
 }
 
 void MapEditorTileManager::SetSelectionOffset(const Vector2 & offset)
@@ -1283,7 +1292,7 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
     auto anim = m_AnimInfo->TryGet(id);
     if (anim && vfind(m_SelectedAnimations, id) == false)
     {
-      SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, anim->m_Position - screen_center);
+      SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, kSpriteDefaultSkin, anim->m_Position - screen_center);
     }
   }
 }
@@ -1325,6 +1334,7 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
 
     builder.FillVertexBuffer(vertex_buffer);
     auto & shader = g_ShaderManager.GetDefaultShader();
+    shader.Bind();
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 160));
@@ -1342,8 +1352,8 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
     AnimationState anim_state;
     m_TileSheet.GetResource()->InitAnimation(tile.m_Animation, tile.m_FrameOffset + m_NumFrames, anim_state);
 
-    SpriteEngineData::RenderTile(m_TileSheet, anim_state.m_AnimIndex, anim_state.m_AnimFrame, Vector2(tile.x, tile.y) - screen_center,
-      RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
+    SpriteEngineData::RenderTile(m_TileSheet, anim_state.m_AnimIndex, anim_state.m_AnimFrame, kSpriteDefaultSkin,
+      Vector2(tile.x, tile.y) - screen_center, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
   }
 }
 
@@ -1418,7 +1428,8 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
       auto anim = m_AnimInfo->TryGet(id);
       if (anim)
       {
-        SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, anim->m_Position + m_SelectedAnimOffset - screen_center);
+        SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, 
+          kSpriteDefaultSkin, anim->m_Position + m_SelectedAnimOffset - screen_center);
 
         auto anim_size = m_TileSheet.GetResource()->GetAnimationMaxSize(anim->m_State);
         auto box = Box::FromFrameCenterAndSize(anim->m_Position, anim_size);

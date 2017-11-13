@@ -21,9 +21,9 @@
 #include "Runtime/UI/UIElementTypeRegister.h"
 #include "Runtime/SpriteBase/SpriteAnimationEventRegister.h"
 #include "Runtime/Asset/Asset.h"
-
-#include "Server/ServerObject/ServerObjectSystem.h"
-
+#include "Runtime/ServerObject/ServerObjectSystem.h"
+#include "Runtime/ServerObject/ServerObjectInitDataTypeDatabase.h"
+#include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
 void RuntimeInit()
 {
@@ -37,6 +37,7 @@ void RuntimeInit()
   g_GlobalAssetListRegister.CallAll();
   g_SpriteAnimationEventRegisterCallList.CallAll();
 
+  g_ServerObjectInitRegisterCallList.CallAll();
   g_ServerObjectSystem.FinalizeTypes();
 }
 
@@ -49,7 +50,10 @@ void RuntimeRegisterTypes(PropertyFieldDatabase & property_db)
 {
   GetProperyMetaData<SpriteDef>(property_db);
   GetProperyMetaData<EntityDef>(property_db);
+  GetProperyMetaData<ServerObjectDef>(property_db);
   GetProperyMetaData<MapEntity>(property_db);
+  GetProperyMetaData<MapServerObject>(property_db);
+  GetProperyMetaData<MapParalaxLayerObject>(property_db);
   GetProperyMetaData<MapDef>(property_db);
   GetProperyMetaData<UIDef>(property_db);
   GetProperyMetaData<VisualEffectDef>(property_db);

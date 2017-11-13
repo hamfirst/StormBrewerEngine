@@ -18,6 +18,16 @@ elseif (APPLE)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_Editor 
             )
+elseif (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Editor 
+            )
+elseif (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Editor 
+            )
 elseif (UNIX)
   add_definitions(-D_LINUX)
   include_directories(/usr/include/freetype2)
@@ -37,6 +47,7 @@ set(GENERIC_SRC_Editor
             ./DocumentSubValueListMirror.cpp
             ./DocumentValueWatcher.cpp
             ./DrawUtil.cpp
+            ./DrawUtilQt.cpp
             ./EditorContainer.cpp
             ./EntityEditor.cpp
             ./FontViewer.cpp
@@ -65,9 +76,12 @@ set(GENERIC_SRC_Editor
             ./MapEditorLayerList.cpp
             ./MapEditorParalaxLayer.cpp
             ./MapEditorParalaxLayerManager.cpp
+            ./MapEditorParalaxObjectSelector.cpp
             ./MapEditorPath.cpp
             ./MapEditorPathManager.cpp
             ./MapEditorSelector.cpp
+            ./MapEditorServerObjectManager.cpp
+            ./MapEditorServerObjectSelector.cpp
             ./MapEditorTileLayerManager.cpp
             ./MapEditorTileManager.cpp
             ./MapEditorTileSelector.cpp
@@ -78,10 +92,15 @@ set(GENERIC_SRC_Editor
             ./MapEditorToolEntityLayerDraw.cpp
             ./MapEditorToolEntityLayerSelect.cpp
             ./MapEditorToolManualTileLayerDraw.cpp
+            ./MapEditorToolManualTileLayerPreview.cpp
             ./MapEditorToolManualTileLayerSelect.cpp
+            ./MapEditorToolParalaxObjectLayerDraw.cpp
+            ./MapEditorToolParalaxObjectLayerSelect.cpp
             ./MapEditorToolPathCreate.cpp
             ./MapEditorToolPathEditor.cpp
             ./MapEditorToolPathMultiEditor.cpp
+            ./MapEditorToolServerObjectLayerDraw.cpp
+            ./MapEditorToolServerObjectLayerSelect.cpp
             ./MapEditorToolVolumeCreate.cpp
             ./MapEditorToolVolumeEditor.cpp
             ./MapEditorToolVolumeMultiEditor.cpp
@@ -100,12 +119,18 @@ set(GENERIC_SRC_Editor
             ./PropertyEditorWidget.cpp
             ./ScrollingPanel.cpp
             ./SelectFromListDialog.cpp
+            ./ServerObjectEditor.cpp
             ./SimpleLabelListElement.cpp
             ./SpriteBaseAnimationEditor.cpp
+            ./SpriteBaseAnimationEventEditorDialog.cpp
             ./SpriteBaseAnimationFrameListEditorDialog.cpp
             ./SpriteBaseAnimationListElement.cpp
             ./SpriteBaseAnimationListFrameElement.cpp
             ./SpriteBaseEditor.cpp
+            ./SpriteBaseFrameDisplay.cpp
+            ./SpriteBaseSkinEditor.cpp
+            ./SpriteBaseSkinListElement.cpp
+            ./SpriteBaseSkinListTextureElement.cpp
             ./SpriteBaseTextureEditor.cpp
             ./SpriteBaseTextureFrameElement.cpp
             ./SpriteBaseTextureFrameList.cpp

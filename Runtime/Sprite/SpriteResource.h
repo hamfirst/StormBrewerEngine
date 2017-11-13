@@ -29,11 +29,11 @@ public:
   static SpriteLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback, SpriteLoadLink & load_link);
 
-  int GetAnimationIndex(uint32_t animation_name_hash);
-  int GetAnimationLength(uint32_t animation_name_hash);
-  void GetDefaultFrame(AnimationState & anim_state);
-  bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1);
-  bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames);
+  int GetAnimationIndex(uint32_t animation_name_hash) const;
+  int GetAnimationLength(uint32_t animation_name_hash) const;
+  void GetDefaultFrame(AnimationState & anim_state) const;
+  bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1) const;
+  bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames) const;
 
   void Render(EntityRenderState & render_state, Vector2 position);
 
@@ -61,6 +61,17 @@ public:
 
       ++ev_ptr; 
     }
+  }
+
+  template <typename Target, typename AnimState, typename ... Args>
+  void SendEventsTo(Target & target, AnimState & state, Args && ... args)
+  {
+    auto visitor = [&](const RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
+    {
+      target.TriggerEventHandler(ev.GetTypeNameHash(), ev.GetValue(), std::forward<Args>(args)..., start, end);
+    };
+
+    VisitEvents(visitor, state.m_AnimIndex, state.m_AnimFrame, state.m_AnimDelay);
   }
 
   static Box GetDefaultSingleBox();

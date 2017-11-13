@@ -81,6 +81,21 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ServerObject\ServerObject.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectDef.refl.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectEventDispatch.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectEventSystem.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectHandle.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectInitDataTypeDatabase.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectManager.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectResource.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectSerialize.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectSystem.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectUpdate.cpp" />
     <ClCompile Include="SpriteBase\SpriteAnimationEventDef.refl.cpp" />
     <ClCompile Include="SpriteBase\SpriteAnimationEventTypeDatabase.cpp" />
     <ClCompile Include="SpriteBase\SpriteBaseDef.refl.cpp" />
@@ -151,6 +166,7 @@
     <ClInclude Include="Entity\EntityResource.h" />
     <ClInclude Include="Event\Event.h" />
     <ClInclude Include="Event\EventDispatcher.h" />
+    <ClInclude Include="Event\EventHandler.h" />
     <ClInclude Include="Event\EventSystem.h">
       <SubType>
       </SubType>
@@ -214,6 +230,34 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RuntimeCommon.h" />
+    <ClInclude Include="ServerObject\ServerObject.h" />
+    <ClInclude Include="ServerObject\ServerObjectDef.refl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectDef.refl.meta.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventDispatch.h" />
+    <ClInclude Include="ServerObject\ServerObjectEventRegister.h" />
+    <ClInclude Include="ServerObject\ServerObjectEventSystem.h" />
+    <ClInclude Include="ServerObject\ServerObjectHandle.h" />
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.h" />
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.meta.h" />
+    <ClInclude Include="ServerObject\ServerObjectInitDataTypeDatabase.h" />
+    <ClInclude Include="ServerObject\ServerObjectManager.h" />
+    <ClInclude Include="ServerObject\ServerObjectMetaFuncs.h" />
+    <ClInclude Include="ServerObject\ServerObjectRegistrationMacros.h" />
+    <ClInclude Include="ServerObject\ServerObjectResource.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectSerialize.h" />
+    <ClInclude Include="ServerObject\ServerObjectSystem.h" />
+    <ClInclude Include="ServerObject\ServerObjectUpdate.h" />
+    <ClInclude Include="ServerObject\ServerTypesJson.h" />
+    <ClInclude Include="ServerObject\ServerTypesNet.h" />
     <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.h" />
     <ClInclude Include="SpriteBase\SpriteAnimationEventDef.refl.meta.h" />
     <ClInclude Include="SpriteBase\SpriteAnimationEventRegister.h" />

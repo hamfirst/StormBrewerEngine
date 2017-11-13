@@ -41,7 +41,7 @@
 #endif
 
 #ifdef HAS_FCNTL
-#include </usr/include/time.h>
+#include <time.h>
 #include <fcntl.h>
 #endif
 

@@ -372,10 +372,20 @@ Optional<std::string> DocumentEditorWidgetBase::GetFileNameForAssetType(czstr as
     auto path = GetRootPath() + "Entities";
     file_name = QFileDialog::getOpenFileName(this, tr("Open Entity"), path.data(), tr("Entity Files (*.entity)")).toStdString();
   }
+  else if (!strcmp(asset_type, "serverobject"))
+  {
+    auto path = GetRootPath() + "ServerObjects";
+    file_name = QFileDialog::getOpenFileName(this, tr("Open Server Object"), path.data(), tr("Server Object Files (*.serverobject)")).toStdString();
+  }
   else if (!strcmp(asset_type, "ui"))
   {
     auto path = GetRootPath() + "UIs";
     file_name = QFileDialog::getOpenFileName(this, tr("Open UI"), path.data(), tr("UI Files (*.ui)")).toStdString();
+  }
+  else if (!strcmp(asset_type, "paralax"))
+  {
+    auto path = GetRootPath();
+    file_name = QFileDialog::getOpenFileName(this, tr("Open Paralax Layer Object"), path.data(), tr("Paralax Layer Files (*.png *.sprite)")).toStdString();
   }
 
   if (ConvertToCanonicalPath(file_name, root_path))

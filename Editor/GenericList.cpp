@@ -170,7 +170,7 @@ void GenericList::SyncNewElement(std::size_t index)
   if (m_Editor)
   {
     std::string element_path = m_BasePath + '[' + std::to_string(index) + ']';
-    m_Editor->AddChildChangeCallback(element_path.data(),
+    new_elem.m_CallbackId = m_Editor->AddChildChangeCallback(element_path.data(),
       DocumentExternalChangeCallback([=](const ReflectionChangeNotification &) { UpdateElement(index); }));
   }
   else

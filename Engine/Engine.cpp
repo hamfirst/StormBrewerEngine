@@ -104,6 +104,7 @@ void EngineUpdate()
   {
     if (e.type == SDL_QUIT)
     {
+      printf("Game wants to quit\n");
       s_Quit = true;
     }
     else if (e.type == SDL_KEYDOWN)

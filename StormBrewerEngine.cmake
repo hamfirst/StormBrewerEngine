@@ -4,9 +4,10 @@ include(CMakeDependentOption)
 
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
-CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB" OFF)
+CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID" OFF)
 
 SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_DEBUG_POSTFIX "")
 
 if(WEB)
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
@@ -33,6 +34,16 @@ if(BUILD_CLIENT)
   add_subdirectory(External/vorbis)
   add_subdirectory(External/resample)
   add_subdirectory(Engine)
+  
+  if (MSVC)
+    add_subdirectory(External/Windows/SDL2)
+    add_subdirectory(External/Windows/freetype2)
+  endif()
+  
+  if(ANDROID)
+    add_subdirectory(External/Android/SDL_build)
+    add_subdirectory(External/Android/freetype2)
+  endif()
 endif()
 
 if(WEB)
@@ -43,11 +54,6 @@ else()
   add_subdirectory(External/enet)
   add_subdirectory(External/usrsctplib)
   add_subdirectory(External/mbedtls)
-  
-  if (MSVC)
-    add_subdirectory(External/Windows/SDL2)
-    add_subdirectory(External/Windows/freetype2)
-  endif()
 
   add_subdirectory(External/asio)
   
@@ -59,8 +65,6 @@ else()
 endif()
 
 add_subdirectory(Runtime)
-add_subdirectory(Shared)
-add_subdirectory(Server)
 add_subdirectory(Foundation)
 add_subdirectory(StormData)
 add_subdirectory(StormNet)

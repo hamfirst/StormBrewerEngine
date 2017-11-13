@@ -38,7 +38,6 @@ struct RUNTIME_EXPORT SpriteBaseAnimationEvent
   ROpaque<std::vector<Box>> m_EventArea;
 };
 
-
 struct RUNTIME_EXPORT SpriteBaseDefAnimation
 {
 public:
@@ -49,6 +48,24 @@ public:
   RMergeList<SpriteBaseAnimationEvent> m_Events;
 };
 
+struct RUNTIME_EXPORT SpriteBaseDefSkinElement
+{
+public:
+  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteBaseDefSkinElement);
+
+  RString m_Texture;
+  RString m_Replacement;
+};
+
+struct RUNTIME_EXPORT SpriteBaseDefSkin
+{
+public:
+  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteBaseDefSkin);
+
+  RString m_Name;
+  RMergeList<SpriteBaseDefSkinElement> m_TextureReplacements;
+};
+
 struct RUNTIME_EXPORT SpriteBaseDef
 {
 public:
@@ -56,6 +73,7 @@ public:
 
   RMergeList<SpriteBaseDefTexture> m_Textures;
   RMergeList<SpriteBaseDefAnimation> m_Animations;
+  RMergeList<SpriteBaseDefSkin> m_Skins;
 
   FrameData m_InstanceData;
   RMap<uint64_t, FrameData> m_FrameData;

@@ -12,6 +12,7 @@ public:
     SpriteBaseDef & sprite, 
     SpriteBaseTextureLoadList & texture_access,
     Delegate<NullOptPtr<ROpaque<Box>>> && getter,
+    Delegate<NullOptPtr<ROpaque<Box>>> && default_val,
     Delegate<void, const Box &> && new_element,
     uint64_t frame_id, 
     QWidget * parent = nullptr);
@@ -38,6 +39,7 @@ protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
   Delegate<NullOptPtr<ROpaque<Box>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<Box>>> m_Default;
   Delegate<void, const Box &> m_NewElement;
 
   bool m_LocalChange;

@@ -216,9 +216,9 @@ void WebSocket::GotMessage(NotNullPtr<uint8_t> message, int length, bool binary)
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
-#endif
 
-#ifdef _LINUX
+#else
+
 #ifdef __APPLE__
 
 #else

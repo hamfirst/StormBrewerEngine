@@ -10,8 +10,7 @@
 #include "Foundation/Random/Random.h"
 
 #include "Runtime/Event/EventSystem.h"
-
-#include "Server/ServerObject/ServerObjectManager.h"
+#include "Runtime/ServerObject/ServerObjectManager.h"
 
 #include <sb/vector.h>
 
@@ -98,6 +97,11 @@ AnimationState & Entity::GetAnimationState()
 EntityRenderState & Entity::GetRenderState()
 {
   return m_RenderState;
+}
+
+void Entity::SetSkinName(uint32_t skin_name_hash)
+{
+  m_RenderState.m_SkinNameHash = skin_name_hash;
 }
 
 void Entity::SetDefaultFrame()

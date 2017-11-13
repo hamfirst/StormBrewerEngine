@@ -12,6 +12,7 @@ public:
     SpriteBaseDef & sprite,
     SpriteBaseTextureLoadList & texture_access,
     Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && getter,
+    Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && default_val,
     Delegate<void, const FrameDataLowerEdgeInfo &> && new_element,
     uint64_t frame_id,
     czstr data_name,
@@ -41,6 +42,7 @@ protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
   Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> m_Default;
   Delegate<void, const FrameDataLowerEdgeInfo &> m_NewElement;
 
   bool m_LocalChange;

@@ -7,6 +7,7 @@
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Entity/EntityDef.refl.h"
+#include "Runtime/ServerObject/ServerObjectDef.refl.h"
 #include "Runtime/Anchor/AnchorDef.refl.h"
 #include "Runtime/Anchor/AnchorTypeDatabase.h"
 #include "Runtime/Path/PathDef.refl.h"
@@ -18,8 +19,9 @@
 #include "Runtime/Map/MapEffectLayerTypeDatabase.h"
 #include "Runtime/Map/MapPropertiesTypeDatabase.h"
 #include "Runtime/Map/MapTile.h"
+#include "Runtime/Volume/VolumeTypeDatabase.h"
 
-#define MAP_PLATFORMER_PATHFINDING
+//#define MAP_PLATFORMER_PATHFINDING
 
 struct RUNTIME_EXPORT MapPropertiesInfo
 {
@@ -58,6 +60,42 @@ struct RUNTIME_EXPORT MapEntityLayer
   RMergeList<MapEntity> STORM_REFL_ATTR(noui) m_Entities;
 };
 
+struct RUNTIME_EXPORT MapServerObject
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapServerObject);
+  RString m_Name;
+  RInt m_XPosition;
+  RInt m_YPosition;
+
+  ServerObjectDef m_ServerObject;
+};
+
+struct RUNTIME_EXPORT MapServerObjectLayer
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapServerObjectLayer);
+
+  RString m_Name;
+  RMergeList<MapServerObject> STORM_REFL_ATTR(noui) m_Objects;
+};
+
+enum STORM_REFL_ENUM MapParalaxLayerObjectType
+{
+  kTexture,
+  kSprite,
+};
+
+struct RUNTIME_EXPORT MapParalaxLayerObject
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapParalaxLayerObject);
+  RString m_Name;
+  REnum<MapParalaxLayerObjectType> m_Type;
+  RString STORM_REFL_ATTR_VAL(file, paralax) m_File;
+  RString m_Animation;
+
+  RInt m_XPosition;
+  RInt m_YPosition;
+};
+
 struct RUNTIME_EXPORT MapParalaxLayer
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapParalaxLayer);
@@ -77,6 +115,8 @@ struct RUNTIME_EXPORT MapParalaxLayer
 
   RFloat m_VelocityX;
   RFloat m_VelocityY;
+
+  RMergeList<MapParalaxLayerObject> STORM_REFL_ATTR(noui) m_Objects;
 };
 
 struct RUNTIME_EXPORT MapEffectLayer
@@ -238,6 +278,7 @@ struct RUNTIME_EXPORT MapDef
   MapPropertiesInfo m_PropertiesInfo;
   MapPathfindingInfo m_PathfingindInfo;
   RMergeList<MapManualTileLayer> m_ManualTileLayers;
+  RMergeList<MapServerObjectLayer> m_ServerObjectLayers;
   RMergeList<MapEntityLayer> m_EntityLayers;
   RMergeList<MapParalaxLayer> m_ParalaxLayers;
   RMergeList<MapEffectLayer> m_EffectLayers;

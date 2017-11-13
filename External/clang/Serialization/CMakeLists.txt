@@ -18,6 +18,16 @@ elseif (APPLE)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_ClangAttrPCHRead 
             )
+elseif (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(../../.././External/Android)
+  set(PLATFORM_SRC_ClangAttrPCHRead 
+            )
+elseif (IOS)
+  add_definitions(-D_IOS)
+  include_directories(../../.././External/IOS)
+  set(PLATFORM_SRC_ClangAttrPCHRead 
+            )
 elseif (UNIX)
   add_definitions(-D_LINUX)
   include_directories(/usr/include/freetype2)

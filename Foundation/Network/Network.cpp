@@ -9,9 +9,9 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
-#endif
 
-#ifdef _LINUX
+#elif !defined(_WEB)
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -22,8 +22,6 @@
 #include <netinet/tcp.h>
 #include <netdb.h>
 #endif
-
-
 
 void NetworkInit()
 {

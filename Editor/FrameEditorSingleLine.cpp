@@ -19,12 +19,14 @@ FrameEditorSingleLine::FrameEditorSingleLine(
   SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
   Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> && getter,
+  Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> && default_val,
   Delegate<void, const FrameDataSingleLineInfo &> && new_element,
   uint64_t frame_id,
   QWidget * parent) :
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
   m_Watcher(editor),
   m_Getter(std::move(getter)),
+  m_Default(std::move(default_val)),
   m_NewElement(std::move(new_element)),
   m_LocalChange(false)
 {
@@ -115,7 +117,15 @@ FrameDataSingleLineInfo FrameEditorSingleLine::GetPreviewData(Optional<Vector2> 
   }
   else
   {
-    data = SpriteResource::GetDefaultSingleLine();
+    data_list = m_Default();
+    if (data_list)
+    {
+      data = data_list->Value();
+    }
+    else
+    {
+      data = SpriteResource::GetDefaultSingleLine();
+    }
   }
 
   if (m_PreviewPoint)

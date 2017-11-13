@@ -6,27 +6,26 @@
 
 using EventDelegateBuffer = StaticAny<sizeof(Delegate<void>)>;
 
-template <typename Source, typename UserData>
-struct EventHandler
-{
-  UserData m_UserData;
-  uint32_t m_EventType;
-  uint32_t m_HandlerKey;
-
-  EventDelegateBuffer m_Handler;
-  void(*m_Caller)(EventDelegateBuffer &, const void *);
-  bool m_Dead;
-};
 
 template <typename Source, typename UserData>
 class EventDispatch
 {
 public:
+  struct EventHandler
+  {
+    UserData m_UserData;
+    uint32_t m_EventType;
+    uint32_t m_HandlerKey;
+
+    EventDelegateBuffer m_Handler;
+    void(*m_Caller)(EventDelegateBuffer &, const void *);
+    bool m_Dead;
+  };
 
   template <typename EventType>
   uint32_t AddEventHandler(Delegate<void, const EventType &> && handler, const UserData & user_data)
   {
-    m_EventHandlers.emplace_back(EventHandler<Source, UserData> {
+    m_EventHandlers.emplace_back(EventHandler {
       user_data,
       EventType::TypeNameHash,
       GetRandomNumber(),
@@ -84,7 +83,7 @@ public:
 
   void ClearDeadHandlers()
   {
-    std::remove_if(m_EventHandlers.begin(), m_EventHandlers.end(), [](const EventHandler<Source, UserData> & a) { return a.m_Dead; });
+    std::remove_if(m_EventHandlers.begin(), m_EventHandlers.end(), [](const EventHandler & a) { return a.m_Dead; });
   }
 
   void ClearAllHandlers()
@@ -93,5 +92,5 @@ public:
   }
 
 private:
-  std::vector<EventHandler<Source, UserData>> m_EventHandlers;
+  std::vector<EventHandler> m_EventHandlers;
 };

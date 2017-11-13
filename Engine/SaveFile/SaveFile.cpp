@@ -15,6 +15,10 @@
 #include <emscripten/emscripten.h>
 #endif
 
+#ifdef _ANDROID
+#include "SDL2/SDL_system.h"
+#endif
+
 SaveFile::SaveFile(czstr save_file) :
   m_SaveFileName(save_file)
 {
@@ -113,10 +117,12 @@ std::string SaveFile::GetSaveFileLocation()
 
   return folder;
 
+#elif defined(_ANDROID)
+  std::string path = SDL_AndroidGetExternalStoragePath();
+  path += "/sb_save";
+  return path;
 #else
-
-  return "~/.sb"
-
+  return "~/.sb";
 #endif
 }
 

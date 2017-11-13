@@ -3,12 +3,28 @@
 #include "Foundation/SpatialDatabase/SpatialDatabase.h"
 
 #include "Runtime/Map/MapDef.refl.h"
+#include "Runtime/Sprite/SpriteResource.h"
+#include "Runtime/Animation/AnimationState.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Rendering/VertexBuffer.h"
 
 class RenderState;
 class RenderUtil;
+
+struct MapParalaxLayerTexture
+{
+  AssetReference<TextureAsset> m_Texture;
+  Vector2 m_Pos;
+};
+
+struct MapParalaxLayerSprite
+{
+  SpritePtr m_Sprite;
+  Vector2 m_Pos;
+  AnimationState m_State;
+  uint32_t m_AnimationHash;
+};
 
 class MapParalaxLayerInstance
 {
@@ -24,6 +40,10 @@ public:
 private:
 
   AssetReference<TextureAsset> m_Texture;
+
+  std::vector<MapParalaxLayerTexture> m_Textures;
+  std::vector<MapParalaxLayerSprite> m_Sprites;
+
   int m_LayerOrder;
 
   bool m_RepeatX;

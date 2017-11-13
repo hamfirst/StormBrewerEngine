@@ -11,6 +11,7 @@
 
 #include "SpriteBaseAnimationEditor.h"
 #include "SpriteBaseTextureEditor.h"
+#include "SpriteBaseSkinEditor.h"
 #include "SpriteBaseTextureFrameList.h"
 #include "SpriteBaseTextureLoadList.h"
 
@@ -31,8 +32,10 @@ protected:
   std::unique_ptr<QHBoxLayout> m_Layout;
 
   std::unique_ptr<SpriteBaseTextureEditor> m_TextureEditor;
+  std::unique_ptr<SpriteBaseSkinEditor> m_SkinEditor;
   std::unique_ptr<SpriteBaseTextureFrameList> m_FrameList;
   std::unique_ptr<SpriteBaseAnimationEditor> m_AnimationEditor;
 
   Delegate<NullOptPtr<FrameData>> m_GlobalFrameDataCallback;
+  Delegate<NullOptPtr<FrameData>> m_EmptyFrameDataCallback;
 };

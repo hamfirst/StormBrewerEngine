@@ -14,16 +14,18 @@
 #include "SpriteEditor.h"
 
 FrameEditorSingleBox::FrameEditorSingleBox(
-  NotNullPtr<SpriteBaseEditor> editor, 
-  SpriteBaseDef & sprite, 
+  NotNullPtr<SpriteBaseEditor> editor,
+  SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
   Delegate<NullOptPtr<ROpaque<Box>>> && getter,
+  Delegate<NullOptPtr<ROpaque<Box>>> && default_val,
   Delegate<void, const Box &> && new_element,
   uint64_t frame_id,
   QWidget * parent) :
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
   m_Watcher(editor),
   m_Getter(std::move(getter)),
+  m_Default(std::move(default_val)),
   m_NewElement(std::move(new_element)),
   m_LocalChange(false)
 {
@@ -124,8 +126,16 @@ Box FrameEditorSingleBox::GetPreviewData(Optional<FrameEditorEdge> & preview_edg
   }
   else
   {
-    box = SpriteResource::GetDefaultSingleBox();    
-    preview_edge = m_PreviewEdge;
+    data_list = m_Default();
+    if (data_list)
+    {
+      data_list = m_Default();
+    }
+    else
+    {
+      box = SpriteResource::GetDefaultSingleBox();
+      preview_edge = m_PreviewEdge;
+    }
   }
 
   return box;

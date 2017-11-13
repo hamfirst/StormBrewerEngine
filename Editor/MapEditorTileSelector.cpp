@@ -382,7 +382,7 @@ void MapEditorTileSelector::mouseMoveEvent(QMouseEvent * ev)
 
   VisitElements([&](QImage * img, int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, int dst_w, int dst_h, uint64_t frame_id, bool animation)
   {
-    if (ev->x() >= dst_x && ev->x() < dst_x + dst_w && ev->y() >= dst_y && ev->y() < dst_y + dst_w)
+    if (ev->x() >= dst_x && ev->x() < dst_x + dst_w && ev->y() >= dst_y && ev->y() < dst_y + dst_h)
     {
       m_HighlightedFrame = frame_id;
       m_HighlightedAnimation = animation;

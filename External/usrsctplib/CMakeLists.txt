@@ -73,7 +73,11 @@ check_function_exists("inet_addr" HAVE_INET_ADDR)
 
 
 add_definitions(-D__Userspace__)
-add_definitions(-D__Userspace_os_${CMAKE_SYSTEM_NAME})
+if(ANDROID)
+  add_definitions(-D__Userspace_os_Linux)
+else()
+  add_definitions(-D__Userspace_os_${CMAKE_SYSTEM_NAME})
+endif()
 add_definitions(-D_GNU_SOURCE)
 
 #################################################
@@ -212,6 +216,10 @@ netinet/sctp_bsd_addr.h  netinet/sctp.h            netinet/sctp_lock_userspace.h
 netinet/sctp_callout.h   netinet/sctp_header.h     netinet/sctp_os.h              netinet/sctp_peeloff.h       netinet/sctp_sysctl.h        netinet/sctp_var.h
 )
 
+if(ANDROID)
+  LIST (APPEND usrsctp_netinet_HEADERS netinet/ifaddrs.h)
+endif()
+
 LIST (APPEND usrsctp_netinet6_HEADERS
 netinet6/sctp6_var.h
 )
@@ -228,6 +236,10 @@ netinet/sctp_asconf.c    netinet/sctp_cc_functions.c  netinet/sctp_output.c   ne
 netinet/sctp_auth.c      netinet/sctp_crc32.c         netinet/sctp_pcb.c      netinet/sctp_sysctl.c        netinet/sctputil.c        user_socket.c
 netinet/sctp_bsd_addr.c  netinet/sctp_indata.c        netinet/sctp_peeloff.c  netinet/sctp_timer.c         user_environment.c
 )
+
+if(ANDROID)
+  LIST (APPEND usrsctp_SOURCES netinet/ifaddrs.c)
+endif()
 
 add_library(usrsctp SHARED ${usrsctp_SOURCES} ${usrsctp_HEADERS})
 add_library(usrsctp-static STATIC ${usrsctp_SOURCES} ${usrsctp_HEADERS})

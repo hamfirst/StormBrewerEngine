@@ -19,6 +19,7 @@ FrameEditorLowerEdge::FrameEditorLowerEdge(
   SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
   Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && getter,
+  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && default_val,
   Delegate<void, const FrameDataLowerEdgeInfo &> && new_element,
   uint64_t frame_id,
   czstr data_name,
@@ -26,6 +27,7 @@ FrameEditorLowerEdge::FrameEditorLowerEdge(
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
   m_Watcher(editor),
   m_Getter(std::move(getter)),
+  m_Default(std::move(default_val)),
   m_NewElement(std::move(new_element)),
   m_LocalChange(false),
   m_Preview(false)
@@ -109,7 +111,15 @@ FrameDataLowerEdgeInfo FrameEditorLowerEdge::GetPreviewData()
   }
   else
   {
-    data.m_OffsetPixels = 0;
+    data_list = m_Default();
+    if (data_list)
+    {
+      data = (*data_list).Value();
+    }
+    else
+    {
+      data.m_OffsetPixels = 0;
+    }
   }
 
   return data;

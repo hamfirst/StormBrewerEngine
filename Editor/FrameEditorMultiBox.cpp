@@ -18,6 +18,7 @@ FrameEditorMultiBox::FrameEditorMultiBox(
   SpriteBaseDef & sprite, 
   SpriteBaseTextureLoadList & texture_access,
   Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && getter,
+  Delegate<NullOptPtr<ROpaque<std::vector<Box>>>> && default_val,
   Delegate<void, std::vector<Box> &&> && new_element,
   uint64_t frame_id, 
   bool use_default_data,
@@ -25,6 +26,7 @@ FrameEditorMultiBox::FrameEditorMultiBox(
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
   m_Watcher(editor),
   m_Getter(std::move(getter)),
+  m_Default(std::move(default_val)),
   m_NewElement(std::move(new_element)),
   m_LocalChange(false),
   m_UseDefault(use_default_data),
@@ -112,9 +114,18 @@ std::vector<Box> FrameEditorMultiBox::GetPreviewData(Optional<FrameEditorEdge> &
   {
     boxes = data_list->Value();
   }
-  else if(m_UseDefault)
+  else
   {
-    boxes.push_back(SpriteResource::GetDefaultSingleBox());
+    data_list = m_Default();
+
+    if (data_list)
+    {
+      boxes = data_list->Value();
+    }
+    else if (m_UseDefault)
+    {
+      boxes.push_back(SpriteResource::GetDefaultSingleBox());
+    }
   }
 
   preview_edge = m_PreviewEdge;

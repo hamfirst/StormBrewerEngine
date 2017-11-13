@@ -12,7 +12,7 @@
 #include "Engine/Entity/EntityHandle.h"
 #include "Engine/Component/ComponentHandle.h"
 
-#include "Server/ServerObject/ServerObjectHandle.h"
+#include "Runtime/ServerObject/ServerObjectHandle.h"
 
 class EngineState;
 class Component;
@@ -92,6 +92,7 @@ public:
   uint64_t GetAssetNameHash();
   AnimationState & GetAnimationState();
   EntityRenderState & GetRenderState();
+  void SetSkinName(uint32_t skin_name_hash);
 
   void SetDefaultFrame();
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true);

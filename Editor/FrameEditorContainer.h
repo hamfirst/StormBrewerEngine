@@ -20,6 +20,7 @@ public:
     SpriteBaseDef & sprite,
     SpriteBaseTextureLoadList & texture_access,
     Delegate<NullOptPtr<FrameData>> && get_frame_data,
+    Delegate<NullOptPtr<FrameData>> && get_default_data,
     uint64_t frame_id,
     const std::vector<FrameDataDefElem> & frame_data_def, 
     QWidget * parent = nullptr);
@@ -29,7 +30,8 @@ public:
     SpriteBaseDef & sprite, 
     SpriteBaseTextureLoadList & texture_access,
     NotNullPtr<QTabWidget> tab_widget,
-    NotNullPtr<Delegate<NullOptPtr<FrameData>>> get_frame_data, 
+    NotNullPtr<Delegate<NullOptPtr<FrameData>>> get_frame_data,
+    NullOptPtr<Delegate<NullOptPtr<FrameData>>> default_data,
     uint64_t frame_id,
     const std::vector<FrameDataDefElem> & frame_data_def);
 
@@ -40,6 +42,7 @@ protected:
 private:
 
   Delegate<NullOptPtr<FrameData>> m_Getter;
+  Delegate<NullOptPtr<FrameData>> m_Default;
   std::unique_ptr<QTabWidget> m_TabWidget;
 };
 

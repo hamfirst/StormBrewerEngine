@@ -3,6 +3,7 @@ CALL git -C %~dp0 add *.c
 CALL git -C %~dp0 add *.cc
 CALL git -C %~dp0 add *.hpp
 CALL git -C %~dp0 add *.h
+CALL git -C %~dp0 add *.java
 
 CALL git -C %~dp0 add *.inc
 CALL git -C %~dp0 add *.inc.tmp

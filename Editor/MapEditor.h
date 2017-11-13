@@ -16,6 +16,7 @@
 #include "MapEditorSelector.h"
 #include "MapEditorLayerManager.h"
 #include "MapEditorEntityManager.h"
+#include "MapEditorServerObjectManager.h"
 #include "MapEditorTileManager.h"
 #include "MapEditorParalaxLayer.h"
 #include "MapEditorEffectLayer.h"
@@ -41,6 +42,7 @@ public:
 
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & GetManualTileManager();
   MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & GetEntityManager();
+  MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> & GetServerObjectManager();
   MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & GetParalaxManager();
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & GetEffectManager();
   MapEditorLayerManager<MapVolume, MapEditorVolume> & GetVolumeManager();
@@ -54,6 +56,9 @@ public:
   void SelectManualTile(int layer_index, uint64_t frame_id);
   void SelectManualAnimation(int layer_index, uint64_t frame_id);
   void SetSelectedEntity(int layer_index, czstr entity_file);
+  void SetSelectedServerObject(int layer_index, czstr server_object_file);
+  void SetSelectedParalaxObject(int layer_index, const MapParalaxLayerObject & paralax_object_data);
+
   void ClearPropertyPanel();
   void ClearSelectors();
 
@@ -66,6 +71,10 @@ public:
   const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & GetAnchorInitData() const;
   void CreateNewAnchor(const Vector2 & point);
 
+  const MapParalaxLayerObject & GetParalaxObjectInitData() const;
+  const MapEditorParalaxObjectType & GetParalaxObject() const;
+  void CreateNewParalaxObject(int layer_index, const Vector2 & point);
+
 public:
 
   void AboutToClose() override;
@@ -74,7 +83,8 @@ private:
 
   MapDef & m_Map;
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> m_ManualTileLayers;
-  MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager>  m_EntityLayers;
+  MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> m_EntityLayers;
+  MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> m_ServerObjectLayers;
   MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> m_ParalaxLayers;
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> m_EffectLayers;
   MapEditorLayerManager<MapVolume, MapEditorVolume> m_Volumes;
@@ -91,6 +101,9 @@ private:
   RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeInitData;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathInitData;
   RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorInitData;
+
+  MapParalaxLayerObject m_ParalaxInitData;
+  MapEditorParalaxObjectType m_ParalaxInitObject;
 
   PropertyEditor * m_PropertyEditor;
   bool m_IgnoreSelectionChanges;

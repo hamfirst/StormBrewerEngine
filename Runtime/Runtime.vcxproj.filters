@@ -61,6 +61,9 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{d6e72b1c-c4a6-43d0-a958-d46772d40c7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServerObject">
+      <UniqueIdentifier>{b28f58b2-796f-48b9-b9cd-f2181835592b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sprite\SpriteDef.refl.cpp">
@@ -178,6 +181,42 @@
     </ClCompile>
     <ClCompile Include="Map\MapPropertiesDef.refl.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObject.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventDispatch.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectEventSystem.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectHandle.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectInitDataTypeDatabase.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectManager.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectSerialize.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectSystem.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectUpdate.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectDef.refl.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectResource.cpp">
+      <Filter>ServerObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -416,6 +455,66 @@
     </ClInclude>
     <ClInclude Include="Map\MapPropertiesDef.refl.meta.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\EventHandler.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObject.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventDispatch.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventRegister.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectEventSystem.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectHandle.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitData.refl.meta.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectInitDataTypeDatabase.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectManager.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectMetaFuncs.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectRegistrationMacros.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectSerialize.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectSystem.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectUpdate.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerTypesJson.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerTypesNet.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectDef.refl.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectDef.refl.meta.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectResource.h">
+      <Filter>ServerObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -32,7 +32,7 @@ void MapEditorEntitySelector::SetLayer(int layer_index)
   m_LayerIndex = layer_index;
 }
 
-void MapEditorEntitySelector::SetSelectEntity(czstr entity_file)
+void MapEditorEntitySelector::SetSelectedEntity(czstr entity_file)
 {
   m_EntityFile = entity_file;
   EntityResource::LoadWithCallback(entity_file, [this](NotNullPtr<EntityResource>) { repaint(); }, m_Entity);

@@ -39,7 +39,6 @@ set(GENERIC_SRC_GameClient
             ./GameClientSystems.cpp
             ./GameClientUIManager.cpp
             ./GameContainer.cpp
-            ./GameGlobalResources.cpp
             ./GameMode.cpp
             ./GameModeConnecting.cpp
             ./GameModeEndGame.cpp

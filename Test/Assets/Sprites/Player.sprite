@@ -1,0 +1,39 @@
+[]
+
+{
+    "m_Textures": {
+        "0": {
+            "m_Filename": ".\/Images\/Player.png",
+            "m_FrameWidth": 16,
+            "m_FrameHeight": 16
+        }
+    },
+    "m_Animations": {
+        "0": {
+            "m_Name": "Animation",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630848",
+                    "m_FrameDuration": 5
+                }
+            }
+        }
+    },
+    "m_InstanceData": {
+        "m_SingleBoxData": {
+            "0": {
+                "m_FrameDataName": "MoveBox",
+                "m_Data": {
+                    "m_Start": {
+                        "x": -6,
+                        "y": -8
+                    },
+                    "m_End": {
+                        "x": 5,
+                        "y": 1
+                    }
+                }
+            }
+        }
+    }
+}

@@ -8,7 +8,8 @@
 
 SpriteEngineData::SpriteEngineData(SpriteBaseDef & sprite) :
   m_Sprite(sprite),
-  m_Reloading(false)
+  m_Reloading(false),
+  m_TexturesPerSkin(0)
 {
 
 }
@@ -23,9 +24,38 @@ void SpriteEngineData::Load()
   std::vector<TextureAsset::LoadCallbackLink> old_textures = std::move(m_Textures);
 
   m_Reloading = true;
+  m_TexturesPerSkin = 0;
   for (auto elem : m_Sprite.m_Textures)
   {
     m_Textures.push_back(TextureAsset::LoadWithCallback(elem.second.m_Filename.data(), [this](NullOptPtr<TextureAsset>) { BuildVertexBuffer(); }));
+    m_TexturesPerSkin++;
+  }
+
+  m_SkinNameHashes.clear();
+  for (auto elem : m_Sprite.m_Skins)
+  {
+    m_SkinNameHashes.emplace_back(crc32(elem.second.m_Name.ToString()));
+
+    for (auto tex : m_Sprite.m_Textures)
+    {
+      auto tex_hash = crc32lowercase(tex.second.m_Filename.ToString());
+
+      bool found = false;
+      for (auto rep : elem.second.m_TextureReplacements)
+      {
+        if (crc32lowercase(rep.second.m_Texture.ToString()) == tex_hash)
+        {
+          m_Textures.push_back(TextureAsset::LoadWithCallback(rep.second.m_Replacement.data(), [this](NullOptPtr<TextureAsset>) {}));
+          found = true;
+          break;
+        }
+      }
+
+      if (found == false)
+      {
+        m_Textures.push_back(TextureAsset::LoadWithCallback(tex.second.m_Filename.data(), [this](NullOptPtr<TextureAsset>) {}));
+      }
+    }
   }
 
   m_Reloading = false;
@@ -137,7 +167,7 @@ void SpriteEngineData::BuildVertexBuffer()
   builder.FillVertexBuffer(m_VertexBuffer);
 }
 
-Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame, const ShaderProgram & shader) const
+Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame, uint32_t skin_name_hash, const ShaderProgram & shader) const
 {
   if (animation_index < 0 || animation_index >= m_Frames.size())
   {
@@ -156,7 +186,28 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
     return{};
   }
 
-  m_Textures[texture_index].Get()->GetTexture().BindTexture(0);
+  if (skin_name_hash == 0)
+  {
+    m_Textures[texture_index].Get()->GetTexture().BindTexture(0);
+  }
+  else
+  {
+    bool found_name = false;
+    for (std::size_t index = 0, end = m_SkinNameHashes.size(); index < end; ++index)
+    {
+      if (m_SkinNameHashes[index] == skin_name_hash)
+      {
+        m_Textures[(index + 1) * m_TexturesPerSkin + texture_index].Get()->GetTexture().BindTexture(0);
+        found_name = true;
+        break;
+      }
+    }
+
+    if (found_name == false)
+    {
+      m_Textures[texture_index].Get()->GetTexture().BindTexture(0);
+    }
+  }
 
   m_VertexBuffer.Bind();
   m_VertexBuffer.CreateDefaultBinding(shader);
@@ -165,7 +216,8 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
   return m_FrameTextureCoords[frame_index];
 }
 
-Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame,
+
+Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
@@ -174,6 +226,12 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
     return{};
   }
 
+  return RenderSprite(resource, animation_index, animation_frame, skin_name_hash, position, matrix, color, shader);
+}
+
+Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
+{
   const SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
   {
@@ -189,10 +247,10 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  return sprite_data->Render(animation_index, animation_frame, shader);
+  return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame,
+Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();
@@ -212,7 +270,7 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  return sprite_data->Render(animation_index, animation_frame, shader);
+  return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
 }
 
 NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords)
@@ -223,6 +281,11 @@ NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const SpritePtr & spri
     return nullptr;
   }
 
+  return GetSpriteFrame(resource, animation_index, animation_frame, texture_coords);
+}
+
+NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords)
+{
   SpriteEngineData * sprite_data = (SpriteEngineData *)resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
   {
@@ -286,5 +349,5 @@ void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 &
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), render_state.m_Matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), render_state.m_Color);
 
-  sprite_data->Render(render_state.m_AnimIndex, render_state.m_AnimFrame, shader);
+  sprite_data->Render(render_state.m_AnimIndex, render_state.m_AnimFrame, render_state.m_SkinNameHash, shader);
 }

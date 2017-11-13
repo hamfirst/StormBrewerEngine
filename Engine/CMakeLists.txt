@@ -18,6 +18,16 @@ elseif (APPLE)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_Engine 
             )
+elseif (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Engine 
+            )
+elseif (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Engine 
+            )
 elseif (UNIX)
   add_definitions(-D_LINUX)
   include_directories(/usr/include/freetype2)
@@ -97,6 +107,7 @@ set(GENERIC_SRC_Engine
             ./UI/UIClickablePtr.cpp
             ./UI/UIElement.cpp
             ./UI/UIElementContainer.refl.cpp
+            ./UI/UIElementExprBinding.cpp
             ./UI/UIElementExprFuncs.cpp
             ./UI/UIElementFullTexture.refl.cpp
             ./UI/UIElementGradient.refl.cpp

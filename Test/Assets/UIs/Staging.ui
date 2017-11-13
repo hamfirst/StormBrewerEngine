@@ -1,0 +1,144 @@
+[{"m_SourceAsset":".\/UIs\/StagingPlayerElement.ui","m_RemotePath":"","m_LocalPath":".m_Children[0].m_UI"},{"m_SourceAsset":".\/UIs\/StagingPlayerElement.ui","m_RemotePath":"","m_LocalPath":".m_Children[1].m_UI"},{"m_SourceAsset":".\/UIs\/StagingPlayerElement.ui","m_RemotePath":"","m_LocalPath":".m_Children[2].m_UI"},{"m_SourceAsset":".\/UIs\/StagingPlayerElement.ui","m_RemotePath":"","m_LocalPath":".m_Children[3].m_UI"}]
+
+{
+    "m_Children": {
+        "0": {
+            "m_Name": "Player1"
+        },
+        "1": {
+            "m_Name": "Player2"
+        },
+        "3": {
+            "m_Name": "Player4"
+        },
+        "2": {
+            "m_Name": "Player3"
+        }
+    },
+    "m_Outputs": {
+        "13": {
+            "m_ChildIndex": 3,
+            "m_VariableName": "Joined",
+            "m_Equation": "Player4Joined"
+        },
+        "0": {
+            "m_ChildIndex": 0,
+            "m_VariableName": "PlayerIndex",
+            "m_Equation": "0"
+        },
+        "1": {
+            "m_ChildIndex": 1,
+            "m_VariableName": "PlayerIndex",
+            "m_Equation": "1"
+        },
+        "8": {
+            "m_ChildIndex": 1,
+            "m_VariableName": "XInput",
+            "m_Equation": "Player2XInput"
+        },
+        "3": {
+            "m_ChildIndex": 3,
+            "m_VariableName": "PlayerIndex",
+            "m_Equation": "3"
+        },
+        "2": {
+            "m_ChildIndex": 2,
+            "m_VariableName": "PlayerIndex",
+            "m_Equation": "2"
+        },
+        "4": {
+            "m_ChildIndex": 0,
+            "m_VariableName": "Joined",
+            "m_Equation": "Player1Joined"
+        },
+        "5": {
+            "m_ChildIndex": 0,
+            "m_VariableName": "XInput",
+            "m_Equation": "Player1XInput"
+        },
+        "7": {
+            "m_ChildIndex": 1,
+            "m_VariableName": "Joined",
+            "m_Equation": "Player2Joined"
+        },
+        "6": {
+            "m_ChildIndex": 0,
+            "m_VariableName": "YInput",
+            "m_Equation": "Player1YInput"
+        },
+        "9": {
+            "m_ChildIndex": 1,
+            "m_VariableName": "YInput",
+            "m_Equation": "Player2YInput"
+        },
+        "10": {
+            "m_ChildIndex": 2,
+            "m_VariableName": "Joined",
+            "m_Equation": "Player3Joined"
+        },
+        "11": {
+            "m_ChildIndex": 2,
+            "m_VariableName": "XInput",
+            "m_Equation": "Player3XInput"
+        },
+        "12": {
+            "m_ChildIndex": 2,
+            "m_VariableName": "YInput",
+            "m_Equation": "Player3YInput"
+        },
+        "14": {
+            "m_ChildIndex": 3,
+            "m_VariableName": "XInput",
+            "m_Equation": "Player4XInput"
+        },
+        "15": {
+            "m_ChildIndex": 3,
+            "m_VariableName": "YInput",
+            "m_Equation": "Player4YInput"
+        }
+    },
+    "m_Inputs": {
+        "0": {
+            "m_VariableName": "Player1Joined"
+        },
+        "1": {
+            "m_VariableName": "Player1XInput"
+        },
+        "8": {
+            "m_VariableName": "Player3YInput"
+        },
+        "3": {
+            "m_VariableName": "Player2Joined",
+            "m_Type": "kFloat"
+        },
+        "2": {
+            "m_VariableName": "Player1YInput"
+        },
+        "4": {
+            "m_VariableName": "Player2XInput",
+            "m_Type": "kFloat"
+        },
+        "5": {
+            "m_VariableName": "Player2YInput",
+            "m_Type": "kFloat"
+        },
+        "7": {
+            "m_VariableName": "Player3XInput",
+            "m_Type": "kFloat"
+        },
+        "6": {
+            "m_VariableName": "Player3Joined",
+            "m_Type": "kFloat"
+        },
+        "9": {
+            "m_VariableName": "Player4Joined"
+        },
+        "10": {
+            "m_VariableName": "Player4XInput"
+        },
+        "11": {
+            "m_Type": "kFloat",
+            "m_VariableName": "Player4YInput"
+        }
+    }
+}

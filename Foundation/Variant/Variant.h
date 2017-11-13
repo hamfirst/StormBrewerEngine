@@ -2,6 +2,8 @@
 
 #include <type_traits>
 
+#include "Foundation/Assert/Assert.h"
+
 template <typename TestType, typename ... PossibleTypes>
 struct VariantTypeIndex
 {
@@ -74,7 +76,7 @@ struct VariantInitialize<Type, PossibleTypes...>
     *mover_list = [](void * src, void * dst)
     {
       Type * src_t = static_cast<Type *>(src);
-      new(dst) Type(*src_t);
+      new(dst) Type(std::move(*src_t));
     };
 
     VariantInitialize<PossibleTypes...>::InitMovers(mover_list + 1);
@@ -140,8 +142,12 @@ public:
     Clear();
     m_TypeIndex = rhs.m_TypeIndex;
 
-    VariantCopier copier = GetCopier();
-    copier(&rhs.m_Buffer, &m_Buffer);
+    if (m_TypeIndex != -1)
+    {
+      VariantCopier copier = GetCopier();
+      copier(&rhs.m_Buffer, &m_Buffer);
+    }
+
     return *this;
   }
 
@@ -150,8 +156,11 @@ public:
     Clear();
     m_TypeIndex = rhs.m_TypeIndex;
 
-    VariantMover mover = GetMover();
-    mover(&rhs.m_Buffer, &m_Buffer);
+    if (m_TypeIndex != -1)
+    {
+      VariantMover mover = GetMover();
+      mover(&rhs.m_Buffer, &m_Buffer);
+    }
     return *this;
   }
 
@@ -183,7 +192,7 @@ public:
 
     if (type_index == -1 || type_index != m_TypeIndex)
     {
-      throw false;
+      ASSERT(false, "Attempting to derefrence a variant of the invalid type");
     }
 
     return *reinterpret_cast<Type *>(&m_Buffer);
@@ -196,7 +205,33 @@ public:
 
     if (type_index == -1 || type_index != m_TypeIndex)
     {
-      throw false;
+      ASSERT(false, "Attempting to derefrence a variant of the invalid type");
+    }
+
+    return *reinterpret_cast<const Type *>(&m_Buffer);
+  }
+
+  template <typename Type>
+  NullOptPtr<Type> TryGet()
+  {
+    int type_index = GetIndexForType<Type>();
+
+    if (type_index == -1 || type_index != m_TypeIndex)
+    {
+      return nullptr;
+    }
+
+    return reinterpret_cast<Type *>(&m_Buffer);
+  }
+
+  template <typename Type>
+  NullOptPtr<const Type> TryGet() const
+  {
+    int type_index = GetIndexForType<Type>();
+
+    if (type_index == -1 || type_index != m_TypeIndex)
+    {
+      return nullptr;
     }
 
     return *reinterpret_cast<const Type *>(&m_Buffer);
@@ -209,20 +244,20 @@ public:
 
     if (type_index == -1 || type_index != m_TypeIndex)
     {
-      throw nullptr;
+      return nullptr;
     }
 
     return reinterpret_cast<Type *>(&m_Buffer);
   }
 
   template <typename Type>
-  const NullOptPtr<Type> Get() const
+  NullOptPtr<const Type> Get() const
   {
     int type_index = GetIndexForType<Type>();
 
     if (type_index == -1 || type_index != m_TypeIndex)
     {
-      throw nullptr;
+      return nullptr;
     }
 
     return reinterpret_cast<const Type *>(&m_Buffer);

@@ -201,6 +201,32 @@ void MapEditorViewer::ZoomToEntity(std::size_t layer_index, std::size_t entity_i
   }
 }
 
+void MapEditorViewer::ZoomToServerObject(std::size_t layer_index, std::size_t object_index)
+{
+  auto layer = m_Map.m_ServerObjectLayers.TryGet(layer_index);
+  if (layer)
+  {
+    auto obj = layer->m_Objects.TryGet(object_index);
+    if (obj)
+    {
+      m_Center = RenderVec2{ obj->m_XPosition, obj->m_YPosition };
+    }
+  }
+}
+
+void MapEditorViewer::ZoomToParalaxObject(std::size_t layer_index, std::size_t object_index)
+{
+  auto layer = m_Map.m_ParalaxLayers.TryGet(layer_index);
+  if (layer)
+  {
+    auto obj = layer->m_Objects.TryGet(object_index);
+    if (obj)
+    {
+      m_Center = RenderVec2{ obj->m_XPosition, obj->m_YPosition };
+    }
+  }
+}
+
 void MapEditorViewer::ZoomToVolume(std::size_t layer_index)
 {
   auto vol = m_Map.m_Volumes.TryGet(layer_index);
@@ -521,6 +547,7 @@ void MapEditorViewer::paintGL()
   auto & paralax_manager = m_Editor->GetParalaxManager();
   auto & tile_manager = m_Editor->GetManualTileManager();
   auto & entity_manager = m_Editor->GetEntityManager();
+  auto & server_object_manager = m_Editor->GetServerObjectManager();
   auto & volume_manager = m_Editor->GetVolumeManager();
   auto & path_manager = m_Editor->GetPathManager();
   auto & anchor_manager = m_Editor->GetAnchorManager();
@@ -596,12 +623,52 @@ void MapEditorViewer::paintGL()
     list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center); });
   }
 
+  for (auto elem : m_Map.m_ServerObjectLayers)
+  {
+    auto layer = server_object_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    if (layer->IsHidden())
+    {
+      continue;
+    }
+
+    auto list_itr = draw_callbacks.find(0);
+    if (list_itr == draw_callbacks.end())
+    {
+      auto result = draw_callbacks.emplace(std::make_pair(0, std::vector<Delegate<void>>{}));
+      list_itr = result.first;
+    }
+
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center); });
+  }
+
   for (auto & list : draw_callbacks)
   {
     for (auto & cb : list.second)
     {
       cb();
     }
+  }
+
+  for (auto elem : m_Map.m_ParalaxLayers)
+  {
+    auto layer = paralax_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    if (layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, m_Center);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
   }
 
   for (auto elem : m_Map.m_ManualTileLayers)
@@ -638,6 +705,23 @@ void MapEditorViewer::paintGL()
     }
 
     layer->DrawPreviewEntity(m_Center);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
+  }
+
+  for (auto elem : m_Map.m_ServerObjectLayers)
+  {
+    auto layer = server_object_manager.GetLayerManager(elem.first);
+    if (layer == nullptr)
+    {
+      continue;
+    }
+
+    if (layer->IsHidden())
+    {
+      continue;
+    }
+
+    layer->DrawPreviewServerObject(m_Center);
     layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
   }
 

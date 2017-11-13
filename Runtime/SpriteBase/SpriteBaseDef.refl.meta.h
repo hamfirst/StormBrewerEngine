@@ -217,11 +217,11 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public
 template <>
 struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
 {
-  using member_type = RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>
+  using member_type = RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>
   static constexpr auto GetName() { return "m_EventData"; }
-  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF18D6131; }
+  static constexpr unsigned GetTypeNameHash() { return 0x520C090D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }
 };
@@ -338,10 +338,124 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data<2, Self> : public S
 };
 
 template <>
+struct StormReflTypeInfo<SpriteBaseDefSkinElement>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "SpriteBaseDefSkinElement"; }
+  static constexpr auto GetNameHash() { return 0xC2ABD8EA; }
+  static SpriteBaseDefSkinElement & GetDefault() { static SpriteBaseDefSkinElement def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Texture"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x179478A7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkinElement::m_Texture; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data<0, Self> : public StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Texture; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Texture; }
+  void SetDefault() { self.m_Texture = StormReflTypeInfo<SpriteBaseDefSkinElement>::GetDefault().m_Texture; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<1>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Replacement"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xB18AF3AE; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkinElement::m_Replacement; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data<1, Self> : public StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Replacement; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Replacement; }
+  void SetDefault() { self.m_Replacement = StormReflTypeInfo<SpriteBaseDefSkinElement>::GetDefault().m_Replacement; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefSkin>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "SpriteBaseDefSkin"; }
+  static constexpr auto GetNameHash() { return 0xD5CD380A; }
+  static SpriteBaseDefSkin & GetDefault() { static SpriteBaseDefSkin def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Name"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkin::m_Name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data<0, Self> : public StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Name; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Name; }
+  void SetDefault() { self.m_Name = StormReflTypeInfo<SpriteBaseDefSkin>::GetDefault().m_Name; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<1>
+{
+  using member_type = RMergeList<SpriteBaseDefSkinElement>; // RMergeList<SpriteBaseDefSkinElement>
+  static constexpr auto GetName() { return "m_TextureReplacements"; }
+  static constexpr auto GetType() { return "RMergeList<SpriteBaseDefSkinElement>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xDD0C8083; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB3C42BAE; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkin::m_TextureReplacements; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data<1, Self> : public StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<SpriteBaseDefSkinElement>> & Get() { return self.m_TextureReplacements; }
+  std::add_const_t<std::remove_reference_t<RMergeList<SpriteBaseDefSkinElement>>> & Get() const { return self.m_TextureReplacements; }
+  void SetDefault() { self.m_TextureReplacements = StormReflTypeInfo<SpriteBaseDefSkin>::GetDefault().m_TextureReplacements; }
+};
+
+template <>
 struct StormReflTypeInfo<SpriteBaseDef>
 {
   using MyBase = void;
-  static constexpr int fields_n = 4;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -397,17 +511,39 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data<1, Self> : public StormReflT
 template <>
 struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<2>
 {
+  using member_type = RMergeList<SpriteBaseDefSkin>; // RMergeList<SpriteBaseDefSkin>
+  static constexpr auto GetName() { return "m_Skins"; }
+  static constexpr auto GetType() { return "RMergeList<SpriteBaseDefSkin>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x6C351B60; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3064FA4B; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_Skins; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<SpriteBaseDef>::field_data<2, Self> : public StormReflTypeInfo<SpriteBaseDef>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<SpriteBaseDefSkin>> & Get() { return self.m_Skins; }
+  std::add_const_t<std::remove_reference_t<RMergeList<SpriteBaseDefSkin>>> & Get() const { return self.m_Skins; }
+  void SetDefault() { self.m_Skins = StormReflTypeInfo<SpriteBaseDef>::GetDefault().m_Skins; }
+};
+
+template <>
+struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<3>
+{
   using member_type = FrameData; // FrameData
   static constexpr auto GetName() { return "m_InstanceData"; }
   static constexpr auto GetType() { return "FrameData"; }
   static constexpr unsigned GetFieldNameHash() { return 0xEFC069F9; }
   static constexpr unsigned GetTypeNameHash() { return 0x4108D867; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_InstanceData; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<SpriteBaseDef>::field_data<2, Self> : public StormReflTypeInfo<SpriteBaseDef>::field_data_static<2>
+struct StormReflTypeInfo<SpriteBaseDef>::field_data<3, Self> : public StormReflTypeInfo<SpriteBaseDef>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -417,19 +553,19 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data<2, Self> : public StormReflT
 };
 
 template <>
-struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<3>
+struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<4>
 {
   using member_type = RMap<uint64_t, FrameData>; // RMap<unsigned long long, FrameData>
   static constexpr auto GetName() { return "m_FrameData"; }
   static constexpr auto GetType() { return "RMap<unsigned long long, FrameData>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1FD97BDF; }
   static constexpr unsigned GetTypeNameHash() { return 0xDE01B17E; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_FrameData; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<SpriteBaseDef>::field_data<3, Self> : public StormReflTypeInfo<SpriteBaseDef>::field_data_static<3>
+struct StormReflTypeInfo<SpriteBaseDef>::field_data<4, Self> : public StormReflTypeInfo<SpriteBaseDef>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -442,7 +578,7 @@ namespace StormReflFileInfo
 {
   struct SpriteBaseDef
   {
-    static const int types_n = 5;
+    static const int types_n = 7;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -472,6 +608,18 @@ namespace StormReflFileInfo
 
   template <>
   struct SpriteBaseDef::type_info<4>
+  {
+    using type = ::SpriteBaseDefSkinElement;
+  };
+
+  template <>
+  struct SpriteBaseDef::type_info<5>
+  {
+    using type = ::SpriteBaseDefSkin;
+  };
+
+  template <>
+  struct SpriteBaseDef::type_info<6>
   {
     using type = ::SpriteBaseDef;
   };

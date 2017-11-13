@@ -30,11 +30,49 @@
 
 #include <gl3w/gl3w.h>
 
-#ifdef _WEB
+#if defined(_WEB)
 
 int gl3wInit(int egl_mode)
 {
   return 1;
+}
+
+int gl3wIsSupported(int major, int minor)
+{
+  return 1;
+}
+
+GL3WglProc gl3wGetProcAddress(const char *proc)
+{
+  return 0;
+}
+
+#elif defined(_ANDROID)
+
+#define _GNU_SOURCE
+#include <dlfcn.h>
+
+PFNGLBINDVERTEXARRAYOESPROC glBindVertexArray;
+PFNGLGENVERTEXARRAYSOESPROC glGenVertexArrays;
+PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArrays;
+
+int gl3wInit(int egl_mode)
+{
+  void *libhandle = dlopen("libGLESv2.so", RTLD_LAZY);
+  if (libhandle == 0)
+  {
+    return 0;
+  }
+
+  glBindVertexArray = (PFNGLBINDVERTEXARRAYOESPROC)dlsym(libhandle,
+    "glBindVertexArrayOES");
+  glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSOESPROC)dlsym(libhandle,
+    "glDeleteVertexArraysOES");
+  glGenVertexArrays = (PFNGLGENVERTEXARRAYSOESPROC)dlsym(libhandle,
+    "glGenVertexArraysOES");
+
+  dlclose(libhandle);
+  return glBindVertexArray && glDeleteVertexArrays && glGenVertexArrays ? 1 : 0;
 }
 
 int gl3wIsSupported(int major, int minor)
@@ -122,7 +160,9 @@ static GL3WglProc get_proc(const char *proc)
 	CFRelease(procname);
 	return res;
 }
+
 #else
+
 #include <dlfcn.h>
 #include <GL/glx.h>
 
@@ -149,6 +189,7 @@ static GL3WglProc get_proc(const char *proc)
 		res = (GL3WglProc) dlsym(libgl, proc);
 	return res;
 }
+
 #endif
 
 static struct {

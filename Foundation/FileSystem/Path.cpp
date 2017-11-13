@@ -6,14 +6,14 @@
 
 #include <cwctype>
 
-#ifndef _WEB
+#if !defined(_WEB) && !defined(_ANDROID)
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
 
 bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 {
-#ifndef _WEB
+#if !defined(_WEB) && !defined(_ANDROID)
   auto canonical_path = fs::canonical(path);
   path = canonical_path.string();
 #endif
@@ -45,7 +45,7 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 
 std::string GetCanonicalRootPath()
 {
-#ifndef _WEB
+#if !defined(_WEB) && !defined(_ANDROID)
   auto canonical_path = fs::canonical(fs::current_path());
   auto root_path = canonical_path.string();
 
@@ -81,9 +81,7 @@ std::string GetCanonicalRootPath()
 
 std::string GetFullPath(const std::string & path, const std::string & root_path)
 {
-#ifdef _WEB
-  return path;
-#else
+#if !defined(_WEB) && !defined(_ANDROID)
   if (std::experimental::filesystem::path(path).is_absolute())
   {
     return path;
@@ -92,12 +90,16 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
   {
     return root_path + path;
   }
+#else
+  return path;
 #endif
 }
 
 std::string JoinPath(const std::string & path_part1, const std::string & path_part2)
 {
-#ifdef _WEB
+#if !defined(_WEB) && !defined(_ANDROID)
+  return (std::experimental::filesystem::path(path_part1) / path_part2).string();
+#else
 
   if (path_part1.size() > 0 && path_part1.back() != '/')
   {
@@ -107,21 +109,18 @@ std::string JoinPath(const std::string & path_part1, const std::string & path_pa
   {
     return path_part1 + path_part2;
   }
-#else
-
-  return (std::experimental::filesystem::path(path_part1) / path_part2).string();
 #endif
 }
 
 bool CreateDirectory(const std::string & path)
 {
-#ifdef _WEB
-  return false;
-#else
+#if !defined(_WEB) && !defined(_ANDROID)
   std::error_code ec;
   std::experimental::filesystem::create_directories(path.data(), ec);
 
   return !ec;
+#else
+  return false;
 #endif
 }
 

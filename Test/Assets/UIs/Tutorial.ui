@@ -1,0 +1,57 @@
+[]
+
+{
+    "m_Children": {
+        "0": {
+            "m_UI": {
+                "m_InitData": {
+                    "T": 2043328801,
+                    "D": {
+                        "m_TextureFile": ".\/Images\/Tutorial.png"
+                    }
+                },
+                "m_Inputs": {
+                    "0": {
+                        "m_VariableName": "Low",
+                        "m_DefaultEquation": "1"
+                    }
+                },
+                "m_Equations": {
+                    "0": {
+                        "m_VariableName": "m_PositionX",
+                        "m_Equation": "384"
+                    },
+                    "1": {
+                        "m_VariableName": "m_PositionY",
+                        "m_Equation": "[ql 0.2, 340 - Low * 100, 300 - Low * 200] ?? [qe]"
+                    },
+                    "2": {
+                        "m_VariableName": "m_ColorA",
+                        "m_Equation": "TimeAlive \/ 0.3"
+                    }
+                },
+                "m_Outputs": { },
+                "m_Children": { }
+            },
+            "m_Name": "Image"
+        }
+    },
+    "m_Equations": {
+        "0": {
+            "m_VariableName": "m_StartY",
+            "m_Equation": ""
+        }
+    },
+    "m_Inputs": {
+        "0": {
+            "m_VariableName": "Low"
+        }
+    },
+    "m_Outputs": {
+        "0": {
+            "m_ChildIndex": 0,
+            "m_VariableName": "Low",
+            "m_Equation": "Low"
+        }
+    }
+}

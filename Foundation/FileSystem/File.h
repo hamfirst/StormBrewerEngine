@@ -4,9 +4,19 @@
 
 #include <cstdio>
 
+#if defined(_ANDROID)
+#include "SDL2/SDL_rwops.h"
+#endif
+
+
 struct FileData final
 {
+#if !defined(_ANDROID)
   FILE * m_File;
+#else
+  SDL_RWops * m_File;
+#endif
+
   int m_FileOpenError;
   size_t m_FileLength;
 };

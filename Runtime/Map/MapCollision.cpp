@@ -38,7 +38,7 @@ std::vector<std::vector<Box>> ExtractMapCollision(const MapDef & map_def, const 
       for (auto tile : elem.second.m_Tiles)
       {
         Vector2 tile_pos = Vector2{ tile.second->x, tile.second->y } + offset;
-        auto frame_data = tile_sheet_data->m_FrameData.TryGet(tile.second->m_FrameId);
+        auto frame_data = tile_sheet_data->m_FrameData.TryGet(tile.second->GetTileId());
 
         bool got_collision_data = false;
 

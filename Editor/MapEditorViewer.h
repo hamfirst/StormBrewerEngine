@@ -70,6 +70,8 @@ public:
   void ClearLayerSelection();
 
   void ZoomToEntity(std::size_t layer_index, std::size_t entity_index);
+  void ZoomToServerObject(std::size_t layer_index, std::size_t object_index);
+  void ZoomToParalaxObject(std::size_t layer_index, std::size_t object_index);
   void ZoomToVolume(std::size_t layer_index);
   void ZoomToPath(std::size_t layer_index);
   void ZoomToAnchor(std::size_t layer_index);

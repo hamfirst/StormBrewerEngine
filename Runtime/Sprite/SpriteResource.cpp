@@ -75,12 +75,12 @@ void SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr
   p_this->AddLoadCallback(std::move(callback), load_link);
 }
 
-int SpriteResource::GetAnimationIndex(uint32_t animation_name_hash)
+int SpriteResource::GetAnimationIndex(uint32_t animation_name_hash) const
 {
   return vfind_index(m_AnimNameHashes, animation_name_hash);
 }
 
-int SpriteResource::GetAnimationLength(uint32_t animation_name_hash)
+int SpriteResource::GetAnimationLength(uint32_t animation_name_hash) const
 {
   int animation_index = GetAnimationIndex(animation_name_hash);
   if (animation_index != -1)
@@ -100,7 +100,7 @@ int SpriteResource::GetAnimationLength(uint32_t animation_name_hash)
   return 0;
 }
 
-void SpriteResource::GetDefaultFrame(AnimationState & anim_state)
+void SpriteResource::GetDefaultFrame(AnimationState & anim_state) const
 {
   if (m_AnimationFrameSizes.size() == 0)
   {
@@ -121,7 +121,7 @@ void SpriteResource::GetDefaultFrame(AnimationState & anim_state)
   anim_state.m_LowerEdge = m_AnimationLowerEdges[0];
 }
 
-bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop, int frames)
+bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop, int frames) const
 {
   bool would_loop = false;
   int animation_index = GetAnimationIndex(animation_name_hash);
@@ -222,7 +222,7 @@ bool SpriteResource::FrameAdvance(uint32_t animation_name_hash, AnimationState &
   return would_loop;
 }
 
-bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames)
+bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames) const
 {
   int animation_index = GetAnimationIndex(animation_name_hash);
 
@@ -356,7 +356,7 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
       total_length += frame.second.m_FrameDuration;
     }
 
-    for (auto & ev : elem.second.m_Events)
+    for (auto ev : elem.second.m_Events)
     {
       AnimEventInfo event_info;
       event_info.m_EventData = ev.second.m_EventData;
@@ -364,7 +364,7 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
       event_info.m_FrameDelay = ev.second.m_FrameDelay;
       event_info.m_EventBoxStart = (int)m_AnimEventBoxes.size();
 
-      for (auto & elem : ev.second.m_EventArea.Value())
+      for (auto elem : ev.second.m_EventArea.Value())
       {
         m_AnimEventBoxes.push_back(elem);
       }

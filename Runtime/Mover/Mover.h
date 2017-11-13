@@ -34,7 +34,7 @@ public:
   template <typename VecType>
   static MoveRequest CreateMoveRequest(const VecType & position, const VecType & velocity, const Box & move_box)
   {
-    using VecCompType = typename VecComp<VecType>;
+    using VecCompType = VecComp<VecType>;
 
     auto start = position;
     auto end = position + velocity;

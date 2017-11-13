@@ -9,7 +9,7 @@
 #include "Engine/Asset/AssetLoader.h"
 #include "Engine/Settings/EngineSettings.refl.h"
 
-#ifndef _WEB
+#if !defined(_WEB) && !defined(_ANDROID)
 #include <experimental/filesystem>
 #endif
 
@@ -527,10 +527,10 @@ void AssetLoader::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallb
 
   std::error_code ec;
 
-#ifdef _WEB
-  auto last_write = default_time_point;
-#else
+#if !defined(_WEB) && !defined(_ANDROID)
   auto last_write = std::experimental::filesystem::last_write_time(path, ec);
+#else
+  auto last_write = default_time_point;
 #endif
 
   callback(file_hash, Optional<Buffer>(std::move(buffer)), last_write);

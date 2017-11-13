@@ -13,11 +13,25 @@ SpriteEditor::SpriteEditor(PropertyFieldDatabase & property_db, const std::strin
   SpriteBaseEditor(property_db, root_path, sprite, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent)
 {
   FrameEditorContainer::CreateFrameEditorTabs(this, m_Sprite, m_TextureAccess, m_TabWidget.get(),
-    &m_GlobalFrameDataCallback, 0, g_FrameData.m_SpriteGlobalData);
+    &m_GlobalFrameDataCallback, nullptr, 0, g_FrameData.m_SpriteGlobalData);
 
   m_FrameList->SetFrameSelectionCallback([this](uint64_t frame_id)
   {
-    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, [this]() { return m_GlobalFrameDataCallback(); }, frame_id, g_FrameData.m_SpriteFrameData);
+    auto getter = [this, frame_id]()
+    {
+      auto frame_data = m_Sprite.m_FrameData.TryGet(frame_id);
+      if (frame_data == nullptr)
+      {
+        frame_data = &m_Sprite.m_FrameData.EmplaceAt(frame_id);
+      }
+
+      return frame_data;
+    };
+
+    auto frame_editor = new FrameEditorContainer(this, m_Sprite, m_TextureAccess, 
+      getter, 
+      [this]() { return m_GlobalFrameDataCallback(); },
+      frame_id, g_FrameData.m_SpriteFrameData);
     frame_editor->exec();
   });
 }

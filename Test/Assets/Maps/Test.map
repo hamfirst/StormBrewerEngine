@@ -1,0 +1,27 @@
+[]
+
+{
+    "m_ManualTileLayers": {
+        "0": {
+            "m_Animations": {
+                "0": [107374182360,1126751474303369216]
+            },
+            "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet",
+            "m_LayerOrder": 0,
+            "m_Name": "Tile Layer",
+            "m_CollisionLayer": true,
+            "m_Tiles": {
+                "3": [107374182344,11695311425793687553],
+                "5": [38654705608,11695311425793687553],
+                "0": [38654705640,11695311425793687552]
+            }
+        }
+    },
+    "m_PathfingindInfo": {
+        "m_CalculatedInfo": {
+            "m_Id": 1982792571,
+            "m_Connections": [],
+            "m_Surfaces": [{"m_P1":{"x":0,"y":-16},"m_P2":{"x":15,"y":-16},"m_Clearance":200,"m_StartConnections1":0,"m_EndConnections1":0,"m_StartConnections2":0,"m_EndConnections2":0},{"m_P1":{"x":16,"y":-48},"m_P2":{"x":31,"y":-48},"m_Clearance":200,"m_StartConnections1":0,"m_EndConnections1":0,"m_StartConnections2":0,"m_EndConnections2":0}]
+        }
+    }
+}

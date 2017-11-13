@@ -12,6 +12,7 @@ public:
     SpriteBaseDef & sprite,
     SpriteBaseTextureLoadList & texture_access,
     Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> && getter,
+    Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> && default_val,
     Delegate<void, const FrameDataSingleLineInfo &> && new_element,
     uint64_t frame_id,
     QWidget * parent = nullptr);
@@ -38,6 +39,7 @@ protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
   Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<FrameDataSingleLineInfo>>> m_Default;
   Delegate<void, const FrameDataSingleLineInfo &> m_NewElement;
 
   bool m_LocalChange;

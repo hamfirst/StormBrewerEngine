@@ -46,7 +46,19 @@ int gl3wInit(int egl_mode);
 int gl3wIsSupported(int major, int minor);
 GL3WglProc gl3wGetProcAddress(const char *proc);
 
-#ifdef _WEB
+#if defined(_ANDROID)
+
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+
+extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArray;
+extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArrays;
+extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArrays;
+
+#define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
+#define  GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
+
+#elif defined(_WEB)
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>

@@ -17,5 +17,6 @@ struct EntityRenderState : public AnimationState
 {
   RenderVec4 m_Matrix = RenderVec4(1.0f, 0.0f, 0.0f, 1.0f);
   Color m_Color = Color(1.0f, 1.0f, 1.0f, 1.0f);
+  uint32_t m_SkinNameHash = 0;
   bool m_Draw = true;
 };

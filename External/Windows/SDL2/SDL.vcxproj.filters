@@ -159,6 +159,9 @@
     <ClInclude Include="joystick\windows\SDL_xinputjoystick_c.h" />
     <ClInclude Include="render\SDL_yuv_sw_c.h" />
     <ClInclude Include="video\windows\wmmsg.h" />
+    <ClInclude Include="video\windows\SDL_windowsvulkan.h" />
+    <ClInclude Include="video\SDL_vulkan_internal.h" />
+    <ClInclude Include="audio\wasapi\SDL_wasapi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libm\e_atan2.c" />
@@ -290,6 +293,9 @@
     <ClCompile Include="joystick\windows\SDL_xinputjoystick.c" />
     <ClCompile Include="render\SDL_yuv_mmx.c" />
     <ClCompile Include="render\SDL_yuv_sw.c" />
+    <ClCompile Include="video\windows\SDL_windowsvulkan.c" />
+    <ClCompile Include="video\SDL_vulkan_utils.c" />
+    <ClCompile Include="audio\wasapi\SDL_wasapi.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="main\windows\version.rc" />

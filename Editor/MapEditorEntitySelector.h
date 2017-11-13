@@ -21,7 +21,7 @@ public:
   void Clear();
 
   void SetLayer(int layer_index);
-  void SetSelectEntity(czstr entity_file);
+  void SetSelectedEntity(czstr entity_file);
 
 protected:
 
