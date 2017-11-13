@@ -10,8 +10,8 @@
 #include "Game/GameNetworkEvents.refl.h"
 
 #include "Game/GameNetworkSettings.h"
-#include "Server/ServerObject/ServerObjectManager.h"
-#include "Server/ServerObject/ServerObjectSerialize.h"
+#include "Runtime/ServerObject/ServerObjectManager.h"
+#include "Runtime/ServerObject/ServerObjectSerialize.h"
 
 struct GameFullState
 {

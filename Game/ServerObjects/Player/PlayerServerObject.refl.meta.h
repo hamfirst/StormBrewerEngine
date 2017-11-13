@@ -5,7 +5,7 @@
 #include "PlayerServerObject.refl.h"
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/ServerObjects/Player/States/PlayerStateDefault.refl.meta.h"
-#include "Server/ServerObject/ServerObjectInitData.refl.meta.h"
+#include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
 
 
 template <>

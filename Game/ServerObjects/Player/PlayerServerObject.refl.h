@@ -10,9 +10,9 @@
 
 #include "Game/GameplayEvents/PlaceholderEvent.h"
 
-#include "Server/ServerObject/ServerObject.h"
-#include "Server/ServerObject/ServerObjectInitData.refl.h"
-#include "Server/ServerObject/ServerObjectRegistrationMacros.h"
+#include "Runtime/ServerObject/ServerObject.h"
+#include "Runtime/ServerObject/ServerObjectInitData.refl.h"
+#include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
 #include "StormNet/NetReflectionPolymorphic.h"
 

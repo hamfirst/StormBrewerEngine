@@ -10,7 +10,7 @@
 
 #include "GameServer/GameInstanceStateBase.h"
 
-#include "Server/ServerObject/ServerObjectEventSystem.h"
+#include "Runtime/ServerObject/ServerObjectEventSystem.h"
 
 struct GameInstanceStateGameplayPlayer
 {

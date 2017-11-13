@@ -20,7 +20,7 @@
 #include "Foundation/HistoryList/HistoryList.h"
 #include "Foundation/CircularBuffer/CircularBuffer.h"
 
-#include "Server/ServerObject/ServerObjectEventSystem.h"
+#include "Runtime/ServerObject/ServerObjectEventSystem.h"
 
 extern int s_BogusSendTimer;
 

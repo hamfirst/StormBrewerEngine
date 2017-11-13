@@ -37,6 +37,7 @@ private:
   friend class GameInstance;
 
   std::vector<ServerObjectStaticInitData> m_StaticObjects;
+  std::vector<ServerObjectStaticInitData> m_DynamicObjects;
   int m_DynamicObjectCount;
 
   CollisionDatabase m_CollisionDatabase;

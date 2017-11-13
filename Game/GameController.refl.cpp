@@ -12,7 +12,7 @@
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
-#include "Server/ServerObject/ServerObjectManager.h"
+#include "Runtime/ServerObject/ServerObjectManager.h"
 
 #include "StormRefl/StormReflMetaCall.h"
 

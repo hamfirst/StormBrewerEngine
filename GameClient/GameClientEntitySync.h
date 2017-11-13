@@ -4,7 +4,7 @@
 
 #include "Engine/Entity/EntityHandle.h"
 
-#include "Server/ServerObject/ServerObjectManager.h"
+#include "Runtime/ServerObject/ServerObjectManager.h"
 
 class GameContainer;
 class GameClientInstanceContainer;

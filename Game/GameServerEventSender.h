@@ -4,7 +4,7 @@
 
 #include "Game/GameNetworkEvents.refl.h"
 
-#include "Server/ServerObject/ServerObjectHandle.h"
+#include "Runtime/ServerObject/ServerObjectHandle.h"
 
 class GameServerEventSender
 {

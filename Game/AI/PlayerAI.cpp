@@ -4,7 +4,7 @@
 #include "Game/GameStage.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
-#include "Server/ServerObject/ServerObjectManager.h"
+#include "Runtime/ServerObject/ServerObjectManager.h"
 
 static GameNetVal kBallRadius = GameNetVal("7");
 

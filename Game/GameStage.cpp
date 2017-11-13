@@ -5,6 +5,7 @@
 #include "Foundation/Pathfinding/Pathfinding.h"
 
 #include "Runtime/Map/MapCollision.h"
+#include "Runtime/ServerObject/ServerObjectSystem.h"
 
 #include "Game/Data/PlayerSpawn.refl.meta.h"
 
@@ -52,6 +53,27 @@ GameStage::GameStage(const Map & map) :
   {
 
   }
+
+  for (auto layer : map_data->m_ServerObjectLayers)
+  {
+    for (auto obj : layer.second.m_Objects)
+    {
+      auto type_index = g_ServerObjectSystem.GetTypeIndexForInitDataTypeNameHash(obj.second.m_ServerObject.m_InitData.GetTypeNameHash());
+      if (type_index)
+      {
+        Vector2 pos = Vector2((int)obj.second.m_XPosition, obj.second.m_YPosition);
+        ServerObjectStaticInitData init_data{ type_index, obj.second.m_ServerObject.m_InitData, pos };
+        if (obj.second.m_ServerObject.m_IsStatic)
+        {
+          m_StaticObjects.emplace_back(std::move(init_data));
+        }
+        else
+        {
+          m_DynamicObjects.emplace_back(std::move(init_data));
+        }
+      }
+    }
+  }
 }
 
 GameStage::~GameStage()
@@ -61,7 +83,7 @@ GameStage::~GameStage()
 
 GameFullState GameStage::CreateDefaultGameState() const
 {
-  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjectCount, kMaxPlayers) };
+  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjects, m_DynamicObjectCount, kMaxPlayers) };
 }
 
 const CollisionDatabase & GameStage::GetCollisionDatabase() const
