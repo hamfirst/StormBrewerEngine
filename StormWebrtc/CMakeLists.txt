@@ -37,5 +37,8 @@ endif()
 
 set(GENERIC_SRC_StormWebrtc 
             ./StormWebrtc.cpp
+            ./StormWebrtcServer.cpp
+            ./StormWebrtcServerImpl.cpp
+            ./StormWebrtcStun.cpp
             )
 add_library(StormWebrtc ${GENERIC_SRC_StormWebrtc} ${PLATFORM_SRC_StormWebrtc} )

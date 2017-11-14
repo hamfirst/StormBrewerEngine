@@ -18,6 +18,16 @@ elseif (APPLE)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_GameClient 
             )
+elseif (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_GameClient 
+            )
+elseif (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_GameClient 
+            )
 elseif (UNIX)
   add_definitions(-D_LINUX)
   include_directories(/usr/include/freetype2)
@@ -27,6 +37,7 @@ endif()
 
 set(GENERIC_SRC_GameClient 
             ./GameCamera.cpp
+            ./GameClientCommon.cpp
             ./GameClientController.refl.cpp
             ./GameClientEntitySync.cpp
             ./GameClientGlobalResources.cpp
@@ -53,18 +64,9 @@ set(GENERIC_SRC_GameClient
             ./GameModeTutorial.cpp
             ./GameNetworkClient.cpp
             ./GameServerEventResponder.cpp
-            ./Components/BallComponent.refl.cpp
-            ./Components/BallComponent.refl.reg.cpp
-            ./Components/FireComponent.refl.cpp
-            ./Components/FireComponent.refl.reg.cpp
             ./Components/PlayerComponent.refl.cpp
             ./Components/PlayerComponent.refl.reg.cpp
-            ./Components/PlayerExplodeComponent.refl.cpp
-            ./Components/PlayerExplodeComponent.refl.reg.cpp
-            ./Components/SwipeComponent.refl.cpp
-            ./Components/SwipeComponent.refl.reg.cpp
             ./EffectLayers/CollisionDrawer.refl.cpp
             ./EffectLayers/CollisionDrawer.refl.reg.cpp
-            ./UI/QuitGamePopup.cpp
             )
 add_library(GameClient ${GENERIC_SRC_GameClient} ${PLATFORM_SRC_GameClient} )

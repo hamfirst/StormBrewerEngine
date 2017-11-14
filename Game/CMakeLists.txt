@@ -18,6 +18,16 @@ elseif (APPLE)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_Game 
             )
+elseif (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Game 
+            )
+elseif (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Game 
+            )
 elseif (UNIX)
   add_definitions(-D_LINUX)
   include_directories(/usr/include/freetype2)
@@ -26,6 +36,7 @@ elseif (UNIX)
 endif()
 
 set(GENERIC_SRC_Game 
+            ./GameCommon.cpp
             ./GameController.refl.cpp
             ./GameEventReconciler.cpp
             ./GameLevelList.cpp
@@ -41,14 +52,9 @@ set(GENERIC_SRC_Game
             ./GameValidation.cpp
             ./GameWebrtc.cpp
             ./AI/PlayerAI.cpp
-            ./Data/BallSpawn.refl.reg.cpp
-            ./Data/PlayerGoal.refl.reg.cpp
-            ./Data/PlayerGoalBarrier.refl.reg.cpp
             ./Data/PlayerSpawn.refl.reg.cpp
-            ./Data/PlayField.refl.reg.cpp
-            ./ServerObjects/BallServerObject.refl.cpp
-            ./ServerObjects/BallServerObject.refl.reg.cpp
-            ./ServerObjects/PlayerServerObject.refl.cpp
-            ./ServerObjects/PlayerServerObject.refl.reg.cpp
+            ./ServerObjects/Player/PlayerServerObject.refl.cpp
+            ./ServerObjects/Player/PlayerServerObject.refl.reg.cpp
+            ./ServerObjects/Player/States/PlayerStateDefault.refl.cpp
             )
 add_library(Game ${GENERIC_SRC_Game} ${PLATFORM_SRC_Game} )
