@@ -405,7 +405,7 @@ void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Bo
   vertex_buffer.Unbind();
 }
 
-Optional<Box> MapEditorParalaxLayer::DrawObject(const MapEditorParalaxObjectType & object, const MapParalaxLayerObject & object_data, 
+Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
   const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center)
 {
   auto texture_link = object.Get<TextureAsset::LoadCallbackLink>();

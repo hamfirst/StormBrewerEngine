@@ -66,6 +66,11 @@ void EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr
   p_this->AddLoadCallback(std::move(callback), link);
 }
 
+SpritePtr & EntityResource::GetSprite()
+{
+  return m_Sprite;
+}
+
 const SpritePtr & EntityResource::GetSprite() const
 {
   return m_Sprite;

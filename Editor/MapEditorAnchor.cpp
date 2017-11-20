@@ -132,7 +132,7 @@ void MapEditorAnchor::CommitPreview()
   }
 
   ClearPreview();
-  m_Offset = {};
+  m_Offset.Clear();
 
   WriteData(preview_anchor.Value());
 }

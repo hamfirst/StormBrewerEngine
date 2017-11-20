@@ -172,7 +172,7 @@ void MapEditorViewer::ClearTool()
     m_Dragging = false;
     SyncMouse();
 
-    m_LastDrawPos = {};
+    m_LastDrawPos.Clear();
   }
 }
 

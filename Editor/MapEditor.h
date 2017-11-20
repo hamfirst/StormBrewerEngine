@@ -71,8 +71,8 @@ public:
   const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & GetAnchorInitData() const;
   void CreateNewAnchor(const Vector2 & point);
 
-  const MapParalaxLayerObject & GetParalaxObjectInitData() const;
-  const MapEditorParalaxObjectType & GetParalaxObject() const;
+  MapParalaxLayerObject & GetParalaxObjectInitData();
+  MapEditorParalaxObjectType & GetParalaxObject();
   void CreateNewParalaxObject(int layer_index, const Vector2 & point);
 
 public:

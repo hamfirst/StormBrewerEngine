@@ -73,8 +73,8 @@ void MapEditorServerObjectManager::RemoveServerObject(std::size_t index)
 void MapEditorServerObjectManager::SetPreviewServerObject(czstr server_object_file)
 {
   m_PreviewServerObjectFile = server_object_file;
-  m_PreviewServerObjectPosition = {};
-  m_PreviewEntity = {};
+  m_PreviewServerObjectPosition.Clear();
+  m_PreviewEntity.Clear();
 
   ServerObjectResource::LoadWithCallback(server_object_file, [this](NotNullPtr<ServerObjectResource> resource) {
     auto init_data_type_name_hash = resource->GetData()->m_InitData.GetTypeNameHash();
@@ -97,9 +97,9 @@ void MapEditorServerObjectManager::SetPreviewServerObjectPosition(const Vector2 
 
 void MapEditorServerObjectManager::ClearPreviewServerObject()
 {
-  m_PreviewServerObject = {};
-  m_PreviewServerObjectPosition = {};
-  m_PreviewEntity = {};
+  m_PreviewServerObject.Clear();
+  m_PreviewServerObjectPosition.Clear();
+  m_PreviewEntity.Clear();
 }
 
 void MapEditorServerObjectManager::CommitPreviewServerObject()

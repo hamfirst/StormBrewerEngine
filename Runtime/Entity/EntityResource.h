@@ -26,6 +26,7 @@ public:
   static EntityLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link);
 
+  SpritePtr & GetSprite();
   const SpritePtr & GetSprite() const;
 
 protected:

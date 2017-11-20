@@ -72,7 +72,7 @@ void MapEditorEntityManager::SetPreviewEntity(czstr entity_file)
 {
   m_PreviewEntityFile = entity_file;
   m_PreviewEntity = EntityResource::Load(entity_file);
-  m_PreviewEntityPosition = {};
+  m_PreviewEntityPosition.Clear();
 }
 
 void MapEditorEntityManager::SetPreviewEntityPosition(const Vector2 & pos)
@@ -82,8 +82,8 @@ void MapEditorEntityManager::SetPreviewEntityPosition(const Vector2 & pos)
 
 void MapEditorEntityManager::ClearPreviewEntity()
 {
-  m_PreviewEntity = {};
-  m_PreviewEntityPosition = {};
+  m_PreviewEntity.Clear();
+  m_PreviewEntityPosition.Clear();
 }
 
 void MapEditorEntityManager::CommitPreviewEntity()

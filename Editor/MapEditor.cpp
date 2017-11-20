@@ -806,12 +806,12 @@ void MapEditor::CreateNewAnchor(const Vector2 & point)
   m_Map.m_Anchors.EmplaceBack(anchor);
 }
 
-const MapParalaxLayerObject & MapEditor::GetParalaxObjectInitData() const
+MapParalaxLayerObject & MapEditor::GetParalaxObjectInitData() 
 {
   return m_ParalaxInitData;
 }
 
-const MapEditorParalaxObjectType & MapEditor::GetParalaxObject() const
+MapEditorParalaxObjectType & MapEditor::GetParalaxObject()
 {
   return m_ParalaxInitObject;
 }

@@ -49,7 +49,7 @@ public:
   void DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center);
   void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util);
 
-  Optional<Box> DrawObject(const MapEditorParalaxObjectType & object, const MapParalaxLayerObject & object_data, 
+  Optional<Box> DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
     const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center);
 
   void ToggleHidden();
