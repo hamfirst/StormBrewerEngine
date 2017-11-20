@@ -89,22 +89,6 @@ int main(int argc, char *argv[])
   g_LagSim = 0;
 #endif
 
-  struct Heuristic
-  {
-    float operator()(const int & a, const int & b) const
-    {
-      return 0;
-    }
-  };
-
-  using GraphType = PathfindingBasicGrid2D<int, float, Heuristic>;
-
-  GraphType graph(Vector2(10, 10));
-
-  auto scratch_data = graph.CreateScratchData();
-  auto path = Pathfinding<GraphType>::FindPath(0, 2, graph, scratch_data);
-
-
 #ifdef _WEB
   int multiplier = 1;
 

@@ -80,6 +80,10 @@ else()
 endif()
 add_definitions(-D_GNU_SOURCE)
 
+if(IOS)
+  add_definitions(-DIOS)
+endif()
+
 #################################################
 # CHECK STRUCT MEMBERS
 #################################################

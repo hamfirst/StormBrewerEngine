@@ -1,5 +1,6 @@
 #pragma once
 
+#include <type_traits>
 
 template <class T>
 class Optional
@@ -12,7 +13,8 @@ public:
   {
 
   }
-
+  
+  template <typename U = T, typename std::enable_if<std::is_copy_constructible<U>::value, int>::type = 0>
   Optional(const Optional<T> & rhs)
   {
     m_Valid = rhs.m_Valid;
@@ -23,6 +25,7 @@ public:
     }
   }
 
+  template <typename U = T, typename std::enable_if<std::is_move_constructible<U>::value, int>::type = 0>
   Optional(Optional<T> && rhs)
   {
     m_Valid = rhs.m_Valid;
@@ -34,18 +37,21 @@ public:
     }
   }
 
+  template <typename U = T, typename std::enable_if<std::is_copy_constructible<U>::value, int>::type = 0>
   Optional(const T & rhs) :
     m_Valid(true)
   {
     new(m_Buffer) T(rhs);
   }
-
+  
+  template <typename U = T, typename std::enable_if<std::is_move_constructible<U>::value, int>::type = 0>
   Optional(T && rhs) :
     m_Valid(true)
   {
     new(m_Buffer) T(std::move(rhs));
   }
 
+  template <typename U = T, typename std::enable_if<std::is_copy_constructible<U>::value, int>::type = 0>
   Optional<T> & operator =(const Optional<T> & rhs)
   {
     Clear();
@@ -58,7 +64,8 @@ public:
 
     return *this;
   }
-
+  
+  template <typename U = T, typename std::enable_if<std::is_move_constructible<U>::value, int>::type = 0>
   Optional<T> & operator =(Optional<T> && rhs)
   {
     Clear();
@@ -69,6 +76,25 @@ public:
       new(m_Buffer) T(std::move(*src));
       rhs.Clear();
     }
+    return *this;
+  }
+  
+  template <typename U = T, typename std::enable_if<std::is_copy_constructible<U>::value, int>::type = 0>
+  Optional<T> & operator =(const T & rhs)
+  {
+    Clear();
+    m_Valid = true;
+    new(m_Buffer) T(rhs);
+    
+    return *this;
+  }
+  
+  template <typename U = T, typename std::enable_if<std::is_move_constructible<U>::value, int>::type = 0>
+  Optional<T> & operator =(T && rhs)
+  {
+    Clear();
+    m_Valid = true;
+    new(m_Buffer) T(std::move(rhs));
     return *this;
   }
 

@@ -4,14 +4,14 @@
 
 #include <cstdio>
 
-#if defined(_ANDROID)
+#if defined(_ANDROID) || defined(_IOS)
 #include "SDL2/SDL_rwops.h"
 #endif
 
 
 struct FileData final
 {
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
   FILE * m_File;
 #else
   SDL_RWops * m_File;

@@ -51,9 +51,21 @@ GL3WglProc gl3wGetProcAddress(const char *proc);
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArray;
-extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArrays;
-extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArrays;
+#define glBindVertexArray glBindVertexArrayOES;
+#define glGenVertexArrays glGenVertexArraysOES;
+#define glDeleteVertexArrays glDeleteVertexArraysOES;
+
+#define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
+#define  GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
+
+#elif defined(_IOS)
+
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+  
+#define glBindVertexArray glBindVertexArrayOES;
+#define glGenVertexArrays glGenVertexArraysOES;
+#define glDeleteVertexArrays glDeleteVertexArraysOES;
 
 #define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
 #define  GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES

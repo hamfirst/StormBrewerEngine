@@ -85,6 +85,23 @@ GL3WglProc gl3wGetProcAddress(const char *proc)
   return 0;
 }
 
+#elif defined(_IOS)
+
+int gl3wInit(int egl_mode)
+{
+	return 1;
+}
+
+int gl3wIsSupported(int major, int minor)
+{
+  return 1;
+}
+
+GL3WglProc gl3wGetProcAddress(const char *proc)
+{
+  return 0;
+}
+
 #else
 
 #ifdef _WIN32

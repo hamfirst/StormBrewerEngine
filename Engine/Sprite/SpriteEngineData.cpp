@@ -167,7 +167,7 @@ void SpriteEngineData::BuildVertexBuffer()
   builder.FillVertexBuffer(m_VertexBuffer);
 }
 
-Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame, uint32_t skin_name_hash, const ShaderProgram & shader) const
+Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame, uint32_t skin_name_hash, const ShaderProgram & shader)
 {
   if (animation_index < 0 || animation_index >= m_Frames.size())
   {
@@ -217,7 +217,7 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
 }
 
 
-Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
+Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
@@ -229,10 +229,10 @@ Optional<Box> SpriteEngineData::RenderSprite(const SpritePtr & sprite, int anima
   return RenderSprite(resource, animation_index, animation_frame, skin_name_hash, position, matrix, color, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
+Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
-  const SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
+  SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
   {
     return{};
@@ -250,7 +250,7 @@ Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<const SpriteResource> re
   return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
+Optional<Box> SpriteEngineData::RenderTile(TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
   const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();
@@ -259,7 +259,7 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int 
     return{};
   }
 
-  const SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
+  SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
   {
     return{};
@@ -273,7 +273,7 @@ Optional<Box> SpriteEngineData::RenderTile(const TileSheetPtr & tile_sheet, int 
   return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
 }
 
-NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords)
+NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)
@@ -284,7 +284,7 @@ NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(const SpritePtr & spri
   return GetSpriteFrame(resource, animation_index, animation_frame, texture_coords);
 }
 
-NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords)
+NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords)
 {
   SpriteEngineData * sprite_data = (SpriteEngineData *)resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)

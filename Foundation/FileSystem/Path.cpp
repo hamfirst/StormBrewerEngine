@@ -6,14 +6,14 @@
 
 #include <cwctype>
 
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
 
 bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 {
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   auto canonical_path = fs::canonical(path);
   path = canonical_path.string();
 #endif
@@ -45,7 +45,7 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 
 std::string GetCanonicalRootPath()
 {
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   auto canonical_path = fs::canonical(fs::current_path());
   auto root_path = canonical_path.string();
 
@@ -81,7 +81,7 @@ std::string GetCanonicalRootPath()
 
 std::string GetFullPath(const std::string & path, const std::string & root_path)
 {
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   if (std::experimental::filesystem::path(path).is_absolute())
   {
     return path;
@@ -97,7 +97,7 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
 
 std::string JoinPath(const std::string & path_part1, const std::string & path_part2)
 {
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   return (std::experimental::filesystem::path(path_part1) / path_part2).string();
 #else
 
@@ -114,7 +114,7 @@ std::string JoinPath(const std::string & path_part1, const std::string & path_pa
 
 bool CreateDirectory(const std::string & path)
 {
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   std::error_code ec;
   std::experimental::filesystem::create_directories(path.data(), ec);
 

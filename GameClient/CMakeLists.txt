@@ -43,7 +43,6 @@ set(GENERIC_SRC_GameClient
             ./GameClientGlobalResources.cpp
             ./GameClientInputManager.cpp
             ./GameClientInstanceContainer.cpp
-            ./GameClientInstanceData.cpp
             ./GameClientInstanceResources.cpp
             ./GameClientLevelLoader.cpp
             ./GameClientSave.cpp

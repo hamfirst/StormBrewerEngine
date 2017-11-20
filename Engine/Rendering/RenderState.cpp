@@ -10,6 +10,9 @@ void BootstrapContext()
 {
   glPixelStorei(GL_PACK_ALIGNMENT, 1); CHECK_GL_RENDER_ERROR;
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1); CHECK_GL_RENDER_ERROR;
+  
+  glDisable(GL_DEPTH_TEST); CHECK_GL_RENDER_ERROR;
+  glDisable(GL_CULL_FACE); CHECK_GL_RENDER_ERROR;
 }
 
 void RenderState::InitRenderState(int screen_width, int screen_height)
@@ -17,6 +20,7 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
   glEnable(GL_BLEND); CHECK_GL_RENDER_ERROR;
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); CHECK_GL_RENDER_ERROR;
   glBlendEquation(GL_FUNC_ADD); CHECK_GL_RENDER_ERROR;
+  glViewport(0, 0, screen_width, screen_height);
 
   BootstrapContext();
 

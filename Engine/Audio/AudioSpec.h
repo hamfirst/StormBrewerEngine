@@ -14,8 +14,8 @@ public:
     m_AudioBufferSize(audio_ref.Resolve()->m_AudioBufferSize),
     m_AudioFormat(audio_ref.Resolve()->m_AudioFormat),
     m_AudioChannels(audio_ref.Resolve()->m_AudioChannels),
-    m_Category(cat),
     m_Volume(volume),
+    m_Category(cat),
     m_Pan(pan),
     m_Looping(looping)
   {

@@ -44,7 +44,7 @@ File::File(czstr path, FileOpenMode mode)
     break;
   }
 
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
 
 #ifdef PEDANTIC_BULLSHIT
   m_FileData.m_File = nullptr;
@@ -67,6 +67,7 @@ File::File(czstr path, FileOpenMode mode)
     m_FileData.m_FileLength = 0;
   }
 #else
+
   if(path[0] != '.' || path[1] != '/')
   {
     m_FileData.m_File = {};
@@ -74,7 +75,24 @@ File::File(czstr path, FileOpenMode mode)
     m_FileData.m_FileOpenError = 1;
   }
 
+#ifdef _IOS
+
+  auto ptr = &path[2];
+  auto start_filename = ptr;
+  while(*ptr != 0)
+  {
+    if(*ptr == '/')
+    {
+      start_filename = ptr + 1;
+    }
+
+    ptr++;
+  }
+
+  m_FileData.m_File = SDL_RWFromFile(start_filename, mode_str);
+#else
   m_FileData.m_File = SDL_RWFromFile(path + 2, mode_str);
+#endif
 
   if(m_FileData.m_File != nullptr)
   {
@@ -121,7 +139,7 @@ void File::Read(const gsl::span<uint8_t> & buffer, std::size_t read_amount)
     return;
   }
 
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
 #ifdef PEDANTIC_BULLSHIT
   fread_s(buffer.data(), buffer.size(), 1, read_amount, m_FileData.m_File);
 #else
@@ -139,7 +157,7 @@ void File::Write(const gsl::span<const uint8_t> & buffer, std::size_t write_amou
     return;
   }
 
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
   fwrite(buffer.data(), 1, write_amount, m_FileData.m_File);
 #else
   SDL_RWwrite(m_FileData.m_File, buffer.data(), 1, write_amount);
@@ -153,7 +171,7 @@ void File::Write(const std::string & str)
     return;
   }
 
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
   fwrite(str.data(), 1, str.length(), m_FileData.m_File);
 #else
   SDL_RWwrite(m_FileData.m_File, str.data(), 1, str.length());
@@ -181,7 +199,7 @@ void FileClose(File & file)
 {
   if (file.m_FileData.m_File != nullptr)
   {
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
     fclose(file.m_FileData.m_File);
 #else
     SDL_RWclose(file.m_FileData.m_File);
@@ -193,7 +211,7 @@ void FileClose(File & file)
 
 bool FileExists(czstr path)
 {
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
 #ifdef PEDANTIC_BULLSHIT
   FILE * fp = nullptr;
   if (fopen_s(&fp, path, "rb"))

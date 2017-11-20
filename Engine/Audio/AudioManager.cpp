@@ -410,31 +410,31 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
 
 void AudioManager::GenerateAudio(uint8_t * stream, int len)
 {
-  //int write_samples = len / (sizeof(float) * 2);
-  //printf("Processing %d audio samples (buffer size %d)\n", write_samples, len);
+//  int write_samples = len / (sizeof(float) * 2);
+//  //printf("Processing %d audio samples (buffer size %d)\n", write_samples, len);
+//
+//  //printf("Processing %d audio samples (buffer size %d)\n", write_samples, len);
+//  auto wave_ptr = (float *)stream;
+//  while (write_samples > 0)
+//  {
+//    auto data_avail = (int)(kWaveSize - s_WaveIndex);
+//    auto data_to_write = std::min(data_avail, write_samples);
+//
+//    memcpy(wave_ptr, &s_Wave[s_WaveIndex * 2], write_samples * sizeof(float) * 2);
+//    s_WaveIndex += data_to_write;
+//    wave_ptr += (data_to_write * 2);
+//
+//    if (s_WaveIndex >= kWaveSize)
+//    {
+//      s_WaveIndex = 0;
+//    }
+//
+//    write_samples -= data_to_write;
+//  }
+//
+//  return;
 
-  ////printf("Processing %d audio samples (buffer size %d)\n", write_samples, len);
-  //auto wave_ptr = (float *)stream;
-  //while (write_samples > 0)
-  //{
-  //  auto data_avail = (int)(kWaveSize - s_WaveIndex);
-  //  auto data_to_write = std::min(data_avail, write_samples);
-
-  //  memcpy(wave_ptr, &s_Wave[s_WaveIndex * 2], write_samples * sizeof(float) * 2);
-  //  s_WaveIndex += data_to_write;
-  //  wave_ptr += (data_to_write * 2);
-
-  //  if (s_WaveIndex >= kWaveSize)
-  //  {
-  //    s_WaveIndex = 0;
-  //  }
-
-  //  write_samples -= data_to_write;
-  //}
-
-  //return;
-
-  memset(stream, 0, len);
+  ;memset(stream, 0, len);
 
 #ifndef _WEB
   std::lock_guard<std::mutex> l(m_AudioMutex);

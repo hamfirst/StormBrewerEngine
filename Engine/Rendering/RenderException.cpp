@@ -25,7 +25,8 @@ RenderException::RenderException(int error)
 
 void ReportRenderError(const char * file, int line, int error)
 {
-  FILE * fp = fopen("exception.log", "wt");
-  fprintf(fp, "Render exception: %s:%d - %d", file, line, error);
-  fclose(fp);
+  //FILE * fp = fopen("exception.log", "wt");
+  printf("Render exception: %s:%d - %d\n", file, line, error);
+  //fclose(fp);
+  
 }

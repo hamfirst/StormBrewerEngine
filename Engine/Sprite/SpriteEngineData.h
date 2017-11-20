@@ -26,21 +26,21 @@ public:
   void Load();
 
   void BuildVertexBuffer();
-  Optional<Box> Render(int animation_index, int animation_frame, uint32_t skin_name, const ShaderProgram & shader) const;
+  Optional<Box> Render(int animation_index, int animation_frame, uint32_t skin_name, const ShaderProgram & shader);
 
-  static Optional<Box> RenderSprite(const SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  static Optional<Box> RenderSprite(SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
     const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
-  static Optional<Box> RenderSprite(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  static Optional<Box> RenderSprite(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 },
     const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
 
-  static Optional<Box> RenderTile(const TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  static Optional<Box> RenderTile(TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
     const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
 
-  static NullOptPtr<TextureAsset> GetSpriteFrame(const SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
-  static NullOptPtr<TextureAsset> GetSpriteFrame(NotNullPtr<const SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords);
+  static NullOptPtr<TextureAsset> GetSpriteFrame(SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
+  static NullOptPtr<TextureAsset> GetSpriteFrame(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords);
 private:
   SpriteBaseDef & m_Sprite;
   bool m_Reloading;

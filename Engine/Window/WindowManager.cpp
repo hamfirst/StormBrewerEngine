@@ -319,13 +319,10 @@ void WindowManager::UpdateWindow(uint32_t window_id)
   bool update = window.m_FakeWindow == nullptr;
 #endif
 
-  printf("Updating input state\n");
   window.m_InputState->Update(window.m_KeyboardFocus, window.m_MouseFocus, (bool)window.m_TextInputContext, window.m_WindowGeo, update);
 
   if (window.m_SDLWindow)
   {
-    printf("Updating window position\n");
-
     int x, y;
     SDL_GetWindowPosition(window.m_SDLWindow, &x, &y);
     window.m_WindowGeo.m_Start = Vector2(x, y);

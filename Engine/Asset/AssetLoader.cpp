@@ -9,7 +9,7 @@
 #include "Engine/Asset/AssetLoader.h"
 #include "Engine/Settings/EngineSettings.refl.h"
 
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
 #include <experimental/filesystem>
 #endif
 
@@ -397,7 +397,7 @@ Optional<Buffer> AssetLoader::LoadFullFileWebsocket(czstr file_path, int & file_
     return{};
   }
 
-  return std::move(resp->m_Buffer);
+  return Optional<Buffer>(std::move(resp->m_Buffer));
 }
 
 
@@ -416,7 +416,7 @@ Optional<Buffer> AssetLoader::LoadFullFileRaw(czstr file_path, int & file_open_e
   auto buffer = Buffer(data_size);
   file.Read(gsl::as_span(buffer.Get(), data_size));
   FileClose(file);
-  return std::move(buffer);
+  return Optional<Buffer>(std::move(buffer));
 }
 
 Optional<Buffer> AssetLoader::LoadFullFileInternal(czstr file_path, int & file_open_error, WebSocket & websocket)
@@ -439,7 +439,7 @@ Optional<Buffer> AssetLoader::LoadFullFileInternal(czstr file_path, int & file_o
 
   auto raw_data = LoadFullFileRaw(file_path, file_open_error);
 
-  return std::move(raw_data);
+  return raw_data;
 }
 
 Optional<Buffer> AssetLoader::LoadFullDocumentWebsocket(czstr file_path, int & file_open_error, WebSocket & websocket)
@@ -469,7 +469,7 @@ Optional<Buffer> AssetLoader::LoadFullDocumentWebsocket(czstr file_path, int & f
     return{};
   }
 
-  return std::move(resp->m_Buffer);
+  return Optional<Buffer>(std::move(resp->m_Buffer));
 }
 
 Optional<Buffer> AssetLoader::LoadFullDocumentRaw(czstr file_path, int & file_open_error)
@@ -527,7 +527,7 @@ void AssetLoader::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallb
 
   std::error_code ec;
 
-#if !defined(_WEB) && !defined(_ANDROID)
+#if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   auto last_write = std::experimental::filesystem::last_write_time(path, ec);
 #else
   auto last_write = default_time_point;

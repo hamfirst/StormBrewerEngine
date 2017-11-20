@@ -54,37 +54,37 @@ public:
     if (m_VorbisBlock)
     {
       vorbis_block_clear(&m_VorbisBlock.Value());
-      m_VorbisBlock = {};
+      m_VorbisBlock.Clear();
     }
 
     if (m_VorbisDSP)
     {
       vorbis_dsp_clear(&m_VorbisDSP.Value());
-      m_VorbisDSP = {};
+      m_VorbisDSP.Clear();
     }
 
     if (m_VorbisComment)
     {
       vorbis_comment_clear(&m_VorbisComment.Value());
-      m_VorbisComment = {};
+      m_VorbisComment.Clear();
     }
 
     if (m_VorbisInfo)
     {
       vorbis_info_clear(&m_VorbisInfo.Value());
-      m_VorbisInfo = {};
+      m_VorbisInfo.Clear();
     }
 
     if (m_StreamState)
     {
       ogg_stream_clear(&m_StreamState.Value());
-      m_StreamState = {};
+      m_StreamState.Clear();
     }
 
     if (m_SyncState)
     {
       ogg_sync_clear(&m_SyncState.Value());
-      m_SyncState = {};
+      m_SyncState.Clear();
     }
   }
 

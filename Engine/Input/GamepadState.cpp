@@ -14,14 +14,12 @@ GamepadState::GamepadState(NotNullPtr<InputState> input_state) :
 
 void GamepadState::Init()
 {
-  //for (int index = 0, end = std::min(SDL_NumJoysticks(), kMaxGamepads); index < end; index++)
-  //{
-  //  m_OpenGamePads[index] = SDL_GameControllerOpen(index);
-  //}
+
 }
 
 void GamepadState::Cleanup()
 {
+#if !defined(_IOS)
   for (int index = 0; index < kMaxGamepads; ++index)
   {
     if (m_OpenGamePads[index] != nullptr)
@@ -30,10 +28,12 @@ void GamepadState::Cleanup()
       m_OpenGamePads[index] = nullptr;
     }
   }
+#endif  
 }
 
 void GamepadState::CheckDeltaState(bool in_focus)
 {
+#if !defined(_IOS)
   for (int index = 0; index < kMaxGamepads; ++index)
   {
     if (m_OpenGamePads[index] != nullptr && m_ConnectedState[index] == true)
@@ -122,10 +122,12 @@ void GamepadState::CheckDeltaState(bool in_focus)
       }
     }
   }
+#endif
 }
 
 void GamepadState::GamepadConnected(int joystick_idx)
 {
+#if !defined(_IOS)  
   for (int index = 0; index < kMaxGamepads; ++index)
   {
     if (m_OpenGamePads[index] == nullptr)
@@ -134,10 +136,12 @@ void GamepadState::GamepadConnected(int joystick_idx)
       return;
     }
   }
+#endif
 }
 
 void GamepadState::GamepadDisonnected(int joystick_id)
 {
+#if !defined(_IOS)
   for (int index = 0; index < kMaxGamepads; ++index)
   {
     if (m_OpenGamePads[index] != nullptr && SDL_JoystickInstanceID((SDL_Joystick *)m_OpenGamePads[index]) == joystick_id)
@@ -147,6 +151,7 @@ void GamepadState::GamepadDisonnected(int joystick_id)
       return;
     }
   }
+#endif
 }
 
 BinaryControlHandle GamepadState::AddControllerConnectedBinding(int gamepad_idx, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback)

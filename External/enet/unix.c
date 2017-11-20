@@ -17,7 +17,7 @@
 #include <errno.h>
 
 #define ENET_BUILDING_LIB 1
-#include "enet/enet.h"
+#include "enet.h"
 
 #ifdef __APPLE__
 #ifdef HAS_POLL
@@ -100,19 +100,20 @@ int
 enet_address_set_host (ENetAddress * address, const char * name)
 {
     struct hostent * hostEntry = NULL;
-#ifdef HAS_GETHOSTBYNAME_R
-    struct hostent hostData;
-    char buffer [2048];
-    int errnum;
-
-#if defined(linux) || defined(__linux) || defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
-    gethostbyname_r (name, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
-#else
-    hostEntry = gethostbyname_r (name, & hostData, buffer, sizeof (buffer), & errnum);
-#endif
-#else
+//#ifdef HAS_GETHOSTBYNAME_R
+//    struct hostent hostData;
+//    char buffer [2048];
+//    int errnum;
+//
+//#if defined(linux) || defined(__linux) || defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+//    gethostbyname_r (name, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
+//#else
+//    hostEntry = gethostbyname_r (name, & hostData, buffer, sizeof (buffer), & errnum);
+//#endif
+//#else
+//    hostEntry = gethostbyname (name);
+//#endif
     hostEntry = gethostbyname (name);
-#endif
 
     if (hostEntry == NULL ||
         hostEntry -> h_addrtype != AF_INET)
@@ -156,23 +157,25 @@ enet_address_get_host (const ENetAddress * address, char * name, size_t nameLeng
 {
     struct in_addr in;
     struct hostent * hostEntry = NULL;
-#ifdef HAS_GETHOSTBYADDR_R
-    struct hostent hostData;
-    char buffer [2048];
-    int errnum;
-
+//#if defined(HAS_GETHOSTBYADDR_R)
+//    struct hostent hostData;
+//    char buffer [2048];
+//    int errnum;
+//
+//    in.s_addr = address -> host;
+//
+//#if defined(linux) || defined(__linux) || defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+//    gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
+//#else
+//    hostEntry = gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & errnum);
+//#endif
+//#else
+//    in.s_addr = address -> host;
+//
+//    hostEntry = gethostbyaddr ((char *) & in, sizeof (struct in_addr), AF_INET);
+//#endif
     in.s_addr = address -> host;
-
-#if defined(linux) || defined(__linux) || defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
-    gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
-#else
-    hostEntry = gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & errnum);
-#endif
-#else
-    in.s_addr = address -> host;
-
     hostEntry = gethostbyaddr ((char *) & in, sizeof (struct in_addr), AF_INET);
-#endif
 
     if (hostEntry == NULL)
       return enet_address_get_host_ip (address, name, nameLength);

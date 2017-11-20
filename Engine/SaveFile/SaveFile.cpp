@@ -117,6 +117,9 @@ std::string SaveFile::GetSaveFileLocation()
 
   return folder;
 
+#elif defined(_IOS)
+  std::string path = "Documents/sb_save";
+  return path;
 #elif defined(_ANDROID)
   std::string path = SDL_AndroidGetExternalStoragePath();
   path += "/sb_save";

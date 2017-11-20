@@ -99,35 +99,15 @@ void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
   
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;
   glBufferData(GL_ARRAY_BUFFER, sizeof(VertexInfo) * list.m_Size, list.m_Verts, m_Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW); CHECK_GL_RENDER_ERROR;
-  glBindBuffer(GL_ARRAY_BUFFER, 0); CHECK_GL_RENDER_ERROR;
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   
   m_Type = type;
   m_IndexCount = (int)list.m_Size;
 }
 
-void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program) const
+void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program)
 {
-  int position_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_Position"); CHECK_GL_RENDER_ERROR;
-  int texcoord_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_TexCoord"); CHECK_GL_RENDER_ERROR;
-  int color_attrib_loc = glGetAttribLocation(program.m_ProgramName, "a_Color"); CHECK_GL_RENDER_ERROR;
-
-  if (position_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(position_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(position_attrib_loc, 2, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_Position)); CHECK_GL_RENDER_ERROR;
-  }
-
-  if (texcoord_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(texcoord_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(texcoord_attrib_loc, 2, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_TexCoord)); CHECK_GL_RENDER_ERROR;
-  }
-
-  if (color_attrib_loc >= 0)
-  {
-    glEnableVertexAttribArray(color_attrib_loc); CHECK_GL_RENDER_ERROR;
-    glVertexAttribPointer(color_attrib_loc, 4, GL_FLOAT, GL_FALSE, sizeof(VertexInfo), (void *)offsetof(VertexInfo, m_Color)); CHECK_GL_RENDER_ERROR;
-  }
+  VertexArray::CreateDefaultBinding(program);
 }
 
 void VertexBuffer::Draw(int index_start, int index_end) const

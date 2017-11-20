@@ -129,7 +129,7 @@ void RenderUtil::DrawQuad(const Box & box, const Color & color, const RenderVec2
 {
   m_QuadShader.Bind();
   m_QuadVertexBuffer.Bind();
-  m_QuadVertexBuffer.CreateDefaultBinding(m_QuadTextureShader);
+  m_QuadVertexBuffer.CreateDefaultBinding(m_QuadShader);
 
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
   m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)box.m_Start);
@@ -150,11 +150,12 @@ void RenderUtil::DrawTexturedQuad(const Box & box, const Color & color, const Te
 
   texture.BindTexture(0);
 
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)box.m_Start);
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)box.m_End);
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
-
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)box.m_Start);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)box.m_End);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  
   m_QuadVertexBuffer.Draw();
 
   m_QuadVertexBuffer.Unbind();
@@ -169,10 +170,11 @@ void RenderUtil::DrawTexturedQuad(const Vector2 & start, const Color & color, co
 
   texture.BindTexture(0);
 
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)start);
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)(start + texture.GetSize()));
-  m_QuadShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), screen_size);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), (RenderVec2)start);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), (RenderVec2)(start + texture.GetSize()));
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
+  m_QuadTextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
   m_QuadVertexBuffer.Draw();
 

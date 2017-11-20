@@ -125,7 +125,7 @@ private:
   {
     if (m_DelegateList[index])
     {
-      m_DelegateList[index] = {};
+      m_DelegateList[index].Clear();
       m_FreeSize++;
       return;
     }

@@ -2,9 +2,11 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/VertexDefinition.h"
+#include "Engine/Rendering/VertexArray.h"
 
 class ShaderProgram;
 class VertexList;
+class VertexArray;
 
 class ENGINE_EXPORT VertexBuffer
 {
@@ -24,7 +26,7 @@ public:
   void SetBufferData(const VertexList & list, VertexBufferType type);
   int GetLoadError() const { return m_LoadError; }
 
-  void CreateDefaultBinding(const ShaderProgram & program) const;
+  void CreateDefaultBinding(const ShaderProgram & program);
   void Draw(int index_start = 0, int index_end = -1) const;
 
   void Bind() const;

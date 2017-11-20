@@ -10,6 +10,24 @@ if(BUILD_CLIENT)
 
   if(ANDROID)
     add_library(ClientExe SHARED Dummy.cpp)
+  elseif(IOS)
+
+    file(GLOB_RECURSE IOSAssets "${PROJECT_SOURCE_DIR}/Test/Assets/*")
+
+    foreach(FullFile ${IOSAssets})
+      
+      file(RELATIVE_PATH ResFile "${PROJECT_SOURCE_DIR}/Test/Assets/" "${FullFile}")
+      get_filename_component(Dir ${ResFile} DIRECTORY)
+      #message(STATUS "Adding asset file: ${ResFile}")
+
+      set_source_files_properties(
+        "${FullFile}" PROPERTIES MACOSX_PACKAGE_LOCATION "${Dir}")
+
+      message(STATUS "Source map ${FullFile} ${Dir}")
+    endforeach(FullFile)
+
+    add_executable(ClientExe MACOSX_BUNDLE Dummy.cpp "${IOSAssets}")
+
   else()
     add_executable(ClientExe Dummy.cpp)
   endif()
@@ -20,6 +38,12 @@ if(BUILD_CLIENT)
     target_link_libraries(ClientExe Game)
     target_link_libraries(ClientExe Runtime)
     target_link_libraries(ClientExe Engine)
+  elseif(IOS)
+    target_link_libraries(ClientExe -Wl,-all_load GameClientExe -Wl,-noall_load)
+    target_link_libraries(ClientExe -Wl,-all_load GameClient -Wl,-noall_load)
+    target_link_libraries(ClientExe -Wl,-all_load Game -Wl,-noall_load)
+    target_link_libraries(ClientExe -Wl,-all_load Runtime -Wl,-noall_load)
+    target_link_libraries(ClientExe -Wl,-all_load Engine -Wl,-noall_load)
   else()
     target_link_libraries(ClientExe -Wl,--whole-archive GameClientExe -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive GameClient -Wl,--no-whole-archive)
@@ -55,7 +79,6 @@ if(BUILD_CLIENT)
     target_link_libraries(ClientExe StormWebrtc)
     target_link_libraries(ClientExe asio)
     target_link_libraries(ClientExe ENet)
-    target_link_libraries(ClientExe SDL2)
     target_link_libraries(ClientExe usrsctp-static)
     target_link_libraries(ClientExe mbedtls)
     
@@ -71,13 +94,46 @@ if(BUILD_CLIENT)
       target_link_libraries(ClientExe Winmm.lib)
       target_link_libraries(ClientExe Version.lib)
       target_link_libraries(ClientExe Imm32.lib)
+      target_link_libraries(ClientExe SDL2)
+    elseif(ANDROID)
+      target_link_libraries(ClientExe dl)
+      target_link_libraries(ClientExe SDL2)
+    elseif(IOS)
+      target_link_libraries(ClientExe
+        "-framework AVFoundation"
+        "-framework Foundation"
+        "-framework OpenGLES"
+        "-framework UIKit"
+        "-framework AVKit"
+        "-framework QuartzCore"
+        "-framework CoreGraphics"
+        "-framework GameController"
+        "-framework MediaPlayer"
+        "-framework CoreMotion"
+        )
+
+      add_definitions(-D_IOS)
+
+      set_target_properties(ClientExe PROPERTIES 
+        BUNDLE YES
+        BUNDLE_EXTENSION "app"
+        MACOSX_BUNDLE YES
+        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2" # iPhone/iPad
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ""
+        XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
+        XCODE_ATTRIBUTE_WRAPPER_EXTENSION "app"
+        XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "10.0"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "StormBrewerEngineTest"
+        MACOSX_BUNDLE_BUNDLE_NAME "StormBrewerEngineTest"
+        RESOURCE "${IOSAssets}"
+      )
+
+      target_link_libraries(ClientExe SDL2-static)
+      target_link_libraries(ClientExe dl pthread)
     else()
-      if(ANDROID)
-        target_link_libraries(ClientExe dl)
-      else()
-        target_link_libraries(ClientExe stdc++fs)
-        target_link_libraries(ClientExe dl pthread)
-      endif()
+      target_link_libraries(ClientExe stdc++fs)
+      target_link_libraries(ClientExe dl pthread)
     endif()
   endif()
 endif()

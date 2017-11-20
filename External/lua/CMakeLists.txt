@@ -47,7 +47,6 @@ set(GENERIC_SRC_lua
             ./loadlib.c
             ./lobject.c
             ./lopcodes.c
-            ./loslib.c
             ./lparser.c
             ./lstate.c
             ./lstring.c

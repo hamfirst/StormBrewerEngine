@@ -4,7 +4,7 @@ include(CMakeDependentOption)
 
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
-CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID" OFF)
+CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
 
 SET(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_DEBUG_POSTFIX "")
@@ -44,6 +44,11 @@ if(BUILD_CLIENT)
     add_subdirectory(External/Android/SDL_build)
     add_subdirectory(External/Android/freetype2)
   endif()
+
+  if(IOS)
+    add_subdirectory(External/IOS/SDL_build)
+    add_subdirectory(External/IOS/freetype2)
+  endif()  
 endif()
 
 if(WEB)

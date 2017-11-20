@@ -81,6 +81,7 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
       error_log[log_size] = 0;
 
       m_CompileLog = error_log;
+      printf("Shader compile error: %s\n", error_log);
     }
 
     return;
@@ -178,19 +179,19 @@ void ShaderProgram::SetUniform(Hash uniform_name, float v1, float v2, float v3, 
 void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec2 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
-  glUniform2f(uniform_index, v.x, v.y);
+  glUniform2f(uniform_index, v.x, v.y); CHECK_GL_RENDER_ERROR; 
 }
 
 void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec3 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
-  glUniform3f(uniform_index, v.x, v.y, v.z);
+  glUniform3f(uniform_index, v.x, v.y, v.z); CHECK_GL_RENDER_ERROR;
 }
 
 void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec4 & v) const
 {
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
-  glUniform4f(uniform_index, v.x, v.y, v.z, v.w);
+  glUniform4f(uniform_index, v.x, v.y, v.z, v.w); CHECK_GL_RENDER_ERROR;
 }
 
 void ShaderProgram::Bind() const

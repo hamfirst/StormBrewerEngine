@@ -6,6 +6,8 @@
 
 #include "Engine/Text/TextManager.h"
 #include "Engine/Component/ComponentSystem.h"
+#include "Engine/Rendering/VertexArray.h"
+#include "Engine/Shader/ShaderManager.h"
 
 #include "Runtime/Asset/Asset.h"
 
@@ -199,6 +201,7 @@ void GameContainer::Update()
 
 void GameContainer::Render()
 {
+  m_Window.MakeCurrent();
   if (m_Mode)
   {
     m_Mode->Render();

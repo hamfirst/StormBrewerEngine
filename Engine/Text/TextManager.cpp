@@ -248,7 +248,7 @@ void TextManager::SetTextMode(TextRenderMode mode)
 void TextManager::SetTextPos(const Vector2 & pos)
 {
   m_Settings.m_TextPos = pos;
-  m_Settings.m_TextBounds = {};
+  m_Settings.m_TextBounds.Clear();
 }
 
 void TextManager::SetTextBounds(const Box & bounds)
@@ -258,7 +258,7 @@ void TextManager::SetTextBounds(const Box & bounds)
 
 void TextManager::ClearTextBounds()
 {
-  m_Settings.m_TextBounds = {};
+  m_Settings.m_TextBounds.Clear()	;
 }
 
 void TextManager::SetPrimaryColor(const Color & color)

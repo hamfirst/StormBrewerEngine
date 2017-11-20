@@ -87,7 +87,6 @@ bool EngineRenderInit()
   g_TextManager.Init();
   g_ShaderManager.Init();
 
-
   BootstrapContext();
 
   return true;

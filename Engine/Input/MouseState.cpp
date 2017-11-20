@@ -15,7 +15,7 @@ MouseState::MouseState(NotNullPtr<InputState> input_state) :
 
 void MouseState::CheckDeltaState(const Box & window_geo, bool in_focus, bool query_state)
 {
-#if !defined(_ANDROID)
+#if !defined(_ANDROID) && !defined(_IOS)
   int x, y;
   const uint32_t button_mask = SDL_GetGlobalMouseState(&x, &y);
 #else
