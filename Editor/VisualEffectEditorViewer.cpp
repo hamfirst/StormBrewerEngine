@@ -118,7 +118,8 @@ void VisualEffectEditorViewer::Update()
 
   if (m_PlayMode)
   {
-    m_VisualEffectManager->Update();
+    auto viewport = Box::FromFrameCenterAndSize(Vector2(0, 0), m_RenderState.GetRenderSize());
+    m_VisualEffectManager->Update(viewport);
   }
 
   auto fx_pos = m_EffectPos;

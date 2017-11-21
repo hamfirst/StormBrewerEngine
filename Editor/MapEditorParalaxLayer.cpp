@@ -1,4 +1,5 @@
 
+
 #include "StormData/StormDataJson.h"
 
 #include "Foundation/FileSystem/Path.h"
@@ -342,6 +343,24 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     auto data = m_GetObject(elem.first);
     data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center);
   }
+
+  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  {
+    if (elem.second.m_Type != MapParalaxLayerObjectType::kVfx)
+    {
+      continue;
+    }
+
+    Vector2 pos = Vector2(elem.second.m_XPosition, elem.second.m_YPosition);
+
+    if (vfind(m_SelectedParalaxObjects, elem.first))
+    {
+      pos += m_SelectedParalaxObjectOffset;
+    }
+
+    auto data = m_GetObject(elem.first);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center);
+  }
 }
 
 void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center)
@@ -469,6 +488,45 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
     return {};
   }
 
+  auto visual_effect_link = object.Get<VisualEffectLoadLink>();
+  if (visual_effect_link)
+  {
+    auto texture = m_Editor->GetTextures().m_VfxTexture.Resolve();
+    if (texture->IsLoaded())
+    {
+      auto texture_box = Box::FromFrameCenterAndSize(pos, texture->GetSize());
+      if (BoxIntersect(texture_box, viewport_bounds))
+      {
+        QuadVertexBufferBuilder builder;
+        QuadVertexBuilderInfo quad;
+        quad.m_Color = Color(255, 255, 255, 255);
+        quad.m_Position = texture_box;
+        quad.m_TexCoords = Box::FromPoints({}, texture->GetSize());
+        quad.m_TextureSize = texture->GetSize();
+        builder.AddQuad(quad);
+
+        builder.FillVertexBuffer(buffer);
+        auto & shader = g_ShaderManager.GetDefaultShader();
+        shader.Bind();
+        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
+        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+
+        texture->GetTexture().BindTexture(0);
+
+        buffer.Bind();
+
+        buffer.CreateDefaultBinding(shader);
+        buffer.Draw();
+        buffer.Unbind();
+      }
+
+      return texture_box;
+    }
+
+    return {};
+  }
+
   return {};
 }
 
@@ -510,6 +568,10 @@ Optional<MapParalaxLayerObjectType> MapEditorParalaxLayer::GetParalaxTypeForPath
   else if (ext == "sprite")
   {
     return MapParalaxLayerObjectType::kSprite;
+  }
+  else if (ext == "vfx")
+  {
+    return MapParalaxLayerObjectType::kVfx;
   }
   else
   {

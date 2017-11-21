@@ -82,6 +82,7 @@ enum STORM_REFL_ENUM MapParalaxLayerObjectType
 {
   kTexture,
   kSprite,
+  kVfx,
 };
 
 struct RUNTIME_EXPORT MapParalaxLayerObject

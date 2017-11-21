@@ -1,6 +1,12 @@
 
+#include <QFile>
+
+#include <unordered_set>
+
 #include "StormData/StormDataParent.h"
 
+#include "Foundation/Buffer/Buffer.h"
+#include "Foundation/FileSystem/Path.h"
 #include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 
 #include "Runtime/Map/MapTileJson.h"
@@ -30,7 +36,6 @@
 #include "MapEditorToolAnchorEditor.h"
 #include "MapEditorToolAnchorMultiEditor.h"
 
-#include <unordered_set>
 
 
 
@@ -82,6 +87,15 @@ MapEditor::MapEditor(PropertyFieldDatabase & property_db, const std::string & ro
 
   m_PropertyEditor = m_Properties->CreateWidget<PropertyEditor>();
   setLayout(m_Layout.get());
+
+  m_Textures.Emplace();
+
+  QFile vfx_file(":/EditorContainer/Resources/Vfx.png");
+  if (vfx_file.open(QIODevice::ReadOnly))
+  {
+    auto vfx_file_data = vfx_file.readAll();
+    m_Textures->m_VfxTexture = TextureAsset::SideLoad(":/EditorContainer/Resources/Vfx.png", vfx_file_data.data(), vfx_file_data.size());
+  }
 }
 
 void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool change_viewer_position)
@@ -823,9 +837,32 @@ void MapEditor::CreateNewParalaxObject(int layer_index, const Vector2 & point)
   m_ParalaxLayers.GetLayerManager(layer_index)->AddParalaxObject(m_ParalaxInitData);
 }
 
+void MapEditor::CreateNewParalaxObject(czstr file_name, int layer_index, const Vector2 & point)
+{
+  auto type = MapEditorParalaxLayer::GetParalaxTypeForPath(file_name);
+  if (type.IsValid() == false)
+  {
+    return;
+  }
+
+  m_ParalaxInitData = {};
+  m_ParalaxInitData.m_File = file_name;
+  m_ParalaxInitData.m_Name = GetFileStemForCanonicalPath(file_name);
+  m_ParalaxInitData.m_XPosition = point.x;
+  m_ParalaxInitData.m_YPosition = point.y;
+  m_ParalaxInitData.m_Type = type.Value();
+  m_ParalaxLayers.GetLayerManager(layer_index)->AddParalaxObject(m_ParalaxInitData);
+}
+
+MapEditorTextures & MapEditor::GetTextures()
+{
+  return m_Textures.Value();
+}
+
 void MapEditor::AboutToClose()
 {
   m_IgnoreSelectionChanges = true;
+  m_Textures.Clear();
 }
 
 REGISTER_EDITOR("Map", MapEditor, MapDef, ".map", "Maps");

@@ -20,6 +20,7 @@ public:
 
   void DrawAllMaps(const Box & viewport_bounds, DrawList & draw_list);
   void UpdateAllMaps(GameContainer & game_container);
+  void UnloadAllMaps();
 private:
 
   NotNullPtr<EngineState> m_EngineState;

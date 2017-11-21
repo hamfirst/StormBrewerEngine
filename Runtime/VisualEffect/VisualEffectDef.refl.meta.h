@@ -362,7 +362,7 @@ template <>
 struct StormReflTypeInfo<VisualEffectDef>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -413,6 +413,50 @@ struct StormReflTypeInfo<VisualEffectDef>::field_data<1, Self> : public StormRef
   match_const_t<Self, RMergeList<VisualEffectDefEmitter>> & Get() { return self.m_Emitters; }
   std::add_const_t<std::remove_reference_t<RMergeList<VisualEffectDefEmitter>>> & Get() const { return self.m_Emitters; }
   void SetDefault() { self.m_Emitters = StormReflTypeInfo<VisualEffectDef>::GetDefault().m_Emitters; }
+};
+
+template <>
+struct StormReflTypeInfo<VisualEffectDef>::field_data_static<2>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_UpdateBoundsX"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2D7E5E58; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_UpdateBoundsX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<VisualEffectDef>::field_data<2, Self> : public StormReflTypeInfo<VisualEffectDef>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_UpdateBoundsX; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_UpdateBoundsX; }
+  void SetDefault() { self.m_UpdateBoundsX = StormReflTypeInfo<VisualEffectDef>::GetDefault().m_UpdateBoundsX; }
+};
+
+template <>
+struct StormReflTypeInfo<VisualEffectDef>::field_data_static<3>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_UpdateBoundsY"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x5A796ECE; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_UpdateBoundsY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<VisualEffectDef>::field_data<3, Self> : public StormReflTypeInfo<VisualEffectDef>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_UpdateBoundsY; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_UpdateBoundsY; }
+  void SetDefault() { self.m_UpdateBoundsY = StormReflTypeInfo<VisualEffectDef>::GetDefault().m_UpdateBoundsY; }
 };
 
 namespace StormReflFileInfo

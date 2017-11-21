@@ -7,10 +7,12 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/VisualEffect/VisualEffectManager.h"
 
 
-MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer_index)
+MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer_index, NotNullPtr<VisualEffectManager> vfx_manager)
 {
+
   auto & layer_data = map.m_ParalaxLayers[(int)layer_index];
   m_LayerOrder = layer_data.m_LayerOrder;
 
@@ -47,8 +49,28 @@ MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer
       spr.m_State = {};
       m_Sprites.emplace_back(std::move(spr));
     }
+    else if (elem.second.m_Type == MapParalaxLayerObjectType::kVfx)
+    {
+      MapParalaxLayerVfx vfx;
+      vfx.m_Vfx = VisualEffectResource::Load(elem.second.m_File.data());
+      vfx.m_Handle = vfx_manager->CreateVisualEffect(vfx.m_Vfx, m_LayerOrder, pos)->GetHandle();
+      m_VisualEffects.emplace_back(std::move(vfx));
+    }
   }
 }
+
+MapParalaxLayerInstance::~MapParalaxLayerInstance()
+{
+  for (auto & elem : m_VisualEffects)
+  {
+    auto vfx = elem.m_Handle.Resolve();
+    if (vfx)
+    {
+      vfx->Destroy();
+    }
+  }
+}
+
 
 void MapParalaxLayerInstance::Update()
 {

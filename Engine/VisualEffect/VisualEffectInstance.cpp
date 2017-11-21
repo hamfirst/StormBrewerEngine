@@ -29,6 +29,11 @@ void VisualEffectInstance::SetPosition(const Vector2f & pos)
   m_InstanceData.m_PositionY = pos.y;
 }
 
+Vector2 VisualEffectInstance::GetPosition() const
+{
+  return Vector2(m_InstanceData.m_PositionX, m_InstanceData.m_PositionY);
+}
+
 void VisualEffectInstance::SetInput(uint32_t var_name_hash, float value)
 {
   for (auto & elem : m_Inputs)
@@ -74,9 +79,9 @@ void VisualEffectInstance::Init(const Vector2f & pos)
   m_VisualEffect->InitInstance(*this, pos);
 }
 
-void VisualEffectInstance::Update(float update_time, StormExprStack & stack)
+void VisualEffectInstance::Update(float update_time, StormExprStack & stack, bool on_screen)
 {
-  m_VisualEffect->UpdateInstance(*this, update_time, stack);
+  m_VisualEffect->UpdateInstance(*this, update_time, stack, on_screen);
 }
 
 void VisualEffectInstance::Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)

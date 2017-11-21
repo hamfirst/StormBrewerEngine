@@ -385,7 +385,7 @@ Optional<std::string> DocumentEditorWidgetBase::GetFileNameForAssetType(czstr as
   else if (!strcmp(asset_type, "paralax"))
   {
     auto path = GetRootPath();
-    file_name = QFileDialog::getOpenFileName(this, tr("Open Paralax Layer Object"), path.data(), tr("Paralax Layer Files (*.png *.sprite)")).toStdString();
+    file_name = QFileDialog::getOpenFileName(this, tr("Open Paralax Layer Object"), path.data(), tr("Paralax Layer Files (*.png *.sprite *.vfx)")).toStdString();
   }
 
   if (ConvertToCanonicalPath(file_name, root_path))

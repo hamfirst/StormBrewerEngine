@@ -53,3 +53,8 @@ void MapSystem::UpdateAllMaps(GameContainer & game_container)
     inst->Update(game_container);
   }
 }
+
+void MapSystem::UnloadAllMaps()
+{
+  m_Maps.clear();
+}

@@ -46,10 +46,13 @@ NotNullPtr<VisualEffectInstance> VisualEffectManager::CreateVisualEffect(const V
   return ptr;
 }
 
-void VisualEffectManager::Update()
+void VisualEffectManager::Update(const Box & viewport_bounds)
 {
   StormExprStack stack;
   auto update_time = (float)m_UpdateClock.GetTimeSinceLastCheck();
+
+  auto viewport_size = viewport_bounds.Size() * 2;
+  auto viewport_center = viewport_bounds.Center();
 
   if (m_Paused)
   {
@@ -58,7 +61,10 @@ void VisualEffectManager::Update()
 
   for (auto elem : m_Effects)
   {
-    elem->Update(update_time, stack);
+    auto diff_offset = elem->GetPosition() - viewport_center;
+    auto on_screen = (abs(diff_offset.x) < viewport_size.x && abs(diff_offset.y) < viewport_size.y);
+ 
+    elem->Update(update_time, stack, on_screen);
   }
 
   auto end_itr = std::remove_if(m_Effects.begin(), m_Effects.end(), 
@@ -78,6 +84,9 @@ void VisualEffectManager::Update()
 
 void VisualEffectManager::DrawAllEffects(const Box & viewport_bounds, DrawList & draw_list)
 {
+  auto viewport_size = viewport_bounds.Size() * 2;
+  auto viewport_center = viewport_bounds.Center();
+
   for (auto elem : m_Effects)
   {
 #ifdef USE_Z_ORDERING
@@ -86,12 +95,19 @@ void VisualEffectManager::DrawAllEffects(const Box & viewport_bounds, DrawList &
     int draw_order = 0;
 #endif
 
-    draw_list.PushDraw(elem->m_Layer, draw_order,
-      [this, e = elem](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
-      { 
-        e->Render(viewport_bounds, screen_center, render_state, render_util); 
-      }
-    );
+
+    auto diff_offset = elem->GetPosition() - viewport_center;
+    auto on_screen = (abs(diff_offset.x) < viewport_size.x && abs(diff_offset.y) < viewport_size.y);
+
+    if (on_screen)
+    {
+      draw_list.PushDraw(elem->m_Layer, draw_order,
+        [this, e = elem](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+        {
+          e->Render(viewport_bounds, screen_center, render_state, render_util);
+        }
+      );
+    }
   }
 }
 

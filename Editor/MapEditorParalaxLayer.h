@@ -3,6 +3,7 @@
 #include "Foundation/Common.h"
 
 #include "Runtime/Map/MapDef.refl.h"
+#include "Runtime/VisualEffect/VisualEffectResource.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Rendering/VertexBuffer.h"
@@ -13,7 +14,7 @@
 class MapEditor;
 class RenderUtil;
 
-using MapEditorParalaxObjectType = Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink>;
+using MapEditorParalaxObjectType = Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink, VisualEffectLoadLink>;
 
 struct MapEditorParalaxObjectManagerElement
 {
@@ -74,6 +75,8 @@ public:
         return SpriteResource::LoadWithCallback(file_path, [updater](NullOptPtr<SpriteResource>) { updater(); });
       case MapParalaxLayerObjectType::kTexture:
         return TextureAsset::LoadWithCallback(file_path, [updater](NullOptPtr<TextureAsset>) { updater(); });
+      case MapParalaxLayerObjectType::kVfx:
+        return VisualEffectResource::LoadWithCallback(file_path, [updater](NullOptPtr<VisualEffectResource>) { updater(); });
       }
     }
 

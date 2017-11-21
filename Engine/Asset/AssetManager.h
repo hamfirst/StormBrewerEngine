@@ -55,6 +55,43 @@ public:
     return &asset;
   }
 
+  NotNullPtr<AssetType> SideLoadAsset(czstr file_path, void * data, std::size_t len, bool load_deps)
+  {
+    static_assert(sizeof(Asset::AssetHandle) >= sizeof(typename plf::colony<AssetType>::iterator), "Invalid iterator size");
+
+    uint64_t file_name_hash = crc64lowercase(file_path);
+    auto existing_asset_itr = m_AssetLookup.find(file_name_hash);
+    if (existing_asset_itr != m_AssetLookup.end())
+    {
+      auto & asset = *existing_asset_itr->second;
+      asset.IncRef();
+      return &asset;
+    }
+
+    auto itr = m_Assets.emplace();
+    auto & asset = *itr;
+
+    Asset::AssetHandle handle;
+    new (handle.m_Buffer) typename plf::colony<AssetType>::iterator(itr);
+
+    asset.m_Handle = handle;
+    asset.m_AssetManager = this;
+    asset.m_FileName = file_path;
+    asset.m_FileNameHash = file_name_hash;
+
+    asset.m_Deleter = [](void * asset_manager, const Asset::AssetHandle & asset_handle)
+    {
+      AssetManager<AssetType> * ptr = static_cast<AssetManager<AssetType> *>(asset_manager);
+      ptr->DestroyAsset(asset_handle);
+    };
+
+    m_AssetLookup.emplace(file_name_hash, itr);
+
+    asset.IncRef();
+    g_AssetLoader.SideLoadAsset(&asset, std::is_same<AssetType, DocumentAsset>::value, false, load_deps, data, len);
+    return &asset;
+  }
+
   void DestroyAsset(const Asset::AssetHandle & handle)
   {
     auto itr = reinterpret_cast<const typename plf::colony<AssetType>::iterator *>(handle.m_Buffer);

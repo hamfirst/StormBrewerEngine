@@ -27,6 +27,11 @@
 
 static const uint64_t kInvalidFrameId = ~0;
 
+struct MapEditorTextures
+{
+  TextureAsset::AssetRef m_VfxTexture;
+};
+
 class MapEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
@@ -74,7 +79,9 @@ public:
   MapParalaxLayerObject & GetParalaxObjectInitData();
   MapEditorParalaxObjectType & GetParalaxObject();
   void CreateNewParalaxObject(int layer_index, const Vector2 & point);
+  void CreateNewParalaxObject(czstr file_name, int layer_index, const Vector2 & point);
 
+  MapEditorTextures & GetTextures();
 public:
 
   void AboutToClose() override;
@@ -90,6 +97,8 @@ private:
   MapEditorLayerManager<MapVolume, MapEditorVolume> m_Volumes;
   MapEditorLayerManager<MapPath, MapEditorPath> m_Paths;
   MapEditorLayerManager<MapAnchor, MapEditorAnchor> m_Anchors;
+
+  Optional<MapEditorTextures> m_Textures;
 
   std::unique_ptr<QGridLayout> m_Layout;
   std::unique_ptr<GenericFrame> m_Properties;

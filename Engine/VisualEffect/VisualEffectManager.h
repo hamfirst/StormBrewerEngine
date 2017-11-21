@@ -23,7 +23,7 @@ public:
   NotNullPtr<VisualEffectInstance> CreateVisualEffect(const VisualEffectResourcePtr & fx_resource, int layer, const Vector2f & pos);
   NotNullPtr<VisualEffectInstance> CreateVisualEffect(const VisualEffectDef * fx_resource, int layer, const Vector2f & pos);
 
-  void Update();
+  void Update(const Box & viewport_bounds);
   void DrawAllEffects(const Box & viewport_bounds, DrawList & draw_list);
   void DestroyAllEffects();
 

@@ -23,8 +23,10 @@ public:
   VisualEffect(const VisualEffectDef & def);
 
   void InitInstance(VisualEffectInstance & inst, const Vector2f & position);
-  void UpdateInstance(VisualEffectInstance & inst, float update_time, StormExprStack & stack);
+  void UpdateInstance(VisualEffectInstance & inst, float update_time, StormExprStack & stack, bool on_screen);
   void RenderInstance(VisualEffectInstance & inst, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+
+  Vector2 GetUpdateBounds();
 
 protected:
 
@@ -62,5 +64,7 @@ private:
 
   std::vector<std::pair<uint32_t, float>> m_Inputs;
   Optional<StormExprValueBlock> m_InputBlock;
+
+  Vector2 m_UpdateBounds;
 };
 

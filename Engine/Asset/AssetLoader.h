@@ -27,9 +27,12 @@ public:
   void RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps);
   void ProcessResponses();
 
+  void SideLoadAsset(Asset * asset, bool as_document, bool as_reload, bool load_deps, void * data, std::size_t length);
+
   Optional<Buffer> LoadFullFile(czstr file_path);
   Optional<Buffer> LoadFullFile(czstr file_path, int & file_open_error);
   void ReloadFile(czstr file_path);
+
 
   static void DisableNetworkLoading();
 

@@ -123,6 +123,9 @@ protected:
   void enterEvent(QEvent * event) override;
   void leaveEvent(QEvent * event) override;
 
+  void dragEnterEvent(QDragEnterEvent * event) override;
+  void dropEvent(QDropEvent * event) override;
+
 public slots:
 
   void tick();

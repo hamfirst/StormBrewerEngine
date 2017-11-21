@@ -51,4 +51,7 @@ public:
 
   RMergeList<VisualEffectDefInputVariable> m_Inputs;
   RMergeList<VisualEffectDefEmitter> m_Emitters;
+
+  RInt m_UpdateBoundsX;
+  RInt m_UpdateBoundsY;
 };

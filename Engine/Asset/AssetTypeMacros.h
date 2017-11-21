@@ -25,10 +25,12 @@ struct LoadCallbackLink                                                         
                                                                                                                     \
                                                                                                                     \
 using LoadCallback = Delegate<void, NullOptPtr<AssetType>>;                                                         \
+using AssetRef = AssetReference<AssetType>;                                                                 \
                                                                                                                     \
-static AssetReference<AssetType> Load(czstr file_path, bool load_deps = true);                                      \
+static AssetRef Load(czstr file_path, bool load_deps = true);                                                 \
 static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback && del, bool load_deps = true);              \
 static void LoadWithCallback(czstr file_path, LoadCallback && del, LoadCallbackLink & link, bool load_deps = true); \
+static AssetRef SideLoad(czstr file_path, void * data, std::size_t len, bool load_deps = true);               \
                                                                                                                     \
 LoadCallbackLink AddLoadCallback(LoadCallback && del);                                                              \
 void AddLoadCallback(LoadCallback && del, LoadCallbackLink & link);                                                 \
@@ -59,6 +61,14 @@ void AssetType::LoadWithCallback(                                               
 {                                                                                                                   \
   AssetType * asset = s_##AssetType##Manager.LoadAsset(file_path, deps);                                            \
   asset->AddLoadCallback(std::move(del), link);                                                                     \
+}                                                                                                                   \
+                                                                                                                    \
+AssetReference<AssetType> AssetType::SideLoad(czstr file_path, void * data, std::size_t len, bool load_deps)        \
+{                                                                                                                   \
+  auto asset = (s_##AssetType##Manager.SideLoadAsset(file_path, data, len, load_deps));                             \
+  auto ref = AssetReference<AssetType>(asset);                                                                      \
+  asset->DecRef();                                                                                                  \
+  return ref;                                                                                                       \
 }                                                                                                                   \
                                                                                                                     \
 AssetType::LoadCallbackLink AssetType::AddLoadCallback(LoadCallback && del)                                         \

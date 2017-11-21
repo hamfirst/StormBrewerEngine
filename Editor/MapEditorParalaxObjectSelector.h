@@ -9,6 +9,7 @@
 
 #include "Engine/Asset/TextureAsset.h"
 
+#include "MapEditorParalaxLayer.h"
 #include "DocumentValueWatcher.h"
 
 class MapEditor;
@@ -43,7 +44,7 @@ private:
   std::unique_ptr<QPushButton> m_PickParalaxObject;
 
   std::string m_ParalaxObjectFile;
-  Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink> m_ParalaxObject;
+  MapEditorParalaxObjectType m_ParalaxObject;
 };
 
 

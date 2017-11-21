@@ -16,7 +16,7 @@
 template <>
 struct StormReflEnumInfo<MapParalaxLayerObjectType>
 {
-  static constexpr int elems_n = 2;
+  static constexpr int elems_n = 3;
   static constexpr auto GetName() { return "MapParalaxLayerObjectType"; }
   static constexpr auto GetNameHash() { return 0x459896D6; }
   template <int N> struct elems { };
@@ -36,6 +36,14 @@ struct StormReflEnumInfo<MapParalaxLayerObjectType>::elems<1>
   static constexpr auto GetName() { return "kSprite"; }
   static constexpr auto GetNameHash() { return 0x97AEEC6A; }
   static constexpr auto GetValue() { return MapParalaxLayerObjectType::kSprite; }
+};
+
+template <>
+struct StormReflEnumInfo<MapParalaxLayerObjectType>::elems<2>
+{
+  static constexpr auto GetName() { return "kVfx"; }
+  static constexpr auto GetNameHash() { return 0xC82BC833; }
+  static constexpr auto GetValue() { return MapParalaxLayerObjectType::kVfx; }
 };
 
 template <>

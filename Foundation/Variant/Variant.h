@@ -345,7 +345,7 @@ private:
 
     if (type == -1)
     {
-      throw false;
+      ASSERT(false, "Can't set to invalid type");
     }
 
     new(&m_Buffer) Type(std::forward<InitArgs>(args)...);

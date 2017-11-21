@@ -135,8 +135,10 @@ void GameModeOnlineGameplay::Update()
 
   m_FrameClock.RemoveExtra();
 
-  visual_effects->Update();
+  auto & camera = container.GetClientSystems()->GetCamera();
+  auto viewport_bounds = Box::FromFrameCenterAndSize(camera.GetPosition(), camera.GetGameResolution());
 
+  visual_effects->Update(viewport_bounds);
   ui_manager.Update();
 
   if (ui_manager.WantsToQuit())

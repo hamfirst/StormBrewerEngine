@@ -20,7 +20,7 @@ EngineState::EngineState(NotNullPtr<GameContainer> game) :
 
 EngineState::~EngineState()
 {
-
+  m_MapSystem->UnloadAllMaps();
 }
 
 NotNullPtr<Entity> EngineState::CreateEntity()

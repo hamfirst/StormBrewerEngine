@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/EditorContainer">
         <file>Editor.ico</file>
+        <file>Resources/Vfx.png</file>
     </qresource>
 </RCC>

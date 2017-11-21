@@ -1,0 +1,49 @@
+[]
+
+{
+    "m_Emitters": {
+        "0": {
+            "m_Properties": {
+                "m_Name": "New1",
+                "m_Texture": "",
+                "m_UpdateDelay": 0,
+                "m_PrespawnParticles": 0,
+                "m_Additive": false,
+                "m_LinearFilter": false
+            },
+            "m_EmitterEquations": {
+                "3066294540": {
+                    "m_VariableName": "m_MaxParticles",
+                    "m_Equation": "100"
+                },
+                "472491818": {
+                    "m_VariableName": "m_SpawnRate",
+                    "m_Equation": "30"
+                }
+            },
+            "m_SpawnEquations": { },
+            "m_ParticleEquations": {
+                "3098055020": {
+                    "m_VariableName": "m_ForceY",
+                    "m_Equation": "10"
+                },
+                "3484393978": {
+                    "m_VariableName": "m_ForceX",
+                    "m_Equation": "[n -3, 3, RandA]"
+                },
+                "3759398623": {
+                    "m_VariableName": "m_SizeY",
+                    "m_Equation": "2"
+                },
+                "2534731337": {
+                    "m_VariableName": "m_SizeX",
+                    "m_Equation": "2"
+                },
+                "1196869079": {
+                    "m_VariableName": "m_ColorA",
+                    "m_Equation": "InvTimePct"
+                }
+            }
+        }
+    }
+}

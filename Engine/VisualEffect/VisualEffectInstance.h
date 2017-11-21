@@ -38,6 +38,7 @@ public:
   ~VisualEffectInstance();
 
   void SetPosition(const Vector2f & pos);
+  Vector2 GetPosition() const;
   void SetInput(uint32_t var_name_hash, float value);
   void Destroy();
 
@@ -49,7 +50,7 @@ public:
 private:
 
   void Init(const Vector2f & pos);
-  void Update(float update_time, StormExprStack & stack);
+  void Update(float update_time, StormExprStack & stack, bool on_screen);
   void Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
 
   template <typename Type>

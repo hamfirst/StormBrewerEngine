@@ -4,8 +4,13 @@
 #include <QTimer>
 #include <QWheelEvent>
 #include <QApplication>
+#include <QMimeData>
+#include <QMessageBox>
+#include <QDragEnterEvent>
 
 #include "SDL2/SDL_keyboard.h"
+
+#include "Foundation/FileSystem/Path.h"
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/ShaderLiteral.h"
@@ -63,6 +68,7 @@ MapEditorViewer::MapEditorViewer(NotNullPtr<MapEditor> editor, MapDef & map, QWi
 {
   setFocusPolicy(Qt::ClickFocus);
   setMouseTracking(true);
+  setAcceptDrops(true);
 
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &MapEditorViewer::tick);
@@ -1218,6 +1224,50 @@ void MapEditorViewer::leaveEvent(QEvent * event)
   if (m_PlayMode)
   {
     m_FakeWindow->SetWindowMouseFocused(false);
+  }
+}
+
+void MapEditorViewer::dragEnterEvent(QDragEnterEvent * event)
+{
+  if (event->mimeData()->hasFormat("text/uri-list"))
+  {
+    event->acceptProposedAction();
+  }
+}
+
+void MapEditorViewer::dropEvent(QDropEvent * event)
+{
+  if (m_SelectedLayer->m_Type == MapEditorLayerItemType::kParalaxLayer ||
+      m_SelectedLayer->m_Type == MapEditorLayerItemType::kParalaxObject)
+  {
+    auto mime_data = event->mimeData();
+    bool show_error = false;
+
+    if (mime_data->hasUrls())
+    {
+      QList<QUrl> file_list = mime_data->urls();
+
+      if (file_list.size() > 0)
+      {
+        m_Editor->BeginTransaction();
+
+        for (int index = 0; index < file_list.size(); index++)
+        {
+          auto filename = file_list.at(index).toLocalFile();
+
+          auto canonical_filename = filename.toStdString();
+          if (ConvertToCanonicalPath(canonical_filename, m_Editor->GetRootPath()) == false)
+          {
+            continue;
+          }
+
+          m_Editor->CreateNewParalaxObject(canonical_filename.data(), m_SelectedLayer->m_Index, GetSnappedCursorPos());
+        }
+
+        m_Editor->CommitChanges();
+      }
+    }
+    return;
   }
 }
 

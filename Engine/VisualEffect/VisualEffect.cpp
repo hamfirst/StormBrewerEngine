@@ -27,6 +27,9 @@ VisualEffect::VisualEffect(const VisualEffectDef & def)
 {
   StormExprValueInitBlock input_init_block;
 
+  m_UpdateBounds.x = def.m_UpdateBoundsX;
+  m_UpdateBounds.y = def.m_UpdateBoundsY;
+
   for (auto input : def.m_Inputs)
   {
     m_Inputs.push_back(std::make_pair(crc32(input.second.m_VariableName.data()), 0.0f));
@@ -202,7 +205,7 @@ void VisualEffect::InitInstance(VisualEffectInstance & inst, const Vector2f & po
   }
 }
 
-void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time, StormExprStack & stack)
+void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time, StormExprStack & stack, bool on_screen)
 {
   auto & emitter_eval = m_EmitterEval.Value();
   auto & particle_eval = m_ParticleEval.Value();
@@ -242,7 +245,7 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
   particle_eval.SetBlockBasePtr(0, inst.m_Inputs.data());
   particle_eval.SetBlockBasePtr(1, &inst.m_InstanceData);
 
-  if (update_time > 0)
+  if (update_time > 0 && on_screen)
   {
     for (std::size_t index = 0; index < m_EmitterCount; ++index)
     {
@@ -512,4 +515,9 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
   }
 
   render_state.EnableBlendMode(RenderingBlendMode::kAlpha);
+}
+
+Vector2 VisualEffect::GetUpdateBounds()
+{
+  return m_UpdateBounds;
 }

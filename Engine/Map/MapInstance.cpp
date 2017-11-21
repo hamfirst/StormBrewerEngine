@@ -26,7 +26,7 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
 
   for (auto elem : map_def.m_ParalaxLayers)
   {
-    m_ParalaxLayers.emplace_back(map_def, elem.first);
+    m_ParalaxLayers.emplace_back(map_def, elem.first, engine_state->GetVisualEffectManager());
   }
 
   std::vector<Entity *> entities;
