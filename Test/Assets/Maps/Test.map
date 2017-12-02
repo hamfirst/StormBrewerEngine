@@ -12,8 +12,12 @@
             "m_CollisionLayer": true,
             "m_Tiles": {
                 "3": [107374182344,11695311425793687553],
+                "2": [18446743974925303752,11695311425793687553],
                 "5": [38654705608,11695311425793687553],
-                "0": [38654705640,11695311425793687552]
+                "0": [18446743901910859784,11695311425793687552],
+                "1": [18446744043644780488,11695311425793687553],
+                "4": [18446743906205827016,11695311425793687553],
+                "6": [176093659080,11695311425793687553]
             }
         }
     },
@@ -41,10 +45,34 @@
                 "0": {
                     "m_Name": "Test",
                     "m_Type": "kVfx",
-                    "m_XPosition": 8,
+                    "m_XPosition": -40,
                     "m_File": ".\/VisualEffects\/Test.vfx",
                     "m_Animation": "",
-                    "m_YPosition": 8
+                    "m_YPosition": 24
+                },
+                "1": {
+                    "m_Name": "Test",
+                    "m_Type": "kVfx",
+                    "m_XPosition": -40,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_Animation": "",
+                    "m_YPosition": -40
+                },
+                "2": {
+                    "m_Name": "Test",
+                    "m_Type": "kVfx",
+                    "m_XPosition": -24,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_Animation": "",
+                    "m_YPosition": -40
+                },
+                "3": {
+                    "m_Name": "Test",
+                    "m_Type": "kVfx",
+                    "m_XPosition": -8,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_Animation": "",
+                    "m_YPosition": -40
                 }
             }
         }

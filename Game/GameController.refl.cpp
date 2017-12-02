@@ -412,7 +412,11 @@ void GameController::HandleAuthEvent(GameLogicContainer & game, std::size_t even
 
 bool GameController::ValidateInput(std::size_t player_index, GameLogicContainer & game, ClientInput & input)
 {
-  input.m_XInput.Clamp(1, -1);
+#ifndef PLATFORMER_MOVEMENT
+  input.m_InputStr.Clamp(0, 1);
+#else
+  input.m_XInput.Clamp(-1, 1);
+#endif
   return true;
 }
 
@@ -603,7 +607,9 @@ void GameController::HandleJumpEvent(const JumpEvent & ev, std::size_t player_in
   auto server_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
   if (server_obj)
   {
+#ifdef PLATFORMER_MOVEMENT
     server_obj->Jump(game);
+#endif
   }
 }
 

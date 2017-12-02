@@ -12,6 +12,8 @@
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
 
+#define PLATFORMER_MOVEMENT
+
 #if (NET_MODE == NET_MODE_GGPO)
 static const int kMaxRewindFrames = 20;
 static const int kMaxHistoryFrames = 30;
@@ -51,9 +53,19 @@ struct ClientLocalData
 
 struct ClientInput
 {
+  NET_REFL;
+
+#ifdef PLATFORMER_MOVEMENT
+
   bool m_JumpHeld;
   GameNetVal m_XInput;
-  NET_REFL;
+
+#else
+
+  GameNetVal m_InputAngle;
+  GameNetVal m_InputStr;
+
+#endif
 };
 
 // Data sent from the client to the server

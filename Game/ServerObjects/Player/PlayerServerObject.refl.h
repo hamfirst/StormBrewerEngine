@@ -6,9 +6,10 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameNetworkData.refl.h"
 
-#include "Game/ServerObjects/Player/States/PlayerStateDefault.refl.h"
+#include "Game/ServerObjects/Player/States/PlayerStateBase.refl.h"
 
 #include "Game/GameplayEvents/PlaceholderEvent.h"
+#include "Runtime/Sprite/SpriteResource.h"
 
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.h"
@@ -16,7 +17,17 @@
 
 #include "StormNet/NetReflectionPolymorphic.h"
 
-class PlayerStateDefault;
+
+enum STORM_REFL_ENUM class PlayerFacing
+{
+  kLeft,
+  kRight,
+#ifndef PLATFORMER_MOVEMENT
+  kDown,
+  kUp,
+#endif
+};
+
 
 struct PlayerServerObjectInitData : public ServerObjectInitData
 {
@@ -38,25 +49,58 @@ public:
   void Init(const PlayerServerObjectInitData & init_data);
   void UpdateFirst(GameLogicContainer & game_container);
 
-  void Jump(GameLogicContainer & game_container);
-
   MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container);
   void MoveCheckIntersectionDatabase(GameLogicContainer & game_container);
 
+  bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
+
+#ifdef PLATFORMER_MOVEMENT
+  void Jump(GameLogicContainer & game_container);
+#endif
+
   void SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, GameLogicContainer & game_container);
 
-  virtual czstr GetEntityBinding() override;
+  SpriteResource & GetSprite();
+  virtual czstr GetDefaultEntityBinding() override;
+
+  template <typename Target>
+  void TriggerAnimationEvents(GameLogicContainer & game_container, Target & target)
+  {
+    GetSprite().SendEventsTo(target, *this, game_container);
+  }
+
+  template <typename State>
+  void TransitionToState(GameLogicContainer & game_container)
+  {
+    NetPolymorphic<PlayerStateBase> new_state(NetPolymorphicTypeInit<State>{});
+    new_state->Init(*this, game_container);
+    m_State->Deinit(*this, game_container);
+    m_State = std::move(new_state);
+
+    if (m_Retransition)
+    {
+      m_State->Transition(*this, game_container);
+    }
+  }
 
 public:
   GameNetVec2 m_Position = {};
   GameNetVec2 m_Velocity = {};
 
-  bool m_OnGround = false;
+#ifdef PLATFORMER_MOVEMENT
+  bool m_OnGround;
+#endif
+
+  NetRangedNumber<int, -1, 30> m_AnimIndex = -1;
+  NetRangedNumber<int, 0, 31> m_AnimFrame = 0;
+  NetRangedNumber<int, 0, 63> m_AnimDelay = 0;
+  NetEnum<PlayerFacing> m_Facing = PlayerFacing::kRight;
 
   ClientInput m_Input;
 
-  NetPolymorphic<PlayerStateDefault> m_State;
+  NetPolymorphic<PlayerStateBase> m_State;
 
 private:
   Box m_MoveBox;
+  bool m_Retransition = false;
 };

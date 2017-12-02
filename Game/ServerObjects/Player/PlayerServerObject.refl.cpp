@@ -9,37 +9,59 @@
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
+#include "Game/ServerObjects/Player/PlayerSettings.h"
+#include "Game/ServerObjects/Player/States/PlayerStateIdle.refl.h"
+#include "Game/ServerObjects/Player/States/PlayerStateJump.refl.h"
+
 #include "Runtime/Sprite/SpriteResource.h"
+#include "Runtime/Animation/AnimationState.h"
 
 GLOBAL_ASSET(SpritePtr, "./Sprites/Player.sprite", g_PlayerSprite);
-
-static GameNetVal kMoveSpeed = GameNetVal("0.5");
-static GameNetVal kPlayerRadius = GameNetVal("10");
-static GameNetVal kMoveThreshold = GameNetVal("0.1");
-static GameNetVal kJumpSpeed = GameNetVal("5.0");
-
 
 void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data)
 {
   m_MoveBox = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
-  m_State.SetType<PlayerStateDefault>();
+  m_State.SetType<PlayerStateIdle>();
+
+  if (GetSlotIndex() == 0)
+  {
+    m_Facing = PlayerFacing::kRight;
+  }
+  else
+  {
+    m_Facing = PlayerFacing::kLeft;
+  }
 }
 
 void PlayerServerObject::UpdateFirst(GameLogicContainer & game_container)
 {
-  m_State->Update(*this, game_container);
+  m_State->PreUpdate(*this, game_container);
+  m_State->Move(*this, game_container);
+
+  m_Retransition = true;
+  m_State->Transition(*this, game_container);
+  m_Retransition = false;
+
+  m_State->Animate(*this, game_container);
+  m_State->PostUpdate(*this, game_container);
 }
 
+#if defined(PLATFORMER_MOVEMENT)
 void PlayerServerObject::Jump(GameLogicContainer & game_container)
 {
+#if defined(PLAYER_ENABLE_JUMP)
   if (m_OnGround)
   {
-    game_container.GetEventSender().BroadcastServerAuthEvent(PlaceholderServerAuthEvent {});
+    game_container.GetEventSender().BroadcastServerAuthEvent(PlaceholderServerAuthEvent{});
 
     m_Velocity.y += kJumpSpeed;
     m_OnGround = false;
+
+    TransitionToState<PlayerStateJump>(game_container);
   }
+#endif
 }
+#endif
 
 MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & game_container)
 {
@@ -79,7 +101,12 @@ MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & 
     m_Position.y += m_Velocity.y;
   }
 
+#ifdef PLATFORMER_MOVEMENT
+
   m_OnGround = result.m_HitBottom;
+
+#endif
+
   return result;
 }
 
@@ -127,12 +154,32 @@ void PlayerServerObject::MoveCheckIntersectionDatabase(GameLogicContainer & game
   }
 }
 
+bool PlayerServerObject::FrameAdvance(uint32_t anim_name_hash, bool loop, int frames)
+{
+  AnimationState state;
+  state.m_AnimIndex = m_AnimIndex;
+  state.m_AnimFrame = m_AnimFrame;
+  state.m_AnimDelay = m_AnimDelay;
+
+  auto result = g_PlayerSprite->FrameAdvance(anim_name_hash, state, loop, frames);
+  m_AnimIndex = state.m_AnimIndex;
+  m_AnimFrame = state.m_AnimFrame;
+  m_AnimDelay = state.m_AnimDelay;
+
+  return result;
+}
+
 void PlayerServerObject::HandlePlaceholderEvent(const PlaceholderEvent & ev, GameLogicContainer & game_container)
 {
 
 }
 
-czstr PlayerServerObject::GetEntityBinding()
+czstr PlayerServerObject::GetDefaultEntityBinding()
 {
   return "./Entities/Player.entity";
+}
+
+SpriteResource & PlayerServerObject::GetSprite()
+{
+  return *g_PlayerSprite.GetResource();
 }

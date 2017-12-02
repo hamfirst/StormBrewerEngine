@@ -92,14 +92,20 @@ void GameClientInputManager::Update()
 
     auto input_str = glm::length(input_vec);
 
+    ClientInput input;
+
+#ifndef PLATFORMER_MOVEMENT
+    input.m_InputStr = GameNetVal::CreateFromFloat(input_str);
+    input.m_InputAngle = GameNetVal::CreateFromFloat(atan2f(input_vec.y, input_vec.x));
+#else
     if (input_state->GetKeyPressedThisFrame(SDL_SCANCODE_SPACE) || input_state->GetGamepadButtonPressedThisFrame(gamepad_index, GamepadButton::kA))
     {
       SendEvent(client_index, JumpEvent{});
     }
 
-    ClientInput input;
     input.m_JumpHeld = input_state->GetKeyState(SDL_SCANCODE_SPACE) || input_state->GetGamepadButtonState(gamepad_index, GamepadButton::kA);
     input.m_XInput = GameNetVal::CreateFromFloat(input_vec.x);
+#endif
     SendInput(client_index, input);
 
     if (client_index == 0)

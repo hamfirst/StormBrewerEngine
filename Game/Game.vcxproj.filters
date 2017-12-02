@@ -42,7 +42,16 @@
     <ClCompile Include="ServerObjects\Player\PlayerServerObject.refl.reg.cpp">
       <Filter>ServerObjects\Player</Filter>
     </ClCompile>
-    <ClCompile Include="ServerObjects\Player\States\PlayerStateDefault.refl.cpp">
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateBase.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateIdle.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateMoving.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateJump.refl.cpp">
       <Filter>ServerObjects\Player\States</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,17 +117,35 @@
     <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.meta.h">
       <Filter>ServerObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.h">
-      <Filter>ServerObjects\Player\States</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.h">
-      <Filter>ServerObjects\Player\States</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObjects\Player\States\PlayerStateDefault.refl.meta.h">
-      <Filter>ServerObjects\Player\States</Filter>
-    </ClInclude>
     <ClInclude Include="GameplayEvents\PlaceholderEvent.h">
       <Filter>GameplayEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateIdle.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateIdle.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateMoving.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateMoving.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\PlayerSettings.h">
+      <Filter>ServerObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

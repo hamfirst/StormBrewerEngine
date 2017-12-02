@@ -61,13 +61,16 @@ void PlayerComponent::ServerDestroy()
 void PlayerComponent::UpdateFirst()
 {
   auto info = GetServerObjectInfo();
+  PlayerServerObject * object;
 
   if (info.m_IsLocal)
   {
+    object = info.m_CurrentObject;
     GetEntity()->SetPosition(info.m_CurrentPos);
   }
   else
   {
+    object = info.m_HistoryObject;
     GetEntity()->SetPosition(info.m_HistoryPos + m_DeadReckonOffset);
     m_DeadReckonPos = info.m_HistoryPos;
     m_DeadReckonOffset -= m_DeadReckonDec;
@@ -75,6 +78,19 @@ void PlayerComponent::UpdateFirst()
 
   auto & sprite = GetEntity()->GetSprite();
   auto & render_state = GetEntity()->GetRenderState();
+
+  render_state.m_AnimIndex = object->m_AnimIndex;
+  render_state.m_AnimFrame = object->m_AnimFrame;
+  render_state.m_AnimDelay = object->m_AnimDelay;
+
+  if (object->m_Facing == PlayerFacing::kLeft)
+  {
+    render_state.m_Matrix.x = -1.0f;
+  }
+  else if (object->m_Facing == PlayerFacing::kRight)
+  {
+    render_state.m_Matrix.x = 1.0f;
+  }
 
   auto event_visitor = [&](auto & event_info, auto box_start, auto box_end)
   {

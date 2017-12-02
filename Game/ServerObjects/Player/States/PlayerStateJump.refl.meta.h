@@ -2,11 +2,12 @@
 
 #include <StormRefl/StormReflMetaInfoBase.h>
 
-#include "PlayerStateDefault.refl.h"
+#include "PlayerStateJump.refl.h"
+#include "Game/ServerObjects/Player/States/PlayerStateBase.refl.meta.h"
 
 
 template <>
-struct StormReflTypeInfo<PlayerStateDefault>
+struct StormReflTypeInfo<PlayerStateJump>
 {
   using MyBase = PlayerStateBase;
   static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
@@ -16,23 +17,23 @@ struct StormReflTypeInfo<PlayerStateDefault>
     field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
   };
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
-  static constexpr auto GetName() { return "PlayerStateDefault"; }
-  static constexpr auto GetNameHash() { return 0x9FE939CC; }
-  static PlayerStateDefault & GetDefault() { static PlayerStateDefault def; return def; }
+  static constexpr auto GetName() { return "PlayerStateJump"; }
+  static constexpr auto GetNameHash() { return 0xEF7B4AE6; }
+  static PlayerStateJump & GetDefault() { static PlayerStateJump def; return def; }
 };
 
 namespace StormReflFileInfo
 {
-  struct PlayerStateDefault
+  struct PlayerStateJump
   {
     static const int types_n = 1;
     template <int i> struct type_info { using type = void; };
   };
 
   template <>
-  struct PlayerStateDefault::type_info<0>
+  struct PlayerStateJump::type_info<0>
   {
-    using type = ::PlayerStateDefault;
+    using type = ::PlayerStateJump;
   };
 
 }
