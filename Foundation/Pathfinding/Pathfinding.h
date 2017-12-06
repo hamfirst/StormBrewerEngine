@@ -16,6 +16,7 @@ public:
   using NodeInfo = typename Graph::NodeInfo;
   using CostVar = typename Graph::CostType;
   using ScratchData = typename Graph::ScratchData;
+  using EvalInfo = typename Graph::EvalInfoType;
   static const NodeId kInvalidNodeId = Graph::kInvalidNodeId;
 
   static NodeId GetRandomNode(uint32_t random_number, const Graph & graph_ref)
@@ -30,14 +31,14 @@ public:
     return (NodeId)(random_number & graph.GetNumNodes());
   }
 
-  static NodeId GetRandomNodeFromSource(NodeId start, CostVar min_dist, CostVar max_dist, uint32_t random_number, const Graph & graph_ref)
+  static NodeId GetRandomNodeFromSource(NodeId start, CostVar min_dist, CostVar max_dist, uint32_t random_number, const Graph & graph_ref, const EvalInfo & eval_info)
   {
     Graph & graph = const_cast<Graph &>(graph_ref);
 
     std::vector<NodeId> possible_nodes;
     auto visitor = [&](NodeId node_id, auto & node_data)
     {
-      auto cost = graph.EvalHeuristic(node_id, start);
+      auto cost = graph.EvalHeuristic(node_id, start, eval_info);
 
       if (cost > min_dist && cost < max_dist)
       {
@@ -79,17 +80,14 @@ public:
     return possible_nodes[random_number % possible_nodes.size()];
   }
 
-  static std::vector<NodeId> FindPath(NodeId start, NodeId end, const Graph & graph, ScratchData & scratch_data)
+  static std::vector<NodeId> FindPath(NodeId start, NodeId end, const Graph & graph, ScratchData & scratch_data, const EvalInfo & eval_info, int max_iterations)
   {
-    while (scratch_data.m_Queue.empty() == false)
-    {
-      scratch_data.m_Queue.pop();
-    }
+    scratch_data.m_Queue = {};
 
     scratch_data.m_OpenList.Clear();
     scratch_data.m_ClosedList.Clear();
 
-    graph.LinkNode(end, kInvalidNodeId, CostVar(0), scratch_data);
+    graph.LinkNode(start, kInvalidNodeId, CostVar(0), scratch_data);
     scratch_data.m_Queue.emplace(NodeInfo{ start, CostVar(0) });
     scratch_data.m_OpenList.Set(start);
 
@@ -103,7 +101,7 @@ public:
       }
 
       cost += cur_cost;
-      auto guess = graph.EvalHeuristic(dst_node_id, end);
+      auto guess = graph.EvalHeuristic(dst_node_id, end, eval_info);
 
       if (scratch_data.m_OpenList.Get(dst_node_id))
       {
@@ -140,12 +138,18 @@ public:
         return nodes;
       }
 
+      max_iterations--;
+      if (max_iterations <= 0)
+      {
+        return {};
+      }
+
       scratch_data.m_Queue.pop();
       scratch_data.m_OpenList.Unset(best.m_NodeId);
       scratch_data.m_ClosedList.Set(best.m_NodeId);
 
       cur_cost = best.m_Cost;
-      graph.VisitNeighbors(best.m_NodeId, visitor);
+      graph.VisitNeighbors(best.m_NodeId, eval_info, visitor);
     }
 
     return{};

@@ -51,6 +51,8 @@ private:
   friend class VertexArray;
   friend class VertexBuffer;
 
+  friend void CreateDefaultVertexBufferBinding(const ShaderProgram &);
+
   std::string m_CompileLog;
   std::vector<std::pair<Hash, int>> m_Uniforms;
 };

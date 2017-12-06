@@ -14,6 +14,7 @@ template <typename VecCompType>
 class IntersectionFuncs
 {
 public:
+  static constexpr VecCompType k2Pi = VecCompType(6.28318530718);
 
   static auto Sqrt(const VecCompType & c)
   {
@@ -70,6 +71,7 @@ template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
 class IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>
 {
 public:
+  static NetFixedPoint<StorageType, NumBits, FractionalBits> k2Pi;
 
   static auto Sqrt(const NetFixedPoint<StorageType, NumBits, FractionalBits> & c)
   {
@@ -121,6 +123,10 @@ public:
     return c - NetFixedPoint<StorageType, NumBits, FractionalBits>::Epsilon();
   }
 };
+
+template <typename StorageType, StorageType NumBits, StorageType FractionalBits>
+NetFixedPoint<StorageType, NumBits, FractionalBits> IntersectionFuncs<NetFixedPoint<StorageType, NumBits, FractionalBits>>::k2Pi = 
+  NetFixedPoint<StorageType, NumBits, FractionalBits>("6.28318530718");
 
 template <typename VecType>
 class IntersectionVecFuncs
@@ -755,4 +761,50 @@ auto LineToPointDistance(const VecType & a, const VecType & b, const VecType & p
   return IntersectionFuncs<LengthType>::Abs(offset);
 }
 
+template <typename VecType>
+bool LineBoxIntersection(const VecType & line_start, const VecType & line_end, const VecType & box_start, const VecType & box_end)
+{
+  // These are not needed if you've already done the box -> box intersection test
 
+  //if (line_start.x < box_start.x && line_end.x < box_start.x)
+  //{
+  //  return false;
+  //}
+
+  //if (line_start.y < box_start.y && line_end.y < box_start.y)
+  //{
+  //  return false;
+  //}
+
+  //if (line_start.x > box_end.x && line_end.x > box_end.x)
+  //{
+  //  return false;
+  //}
+
+  //if (line_start.y > box_end.y && line_end.y > box_end.y)
+  //{
+  //  return false;
+  //}
+
+  int dx = line_end.x - line_start.x;
+  int dy = line_start.y - line_end.y;
+
+  int dx1 = box_start.x - line_start.x;
+  int dy1 = box_start.y - line_start.y;
+  int dx2 = box_end.x - line_start.x;
+  int dy2 = box_end.y - line_start.y;
+
+  int v1 = dy * dx1 + dx * dy1;
+  int v2 = dy * dx1 + dx * dy2;
+  int v3 = dy * dx2 + dx * dy2;
+  int v4 = dy * dx2 + dx * dy1;
+
+  if ((v1 * v2 <= 0) |
+    (v2 * v3 <= 0) |
+    (v3 * v4 <= 0))
+  {
+    return true;
+  }
+
+  return false;
+}

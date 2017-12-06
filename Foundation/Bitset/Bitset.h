@@ -24,6 +24,7 @@ public:
 
 private:
 
+  std::size_t m_NumWords;
   std::unique_ptr<uint32_t[]> m_Buffer;
   std::size_t m_NumBits;
 };

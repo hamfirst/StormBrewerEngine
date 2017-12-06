@@ -4,6 +4,62 @@
 #include "Foundation/Math/Intersection.h"
 
 template <typename ValueType>
+static inline auto WrapAngle(ValueType angle)
+{
+  auto two_pi = IntersectionFuncs<ValueType>::k2Pi;
+  auto n_angle = angle / two_pi;
+  return (n_angle - IntersectionFuncs<ValueType>::Floor(n_angle)) * two_pi;
+}
+
+template <typename ValueType>
+static inline auto DiffAngle(ValueType a, ValueType b)
+{
+  auto two_pi = IntersectionFuncs<ValueType>::k2Pi;
+  auto wa = WrapAngle(a);
+  auto wb = WrapAngle(b);
+
+  if (wa > wb)
+  {
+    auto d1 = wa - wb;
+    auto d2 = wb + two_pi - wa;
+    return d1 < d2 ? -d1 : d2;
+  }
+  else
+  {
+    auto d1 = wb - wa;
+    auto d2 = wa + two_pi - wb;
+    return d1 < d2 ? d1 : -d2;
+  }
+}
+
+template <typename ValueType>
+static inline auto OffsetAngle(ValueType a, ValueType b)
+{
+  auto two_pi = IntersectionFuncs<ValueType>::k2Pi;
+  auto wa = WrapAngle(a);
+  auto wb = WrapAngle(b);
+
+  if (wa > wb)
+  {
+    return std::min(wa - wb, wb + two_pi - wa);
+  }
+  else
+  {
+    return std::min(wb - wa, wa + two_pi - wb);
+  }
+}
+
+template <typename ValueType>
+static inline auto BallisticFactor(ValueType v)
+{
+  auto one = ValueType(1);
+  auto two = ValueType(2);
+
+  auto f = v * two - one;
+  return one - f * f;
+}
+
+template <typename ValueType>
 auto AccelToward(ValueType cur_val, ValueType target_val, ValueType accel, ValueType drag)
 {
   auto accel_dir = target_val > cur_val ? ValueType(1) : ValueType(-1);
@@ -64,6 +120,31 @@ auto ManhattanDist(const VecType & a, const VecType & b)
 {
   auto diff = a - b;
   return ManhattanLength(diff);
+}
+
+template <typename VecType>
+auto DistEstimate(const VecType & a, const VecType & b)
+{
+  using VecCompType = VecComp<VecType>;
+  auto diff = a - b;
+
+  auto dx = IntersectionFuncs<VecCompType>::Abs(diff.x);
+  auto dy = IntersectionFuncs<VecCompType>::Abs(diff.y);
+
+  auto zero = VecCompType(0);
+  if (dx == zero && dy == zero)
+  {
+    return zero;
+  }
+
+  if (dx > dy)
+  {
+    return dx + dy / VecCompType(2);
+  }
+  else
+  {
+    return dy + dx / VecCompType(2);
+  }
 }
 
 template <typename VecType>

@@ -7,4 +7,5 @@ bool ENGINE_EXPORT EngineRenderInit();
 void ENGINE_EXPORT EngineUpdate();
 void ENGINE_EXPORT EngineCleanup();
 
+void ENGINE_EXPORT EngineQuit();
 bool ENGINE_EXPORT EngineWantsToQuit();

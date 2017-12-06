@@ -17,7 +17,7 @@ Optional<Allocator2DResult> Allocator2D::Allocate(int width, int height)
     return{};
   }
 
-  return Allocator2DResult{ result.x, result.y, result.width == height };
+  return Allocator2DResult{ result.x, result.y, result.width != width };
 }
 
 Allocator2DShelf::Allocator2DShelf(int width) :
@@ -34,5 +34,5 @@ Optional<Allocator2DResult> Allocator2DShelf::Allocate(int width, int height)
     return{};
   }
 
-  return Allocator2DResult{ result.x, result.y, result.width == height };
+  return Allocator2DResult{ result.x, result.y, result.width != width };
 }

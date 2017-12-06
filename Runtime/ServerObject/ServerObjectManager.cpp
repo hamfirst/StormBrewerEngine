@@ -11,7 +11,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
                                          const std::vector<ServerObjectStaticInitData> & dynamic_objects,
                                          int max_dynamic_objects, int num_reserved_slots)
 {
-  int slot_index = 1;
+  int slot_index = 0;
   for (auto & obj : static_objects)
   {
     auto ptr = g_ServerObjectSystem.AllocateObject(obj.m_TypeIndex, obj.m_InitData.GetValue());
@@ -19,7 +19,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_TypeIndex = (int)obj.m_TypeIndex;
     ptr->m_SlotIndex = -1;
     ptr->m_FramesAlive = 0;
-    ptr->m_ServerObjectHandle.m_SlotId = -slot_index;
+    ptr->m_ServerObjectHandle.m_SlotId = slot_index;
     ptr->m_ServerObjectHandle.m_Gen = 0;
     ptr->m_EventDispatch = ptr->GetEventDispatch();      
     ptr->InitPosition(obj.m_InitPosition);

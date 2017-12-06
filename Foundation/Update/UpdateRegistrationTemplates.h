@@ -67,7 +67,7 @@ struct RegisterUpdateFirst<T, BaseClass, UpdateFunc, true>
   }
 };
 
-template <typename T, typename BaseClass, typename UpdateFunc, bool HasUpdateFirst>
+template <typename T, typename BaseClass, typename UpdateFunc, bool HasUpdateMiddle>
 struct RegisterUpdateMiddle
 {
   static void Process(T & t, UpdateList<BaseClass, UpdateFunc> & update_list)
@@ -86,16 +86,16 @@ struct RegisterUpdateMiddle<T, BaseClass, UpdateFunc, true>
 {
   static void Process(T & t, UpdateList<BaseClass, UpdateFunc> & update_list)
   {
-    update_list.AddMiddle(&t, (UpdateFunc)&T::UpdateFirst);
+    update_list.AddMiddle(&t, (UpdateFunc)&T::UpdateMiddle);
   }
 
   static void Process(T & t, UpdateBucketList<BaseClass, UpdateFunc> & bucket_list, int bucket)
   {
-    bucket_list.AddMiddle(&t, (UpdateFunc)&T::UpdateFirst, bucket);
+    bucket_list.AddMiddle(&t, (UpdateFunc)&T::UpdateMiddle, bucket);
   }
 };
 
-template <typename T, typename BaseClass, typename UpdateFunc, bool HasUpdateFirst>
+template <typename T, typename BaseClass, typename UpdateFunc, bool HasUpdateLast>
 struct RegisterUpdateLast
 {
   static void Process(T & t, UpdateList<BaseClass, UpdateFunc> & update_list)
@@ -114,12 +114,12 @@ struct RegisterUpdateLast<T, BaseClass, UpdateFunc, true>
 {
   static void Process(T & t, UpdateList<BaseClass, UpdateFunc> & update_list)
   {
-    update_list.AddLast(&t, (UpdateFunc)&T::UpdateFirst);
+    update_list.AddLast(&t, (UpdateFunc)&T::UpdateLast);
   }
 
   static void Process(T & t, UpdateBucketList<BaseClass, UpdateFunc> & bucket_list, int bucket)
   {
-    bucket_list.AddLast(&t, (UpdateFunc)&T::UpdateFirst, bucket);
+    bucket_list.AddLast(&t, (UpdateFunc)&T::UpdateLast, bucket);
   }
 };
 

@@ -5,8 +5,8 @@
 #include <StormData/StormData.h>
 #include <StormData/StormDataTypes.h>
 
-class RUNTIME_EXPORT SpriteAnimationEventBase
+class RUNTIME_EXPORT SpriteAnimationEventDataBase
 {
 public:
-  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteAnimationEventBase);
+  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteAnimationEventDataBase);
 };

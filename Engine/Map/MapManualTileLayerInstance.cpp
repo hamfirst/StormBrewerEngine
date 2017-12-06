@@ -397,7 +397,7 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
   {
     auto grid_box = m_DrawInfo.GetGridBoxForGridId(grid_id);
 
-    auto grid_start = RenderVec2{ grid_box.m_Start };
+    auto grid_start = glm::round(RenderVec2{ grid_box.m_Start });
     auto & shader = g_ShaderManager.GetDefaultShader();
     shader.Bind();
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
@@ -421,7 +421,8 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
     auto anim_box = Box::FromFrameCenterAndSize(anim.m_Position, Vector2(anim.m_State.m_FrameWidth, anim.m_State.m_FrameHeight));
     if (BoxIntersect(viewport_bounds, anim_box))
     {
-      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, kSpriteDefaultSkin, anim.m_Position);
+      auto pos = glm::round((RenderVec2)anim.m_Position - screen_center);
+      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, kSpriteDefaultSkin, pos);
     }
   }
 }

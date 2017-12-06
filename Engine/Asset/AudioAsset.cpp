@@ -362,17 +362,20 @@ int AudioAsset::DecodeWavFile(Buffer & buffer)
   std::size_t file_size = buffer.GetSize();
   if (file_size < sizeof(WAVE_HEADER))
   {
+    printf("%s: Invalid wave file header\n", GetFileName().data());
     return 1;
   }
 
   WAVE_HEADER * header = reinterpret_cast<WAVE_HEADER *>(buffer.Get());
   if (header->riff != 0x46464952)
   {
+    printf("%s: Invalid wave file type\n", GetFileName().data());
     return 2;
   }
 
   if (header->sample_rate != 44100)
   {
+    printf("%s: Invalid wave sample rate: %d\n", GetFileName().data(), header->sample_rate);
     return 3;
   }
 
@@ -393,11 +396,13 @@ int AudioAsset::DecodeWavFile(Buffer & buffer)
     }
     else
     {
+      printf("%s: Invalid wave format: %d\n", GetFileName().data(), header->format_type);
       return 4;
     }
   }
   else
   {
+    printf("%s: Invalid wave format: %d\n", GetFileName().data(), header->format_type);
     return 4;
   }
 

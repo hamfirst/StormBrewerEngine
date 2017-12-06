@@ -2,12 +2,13 @@
 
 #include "Foundation/Pathfinding/Pathfinding.h"
 
-template <typename GridData, typename CostVar, typename MoveEvaluator, bool AllowDiagonals = false, bool DiagonalCostIncrease = true>
+template <typename GridData, typename CostVar, typename MoveEvaluator, typename EvalInfo, bool AllowDiagonals = false, bool DiagonalCostIncrease = true>
 class PathfindingBasicGrid2D
 {
 public:
   using NodeId = uint32_t;
   using CostType = CostVar;
+  using EvalInfoType = EvalInfo;
   static const NodeId kInvalidNodeId = -1;
 
   struct NodeInfo
@@ -41,10 +42,11 @@ public:
     Bitset m_ClosedList;
   };
 
-  PathfindingBasicGrid2D(const Vector2 & size) :
+  PathfindingBasicGrid2D(const Vector2 & size, CostVar diagonal_cost) :
     m_Grid(std::make_unique<GridData[]>(size.x * size.y)),
     m_Width(size.x),
-    m_Height(size.y)
+    m_Height(size.y),
+    m_DiagonalCost(diagonal_cost)
   {
 
   }
@@ -108,27 +110,21 @@ public:
     return grid_data.m_PrevNode;
   }
 
-  CostVar EvalHeuristic(NodeId dest_node_id, NodeId src_node) const
+  CostVar EvalHeuristic(NodeId dest_node_id, NodeId src_node, const EvalInfo & eval_info) const
   {
     auto src_location = NodeIdToLocation(src_node);
     auto dst_location = NodeIdToLocation(dest_node_id);
     if (AllowDiagonals)
     {
-      auto dx = abs(src_location.x - dst_location.x);
-      auto dy = abs(src_location.y - dst_location.y);
-
-      auto mx = std::max(dx, dy);
-
       if (DiagonalCostIncrease)
       {
-        auto mn = std::min(dx, dy);
-        auto diag_dist = (CostVar)mn * kSqrt2;
-
-        return diag_dist + (CostVar)(mx - mn);
+        return DistEstimate(src_location, dst_location);
       }
       else
       {
-        return (CostVar)mx;
+        auto dx = abs(src_location.x - dst_location.x);
+        auto dy = abs(src_location.y - dst_location.y);
+        return (CostVar)std::max(dx, dy);
       }
     }
     else
@@ -138,7 +134,7 @@ public:
   }
 
   template <typename Visitor>
-  void VisitNeighbors(NodeId node_id, Visitor && visitor) const
+  void VisitNeighbors(NodeId node_id, const EvalInfo & eval_info, Visitor && visitor) const
   {
     auto location = NodeIdToLocation(node_id);
     auto target_location = NodeIdToLocation(node_id);
@@ -150,7 +146,7 @@ public:
     {
       auto dest_node = LocationToNodeId(Vector2(location.x - 1, location.y));
       auto & dest_data = GetGridData(location.x - 1, location.y);
-      auto cost = m_Eval(src_grid, dest_data);
+      auto cost = m_Eval(src_grid, dest_data, eval_info);
 
       if (cost >= zero)
       {
@@ -162,7 +158,7 @@ public:
     {
       auto dest_node = LocationToNodeId(Vector2(location.x + 1, location.y));
       auto & dest_data = GetGridData(location.x + 1, location.y);
-      auto cost = m_Eval(src_grid, dest_data);
+      auto cost = m_Eval(src_grid, dest_data, eval_info);
 
       if (cost >= zero)
       {
@@ -174,7 +170,7 @@ public:
     {
       auto dest_node = LocationToNodeId(Vector2(location.x, location.y - 1));
       auto & dest_data = GetGridData(location.x, location.y - 1);
-      auto cost = m_Eval(src_grid, dest_data);
+      auto cost = m_Eval(src_grid, dest_data, eval_info);
 
       if (cost >= zero)
       {
@@ -186,7 +182,7 @@ public:
     {
       auto dest_node = LocationToNodeId(Vector2(location.x, location.y + 1));
       auto & dest_data = GetGridData(location.x, location.y + 1);
-      auto cost = m_Eval(src_grid, dest_data);
+      auto cost = m_Eval(src_grid, dest_data, eval_info);
 
       if (cost >= zero)
       {
@@ -200,11 +196,11 @@ public:
       {
         auto dest_node = LocationToNodeId(Vector2(location.x - 1, location.y - 1));
         auto & dest_data = GetGridData(location.x - 1, location.y - 1);
-        auto cost = m_Eval(src_grid, dest_data);
+        auto cost = m_Eval(src_grid, dest_data, eval_info);
 
         if (DiagonalCostIncrease)
         {
-          cost *= kSqrt2;
+          cost *= m_DiagonalCost;
         }
 
         if (cost >= zero)
@@ -217,11 +213,11 @@ public:
       {
         auto dest_node = LocationToNodeId(Vector2(location.x - 1, location.y + 1));
         auto & dest_data = GetGridData(location.x - 1, location.y + 1);
-        auto cost = m_Eval(src_grid, dest_data);
+        auto cost = m_Eval(src_grid, dest_data, eval_info);
 
         if (DiagonalCostIncrease)
         {
-          cost *= kSqrt2;
+          cost *= m_DiagonalCost;
         }
 
         if (cost >= zero)
@@ -234,11 +230,11 @@ public:
       {
         auto dest_node = LocationToNodeId(Vector2(location.x + 1, location.y - 1));
         auto & dest_data = GetGridData(location.x + 1, location.y - 1);
-        auto cost = m_Eval(src_grid, dest_data);
+        auto cost = m_Eval(src_grid, dest_data, eval_info);
 
         if (DiagonalCostIncrease)
         {
-          cost *= kSqrt2;
+          cost *= m_DiagonalCost;
         }
 
         if (cost >= zero)
@@ -251,11 +247,11 @@ public:
       {
         auto dest_node = LocationToNodeId(Vector2(location.x + 1, location.y + 1));
         auto & dest_data = GetGridData(location.x + 1, location.y + 1);
-        auto cost = m_Eval(src_grid, dest_data);
+        auto cost = m_Eval(src_grid, dest_data, eval_info);
 
         if (DiagonalCostIncrease)
         {
-          cost *= kSqrt2;
+          cost *= m_DiagonalCost;
         }
 
         if (cost >= zero)
@@ -288,12 +284,18 @@ private:
   std::size_t m_Height;
 
   MoveEvaluator m_Eval;
+  CostVar m_DiagonalCost;
+};
+
+struct PathfindingBasicTraversalGridEvalInfo
+{
+
 };
 
 template <typename CostVar>
 struct PathfindingBasicTraversalGridEval
 {
-  CostVar operator()(bool src, bool dst)
+  CostVar operator()(bool src, bool dst, const PathfindingBasicTraversalGridEvalInfo & eval_info)
   {
     return src || dst ? CostVar(-1) : CostVar(1);
   }
@@ -301,5 +303,6 @@ struct PathfindingBasicTraversalGridEval
 
 
 template <bool AllowDiagonals = false, bool DiagonalCostIncrease = true>
-using PathfindingBasicTraversalGrid = PathfindingBasicGrid2D<bool, float, PathfindingBasicTraversalGridEval<float>, AllowDiagonals, DiagonalCostIncrease>;
+using PathfindingBasicTraversalGrid = PathfindingBasicGrid2D<bool, float, PathfindingBasicTraversalGridEval<float>, 
+                                                             PathfindingBasicTraversalGridEvalInfo, AllowDiagonals, DiagonalCostIncrease>;
 

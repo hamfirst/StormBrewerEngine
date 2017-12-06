@@ -724,6 +724,7 @@ void AssetLoader::FinalizeAssetResponse(AssetLoadResponse & resp)
   }
   else
   {
+    printf("Asset %s failed to load: %d\n", resp.m_Asset->GetFileName().data(), resp.m_Asset->m_LoadError);
     resp.m_Asset->CallAssetLoadCallbacksWithFailure();
   }
 

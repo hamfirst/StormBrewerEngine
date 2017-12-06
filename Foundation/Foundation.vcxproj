@@ -113,6 +113,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Math\Intersection.h" />
+    <ClInclude Include="Math\LineDrawing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Math\Util.h" />
     <ClInclude Include="Network\Network.h">

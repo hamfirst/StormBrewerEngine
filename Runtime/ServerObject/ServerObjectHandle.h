@@ -66,13 +66,13 @@ struct NetDeserializer<ServerObjectHandle, NetBitReader>
 {
   void operator()(ServerObjectHandle & h, NetBitReader & reader)
   {
-    auto val = reader.ReadBits(1);
+    auto val = reader.ReadUBits(1);
     if (val)
     {
       auto server_manager = reader.GetServerManager();
 
       h.m_Gen = 0;
-      h.m_SlotId = reader.ReadBits(server_manager->GetHandleBits());
+      h.m_SlotId = (int)reader.ReadUBits(server_manager->GetHandleBits());
     }
     else
     {

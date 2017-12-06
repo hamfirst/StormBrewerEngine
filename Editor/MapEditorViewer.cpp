@@ -771,21 +771,34 @@ void MapEditorViewer::paintGL()
     
 #ifndef MAP_PLATFORMER_PATHFINDING
     
-    int value_index = 0;
-    for (int y = 0; y < info.m_SizeY; ++y)
+    if (info.m_GridWidth > 0 && info.m_GridHeight > 0)
     {
-      for (int x = 0; x < info.m_SizeX; ++x)
+      int start_x = viewport_bounds.m_Start.x - info.m_StartX - info.m_GridWidth;
+      int start_y = viewport_bounds.m_Start.y - info.m_StartY - info.m_GridHeight;
+
+      int end_x = viewport_bounds.m_End.x - info.m_StartX + info.m_GridWidth;
+      int end_y = viewport_bounds.m_End.y - info.m_StartY + info.m_GridHeight;
+
+      start_x = std::max(start_x / info.m_GridWidth, 0);
+      start_y = std::max(start_y / info.m_GridHeight, 0);
+
+      end_x = std::min(end_x / info.m_GridWidth, info.m_SizeX);
+      end_y = std::min(end_y / info.m_GridHeight, info.m_SizeY);
+
+      for (int y = start_y; y < end_y; ++y)
       {
-        Box box;
-        box.m_Start.x = info.m_StartX + x * info.m_GridWidth;
-        box.m_Start.y = info.m_StartY + y * info.m_GridHeight;
-        box.m_End.x = box.m_Start.x + info.m_GridWidth - 1;
-        box.m_End.y = box.m_Start.y + info.m_GridHeight - 1;
+        for (int x = start_x; x < end_x; ++x)
+        {
+          Box box;
+          box.m_Start.x = info.m_StartX + x * info.m_GridWidth;
+          box.m_Start.y = info.m_StartY + y * info.m_GridHeight;
+          box.m_End.x = box.m_Start.x + info.m_GridWidth - 1;
+          box.m_End.y = box.m_Start.y + info.m_GridHeight - 1;
 
-        auto color = info.m_GridInfo[value_index] ? Color(255, 0, 0, 200) : Color(0, 0, 255, 200);
-        builder.FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), color);
-
-        ++value_index;
+          int value_index = x + info.m_SizeX * y;
+          auto color = std::get<0>(info.m_GridInfo[value_index]) ? Color(255, 0, 0, 200) : Color(0, 0, 255, 200);
+          builder.FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), color);
+        }
       }
     }
 #else

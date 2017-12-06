@@ -6,16 +6,16 @@
 
 
 template <>
-struct StormReflTypeInfo<SpriteAnimationEventBase>
+struct StormReflTypeInfo<SpriteAnimationEventDataBase>
 {
   using MyBase = void;
   static constexpr int fields_n = 0;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "SpriteAnimationEventBase"; }
-  static constexpr auto GetNameHash() { return 0xDBC3BCBA; }
-  static SpriteAnimationEventBase & GetDefault() { static SpriteAnimationEventBase def; return def; }
+  static constexpr auto GetName() { return "SpriteAnimationEventDataBase"; }
+  static constexpr auto GetNameHash() { return 0x0131E8FB; }
+  static SpriteAnimationEventDataBase & GetDefault() { static SpriteAnimationEventDataBase def; return def; }
 };
 
 namespace StormReflFileInfo
@@ -29,7 +29,7 @@ namespace StormReflFileInfo
   template <>
   struct SpriteAnimationEventDef::type_info<0>
   {
-    using type = ::SpriteAnimationEventBase;
+    using type = ::SpriteAnimationEventDataBase;
   };
 
 }

@@ -103,7 +103,7 @@ void SpriteBaseAnimationEventEditorDialog::handleNewEvent(int frame_index, int f
   SpriteBaseAnimationEvent event_info;
   event_info.m_Frame = frame_index;
   event_info.m_FrameDelay = frame_delay;
-  event_info.m_EventData.SetType<SpriteAnimationEventBase>();
+  event_info.m_EventData.SetType<SpriteAnimationEventDataBase>();
   anim->m_Events.EmplaceBack(std::move(event_info));
 
   m_SelectedEvent = anim->m_Events.HighestIndex();

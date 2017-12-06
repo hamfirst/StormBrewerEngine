@@ -194,6 +194,11 @@ void EngineCleanup()
   NetworkShutdown();
 }
 
+void EngineQuit()
+{
+  s_Quit = true;
+}
+
 bool EngineWantsToQuit()
 {
   return s_Quit;

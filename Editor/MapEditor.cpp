@@ -481,6 +481,11 @@ void MapEditor::CalculatePathfindingInfo()
   info.m_SizeY = (size.y + info.m_GridHeight * 6 + info.m_GridHeight - 1) / info.m_GridHeight;
   info.m_GridInfo.reserve(info.m_SizeX * info.m_SizeY);
 
+  info.m_StartX = RoundDownInt(info.m_StartX, info.m_GridWidth);
+  info.m_StartY = RoundDownInt(info.m_StartY, info.m_GridHeight);
+  info.m_SizeX = RoundUpInt(info.m_SizeX, info.m_GridWidth);
+  info.m_SizeY = RoundUpInt(info.m_SizeY, info.m_GridHeight);
+
   for (int y = 0; y < info.m_SizeY; ++y)
   {
     for (int x = 0; x < info.m_SizeX; ++x)
@@ -492,9 +497,108 @@ void MapEditor::CalculatePathfindingInfo()
       box.m_End.y = box.m_Start.y + info.m_GridHeight - 1;
 
       uint8_t grid_val = (uint8_t)(coll_database.CheckCollisionAny(box, 0xFFFFFFFF) != 0);
-      info.m_GridInfo.push_back(grid_val);
+      info.m_GridInfo.push_back(std::make_tuple(grid_val, (uint8_t)0, (uint8_t)0));
     }
   }
+
+  int clearance_x = m_Map.m_PathfingindInfo.m_MaximumClearanceX / m_Map.m_PathfingindInfo.m_GridWidth;
+  int clearance_y = m_Map.m_PathfingindInfo.m_MaximumClearanceY / m_Map.m_PathfingindInfo.m_GridHeight;
+  if (clearance_x != 0 && clearance_y != 0)
+  {
+    auto test_grid = [&](int x, int y)
+    {
+      if (x < 0 || x >= info.m_SizeX || y < 0 || y >= info.m_SizeY)
+      {
+        return false;
+      }
+
+      return std::get<0>(info.m_GridInfo[y * info.m_SizeX + x]) != 0;
+    };
+
+    auto sample_grid_box = [&](int x, int y, int w, int h)
+    {
+      for (int ty = 0; ty <= h; ty++)
+      {
+        for (int tx = 0; tx <= w; tx++)
+        {
+          if (test_grid(x - tx, y - ty) == true ||
+            test_grid(x - tx, y + ty) == true ||
+            test_grid(x + tx, y - ty) == true ||
+            test_grid(x + tx, y + ty) == true)
+          {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    };
+
+    auto test_clearance = [&](int x, int y)
+    {
+      int w = 0;
+      int h = 0;
+
+      bool expand_x = true;
+      bool expand_y = true;
+
+      while (expand_x || expand_y)
+      {
+        if (expand_x)
+        {
+          if (sample_grid_box(x, y, w + 1, h) == false)
+          {
+            expand_x = false;
+          }
+          else
+          {
+            w++;
+            if (w >= clearance_x)
+            {
+              expand_x = false;
+            }
+          }
+        }
+
+        if (expand_y)
+        {
+          if (sample_grid_box(x, y, w, h + 1) == false)
+          {
+            expand_y = false;
+          }
+          else
+          {
+            h++;
+            if (h >= clearance_y)
+            {
+              expand_y = false;
+            }
+          }
+        }
+      }
+
+      return std::make_pair(w, h);
+    };
+
+    for (int y = 0; y < info.m_SizeY; ++y)
+    {
+      for (int x = 0; x < info.m_SizeX; ++x)
+      {
+        if (test_grid(x, y))
+        {
+          continue;
+        }
+
+        auto clearance = test_clearance(x, y);
+        auto & elem = info.m_GridInfo[y * info.m_SizeX + x];
+
+        elem = std::make_tuple((uint8_t)0, (uint8_t)clearance.first, (uint8_t)clearance.second);
+      }
+    }
+  }
+
+
+  
 
 #else
 
@@ -620,13 +724,19 @@ void MapEditor::CalculatePathfindingInfo()
   }
 #endif
 
+  BeginTransaction();
   m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
+  m_Map.m_PathfingindInfo.m_Valid = true;
+  CommitChanges();
 }
 
 void MapEditor::ClearPathfindingInfo()
 {
+  BeginTransaction();
   MapPathfindingCalculatedInfo info = {};
   m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
+  m_Map.m_PathfingindInfo.m_Valid = false;
+  CommitChanges();
 }
 
 MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & MapEditor::GetManualTileManager()

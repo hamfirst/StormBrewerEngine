@@ -34,7 +34,7 @@ struct RUNTIME_EXPORT SpriteBaseAnimationEvent
   RInt m_Frame;
   RInt m_FrameDelay;
 
-  RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
+  RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
   ROpaque<std::vector<Box>> m_EventArea;
 };
 

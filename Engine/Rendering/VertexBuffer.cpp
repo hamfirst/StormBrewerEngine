@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Rendering/VertexList.h"
+#include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/RenderErrorMacros.h"
 
@@ -107,7 +108,7 @@ void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
 
 void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program)
 {
-  VertexArray::CreateDefaultBinding(program);
+  CreateDefaultVertexBufferBinding(program);
 }
 
 void VertexBuffer::Draw(int index_start, int index_end) const

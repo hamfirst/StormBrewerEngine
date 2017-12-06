@@ -11,6 +11,7 @@ struct VisualEffectInstanceEmitterGlobalData
   float m_PrevPositionX;
   float m_PrevPositionY;
   float m_EffectTimeAlive;
+  float m_ParticleId;
 };
 
 struct VisualEffectInstanceEmitterAutoData

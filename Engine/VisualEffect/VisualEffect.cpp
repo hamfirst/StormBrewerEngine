@@ -14,7 +14,8 @@
 #include "StormExpr/StormExprReflBlock.h"
 #include "StormExpr/StormExprEvalBuilder.h"
 
-static auto s_GlobalInitBlock = StormExprCreateInitBlockForDataType<VisualEffectInstanceEmitterAutoData>();
+
+static auto s_GlobalInitBlock = StormExprCreateInitBlockForDataType<VisualEffectInstanceEmitterGlobalData>();
 static auto s_RandInitBlock = StormExprCreateInitBlockForDataType<VisualEffectInstanceRandBlock>();
 static auto s_EmitterAutoInitBlock = StormExprCreateInitBlockForDataType<VisualEffectInstanceEmitterAutoData>();
 static auto s_EmitterScriptInitBlock = StormExprCreateInitBlockForDataType<VisualEffectInstanceEmitterScriptData>();
@@ -185,6 +186,11 @@ VisualEffect::VisualEffect(const VisualEffectDef & def)
   m_EmitterEval.Emplace(std::move(emitter_eval_builder));
   m_SpawnEval.Emplace(std::move(spawn_eval_builder));
   m_ParticleEval.Emplace(std::move(particle_eval_builder));
+
+  for (auto & error : errors)
+  {
+    printf("%s\n", error.data());
+  }
 }
 
 void VisualEffect::InitInstance(VisualEffectInstance & inst, const Vector2f & position)
@@ -407,6 +413,7 @@ void VisualEffect::SpawnParticles(VisualEffectInstance & inst, int emitter_index
 
     num_particles--;
     inst.m_NextParticleId++;
+    inst.m_InstanceData.m_ParticleId = (float)inst.m_NextParticleId;
 
     pre_sim -= pre_sim_dec;
   }

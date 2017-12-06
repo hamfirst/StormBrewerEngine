@@ -5,6 +5,8 @@
 
 #include "Engine/Rendering/ShaderProgram.h"
 
+void CreateDefaultVertexBufferBinding(const ShaderProgram & program);
+
 #ifndef _WEB
 
 class VertexBuffer;
@@ -25,7 +27,7 @@ public:
   void Destroy();
 
   void CreateDefaultBinding(const ShaderProgram & program, VertexBuffer & buffer);
-  static void CreateDefaultBinding(const ShaderProgram & program);
+
 
   int GetLoadError() const { return m_LoadError; }
 

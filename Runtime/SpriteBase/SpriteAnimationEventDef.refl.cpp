@@ -4,4 +4,4 @@
 
 #include <StormData/StormDataJson.h>
 
-STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(SpriteAnimationEventBase);
+STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(SpriteAnimationEventDataBase);

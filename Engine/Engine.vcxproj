@@ -310,6 +310,7 @@
     </ClInclude>
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\ComponentHandle.h" />
+    <ClInclude Include="Component\ComponentIterator.h" />
     <ClInclude Include="Component\ComponentList.h" />
     <ClInclude Include="Component\ComponentRegistrationMacros.h" />
     <ClInclude Include="Component\ComponentSystem.h" />

@@ -102,7 +102,7 @@ public:
   NullOptPtr<ServerObject> GetServerObject(int history_index = 0);
 
   template <typename ServerObjectType>
-  NullOptPtr<ServerObjectType> GetServerObjectAs(int history_index = 0)
+  NullOptPtr<ServerObjectType> GetServerObjectAs(int history_index = 0, bool require_exact_history = false)
   {
     auto obj_manager = GetServerObjectManager();
     auto obj = obj_manager ? m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager) : nullptr;
@@ -115,6 +115,16 @@ public:
     if (obj == nullptr)
     {
       return nullptr;
+    }
+
+    if (history_index > obj->GetLifetime())
+    {
+      if (require_exact_history)
+      {
+        return nullptr;
+      }
+
+      history_index = obj->GetLifetime();
     }
 
     history_index = std::min(history_index, obj->GetLifetime());

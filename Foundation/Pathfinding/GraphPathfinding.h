@@ -2,7 +2,7 @@
 
 #include "Foundation/Pathfinding/Pathfinding.h"
 
-template <typename GraphData, typename CostVar, typename Heuristic>
+template <typename GraphData, typename CostVar, typename Heuristic, typename EvalInfo>
 class PathfindingSymmetricGraph
 {
 public:
@@ -46,11 +46,11 @@ public:
 
   }
 
-  PathfindingSymmetricGraph(const PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> & rhs) = delete;
-  PathfindingSymmetricGraph(PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> && rhs) = delete;
+  PathfindingSymmetricGraph(const PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> & rhs) = delete;
+  PathfindingSymmetricGraph(PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> && rhs) = delete;
 
-  PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> & operator =(const PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> & rhs) = delete;
-  PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> & operator =(PathfindingSymmetricGraph<GraphData, CostVar, Heuristic> && rhs) = delete;
+  PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> & operator =(const PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> & rhs) = delete;
+  PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> & operator =(PathfindingSymmetricGraph<GraphData, CostVar, Heuristic, EvalInfo> && rhs) = delete;
 
   std::size_t GetNumNodes() const
   {
@@ -70,9 +70,9 @@ public:
     m_Graph[node_b].m_Connections.emplace_back(std::make_pair(node_a, cost));
   }
 
-  void ConnectNodes(NodeId node_a, NodeId node_b)
+  void ConnectNodes(NodeId node_a, NodeId node_b, const EvalInfo & eval_info)
   {
-    ConnectNodes(node_a, node_b, EvalHeuristic(node_a, node_b));
+    ConnectNodes(node_a, node_b, EvalHeuristic(node_a, node_b, eval_info));
   }
 
   const GraphData & GetGridData(NodeId node_id) const
@@ -113,13 +113,13 @@ public:
     return graph_data.m_PrevNode;
   }
 
-  CostVar EvalHeuristic(NodeId dest_node_id, NodeId src_node_id) const
+  CostVar EvalHeuristic(NodeId dest_node_id, NodeId src_node_id, const EvalInfo & eval_info) const
   {
-    return m_Heuristic(m_Graph[src_node_id].m_Data, m_Graph[dest_node_id].m_Data);
+    return m_Heuristic(m_Graph[src_node_id].m_Data, m_Graph[dest_node_id].m_Data, eval_info);
   }
 
   template <typename Visitor>
-  void VisitNeighbors(NodeId node_id, Visitor && visitor)
+  void VisitNeighbors(NodeId node_id, const EvalInfo & eval_info, Visitor && visitor)
   {
     auto & graph_data = m_Graph[node_id];
     for (auto & elem : graph_data.m_Connections)
@@ -129,7 +129,7 @@ public:
   }
 
   template <typename Visitor>
-  void VisitNeighbors(NodeId node_id, Visitor && visitor) const
+  void VisitNeighbors(NodeId node_id, const EvalInfo & eval_info, Visitor && visitor) const
   {
     auto & graph_data = m_Graph[node_id];
     for (auto & elem : graph_data.m_Connections)

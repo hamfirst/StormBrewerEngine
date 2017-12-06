@@ -66,7 +66,7 @@ public:
   template <typename Target, typename AnimState, typename ... Args>
   void SendEventsTo(Target & target, AnimState & state, Args && ... args)
   {
-    auto visitor = [&](const RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
+    auto visitor = [&](const RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
     {
       target.TriggerEventHandler(ev.GetTypeNameHash(), ev.GetValue(), std::forward<Args>(args)..., start, end);
     };
@@ -86,7 +86,7 @@ private:
   friend class SpriteEngineData;
   struct AnimEventInfo
   {
-    RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
+    RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
     int m_FrameIndex;
     int m_FrameDelay;
     int m_EventBoxStart;

@@ -9,7 +9,7 @@ template <>
 struct StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 6;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -126,6 +126,28 @@ struct StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::field_data<4, S
   match_const_t<Self, float> & Get() { return self.m_EffectTimeAlive; }
   std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_EffectTimeAlive; }
   void SetDefault() { self.m_EffectTimeAlive = StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::GetDefault().m_EffectTimeAlive; }
+};
+
+template <>
+struct StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::field_data_static<5>
+{
+  using member_type = float; // float
+  static constexpr auto GetName() { return "m_ParticleId"; }
+  static constexpr auto GetType() { return "float"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x87D1B063; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetMemberPtr() { return &VisualEffectInstanceEmitterGlobalData::m_ParticleId; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::field_data<5, Self> : public StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, float> & Get() { return self.m_ParticleId; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_ParticleId; }
+  void SetDefault() { self.m_ParticleId = StormReflTypeInfo<VisualEffectInstanceEmitterGlobalData>::GetDefault().m_ParticleId; }
 };
 
 template <>

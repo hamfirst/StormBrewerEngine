@@ -45,3 +45,6 @@ private:
   static struct s_Reg_##Prefix##CallList { s_Reg_##Prefix##CallList(){ CallList.AddCall(Call); } } sv_Reg_##Prefix##CallList __attribute__((used)); \
   void __attribute__((used)) s_Reg_##Prefix##CallListFunc() { printf("%p", &sv_Reg_##Prefix##CallList); }
 #endif
+
+#define DECLARE_PREMAIN_CALL(Prefix) void s_Reg_##Prefix##CallListFunc();
+#define REFERENCE_PREMAIN_CALL(Prefix) s_Reg_##Prefix##CallListFunc();

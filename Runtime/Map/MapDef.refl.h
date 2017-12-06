@@ -244,7 +244,7 @@ struct RUNTIME_EXPORT MapPathfindingCalculatedInfo
   int m_StartY;
   int m_SizeX;
   int m_SizeY;
-  std::vector<uint8_t> m_GridInfo;
+  std::vector<std::tuple<uint8_t, uint8_t, uint8_t>> m_GridInfo;
 
 #else
 
@@ -263,12 +263,16 @@ struct RUNTIME_EXPORT MapPathfindingInfo
 #ifndef MAP_PLATFORMER_PATHFINDING
   RInt m_GridWidth = 8;
   RInt m_GridHeight = 8;
+
+  RInt m_MaximumClearanceX = 32;
+  RInt m_MaximumClearanceY = 32;
 #else
   RInt m_MinimumClearance = 24;
   RInt m_MaximumClearance = 200;
 #endif
 
   RMergeList<RString> m_CollisionMask = { "Collision" };
+  RBool STORM_REFL_ATTR(noui) m_Valid = false;
   ROpaque<MapPathfindingCalculatedInfo> STORM_REFL_ATTR(noui) m_CalculatedInfo;
 };
 

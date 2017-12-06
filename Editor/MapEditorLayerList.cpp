@@ -5,6 +5,7 @@
 #include <QStyle>
 #include <QStyleOptionFrame>
 #include <QMouseEvent>
+#include <QApplication>
 
 #include <StormRefl/StormReflJson.h>
 #include <StormData/StormDataJson.h>
@@ -230,7 +231,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
         label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kAnchor, index };
         ptr->UpdateScroll();
 
-        if (ptr->m_SelectNewLayers)
+        if (ptr->m_SelectNewLayers && (QApplication::keyboardModifiers() & Qt::ShiftModifier) == 0)
         {
           ptr->m_Editor->ChangeLayerSelection(label.m_LayerInfo, false);
         }

@@ -217,11 +217,11 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public
 template <>
 struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
 {
-  using member_type = RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>
+  using member_type = RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>
   static constexpr auto GetName() { return "m_EventData"; }
-  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x520C090D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x5C470443; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }
 };
@@ -231,8 +231,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<2, Self> : public
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>> & Get() { return self.m_EventData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>>> & Get() const { return self.m_EventData; }
+  match_const_t<Self, RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>> & Get() { return self.m_EventData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>>> & Get() const { return self.m_EventData; }
   void SetDefault() { self.m_EventData = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_EventData; }
 };
 

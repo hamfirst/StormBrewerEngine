@@ -2,6 +2,8 @@
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Collision/CollisionDatabase.h"
 
+#include "Foundation/Math/Intersection.h"
+
 #include <sb/vector.h>
 
 CollisionDatabase::CollisionDatabase(std::size_t num_collision_layers) :
@@ -49,6 +51,30 @@ uint32_t CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collisio
   }
 
   return 0;
+}
+
+uint32_t CollisionDatabase::CheckLineOfSight(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
+{
+  uint32_t result = 0;
+
+  auto query_box = Box::FromPoints(start, end);
+  std::vector<Box> box_list;
+
+  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
+  {
+    m_CollisionLayers[index].QueryBoxes(query_box, box_list);
+    for (auto & elem : box_list)
+    {
+      if (LineBoxIntersection(start, end, elem.m_Start, elem.m_End))
+      {
+        result |= (1 << index);
+      }
+    }
+
+    box_list.clear();
+  }
+
+  return result;
 }
 
 uint32_t CollisionDatabase::CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const
