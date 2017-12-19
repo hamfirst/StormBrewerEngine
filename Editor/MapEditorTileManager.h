@@ -51,9 +51,9 @@ public:
   void CopySelection();
   void PasteSelection(const Vector2 & screen_center);
 
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center);
-  void DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center);
-  void DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderUtil & render_util);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
 
   void SetPreviewTiles(const std::vector<MapTile> & tiles);
   void SetPreviewAnimations(const std::vector<MapAnimatedTile> & anims);

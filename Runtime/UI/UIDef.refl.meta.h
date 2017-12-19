@@ -250,11 +250,11 @@ struct StormReflTypeInfo<UIDef>
 template <>
 struct StormReflTypeInfo<UIDef>::field_data_static<0>
 {
-  using member_type = RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>
+  using member_type = RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>"; }
+  static constexpr auto GetType() { return "RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1FA8A29E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4B1250EF; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_InitData; }
 };

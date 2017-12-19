@@ -54,6 +54,15 @@
     <ClCompile Include="ServerObjects\Player\States\PlayerStateJump.refl.cpp">
       <Filter>ServerObjects\Player\States</Filter>
     </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateLand.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.cpp">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\GameLogicSystems.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMessages.refl.h" />
@@ -146,6 +155,21 @@
     </ClInclude>
     <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.meta.h">
       <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateLand.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateLand.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.meta.h">
+      <Filter>ServerObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\GameLogicSystems.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,12 +11,17 @@
 
 #include "StormRefl/StormReflMetaInfoBase.h"
 
+
+#define DECLARE_PLAYER_STATE \
+        NET_REFL; \
+        STORM_REFL_FUNCS;
+
 class PlayerServerObject;
 
 class PlayerStateBase
 {
 public:
-  NET_REFL;
+  DECLARE_PLAYER_STATE;
   NET_DECLARE_BASE_TYPE;
 
   virtual void Init(PlayerServerObject & player, GameLogicContainer & game_container) {};
@@ -34,3 +39,4 @@ public:
 
 template <typename T>
 using PlayerStateEventHandler = EventHandler<T, GameLogicContainer &, const Box *, const Box *>;
+

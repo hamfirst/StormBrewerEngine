@@ -62,7 +62,7 @@ public:
   Box GetTextSize(czstr text, int font_id);
   Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, const char * prompt = "");
 
-  bool BindGlyphTexture(int font_id, int texture_stage);
+  bool BindGlyphTexture(RenderState & render_state, int font_id, int texture_stage);
 
   void SetTextMode(TextRenderMode mode = TextRenderMode::kNormal);
 

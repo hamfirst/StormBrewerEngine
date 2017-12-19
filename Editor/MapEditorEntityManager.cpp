@@ -259,7 +259,7 @@ Optional<std::size_t> MapEditorEntityManager::GetSingleSelectionIndex()
   return m_SelectedEntities[0];
 }
 
-void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
   {
@@ -283,18 +283,18 @@ void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 
 
       if (BoxIntersect(viewport_bounds, frame))
       {
-        auto & shader = g_ShaderManager.GetDefaultShader();
+        auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
 
         RenderVec2 draw_pos = pos;
         draw_pos -= screen_center;
 
-        SpriteEngineData::RenderSprite(data->m_Sprite, 0, 0, kSpriteDefaultSkin, draw_pos);
+        SpriteEngineData::RenderSprite(data->m_Sprite, render_state, 0, 0, kSpriteDefaultSkin, draw_pos);
       }
     }
   }
 }
 
-void MapEditorEntityManager::DrawPreviewEntity(const RenderVec2 & screen_center)
+void MapEditorEntityManager::DrawPreviewEntity(const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   auto entity = m_PreviewEntity.GetResource();
   if (entity == nullptr || entity->IsLoaded() == false || m_PreviewEntityPosition == false)
@@ -307,10 +307,10 @@ void MapEditorEntityManager::DrawPreviewEntity(const RenderVec2 & screen_center)
   RenderVec2 draw_pos = RenderVec2{ m_PreviewEntityPosition.Value() };
   draw_pos -= screen_center;
 
-  SpriteEngineData::RenderSprite(sprite, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
+  SpriteEngineData::RenderSprite(sprite, render_state, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
 }
 
-void MapEditorEntityManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util)
+void MapEditorEntityManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_SelectedEntities.size() == 0)
   {
@@ -348,17 +348,15 @@ void MapEditorEntityManager::DrawSelection(VertexBuffer & vertex_buffer, const B
   }
 
   line_builder.FillVertexBuffer(vertex_buffer);
-  auto & shader = g_ShaderManager.GetDefaultShader();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
-  render_util.GetDefaultTexture().BindTexture(0);
 
-  vertex_buffer.Bind();
-
-  vertex_buffer.CreateDefaultBinding(shader);
-  vertex_buffer.Draw();
-  vertex_buffer.Unbind();
+  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindVertexBuffer(vertex_buffer);
+  render_state.Draw();
 }
 
 void MapEditorEntityManager::ToggleHidden()

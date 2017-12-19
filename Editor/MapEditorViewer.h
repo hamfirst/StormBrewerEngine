@@ -152,7 +152,6 @@ private:
 
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;
-  VertexArray m_GridArray;
 
   ShaderProgram m_DrawUtilShader;
 

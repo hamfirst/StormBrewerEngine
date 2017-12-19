@@ -483,11 +483,11 @@ void GameController::Update(GameLogicContainer & game)
   auto & event_system = game.GetServerObjectEventSystem();
 
   update_list.CallFirst(game);
-  event_system.FinalizeEvents(game, game.GetObjectManager());
+  event_system.FinalizeEvents(game.GetObjectManager());
   update_list.CallMiddle(game);
-  event_system.FinalizeEvents(game, game.GetObjectManager());
+  event_system.FinalizeEvents(game.GetObjectManager());
   update_list.CallLast(game);
-  event_system.FinalizeEvents(game, game.GetObjectManager());
+  event_system.FinalizeEvents(game.GetObjectManager());
 
   for (auto player : game_data.m_Players)
   {

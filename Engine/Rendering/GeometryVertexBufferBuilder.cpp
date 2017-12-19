@@ -414,23 +414,21 @@ void GeometryVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
   vertex_buffer.SetBufferData(m_List, VertexBufferType::kTriangles);
 }
 
-void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<const ShaderProgram> shader)
+void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<ShaderProgram> shader)
 {
   if (shader == nullptr)
   {
-    shader = &g_ShaderManager.GetDefaultShader();
+    shader = &g_ShaderManager.GetDefaultWorldSpaceShader();
   }
 
-  shader->Bind();
+  render_state.BindShader(*shader);
 
   auto & vertex_buffer = render_util.GetScratchBuffer();
   FillVertexBuffer(vertex_buffer);
 
-  vertex_buffer.Bind();
-  render_util.GetDefaultTexture().BindTexture(0);
-
-  vertex_buffer.CreateDefaultBinding(*shader);
-  vertex_buffer.Draw();
+  render_state.BindVertexBuffer(vertex_buffer);
+  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.Draw();
 }
 
 bool GeometryVertexBufferBuilder::HasGeo() const

@@ -89,6 +89,10 @@
     <ClCompile Include="ServerObject\ServerObjectInitData.refl.cpp" />
     <ClCompile Include="ServerObject\ServerObjectInitDataTypeDatabase.cpp" />
     <ClCompile Include="ServerObject\ServerObjectManager.cpp" />
+    <ClCompile Include="ServerObject\ServerObjectOverlapSystem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ServerObject\ServerObjectResource.cpp">
       <SubType>
       </SubType>
@@ -248,6 +252,11 @@
     <ClInclude Include="ServerObject\ServerObjectInitDataTypeDatabase.h" />
     <ClInclude Include="ServerObject\ServerObjectManager.h" />
     <ClInclude Include="ServerObject\ServerObjectMetaFuncs.h" />
+    <ClInclude Include="ServerObject\ServerObjectOverlapRegistrationMacros.h" />
+    <ClInclude Include="ServerObject\ServerObjectOverlapSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ServerObject\ServerObjectRegistrationMacros.h" />
     <ClInclude Include="ServerObject\ServerObjectResource.h">
       <SubType>

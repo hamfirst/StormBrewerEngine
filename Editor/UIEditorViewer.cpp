@@ -11,6 +11,7 @@
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Camera/Camera.h"
 #include "Engine/Input/KeyboardState.h"
+#include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 
 #include "GameClient/GameCamera.h"
 
@@ -154,7 +155,7 @@ void UIEditorViewer::resizeGL(int w, int h)
   if (m_FakeWindow)
   {
     m_FakeWindow->SetWindowSize(Vector2(w, h));
-    m_RenderState.SetScreenSize(Vector2(w, h));
+    m_RenderState.SetScreenSize(Vector2(std::max(w + 100, 1), std::max(h + 100, 1)));
   }
 }
 
@@ -164,6 +165,18 @@ void UIEditorViewer::paintGL()
 
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
+
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  m_RenderState.BindShader(shader);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), Vector2f(kDefaultResolutionWidth, kDefaultResolutionHeight) * -0.5f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+
+  GeometryVertexBufferBuilder builder;
+  builder.Rectangle(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)), 2.0f, Color(255, 255, 255, 255));
+  builder.DrawDefault(m_RenderState, m_RenderUtil);
 
   if (m_UIManager)
   {

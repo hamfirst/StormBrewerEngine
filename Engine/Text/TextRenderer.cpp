@@ -294,9 +294,9 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
   }
 }
 
-void TextRenderer::BindGlyphTexture(int texture_stage)
+void TextRenderer::BindGlyphTexture(RenderState & render_state, int texture_stage)
 {
-  m_Texture.BindTexture(texture_stage);
+  render_state.BindTexture(m_Texture, texture_stage);
 }
 
 Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len)

@@ -205,8 +205,11 @@ Vector2 MapEditorTileSelector::VisitElements(Delegate<void, QImage *, int, int, 
     int dst_w = texture_data.m_FrameWidth * magnification;
     int dst_h = texture_data.m_FrameHeight * magnification;
 
-    auto display_size = GetFrameDisplaySize(texture_data.m_FrameWidth, texture_data.m_FrameHeight, texture->GetWidth(), texture->GetHeight(), magnification, spacing_size);
     auto frame_size = GetSizeInFrames(texture_data.m_FrameWidth, texture_data.m_FrameHeight, texture->GetWidth(), texture->GetHeight());
+    int width_in_frames = frame_size.x;
+    int height_in_frames = frame_size.y;
+
+    auto display_size = GetFrameDisplaySize(texture_data.m_FrameWidth, texture_data.m_FrameHeight, texture->GetWidth(), texture->GetHeight(), magnification, spacing_size);
 
     Vector2 location;
 
@@ -234,7 +237,9 @@ Vector2 MapEditorTileSelector::VisitElements(Delegate<void, QImage *, int, int, 
     VisitFrames(texture_data.m_FrameWidth, texture_data.m_FrameHeight, 
       texture->GetWidth(), texture->GetHeight(), [&](int src_x, int src_y, int fx, int fy, int frame_index) 
     {
-      uint64_t frame_id = tex_frame_id | frame_index;
+      auto actual_frame_index = (height_in_frames - fy - 1) * width_in_frames + fx;
+
+      uint64_t frame_id = tex_frame_id | actual_frame_index;
 
       int dst_x = src_x * magnification + fx * spacing_size - m_ScrollX->value() + location.x + spacing_size;
       int dst_y = src_y * magnification + fy * spacing_size - m_ScrollY->value() + location.y + spacing_size + height_offset;
@@ -302,7 +307,7 @@ Vector2 MapEditorTileSelector::VisitElements(Delegate<void, QImage *, int, int, 
       continue;
     }
 
-    auto display_size = m_TileSheet.GetResource()->GetAnimationMaxSize(animation_hash);
+    auto display_size = m_TileSheet.GetResource()->GetAnimationMaxSize(animation_hash) * magnification;
     display_size.x += spacing_size * 2;
     display_size.y += spacing_size * 2;
 

@@ -28,6 +28,18 @@ if(BUILD_CLIENT)
 
     add_executable(ClientExe MACOSX_BUNDLE Dummy.cpp "${IOSAssets}")
 
+  elseif(WEB)
+    add_definitions(-D_WEB)
+    include_directories(${PROJECT_SOURCE_DIR} External External/Web)
+  
+    file(GLOB_RECURSE ClientSrc 
+      ${PROJECT_SOURCE_DIR}/GameClientExe/*.cpp
+      ${PROJECT_SOURCE_DIR}/GameClient/*.cpp
+      ${PROJECT_SOURCE_DIR}/Game/*.cpp
+      ${PROJECT_SOURCE_DIR}/Runtime/*.cpp
+      ${PROJECT_SOURCE_DIR}/Engine/*.cpp)
+     
+    add_executable(ClientExe ${ClientSrc})
   else()
     add_executable(ClientExe Dummy.cpp)
   endif()
@@ -44,7 +56,7 @@ if(BUILD_CLIENT)
     target_link_libraries(ClientExe -Wl,-all_load Game -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load Runtime -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load Engine -Wl,-noall_load)
-  else()
+  elseif(NOT WEB)
     target_link_libraries(ClientExe -Wl,--whole-archive GameClientExe -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive GameClient -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive Game -Wl,--no-whole-archive)
@@ -52,8 +64,11 @@ if(BUILD_CLIENT)
     target_link_libraries(ClientExe -Wl,--whole-archive Engine -Wl,--no-whole-archive)
   endif()
   
-  target_link_libraries(ClientExe Runtime)
-  target_link_libraries(ClientExe Engine)
+  if(NOT WEB)
+    target_link_libraries(ClientExe Runtime)
+    target_link_libraries(ClientExe Engine)
+  endif()
+  
   target_link_libraries(ClientExe Foundation)
   target_link_libraries(ClientExe External)
   target_link_libraries(ClientExe StormNetCustomBindings)

@@ -18,6 +18,13 @@ struct StormReflTypeInfo<PlayerStateBase>
   static PlayerStateBase & GetDefault() { static PlayerStateBase def; return def; }
 };
 
+template <>
+struct StormReflFuncInfo<PlayerStateBase>
+{
+  static constexpr int funcs_n = 0;
+  template <int N> struct func_data_static {};
+};
+
 namespace StormReflFileInfo
 {
   struct PlayerStateBase

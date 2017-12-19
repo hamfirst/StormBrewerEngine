@@ -545,8 +545,8 @@ void MapEditorViewer::paintGL()
   viewport_bounds.m_End += Vector2(1, 1);
 
   m_RenderState.EnableBlendMode();
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  m_RenderState.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), window_end - window_start);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
@@ -580,7 +580,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(m_DrawBuffer, viewport_bounds, m_Center); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(m_DrawBuffer, viewport_bounds, m_Center, m_RenderState, m_RenderUtil); });
   }
 
   for (auto elem : m_Map.m_ManualTileLayers)
@@ -603,7 +603,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center, m_RenderState, m_RenderUtil); });
   }
 
   for (auto elem : m_Map.m_EntityLayers)
@@ -626,7 +626,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center, m_RenderState, m_RenderUtil); });
   }
 
   for (auto elem : m_Map.m_ServerObjectLayers)
@@ -649,7 +649,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, m_Center, m_RenderState, m_RenderUtil); });
   }
 
   for (auto & list : draw_callbacks)
@@ -673,8 +673,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, m_Center);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
+    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, m_Center, m_RenderState, m_RenderUtil);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderState, m_RenderUtil);
   }
 
   for (auto elem : m_Map.m_ManualTileLayers)
@@ -692,8 +692,8 @@ void MapEditorViewer::paintGL()
 
     if (layer != nullptr)
     {
-      layer->DrawPreviewTiles(m_DrawBuffer, m_Center);
-      layer->DrawSelectedTiles(m_DrawBuffer, m_Center, m_RenderUtil);
+      layer->DrawPreviewTiles(m_DrawBuffer, m_Center, m_RenderState, m_RenderUtil);
+      layer->DrawSelectedTiles(m_DrawBuffer, m_Center, m_RenderState, m_RenderUtil);
     }
   }
 
@@ -710,8 +710,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewEntity(m_Center);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
+    layer->DrawPreviewEntity(m_Center, m_RenderState, m_RenderUtil);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderState, m_RenderUtil);
   }
 
   for (auto elem : m_Map.m_ServerObjectLayers)
@@ -727,8 +727,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewServerObject(m_Center);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderUtil);
+    layer->DrawPreviewServerObject(m_Center, m_RenderState, m_RenderUtil);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, m_Center, m_RenderState, m_RenderUtil);
   }
 
   GeometryVertexBufferBuilder builder;
@@ -859,7 +859,7 @@ void MapEditorViewer::paintGL()
 
   if (builder.HasGeo())
   {
-    m_DrawUtilShader.Bind();
+    m_RenderState.BindShader(m_DrawUtilShader);
 
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), window_end - window_start);
@@ -867,15 +867,14 @@ void MapEditorViewer::paintGL()
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_Center } *-1.0f);
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
-    m_RenderUtil.GetDefaultTexture().BindTexture(0);
-
     builder.FillVertexBuffer(m_DrawBuffer);
-    m_DrawBuffer.Bind();
-    m_DrawBuffer.CreateDefaultBinding(m_DrawUtilShader);
-    m_DrawBuffer.Draw();
+
+    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+    m_RenderState.BindVertexBuffer(m_DrawBuffer);
+    m_RenderState.Draw();
   }
 
-  shader.Bind();
+  m_RenderState.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -m_Center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
@@ -885,16 +884,12 @@ void MapEditorViewer::paintGL()
     builder.FilledRectangle(m_SelectionBox.Value(), Color(0.7, 0.9, 1.0f, 0.4f));
     builder.FillVertexBuffer(m_DrawBuffer);
 
-    m_RenderUtil.GetDefaultTexture().BindTexture(0);
-
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -m_Center);
 
-    m_DrawBuffer.Bind();
-    m_DrawBuffer.CreateDefaultBinding(shader);
-    m_DrawBuffer.Draw();
+    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+    m_RenderState.BindVertexBuffer(m_DrawBuffer);
+    m_RenderState.Draw();
   }
-
-  shader.Unbind();
 
   if (m_GridWidth != 0 && m_GridHeight != 0 && m_DrawGrid)
   {
@@ -931,15 +926,9 @@ void MapEditorViewer::paintGL()
     }
 
     vertex_builder.FillVertexBuffer(m_GridBuffer);
-    m_GridArray.CreateDefaultBinding(m_GridShader, m_GridBuffer);
-
-    m_GridShader.Bind();
-    m_GridArray.Bind();
-
-    m_GridBuffer.Draw();
-
-    m_GridShader.Unbind();
-    m_GridArray.Unbind();
+    m_RenderState.BindShader(m_GridShader);
+    m_RenderState.BindVertexBuffer(m_GridBuffer);
+    m_RenderState.Draw();
   }
 
   m_RenderState.DisableBlendMode();

@@ -3,13 +3,15 @@
 #include "Foundation/CallList/CallList.h"
 
 #include "Engine/Rendering/ShaderProgram.h"
+#include "Engine/Rendering/VertexArray.h"
 
 class ENGINE_EXPORT ShaderManager
 {
 public:
 
-  const ShaderProgram & GetShader(uint32_t shader_name_hash);
-  const ShaderProgram & GetDefaultShader();
+  ShaderProgram & GetShader(uint32_t shader_name_hash);
+  ShaderProgram & GetDefaultWorldSpaceShader();
+  ShaderProgram & GetDefaultScreenSpaceShader();
 
   void RegisterShader(ShaderProgram && shader_prgram, czstr shader_name);
   void RegisterShader(czstr vertex_program, czstr fragment_program, czstr shader_name);

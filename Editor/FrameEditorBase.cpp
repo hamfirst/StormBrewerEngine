@@ -299,22 +299,21 @@ void FrameEditorBase::paintGL()
     matrix.w *= -1.0f;
   }
 
-  auto & default_shader = g_ShaderManager.GetDefaultShader();
-  default_shader.Bind();
+  auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  m_RenderState.BindShader(default_shader);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_Center } *-1.0f);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
 
-  texture->GetTexture().BindTexture(0);
+  m_RenderState.BindTexture(*texture);
 
   QuadVertexBufferBuilder builder;
   builder.AddFrame(frame_box, texture_size, frame_size, m_FrameId & 0xFFFF, Color(255, 255, 255, 255));
   builder.FillVertexBuffer(m_VertexBuffer);
 
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(default_shader);
-  m_VertexBuffer.Draw();
+  m_RenderState.BindVertexBuffer(m_VertexBuffer);
+  m_RenderState.Draw();
 
   frame_box.m_End += Vector2(1, 1);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
@@ -363,15 +362,14 @@ void FrameEditorBase::paintGL()
       line_builder.AddLine(line);
     }
 
-    m_RenderUtil.GetDefaultTexture().BindTexture(0);
+    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
 
     line_builder.FillVertexBuffer(m_VertexBuffer);
-    m_VertexBuffer.Bind();
-    m_VertexBuffer.CreateDefaultBinding(default_shader);
-    m_VertexBuffer.Draw();
+    m_RenderState.BindVertexBuffer(m_VertexBuffer);
+    m_RenderState.Draw();
   }
 
-  m_Shader.Bind();
+  m_RenderState.BindShader(m_Shader);
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
@@ -383,12 +381,11 @@ void FrameEditorBase::paintGL()
 
   DrawData();
 
-  m_RenderUtil.GetDefaultTexture().BindTexture(0);
+  m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
 
   m_GeometryBuidler->FillVertexBuffer(m_VertexBuffer);
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(m_Shader);
-  m_VertexBuffer.Draw();
+  m_RenderState.BindVertexBuffer(m_VertexBuffer);
+  m_RenderState.Draw();
 
   m_GeometryBuidler.Clear();
 }

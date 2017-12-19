@@ -92,7 +92,7 @@ void UIElementSpriteFrame::RenderDefault(RenderState & render_state, RenderUtil 
   m_State.m_Matrix.z = -sc.y * m_Data.m_ScaleY;
   m_State.m_Matrix.w = sc.x * m_Data.m_ScaleY;
 
-  m_Sprite.GetResource()->Render(m_State, Vector2((int)m_Data.m_PositionX, (int)m_Data.m_PositionY) + offset);
+  m_Sprite.GetResource()->Render(render_state, m_State, Vector2((int)m_Data.m_PositionX, (int)m_Data.m_PositionY) + offset);
 }
 
 const UIElementSpriteFrameInitData & UIElementSpriteFrame::GetInitData()

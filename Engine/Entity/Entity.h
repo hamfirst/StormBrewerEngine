@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Foundation/SkipField/SkipFieldIterator.h"
+#include "Runtime/Event/Event.h"
 #include "Runtime/Event/EventSystem.h"
 #include "Runtime/Event/EventDispatcher.h"
 #include "Runtime/Sprite/SpriteResource.h"
@@ -78,7 +79,7 @@ public:
     m_EventSystem->PushEventReceiver(this, box, Event::TypeNameHash);
   }
 
-  void TriggerEventHandler(uint32_t event_type, const void * ev);
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
 
   NotNullPtr<EngineState> GetEngineState();
   NotNullPtr<GameContainer> GetGameContainer();

@@ -87,12 +87,12 @@ void UIElementShape::RenderDefault(RenderState & render_state, RenderUtil & rend
     builder.FilledEllipse(Vector2f(center_x, center_y), size_x / 2.0f, size_y / 2.0f, c, 50);
   }
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-  render_util.GetDefaultTexture().BindTexture(0);
+  render_state.BindTexture(render_util.GetDefaultTexture());
 
   builder.DrawDefault(render_state, render_util, &shader);
 }

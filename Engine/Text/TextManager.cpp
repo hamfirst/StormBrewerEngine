@@ -150,20 +150,16 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kTriangles);
 
-  m_TextShader.Bind();
-  m_TextVertexBuffer.Bind();
-  m_TextVertexBuffer.CreateDefaultBinding(m_TextShader);
+  render_state.BindShader(m_TextShader);
+  render_state.BindVertexBuffer(m_TextVertexBuffer);
 
-  font->BindGlyphTexture(0);
+  font->BindGlyphTexture(render_state, 0);
 
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_GlyphTexture"), 0);
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetRenderWidth(), (float)render_state.GetRenderHeight());
   m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
 
-  m_TextVertexBuffer.Draw();
-
-  m_TextVertexBuffer.Unbind();
-  m_TextShader.Unbind();
+  render_state.Draw();
 }
 
 void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
@@ -222,7 +218,7 @@ Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int fo
   }
 }
 
-bool TextManager::BindGlyphTexture(int font_id, int texture_stage)
+bool TextManager::BindGlyphTexture(RenderState & render_state, int font_id, int texture_stage)
 {
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
@@ -236,7 +232,7 @@ bool TextManager::BindGlyphTexture(int font_id, int texture_stage)
     return false;
   }
 
-  font->BindGlyphTexture(texture_stage);
+  font->BindGlyphTexture(render_state, texture_stage);
   return true;
 }
 

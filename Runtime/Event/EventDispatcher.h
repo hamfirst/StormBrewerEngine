@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Runtime/RuntimeCommon.h"
+#include "Runtime/Event/Event.h"
 
 #include "Foundation/Any/Any.h"
 
@@ -18,12 +19,12 @@ public:
     uint32_t m_HandlerKey;
 
     EventDelegateBuffer m_Handler;
-    void(*m_Caller)(EventDelegateBuffer &, const void *);
+    bool(*m_Caller)(EventDelegateBuffer &, const void *);
     bool m_Dead;
   };
 
   template <typename EventType>
-  uint32_t AddEventHandler(Delegate<void, const EventType &> && handler, const UserData & user_data)
+  uint32_t AddEventHandler(Delegate<bool, const EventType &> && handler, const UserData & user_data)
   {
     m_EventHandlers.emplace_back(EventHandler {
       user_data,
@@ -32,8 +33,8 @@ public:
       EventDelegateBuffer(std::move(handler)),
       [](EventDelegateBuffer & handler, const void * event)
       { 
-        auto del = handler.Get<Delegate<void, const EventType &>>();
-        del->Call(*static_cast<const EventType *>(event));
+        auto del = handler.Get<Delegate<bool, const EventType &>>();
+        return del->Call(*static_cast<const EventType *>(event));
       },
       false
     });
@@ -64,15 +65,17 @@ public:
     }
   }
 
-  void TriggerEvent(uint32_t type_name_hash, const void * event)
+  bool TriggerEvent(uint32_t type_name_hash, const void * event)
   {
     for (auto & handler : m_EventHandlers)
     {
       if (handler.m_EventType == type_name_hash && handler.m_Dead == false)
       {
-        handler.m_Caller(handler.m_Handler, event);
+        return handler.m_Caller(handler.m_Handler, event);
       }
     }
+
+    return true;
   }
 
   template <typename T> 

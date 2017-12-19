@@ -13,7 +13,7 @@
 
 Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
-void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 & position);
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
 
 SpriteResource::SpriteResource(Any && load_data, uint64_t path_hash) :
   DocumentResourceBase(std::move(load_data), path_hash),
@@ -263,9 +263,9 @@ bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & 
   return true;
 }
 
-void SpriteResource::Render(EntityRenderState & render_state, Vector2 position)
+void SpriteResource::Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position)
 {
-  RenderSprite(m_EngineData, render_state, position);
+  RenderSprite(m_EngineData, render_state, entity_render_state, position);
 }
 
 Box SpriteResource::GetDefaultSingleBox()

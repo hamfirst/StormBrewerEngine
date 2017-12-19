@@ -81,11 +81,11 @@ void UIManager::Update(InputState & input_state, RenderState & render_state, con
 
 void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
 {
-  auto & shader = g_ShaderManager.GetDefaultShader();
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   auto render_size = (RenderVec2)render_state.GetRenderSize();
 
-  shader.Bind();
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_size);
+  render_state.BindShader(shader);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), Vector2f(render_state.GetScreenSize()));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);

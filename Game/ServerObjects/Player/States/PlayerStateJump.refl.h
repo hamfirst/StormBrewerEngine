@@ -13,7 +13,7 @@
 class PlayerStateJump : public PlayerStateBase, public PlayerStateEventHandler<PlayerStateJump>
 {
 public:
-  NET_REFL;
+  DECLARE_PLAYER_STATE;
 
   virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) override;
   virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) override;

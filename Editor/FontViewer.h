@@ -46,7 +46,6 @@ private:
   RenderUtil m_RenderUtil;
   ShaderProgram m_Shader;
   VertexBuffer m_VertexBuffer;
-  VertexArray m_VertexArray;
 
   RenderVec2 m_Center = {};
   QtLerpVar m_Magnification;

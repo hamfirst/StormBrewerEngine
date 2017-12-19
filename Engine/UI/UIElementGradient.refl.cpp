@@ -83,16 +83,14 @@ void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & r
   gsl::span<VertexInfo> vert_span = gsl::as_span(verts, 6);
   m_VertexBuffer.SetBufferData(vert_span, VertexBufferType::kTriangles);
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
-  render_util.GetDefaultTexture().BindTexture(0);
-
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(shader);
-  m_VertexBuffer.Draw();
+  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindVertexBuffer(m_VertexBuffer);
+  render_state.Draw();
 }
 
 const UIElementGradientInitData & UIElementGradient::GetInitData()

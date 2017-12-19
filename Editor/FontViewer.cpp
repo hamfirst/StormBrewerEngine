@@ -92,7 +92,6 @@ void FontViewer::initializeGL()
 
   builder.AddQuad(quad);
   builder.FillVertexBuffer(m_VertexBuffer);
-  m_VertexArray.CreateDefaultBinding(m_Shader, m_VertexBuffer);
 }
 
 void FontViewer::resizeGL(int w, int h)
@@ -116,10 +115,10 @@ void FontViewer::paintGL()
     return;
   }
 
-  m_Shader.Bind();
-  m_VertexArray.Bind();
+  m_RenderState.BindShader(m_Shader);
+  m_RenderState.BindVertexBuffer(m_VertexBuffer);
 
-  g_TextManager.BindGlyphTexture(m_FontId, 0);
+  g_TextManager.BindGlyphTexture(m_RenderState, m_FontId, 0);
 
   RenderVec2 tex_center = RenderVec2{ g_EngineSettings.m_FontCacheSize, g_EngineSettings.m_FontCacheSize } * 0.5f;
   RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
@@ -129,10 +128,7 @@ void FontViewer::paintGL()
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
-  m_VertexBuffer.Draw();
-
-  m_Shader.Unbind();
-  m_VertexArray.Unbind();
+  m_RenderState.Draw();
 
   std::string info;
   info += "Width: ";
@@ -157,7 +153,7 @@ void FontViewer::paintGL()
   Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
   Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), m_RenderState.GetScreenSize());
+  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), m_RenderState.GetScreenSize(), m_RenderState);
 
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();

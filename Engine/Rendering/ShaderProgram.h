@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Rendering/VertexArray.h"
 
 class Shader;
 
@@ -22,39 +23,88 @@ public:
   int GetLoadError() const { return m_LoadError; }
   const std::string & GetCompileLog() const { return m_CompileLog; }
 
+  int GetUniformLocation(Hash uniform_name) const;
+  int GetUniformLocation(czstr uniform_name) const;
+
+  void SetUniform(Hash uniform_name, int v1);
+  void SetUniform(Hash uniform_name, int v1, int v2);
+  void SetUniform(Hash uniform_name, int v1, int v2, int v3);
+  void SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4);
+
+  void SetUniform(Hash uniform_name, float v1);
+  void SetUniform(Hash uniform_name, float v1, float v2);
+  void SetUniform(Hash uniform_name, float v1, float v2, float v3);
+  void SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4);
+
+  void SetUniform(Hash uniform_name, const RenderVec2 & v);
+  void SetUniform(Hash uniform_name, const RenderVec3 & v);
+  void SetUniform(Hash uniform_name, const RenderVec4 & v);
+
+protected:
+
   int GetUniformIndex(Hash uniform_name) const;
-  int GetUniformIndex(czstr uniform_name) const;
 
-  void SetUniform(Hash uniform_name, int v1) const;
-  void SetUniform(Hash uniform_name, int v1, int v2) const;
-  void SetUniform(Hash uniform_name, int v1, int v2, int v3) const;
-  void SetUniform(Hash uniform_name, int v1, int v2, int v3, int v4) const;
+  static bool CheckDataDelta(const uint8_t * data_start)
+  {
+    return false;
+  }
 
-  void SetUniform(Hash uniform_name, float v1) const;
-  void SetUniform(Hash uniform_name, float v1, float v2) const;
-  void SetUniform(Hash uniform_name, float v1, float v2, float v3) const;
-  void SetUniform(Hash uniform_name, float v1, float v2, float v3, float v4) const;
+  template <typename T, typename ... Args>
+  static bool CheckDataDelta(const uint8_t * data_start, T && t, Args && ... args)
+  {
+    if (memcmp(data_start, &t, sizeof(T)) != 0)
+    {
+      return true;
+    }
 
-  void SetUniform(Hash uniform_name, const RenderVec2 & v) const;
-  void SetUniform(Hash uniform_name, const RenderVec3 & v) const;
-  void SetUniform(Hash uniform_name, const RenderVec4 & v) const;
+    return CheckDataDelta(data_start + sizeof(T), std::forward<Args>(args)...);
+  }
 
+  template <typename ... Args>
+  static bool CheckDataDeltaAndSize(const uint8_t * data_start, int data_size, Args && ... args)
+  {
+    int args_size = sizeof(std::tuple<std::decay_t<Args>...>);
+    ASSERT(args_size == data_size, "Uniform data size mismatch");
+    return CheckDataDelta(data_start, std::forward<Args>(args)...);
+  }
+
+  static void SetData(uint8_t * data_start)
+  {
+
+  }
+
+  template <typename T, typename ... Args>
+  static void SetData(uint8_t * data_start, T && t, Args && ... args)
+  {
+    memcpy(data_start, &t, sizeof(T));
+    SetData(data_start + sizeof(T), std::forward<Args>(args)...);
+  }
+
+  friend class RenderState;
+  friend class VertexArray;
 
   void Bind() const;  
   void Unbind() const;
 
 private:
 
-  unsigned int m_ProgramName;
-  unsigned int m_LoadError;
-
   friend class VertexArray;
   friend class VertexBuffer;
 
-  friend void CreateDefaultVertexBufferBinding(const ShaderProgram &);
+  struct UniformData
+  {
+    Hash m_NameHash;
+    int m_LocationIndex;
+    int m_DataOffset;
+    int m_DataSize;
+  };
+
+  unsigned int m_ProgramName;
+  unsigned int m_LoadError;
 
   std::string m_CompileLog;
-  std::vector<std::pair<Hash, int>> m_Uniforms;
+  std::vector<UniformData> m_Uniforms;
+  std::unique_ptr<uint8_t[]> m_UniformData;
 };
 
 ShaderProgram ENGINE_EXPORT MakeQuickShaderProgram(const char * vertex_shader, const char * fragment_shader);

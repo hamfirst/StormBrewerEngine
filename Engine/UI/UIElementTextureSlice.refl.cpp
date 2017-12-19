@@ -209,16 +209,14 @@ void UIElementTextureSlice::RenderDefault(RenderState & render_state, RenderUtil
   auto & vertex_buffer = render_util.GetScratchBuffer();
   buffer_builder.FillVertexBuffer(vertex_buffer);
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), (RenderVec2)offset);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-  m_Texture->GetTexture().BindTexture(0);
-
-  vertex_buffer.Bind();
-  vertex_buffer.CreateDefaultBinding(shader);
-  vertex_buffer.Draw();
+  render_state.BindTexture(*m_Texture);
+  render_state.BindVertexBuffer(vertex_buffer);
+  render_state.Draw();
 }
 
 const UIElementTextureSliceInitData & UIElementTextureSlice::GetInitData()

@@ -275,7 +275,7 @@ Optional<std::size_t> MapEditorServerObjectManager::GetSingleSelectionIndex()
   return m_SelectedServerObjects[0];
 }
 
-void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
@@ -304,19 +304,17 @@ void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const Rende
 
         if (BoxIntersect(viewport_bounds, frame))
         {
-          auto & shader = g_ShaderManager.GetDefaultShader();
-
           RenderVec2 draw_pos = pos;
           draw_pos -= screen_center;
 
-          SpriteEngineData::RenderSprite(sprite, 0, 0, kSpriteDefaultSkin, draw_pos);
+          SpriteEngineData::RenderSprite(sprite, render_state, 0, 0, kSpriteDefaultSkin, draw_pos);
         }
       }
     }
   }
 }
 
-void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & screen_center)
+void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   auto entity = m_PreviewEntity.GetResource();
   if (entity == nullptr || entity->IsLoaded() == false || m_PreviewServerObjectPosition == false)
@@ -329,10 +327,10 @@ void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & sc
   RenderVec2 draw_pos = RenderVec2{ m_PreviewServerObjectPosition.Value() };
   draw_pos -= screen_center;
 
-  SpriteEngineData::RenderSprite(sprite, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
+  SpriteEngineData::RenderSprite(sprite, render_state, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
 }
 
-void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util)
+void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_SelectedServerObjects.size() == 0)
   {
@@ -370,17 +368,15 @@ void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, c
   }
 
   line_builder.FillVertexBuffer(vertex_buffer);
-  auto & shader = g_ShaderManager.GetDefaultShader();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
-  render_util.GetDefaultTexture().BindTexture(0);
 
-  vertex_buffer.Bind();
-
-  vertex_buffer.CreateDefaultBinding(shader);
-  vertex_buffer.Draw();
-  vertex_buffer.Unbind();
+  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindVertexBuffer(vertex_buffer);
+  render_state.Draw();
 }
 
 void MapEditorServerObjectManager::ToggleHidden()

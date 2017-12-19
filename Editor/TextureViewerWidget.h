@@ -60,10 +60,8 @@ private:
   RenderUtil m_RenderUtil;
   ShaderProgram m_TextureShader;
   VertexBuffer m_VertexBuffer;
-  VertexArray m_VertexArray;
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;
-  VertexArray m_GridArray;
 
   int m_GridWidth;
   int m_GridHeight;

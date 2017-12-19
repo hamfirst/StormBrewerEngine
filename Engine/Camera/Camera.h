@@ -17,7 +17,7 @@ public:
   void SetScreenResolution(const RenderVec2 & resolution);
   void SetPosition(const RenderVec2 & position);
 
-  void BootstrapShader(const ShaderProgram & shader);
+  void BootstrapShader(ShaderProgram & shader, RenderState & render_state);
 
   const RenderVec2 & GetGameResolution() const;
   const RenderVec2 & GetScreenResolution() const;

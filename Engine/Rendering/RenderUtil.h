@@ -21,10 +21,10 @@ public:
   static void Clear(const Color & color);
   static void SetClearColor(const Color & color);
 
-  void DrawQuad(const Box & box, const Color & color, const RenderVec2 & screen_size);
+  void DrawQuad(const Box & box, const Color & color, const RenderVec2 & screen_size, RenderState & render_state);
 
-  void DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, const RenderVec2 & screen_size);
-  void DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, const RenderVec2 & screen_size);
+  void DrawTexturedQuad(const Box & box, const Color & color, const Texture & texture, const RenderVec2 & screen_size, RenderState & render_state);
+  void DrawTexturedQuad(const Vector2 & start, const Color & color, const Texture & texture, const RenderVec2 & screen_size, RenderState & render_state);
 
   const Texture & GetDefaultTexture() const;
   VertexBuffer & GetScratchBuffer();

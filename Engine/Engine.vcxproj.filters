@@ -460,6 +460,9 @@
     <ClInclude Include="Component\ComponentIterator.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\VertexAttrib.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -740,6 +743,9 @@
     </ClCompile>
     <ClCompile Include="Audio\MusicManager.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\VertexAttrib.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

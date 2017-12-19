@@ -108,6 +108,8 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
   Destroy();
 
   GLenum format;
+  GLenum gl_type = GL_UNSIGNED_BYTE;
+
   switch (type)
   {
   case TextureType::kGrayscale:
@@ -126,6 +128,11 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
     ASSERT(pixel_buffer.GetPixelSize() == 4, "Invalid Pixel Surface");
     format = GL_RGBA;
     break;
+  case TextureType::kFRGBA:
+    ASSERT(pixel_buffer.GetPixelSize() == 16, "Invalid Pixel Surface");
+    format = GL_RGBA;
+    gl_type = GL_FLOAT;
+    break;
   default:
     ASSERT(false, "Invalid pixel surface type");
     return;
@@ -137,7 +144,7 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
   auto texture_destroy_on_error = gsl::finally([&] { if (m_LoadError != 0) { glDeleteTextures(1, &m_TextureName); m_TextureName = 0; } });
 
   glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
-  glTexImage2D(GL_TEXTURE_2D, 0, format, pixel_buffer.GetWidth(), pixel_buffer.GetHeight(), 0, format, GL_UNSIGNED_BYTE, pixel_buffer.GetPixelBuffer()); CHECK_GL_RENDER_ERROR;
+  glTexImage2D(GL_TEXTURE_2D, 0, format, pixel_buffer.GetWidth(), pixel_buffer.GetHeight(), 0, format, gl_type, pixel_buffer.GetPixelBuffer()); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
@@ -152,6 +159,8 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
 void Texture::SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int dst_y)
 {
   GLenum format;
+  GLenum gl_type = GL_UNSIGNED_BYTE;
+
   switch (m_Type)
   {
   case TextureType::kGrayscale:
@@ -170,13 +179,18 @@ void Texture::SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int
     ASSERT(pixel_buffer.GetPixelSize() == 4, "Invalid Pixel Surface");
     format = GL_RGBA;
     break;
+  case TextureType::kFRGBA:
+    ASSERT(pixel_buffer.GetPixelSize() == 16, "Invalid Pixel Surface");
+    format = GL_RGBA;
+    gl_type = GL_FLOAT;
+    break;
   default:
     ASSERT(false, "Texture has not been initialized yet");
     return;
   }
 
   glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
-  glTexSubImage2D(GL_TEXTURE_2D, 0, dst_x, dst_y, pixel_buffer.GetWidth(), pixel_buffer.GetHeight(), format, GL_UNSIGNED_BYTE, pixel_buffer.GetPixelBuffer()); CHECK_GL_RENDER_ERROR;
+  glTexSubImage2D(GL_TEXTURE_2D, 0, dst_x, dst_y, pixel_buffer.GetWidth(), pixel_buffer.GetHeight(), format, gl_type, pixel_buffer.GetPixelBuffer()); CHECK_GL_RENDER_ERROR;
   glBindTexture(GL_TEXTURE_2D, 0); CHECK_GL_RENDER_ERROR;
 }
 

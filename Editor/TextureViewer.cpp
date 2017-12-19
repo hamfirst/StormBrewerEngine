@@ -87,7 +87,6 @@ void TextureViewer::initializeGL()
 
   builder.AddQuad(quad);
   builder.FillVertexBuffer(m_VertexBuffer);
-  m_VertexArray.CreateDefaultBinding(m_Shader, m_VertexBuffer);
 }
 
 void TextureViewer::resizeGL(int w, int h)
@@ -107,10 +106,8 @@ void TextureViewer::paintGL()
   TextureAsset * asset = m_TextureAsset.Get();
   if (asset->IsLoaded())
   {
-    m_Shader.Bind();
-    m_VertexArray.Bind();
-
-    asset->GetTexture().BindTexture(0);
+    m_RenderState.BindShader(m_Shader);
+    m_RenderState.BindTexture(*asset);
 
     RenderVec2 tex_center = RenderVec2{ asset->GetWidth(), asset->GetHeight() } * 0.5f;
     RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
@@ -120,10 +117,7 @@ void TextureViewer::paintGL()
     m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
     m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
-    m_VertexBuffer.Draw();
-
-    m_Shader.Unbind();
-    m_VertexArray.Unbind();
+    m_RenderState.Draw();
 
     std::string info;
     info += "Width: ";
@@ -141,7 +135,7 @@ void TextureViewer::paintGL()
     Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
     Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-    m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), (RenderVec2)m_RenderState.GetScreenSize());
+    m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), (RenderVec2)m_RenderState.GetScreenSize(), m_RenderState);
 
     g_TextManager.SetTextPos(text_start);
     g_TextManager.RenderText(info.data(), -1, m_RenderState);

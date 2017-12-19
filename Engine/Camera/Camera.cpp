@@ -33,9 +33,9 @@ void Camera::SetPosition(const RenderVec2 & position)
   m_Position = position;
 }
 
-void Camera::BootstrapShader(const ShaderProgram & shader)
+void Camera::BootstrapShader(ShaderProgram & shader, RenderState & render_state)
 {
-  shader.Bind();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
@@ -91,8 +91,8 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
   viewport.m_End = viewport.m_Start + m_GameResolution;
 
-  auto & default_shader = g_ShaderManager.GetDefaultShader();
-  default_shader.Bind();
+  auto & default_shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(default_shader);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
 
@@ -102,7 +102,6 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
   engine_state->GetVisualEffectManager()->DrawAllEffects(viewport, draw_list);
   draw_list.Draw(game_container, viewport, m_Position, render_state, render_util);
-  default_shader.Unbind();
 }
 
 void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color)
@@ -111,7 +110,7 @@ void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, con
   b.m_Start -= (Vector2)m_Position + (render_state.GetScreenSize() / 2);
   b.m_End -= (Vector2)m_Position + (render_state.GetScreenSize() / 2);
 
-  render_util.DrawQuad(b, color, render_state.GetScreenSize());
+  render_util.DrawQuad(b, color, render_state.GetScreenSize(), render_state);
 }
 
 void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Vector2 & offset, const Color & color)

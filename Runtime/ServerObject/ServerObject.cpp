@@ -50,6 +50,12 @@ void ServerObject::InitPosition(const Vector2 & pos)
 
 }
 
+Vector2 ServerObject::GetPosition() const
+{
+  ASSERT(false, "Object does not implement position semantics");
+  return {};
+}
+
 czstr ServerObject::GetDefaultEntityBinding()
 {
   return nullptr;
@@ -75,14 +81,19 @@ int ServerObject::GetLifetime() const
   return std::min(m_FramesAlive, 7);
 }
 
-void ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, GameLogicContainer & game_container)
+int ServerObject::GetTypeIndex() const
+{
+  return m_TypeIndex;
+}
+
+bool ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
 {
   if (m_EventDispatch == nullptr)
   {
-    return;
+    return true;
   }
 
-  m_EventDispatch->TriggerEventHandler(this, event_type, ev, game_container);
+  return m_EventDispatch->TriggerEventHandler(this, event_type, ev, meta);
 }
 
 void ServerObject::SetEventDispatch(NotNullPtr<ServerObjectEventDispatch> event_dispatch)

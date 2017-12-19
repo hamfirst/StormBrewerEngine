@@ -7,6 +7,7 @@ enum class TextureType
   kGrayscale,
   kRGB,
   kRGBA,
+  kFRGBA,
   kInvalid,
 };
 
@@ -28,7 +29,6 @@ public:
   void SetTextureData(const PixelBuffer & pixel_buffer, TextureType type);
   void SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int dst_y);
 
-  void BindTexture(int texture_stage) const;
   void SetLinearFilter() const;
 
   int GetLoadError() const { return m_LoadError; }
@@ -37,6 +37,12 @@ public:
   int GetHeight() const { return m_Height; }
 
   Vector2 GetSize() const { return Vector2((int)m_Width, (int)m_Height); }
+
+private:
+
+  friend class RenderState;
+  void BindTexture(int texture_stage) const;
+
 private:
 
   unsigned int m_TextureName;

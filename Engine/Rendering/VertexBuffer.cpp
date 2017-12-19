@@ -9,13 +9,15 @@
 #include <gl3w/gl3w.h>
 
 
-VertexBuffer::VertexBuffer(bool dynamic)
+VertexBuffer::VertexBuffer(bool dynamic, NotNullPtr<VertexAttribSpec> spec)
 {
   m_VertexBufferName = 0;
   m_LoadError = 0;
   m_Type = VertexBufferType::kInvalid;
   m_IndexCount = 0;
   m_Dynamic = dynamic;
+  m_Dirty = false;
+  m_VertexSpec = spec;
 }
 
 VertexBuffer::VertexBuffer(VertexBuffer && rhs) noexcept
@@ -38,15 +40,20 @@ VertexBuffer & VertexBuffer::operator = (VertexBuffer && rhs) noexcept
 void VertexBuffer::Move(VertexBuffer && rhs) noexcept
 {
   m_VertexBufferName = rhs.m_VertexBufferName;
+  m_VertexSpec = rhs.m_VertexSpec;
+  m_VertexArray = std::move(rhs.m_VertexArray);
   m_LoadError = rhs.m_LoadError;
   m_Type = rhs.m_Type;
   m_IndexCount = rhs.m_IndexCount;
   m_Dynamic = rhs.m_Dynamic;
+  m_Dirty = rhs.m_Dirty;
 
   rhs.m_VertexBufferName = 0;
+  rhs.m_VertexSpec = &g_DefaultVertexSpec;
   rhs.m_LoadError = 0;
   rhs.m_Type = VertexBufferType::kInvalid;
   rhs.m_IndexCount = 0;
+  rhs.m_Dirty = false;
 }
 
 void VertexBuffer::Destroy()
@@ -82,6 +89,7 @@ void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, VertexBuff
 
   m_Type = type;
   m_IndexCount = (int)verts.size();
+  m_Dirty = true;
 }
 
 void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
@@ -104,11 +112,6 @@ void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
   
   m_Type = type;
   m_IndexCount = (int)list.m_Size;
-}
-
-void VertexBuffer::CreateDefaultBinding(const ShaderProgram & program)
-{
-  CreateDefaultVertexBufferBinding(program);
 }
 
 void VertexBuffer::Draw(int index_start, int index_end) const
@@ -141,6 +144,12 @@ void VertexBuffer::Draw(int index_start, int index_end) const
   }
 
   glDrawArrays(mode, index_start, (index_end - index_start)); CHECK_GL_RENDER_ERROR;
+}
+
+void VertexBuffer::Sync(RenderState & render_state, const ShaderProgram & shader_program)
+{
+  m_VertexArray.Sync(render_state, *this, shader_program, m_Dirty);
+  m_Dirty = false;
 }
 
 void VertexBuffer::Bind() const

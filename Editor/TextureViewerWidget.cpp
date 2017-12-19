@@ -214,7 +214,6 @@ void TextureViewerWidget::initializeGL()
 
   builder.AddQuad(quad);
   builder.FillVertexBuffer(m_VertexBuffer);
-  m_VertexArray.CreateDefaultBinding(m_TextureShader, m_VertexBuffer);
 }
 
 void TextureViewerWidget::resizeGL(int w, int h)
@@ -234,10 +233,9 @@ void TextureViewerWidget::paintGL()
   TextureAsset * asset = m_TextureAsset.Get();
   if (asset && asset->IsLoaded())
   {
-    m_TextureShader.Bind();
-    m_VertexArray.Bind();
-
-    asset->GetTexture().BindTexture(0);
+    m_RenderState.BindShader(m_TextureShader);
+    m_RenderState.BindVertexBuffer(m_VertexBuffer);
+    m_RenderState.BindTexture(*asset);
 
     RenderVec2 tex_center = RenderVec2{ asset->GetWidth(), asset->GetHeight() } * 0.5f;
     RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
@@ -248,10 +246,8 @@ void TextureViewerWidget::paintGL()
     m_TextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
     m_TextureShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
-    m_VertexBuffer.Draw();
+    m_RenderState.Draw();
 
-    m_TextureShader.Unbind();
-    m_VertexArray.Unbind();
 
     if (m_GridWidth != 0 && m_GridHeight != 0)
     {
@@ -293,15 +289,10 @@ void TextureViewerWidget::paintGL()
       m_RenderState.EnableBlendMode();
 
       vertex_builder.FillVertexBuffer(m_GridBuffer);
-      m_GridArray.CreateDefaultBinding(m_GridShader, m_GridBuffer);
 
-      m_GridShader.Bind();
-      m_GridArray.Bind();
-
-      m_GridBuffer.Draw();
-
-      m_GridShader.Unbind();
-      m_GridArray.Unbind();
+      m_RenderState.BindShader(m_GridShader);
+      m_RenderState.BindVertexBuffer(m_GridBuffer);
+      m_RenderState.Draw();
 
       m_RenderState.DisableBlendMode();
     }
@@ -322,7 +313,7 @@ void TextureViewerWidget::paintGL()
     Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
     Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-    m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), (RenderVec2)m_RenderState.GetScreenSize());
+    m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), (RenderVec2)m_RenderState.GetScreenSize(), m_RenderState);
 
     g_TextManager.SetTextPos(text_start);
     g_TextManager.RenderText(info.data(), -1, m_RenderState);

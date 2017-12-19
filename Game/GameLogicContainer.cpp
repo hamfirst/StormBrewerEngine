@@ -10,6 +10,7 @@ GameLogicContainer::GameLogicContainer(
   GameSimulationEventCallbacks & sim_event_sender,
   GameSharedGlobalResources & shared_global_resources,
   GameSharedInstanceResources & shared_instance_resources,
+  GameLogicSystems & systems,
   const GameStage & stage,
   bool is_authority,
   int & send_timer) :
@@ -21,6 +22,7 @@ GameLogicContainer::GameLogicContainer(
   m_SimEventSender(sim_event_sender),
   m_SharedGlobalResources(shared_global_resources),
   m_SharedInstanceResources(shared_instance_resources),
+  m_Systems(systems),
   m_Stage(stage),
   m_IsAuthority(is_authority),
   m_SendTimer(send_timer)
@@ -66,6 +68,11 @@ GameSharedGlobalResources & GameLogicContainer::GetSharedGlobalResources()
 GameSharedInstanceResources & GameLogicContainer::GetSharedInstanceResources()
 {
   return m_SharedInstanceResources;
+}
+
+GameLogicSystems & GameLogicContainer::GetSystems()
+{
+  return m_Systems;
 }
 
 const GameStage & GameLogicContainer::GetStage()

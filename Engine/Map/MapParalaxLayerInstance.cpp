@@ -147,18 +147,15 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
 
 
     buffer.SetBufferData(verts, VertexBufferType::kTriangles);
-    auto & shader = g_ShaderManager.GetDefaultShader();
-    shader.Bind();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
-    texture->GetTexture().BindTexture(0);
 
-    buffer.Bind();
-
-    buffer.CreateDefaultBinding(shader);
-    buffer.Draw();
-    buffer.Unbind();
+    render_state.BindTexture(*texture);
+    render_state.BindVertexBuffer(buffer);
+    render_state.Draw();
   }
 
   for (auto & tex_info : m_Textures)
@@ -179,19 +176,15 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
         builder.AddQuad(quad);
 
         builder.FillVertexBuffer(buffer);
-        auto & shader = g_ShaderManager.GetDefaultShader();
-        shader.Bind();
+        auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+        render_state.BindShader(shader);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
 
-        texture->GetTexture().BindTexture(0);
-
-        buffer.Bind();
-
-        buffer.CreateDefaultBinding(shader);
-        buffer.Draw();
-        buffer.Unbind();
+        render_state.BindTexture(*texture);
+        render_state.BindVertexBuffer(buffer);
+        render_state.Draw();
       }
     }
   }
@@ -201,12 +194,12 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
     auto & sprite = sprite_info.m_Sprite;
     if (sprite->IsLoaded())
     {
-      auto & shader = g_ShaderManager.GetDefaultShader();
+      auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
 
-      SpriteEngineData::RenderSprite(sprite, sprite_info.m_State.m_AnimIndex, sprite_info.m_State.m_AnimFrame, 0, sprite_info.m_Pos);
+      SpriteEngineData::RenderSprite(sprite, render_state, sprite_info.m_State.m_AnimIndex, sprite_info.m_State.m_AnimFrame, 0, sprite_info.m_Pos);
     }
   }
 }

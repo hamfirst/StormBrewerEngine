@@ -250,7 +250,6 @@ void EditorContainer::OpenEditorForFile(czstr file)
   }
 
   AddRecentFile(file);
-  UpdateRecentFiles();
 
   m_TabWidget->addTab(widget, file_name.data());
   m_TabWidget->setCurrentWidget(widget);
@@ -285,6 +284,64 @@ void EditorContainer::CloseEditor(QWidget * editor, bool send_message)
       m_DocumentEditors.erase(itr);
       return;
     }
+  }
+}
+
+void EditorContainer::AddRecentFile(const QString & filename)
+{
+  QSettings settings;
+  auto files = settings.value("recent_files").toStringList();
+
+  files.removeAll(filename);
+  files.prepend(filename);
+
+  while (files.size() > kNumRecentFiles)
+  {
+    files.removeLast();
+  }
+
+  settings.setValue("recent_files", files);
+
+  UpdateRecentFiles();
+}
+
+void EditorContainer::RemoveRecentFile(const QString & filename)
+{
+  QSettings settings;
+  auto files = settings.value("recent_files").toStringList();
+  files.removeAll(filename);
+  settings.setValue("recent_files", files);
+
+  UpdateRecentFiles();
+}
+
+void EditorContainer::UpdateRecentFiles()
+{
+  QSettings settings;
+  auto files = settings.value("recent_files").toStringList();
+
+  while (files.size() > kNumRecentFiles)
+  {
+    files.removeLast();
+  }
+
+  int max_recent = kNumRecentFiles;
+  int num_files = std::min((int)files.size(), max_recent);
+
+  m_RecentFileSeparator->setVisible(num_files > 0);
+
+  for (int index = 0; index < num_files; index++)
+  {
+    QFileInfo file_info(QString(m_RootPath.data()) + '/' + files[index]);
+    auto menu_option = QString("&%1 - %2").arg(index + 1).arg(file_info.fileName());
+    m_RecentFiles[index]->setText(menu_option);
+    m_RecentFiles[index]->setData(files[index]);
+    m_RecentFiles[index]->setVisible(true);
+  }
+
+  for (int index = num_files; index < kNumRecentFiles; index++)
+  {
+    m_RecentFiles[index]->setVisible(false);
   }
 }
 
@@ -437,8 +494,7 @@ void EditorContainer::newFile()
 
     m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kNew ") + std::to_string(editor.second) + ' ' + canonical_filename);
 
-    AddRecentFile(file_name.data());
-    UpdateRecentFiles();
+    AddRecentFile(canonical_filename.data());
 
     m_TabWidget->addTab(editor.first, file_name.data());
     m_TabWidget->setCurrentWidget(editor.first);
@@ -503,9 +559,7 @@ void EditorContainer::newConfigFile()
   }
 
   m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kNew ") + std::to_string(editor.second) + ' ' + canonical_filename);
-
-  AddRecentFile(file_name.data());
-  UpdateRecentFiles();
+  AddRecentFile(canonical_filename.data());
 
   m_TabWidget->addTab(editor.first, file_name.data());
   m_TabWidget->setCurrentWidget(editor.first);
@@ -623,63 +677,6 @@ void EditorContainer::NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget)
   }
 }
 
-void EditorContainer::AddRecentFile(const QString & filename)
-{
-  QSettings settings;
-  auto files = settings.value("recent_files").toStringList();
-
-  files.removeAll(filename);
-  files.prepend(filename);
-
-  while (files.size() > kNumRecentFiles)
-  {
-    files.removeLast();
-  }
-
-  settings.setValue("recent_files", files);
-}
-
-void EditorContainer::UpdateRecentFiles()
-{
-  QSettings settings;
-  auto files = settings.value("recent_files").toStringList();
-
-  while (files.size() > kNumRecentFiles)
-  {
-    files.removeLast();
-  }
-
-  int max_recent = kNumRecentFiles;
-  int num_files = std::min((int)files.size(), max_recent);
-
-  for (int index = 0; index < num_files; index++)
-  {
-    QFileInfo file_info(QString(m_RootPath.data()) + '/' + files[index]);
-    if (file_info.exists() == false)
-    {
-      files.removeAt(index);
-      index--;
-      num_files--;
-    }
-  }
-
-  m_RecentFileSeparator->setVisible(num_files > 0);
-
-  for (int index = 0; index < num_files; index++)
-  {
-    QFileInfo file_info(QString(m_RootPath.data()) + '/' + files[index]);
-    auto menu_option = QString("&%1 - %2").arg(index + 1).arg(file_info.fileName());
-    m_RecentFiles[index]->setText(menu_option);
-    m_RecentFiles[index]->setData(files[index]);
-    m_RecentFiles[index]->setVisible(true);
-  }
-
-  for (int index = num_files; index < kNumRecentFiles; index++)
-  {
-    m_RecentFiles[index]->setVisible(false);
-  }
-}
-
 void EditorContainer::HandleDocumentServerEvent(DocumentServerEvent & ev)
 {
   if (ev.m_Type == DocumentServerEventType::kConnected)
@@ -733,10 +730,12 @@ void EditorContainer::HandleDocumentServerEvent(DocumentServerEvent & ev)
     {
     case DocumentClientMessageType::kNewFileError:
       QMessageBox::warning(this, "Error creating file", QString("Got file creation error: ") + data);
+      RemoveRecentFile(itr->second.m_Path.data());
       CloseEditor(itr->second.m_Editor, false);
       return;
     case DocumentClientMessageType::kOpenFileError:
       QMessageBox::warning(this, "Error opening file", QString("Got file open error: ") + data);
+      RemoveRecentFile(itr->second.m_Path.data());
       CloseEditor(itr->second.m_Editor, false);
       return;
     case DocumentClientMessageType::kDocumentState:

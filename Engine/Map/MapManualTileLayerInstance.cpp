@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Map/MapManualTileLayerInstance.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
+#include "Engine/Rendering/RenderState.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Profiler/Profiler.h"
 #include "Engine/Sprite/SpriteEngineData.h"
@@ -398,19 +399,17 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
     auto grid_box = m_DrawInfo.GetGridBoxForGridId(grid_id);
 
     auto grid_start = glm::round(RenderVec2{ grid_box.m_Start });
-    auto & shader = g_ShaderManager.GetDefaultShader();
-    shader.Bind();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-    m_VertexBuffer.Bind();
-    m_VertexBuffer.CreateDefaultBinding(shader);
+    render_state.BindVertexBuffer(m_VertexBuffer);
 
     for (auto & draw : grid_elems)
     {
-      draw.m_Texture->GetTexture().BindTexture(0);
-
-      m_VertexBuffer.Draw(draw.m_StartIndex, draw.m_EndIndex);
+      render_state.BindTexture(*draw.m_Texture);
+      render_state.Draw(draw.m_StartIndex, draw.m_EndIndex);
     }
 
     return true;
@@ -422,7 +421,7 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
     if (BoxIntersect(viewport_bounds, anim_box))
     {
       auto pos = glm::round((RenderVec2)anim.m_Position - screen_center);
-      SpriteEngineData::RenderTile(m_TileSheet, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, kSpriteDefaultSkin, pos);
+      SpriteEngineData::RenderTile(m_TileSheet, render_state, anim.m_State.m_AnimIndex, anim.m_State.m_AnimFrame, kSpriteDefaultSkin, pos);
     }
   }
 }
@@ -435,20 +434,19 @@ void MapManualTileLayerInstance::DrawDynamic(const Box & viewport_bounds, DrawLi
   {
     for (auto & elem : grid_elems)
     {
-      draw_list.PushDraw(m_LayerOrder, elem.m_LowerEdge, [this, grid_id, elem=&elem](GameContainer &, const Box &, const RenderVec2 & screen_center, RenderState &, RenderUtil &)
+      draw_list.PushDraw(m_LayerOrder, elem.m_LowerEdge, [this, grid_id, elem=&elem](GameContainer &, const Box &, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil &)
       {
-        auto & shader = g_ShaderManager.GetDefaultShader();
+        auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
         auto grid_box = m_DynamicDrawInfo.GetGridBoxForGridId(grid_id);
         auto grid_start = RenderVec2{ grid_box.m_Start };
-        shader.Bind();
+        render_state.BindShader(shader);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-        m_VertexBuffer.Bind();
-        m_VertexBuffer.CreateDefaultBinding(shader);
+        render_state.BindVertexBuffer(m_VertexBuffer);
+        render_state.BindTexture(*elem->m_Texture);
 
-        elem->m_Texture->GetTexture().BindTexture(0);
-        m_VertexBuffer.Draw(elem->m_StartIndex, elem->m_EndIndex);
+        render_state.Draw(elem->m_StartIndex, elem->m_EndIndex);
       });
     }
 

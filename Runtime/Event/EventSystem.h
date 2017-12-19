@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Runtime/RuntimeCommon.h"
+#include "Runtime/Event/Event.h"
 
 #include "Foundation/Any/Any.h"
 #include "Foundation/SpatialDatabase/SpatialDatabase.h"
@@ -11,20 +12,20 @@ struct EventDef
 
 };
 
-template <typename ObjectType, typename HandleType, typename ... HandlerArgs>
+template <typename ObjectType, typename HandleType>
 class EventSystem
 {
 public:
 
   template <typename Event, typename ... InitArgs>
-  NotNullPtr<Event> PushEventSource(const Box & box, EventDef<Event> event_type, InitArgs && ... init_args)
+  NotNullPtr<Event> PushEventSource(const Box & box, const EventMetaData & meta, EventDef<Event> event_type, InitArgs && ... init_args)
   {
     EventSrc event_data;
     event_data.m_Type = Event::TypeNameHash;
     event_data.m_EventData = Any(Event(std::forward<InitArgs>(init_args)...));
-    event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<ObjectType> dst, HandlerArgs ... handler_args)
+    event_data.m_Callback = [](NotNullPtr<EventSrc> src_data, NotNullPtr<EventDest> dest_data, NotNullPtr<ObjectType> dst)
     {
-      dst->TriggerEventHandler(src_data->m_Type, src_data->m_EventData.template Get<Event>(), handler_args...);
+      return dst->TriggerEventHandler(src_data->m_Type, src_data->m_EventData.template Get<Event>(), src_data->m_Meta);
     };
 
     auto id = m_Events.size();
@@ -45,7 +46,7 @@ public:
   }
 
   template <typename ... ResolveArgs>
-  void FinalizeEvents(HandlerArgs ... handler_args, ResolveArgs && ... resolve_args)
+  void FinalizeEvents(ResolveArgs && ... resolve_args)
   {
     std::vector<std::size_t> event_ids;
     for (auto & r : m_EventReceivers)
@@ -61,7 +62,10 @@ public:
 
       for (auto id : event_ids)
       {
-        m_Events[id].m_Callback(&m_Events[id], &r, obj, handler_args...);
+        if (m_Events[id].m_Callback(&m_Events[id], &r, obj) == false)
+        {
+          break;
+        }
       }
     }
 
@@ -80,7 +84,8 @@ private:
   {
     uint32_t m_Type;
     Any m_EventData;
-    void (*m_Callback)(NotNullPtr<EventSrc>, NotNullPtr<EventDest>, NotNullPtr<ObjectType>, HandlerArgs ...);
+    EventMetaData m_Meta;
+    bool (*m_Callback)(NotNullPtr<EventSrc>, NotNullPtr<EventDest>, NotNullPtr<ObjectType>);
   };
 
   struct EventDest

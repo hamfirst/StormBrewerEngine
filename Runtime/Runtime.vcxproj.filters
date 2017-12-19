@@ -218,6 +218,9 @@
     <ClCompile Include="ServerObject\ServerObjectResource.cpp">
       <Filter>ServerObject</Filter>
     </ClCompile>
+    <ClCompile Include="ServerObject\ServerObjectOverlapSystem.cpp">
+      <Filter>ServerObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\EntityDef.refl.h">
@@ -514,6 +517,12 @@
       <Filter>ServerObject</Filter>
     </ClInclude>
     <ClInclude Include="ServerObject\ServerObjectResource.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectOverlapSystem.h">
+      <Filter>ServerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObject\ServerObjectOverlapRegistrationMacros.h">
       <Filter>ServerObject</Filter>
     </ClInclude>
   </ItemGroup>

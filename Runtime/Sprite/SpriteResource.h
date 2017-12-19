@@ -4,12 +4,14 @@
 
 #include "Runtime/FrameData/FrameData.refl.h"
 #include "Runtime/FrameData/FrameDataExtract.h"
+#include "Runtime/Event/Event.h"
 #include "Runtime/DocumentResource/DocumentResourceBase.h"
 #include "Runtime/DocumentResource/DocumentResourcePtr.h"
 #include "Runtime/Sprite/SpriteDef.refl.h"
 
 class SpriteResource;
 class AnimationState;
+class RenderState;
 
 struct EntityRenderState;
 
@@ -35,7 +37,7 @@ public:
   bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1) const;
   bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames) const;
 
-  void Render(EntityRenderState & render_state, Vector2 position);
+  void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
 
   template <typename Visitor>
   void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay)
@@ -63,12 +65,15 @@ public:
     }
   }
 
-  template <typename Target, typename AnimState, typename ... Args>
-  void SendEventsTo(Target & target, AnimState & state, Args && ... args)
+  template <typename Target, typename AnimState>
+  void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta)
   {
+    EventMetaData meta_dup = meta;
     auto visitor = [&](const RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
     {
-      target.TriggerEventHandler(ev.GetTypeNameHash(), ev.GetValue(), std::forward<Args>(args)..., start, end);
+      meta_dup.m_Start = start;
+      meta_dup.m_End = end;
+      target.TriggerEventHandler(ev.GetTypeNameHash(), ev.GetValue(), meta_dup);
     };
 
     VisitEvents(visitor, state.m_AnimIndex, state.m_AnimFrame, state.m_AnimDelay);

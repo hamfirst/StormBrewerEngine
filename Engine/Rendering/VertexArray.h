@@ -1,15 +1,13 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Rendering/RenderSettings.h"
 #include "Engine/Rendering/VertexDefinition.h"
+#include "Engine/Rendering/VertexAttrib.h"
 
-#include "Engine/Rendering/ShaderProgram.h"
-
-void CreateDefaultVertexBufferBinding(const ShaderProgram & program);
-
-#ifndef _WEB
-
+class RenderState;
 class VertexBuffer;
+class ShaderProgram;
 
 class ENGINE_EXPORT VertexArray
 {
@@ -22,24 +20,29 @@ public:
   VertexArray & operator = (VertexArray & rhs) = delete;
   VertexArray & operator = (VertexArray && rhs) noexcept;
 
-  void Create();
   void Move(VertexArray && rhs) noexcept;
   void Destroy();
 
-  void CreateDefaultBinding(const ShaderProgram & program, VertexBuffer & buffer);
-
-
   int GetLoadError() const { return m_LoadError; }
-
-  void Bind() const;
-  void Unbind() const;
 
 private:
 
+  friend class RenderState;
+  friend class VertexBuffer;
+
+  void Sync(RenderState & render_state, const VertexBuffer & vertex_buffer, const ShaderProgram & shader_program, bool dirty);
+  void GenerateAttribState(const VertexBuffer & vertex_buffer, const ShaderProgram & shader_program, NotNullPtr<VertexAttribState> new_state);
+
+private:
+
+#ifdef USE_VERTEX_ARRAY
   unsigned int m_VertexArrayName;
+#endif
+
+  NullOptPtr<const ShaderProgram> m_BoundShader = nullptr;
+  int m_BoundShaderName = 0;
+
+  VertexAttribState m_Current[kMaxVertexAttribs] = {};
 
   int m_LoadError;
 };
-
-#endif
-

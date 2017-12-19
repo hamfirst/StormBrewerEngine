@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
+#include "Engine/Rendering/RenderState.h"
 #include "Engine/Shader/ShaderManager.h"
 
 #include <sb/vector.h>
@@ -167,7 +168,7 @@ void SpriteEngineData::BuildVertexBuffer()
   builder.FillVertexBuffer(m_VertexBuffer);
 }
 
-Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame, uint32_t skin_name_hash, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::Render(RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash, ShaderProgram & shader)
 {
   if (animation_index < 0 || animation_index >= m_Frames.size())
   {
@@ -188,7 +189,7 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
 
   if (skin_name_hash == 0)
   {
-    m_Textures[texture_index].Get()->GetTexture().BindTexture(0);
+    render_state.BindTexture(*m_Textures[texture_index].Get());
   }
   else
   {
@@ -197,7 +198,7 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
     {
       if (m_SkinNameHashes[index] == skin_name_hash)
       {
-        m_Textures[(index + 1) * m_TexturesPerSkin + texture_index].Get()->GetTexture().BindTexture(0);
+        render_state.BindTexture(*m_Textures[(index + 1) * m_TexturesPerSkin + texture_index].Get());
         found_name = true;
         break;
       }
@@ -205,20 +206,19 @@ Optional<Box> SpriteEngineData::Render(int animation_index, int animation_frame,
 
     if (found_name == false)
     {
-      m_Textures[texture_index].Get()->GetTexture().BindTexture(0);
+      render_state.BindTexture(*m_Textures[texture_index].Get());
     }
   }
 
-  m_VertexBuffer.Bind();
-  m_VertexBuffer.CreateDefaultBinding(shader);
-  m_VertexBuffer.Draw(frame_index * 6, frame_index * 6 + 6);
+  render_state.BindVertexBuffer(m_VertexBuffer);
+  render_state.Draw(frame_index * 6, frame_index * 6 + 6);
 
   return m_FrameTextureCoords[frame_index];
 }
 
 
-Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)
@@ -226,11 +226,11 @@ Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, int animation_i
     return{};
   }
 
-  return RenderSprite(resource, animation_index, animation_frame, skin_name_hash, position, matrix, color, shader);
+  return RenderSprite(resource, render_state, animation_index, animation_frame, skin_name_hash, position, matrix, color, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
@@ -242,16 +242,16 @@ Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource
   rounded_pos.x = floorf(rounded_pos.x);
   rounded_pos.y = floorf(rounded_pos.y);
 
-  shader.Bind();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), rounded_pos);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
+  return sprite_data->Render(render_state, animation_index, animation_frame, skin_name_hash, shader);
 }
 
-Optional<Box> SpriteEngineData::RenderTile(TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, const ShaderProgram & shader)
+Optional<Box> SpriteEngineData::RenderTile(TileSheetPtr & tile_sheet, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();
   if (resource == nullptr)
@@ -265,12 +265,12 @@ Optional<Box> SpriteEngineData::RenderTile(TileSheetPtr & tile_sheet, int animat
     return{};
   }
 
-  shader.Bind();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), color);
 
-  return sprite_data->Render(animation_index, animation_frame, skin_name_hash, shader);
+  return sprite_data->Render(render_state, animation_index, animation_frame, skin_name_hash, shader);
 }
 
 NullOptPtr<TextureAsset> SpriteEngineData::GetSpriteFrame(SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords)
@@ -334,7 +334,7 @@ void UpdateSpriteEngineData(Any & engine_data)
   sprite_data->Load();
 }
 
-void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 & position)
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position)
 {
   SpriteEngineData * sprite_data = engine_data.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
@@ -342,12 +342,12 @@ void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 &
     return;
   }
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ position } );
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), render_state.m_Matrix);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), render_state.m_Color);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), entity_render_state.m_Matrix);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), entity_render_state.m_Color);
 
-  sprite_data->Render(render_state.m_AnimIndex, render_state.m_AnimFrame, render_state.m_SkinNameHash, shader);
+  sprite_data->Render(render_state, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame, entity_render_state.m_SkinNameHash, shader);
 }

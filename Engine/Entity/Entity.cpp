@@ -39,9 +39,9 @@ Entity::~Entity()
 
 }
 
-void Entity::TriggerEventHandler(uint32_t event_type, const void * ev)
+bool Entity::TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
 {
-  m_EventDispatch.TriggerEvent(event_type, ev);
+  return m_EventDispatch.TriggerEvent(event_type, ev);
 }
 
 NotNullPtr<EngineState> Entity::GetEngineState()

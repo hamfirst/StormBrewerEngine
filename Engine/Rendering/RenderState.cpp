@@ -1,8 +1,12 @@
 
 #include "Engine/EngineCommon.h"
 
-#include "RenderState.h"
-#include "RenderErrorMacros.h"
+#include "Engine/Rendering/RenderState.h"
+#include "Engine/Rendering/RenderErrorMacros.h"
+#include "Engine/Rendering/ShaderProgram.h"
+#include "Engine/Rendering/VertexBuffer.h"
+#include "Engine/Rendering/Texture.h"
+#include "Engine/Asset/TextureAsset.h"
 
 #include <gl3w/gl3w.h>
 
@@ -29,6 +33,47 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
 
   m_ScreenWidth = screen_width;
   m_ScreenHeight = screen_height;
+}
+
+void RenderState::BindShader(const ShaderProgram & shader)
+{
+  if (m_BoundShader != &shader || m_BoundShaderName != shader.m_ProgramName)
+  {
+    m_BoundShader = &shader;
+    m_BoundShaderName = shader.m_ProgramName;
+    shader.Bind();
+  }
+}
+
+void RenderState::BindVertexBuffer(VertexBuffer & buffer)
+{
+  if (m_BoundVertexBuffer != &buffer || m_BoundVertexBufferName != buffer.m_VertexBufferName)
+  {
+    m_BoundVertexBuffer = &buffer;
+    m_BoundVertexBufferName = buffer.m_VertexBufferName;
+    buffer.Sync(*this, *m_BoundShader);
+  }
+}
+
+void RenderState::BindTexture(const Texture & texture, int texture_slot)
+{
+  if (m_BoundTexture != &texture || m_BoundTextureName != texture.m_TextureName)
+  {
+    m_BoundTexture = &texture;
+    m_BoundTextureName = texture.m_TextureName;
+    texture.BindTexture(texture_slot);
+  }
+}
+
+void RenderState::BindTexture(const TextureAsset & texture, int texture_slot)
+{
+  BindTexture(texture.GetTexture(), texture_slot);
+}
+
+void RenderState::Draw(int index_start, int index_end) const
+{
+  ASSERT(m_BoundVertexBuffer->m_VertexArray.m_BoundShader == m_BoundShader, "Invalid shader binding");
+  m_BoundVertexBuffer->Draw(index_start, index_end);
 }
 
 void RenderState::SetFramePct(float frame_pct)

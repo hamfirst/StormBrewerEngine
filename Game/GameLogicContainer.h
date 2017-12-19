@@ -6,6 +6,7 @@ class ServerObjectManager;
 class ServerObjectEventSystem;
 class GameServerEventSender;
 class GameSimulationEventCallbacks;
+class GameLogicSystems;
 class GameStage;
 class GameSharedGlobalResources;
 class GameSharedInstanceResources;
@@ -22,6 +23,7 @@ public:
     GameSimulationEventCallbacks & sim_event_sender,
     GameSharedGlobalResources & shared_global_resources,
     GameSharedInstanceResources & shared_instance_resources,
+    GameLogicSystems & systems,
     const GameStage & stage, 
     bool is_authority,
     int & send_timer);
@@ -40,6 +42,7 @@ public:
   GameSimulationEventCallbacks & GetSimEventCallbacks();
   GameSharedGlobalResources & GetSharedGlobalResources();
   GameSharedInstanceResources & GetSharedInstanceResources();
+  GameLogicSystems & GetSystems();
   const GameStage & GetStage();
   bool IsAuthority();
   void TriggerImmediateSend();
@@ -53,6 +56,7 @@ private:
   GameSimulationEventCallbacks & m_SimEventSender;
   GameSharedGlobalResources & m_SharedGlobalResources;
   GameSharedInstanceResources & m_SharedInstanceResources;
+  GameLogicSystems & m_Systems;
   const GameStage & m_Stage;
   bool m_IsAuthority;
   int & m_SendTimer;

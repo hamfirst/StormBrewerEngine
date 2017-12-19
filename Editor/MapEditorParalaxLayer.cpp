@@ -230,7 +230,7 @@ Optional<std::size_t> MapEditorParalaxLayer::GetSingleSelectionIndex()
   return m_SelectedParalaxObjects[0];
 }
 
-void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   auto layer = m_Map.m_ParalaxLayers.TryGet(m_LayerIndex);
   if (layer == nullptr)
@@ -296,17 +296,15 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     verts.AddVert(vert);
 
     buffer.SetBufferData(verts, VertexBufferType::kTriangles);
-    auto & shader = g_ShaderManager.GetDefaultShader();
+    auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
-    texture->GetTexture().BindTexture(0);
 
-    buffer.Bind();
-
-    buffer.CreateDefaultBinding(shader);
-    buffer.Draw();
-    buffer.Unbind();
+    render_state.BindTexture(*texture);
+    render_state.BindVertexBuffer(buffer);
+    render_state.Draw();
   }
 
   for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
@@ -323,7 +321,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
   }
 
   for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
@@ -341,7 +339,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
   }
 
   for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
@@ -359,21 +357,21 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
   }
 }
 
-void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_PreviewPosition.IsValid() == false)
   {
     return;
   }
 
-  DrawObject(m_Editor->GetParalaxObject(), m_Editor->GetParalaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center);
+  DrawObject(m_Editor->GetParalaxObject(), m_Editor->GetParalaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center, render_state, render_util);
 }
 
-void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderUtil & render_util)
+void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_SelectedParalaxObjects.size() == 0)
   {
@@ -410,22 +408,19 @@ void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Bo
   }
 
   line_builder.FillVertexBuffer(vertex_buffer);
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
-  render_util.GetDefaultTexture().BindTexture(0);
 
-  vertex_buffer.Bind();
-
-  vertex_buffer.CreateDefaultBinding(shader);
-  vertex_buffer.Draw();
-  vertex_buffer.Unbind();
+  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindVertexBuffer(vertex_buffer);
+  render_state.Draw();
 }
 
 Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
-  const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center)
+  const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   auto texture_link = object.Get<TextureAsset::LoadCallbackLink>();
   if (texture_link)
@@ -445,19 +440,15 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
         builder.AddQuad(quad);
 
         builder.FillVertexBuffer(buffer);
-        auto & shader = g_ShaderManager.GetDefaultShader();
-        shader.Bind();
+        auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+        render_state.BindShader(shader);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
 
-        texture->GetTexture().BindTexture(0);
-
-        buffer.Bind();
-
-        buffer.CreateDefaultBinding(shader);
-        buffer.Draw();
-        buffer.Unbind();
+        render_state.BindTexture(*texture);
+        render_state.BindVertexBuffer(buffer);
+        render_state.Draw();
       }
 
       return texture_box;
@@ -472,7 +463,7 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
     if (sprite_link->IsLoaded())
     {
       auto sprite = sprite_link->GetResource();
-      auto & shader = g_ShaderManager.GetDefaultShader();
+      auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
@@ -482,7 +473,7 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
       AnimationState state;
       sprite->SyncToFrame(crc32(object_data.m_Animation.data()), state, frame);
 
-      return SpriteEngineData::RenderSprite(sprite, state.m_AnimIndex, state.m_AnimFrame, 0, pos);
+      return SpriteEngineData::RenderSprite(sprite, render_state, state.m_AnimIndex, state.m_AnimFrame, 0, pos);
     }
 
     return {};
@@ -506,19 +497,15 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
         builder.AddQuad(quad);
 
         builder.FillVertexBuffer(buffer);
-        auto & shader = g_ShaderManager.GetDefaultShader();
-        shader.Bind();
+        auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+        render_state.BindShader(shader);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
 
-        texture->GetTexture().BindTexture(0);
-
-        buffer.Bind();
-
-        buffer.CreateDefaultBinding(shader);
-        buffer.Draw();
-        buffer.Unbind();
+        render_state.BindTexture(*texture);
+        render_state.BindVertexBuffer(buffer);
+        render_state.Draw();
       }
 
       return texture_box;

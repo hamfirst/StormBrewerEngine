@@ -34,6 +34,10 @@ public:
   void RegisterEditor(czstr asset_type, czstr file_extension, czstr default_dir, DocumentEditorCreationDelegate && widget_delegate);
   void CloseEditor(QWidget * editor, bool send_message);
 
+  void AddRecentFile(const QString & filename);
+  void RemoveRecentFile(const QString & filename);
+  void UpdateRecentFiles();
+
 protected:
 
   void closeEvent(QCloseEvent * ev) override;
@@ -73,9 +77,6 @@ protected:
   void NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget);
 
 private:
-
-  void AddRecentFile(const QString & filename);
-  void UpdateRecentFiles();
 
   void HandleDocumentServerEvent(DocumentServerEvent & ev);
   std::pair<QWidget *, int> CreateEditorForFile(czstr file, uint32_t extension_hash);

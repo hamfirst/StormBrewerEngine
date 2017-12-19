@@ -29,7 +29,7 @@ public:
   void CreateVertexBufferForString(czstr utf8_str, std::size_t len, int sel_start, int sel_end, int cursor_pos,
     const TextSettings & settings, TextBufferBuilder & buffer, std::vector<Box> & glyph_positions);
 
-  void BindGlyphTexture(int texture_stage);
+  void BindGlyphTexture(RenderState & render_state, int texture_stage);
   Box GetTextSize(czstr utf8_str, std::size_t len);
 
   bool Loaded() { return m_Loaded; }

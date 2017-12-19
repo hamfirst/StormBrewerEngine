@@ -22,6 +22,14 @@ struct StormReflTypeInfo<PlayerStateIdle>
   static PlayerStateIdle & GetDefault() { static PlayerStateIdle def; return def; }
 };
 
+template <>
+struct StormReflFuncInfo<PlayerStateIdle>
+{
+  using MyBase = PlayerStateBase;
+  static constexpr int funcs_n = 0 + StormReflFuncInfo<MyBase>::funcs_n;
+  template <int N> struct func_data_static : public StormReflFuncInfo<MyBase>::func_data_static<N> {};
+};
+
 namespace StormReflFileInfo
 {
   struct PlayerStateIdle

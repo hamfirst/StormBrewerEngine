@@ -7,6 +7,7 @@
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
 #include "Runtime/ServerObject/ServerObjectEventSystem.h"
+#include "Runtime/Event/Event.h"
 
 #include "StormRefl/StormReflMetaInfoBase.h"
 
@@ -25,6 +26,7 @@ public:
   void Destroy(ServerObjectManager & obj_manager);
 
   virtual void InitPosition(const Vector2 & pos);
+  virtual Vector2 GetPosition() const;
 
   virtual czstr GetDefaultEntityBinding();
   virtual czstr GetEntityBinding();
@@ -33,6 +35,7 @@ public:
   int GetSlotIndex() const;
 
   int GetLifetime() const;
+  int GetTypeIndex() const;
 
   template <typename Type>
   NullOptPtr<Type> CastTo()
@@ -46,9 +49,9 @@ public:
   }
 
   template <typename EventType>
-  void SendEvent(const EventType & ev, GameLogicContainer & game_container)
+  bool SendEvent(const EventType & ev, const EventMetaData & meta)
   {
-    TriggerEventHandler(EventType::TypeNameHash, &ev, game_container);
+    return TriggerEventHandler(EventType::TypeNameHash, &ev, meta);
   }
 
 protected:
@@ -60,11 +63,12 @@ private:
   template <typename Type>
   friend class SkipField;
 
-  template <typename ObjectType, typename HandleType, typename ... HandlerArgs>
+  template <typename ObjectType, typename HandleType>
   friend class EventSystem;
 
   friend class ServerObjectSystem;
   friend class ServerObjectManager;
+  friend class ServerObjectOverlapSystem;
 
   const Handle & GetHandle() const;
   void SetHandle(Handle & handle);
@@ -72,7 +76,7 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
-  void TriggerEventHandler(uint32_t event_type, const void * ev, GameLogicContainer & game_container);
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
 
 private:
   bool m_IsStatic = false;

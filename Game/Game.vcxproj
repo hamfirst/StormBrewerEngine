@@ -265,7 +265,13 @@
     <ClCompile Include="ServerObjects\Player\States\PlayerStateBase.refl.cpp" />
     <ClCompile Include="ServerObjects\Player\States\PlayerStateIdle.refl.cpp" />
     <ClCompile Include="ServerObjects\Player\States\PlayerStateJump.refl.cpp" />
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateLand.refl.cpp" />
     <ClCompile Include="ServerObjects\Player\States\PlayerStateMoving.refl.cpp" />
+    <ClCompile Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.cpp" />
+    <ClCompile Include="Systems\GameLogicSystems.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\PlayerAI.h">
@@ -348,8 +354,16 @@
     <ClInclude Include="ServerObjects\Player\States\PlayerStateIdle.refl.meta.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateLand.refl.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateLand.refl.meta.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateMoving.refl.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateMoving.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.h" />
+    <ClInclude Include="ServerObjects\Player\States\PlayerStateWallSlide.refl.meta.h" />
+    <ClInclude Include="Systems\GameLogicSystems.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />

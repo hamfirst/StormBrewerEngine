@@ -8,11 +8,11 @@
         "1": {
             "m_Name": "Player2"
         },
-        "3": {
-            "m_Name": "Player4"
-        },
         "2": {
             "m_Name": "Player3"
+        },
+        "3": {
+            "m_Name": "Player4"
         }
     },
     "m_Outputs": {
@@ -31,20 +31,20 @@
             "m_VariableName": "PlayerIndex",
             "m_Equation": "1"
         },
-        "8": {
-            "m_ChildIndex": 1,
-            "m_VariableName": "XInput",
-            "m_Equation": "Player2XInput"
+        "2": {
+            "m_ChildIndex": 2,
+            "m_VariableName": "PlayerIndex",
+            "m_Equation": "2"
         },
         "3": {
             "m_ChildIndex": 3,
             "m_VariableName": "PlayerIndex",
             "m_Equation": "3"
         },
-        "2": {
-            "m_ChildIndex": 2,
-            "m_VariableName": "PlayerIndex",
-            "m_Equation": "2"
+        "8": {
+            "m_ChildIndex": 1,
+            "m_VariableName": "XInput",
+            "m_Equation": "Player2XInput"
         },
         "4": {
             "m_ChildIndex": 0,
@@ -104,15 +104,15 @@
         "1": {
             "m_VariableName": "Player1XInput"
         },
-        "8": {
-            "m_VariableName": "Player3YInput"
+        "2": {
+            "m_VariableName": "Player1YInput"
         },
         "3": {
             "m_VariableName": "Player2Joined",
             "m_Type": "kFloat"
         },
-        "2": {
-            "m_VariableName": "Player1YInput"
+        "8": {
+            "m_VariableName": "Player3YInput"
         },
         "4": {
             "m_VariableName": "Player2XInput",
@@ -122,12 +122,12 @@
             "m_VariableName": "Player2YInput",
             "m_Type": "kFloat"
         },
-        "7": {
-            "m_VariableName": "Player3XInput",
-            "m_Type": "kFloat"
-        },
         "6": {
             "m_VariableName": "Player3Joined",
+            "m_Type": "kFloat"
+        },
+        "7": {
+            "m_VariableName": "Player3XInput",
             "m_Type": "kFloat"
         },
         "9": {

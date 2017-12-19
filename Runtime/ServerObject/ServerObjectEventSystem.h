@@ -5,9 +5,9 @@
 
 class GameLogicContainer;
 
-extern template class EventSystem<ServerObject, ServerObjectHandle, GameLogicContainer &>;
+extern template class EventSystem<ServerObject, ServerObjectHandle>;
 
-class ServerObjectEventSystem : public EventSystem<ServerObject, ServerObjectHandle, GameLogicContainer &>
+class ServerObjectEventSystem : public EventSystem<ServerObject, ServerObjectHandle>
 {
 
 };

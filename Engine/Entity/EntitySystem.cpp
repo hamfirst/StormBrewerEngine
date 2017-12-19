@@ -227,6 +227,6 @@ void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & view
 void EntitySystem::DefaultDrawEntity(SpritePtr & sprite, const Vector2f & pos, const EntityRenderState & entity_render_state, 
                                      const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
-  SpriteEngineData::RenderSprite(sprite, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame, 
+  SpriteEngineData::RenderSprite(sprite, render_state, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame,
     entity_render_state.m_SkinNameHash, pos - screen_center, entity_render_state.m_Matrix, entity_render_state.m_Color);
 }

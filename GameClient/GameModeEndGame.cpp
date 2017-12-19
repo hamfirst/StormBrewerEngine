@@ -105,10 +105,13 @@ void GameModeEndGame::OnAssetsLoaded()
 
 void GameModeEndGame::Update()
 {
+
   m_Sequencer.Update();
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
+
+  container.GetWindow().Update();
 
   auto input_state = container.GetWindow().GetInputState();
   m_UIManager.Update(*input_state, render_state);

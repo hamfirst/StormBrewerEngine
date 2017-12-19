@@ -5,8 +5,7 @@
 class PlayerStateIdle : public PlayerStateBase, public PlayerStateEventHandler<PlayerStateIdle>
 {
 public:
-  NET_REFL;
-
+  DECLARE_PLAYER_STATE;
 
   virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) override;
   virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) override;

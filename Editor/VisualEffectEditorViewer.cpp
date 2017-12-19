@@ -175,8 +175,8 @@ void VisualEffectEditorViewer::paintGL()
     auto size = RenderVec2{ kDefaultResolutionWidth, kDefaultResolutionHeight } *m_Magnification.Get();
     m_RenderState.SetRenderSize(size);
 
-    auto & shader = g_ShaderManager.GetDefaultShader();
-    shader.Bind();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+    m_RenderState.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), size);
 
     GameContainer * container = nullptr;

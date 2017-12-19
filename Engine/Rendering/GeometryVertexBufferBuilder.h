@@ -38,7 +38,7 @@ public:
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
 
-  void DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<const ShaderProgram> shader = nullptr);
+  void DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<ShaderProgram> shader = nullptr);
 
   bool HasGeo() const;
 

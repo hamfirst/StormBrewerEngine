@@ -430,8 +430,8 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
   vert[4].m_TexCoord = RenderVec2{ 1, 1 };
   vert[5].m_TexCoord = RenderVec2{ 0, 1 };
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
@@ -451,12 +451,12 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
     auto texture = texture_ref.Resolve();
     if (texture && texture->IsLoaded() && texture->GetWidth() != 0 && texture->GetHeight() != 0)
     {
-      texture->GetTexture().BindTexture(0);
+      render_state.BindTexture(*texture);
       texture_size = texture->GetSize();
     }
     else
     {
-      render_util.GetDefaultTexture().BindTexture(0);
+      render_state.BindTexture(render_util.GetDefaultTexture());
       texture_size = Vector2f{ 1, 1 };
     }
 
@@ -516,9 +516,8 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
     }
 
     scratch_buffer.SetBufferData(gsl::as_span(m_ScratchVertexList), VertexBufferType::kTriangles);
-    scratch_buffer.Bind();
-    scratch_buffer.CreateDefaultBinding(shader);
-    scratch_buffer.Draw();
+    render_state.BindVertexBuffer(scratch_buffer);
+    render_state.Draw();
   }
 
   render_state.EnableBlendMode(RenderingBlendMode::kAlpha);

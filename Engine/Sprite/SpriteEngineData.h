@@ -26,18 +26,18 @@ public:
   void Load();
 
   void BuildVertexBuffer();
-  Optional<Box> Render(int animation_index, int animation_frame, uint32_t skin_name, const ShaderProgram & shader);
+  Optional<Box> Render(RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name, ShaderProgram & shader);
 
-  static Optional<Box> RenderSprite(SpritePtr & sprite, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  static Optional<Box> RenderSprite(SpritePtr & sprite, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
-    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
-  static Optional<Box> RenderSprite(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, uint32_t skin_name_hash,
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), ShaderProgram & shader = g_ShaderManager.GetDefaultWorldSpaceShader());
+  static Optional<Box> RenderSprite(NotNullPtr<SpriteResource> resource, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 },
-    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), ShaderProgram & shader = g_ShaderManager.GetDefaultWorldSpaceShader());
 
-  static Optional<Box> RenderTile(TileSheetPtr & tile_sheet, int animation_index, int animation_frame, uint32_t skin_name_hash,
+  static Optional<Box> RenderTile(TileSheetPtr & tile_sheet, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
     const Vector2f & position, const RenderVec4 & matrix = RenderVec4{ 1, 0, 0, 1 }, 
-    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), const ShaderProgram & shader = g_ShaderManager.GetDefaultShader());
+    const Color & color = Color(1.0f, 1.0f, 1.0f, 1.0f), ShaderProgram & shader = g_ShaderManager.GetDefaultWorldSpaceShader());
 
   static NullOptPtr<TextureAsset> GetSpriteFrame(SpritePtr & sprite, int animation_index, int animation_frame, Box & texture_coords);
   static NullOptPtr<TextureAsset> GetSpriteFrame(NotNullPtr<SpriteResource> resource, int animation_index, int animation_frame, Box & texture_coords);
@@ -58,7 +58,7 @@ private:
 
 Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
-void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 & position);
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
 
 
 

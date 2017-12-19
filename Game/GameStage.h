@@ -3,6 +3,7 @@
 #include "Runtime/Map/MapResource.h"
 
 #include "Foundation/Pathfinding/GraphPathfinding.h"
+#include "Foundation/Pathfinding/GridPathfinding.h"
 #include "Foundation/Pathfinding/PathfindingPath.h"
 
 #include "Game/GameFullState.refl.h"
@@ -10,6 +11,27 @@
 
 #include "Runtime/Collision/CollisionDatabase.h"
 #include "Runtime/Collision/IntersectionDatabase.h"
+
+#ifndef MAP_PLATFORMER_PATHFINDING
+struct GamePathfindingGridElement
+{
+  bool m_Passable = true;
+};
+
+struct GamePathfindingEvalInfo
+{
+};
+
+struct GamePathfindingGridEvaluator
+{
+  GameNetVal operator ()(const GamePathfindingGridElement & a, const GamePathfindingGridElement & b, const GamePathfindingEvalInfo & eval_info) const
+  {
+    return b.m_Passable ? GameNetVal(1) : GameNetVal(-1);
+  }
+};
+
+using PathfindingDatabaseType = PathfindingBasicGrid2D<GamePathfindingGridElement, GameNetVal, GamePathfindingGridEvaluator, GamePathfindingEvalInfo, true, true>;
+#endif
 
 struct GameCollisionLine
 {
@@ -27,6 +49,7 @@ public:
   GameFullState CreateDefaultGameState() const;
 
   const CollisionDatabase & GetCollisionDatabase() const;
+  std::vector<Vector2> FindPath(const Vector2 & start, const Vector2 & end, int max_iterations) const;
 
   const IntersectionDatabase<GameNetVal> & GetIntersectionDatabase() const;
   const std::vector<GameCollisionLine> GetCollisionLines() const;
@@ -41,6 +64,13 @@ private:
   int m_DynamicObjectCount;
 
   CollisionDatabase m_CollisionDatabase;
+
+#ifndef MAP_PLATFORMER_PATHFINDING
+  Optional<PathfindingDatabaseType> m_Pathfinding;
+  Box m_PathfindingBounds;
+  Vector2 m_PathfindingGridSize;
+  Vector2 m_PathfindingElementSize;
+#endif
 
   IntersectionDatabase<GameNetVal> m_IntersectionDatabase;
   std::vector<GameCollisionLine> m_CollisionLines;

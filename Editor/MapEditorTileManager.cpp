@@ -1094,7 +1094,7 @@ void MapEditorTileManager::PasteSelection(const Vector2 & screen_center)
   SetPreviewAnimations(clipboard_info.second);
 }
 
-void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center)
+void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_InitialSyncComplete == false)
   {
@@ -1263,23 +1263,21 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
 
   m_DrawInfo->VisitGrid(viewport_bounds, [&](uint32_t grid_id, GridDrawList & grid_draw_list)
   {
-    auto & shader = g_ShaderManager.GetDefaultShader();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
     auto grid_box = m_DrawInfo->GetGridBoxForGridId(grid_id);
 
     auto grid_start = RenderVec2{ grid_box.m_Start };
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
 
-    grid_draw_list.m_VertexBuffer.Bind();
-    grid_draw_list.m_VertexBuffer.CreateDefaultBinding(shader);
+    render_state.BindVertexBuffer(grid_draw_list.m_VertexBuffer);
 
     for (auto & draw : grid_draw_list.m_DrawElems)
     {
-      draw.m_Texture->GetTexture().BindTexture(0);
-      grid_draw_list.m_VertexBuffer.Draw(draw.m_StartIndex, draw.m_EndIndex);
+      render_state.BindTexture(*draw.m_Texture);
+      render_state.Draw(draw.m_StartIndex, draw.m_EndIndex);
     }
-
-    grid_draw_list.m_VertexBuffer.Unbind();
 
     return true;
   }, false);
@@ -1292,12 +1290,12 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
     auto anim = m_AnimInfo->TryGet(id);
     if (anim && vfind(m_SelectedAnimations, id) == false)
     {
-      SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, kSpriteDefaultSkin, anim->m_Position - screen_center);
+      SpriteEngineData::RenderTile(m_TileSheet, render_state, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, kSpriteDefaultSkin, anim->m_Position - screen_center);
     }
   }
 }
 
-void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center)
+void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   for (auto & texture_data : m_Textures)
   {
@@ -1333,18 +1331,15 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
     }
 
     builder.FillVertexBuffer(vertex_buffer);
-    auto & shader = g_ShaderManager.GetDefaultShader();
-    shader.Bind();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 160));
-    texture->GetTexture().BindTexture(0);
 
-    vertex_buffer.Bind();
-
-    vertex_buffer.CreateDefaultBinding(shader);
-    vertex_buffer.Draw();
-    vertex_buffer.Unbind();
+    render_state.BindTexture(*texture);
+    render_state.BindVertexBuffer(vertex_buffer);
+    render_state.Draw();
   }
 
   for (auto & tile : m_PreviewAnims)
@@ -1352,12 +1347,12 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
     AnimationState anim_state;
     m_TileSheet.GetResource()->InitAnimation(tile.m_Animation, tile.m_FrameOffset + m_NumFrames, anim_state);
 
-    SpriteEngineData::RenderTile(m_TileSheet, anim_state.m_AnimIndex, anim_state.m_AnimFrame, kSpriteDefaultSkin,
+    SpriteEngineData::RenderTile(m_TileSheet, render_state, anim_state.m_AnimIndex, anim_state.m_AnimFrame, kSpriteDefaultSkin,
       Vector2(tile.x, tile.y) - screen_center, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
   }
 }
 
-void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderUtil & render_util)
+void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
   if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
   {
@@ -1407,17 +1402,15 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
       }
 
       builder.FillVertexBuffer(vertex_buffer);
-      auto & shader = g_ShaderManager.GetDefaultShader();
+      auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+      render_state.BindShader(shader);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
-      texture->GetTexture().BindTexture(0);
 
-      vertex_buffer.Bind();
-
-      vertex_buffer.CreateDefaultBinding(shader);
-      vertex_buffer.Draw();
-      vertex_buffer.Unbind();
+      render_state.BindTexture(*texture);
+      render_state.BindVertexBuffer(vertex_buffer);
+      render_state.Draw();
     }
   }
 
@@ -1428,7 +1421,7 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
       auto anim = m_AnimInfo->TryGet(id);
       if (anim)
       {
-        SpriteEngineData::RenderTile(m_TileSheet, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, 
+        SpriteEngineData::RenderTile(m_TileSheet, render_state, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, 
           kSpriteDefaultSkin, anim->m_Position + m_SelectedAnimOffset - screen_center);
 
         auto anim_size = m_TileSheet.GetResource()->GetAnimationMaxSize(anim->m_State);
@@ -1446,17 +1439,15 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
   if (line_builder.HasData())
   {
     line_builder.FillVertexBuffer(vertex_buffer);
-    auto & shader = g_ShaderManager.GetDefaultShader();
+    auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+    render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
-    render_util.GetDefaultTexture().BindTexture(0);
 
-    vertex_buffer.Bind();
-
-    vertex_buffer.CreateDefaultBinding(shader);
-    vertex_buffer.Draw();
-    vertex_buffer.Unbind();
+    render_state.BindTexture(render_util.GetDefaultTexture());
+    render_state.BindVertexBuffer(vertex_buffer);
+    render_state.Draw();
   }
 }
 

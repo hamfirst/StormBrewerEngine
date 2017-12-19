@@ -18,7 +18,7 @@ void ShaderManager::Shutdown()
   m_Shaders.clear();
 }
 
-const ShaderProgram & ShaderManager::GetShader(uint32_t shader_name_hash)
+ShaderProgram & ShaderManager::GetShader(uint32_t shader_name_hash)
 {
   for (auto & elem : m_Shaders)
   {
@@ -31,7 +31,12 @@ const ShaderProgram & ShaderManager::GetShader(uint32_t shader_name_hash)
   return m_DefaultShader;
 }
 
-const ShaderProgram & ShaderManager::GetDefaultShader()
+ShaderProgram & ShaderManager::GetDefaultWorldSpaceShader()
+{
+  return m_DefaultShader;
+}
+
+ShaderProgram & ShaderManager::GetDefaultScreenSpaceShader()
 {
   return m_DefaultShader;
 }
