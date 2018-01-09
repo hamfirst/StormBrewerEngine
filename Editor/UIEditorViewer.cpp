@@ -98,6 +98,7 @@ void UIEditorViewer::initializeGL()
     window_box,
     [this] {},
     [this] {},
+    [this] { makeCurrent(); glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject()); },
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { close(); },
     [this](NullOptPtr<Box> box) { m_ImeMode = true; },
@@ -180,6 +181,7 @@ void UIEditorViewer::paintGL()
 
   if (m_UIManager)
   {
+    m_RenderState.SetRenderSize(Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
     m_UIManager->Render(m_RenderState, m_RenderUtil);
   }
 }

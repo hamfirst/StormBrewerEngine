@@ -31,9 +31,10 @@ public:
   {
     Vector2f m_Position;
     float m_Thickness;
+    Color m_Color;
   };
 
-  void Trail(const std::vector<TrailInfo> & points, const Color & c);
+  void Trail(const gsl::span<TrailInfo> & points, float texture_width);
 
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
@@ -45,6 +46,7 @@ public:
 private:
 
   void AddVert(const Vector2f & pos, const Color & c);
+  void AddVert(const Vector2f & pos, const Color & c, const Vector2f & texcoord);
 
 private:
 

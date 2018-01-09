@@ -23,7 +23,7 @@ struct VisualEffectInstanceEmitterScriptData
 {
   STORM_REFL;
   float m_MaxParticles = 10000.0f;
-  float m_EmitterLifetime = 0;
+  float m_EmitterLifetime = -1;
   float m_SpawnRate = 5.0f;
 };
 

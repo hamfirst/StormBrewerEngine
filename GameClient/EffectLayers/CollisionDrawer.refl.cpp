@@ -43,8 +43,8 @@ void CollisionDrawer::Render(GameContainer & game_container, const Box & viewpor
   auto & stage = game_container.GetInstanceData()->GetStage();
   auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
 
-  auto & shader = g_ShaderManager.GetDefaultShader();
-  shader.Bind();
+  auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
+  render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
 
   auto collision_mask = GetCollisionMask(game_container);
@@ -83,7 +83,7 @@ uint32_t CollisionDrawer::GetCollisionMask(GameContainer & game_container)
       }
     }
 
-    if (game_data.m_Score[team] >= kMaxScore || has_player == false)
+    if (has_player == false)
     {
       collision_mask |= (1 << team);
     }

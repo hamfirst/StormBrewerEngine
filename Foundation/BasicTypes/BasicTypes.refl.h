@@ -111,6 +111,11 @@ struct Vector2
     return *this;
   }
 
+  Vector2 operator - () const
+  {
+    return Vector2(-x, -y);
+  }
+
   bool operator == (const Vector2 & rhs) const
   {
     return x == rhs.x && y == rhs.y;
@@ -152,6 +157,8 @@ struct Box
   {
     return m_Start == rhs.m_Start && m_End == rhs.m_End;
   }
+
+  Box Offset(const Vector2 & offset) const;
 
   static Box FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size);
   static Box FromBaselineAndOffset(const Box & baseline, const Vector2 & offset);

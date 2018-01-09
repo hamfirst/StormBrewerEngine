@@ -49,7 +49,10 @@ void GameModeTutorial::OnAssetsLoaded()
   container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
-  auto game_logic = m_InstanceContainer->GetLogicContainer(true);
+  auto game_logic = m_InstanceContainer->GetLogicContainer();
+
+  auto & render_state = container.GetRenderState();
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 
 #ifdef NET_USE_RANDOM
   game_logic.GetInstanceData().m_Random = NetRandom(1);
@@ -69,7 +72,7 @@ void GameModeTutorial::OnAssetsLoaded()
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
   m_FrameClock.Start();
@@ -255,7 +258,7 @@ bool GameModeTutorial::IsLoaded()
 
 void GameModeTutorial::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
-  auto game = m_InstanceContainer->GetLogicContainer(true);
+  auto game = m_InstanceContainer->GetLogicContainer();
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);
 }
 

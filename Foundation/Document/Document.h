@@ -22,9 +22,9 @@ class Document
 {
 public:
 
-  using DocumentChangeHandler = Delegate<void, uint64_t, Document *, const ReflectionChangeNotification &>;
-  using DocumentStateChangeHandler = Delegate<void, uint64_t, Document *, DocumentState, DocumentState>;
-  using DocumentLinksChangeHandler = Delegate<void, uint64_t, Document *>;
+  using DocumentChangeHandler = Delegate<void, uint32_t, Document *, const ReflectionChangeNotification &>;
+  using DocumentStateChangeHandler = Delegate<void, uint32_t, Document *, DocumentState, DocumentState>;
+  using DocumentLinksChangeHandler = Delegate<void, uint32_t, Document *>;
 
   Document(NotNullPtr<DocumentCompiler> compiler, czstr path);
 
@@ -38,7 +38,7 @@ public:
   void TearDown();
 
   const std::string & GetPath() const;
-  uint64_t GetFileId() const;
+  uint32_t GetFileId() const;
   DocumentState GetState() const;
 
   std::string GetDocumentJson();
@@ -53,7 +53,7 @@ public:
 
   void ApplyChange(const ReflectionChangeNotification & change, bool as_redo = false);
   void AddLink(const char * source_document, const char * source_path, const char * dest_path, bool as_redo = false);
-  bool RemoveLink(uint64_t file_id, const char * source_path, const char * dest_path, bool as_redo = false);
+  bool RemoveLink(uint32_t file_id, const char * source_path, const char * dest_path, bool as_redo = false);
 
   std::vector<std::tuple<std::string, std::string, std::string>> GetLinks();
 
@@ -82,7 +82,7 @@ private:
   struct DocumentLinkData
   {
     Document * m_Document;
-    uint64_t m_FileId;
+    uint32_t m_FileId;
     bool m_Loaded;
     bool m_Error;
     DocumentLink m_Link;
@@ -110,7 +110,7 @@ private:
 
   NotNullPtr<DocumentCompiler> m_Compiler;
   std::string m_Path;
-  uint64_t m_FileId;
+  uint32_t m_FileId;
   DocumentState m_State;
 
   int m_RefCount;

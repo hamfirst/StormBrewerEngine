@@ -15,12 +15,13 @@ using ServerObjectLoadLink = DocumentResourceLoadCallbackLink<ServerObjectDef, S
 class ServerObjectResource : public DocumentResourceBase
 {
 public:
-  ServerObjectResource(Any && load_data, uint64_t path_hash);
+  ServerObjectResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<ServerObjectDef> GetData();
   ServerObjectLoadLink AddLoadCallback(Delegate<void, NotNullPtr<ServerObjectResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<ServerObjectResource>> && callback, ServerObjectLoadLink & link);
 
+  static ServerObjectResourcePtr Find(uint32_t file_path_hash);
   static ServerObjectResourcePtr Load(czstr file_path);
   static ServerObjectLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<ServerObjectResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<ServerObjectResource>> && callback, ServerObjectLoadLink & link);

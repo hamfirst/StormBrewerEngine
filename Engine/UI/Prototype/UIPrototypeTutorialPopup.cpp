@@ -16,8 +16,8 @@ UIPrototypeTutorialPopup::UIPrototypeTutorialPopup(UIManager & manager, czstr na
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(0, 0, 0, 0));
-  fader_data.m_StartX = 0;
-  fader_data.m_StartY = 0;
+  fader_data.m_StartX = -10000;
+  fader_data.m_StartY = -10000;
   fader_data.m_EndX = 10000;
   fader_data.m_EndY = 10000;
   fader_data.m_Shape = kUIElementShapeFilledRectangle;

@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 
 #include <SDL2/SDL_keyboard.h>
+#include <External/gl3w/gl3w.h>
 
 #include "GameClientWidget.h"
 #include "EditorContainer.h"
@@ -68,6 +69,7 @@ void GameClientWidget::showEvent(QShowEvent * ev)
     window_box,
     [this] {},
     [this] {},
+    [this] { makeCurrent(); glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject()); },
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { close(); },
     [this](NullOptPtr<Box> box) { m_ImeMode = true; },
@@ -100,9 +102,9 @@ void GameClientWidget::showEvent(QShowEvent * ev)
 
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
   m_GameContainer.Emplace(m_FakeWindow->GetWindow(), std::move(init_settings));
+  m_GameContainer->Update();
 
-  m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this] { Update(); });
-
+  m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this] { makeCurrent(); Update(); });
   setFocus();
 }
 

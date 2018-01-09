@@ -99,6 +99,6 @@ protected:
 
   DelegateList<void, NullOptPtr<Asset>> m_GenericLoadCallbackList;
 
-  uint64_t m_FileNameHash = 0;
+  uint32_t m_FileNameHash = 0;
   std::string m_FileName;
 };

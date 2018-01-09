@@ -35,35 +35,36 @@ void GameModeOfflineStaging::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
+
   UIElementFullTextureInitData logo_init;
   logo_init.m_TextureFile = "./Images/GameTitle.png";
   UIElementFullTextureData logo_data;
-  logo_data.m_PositionX = kDefaultResolutionWidth / 2.0f;
-  logo_data.m_PositionY = kDefaultResolutionHeight / 2.0f;
+  logo_data.m_PositionX = 0;
+  logo_data.m_PositionY = 0;
   logo_data.m_ColorA = 0.3f;
 
   m_TitleImage = m_UIManager.AllocateFullTexture("logo", nullptr, logo_init, logo_data);
 
-
-  m_Start.Emplace(m_UIManager, "start", nullptr, Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 85, 30), Vector2(150, 40)), 
+  m_Start.Emplace(m_UIManager, "start", nullptr, Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30), Vector2(150, 25)), 
     "Start", &container.GetClientGlobalResources().UISoundEffects);
   m_Start->SetOnClickCallback([this] { Start(); });
 
-  m_Back.Emplace(m_UIManager, "back", nullptr, Box::FromFrameCenterAndSize(Vector2(85, 30), Vector2(150, 40)), 
+  m_Back.Emplace(m_UIManager, "back", nullptr, Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30 - half_res.y), Vector2(150, 25)), 
     "Back", &container.GetClientGlobalResources().UISoundEffects, true);
   m_Back->SetOnClickCallback([this] { Back(); });
 
   m_StagingUI = m_UIManager.AllocateElementFromDef("staging", *container.GetClientGlobalResources().Staging.GetData());
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, half_res - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, half_res - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, half_res - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
   m_Sequencer.Push(0.5f, [this](float val) {

@@ -25,8 +25,7 @@ UIElementText::UIElementText(const UIElementTextInitData & init_data, const UIEl
 
 void UIElementText::Update(float dt)
 {
-
-  auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
+  auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
   auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
@@ -44,7 +43,7 @@ void UIElementText::Update(float dt)
 
   UIElement::Update(dt);
 
-  size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
+  size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
   pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
@@ -95,19 +94,17 @@ void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & rende
     g_TextManager.ClearTextBounds();
   }
 
-  auto real_offset = offset + render_state.GetRenderSize() / 2;
-
   if (m_Data.m_Centered)
   {
-    auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId);
-    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) - (size.Size() / 2) + real_offset - size.m_Start);
+    auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
+    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) - (size.Size() / 2) + offset - size.m_Start);
   }
   else
   {
-    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + real_offset);
+    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + offset);
   }
 
-  g_TextManager.RenderText(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, render_state);
+  g_TextManager.RenderText(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale, render_state);
 }
 
 const UIElementTextInitData & UIElementText::GetInitData()

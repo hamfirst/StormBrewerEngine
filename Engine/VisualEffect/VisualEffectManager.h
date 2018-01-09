@@ -11,8 +11,6 @@
 
 #include "Runtime/VisualEffect/VisualEffectResource.h"
 
-
-
 class VisualEffectManager
 {
 public:

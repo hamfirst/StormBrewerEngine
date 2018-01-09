@@ -34,6 +34,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Collision\CollisionDatabase.cpp" />
+    <ClCompile Include="Collision\DynamicCollisionDatabase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Collision\StaticCollisionDatabase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Component\ComponentInitData.refl.cpp" />
     <ClCompile Include="Component\ComponentInitDataTypeDatabase.cpp" />
     <ClCompile Include="Config\ConfigManager.cpp" />
@@ -135,7 +143,16 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Collision\CollisionDatabase.h" />
+    <ClInclude Include="Collision\CollisionDatabaseResult.h" />
+    <ClInclude Include="Collision\DynamicCollisionDatabase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Collision\IntersectionDatabase.h" />
+    <ClInclude Include="Collision\StaticCollisionDatabase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Component\ComponentInitData.refl.h">
       <SubType>
       </SubType>

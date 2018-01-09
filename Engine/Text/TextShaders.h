@@ -18,7 +18,6 @@ static const char * kBasicTextVertexShader = SHADER_LITERAL(
   {
     vec2 position = a_Position;
     position /= u_ScreenSize;
-    position -= vec2(0.5, 0.5);
     position *= 2.0;
 
     gl_Position = vec4(position, 0, 1);

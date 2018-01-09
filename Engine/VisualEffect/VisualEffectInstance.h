@@ -45,7 +45,7 @@ public:
   VisualEffectHandle GetHandle();
 
   bool IsComplete() const;
-  void StopSpawning();
+  void StopSpawning(bool spawn_final_particle = false);
 
 private:
 
@@ -73,6 +73,7 @@ private:
 
   int m_Layer = 0;
   bool m_Prespawn = true;
+  bool m_PostSpawn = false;
   bool m_Spawning = true;
   int m_NextParticleId = 0;
   bool m_Allocated = true;

@@ -34,6 +34,7 @@
 
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameCamera.h"
+#include "GameClient/GameShaders.h"
 
 #include "Foundation/Pathfinding/Pathfinding.h"
 #include "Foundation/Pathfinding/GraphPathfinding.h"
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #else
 
-  int multiplier = 3;
+  int multiplier = 1;
 #endif
   for (int index = 0; index < argc; index++)
   {
@@ -111,7 +112,7 @@ int main(int argc, char *argv[])
 #endif
 
   InitServerTypes();
-  EngineInit(true);
+  EngineInit(false);
 
 #if defined(NET_USE_WEBRTC) && !defined(_WEB)
   StormWebrtcStaticInit();
@@ -125,6 +126,7 @@ int main(int argc, char *argv[])
   //window.SetVsyncEnabled(false);
 
   EngineRenderInit();
+  RegisterGameplayShaders();
 
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);
 

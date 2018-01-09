@@ -574,5 +574,8 @@ void MapEditorParalaxLayer::HandleTextureChanged()
     return;
   }
 
-  m_TextureAsset = TextureAsset::Load(layer->m_Image.data());
+  if (layer->m_Image.size() > 0)
+  {
+    m_TextureAsset = TextureAsset::Load(layer->m_Image.data());
+  }
 }

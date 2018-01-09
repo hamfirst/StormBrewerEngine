@@ -8,6 +8,8 @@
 #include <SDL2/SDL_keyboard.h>
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Rendering/GeometryVertexBufferBuilder.h"
+#include "Engine/Rendering/ShaderLiteral.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Camera/Camera.h"
 #include "Engine/Input/KeyboardState.h"
@@ -20,6 +22,33 @@
 #include "VisualEffectEditor.h"
 
 extern DelegateList<void> g_GlobalUpdate;
+
+
+static const char * kVisualEffectViewerWidgetGridVertexShader = SHADER_LITERAL(
+  attribute vec2 a_Position;
+  attribute vec4 a_Color;
+
+  varying vec4 v_Color;
+
+  void main()
+  {
+    gl_Position = vec4(a_Position, 0, 1);
+    v_Color = a_Color;
+  }
+);
+
+static const char * kVisualEffectViewerWidgetGridFragmentShader = SHADER_LITERAL(
+
+  varying vec4 v_Color;
+
+  uniform sampler2D u_Texture;
+
+  void main()
+  {
+    gl_FragColor = v_Color;
+  }
+);
+
 
 VisualEffectEditorViewer::VisualEffectEditorViewer(NotNullPtr<VisualEffectEditor> editor, VisualEffectDef & ui, QWidget *parent) :
   QOpenGLWidget(parent),
@@ -74,6 +103,8 @@ void VisualEffectEditorViewer::initializeGL()
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
   m_RenderUtil.LoadShaders();
 
+  m_GridShader = MakeQuickShaderProgram(kVisualEffectViewerWidgetGridVertexShader, kVisualEffectViewerWidgetGridFragmentShader);
+
   auto window_geo = geometry();
   auto window_pos = mapToGlobal(QPoint(window_geo.x(), window_geo.y()));
   auto window_box = Box{ Vector2{ window_pos.x(), window_pos.y() }, Vector2{ window_pos.x() + window_geo.width(), window_pos.y() + window_geo.height() } };
@@ -82,6 +113,7 @@ void VisualEffectEditorViewer::initializeGL()
     window_box,
     [this] {},
     [this] {},
+    [this] { makeCurrent(); glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject()); },
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { close(); },
     [this](NullOptPtr<Box> box) { m_ImeMode = true; },
@@ -165,15 +197,88 @@ void VisualEffectEditorViewer::paintGL()
 
   m_FPSClock.Update();
 
+  auto size = RenderVec2{ kDefaultResolutionWidth, kDefaultResolutionHeight } *m_Magnification.Get();
+  m_RenderState.SetRenderSize(size);
+
+  auto viewport = Box::FromFrameCenterAndSize(Vector2(0, 0), m_RenderState.GetRenderSize());
+  RenderVec2 window_start = viewport.m_Start;
+  RenderVec2 window_end = viewport.m_End;
+  RenderVec2 half_render_size = viewport.Size() / 2;
+
+  if (m_GridWidth != 0 && m_GridHeight != 0 && m_DrawGrid)
+  {
+    GeometryVertexBufferBuilder vertex_builder;
+
+    auto x_start = floorf(window_start.x / m_GridWidth) * m_GridWidth;
+    auto x_end = (floorf(window_end.x / m_GridWidth) + 1) * m_GridWidth;
+
+    auto y_start = floorf(window_start.y / m_GridHeight) * m_GridHeight;
+    auto y_end = (floorf(window_end.y / m_GridHeight) + 1) * m_GridHeight;
+
+    for (float x = x_start; x <= x_end; x += m_GridWidth)
+    {
+      auto start = RenderVec2{ x, y_start } / half_render_size;
+      auto end = RenderVec2{ x, y_end } / half_render_size;
+
+      int mx = (int)(x / m_GridHeight);
+      int gx = mx % 10;
+      int zx = mx % 50;
+
+      vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 2.0f) / width(), Color(1.0f, 0.5f, 0.6f, 0.3f));
+    }
+
+    for (float y = y_start; y < y_end; y += m_GridHeight)
+    {
+      auto start = RenderVec2{ x_start, y } / half_render_size;
+      auto end = RenderVec2{ x_end, y } / half_render_size;
+
+      int my = (int)(y / m_GridHeight);
+      int gy = my % 10;
+      int zy = my % 50;
+
+      vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 2.0f) / height(), Color(1.0f, 0.5f, 0.6f, 0.3f));
+    }
+
+    x_start = floorf(window_start.x / kDefaultResolutionWidth) * kDefaultResolutionWidth - kDefaultResolutionWidth / 2;
+    x_end = (floorf(window_end.x / kDefaultResolutionWidth) + 1) * kDefaultResolutionWidth + kDefaultResolutionWidth / 2;
+
+    y_start = floorf(window_start.y / kDefaultResolutionHeight) * kDefaultResolutionHeight - kDefaultResolutionHeight / 2;
+    y_end = (floorf(window_end.y / kDefaultResolutionHeight) + 1) * kDefaultResolutionHeight + kDefaultResolutionHeight / 2;
+
+    for (float x = x_start; x <= x_end; x += kDefaultResolutionWidth)
+    {
+      auto start = RenderVec2{ x, y_start } / half_render_size;
+      auto end = RenderVec2{ x, y_end } / half_render_size;
+
+      int mx = (int)(x / kDefaultResolutionWidth);
+      int gx = mx % 10;
+      int zx = mx % 50;
+
+      vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 2.0f) / width(), Color(0.2f, 0.2f, 1.0f, 0.3f));
+    }
+
+    for (float y = y_start; y < y_end; y += kDefaultResolutionHeight)
+    {
+      auto start = RenderVec2{ x_start, y } / half_render_size;;
+      auto end = RenderVec2{ x_end, y } / half_render_size;;
+
+      int my = (int)(y / kDefaultResolutionHeight);
+      int gy = my % 10;
+      int zy = my % 50;
+
+      vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 2.0f) / height(), Color(0.2f, 0.2f, 1.0f, 0.3f));
+    }
+
+    vertex_builder.FillVertexBuffer(m_RenderUtil.GetScratchBuffer());
+    m_RenderState.BindShader(m_GridShader);
+    m_RenderState.BindVertexBuffer(m_RenderUtil.GetScratchBuffer());
+    m_RenderState.Draw();
+  }
+
   if (m_VisualEffectManager)
   {
-    auto viewport = Box::FromFrameCenterAndSize(Vector2(0, 0), m_RenderState.GetRenderSize());
-
     DrawList draw_list;
     m_VisualEffectManager->DrawAllEffects(viewport, draw_list);
-
-    auto size = RenderVec2{ kDefaultResolutionWidth, kDefaultResolutionHeight } *m_Magnification.Get();
-    m_RenderState.SetRenderSize(size);
 
     auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
     m_RenderState.BindShader(shader);
@@ -184,12 +289,12 @@ void VisualEffectEditorViewer::paintGL()
   }
 
   std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2(40, 10));
+  g_TextManager.SetTextPos(Vector2(40, 10) - m_RenderState.GetRenderSize() / 2);
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);
   g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(fps_data.data(), -1, m_RenderState);
+  g_TextManager.RenderText(fps_data.data(), -1, 1, m_RenderState);
 }
 
 void VisualEffectEditorViewer::showEvent(QShowEvent * ev)

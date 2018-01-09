@@ -23,6 +23,7 @@
 #include "MapEditorVolume.h"
 #include "MapEditorPath.h"
 #include "MapEditorAnchor.h"
+#include "MapEditorTypes.refl.h"
 
 
 static const uint64_t kInvalidFrameId = ~0;
@@ -54,6 +55,7 @@ public:
   MapEditorLayerManager<MapPath, MapEditorPath> & GetPathManager();
   MapEditorLayerManager<MapAnchor, MapEditorAnchor> & GetAnchorManager();
 
+  MapDef & GetMapDef();
   MapEditorSelector & GetSelector();
   MapEditorLayerList & GetLayerList();
   MapEditorViewer & GetViewer();
@@ -73,8 +75,9 @@ public:
   const RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> & GetPathInitData() const;
   void CreateNewPath(const Line & line);
 
-  const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & GetAnchorInitData() const;
+  const MapEditorAnchorInitData & GetAnchorInitData() const;
   void CreateNewAnchor(const Vector2 & point);
+  void DuplicateAnchorData(int layer_index);
 
   MapParalaxLayerObject & GetParalaxObjectInitData();
   MapEditorParalaxObjectType & GetParalaxObject();
@@ -109,7 +112,7 @@ private:
 
   RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeInitData;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathInitData;
-  RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorInitData;
+  MapEditorAnchorInitData m_AnchorInitData;
 
   MapParalaxLayerObject m_ParalaxInitData;
   MapEditorParalaxObjectType m_ParalaxInitObject;

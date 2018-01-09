@@ -160,7 +160,7 @@ public:
      std::is_class<std::decay_t<Callable>>::value> * Enable = nullptr>
   Delegate(Callable && callable)
   {
-    static_assert(sizeof(Callable) < kMaxDelegateSize, "Delegate cannot fit this callable");
+    static_assert(sizeof(Callable) <= kMaxDelegateSize, "Delegate cannot fit this callable");
     new (m_Buffer) std::decay_t<Callable>(std::move(callable));
 
     static DelegateCallbacks<ReturnType, Args...> callbacks(callable, [](void * obj, Args ... args) -> ReturnType 

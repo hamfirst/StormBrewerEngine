@@ -19,19 +19,167 @@ struct StormReflTypeInfo<GlobalNetworkEvent>
 };
 
 template <>
-struct StormReflTypeInfo<PlaceholderGlobalEvent>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>
 {
   using MyBase = GlobalNetworkEvent;
-  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  static constexpr int fields_n = 3 + StormReflTypeInfo<MyBase>::fields_n;
   template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
   template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
   {
     field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
   };
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
-  static constexpr auto GetName() { return "PlaceholderGlobalEvent"; }
-  static constexpr auto GetNameHash() { return 0x3E75F02A; }
-  static PlaceholderGlobalEvent & GetDefault() { static PlaceholderGlobalEvent def; return def; }
+  static constexpr auto GetName() { return "PlaySoundGlobalEvent"; }
+  static constexpr auto GetNameHash() { return 0x5199D34C; }
+  static PlaySoundGlobalEvent & GetDefault() { static PlaySoundGlobalEvent def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = uint32_t; // unsigned int
+  static constexpr auto GetName() { return "m_AssetHash"; }
+  static constexpr auto GetType() { return "unsigned int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_AssetHash; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint32_t> & Get() { return self.m_AssetHash; }
+  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_AssetHash; }
+  void SetDefault() { self.m_AssetHash = StormReflTypeInfo<PlaySoundGlobalEvent>::GetDefault().m_AssetHash; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionX"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionX; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionX; }
+  void SetDefault() { self.m_PositionX = StormReflTypeInfo<PlaySoundGlobalEvent>::GetDefault().m_PositionX; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionY"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionY; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionY; }
+  void SetDefault() { self.m_PositionY = StormReflTypeInfo<PlaySoundGlobalEvent>::GetDefault().m_PositionY; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>
+{
+  using MyBase = GlobalNetworkEvent;
+  static constexpr int fields_n = 3 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "PlayVfxGlobalEvent"; }
+  static constexpr auto GetNameHash() { return 0xEA5024F2; }
+  static PlayVfxGlobalEvent & GetDefault() { static PlayVfxGlobalEvent def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = uint32_t; // unsigned int
+  static constexpr auto GetName() { return "m_AssetHash"; }
+  static constexpr auto GetType() { return "unsigned int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_AssetHash; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint32_t> & Get() { return self.m_AssetHash; }
+  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_AssetHash; }
+  void SetDefault() { self.m_AssetHash = StormReflTypeInfo<PlayVfxGlobalEvent>::GetDefault().m_AssetHash; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionX"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionX; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionX; }
+  void SetDefault() { self.m_PositionX = StormReflTypeInfo<PlayVfxGlobalEvent>::GetDefault().m_PositionX; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionY"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionY; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionY; }
+  void SetDefault() { self.m_PositionY = StormReflTypeInfo<PlayVfxGlobalEvent>::GetDefault().m_PositionY; }
 };
 
 template <>
@@ -163,7 +311,7 @@ namespace StormReflFileInfo
 {
   struct GameNetworkEvents
   {
-    static const int types_n = 9;
+    static const int types_n = 10;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -176,47 +324,53 @@ namespace StormReflFileInfo
   template <>
   struct GameNetworkEvents::type_info<1>
   {
-    using type = ::PlaceholderGlobalEvent;
+    using type = ::PlaySoundGlobalEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<2>
   {
-    using type = ::ServerAuthNetworkEvent;
+    using type = ::PlayVfxGlobalEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<3>
   {
-    using type = ::PlaceholderServerAuthEvent;
+    using type = ::ServerAuthNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<4>
   {
-    using type = ::TargetNetworkEvent;
+    using type = ::PlaceholderServerAuthEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<5>
   {
-    using type = ::PlaceholderTargetEvent;
+    using type = ::TargetNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<6>
   {
-    using type = ::ClientNetworkEvent;
+    using type = ::PlaceholderTargetEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<7>
   {
-    using type = ::PlaceholderClientEvent;
+    using type = ::ClientNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<8>
+  {
+    using type = ::PlaceholderClientEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<9>
   {
     using type = ::JumpEvent;
   };

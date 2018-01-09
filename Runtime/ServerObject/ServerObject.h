@@ -26,7 +26,7 @@ public:
   void Destroy(ServerObjectManager & obj_manager);
 
   virtual void InitPosition(const Vector2 & pos);
-  virtual Vector2 GetPosition() const;
+  virtual Vector2 GetPosition(GameLogicContainer & game_container) const;
 
   virtual czstr GetDefaultEntityBinding();
   virtual czstr GetEntityBinding();
@@ -49,7 +49,7 @@ public:
   }
 
   template <typename EventType>
-  bool SendEvent(const EventType & ev, const EventMetaData & meta)
+  bool SendEvent(EventType & ev, const EventMetaData & meta)
   {
     return TriggerEventHandler(EventType::TypeNameHash, &ev, meta);
   }
@@ -76,7 +76,7 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
-  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
+  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta);
 
 private:
   bool m_IsStatic = false;
@@ -92,7 +92,7 @@ private:
 };
 
 template <typename T>
-NullOptPtr<T> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_manager)
+NullOptPtr<T> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_manager) const
 {
   static_assert(std::is_base_of<ServerObject, T>::value, "Must resolve to server object type");
 
@@ -111,7 +111,7 @@ NullOptPtr<T> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_m
 }
 
 template <>
-NullOptPtr<ServerObject> ServerObjectHandle::ResolveTo<ServerObject>(const ServerObjectManager & object_manager);
+NullOptPtr<ServerObject> ServerObjectHandle::ResolveTo<ServerObject>(const ServerObjectManager & object_manager) const;
 
 template <>
 struct StormReflTypeInfo<ServerObject>

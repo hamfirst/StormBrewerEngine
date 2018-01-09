@@ -8,6 +8,7 @@
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Asset/ClientAssetLoader.h"
 
 #include "Runtime/Asset/Asset.h"
 
@@ -52,7 +53,7 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_SharedGlobalResources.Emplace();
   m_ClientGlobalResources.Emplace();
 
-  g_GlobalAssetList.BeginAssetLoad();
+  g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);
 
   SetInitialMode();
 }
@@ -202,6 +203,9 @@ void GameContainer::Update()
 void GameContainer::Render()
 {
   m_Window.MakeCurrent();
+
+  m_RenderState.BeginFrame(m_Window);
+
   if (m_Mode)
   {
     m_Mode->Render();
@@ -210,8 +214,10 @@ void GameContainer::Render()
   {
     m_RenderUtil.Clear();
     g_TextManager.SetTextPos(Vector2(20, 20));
-    g_TextManager.RenderText("No mode set", -1, m_RenderState);
+    g_TextManager.RenderText("No mode set", -1, 1, m_RenderState);
   }
+
+  m_RenderState.FinalizeFrame(m_Window);
 
   m_Window.Swap();
 }

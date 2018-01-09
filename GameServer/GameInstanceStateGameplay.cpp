@@ -13,6 +13,7 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_Stage(state_data.GetStage()),
   m_InstanceResources(std::move(resources)),
   m_SendTimer(0),
+  m_Systems(state_data.GetStage().GetCollisionDatabase()),
   m_FramesToRewind(0),
   m_FramesToUpdate(0),
   m_ReconcileFrame(0),
@@ -21,7 +22,12 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_InitialState(m_Stage.CreateDefaultGameState())
 {
   GameLogicContainer logic_container(m_Controller, m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, 
-    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, m_SendTimer);
+    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+    m_DeliberateSyncSystemData,
+#endif
+    m_Stage, true, m_SendTimer);
+
 
   for (auto elem : loading_data.m_Players)
   {
@@ -83,6 +89,32 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
 
   m_CurrentState = std::make_shared<GameFullState>(m_InitialState);
   m_SimHistory.Push(std::shared_ptr<GameFullState>(m_CurrentState));
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  auto deliberate_data_type_size = std::tuple_size<GameDeliberateSyncSystemListType>::value;
+
+  m_DeliberateSyncSystemDataPtrs = std::make_unique<void *[]>(deliberate_data_type_size);
+  void ** ptrs = m_DeliberateSyncSystemDataPtrs.get();
+
+  auto init_visitor = [&](auto & f)
+  {
+    *ptrs = &f;
+    ++ptrs;
+  };
+
+  NetMetaUtil::VisitTuple(init_visitor, m_DeliberateSyncSystemData);
+
+  auto sync_visitor = [&](std::size_t client_index, GameInstanceStatePlayer & player)
+  {
+    for (std::size_t index = 0; index < deliberate_data_type_size; ++index)
+    {
+      player.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
+    }
+  };
+
+  m_StateData.VisitPlayers(sync_visitor);
+
+#endif
 }
 
 GameInstanceStateGameplay::~GameInstanceStateGameplay()
@@ -433,6 +465,17 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
     m_PendingExternals.emplace_back(std::move(ev));
   }
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  auto deliberate_data_type_size = std::tuple_size<GameDeliberateSyncSystemListType>::value;
+
+  for (std::size_t index = 0; index < deliberate_data_type_size; ++index)
+  {
+    client_info.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
+  }
+
+#endif
+
+
   ClientLocalData local_data;
   local_data.m_PlayerIndex = player_info.m_PlayerIndex;
 
@@ -616,7 +659,11 @@ void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_
 
     int fake_send_timer = 0;
     GameLogicContainer logic_container(m_Controller, new_state->m_InstanceData, new_state->m_ServerObjectManager, m_ServerObjectEventSystem,
-      *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, fake_send_timer);
+      *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+      m_DeliberateSyncSystemData,
+#endif
+      m_Stage, true, fake_send_timer);
 
     auto input_visitor = [&](int frame_count, HistoryInput & elem)
     {   
@@ -990,6 +1037,19 @@ void GameInstanceStateGameplay::SendEntityEvent(std::size_t class_id, const void
 
 #endif
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+
+void GameInstanceStateGameplay::SyncDeliberateSyncSystem(int system_index)
+{
+  auto sync_visitor = [&](std::size_t client_index, GameInstanceStatePlayer & player)
+  {
+    player.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[system_index], (int)system_index);
+  };
+
+  m_StateData.VisitPlayers(sync_visitor);
+}
+
+#endif
 
 GameFullState & GameInstanceStateGameplay::GetCurrentState()
 {
@@ -1003,8 +1063,13 @@ GameInstanceData & GameInstanceStateGameplay::GetCurrentInstanceData()
 
 GameLogicContainer GameInstanceStateGameplay::GetLogicContainer(int history_index)
 {
-  return GameLogicContainer(m_Controller, m_CurrentState->m_InstanceData, m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
-    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Stage, true, m_SendTimer);
+  return GameLogicContainer(m_Controller, m_CurrentState->m_InstanceData, 
+    m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
+    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+    m_DeliberateSyncSystemData,
+#endif
+    m_Stage, true, m_SendTimer);
 }
 
 void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameInstanceStateGameplayPlayer & player)

@@ -104,7 +104,8 @@ void AssetLoader::ShutDown()
 
 void AssetLoader::RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps)
 {
-  //printf("Requesting file load %s (%s)\n", file_path, as_document ? "doc" : "asset");
+  printf("Requesting file load %s (%s)\n", file_path, as_document ? "doc" : "asset");
+  ASSERT(file_path[0] != 0, "Requesting empty file");
   
   asset->IncRef();
 
@@ -518,7 +519,7 @@ Optional<Buffer> AssetLoader::LoadFullDocumentInternal(czstr file_path, int & fi
   return LoadFullDocumentRaw(file_path, file_open_error);
 }
 
-void AssetLoader::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback)
+void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
 {
   auto default_time_point = std::chrono::system_clock::time_point();
 

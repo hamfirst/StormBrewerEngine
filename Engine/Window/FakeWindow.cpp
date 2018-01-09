@@ -3,12 +3,13 @@
 #include "Engine/Window/FakeWindow.h"
 #include "Engine/Window/WindowManager.h"
 
-FakeWindow::FakeWindow(const Box & window_geo, const Delegate<void> & make_current_cb, const Delegate<void> & swap_cb, 
+FakeWindow::FakeWindow(const Box & window_geo, const Delegate<void> & make_current_cb, const Delegate<void> & swap_cb, const Delegate<void> & bind_default_rt,
                        const Delegate<void, int, int> & set_mouse_cb, const Delegate<void> & close_cb,
                        const Delegate<void, NullOptPtr<Box>> & start_ime_cb, const Delegate<void> stop_ime_cb) :
   m_Window(g_WindowManager.CreateFakeWindow(this, window_geo)),
   m_MakeCurrentDelegate(make_current_cb),
   m_SwapDelegate(swap_cb),
+  m_BindDefaultRenderTargetDelegate(bind_default_rt),
   m_SetMousePosDelegate(set_mouse_cb),
   m_CloseDelegate(close_cb),
   m_StartImeDelegate(start_ime_cb),

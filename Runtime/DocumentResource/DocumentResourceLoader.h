@@ -5,11 +5,11 @@
 #include "Runtime/RuntimeCommon.h"
 
 
-typedef void(*DocumentResourceLoaderCallback)(uint64_t path_hash, NullOptPtr<std::string> resource_data, void * user_ptr);
+typedef void(*DocumentResourceLoaderCallback)(uint32_t path_hash, NullOptPtr<std::string> resource_data, void * user_ptr);
 
 class DocumentResourceLoader 
 {
 public:
   virtual Any LoadResource(czstr path, DocumentResourceLoaderCallback load_callback, void * user_ptr) = 0;
-  virtual void UnloadResource(uint64_t path_hash, Any && load_data) = 0;
+  virtual void UnloadResource(uint32_t path_hash, Any && load_data) = 0;
 };

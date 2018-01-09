@@ -42,30 +42,32 @@ void GameModeMainMenu::OnAssetsLoaded()
   UIElementFullTextureInitData logo_init;
   logo_init.m_TextureFile = "./Images/GameTitle.png";
   UIElementFullTextureData logo_data;
-  logo_data.m_PositionX = kDefaultResolutionWidth / 2.0f;
-  logo_data.m_PositionY = kDefaultResolutionHeight / 2.0f;
+  logo_data.m_PositionX = 0;
+  logo_data.m_PositionY = 0;
+
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 
   m_TitleImage = m_UIManager.AllocateFullTexture("logo", nullptr, logo_init, logo_data);
 
   m_PlayOnline.Emplace(m_UIManager, "playonline", nullptr, 
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 85), Vector2(100, 25)), "Play Online", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(half_res.x - 55, 85 - half_res.y), Vector2(100, 25)), "Play Online", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayOnline->SetOnClickCallback([this] { PlayOnline(); });
 
   m_Tutorial.Emplace(m_UIManager, "tutorial", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 55), Vector2(100, 18)), "Tutorial", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(half_res.x - 55, 55 - half_res.y), Vector2(100, 18)), "Tutorial", &container.GetClientGlobalResources().UISoundEffects);
   m_Tutorial->SetOnClickCallback([this] { Tutorial(); });
 
   m_PlayOffline.Emplace(m_UIManager, "playoffline", nullptr, 
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 35), Vector2(100, 18)), "Local Multiplayer", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(half_res.x - 55, 35 - half_res.y), Vector2(100, 18)), "Local Multiplayer", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayOffline->SetOnClickCallback([this] { PlayOffline(); });
 
   m_PlaySingleplayer.Emplace(m_UIManager, "playsingleplayer", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 55, 15), Vector2(100, 18)), "Single Player", &container.GetClientGlobalResources().UISoundEffects);
+    Box::FromFrameCenterAndSize(Vector2(half_res.x - 55, 15 - half_res.y), Vector2(100, 18)), "Single Player", &container.GetClientGlobalResources().UISoundEffects);
   m_PlaySingleplayer->SetOnClickCallback([this] { PlaySingleplayer(); });
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, half_res - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, half_res - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, half_res - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   if (container.GetSave().GetSaveData().m_WatchedTutorial == false)
   {
@@ -79,11 +81,12 @@ void GameModeMainMenu::OnAssetsLoaded()
     container.GetSave().RequestSave();
   }
 
+
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
   m_Sequencer.Push(0.5f, [this](float val) {

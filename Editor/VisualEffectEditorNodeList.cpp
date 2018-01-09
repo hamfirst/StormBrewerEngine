@@ -212,7 +212,7 @@ void VisualEffectEditorNodeList::scrollChanged()
 
 void VisualEffectEditorNodeList::addNewElement()
 {
-  auto name = std::string("New") + std::to_string(m_VisualEffect.m_Emitters.HighestIndex() + 2);
+  auto name = std::string("Emitter") + std::to_string(m_VisualEffect.m_Emitters.HighestIndex() + 2);
 
   VisualEffectDefEmitter new_element;
   new_element.m_Properties.m_Name = name;

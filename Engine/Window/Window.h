@@ -40,6 +40,9 @@ private:
 
   friend class WindowManager;
   friend class FakeWindow;
+  friend class RenderState;
+
+  void BindDefaultRenderTarget() const;
 
   void AddRef();
   void DecRef();

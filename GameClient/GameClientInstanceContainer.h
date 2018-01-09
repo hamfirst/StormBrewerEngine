@@ -9,6 +9,8 @@
 #include "Game/GameSharedGlobalResources.h"
 #include "Game/GameSharedInstanceResources.h"
 #include "Game/GameEventReconciler.h"
+#include "Game/Systems/GameLogicSystems.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #include "GameClient/GameClientController.refl.h"
 #include "GameClient/GameClientLevelLoader.h"
@@ -60,7 +62,7 @@ public:
   void PushAuthorityEvent(NetPolymorphic<ServerAuthNetworkEvent> && event, int frame);
   void HandleLocalServerAuthorityEvent(std::size_t class_id, const void * ev);
 
-  GameLogicContainer GetLogicContainer(bool authority = false, int & send_timer = s_BogusSendTimer);
+  GameLogicContainer GetLogicContainer(NullOptPtr<bool> authority = nullptr, int & send_timer = s_BogusSendTimer);
 
   GameController & GetGameController();
   GameClientEventSender & GetEventSender();
@@ -78,7 +80,12 @@ public:
   GameInstanceData & GetGlobalInstanceData();
   GameSharedInstanceResources & GetSharedResources();
   GameClientInstanceResources & GetClientResources();
+  GameLogicSystems & GetSystems();
   GameStage & GetStage();
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  void SyncDeliberateSyncSystem(std::size_t index, void * data);
+#endif
 
   template <typename Visitor>
   void VisitLocalInput(int since_frame, Visitor && visitor)
@@ -101,6 +108,7 @@ public:
 
     m_LocalEventHistory.VisitElementsSince(since_frame, marshaler);
   }
+
 
 private:
 
@@ -128,6 +136,14 @@ private:
   GameContainer & m_GameContainer;
   GameClientEventSender & m_EventSender;
   GameController m_GameController;
+  Optional<GameLogicSystems> m_Systems;
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  using GameDeliberateSyncSystemCallback = void(*)(void *, void *);
+  GameDeliberateSyncSystemListType m_DeliberateSyncSystemData;
+  std::unique_ptr<std::pair<void *, GameDeliberateSyncSystemCallback>[]> m_DeliberateSyncSystemCallback;
+#endif
+
   GameClientController m_ClientController;
   GameClientLevelLoader m_LevelLoader;
   GameClientEntitySync m_EntitySync;

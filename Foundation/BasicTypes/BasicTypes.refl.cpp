@@ -28,6 +28,14 @@ Vector2::Vector2(const RenderVec2 & v) :
 
 }
 
+Box Box::Offset(const Vector2 & offset) const
+{
+  Box b = *this;
+  b.m_Start += offset;
+  b.m_End += offset;
+  return b;
+}
+
 Box Box::FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size)
 {
   Box b;

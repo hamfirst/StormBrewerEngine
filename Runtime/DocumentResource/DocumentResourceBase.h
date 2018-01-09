@@ -23,14 +23,15 @@ public:
 protected:
   friend class DocumentResourceReferenceBase;
 
-  DocumentResourceBase(Any && load_data, uint64_t file_name_hash);
+  DocumentResourceBase(Any && load_data, uint32_t file_name_hash);
 
   void IncRef();
   void DecRef();
 
 protected:
 
-  static NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint64_t));
+  static NullOptPtr<DocumentResourceBase> FindDocumentResource(uint32_t file_path_hash);
+  static NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t));
 
   virtual void OnDataLoadComplete(const std::string & resource_data);
   virtual void CallAssetLoadCallbacks();
@@ -46,5 +47,5 @@ protected:
   bool m_Error;
 
   NotNullPtr<DocumentResourceManager> m_ResourceManager;
-  uint64_t m_FileNameHash;
+  uint32_t m_FileNameHash;
 };

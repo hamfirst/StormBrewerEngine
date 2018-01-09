@@ -7,7 +7,7 @@
 
 #include <sb/vector.h>
 
-EntityResource::EntityResource(Any && load_data, uint64_t path_hash) :
+EntityResource::EntityResource(Any && load_data, uint32_t path_hash) :
   DocumentResourceBase(std::move(load_data), path_hash)
 {
 
@@ -40,10 +40,22 @@ void EntityResource::AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> 
   }
 }
 
+EntityResourcePtr EntityResource::Find(uint32_t file_path_hash)
+{
+  auto resource = FindDocumentResource(file_path_hash);
+  if (resource)
+  {
+    auto p_this = static_cast<EntityResource *>(resource);
+    return EntityResourcePtr(DocumentResourceReference<EntityResource>(p_this));
+  }
+
+  return {};
+}
+
 EntityResourcePtr EntityResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
   return EntityResourcePtr(DocumentResourceReference<EntityResource>(p_this));
 }
@@ -51,7 +63,7 @@ EntityResourcePtr EntityResource::Load(czstr file_path)
 EntityLoadLink EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback)
 {
   auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
@@ -60,7 +72,7 @@ EntityLoadLink EntityResource::LoadWithCallback(czstr file_path, Delegate<void, 
 void EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link)
 {
   auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
 
   p_this->AddLoadCallback(std::move(callback), link);

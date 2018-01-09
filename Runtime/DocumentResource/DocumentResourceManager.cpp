@@ -13,9 +13,20 @@ DocumentResourceManager::DocumentResourceManager() :
 
 }
 
-NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint64_t))
+NullOptPtr<DocumentResourceBase> DocumentResourceManager::FindDocumentResource(uint32_t file_path_hash)
 {
-  uint64_t path_hash = crc64(file_path);
+  auto itr = m_Documents.find(file_path_hash);
+  if (itr != m_Documents.end())
+  {
+    return itr->second.get();
+  }
+
+  return nullptr;
+}
+
+NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t))
+{
+  uint32_t path_hash = crc32lowercase(file_path);
 
   auto itr = m_Documents.find(path_hash);
   if (itr == m_Documents.end())
@@ -24,7 +35,7 @@ NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(c
     m_PendingDocumentLoaded = false;
 
     auto load_data = g_ResourceLoader->LoadResource(file_path,
-      [](uint64_t path_hash, NullOptPtr<std::string> resource_data, void * user_ptr)
+      [](uint32_t path_hash, NullOptPtr<std::string> resource_data, void * user_ptr)
       { 
         auto p_this = static_cast<DocumentResourceManager *>(user_ptr);
         p_this->HandleResourceLoadResult(path_hash, resource_data);
@@ -50,7 +61,7 @@ NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(c
   }
 }
 
-void DocumentResourceManager::HandleResourceLoadResult(uint64_t path_hash, NullOptPtr<std::string> resource_data)
+void DocumentResourceManager::HandleResourceLoadResult(uint32_t path_hash, NullOptPtr<std::string> resource_data)
 {
   if (path_hash == m_PendingDocumentLoad)
   {
@@ -85,7 +96,7 @@ void DocumentResourceManager::HandleResourceLoadResult(uint64_t path_hash, NullO
   itr->second->CallAssetLoadCallbacks();
 }
 
-void DocumentResourceManager::DestroyDocument(uint64_t path_hash)
+void DocumentResourceManager::DestroyDocument(uint32_t path_hash)
 {
   auto itr = m_Documents.find(path_hash);
   if (itr == m_Documents.end())

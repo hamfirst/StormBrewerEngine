@@ -58,18 +58,20 @@ void GameModeEndGame::OnAssetsLoaded()
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
 
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
+
   m_Fader = m_UIManager.AllocateShape("fader", nullptr);
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 0));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
-  m_PlayAgain.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2, Vector2(150, 50)), 
+  m_PlayAgain.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(Vector2(0, 0), Vector2(150, 50)), 
     "Play Again", &container.GetClientGlobalResources().UISoundEffects);
   m_PlayAgain->SetOnClickCallback([this] { PlayAgain(); });
 
-  m_Quit.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() / 2 + Vector2(0, -50), Vector2(150, 25)),
+  m_Quit.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(Vector2(0, -50), Vector2(150, 25)),
     "Quit To Main Menu", &container.GetClientGlobalResources().UISoundEffects);
   m_Quit->SetOnClickCallback([this] { Quit(); });
 
@@ -77,8 +79,8 @@ void GameModeEndGame::OnAssetsLoaded()
   auto & result_data = m_Result->GetData();
   result_data.m_Centered = 1.0f;
   result_data.m_FontId = -1.0f;
-  result_data.m_PositionX = render_state.GetRenderWidth() / 2.0f;
-  result_data.m_PositionY = render_state.GetRenderHeight() / 2.0f + 80;
+  result_data.m_PositionX = 0;
+  result_data.m_PositionY = 80;
   result_data.m_Text = m_Victory ? "Victory" : "Defeat";
   result_data.m_TextMode = 2.0f;
 

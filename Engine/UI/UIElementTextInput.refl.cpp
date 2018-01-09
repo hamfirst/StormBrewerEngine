@@ -34,7 +34,7 @@ UIElementTextInput::~UIElementTextInput()
 
 void UIElementTextInput::Update(float dt)
 {
-  auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
+  auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Scale, m_Data.m_Prompt.data());
   auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
@@ -50,7 +50,7 @@ void UIElementTextInput::Update(float dt)
 
   UIElement::Update(dt);
 
-  size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
+  size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Scale, m_Data.m_Prompt.data());
   pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
 
   if (m_Data.m_Centered)
@@ -107,7 +107,7 @@ void UIElementTextInput::RenderDefault(RenderState & render_state, RenderUtil & 
 
   if (m_Data.m_Centered)
   {
-    auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Prompt.data());
+    auto size = g_TextManager.GetTextSize(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Scale, m_Data.m_Prompt.data());
     g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) - (size.Size() / 2) + real_offset - size.m_Start);
   }
   else
@@ -115,7 +115,7 @@ void UIElementTextInput::RenderDefault(RenderState & render_state, RenderUtil & 
     g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + real_offset);
   }
 
-  g_TextManager.RenderInputText(m_TextInput, (int)m_Data.m_FontId, render_state, m_Data.m_Prompt.data());
+  g_TextManager.RenderInputText(m_TextInput, (int)m_Data.m_FontId, m_Data.m_Scale, render_state, m_Data.m_Prompt.data());
 }
 
 const UIElementTextInputInitData & UIElementTextInput::GetInitData()

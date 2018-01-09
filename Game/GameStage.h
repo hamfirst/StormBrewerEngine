@@ -48,13 +48,15 @@ public:
 
   GameFullState CreateDefaultGameState() const;
 
-  const CollisionDatabase & GetCollisionDatabase() const;
+  const StaticCollisionDatabase & GetCollisionDatabase() const;
   std::vector<Vector2> FindPath(const Vector2 & start, const Vector2 & end, int max_iterations) const;
 
   const IntersectionDatabase<GameNetVal> & GetIntersectionDatabase() const;
   const std::vector<GameCollisionLine> GetCollisionLines() const;
 
   const std::vector<std::vector<Vector2>> & GetPlayerSpawns() const;
+
+  Optional<ServerObjectHandle> FindStaticObject(uint32_t obj_name_hash) const;
 
 private:
   friend class GameInstance;
@@ -63,7 +65,7 @@ private:
   std::vector<ServerObjectStaticInitData> m_DynamicObjects;
   int m_DynamicObjectCount;
 
-  CollisionDatabase m_CollisionDatabase;
+  StaticCollisionDatabase m_CollisionDatabase;
 
 #ifndef MAP_PLATFORMER_PATHFINDING
   Optional<PathfindingDatabaseType> m_Pathfinding;
@@ -76,4 +78,6 @@ private:
   std::vector<GameCollisionLine> m_CollisionLines;
 
   std::vector<std::vector<Vector2>> m_PlayerSpawns;
+
+  std::unordered_map<uint32_t, ServerObjectHandle> m_StaticObjLookup;
 };

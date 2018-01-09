@@ -3,7 +3,7 @@
 #include "Runtime/DocumentResource/DocumentResourceBase.h"
 #include "Runtime/DocumentResource/DocumentResourceManager.h"
 
-DocumentResourceBase::DocumentResourceBase(Any && load_data, uint64_t file_name_hash) :
+DocumentResourceBase::DocumentResourceBase(Any && load_data, uint32_t file_name_hash) :
   m_LoadData(std::move(load_data)),
   m_RefCount(0),
   m_Loaded(false),
@@ -47,7 +47,12 @@ uint64_t DocumentResourceBase::GetFileNameHash() const
   return m_FileNameHash;
 }
 
-NotNullPtr<DocumentResourceBase> DocumentResourceBase::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint64_t))
+NullOptPtr<DocumentResourceBase> DocumentResourceBase::FindDocumentResource(uint32_t file_path_hash)
+{
+  return g_DocumentResourceManager.FindDocumentResource(file_path_hash);
+}
+
+NotNullPtr<DocumentResourceBase> DocumentResourceBase::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t))
 {
   return g_DocumentResourceManager.LoadDocumentResource(file_path, ResourceCreator);
 }

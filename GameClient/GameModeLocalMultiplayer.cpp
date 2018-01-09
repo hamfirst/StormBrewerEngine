@@ -56,7 +56,7 @@ void GameModeLocalMultiplayer::OnAssetsLoaded()
   container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
-  auto game_logic = m_InstanceContainer->GetLogicContainer(true);
+  auto game_logic = m_InstanceContainer->GetLogicContainer();
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();
 
@@ -108,7 +108,7 @@ void GameModeLocalMultiplayer::Update()
   int num_local_players_alive = 0;
   for (auto player_index = 0; player_index < kMaxPlayers; player_index++)
   {
-    if (m_AttachedPlayers[player_index] && game_data.m_Score[player_index] < kMaxScore)
+    if (m_AttachedPlayers[player_index])
     {
       num_local_players_alive++;
     }
@@ -220,6 +220,6 @@ bool GameModeLocalMultiplayer::IsLoaded()
 
 void GameModeLocalMultiplayer::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
-  auto game = m_InstanceContainer->GetLogicContainer(true);
+  auto game = m_InstanceContainer->GetLogicContainer();
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);
 }

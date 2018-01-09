@@ -394,6 +394,7 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
   PROFILE_SCOPE("Draw Map");
 
 
+
   m_DrawInfo.VisitGrid(viewport_bounds, [&](uint32_t grid_id, std::vector<GridDrawElement> & grid_elems)
   {
     auto grid_box = m_DrawInfo.GetGridBoxForGridId(grid_id);
@@ -403,6 +404,7 @@ void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderV
     render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
     render_state.BindVertexBuffer(m_VertexBuffer);
 
@@ -442,6 +444,7 @@ void MapManualTileLayerInstance::DrawDynamic(const Box & viewport_bounds, DrawLi
         render_state.BindShader(shader);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), grid_start - screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
         render_state.BindVertexBuffer(m_VertexBuffer);
         render_state.BindTexture(*elem->m_Texture);

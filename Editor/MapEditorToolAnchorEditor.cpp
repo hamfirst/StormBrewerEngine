@@ -15,7 +15,11 @@ MapEditorToolAnchorEditor::MapEditorToolAnchorEditor(MapEditor & map_editor, int
 
 void MapEditorToolAnchorEditor::Init()
 {
-
+  auto anchor = m_MapEditor.GetAnchorManager().GetLayerManager(m_LayerIndex);
+  if (anchor)
+  {
+    anchor->SetSelected();
+  }
 }
 
 void MapEditorToolAnchorEditor::Cleanup()
@@ -29,6 +33,11 @@ void MapEditorToolAnchorEditor::Cleanup()
   }
 
   m_MapEditor.GetViewer().ClearSelectionBox();
+}
+
+void MapEditorToolAnchorEditor::Delete()
+{
+  m_MapEditor.GetMapDef().m_Anchors.RemoveAt(m_LayerIndex);
 }
 
 void MapEditorToolAnchorEditor::DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl)
@@ -65,10 +74,18 @@ bool MapEditorToolAnchorEditor::DrawStart(const Vector2 & pos, bool alt, bool sh
 
     if (anchor->IsHighlighted())
     {
-      anchor->SetSelected();
-      anchor->ClearHighlighted();
+      if (alt)
+      {
+        m_MapEditor.DuplicateAnchorData(m_LayerIndex);
+      }
+      else
+      {
+        anchor->SetSelected();
+        anchor->ClearHighlighted();
 
-      m_Start = snapped_pos;
+        m_Start = snapped_pos;
+      }
+
       return true;
     }
   }
@@ -98,7 +115,7 @@ void MapEditorToolAnchorEditor::DrawEnd(const Vector2 & pos, bool alt, bool shif
   if (anchor)
   {
     anchor->CommitPreview();
-    anchor->ClearSelected();
+    DrawPreview(pos, alt, shift, ctrl);
   }
 }
 

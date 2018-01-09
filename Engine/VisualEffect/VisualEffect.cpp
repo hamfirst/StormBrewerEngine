@@ -7,6 +7,7 @@
 
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Profiler/Profiler.h"
@@ -79,6 +80,7 @@ VisualEffect::VisualEffect(const VisualEffectDef & def)
 
     EmitterProps props;
     props.m_Additive = emitter.second.m_Properties.m_Additive;
+    props.m_Trail = emitter.second.m_Properties.m_Trail;
     props.m_Prespawn = emitter.second.m_Properties.m_PrespawnParticles;
     props.m_Delay = 0;
     props.m_DelayMax = emitter.second.m_Properties.m_UpdateDelay;
@@ -86,6 +88,7 @@ VisualEffect::VisualEffect(const VisualEffectDef & def)
 
     m_EmitterProps.push_back(props);
 
+    m_DefaultParticle.emplace_back();
 
     std::vector<std::pair<StormExprBinding, int>> emitter_bindings;
 
@@ -170,11 +173,11 @@ VisualEffect::VisualEffect(const VisualEffectDef & def)
         }
         else
         {
-          particle_bindings.emplace_back(std::make_pair(StormExprBinding(&m_DefaultParticle, &f.Get()), function_index));
+          particle_bindings.emplace_back(std::make_pair(StormExprBinding(&m_DefaultParticle.back(), &f.Get()), function_index));
         }
       };
 
-      StormReflVisitField(m_DefaultParticle, visitor, var_name_hash);
+      StormReflVisitField(m_DefaultParticle.back(), visitor, var_name_hash);
     }
 
     m_EmitterBindings.emplace_back(std::move(emitter_bindings));
@@ -248,6 +251,16 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
     inst.m_Prespawn = false;
   }
 
+  if (inst.m_PostSpawn)
+  {
+    for (std::size_t index = 0; index < m_EmitterCount; ++index)
+    {
+      SpawnParticles(inst, (int)index, 1, 0, 0, 1, RenderVec2{}, stack);
+    }
+
+    inst.m_PostSpawn = false;
+  }
+
   particle_eval.SetBlockBasePtr(0, inst.m_Inputs.data());
   particle_eval.SetBlockBasePtr(1, &inst.m_InstanceData);
 
@@ -265,6 +278,12 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
       }
 
       auto & emitter = inst.m_Emitters[index];
+      if ((emitter.m_ScriptData.m_EmitterLifetime >= 0 && inst.m_InstanceData.m_EffectTimeAlive >= emitter.m_ScriptData.m_EmitterLifetime) ||
+        inst.m_Spawning == false)
+      {
+        emitter.m_Complete = true;
+      }
+
       emitter.m_SpawnOverflow += props.m_UpdateTime;
 
       if (emitter.m_ScriptData.m_SpawnRate > 0 && emitter.m_Complete == false && inst.m_Spawning)
@@ -333,11 +352,6 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
       });
 
       emitter.m_Particles.erase(end_itr, emitter.m_Particles.end());
-
-      if (emitter.m_ScriptData.m_EmitterLifetime != 0 && inst.m_InstanceData.m_EffectTimeAlive >= emitter.m_ScriptData.m_EmitterLifetime)
-      {
-        emitter.m_Complete = true;
-      }
     }
   }
 
@@ -401,7 +415,7 @@ void VisualEffect::SpawnParticles(VisualEffectInstance & inst, int emitter_index
     auto pos = RenderVec2{ inst.m_InstanceData.m_PositionX, inst.m_InstanceData.m_PositionY };
     pos -= travel_dist * (pre_sim / interval);
 
-    particle.m_ScriptData = m_DefaultParticle;
+    particle.m_ScriptData = m_DefaultParticle[emitter_index];
     particle.m_AutoData.m_PositionX = pos.x + spawn_data.m_SpawnOffsetX + spawn_data.m_SpawnVelocityX * pre_sim;
     particle.m_AutoData.m_PositionY = pos.y + spawn_data.m_SpawnOffsetY + spawn_data.m_SpawnVelocityY * pre_sim;
     particle.m_AutoData.m_VelocityX = spawn_data.m_SpawnVelocityX;
@@ -460,62 +474,93 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
       texture_size = Vector2f{ 1, 1 };
     }
 
-    RenderVec2 quad_bl = texture_size * -0.5f;
-    RenderVec2 quad_tr = texture_size * 0.5f;
-    RenderVec2 quad_br = RenderVec2{ quad_tr.x, quad_bl.y };
-    RenderVec2 quad_tl = RenderVec2{ quad_bl.x, quad_tr.y };
-
     auto & scratch_buffer = render_util.GetScratchBuffer();
     m_ScratchVertexList.clear();
 
-    for (auto & particle : emitter.m_Particles)
+    if (props.m_Trail)
     {
-      auto color = Color(particle.m_ScriptData.m_ColorR, particle.m_ScriptData.m_ColorG, particle.m_ScriptData.m_ColorB, particle.m_ScriptData.m_ColorA);
-      auto pos = RenderVec2{ particle.m_AutoData.m_PositionX, particle.m_AutoData.m_PositionY };
-      auto dest = RenderVec2{ particle.m_ScriptData.m_DestinationX, particle.m_ScriptData.m_DestinationY };
+      std::vector<GeometryVertexBufferBuilder::TrailInfo> particle_tralis;
+      particle_tralis.reserve(emitter.m_Particles.size());
 
-      pos = (1.0f - particle.m_ScriptData.m_DestinationLerp) * pos + (particle.m_ScriptData.m_DestinationLerp) * dest;
+      GeometryVertexBufferBuilder::TrailInfo trail_info;
 
-      RenderVec2 scale = RenderVec2{ particle.m_ScriptData.m_SizeX, particle.m_ScriptData.m_SizeY };
-
-      auto bl = quad_bl * scale;
-      auto br = quad_br * scale;
-      auto tr = quad_tr * scale;
-      auto tl = quad_tl * scale;
-
-      if (particle.m_ScriptData.m_Rotation != 0)
+      for (auto & particle : emitter.m_Particles)
       {
-        auto sc = SinCosf(particle.m_ScriptData.m_Rotation);
-        auto cs = Vector2f{ -sc.y, sc.x };
+        auto color = Color(particle.m_ScriptData.m_ColorR, particle.m_ScriptData.m_ColorG, particle.m_ScriptData.m_ColorB, particle.m_ScriptData.m_ColorA);
+        auto pos = RenderVec2{ particle.m_AutoData.m_PositionX, particle.m_AutoData.m_PositionY };
+        auto dest = RenderVec2{ particle.m_ScriptData.m_DestinationX, particle.m_ScriptData.m_DestinationY };
 
-        bl = RenderVec2{ bl.x * sc.x + bl.y * sc.y, bl.x * cs.x + bl.y * cs.y };
-        br = RenderVec2{ br.x * sc.x + br.y * sc.y, br.x * cs.x + br.y * cs.y };
-        tr = RenderVec2{ tr.x * sc.x + tr.y * sc.y, tr.x * cs.x + tr.y * cs.y };
-        tl = RenderVec2{ tl.x * sc.x + tl.y * sc.y, tl.x * cs.x + tl.y * cs.y };
+        pos = (1.0f - particle.m_ScriptData.m_DestinationLerp) * pos + (particle.m_ScriptData.m_DestinationLerp) * dest;
+
+        trail_info.m_Position = pos;
+        trail_info.m_Color = color;
+        trail_info.m_Thickness = texture_size.y * particle.m_ScriptData.m_SizeY;
+
+        particle_tralis.emplace_back(trail_info);
       }
 
-      vert[0].m_Color = color;
-      vert[0].m_Position = pos + bl;
-      vert[1].m_Color = color;
-      vert[1].m_Position = pos + br;
-      vert[2].m_Color = color;
-      vert[2].m_Position = pos + tr;
-      vert[3].m_Color = color;
-      vert[3].m_Position = pos + bl;
-      vert[4].m_Color = color;
-      vert[4].m_Position = pos + tr;
-      vert[5].m_Color = color;
-      vert[5].m_Position = pos + tl;
+      GeometryVertexBufferBuilder builder;
+      builder.Trail(gsl::as_span(particle_tralis), texture_size.x);
 
-      m_ScratchVertexList.emplace_back(vert[0]);
-      m_ScratchVertexList.emplace_back(vert[1]);
-      m_ScratchVertexList.emplace_back(vert[2]);
-      m_ScratchVertexList.emplace_back(vert[3]);
-      m_ScratchVertexList.emplace_back(vert[4]);
-      m_ScratchVertexList.emplace_back(vert[5]);
+      builder.FillVertexBuffer(scratch_buffer);
+    }
+    else
+    {
+      RenderVec2 quad_bl = texture_size * -0.5f;
+      RenderVec2 quad_tr = texture_size * 0.5f;
+      RenderVec2 quad_br = RenderVec2{ quad_tr.x, quad_bl.y };
+      RenderVec2 quad_tl = RenderVec2{ quad_bl.x, quad_tr.y };
+
+      for (auto & particle : emitter.m_Particles)
+      {
+        auto color = Color(particle.m_ScriptData.m_ColorR, particle.m_ScriptData.m_ColorG, particle.m_ScriptData.m_ColorB, particle.m_ScriptData.m_ColorA);
+        auto pos = RenderVec2{ particle.m_AutoData.m_PositionX, particle.m_AutoData.m_PositionY };
+        auto dest = RenderVec2{ particle.m_ScriptData.m_DestinationX, particle.m_ScriptData.m_DestinationY };
+
+        pos = (1.0f - particle.m_ScriptData.m_DestinationLerp) * pos + (particle.m_ScriptData.m_DestinationLerp) * dest;
+
+        RenderVec2 scale = RenderVec2{ particle.m_ScriptData.m_SizeX, particle.m_ScriptData.m_SizeY };
+
+        auto bl = quad_bl * scale;
+        auto br = quad_br * scale;
+        auto tr = quad_tr * scale;
+        auto tl = quad_tl * scale;
+
+        if (particle.m_ScriptData.m_Rotation != 0)
+        {
+          auto sc = SinCosf(particle.m_ScriptData.m_Rotation);
+          auto cs = Vector2f{ -sc.y, sc.x };
+
+          bl = RenderVec2{ bl.x * sc.x + bl.y * sc.y, bl.x * cs.x + bl.y * cs.y };
+          br = RenderVec2{ br.x * sc.x + br.y * sc.y, br.x * cs.x + br.y * cs.y };
+          tr = RenderVec2{ tr.x * sc.x + tr.y * sc.y, tr.x * cs.x + tr.y * cs.y };
+          tl = RenderVec2{ tl.x * sc.x + tl.y * sc.y, tl.x * cs.x + tl.y * cs.y };
+        }
+
+        vert[0].m_Color = color;
+        vert[0].m_Position = pos + bl;
+        vert[1].m_Color = color;
+        vert[1].m_Position = pos + br;
+        vert[2].m_Color = color;
+        vert[2].m_Position = pos + tr;
+        vert[3].m_Color = color;
+        vert[3].m_Position = pos + bl;
+        vert[4].m_Color = color;
+        vert[4].m_Position = pos + tr;
+        vert[5].m_Color = color;
+        vert[5].m_Position = pos + tl;
+
+        m_ScratchVertexList.emplace_back(vert[0]);
+        m_ScratchVertexList.emplace_back(vert[1]);
+        m_ScratchVertexList.emplace_back(vert[2]);
+        m_ScratchVertexList.emplace_back(vert[3]);
+        m_ScratchVertexList.emplace_back(vert[4]);
+        m_ScratchVertexList.emplace_back(vert[5]);
+      }
+
+      scratch_buffer.SetBufferData(gsl::as_span(m_ScratchVertexList), VertexBufferType::kTriangles);
     }
 
-    scratch_buffer.SetBufferData(gsl::as_span(m_ScratchVertexList), VertexBufferType::kTriangles);
     render_state.BindVertexBuffer(scratch_buffer);
     render_state.Draw();
   }

@@ -15,11 +15,12 @@ using UILoadLink = DocumentResourceLoadCallbackLink<UIDef, UIResource>;
 class UIResource : public DocumentResourceBase
 {
 public:
-  UIResource(Any && load_data, uint64_t path_hash);
+  UIResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<UIDef> GetData();
   DocumentResourceLoadCallbackLink<UIDef, UIResource> AddLoadCallback(Delegate<void, NotNullPtr<UIResource>> && callback);
 
+  static UIResourcePtr Find(uint32_t file_path_hash);
   static UIResourcePtr Load(czstr file_path);
   static DocumentResourceLoadCallbackLink<UIDef, UIResource> LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<UIResource>> && callback);
 

@@ -10,6 +10,8 @@ StormExprOp StormExprGetOpForOperator(StormExprOperatorType op, bool quick_versi
   {
     switch (op)
     {
+    case StormExprOperatorType::kCat:
+      return StormExprOp{ StormExprOpCat };
     case StormExprOperatorType::kNeg:
       return StormExprOp{ StormExprOpNeg };
     case StormExprOperatorType::kAdd:
@@ -48,6 +50,8 @@ StormExprOp StormExprGetOpForOperator(StormExprOperatorType op, bool quick_versi
   {
     switch (op)
     {
+    case StormExprOperatorType::kCat:
+      return StormExprOp{ StormExprOpCatQuick };
     case StormExprOperatorType::kNeg:
       return StormExprOp{ StormExprOpNegQuick };
     case StormExprOperatorType::kAdd:
@@ -129,7 +133,7 @@ bool StormExprOpCat(StormExprStack & stack, const StormExprValueBlockList & vals
     return false;
   }
 
-  if (v1.GetType() != StormExprValueType::kFloat)
+  if (v1.GetType() != StormExprValueType::kString)
   {
     stack.Push({});
     return false;

@@ -52,15 +52,15 @@ public:
   void LoadFont(czstr font_path, int font_id, int font_size);
   bool IsFontLoaded(int font_id);
 
-  void AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
-  void AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, TextBufferBuilder & vertex_builder, const char * prompt = "");
+  void AddTextToBuffer(czstr text, int font_id, float scale, TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, float scale, TextBufferBuilder & vertex_builder, const char * prompt = "");
   void RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state);
 
-  void RenderText(czstr text, int font_id, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
-  void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state, const char * prompt = "");
+  void RenderText(czstr text, int font_id, float scale, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, float scale, RenderState & render_state, const char * prompt = "");
 
-  Box GetTextSize(czstr text, int font_id);
-  Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, const char * prompt = "");
+  Box GetTextSize(czstr text, int font_id, float scale);
+  Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, float scale, const char * prompt = "");
 
   bool BindGlyphTexture(RenderState & render_state, int font_id, int texture_stage);
 

@@ -10,6 +10,8 @@ public:
   virtual void Init();
   virtual void Cleanup();
 
+  virtual void Delete();
+
   virtual void DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl);
 
   virtual bool DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl);

@@ -17,18 +17,23 @@ UIPrototypeConfirmPopup::UIPrototypeConfirmPopup(UIManager & manager, czstr name
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 0));
-  fader_data.m_StartX = 0;
-  fader_data.m_StartY = 0;
+  fader_data.m_StartX = -10000;
+  fader_data.m_StartY = -10000;
   fader_data.m_EndX = 10000;
   fader_data.m_EndY = 10000;
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
+  fader_data.m_Layer = -1;
 
   m_Bkg = manager.AllocateGradient("bkg", m_Fader, {}, {});
+
+  auto bkg_box = box;
+  bkg_box.m_Start -= Vector2(fader_data.m_StartX, fader_data.m_StartY);
+  bkg_box.m_End -= Vector2(fader_data.m_StartX, fader_data.m_StartY);
 
   auto bkg = m_Bkg.Get();
   auto & bkg_data = bkg->GetData();
   bkg_data.SetColor(m_BkgColor);
-  bkg_data.SetBounds(box);
+  bkg_data.SetBounds(bkg_box);
 
   m_Border = manager.AllocateShape("border", bkg, {}, {});
   auto border = m_Border.Get();

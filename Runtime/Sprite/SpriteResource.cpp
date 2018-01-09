@@ -15,7 +15,7 @@ Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
 void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
 
-SpriteResource::SpriteResource(Any && load_data, uint64_t path_hash) :
+SpriteResource::SpriteResource(Any && load_data, uint32_t path_hash) :
   DocumentResourceBase(std::move(load_data), path_hash),
   FrameDataExtract(m_Data)
 {
@@ -49,10 +49,22 @@ void SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> 
   }
 }
 
+SpritePtr SpriteResource::Find(uint32_t file_path_hash)
+{
+  auto resource = FindDocumentResource(file_path_hash);
+  if (resource)
+  {
+    auto p_this = static_cast<SpriteResource *>(resource);
+    return SpritePtr(DocumentResourceReference<SpriteResource>(p_this));
+  }
+
+  return {};
+}
+
 SpritePtr SpriteResource::Load(czstr file_path)
 {
   auto resource = LoadDocumentResource(file_path, 
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<SpriteResource *>(resource);
   return SpritePtr(DocumentResourceReference<SpriteResource>(p_this));
 }
@@ -60,7 +72,7 @@ SpritePtr SpriteResource::Load(czstr file_path)
 SpriteLoadLink SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback)
 {
   auto resource = LoadDocumentResource(file_path, 
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<SpriteResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
@@ -69,7 +81,7 @@ SpriteLoadLink SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, 
 void SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback, SpriteLoadLink & load_link)
 {
   auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint64_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<SpriteResource *>(resource);
 
   p_this->AddLoadCallback(std::move(callback), load_link);

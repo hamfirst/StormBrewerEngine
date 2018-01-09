@@ -9,6 +9,7 @@
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameSharedInstanceResources.h"
 #include "Game/GameEventReconciler.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #ifdef NET_USE_WEBRTC
 #include <StormNetCustomBindings/NetClientBackendWebrtc.h>
@@ -97,6 +98,10 @@ private:
   void HandleEntityEvent(std::size_t event_class_id, void * event_ptr);
 #endif
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  void HandleDeliberateSystemSync(std::size_t type_index, void * data_ptr);
+#endif
+
   void SendPing();
   void SendClientUpdate();
 
@@ -133,6 +138,10 @@ private:
   int m_LastServerFrame;
 
   int m_FrameSkip;
+#endif
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  std::unique_ptr<bool[]> m_InitialDeliberateSystemSync;
 #endif
 
   bool m_FinalizedLoad;

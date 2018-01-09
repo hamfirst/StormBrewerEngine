@@ -11,7 +11,7 @@ std::vector<std::vector<Box>> ExtractMapCollision(const MapDef & map_def, const 
   {
     collision_list.emplace_back();
 
-    auto & main_coll = collision_list[0];
+    auto & main_coll = collision_list.back();
 
     for (auto elem : map_def.m_ManualTileLayers)
     {

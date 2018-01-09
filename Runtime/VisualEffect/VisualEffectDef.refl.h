@@ -32,6 +32,7 @@ struct RUNTIME_EXPORT VisualEffectDefEmitterProperties
   RInt m_UpdateDelay;
   RBool m_Additive;
   RBool m_LinearFilter;
+  RBool m_Trail;
 };
 
 struct RUNTIME_EXPORT VisualEffectDefEmitter

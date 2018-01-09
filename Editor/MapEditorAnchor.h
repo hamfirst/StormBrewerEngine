@@ -7,6 +7,7 @@
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 
 #include "DocumentValueWatcher.h"
+#include "DocumentSubValueListMirror.h"
 
 class MapEditor;
 class RenderUtil;
@@ -46,6 +47,9 @@ private:
   bool m_Selected = false;
   bool m_Highlighted = false;
   Optional<Vector2> m_Offset;
+
+  DocumentValueWatcher m_SpritePathWatcher;
+  SpritePtr m_SpritePtr;
 
   MapDef & m_Map;
   int m_LayerIndex;

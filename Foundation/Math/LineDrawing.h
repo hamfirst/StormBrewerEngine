@@ -4,8 +4,11 @@
 #include "Foundation/BasicTypes/BasicTypes.refl.h"
 
 template <typename Visitor>
-bool VisitPointsAlongLine(Vector2 & p1, Vector2 & p2, Visitor && visitor)
+bool VisitPointsAlongLine(const Vector2 & p1_v, const Vector2 & p2_v, Visitor && visitor)
 {
+  Vector2 p1 = p1_v;
+  Vector2 p2 = p2_v;
+
   bool steep = abs(p2.y - p1.y) > abs(p2.x - p1.x);
   bool reverse = false;
   if (steep)

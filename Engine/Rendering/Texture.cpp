@@ -153,6 +153,7 @@ void Texture::SetTextureData(const PixelBuffer & pixel_buffer, TextureType type)
 
   m_Width = pixel_buffer.GetWidth();
   m_Height = pixel_buffer.GetHeight();
+  m_LinearFilter = false;
   m_Type = type;
 }
 
@@ -196,16 +197,29 @@ void Texture::SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int
 
 void Texture::BindTexture(int texture_stage) const
 {
-  glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
   glActiveTexture(GL_TEXTURE0 + texture_stage); CHECK_GL_RENDER_ERROR;
-}
-
-
-void Texture::SetLinearFilter() const
-{
   glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
 }
 
 
+void Texture::SetLinearFilter()
+{
+  if (m_LinearFilter == false)
+  {
+    glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
+    m_LinearFilter = true;
+  }
+}
+
+void Texture::SetPixelPerfectFilter()
+{
+  if (m_LinearFilter == true)
+  {
+    glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+    m_LinearFilter = false;
+  }
+}

@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Foundation/Common.h"
+#include "StormNet/NetMetaUtil.h"
 
 #include "Game/GameNetworkEvents.refl.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #include "Runtime/ServerObject/ServerObjectHandle.h"
+
+class GameDeliberateSyncSystemBase;
 
 class GameServerEventSender
 {
@@ -82,7 +86,22 @@ public:
     return ReconcileEvent(typeid(T).hash_code(), event_id, pos);
   }
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  template <typename SystemData>
+  void SyncDeliberateSyncSystem()
+  {
+    auto type_index = NetMetaUtil::template GetTypeIndex<SystemData, DELIBERATE_SYNC_SYSTEM_LIST>();
+    ASSERT(type_index >= 0, "Invalid deliberate sync system type");
+    SyncDeliberateSyncSystem(type_index);
+  }
+#endif
+
   virtual void BlockRewind(std::size_t connection) {};
+
+  void SendSoundEvent(const GameNetVec2 & pos, uint32_t asset_hash);
+  void SendSoundEvent(const GameNetVec2 & pos, const GameNetVec2 & normal, uint32_t asset_hash);
+  void SendVfxEvent(const GameNetVec2 & pos, uint32_t asset_hash);
+  void SendVfxEvent(const GameNetVec2 & pos, const GameNetVec2 & normal, uint32_t asset_hash);
 
 protected:
   virtual void SendGlobalEvent(std::size_t class_id, const void * event_ptr) {}
@@ -91,4 +110,8 @@ protected:
   virtual void SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) {}
   virtual void SendAuthEvent(std::size_t class_id, const void * event_ptr) {}
   virtual bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) { return true; }
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  virtual void SyncDeliberateSyncSystem(int system_index) { }
+#endif
 };

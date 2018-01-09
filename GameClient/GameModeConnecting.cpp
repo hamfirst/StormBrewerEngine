@@ -100,7 +100,7 @@ void GameModeConnecting::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
 
-    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size);
+    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
 
     const char * status_msg = "";
     switch (container.GetClient().GetConnectionState())
@@ -128,23 +128,23 @@ void GameModeConnecting::Render()
       status_msg = full_status_msg.data();
     }
 
-    auto text_size = g_TextManager.GetTextSize(status_msg, -1);
+    auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
 
-    auto text_pos = window_size / 2;
+    Vector2 text_pos = {};
     text_pos.y -= texture_size.y / 2 + 4;
     text_pos.x -= text_size.Size().x / 2;
 
     g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));
     g_TextManager.SetTextMode();
     g_TextManager.SetTextPos(text_pos);
-    g_TextManager.RenderText(status_msg, -1, render_state);
+    g_TextManager.RenderText(status_msg, -1, 1, render_state);
 
     if (m_ConnectFailed &&
       container.GetClient().GetConnectionState() != ClientConnectionState::kStaging &&
       container.GetClient().GetConnectionState() != ClientConnectionState::kLoading)
     {
       status_msg = "The servers may be offline";
-      auto text_size = g_TextManager.GetTextSize(status_msg, -1);
+      auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
 
       auto text_pos = window_size / 2;
       text_pos.y -= texture_size.y / 2 + 25;
@@ -153,7 +153,7 @@ void GameModeConnecting::Render()
       g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));
       g_TextManager.SetTextMode();
       g_TextManager.SetTextPos(text_pos);
-      g_TextManager.RenderText(status_msg, -1, render_state);
+      g_TextManager.RenderText(status_msg, -1, 1, render_state);
     }
 
     if (container.GetClient().GetConnectionState() == ClientConnectionState::kStaging)
@@ -167,16 +167,16 @@ void GameModeConnecting::Render()
         auto timer = staging_state->m_WaitTimer / 60;
         snprintf(text, sizeof(text), "Starting in %d:%02d", timer / 60, timer % 60);
 
-        auto text_size = g_TextManager.GetTextSize(text, -1);
+        auto text_size = g_TextManager.GetTextSize(text, -1, 1);
 
-        auto text_pos = window_size / 2;
+        Vector2 text_pos = {};
         text_pos.y -= 120;
         text_pos.x -= text_size.Size().x / 2;
 
         g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));
         g_TextManager.SetTextMode();
         g_TextManager.SetTextPos(text_pos);
-        g_TextManager.RenderText(text, -1, render_state);
+        g_TextManager.RenderText(text, -1, 1, render_state);
       }
     }
   }

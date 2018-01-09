@@ -463,6 +463,9 @@
     <ClInclude Include="Rendering\VertexAttrib.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Asset\ClientAssetLoader.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\VertexBuffer.cpp">
@@ -746,6 +749,9 @@
     </ClCompile>
     <ClCompile Include="Rendering\VertexAttrib.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset\ClientAssetLoader.cpp">
+      <Filter>Asset</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

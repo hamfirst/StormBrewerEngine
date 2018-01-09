@@ -133,8 +133,9 @@ public:
   explicit StaticAny(const T & t, std::enable_if_t<std::is_same<std::decay_t<T>, StaticAny<BufferSize, AlignType>>::value == false> * Enable = 0)
   {
     new (m_Buffer) T(t);
+    m_Copier = [](const void * src, void * dst) { new(dst) T(*(const T *)src); };
     m_Mover = [](void * src, void * dst) { new(dst) T(std::move(*(T *)src)); };
-    m_Deleter = [](void * ptr) { delete static_cast<T *>(ptr); };
+    m_Deleter = [](void * ptr) { static_cast<T *>(ptr)->~T(); };
     m_Type = typeid(T).hash_code();
   }
 
@@ -142,34 +143,62 @@ public:
   explicit StaticAny(T && t, std::enable_if_t<std::is_same<std::decay_t<T>, Any>::value == false> * Enable = 0)
   {
     new (m_Buffer) T(std::move(t));
+    m_Copier = [](const void * src, void * dst) { new(dst) T(*(const T *)src); };
     m_Mover = [](void * src, void * dst) { new(dst) T(std::move(*(T *)src)); };
-    m_Deleter = [](void * ptr) { delete static_cast<T *>(ptr); };
+    m_Deleter = [](void * ptr) { static_cast<T *>(ptr)->~T(); };
     m_Type = typeid(T).hash_code();
   }
 
-  StaticAny(const StaticAny<BufferSize, AlignType> & rhs) = delete;
-  StaticAny(StaticAny<BufferSize, AlignType> && rhs) :
+  StaticAny(const StaticAny<BufferSize, AlignType> & rhs) :
     m_Type(rhs.m_Type),
+    m_Copier(rhs.m_Copier),
     m_Mover(rhs.m_Mover),
     m_Deleter(rhs.m_Deleter)
   {
     if (m_Type != 0)
     {
-      rhs.m_Mover(m_Buffer, rhs.m_Buffer);
+      rhs.m_Copier(rhs.m_Buffer, m_Buffer);
     }
   }
 
-  StaticAny<BufferSize, AlignType> & operator = (const StaticAny<BufferSize, AlignType> & any) = delete;
-  StaticAny<BufferSize, AlignType> & operator = (StaticAny<BufferSize, AlignType> && any)
+  StaticAny(StaticAny<BufferSize, AlignType> && rhs) :
+    m_Type(rhs.m_Type),
+    m_Copier(rhs.m_Copier),
+    m_Mover(rhs.m_Mover),
+    m_Deleter(rhs.m_Deleter)
+  {
+    if (m_Type != 0)
+    {
+      rhs.m_Mover(rhs.m_Buffer, m_Buffer);
+    }
+  }
+
+  StaticAny<BufferSize, AlignType> & operator = (const StaticAny<BufferSize, AlignType> & any)
   {
     Clear();
     m_Type = any.m_Type;
+    m_Copier = any.m_Copier;
     m_Mover = any.m_Mover;
     m_Deleter = any.m_Deleter;
 
     if (m_Type != 0)
     {
-      any.m_Mover(m_Buffer, any.m_Buffer);
+      any.m_Copier(any.m_Buffer, m_Buffer);
+    }
+    return *this;
+  }
+
+  StaticAny<BufferSize, AlignType> & operator = (StaticAny<BufferSize, AlignType> && any)
+  {
+    Clear();
+    m_Type = any.m_Type;
+    m_Copier = any.m_Copier;
+    m_Mover = any.m_Mover;
+    m_Deleter = any.m_Deleter;
+
+    if (m_Type != 0)
+    {
+      any.m_Mover(any.m_Buffer, m_Buffer);
     }
     return *this;
   }
@@ -194,13 +223,13 @@ public:
   template <typename T>
   NullOptPtr<T> Get()
   {
-    return m_Type == typeid(T).hash_code() ? static_cast<T *>(m_Buffer) : nullptr;
+    return m_Type == typeid(T).hash_code() ? reinterpret_cast<T *>(&m_Buffer[0]) : nullptr;
   }
 
   template <typename T>
   NullOptPtr<const T> Get() const
   {
-    return m_Type == typeid(T).hash_code() ? static_cast<const T *>(m_Buffer) : nullptr;
+    return m_Type == typeid(T).hash_code() ? reinterpret_cast<const T *>(&m_Buffer[0]) : nullptr;
   }
 
   operator bool() const
@@ -210,6 +239,7 @@ public:
 
 private:
   std::size_t m_Type;
+  void(*m_Copier)(const void *, void *);
   void(*m_Mover)(void *, void *);
   void(*m_Deleter)(void *);
   alignas(alignof(AlignType)) char m_Buffer[BufferSize];

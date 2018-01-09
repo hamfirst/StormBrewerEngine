@@ -11,6 +11,7 @@
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Shader/ShaderManager.h"
+#include "Engine/Sprite/SpriteEngineData.h"
 
 #include "MapEditorAnchor.h"
 #include "MapEditor.h"
@@ -19,10 +20,19 @@
 
 MapEditorAnchor::MapEditorAnchor(NotNullPtr<MapEditor> editor, MapDef & map, int layer_index) :
   m_Editor(editor),
+  m_SpritePathWatcher(editor),
   m_Map(map),
   m_LayerIndex(layer_index)
 {
+  std::string path = ".m_Anchors[" + std::to_string(layer_index) + "].m_Sprite";
 
+  m_SpritePathWatcher.SetPath(path.data(), true, false, [this]() -> bool { return m_Map.m_Anchors.TryGet(m_LayerIndex); });
+  m_SpritePathWatcher.SetChangeCallback([this](const ReflectionChangeNotification & change) 
+  { 
+    m_SpritePtr = SpriteResource::Load(m_Map.m_Anchors[m_LayerIndex].m_Sprite.data());
+  });
+
+  m_SpritePtr = SpriteResource::Load(m_Map.m_Anchors[m_LayerIndex].m_Sprite.data());
 }
 
 Optional<Vector2> MapEditorAnchor::GetPreviewAnchor()
@@ -44,7 +54,17 @@ Optional<Vector2> MapEditorAnchor::GetPreviewAnchor()
 
 void MapEditorAnchor::Draw(GeometryVertexBufferBuilder & buffer, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification)
 {
+  auto point = GetPreviewAnchor();
+  if (point == false)
+  {
+    return;
+  }
 
+  if (m_SpritePtr.IsLoaded())
+  {
+    RenderState render_state;
+    SpriteEngineData::RenderSprite(m_SpritePtr, render_state, 0, 0, 0, point.Value() - screen_center);
+  }
 }
 
 void MapEditorAnchor::DrawControls(GeometryVertexBufferBuilder & buffer, const Box & viewport_bounds, RenderVec2 & screen_center, float magnification)

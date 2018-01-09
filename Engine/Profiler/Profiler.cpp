@@ -11,5 +11,5 @@ void RenderProfilerData(RenderState & render_state)
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);
   g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(profiler_data.data(), -1, render_state);
+  g_TextManager.RenderText(profiler_data.data(), -1, 1, render_state);
 }

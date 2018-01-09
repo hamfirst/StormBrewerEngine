@@ -2,7 +2,7 @@
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
 
-bool ServerObjectEventDispatch::TriggerEventHandler(NotNullPtr<ServerObject> obj, uint32_t type, const void * ev, const EventMetaData & meta)
+bool ServerObjectEventDispatch::TriggerEventHandler(NotNullPtr<ServerObject> obj, uint32_t type, void * ev, const EventMetaData & meta)
 {
   for (auto & handler : m_EventHandlers)
   {

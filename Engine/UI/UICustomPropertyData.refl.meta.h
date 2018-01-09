@@ -91,7 +91,7 @@ template <>
 struct StormReflTypeInfo<UIElementDataBase>
 {
   using MyBase = void;
-  static constexpr int fields_n = 6;
+  static constexpr int fields_n = 7;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -230,6 +230,28 @@ struct StormReflTypeInfo<UIElementDataBase>::field_data<5, Self> : public StormR
   match_const_t<Self, float> & Get() { return self.m_ColorA; }
   std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_ColorA; }
   void SetDefault() { self.m_ColorA = StormReflTypeInfo<UIElementDataBase>::GetDefault().m_ColorA; }
+};
+
+template <>
+struct StormReflTypeInfo<UIElementDataBase>::field_data_static<6>
+{
+  using member_type = float; // float
+  static constexpr auto GetName() { return "m_Layer"; }
+  static constexpr auto GetType() { return "float"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x69EDB17A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &UIElementDataBase::m_Layer; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UIElementDataBase>::field_data<6, Self> : public StormReflTypeInfo<UIElementDataBase>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, float> & Get() { return self.m_Layer; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_Layer; }
+  void SetDefault() { self.m_Layer = StormReflTypeInfo<UIElementDataBase>::GetDefault().m_Layer; }
 };
 
 template <>

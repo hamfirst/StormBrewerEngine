@@ -16,12 +16,13 @@ using EntityLoadLink = DocumentResourceLoadCallbackLink<EntityDef, EntityResourc
 class EntityResource : public DocumentResourceBase
 {
 public:
-  EntityResource(Any && load_data, uint64_t path_hash);
+  EntityResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<EntityDef> GetData();
   EntityLoadLink AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link);
 
+  static EntityResourcePtr Find(uint32_t file_path_hash);
   static EntityResourcePtr Load(czstr file_path);
   static EntityLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link);

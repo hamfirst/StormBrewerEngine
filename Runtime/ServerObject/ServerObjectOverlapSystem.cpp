@@ -9,12 +9,13 @@ ServerObjectOverlapSystem g_ServerObjectOverlapSystem;
 PreMainCallList g_ServerObjectOverlapSystemRegister;
 PreMainCallList g_ServerObjectOverlapSystemInteractionRegister;
 
-void ServerObjectOverlapSystem::RegisterObjectType(std::size_t object_type, NotNullPtr<SpriteResource> sprite, uint32_t data_name_hash)
+void ServerObjectOverlapSystem::RegisterObjectType(std::size_t object_type, NotNullPtr<SpritePtr> sprite, uint32_t data_name_hash)
 {
 #ifdef _DEBUG
   ASSERT(m_ObjectInfo.HasAt(object_type) == false, "Registering overlap object twice");
 #endif
 
+  ASSERT(sprite != nullptr, "Overlap system was not given proper sprite data");
   m_ObjectInfo.EmplaceAt(object_type, ObjectInfo{ sprite, data_name_hash });
 }
 
@@ -28,7 +29,7 @@ void ServerObjectOverlapSystem::RegisterObjectInteraction(std::size_t src_object
   m_ObjectInfo[src_object_type].m_DstTypes.push_back(dst_object_type);
 }
 
-void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager, GameLogicContainer & game_logic_containers)
+void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager, GameLogicContainer & game_logic_container)
 {
   struct Object
   {
@@ -40,11 +41,17 @@ void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager,
   std::vector<Object> objects;
   obj_manager.VisitObjects([&](std::size_t slot_index, ServerObject * obj)
   {
-    auto pos = obj->GetPosition();
+    auto pos = obj->GetPosition(game_logic_container);
     auto type_index = obj->GetTypeIndex();
 
+    if (m_ObjectInfo.HasAt(type_index) == false)
+    {
+      return;
+    }
+
     auto obj_info = m_ObjectInfo[type_index];
-    auto box = obj_info.m_Sprite->GetSingleBox(obj_info.m_DataNameHash);
+
+    auto box = obj_info.m_Sprite->GetResource()->GetSingleBox(obj_info.m_DataNameHash);
 
     box.m_Start += pos;
     box.m_End += pos;
@@ -53,7 +60,7 @@ void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager,
   });
 
   EventMetaData meta_data;
-  meta_data.m_GameLogicContainer = &game_logic_containers;
+  meta_data.m_GameLogicContainer = &game_logic_container;
 
   auto num_objects = objects.size();
   for (std::size_t index1 = 0; index1 < num_objects; ++index1)
@@ -70,7 +77,7 @@ void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager,
       if (BoxIntersect(object1.m_Box, object2.m_Box))
       {
         bool found_dest_id = false;
-        for (auto & elem : m_ObjectInfo[index1].m_DstTypes)
+        for (auto & elem : m_ObjectInfo[object1.m_TypeIndex].m_DstTypes)
         {
           if (elem == object2.m_TypeIndex)
           {

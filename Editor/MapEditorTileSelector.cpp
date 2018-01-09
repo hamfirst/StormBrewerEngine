@@ -216,7 +216,7 @@ Vector2 MapEditorTileSelector::VisitElements(Delegate<void, QImage *, int, int, 
     if (display_size.x >= available_width)
     {
       height_offset = highest_y;
-      location = Vector2(0, 0);
+      location = Vector2(0, highest_y);
       allocator.Emplace(available_width);
     }
     else
@@ -225,7 +225,7 @@ Vector2 MapEditorTileSelector::VisitElements(Delegate<void, QImage *, int, int, 
       if (result == false || result->m_Rotated)
       {
         height_offset = highest_y;
-        location = Vector2(0, 0);
+        location = Vector2(0, highest_y);
         allocator.Emplace(available_width);
       }
       else

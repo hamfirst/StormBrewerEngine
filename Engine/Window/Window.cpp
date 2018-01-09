@@ -130,6 +130,16 @@ bool Window::IsFullScreen() const
   return g_WindowManager.IsFullScreen(m_WindowId);
 }
 
+void Window::BindDefaultRenderTarget() const
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  return g_WindowManager.BindDefaultRenderTarget(m_WindowId);
+}
+
 Vector2 Window::GetSize() const
 {
   if (m_WindowId == 0)

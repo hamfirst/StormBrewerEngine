@@ -1,24 +1,27 @@
 #pragma once
 
-#include "Foundation/SpatialDatabase/SpatialDatabase.h"
-
+#include "Runtime/Collision/StaticCollisionDatabase.h"
+#include "Runtime/Collision/DynamicCollisionDatabase.h"
 
 class CollisionDatabase
 {
 public:
-  CollisionDatabase(std::size_t num_collision_layers = 1);
+  explicit CollisionDatabase(const StaticCollisionDatabase & static_collision);
 
-  uint32_t CheckCollision(const Box & box, uint32_t collision_layer_mask) const;
-  uint32_t CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const;
+  Optional<CollisionDatabaseCheckResult> CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const;
+  std::vector<CollisionDatabaseCheckResult> QueryAllDynamic(const Box & box, uint32_t collision_layer_mask) const;
   uint32_t CheckLineOfSight(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const;
+
+  Optional<CollisionDatabaseTraceResult> TracePath(const Box & box, const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const;
 
   uint32_t CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const;
 
-  Optional<Box> PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> && collision_boxes);
-  void RemoveMapCollision(std::size_t map_id);
+  void ResetDynamicCollision();
+  void PushDynamicCollision(const Box & box, uint32_t collision_mask, CollisionDatabaseObjectInfo && obj_info);
 
 private:
   friend class Camera;
 
-  std::vector<SpatialDatabase> m_CollisionLayers;
+  const StaticCollisionDatabase & m_StaticCollision;
+  DynamicCollisionDatabase m_DynamicCollision;
 };

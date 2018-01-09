@@ -209,11 +209,11 @@ void EntitySystem::DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bo
   }
   else
   {
-    DefaultDrawEntity(entity, viewport_bounds, screen_center, render_state, render_util);
+    DefaultDrawEntity(entity, viewport_bounds, screen_center, render_state, render_util, g_ShaderManager.GetDefaultWorldSpaceShader());
   }
 }
 
-void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader)
 {
   auto position = entity->GetPosition();
   if (entity->m_PrevPosition)
@@ -221,12 +221,12 @@ void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & view
     position = glm::mix(position, entity->m_PrevPosition.Value(), render_state.GetFramePct());
   }
 
-  DefaultDrawEntity(entity->GetSprite(), position, entity->GetRenderState(), viewport_bounds, screen_center, render_state, render_util);
+  DefaultDrawEntity(entity->GetSprite(), position, entity->GetRenderState(), viewport_bounds, screen_center, render_state, render_util, shader);
 }
 
 void EntitySystem::DefaultDrawEntity(SpritePtr & sprite, const Vector2f & pos, const EntityRenderState & entity_render_state, 
-                                     const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+                                     const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader)
 {
   SpriteEngineData::RenderSprite(sprite, render_state, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame,
-    entity_render_state.m_SkinNameHash, pos - screen_center, entity_render_state.m_Matrix, entity_render_state.m_Color);
+    entity_render_state.m_SkinNameHash, pos - screen_center, entity_render_state.m_Matrix, entity_render_state.m_Color, shader);
 }

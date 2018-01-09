@@ -75,8 +75,25 @@ void RenderTarget::Destroy()
 }
 
 
-void RenderTarget::CreateRenderTarget(int width, int height, int depth_size, int stencil_size)
+void RenderTarget::BindAsRenderTarget() const
 {
+  glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferName); CHECK_GL_RENDER_ERROR;
+  glViewport(0, 0, m_Width, m_Height); CHECK_GL_RENDER_ERROR;
+}
+
+void RenderTarget::BindAsTexture(int texture_stage) const
+{
+  glActiveTexture(GL_TEXTURE0 + texture_stage); CHECK_GL_RENDER_ERROR;
+  glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
+}
+
+void RenderTarget::CreateRenderTarget(int width, int height, bool hdr, int depth_size, int stencil_size)
+{
+  if (width == m_Width && height == m_Height && hdr == m_Hdr && depth_size == m_DepthSize && stencil_size == m_StencilSize)
+  {
+    return;
+  }
+
   Destroy();
 
   glGenFramebuffers(1, &m_FrameBufferName); CHECK_GL_LOAD_ERROR;
@@ -86,8 +103,13 @@ void RenderTarget::CreateRenderTarget(int width, int height, int depth_size, int
   auto texture_destroy_on_error = gsl::finally([&] { if (m_LoadError != 0) { glDeleteTextures(1, &m_TextureName); m_TextureName = 0; } });
 
   glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_LOAD_ERROR;
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); CHECK_GL_LOAD_ERROR;
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureName, 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, hdr ? GL_FLOAT : GL_UNSIGNED_BYTE, nullptr); CHECK_GL_LOAD_ERROR;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+  glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferName);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureName, 0); CHECK_GL_LOAD_ERROR;
 
   if (depth_size > 0 || stencil_size > 0)
   {
@@ -137,9 +159,39 @@ void RenderTarget::CreateRenderTarget(int width, int height, int depth_size, int
     glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBufferName); CHECK_GL_LOAD_ERROR;
     glRenderbufferStorage(GL_RENDERBUFFER, depth_mode, width, height); CHECK_GL_LOAD_ERROR;
 
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBufferName);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBufferName); CHECK_GL_LOAD_ERROR;
   }
+
+  ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Invalid render target state");
+  glBindFramebuffer(GL_FRAMEBUFFER, 0); CHECK_GL_LOAD_ERROR;
 
   m_Width = width;
   m_Height = height;
+
+  m_Hdr = hdr;
+  m_LinearFilter = false;
+  m_DepthSize = depth_size;
+  m_StencilSize = stencil_size;
+}
+
+void RenderTarget::SetLinearFilter()
+{
+  if (m_LinearFilter == false)
+  {
+    glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); CHECK_GL_RENDER_ERROR;
+    m_LinearFilter = true;
+  }
+}
+
+void RenderTarget::SetPixelPerfectFilter()
+{
+  if (m_LinearFilter == true)
+  {
+    glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
+    m_LinearFilter = false;
+  }
 }

@@ -45,10 +45,11 @@ private:
     int m_DelayMax;
     float m_UpdateTime;
     bool m_Additive;
+    bool m_Trail;
   };
 
   VisualEffectInstanceEmitterSpawnData m_DefaultSpawn;
-  VisualEffectInstanceParticleScriptData m_DefaultParticle;
+  std::vector<VisualEffectInstanceParticleScriptData> m_DefaultParticle;
 
   std::size_t m_EmitterCount;
   std::vector<EmitterProps> m_EmitterProps;

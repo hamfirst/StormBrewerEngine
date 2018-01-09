@@ -10,6 +10,7 @@
 #include "Game/GameMessages.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameProtocol.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 
 #include "GameClient/GameNetworkClient.h"
@@ -39,6 +40,10 @@ GameNetworkClient::GameNetworkClient(GameContainer & game) :
   m_LastAckFrame = 0;
   m_LastServerFrame = 0;
   m_FrameSkip = 0;
+#endif
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  m_InitialDeliberateSystemSync = std::make_unique<bool[]>(std::tuple_size<GameDeliberateSyncSystemListType>::value);
 #endif
 }
 
@@ -197,9 +202,33 @@ void GameNetworkClient::HandleLoadingUpdate(const GameStateLoading & state)
   m_LoadingState = state;
 }
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+void GameNetworkClient::HandleDeliberateSystemSync(std::size_t type_index, void * data_ptr)
+{
+  m_InitialDeliberateSystemSync[type_index] = true;
+  GameClientInstanceContainer * inst = (m_State != ClientConnectionState::kConnected ? m_LoadingInstanceContainer.get() : m_InstanceContainer.get());
+
+  inst->SyncDeliberateSyncSystem(type_index, data_ptr);
+}
+#endif
+
 #if NET_MODE == NET_MODE_GGPO
 void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
 {
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  if (m_State != ClientConnectionState::kConnected)
+  {
+    auto size = std::tuple_size<GameDeliberateSyncSystemListType>::value;
+    for (std::size_t index = 0; index < size; ++index)
+    {
+      if (m_InitialDeliberateSystemSync[index] == false)
+      {
+        return;
+      }
+    }
+  }
+#endif
+
   m_LastAckFrame = game_state.m_AckFrame;
   if (m_State != ClientConnectionState::kConnected)
   {
@@ -406,6 +435,10 @@ void GameNetworkClient::InitConnection(ProtocolType & protocol)
   m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleStagingUpdate, this);
   m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleLoadingUpdate, this);
   m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleSimUpdate, this);
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  m_Protocol->GetReceiverChannel<2>().RegisterGenericCallback(&GameNetworkClient::HandleDeliberateSystemSync, this);
+#endif
 
 #else
   m_Protocol->GetReceiverChannel<3>().RegisterCallback(&GameNetworkClient::HandleSimUpdate, this);

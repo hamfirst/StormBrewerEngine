@@ -135,11 +135,11 @@ struct StormReflTypeInfo<GameStateStaging>
 template <>
 struct StormReflTypeInfo<GameStateStaging>::field_data_static<0>
 {
-  using member_type = NetSparseList<GameStateStagingPlayer, kMaxPlayers>; // NetSparseList<GameStateStagingPlayer, 4>
+  using member_type = NetSparseList<GameStateStagingPlayer, kMaxPlayers>; // NetSparseList<GameStateStagingPlayer, 2>
   static constexpr auto GetName() { return "m_Players"; }
-  static constexpr auto GetType() { return "NetSparseList<GameStateStagingPlayer, 4>"; }
+  static constexpr auto GetType() { return "NetSparseList<GameStateStagingPlayer, 2>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB3BC3673; }
-  static constexpr unsigned GetTypeNameHash() { return 0x7BE9AA51; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2DB30DD7; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameStateStaging::m_Players; }
 };
@@ -315,11 +315,11 @@ struct StormReflTypeInfo<GameStateLoading>
 template <>
 struct StormReflTypeInfo<GameStateLoading>::field_data_static<0>
 {
-  using member_type = NetSparseList<GameStateLoadingPlayer, kMaxPlayers>; // NetSparseList<GameStateLoadingPlayer, 4>
+  using member_type = NetSparseList<GameStateLoadingPlayer, kMaxPlayers>; // NetSparseList<GameStateLoadingPlayer, 2>
   static constexpr auto GetName() { return "m_Players"; }
-  static constexpr auto GetType() { return "NetSparseList<GameStateLoadingPlayer, 4>"; }
+  static constexpr auto GetType() { return "NetSparseList<GameStateLoadingPlayer, 2>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB3BC3673; }
-  static constexpr unsigned GetTypeNameHash() { return 0x6AA73001; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3CFD9787; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameStateLoading::m_Players; }
 };
@@ -350,11 +350,11 @@ struct StormReflTypeInfo<GameHistoryInput>
 template <>
 struct StormReflTypeInfo<GameHistoryInput>::field_data_static<0>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 4>
+  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 2>
   static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 4>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 2>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xE5BFFC88; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB3E55B0E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameHistoryInput::m_PlayerIndex; }
 };
@@ -429,11 +429,11 @@ struct StormReflTypeInfo<GameHistoryEvent>
 template <>
 struct StormReflTypeInfo<GameHistoryEvent>::field_data_static<0>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 4>
+  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 2>
   static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 4>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 2>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xE5BFFC88; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB3E55B0E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameHistoryEvent::m_PlayerIndex; }
 };

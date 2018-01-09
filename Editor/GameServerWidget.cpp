@@ -7,6 +7,7 @@
 #include "GameServerWidget.h"
 
 #include "Runtime/Asset/Asset.h"
+#include "Engine/Asset/ClientAssetLoader.h"
 
 GameServerWidget::GameServerWidget(QWidget *parent) :
   m_FrameClock(1.0 / 60.0)
@@ -23,7 +24,7 @@ GameServerWidget::GameServerWidget(QWidget *parent) :
   connect(timer, &QTimer::timeout, this, &GameServerWidget::tick);
   timer->start(10);
 
-  g_GlobalAssetList.BeginAssetLoad();
+  g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);
 }
 
 GameServerWidget::~GameServerWidget()

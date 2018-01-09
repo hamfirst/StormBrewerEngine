@@ -3,168 +3,88 @@
 #include "Runtime/Collision/CollisionDatabase.h"
 
 #include "Foundation/Math/Intersection.h"
+#include "Foundation/Math/LineDrawing.h"
+#include "Foundation/Math/Util.h"
 
 #include <sb/vector.h>
 
-CollisionDatabase::CollisionDatabase(std::size_t num_collision_layers) :
-  m_CollisionLayers(num_collision_layers)
+CollisionDatabase::CollisionDatabase(const StaticCollisionDatabase & static_collision) :
+  m_StaticCollision(static_collision)
 {
-  for (auto & elem : m_CollisionLayers)
-  {
-    elem.SetAllowUnique(true);
-  }
+
 }
 
-uint32_t CollisionDatabase::CheckCollision(const Box & box, uint32_t collision_layer_mask) const
+Optional<CollisionDatabaseCheckResult> CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const
 {
-  uint32_t result = 0;
-  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
+  auto result_mask = m_StaticCollision.CheckCollision(box, collision_layer_mask);
+  auto result = m_DynamicCollision.CheckCollisionAny(box, collision_layer_mask);
+  if (result)
   {
-    if (((1 << index) & collision_layer_mask) == 0)
-    {
-      continue;
-    }
-
-    if (m_CollisionLayers[index].QueryAny(box))
-    {
-      result |= (1 << index);
-    }
+    result->m_Mask |= result_mask;
+    return result;
   }
 
-  return result;
+  if (result_mask == 0)
+  {
+    return {};
+  }
+
+  CollisionDatabaseCheckResult out;
+  out.m_Mask = result_mask;
+  return out;
 }
 
-uint32_t CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const
+std::vector<CollisionDatabaseCheckResult> CollisionDatabase::QueryAllDynamic(const Box & box, uint32_t collision_layer_mask) const
 {
-  uint32_t result = 0;
-  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
-  {
-    if (((1 << index) & collision_layer_mask) == 0)
-    {
-      continue;
-    }
-
-    if (m_CollisionLayers[index].QueryAny(box))
-    {
-      return (1 << index);
-    }
-  }
-
-  return 0;
+  return m_DynamicCollision.QueryAll(box, collision_layer_mask);
 }
 
 uint32_t CollisionDatabase::CheckLineOfSight(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
 {
-  uint32_t result = 0;
+  return m_StaticCollision.CheckLineOfSight(start, end, collision_layer_mask);
+}
 
-  auto query_box = Box::FromPoints(start, end);
-  std::vector<Box> box_list;
-
-  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
+Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Box & box, const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
+{
+  Optional<CollisionDatabaseTraceResult> out;
+  VisitPointsAlongLine(start, end, [&](const Vector2 & p) 
   {
-    m_CollisionLayers[index].QueryBoxes(query_box, box_list);
-    for (auto & elem : box_list)
+    Box b = box;
+    b.m_Start += p;
+    b.m_End += p;
+
+    auto result = CheckCollisionAny(b, collision_layer_mask);
+    if (result)
     {
-      if (LineBoxIntersection(start, end, elem.m_Start, elem.m_End))
-      {
-        result |= (1 << index);
-      }
+      out.Emplace();
+      out->m_ImpactPos = p;
+      out->m_Mask = result->m_Mask;
+      out->m_HitObject = result->m_HitObject;
+
+      auto base_offset = end - start;
+      auto hit_offset = p - start;
+
+      out->m_T = IntersectionVecFuncs<Vector2f>::Mag(hit_offset) / IntersectionVecFuncs<Vector2f>::Mag(base_offset);
+      return false;
     }
 
-    box_list.clear();
-  }
+    return true;
+  });
 
-  return result;
+  return out;
 }
 
 uint32_t CollisionDatabase::CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const
 {
-  Box box = { pos, pos };
-  box.m_End.y += maximum_clearance;
-
-  uint32_t clearance = maximum_clearance;
-
-  std::vector<Box> query_boxes;
-
-  for (std::size_t index = 0; index < m_CollisionLayers.size(); index++)
-  {
-    if (((1 << index) & collision_layer_mask) == 0)
-    {
-      continue;
-    }
-
-    m_CollisionLayers[index].QueryBoxes(box, query_boxes);
-    for (auto & elem : query_boxes)
-    {
-      if (elem.m_Start.y <= pos.y)
-      {
-        return 0;
-      }
-
-      uint32_t box_clearance = (uint32_t)(elem.m_Start.y - pos.y);
-      clearance = std::min(box_clearance, clearance);
-    }
-
-    query_boxes.clear();
-  }
-
-  return clearance;
+  return m_StaticCollision.CheckClearance(pos, maximum_clearance, collision_layer_mask);
 }
 
-Optional<Box> CollisionDatabase::PushMapCollision(std::size_t map_id, std::vector<std::vector<Box>> && collision_boxes)
+void CollisionDatabase::ResetDynamicCollision()
 {
-  Optional<Box> bounds;
-
-  for(std::size_t index = 0, end = std::min(collision_boxes.size(), m_CollisionLayers.size()); index < end; ++index)
-  {
-    if (collision_boxes[index].size() == 0)
-    {
-      continue;
-    }
-
-    Box bounding_box = collision_boxes[index][0];
-    std::vector<std::pair<std::size_t, Box>> box_list;
-
-    if (bounds.IsValid())
-    {
-      BoxUnionInPlace(bounds.Value(), bounding_box);
-    }
-    else
-    {
-      bounds = bounding_box;
-    }
-
-    for (auto & box : collision_boxes[index])
-    {
-      box_list.emplace_back(std::make_pair(map_id, box));
-      BoxUnionInPlace(bounding_box, box);
-      BoxUnionInPlace(bounds.Value(), box);
-    }
-
-    m_CollisionLayers[index].InsertBatch(bounding_box, box_list);
-  }
-
-  return bounds;
+  m_DynamicCollision.ResetCollision();
 }
 
-void CollisionDatabase::RemoveMapCollision(std::size_t map_id)
+void CollisionDatabase::PushDynamicCollision(const Box & box, uint32_t collision_mask, CollisionDatabaseObjectInfo && obj_info)
 {
-  for (auto & elem : m_CollisionLayers)
-  {
-    elem.VisitAll([&](uint32_t grid_id, SpatialDatabaseNode & node)
-    {
-      std::size_t index = 0;
-      while (index < node.m_Elements.size())
-      {
-        if (node.m_Elements[index].first == map_id)
-        {
-          vremove_index_quick(node.m_Elements, index);
-        }
-        else
-        {
-          index++;
-        }
-      }
-    });
-  }
+  m_DynamicCollision.PushCollision(box, collision_mask, std::move(obj_info));
 }

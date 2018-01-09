@@ -15,11 +15,12 @@ using VisualEffectLoadLink = DocumentResourceLoadCallbackLink<VisualEffectDef, V
 class VisualEffectResource : public DocumentResourceBase
 {
 public:
-  VisualEffectResource(Any && load_data, uint64_t path_hash);
+  VisualEffectResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<VisualEffectDef> GetData();
   DocumentResourceLoadCallbackLink<VisualEffectDef, VisualEffectResource> AddLoadCallback(Delegate<void, NotNullPtr<VisualEffectResource>> && callback);
 
+  static VisualEffectResourcePtr Find(uint32_t file_path_hash);
   static VisualEffectResourcePtr Load(czstr file_path);
   static DocumentResourceLoadCallbackLink<VisualEffectDef, VisualEffectResource> LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<VisualEffectResource>> && callback);
 

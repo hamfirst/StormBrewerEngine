@@ -149,7 +149,7 @@ void FontViewer::paintGL()
     info += input;
   }
 
-  auto size = g_TextManager.GetTextSize(info.data(), m_FontId);
+  auto size = g_TextManager.GetTextSize(info.data(), m_FontId, 1);
   Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
   Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
@@ -159,7 +159,7 @@ void FontViewer::paintGL()
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kShadowed);
   g_TextManager.SetTextPos(text_start);
-  g_TextManager.RenderText(info.data(), m_FontId, m_RenderState);
+  g_TextManager.RenderText(info.data(), m_FontId, 1, m_RenderState);
   g_TextManager.SetTextMode();
 }
 

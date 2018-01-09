@@ -16,11 +16,12 @@ using MapLoadLink = DocumentResourceLoadCallbackLink<MapDef, MapResource>;
 class MapResource : public DocumentResourceBase
 {
 public:
-  MapResource(Any && load_data, uint64_t path_hash);
+  MapResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<MapDef> GetData();
   DocumentResourceLoadCallbackLink<MapDef, MapResource> AddLoadCallback(Delegate<void, NotNullPtr<MapResource>> && callback);
 
+  static Map Find(uint32_t file_path_hash);
   static Map Load(czstr file_path);
   static MapLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<MapResource>> && callback);
 

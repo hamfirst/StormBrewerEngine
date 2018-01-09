@@ -22,7 +22,7 @@ NET_REGISTER_TYPE(PlayerStateJump, PlayerStateBase);
 
 void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & game_container)
 {
-  player.m_Velocity.x = player.m_Input.m_XInput;
+  player.m_Velocity.x = player.m_Input.m_XInput * kMoveSpeed;
   player.m_Velocity.y -= kGravity;
 
   player.MoveCheckCollisionDatabase(game_container);

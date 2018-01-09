@@ -40,3 +40,15 @@ static inline int RoundUpInt(int x, int mod)
   int m = x % mod;
   return m == 0 ? x : (m > 0 ? x - m : x - (mod + m)) + mod;
 };
+
+template <typename ValueType>
+ValueType Lerp(ValueType a, ValueType b, ValueType i)
+{
+  return a + (b - a) * i;
+}
+
+template <typename ValueType>
+ValueType Normalize(ValueType a, ValueType b, ValueType i)
+{
+  return (i - a) / (b - a);
+}

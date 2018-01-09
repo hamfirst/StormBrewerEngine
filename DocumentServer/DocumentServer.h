@@ -38,7 +38,7 @@ struct DocumentServerDocumentInfo
 
 struct DocumentServerClientDocument
 {
-  uint64_t m_FileId;
+  uint32_t m_FileId;
   uint32_t m_DocumentId;
 };
 
@@ -51,7 +51,7 @@ struct DocumentServerClientInfo
 struct CompilerServerClientInfo
 {
   StormSockets::StormSocketConnectionId m_ClientId;
-  std::vector<std::pair<Document *, uint64_t>> m_FileIds;
+  std::vector<std::pair<Document *, uint32_t>> m_FileIds;
 };
 
 class DocumentServer : public DocumentLoader
@@ -63,12 +63,12 @@ public:
   void Run();
 
 private:
-  virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback) override;
+  virtual void LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback) override;
   std::string GetFullPath(const std::string & path);
 
-  void HandleDocumentChange(uint64_t file_hash, Document * document, const ReflectionChangeNotification & change);
-  void HandleDocumentStateChange(uint64_t file_hash, Document * document, DocumentState state, DocumentState prev_state);
-  void HandleDocumentLinksModified(uint64_t file_hash, Document * document);
+  void HandleDocumentChange(uint32_t file_hash, Document * document, const ReflectionChangeNotification & change);
+  void HandleDocumentStateChange(uint32_t file_hash, Document * document, DocumentState state, DocumentState prev_state);
+  void HandleDocumentLinksModified(uint32_t file_hash, Document * document);
 
   void HandleDocumentModified(czstr path, std::chrono::system_clock::time_point last_modified);
   void HandleDocumentRemoved(czstr path);
@@ -94,13 +94,13 @@ private:
   std::unique_ptr<FileSystemWatcher> m_FilesystemWatcher;
   std::vector<StormSockets::StormSocketConnectionId> m_ReloadConnections;
 
-  std::unordered_map<uint64_t, DocumentServerDocumentInfo> m_OpenDocuments;
+  std::unordered_map<uint32_t, DocumentServerDocumentInfo> m_OpenDocuments;
   std::unordered_map<uint32_t, DocumentServerClientInfo> m_DocServerClients;
 
   std::unordered_map<uint32_t, CompilerServerClientInfo> m_CompileServerClients;
 
   std::unordered_map<Hash, Buffer> m_CachedAssets;
-  std::unordered_map<uint64_t, DocumentServerDocumentInfo *> m_PendingChangedDocuments;
+  std::unordered_map<uint32_t, DocumentServerDocumentInfo *> m_PendingChangedDocuments;
 
   FileNameDatabase m_FileNameDatabase;
   bool m_Quit = false;

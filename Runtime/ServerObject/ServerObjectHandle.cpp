@@ -29,19 +29,26 @@ void ServerObjectHandle::ResetGen(const ServerObjectManager & object_manager)
   }
 }
 
-
 int ServerObjectHandle::GetRawSlotIndex() const
 {
   return m_SlotId;
 }
 
-NullOptPtr<ServerObject> ServerObjectHandle::Resolve(const ServerObjectManager & object_manager)
+ServerObjectHandle ServerObjectHandle::ConstructFromStaticIndex(int static_index)
+{
+  ServerObjectHandle handle;
+  handle.m_SlotId = static_index;
+  handle.m_Gen = 0;
+  return handle;
+}
+
+NullOptPtr<ServerObject> ServerObjectHandle::Resolve(const ServerObjectManager & object_manager) const
 {
   return object_manager.ResolveHandle(m_SlotId, m_Gen);
 }
 
 template <>
-NullOptPtr<ServerObject> ServerObjectHandle::ResolveTo<ServerObject>(const ServerObjectManager & object_manager)
+NullOptPtr<ServerObject> ServerObjectHandle::ResolveTo<ServerObject>(const ServerObjectManager & object_manager) const
 {
   return Resolve(object_manager);
 }

@@ -102,7 +102,7 @@ template <>
 struct StormReflTypeInfo<VisualEffectDefEmitterProperties>
 {
   using MyBase = void;
-  static constexpr int fields_n = 6;
+  static constexpr int fields_n = 7;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -255,6 +255,28 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data<5, Self> 
   match_const_t<Self, RBool> & Get() { return self.m_LinearFilter; }
   std::add_const_t<std::remove_reference_t<RBool>> & Get() const { return self.m_LinearFilter; }
   void SetDefault() { self.m_LinearFilter = StormReflTypeInfo<VisualEffectDefEmitterProperties>::GetDefault().m_LinearFilter; }
+};
+
+template <>
+struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<6>
+{
+  using member_type = RBool; // RBool
+  static constexpr auto GetName() { return "m_Trail"; }
+  static constexpr auto GetType() { return "RBool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3F5E15EF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_Trail; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data<6, Self> : public StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RBool> & Get() { return self.m_Trail; }
+  std::add_const_t<std::remove_reference_t<RBool>> & Get() const { return self.m_Trail; }
+  void SetDefault() { self.m_Trail = StormReflTypeInfo<VisualEffectDefEmitterProperties>::GetDefault().m_Trail; }
 };
 
 template <>

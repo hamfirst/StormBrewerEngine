@@ -78,7 +78,7 @@ struct RUNTIME_EXPORT MapServerObjectLayer
   RMergeList<MapServerObject> STORM_REFL_ATTR(noui) m_Objects;
 };
 
-enum STORM_REFL_ENUM MapParalaxLayerObjectType
+enum STORM_REFL_ENUM class MapParalaxLayerObjectType
 {
   kTexture,
   kSprite,
@@ -135,6 +135,8 @@ struct RUNTIME_EXPORT MapAnchor
   STORM_DATA_DEFAULT_CONSTRUCTION(MapAnchor);
   RString m_Name;
   RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorData;
+
+  RString STORM_REFL_ATTR_VAL(file, sprite) m_Sprite;
 
   RInt m_X;
   RInt m_Y;

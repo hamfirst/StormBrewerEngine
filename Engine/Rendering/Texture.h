@@ -29,7 +29,8 @@ public:
   void SetTextureData(const PixelBuffer & pixel_buffer, TextureType type);
   void SetTextureSubData(const PixelBuffer & pixel_buffer, int dst_x, int dst_y);
 
-  void SetLinearFilter() const;
+  void SetLinearFilter();
+  void SetPixelPerfectFilter();
 
   int GetLoadError() const { return m_LoadError; }
 
@@ -51,5 +52,6 @@ private:
 
   unsigned int m_Width;
   unsigned int m_Height;
+  bool m_LinearFilter;
 };
 

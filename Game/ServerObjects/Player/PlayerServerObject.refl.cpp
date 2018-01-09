@@ -5,6 +5,7 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
+#include "Game/Systems/GameLogicSystems.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
@@ -66,10 +67,15 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
 MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & game_container)
 {
   auto & stage = game_container.GetStage();
-  auto & collision = stage.GetCollisionDatabase();
+  auto & collision = game_container.GetSystems().GetCollisionDatabase();
 
   MoveRequest req = Mover::CreateMoveRequest(m_Position, m_Velocity, m_MoveBox);
+
+#ifdef MOVER_ONE_WAY_COLLISION
+  auto result = Mover::UpdateMover(collision, req, COLLISION_LAYER_SOLID, COLLISION_LAYER_ONE_WAY);
+#else
   auto result = Mover::UpdateMover(collision, req, 0xFFFFFFFF);
+#endif
 
   if (result.m_HitRight)
   {
@@ -169,9 +175,9 @@ bool PlayerServerObject::FrameAdvance(uint32_t anim_name_hash, bool loop, int fr
   return result;
 }
 
-void PlayerServerObject::HandlePlaceholderEvent(const PlaceholderEvent & ev, GameLogicContainer & game_container)
+bool PlayerServerObject::HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta)
 {
-
+  return true;
 }
 
 czstr PlayerServerObject::GetDefaultEntityBinding()

@@ -50,7 +50,7 @@ void ServerObject::InitPosition(const Vector2 & pos)
 
 }
 
-Vector2 ServerObject::GetPosition() const
+Vector2 ServerObject::GetPosition(GameLogicContainer & game_container) const
 {
   ASSERT(false, "Object does not implement position semantics");
   return {};
@@ -86,7 +86,7 @@ int ServerObject::GetTypeIndex() const
   return m_TypeIndex;
 }
 
-bool ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
+bool ServerObject::TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta)
 {
   if (m_EventDispatch == nullptr)
   {

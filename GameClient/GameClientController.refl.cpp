@@ -111,9 +111,19 @@ void GameClientController::HandleAuthEvent(std::size_t event_class_id, const voi
   m_AuthEventCallbacks[event_class_id].Call(event_ptr);
 }
 
-void GameClientController::HandlePlaceholderEvent(const PlaceholderGlobalEvent & ev)
+void GameClientController::HandlePlaySoundGlobalEvent(const PlaySoundGlobalEvent & ev)
 {
+  auto audio_asset = AudioAsset::Find(ev.m_AssetHash);
+  g_AudioManager.PlayAudio(audio_asset);
+}
 
+void GameClientController::HandlePlayVfxGlobalEvent(const PlayVfxGlobalEvent & ev)
+{
+  auto vfx_asset = VisualEffectResource::Find(ev.m_AssetHash);
+  if (vfx_asset.IsLoaded())
+  {
+    m_GameContainer.GetEngineState().GetVisualEffectManager()->CreateVisualEffect(vfx_asset->GetData(), 0, Vector2(ev.m_PositionX, ev.m_PositionY));
+  }
 }
 
 void GameClientController::HandlePlaceholderAuthEvent(const PlaceholderServerAuthEvent & ev)

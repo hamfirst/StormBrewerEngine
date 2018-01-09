@@ -72,6 +72,13 @@ void GameClientConnection::SendLoadLevel(const LoadLevelMessage & load_msg)
   m_Protocol.GetSenderChannel<0>().SendMessage(load_msg);
 }
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+void GameClientConnection::SendDeliberateSync(void * data, int type_index)
+{
+  m_Protocol.GetSenderChannel<2>().SendMessage(type_index, data);
+}
+#endif
+
 void GameClientConnection::ForceDisconnect()
 {
   RemoveFromGame();

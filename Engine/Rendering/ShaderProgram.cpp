@@ -156,7 +156,7 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
   }
 
   m_UniformData = std::make_unique<uint8_t[]>(data_len);
-  memset(m_UniformData.get(), 0, data_len);
+  memset(m_UniformData.get(), 0xFF, data_len);
 }
 
 int ShaderProgram::GetUniformLocation(Hash uniform_name) const

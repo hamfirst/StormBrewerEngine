@@ -101,8 +101,12 @@ private:
 
   FPSClock m_FPSClock;
 
+  ShaderProgram m_GridShader;
+  int m_GridWidth = 16;
+  int m_GridHeight = 16;
+  bool m_DrawGrid = true;
+
   bool m_PlayMode;
   bool m_Moving;
   bool m_ImeMode;
-
 };

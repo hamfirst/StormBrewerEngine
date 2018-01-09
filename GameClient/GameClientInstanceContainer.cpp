@@ -19,6 +19,28 @@ GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_co
   m_NumLocalClients(num_local_clients)
 {
   m_ClientData.resize(num_local_clients);
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  m_DeliberateSyncSystemCallback = std::make_unique<std::pair<void *, GameDeliberateSyncSystemCallback>[]>(std::tuple_size<GameDeliberateSyncSystemListType>::value);
+
+  auto index = 0;
+  auto visitor = [&](auto & elem)
+  {
+    using ElemType = std::decay_t<decltype(elem)>;
+    m_DeliberateSyncSystemCallback[index] = std::make_pair((void *)&elem, [](void * src, void * dst) 
+    {
+      auto src_elem = (ElemType *)src;
+      auto dst_elem = (ElemType *)dst;
+
+      *dst_elem = std::move(*src_elem);
+    });
+
+    ++index;
+  };
+
+  NetMetaUtil::VisitTuple(visitor, m_DeliberateSyncSystemData);
+
+#endif
 }
 
 GameClientInstanceContainer::~GameClientInstanceContainer()
@@ -39,6 +61,7 @@ void GameClientInstanceContainer::Load(const GameInitSettings & init_settings, u
     m_DefaultSim = std::make_shared<GameFullState>(m_Stage->CreateDefaultGameState());
     m_CurrentSim = m_DefaultSim;
     m_SimHistory.Push(m_CurrentSim);
+    m_Systems.Emplace(m_Stage->GetCollisionDatabase());
   });
 
   m_SharedResources.Emplace(init_settings);
@@ -63,10 +86,8 @@ void GameClientInstanceContainer::Update()
   auto frame = m_CurrentSim->m_InstanceData.m_FrameCount;
 
   auto & controller = GetGameController();
-
-  GameLogicContainer logic_container(GetGameController(), m_CurrentSim->m_InstanceData, m_CurrentSim->m_ServerObjectManager, m_ServerObjectEventSystem,
-    m_ServerEventResponder, GetClientController(), m_GameContainer.GetSharedGlobalResources(), GetSharedResources(), GetStage(), m_Authority, s_BogusSendTimer);
-
+  auto logic_container = GetLogicContainer();
+       
   auto remote_input_visitor = [&](int frame_count, HistoryInput & elem)
   {
     controller.ApplyInput(elem.m_PlayerIndex, logic_container, elem.m_Input);
@@ -285,12 +306,13 @@ void GameClientInstanceContainer::HandleLocalServerAuthorityEvent(std::size_t cl
     return;
   }
 
-  auto logic_container = GetLogicContainer(true);
+  bool auth = true;
+  auto logic_container = GetLogicContainer(&auth);
   m_GameController.HandleAuthEvent(logic_container, class_id, ev);
   m_ClientController.HandleAuthEvent(class_id, ev);
 }
 
-GameLogicContainer GameClientInstanceContainer::GetLogicContainer(bool authority, int & send_timer)
+GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<bool> authority, int & send_timer)
 {
   return GameLogicContainer(
     GetGameController(),
@@ -301,8 +323,12 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(bool authority
     GetClientController(),
     m_GameContainer.GetSharedGlobalResources(),
     GetSharedResources(),
+    GetSystems(),
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+    m_DeliberateSyncSystemData,
+#endif
     GetStage(),
-    authority, send_timer);
+    authority ? *authority : m_Authority, send_timer);
 }
 
 GameController & GameClientInstanceContainer::GetGameController()
@@ -375,7 +401,23 @@ GameClientInstanceResources & GameClientInstanceContainer::GetClientResources()
   return m_ClientResources.Value();
 }
 
+GameLogicSystems & GameClientInstanceContainer::GetSystems()
+{
+  return m_Systems.Value();
+}
+
 GameStage & GameClientInstanceContainer::GetStage()
 {
   return *m_Stage.get();
 }
+
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+
+void GameClientInstanceContainer::SyncDeliberateSyncSystem(std::size_t index, void * data)
+{
+  auto & sync_info = m_DeliberateSyncSystemCallback[index];
+  sync_info.second(data, sync_info.first);
+}
+
+#endif

@@ -7,7 +7,6 @@
 #include <QBoxLayout>
 #include <QGroupBox>
 
-
 AudioViewer::AudioViewer(bool is_audio, const char * file_path, QWidget *parent) :
   QWidget(parent),
   m_IsAudio(is_audio),

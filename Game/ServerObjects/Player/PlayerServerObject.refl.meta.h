@@ -274,12 +274,12 @@ struct StormReflFuncInfo<PlayerServerObject>
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>
 {
-  using return_type = void;
+  using return_type = bool;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "HandlePlaceholderEvent"; }
-  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr auto GetReturnType() { return "bool"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xB51A771F; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFunctionIndex() { return 0 + StormReflFuncInfo<ServerObject>::funcs_n; }
   static constexpr auto GetFunctionPtr() { return &PlayerServerObject::HandlePlaceholderEvent; }
   template <int i>
@@ -289,21 +289,21 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>::param_info<0>
 {
-  using param_type = const PlaceholderEvent &;
+  using param_type = PlaceholderEvent &;
   static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "const PlaceholderEvent &"; }
+  static constexpr auto GetType() { return "PlaceholderEvent &"; }
   static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB0413EBA; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF8BBABC7; }
 };
 
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<ServerObject>::funcs_n>::param_info<1>
 {
-  using param_type = GameLogicContainer &;
-  static constexpr auto GetName() { return "game_container"; }
-  static constexpr auto GetType() { return "GameLogicContainer &"; }
-  static constexpr unsigned GetNameHash() { return 0x15042D19; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBFBDFC4E; }
+  using param_type = const EventMetaData &;
+  static constexpr auto GetName() { return "meta"; }
+  static constexpr auto GetType() { return "const EventMetaData &"; }
+  static constexpr unsigned GetNameHash() { return 0xD7F21435; }
+  static constexpr unsigned GetTypeNameHash() { return 0x039083D7; }
 };
 
 namespace StormReflFileInfo

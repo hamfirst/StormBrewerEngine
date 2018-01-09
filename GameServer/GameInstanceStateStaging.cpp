@@ -103,6 +103,8 @@ void GameInstanceStateStaging::HandlePlayerLoaded(std::size_t client_index, cons
 
 void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
 {
+  auto team_counts = GameController::GetTeamCounts(m_State);
+
   m_State.m_Players.EmplaceAt(client_index);
 
   auto & staging_player = m_State.m_Players.EmplaceAt(client_index);
@@ -110,8 +112,9 @@ void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
 
   staging_player.m_UserName = player_data.m_UserName;
 
-  auto team_counts = GameController::GetTeamCounts(m_State);
-  staging_player.m_Team = GameController::GetRandomTeam(team_counts, player_data.m_RandomSeed);
+  auto team = GameController::GetRandomTeam(team_counts, player_data.m_RandomSeed);
+
+  staging_player.m_Team = team;
 }
 
 bool GameInstanceStateStaging::CheckGameReady()

@@ -58,6 +58,7 @@
       <Filter>Shared</Filter>
     </ClCompile>
     <ClCompile Include="GameClientCommon.cpp" />
+    <ClCompile Include="GameShaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNetworkClient.h" />
@@ -123,6 +124,7 @@
       <Filter>Shared</Filter>
     </ClInclude>
     <ClInclude Include="GameClientCommon.h" />
+    <ClInclude Include="GameShaders.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

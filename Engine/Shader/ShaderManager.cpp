@@ -52,6 +52,11 @@ void ShaderManager::RegisterShader(czstr vertex_program, czstr fragment_program,
   RegisterShader(MakeQuickShaderProgram(vertex_program, fragment_program), shader_name);
 }
 
+void ShaderManager::RegisterShader(czstr fragment_program, czstr shader_name)
+{
+  RegisterShader(MakeQuickShaderProgram(kDefaultVertexShader, fragment_program), shader_name);
+}
+
 const std::vector<std::string> & ShaderManager::GetShaderNames() const
 {
   return m_ShaderNames;

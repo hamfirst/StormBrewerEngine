@@ -303,7 +303,7 @@ void FrameEditorBase::paintGL()
   m_RenderState.BindShader(default_shader);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_Center } *-1.0f);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_Center } * -1.0f);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
 
   m_RenderState.BindTexture(*texture);

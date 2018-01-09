@@ -15,8 +15,19 @@ public:
 
   void RegisterShader(ShaderProgram && shader_prgram, czstr shader_name);
   void RegisterShader(czstr vertex_program, czstr fragment_program, czstr shader_name);
+  void RegisterShader(czstr fragment_program, czstr shader_name);
 
   const std::vector<std::string> & GetShaderNames() const;
+
+  template <typename Visitor>
+  void VisitShaders(Visitor && visitor)
+  {
+    visitor(m_DefaultShader);
+    for (auto & elem : m_Shaders)
+    {
+      visitor(elem.m_Shader);
+    }
+  }
 
 protected:
 

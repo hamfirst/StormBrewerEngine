@@ -14,6 +14,8 @@
 
 #include <experimental/filesystem>
 
+class RenderState;
+
 class DefaultDocumentAssetLoader : public DocumentLoader
 {
 public:
@@ -22,7 +24,7 @@ public:
     m_RootPath = GetCanonicalRootPath();
   }
 
-  virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback)
+  virtual void LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
   {
     auto path_str = GetFullPath(path, m_RootPath);
 
@@ -59,11 +61,11 @@ public:
     document->AddRef();
 
     auto doc_data = document->GetDocumentJson();
-    load_callback(crc64(path), &doc_data, user_ptr);
+    load_callback(crc32lowercase(path), &doc_data, user_ptr);
     return{};
   }
 
-  virtual void UnloadResource(uint64_t path_hash, Any && load_data) override
+  virtual void UnloadResource(uint32_t path_hash, Any && load_data) override
   {
     auto document = m_Compiler.GetDocument(path_hash);
     if (document)
@@ -89,7 +91,7 @@ void UpdateSpriteEngineData(Any & engine_data)
 
 }
 
-void RenderSprite(Any & engine_data, EntityRenderState & render_state, Vector2 & position)
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position)
 {
 
 }

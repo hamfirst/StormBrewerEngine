@@ -21,12 +21,13 @@ using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResourc
 class SpriteResource : public DocumentResourceBase, public FrameDataExtract
 {
 public:
-  SpriteResource(Any && load_data, uint64_t path_hash);
+  SpriteResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<SpriteDef> GetData();
   DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback, DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> & load_link);
 
+  static SpritePtr Find(uint32_t file_path_hash);
   static SpritePtr Load(czstr file_path);
   static SpriteLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<SpriteResource>> && callback, SpriteLoadLink & load_link);
@@ -69,7 +70,7 @@ public:
   void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta)
   {
     EventMetaData meta_dup = meta;
-    auto visitor = [&](const RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
+    auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
     {
       meta_dup.m_Start = start;
       meta_dup.m_End = end;

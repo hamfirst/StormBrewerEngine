@@ -309,14 +309,14 @@ void TextureViewerWidget::paintGL()
     info += " Magnification: ";
     info += mag_str;
 
-    auto size = g_TextManager.GetTextSize(info.data(), -1);
+    auto size = g_TextManager.GetTextSize(info.data(), -1, 1);
     Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
     Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
     m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), (RenderVec2)m_RenderState.GetScreenSize(), m_RenderState);
 
     g_TextManager.SetTextPos(text_start);
-    g_TextManager.RenderText(info.data(), -1, m_RenderState);
+    g_TextManager.RenderText(info.data(), -1, 1, m_RenderState);
   }
 }
 

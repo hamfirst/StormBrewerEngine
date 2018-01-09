@@ -4,6 +4,7 @@
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/ShaderProgram.h"
+#include "Engine/Rendering/RenderSettings.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/DrawList/DrawList.h"
 #include "Engine/Entity/EntitySystem.h"
@@ -91,10 +92,13 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   viewport.m_Start = m_Position - (m_GameResolution / 2.0f);
   viewport.m_End = viewport.m_Start + m_GameResolution;
 
-  auto & default_shader = g_ShaderManager.GetDefaultWorldSpaceShader();
-  render_state.BindShader(default_shader);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
+  auto visitor = [&](ShaderProgram & shader)
+  {
+    render_state.BindShader(shader);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
+  };
+
+  g_ShaderManager.VisitShaders(visitor);
 
   DrawList draw_list;
 

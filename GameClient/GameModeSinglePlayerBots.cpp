@@ -52,14 +52,17 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
   container.SetInstanceData(m_InstanceContainer.get());
   container.SetClientSystems(m_ClientSystems.get());
 
-  auto game_logic = m_InstanceContainer->GetLogicContainer(true);
+  auto game_logic = m_InstanceContainer->GetLogicContainer();
+
+  auto & render_state = container.GetRenderState();
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 
 #ifdef NET_USE_RANDOM
   game_logic.GetInstanceData().m_Random = NetRandom((uint32_t)time(nullptr));
 #endif
 
   m_InstanceContainer->GetGameController().ConstructPlayer(0, game_logic, "Player", 0);
-  m_InstanceContainer->GetGameController().FillWithBots(game_logic, GetRandomNumber());
+  //m_InstanceContainer->GetGameController().FillWithBots(game_logic, GetRandomNumber());
   m_InstanceContainer->GetGameController().StartGame(game_logic);
   m_InstanceContainer->GetClientLocalData(0).m_PlayerIndex = 0;
 
@@ -72,9 +75,8 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
   m_Fader->SetActive();
   auto & fader_data = m_Fader->GetData();
   fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)));
+  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
   fader_data.m_Shape = kUIElementShapeFilledRectangle;
-
 
   if (m_ShowTutorial)
   {
@@ -101,13 +103,6 @@ void GameModeSinglePlayerBots::Update()
   auto & game_data = instance_data.GetGlobalInstanceData();
 
   if (game_data.m_WiningTeam)
-  {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, 
-      std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
-    return;
-  }
-
-  if (game_data.m_Score[0] >= kMaxScore)
   {
     container.SwitchMode(GameModeDef<GameModeEndGame>{}, 
       std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
@@ -248,12 +243,12 @@ void GameModeSinglePlayerBots::Render()
 
   m_FPSClock.Update();
   std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2(40, 40));
+  g_TextManager.SetTextPos(Vector2(40, 40) - render_state.GetRenderSize() / 2);
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);
   g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(fps_data.data(), -1, render_state);
+  g_TextManager.RenderText(fps_data.data(), -1, 1, render_state);
 }
 
 bool GameModeSinglePlayerBots::IsLoaded()
@@ -268,7 +263,7 @@ bool GameModeSinglePlayerBots::IsLoaded()
 
 void GameModeSinglePlayerBots::SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index)
 {
-  auto game = m_InstanceContainer->GetLogicContainer(true);
+  auto game = m_InstanceContainer->GetLogicContainer();
   m_InstanceContainer->GetGameController().HandleClientEvent(0, game, class_id, event_ptr);
 }
 

@@ -10,10 +10,11 @@
 #include "Game/Data/PlayerSpawn.refl.meta.h"
 
 GameStage::GameStage(const Map & map) :
-  m_DynamicObjectCount(127)
+  m_DynamicObjectCount(127),
+  m_CollisionDatabase(2)
 {
   auto map_data = map.GetData();
-  m_CollisionDatabase.PushMapCollision(0, ExtractMapCollision(*map_data, {}));
+  m_CollisionDatabase.PushMapCollision(0, ExtractMapCollision(*map_data, {}, { COMPILE_TIME_CRC32_STR("Collision"), COMPILE_TIME_CRC32_STR("OneWay") }));
 
   if (map_data->m_PathfingindInfo.m_Valid)
   {
@@ -22,7 +23,6 @@ GameStage::GameStage(const Map & map) :
 #ifndef MAP_PLATFORMER_PATHFINDING
     if (map_data->m_PathfingindInfo.m_GridWidth > 0 && map_data->m_PathfingindInfo.m_GridHeight > 0)
     {
-
       m_PathfindingElementSize = Vector2(map_data->m_PathfingindInfo.m_GridWidth, map_data->m_PathfingindInfo.m_GridHeight);
       m_PathfindingGridSize = Vector2(calc_info->m_SizeX, calc_info->m_SizeY);
 
@@ -79,6 +79,7 @@ GameStage::GameStage(const Map & map) :
     if (player_spawn_info)
     {
       m_PlayerSpawns[(int)player_spawn_info->m_Team].push_back(anchor.second.GetPoint());
+      continue;
     }
   }
 
@@ -95,9 +96,10 @@ GameStage::GameStage(const Map & map) :
       if (type_index)
       {
         Vector2 pos = Vector2((int)obj.second.m_XPosition, obj.second.m_YPosition);
-        ServerObjectStaticInitData init_data{ type_index, obj.second.m_ServerObject.m_InitData, pos };
+        ServerObjectStaticInitData init_data{ type_index.Value(), obj.second.m_ServerObject.m_InitData, pos };
         if (obj.second.m_ServerObject.m_IsStatic)
         {
+          m_StaticObjLookup.insert(std::make_pair(crc32(obj.second.m_Name.data()), ServerObjectHandle::ConstructFromStaticIndex((int)m_StaticObjects.size())));
           m_StaticObjects.emplace_back(std::move(init_data));
         }
         else
@@ -119,7 +121,7 @@ GameFullState GameStage::CreateDefaultGameState() const
   return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjects, m_DynamicObjectCount, kMaxPlayers) };
 }
 
-const CollisionDatabase & GameStage::GetCollisionDatabase() const
+const StaticCollisionDatabase & GameStage::GetCollisionDatabase() const
 {
   return m_CollisionDatabase;
 }
@@ -184,4 +186,15 @@ const std::vector<GameCollisionLine> GameStage::GetCollisionLines() const
 const std::vector<std::vector<Vector2>> & GameStage::GetPlayerSpawns() const
 {
   return m_PlayerSpawns;
+}
+
+Optional<ServerObjectHandle> GameStage::FindStaticObject(uint32_t obj_name_hash) const
+{
+  auto itr = m_StaticObjLookup.find(obj_name_hash);
+  if (itr == m_StaticObjLookup.end())
+  {
+    return {};
+  }
+
+  return itr->second;
 }

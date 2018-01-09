@@ -20,7 +20,7 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
 {
   auto & render_state = container.GetRenderState();
 
-  m_QuitPopup.Emplace(m_UIManager, "quit", nullptr, Box::FromFrameCenterAndSize(render_state.GetRenderSize() * 0.5f, Vector2(250, 100)),
+  m_QuitPopup.Emplace(m_UIManager, "quit", nullptr, Box::FromFrameCenterAndSize(Vector2(0, 0), Vector2(250, 100)),
     "Quit To Main Menu?", &m_GameContainer.GetClientGlobalResources().UISoundEffects);
   m_QuitPopup->SetOnOkayCallback([this] { Quit(); });
   m_QuitPopup->SetOnCancelCallback([this] 
@@ -40,8 +40,8 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
 #ifdef NET_USE_COUNTDOWN
   m_CountdownCaption = m_UIManager.AllocateText("countdown_caption");
   auto & countdown_caption_data = m_CountdownCaption->GetData();
-  countdown_caption_data.m_PositionX = (float)(render_state.GetRenderWidth() / 2);
-  countdown_caption_data.m_PositionY = (float)(render_state.GetRenderHeight() / 2) + 20.0f;
+  countdown_caption_data.m_PositionX = 0;
+  countdown_caption_data.m_PositionY = 20.0f;
   countdown_caption_data.m_Text = "Game Starts In...";
   countdown_caption_data.m_FontId = -1;
   countdown_caption_data.m_TextMode = 2;
@@ -49,8 +49,8 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
 
   m_Countdown = m_UIManager.AllocateText("countdown");
   auto & countdown_data = m_Countdown->GetData();
-  countdown_data.m_PositionX = (float)(render_state.GetRenderWidth() / 2);
-  countdown_data.m_PositionY = (float)(render_state.GetRenderHeight() / 2);
+  countdown_data.m_PositionX = 0;
+  countdown_data.m_PositionY = 0;
   countdown_data.m_FontId = -2;
   countdown_data.m_TextMode = 2;
   countdown_data.m_Centered = 1;
@@ -59,8 +59,8 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
 #ifdef NET_USE_ROUND_TIMER
   m_RoundTimerCaption = m_UIManager.AllocateText("round_timer_caption");
   auto & round_timer_caption_data = m_RoundTimerCaption->GetData();
-  round_timer_caption_data.m_PositionX = (float)(render_state.GetRenderWidth() / 2);
-  round_timer_caption_data.m_PositionY = (float)(render_state.GetRenderHeight()) - 6;
+  round_timer_caption_data.m_PositionX = 0;
+  round_timer_caption_data.m_PositionY = -6;
   round_timer_caption_data.m_Text = "Round Timer";
   round_timer_caption_data.m_FontId = -1;
   round_timer_caption_data.m_TextMode = 2;
@@ -68,8 +68,8 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
 
   m_RoundTimer = m_UIManager.AllocateText("round_timer");
   auto & round_timer_data = m_RoundTimer->GetData();
-  round_timer_data.m_PositionX = (float)(render_state.GetRenderWidth() / 2);
-  round_timer_data.m_PositionY = (float)(render_state.GetRenderHeight() - 21);
+  round_timer_data.m_PositionX = 0;
+  round_timer_data.m_PositionY = -21;
   round_timer_data.m_FontId = -2;
   round_timer_data.m_TextMode = 2;
   round_timer_data.m_Centered = 1;
@@ -146,7 +146,7 @@ void GameClientUIManager::ShowTutorial()
   m_Tutorial = m_UIManager.AllocateElementFromDef("tutorial", *resources.Tutorial.GetData());
   m_Tutorial->SetInput(COMPILE_TIME_CRC32_STR("Low"), 0.0f);
 
-  auto okay_box = Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() / 2, render_state.GetRenderHeight() / 2 - 40), Vector2(150, 30));
+  auto okay_box = Box::FromFrameCenterAndSize(Vector2(0, -40), Vector2(150, 30));
   m_TutorialOkay.Emplace(m_UIManager, "tutorial_okay", nullptr, okay_box, "Okay", &resources.UISoundEffects);
   m_TutorialOkay->SetOnClickCallback([this] { TogglePopup(); });
 }
@@ -216,17 +216,17 @@ void GameClientUIManager::TogglePopup()
   }
   else if(m_DisabledPopup == false)
   {
-    m_QuitPopup->Toggle();
+    auto & render_state = m_GameContainer.GetRenderState();
+    auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 
     auto & resources = m_GameContainer.GetClientGlobalResources();
     m_Tutorial = m_UIManager.AllocateElementFromDef("tutorial", *resources.Tutorial.GetData());
     m_Tutorial->SetInput(COMPILE_TIME_CRC32_STR("Low"), 1.0f);
 
-    auto & render_state = m_GameContainer.GetRenderState();
+    m_MuteButton.Emplace(m_UIManager, "mute", nullptr, half_res - Vector2(60, 20), false, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_MusicButton.Emplace(m_UIManager, "music", nullptr, half_res - Vector2(100, 20), true, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, half_res - Vector2(20, 20), m_GameContainer.GetWindow(), &m_GameContainer.GetClientGlobalResources().UISoundEffects);
 
-    m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
-    m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &m_GameContainer.GetClientGlobalResources().UISoundEffects);
-    m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), 
-      m_GameContainer.GetWindow(), &m_GameContainer.GetClientGlobalResources().UISoundEffects);
+    m_QuitPopup->Toggle();
   }
 }

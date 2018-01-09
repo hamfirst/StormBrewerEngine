@@ -73,7 +73,7 @@ private:
   Optional<Buffer> LoadFullDocumentRaw(czstr file_path, int & file_open_error);
   Optional<Buffer> LoadFullDocumentInternal(czstr file_path, int & file_open_error, WebSocket & websocket);
 
-  virtual void LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback) override;
+  virtual void LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback) override;
 
   template <typename AssetType>
   friend class AssetManager;

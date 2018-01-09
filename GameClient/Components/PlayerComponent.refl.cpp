@@ -92,12 +92,7 @@ void PlayerComponent::UpdateFirst()
     render_state.m_Matrix.x = 1.0f;
   }
 
-  auto event_visitor = [&](auto & event_info, auto box_start, auto box_end)
-  {
-    GetEntity()->TriggerEventHandler(event_info.GetTypeNameHash(), event_info.GetValue());
-  };
-
-  sprite->VisitEvents(event_visitor, render_state.m_AnimIndex, render_state.m_AnimFrame, render_state.m_AnimDelay);
+  sprite->SendEventsTo(*GetEntity(), render_state, EventMetaData(GetEntity()->GetGameContainer()));
 } 
 
 PlayerServerObjectInfo PlayerComponent::GetServerObjectInfo()

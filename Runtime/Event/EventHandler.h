@@ -36,9 +36,9 @@ class EventHandler
 {
 public:
 
-  static std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> RegisterEventHandlers()
+  static std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> RegisterEventHandlers()
   {
-    std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> handlers;
+    std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> handlers;
     auto visitor = [&](auto f)
     {
       using FuncType = decltype(f);
@@ -54,10 +54,10 @@ public:
     return handlers;
   }
 
-  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
+  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta)
   {
     T * t = static_cast<T *>(this);
-    static std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> handlers = RegisterEventHandlers();
+    static std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> handlers = RegisterEventHandlers();
 
     for (auto & elem : handlers)
     {

@@ -49,7 +49,6 @@ UIManager::~UIManager()
 
 void UIManager::Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
 {
-  //std::sort(m_RootElements.begin(), m_RootElements.end(), [](NotNullPtr<const UIElement> a, NotNullPtr<const UIElement> b) { return a->m_Layer > b->m_Layer; });
 
   m_GlobalBlock.m_Time = (float)GetTimeSeconds();
   m_GlobalBlock.m_ScreenWidth = (float)render_state.GetRenderWidth();
@@ -65,6 +64,8 @@ void UIManager::Update(InputState & input_state, RenderState & render_state, con
   {
     elem->Update((float)update_time);
   }
+
+  std::stable_sort(m_RootElements.begin(), m_RootElements.end(), [](NotNullPtr<UIElement> a, NotNullPtr<UIElement> b) { return a->GetBaseData()->m_Layer < b->GetBaseData()->m_Layer; });
 
   std::vector<std::pair<NotNullPtr<UIElement>, Box>> active_elements;
   for (auto itr = m_RootElements.rbegin(), end = m_RootElements.rend(); itr != end; ++itr)
@@ -85,13 +86,13 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
   auto render_size = (RenderVec2)render_state.GetRenderSize();
 
   render_state.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), Vector2f(render_state.GetScreenSize()));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_size);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
-  auto base_offset = render_size * -0.5f;
+  auto base_offset = RenderVec2{};
 
   for (auto elem : m_RootElements)
   {
@@ -509,7 +510,7 @@ void UIManager::SetupActiveElementsList(std::vector<std::pair<NotNullPtr<UIEleme
     auto & child = *itr;
     if (child->GetBaseData()->m_Enabled != 0.0f)
     {
-      SetupActiveElementsList(elements, child, elem->m_Offset);
+      SetupActiveElementsList(elements, child, elem->m_Offset + offset);
     }
   }
 
@@ -565,7 +566,7 @@ void UIManager::ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, 
   auto pointer_pos = (Vector2)render_state.ScreenPixelsToRenderPixels(pointer_state.m_Pos);
 
   Vector2 ui_pos = pointer_pos;
-  ui_pos += render_state.GetRenderSize() / 2;
+  //ui_pos += render_state.GetRenderSize() / 2;
 
   UIElement * cur_hover_element = nullptr;
   UIClickable * cur_hover_clickable = nullptr;

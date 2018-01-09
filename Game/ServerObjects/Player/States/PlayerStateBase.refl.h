@@ -38,5 +38,5 @@ public:
 };
 
 template <typename T>
-using PlayerStateEventHandler = EventHandler<T, GameLogicContainer &, const Box *, const Box *>;
+using PlayerStateEventHandler = EventHandler<T>;
 

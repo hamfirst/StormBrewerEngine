@@ -41,6 +41,7 @@ private:
 
   void UpdateWindow(uint32_t window_id);
   void MakeCurrent(uint32_t window_id);
+  void BindDefaultRenderTarget(uint32_t window_id);
   void Swap(uint32_t window_id);
   void SetMousePos(uint32_t window_id, int x, int y);
   void SetVsyncEnabled(uint32_t window_id, bool enabled);

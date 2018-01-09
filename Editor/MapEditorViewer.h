@@ -155,8 +155,8 @@ private:
 
   ShaderProgram m_DrawUtilShader;
 
-  int m_GridWidth;
-  int m_GridHeight;
+  int m_GridWidth = 16;
+  int m_GridHeight = 16;
   bool m_DrawGrid = true;
 
   RenderVec2 m_Center = {};

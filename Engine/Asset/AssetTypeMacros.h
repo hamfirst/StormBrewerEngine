@@ -25,12 +25,13 @@ struct LoadCallbackLink                                                         
                                                                                                                     \
                                                                                                                     \
 using LoadCallback = Delegate<void, NullOptPtr<AssetType>>;                                                         \
-using AssetRef = AssetReference<AssetType>;                                                                 \
+using AssetRef = AssetReference<AssetType>;                                                                         \
                                                                                                                     \
-static AssetRef Load(czstr file_path, bool load_deps = true);                                                 \
+static AssetRef Find(uint32_t file_path_hash);                                                                      \
+static AssetRef Load(czstr file_path, bool load_deps = true);                                                       \
 static LoadCallbackLink LoadWithCallback(czstr file_path, LoadCallback && del, bool load_deps = true);              \
 static void LoadWithCallback(czstr file_path, LoadCallback && del, LoadCallbackLink & link, bool load_deps = true); \
-static AssetRef SideLoad(czstr file_path, void * data, std::size_t len, bool load_deps = true);               \
+static AssetRef SideLoad(czstr file_path, void * data, std::size_t len, bool load_deps = true);                     \
                                                                                                                     \
 LoadCallbackLink AddLoadCallback(LoadCallback && del);                                                              \
 void AddLoadCallback(LoadCallback && del, LoadCallbackLink & link);                                                 \
@@ -43,6 +44,13 @@ void CallAssetLoadCallbacks() override;                                         
 
 #define ASSET_SOURCE_FUNCS(AssetType)                                                                               \
 static AssetManager<AssetType> s_##AssetType##Manager;                                                              \
+                                                                                                                    \
+AssetReference<AssetType> AssetType::Find(uint32_t file_path_hash)                                                  \
+{                                                                                                                   \
+  auto asset = s_##AssetType##Manager.FindAsset(file_path_hash);                                                    \
+  if(asset) { return AssetReference<AssetType>(asset); }                                                            \
+  return {};                                                                                                        \
+}                                                                                                                   \
                                                                                                                     \
 AssetReference<AssetType> AssetType::Load(czstr file_path, bool deps)                                               \
 {                                                                                                                   \

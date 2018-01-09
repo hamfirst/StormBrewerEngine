@@ -6,7 +6,7 @@ class ENGINE_EXPORT FakeWindow
 {
 public:
 
-  FakeWindow(const Box & window_geo, const Delegate<void> & make_current_cb, const Delegate<void> & swap_cb, 
+  FakeWindow(const Box & window_geo, const Delegate<void> & make_current_cb, const Delegate<void> & swap_cb, const Delegate<void> & bind_default_rt,
     const Delegate<void, int, int> & set_mouse_cb, const Delegate<void> & close_cb,
     const Delegate<void, NullOptPtr<Box>> & start_ime, const Delegate<void> stop_ime);
 
@@ -35,6 +35,7 @@ private:
 
   Delegate<void> m_MakeCurrentDelegate;
   Delegate<void> m_SwapDelegate;
+  Delegate<void> m_BindDefaultRenderTargetDelegate;
   Delegate<void, int, int> m_SetMousePosDelegate;
   Delegate<void> m_CloseDelegate;
   Delegate<void, NullOptPtr<Box>> m_StartImeDelegate;

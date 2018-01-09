@@ -26,6 +26,8 @@ struct UIElementDataBase
   float m_ColorB = 1.0f;
   float m_ColorA = 1.0f;
 
+  float m_Layer = 0.0f;
+
   void SetColor(const Color & c)
   {
     m_ColorR = c.r;

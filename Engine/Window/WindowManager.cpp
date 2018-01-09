@@ -7,6 +7,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "External/gl3w/gl3w.h"
+
 #ifdef _WEB
 #include <emscripten.h>
 #include <emscripten/html5.h>
@@ -213,6 +215,26 @@ void WindowManager::DecWindowRef(uint32_t window_id)
   {
     CloseWindow(window_id);
   }
+}
+
+void WindowManager::BindDefaultRenderTarget(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+  window.m_RefCount--;
+
+  if (window.m_SDLWindow)
+  {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  }
+  else
+  {
+    window.m_FakeWindow->m_BindDefaultRenderTargetDelegate();
+  }
+
+  auto window_size = window.m_WindowGeo.Size();
+  glViewport(0, 0, window_size.x, window_size.y);
 }
 
 void WindowManager::Swap(uint32_t window_id)

@@ -14,9 +14,20 @@ struct GlobalNetworkEvent
   NET_REFL;
 };
 
-struct PlaceholderGlobalEvent : public GlobalNetworkEvent
+struct PlaySoundGlobalEvent : public GlobalNetworkEvent
 {
   NET_REFL;
+  uint32_t m_AssetHash;
+  int16_t m_PositionX;
+  int16_t m_PositionY;
+};
+
+struct PlayVfxGlobalEvent : public GlobalNetworkEvent
+{
+  NET_REFL;
+  uint32_t m_AssetHash;
+  int16_t m_PositionX;
+  int16_t m_PositionY;
 };
 
 struct ServerAuthNetworkEvent

@@ -15,13 +15,15 @@ public:
   ServerObjectHandle();
 
   template <typename T>
-  NullOptPtr<T> ResolveTo(const ServerObjectManager & object_manager);
+  NullOptPtr<T> ResolveTo(const ServerObjectManager & object_manager) const;
 
-  NullOptPtr<ServerObject> Resolve(const ServerObjectManager & object_manager);
+  NullOptPtr<ServerObject> Resolve(const ServerObjectManager & object_manager) const;
 
   void Reset();
 
   int GetRawSlotIndex() const;
+
+  static ServerObjectHandle ConstructFromStaticIndex(int static_index);
 
 private:
 

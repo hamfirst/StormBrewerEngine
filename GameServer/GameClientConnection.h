@@ -3,6 +3,7 @@
 
 #include "Game/GameProtocol.h"
 #include "Game/GameNetworkSettings.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 
 class GameServer;
@@ -26,6 +27,10 @@ public:
 #endif
 
   void SendLoadLevel(const LoadLevelMessage & load_msg);
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  void SendDeliberateSync(void * data, int type_index);
+#endif
 
   void ForceDisconnect();
   void RemoveFromGame();

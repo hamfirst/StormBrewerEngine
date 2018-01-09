@@ -20,11 +20,23 @@ public:
     g_AssetLoader.RegisterAssetLoadCallback(&reload_info);
   }
 
+  NullOptPtr<AssetType> FindAsset(uint32_t file_name_hash)
+  {
+    auto existing_asset_itr = m_AssetLookup.find(file_name_hash);
+    if (existing_asset_itr != m_AssetLookup.end())
+    {
+      auto & asset = *existing_asset_itr->second;
+      return &asset;
+    }
+
+    return nullptr;
+  }
+
   NotNullPtr<AssetType> LoadAsset(czstr file_path, bool load_deps)
   {
     static_assert(sizeof(Asset::AssetHandle) >= sizeof(typename plf::colony<AssetType>::iterator), "Invalid iterator size");
 
-    uint64_t file_name_hash = crc64lowercase(file_path);
+    uint32_t file_name_hash = crc32lowercase(file_path);
     auto existing_asset_itr = m_AssetLookup.find(file_name_hash);
     if (existing_asset_itr != m_AssetLookup.end())
     {
@@ -59,7 +71,7 @@ public:
   {
     static_assert(sizeof(Asset::AssetHandle) >= sizeof(typename plf::colony<AssetType>::iterator), "Invalid iterator size");
 
-    uint64_t file_name_hash = crc64lowercase(file_path);
+    uint32_t file_name_hash = crc32lowercase(file_path);
     auto existing_asset_itr = m_AssetLookup.find(file_name_hash);
     if (existing_asset_itr != m_AssetLookup.end())
     {
@@ -101,7 +113,7 @@ public:
 
   void ReloadFile(czstr path)
   {
-    uint64_t file_name_hash = crc64lowercase(path);
+    uint32_t file_name_hash = crc32lowercase(path);
     auto existing_asset_itr = m_AssetLookup.find(file_name_hash);
     if (existing_asset_itr == m_AssetLookup.end())
     {
@@ -114,5 +126,5 @@ public:
 
 private:
   plf::colony<AssetType> m_Assets;
-  std::unordered_map<uint64_t, typename plf::colony<AssetType>::iterator> m_AssetLookup;
+  std::unordered_map<uint32_t, typename plf::colony<AssetType>::iterator> m_AssetLookup;
 };

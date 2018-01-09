@@ -16,12 +16,13 @@ using TileSheetLoadLink = DocumentResourceLoadCallbackLink<TileSheetDef, TileShe
 class TileSheetResource : public DocumentResourceBase
 {
 public:
-  TileSheetResource(Any && load_data, uint64_t path_hash);
+  TileSheetResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<TileSheetDef> GetData();
   DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback, DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> & load_link);
 
+  static TileSheetPtr Find(uint32_t file_path_hash);
   static TileSheetPtr Load(czstr file_path);
   static TileSheetLoadLink LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback);
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback, TileSheetLoadLink & load_link);

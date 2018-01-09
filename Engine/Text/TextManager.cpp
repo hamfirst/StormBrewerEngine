@@ -63,7 +63,7 @@ bool TextManager::IsFontLoaded(int font_id)
   return font->Loaded();
 }
 
-void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
+void TextManager::AddTextToBuffer(czstr text, int font_id, float scale, TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
 {
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
@@ -87,10 +87,10 @@ void TextManager::AddTextToBuffer(czstr text, int font_id, TextBufferBuilder & v
   }
 
   m_GlyphPositions.clear();
-  font->CreateVertexBufferForString(text, strlen(text), sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
+  font->CreateVertexBufferForString(text, strlen(text), scale, sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
 }
 
-void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, TextBufferBuilder & vertex_builder, const char * prompt)
+void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, float scale, TextBufferBuilder & vertex_builder, const char * prompt)
 {
   std::string text = prompt;
   std::size_t prompt_length = TextInputContext::GetMultibyteLength(prompt);
@@ -107,11 +107,11 @@ void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, i
   if (compo_size)
   {
     text.insert(text.begin() + prompt_length + context->GetCharacterByteOffset(context->GetCursorPos()), compo.begin(), compo.end());
-    AddTextToBuffer(text.data(), font_id, vertex_builder, cursor_pos, (int)(cursor_pos + compo_size), show_cursor ? (int)(cursor_pos + compo_size) : -1);
+    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, cursor_pos, (int)(cursor_pos + compo_size), show_cursor ? (int)(cursor_pos + compo_size) : -1);
   }
   else
   {
-    AddTextToBuffer(text.data(), font_id, vertex_builder, -1, -1, cursor_pos);
+    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, -1, -1, cursor_pos);
   }
 }
 
@@ -162,21 +162,21 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   render_state.Draw();
 }
 
-void TextManager::RenderText(czstr text, int font_id, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
+void TextManager::RenderText(czstr text, int font_id, float scale, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
 {
   TextBufferBuilder buffer_builder;
-  AddTextToBuffer(text, font_id, buffer_builder, sel_start, sel_end, cursor_pos);
+  AddTextToBuffer(text, font_id, scale, buffer_builder, sel_start, sel_end, cursor_pos);
   RenderBuffer(buffer_builder, render_state);
 }
 
-void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, RenderState & render_state, const char * prompt)
+void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, float scale, RenderState & render_state, const char * prompt)
 {
   TextBufferBuilder buffer_builder;
-  AddTextToBuffer(context, font_id, buffer_builder, prompt);
+  AddTextToBuffer(context, font_id, scale, buffer_builder, prompt);
   RenderBuffer(buffer_builder, render_state);
 }
 
-Box TextManager::GetTextSize(czstr text, int font_id)
+Box TextManager::GetTextSize(czstr text, int font_id, float scale)
 {
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
@@ -190,10 +190,10 @@ Box TextManager::GetTextSize(czstr text, int font_id)
     return{};
   }
 
-  return font->GetTextSize(text, strlen(text));
+  return font->GetTextSize(text, strlen(text), scale);
 }
 
-Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, const char * prompt)
+Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, float scale, const char * prompt)
 {
   std::string text = prompt;
   std::size_t prompt_length = TextInputContext::GetMultibyteLength(prompt);
@@ -210,11 +210,11 @@ Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int fo
   if (compo_size)
   {
     text.insert(text.begin() + prompt_length + context->GetCharacterByteOffset(context->GetCursorPos()), compo.begin(), compo.end());
-    return GetTextSize(text.data(), font_id);
+    return GetTextSize(text.data(), font_id, scale);
   }
   else
   {
-    return GetTextSize(text.data(), font_id);
+    return GetTextSize(text.data(), font_id, scale);
   }
 }
 

@@ -61,10 +61,10 @@ void GameModeLogo::Render()
   auto texture = GetAssets().GetTexture("logo");
   if (texture && texture->IsLoaded())
   {
-    auto window_size = container.GetWindow().GetSize();
+    auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
    
-    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size);
+    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
   }
 }
 

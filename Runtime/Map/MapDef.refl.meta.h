@@ -1181,7 +1181,7 @@ template <>
 struct StormReflTypeInfo<MapAnchor>
 {
   using MyBase = void;
-  static constexpr int fields_n = 4;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -1237,17 +1237,53 @@ struct StormReflTypeInfo<MapAnchor>::field_data<1, Self> : public StormReflTypeI
 template <>
 struct StormReflTypeInfo<MapAnchor>::field_data_static<2>
 {
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Sprite"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x7822D856; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &MapAnchor::m_Sprite; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Sprite; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Sprite; }
+  void SetDefault() { self.m_Sprite = StormReflTypeInfo<MapAnchor>::GetDefault().m_Sprite; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::annotations<2>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::annotations<2>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "file: sprite"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0x1563DF3B; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<3>
+{
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_X"; }
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE7DD193C; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_X; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<2>
+struct StormReflTypeInfo<MapAnchor>::field_data<3, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1257,19 +1293,19 @@ struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeI
 };
 
 template <>
-struct StormReflTypeInfo<MapAnchor>::field_data_static<3>
+struct StormReflTypeInfo<MapAnchor>::field_data_static<4>
 {
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_Y"; }
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x90DA29AA; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_Y; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapAnchor>::field_data<3, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<3>
+struct StormReflTypeInfo<MapAnchor>::field_data<4, Self> : public StormReflTypeInfo<MapAnchor>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

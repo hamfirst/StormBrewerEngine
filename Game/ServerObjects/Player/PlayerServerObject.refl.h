@@ -58,7 +58,7 @@ public:
   void Jump(GameLogicContainer & game_container);
 #endif
 
-  void SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, GameLogicContainer & game_container);
+  bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta);
 
   SpriteResource & GetSprite();
   virtual czstr GetDefaultEntityBinding() override;

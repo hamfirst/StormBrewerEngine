@@ -28,10 +28,12 @@
 
 #include "Engine/Engine.h"
 #include "Engine/Text/TextManager.h"
-
 #include "Engine/Component/ComponentSystem.h"
+
 #include "Runtime/Runtime.h"
 #include "Runtime/Config/ConfigManager.h"
+
+#include "GameClient/GameShaders.h"
 
 #include "DocumentServer/DocumentServerMessages.refl.meta.h"
 
@@ -45,6 +47,7 @@
 #include "GameServerWidget.h"
 #include "GameClientWidget.h"
 #include "GameHostWidget.h"
+#include "MapEditorTypes.refl.meta.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
@@ -162,9 +165,12 @@ EditorContainer::EditorContainer(QWidget *parent) :
   InitServerTypes();
   EngineInit(false);
   EngineRenderInit();
+  RegisterGameplayShaders();
 
   g_ComponentTypeSystem.LoadPropertyDatabase(m_PropertyDatabase);
   RuntimeRegisterTypes(m_PropertyDatabase);
+
+  GetProperyMetaData<MapEditorAnchorInitData>(m_PropertyDatabase);
 
   QString exec_path = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
   g_TextManager.LoadFont("./Fonts/FFF.ttf", -1, 8);

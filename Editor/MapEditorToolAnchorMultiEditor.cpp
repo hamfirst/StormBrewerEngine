@@ -94,7 +94,15 @@ bool MapEditorToolAnchorMultiEditor::DrawStart(const Vector2 & pos, bool alt, bo
   {
     if (num_selected == 1)
     {
-      m_SelectElem = selected_index;
+      if (alt)
+      {
+        m_MapEditor.DuplicateAnchorData(selected_index);
+        return false;
+      }
+      else
+      {
+        m_SelectElem = selected_index;
+      }
     }
 
     auto snapped_pos = pos;

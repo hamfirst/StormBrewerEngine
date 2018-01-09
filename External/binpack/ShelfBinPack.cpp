@@ -78,8 +78,7 @@ void ShelfBinPack::StartNewShelf(int startingHeight)
 bool ShelfBinPack::FitsOnShelf(const Shelf &shelf, int width, int height, bool canResize) const
 {
 	const int shelfHeight = canResize ? (binHeight - shelf.startY) : shelf.height;
-	if ((shelf.currentX + width <= binWidth && height <= shelfHeight) ||
-		(shelf.currentX + height <= binWidth && width <= shelfHeight))
+	if ((shelf.currentX + width <= binWidth && height <= shelfHeight))
 		return true;
 	else
 		return false;
@@ -90,10 +89,10 @@ void ShelfBinPack::RotateToShelf(const Shelf &shelf, int &width, int &height) co
 	// If the width > height and the long edge of the new rectangle fits vertically onto the current shelf,
 	// flip it. If the short edge is larger than the current shelf height, store
 	// the short edge vertically.
-	if ((width > height && width > binWidth - shelf.currentX) ||
-		(width > height && width < shelf.height) ||
-		(width < height && height > shelf.height && height <= binWidth - shelf.currentX))
-		swap(width, height);
+	//if ((width > height && width > binWidth - shelf.currentX) ||
+	//	(width > height && width < shelf.height) ||
+	//	(width < height && height > shelf.height && height <= binWidth - shelf.currentX))
+	//	swap(width, height);
 }
 
 void ShelfBinPack::AddToShelf(Shelf &shelf, int width, int height, Rect &newNode)

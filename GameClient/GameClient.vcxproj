@@ -295,6 +295,7 @@
     </ClCompile>
     <ClCompile Include="GameNetworkClient.cpp" />
     <ClCompile Include="GameServerEventResponder.cpp" />
+    <ClCompile Include="GameShaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\PlayerComponent.refl.h" />
@@ -404,6 +405,7 @@
     </ClInclude>
     <ClInclude Include="GameNetworkClient.h" />
     <ClInclude Include="GameServerEventResponder.h" />
+    <ClInclude Include="GameShaders.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />

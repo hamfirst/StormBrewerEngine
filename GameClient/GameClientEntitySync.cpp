@@ -71,7 +71,7 @@ void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container
     {
       if (entity)
       {
-        auto asset_hash = crc64(entity_asset);
+        auto asset_hash = crc32lowercase(entity_asset);
         if (asset_hash == entity->GetAssetNameHash())
         {
           entity->ServerUpdate();
@@ -138,7 +138,7 @@ void GameClientEntitySync::SendEntityEvent(int entity_index, uint32_t type_name_
 
   if (entity)
   {
-    entity->TriggerEventHandler(type_name_hash, ev);
+    entity->TriggerEventHandler(type_name_hash, ev, EventMetaData(&m_GameContainer));
   }
 }
 

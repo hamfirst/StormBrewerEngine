@@ -7,6 +7,8 @@
 
 #include "Game/GameServerEventSender.h"
 #include "Game/GameFullState.refl.h"
+#include "Game/Systems/GameLogicSystems.h"
+#include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #include "GameServer/GameInstanceStateBase.h"
 
@@ -68,6 +70,12 @@ public:
 
 #endif
 
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+
+  virtual void SyncDeliberateSyncSystem(int system_index) override;
+
+#endif
+
 protected:
 
   GameFullState & GetCurrentState();
@@ -84,6 +92,13 @@ private:
   int m_SendTimer;
 
   GameController m_Controller;
+  GameLogicSystems m_Systems;
+
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+  GameDeliberateSyncSystemListType m_DeliberateSyncSystemData;
+  std::unique_ptr<void *[]> m_DeliberateSyncSystemDataPtrs;
+#endif
+
   SparseList<GameInstanceStateGameplayPlayer> m_PlayerInfo;
   IdAllocator m_PlayerIdAllocator;
 

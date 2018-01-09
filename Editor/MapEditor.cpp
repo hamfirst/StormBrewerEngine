@@ -35,6 +35,7 @@
 #include "MapEditorToolAnchorCreate.h"
 #include "MapEditorToolAnchorEditor.h"
 #include "MapEditorToolAnchorMultiEditor.h"
+#include "MapEditorTypes.refl.meta.h"
 
 
 
@@ -319,11 +320,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
   case MapEditorLayerItemType::kCreateAnchor:
 
     ClearSelectors();
-
-    {
-      auto property_data = GetProperyMetaData<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>(GetPropertyFieldDatabase());
-      m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_AnchorInitData; }, "");
-    }
+    m_PropertyEditor->LoadStruct(this, m_AnchorInitData, true);
 
     break;
 
@@ -435,7 +432,7 @@ void MapEditor::CalculatePathfindingInfo()
   }
 
   auto box_multi_list = ExtractMapCollision(m_Map, Vector2{}, collision_hashes);
-  CollisionDatabase coll_database(box_multi_list.size());
+  StaticCollisionDatabase coll_database(box_multi_list.size());
   auto bounds = coll_database.PushMapCollision(0, std::move(box_multi_list));
 
   std::vector<Box> all_boxes_list;
@@ -779,6 +776,11 @@ MapEditorLayerManager<MapAnchor, MapEditorAnchor> & MapEditor::GetAnchorManager(
   return m_Anchors;
 }
 
+MapDef & MapEditor::GetMapDef()
+{
+  return m_Map;
+}
+
 MapEditorSelector & MapEditor::GetSelector()
 {
   return *m_Selector.get();
@@ -905,7 +907,7 @@ void MapEditor::CreateNewPath(const Line & line)
   m_Map.m_Paths.EmplaceBack(path);
 }
 
-const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & MapEditor::GetAnchorInitData() const
+const MapEditorAnchorInitData & MapEditor::GetAnchorInitData() const
 {
   return m_AnchorInitData;
 }
@@ -913,11 +915,12 @@ const RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> & Map
 void MapEditor::CreateNewAnchor(const Vector2 & point)
 {
   MapAnchor anchor;
-  anchor.m_AnchorData = m_AnchorInitData;
+  anchor.m_AnchorData = m_AnchorInitData.m_InitData;
+  anchor.m_Sprite = m_AnchorInitData.m_Sprite;
   anchor.m_X = point.x;
   anchor.m_Y = point.y;
 
-  auto type_info = m_AnchorInitData.GetTypeInfo();
+  auto type_info = m_AnchorInitData.m_InitData.GetTypeInfo();
   if (type_info)
   {
     anchor.m_Name = type_info->m_Name;
@@ -928,6 +931,18 @@ void MapEditor::CreateNewAnchor(const Vector2 & point)
   }
 
   m_Map.m_Anchors.EmplaceBack(anchor);
+}
+
+void MapEditor::DuplicateAnchorData(int layer_index)
+{
+  auto & anchor = m_Map.m_Anchors[layer_index];
+
+  m_AnchorInitData.m_InitData = anchor.m_AnchorData;
+  m_AnchorInitData.m_Sprite = anchor.m_Sprite;
+
+  MapEditorLayerSelection layer_selection = {};
+  layer_selection.m_Type = MapEditorLayerItemType::kCreateAnchor;
+  ChangeLayerSelection(layer_selection);
 }
 
 MapParalaxLayerObject & MapEditor::GetParalaxObjectInitData() 

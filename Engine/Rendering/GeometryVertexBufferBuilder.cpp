@@ -197,7 +197,7 @@ void GeometryVertexBufferBuilder::Rectangle(const Box & box, float thickness, co
   float ey = (float)(box.m_End.y + 1);
 
   Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
-  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
+  Line(Vector2f{ sx + 1, sy }, Vector2f{ sx + 1, ey }, thickness, c);
   Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
   Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
 }
@@ -266,41 +266,38 @@ void GeometryVertexBufferBuilder::FilledRectangle(const Box & box, const Color &
   FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), c);
 }
 
-void GeometryVertexBufferBuilder::Trail(const std::vector<TrailInfo> & points, const Color & c)
+void GeometryVertexBufferBuilder::Trail(const gsl::span<TrailInfo> & points, float texture_width)
 {
   if (points.size() <= 1)
   {
     return;
   }
 
-  if (points.size() == 2)
-  {
-    Line(points[0].m_Position, points[1].m_Position, points[0].m_Thickness, points[1].m_Thickness, c);
-    return;
-  }
-
   int prev_index = 0;
   int cur_index = 1;
-  int next_index = 2;
   int num_points = (int)points.size();
 
   Vector2f prev_point = points[0].m_Position;
   Vector2f cur_point = points[1].m_Position;
-  Vector2f next_point = points[2].m_Position;
 
   Vector2f prev_dir;
+  Color prev_color = points[0].m_Color;
+  float prev_thickness = points[0].m_Thickness;
   float prev_len;
 
-  Vector2f cur_dir;
-  float cur_len;
+  Color cur_color;
+  float cur_thickness;
 
-  Optional<std::pair<Vector2f, Vector2>> last_offset_points;
+  float tx = 0;
 
   while (true)
   {
-    while (cur_index < num_points - 1)
+    while (cur_index < num_points)
     {
       cur_point = points[cur_index].m_Position;
+      cur_thickness = points[cur_index].m_Thickness;
+      cur_color = points[cur_index].m_Color;
+
       prev_dir = cur_point - prev_point;
       prev_len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(prev_dir);
 
@@ -312,92 +309,30 @@ void GeometryVertexBufferBuilder::Trail(const std::vector<TrailInfo> & points, c
       cur_index++;
     }
 
-    next_index = cur_index + 1;
-    while (next_index < num_points)
-    {
-      next_point = points[next_index].m_Position;
-      cur_dir = next_point - cur_point;
-      cur_len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(cur_dir);
-
-      if (cur_len > 0)
-      {
-        break;
-      }
-
-      next_index++;
-    }
-
-    if (next_index >= num_points)
+    if (cur_index >= num_points)
     {
       break;
     }
 
     auto prev_dir_perp = IntersectionVecFuncs<Vector2f>::GetPerpVec(prev_dir);
-    auto cur_dir_perp = IntersectionVecFuncs<Vector2f>::GetPerpVec(cur_dir);
-    if (last_offset_points == false)
-    {
-      auto & point = points[prev_index];
-      auto t = point.m_Thickness / 2.0f;
+    auto prev_offset = prev_dir_perp * (prev_thickness / 2.0f);
+    auto cur_offset = prev_dir_perp * (cur_thickness / 2.0f);
 
-      Vector2f first_point = point.m_Position + t * prev_dir_perp;
-      Vector2f second_point = point.m_Position - t * prev_dir_perp;
-      
-      last_offset_points.Emplace(std::make_pair(first_point, second_point));
-    }
+    float etx = tx + (prev_len / texture_width);
 
-    auto dp = IntersectionVecFuncs<Vector2f>::Dot(prev_dir_perp, cur_dir_perp);
-    auto angle_between = acos(dp);
+    AddVert(prev_point + prev_offset, prev_color, Vector2f{ tx, 1 });
+    AddVert(prev_point - prev_offset, prev_color, Vector2f{ tx, 0 });
+    AddVert(cur_point + cur_offset, cur_color, Vector2f{ etx, 1 });
+    AddVert(prev_point - prev_offset, prev_color, Vector2f{ tx, 0 });
+    AddVert(cur_point + cur_offset, cur_color, Vector2f{ etx, 1 });
+    AddVert(cur_point - cur_offset, cur_color, Vector2f{ etx, 0 });
 
-    if (angle_between == 0)
-    {
-      auto & point = points[cur_index];
-      auto t = point.m_Thickness / 2.0f;
-
-      Vector2f first_point = point.m_Position + t * cur_dir_perp;
-      Vector2f second_point = point.m_Position - t * cur_dir_perp;
-
-      AddVert(first_point, c);
-      AddVert(second_point, c);
-      AddVert(last_offset_points->first, c);
-      AddVert(second_point, c);
-      AddVert(last_offset_points->first, c);
-      AddVert(last_offset_points->second, c);
-
-      last_offset_points.Emplace(std::make_pair(first_point, second_point));
-    }
-    else
-    {
-
-    }
+    prev_color = cur_color;
+    prev_thickness = cur_thickness;
+    prev_point = cur_point;
 
     prev_index = cur_index;
-    cur_index = next_index + 1;
-
-    prev_point = cur_point;
-  }
-
-  if (last_offset_points)
-  {
-    auto & point = points[num_points - 1];
-    auto t = point.m_Thickness / 2.0f;
-
-    auto dir = point.m_Position - cur_point;
-    auto len = IntersectionVecFuncs<Vector2f>::NormalizeInPlace(dir);
-
-    if (len > 0)
-    {
-      auto perp_dir = IntersectionVecFuncs<Vector2f>::GetPerpVec(dir);
-
-      Vector2f first_point = point.m_Position + t * perp_dir;
-      Vector2f second_point = point.m_Position - t * perp_dir;
-
-      AddVert(first_point, c);
-      AddVert(second_point, c);
-      AddVert(last_offset_points->first, c);
-      AddVert(second_point, c);
-      AddVert(last_offset_points->first, c);
-      AddVert(last_offset_points->second, c);
-    }
+    cur_index++;
   }
 }
 
@@ -442,4 +377,12 @@ void GeometryVertexBufferBuilder::AddVert(const Vector2f & pos, const Color & c)
   v.m_Position = pos;
   v.m_Color = c;
   v.m_TexCoord = m_TexCoord;
+}
+
+void GeometryVertexBufferBuilder::AddVert(const Vector2f & pos, const Color & c, const Vector2f & texcoord)
+{
+  VertexInfo & v = m_List.AddVert();
+  v.m_Position = pos;
+  v.m_Color = c;
+  v.m_TexCoord = texcoord;
 }

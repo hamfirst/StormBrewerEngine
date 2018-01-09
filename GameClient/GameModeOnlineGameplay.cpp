@@ -79,18 +79,6 @@ void GameModeOnlineGameplay::Update()
     return;
   }
 
-  auto player = game_data.m_Players.TryGet(local_data.m_PlayerIndex);
-  if (player)
-  {
-    if (game_data.m_Score[(int)player->m_Team] >= kMaxScore)
-    {
-      auto instance = container.GetClient().ConvertToOffline();
-      container.StopNetworkClient();
-      container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
-      return;
-    }
-  }
-
   auto & engine_state = container.GetEngineState();
   auto comp_system = engine_state.GetComponentSystem();
   auto entity_system = engine_state.GetEntitySystem();
@@ -192,12 +180,12 @@ void GameModeOnlineGameplay::Render()
 
   m_FPSClock.Update();
   std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2(40, 40));
+  g_TextManager.SetTextPos(Vector2(40, 40) - render_state.GetRenderSize() / 2);
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);
   g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(fps_data.data(), -1, render_state);
+  g_TextManager.RenderText(fps_data.data(), -1, 1, render_state);
 
 }
 

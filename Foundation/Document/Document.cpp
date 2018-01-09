@@ -15,7 +15,7 @@
 Document::Document(NotNullPtr<DocumentCompiler> compiler, czstr path) :
   m_Compiler(compiler),
   m_Path(path),
-  m_FileId(crc64(path)),
+  m_FileId(crc32lowercase(path)),
   m_State(DocumentState::kLoading),
   m_RefCount(0)
 {
@@ -41,7 +41,7 @@ const std::string & Document::GetPath() const
   return m_Path;
 }
 
-uint64_t Document::GetFileId() const
+uint32_t Document::GetFileId() const
 {
   return m_FileId;
 }
@@ -281,7 +281,7 @@ void Document::AddLink(const char * source_document, const char * source_path, c
 
   doc->AddDependency(this, source_path);
 
-  auto reverse_operation = std::function<void()>([=, file_id = crc64(source_document), spath = std::string(source_path), dpath = std::string(dest_path)]
+  auto reverse_operation = std::function<void()>([=, file_id = crc32lowercase(source_document), spath = std::string(source_path), dpath = std::string(dest_path)]
   {
     RemoveLink(file_id, spath.data(), dpath.data(), !as_redo);
   });
@@ -296,7 +296,7 @@ void Document::AddLink(const char * source_document, const char * source_path, c
   }
 }
 
-bool Document::RemoveLink(uint64_t file_id, const char * source_path, const char * dest_path, bool as_redo)
+bool Document::RemoveLink(uint32_t file_id, const char * source_path, const char * dest_path, bool as_redo)
 {
   for(std::size_t index = 0, end = m_Links.size(); index < end; index++)
   {

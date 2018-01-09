@@ -69,9 +69,14 @@ bool VisualEffectInstance::IsComplete() const
   return true;
 }
 
-void VisualEffectInstance::StopSpawning()
+void VisualEffectInstance::StopSpawning(bool spawn_final_particle)
 {
   m_Spawning = false;
+
+  if (spawn_final_particle)
+  {
+    m_PostSpawn = true;
+  }
 }
 
 void VisualEffectInstance::Init(const Vector2f & pos)

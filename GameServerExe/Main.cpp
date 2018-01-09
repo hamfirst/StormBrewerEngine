@@ -91,7 +91,8 @@ int main(int argc, char ** argv)
     return 0;
   }
 
-  g_GlobalAssetList.BeginAssetLoad();
+  ClientAssetLoader stub_loader;
+  g_GlobalAssetList.BeginAssetLoad(&stub_loader);
 
   printf("  Assets loaded...\n");
   GameStageManager stage_manager(level_list);

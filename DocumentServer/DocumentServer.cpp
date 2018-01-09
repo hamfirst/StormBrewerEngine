@@ -220,7 +220,7 @@ void DocumentServer::Run()
         recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;
 
         char * path = recv_buffer.data();
-        auto path_hash = crc64(path);
+        auto path_hash = crc32lowercase(path);
 
         printf("Got compiler server request: %s\n", path);
 
@@ -387,7 +387,7 @@ void DocumentServer::Run()
   }
 }
 
-void DocumentServer::LoadDocument(czstr path, uint64_t file_hash, DocumentLoadCallback callback)
+void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
 {
   auto full_path = GetFullPath(path);
 
@@ -417,7 +417,7 @@ std::string DocumentServer::GetFullPath(const std::string & path)
   }
 }
 
-void DocumentServer::HandleDocumentChange(uint64_t file_hash, Document * document, const ReflectionChangeNotification & change)
+void DocumentServer::HandleDocumentChange(uint32_t file_hash, Document * document, const ReflectionChangeNotification & change)
 {
   auto doc_itr = m_OpenDocuments.find(file_hash);
   if (doc_itr == m_OpenDocuments.end())
@@ -434,7 +434,7 @@ void DocumentServer::HandleDocumentChange(uint64_t file_hash, Document * documen
   }
 }
 
-void DocumentServer::HandleDocumentStateChange(uint64_t file_hash, Document * document, DocumentState state, DocumentState prev_state)
+void DocumentServer::HandleDocumentStateChange(uint32_t file_hash, Document * document, DocumentState state, DocumentState prev_state)
 {
   auto doc_itr = m_OpenDocuments.find(file_hash);
   if (doc_itr == m_OpenDocuments.end())
@@ -459,7 +459,7 @@ void DocumentServer::HandleDocumentStateChange(uint64_t file_hash, Document * do
   }
 }
 
-void DocumentServer::HandleDocumentLinksModified(uint64_t file_hash, Document * document)
+void DocumentServer::HandleDocumentLinksModified(uint32_t file_hash, Document * document)
 {
   auto doc_itr = m_OpenDocuments.find(file_hash);
   if (doc_itr == m_OpenDocuments.end())
@@ -477,7 +477,7 @@ void DocumentServer::HandleDocumentLinksModified(uint64_t file_hash, Document * 
 
 void DocumentServer::OpenDocumentForClient(czstr path, uint32_t document_id, StormSockets::StormSocketConnectionId client_id)
 {
-  auto file_hash = crc64(path);
+  auto file_hash = crc32lowercase(path);
   auto itr = m_OpenDocuments.find(file_hash);
 
   auto document = m_DocumentCompiler.GetDocument(path);
@@ -591,7 +591,7 @@ NullOptPtr<DocumentServerDocumentInfo> DocumentServer::GetDocumentForClient(uint
 
 void DocumentServer::HandleDocumentModified(czstr path, std::chrono::system_clock::time_point last_modified)
 {
-  auto file_id = crc64(path);
+  auto file_id = crc32lowercase(path);
 
   auto doc_itr = m_OpenDocuments.find(file_id);
   if (doc_itr != m_OpenDocuments.end())
@@ -611,7 +611,7 @@ void DocumentServer::HandleDocumentModified(czstr path, std::chrono::system_cloc
 
 void DocumentServer::HandleDocumentRemoved(czstr path)
 {
-  auto file_id = crc64(path);
+  auto file_id = crc32lowercase(path);
 
   auto doc_itr = m_OpenDocuments.find(file_id);
   if (doc_itr != m_OpenDocuments.end())
@@ -788,7 +788,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
           auto & src_path = std::get<1>(link_data);
           auto & dst_path = std::get<2>(link_data);
 
-          auto file_id = crc64(src_document);
+          auto file_id = crc32lowercase(src_document);
           document->m_Document->RemoveLink(file_id, src_path.data(), dst_path.data());
         }
       }

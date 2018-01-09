@@ -39,7 +39,7 @@ NullOptPtr<Document> DocumentCompiler::CreateNewDocument(czstr path)
 
 NotNullPtr<Document> DocumentCompiler::GetDocument(czstr path)
 {
-  uint64_t file_hash = crc64(path);
+  uint32_t file_hash = crc32lowercase(path);
 
   auto itr = m_Documents.find(file_hash);
   if (itr != m_Documents.end())
@@ -54,7 +54,7 @@ NotNullPtr<Document> DocumentCompiler::GetDocument(czstr path)
   return result.first->second.get();
 }
 
-NullOptPtr<Document> DocumentCompiler::GetDocument(uint64_t path_hash)
+NullOptPtr<Document> DocumentCompiler::GetDocument(uint32_t path_hash)
 {
   auto itr = m_Documents.find(path_hash);
   if (itr != m_Documents.end())
@@ -67,7 +67,7 @@ NullOptPtr<Document> DocumentCompiler::GetDocument(uint64_t path_hash)
 
 void DocumentCompiler::ReloadDocument(czstr path)
 {
-  uint64_t file_hash = crc64(path);
+  uint32_t file_hash = crc32lowercase(path);
 
   auto itr = m_Documents.find(file_hash);
   if (itr == m_Documents.end())
@@ -78,7 +78,7 @@ void DocumentCompiler::ReloadDocument(czstr path)
   m_Loader->LoadDocument(path, file_hash, DocumentLoadCallback(&DocumentCompiler::HandleDocumentLoaded, this));
 }
 
-void DocumentCompiler::HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> && buffer, std::chrono::system_clock::time_point last_modified_time)
+void DocumentCompiler::HandleDocumentLoaded(uint32_t file_id, Optional<Buffer> && buffer, std::chrono::system_clock::time_point last_modified_time)
 {
   auto itr = m_Documents.find(file_id);
   if (itr == m_Documents.end())
@@ -96,7 +96,7 @@ void DocumentCompiler::HandleDocumentLoaded(uint64_t file_id, Optional<Buffer> &
   }
 }
 
-void DocumentCompiler::UnloadDocument(uint64_t file_id)
+void DocumentCompiler::UnloadDocument(uint32_t file_id)
 {
   auto itr = m_Documents.find(file_id);
   if (itr == m_Documents.end())

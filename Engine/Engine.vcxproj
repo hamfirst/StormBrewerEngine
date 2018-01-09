@@ -280,6 +280,10 @@
     <ClInclude Include="Asset\AssetSync.h" />
     <ClInclude Include="Asset\AssetTypeMacros.h" />
     <ClInclude Include="Asset\AudioAsset.h" />
+    <ClInclude Include="Asset\ClientAssetLoader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Asset\DocumentAsset.h">
       <SubType>
       </SubType>
@@ -588,6 +592,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Asset\AudioAsset.cpp" />
+    <ClCompile Include="Asset\ClientAssetLoader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Asset\DocumentAsset.cpp">
       <SubType>
       </SubType>
