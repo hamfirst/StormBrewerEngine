@@ -16,7 +16,7 @@ public:
   void Move(RenderTarget && rhs) noexcept;
   void Destroy();
 
-  void CreateRenderTarget(int width, int height, bool hdr, int depth_size = 0, int stencil_size = 0);
+  void CreateRenderTarget(int width, int height, bool hdr, int depth_size = 0, int stencil_size = 0, int num_color_buffers = 1);
   int GetLoadError() const { return m_LoadError; }
 
   void SetLinearFilter();
@@ -28,14 +28,16 @@ public:
 protected:
 
   void BindAsRenderTarget() const;
-  void BindAsTexture(int texture_stage) const;
+  void BindAsTexture(int texture_stage, int color_buffer_index) const;
 
 private:
 
   friend class RenderState;
 
+  static const int kMaxColorBuffers = 4;
+
   unsigned int m_FrameBufferName;
-  unsigned int m_TextureName;
+  unsigned int m_TextureName[kMaxColorBuffers];
   unsigned int m_DepthBufferName;
   unsigned int m_LoadError;
 
@@ -43,6 +45,7 @@ private:
   unsigned int m_Height;
   bool m_Hdr;
   bool m_LinearFilter;
+  int m_NumColorBuffers;
   int m_DepthSize;
   int m_StencilSize;
 };

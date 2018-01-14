@@ -103,8 +103,6 @@ void GameInstanceStateStaging::HandlePlayerLoaded(std::size_t client_index, cons
 
 void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
 {
-  auto team_counts = GameController::GetTeamCounts(m_State);
-
   m_State.m_Players.EmplaceAt(client_index);
 
   auto & staging_player = m_State.m_Players.EmplaceAt(client_index);
@@ -112,7 +110,12 @@ void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
 
   staging_player.m_UserName = player_data.m_UserName;
 
+#ifdef NET_USE_RANDOM_TEAM
+  auto team_counts = GameController::GetTeamCounts(m_State);
   auto team = GameController::GetRandomTeam(team_counts, player_data.m_RandomSeed);
+#else
+  auto team = (int)(client_index % kMaxTeams);
+#endif
 
   staging_player.m_Team = team;
 }

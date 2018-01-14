@@ -540,5 +540,8 @@
     <ClInclude Include="Collision\CollisionDatabaseResult.h">
       <Filter>Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Config\ConfigResource.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

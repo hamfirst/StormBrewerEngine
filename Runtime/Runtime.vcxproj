@@ -166,6 +166,7 @@
     <ClInclude Include="Config\ConfigList.h" />
     <ClInclude Include="Config\ConfigManager.h" />
     <ClInclude Include="Config\ConfigRegistrationMacros.h" />
+    <ClInclude Include="Config\ConfigResource.h" />
     <ClInclude Include="DocumentResource\DocumentResourceBase.h" />
     <ClInclude Include="DocumentResource\DocumentResourceLoader.h">
       <SubType>

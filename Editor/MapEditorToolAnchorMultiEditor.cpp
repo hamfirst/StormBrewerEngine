@@ -6,10 +6,14 @@
 #include "MapEditor.h"
 
 
-MapEditorToolAnchorMultiEditor::MapEditorToolAnchorMultiEditor(MapEditor & map_editor) :
+MapEditorToolAnchorMultiEditor::MapEditorToolAnchorMultiEditor(MapEditor & map_editor, int layer_index) :
   MapEditorToolBase(map_editor)
 {
-
+  if (layer_index != -1)
+  {
+    auto anchor = m_MapEditor.GetAnchorManager().GetLayerManager(layer_index);
+    anchor->SetSelected();
+  }
 }
 
 void MapEditorToolAnchorMultiEditor::Init()
@@ -28,6 +32,28 @@ void MapEditorToolAnchorMultiEditor::Cleanup()
 
   m_MapEditor.GetAnchorManager().VisitLayers(visitor);
   m_MapEditor.GetViewer().ClearSelectionBox();
+}
+
+void MapEditorToolAnchorMultiEditor::Delete()
+{
+  std::vector<std::size_t> dead_indices;
+  auto visitor = [&](auto anchor_index, auto & anchor)
+  {
+    if (anchor->IsHighlighted() || anchor->IsSelected())
+    {
+      dead_indices.push_back(anchor_index);
+    }
+  };
+
+  m_MapEditor.GetAnchorManager().VisitLayers(visitor);
+  m_MapEditor.BeginTransaction();
+
+  for (auto & elem : dead_indices)
+  {
+    m_MapEditor.GetMapDef().m_Anchors.RemoveAt(elem);
+  }
+
+  m_MapEditor.CommitChanges();
 }
 
 void MapEditorToolAnchorMultiEditor::DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl)
@@ -68,49 +94,77 @@ void MapEditorToolAnchorMultiEditor::DrawPreview(const Vector2 & pos, bool alt, 
 bool MapEditorToolAnchorMultiEditor::DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
   int num_selected = 0;
-  int selected_index = 0;
-  bool is_highlighted = false;
+  int selected_index = -1;
+  int highlighted_index = -1;
+  bool is_highlight_selected = false;
 
   m_SelectElem = -1;
   m_SelectMode = false;
 
   auto visitor = [&](auto anchor_index, auto & anchor)
   {
-    if (anchor->IsHighlighted() || anchor->IsSelected())
+    if(anchor->IsHighlighted())
     {
-      num_selected++;
-      selected_index = (int)anchor_index;
+      if (anchor->IsSelected())
+      {
+        is_highlight_selected = true;
+      }
+
+      highlighted_index = anchor_index;
     }
 
-    if (anchor->IsHighlighted())
+    if (anchor->IsSelected())
     {
-      is_highlighted = true;
+      num_selected++;
+      selected_index = anchor_index;
     }
   };
 
   m_MapEditor.GetAnchorManager().VisitLayers(visitor);
 
-  if (is_highlighted)
+  if (alt)
   {
-    if (num_selected == 1)
+    if (highlighted_index != -1)
     {
-      if (alt)
-      {
-        m_MapEditor.DuplicateAnchorData(selected_index);
-        return false;
-      }
-      else
-      {
-        m_SelectElem = selected_index;
-      }
+      m_MapEditor.DuplicateAnchorData(highlighted_index);
     }
 
+    return false;
+  }
+
+  if (shift)
+  {
+    if (highlighted_index != -1)
+    {
+      m_MapEditor.GetAnchorManager().GetLayerManager(highlighted_index)->SetSelected();
+    }
+
+    return false;
+  }
+
+  if (is_highlight_selected == false && highlighted_index != -1)
+  {
+    auto visitor = [&](auto anchor_index, auto & anchor)
+    {
+      anchor->ClearSelected();
+    };
+
+    m_MapEditor.GetAnchorManager().VisitLayers(visitor);
+
+    m_MapEditor.GetAnchorManager().GetLayerManager(highlighted_index)->SetSelected();
+    num_selected = 1;
+    is_highlight_selected = true;
+
+    m_SelectElem = highlighted_index;
+  }
+
+  if (num_selected > 0 && is_highlight_selected)
+  {
     auto snapped_pos = pos;
     m_MapEditor.GetViewer().SnapToGrid(snapped_pos, false);
 
     m_Start = snapped_pos;
     m_MapEditor.GetAnchorManager().VisitLayers(visitor);
-
   }
   else
   {
@@ -122,6 +176,7 @@ bool MapEditorToolAnchorMultiEditor::DrawStart(const Vector2 & pos, bool alt, bo
     m_MapEditor.GetAnchorManager().VisitLayers(visitor);
 
     m_SelectMode = true;
+    m_SelectElem = highlighted_index;
     m_Start = pos;
   }
 
@@ -138,6 +193,15 @@ void MapEditorToolAnchorMultiEditor::DrawMove(const Vector2 & pos, bool alt, boo
       m_MapEditor.GetViewer().SetSelectionBox(box);
 
       anchor->Select(box);
+
+      if (m_SelectElem != -1)
+      {
+        auto anchor = m_MapEditor.GetAnchorManager().GetLayerManager(m_SelectElem);
+        if (anchor)
+        {
+          anchor->SetSelected();
+        }
+      }
     }
     else if(anchor->IsSelected() || anchor->IsHighlighted())
     {
@@ -162,12 +226,18 @@ void MapEditorToolAnchorMultiEditor::DrawEnd(const Vector2 & pos, bool alt, bool
 {
   m_MapEditor.GetViewer().ClearSelectionBox();
 
-  if (m_SelectElem != -1)
+  if (m_SelectMode)
   {
-    MapEditorLayerSelection layer_selection = { MapEditorLayerItemType::kAnchor, (std::size_t)m_SelectElem };
-    m_MapEditor.ChangeLayerSelection(layer_selection, false);
+    if (m_SelectElem != -1)
+    {
+      auto anchor = m_MapEditor.GetAnchorManager().GetLayerManager(m_SelectElem);
+      if (anchor)
+      {
+        anchor->SetSelected();
+      }
+    }
   }
-  else if (m_SelectMode == false)
+  else
   {
     m_MapEditor.BeginTransaction();
 
@@ -178,6 +248,25 @@ void MapEditorToolAnchorMultiEditor::DrawEnd(const Vector2 & pos, bool alt, bool
 
     m_MapEditor.GetAnchorManager().VisitLayers(visitor);
     m_MapEditor.CommitChanges();
+  }
+
+  int num_selected = 0;
+  int selected_index = -1;
+
+  auto visitor = [&](auto anchor_index, auto & anchor)
+  {
+    if (anchor->IsSelected())
+    {
+      num_selected++;
+      selected_index = anchor_index;
+    }
+  };
+
+  m_MapEditor.GetAnchorManager().VisitLayers(visitor);
+  if (num_selected == 1)
+  {
+    MapEditorLayerSelection layer_selection = { MapEditorLayerItemType::kAnchor, (std::size_t)selected_index };
+    m_MapEditor.ChangeLayerSelection(layer_selection, false);
   }
 }
 

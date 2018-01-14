@@ -90,7 +90,6 @@ public:
   void AboutToClose() override;
 
 private:
-
   MapDef & m_Map;
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> m_ManualTileLayers;
   MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> m_EntityLayers;

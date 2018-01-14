@@ -245,13 +245,13 @@ void RenderState::BindRenderTarget(const RenderTarget & rt)
   }
 }
 
-void RenderState::BindRenderTargetTexture(const RenderTarget & rt, int texture_slot)
+void RenderState::BindRenderTargetTexture(const RenderTarget & rt, int texture_slot, int color_buffer_index)
 {
   //if (m_BoundTexture != nullptr || m_BoundTextureName != rt.m_TextureName)
   {
     m_BoundTexture = nullptr;
-    m_BoundTextureName = rt.m_TextureName;
-    rt.BindAsTexture(texture_slot);
+    m_BoundTextureName = rt.m_TextureName[color_buffer_index];
+    rt.BindAsTexture(texture_slot, color_buffer_index);
   }
 }
 

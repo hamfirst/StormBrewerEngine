@@ -79,8 +79,12 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   {
     auto player_id = m_PlayerIdAllocator.Allocate();
 
+#ifdef NET_USE_RANDOM_TEAM
     auto team_counts = m_Controller.GetTeamCounts(m_InitialState.m_InstanceData);
     auto team = GameController::GetRandomTeam(team_counts, GetRandomNumber());
+#else
+    auto team = player_id % kMaxTeams;
+#endif
     m_Controller.ConstructBot(player_id, logic_container, "AI", team);
   }
 #endif

@@ -396,10 +396,10 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorCreate>{});
     break;
   case MapEditorLayerItemType::kAllAnchors:
-    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorMultiEditor>{});
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorMultiEditor>{}, -1);
     break;
   case MapEditorLayerItemType::kAnchor:
-    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorEditor>{}, (int)layer.m_Index);
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolAnchorMultiEditor>{}, (int)layer.m_Index);
     break;
   }
 }

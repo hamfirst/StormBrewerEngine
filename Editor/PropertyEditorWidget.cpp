@@ -27,6 +27,7 @@ std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBas
   case PropertyFieldType::kSignedNumber:
   case PropertyFieldType::kUnsignedNumber:
   case PropertyFieldType::kFloatNumber:
+  case PropertyFieldType::kFloatNumberDeterministic:
     return std::make_unique<PropertyEditorNumber>(editor, prop, create_callback, std::move(data_ptr), path, parent);
   case PropertyFieldType::kList:
     {

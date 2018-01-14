@@ -198,5 +198,11 @@ void PropertyEditorNumber::UpdateText()
       m_Input->RemoteUpdate(std::to_string(val).data());
     }
     break;
+  case PropertyFieldType::kFloatNumberDeterministic:
+    {
+      auto val = m_Property->m_FloatNumberDeterministic.Get(property_ptr);
+      m_Input->RemoteUpdate(val);
+    }
+    break;
   }
 }

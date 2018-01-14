@@ -103,7 +103,7 @@ void UIElementTextInput::RenderDefault(RenderState & render_state, RenderUtil & 
     g_TextManager.ClearTextBounds();
   }
 
-  auto real_offset = offset + render_state.GetRenderSize() / 2;
+  auto real_offset = offset;
 
   if (m_Data.m_Centered)
   {

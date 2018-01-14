@@ -43,7 +43,7 @@ static const char * kDefaultFragmentShader = SHADER_LITERAL(
   void main()
   {
     vec4 color = texture2D(u_Texture, fract(v_TexCoord)) * v_Color * u_Color;
-    gl_FragColor = color;
+    gl_FragColor = vec4(color.rgb,color.a);
   }
 );
 

@@ -1,11 +1,12 @@
 #pragma once
 
 #include "MapEditorToolBase.h"
+#include "MapEditorLayer.h"
 
-class MapEditorToolAnchorMultiEditor : public MapEditorToolBase
+class MapEditorToolAllLayers : public MapEditorToolBase
 {
 public:
-  MapEditorToolAnchorMultiEditor(MapEditor & map_editor, int layer_index);
+  MapEditorToolAllLayers(MapEditor & map_editor);
 
   virtual void Init();
   virtual void Cleanup();
@@ -21,9 +22,13 @@ public:
 
 private:
 
-  Vector2 m_Start;
+  Optional<MapEditorLayerSelection> PickLayer(const Vector2 & pos);
 
-  bool m_SelectMode;
-  int m_SelectElem;
+  Vector2 m_Start;
+  bool m_MoveMode;
 };
+
+
+
+
 

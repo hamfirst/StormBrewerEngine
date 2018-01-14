@@ -68,8 +68,8 @@ PropertyFieldDatabase::PropertyFieldDatabase()
   m_BasicDouble.m_FloatNumber.m_Max = (float)DBL_MAX;
 
   m_BasicFloatDeterministic.m_Type = PropertyFieldType::kFloatNumberDeterministic;
-  m_BasicFloatDeterministic.m_FloatNumberDeterministic.Get = [](void * obj) -> czstr { auto var = static_cast<RDeterministicFloat *>(obj); return var->GetStr(); };
-  m_BasicFloatDeterministic.m_FloatNumberDeterministic.Set = [](void * obj, czstr val) { auto var = static_cast<RDeterministicFloat *>(obj); (*var) = val; };
+  m_BasicFloatDeterministic.m_FloatNumberDeterministic.Get = [](void * obj) -> czstr { auto var = static_cast<RDeterministicFloatBase *>(obj); return var->GetStr(); };
+  m_BasicFloatDeterministic.m_FloatNumberDeterministic.Set = [](void * obj, czstr val) { auto var = static_cast<RDeterministicFloatBase *>(obj); (*var) = val; };
   m_BasicFloatDeterministic.m_FloatNumberDeterministic.m_Min = -FLT_MAX;
   m_BasicFloatDeterministic.m_FloatNumberDeterministic.m_Max = FLT_MAX;
 

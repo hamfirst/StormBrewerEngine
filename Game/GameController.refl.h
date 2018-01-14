@@ -38,6 +38,7 @@ public:
   void ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game);
 
   void InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player);
+  void SetPlayerToSpawn(GameLogicContainer & game, std::size_t player_index);
   void CleanupPlayer(GameLogicContainer & game, std::size_t player_index);
   int AddAIPlayer(GameLogicContainer & game, uint32_t random_number);
   void FillWithBots(GameLogicContainer & game, uint32_t random_number);

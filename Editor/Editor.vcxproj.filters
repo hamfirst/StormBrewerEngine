@@ -1183,6 +1183,9 @@
     <ClCompile Include="MapEditorTypes.refl.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
+    <ClCompile Include="MapEditorToolAllLayers.cpp">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="EditorContainer.ui">
@@ -1585,6 +1588,9 @@
     </ClInclude>
     <ClInclude Include="MapEditorTypes.refl.meta.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorToolAllLayers.h">
+      <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

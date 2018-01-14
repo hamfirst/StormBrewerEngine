@@ -197,11 +197,24 @@ void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_in
 {
   auto & obj_manager = game.GetObjectManager();
 
+  auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index);
+  StormReflSefDefault(*player_obj);
+
+  SetPlayerToSpawn(game, player_index);
+
+  if (player.m_AIPlayerInfo)
+  {
+    PlayerAI::InitAI(game, player_index);
+  }
+}
+
+void GameController::SetPlayerToSpawn(GameLogicContainer & game, std::size_t player_index)
+{
   auto & stage = game.GetStage();
   auto & spawns = stage.GetPlayerSpawns();
 
-  auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index);
-  StormReflSefDefault(*player_obj);
+  auto & player = game.GetInstanceData().m_Players[player_index];
+  auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
 
   if (spawns[(int)player.m_Team].size() == 0)
   {
@@ -211,11 +224,6 @@ void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_in
   {
     auto & spawn = spawns[(int)player.m_Team][0];
     player_obj->m_Position = GameNetVec2(spawn.x, spawn.y);
-  }
-
-  if (player.m_AIPlayerInfo)
-  {
-    PlayerAI::InitAI(game, player_index);
   }
 }
 

@@ -243,7 +243,38 @@ struct PropertyMetaData<RNumber<double>> : PropertyMetaDataFloat<double>
 };
 
 template <>
-struct PropertyMetaData<RDeterministicFloat>
+struct PropertyMetaData<RDeterministicFloatBase>
+{
+  static PropertyField * GetMetaData(PropertyFieldDatabase & property_db)
+  {
+    return property_db.GetBasicField(PropertyFieldType::kFloatNumberDeterministic);
+  }
+
+  template <typename SurroundingType, typename FieldData>
+  static PropertyField * GetMetaData(PropertyFieldDatabase & property_db, FieldData field_data)
+  {
+    auto min = StormReflGetAnnotationValue<SurroundingType, FieldData::GetFieldIndex()>("min");
+    auto max = StormReflGetAnnotationValue<SurroundingType, FieldData::GetFieldIndex()>("max");
+
+    auto basic = &property_db.GetBasicField(PropertyFieldType::kFloatNumberDeterministic)->m_FloatNumberDeterministic;
+
+    if (min || max)
+    {
+      auto field = property_db.AllocateField();
+      field->m_Type = PropertyFieldType::kFloatNumberDeterministic;
+      field->m_FloatNumberDeterministic.Get = basic->Get;
+      field->m_FloatNumberDeterministic.Set = basic->Set;
+      field->m_FloatNumberDeterministic.m_Min = min ? std::max((float)atof(min), basic->m_Min) : basic->m_Min;
+      field->m_FloatNumberDeterministic.m_Max = max ? std::min((float)atof(max), basic->m_Max) : basic->m_Max;
+      return field;
+    }
+
+    return GetMetaData(property_db);
+  }
+};
+
+template <typename ParsedType>
+struct PropertyMetaData<RDeterministicFloat<ParsedType>>
 {
   static PropertyField * GetMetaData(PropertyFieldDatabase & property_db)
   {

@@ -35,7 +35,7 @@ public:
   void BindTexture(const Texture & texture, int texture_slot = 0);
   void BindTexture(const TextureAsset & texture, int texture_slot = 0);
   void BindRenderTarget(const RenderTarget & rt);
-  void BindRenderTargetTexture(const RenderTarget & rt, int texture_slot = 0);
+  void BindRenderTargetTexture(const RenderTarget & rt, int texture_slot = 0, int color_buffer_index = 0);
   void BindDefaultRenderTarget(const Window & window);
   void Draw(int index_start = 0, int index_end = -1) const;
 

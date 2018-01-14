@@ -101,7 +101,6 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   g_ShaderManager.VisitShaders(visitor);
 
   DrawList draw_list;
-
   engine_state->GetMapSystem()->DrawAllMaps(viewport, draw_list);
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
   engine_state->GetVisualEffectManager()->DrawAllEffects(viewport, draw_list);

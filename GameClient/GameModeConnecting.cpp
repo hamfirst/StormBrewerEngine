@@ -146,7 +146,7 @@ void GameModeConnecting::Render()
       status_msg = "The servers may be offline";
       auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
 
-      auto text_pos = window_size / 2;
+      Vector2 text_pos = {};
       text_pos.y -= texture_size.y / 2 + 25;
       text_pos.x -= text_size.Size().x / 2;
 

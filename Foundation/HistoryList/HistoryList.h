@@ -137,6 +137,7 @@ public:
 
     if (m_Size == 0 || frame >= m_Values[m_Size - 1].m_Frame)
     {
+      ValidateElement(&m_Values[m_Size]);
       new(&m_Values[m_Size]) ValueContainer{ frame, std::move(value) };
       m_Size++;
       return;
@@ -145,7 +146,7 @@ public:
     new(&m_Values[m_Size]) ValueContainer(std::move(m_Values[m_Size - 1]));
 
     int dst_index = 0;
-    for (int index = m_Size - 1; m_Size >= 0; --index)
+    for (int index = m_Size - 1; index >= 0; --index)
     {
       if (m_Values[index].m_Frame <= frame)
       {
@@ -156,9 +157,11 @@ public:
 
     for (int index = m_Size - 1; index > dst_index; --index)
     {
+      ValidateElement(&m_Values[index]);
       m_Values[index] = std::move(m_Values[index - 1]);
     }
 
+    ValidateElement(&m_Values[dst_index]);
     m_Values[dst_index] = ValueContainer{ frame, std::move(value) };
   }
 
@@ -180,6 +183,7 @@ public:
       for(auto itr = begin; itr != end; ++itr)
       {
         auto & elem = (*itr);
+        ValidateElement(&m_Values[m_Size]);
         new(&m_Values[m_Size]) ValueContainer( time_pred(elem), std::move(value_pred(elem)) );
         m_Size++;
       }
@@ -204,6 +208,7 @@ public:
       for(auto itr = begin; itr != end; ++itr)
       {
         auto & elem = (*itr);
+        ValidateElement(&m_Values[m_Size]);
         new(&m_Values[m_Size]) ValueContainer( time_pred(elem), std::move(value_pred(elem)) );
         m_Size++;
       }
@@ -238,7 +243,7 @@ public:
           break;
         }
 
-        place_holder.Emplace(ValueContainer( time_pred(*begin), std::move(value_pred(*begin)) ));
+        place_holder.Emplace(ValueContainer(time_pred(*begin), std::move(value_pred(*begin)) ));
         src = &place_holder.Value();
         ++begin;
 
@@ -273,6 +278,7 @@ public:
       }
       else
       {
+        ValidateElement(dst);
         new(dst) ValueContainer(std::move(*src));
       }
 
@@ -362,6 +368,7 @@ public:
         break;
       }
 
+      ValidateElement(elem);
       elem->~ValueContainer();
       elem--;
       m_Size--;
@@ -403,6 +410,13 @@ protected:
     free(m_Values);
     m_Values = new_values;
     m_Capacity = new_capacity;
+  }
+
+  void ValidateElement(NotNullPtr<HistoryListValueContainer<T, TimeValue>> ptr)
+  {
+#ifdef _DEBUG
+    ASSERT(ptr >= m_Values && ptr < m_Values + m_Capacity, "Writing to invalid location");
+#endif
   }
 
 private:

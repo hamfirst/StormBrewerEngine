@@ -201,6 +201,7 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
   for (std::size_t index = 0; index < m_MaxDynamicObjects; ++index)
   {
     auto obj = m_DynamicObjects.TryGet(index);
+
     if (obj)
     {
       so_writer.WriteBits(1, 1);
@@ -241,7 +242,6 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
 
       if (obj)
       {
-        auto type_index = obj->m_TypeIndex;
         if (obj->m_TypeIndex == type_index)
         {
           g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj->m_ServerObject, so_reader);

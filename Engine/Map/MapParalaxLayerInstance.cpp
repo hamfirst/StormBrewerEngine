@@ -151,7 +151,8 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
     render_state.BindShader(shader);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
     render_state.BindTexture(*texture);
     render_state.BindVertexBuffer(buffer);
@@ -181,6 +182,7 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
         shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+        shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
         render_state.BindTexture(*texture);
         render_state.BindVertexBuffer(buffer);
@@ -198,6 +200,7 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
       shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+      shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
 
       SpriteEngineData::RenderSprite(sprite, render_state, sprite_info.m_State.m_AnimIndex, sprite_info.m_State.m_AnimFrame, 0, sprite_info.m_Pos);
     }
