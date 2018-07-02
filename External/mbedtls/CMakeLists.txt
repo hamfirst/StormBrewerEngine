@@ -49,6 +49,7 @@ set(GENERIC_SRC_mbedtls
             ./certs.c
             ./cipher.c
             ./cipher_wrap.c
+            ./cmac.c
             ./ctr_drbg.c
             ./debug.c
             ./des.c
@@ -70,7 +71,6 @@ set(GENERIC_SRC_mbedtls
             ./md5.c
             ./md_wrap.c
             ./memory_buffer_alloc.c
-            ./net.c
             ./oid.c
             ./padlock.c
             ./pem.c
@@ -84,6 +84,7 @@ set(GENERIC_SRC_mbedtls
             ./platform.c
             ./ripemd160.c
             ./rsa.c
+            ./rsa_internal.c
             ./sha1.c
             ./sha256.c
             ./sha512.c

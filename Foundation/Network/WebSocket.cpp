@@ -448,7 +448,7 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
         break;
       }
 
-      gsl::string_span<> header = gsl::as_span(header_start, header_end);
+      gsl::string_span<> header = gsl::make_span(header_start, header_end);
 
       if (got_status_line == false)
       {

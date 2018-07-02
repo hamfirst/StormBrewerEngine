@@ -11,8 +11,7 @@
 
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
-
-#define PLATFORMER_MOVEMENT
+#include "Game/GameSettings.h"
 
 #if (NET_MODE == NET_MODE_GGPO)
 static const int kMaxRewindFrames = 20;

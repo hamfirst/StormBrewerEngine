@@ -10,10 +10,10 @@
 #include "StormData/StormDataParent.h"
 #include "StormRefl/StormReflMetaEnum.h"
 
-UIEditor::UIEditor(PropertyFieldDatabase & property_db, const std::string & root_path, UIDef & ui,
+UIEditor::UIEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, UIDef & ui,
   DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback,
   DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
-  DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
+  DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_UI(ui),
   m_Layout(std::make_unique<QGridLayout>()),
   m_PropertiesPanel(std::make_unique<ScrollingPanel>(this)),

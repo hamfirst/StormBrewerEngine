@@ -165,7 +165,7 @@ ComponentResolver ComponentName::GetResolver()                                  
 #define COMPONENT_CONSTRUCT_NOINIT_DATA    auto comp = store->AllocateComponent();
 
 #define COMPONENT_CONSTRUCT_INIT_DEFAULT(InitData) InitData init_data = {}; auto comp = store->AllocateComponent(std::move(init_data));
-#define COMPONENT_CONSTRUCT_INIT_DATA(InitData)    auto comp = store->AllocateComponent(*((InitData *)init_data));
+#define COMPONENT_CONSTRUCT_INIT_DATA(InitData)    auto comp = store->AllocateComponent(std::move(*((InitData *)init_data)));
 
 #define REGISTER_BASE_COMPONENT(ComponentName) \
   REGISTER_COMPONENT_CODE(ComponentName, ComponentInitData, COMPONENT_CONSTRUCT_NOINIT_DEFAULT, COMPONENT_CONSTRUCT_NOINIT_DATA, 0, COMPONENT_CONSTRUCT_NOBASE)

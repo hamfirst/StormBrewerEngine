@@ -7,7 +7,10 @@
 #include "Game/GameServerTypes.h"
 #include "Game/GameLogicContainer.h"
 
+#include "Game/Configs/PlayerConfig.refl.h"
+
 #include "Runtime/Event/EventHandler.h"
+#include "Runtime/Config/ConfigResource.h"
 
 #include "StormRefl/StormReflMetaInfoBase.h"
 
@@ -40,3 +43,4 @@ public:
 template <typename T>
 using PlayerStateEventHandler = EventHandler<T>;
 
+extern ConfigPtr<PlayerConfig> g_PlayerConfig;

@@ -6,7 +6,6 @@
 #include "Game/GameStage.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
-#include "Game/ServerObjects/Player/PlayerSettings.h"
 
 #include "Game/ServerObjects/Player/States/PlayerStateIdle.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateIdle.refl.meta.h"
@@ -28,7 +27,7 @@ void PlayerStateIdle::Move(PlayerServerObject & player, GameLogicContainer & gam
 #else
 
   player.m_Velocity.x = 0;
-  player.m_Velocity.y -= kGravity;
+  player.m_Velocity.y -= g_PlayerConfig->m_Gravity;
 
   player.MoveCheckCollisionDatabase(game_container);
 
@@ -51,7 +50,12 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
 
   if (player.m_OnGround == false)
   {
-    player.TransitionToState<PlayerStateJump>(game_container);
+    auto jump_state = player.TransitionToState<PlayerStateJump>(game_container);
+    if (jump_state)
+    {
+      jump_state->AllowGraceJump();
+    }
+
     return;
   }
 

@@ -11,9 +11,9 @@ public:
     NotNullPtr<SpriteBaseEditor> editor,
     SpriteBaseDef & sprite,
     SpriteBaseTextureLoadList & texture_access,
-    Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && getter,
+    Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>, uint64_t> && getter,
     Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && default_val,
-    Delegate<void, const FrameDataLowerEdgeInfo &> && new_element,
+    Delegate<void, uint64_t, const FrameDataLowerEdgeInfo &> && new_element,
     uint64_t frame_id,
     czstr data_name,
     QWidget * parent = nullptr);
@@ -21,7 +21,7 @@ public:
 protected:
 
   void HandleDataUpdate();
-  void RefreshWatcher();
+  virtual void RefreshWatcher();
 
   void WriteData(const FrameDataLowerEdgeInfo & data);
   FrameDataLowerEdgeInfo GetPreviewData();
@@ -29,6 +29,9 @@ protected:
   int GetEdgePos(FrameDataLowerEdgeInfo & info);
 
 protected:
+
+  virtual void Copy();
+  virtual void Paste();
 
   virtual void DrawData();
   virtual void DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl);
@@ -41,9 +44,9 @@ protected:
 protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
-  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>, uint64_t> m_Getter;
   Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> m_Default;
-  Delegate<void, const FrameDataLowerEdgeInfo &> m_NewElement;
+  Delegate<void, uint64_t, const FrameDataLowerEdgeInfo &> m_NewElement;
 
   bool m_LocalChange;
 

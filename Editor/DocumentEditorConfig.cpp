@@ -1,8 +1,9 @@
 
 #include "DocumentEditorConfig.h"
 
-DocumentEditorConfig::DocumentEditorConfig(ConfigRegistrationInfo & config_info, PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent) :
-  DocumentEditorBase(property_db, root_path, std::move(output_delegate), parent),
+DocumentEditorConfig::DocumentEditorConfig(EditorContainer & editor_container, ConfigRegistrationInfo & config_info, 
+                                           PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent) :
+  DocumentEditorBase(editor_container, property_db, root_path, std::move(output_delegate), parent),
   m_ConfigInfo(config_info),
   m_Widget(nullptr),
   m_Layout(nullptr),
@@ -58,7 +59,7 @@ void DocumentEditorConfig::GotDocumentStateChange(DocumentState state, const std
       CommitQueuedChanges();
     });
 
-    m_Widget = new ConfigEditor(m_PropertyDb, m_RootPath, m_ClientCopy.GetRaw(), m_ConfigInfo, 
+    m_Widget = new ConfigEditor(m_EditorContainer, m_PropertyDb, m_RootPath, m_ClientCopy.GetRaw(), m_ConfigInfo,
       std::move(change_link_callback), std::move(begin_changes_callback), std::move(commit_changes_callback));
 
     m_Layout->addWidget(m_Widget);

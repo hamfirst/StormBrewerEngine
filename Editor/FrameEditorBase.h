@@ -28,9 +28,12 @@ public:
     uint64_t frame_id,
     QWidget * parent = nullptr);
 
-protected:
-
   void SetFrame(uint64_t frame_id);
+
+  virtual void Copy();
+  virtual void Paste();
+
+protected:
 
   void initializeGL() override;
   void resizeGL(int w, int h) override;
@@ -39,6 +42,10 @@ protected:
 public slots:
 
   void tick();
+  void setMagnification(int mag);
+
+signals:
+  void magnificationChanged(int mag);
 
 protected:
 
@@ -58,6 +65,8 @@ protected:
   void DrawHighlightedLine(const Vector2 & a, const Vector2 & b);
   void DrawCornerControl(const Vector2 & pos);
   void DrawHighlightedCornerControl(const Vector2 & pos);
+
+  virtual void RefreshWatcher();
 
   virtual void DrawData();
   virtual void DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl);

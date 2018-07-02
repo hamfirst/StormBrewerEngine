@@ -6,7 +6,6 @@
 #include "Game/GameStage.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
-#include "Game/ServerObjects/Player/PlayerSettings.h"
 
 #include "Game/ServerObjects/Player/States/PlayerStateMoving.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateMoving.refl.meta.h"
@@ -22,7 +21,7 @@ void PlayerStateMoving::Move(PlayerServerObject & player, GameLogicContainer & g
 {
 #ifndef PLATFORMER_MOVEMENT
 
-  auto move_str = player.m_Input.m_InputStr * kMoveSpeed;
+  auto move_str = player.m_Input.m_InputStr * g_PlayerConfig->m_MoveSpeed;
   player.m_Velocity.x = GameNetLUT::Cos(player.m_Input.m_InputAngle) * move_str;
   player.m_Velocity.y = GameNetLUT::Sin(player.m_Input.m_InputAngle) * move_str;
 
@@ -30,8 +29,25 @@ void PlayerStateMoving::Move(PlayerServerObject & player, GameLogicContainer & g
 
 #else
 
-  player.m_Velocity.x = player.m_Input.m_XInput * kMoveSpeed;
-  player.m_Velocity.y -= kGravity;
+  auto target_velocity = player.m_Input.m_XInput * g_PlayerConfig->m_MoveSpeed;
+  if (player.m_Velocity.x < target_velocity)
+  {
+    player.m_Velocity.x += g_PlayerConfig->m_MoveAccel;
+    if (player.m_Velocity.x > target_velocity)
+    {
+      player.m_Velocity.x = target_velocity;
+    }
+  }
+  else
+  {
+    player.m_Velocity.x -= g_PlayerConfig->m_MoveAccel;
+    if (player.m_Velocity.x < target_velocity)
+    {
+      player.m_Velocity.x = target_velocity;
+    }
+  }
+
+  player.m_Velocity.y -= g_PlayerConfig->m_Gravity;
 
   player.MoveCheckCollisionDatabase(game_container);
 
@@ -59,7 +75,7 @@ void PlayerStateMoving::Transition(PlayerServerObject & player, GameLogicContain
 
 #endif
 
-  if (player.m_Input.m_XInput == GameNetVal(0))
+  if (player.m_Input.m_XInput == GameNetVal(0) && player.m_Velocity.x == GameNetVal(0))
   {
     player.TransitionToState<PlayerStateIdle>(game_container);
   }
@@ -117,13 +133,28 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
   if (player.m_Input.m_XInput < GameNetVal(0))
   {
     player.m_Facing = PlayerFacing::kLeft;
+    if (player.m_Velocity.x < GameNetVal(0))
+    {
+      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
+    }
+    else
+    {
+      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Turn"));
+    }
   }
-  else
+  else if(player.m_Input.m_XInput > GameNetVal(0))
   {
     player.m_Facing = PlayerFacing::kRight;
+    if (player.m_Velocity.x > GameNetVal(0))
+    {
+      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
+    }
+    else
+    {
+      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Turn"));
+    }
   }
 
-  player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
 
 #endif
 

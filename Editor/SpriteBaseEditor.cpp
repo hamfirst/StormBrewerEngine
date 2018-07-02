@@ -10,9 +10,9 @@
 #include "DocumentEditor.h"
 #include "FrameEditorContainer.h"
 
-SpriteBaseEditor::SpriteBaseEditor(PropertyFieldDatabase & property_db, const std::string & root_path, SpriteBaseDef & sprite, DocumentChangeLinkDelegate && change_link_callback,
-  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
-  DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
+SpriteBaseEditor::SpriteBaseEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, SpriteBaseDef & sprite, 
+  DocumentChangeLinkDelegate && change_link_callback,  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
+  DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_Sprite(sprite),
   m_TextureAccess(this, m_Sprite),
   m_TabWidget(std::make_unique<QTabWidget>()),
@@ -31,7 +31,7 @@ SpriteBaseEditor::SpriteBaseEditor(PropertyFieldDatabase & property_db, const st
   m_Layout->addWidget(m_TabWidget.get());
   setLayout(m_Layout.get());
 
-  m_GlobalFrameDataCallback = [this] { return &m_Sprite.m_InstanceData; };
+  m_GlobalFrameDataCallback = [this](uint64_t) { return &m_Sprite.m_InstanceData; };
   m_EmptyFrameDataCallback = [this]() -> NullOptPtr<FrameData> { return nullptr; };
 }
 

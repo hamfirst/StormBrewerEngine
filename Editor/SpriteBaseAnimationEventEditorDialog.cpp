@@ -164,7 +164,7 @@ void SpriteBaseAnimationEventEditorDialog::UpdateFrame()
 
   auto frame_id = (uint64_t)itr->second.m_FrameId;
 
-  auto getter = [this]() -> NullOptPtr<ROpaque<std::vector<Box>>>
+  auto getter = [this](uint64_t) -> NullOptPtr<ROpaque<std::vector<Box>>>
   {
     auto anim = m_Sprite.m_Animations.TryGet(m_AnimationIndex);
     if (anim == nullptr)
@@ -186,7 +186,7 @@ void SpriteBaseAnimationEventEditorDialog::UpdateFrame()
     return nullptr;
   };
 
-  auto new_element = [this](std::vector<Box> && box_list)
+  auto new_element = [this](uint64_t, std::vector<Box> && box_list)
   {
 
   };

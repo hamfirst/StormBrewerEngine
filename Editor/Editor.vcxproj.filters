@@ -100,117 +100,59 @@
     <ClCompile Include="EditorContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_EditorContainer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_EditorContainer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_EditorContainer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="ConnectingDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ConnectingDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ConnectingDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TextureViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TextureViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FontViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FontViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_AudioViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_AudioViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
+    
+    
     <ClCompile Include="DocumentEditorBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentEditorBase.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DocumentEditorBase.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_DocumentEditorBase.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="DocumentServerThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DocumentEditorWidgetBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentEditorWidgetBase.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DocumentEditorWidgetBase.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_DocumentEditorWidgetBase.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="GenericInput.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenericInput.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GenericInput.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GenericInput.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="TextureViewerWidget.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TextureViewerWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TextureViewerWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_TextureViewerWidget.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="ScrollingPanel.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
     <ClCompile Include="GenericList.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenericList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ScrollingPanel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GenericList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GenericList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ScrollingPanel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_ScrollingPanel.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
     <ClCompile Include="AudioViewer.cpp">
       <Filter>Source Files\AssetViewers</Filter>
     </ClCompile>
@@ -223,369 +165,195 @@
     <ClCompile Include="PropertyEditorString.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorString.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorString.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorString.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorStruct.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorStruct.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorStruct.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorStruct.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorWidget.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorNumber.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorNumber.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorNumber.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorNumber.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorFile.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorFile.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorFile.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorFile.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="GenericFrame.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenericFrame.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GenericFrame.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GenericFrame.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorBool.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorBool.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorBool.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorBool.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="GenericCheckbox.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenericCheckbox.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GenericCheckbox.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GenericCheckbox.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SimpleLabelListElement.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
     <ClCompile Include="GenericListFrame.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenericListFrame.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GenericListFrame.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GenericListFrame.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorPolymorphic.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorPolymorphic.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorPolymorphic.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorPolymorphic.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorEnum.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorEnum.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorEnum.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorEnum.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="PropertyEditorList.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyEditorList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PropertyEditorList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_PropertyEditorList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="DocumentValueWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EntityEditor.cpp">
       <Filter>Source Files\DocumentEditors\EntityEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_EntityEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_EntityEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_EntityEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="DocumentSubValueListMirror.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseAnimationEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseAnimationFrameListEditorDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationFrameListEditorDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationFrameListEditorDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationFrameListEditorDialog.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseAnimationListElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationListElement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationListElement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationListElement.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseAnimationListFrameElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationListFrameElement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationListFrameElement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationListFrameElement.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTextureEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseTextureEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseTextureEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseTextureEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTextureFrameElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseTextureFrameElement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseTextureFrameElement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseTextureFrameElement.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTextureFrameList.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseTextureFrameList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseTextureFrameList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseTextureFrameList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTextureImportDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseTextureImportDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseTextureImportDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseTextureImportDialog.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTextureLoadList.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseTimeline.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseTimeline.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseTimeline.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseTimeline.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteBaseTimelineElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="SpriteEditor.cpp">
       <Filter>Source Files\DocumentEditors\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="TileSheetEditor.cpp">
       <Filter>Source Files\DocumentEditors\TileSheet</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TileSheetEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TileSheetEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_TileSheetEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditor.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorLayerList.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorLayerList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorLayerList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorLayerList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorViewer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorTileSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorTileSelector.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorTileSelector.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorTileSelector.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorTileManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -595,27 +363,15 @@
     <ClCompile Include="MapEditorEntitySelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorEntitySelector.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorEntitySelector.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorEntitySelector.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorSelector.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorSelector.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorSelector.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorEntityManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -640,54 +396,30 @@
     <ClCompile Include="FrameEditorSingleBox.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorSingleBox.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorSingleBox.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorSingleBox.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="FrameEditorContainer.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorContainer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorContainer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorContainer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="FrameEditorBase.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorBase.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorBase.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorBase.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="FrameEditorUtil.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
     <ClCompile Include="FrameEditorSingleLine.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorSingleLine.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorSingleLine.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorSingleLine.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="MapEditorVolume.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -712,84 +444,42 @@
     <ClCompile Include="FrameEditorMultiBox.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorMultiBox.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorMultiBox.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorMultiBox.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="GameServerWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameClientWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GameClientWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GameServerWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GameClientWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameClientWidget.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GameServerWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameServerWidget.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
     <ClCompile Include="GameHostWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_GameHostWidget.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_GameHostWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_GameHostWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_GameHostWidget.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="SelectFromListDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SelectFromListDialog.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SelectFromListDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SelectFromListDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SelectFromListDialog.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="ConfigEditor.cpp">
       <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_ConfigEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ConfigEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_ConfigEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="DocumentEditorConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -805,18 +495,10 @@
     <ClCompile Include="FrameEditorLowerEdge.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_FrameEditorLowerEdge.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FrameEditorLowerEdge.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FrameEditorLowerEdge.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_FrameEditorLowerEdge.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="MapEditorAnchor.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -832,144 +514,70 @@
     <ClCompile Include="UIEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEditorNodeList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorNodeList.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorNodeList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorNodeList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorNodeList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorViewer.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorViewer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEquationEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEquationEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEquationEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEquationEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEditorPropertyContainer.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorPropertyContainer.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorPropertyContainer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorPropertyContainer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorPropertyContainer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEditorEquationList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorEquationList.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorEquationList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorEquationList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorEquationList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIEditorOutputEquationList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIEditorOutputEquationList.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIEditorOutputEquationList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIEditorOutputEquationList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIEditorOutputEquationList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="UIOutputEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_UIOutputEquationEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UIOutputEquationEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UIOutputEquationEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_UIOutputEquationEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="VisualEffectEditor.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
+    
     <ClCompile Include="VisualEffectEditorNodeList.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorNodeList.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorNodeList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorNodeList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorNodeList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="VisualEffectEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
@@ -982,63 +590,25 @@
     <ClCompile Include="VisualEffectEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEquationEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorEquationList.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorPropertyContainer.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_VisualEffectEditorViewer.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEquationEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEquationEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEquationEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorEquationList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorEquationList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorEquationList.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorPropertyContainer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorPropertyContainer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorPropertyContainer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VisualEffectEditorViewer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VisualEffectEditorViewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_VisualEffectEditorViewer.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <ClCompile Include="DrawUtilQt.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -1048,33 +618,17 @@
     <ClCompile Include="SpriteBaseAnimationEventEditorDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseAnimationEventEditorDialog.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseAnimationEventEditorDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseAnimationEventEditorDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseAnimationEventEditorDialog.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="SpriteBaseFrameDisplay.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseFrameDisplay.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseFrameDisplay.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseFrameDisplay.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseFrameDisplay.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="SpriteBaseSkinEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
@@ -1084,42 +638,18 @@
     <ClCompile Include="SpriteBaseSkinListTextureElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinListTextureElement.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinListTextureElement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinListTextureElement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinListTextureElement.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinListElement.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinListElement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinListElement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinListElement.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_SpriteBaseSkinEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SpriteBaseSkinEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SpriteBaseSkinEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_SpriteBaseSkinEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <ClCompile Include="MapEditorServerObjectManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -1132,48 +662,24 @@
     <ClCompile Include="MapEditorServerObjectSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_MapEditorServerObjectSelector.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorServerObjectSelector.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorServerObjectSelector.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorServerObjectSelector.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="ServerObjectEditor.cpp">
       <Filter>Source Files\DocumentEditors\ServerObjectEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_ServerObjectEditor.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ServerObjectEditor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ServerObjectEditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_ServerObjectEditor.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="MapEditorParalaxObjectSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_MapEditorParalaxObjectSelector.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorParalaxObjectSelector.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorParalaxObjectSelector.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_MapEditorParalaxObjectSelector.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="MapEditorToolParalaxObjectLayerDraw.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClCompile>
@@ -1186,254 +692,287 @@
     <ClCompile Include="MapEditorToolAllLayers.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClCompile>
+    <ClCompile Include="FrameEditorAnchorManager.cpp">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClCompile>
+    
+    
+    
+    
+    <ClCompile Include="FrameEditorAnchorEditor.cpp">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClCompile>
+    
+    
+    
+    
+    <ClCompile Include="TextInputDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="EditorContainer.ui">
+    <QtUic Include="EditorContainer.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="EditorContainer.qrc">
+    </QtUic>
+    <QtRcc Include="EditorContainer.qrc">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="EditorContainer.h">
+    </QtRcc>
+    <QtMoc Include="EditorContainer.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ConnectingDialog.ui">
+    </QtMoc>
+    <QtUic Include="ConnectingDialog.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ConnectingDialog.h">
+    </QtUic>
+    <QtMoc Include="ConnectingDialog.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DocumentEditorBase.h">
+    </QtMoc>
+    <QtMoc Include="DocumentEditorBase.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DocumentEditorWidgetBase.h">
+    </QtMoc>
+    <QtMoc Include="DocumentEditorWidgetBase.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GenericInput.h">
+    </QtMoc>
+    <QtMoc Include="GenericInput.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="TextureViewerWidget.h">
+    </QtMoc>
+    <QtMoc Include="TextureViewerWidget.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GenericList.h">
+    </QtMoc>
+    <QtMoc Include="GenericList.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ScrollingPanel.h">
+    </QtMoc>
+    <QtMoc Include="ScrollingPanel.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AudioViewer.h">
+    </QtMoc>
+    <QtMoc Include="AudioViewer.h">
       <Filter>Source Files\AssetViewers</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FontViewer.h">
+    </QtMoc>
+    <QtMoc Include="FontViewer.h">
       <Filter>Source Files\AssetViewers</Filter>
-    </CustomBuild>
-    <CustomBuild Include="TextureViewer.h">
+    </QtMoc>
+    <QtMoc Include="TextureViewer.h">
       <Filter>Source Files\AssetViewers</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorString.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorString.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorStruct.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorStruct.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditor.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditor.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorNumber.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorNumber.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorFile.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorFile.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GenericFrame.h">
+    </QtMoc>
+    <QtMoc Include="GenericFrame.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorBool.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorBool.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GenericCheckbox.h">
+    </QtMoc>
+    <QtMoc Include="GenericCheckbox.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
+    </QtMoc>
     <CustomBuild Include="SimpleLabelList.h">
       <Filter>Source Files\CommonWidgets</Filter>
     </CustomBuild>
-    <CustomBuild Include="GenericListFrame.h">
+    <QtMoc Include="GenericListFrame.h">
       <Filter>Source Files\CommonWidgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteTextureImportDialog.ui">
+    </QtMoc>
+    <QtUic Include="SpriteTextureImportDialog.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorPolymorphic.h">
+    </QtUic>
+    <QtMoc Include="PropertyEditorPolymorphic.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorEnum.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorEnum.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="PropertyEditorList.h">
+    </QtMoc>
+    <QtMoc Include="PropertyEditorList.h">
       <Filter>Source Files\PropertyEditors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="EntityEditor.h">
+    </QtMoc>
+    <QtMoc Include="EntityEditor.h">
       <Filter>Source Files\DocumentEditors\EntityEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AnimationFrameEditor.ui">
+    </QtMoc>
+    <QtUic Include="AnimationFrameEditor.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseAnimationEditor.h">
+    </QtUic>
+    <QtMoc Include="SpriteBaseAnimationEditor.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseAnimationFrameListEditorDialog.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseAnimationFrameListEditorDialog.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseAnimationListElement.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseAnimationListElement.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseAnimationListFrameElement.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseAnimationListFrameElement.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseTextureEditor.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseTextureEditor.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseTextureFrameElement.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseTextureFrameElement.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseTextureFrameList.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseTextureFrameList.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseTextureImportDialog.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseTextureImportDialog.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseTimeline.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseTimeline.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseEditor.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseEditor.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteEditor.h">
+    </QtMoc>
+    <QtMoc Include="SpriteEditor.h">
       <Filter>Source Files\DocumentEditors\Sprite</Filter>
-    </CustomBuild>
-    <CustomBuild Include="TileSheetEditor.h">
+    </QtMoc>
+    <QtMoc Include="TileSheetEditor.h">
       <Filter>Source Files\DocumentEditors\TileSheet</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditor.h">
+    </QtMoc>
+    <QtMoc Include="MapEditor.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorLayerList.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorLayerList.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorViewer.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorViewer.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorTileSelector.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorTileSelector.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorEntitySelector.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorEntitySelector.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorSelector.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorSelector.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorSingleBox.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorSingleBox.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorContainer.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorContainer.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorBase.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorBase.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorSingleLine.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorSingleLine.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorMultiBox.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorMultiBox.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GameClientWidget.h">
+    </QtMoc>
+    <QtMoc Include="GameClientWidget.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GameServerWidget.h">
+    </QtMoc>
+    <QtMoc Include="GameServerWidget.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GameHostWidget.h">
+    </QtMoc>
+    <QtMoc Include="GameHostWidget.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SelectFromListDialog.ui">
+    </QtMoc>
+    <QtUic Include="SelectFromListDialog.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SelectFromListDialog.h">
+    </QtUic>
+    <QtMoc Include="SelectFromListDialog.h">
       <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ConfigEditor.h">
+    </QtMoc>
+    <QtMoc Include="ConfigEditor.h">
       <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FrameEditorLowerEdge.h">
+    </QtMoc>
+    <QtMoc Include="FrameEditorLowerEdge.h">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditor.h">
+    </QtMoc>
+    <QtMoc Include="UIEditor.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditorNodeList.h">
+    </QtMoc>
+    <QtMoc Include="UIEditorNodeList.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditorViewer.h">
+    </QtMoc>
+    <QtMoc Include="UIEditorViewer.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEquationEditor.h">
+    </QtMoc>
+    <QtMoc Include="UIEquationEditor.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditorPropertyContainer.h">
+    </QtMoc>
+    <QtMoc Include="UIEditorPropertyContainer.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditorEquationList.h">
+    </QtMoc>
+    <QtMoc Include="UIEditorEquationList.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIEditorOutputEquationList.h">
+    </QtMoc>
+    <QtMoc Include="UIEditorOutputEquationList.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UIOutputEquationEditor.h">
+    </QtMoc>
+    <QtMoc Include="UIOutputEquationEditor.h">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEditor.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEditor.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEditorNodeList.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEditorNodeList.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEquationEditor.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEquationEditor.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEditorEquationList.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEditorEquationList.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEditorPropertyContainer.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEditorPropertyContainer.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="VisualEffectEditorViewer.h">
+    </QtMoc>
+    <QtMoc Include="VisualEffectEditorViewer.h">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseAnimationEventEditorDialog.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseAnimationEventEditorDialog.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseFrameDisplay.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseFrameDisplay.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseSkinListTextureElement.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseSkinListTextureElement.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseSkinListElement.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseSkinListElement.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SpriteBaseSkinEditor.h">
+    </QtMoc>
+    <QtMoc Include="SpriteBaseSkinEditor.h">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorServerObjectSelector.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorServerObjectSelector.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ServerObjectEditor.h">
+    </QtMoc>
+    <QtMoc Include="ServerObjectEditor.h">
       <Filter>Source Files\DocumentEditors\ServerObjectEditor</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MapEditorParalaxObjectSelector.h">
+    </QtMoc>
+    <QtMoc Include="MapEditorParalaxObjectSelector.h">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
-    </CustomBuild>
+    </QtMoc>
+    <QtMoc Include="FrameEditorAnchorManager.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </QtMoc>
+    <QtMoc Include="FrameEditorAnchorEditor.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </QtMoc>
+    <QtUic Include="TextInputDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="TextInputDialog.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
@@ -1591,6 +1130,15 @@
     </ClInclude>
     <ClInclude Include="MapEditorToolAllLayers.h">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameEditorTypes.refl.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameEditorTypes.refl.meta.h">
+      <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_TextInputDialog.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,10 @@
 #define _SCL_SECURE_NO_WARNINGS
 #endif
 
+#ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+#endif
+
 #ifdef min
 #undef min
 #endif
@@ -30,7 +34,7 @@
 
 #include <cstdint>
 
-#include <gsl/gsl.h>
+#include <gsl/gsl>
 
 #include <hash/Hash.h>
 #include <hash/Hash64.h>

@@ -48,7 +48,7 @@ public:
   }
 
   template <typename ... Args>
-  void emplace_back(Args && ... args)
+  decltype(auto) emplace_back(Args && ... args)
   {
     return m_Array.emplace_back(std::forward<Args>(args)...);
   }

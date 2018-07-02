@@ -91,13 +91,13 @@ struct StormReflTypeInfo<ClientInput>
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<0>
 {
-  using member_type = bool; // bool
-  static constexpr auto GetName() { return "m_JumpHeld"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xB2E64C00; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
+  static constexpr auto GetName() { return "m_InputAngle"; }
+  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x55B148EC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &ClientInput::m_JumpHeld; }
+  static constexpr auto GetMemberPtr() { return &ClientInput::m_InputAngle; }
 };
 
 template <typename Self>
@@ -105,21 +105,21 @@ struct StormReflTypeInfo<ClientInput>::field_data<0, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, bool> & Get() { return self.m_JumpHeld; }
-  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_JumpHeld; }
-  void SetDefault() { self.m_JumpHeld = StormReflTypeInfo<ClientInput>::GetDefault().m_JumpHeld; }
+  match_const_t<Self, GameNetVal> & Get() { return self.m_InputAngle; }
+  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_InputAngle; }
+  void SetDefault() { self.m_InputAngle = StormReflTypeInfo<ClientInput>::GetDefault().m_InputAngle; }
 };
 
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<1>
 {
   using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
-  static constexpr auto GetName() { return "m_XInput"; }
+  static constexpr auto GetName() { return "m_InputStr"; }
   static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xC4479309; }
+  static constexpr unsigned GetFieldNameHash() { return 0xC2CCEED1; }
   static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &ClientInput::m_XInput; }
+  static constexpr auto GetMemberPtr() { return &ClientInput::m_InputStr; }
 };
 
 template <typename Self>
@@ -127,9 +127,9 @@ struct StormReflTypeInfo<ClientInput>::field_data<1, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameNetVal> & Get() { return self.m_XInput; }
-  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_XInput; }
-  void SetDefault() { self.m_XInput = StormReflTypeInfo<ClientInput>::GetDefault().m_XInput; }
+  match_const_t<Self, GameNetVal> & Get() { return self.m_InputStr; }
+  std::add_const_t<std::remove_reference_t<GameNetVal>> & Get() const { return self.m_InputStr; }
+  void SetDefault() { self.m_InputStr = StormReflTypeInfo<ClientInput>::GetDefault().m_InputStr; }
 };
 
 template <>

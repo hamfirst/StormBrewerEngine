@@ -50,7 +50,7 @@ public:
   void UpdateFirst(GameLogicContainer & game_container);
 
   MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container);
-  void MoveCheckIntersectionDatabase(GameLogicContainer & game_container);
+  void MoveCheckIntersectionDatabase(GameLogicContainer & game_container, GameNetVal player_radius, GameNetVal move_threshold);
 
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
 
@@ -69,8 +69,8 @@ public:
     GetSprite().SendEventsTo(target, *this, game_container);
   }
 
-  template <typename State>
-  void TransitionToState(GameLogicContainer & game_container)
+  template <typename State, typename ... Args>
+  NullOptPtr<State> TransitionToState(GameLogicContainer & game_container)
   {
     NetPolymorphic<PlayerStateBase> new_state(NetPolymorphicTypeInit<State>{});
     new_state->Init(*this, game_container);
@@ -81,7 +81,10 @@ public:
     {
       m_State->Transition(*this, game_container);
     }
+
+    return m_State.Get<State>();
   }
+
 
 public:
   GameNetVec2 m_Position = {};

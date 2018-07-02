@@ -66,6 +66,15 @@ public:
   RMergeList<SpriteBaseDefSkinElement> m_TextureReplacements;
 };
 
+struct RUNTIME_EXPORT SpriteBaseDefAnchor
+{
+public:
+  STORM_DATA_DEFAULT_CONSTRUCTION(SpriteBaseDefAnchor);
+
+  RString m_AnchorName;
+  ROpaque<Vector2> m_DefaultPosition;
+};
+
 struct RUNTIME_EXPORT SpriteBaseDef
 {
 public:
@@ -74,6 +83,7 @@ public:
   RMergeList<SpriteBaseDefTexture> m_Textures;
   RMergeList<SpriteBaseDefAnimation> m_Animations;
   RMergeList<SpriteBaseDefSkin> m_Skins;
+  RMergeList<SpriteBaseDefAnchor> m_Anchors;
 
   FrameData m_InstanceData;
   RMap<uint64_t, FrameData> m_FrameData;

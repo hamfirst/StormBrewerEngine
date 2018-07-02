@@ -9,7 +9,7 @@
 template <>
 struct StormReflEnumInfo<FrameDataDefType>
 {
-  static constexpr int elems_n = 4;
+  static constexpr int elems_n = 5;
   static constexpr auto GetName() { return "FrameDataDefType"; }
   static constexpr auto GetNameHash() { return 0xCD6F2DAB; }
   template <int N> struct elems { };
@@ -45,6 +45,14 @@ struct StormReflEnumInfo<FrameDataDefType>::elems<3>
   static constexpr auto GetName() { return "kLowerEdge"; }
   static constexpr auto GetNameHash() { return 0xFD74B552; }
   static constexpr auto GetValue() { return FrameDataDefType::kLowerEdge; }
+};
+
+template <>
+struct StormReflEnumInfo<FrameDataDefType>::elems<4>
+{
+  static constexpr auto GetName() { return "kAnchor"; }
+  static constexpr auto GetNameHash() { return 0xC5E27289; }
+  static constexpr auto GetValue() { return FrameDataDefType::kAnchor; }
 };
 
 template <>
@@ -368,10 +376,67 @@ struct StormReflTypeInfo<FrameDataLowerEdge>::field_data<1, Self> : public Storm
 };
 
 template <>
+struct StormReflTypeInfo<FrameDataAnchorElement>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "FrameDataAnchorElement"; }
+  static constexpr auto GetNameHash() { return 0x39BF778B; }
+  static FrameDataAnchorElement & GetDefault() { static FrameDataAnchorElement def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataAnchorElement>::field_data_static<0>
+{
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_AnchorName"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x806F111D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &FrameDataAnchorElement::m_AnchorName; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataAnchorElement>::field_data<0, Self> : public StormReflTypeInfo<FrameDataAnchorElement>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_AnchorName; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_AnchorName; }
+  void SetDefault() { self.m_AnchorName = StormReflTypeInfo<FrameDataAnchorElement>::GetDefault().m_AnchorName; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameDataAnchorElement>::field_data_static<1>
+{
+  using member_type = ROpaque<Vector2>; // ROpaque<Vector2>
+  static constexpr auto GetName() { return "m_Position"; }
+  static constexpr auto GetType() { return "ROpaque<Vector2>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xB00030DB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1BBED1BD; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &FrameDataAnchorElement::m_Position; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameDataAnchorElement>::field_data<1, Self> : public StormReflTypeInfo<FrameDataAnchorElement>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ROpaque<Vector2>> & Get() { return self.m_Position; }
+  std::add_const_t<std::remove_reference_t<ROpaque<Vector2>>> & Get() const { return self.m_Position; }
+  void SetDefault() { self.m_Position = StormReflTypeInfo<FrameDataAnchorElement>::GetDefault().m_Position; }
+};
+
+template <>
 struct StormReflTypeInfo<FrameData>
 {
   using MyBase = void;
-  static constexpr int fields_n = 4;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -466,6 +531,28 @@ struct StormReflTypeInfo<FrameData>::field_data<3, Self> : public StormReflTypeI
   match_const_t<Self, RMergeList<FrameDataLowerEdge>> & Get() { return self.m_LowerEdgeData; }
   std::add_const_t<std::remove_reference_t<RMergeList<FrameDataLowerEdge>>> & Get() const { return self.m_LowerEdgeData; }
   void SetDefault() { self.m_LowerEdgeData = StormReflTypeInfo<FrameData>::GetDefault().m_LowerEdgeData; }
+};
+
+template <>
+struct StormReflTypeInfo<FrameData>::field_data_static<4>
+{
+  using member_type = RMergeList<FrameDataAnchorElement>; // RMergeList<FrameDataAnchorElement>
+  static constexpr auto GetName() { return "m_Anchors"; }
+  static constexpr auto GetType() { return "RMergeList<FrameDataAnchorElement>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA02FE64E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x496FFC2F; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &FrameData::m_Anchors; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<FrameData>::field_data<4, Self> : public StormReflTypeInfo<FrameData>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RMergeList<FrameDataAnchorElement>> & Get() { return self.m_Anchors; }
+  std::add_const_t<std::remove_reference_t<RMergeList<FrameDataAnchorElement>>> & Get() const { return self.m_Anchors; }
+  void SetDefault() { self.m_Anchors = StormReflTypeInfo<FrameData>::GetDefault().m_Anchors; }
 };
 
 template <>
@@ -630,7 +717,7 @@ namespace StormReflFileInfo
 {
   struct FrameData
   {
-    static const int types_n = 9;
+    static const int types_n = 10;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -673,17 +760,23 @@ namespace StormReflFileInfo
   template <>
   struct FrameData::type_info<6>
   {
-    using type = ::FrameData;
+    using type = ::FrameDataAnchorElement;
   };
 
   template <>
   struct FrameData::type_info<7>
   {
-    using type = ::FrameDataDefElem;
+    using type = ::FrameData;
   };
 
   template <>
   struct FrameData::type_info<8>
+  {
+    using type = ::FrameDataDefElem;
+  };
+
+  template <>
+  struct FrameData::type_info<9>
   {
     using type = ::FrameDataDef;
   };

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'EditorContainer.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.11.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -12,8 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -111,22 +109,22 @@ public:
 
     void retranslateUi(QMainWindow *EditorContainerClass)
     {
-        EditorContainerClass->setWindowTitle(QApplication::translate("EditorContainerClass", "StormBrewer Engine", Q_NULLPTR));
-        action_Open->setText(QApplication::translate("EditorContainerClass", "&Open", Q_NULLPTR));
-        action_Save->setText(QApplication::translate("EditorContainerClass", "Save", Q_NULLPTR));
-        action_Quit->setText(QApplication::translate("EditorContainerClass", "&Quit", Q_NULLPTR));
-        action_Sprite->setText(QApplication::translate("EditorContainerClass", "Sprite", Q_NULLPTR));
-        action_Undo->setText(QApplication::translate("EditorContainerClass", "Undo", Q_NULLPTR));
-        action_Redo->setText(QApplication::translate("EditorContainerClass", "Redo", Q_NULLPTR));
-        action_StartServer->setText(QApplication::translate("EditorContainerClass", "Start Server", Q_NULLPTR));
-        action_LaunchClients->setText(QApplication::translate("EditorContainerClass", "Launch Clients", Q_NULLPTR));
-        action_TestBuild->setText(QApplication::translate("EditorContainerClass", "Test Build", Q_NULLPTR));
-        action_TestBuildWithoutOneClient->setText(QApplication::translate("EditorContainerClass", "Test Build Without One Client", Q_NULLPTR));
-        action_TestBuildWithBots->setText(QApplication::translate("EditorContainerClass", "Test Build With Bots", Q_NULLPTR));
-        menuFile->setTitle(QApplication::translate("EditorContainerClass", "&File", Q_NULLPTR));
-        menu_New->setTitle(QApplication::translate("EditorContainerClass", "&New", Q_NULLPTR));
-        menuEdit->setTitle(QApplication::translate("EditorContainerClass", "Edit", Q_NULLPTR));
-        menuRun->setTitle(QApplication::translate("EditorContainerClass", "Run", Q_NULLPTR));
+        EditorContainerClass->setWindowTitle(QApplication::translate("EditorContainerClass", "StormBrewer Engine", nullptr));
+        action_Open->setText(QApplication::translate("EditorContainerClass", "&Open", nullptr));
+        action_Save->setText(QApplication::translate("EditorContainerClass", "Save", nullptr));
+        action_Quit->setText(QApplication::translate("EditorContainerClass", "&Quit", nullptr));
+        action_Sprite->setText(QApplication::translate("EditorContainerClass", "Sprite", nullptr));
+        action_Undo->setText(QApplication::translate("EditorContainerClass", "Undo", nullptr));
+        action_Redo->setText(QApplication::translate("EditorContainerClass", "Redo", nullptr));
+        action_StartServer->setText(QApplication::translate("EditorContainerClass", "Start Server", nullptr));
+        action_LaunchClients->setText(QApplication::translate("EditorContainerClass", "Launch Clients", nullptr));
+        action_TestBuild->setText(QApplication::translate("EditorContainerClass", "Test Build", nullptr));
+        action_TestBuildWithoutOneClient->setText(QApplication::translate("EditorContainerClass", "Test Build Without One Client", nullptr));
+        action_TestBuildWithBots->setText(QApplication::translate("EditorContainerClass", "Test Build With Bots", nullptr));
+        menuFile->setTitle(QApplication::translate("EditorContainerClass", "&File", nullptr));
+        menu_New->setTitle(QApplication::translate("EditorContainerClass", "&New", nullptr));
+        menuEdit->setTitle(QApplication::translate("EditorContainerClass", "Edit", nullptr));
+        menuRun->setTitle(QApplication::translate("EditorContainerClass", "Run", nullptr));
     } // retranslateUi
 
 };

@@ -424,7 +424,7 @@ Optional<Buffer> AssetLoader::LoadFullFileRaw(czstr file_path, int & file_open_e
 
   auto data_size = file.GetFileLength();
   auto buffer = Buffer(data_size);
-  file.Read(gsl::as_span(buffer.Get(), data_size));
+  file.Read(gsl::make_span(buffer.Get(), data_size));
   FileClose(file);
   return Optional<Buffer>(std::move(buffer));
 }

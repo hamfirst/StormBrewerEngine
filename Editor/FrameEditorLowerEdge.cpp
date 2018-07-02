@@ -1,6 +1,8 @@
 
 #include <QPainter>
 #include <QWheelEvent>
+#include <QApplication>
+#include <QClipboard>
 
 #include "StormData/StormDataPath.h"
 #include "StormData/StormDataJson.h"
@@ -12,15 +14,16 @@
 #include "Runtime/FrameData/FrameData.refl.meta.h"
 
 #include "FrameEditorLowerEdge.h"
+#include "FrameEditorTypes.refl.meta.h"
 #include "SpriteEditor.h"
 
 FrameEditorLowerEdge::FrameEditorLowerEdge(
   NotNullPtr<SpriteBaseEditor> editor,
   SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
-  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && getter,
+  Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>, uint64_t> && getter,
   Delegate<NullOptPtr<ROpaque<FrameDataLowerEdgeInfo>>> && default_val,
-  Delegate<void, const FrameDataLowerEdgeInfo &> && new_element,
+  Delegate<void, uint64_t, const FrameDataLowerEdgeInfo &> && new_element,
   uint64_t frame_id,
   czstr data_name,
   QWidget * parent) :
@@ -40,7 +43,7 @@ FrameEditorLowerEdge::FrameEditorLowerEdge(
 
 void FrameEditorLowerEdge::HandleDataUpdate()
 {
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
 
   if(m_LocalChange)
   {
@@ -64,11 +67,11 @@ void FrameEditorLowerEdge::HandleDataUpdate()
 
 void FrameEditorLowerEdge::RefreshWatcher()
 {
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
   if (data_list)
   {
     m_Watcher.Emplace(m_Editor);
-    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, [this] { return m_Getter(); });
+    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, [this] { return m_Getter(m_FrameId); });
     m_Watcher->SetChangeCallback([this](const ReflectionChangeNotification &) { HandleDataUpdate(); });
     m_Watcher->SetParentChangeCallback([this] { HandleDataUpdate(); });
     m_Watcher->SetChildChangeCallback([this] { HandleDataUpdate(); });
@@ -79,10 +82,10 @@ void FrameEditorLowerEdge::WriteData(const FrameDataLowerEdgeInfo & data)
 {
   m_LocalChange = true;
 
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
   if (data_list == nullptr)
   {
-    m_NewElement(data);
+    m_NewElement(m_FrameId, data);
     RefreshWatcher();
   }
   else
@@ -98,7 +101,7 @@ FrameDataLowerEdgeInfo FrameEditorLowerEdge::GetPreviewData()
 {
   FrameDataLowerEdgeInfo data;
 
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
 
   if (m_PreviewData)
   {
@@ -131,6 +134,34 @@ int FrameEditorLowerEdge::GetEdgePos(FrameDataLowerEdgeInfo & info)
   auto frame = Box::FromFrameCenterAndSize(Vector2{}, Vector2(m_FrameWidth, m_FrameHeight));
   int y = m_Editor->IsTileSheet() ? frame.m_End.y + 1 + info.m_OffsetPixels : frame.m_Start.y + info.m_OffsetPixels;
   return y;
+}
+
+void FrameEditorLowerEdge::Copy()
+{
+  FrameCopyData data;
+  data.m_Valid = true;
+  data.m_Type = FrameDataDefType::kLowerEdge;
+  data.m_Data = StormReflEncodeJson(GetPreviewData());
+
+  QClipboard *clipboard = QApplication::clipboard();
+  clipboard->setText(StormReflEncodeJson(data).data());
+}
+
+void FrameEditorLowerEdge::Paste()
+{
+  QClipboard *clipboard = QApplication::clipboard();
+  auto clipboard_data = clipboard->text();
+
+  FrameCopyData data;
+  StormReflParseJson(data, clipboard_data.toStdString().data());
+
+  if (data.m_Valid && data.m_Type == FrameDataDefType::kLowerEdge)
+  {
+    FrameDataLowerEdgeInfo frame_data;
+    StormReflParseJson(frame_data, data.m_Data.data());
+
+    WriteData(frame_data);
+  }
 }
 
 void FrameEditorLowerEdge::DrawData()

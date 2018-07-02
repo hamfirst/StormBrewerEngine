@@ -471,21 +471,6 @@
     <ClInclude Include="glm\simd\vector_relational.h">
       <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="gsl\gsl.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\gsl_assert.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\gsl_util.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\span.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\string_span.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
     <ClInclude Include="sb\cstr.h">
       <Filter>sb</Filter>
     </ClInclude>
@@ -846,6 +831,33 @@
     </None>
     <None Include="glm\gtx\wrap.inl">
       <Filter>glm\gtx</Filter>
+    </None>
+    <None Include="gsl\gsl">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\gsl_algorithm">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\gsl_assert">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\gsl_byte">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\gsl_util">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\multi_span">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\pointers">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\span">
+      <Filter>gsl</Filter>
+    </None>
+    <None Include="gsl\string_span">
+      <Filter>gsl</Filter>
     </None>
   </ItemGroup>
 </Project>

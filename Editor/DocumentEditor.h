@@ -14,8 +14,8 @@ template <class DataType, typename Widget>
 class DocumentEditor : public DocumentEditorBase
 {
 public:
-  DocumentEditor(PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr) :
-    DocumentEditorBase(property_db, root_path, std::move(output_delegate), parent),
+  DocumentEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr) :
+    DocumentEditorBase(editor_container, property_db, root_path, std::move(output_delegate), parent),
     m_Widget(nullptr),
     m_Layout(nullptr)
   {
@@ -68,7 +68,7 @@ public:
         CommitQueuedChanges();
       });
 
-      m_Widget = new Widget(m_PropertyDb, m_RootPath, m_ClientCopy, std::move(change_link_callback), std::move(begin_changes_callback), std::move(commit_changes_callback));
+      m_Widget = new Widget(m_EditorContainer, m_PropertyDb, m_RootPath, m_ClientCopy, std::move(change_link_callback), std::move(begin_changes_callback), std::move(commit_changes_callback));
       m_Layout->addWidget(m_Widget);
 
       UpdateLinks();

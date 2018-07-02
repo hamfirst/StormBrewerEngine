@@ -144,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -208,6 +209,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -394,11 +396,6 @@
     <ClInclude Include="glm\vec3.hpp" />
     <ClInclude Include="glm\vec4.hpp" />
     <ClInclude Include="glm\vector_relational.hpp" />
-    <ClInclude Include="gsl\gsl.h" />
-    <ClInclude Include="gsl\gsl_assert.h" />
-    <ClInclude Include="gsl\gsl_util.h" />
-    <ClInclude Include="gsl\span.h" />
-    <ClInclude Include="gsl\string_span.h" />
     <ClInclude Include="hash\Hash.h" />
     <ClInclude Include="hash\Hash64.h" />
     <ClInclude Include="optional\optional.hpp" />
@@ -522,6 +519,15 @@
     <None Include="glm\gtx\vector_angle.inl" />
     <None Include="glm\gtx\vector_query.inl" />
     <None Include="glm\gtx\wrap.inl" />
+    <None Include="gsl\gsl" />
+    <None Include="gsl\gsl_algorithm" />
+    <None Include="gsl\gsl_assert" />
+    <None Include="gsl\gsl_byte" />
+    <None Include="gsl\gsl_util" />
+    <None Include="gsl\multi_span" />
+    <None Include="gsl\pointers" />
+    <None Include="gsl\span" />
+    <None Include="gsl\string_span" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

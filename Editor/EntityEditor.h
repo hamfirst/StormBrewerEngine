@@ -15,7 +15,7 @@ class EntityEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  EntityEditor(PropertyFieldDatabase & property_db, const std::string & root_path, EntityDef & entity, DocumentChangeLinkDelegate && change_link_callback,
+  EntityEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, EntityDef & entity, DocumentChangeLinkDelegate && change_link_callback,
     DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 
 private:

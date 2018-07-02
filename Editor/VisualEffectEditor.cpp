@@ -10,10 +10,10 @@
 #include "StormData/StormDataParent.h"
 #include "StormRefl/StormReflMetaEnum.h"
 
-VisualEffectEditor::VisualEffectEditor(PropertyFieldDatabase & property_db, const std::string & root_path, VisualEffectDef & ui,
+VisualEffectEditor::VisualEffectEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, VisualEffectDef & ui,
   DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback,
   DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
-  DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
+  DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_VisualEffect(ui),
   m_Layout(std::make_unique<QGridLayout>()),
   m_PropertiesPanel(std::make_unique<ScrollingPanel>(this)),
@@ -21,7 +21,6 @@ VisualEffectEditor::VisualEffectEditor(PropertyFieldDatabase & property_db, cons
   m_Viewer(std::make_unique<VisualEffectEditorViewer>(this, m_VisualEffect)),
   m_IgnoreSelectionChanges(false)
 {
-
   m_Layout->setColumnStretch(0, 1);
   m_Layout->setColumnMinimumWidth(0, 100);
 

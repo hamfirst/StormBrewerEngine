@@ -22,7 +22,7 @@ class UIEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  UIEditor(PropertyFieldDatabase & property_db, const std::string & root_path, UIDef & ui,
+  UIEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, UIDef & ui,
     DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback,
     DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 

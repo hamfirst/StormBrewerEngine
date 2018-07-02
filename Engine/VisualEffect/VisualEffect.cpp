@@ -500,7 +500,7 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
       }
 
       GeometryVertexBufferBuilder builder;
-      builder.Trail(gsl::as_span(particle_tralis), texture_size.x);
+      builder.Trail(gsl::make_span(particle_tralis), texture_size.x);
 
       builder.FillVertexBuffer(scratch_buffer);
     }
@@ -558,7 +558,7 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
         m_ScratchVertexList.emplace_back(vert[5]);
       }
 
-      scratch_buffer.SetBufferData(gsl::as_span(m_ScratchVertexList), VertexBufferType::kTriangles);
+      scratch_buffer.SetBufferData(gsl::make_span(m_ScratchVertexList), VertexBufferType::kTriangles);
     }
 
     render_state.BindVertexBuffer(scratch_buffer);

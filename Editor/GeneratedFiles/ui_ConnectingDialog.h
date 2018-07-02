@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ConnectingDialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.11.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,12 +10,9 @@
 #define UI_CONNECTINGDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
@@ -59,9 +56,9 @@ public:
 
     void retranslateUi(QDialog *ConnectingDialogClass)
     {
-        ConnectingDialogClass->setWindowTitle(QApplication::translate("ConnectingDialogClass", "Connection...", Q_NULLPTR));
-        cancelButton->setText(QApplication::translate("ConnectingDialogClass", "Cancel", Q_NULLPTR));
-        label->setText(QApplication::translate("ConnectingDialogClass", "Connecting To Document Server...", Q_NULLPTR));
+        ConnectingDialogClass->setWindowTitle(QApplication::translate("ConnectingDialogClass", "Connection...", nullptr));
+        cancelButton->setText(QApplication::translate("ConnectingDialogClass", "Cancel", nullptr));
+        label->setText(QApplication::translate("ConnectingDialogClass", "Connecting To Document Server...", nullptr));
     } // retranslateUi
 
 };

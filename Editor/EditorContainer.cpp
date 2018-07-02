@@ -80,15 +80,17 @@ EditorContainer::EditorContainer(QWidget *parent) :
   ui.setupUi(this);
   resize(1000, 600);
 
+  auto new_config = ui.menu_New->addAction("Config");
+  connect(new_config, &QAction::triggered, this, &EditorContainer::newConfigFile);
+
+  std::sort(m_DocumentTypes.begin(), m_DocumentTypes.end(), [](const DocumentTypeData & a, const DocumentTypeData & b) { return a.m_Name < b.m_Name; });
+
   for (auto & doc_type : m_DocumentTypes)
   {
     auto action = ui.menu_New->addAction(doc_type.m_Name.data());
     action->setData(QString(doc_type.m_Name.data()));
     connect(action, &QAction::triggered, this, &EditorContainer::newFile);
   }
-
-  auto new_config = ui.menu_New->addAction("Config");
-  connect(new_config, &QAction::triggered, this, &EditorContainer::newConfigFile);
 
   connect(ui.action_Open, &QAction::triggered, this, &EditorContainer::open);
   ui.action_Open->setShortcut(QKeySequence::Open);
@@ -831,7 +833,7 @@ std::pair<QWidget *, int> EditorContainer::CreateEditorForFile(czstr file, uint3
       m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string(StormReflGetEnumAsString(type)) + ' ' + std::to_string(doc_id) + ' ' + args);
     };
 
-    auto editor = new DocumentEditorConfig(*config_info, m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
+    auto editor = new DocumentEditorConfig(*this, *config_info, m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
 
     m_DocumentEditors.emplace(std::make_pair(m_NextDocumentId, DocumentEditorData{ editor, file }));
     m_NextDocumentId++;
@@ -844,7 +846,7 @@ std::pair<QWidget *, int> EditorContainer::CreateEditorForFile(czstr file, uint3
     m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string(StormReflGetEnumAsString(type)) + ' ' + std::to_string(doc_id) + ' ' + args);
   };
 
-  auto editor = itr->second(m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
+  auto editor = itr->second(*this, m_PropertyDatabase, m_RootPath, std::move(del), nullptr);
 
   m_DocumentEditors.emplace(std::make_pair(m_NextDocumentId, DocumentEditorData{ editor, file }));
   m_NextDocumentId++;

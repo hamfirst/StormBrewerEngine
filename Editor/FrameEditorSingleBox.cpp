@@ -1,6 +1,8 @@
 
 #include <QPainter>
 #include <QWheelEvent>
+#include <QApplication>
+#include <QClipboard>
 
 #include "StormData/StormDataPath.h"
 #include "StormData/StormDataJson.h"
@@ -11,15 +13,16 @@
 #include "Runtime/FrameData/FrameData.refl.meta.h"
 
 #include "FrameEditorSingleBox.h"
+#include "FrameEditorTypes.refl.meta.h"
 #include "SpriteEditor.h"
 
 FrameEditorSingleBox::FrameEditorSingleBox(
   NotNullPtr<SpriteBaseEditor> editor,
   SpriteBaseDef & sprite,
   SpriteBaseTextureLoadList & texture_access,
-  Delegate<NullOptPtr<ROpaque<Box>>> && getter,
+  Delegate<NullOptPtr<ROpaque<Box>>, uint64_t> && getter,
   Delegate<NullOptPtr<ROpaque<Box>>> && default_val,
-  Delegate<void, const Box &> && new_element,
+  Delegate<void, uint64_t, const Box &> && new_element,
   uint64_t frame_id,
   QWidget * parent) :
   FrameEditorBase(editor, sprite, texture_access, frame_id, parent),
@@ -37,7 +40,7 @@ FrameEditorSingleBox::FrameEditorSingleBox(
 
 void FrameEditorSingleBox::HandleDataUpdate()
 {
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
 
   if (m_LocalChange)
   {
@@ -57,11 +60,11 @@ void FrameEditorSingleBox::RefreshWatcher()
 {
   m_Watcher.Clear();
 
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
   if (data_list)
   {
     m_Watcher.Emplace(m_Editor);
-    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, [this] { return m_Getter(); });
+    m_Watcher->SetPath(StormDataGetPath(*data_list).data(), true, true, [this] { return m_Getter(m_FrameId); });
     m_Watcher->SetChangeCallback([this](const ReflectionChangeNotification &) { HandleDataUpdate(); });
     m_Watcher->SetParentChangeCallback([this] { HandleDataUpdate(); });
     m_Watcher->SetChildChangeCallback([this] { HandleDataUpdate(); });
@@ -72,10 +75,10 @@ void FrameEditorSingleBox::WriteData(Box & box)
 {
   m_LocalChange = true;
 
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
   if (data_list == nullptr)
   {
-    m_NewElement(box);
+    m_NewElement(m_FrameId, box);
     RefreshWatcher();
   }
   else
@@ -91,7 +94,7 @@ Box FrameEditorSingleBox::GetPreviewData(Optional<FrameEditorEdge> & preview_edg
 {
   Box box;
 
-  auto data_list = m_Getter();
+  auto data_list = m_Getter(m_FrameId);
 
   if (m_PreviewBox)
   {
@@ -139,6 +142,36 @@ Box FrameEditorSingleBox::GetPreviewData(Optional<FrameEditorEdge> & preview_edg
   }
 
   return box;
+}
+
+void FrameEditorSingleBox::Copy()
+{
+  Optional<FrameEditorEdge> preview_point;
+
+  FrameCopyData data;
+  data.m_Valid = true;
+  data.m_Type = FrameDataDefType::kSingleBox;
+  data.m_Data = StormReflEncodeJson(GetPreviewData(preview_point));
+
+  QClipboard *clipboard = QApplication::clipboard();
+  clipboard->setText(StormReflEncodeJson(data).data());
+}
+
+void FrameEditorSingleBox::Paste()
+{
+  QClipboard *clipboard = QApplication::clipboard();
+  auto clipboard_data = clipboard->text();
+
+  FrameCopyData data;
+  StormReflParseJson(data, clipboard_data.toStdString().data());
+
+  if (data.m_Valid && data.m_Type == FrameDataDefType::kSingleBox)
+  {
+    Box frame_data;
+    StormReflParseJson(frame_data, data.m_Data.data());
+
+    WriteData(frame_data);
+  }
 }
 
 void FrameEditorSingleBox::DrawData()

@@ -10,14 +10,17 @@
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
-#include "Game/ServerObjects/Player/PlayerSettings.h"
 #include "Game/ServerObjects/Player/States/PlayerStateIdle.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateJump.refl.h"
 
+#include "Game/Configs/PlayerConfig.refl.meta.h"
+
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Animation/AnimationState.h"
+#include "Runtime/Config/ConfigResource.h"
 
 GLOBAL_ASSET(SpritePtr, "./Sprites/Player.sprite", g_PlayerSprite);
+GLOBAL_ASSET(ConfigPtr<PlayerConfig>, "./Configs/PlayerConfig.playerconfig", g_PlayerConfig);
 
 void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data)
 {
@@ -55,11 +58,22 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
   {
     game_container.GetEventSender().BroadcastServerAuthEvent(PlaceholderServerAuthEvent{});
 
-    m_Velocity.y += kJumpSpeed;
+    m_Velocity.y += g_PlayerConfig->m_JumpSpeed;
     m_OnGround = false;
 
     TransitionToState<PlayerStateJump>(game_container);
   }
+  else if (m_State.Is<PlayerStateJump>())
+  {
+    auto jump_state = m_State.Get<PlayerStateJump>();
+
+    if (jump_state->CanGraceJump())
+    {
+      m_Velocity.y += g_PlayerConfig->m_JumpSpeed;
+      TransitionToState<PlayerStateJump>(game_container);
+    }
+  }
+
 #endif
 }
 #endif
@@ -116,7 +130,7 @@ MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & 
   return result;
 }
 
-void PlayerServerObject::MoveCheckIntersectionDatabase(GameLogicContainer & game_container)
+void PlayerServerObject::MoveCheckIntersectionDatabase(GameLogicContainer & game_container, GameNetVal player_radius, GameNetVal move_threshold)
 {
   GameNetVal one = GameNetVal(1);
   GameNetVal two = GameNetVal(2);
@@ -130,15 +144,15 @@ void PlayerServerObject::MoveCheckIntersectionDatabase(GameLogicContainer & game
   IntersectionResult<GameNetVal> result;
   CollisionDatabaseData<GameNetVal> hit_line;
 
-  if (collision.SweptCircleTest(movement, kPlayerRadius, result, hit_line, 0x01) == false)
+  if (collision.SweptCircleTest(movement, player_radius, result, hit_line, 0x01) == false)
   {
     m_Position += velocity;
   }
   else
   {
-    if (result.m_T > kMoveThreshold)
+    if (result.m_T > move_threshold)
     {
-      result.m_T -= kMoveThreshold;
+      result.m_T -= move_threshold;
 
       auto actual_movement = velocity * result.m_T;
       m_Position += actual_movement;
@@ -153,7 +167,7 @@ void PlayerServerObject::MoveCheckIntersectionDatabase(GameLogicContainer & game
     velocity -= result.m_HitNormal * second_check_dp * two;
 
     Intersection<GameNetVal>::CollisionLine new_movement(m_Position, m_Position + velocity);
-    if (collision.SweptCircleTest(new_movement, kPlayerRadius, result, hit_line, 0x01) == false)
+    if (collision.SweptCircleTest(new_movement, player_radius, result, hit_line, 0x01) == false)
     {
       m_Position += velocity;
     }

@@ -21,7 +21,7 @@ class DocumentEditorWidgetBase : public QWidget
 {
   Q_OBJECT;
 public:
-  DocumentEditorWidgetBase(PropertyFieldDatabase & property_db, const std::string & root_path, DocumentChangeLinkDelegate && change_link_callback,
+  DocumentEditorWidgetBase(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, DocumentChangeLinkDelegate && change_link_callback,
     DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
   ~DocumentEditorWidgetBase();
 
@@ -41,6 +41,9 @@ public:
   void CreateLink(czstr src_asset_path, czstr remote_path, czstr local_path);
   void RemoveLink(czstr src_asset_path, czstr remote_path, czstr local_path);
 
+  void Undo();
+  void Redo();
+
   void BeginTransaction();
   void CommitChanges();
 
@@ -54,7 +57,7 @@ public:
   Optional<std::string> GetFileNameForAssetType(czstr asset_type);
 
 private:
-
+  EditorContainer & m_EditorContainer;
   PropertyFieldDatabase & m_PropertyDb;
   const std::string & m_RootPath;
 
@@ -103,6 +106,6 @@ extern EditorContainer * g_DocumentRegistrationEditor;
 #define REGISTER_EDITOR(AssetType, WidgetType, DataType, Extension, DefaultDirectory)  \
   ADD_PREMAIN_CALL(g_DocumentRegistrationCallList, WidgetType, \
     []() { g_DocumentRegistrationEditor->RegisterEditor(AssetType, Extension, DefaultDirectory, \
-      DocumentEditorCreationDelegate([](PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget * parent) -> DocumentEditorBase * \
-        { return new DocumentEditor<DataType, WidgetType>(property_db, root_path, std::move(output_delegate), parent); })); }) \
+      DocumentEditorCreationDelegate([](EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget * parent) -> DocumentEditorBase * \
+        { return new DocumentEditor<DataType, WidgetType>(editor_container, property_db, root_path, std::move(output_delegate), parent); })); }) \
 

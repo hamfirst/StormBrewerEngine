@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'SpriteTextureImportDialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.11.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,12 +10,9 @@
 #define UI_SPRITETEXTUREIMPORTDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -84,11 +81,11 @@ public:
 
     void retranslateUi(QDialog *SpriteTextureImport)
     {
-        SpriteTextureImport->setWindowTitle(QApplication::translate("SpriteTextureImport", "Texture Import", Q_NULLPTR));
-        okButton->setText(QApplication::translate("SpriteTextureImport", "OK", Q_NULLPTR));
-        cancelButton->setText(QApplication::translate("SpriteTextureImport", "Cancel", Q_NULLPTR));
-        label->setText(QApplication::translate("SpriteTextureImport", "Frame Width", Q_NULLPTR));
-        label_2->setText(QApplication::translate("SpriteTextureImport", "Frame Height", Q_NULLPTR));
+        SpriteTextureImport->setWindowTitle(QApplication::translate("SpriteTextureImport", "Texture Import", nullptr));
+        okButton->setText(QApplication::translate("SpriteTextureImport", "OK", nullptr));
+        cancelButton->setText(QApplication::translate("SpriteTextureImport", "Cancel", nullptr));
+        label->setText(QApplication::translate("SpriteTextureImport", "Frame Width", nullptr));
+        label_2->setText(QApplication::translate("SpriteTextureImport", "Frame Height", nullptr));
     } // retranslateUi
 
 };

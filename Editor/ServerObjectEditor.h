@@ -15,8 +15,9 @@ class ServerObjectEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  ServerObjectEditor(PropertyFieldDatabase & property_db, const std::string & root_path, ServerObjectDef & entity, DocumentChangeLinkDelegate && change_link_callback,
-    DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
+  ServerObjectEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, ServerObjectDef & entity, 
+    DocumentChangeLinkDelegate && change_link_callback,  DocumentBeginTransactionDelegate && begin_transaction_callback, 
+    DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 
 private:
 

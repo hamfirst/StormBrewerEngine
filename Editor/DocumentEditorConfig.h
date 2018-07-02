@@ -17,7 +17,8 @@
 class DocumentEditorConfig : public DocumentEditorBase
 {
 public:
-  DocumentEditorConfig(ConfigRegistrationInfo & config_info, PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr);
+  DocumentEditorConfig(EditorContainer & editor_container, ConfigRegistrationInfo & config_info, 
+    PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr);
   virtual ~DocumentEditorConfig();
 
   virtual void GotDocumentChange(ReflectionChangeNotification & change) override;

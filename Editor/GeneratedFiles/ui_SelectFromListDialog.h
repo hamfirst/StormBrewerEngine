@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'SelectFromListDialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.11.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,12 +10,9 @@
 #define UI_SELECTFROMLISTDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
@@ -79,9 +76,9 @@ public:
 
     void retranslateUi(QDialog *SelectFromListDialogClass)
     {
-        SelectFromListDialogClass->setWindowTitle(QApplication::translate("SelectFromListDialogClass", "Select From List", Q_NULLPTR));
-        okButton->setText(QApplication::translate("SelectFromListDialogClass", "OK", Q_NULLPTR));
-        cancelButton->setText(QApplication::translate("SelectFromListDialogClass", "Cancel", Q_NULLPTR));
+        SelectFromListDialogClass->setWindowTitle(QApplication::translate("SelectFromListDialogClass", "Select From List", nullptr));
+        okButton->setText(QApplication::translate("SelectFromListDialogClass", "OK", nullptr));
+        cancelButton->setText(QApplication::translate("SelectFromListDialogClass", "Cancel", nullptr));
     } // retranslateUi
 
 };

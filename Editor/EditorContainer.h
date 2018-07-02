@@ -20,7 +20,7 @@ class QOffscreenSurface;
 
 class GameHostWidget;
 
-using DocumentEditorCreationDelegate = Delegate<DocumentEditorBase *, PropertyFieldDatabase &, const std::string &, DocumentOutputDelegate &&, QWidget *>;
+using DocumentEditorCreationDelegate = Delegate<DocumentEditorBase *, EditorContainer &, PropertyFieldDatabase &, const std::string &, DocumentOutputDelegate &&, QWidget *>;
 
 class EditorContainer : public QMainWindow
 {

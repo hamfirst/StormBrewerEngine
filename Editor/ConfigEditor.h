@@ -15,7 +15,7 @@ class ConfigEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  ConfigEditor(PropertyFieldDatabase & property_db, const std::string & root_path, void * config_ptr, ConfigRegistrationInfo & config_info, 
+  ConfigEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, void * config_ptr, ConfigRegistrationInfo & config_info,
     DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback, 
     DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 

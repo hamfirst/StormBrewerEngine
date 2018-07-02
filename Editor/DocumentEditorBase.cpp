@@ -9,8 +9,10 @@
 #include <StormData/StormDataPath.h>
 #include <StormRefl/StormReflJsonStd.h>
 
-DocumentEditorBase::DocumentEditorBase(PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent) :
+DocumentEditorBase::DocumentEditorBase(EditorContainer & editor_container, PropertyFieldDatabase & property_db, 
+                                       const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent) :
   QWidget(parent),
+  m_EditorContainer(editor_container),
   m_PropertyDb(property_db),
   m_RootPath(root_path),
   m_State(DocumentState::kLoading),

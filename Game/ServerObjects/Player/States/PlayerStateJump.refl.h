@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define PLAYER_ENABLE_JUMP
+#include "Game/GameSettings.h"
 
 #ifdef PLAYER_ENABLE_JUMP
 
@@ -15,12 +15,16 @@ class PlayerStateJump : public PlayerStateBase, public PlayerStateEventHandler<P
 public:
   DECLARE_PLAYER_STATE;
 
+  void AllowGraceJump();
+  bool CanGraceJump() const;
+
   virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) override;
   virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) override;
   virtual void Animate(PlayerServerObject & player, GameLogicContainer & game_container) override;
 
 public:
-  // Serialized variables
+
+  NetRangedNumber<int, 0, 5> m_JumpGraceFrames;
 };
 
 #endif

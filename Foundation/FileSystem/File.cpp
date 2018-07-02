@@ -129,7 +129,7 @@ size_t File::GetFileLength() const
 
 void File::Read(const gsl::span<uint8_t> & buffer)
 {
-  Read(buffer, buffer.length());
+  Read(buffer, buffer.size());
 }
 
 void File::Read(const gsl::span<uint8_t> & buffer, std::size_t read_amount)
@@ -186,7 +186,7 @@ Buffer File::ReadFileFull()
   }
 
   Buffer buffer(m_FileData.m_FileLength);
-  Read(gsl::as_span(buffer.Get(), buffer.GetSize()));
+  Read(gsl::make_span(buffer.Get(), buffer.GetSize()));
   return buffer;
 }
 
@@ -264,7 +264,7 @@ std::string FileReadFullAsString(czstr path)
   std::string str;
   str.resize(file.GetFileLength(), 0);
 
-  file.Read(gsl::as_span((uint8_t *)str.data(), file.GetFileLength()));
+  file.Read(gsl::make_span((uint8_t *)str.data(), file.GetFileLength()));
   return str;
 }
 

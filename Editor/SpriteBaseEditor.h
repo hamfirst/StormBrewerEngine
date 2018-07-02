@@ -19,8 +19,9 @@ class SpriteBaseEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  SpriteBaseEditor(PropertyFieldDatabase & property_db, const std::string & root_path, SpriteBaseDef & sprite, DocumentChangeLinkDelegate && change_link_callback,
-    DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
+  SpriteBaseEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, SpriteBaseDef & sprite, 
+    DocumentChangeLinkDelegate && change_link_callback,  DocumentBeginTransactionDelegate && begin_transaction_callback, 
+    DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 
   virtual bool IsTileSheet() const = 0;
 protected:
@@ -36,6 +37,6 @@ protected:
   std::unique_ptr<SpriteBaseTextureFrameList> m_FrameList;
   std::unique_ptr<SpriteBaseAnimationEditor> m_AnimationEditor;
 
-  Delegate<NullOptPtr<FrameData>> m_GlobalFrameDataCallback;
+  Delegate<NullOptPtr<FrameData>, uint64_t> m_GlobalFrameDataCallback;
   Delegate<NullOptPtr<FrameData>> m_EmptyFrameDataCallback;
 };

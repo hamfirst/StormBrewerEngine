@@ -165,6 +165,11 @@ void FrameEditorBase::DrawHighlightedCornerControl(const Vector2 & pos)
   DrawUtil::DrawHighlightedCornerControl(m_GeometryBuidler.Value(), pos, m_Magnification);
 }
 
+void FrameEditorBase::RefreshWatcher()
+{
+
+}
+
 void FrameEditorBase::DrawData()
 {
 
@@ -213,8 +218,19 @@ void FrameEditorBase::StopDrawing()
 void FrameEditorBase::SetFrame(uint64_t frame_id)
 {
   m_FrameId = frame_id;
+  RefreshWatcher();
   UpdateFrameSize();
   repaint();
+}
+
+void FrameEditorBase::Copy()
+{
+
+}
+
+void FrameEditorBase::Paste()
+{
+
 }
 
 void FrameEditorBase::initializeGL()
@@ -341,7 +357,6 @@ void FrameEditorBase::paintGL()
       line_builder.AddLine(line);
     }
 
-
     for (int x = frame_box.m_Start.x; x <= frame_box.m_End.x; x++)
     {
       line.m_Start.x = x;
@@ -395,6 +410,11 @@ void FrameEditorBase::tick()
   repaint();
 
   UpdateFrameSize();
+}
+
+void FrameEditorBase::setMagnification(int mag)
+{
+  m_Magnification = mag;
 }
 
 void FrameEditorBase::keyPressEvent(QKeyEvent * event)
@@ -535,6 +555,7 @@ void FrameEditorBase::wheelEvent(QWheelEvent *event)
     m_Magnification += m_Magnification / 6 + 1;
   }
 
+  emit magnificationChanged(m_Magnification);
   repaint();
 }
 

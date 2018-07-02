@@ -9,12 +9,15 @@
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
 #include "Game/AI/PlayerAI.h"
-
+#include "Game/Configs/GameConfig.refl.meta.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
 #include "Runtime/ServerObject/ServerObjectManager.h"
 
 #include "StormRefl/StormReflMetaCall.h"
+
+
+GLOBAL_ASSET(ConfigPtr<GameConfig>, "./Configs/GameConfig.gameconfig", g_GameConfig);
 
 struct GameControllerRegister
 {

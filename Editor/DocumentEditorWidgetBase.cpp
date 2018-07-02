@@ -7,13 +7,15 @@
 #include <QFileDialog>
 
 #include "DocumentEditorWidgetBase.h"
+#include "EditorContainer.h"
 
 PreMainCallList g_DocumentRegistrationCallList;
 EditorContainer * g_DocumentRegistrationEditor;
 
-DocumentEditorWidgetBase::DocumentEditorWidgetBase(PropertyFieldDatabase & property_db, const std::string & root_path, DocumentChangeLinkDelegate && change_link_callback,
-  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
+DocumentEditorWidgetBase::DocumentEditorWidgetBase(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, 
+  DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
   QWidget(parent),
+  m_EditorContainer(editor_container),
   m_PropertyDb(property_db),
   m_RootPath(root_path),
   m_IgnoreCallbacks(false),
@@ -310,6 +312,16 @@ void DocumentEditorWidgetBase::CreateLink(czstr src_asset_path, czstr remote_pat
 void DocumentEditorWidgetBase::RemoveLink(czstr src_asset_path, czstr remote_path, czstr local_path)
 {
   m_ChangeLinkCallback(false, src_asset_path, remote_path, local_path);
+}
+
+void DocumentEditorWidgetBase::Undo()
+{
+  m_EditorContainer.undo();
+}
+
+void DocumentEditorWidgetBase::Redo()
+{
+  m_EditorContainer.redo();
 }
 
 void DocumentEditorWidgetBase::BeginTransaction()

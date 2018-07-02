@@ -5,6 +5,8 @@
 
 #include <sb/vector.h>
 
+#include <utility>
+
 template <typename NodeType>
 class SpatialDatabaseGrid
 {
@@ -17,7 +19,8 @@ public:
     {
       if (create_nodes)
       {
-        auto result = m_Nodes.emplace(std::make_pair(grid_id, NodeType{}));
+        NodeType new_node;
+        auto result = m_Nodes.emplace(std::make_pair(grid_id, std::move(new_node)));
         node_itr = result.first;
       }
       else
@@ -48,7 +51,8 @@ public:
         {
           if (create_nodes)
           {
-            auto result = m_Nodes.emplace(std::make_pair(grid_id, NodeType{}));
+            NodeType new_node;
+            auto result = m_Nodes.emplace(std::make_pair(grid_id, std::move(new_node)));
             node_itr = result.first;
           }
           else

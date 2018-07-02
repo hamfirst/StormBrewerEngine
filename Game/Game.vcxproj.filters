@@ -57,6 +57,13 @@
     <ClCompile Include="Systems\GameLogicSystems.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Configs\PlayerConfig.refl.reg.cpp">
+      <Filter>Configs</Filter>
+    </ClCompile>
+    <ClCompile Include="Configs\GameConfig.refl.reg.cpp">
+      <Filter>Configs</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServerEventSender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMessages.refl.h" />
@@ -141,9 +148,6 @@
     <ClInclude Include="ServerObjects\Player\States\PlayerStateMoving.refl.meta.h">
       <Filter>ServerObjects\Player\States</Filter>
     </ClInclude>
-    <ClInclude Include="ServerObjects\Player\PlayerSettings.h">
-      <Filter>ServerObjects\Player</Filter>
-    </ClInclude>
     <ClInclude Include="ServerObjects\Player\States\PlayerStateJump.refl.h">
       <Filter>ServerObjects\Player\States</Filter>
     </ClInclude>
@@ -156,6 +160,19 @@
     <ClInclude Include="Systems\GameDeliberateSyncSystemlist.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Configs\PlayerConfig.refl.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="Configs\PlayerConfig.refl.meta.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="Configs\GameConfig.refl.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="Configs\GameConfig.refl.meta.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">

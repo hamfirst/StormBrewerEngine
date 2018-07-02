@@ -11,21 +11,24 @@ public:
     NotNullPtr<SpriteBaseEditor> editor, 
     SpriteBaseDef & sprite, 
     SpriteBaseTextureLoadList & texture_access,
-    Delegate<NullOptPtr<ROpaque<Box>>> && getter,
+    Delegate<NullOptPtr<ROpaque<Box>>, uint64_t> && getter,
     Delegate<NullOptPtr<ROpaque<Box>>> && default_val,
-    Delegate<void, const Box &> && new_element,
+    Delegate<void, uint64_t, const Box &> && new_element,
     uint64_t frame_id, 
     QWidget * parent = nullptr);
 
 protected:
 
   void HandleDataUpdate();
-  void RefreshWatcher();
+  virtual void RefreshWatcher();
 
   void WriteData(Box & box);
   Box GetPreviewData(Optional<FrameEditorEdge> & preview_edge);
 
 protected:
+
+  virtual void Copy();
+  virtual void Paste();
 
   virtual void DrawData();
   virtual void DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl);
@@ -38,9 +41,9 @@ protected:
 protected:
 
   Optional<DocumentValueWatcher> m_Watcher;
-  Delegate<NullOptPtr<ROpaque<Box>>> m_Getter;
+  Delegate<NullOptPtr<ROpaque<Box>>, uint64_t> m_Getter;
   Delegate<NullOptPtr<ROpaque<Box>>> m_Default;
-  Delegate<void, const Box &> m_NewElement;
+  Delegate<void, uint64_t, const Box &> m_NewElement;
 
   bool m_LocalChange;
 

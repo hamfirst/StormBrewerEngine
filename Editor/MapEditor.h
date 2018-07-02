@@ -37,7 +37,7 @@ class MapEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  MapEditor(PropertyFieldDatabase & property_db, const std::string & root_path, MapDef & map, DocumentChangeLinkDelegate && change_link_callback,
+  MapEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, MapDef & map, DocumentChangeLinkDelegate && change_link_callback,
     DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 
   void ChangeLayerSelection(const MapEditorLayerSelection & layer, bool change_viewer_position = true);

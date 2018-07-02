@@ -8,9 +8,9 @@
 #include "EntityEditor.h"
 
 
-EntityEditor::EntityEditor(PropertyFieldDatabase & property_db, const std::string & root_path, EntityDef & entity, DocumentChangeLinkDelegate && change_link_callback,
-  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
-  DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
+EntityEditor::EntityEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, EntityDef & entity, 
+  DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
+  DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_Entity(entity),
   m_Layout(std::make_unique<QGridLayout>()),
   m_EntityProperties(std::make_unique<GenericFrame>("Entity Properties", this))

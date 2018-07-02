@@ -8,9 +8,9 @@
 #include "ServerObjectEditor.h"
 
 
-ServerObjectEditor::ServerObjectEditor(PropertyFieldDatabase & property_db, const std::string & root_path, ServerObjectDef & server_object, DocumentChangeLinkDelegate && change_link_callback,
-  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
-  DocumentEditorWidgetBase(property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
+ServerObjectEditor::ServerObjectEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, ServerObjectDef & server_object, 
+  DocumentChangeLinkDelegate && change_link_callback,  DocumentBeginTransactionDelegate && begin_transaction_callback, DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent) :
+  DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_ServerObject(server_object),
   m_Layout(std::make_unique<QGridLayout>()),
   m_ServerObjectProperties(std::make_unique<GenericFrame>("Server Object Properties", this))

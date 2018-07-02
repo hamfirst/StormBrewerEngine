@@ -16,11 +16,14 @@
 
 using DocumentOutputDelegate = Delegate<void, DocumentServerMessageType, const std::string &>;
 
+class EditorContainer;
+
 class DocumentEditorBase : public QWidget
 {
   Q_OBJECT
 public:
-  DocumentEditorBase(PropertyFieldDatabase & property_db, const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr);
+  DocumentEditorBase(EditorContainer & editor_container, PropertyFieldDatabase & property_db, 
+    const std::string & root_path, DocumentOutputDelegate && output_delegate, QWidget *parent = nullptr);
   virtual ~DocumentEditorBase();
 
   void QueueChange(const ReflectionChangeNotification & change);
@@ -52,6 +55,7 @@ private:
   void AddHotSpot(const ReflectionChangeNotification & change);
 
 protected:
+  EditorContainer & m_EditorContainer;
   PropertyFieldDatabase & m_PropertyDb;
   const std::string & m_RootPath;
 

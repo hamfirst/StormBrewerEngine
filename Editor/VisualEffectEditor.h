@@ -22,7 +22,7 @@ class VisualEffectEditor : public DocumentEditorWidgetBase
 {
   Q_OBJECT;
 public:
-  VisualEffectEditor(PropertyFieldDatabase & property_db, const std::string & root_path, VisualEffectDef & ui,
+  VisualEffectEditor(EditorContainer & editor_container, PropertyFieldDatabase & property_db, const std::string & root_path, VisualEffectDef & ui,
     DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback,
     DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 

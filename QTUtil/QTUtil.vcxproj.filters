@@ -46,95 +46,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QTUtil.cpp">
+    <ClCompile Include="AnimationTrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DraggableList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DraggableList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DraggableList.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="ExpandableList.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ExpandableList.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ExpandableList.cpp">
-      <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="FocusWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FocusWatcher.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FocusWatcher.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_QtLerpVar.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QtLerpVar.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_QtLerpVar.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_QtLerpVar.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
     <ClCompile Include="QtLerpVar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationTrack.cpp">
+    <ClCompile Include="QTUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\FinalStatic\moc_AnimationTrack.cpp">
-      <Filter>Generated Files\FinalStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_AnimationTrack.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_AnimationTrack.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\CoreOpt\moc_AnimationTrack.cpp">
-      <Filter>Generated Files\CoreOpt</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="AnimationTrack.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DraggableList.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ExpandableList.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FocusWatcher.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtLerpVar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QTUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorRearrange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="qtutil_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="DraggableList.h">
+    <ClInclude Include="VectorRearrange.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ExpandableList.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="FocusWatcher.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QtLerpVar.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AnimationTrack.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
+    </ClInclude>
   </ItemGroup>
 </Project>

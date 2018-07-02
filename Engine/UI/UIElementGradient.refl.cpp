@@ -80,7 +80,7 @@ void UIElementGradient::RenderDefault(RenderState & render_state, RenderUtil & r
   verts[5].m_Position = RenderVec2{ m_Data.m_EndX, m_Data.m_StartY };
   verts[5].m_TexCoord = {};
 
-  gsl::span<VertexInfo> vert_span = gsl::as_span(verts, 6);
+  gsl::span<VertexInfo> vert_span = gsl::make_span(verts, 6);
   m_VertexBuffer.SetBufferData(vert_span, VertexBufferType::kTriangles);
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();

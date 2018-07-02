@@ -121,6 +121,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -183,6 +184,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Game/GameCommon.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -220,6 +222,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Configs\GameConfig.refl.reg.cpp" />
+    <ClCompile Include="Configs\PlayerConfig.refl.reg.cpp" />
     <ClCompile Include="Data\PlayerSpawn.refl.reg.cpp" />
     <ClCompile Include="GameCommon.cpp">
       <SubType>
@@ -244,6 +248,7 @@
     <ClCompile Include="GameMessages.refl.cpp" />
     <ClCompile Include="GameNetworkEvents.refl.cpp" />
     <ClCompile Include="GameNetworkExternals.refl.cpp" />
+    <ClCompile Include="GameServerEventSender.cpp" />
     <ClCompile Include="GameServerTypes.cpp" />
     <ClCompile Include="GameSharedGlobalResources.cpp" />
     <ClCompile Include="GameSharedInstanceResources.cpp">
@@ -276,6 +281,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Configs\GameConfig.refl.h" />
+    <ClInclude Include="Configs\GameConfig.refl.meta.h" />
+    <ClInclude Include="Configs\PlayerConfig.refl.h" />
+    <ClInclude Include="Configs\PlayerConfig.refl.meta.h" />
     <ClInclude Include="Data\PlayerSpawn.refl.h" />
     <ClInclude Include="Data\PlayerSpawn.refl.meta.h" />
     <ClInclude Include="GameCommon.h">
@@ -328,6 +337,7 @@
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameServerEventSender.h" />
     <ClInclude Include="GameServerTypes.h" />
+    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameSharedGlobalResources.h" />
     <ClInclude Include="GameSharedInstanceResources.h">
       <SubType>
@@ -345,7 +355,6 @@
     </ClInclude>
     <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.h" />
     <ClInclude Include="ServerObjects\Player\PlayerServerObject.refl.meta.h" />
-    <ClInclude Include="ServerObjects\Player\PlayerSettings.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.refl.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateBase.refl.meta.h" />
     <ClInclude Include="ServerObjects\Player\States\PlayerStateIdle.refl.h" />

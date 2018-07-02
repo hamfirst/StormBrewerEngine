@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'AnimationFrameEditor.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.11.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,12 +10,9 @@
 #define UI_ANIMATIONFRAMEEDITOR_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QWidget>
@@ -67,9 +64,9 @@ public:
 
     void retranslateUi(QDialog *AnimationFrameEditor)
     {
-        AnimationFrameEditor->setWindowTitle(QApplication::translate("AnimationFrameEditor", "Animation Frame Editor", Q_NULLPTR));
-        okButton->setText(QApplication::translate("AnimationFrameEditor", "OK", Q_NULLPTR));
-        cancelButton->setText(QApplication::translate("AnimationFrameEditor", "Cancel", Q_NULLPTR));
+        AnimationFrameEditor->setWindowTitle(QApplication::translate("AnimationFrameEditor", "Animation Frame Editor", nullptr));
+        okButton->setText(QApplication::translate("AnimationFrameEditor", "OK", nullptr));
+        cancelButton->setText(QApplication::translate("AnimationFrameEditor", "Cancel", nullptr));
     } // retranslateUi
 
 };

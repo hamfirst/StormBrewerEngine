@@ -33,6 +33,7 @@ struct StormReflFuncInfo<GameClientController>
 template <>
 struct StormReflFuncInfo<GameClientController>::func_data_static<0 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n>
 {
+  using func_ptr_type = void (GameClientController::*)(const PlaySoundGlobalEvent &);
   using return_type = void;
   static constexpr int params_n = 1;
   static constexpr auto GetName() { return "HandlePlaySoundGlobalEvent"; }
@@ -40,7 +41,7 @@ struct StormReflFuncInfo<GameClientController>::func_data_static<0 + StormReflFu
   static constexpr unsigned GetFunctionNameHash() { return 0x3AABCC55; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 0 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n; }
-  static constexpr auto GetFunctionPtr() { return &GameClientController::HandlePlaySoundGlobalEvent; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameClientController::HandlePlaySoundGlobalEvent; }
   template <int i>
   struct param_info { };
 };
@@ -58,6 +59,7 @@ struct StormReflFuncInfo<GameClientController>::func_data_static<0 + StormReflFu
 template <>
 struct StormReflFuncInfo<GameClientController>::func_data_static<1 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n>
 {
+  using func_ptr_type = void (GameClientController::*)(const PlayVfxGlobalEvent &);
   using return_type = void;
   static constexpr int params_n = 1;
   static constexpr auto GetName() { return "HandlePlayVfxGlobalEvent"; }
@@ -65,7 +67,7 @@ struct StormReflFuncInfo<GameClientController>::func_data_static<1 + StormReflFu
   static constexpr unsigned GetFunctionNameHash() { return 0x1780638E; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 1 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n; }
-  static constexpr auto GetFunctionPtr() { return &GameClientController::HandlePlayVfxGlobalEvent; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameClientController::HandlePlayVfxGlobalEvent; }
   template <int i>
   struct param_info { };
 };
@@ -83,6 +85,7 @@ struct StormReflFuncInfo<GameClientController>::func_data_static<1 + StormReflFu
 template <>
 struct StormReflFuncInfo<GameClientController>::func_data_static<2 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n>
 {
+  using func_ptr_type = void (GameClientController::*)(const PlaceholderServerAuthEvent &);
   using return_type = void;
   static constexpr int params_n = 1;
   static constexpr auto GetName() { return "HandlePlaceholderAuthEvent"; }
@@ -90,7 +93,7 @@ struct StormReflFuncInfo<GameClientController>::func_data_static<2 + StormReflFu
   static constexpr unsigned GetFunctionNameHash() { return 0x872AEDE1; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 2 + StormReflFuncInfo<StormRelfEmptyBase>::funcs_n; }
-  static constexpr auto GetFunctionPtr() { return &GameClientController::HandlePlaceholderAuthEvent; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameClientController::HandlePlaceholderAuthEvent; }
   template <int i>
   struct param_info { };
 };

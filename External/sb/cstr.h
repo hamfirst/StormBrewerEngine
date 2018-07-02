@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gsl/string_span.h>
+#include <gsl/string_span>
 
 using zstr = gsl::zstring<>;
 using czstr = gsl::czstring<>;

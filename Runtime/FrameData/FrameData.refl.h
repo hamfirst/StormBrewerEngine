@@ -66,6 +66,13 @@ public:
   ROpaque<FrameDataLowerEdgeInfo> m_Data;
 };
 
+struct RUNTIME_EXPORT FrameDataAnchorElement
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(FrameDataAnchorElement);
+  RString m_AnchorName;
+  ROpaque<Vector2> m_Position;
+};
+
 struct RUNTIME_EXPORT FrameData
 {
 public:
@@ -75,6 +82,7 @@ public:
   RMergeList<FrameDataMultiBox> m_MultiBoxData;
   RMergeList<FrameDataSingleLine> m_SingleLineData;
   RMergeList<FrameDataLowerEdge> m_LowerEdgeData;
+  RMergeList<FrameDataAnchorElement> m_Anchors;
 };
 
 enum STORM_REFL_ENUM class FrameDataDefType
@@ -82,7 +90,8 @@ enum STORM_REFL_ENUM class FrameDataDefType
   kSingleBox,
   kMultiBox,
   kSingleLine,
-  kLowerEdge
+  kLowerEdge,
+  kAnchor
 };
 
 struct RUNTIME_EXPORT FrameDataDefElem

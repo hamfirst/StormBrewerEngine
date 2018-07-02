@@ -35,7 +35,6 @@
     <ClCompile Include="md4.c" />
     <ClCompile Include="md5.c" />
     <ClCompile Include="memory_buffer_alloc.c" />
-    <ClCompile Include="net.c" />
     <ClCompile Include="oid.c" />
     <ClCompile Include="padlock.c" />
     <ClCompile Include="pem.c" />
@@ -71,6 +70,9 @@
     <ClCompile Include="x509write_crt.c" />
     <ClCompile Include="x509write_csr.c" />
     <ClCompile Include="xtea.c" />
+    <ClCompile Include="cmac.c" />
+    <ClCompile Include="net_sockets.c" />
+    <ClCompile Include="rsa_internal.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aes.h" />
@@ -139,5 +141,10 @@
     <ClInclude Include="x509_crt.h" />
     <ClInclude Include="x509_csr.h" />
     <ClInclude Include="xtea.h" />
+    <ClInclude Include="cmac.h" />
+    <ClInclude Include="ecp_internal.h" />
+    <ClInclude Include="net_sockets.h" />
+    <ClInclude Include="platform_time.h" />
+    <ClInclude Include="rsa_internal.h" />
   </ItemGroup>
 </Project>
