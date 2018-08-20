@@ -301,7 +301,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
 
   cmake_file << "\n";
   cmake_file << "foreach(REFL_FILE " + project_name + " ${GENERIC_REFL_" + project_name + "} ${PLATFORM_REFL_" + project_name + "})\n";
-  cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFIL_FILE})\n";
+  cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
   cmake_file << "  add_custom_command(OUTPUT ${META_FILE}\n";
   cmake_file << "                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I" + relative_root + " -I" + relative_root + "/External\n";
   cmake_file << "                     MAIN_DEPENDENCY ${REFL_FILE}\n";
