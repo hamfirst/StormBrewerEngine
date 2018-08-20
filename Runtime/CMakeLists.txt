@@ -3,38 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(.././External/Web)
-  set(PLATFORM_SRC_Runtime 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(.././External/Windows)
-  set(PLATFORM_SRC_Runtime 
-            )
-elseif (IOS)
-  add_definitions(-D_IOS)
-  include_directories(.././External/IOS)
-  set(PLATFORM_SRC_Runtime 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Runtime 
-            )
-elseif (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(.././External/Android)
-  set(PLATFORM_SRC_Runtime 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Runtime 
-            )
-endif()
-
 set(GENERIC_SRC_Runtime 
             ./Runtime.cpp
             ./RuntimeCommon.cpp
@@ -42,6 +10,8 @@ set(GENERIC_SRC_Runtime
             ./Anchor/AnchorTypeDatabase.cpp
             ./Asset/Asset.cpp
             ./Collision/CollisionDatabase.cpp
+            ./Collision/DynamicCollisionDatabase.cpp
+            ./Collision/StaticCollisionDatabase.cpp
             ./Component/ComponentInitData.refl.cpp
             ./Component/ComponentInitDataTypeDatabase.cpp
             ./Config/ConfigManager.cpp
@@ -71,6 +41,7 @@ set(GENERIC_SRC_Runtime
             ./ServerObject/ServerObjectInitData.refl.cpp
             ./ServerObject/ServerObjectInitDataTypeDatabase.cpp
             ./ServerObject/ServerObjectManager.cpp
+            ./ServerObject/ServerObjectOverlapSystem.cpp
             ./ServerObject/ServerObjectResource.cpp
             ./ServerObject/ServerObjectSerialize.cpp
             ./ServerObject/ServerObjectSystem.cpp
@@ -89,5 +60,191 @@ set(GENERIC_SRC_Runtime
             ./VisualEffect/VisualEffectResource.cpp
             ./Volume/VolumeDef.refl.cpp
             ./Volume/VolumeTypeDatabase.cpp
+            #CPP_PLACEHOLDER
             )
-add_library(Runtime ${GENERIC_SRC_Runtime} ${PLATFORM_SRC_Runtime} )
+set(GENERIC_HEADER_Runtime 
+            ./Runtime.h
+            ./RuntimeCommon.h
+            ./Anchor/AnchorDef.refl.h
+            ./Anchor/AnchorDef.refl.meta.h
+            ./Anchor/AnchorTypeDatabase.h
+            ./Anchor/AnchorTypeRegister.h
+            ./Animation/AnimationState.h
+            ./Asset/Asset.h
+            ./Collision/CollisionDatabase.h
+            ./Collision/CollisionDatabaseResult.h
+            ./Collision/DynamicCollisionDatabase.h
+            ./Collision/IntersectionDatabase.h
+            ./Collision/StaticCollisionDatabase.h
+            ./Component/ComponentInitData.refl.h
+            ./Component/ComponentInitData.refl.meta.h
+            ./Component/ComponentInitDataTypeDatabase.h
+            ./Component/ComponentInitDataTypeDatabaseRegister.h
+            ./Config/ConfigList.h
+            ./Config/ConfigManager.h
+            ./Config/ConfigRegistrationMacros.h
+            ./Config/ConfigResource.h
+            ./DocumentResource/DocumentResourceBase.h
+            ./DocumentResource/DocumentResourceLoader.h
+            ./DocumentResource/DocumentResourceMacros.h
+            ./DocumentResource/DocumentResourceManager.h
+            ./DocumentResource/DocumentResourcePtr.h
+            ./DocumentResource/DocumentResourceReference.h
+            ./DocumentResource/DocumentResourceReferenceBase.h
+            ./Entity/EntityDef.refl.h
+            ./Entity/EntityDef.refl.meta.h
+            ./Entity/EntityResource.h
+            ./Event/Event.h
+            ./Event/EventDispatcher.h
+            ./Event/EventHandler.h
+            ./Event/EventSystem.h
+            ./FrameData/FrameData.refl.h
+            ./FrameData/FrameData.refl.meta.h
+            ./FrameData/FrameDataExtract.h
+            ./GenericResource/GenericResource.h
+            ./Map/MapCollision.h
+            ./Map/MapDef.refl.h
+            ./Map/MapDef.refl.meta.h
+            ./Map/MapEffectLayerDef.refl.h
+            ./Map/MapEffectLayerDef.refl.meta.h
+            ./Map/MapEffectLayerTypeDatabase.h
+            ./Map/MapEffectLayerTypeRegister.h
+            ./Map/MapMetaExtractor.h
+            ./Map/MapPropertiesDef.refl.h
+            ./Map/MapPropertiesDef.refl.meta.h
+            ./Map/MapPropertiesTypeDatabase.h
+            ./Map/MapPropertiesTypeRegister.h
+            ./Map/MapResource.h
+            ./Map/MapTile.h
+            ./Map/MapTileJson.h
+            ./Mover/Mover.h
+            ./Path/PathDef.refl.h
+            ./Path/PathDef.refl.meta.h
+            ./Path/PathTypeDatabase.h
+            ./Path/PathTypeRegister.h
+            ./ServerObject/ServerObject.h
+            ./ServerObject/ServerObjectDef.refl.h
+            ./ServerObject/ServerObjectDef.refl.meta.h
+            ./ServerObject/ServerObjectEventDispatch.h
+            ./ServerObject/ServerObjectEventRegister.h
+            ./ServerObject/ServerObjectEventSystem.h
+            ./ServerObject/ServerObjectHandle.h
+            ./ServerObject/ServerObjectInitData.refl.h
+            ./ServerObject/ServerObjectInitData.refl.meta.h
+            ./ServerObject/ServerObjectInitDataTypeDatabase.h
+            ./ServerObject/ServerObjectManager.h
+            ./ServerObject/ServerObjectMetaFuncs.h
+            ./ServerObject/ServerObjectOverlapRegistrationMacros.h
+            ./ServerObject/ServerObjectOverlapSystem.h
+            ./ServerObject/ServerObjectRegistrationMacros.h
+            ./ServerObject/ServerObjectResource.h
+            ./ServerObject/ServerObjectSerialize.h
+            ./ServerObject/ServerObjectSystem.h
+            ./ServerObject/ServerObjectUpdate.h
+            ./ServerObject/ServerTypesJson.h
+            ./ServerObject/ServerTypesNet.h
+            ./Sprite/SpriteDef.refl.h
+            ./Sprite/SpriteDef.refl.meta.h
+            ./Sprite/SpriteResource.h
+            ./SpriteBase/SpriteAnimationEventDef.refl.h
+            ./SpriteBase/SpriteAnimationEventDef.refl.meta.h
+            ./SpriteBase/SpriteAnimationEventRegister.h
+            ./SpriteBase/SpriteAnimationEventTypeDatabase.h
+            ./SpriteBase/SpriteBaseDef.refl.h
+            ./SpriteBase/SpriteBaseDef.refl.meta.h
+            ./TileSheet/TileSheetDef.refl.h
+            ./TileSheet/TileSheetDef.refl.meta.h
+            ./TileSheet/TileSheetResource.h
+            ./UI/UIDef.refl.h
+            ./UI/UIDef.refl.meta.h
+            ./UI/UIElementTypeDatabase.h
+            ./UI/UIElementTypeRegister.h
+            ./UI/UIResource.h
+            ./UI/UITypes.refl.h
+            ./UI/UITypes.refl.meta.h
+            ./VisualEffect/VisualEffectDef.refl.h
+            ./VisualEffect/VisualEffectDef.refl.meta.h
+            ./VisualEffect/VisualEffectResource.h
+            ./Volume/VolumeDef.refl.h
+            ./Volume/VolumeDef.refl.meta.h
+            ./Volume/VolumeTypeDatabase.h
+            ./Volume/VolumeTypeRegister.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_Runtime 
+            ./Anchor/AnchorDef.refl.h
+            ./Component/ComponentInitData.refl.h
+            ./Entity/EntityDef.refl.h
+            ./FrameData/FrameData.refl.h
+            ./Map/MapDef.refl.h
+            ./Map/MapEffectLayerDef.refl.h
+            ./Map/MapPropertiesDef.refl.h
+            ./Path/PathDef.refl.h
+            ./ServerObject/ServerObjectDef.refl.h
+            ./ServerObject/ServerObjectInitData.refl.h
+            ./Sprite/SpriteDef.refl.h
+            ./SpriteBase/SpriteAnimationEventDef.refl.h
+            ./SpriteBase/SpriteBaseDef.refl.h
+            ./TileSheet/TileSheetDef.refl.h
+            ./UI/UIDef.refl.h
+            ./UI/UITypes.refl.h
+            ./VisualEffect/VisualEffectDef.refl.h
+            ./Volume/VolumeDef.refl.h
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(.././External/Windows)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_WINDOWS_PLACEHOLDER
+            )
+endif()
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(.././External/Web)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_WEB_PLACEHOLDER
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_IOS_PLACEHOLDER
+            )
+endif()
+if (APPLE && NOT IOS)
+  add_definitions(-D_MACOS)
+  include_directories(.././External/MacOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_MACOS_PLACEHOLDER
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_ANDROID_PLACEHOLDER
+            )
+endif()
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+  include_directories(.././External/Linux)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Runtime 
+            #CPP_LINUX_PLACEHOLDER
+            )
+endif()
+
+foreach(REFL_FILE Runtime ${GENERIC_REFL_Runtime} ${PLATFORM_REFL_Runtime})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
+  add_custom_command(OUTPUT ${META_FILE}
+                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
+                     MAIN_DEPENDENCY ${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+endforeach()
+
+add_library(Runtime ${GENERIC_SRC_Runtime} ${PLATFORM_SRC_Runtime}
+            Runtime ${GENERIC_HEADER_Runtime} ${PLATFORM_HEADER_Runtime})

@@ -4,6 +4,7 @@ include(CMakeDependentOption)
 
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
+option(BUILD_TOOLS "Build Client" ON)
 CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
 
 SET(CMAKE_CXX_STANDARD 14)
@@ -26,6 +27,13 @@ endif()
 add_subdirectory(External)
 add_subdirectory(External/binpack)
 add_subdirectory(External/lua)
+
+if(BUILD_TOOLS)
+  add_subdirectory(GenerateCMake)
+  add_subdirectory(StormRefl)
+  add_subdirectory(DocumentServer)
+  add_subdirectory(Editor)
+endif()
 
 if(BUILD_CLIENT)
   add_subdirectory(External/gl3w)

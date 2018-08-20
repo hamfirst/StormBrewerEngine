@@ -4,6 +4,13 @@ include(StormBrewerEngine.cmake)
 
 add_subdirectory(Game)
 
+if(BUILD_TOOLS)
+  add_executable(GenerateCMake GenerateCMake/Main.cpp)  
+  target_link_libraries(GenerateCMake stdc++fs)
+
+  install(TARGETS GenerateCMake ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 if(BUILD_CLIENT)  
   add_subdirectory(GameClient)
   add_subdirectory(GameClientExe)

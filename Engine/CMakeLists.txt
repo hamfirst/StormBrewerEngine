@@ -3,38 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(.././External/Web)
-  set(PLATFORM_SRC_Engine 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(.././External/Windows)
-  set(PLATFORM_SRC_Engine 
-            )
-elseif (IOS)
-  add_definitions(-D_IOS)
-  include_directories(.././External/IOS)
-  set(PLATFORM_SRC_Engine 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Engine 
-            )
-elseif (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(.././External/Android)
-  set(PLATFORM_SRC_Engine 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Engine 
-            )
-endif()
-
 set(GENERIC_SRC_Engine 
             ./Engine.cpp
             ./EngineCommon.cpp
@@ -46,6 +14,7 @@ set(GENERIC_SRC_Engine
             ./Asset/AssetLoader.cpp
             ./Asset/AssetReferenceBase.cpp
             ./Asset/AudioAsset.cpp
+            ./Asset/ClientAssetLoader.cpp
             ./Asset/DocumentAsset.cpp
             ./Asset/DocumentAssetLoader.cpp
             ./Asset/FontAsset.cpp
@@ -92,6 +61,7 @@ set(GENERIC_SRC_Engine
             ./Rendering/ShaderProgram.cpp
             ./Rendering/Texture.cpp
             ./Rendering/VertexArray.cpp
+            ./Rendering/VertexAttrib.cpp
             ./Rendering/VertexBuffer.cpp
             ./Rendering/VertexBufferBuilder.cpp
             ./Rendering/VertexList.cpp
@@ -133,5 +103,218 @@ set(GENERIC_SRC_Engine
             ./Window/FakeWindow.cpp
             ./Window/Window.cpp
             ./Window/WindowManager.cpp
+            #CPP_PLACEHOLDER
             )
-add_library(Engine ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine} )
+set(GENERIC_HEADER_Engine 
+            ./Engine.h
+            ./EngineCommon.h
+            ./EngineState.h
+            ./EngineStateFuncs.h
+            ./Asset/Asset.h
+            ./Asset/AssetBundle.h
+            ./Asset/AssetLoad.h
+            ./Asset/AssetLoader.h
+            ./Asset/AssetManager.h
+            ./Asset/AssetReference.h
+            ./Asset/AssetReferenceBase.h
+            ./Asset/AssetReloadCallback.h
+            ./Asset/AssetSync.h
+            ./Asset/AssetTypeMacros.h
+            ./Asset/AudioAsset.h
+            ./Asset/ClientAssetLoader.h
+            ./Asset/DocumentAsset.h
+            ./Asset/DocumentAssetLoader.h
+            ./Asset/FontAsset.h
+            ./Asset/MusicAsset.h
+            ./Asset/TextureAsset.h
+            ./Audio/AudioFormat.h
+            ./Audio/AudioHandle.h
+            ./Audio/AudioManager.h
+            ./Audio/AudioSpec.h
+            ./Audio/MusicManager.h
+            ./Audio/MusicSpec.h
+            ./Audio/VolumeCategory.h
+            ./Camera/Camera.h
+            ./Component/Component.h
+            ./Component/ComponentHandle.h
+            ./Component/ComponentIterator.h
+            ./Component/ComponentList.h
+            ./Component/ComponentRegistrationMacros.h
+            ./Component/ComponentSystem.h
+            ./Component/ComponentUpdateBucketList.h
+            ./Component/ComponentUpdateRegistrationTemplates.h
+            ./DrawList/DrawList.h
+            ./Entity/Entity.h
+            ./Entity/EntityHandle.h
+            ./Entity/EntitySystem.h
+            ./Input/BinaryControlBinding.h
+            ./Input/ControlBinding.h
+            ./Input/ControlBindingHandleList.h
+            ./Input/ControlBindingList.h
+            ./Input/ControlBindingSet.h
+            ./Input/ControlHandle.h
+            ./Input/ControlId.h
+            ./Input/GamepadState.h
+            ./Input/InputState.h
+            ./Input/KeyboardState.h
+            ./Input/MouseState.h
+            ./Input/PointerControlBinding.h
+            ./Input/ScalarControlBinding.h
+            ./Input/TextInputContext.h
+            ./Input/VectorControlBinding.h
+            ./Map/MapEffectLayerInstance.h
+            ./Map/MapEffectLayerRenderer.h
+            ./Map/MapInstance.h
+            ./Map/MapManualTileLayerInstance.h
+            ./Map/MapParalaxLayerInstance.h
+            ./Map/MapSystem.h
+            ./Profiler/Profiler.h
+            ./Rendering/GeometryVertexBufferBuilder.h
+            ./Rendering/RenderErrorMacros.h
+            ./Rendering/RenderException.h
+            ./Rendering/Rendering.h
+            ./Rendering/RenderSettings.h
+            ./Rendering/RenderState.h
+            ./Rendering/RenderTarget.h
+            ./Rendering/RenderUtil.h
+            ./Rendering/Shader.h
+            ./Rendering/ShaderLiteral.h
+            ./Rendering/ShaderProgram.h
+            ./Rendering/Texture.h
+            ./Rendering/VertexArray.h
+            ./Rendering/VertexAttrib.h
+            ./Rendering/VertexBuffer.h
+            ./Rendering/VertexBufferBuilder.h
+            ./Rendering/VertexDefinition.h
+            ./Rendering/VertexList.h
+            ./SaveFile/SaveFile.h
+            ./SaveFile/SaveFileMetaFuncs.h
+            ./Settings/EngineSettings.refl.h
+            ./Settings/EngineSettings.refl.meta.h
+            ./Shader/DefaultShader.h
+            ./Shader/ShaderManager.h
+            ./Sprite/SpriteEngineData.h
+            ./Text/TextBackupFont.h
+            ./Text/TextBufferBuilder.h
+            ./Text/TextManager.h
+            ./Text/TextRenderer.h
+            ./Text/TextShaders.h
+            ./UI/UIClickable.h
+            ./UI/UIClickablePtr.h
+            ./UI/UICustomPropertyData.refl.h
+            ./UI/UICustomPropertyData.refl.meta.h
+            ./UI/UIElement.h
+            ./UI/UIElementContainer.refl.h
+            ./UI/UIElementContainer.refl.meta.h
+            ./UI/UIElementExprBinding.h
+            ./UI/UIElementExprFuncs.h
+            ./UI/UIElementExprTypes.refl.h
+            ./UI/UIElementExprTypes.refl.meta.h
+            ./UI/UIElementFullTexture.refl.h
+            ./UI/UIElementFullTexture.refl.meta.h
+            ./UI/UIElementGradient.refl.h
+            ./UI/UIElementGradient.refl.meta.h
+            ./UI/UIElementHandle.h
+            ./UI/UIElementPtr.h
+            ./UI/UIElementShape.refl.h
+            ./UI/UIElementShape.refl.meta.h
+            ./UI/UIElementSpriteFrame.refl.h
+            ./UI/UIElementSpriteFrame.refl.meta.h
+            ./UI/UIElementText.refl.h
+            ./UI/UIElementText.refl.meta.h
+            ./UI/UIElementTextInput.refl.h
+            ./UI/UIElementTextInput.refl.meta.h
+            ./UI/UIElementTextureSlice.refl.h
+            ./UI/UIElementTextureSlice.refl.meta.h
+            ./UI/UIManager.h
+            ./UI/Prototype/UIPrototypeButton.h
+            ./UI/Prototype/UIPrototypeConfirmPopup.h
+            ./UI/Prototype/UIPrototypeFullscreenButton.h
+            ./UI/Prototype/UIPrototypeMuteButton.h
+            ./UI/Prototype/UIPrototypeSlider.h
+            ./UI/Prototype/UIPrototypeTextInput.h
+            ./UI/Prototype/UIPrototypeTutorialPopup.h
+            ./UI/Prototype/UISoundPrototypeEffects.h
+            ./VisualEffect/VisualEffect.h
+            ./VisualEffect/VisualEffectFuncs.h
+            ./VisualEffect/VisualEffectHandle.h
+            ./VisualEffect/VisualEffectInstance.h
+            ./VisualEffect/VisualEffectManager.h
+            ./VisualEffect/VisualEffectTypes.refl.h
+            ./VisualEffect/VisualEffectTypes.refl.meta.h
+            ./Window/FakeWindow.h
+            ./Window/Window.h
+            ./Window/WindowManager.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_Engine 
+            ./Settings/EngineSettings.refl.h
+            ./UI/UICustomPropertyData.refl.h
+            ./UI/UIElementContainer.refl.h
+            ./UI/UIElementExprTypes.refl.h
+            ./UI/UIElementFullTexture.refl.h
+            ./UI/UIElementGradient.refl.h
+            ./UI/UIElementShape.refl.h
+            ./UI/UIElementSpriteFrame.refl.h
+            ./UI/UIElementText.refl.h
+            ./UI/UIElementTextInput.refl.h
+            ./UI/UIElementTextureSlice.refl.h
+            ./VisualEffect/VisualEffectTypes.refl.h
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(.././External/Windows)
+  set(PLATFORM_SRC_Engine 
+            #CPP_WINDOWS_PLACEHOLDER
+            )
+endif()
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(.././External/Web)
+  set(PLATFORM_SRC_Engine 
+            #CPP_WEB_PLACEHOLDER
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Engine 
+            #CPP_IOS_PLACEHOLDER
+            )
+endif()
+if (APPLE && NOT IOS)
+  add_definitions(-D_MACOS)
+  include_directories(.././External/MacOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Engine 
+            #CPP_MACOS_PLACEHOLDER
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Engine 
+            #CPP_ANDROID_PLACEHOLDER
+            )
+endif()
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+  include_directories(.././External/Linux)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Engine 
+            #CPP_LINUX_PLACEHOLDER
+            )
+endif()
+
+foreach(REFL_FILE Engine ${GENERIC_REFL_Engine} ${PLATFORM_REFL_Engine})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
+  add_custom_command(OUTPUT ${META_FILE}
+                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
+                     MAIN_DEPENDENCY ${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+endforeach()
+
+add_library(Engine ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine}
+            Engine ${GENERIC_HEADER_Engine} ${PLATFORM_HEADER_Engine})

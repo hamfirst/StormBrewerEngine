@@ -3,37 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(.././External/Web)
-  set(PLATFORM_SRC_Editor 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(.././External/Windows)
-  set(PLATFORM_SRC_Editor 
-            )
-elseif (IOS)
-  add_definitions(-D_IOS)
-  include_directories(.././External/IOS)
-  set(PLATFORM_SRC_Editor 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Editor 
-            )
-elseif (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(.././External/Android)
-  set(PLATFORM_SRC_Editor 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_Editor 
-            )
-endif()
+set(CMAKE_AUTOMOC ON)
+find_package(Qt5 REQUIRED COMPONENTS core widgets)
 
 set(GENERIC_SRC_Editor 
             ./AudioViewer.cpp
@@ -51,6 +22,8 @@ set(GENERIC_SRC_Editor
             ./EditorContainer.cpp
             ./EntityEditor.cpp
             ./FontViewer.cpp
+            ./FrameEditorAnchorEditor.cpp
+            ./FrameEditorAnchorManager.cpp
             ./FrameEditorBase.cpp
             ./FrameEditorContainer.cpp
             ./FrameEditorLowerEdge.cpp
@@ -85,6 +58,7 @@ set(GENERIC_SRC_Editor
             ./MapEditorTileLayerManager.cpp
             ./MapEditorTileManager.cpp
             ./MapEditorTileSelector.cpp
+            ./MapEditorToolAllLayers.cpp
             ./MapEditorToolAnchorCreate.cpp
             ./MapEditorToolAnchorEditor.cpp
             ./MapEditorToolAnchorMultiEditor.cpp
@@ -104,6 +78,7 @@ set(GENERIC_SRC_Editor
             ./MapEditorToolVolumeCreate.cpp
             ./MapEditorToolVolumeEditor.cpp
             ./MapEditorToolVolumeMultiEditor.cpp
+            ./MapEditorTypes.refl.cpp
             ./MapEditorViewer.cpp
             ./MapEditorVolume.cpp
             ./MapEditorVolumeManager.cpp
@@ -139,6 +114,7 @@ set(GENERIC_SRC_Editor
             ./SpriteBaseTimeline.cpp
             ./SpriteBaseTimelineElement.cpp
             ./SpriteEditor.cpp
+            ./TextInputDialog.cpp
             ./TextureViewer.cpp
             ./TextureViewerWidget.cpp
             ./TileSheetEditor.cpp
@@ -156,6 +132,202 @@ set(GENERIC_SRC_Editor
             ./VisualEffectEditorPropertyContainer.cpp
             ./VisualEffectEditorViewer.cpp
             ./VisualEffectEquationEditor.cpp
-            ./GeneratedFiles/qrc_EditorContainer.cpp
+            #CPP_PLACEHOLDER
             )
-add_library(Editor ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor} )
+set(GENERIC_HEADER_Editor 
+            ./AudioViewer.h
+            ./ConfigEditor.h
+            ./ConnectingDialog.h
+            ./DocumentEditor.h
+            ./DocumentEditorBase.h
+            ./DocumentEditorConfig.h
+            ./DocumentEditorWidgetBase.h
+            ./DocumentListValueWatcher.h
+            ./DocumentServerThread.h
+            ./DocumentSubValueListMirror.h
+            ./DocumentValueWatcher.h
+            ./DrawUtil.h
+            ./DrawUtilQt.h
+            ./EditorContainer.h
+            ./EntityEditor.h
+            ./FontViewer.h
+            ./FrameEditorAnchorEditor.h
+            ./FrameEditorAnchorManager.h
+            ./FrameEditorBase.h
+            ./FrameEditorContainer.h
+            ./FrameEditorLowerEdge.h
+            ./FrameEditorMultiBox.h
+            ./FrameEditorSingleBox.h
+            ./FrameEditorSingleLine.h
+            ./FrameEditorTypes.refl.h
+            ./FrameEditorTypes.refl.meta.h
+            ./FrameEditorUtil.h
+            ./GameClientWidget.h
+            ./GameHostWidget.h
+            ./GameServerWidget.h
+            ./GenericCheckbox.h
+            ./GenericFrame.h
+            ./GenericInput.h
+            ./GenericList.h
+            ./GenericListFrame.h
+            ./MapEditor.h
+            ./MapEditorAnchor.h
+            ./MapEditorEffectLayer.h
+            ./MapEditorEntityLayerManager.h
+            ./MapEditorEntityManager.h
+            ./MapEditorEntitySelector.h
+            ./MapEditorLayer.h
+            ./MapEditorLayerList.h
+            ./MapEditorLayerManager.h
+            ./MapEditorParalaxLayer.h
+            ./MapEditorParalaxLayerManager.h
+            ./MapEditorParalaxObjectSelector.h
+            ./MapEditorPath.h
+            ./MapEditorPathManager.h
+            ./MapEditorSelector.h
+            ./MapEditorServerObjectManager.h
+            ./MapEditorServerObjectSelector.h
+            ./MapEditorTileLayerManager.h
+            ./MapEditorTileManager.h
+            ./MapEditorTileSelector.h
+            ./MapEditorToolAllLayers.h
+            ./MapEditorToolAnchorCreate.h
+            ./MapEditorToolAnchorEditor.h
+            ./MapEditorToolAnchorMultiEditor.h
+            ./MapEditorToolBase.h
+            ./MapEditorToolEntityLayerDraw.h
+            ./MapEditorToolEntityLayerSelect.h
+            ./MapEditorToolManualTileLayerDraw.h
+            ./MapEditorToolManualTileLayerPreview.h
+            ./MapEditorToolManualTileLayerSelect.h
+            ./MapEditorToolParalaxObjectLayerDraw.h
+            ./MapEditorToolParalaxObjectLayerSelect.h
+            ./MapEditorToolPathCreate.h
+            ./MapEditorToolPathEditor.h
+            ./MapEditorToolPathMultiEditor.h
+            ./MapEditorToolServerObjectLayerDraw.h
+            ./MapEditorToolServerObjectLayerSelect.h
+            ./MapEditorToolVolumeCreate.h
+            ./MapEditorToolVolumeEditor.h
+            ./MapEditorToolVolumeMultiEditor.h
+            ./MapEditorTypes.refl.h
+            ./MapEditorTypes.refl.meta.h
+            ./MapEditorViewer.h
+            ./MapEditorVolume.h
+            ./MapEditorVolumeManager.h
+            ./PropertyEditor.h
+            ./PropertyEditorBool.h
+            ./PropertyEditorEnum.h
+            ./PropertyEditorFile.h
+            ./PropertyEditorList.h
+            ./PropertyEditorNumber.h
+            ./PropertyEditorPolymorphic.h
+            ./PropertyEditorString.h
+            ./PropertyEditorStruct.h
+            ./PropertyEditorWidget.h
+            ./ScrollingPanel.h
+            ./SelectFromListDialog.h
+            ./ServerObjectEditor.h
+            ./SimpleLabelList.h
+            ./SimpleLabelListElement.h
+            ./SpriteBaseAnimationEditor.h
+            ./SpriteBaseAnimationEventEditorDialog.h
+            ./SpriteBaseAnimationFrameListEditorDialog.h
+            ./SpriteBaseAnimationListElement.h
+            ./SpriteBaseAnimationListFrameElement.h
+            ./SpriteBaseEditor.h
+            ./SpriteBaseFrameDisplay.h
+            ./SpriteBaseSkinEditor.h
+            ./SpriteBaseSkinListElement.h
+            ./SpriteBaseSkinListTextureElement.h
+            ./SpriteBaseTextureEditor.h
+            ./SpriteBaseTextureFrameElement.h
+            ./SpriteBaseTextureFrameList.h
+            ./SpriteBaseTextureImportDialog.h
+            ./SpriteBaseTextureLoadList.h
+            ./SpriteBaseTimeline.h
+            ./SpriteBaseTimelineElement.h
+            ./SpriteEditor.h
+            ./TextInputDialog.h
+            ./TextureViewer.h
+            ./TextureViewerWidget.h
+            ./TileSheetEditor.h
+            ./UIEditor.h
+            ./UIEditorEquationList.h
+            ./UIEditorNode.h
+            ./UIEditorNodeList.h
+            ./UIEditorOutputEquationList.h
+            ./UIEditorPropertyContainer.h
+            ./UIEditorViewer.h
+            ./UIEquationEditor.h
+            ./UIOutputEquationEditor.h
+            ./VisualEffectEditor.h
+            ./VisualEffectEditorEquationList.h
+            ./VisualEffectEditorNodeList.h
+            ./VisualEffectEditorNodeSelection.h
+            ./VisualEffectEditorPropertyContainer.h
+            ./VisualEffectEditorViewer.h
+            ./VisualEffectEquationEditor.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_Editor 
+            ./FrameEditorTypes.refl.h
+            ./MapEditorTypes.refl.h
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(.././External/Windows)
+  set(PLATFORM_SRC_Editor 
+            #CPP_WINDOWS_PLACEHOLDER
+            )
+endif()
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(.././External/Web)
+  set(PLATFORM_SRC_Editor 
+            #CPP_WEB_PLACEHOLDER
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(.././External/IOS)
+  set(PLATFORM_SRC_Editor 
+            #CPP_IOS_PLACEHOLDER
+            )
+endif()
+if (APPLE && NOT IOS)
+  add_definitions(-D_MACOS)
+  include_directories(.././External/MacOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Editor 
+            #CPP_MACOS_PLACEHOLDER
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(.././External/Android)
+  set(PLATFORM_SRC_Editor 
+            #CPP_ANDROID_PLACEHOLDER
+            )
+endif()
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+  include_directories(.././External/Linux)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_Editor 
+            #CPP_LINUX_PLACEHOLDER
+            )
+endif()
+
+foreach(REFL_FILE Editor ${GENERIC_REFL_Editor} ${PLATFORM_REFL_Editor})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
+  add_custom_command(OUTPUT ${META_FILE}
+                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
+                     MAIN_DEPENDENCY ${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+endforeach()
+
+add_library(Editor ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor}
+            Editor ${GENERIC_HEADER_Editor} ${PLATFORM_HEADER_Editor})

@@ -3,39 +3,70 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(. ../../. ../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
+set(GENERIC_SRC_upng 
+            ./upng.cpp
+            #CPP_PLACEHOLDER
+            )
+set(GENERIC_HEADER_upng 
+            ./upng.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_upng 
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(../.././External/Windows)
+  set(PLATFORM_SRC_upng 
+            #CPP_WINDOWS_PLACEHOLDER
+            )
+endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(../.././External/Web)
   set(PLATFORM_SRC_upng 
+            #CPP_WEB_PLACEHOLDER
             )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(../.././External/Windows)
-  set(PLATFORM_SRC_upng 
-            )
-elseif (IOS)
+endif()
+if (IOS)
   add_definitions(-D_IOS)
   include_directories(../.././External/IOS)
   set(PLATFORM_SRC_upng 
+            #CPP_IOS_PLACEHOLDER
             )
-elseif (APPLE)
+endif()
+if (APPLE && NOT IOS)
   add_definitions(-D_MACOS)
+  include_directories(../.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_upng 
+            #CPP_MACOS_PLACEHOLDER
             )
-elseif (ANDROID)
+endif()
+if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(../.././External/Android)
   set(PLATFORM_SRC_upng 
+            #CPP_ANDROID_PLACEHOLDER
             )
-elseif (UNIX)
+endif()
+if (UNIX AND NOT APPLE)
   add_definitions(-D_LINUX)
+  include_directories(../.././External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_upng 
+            #CPP_LINUX_PLACEHOLDER
             )
 endif()
 
-set(GENERIC_SRC_upng 
-            ./upng.cpp
-            )
-add_library(upng ${GENERIC_SRC_upng} ${PLATFORM_SRC_upng} )
+foreach(REFL_FILE upng ${GENERIC_REFL_upng} ${PLATFORM_REFL_upng})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
+  add_custom_command(OUTPUT ${META_FILE}
+                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../../. -I../.././External
+                     MAIN_DEPENDENCY ${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+endforeach()
+
+add_library(upng ${GENERIC_SRC_upng} ${PLATFORM_SRC_upng}
+            upng ${GENERIC_HEADER_upng} ${PLATFORM_HEADER_upng})

@@ -3,38 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(. ../../../. ../../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(../../.././External/Web)
-  set(PLATFORM_SRC_opus 
-            )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(../../.././External/Windows)
-  set(PLATFORM_SRC_opus 
-            )
-elseif (IOS)
-  add_definitions(-D_IOS)
-  include_directories(../../.././External/IOS)
-  set(PLATFORM_SRC_opus 
-            )
-elseif (APPLE)
-  add_definitions(-D_MACOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_opus 
-            )
-elseif (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(../../.././External/Android)
-  set(PLATFORM_SRC_opus 
-            )
-elseif (UNIX)
-  add_definitions(-D_LINUX)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_opus 
-            )
-endif()
-
 set(GENERIC_SRC_opus 
             ./analysis.c
             ./mlp.c
@@ -218,5 +186,164 @@ set(GENERIC_SRC_opus
             ./silk/float/sort_FLP.c
             ./silk/float/warped_autocorrelation_FLP.c
             ./silk/float/wrappers_FLP.c
+            #CPP_PLACEHOLDER
             )
-add_library(opus ${GENERIC_SRC_opus} ${PLATFORM_SRC_opus} )
+set(GENERIC_HEADER_opus 
+            ./analysis.h
+            ./config.h
+            ./mlp.h
+            ./opus.h
+            ./opus_custom.h
+            ./opus_defines.h
+            ./opus_multistream.h
+            ./opus_private.h
+            ./opus_types.h
+            ./tansig_table.h
+            ./version.h
+            ./celt/arch.h
+            ./celt/bands.h
+            ./celt/celt.h
+            ./celt/celt_lpc.h
+            ./celt/cpu_support.h
+            ./celt/cwrs.h
+            ./celt/ecintrin.h
+            ./celt/entcode.h
+            ./celt/entdec.h
+            ./celt/entenc.h
+            ./celt/fixed_c5x.h
+            ./celt/fixed_c6x.h
+            ./celt/fixed_debug.h
+            ./celt/fixed_generic.h
+            ./celt/float_cast.h
+            ./celt/kiss_fft.h
+            ./celt/laplace.h
+            ./celt/mathops.h
+            ./celt/mdct.h
+            ./celt/mfrngcod.h
+            ./celt/modes.h
+            ./celt/os_support.h
+            ./celt/pitch.h
+            ./celt/quant_bands.h
+            ./celt/rate.h
+            ./celt/stack_alloc.h
+            ./celt/static_modes_fixed.h
+            ./celt/static_modes_fixed_arm_ne10.h
+            ./celt/static_modes_float.h
+            ./celt/static_modes_float_arm_ne10.h
+            ./celt/vq.h
+            ./celt/_kiss_fft_guts.h
+            ./celt/arm/armcpu.h
+            ./celt/arm/fft_arm.h
+            ./celt/arm/fixed_arm64.h
+            ./celt/arm/fixed_armv4.h
+            ./celt/arm/fixed_armv5e.h
+            ./celt/arm/kiss_fft_armv4.h
+            ./celt/arm/kiss_fft_armv5e.h
+            ./celt/arm/mdct_arm.h
+            ./celt/arm/pitch_arm.h
+            ./celt/dump_modes/dump_modes_arch.h
+            ./celt/mips/celt_mipsr1.h
+            ./celt/mips/fixed_generic_mipsr1.h
+            ./celt/mips/kiss_fft_mipsr1.h
+            ./celt/mips/mdct_mipsr1.h
+            ./celt/mips/pitch_mipsr1.h
+            ./celt/mips/vq_mipsr1.h
+            ./silk/API.h
+            ./silk/control.h
+            ./silk/debug.h
+            ./silk/define.h
+            ./silk/errors.h
+            ./silk/Inlines.h
+            ./silk/MacroCount.h
+            ./silk/MacroDebug.h
+            ./silk/macros.h
+            ./silk/main.h
+            ./silk/NSQ.h
+            ./silk/pitch_est_defines.h
+            ./silk/PLC.h
+            ./silk/resampler_private.h
+            ./silk/resampler_rom.h
+            ./silk/resampler_structs.h
+            ./silk/SigProc_FIX.h
+            ./silk/structs.h
+            ./silk/tables.h
+            ./silk/tuning_parameters.h
+            ./silk/typedef.h
+            ./silk/arm/macros_arm64.h
+            ./silk/arm/macros_armv4.h
+            ./silk/arm/macros_armv5e.h
+            ./silk/arm/NSQ_neon.h
+            ./silk/arm/SigProc_FIX_armv4.h
+            ./silk/arm/SigProc_FIX_armv5e.h
+            ./silk/fixed/main_FIX.h
+            ./silk/fixed/structs_FIX.h
+            ./silk/fixed/mips/noise_shape_analysis_FIX_mipsr1.h
+            ./silk/fixed/mips/prefilter_FIX_mipsr1.h
+            ./silk/fixed/mips/warped_autocorrelation_FIX_mipsr1.h
+            ./silk/float/main_FLP.h
+            ./silk/float/SigProc_FLP.h
+            ./silk/float/structs_FLP.h
+            ./silk/mips/macros_mipsr1.h
+            ./silk/mips/NSQ_del_dec_mipsr1.h
+            ./silk/mips/sigproc_fix_mipsr1.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_opus 
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(../../.././External/Windows)
+  set(PLATFORM_SRC_opus 
+            #CPP_WINDOWS_PLACEHOLDER
+            )
+endif()
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(../../.././External/Web)
+  set(PLATFORM_SRC_opus 
+            #CPP_WEB_PLACEHOLDER
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(../../.././External/IOS)
+  set(PLATFORM_SRC_opus 
+            #CPP_IOS_PLACEHOLDER
+            )
+endif()
+if (APPLE && NOT IOS)
+  add_definitions(-D_MACOS)
+  include_directories(../../.././External/MacOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_opus 
+            #CPP_MACOS_PLACEHOLDER
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(../../.././External/Android)
+  set(PLATFORM_SRC_opus 
+            #CPP_ANDROID_PLACEHOLDER
+            )
+endif()
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+  include_directories(../../.././External/Linux)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_opus 
+            #CPP_LINUX_PLACEHOLDER
+            )
+endif()
+
+foreach(REFL_FILE opus ${GENERIC_REFL_opus} ${PLATFORM_REFL_opus})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
+  add_custom_command(OUTPUT ${META_FILE}
+                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../../../. -I../../.././External
+                     MAIN_DEPENDENCY ${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+endforeach()
+
+add_library(opus ${GENERIC_SRC_opus} ${PLATFORM_SRC_opus}
+            opus ${GENERIC_HEADER_opus} ${PLATFORM_HEADER_opus})
