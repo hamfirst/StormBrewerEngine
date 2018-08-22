@@ -5,10 +5,71 @@ include(StormBrewerEngine.cmake)
 add_subdirectory(Game)
 
 if(BUILD_TOOLS)
-  add_executable(GenerateCMake GenerateCMake/Main.cpp)  
-  target_link_libraries(GenerateCMake stdc++fs)
+  add_executable(generatecmake GenerateCMake/Main.cpp)  
+  target_link_libraries(generatecmake stdc++fs)
 
-  install(TARGETS GenerateCMake ${CMAKE_CURRENT_SOURCE_DIR})
+  add_executable(stormrefl StormRefl/main.cpp  StormRefl/StaticLibs.cpp StormRefl/StormReflOutput.cpp)  
+  target_include_directories(stormrefl PUBLIC . External)
+  target_link_libraries(stormrefl
+    clangFrontend
+    clangSerialization
+    clangDriver
+    clangParse
+    clangSema
+    clangAnalysis
+    clangAST
+    clangBasic
+    clangEdit
+    clangLex
+    clangTooling
+    clang
+  )
+
+  target_link_libraries(stormrefl
+    LLVMX86AsmParser # MC, MCParser, Support, X86Desc, X86Info
+    LLVMX86Desc # MC, Support, X86AsmPrinter, X86Info
+    LLVMX86AsmPrinter # MC, Support, X86Utils
+    LLVMX86Info # MC, Support, Target
+    LLVMX86Utils # Core, Support
+    LLVMipo
+    LLVMScalarOpts
+    LLVMInstCombine
+    LLVMTransformUtils
+    LLVMAnalysis
+    LLVMTarget
+    LLVMOption # Support
+    LLVMMCParser # MC, Support
+    LLVMMC # Object, Support
+    LLVMObject # BitReader, Core, Support
+    LLVMBitReader # Core, Support
+    LLVMCore # Support
+    LLVMSupport
+    LLVMDebugInfoDWARF
+    LLVMBinaryFormat
+    LLVMProfileData
+  )
+
+  target_compile_options(stormrefl PUBLIC -fno-rtti)
+  target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+  target_link_libraries(stormrefl stdc++fs z rt m c dl)
+
+  install(TARGETS generatecmake stormrefl DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+
+  add_executable(documentserver Dummy.cpp)
+  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls) 
+  target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+  target_link_libraries(documentserver stdc++fs z rt m c dl)
+
+  find_package(Qt5Widgets CONFIG REQUIRED)
+
+  add_executable(editor Dummy.cpp)
+  target_link_libraries(editor Editor Foundation StormSocketCPP StormData asio mbedtls) 
+  target_link_libraries(editor -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+  target_link_libraries(editor Qt5::Widgets)
+  target_link_libraries(editor stdc++fs z rt m c dl)
+
+  install(TARGETS documentserver editor DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Test)
+
 endif()
 
 if(BUILD_CLIENT)  

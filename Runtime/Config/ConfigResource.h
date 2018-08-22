@@ -37,21 +37,21 @@ public:
 
   NotNullPtr<ConfigDataType> operator *()
   {
-    return GetData();
+    return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::GetData();
   }
 
   NotNullPtr<const ConfigDataType> operator *() const
   {
-    return GetData();
+    return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::GetData();
   }
 
   NotNullPtr<ConfigDataType> operator ->()
   {
-    return GetData();
+    return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::GetData();
   }
 
   NotNullPtr<const ConfigDataType> operator ->() const
   {
-    return GetData();
+    return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::GetData();
   }
 };

@@ -1,33 +1,28 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_QTUtil 
+            ./QtLerpVar.cpp
             ./AnimationTrack.cpp
+            ./QTUtil.cpp
+            ./LerpVar.cpp
             ./DraggableList.cpp
             ./ExpandableList.cpp
             ./FocusWatcher.cpp
-            ./LerpVar.cpp
-            ./QtLerpVar.cpp
-            ./QTUtil.cpp
-            ./GeneratedFiles/CoreOpt/moc_AnimationTrack.cpp
-            ./GeneratedFiles/CoreOpt/moc_DraggableList.cpp
-            ./GeneratedFiles/CoreOpt/moc_ExpandableList.cpp
-            ./GeneratedFiles/CoreOpt/moc_FocusWatcher.cpp
-            ./GeneratedFiles/CoreOpt/moc_QtLerpVar.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_QTUtil 
+            ./VectorRearrange.h
+            ./QtLerpVar.h
             ./AnimationTrack.h
-            ./DraggableList.h
-            ./ExpandableList.h
             ./FocusWatcher.h
             ./LerpVar.h
-            ./QtLerpVar.h
+            ./ExpandableList.h
             ./QTUtil.h
             ./qtutil_global.h
-            ./VectorRearrange.h
+            ./DraggableList.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_QTUtil 
@@ -38,36 +33,46 @@ if (MSVC)
   add_definitions(-D_WINDOWS)
   include_directories(.././External/Windows)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_WINDOWS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(.././External/Web)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_WEB_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
 if (IOS)
   add_definitions(-D_IOS)
   include_directories(.././External/IOS)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_IOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
-if (APPLE && NOT IOS)
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
   include_directories(.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_MACOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
 if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(.././External/Android)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_ANDROID_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
 if (UNIX AND NOT APPLE)
@@ -75,17 +80,19 @@ if (UNIX AND NOT APPLE)
   include_directories(.././External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_QTUtil 
-            #CPP_LINUX_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_QTUtil 
             )
 endif()
 
-foreach(REFL_FILE QTUtil ${GENERIC_REFL_QTUtil} ${PLATFORM_REFL_QTUtil})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
-  add_custom_command(OUTPUT ${META_FILE}
-                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
-                     MAIN_DEPENDENCY ${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+foreach(REFL_FILE ${GENERIC_REFL_QTUtil})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
 add_library(QTUtil ${GENERIC_SRC_QTUtil} ${PLATFORM_SRC_QTUtil}
-            QTUtil ${GENERIC_HEADER_QTUtil} ${PLATFORM_HEADER_QTUtil})
+            ${GENERIC_HEADER_QTUtil} ${PLATFORM_HEADER_QTUtil})

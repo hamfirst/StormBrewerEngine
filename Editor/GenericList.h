@@ -8,6 +8,7 @@
 #include <StormData/StormDataPath.h>
 
 #include "DocumentEditorWidgetBase.h"
+#include "ScrollingPanel.h"
 
 class GenericList;
 class GenericFrame;

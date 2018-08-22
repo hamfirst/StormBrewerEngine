@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 include(CMakeDependentOption)
 
+
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
 option(BUILD_TOOLS "Build Client" ON)
@@ -28,12 +29,6 @@ add_subdirectory(External)
 add_subdirectory(External/binpack)
 add_subdirectory(External/lua)
 
-if(BUILD_TOOLS)
-  add_subdirectory(GenerateCMake)
-  add_subdirectory(StormRefl)
-  add_subdirectory(DocumentServer)
-  add_subdirectory(Editor)
-endif()
 
 if(BUILD_CLIENT)
   add_subdirectory(External/gl3w)
@@ -77,11 +72,15 @@ else()
   add_subdirectory(StormWebrtcClientAPI)
 endif()
 
-add_subdirectory(Runtime)
 add_subdirectory(Foundation)
+add_subdirectory(Runtime)
 add_subdirectory(StormData)
 add_subdirectory(StormNet)
 add_subdirectory(StormNetCustomBindings)
 add_subdirectory(StormExpr)
 
+if(BUILD_TOOLS)
+  add_subdirectory(DocumentServer)
+  add_subdirectory(Editor)
+endif()
 

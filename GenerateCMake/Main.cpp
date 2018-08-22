@@ -211,7 +211,17 @@ void WritePlatformFileList(std::ofstream & cmake_file, const std::string & optio
     }
   }
 
-  cmake_file << "            #CPP" + define + "_PLACEHOLDER\n";
+  cmake_file << "            )\n\n";
+  cmake_file << "set(PLATFORM_HEADER_" + project_name + " \n";
+
+  for (auto & file : files.m_HeaderFiles)
+  {
+    if (callback(file))
+    {
+      cmake_file << "            " + file + "\n";
+    }
+  }
+
   cmake_file << "            )\n";
   cmake_file << "endif()\n";
 }
@@ -242,14 +252,19 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   std::ofstream cmake_file;
   cmake_file.open(cmake_file_path.c_str());
 
-  cmake_file << "cmake_minimum_required(VERSION 3.0)\n\n";
+  cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
   cmake_file << "include_directories(. " + relative_root + " " + relative_root + "/External)\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 14)\n\n";
 
   if (qt_proj)
   {
     cmake_file << "set(CMAKE_AUTOMOC ON)\n";
-    cmake_file << "find_package(Qt5 REQUIRED COMPONENTS core widgets)\n\n";
+    cmake_file << "set(CMAKE_AUTOUIC ON)\n";
+    cmake_file << "set(CMAKE_AUTORCC ON)\n";
+    cmake_file << "cmake_policy(SET CMP0071 OLD)\n";
+    cmake_file << "find_package(Qt5 REQUIRED COMPONENTS Core Widgets)\n";
+    cmake_file << "include_directories(${Qt5Widgets_INCLUDE_DIRS})\n";
+    cmake_file << "set(CMAKE_POSITION_INDEPENDENT_CODE ON)\n";
   }
 
   cmake_file << "set(GENERIC_SRC_" + project_name + " \n";
@@ -295,21 +310,21 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   WritePlatformFileList(cmake_file, "MSVC", "_WINDOWS", "Windows", project_name, relative_root, files, false, [](const std::string & file) { return IsWindowsPlatformFile(file); });
   WritePlatformFileList(cmake_file, "WEB", "_WEB", "Web", project_name, relative_root, files, false, [](const std::string & file) { return IsWebPlatformFile(file); });
   WritePlatformFileList(cmake_file, "IOS", "_IOS", "IOS", project_name, relative_root, files, false, [](const std::string & file) { return IsIOSPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "APPLE && NOT IOS", "_MACOS", "MacOS", project_name, relative_root, files, true, [](const std::string & file) { return IsMacOSPlatformFile(file); });
+  WritePlatformFileList(cmake_file, "APPLE AND NOT IOS", "_MACOS", "MacOS", project_name, relative_root, files, true, [](const std::string & file) { return IsMacOSPlatformFile(file); });
   WritePlatformFileList(cmake_file, "ANDROID", "_ANDROID", "Android", project_name, relative_root, files, false, [](const std::string & file) { return IsAndroidOSPlatformFile(file); });
   WritePlatformFileList(cmake_file, "UNIX AND NOT APPLE", "_LINUX", "Linux", project_name, relative_root, files, true, [](const std::string & file) { return IsLinuxPlatformFile(file); });
 
   cmake_file << "\n";
-  cmake_file << "foreach(REFL_FILE " + project_name + " ${GENERIC_REFL_" + project_name + "} ${PLATFORM_REFL_" + project_name + "})\n";
+  cmake_file << "foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
   cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
-  cmake_file << "  add_custom_command(OUTPUT ${META_FILE}\n";
-  cmake_file << "                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I" + relative_root + " -I" + relative_root + "/External\n";
-  cmake_file << "                     MAIN_DEPENDENCY ${REFL_FILE}\n";
-  cmake_file << "                     IMPLICIT_DEPENDS CXX ${REFL_FILE})\n";
+  cmake_file << "  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
+  cmake_file << "                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/" + relative_root + " -I${CMAKE_CURRENT_SOURCE_DIR}/" + relative_root + "/External -I${CLANG_HEADER_PATH}\n";
+  cmake_file << "                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
+  cmake_file << "                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
   cmake_file << "endforeach()\n\n";
 
   cmake_file << "add_library(" + project_name + " ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
-  cmake_file << "            " + project_name + " ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})";
+  cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})";
 
   cmake_file.close();
 }
@@ -367,9 +382,10 @@ void ProcessProjectFolder(const fs::path & p, const std::string & base_path, con
   }
 }
 
-void main()
+int main()
 {
   ProcessProjectFolder(fs::current_path(), ".", ".", nullptr, false);
+  return 0;
 }
 
 

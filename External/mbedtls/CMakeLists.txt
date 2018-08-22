@@ -1,155 +1,155 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../../. ../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_mbedtls 
-            ./aes.c
-            ./aesni.c
-            ./arc4.c
-            ./asn1parse.c
-            ./asn1write.c
-            ./base64.c
-            ./bignum.c
-            ./blowfish.c
-            ./camellia.c
-            ./ccm.c
-            ./certs.c
-            ./cipher.c
-            ./cipher_wrap.c
-            ./cmac.c
-            ./ctr_drbg.c
-            ./debug.c
-            ./des.c
-            ./dhm.c
-            ./ecdh.c
-            ./ecdsa.c
-            ./ecjpake.c
-            ./ecp.c
-            ./ecp_curves.c
-            ./entropy.c
-            ./entropy_poll.c
-            ./error.c
-            ./gcm.c
-            ./havege.c
-            ./hmac_drbg.c
-            ./md.c
-            ./md2.c
-            ./md4.c
-            ./md5.c
-            ./md_wrap.c
-            ./memory_buffer_alloc.c
-            ./net_sockets.c
-            ./oid.c
-            ./padlock.c
             ./pem.c
-            ./pk.c
-            ./pkcs11.c
-            ./pkcs12.c
-            ./pkcs5.c
-            ./pkparse.c
-            ./pkwrite.c
-            ./pk_wrap.c
             ./platform.c
-            ./ripemd160.c
-            ./rsa.c
-            ./rsa_internal.c
-            ./sha1.c
-            ./sha256.c
-            ./sha512.c
-            ./ssl_cache.c
+            ./pk_wrap.c
             ./ssl_ciphersuites.c
-            ./ssl_cli.c
-            ./ssl_cookie.c
-            ./ssl_srv.c
-            ./ssl_ticket.c
-            ./ssl_tls.c
-            ./threading.c
-            ./timing.c
-            ./version.c
-            ./version_features.c
-            ./x509.c
-            ./x509write_crt.c
-            ./x509write_csr.c
+            ./cmac.c
+            ./ssl_cache.c
+            ./camellia.c
+            ./hmac_drbg.c
+            ./asn1parse.c
+            ./padlock.c
+            ./rsa.c
+            ./aes.c
+            ./pk.c
             ./x509_create.c
-            ./x509_crl.c
-            ./x509_crt.c
-            ./x509_csr.c
+            ./x509write_crt.c
+            ./ripemd160.c
+            ./havege.c
+            ./bignum.c
+            ./ecdh.c
+            ./sha256.c
+            ./ecdsa.c
+            ./ssl_cookie.c
+            ./blowfish.c
+            ./pkcs11.c
+            ./sha512.c
+            ./ssl_ticket.c
+            ./ecp_curves.c
+            ./md5.c
+            ./certs.c
+            ./debug.c
             ./xtea.c
+            ./threading.c
+            ./version.c
+            ./net_sockets.c
+            ./ecp.c
+            ./arc4.c
+            ./md_wrap.c
+            ./error.c
+            ./x509_csr.c
+            ./ssl_srv.c
+            ./dhm.c
+            ./entropy.c
+            ./md4.c
+            ./pkcs5.c
+            ./pkcs12.c
+            ./gcm.c
+            ./ccm.c
+            ./pkparse.c
+            ./cipher_wrap.c
+            ./oid.c
+            ./md2.c
+            ./ecjpake.c
+            ./x509_crt.c
+            ./ssl_tls.c
+            ./ssl_cli.c
+            ./sha1.c
+            ./aesni.c
+            ./cipher.c
+            ./des.c
+            ./rsa_internal.c
+            ./ctr_drbg.c
+            ./x509write_csr.c
+            ./x509.c
+            ./timing.c
+            ./asn1write.c
+            ./md.c
+            ./memory_buffer_alloc.c
+            ./version_features.c
+            ./x509_crl.c
+            ./entropy_poll.c
+            ./pkwrite.c
+            ./base64.c
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_mbedtls 
-            ./aes.h
-            ./aesni.h
-            ./arc4.h
-            ./asn1.h
-            ./asn1write.h
-            ./base64.h
-            ./bignum.h
-            ./blowfish.h
-            ./bn_mul.h
-            ./camellia.h
-            ./ccm.h
-            ./certs.h
-            ./check_config.h
-            ./cipher.h
+            ./memory_buffer_alloc.h
+            ./md_internal.h
+            ./rsa_internal.h
+            ./debug.h
             ./cipher_internal.h
             ./cmac.h
-            ./compat-1.3.h
-            ./config.h
-            ./ctr_drbg.h
-            ./debug.h
-            ./des.h
-            ./dhm.h
-            ./ecdh.h
-            ./ecdsa.h
-            ./ecjpake.h
-            ./ecp.h
-            ./ecp_internal.h
-            ./entropy.h
-            ./entropy_poll.h
-            ./error.h
-            ./gcm.h
-            ./havege.h
-            ./hmac_drbg.h
-            ./md.h
-            ./md2.h
-            ./md4.h
-            ./md5.h
-            ./md_internal.h
-            ./memory_buffer_alloc.h
-            ./net.h
-            ./net_sockets.h
-            ./oid.h
-            ./padlock.h
-            ./pem.h
-            ./pk.h
-            ./pkcs11.h
-            ./pkcs12.h
-            ./pkcs5.h
-            ./pk_internal.h
-            ./platform.h
-            ./platform_time.h
-            ./ripemd160.h
-            ./rsa.h
-            ./rsa_internal.h
-            ./sha1.h
-            ./sha256.h
-            ./sha512.h
-            ./ssl.h
-            ./ssl_cache.h
-            ./ssl_ciphersuites.h
-            ./ssl_cookie.h
-            ./ssl_internal.h
-            ./ssl_ticket.h
-            ./threading.h
-            ./timing.h
-            ./version.h
             ./x509.h
-            ./x509_crl.h
-            ./x509_crt.h
-            ./x509_csr.h
+            ./ssl.h
+            ./camellia.h
+            ./ssl_cookie.h
+            ./entropy.h
+            ./net.h
+            ./base64.h
+            ./aes.h
+            ./des.h
+            ./bignum.h
+            ./oid.h
+            ./sha1.h
             ./xtea.h
+            ./bn_mul.h
+            ./platform.h
+            ./ecdh.h
+            ./ripemd160.h
+            ./threading.h
+            ./md.h
+            ./check_config.h
+            ./compat-1.3.h
+            ./rsa.h
+            ./timing.h
+            ./x509_crl.h
+            ./pem.h
+            ./aesni.h
+            ./ecdsa.h
+            ./error.h
+            ./arc4.h
+            ./config.h
+            ./sha512.h
+            ./md5.h
+            ./havege.h
+            ./pk.h
+            ./ctr_drbg.h
+            ./pk_internal.h
+            ./hmac_drbg.h
+            ./pkcs11.h
+            ./ssl_ticket.h
+            ./ssl_internal.h
+            ./sha256.h
+            ./pkcs5.h
+            ./gcm.h
+            ./dhm.h
+            ./ccm.h
+            ./ecjpake.h
+            ./asn1write.h
+            ./md4.h
+            ./asn1.h
+            ./net_sockets.h
+            ./ecp.h
+            ./x509_crt.h
+            ./ecp_internal.h
+            ./platform_time.h
+            ./md2.h
+            ./ssl_cache.h
+            ./pkcs12.h
+            ./cipher.h
+            ./padlock.h
+            ./x509_csr.h
+            ./version.h
+            ./certs.h
+            ./entropy_poll.h
+            ./ssl_ciphersuites.h
+            ./blowfish.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_mbedtls 
@@ -160,36 +160,46 @@ if (MSVC)
   add_definitions(-D_WINDOWS)
   include_directories(../.././External/Windows)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_WINDOWS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(../.././External/Web)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_WEB_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
 if (IOS)
   add_definitions(-D_IOS)
   include_directories(../.././External/IOS)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_IOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
-if (APPLE && NOT IOS)
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
   include_directories(../.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_MACOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
 if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(../.././External/Android)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_ANDROID_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
 if (UNIX AND NOT APPLE)
@@ -197,17 +207,19 @@ if (UNIX AND NOT APPLE)
   include_directories(../.././External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_mbedtls 
-            #CPP_LINUX_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_mbedtls 
             )
 endif()
 
-foreach(REFL_FILE mbedtls ${GENERIC_REFL_mbedtls} ${PLATFORM_REFL_mbedtls})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
-  add_custom_command(OUTPUT ${META_FILE}
-                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../../. -I../.././External
-                     MAIN_DEPENDENCY ${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+foreach(REFL_FILE ${GENERIC_REFL_mbedtls})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../../. -I${CMAKE_CURRENT_SOURCE_DIR}/../.././External -I${CLANG_HEADER_PATH}
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
 add_library(mbedtls ${GENERIC_SRC_mbedtls} ${PLATFORM_SRC_mbedtls}
-            mbedtls ${GENERIC_HEADER_mbedtls} ${PLATFORM_HEADER_mbedtls})
+            ${GENERIC_HEADER_mbedtls} ${PLATFORM_HEADER_mbedtls})

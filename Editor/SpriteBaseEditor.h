@@ -14,6 +14,7 @@
 #include "SpriteBaseSkinEditor.h"
 #include "SpriteBaseTextureFrameList.h"
 #include "SpriteBaseTextureLoadList.h"
+#include "SpriteBaseTextureImportDialog.h"
 
 class SpriteBaseEditor : public DocumentEditorWidgetBase
 {

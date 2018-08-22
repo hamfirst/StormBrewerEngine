@@ -34,7 +34,7 @@ public:
       return;
     }
 
-    AssetType::LoadCallback cb(&AssetSync<AssetType>::HandleLoadCallback, this);
+    typename AssetType::LoadCallback cb(&AssetSync<AssetType>::HandleLoadCallback, this);
     m_AssetLink = AssetType::LoadWithCallback(file_name, std::move(cb));
     m_AssetLoadHash = hash;
   }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
@@ -8,185 +8,185 @@ set(GENERIC_SRC_External
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_External 
-            ./Android/SDL2/begin_code.h
-            ./Android/SDL2/close_code.h
-            ./Android/SDL2/SDL.h
-            ./Android/SDL2/SDL_assert.h
-            ./Android/SDL2/SDL_atomic.h
-            ./Android/SDL2/SDL_audio.h
-            ./Android/SDL2/SDL_bits.h
-            ./Android/SDL2/SDL_blendmode.h
-            ./Android/SDL2/SDL_clipboard.h
-            ./Android/SDL2/SDL_config.h
-            ./Android/SDL2/SDL_config_iphoneos.h
-            ./Android/SDL2/SDL_config_minimal.h
-            ./Android/SDL2/SDL_config_pandora.h
-            ./Android/SDL2/SDL_config_psp.h
-            ./Android/SDL2/SDL_config_wiz.h
-            ./Android/SDL2/SDL_copying.h
-            ./Android/SDL2/SDL_cpuinfo.h
-            ./Android/SDL2/SDL_egl.h
-            ./Android/SDL2/SDL_endian.h
-            ./Android/SDL2/SDL_error.h
-            ./Android/SDL2/SDL_events.h
-            ./Android/SDL2/SDL_filesystem.h
-            ./Android/SDL2/SDL_gamecontroller.h
-            ./Android/SDL2/SDL_gesture.h
-            ./Android/SDL2/SDL_haptic.h
-            ./Android/SDL2/SDL_hints.h
-            ./Android/SDL2/SDL_joystick.h
-            ./Android/SDL2/SDL_keyboard.h
-            ./Android/SDL2/SDL_keycode.h
-            ./Android/SDL2/SDL_loadso.h
-            ./Android/SDL2/SDL_log.h
-            ./Android/SDL2/SDL_main.h
-            ./Android/SDL2/SDL_messagebox.h
-            ./Android/SDL2/SDL_mouse.h
-            ./Android/SDL2/SDL_mutex.h
-            ./Android/SDL2/SDL_name.h
-            ./Android/SDL2/SDL_opengl.h
-            ./Android/SDL2/SDL_opengles.h
-            ./Android/SDL2/SDL_opengles2.h
-            ./Android/SDL2/SDL_opengles2_gl2.h
-            ./Android/SDL2/SDL_opengles2_gl2ext.h
-            ./Android/SDL2/SDL_opengles2_gl2platform.h
-            ./Android/SDL2/SDL_opengles2_khrplatform.h
-            ./Android/SDL2/SDL_opengl_glext.h
-            ./Android/SDL2/SDL_pixels.h
-            ./Android/SDL2/SDL_platform.h
-            ./Android/SDL2/SDL_power.h
-            ./Android/SDL2/SDL_quit.h
-            ./Android/SDL2/SDL_rect.h
-            ./Android/SDL2/SDL_render.h
-            ./Android/SDL2/SDL_revision.h
-            ./Android/SDL2/SDL_rwops.h
-            ./Android/SDL2/SDL_scancode.h
-            ./Android/SDL2/SDL_shape.h
-            ./Android/SDL2/SDL_stdinc.h
-            ./Android/SDL2/SDL_surface.h
-            ./Android/SDL2/SDL_system.h
-            ./Android/SDL2/SDL_syswm.h
-            ./Android/SDL2/SDL_test.h
-            ./Android/SDL2/SDL_test_assert.h
-            ./Android/SDL2/SDL_test_common.h
-            ./Android/SDL2/SDL_test_compare.h
-            ./Android/SDL2/SDL_test_crc32.h
-            ./Android/SDL2/SDL_test_font.h
-            ./Android/SDL2/SDL_test_fuzzer.h
-            ./Android/SDL2/SDL_test_harness.h
-            ./Android/SDL2/SDL_test_images.h
-            ./Android/SDL2/SDL_test_log.h
-            ./Android/SDL2/SDL_test_md5.h
-            ./Android/SDL2/SDL_test_memory.h
-            ./Android/SDL2/SDL_test_random.h
-            ./Android/SDL2/SDL_thread.h
-            ./Android/SDL2/SDL_timer.h
-            ./Android/SDL2/SDL_touch.h
-            ./Android/SDL2/SDL_types.h
-            ./Android/SDL2/SDL_version.h
-            ./Android/SDL2/SDL_video.h
-            ./Android/SDL2/SDL_vulkan.h
-            ./colony/colony.h
             ./glm/simd/common.h
             ./glm/simd/exponential.h
-            ./glm/simd/geometric.h
-            ./glm/simd/integer.h
-            ./glm/simd/matrix.h
             ./glm/simd/packing.h
-            ./glm/simd/platform.h
-            ./glm/simd/trigonometric.h
+            ./glm/simd/integer.h
             ./glm/simd/vector_relational.h
-            ./hash/Hash.h
-            ./hash/Hash64.h
-            ./IOS/SDL2/begin_code.h
-            ./IOS/SDL2/close_code.h
+            ./glm/simd/platform.h
+            ./glm/simd/matrix.h
+            ./glm/simd/trigonometric.h
+            ./glm/simd/geometric.h
+            ./IOS/SDL2/SDL_test_harness.h
+            ./IOS/SDL2/SDL_gamecontroller.h
+            ./IOS/SDL2/SDL_rect.h
+            ./IOS/SDL2/SDL_test_crc32.h
+            ./IOS/SDL2/SDL_vulkan.h
+            ./IOS/SDL2/SDL_test.h
+            ./IOS/SDL2/SDL_test_compare.h
+            ./IOS/SDL2/SDL_opengles2_gl2ext.h
+            ./IOS/SDL2/SDL_rwops.h
+            ./IOS/SDL2/SDL_messagebox.h
+            ./IOS/SDL2/SDL_loadso.h
+            ./IOS/SDL2/SDL_pixels.h
             ./IOS/SDL2/SDL.h
-            ./IOS/SDL2/SDL_assert.h
-            ./IOS/SDL2/SDL_atomic.h
-            ./IOS/SDL2/SDL_audio.h
-            ./IOS/SDL2/SDL_bits.h
-            ./IOS/SDL2/SDL_blendmode.h
-            ./IOS/SDL2/SDL_clipboard.h
+            ./IOS/SDL2/SDL_opengles2.h
+            ./IOS/SDL2/SDL_opengles2_gl2platform.h
             ./IOS/SDL2/SDL_config.h
             ./IOS/SDL2/SDL_config_iphoneos.h
+            ./IOS/SDL2/begin_code.h
+            ./IOS/SDL2/SDL_test_common.h
+            ./IOS/SDL2/SDL_joystick.h
+            ./IOS/SDL2/SDL_opengl.h
+            ./IOS/SDL2/SDL_render.h
+            ./IOS/SDL2/SDL_platform.h
+            ./IOS/SDL2/SDL_log.h
+            ./IOS/SDL2/SDL_stdinc.h
+            ./IOS/SDL2/SDL_test_memory.h
+            ./IOS/SDL2/SDL_keyboard.h
+            ./IOS/SDL2/SDL_audio.h
+            ./IOS/SDL2/SDL_video.h
             ./IOS/SDL2/SDL_config_minimal.h
-            ./IOS/SDL2/SDL_config_pandora.h
-            ./IOS/SDL2/SDL_config_psp.h
+            ./IOS/SDL2/close_code.h
             ./IOS/SDL2/SDL_config_wiz.h
-            ./IOS/SDL2/SDL_copying.h
             ./IOS/SDL2/SDL_cpuinfo.h
-            ./IOS/SDL2/SDL_egl.h
+            ./IOS/SDL2/SDL_test_log.h
+            ./IOS/SDL2/SDL_test_font.h
             ./IOS/SDL2/SDL_endian.h
+            ./IOS/SDL2/SDL_name.h
+            ./IOS/SDL2/SDL_touch.h
+            ./IOS/SDL2/SDL_system.h
+            ./IOS/SDL2/SDL_keycode.h
+            ./IOS/SDL2/SDL_power.h
+            ./IOS/SDL2/SDL_gesture.h
+            ./IOS/SDL2/SDL_filesystem.h
+            ./IOS/SDL2/SDL_copying.h
+            ./IOS/SDL2/SDL_egl.h
+            ./IOS/SDL2/SDL_test_fuzzer.h
+            ./IOS/SDL2/SDL_main.h
+            ./IOS/SDL2/SDL_blendmode.h
             ./IOS/SDL2/SDL_error.h
             ./IOS/SDL2/SDL_events.h
-            ./IOS/SDL2/SDL_filesystem.h
-            ./IOS/SDL2/SDL_gamecontroller.h
-            ./IOS/SDL2/SDL_gesture.h
-            ./IOS/SDL2/SDL_haptic.h
-            ./IOS/SDL2/SDL_hints.h
-            ./IOS/SDL2/SDL_joystick.h
-            ./IOS/SDL2/SDL_keyboard.h
-            ./IOS/SDL2/SDL_keycode.h
-            ./IOS/SDL2/SDL_loadso.h
-            ./IOS/SDL2/SDL_log.h
-            ./IOS/SDL2/SDL_main.h
-            ./IOS/SDL2/SDL_messagebox.h
-            ./IOS/SDL2/SDL_mouse.h
-            ./IOS/SDL2/SDL_mutex.h
-            ./IOS/SDL2/SDL_name.h
-            ./IOS/SDL2/SDL_opengl.h
-            ./IOS/SDL2/SDL_opengles.h
-            ./IOS/SDL2/SDL_opengles2.h
-            ./IOS/SDL2/SDL_opengles2_gl2.h
-            ./IOS/SDL2/SDL_opengles2_gl2ext.h
-            ./IOS/SDL2/SDL_opengles2_gl2platform.h
-            ./IOS/SDL2/SDL_opengles2_khrplatform.h
-            ./IOS/SDL2/SDL_opengl_glext.h
-            ./IOS/SDL2/SDL_pixels.h
-            ./IOS/SDL2/SDL_platform.h
-            ./IOS/SDL2/SDL_power.h
-            ./IOS/SDL2/SDL_quit.h
-            ./IOS/SDL2/SDL_rect.h
-            ./IOS/SDL2/SDL_render.h
-            ./IOS/SDL2/SDL_revision.h
-            ./IOS/SDL2/SDL_rwops.h
-            ./IOS/SDL2/SDL_scancode.h
-            ./IOS/SDL2/SDL_shape.h
-            ./IOS/SDL2/SDL_stdinc.h
-            ./IOS/SDL2/SDL_surface.h
-            ./IOS/SDL2/SDL_system.h
-            ./IOS/SDL2/SDL_syswm.h
-            ./IOS/SDL2/SDL_test.h
-            ./IOS/SDL2/SDL_test_assert.h
-            ./IOS/SDL2/SDL_test_common.h
-            ./IOS/SDL2/SDL_test_compare.h
-            ./IOS/SDL2/SDL_test_crc32.h
-            ./IOS/SDL2/SDL_test_font.h
-            ./IOS/SDL2/SDL_test_fuzzer.h
-            ./IOS/SDL2/SDL_test_harness.h
-            ./IOS/SDL2/SDL_test_images.h
-            ./IOS/SDL2/SDL_test_log.h
-            ./IOS/SDL2/SDL_test_md5.h
-            ./IOS/SDL2/SDL_test_memory.h
             ./IOS/SDL2/SDL_test_random.h
-            ./IOS/SDL2/SDL_thread.h
-            ./IOS/SDL2/SDL_timer.h
-            ./IOS/SDL2/SDL_touch.h
             ./IOS/SDL2/SDL_types.h
+            ./IOS/SDL2/SDL_hints.h
+            ./IOS/SDL2/SDL_mouse.h
+            ./IOS/SDL2/SDL_config_psp.h
+            ./IOS/SDL2/SDL_shape.h
+            ./IOS/SDL2/SDL_thread.h
+            ./IOS/SDL2/SDL_haptic.h
+            ./IOS/SDL2/SDL_test_assert.h
+            ./IOS/SDL2/SDL_assert.h
             ./IOS/SDL2/SDL_version.h
-            ./IOS/SDL2/SDL_video.h
-            ./IOS/SDL2/SDL_vulkan.h
+            ./IOS/SDL2/SDL_scancode.h
+            ./IOS/SDL2/SDL_opengles2_khrplatform.h
+            ./IOS/SDL2/SDL_clipboard.h
+            ./IOS/SDL2/SDL_opengles.h
+            ./IOS/SDL2/SDL_opengles2_gl2.h
+            ./IOS/SDL2/SDL_surface.h
+            ./IOS/SDL2/SDL_revision.h
+            ./IOS/SDL2/SDL_test_images.h
+            ./IOS/SDL2/SDL_syswm.h
+            ./IOS/SDL2/SDL_mutex.h
+            ./IOS/SDL2/SDL_quit.h
+            ./IOS/SDL2/SDL_timer.h
+            ./IOS/SDL2/SDL_test_md5.h
+            ./IOS/SDL2/SDL_atomic.h
+            ./IOS/SDL2/SDL_opengl_glext.h
+            ./IOS/SDL2/SDL_config_pandora.h
+            ./IOS/SDL2/SDL_bits.h
+            ./hash/Hash.h
+            ./hash/Hash64.h
+            ./sb/match_ref.h
+            ./sb/vector.h
+            ./sb/static_sized_array_alloc.h
             ./sb/cstr.h
-            ./sb/fixed_sized_alloc.h
+            ./sb/static_sized_alloc.h
             ./sb/fixed_sized_array_alloc.h
             ./sb/match_const.h
-            ./sb/match_ref.h
-            ./sb/static_sized_alloc.h
-            ./sb/static_sized_array_alloc.h
-            ./sb/vector.h
-            ./Windows/EGL/egl.h
+            ./sb/fixed_sized_alloc.h
+            ./Android/SDL2/SDL_test_harness.h
+            ./Android/SDL2/SDL_gamecontroller.h
+            ./Android/SDL2/SDL_rect.h
+            ./Android/SDL2/SDL_test_crc32.h
+            ./Android/SDL2/SDL_vulkan.h
+            ./Android/SDL2/SDL_test.h
+            ./Android/SDL2/SDL_test_compare.h
+            ./Android/SDL2/SDL_opengles2_gl2ext.h
+            ./Android/SDL2/SDL_rwops.h
+            ./Android/SDL2/SDL_messagebox.h
+            ./Android/SDL2/SDL_loadso.h
+            ./Android/SDL2/SDL_pixels.h
+            ./Android/SDL2/SDL.h
+            ./Android/SDL2/SDL_opengles2.h
+            ./Android/SDL2/SDL_opengles2_gl2platform.h
+            ./Android/SDL2/SDL_config.h
+            ./Android/SDL2/SDL_config_iphoneos.h
+            ./Android/SDL2/begin_code.h
+            ./Android/SDL2/SDL_test_common.h
+            ./Android/SDL2/SDL_joystick.h
+            ./Android/SDL2/SDL_opengl.h
+            ./Android/SDL2/SDL_render.h
+            ./Android/SDL2/SDL_platform.h
+            ./Android/SDL2/SDL_log.h
+            ./Android/SDL2/SDL_stdinc.h
+            ./Android/SDL2/SDL_test_memory.h
+            ./Android/SDL2/SDL_keyboard.h
+            ./Android/SDL2/SDL_audio.h
+            ./Android/SDL2/SDL_video.h
+            ./Android/SDL2/SDL_config_minimal.h
+            ./Android/SDL2/close_code.h
+            ./Android/SDL2/SDL_config_wiz.h
+            ./Android/SDL2/SDL_cpuinfo.h
+            ./Android/SDL2/SDL_test_log.h
+            ./Android/SDL2/SDL_test_font.h
+            ./Android/SDL2/SDL_endian.h
+            ./Android/SDL2/SDL_name.h
+            ./Android/SDL2/SDL_touch.h
+            ./Android/SDL2/SDL_system.h
+            ./Android/SDL2/SDL_keycode.h
+            ./Android/SDL2/SDL_power.h
+            ./Android/SDL2/SDL_gesture.h
+            ./Android/SDL2/SDL_filesystem.h
+            ./Android/SDL2/SDL_copying.h
+            ./Android/SDL2/SDL_egl.h
+            ./Android/SDL2/SDL_test_fuzzer.h
+            ./Android/SDL2/SDL_main.h
+            ./Android/SDL2/SDL_blendmode.h
+            ./Android/SDL2/SDL_error.h
+            ./Android/SDL2/SDL_events.h
+            ./Android/SDL2/SDL_test_random.h
+            ./Android/SDL2/SDL_types.h
+            ./Android/SDL2/SDL_hints.h
+            ./Android/SDL2/SDL_mouse.h
+            ./Android/SDL2/SDL_config_psp.h
+            ./Android/SDL2/SDL_shape.h
+            ./Android/SDL2/SDL_thread.h
+            ./Android/SDL2/SDL_haptic.h
+            ./Android/SDL2/SDL_test_assert.h
+            ./Android/SDL2/SDL_assert.h
+            ./Android/SDL2/SDL_version.h
+            ./Android/SDL2/SDL_scancode.h
+            ./Android/SDL2/SDL_opengles2_khrplatform.h
+            ./Android/SDL2/SDL_clipboard.h
+            ./Android/SDL2/SDL_opengles.h
+            ./Android/SDL2/SDL_opengles2_gl2.h
+            ./Android/SDL2/SDL_surface.h
+            ./Android/SDL2/SDL_revision.h
+            ./Android/SDL2/SDL_test_images.h
+            ./Android/SDL2/SDL_syswm.h
+            ./Android/SDL2/SDL_mutex.h
+            ./Android/SDL2/SDL_quit.h
+            ./Android/SDL2/SDL_timer.h
+            ./Android/SDL2/SDL_test_md5.h
+            ./Android/SDL2/SDL_atomic.h
+            ./Android/SDL2/SDL_opengl_glext.h
+            ./Android/SDL2/SDL_config_pandora.h
+            ./Android/SDL2/SDL_bits.h
+            ./colony/colony.h
             ./Windows/EGL/eglext.h
             ./Windows/EGL/eglplatform.h
+            ./Windows/EGL/egl.h
             ./Windows/KHR/khrplatform.h
             #HEADER_PLACEHOLDER
             )
@@ -198,36 +198,52 @@ if (MSVC)
   add_definitions(-D_WINDOWS)
   include_directories(.././External/Windows)
   set(PLATFORM_SRC_External 
-            #CPP_WINDOWS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
+            ./IOS/SDL2/SDL_config_windows.h
+            ./Android/SDL2/SDL_config_windows.h
             )
 endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(.././External/Web)
   set(PLATFORM_SRC_External 
-            #CPP_WEB_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
             )
 endif()
 if (IOS)
   add_definitions(-D_IOS)
   include_directories(.././External/IOS)
   set(PLATFORM_SRC_External 
-            #CPP_IOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
             )
 endif()
-if (APPLE && NOT IOS)
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
   include_directories(.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_External 
-            #CPP_MACOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
+            ./IOS/SDL2/SDL_config_macosx.h
+            ./Android/SDL2/SDL_config_macosx.h
             )
 endif()
 if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(.././External/Android)
   set(PLATFORM_SRC_External 
-            #CPP_ANDROID_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
+            ./IOS/SDL2/SDL_config_android.h
+            ./Android/SDL2/SDL_config_android.h
             )
 endif()
 if (UNIX AND NOT APPLE)
@@ -235,17 +251,19 @@ if (UNIX AND NOT APPLE)
   include_directories(.././External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_External 
-            #CPP_LINUX_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_External 
             )
 endif()
 
-foreach(REFL_FILE External ${GENERIC_REFL_External} ${PLATFORM_REFL_External})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
-  add_custom_command(OUTPUT ${META_FILE}
-                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
-                     MAIN_DEPENDENCY ${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+foreach(REFL_FILE ${GENERIC_REFL_External})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
 add_library(External ${GENERIC_SRC_External} ${PLATFORM_SRC_External}
-            External ${GENERIC_HEADER_External} ${PLATFORM_HEADER_External})
+            ${GENERIC_HEADER_External} ${PLATFORM_HEADER_External})

@@ -1,278 +1,283 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_AUTOMOC ON)
-find_package(Qt5 REQUIRED COMPONENTS core widgets)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+cmake_policy(SET CMP0071 OLD)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(GENERIC_SRC_Editor 
-            ./AudioViewer.cpp
-            ./ConfigEditor.cpp
-            ./ConnectingDialog.cpp
-            ./DocumentEditorBase.cpp
-            ./DocumentEditorConfig.cpp
-            ./DocumentEditorWidgetBase.cpp
-            ./DocumentListValueWatcher.cpp
-            ./DocumentServerThread.cpp
-            ./DocumentSubValueListMirror.cpp
-            ./DocumentValueWatcher.cpp
-            ./DrawUtil.cpp
-            ./DrawUtilQt.cpp
-            ./EditorContainer.cpp
-            ./EntityEditor.cpp
-            ./FontViewer.cpp
-            ./FrameEditorAnchorEditor.cpp
-            ./FrameEditorAnchorManager.cpp
-            ./FrameEditorBase.cpp
-            ./FrameEditorContainer.cpp
-            ./FrameEditorLowerEdge.cpp
-            ./FrameEditorMultiBox.cpp
-            ./FrameEditorSingleBox.cpp
-            ./FrameEditorSingleLine.cpp
-            ./FrameEditorUtil.cpp
-            ./GameClientWidget.cpp
-            ./GameHostWidget.cpp
-            ./GameServerWidget.cpp
-            ./GenericCheckbox.cpp
-            ./GenericFrame.cpp
-            ./GenericInput.cpp
-            ./GenericList.cpp
-            ./GenericListFrame.cpp
-            ./main.cpp
-            ./MapEditor.cpp
-            ./MapEditorAnchor.cpp
-            ./MapEditorEffectLayer.cpp
-            ./MapEditorEntityLayerManager.cpp
-            ./MapEditorEntityManager.cpp
-            ./MapEditorEntitySelector.cpp
-            ./MapEditorLayerList.cpp
-            ./MapEditorParalaxLayer.cpp
-            ./MapEditorParalaxLayerManager.cpp
-            ./MapEditorParalaxObjectSelector.cpp
-            ./MapEditorPath.cpp
-            ./MapEditorPathManager.cpp
-            ./MapEditorSelector.cpp
-            ./MapEditorServerObjectManager.cpp
-            ./MapEditorServerObjectSelector.cpp
-            ./MapEditorTileLayerManager.cpp
-            ./MapEditorTileManager.cpp
-            ./MapEditorTileSelector.cpp
-            ./MapEditorToolAllLayers.cpp
-            ./MapEditorToolAnchorCreate.cpp
-            ./MapEditorToolAnchorEditor.cpp
-            ./MapEditorToolAnchorMultiEditor.cpp
-            ./MapEditorToolBase.cpp
-            ./MapEditorToolEntityLayerDraw.cpp
-            ./MapEditorToolEntityLayerSelect.cpp
-            ./MapEditorToolManualTileLayerDraw.cpp
-            ./MapEditorToolManualTileLayerPreview.cpp
-            ./MapEditorToolManualTileLayerSelect.cpp
-            ./MapEditorToolParalaxObjectLayerDraw.cpp
-            ./MapEditorToolParalaxObjectLayerSelect.cpp
-            ./MapEditorToolPathCreate.cpp
-            ./MapEditorToolPathEditor.cpp
-            ./MapEditorToolPathMultiEditor.cpp
-            ./MapEditorToolServerObjectLayerDraw.cpp
-            ./MapEditorToolServerObjectLayerSelect.cpp
-            ./MapEditorToolVolumeCreate.cpp
-            ./MapEditorToolVolumeEditor.cpp
-            ./MapEditorToolVolumeMultiEditor.cpp
-            ./MapEditorTypes.refl.cpp
-            ./MapEditorViewer.cpp
-            ./MapEditorVolume.cpp
-            ./MapEditorVolumeManager.cpp
-            ./PropertyEditor.cpp
-            ./PropertyEditorBool.cpp
-            ./PropertyEditorEnum.cpp
-            ./PropertyEditorFile.cpp
-            ./PropertyEditorList.cpp
-            ./PropertyEditorNumber.cpp
-            ./PropertyEditorPolymorphic.cpp
-            ./PropertyEditorString.cpp
-            ./PropertyEditorStruct.cpp
-            ./PropertyEditorWidget.cpp
-            ./ScrollingPanel.cpp
             ./SelectFromListDialog.cpp
-            ./ServerObjectEditor.cpp
-            ./SimpleLabelListElement.cpp
-            ./SpriteBaseAnimationEditor.cpp
-            ./SpriteBaseAnimationEventEditorDialog.cpp
+            ./FontViewer.cpp
+            ./TileSheetEditor.cpp
+            ./MapEditorPathManager.cpp
+            ./MapEditorToolServerObjectLayerSelect.cpp
+            ./DocumentEditorWidgetBase.cpp
+            ./PropertyEditorNumber.cpp
+            ./MapEditorToolServerObjectLayerDraw.cpp
+            ./TextureViewerWidget.cpp
+            ./MapEditorVolume.cpp
             ./SpriteBaseAnimationFrameListEditorDialog.cpp
-            ./SpriteBaseAnimationListElement.cpp
-            ./SpriteBaseAnimationListFrameElement.cpp
-            ./SpriteBaseEditor.cpp
-            ./SpriteBaseFrameDisplay.cpp
-            ./SpriteBaseSkinEditor.cpp
+            ./SpriteBaseTextureLoadList.cpp
             ./SpriteBaseSkinListElement.cpp
-            ./SpriteBaseSkinListTextureElement.cpp
-            ./SpriteBaseTextureEditor.cpp
+            ./MapEditorTileManager.cpp
+            ./GameHostWidget.cpp
+            ./PropertyEditorStruct.cpp
+            ./MapEditorEntityManager.cpp
+            ./DocumentEditorConfig.cpp
+            ./UIEditor.cpp
+            ./GenericFrame.cpp
             ./SpriteBaseTextureFrameElement.cpp
             ./SpriteBaseTextureFrameList.cpp
-            ./SpriteBaseTextureImportDialog.cpp
-            ./SpriteBaseTextureLoadList.cpp
-            ./SpriteBaseTimeline.cpp
-            ./SpriteBaseTimelineElement.cpp
-            ./SpriteEditor.cpp
-            ./TextInputDialog.cpp
-            ./TextureViewer.cpp
-            ./TextureViewerWidget.cpp
-            ./TileSheetEditor.cpp
-            ./UIEditor.cpp
-            ./UIEditorEquationList.cpp
-            ./UIEditorNodeList.cpp
-            ./UIEditorOutputEquationList.cpp
-            ./UIEditorPropertyContainer.cpp
-            ./UIEditorViewer.cpp
-            ./UIEquationEditor.cpp
-            ./UIOutputEquationEditor.cpp
-            ./VisualEffectEditor.cpp
-            ./VisualEffectEditorEquationList.cpp
             ./VisualEffectEditorNodeList.cpp
-            ./VisualEffectEditorPropertyContainer.cpp
+            ./PropertyEditorWidget.cpp
+            ./SpriteBaseTextureImportDialog.cpp
+            ./UIEditorNodeList.cpp
+            ./PropertyEditorPolymorphic.cpp
+            ./SpriteBaseAnimationEventEditorDialog.cpp
+            ./MapEditorToolManualTileLayerPreview.cpp
+            ./DocumentServerThread.cpp
+            ./UIEditorOutputEquationList.cpp
+            ./GenericList.cpp
+            ./VisualEffectEditor.cpp
+            ./MapEditorServerObjectManager.cpp
+            ./SpriteBaseSkinListTextureElement.cpp
+            ./MapEditorToolVolumeEditor.cpp
+            ./ConnectingDialog.cpp
+            ./DocumentValueWatcher.cpp
+            ./DrawUtil.cpp
+            ./MapEditorEntitySelector.cpp
+            ./MapEditorTypes.refl.cpp
+            ./FrameEditorSingleLine.cpp
+            ./SimpleLabelListElement.cpp
+            ./VisualEffectEditorEquationList.cpp
+            ./ServerObjectEditor.cpp
+            ./UIEquationEditor.cpp
+            ./UIEditorEquationList.cpp
+            ./FrameEditorSingleBox.cpp
+            ./DocumentEditorBase.cpp
+            ./MapEditorServerObjectSelector.cpp
+            ./MapEditorToolEntityLayerDraw.cpp
+            ./DrawUtilQt.cpp
+            ./UIEditorViewer.cpp
+            ./MapEditorToolAnchorCreate.cpp
+            ./SpriteBaseAnimationListFrameElement.cpp
+            ./FrameEditorBase.cpp
+            ./MapEditorToolManualTileLayerDraw.cpp
+            ./MapEditorToolPathMultiEditor.cpp
+            ./GenericCheckbox.cpp
+            ./SpriteBaseFrameDisplay.cpp
+            ./TextureViewer.cpp
+            ./MapEditorTileSelector.cpp
+            ./SpriteEditor.cpp
+            ./UIEditorPropertyContainer.cpp
+            ./PropertyEditorFile.cpp
+            ./MapEditorToolParalaxObjectLayerDraw.cpp
+            ./MapEditorToolVolumeCreate.cpp
+            ./PropertyEditorList.cpp
+            ./MapEditorParalaxLayerManager.cpp
+            ./TextInputDialog.cpp
+            ./SpriteBaseTimeline.cpp
+            ./EntityEditor.cpp
+            ./PropertyEditorString.cpp
+            ./MapEditorToolBase.cpp
+            ./GameClientWidget.cpp
+            ./MapEditorAnchor.cpp
+            ./PropertyEditorBool.cpp
+            ./PropertyEditorEnum.cpp
+            ./GenericInput.cpp
+            ./MapEditorSelector.cpp
             ./VisualEffectEditorViewer.cpp
+            ./FrameEditorAnchorEditor.cpp
+            ./SpriteBaseTimelineElement.cpp
+            ./MapEditorViewer.cpp
+            ./GameServerWidget.cpp
+            ./MapEditorToolAnchorEditor.cpp
+            ./SpriteBaseAnimationEditor.cpp
+            ./FrameEditorLowerEdge.cpp
+            ./MapEditorParalaxObjectSelector.cpp
+            ./MapEditorToolAnchorMultiEditor.cpp
+            ./ConfigEditor.cpp
+            ./ScrollingPanel.cpp
+            ./MapEditor.cpp
+            ./MapEditorTileLayerManager.cpp
+            ./PropertyEditor.cpp
+            ./MapEditorToolVolumeMultiEditor.cpp
+            ./MapEditorEffectLayer.cpp
+            ./SpriteBaseAnimationListElement.cpp
+            ./FrameEditorUtil.cpp
+            ./EditorContainer.cpp
+            ./FrameEditorMultiBox.cpp
+            ./UIOutputEquationEditor.cpp
+            ./DocumentListValueWatcher.cpp
+            ./MapEditorVolumeManager.cpp
+            ./MapEditorToolManualTileLayerSelect.cpp
+            ./MapEditorPath.cpp
+            ./SpriteBaseEditor.cpp
+            ./MapEditorParalaxLayer.cpp
             ./VisualEffectEquationEditor.cpp
+            ./MapEditorToolParalaxObjectLayerSelect.cpp
+            ./MapEditorToolAllLayers.cpp
+            ./SpriteBaseSkinEditor.cpp
+            ./DocumentSubValueListMirror.cpp
+            ./SpriteBaseTextureEditor.cpp
+            ./GenericListFrame.cpp
+            ./MapEditorLayerList.cpp
+            ./MapEditorToolPathEditor.cpp
+            ./VisualEffectEditorPropertyContainer.cpp
+            ./FrameEditorAnchorManager.cpp
+            ./MapEditorToolEntityLayerSelect.cpp
+            ./FrameEditorContainer.cpp
+            ./main.cpp
+            ./MapEditorEntityLayerManager.cpp
+            ./MapEditorToolPathCreate.cpp
+            ./AudioViewer.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Editor 
-            ./AudioViewer.h
-            ./ConfigEditor.h
-            ./ConnectingDialog.h
-            ./DocumentEditor.h
-            ./DocumentEditorBase.h
-            ./DocumentEditorConfig.h
             ./DocumentEditorWidgetBase.h
-            ./DocumentListValueWatcher.h
-            ./DocumentServerThread.h
-            ./DocumentSubValueListMirror.h
-            ./DocumentValueWatcher.h
-            ./DrawUtil.h
-            ./DrawUtilQt.h
-            ./EditorContainer.h
-            ./EntityEditor.h
-            ./FontViewer.h
-            ./FrameEditorAnchorEditor.h
-            ./FrameEditorAnchorManager.h
-            ./FrameEditorBase.h
-            ./FrameEditorContainer.h
-            ./FrameEditorLowerEdge.h
-            ./FrameEditorMultiBox.h
-            ./FrameEditorSingleBox.h
-            ./FrameEditorSingleLine.h
-            ./FrameEditorTypes.refl.h
-            ./FrameEditorTypes.refl.meta.h
-            ./FrameEditorUtil.h
-            ./GameClientWidget.h
-            ./GameHostWidget.h
-            ./GameServerWidget.h
-            ./GenericCheckbox.h
-            ./GenericFrame.h
-            ./GenericInput.h
-            ./GenericList.h
-            ./GenericListFrame.h
-            ./MapEditor.h
-            ./MapEditorAnchor.h
-            ./MapEditorEffectLayer.h
-            ./MapEditorEntityLayerManager.h
-            ./MapEditorEntityManager.h
             ./MapEditorEntitySelector.h
-            ./MapEditorLayer.h
-            ./MapEditorLayerList.h
-            ./MapEditorLayerManager.h
-            ./MapEditorParalaxLayer.h
-            ./MapEditorParalaxLayerManager.h
-            ./MapEditorParalaxObjectSelector.h
+            ./MapEditorEffectLayer.h
+            ./MapEditorToolEntityLayerDraw.h
+            ./MapEditorServerObjectManager.h
+            ./MapEditorToolAllLayers.h
+            ./DrawUtil.h
+            ./SpriteBaseAnimationEditor.h
+            ./PropertyEditorStruct.h
+            ./UIEditorOutputEquationList.h
+            ./MapEditorToolPathMultiEditor.h
+            ./MapEditorVolumeManager.h
+            ./TextureViewer.h
+            ./PropertyEditorString.h
+            ./GameHostWidget.h
+            ./MapEditorViewer.h
+            ./ScrollingPanel.h
+            ./UIEditorNode.h
+            ./SpriteBaseTextureImportDialog.h
+            ./VisualEffectEditorEquationList.h
+            ./UIEditorViewer.h
+            ./PropertyEditorEnum.h
+            ./DocumentEditor.h
+            ./MapEditorToolManualTileLayerDraw.h
+            ./PropertyEditorList.h
+            ./SpriteBaseTextureLoadList.h
+            ./PropertyEditor.h
+            ./DocumentSubValueListMirror.h
+            ./ConnectingDialog.h
+            ./MapEditorToolAnchorCreate.h
+            ./DrawUtilQt.h
+            ./PropertyEditorBool.h
+            ./MapEditorToolVolumeCreate.h
+            ./SimpleLabelListElement.h
+            ./MapEditorToolAnchorMultiEditor.h
+            ./MapEditorEntityManager.h
             ./MapEditorPath.h
             ./MapEditorPathManager.h
-            ./MapEditorSelector.h
-            ./MapEditorServerObjectManager.h
+            ./AudioViewer.h
+            ./TileSheetEditor.h
+            ./SpriteBaseAnimationFrameListEditorDialog.h
+            ./SpriteBaseTextureEditor.h
+            ./VisualEffectEditor.h
+            ./DocumentEditorConfig.h
+            ./SpriteBaseTextureFrameList.h
+            ./VisualEffectEquationEditor.h
+            ./MapEditorAnchor.h
+            ./GameClientWidget.h
+            ./UIEditorEquationList.h
+            ./EntityEditor.h
+            ./FontViewer.h
+            ./GenericFrame.h
+            ./UIEquationEditor.h
+            ./SelectFromListDialog.h
+            ./PropertyEditorFile.h
             ./MapEditorServerObjectSelector.h
-            ./MapEditorTileLayerManager.h
-            ./MapEditorTileManager.h
-            ./MapEditorTileSelector.h
-            ./MapEditorToolAllLayers.h
-            ./MapEditorToolAnchorCreate.h
-            ./MapEditorToolAnchorEditor.h
-            ./MapEditorToolAnchorMultiEditor.h
-            ./MapEditorToolBase.h
-            ./MapEditorToolEntityLayerDraw.h
-            ./MapEditorToolEntityLayerSelect.h
-            ./MapEditorToolManualTileLayerDraw.h
+            ./PropertyEditorWidget.h
+            ./SpriteBaseAnimationListFrameElement.h
+            ./EditorContainer.h
             ./MapEditorToolManualTileLayerPreview.h
             ./MapEditorToolManualTileLayerSelect.h
-            ./MapEditorToolParalaxObjectLayerDraw.h
-            ./MapEditorToolParalaxObjectLayerSelect.h
-            ./MapEditorToolPathCreate.h
-            ./MapEditorToolPathEditor.h
-            ./MapEditorToolPathMultiEditor.h
-            ./MapEditorToolServerObjectLayerDraw.h
-            ./MapEditorToolServerObjectLayerSelect.h
-            ./MapEditorToolVolumeCreate.h
-            ./MapEditorToolVolumeEditor.h
-            ./MapEditorToolVolumeMultiEditor.h
-            ./MapEditorTypes.refl.h
-            ./MapEditorTypes.refl.meta.h
-            ./MapEditorViewer.h
-            ./MapEditorVolume.h
-            ./MapEditorVolumeManager.h
-            ./PropertyEditor.h
-            ./PropertyEditorBool.h
-            ./PropertyEditorEnum.h
-            ./PropertyEditorFile.h
-            ./PropertyEditorList.h
-            ./PropertyEditorNumber.h
-            ./PropertyEditorPolymorphic.h
-            ./PropertyEditorString.h
-            ./PropertyEditorStruct.h
-            ./PropertyEditorWidget.h
-            ./ScrollingPanel.h
-            ./SelectFromListDialog.h
-            ./ServerObjectEditor.h
-            ./SimpleLabelList.h
-            ./SimpleLabelListElement.h
-            ./SpriteBaseAnimationEditor.h
-            ./SpriteBaseAnimationEventEditorDialog.h
-            ./SpriteBaseAnimationFrameListEditorDialog.h
-            ./SpriteBaseAnimationListElement.h
-            ./SpriteBaseAnimationListFrameElement.h
-            ./SpriteBaseEditor.h
-            ./SpriteBaseFrameDisplay.h
-            ./SpriteBaseSkinEditor.h
-            ./SpriteBaseSkinListElement.h
-            ./SpriteBaseSkinListTextureElement.h
-            ./SpriteBaseTextureEditor.h
-            ./SpriteBaseTextureFrameElement.h
-            ./SpriteBaseTextureFrameList.h
-            ./SpriteBaseTextureImportDialog.h
-            ./SpriteBaseTextureLoadList.h
-            ./SpriteBaseTimeline.h
-            ./SpriteBaseTimelineElement.h
-            ./SpriteEditor.h
-            ./TextInputDialog.h
-            ./TextureViewer.h
-            ./TextureViewerWidget.h
-            ./TileSheetEditor.h
-            ./UIEditor.h
-            ./UIEditorEquationList.h
-            ./UIEditorNode.h
-            ./UIEditorNodeList.h
-            ./UIEditorOutputEquationList.h
+            ./MapEditorLayerManager.h
             ./UIEditorPropertyContainer.h
-            ./UIEditorViewer.h
-            ./UIEquationEditor.h
-            ./UIOutputEquationEditor.h
-            ./VisualEffectEditor.h
-            ./VisualEffectEditorEquationList.h
-            ./VisualEffectEditorNodeList.h
-            ./VisualEffectEditorNodeSelection.h
-            ./VisualEffectEditorPropertyContainer.h
+            ./FrameEditorAnchorManager.h
+            ./TextInputDialog.h
+            ./MapEditorToolEntityLayerSelect.h
+            ./DocumentListValueWatcher.h
+            ./FrameEditorAnchorEditor.h
             ./VisualEffectEditorViewer.h
-            ./VisualEffectEquationEditor.h
+            ./DocumentValueWatcher.h
+            ./MapEditorToolPathCreate.h
+            ./MapEditorTileManager.h
+            ./MapEditorTypes.refl.h
+            ./UIOutputEquationEditor.h
+            ./MapEditorToolAnchorEditor.h
+            ./SpriteBaseSkinListTextureElement.h
+            ./MapEditorTileSelector.h
+            ./GenericCheckbox.h
+            ./MapEditorSelector.h
+            ./FrameEditorSingleLine.h
+            ./VisualEffectEditorPropertyContainer.h
+            ./VisualEffectEditorNodeSelection.h
+            ./SimpleLabelList.h
+            ./FrameEditorContainer.h
+            ./FrameEditorTypes.refl.h
+            ./GameServerWidget.h
+            ./SpriteBaseSkinEditor.h
+            ./MapEditorToolParalaxObjectLayerSelect.h
+            ./SpriteBaseEditor.h
+            ./MapEditorToolPathEditor.h
+            ./MapEditorToolParalaxObjectLayerDraw.h
+            ./MapEditorEntityLayerManager.h
+            ./PropertyEditorPolymorphic.h
+            ./ConfigEditor.h
+            ./UIEditor.h
+            ./MapEditorParalaxLayer.h
+            ./MapEditorLayerList.h
+            ./FrameEditorLowerEdge.h
+            ./GenericInput.h
+            ./MapEditor.h
+            ./SpriteEditor.h
+            ./DocumentEditorBase.h
+            ./SpriteBaseFrameDisplay.h
+            ./FrameEditorTypes.refl.meta.h
+            ./MapEditorVolume.h
+            ./SpriteBaseAnimationEventEditorDialog.h
+            ./DocumentServerThread.h
+            ./SpriteBaseSkinListElement.h
+            ./TextureViewerWidget.h
+            ./UIEditorNodeList.h
+            ./MapEditorToolVolumeEditor.h
+            ./GenericListFrame.h
+            ./MapEditorTypes.refl.meta.h
+            ./SpriteBaseTimelineElement.h
+            ./SpriteBaseAnimationListElement.h
+            ./MapEditorParalaxObjectSelector.h
+            ./MapEditorToolServerObjectLayerDraw.h
+            ./FrameEditorSingleBox.h
+            ./GenericList.h
+            ./MapEditorToolVolumeMultiEditor.h
+            ./SpriteBaseTextureFrameElement.h
+            ./FrameEditorUtil.h
+            ./MapEditorToolBase.h
+            ./FrameEditorBase.h
+            ./VisualEffectEditorNodeList.h
+            ./MapEditorToolServerObjectLayerSelect.h
+            ./ServerObjectEditor.h
+            ./FrameEditorMultiBox.h
+            ./MapEditorParalaxLayerManager.h
+            ./PropertyEditorNumber.h
+            ./MapEditorLayer.h
+            ./MapEditorTileLayerManager.h
+            ./SpriteBaseTimeline.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Editor 
-            ./FrameEditorTypes.refl.h
             ./MapEditorTypes.refl.h
+            ./FrameEditorTypes.refl.h
             #REFL_PLACEHOLDER
             )
 
@@ -280,54 +285,68 @@ if (MSVC)
   add_definitions(-D_WINDOWS)
   include_directories(.././External/Windows)
   set(PLATFORM_SRC_Editor 
-            #CPP_WINDOWS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(.././External/Web)
   set(PLATFORM_SRC_Editor 
-            #CPP_WEB_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
 if (IOS)
   add_definitions(-D_IOS)
   include_directories(.././External/IOS)
   set(PLATFORM_SRC_Editor 
-            #CPP_IOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
-if (APPLE && NOT IOS)
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
   include_directories(.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_Editor 
-            #CPP_MACOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
 if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(.././External/Android)
   set(PLATFORM_SRC_Editor 
-            #CPP_ANDROID_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
 if (UNIX AND NOT APPLE)
   add_definitions(-D_LINUX)
   include_directories(.././External/Linux)
   include_directories(/usr/include/freetype2)
+
+  add_definitions(-fPIC)
   set(PLATFORM_SRC_Editor 
-            #CPP_LINUX_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_Editor 
             )
 endif()
 
-foreach(REFL_FILE Editor ${GENERIC_REFL_Editor} ${PLATFORM_REFL_Editor})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
-  add_custom_command(OUTPUT ${META_FILE}
-                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
-                     MAIN_DEPENDENCY ${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+foreach(REFL_FILE ${GENERIC_REFL_Editor})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
 add_library(Editor ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor}
-            Editor ${GENERIC_HEADER_Editor} ${PLATFORM_HEADER_Editor})
+            ${GENERIC_HEADER_Editor} ${PLATFORM_HEADER_Editor})

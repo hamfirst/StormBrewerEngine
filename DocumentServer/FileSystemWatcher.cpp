@@ -1,18 +1,26 @@
 
 #include "FileSystemWatcher.h"
 
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+
 #ifdef _MSC_VER
 
 #include <Windows.h>
 
 #include <codecvt>
 
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
 
 struct FileSystemWatcherData
 {
   HANDLE m_DirectoryHandle;
+};
+
+#else
+
+struct FileSystemWatcherData
+{
+
 };
 
 #endif

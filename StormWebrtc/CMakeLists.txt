@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
@@ -9,8 +9,8 @@ set(GENERIC_SRC_StormWebrtc
             )
 set(GENERIC_HEADER_StormWebrtc 
             ./StormWebrtc.h
-            ./StormWebrtcConnection.h
             ./StormWebrtcDataChannel.h
+            ./StormWebrtcConnection.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_StormWebrtc 
@@ -21,36 +21,46 @@ if (MSVC)
   add_definitions(-D_WINDOWS)
   include_directories(.././External/Windows)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_WINDOWS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
 if (WEB)
   add_definitions(-D_WEB)
   include_directories(.././External/Web)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_WEB_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
 if (IOS)
   add_definitions(-D_IOS)
   include_directories(.././External/IOS)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_IOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
-if (APPLE && NOT IOS)
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
   include_directories(.././External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_MACOS_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
 if (ANDROID)
   add_definitions(-D_ANDROID)
   include_directories(.././External/Android)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_ANDROID_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
 if (UNIX AND NOT APPLE)
@@ -58,17 +68,19 @@ if (UNIX AND NOT APPLE)
   include_directories(.././External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_StormWebrtc 
-            #CPP_LINUX_PLACEHOLDER
+            )
+
+set(PLATFORM_HEADER_StormWebrtc 
             )
 endif()
 
-foreach(REFL_FILE StormWebrtc ${GENERIC_REFL_StormWebrtc} ${PLATFORM_REFL_StormWebrtc})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFIL_FILE})
-  add_custom_command(OUTPUT ${META_FILE}
-                     COMMAND StormRefl -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I. -I../. -I.././External
-                     MAIN_DEPENDENCY ${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${REFL_FILE})
+foreach(REFL_FILE ${GENERIC_REFL_StormWebrtc})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
 add_library(StormWebrtc ${GENERIC_SRC_StormWebrtc} ${PLATFORM_SRC_StormWebrtc}
-            StormWebrtc ${GENERIC_HEADER_StormWebrtc} ${PLATFORM_HEADER_StormWebrtc})
+            ${GENERIC_HEADER_StormWebrtc} ${PLATFORM_HEADER_StormWebrtc})

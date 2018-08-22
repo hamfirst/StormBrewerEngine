@@ -20,7 +20,7 @@ public:
   T * CreateWidget()
   {
     SetChildWidget(std::make_unique<T>(this));
-    return static_cast<T *>(m_ChildWidget.get());
+    return static_cast<T *>(m_Widget.get());
   }
 
 public slots:

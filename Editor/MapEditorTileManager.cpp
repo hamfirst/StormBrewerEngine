@@ -58,7 +58,8 @@ void MapEditorTileManager::Update()
   }
 
   m_NumFrames++;
-  for (auto & elem : m_AnimInfo.Value())
+
+  for (auto elem : m_AnimInfo.Value())
   {
     tile_sheet->FrameAdvance(elem.second.m_State);
   }
