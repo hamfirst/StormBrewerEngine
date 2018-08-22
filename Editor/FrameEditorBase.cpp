@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QWheelEvent>
 #include <QApplication>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
 
 #include "StormData/StormDataPath.h"
 
@@ -252,8 +254,10 @@ void FrameEditorBase::paintGL()
   QColor clear_color_qt = palette().color(QPalette::Window);
   Color color(clear_color_qt.red(), clear_color_qt.green(), clear_color_qt.blue(), 255);
 
-  glClearColor(color.r, color.g, color.b, color.a);
-  glClear(GL_COLOR_BUFFER_BIT);
+  auto f = context()->functions();
+
+  f->glClearColor(color.r, color.g, color.b, color.a);
+  f->glClear(GL_COLOR_BUFFER_BIT);
 
   if (m_Sprite.m_Textures.HighestIndex() == -1)
   {

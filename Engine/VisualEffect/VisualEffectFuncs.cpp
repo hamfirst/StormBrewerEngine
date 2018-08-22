@@ -5,7 +5,7 @@
 #include "StormNet/NetMetaUtil.h"
 #include "StormExpr/StormExprFunctionReg.h"
 
-float Normalize(float a, float b, float r)
+float NormalizeF(float a, float b, float r)
 {
   return b * r + a * (1.0f - r);
 }
@@ -38,7 +38,7 @@ StormExprFunctionList VisualEffectCreateFunctionList()
   StormExprRegisterFunction("sin", function_list, sinf);
   StormExprRegisterFunction("cos", function_list, cosf);
   StormExprRegisterFunction("tan", function_list, tanf);
-  StormExprRegisterFunction("n", function_list, Normalize);
+  StormExprRegisterFunction("n", function_list, NormalizeF);
   StormExprRegisterFunction("cx", function_list, CircleX);
   StormExprRegisterFunction("cy", function_list, CircleY);
   return function_list;

@@ -83,7 +83,7 @@ void MapEditorParalaxLayer::SelectParalaxObjects(const Box & box)
   ClearSelection();
   m_SelectedParalaxObjectOffset = {};
 
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetObject(elem.first);
 
@@ -96,7 +96,7 @@ void MapEditorParalaxLayer::SelectParalaxObjects(const Box & box)
 
 Optional<MapParalaxLayerObject> MapEditorParalaxLayer::FindParalaxObject(const Vector2 & pos)
 {
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetObject(elem.first);
 
@@ -119,7 +119,7 @@ void MapEditorParalaxLayer::DropSelection()
   if (m_SelectedParalaxObjectOffset.x != 0 || m_SelectedParalaxObjectOffset.y != 0)
   {
     m_Editor->BeginTransaction();
-    for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+    for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
     {
       if (vfind(m_SelectedParalaxObjects, elem.first))
       {
@@ -144,7 +144,7 @@ void MapEditorParalaxLayer::ClearSelection()
 void MapEditorParalaxLayer::DeselectParalaxObjects()
 {
   m_SelectedParalaxObjects.clear();
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     if (vfind(m_SelectedParalaxObjects, elem.first))
     {
@@ -307,7 +307,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     render_state.Draw();
   }
 
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     if (elem.second.m_Type != MapParalaxLayerObjectType::kTexture)
     {
@@ -324,7 +324,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
   }
 
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     if (elem.second.m_Type != MapParalaxLayerObjectType::kSprite)
     {
@@ -342,7 +342,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
   }
 
-  for (auto & elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
   {
     if (elem.second.m_Type != MapParalaxLayerObjectType::kVfx)
     {

@@ -117,7 +117,7 @@ void MapEditorServerObjectManager::SelectServerObjects(const Box & box)
   ClearSelection();
   m_SelectedServerObjectOffset = {};
 
-  for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetSprite(elem.first);
 
@@ -130,7 +130,7 @@ void MapEditorServerObjectManager::SelectServerObjects(const Box & box)
 
 Optional<std::string> MapEditorServerObjectManager::FindServerObject(const Vector2 & pos)
 {
-  for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetSprite(elem.first);
 
@@ -164,7 +164,7 @@ void MapEditorServerObjectManager::DropSelection()
   if (m_SelectedServerObjectOffset.x != 0 || m_SelectedServerObjectOffset.y != 0)
   {
     m_Editor->BeginTransaction();
-    for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
+    for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
     {
       if (vfind(m_SelectedServerObjects, elem.first))
       {
@@ -189,7 +189,7 @@ void MapEditorServerObjectManager::ClearSelection()
 void MapEditorServerObjectManager::DeselectServerObjects()
 {
   m_SelectedServerObjects.clear();
-  for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
     if (vfind(m_SelectedServerObjects, elem.first))
     {
@@ -277,7 +277,7 @@ Optional<std::size_t> MapEditorServerObjectManager::GetSingleSelectionIndex()
 
 void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
-  for (auto & elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetSprite(elem.first);
     auto entity = data->m_Entity.GetResource();

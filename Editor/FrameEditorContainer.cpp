@@ -279,7 +279,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_SingleBoxData)
+            for (auto elem : data->m_SingleBoxData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -303,7 +303,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_SingleBoxData)
+            for (auto elem : data->m_SingleBoxData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -342,7 +342,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_MultiBoxData)
+            for (auto elem : data->m_MultiBoxData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -366,7 +366,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_MultiBoxData)
+            for (auto elem : data->m_MultiBoxData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -405,7 +405,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_SingleLineData)
+            for (auto elem : data->m_SingleLineData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -429,7 +429,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_SingleLineData)
+            for (auto elem : data->m_SingleLineData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -468,7 +468,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_LowerEdgeData)
+            for (auto elem : data->m_LowerEdgeData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {
@@ -492,7 +492,7 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
               return nullptr;
             }
 
-            for (auto & elem : data->m_LowerEdgeData)
+            for (auto elem : data->m_LowerEdgeData)
             {
               if (elem.second.m_FrameDataName.ToString() == name.get())
               {

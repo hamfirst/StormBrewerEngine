@@ -247,7 +247,7 @@ void DraggableList::SetSelection(int index, bool additive)
 
 void DraggableList::ResetSelection()
 {
-  for (auto & val : m_IsSelected)
+  for (auto val : m_IsSelected)
   {
     val = false;
   }

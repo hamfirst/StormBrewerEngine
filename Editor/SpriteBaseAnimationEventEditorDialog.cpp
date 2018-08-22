@@ -210,13 +210,13 @@ void SpriteBaseAnimationEventEditorDialog::UpdateTimeline()
   auto anim_info = m_Sprite.m_Animations.TryGet(m_AnimationIndex);
   if (anim_info != nullptr)
   {
-    for (auto & frame : anim_info->m_Frames)
+    for (auto frame : anim_info->m_Frames)
     {
       frames.emplace_back(AnimationTrackFrameInfo{ (int)frame.second.m_FrameDuration });
     }
   }
 
-  for (auto & elem : anim_info->m_Events)
+  for (auto elem : anim_info->m_Events)
   {
     AnimationTrackEventInfo ev_info;
     ev_info.m_Frame = elem.second.m_Frame;

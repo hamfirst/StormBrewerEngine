@@ -101,7 +101,7 @@ void MapEditorEntityManager::SelectEntities(const Box & box)
   ClearSelection();
   m_SelectedEntityOffset = {};
 
-  for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
+  for (auto elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
   {
     auto data = m_GetSprite(elem.first);
 
@@ -114,7 +114,7 @@ void MapEditorEntityManager::SelectEntities(const Box & box)
 
 Optional<std::string> MapEditorEntityManager::FindEntity(const Vector2 & pos)
 {
-  for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
+  for (auto elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
   {
     auto data = m_GetSprite(elem.first);
 
@@ -148,7 +148,7 @@ void MapEditorEntityManager::DropSelection()
   if (m_SelectedEntityOffset.x != 0 || m_SelectedEntityOffset.y != 0)
   {
     m_Editor->BeginTransaction();
-    for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
+    for (auto elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
     {
       if (vfind(m_SelectedEntities, elem.first))
       {
@@ -173,7 +173,7 @@ void MapEditorEntityManager::ClearSelection()
 void MapEditorEntityManager::DeselectEntities()
 {
   m_SelectedEntities.clear();
-  for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
+  for (auto elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
   {
     if (vfind(m_SelectedEntities, elem.first))
     {
@@ -261,7 +261,7 @@ Optional<std::size_t> MapEditorEntityManager::GetSingleSelectionIndex()
 
 void MapEditorEntityManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
 {
-  for (auto & elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
+  for (auto elem : m_Map.m_EntityLayers[m_LayerIndex].m_Entities)
   {
     auto data = m_GetSprite(elem.first);
 

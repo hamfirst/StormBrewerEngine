@@ -19,7 +19,7 @@ GenericList * CreateSimpleLabelList(DocumentEditorWidgetBase * editor, ListType<
   typedef std::string(*SimpleStringAdapterFunc)(T &);
   auto simple_list_updater = [](QWidget * widget, T & elem, void * user_data)
   {
-    auto adapter = static_cast<SimpleStringAdapterFunc>(user_data);
+    auto adapter = reinterpret_cast<SimpleStringAdapterFunc>(user_data);
     auto list_elem = static_cast<SimpleLabelListElement *>(widget);
 
     list_elem->SetText(adapter(elem).data());
@@ -36,7 +36,9 @@ GenericList * CreateSimpleLabelList(DocumentEditorWidgetBase * editor, ListType<
     data_ptr = [&]() -> void * { return &list; };
   }
 
-  auto widget = CreateGenericList<ListType, T>(editor, list, simple_list_adapter, nullptr, simple_list_updater, adapter, frame, std::move(data_ptr));
+  auto widget = CreateGenericList<ListType, T>(editor, list, simple_list_adapter, nullptr, simple_list_updater, 
+                                               reinterpret_cast<void *>(adapter), frame, std::move(data_ptr));
+                                               
   widget->SetSelectElementCallback(simple_list_select_element);
   return widget;
 }

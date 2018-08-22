@@ -2,8 +2,6 @@
 #include <QTimer>
 #include <QTemporaryFile>
 
-#include <corecrt_stdio_config.h>
-
 #include "GameServerWidget.h"
 
 #include "Runtime/Asset/Asset.h"

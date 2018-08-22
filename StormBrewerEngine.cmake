@@ -30,7 +30,7 @@ add_subdirectory(External/binpack)
 add_subdirectory(External/lua)
 
 
-if(BUILD_CLIENT)
+if(BUILD_CLIENT OR BUILD_TOOLS)
   add_subdirectory(External/gl3w)
   add_subdirectory(External/ogg)
   add_subdirectory(External/lodepng)
@@ -51,6 +51,10 @@ if(BUILD_CLIENT)
   if(IOS)
     add_subdirectory(External/IOS/SDL_build)
     add_subdirectory(External/IOS/freetype2)
+  endif()
+
+  if(UNIX AND NOT APPLE)
+    add_subdirectory(External/Linux/SDL2)
   endif()  
 endif()
 
@@ -81,6 +85,7 @@ add_subdirectory(StormExpr)
 
 if(BUILD_TOOLS)
   add_subdirectory(DocumentServer)
+  add_subdirectory(QTUtil)
   add_subdirectory(Editor)
 endif()
 
