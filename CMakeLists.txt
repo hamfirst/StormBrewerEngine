@@ -4,6 +4,8 @@ include(StormBrewerEngine.cmake)
 
 add_subdirectory(Game)
 
+set(CLIENT_LINK)
+
 if(BUILD_CLIENT OR BUILD_TOOLS)  
   add_subdirectory(GameClient)
   add_subdirectory(GameClientExe)
@@ -149,7 +151,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 
     else()
       if(UNIX AND NOT APPLE)
-        target_link_libraries(ClientExe SDL)
+        target_link_libraries(ClientExe SDL2-static)
       endif()
 
       target_link_libraries(ClientExe stdc++fs)
@@ -158,7 +160,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   endif()
 endif()
 
-if(BUILD_SERVER)
+if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(GameServer)
   add_subdirectory(GameServerExe)
 
@@ -256,7 +258,7 @@ if(BUILD_TOOLS)
   target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
   target_link_libraries(stormrefl stdc++fs z rt m c dl)
 
-  install(TARGETS generatecmake stormrefl DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+  configure_file(generatecmake ${CMAKE_CURRENT_SOURCE_DIR}/generatecmake COPYONLY)
 
   add_executable(documentserver Dummy.cpp)
   target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls) 
@@ -267,12 +269,38 @@ if(BUILD_TOOLS)
   find_package(Qt5OpenGL CONFIG REQUIRED)
 
   add_executable(editor Dummy.cpp)
-  target_link_libraries(editor Editor GameClient GameServer Game Engine Runtime Foundation StormSocketCPP StormData QTUtil SDL2 asio mbedtls) 
-  target_link_libraries(editor -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-  target_link_libraries(editor Qt5::Widgets Qt5::OpenGL)
-  target_link_libraries(editor stdc++fs z rt m c dl)
+  get_target_property(CLIENT_LINK_LIBRARIES ClientExe LINK_LIBRARIES)
+  list(REMOVE_ITEM CLIENT_LINK_LIBRARIES ClientExe)
+  list(REMOVE_ITEM CLIENT_LINK_LIBRARIES -Wl,--whole-archive GameClientExe -Wl,--no-whole-archive)
 
-  install(TARGETS documentserver editor DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Test)
+  target_link_libraries(editor Editor)
+  target_link_libraries(editor ${CLIENT_LINK_LIBRARIES})
+  target_link_libraries(editor GameServer)
+  target_link_libraries(editor StormWebrtcServerAPI)
+  target_link_libraries(editor StormNetCustomBindings)
+  target_link_libraries(editor StormNetBindingsEnet)
+  target_link_libraries(editor QTUtil)
+  target_link_libraries(editor Qt5::Widgets Qt5::OpenGL)
+
+  add_custom_command(TARGET documentserver POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test/DocumentServer
+      COMMENT "Copying to Test Directory"
+  )
+
+  add_custom_command(TARGET editor POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test/Editor
+      COMMENT "Copying to Test Directory"
+  )
+
+    add_custom_command(TARGET ClientExe POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ClientExe
+      COMMENT "Copying to Test Directory"
+  )
+
+  add_custom_command(TARGET ServerExe POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ServerExe
+      COMMENT "Copying to Test Directory"
+  )
 
 endif()
 

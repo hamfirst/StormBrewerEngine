@@ -723,7 +723,7 @@ void GameInstanceStateGameplay::ComputeMaxRewind()
 
   m_FurthestRewind = m_CurrentState->m_InstanceData.m_FrameCount;
 
-  for (auto & elem : m_PlayerInfo)
+  for (auto elem : m_PlayerInfo)
   {
     auto frame = std::max(min_frame, elem.second.m_InputFrame);
     m_FurthestRewind = std::min(m_FurthestRewind, frame);
@@ -933,7 +933,8 @@ void GameInstanceStateGameplay::SendAuthEvent(std::size_t class_id, const void *
 
   if (current_frame < m_FurthestRewind)
   {
-    m_Controller.HandleAuthEvent(GetLogicContainer(m_ReconcileFrame), class_id, event_ptr);
+    auto logic_container = GetLogicContainer(m_ReconcileFrame);
+    m_Controller.HandleAuthEvent(logic_container, class_id, event_ptr);
   }
 }
 

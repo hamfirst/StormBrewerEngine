@@ -7,7 +7,6 @@ set(GENERIC_SRC_GameServer
             ./GameClientConnection.cpp
             ./GameInstanceStateData.cpp
             ./GameInstanceStateLoading.cpp
-            ./GameClient.cpp
             ./GameInstanceStateGameplay.cpp
             ./GameServer.cpp
             ./GameServerGlobalResources.cpp

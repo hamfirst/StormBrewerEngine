@@ -34,18 +34,18 @@ public:
   GameLogicContainer & operator = (const GameLogicContainer & rhs) = default;
   GameLogicContainer & operator = (GameLogicContainer && rhs) = default;
 
-  GameController & GetGameController();
-  GameInstanceData & GetInstanceData();
-  ServerObjectManager & GetObjectManager();
-  ServerObjectEventSystem & GetServerObjectEventSystem();
-  GameServerEventSender & GetEventSender();
-  GameSimulationEventCallbacks & GetSimEventCallbacks();
-  GameSharedGlobalResources & GetSharedGlobalResources();
-  GameSharedInstanceResources & GetSharedInstanceResources();
-  GameLogicSystems & GetSystems();
-  const GameStage & GetStage();
-  bool IsAuthority();
-  void TriggerImmediateSend();
+  GameController & GetGameController() const;
+  GameInstanceData & GetInstanceData() const;
+  ServerObjectManager & GetObjectManager() const;
+  ServerObjectEventSystem & GetServerObjectEventSystem() const;
+  GameServerEventSender & GetEventSender() const;
+  GameSimulationEventCallbacks & GetSimEventCallbacks() const;
+  GameSharedGlobalResources & GetSharedGlobalResources() const;
+  GameSharedInstanceResources & GetSharedInstanceResources() const;
+  GameLogicSystems & GetSystems() const;
+  const GameStage & GetStage() const;
+  bool IsAuthority() const;
+  void TriggerImmediateSend() const;
 
 private:
   GameController & m_GameController;

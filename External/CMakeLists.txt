@@ -188,6 +188,84 @@ set(GENERIC_HEADER_External
             ./Windows/EGL/eglplatform.h
             ./Windows/EGL/egl.h
             ./Windows/KHR/khrplatform.h
+            ./Linux/SDL2/SDL_test_harness.h
+            ./Linux/SDL2/SDL_gamecontroller.h
+            ./Linux/SDL2/SDL_rect.h
+            ./Linux/SDL2/SDL_test_crc32.h
+            ./Linux/SDL2/SDL_vulkan.h
+            ./Linux/SDL2/SDL_test.h
+            ./Linux/SDL2/SDL_test_compare.h
+            ./Linux/SDL2/SDL_opengles2_gl2ext.h
+            ./Linux/SDL2/SDL_rwops.h
+            ./Linux/SDL2/SDL_messagebox.h
+            ./Linux/SDL2/SDL_loadso.h
+            ./Linux/SDL2/SDL_pixels.h
+            ./Linux/SDL2/SDL.h
+            ./Linux/SDL2/SDL_opengles2.h
+            ./Linux/SDL2/SDL_opengles2_gl2platform.h
+            ./Linux/SDL2/SDL_config.h
+            ./Linux/SDL2/SDL_config_iphoneos.h
+            ./Linux/SDL2/begin_code.h
+            ./Linux/SDL2/SDL_test_common.h
+            ./Linux/SDL2/SDL_joystick.h
+            ./Linux/SDL2/SDL_opengl.h
+            ./Linux/SDL2/SDL_render.h
+            ./Linux/SDL2/SDL_platform.h
+            ./Linux/SDL2/SDL_log.h
+            ./Linux/SDL2/SDL_stdinc.h
+            ./Linux/SDL2/SDL_test_memory.h
+            ./Linux/SDL2/SDL_keyboard.h
+            ./Linux/SDL2/SDL_audio.h
+            ./Linux/SDL2/SDL_video.h
+            ./Linux/SDL2/SDL_config_minimal.h
+            ./Linux/SDL2/close_code.h
+            ./Linux/SDL2/SDL_config_wiz.h
+            ./Linux/SDL2/SDL_cpuinfo.h
+            ./Linux/SDL2/SDL_test_log.h
+            ./Linux/SDL2/SDL_test_font.h
+            ./Linux/SDL2/SDL_endian.h
+            ./Linux/SDL2/SDL_name.h
+            ./Linux/SDL2/SDL_touch.h
+            ./Linux/SDL2/SDL_system.h
+            ./Linux/SDL2/SDL_keycode.h
+            ./Linux/SDL2/SDL_power.h
+            ./Linux/SDL2/SDL_gesture.h
+            ./Linux/SDL2/SDL_filesystem.h
+            ./Linux/SDL2/SDL_copying.h
+            ./Linux/SDL2/SDL_egl.h
+            ./Linux/SDL2/SDL_test_fuzzer.h
+            ./Linux/SDL2/SDL_main.h
+            ./Linux/SDL2/SDL_blendmode.h
+            ./Linux/SDL2/SDL_error.h
+            ./Linux/SDL2/SDL_events.h
+            ./Linux/SDL2/SDL_test_random.h
+            ./Linux/SDL2/SDL_types.h
+            ./Linux/SDL2/SDL_hints.h
+            ./Linux/SDL2/SDL_mouse.h
+            ./Linux/SDL2/SDL_config_psp.h
+            ./Linux/SDL2/SDL_shape.h
+            ./Linux/SDL2/SDL_thread.h
+            ./Linux/SDL2/SDL_haptic.h
+            ./Linux/SDL2/SDL_test_assert.h
+            ./Linux/SDL2/SDL_assert.h
+            ./Linux/SDL2/SDL_version.h
+            ./Linux/SDL2/SDL_scancode.h
+            ./Linux/SDL2/SDL_opengles2_khrplatform.h
+            ./Linux/SDL2/SDL_clipboard.h
+            ./Linux/SDL2/SDL_opengles.h
+            ./Linux/SDL2/SDL_opengles2_gl2.h
+            ./Linux/SDL2/SDL_surface.h
+            ./Linux/SDL2/SDL_revision.h
+            ./Linux/SDL2/SDL_test_images.h
+            ./Linux/SDL2/SDL_syswm.h
+            ./Linux/SDL2/SDL_mutex.h
+            ./Linux/SDL2/SDL_quit.h
+            ./Linux/SDL2/SDL_timer.h
+            ./Linux/SDL2/SDL_test_md5.h
+            ./Linux/SDL2/SDL_atomic.h
+            ./Linux/SDL2/SDL_opengl_glext.h
+            ./Linux/SDL2/SDL_config_pandora.h
+            ./Linux/SDL2/SDL_bits.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_External 
@@ -203,6 +281,7 @@ if (MSVC)
 set(PLATFORM_HEADER_External 
             ./IOS/SDL2/SDL_config_windows.h
             ./Android/SDL2/SDL_config_windows.h
+            ./Linux/SDL2/SDL_config_windows.h
             )
 endif()
 if (WEB)
@@ -233,6 +312,7 @@ if (APPLE AND NOT IOS)
 set(PLATFORM_HEADER_External 
             ./IOS/SDL2/SDL_config_macosx.h
             ./Android/SDL2/SDL_config_macosx.h
+            ./Linux/SDL2/SDL_config_macosx.h
             )
 endif()
 if (ANDROID)
@@ -244,6 +324,7 @@ if (ANDROID)
 set(PLATFORM_HEADER_External 
             ./IOS/SDL2/SDL_config_android.h
             ./Android/SDL2/SDL_config_android.h
+            ./Linux/SDL2/SDL_config_android.h
             )
 endif()
 if (UNIX AND NOT APPLE)

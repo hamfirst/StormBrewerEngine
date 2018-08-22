@@ -54,8 +54,8 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   endif()
 
   if(UNIX AND NOT APPLE)
-    add_subdirectory(External/Linux/SDL2)
-  endif()  
+    add_subdirectory(External/Linux/SDL_build)
+  endif()
 endif()
 
 if(WEB)
