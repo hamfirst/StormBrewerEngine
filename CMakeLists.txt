@@ -6,7 +6,7 @@ add_subdirectory(Game)
 
 set(CLIENT_LINK)
 
-if(BUILD_CLIENT OR BUILD_TOOLS)  
+if(BUILD_CLIENT OR BUILD_TOOLS)
   add_subdirectory(GameClient)
   add_subdirectory(GameClientExe)
 
@@ -17,7 +17,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     file(GLOB_RECURSE IOSAssets "${PROJECT_SOURCE_DIR}/Test/Assets/*")
 
     foreach(FullFile ${IOSAssets})
-      
+
       file(RELATIVE_PATH ResFile "${PROJECT_SOURCE_DIR}/Test/Assets/" "${FullFile}")
       get_filename_component(Dir ${ResFile} DIRECTORY)
       #message(STATUS "Adding asset file: ${ResFile}")
@@ -33,14 +33,14 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   elseif(WEB)
     add_definitions(-D_WEB)
     include_directories(${PROJECT_SOURCE_DIR} External External/Web)
-  
-    file(GLOB_RECURSE ClientSrc 
+
+    file(GLOB_RECURSE ClientSrc
       ${PROJECT_SOURCE_DIR}/GameClientExe/*.cpp
       ${PROJECT_SOURCE_DIR}/GameClient/*.cpp
       ${PROJECT_SOURCE_DIR}/Game/*.cpp
       ${PROJECT_SOURCE_DIR}/Runtime/*.cpp
       ${PROJECT_SOURCE_DIR}/Engine/*.cpp)
-     
+
     add_executable(ClientExe ${ClientSrc})
   else()
     add_executable(ClientExe Dummy.cpp)
@@ -65,12 +65,12 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     target_link_libraries(ClientExe -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive Engine -Wl,--no-whole-archive)
   endif()
-  
+
   if(NOT WEB)
     target_link_libraries(ClientExe Runtime)
     target_link_libraries(ClientExe Engine)
   endif()
-  
+
   target_link_libraries(ClientExe Foundation)
   target_link_libraries(ClientExe External)
   target_link_libraries(ClientExe StormNetCustomBindings)
@@ -86,11 +86,11 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   target_link_libraries(ClientExe vorbis)
   target_link_libraries(ClientExe ogg)
   target_link_libraries(ClientExe freetype)
-  
+
   if(WEB)
     add_custom_command(TARGET ClientExe PRE_LINK COMMAND ${PROJECT_SOURCE_DIR}/BuildFinalAssets.exe WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
   else()
-    
+
     target_link_libraries(ClientExe StormNetBindingsEnet)
     target_link_libraries(ClientExe StormNet)
     target_link_libraries(ClientExe StormWebrtc)
@@ -98,7 +98,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     target_link_libraries(ClientExe ENet)
     target_link_libraries(ClientExe usrsctp-static)
     target_link_libraries(ClientExe mbedtls)
-    
+
     if(MSVC)
       if("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
         target_link_libraries(ClientExe ${PROJECT_SOURCE_DIR}\\External\\Windows\\angle\\x64\\libEGL.lib)
@@ -107,7 +107,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
         target_link_libraries(ClientExe ${PROJECT_SOURCE_DIR}\\External\\Windows\\angle\\libEGL.lib)
         target_link_libraries(ClientExe ${PROJECT_SOURCE_DIR}\\External\\Windows\\angle\\libGLESv2.lib)
       endif()
-      
+
       target_link_libraries(ClientExe Winmm.lib)
       target_link_libraries(ClientExe Version.lib)
       target_link_libraries(ClientExe Imm32.lib)
@@ -131,7 +131,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 
       add_definitions(-D_IOS)
 
-      set_target_properties(ClientExe PROPERTIES 
+      set_target_properties(ClientExe PROPERTIES
         BUNDLE YES
         BUNDLE_EXTENSION "app"
         MACOSX_BUNDLE YES
@@ -165,13 +165,13 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(GameServerExe)
 
   add_executable(ServerExe Dummy.cpp)
-  
+
   if(MSVC)
     target_link_libraries(ServerExe GameServerExe)
     target_link_libraries(ServerExe GameServer)
     target_link_libraries(ServerExe Game)
     target_link_libraries(ServerExe Runtime)
-    target_link_libraries(ServerExe Server)  
+    target_link_libraries(ServerExe Server)
   else()
     target_link_libraries(ServerExe -Wl,--whole-archive GameServerExe -Wl,--no-whole-archive)
     target_link_libraries(ServerExe -Wl,--whole-archive GameServer -Wl,--no-whole-archive)
@@ -194,11 +194,11 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   target_link_libraries(ServerExe ENet)
   target_link_libraries(ServerExe usrsctp-static)
   target_link_libraries(ServerExe mbedtls)
-  
+
   if(UNIX)
     target_link_libraries(ServerExe stdc++fs)
     target_link_libraries(ServerExe -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-    target_link_libraries(ServerExe rt m c dl)    
+    target_link_libraries(ServerExe rt m c dl)
 
     #set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
     #set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
@@ -210,10 +210,14 @@ if(BUILD_SERVER OR BUILD_TOOLS)
 endif()
 
 if(BUILD_TOOLS)
-  add_executable(generatecmake GenerateCMake/Main.cpp)  
+  add_executable(generatecmake GenerateCMake/Main.cpp)
   target_link_libraries(generatecmake stdc++fs)
 
-  add_executable(stormrefl StormRefl/main.cpp  StormRefl/StaticLibs.cpp StormRefl/StormReflOutput.cpp)  
+  add_custom_command(TARGET generatecmake POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generatecmake> ${CMAKE_CURRENT_SOURCE_DIR}/generatecmake
+  )
+
+  add_executable(stormrefl StormRefl/main.cpp  StormRefl/StaticLibs.cpp StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
   target_link_libraries(stormrefl
     clangFrontend
@@ -256,12 +260,10 @@ if(BUILD_TOOLS)
 
   target_compile_options(stormrefl PUBLIC -fno-rtti)
   target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-  target_link_libraries(stormrefl stdc++fs z rt m c dl)
-
-  configure_file(generatecmake ${CMAKE_CURRENT_SOURCE_DIR}/generatecmake COPYONLY)
+  target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
 
   add_executable(documentserver Dummy.cpp)
-  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls) 
+  target_link_libraries(documentserver DocumentServer Foundation StormSockets StormData asio mbedtls)
   target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
   target_link_libraries(documentserver GL GLU stdc++fs z rt m c dl)
 

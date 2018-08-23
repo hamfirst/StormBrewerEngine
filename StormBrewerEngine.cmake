@@ -5,7 +5,7 @@ include(CMakeDependentOption)
 
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
-option(BUILD_TOOLS "Build Client" ON)
+option(BUILD_TOOLS "Build Client" OFF)
 CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
 
 SET(CMAKE_CXX_STANDARD 14)
