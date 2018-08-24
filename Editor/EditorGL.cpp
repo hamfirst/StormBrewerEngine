@@ -1444,6 +1444,8 @@ extern "C"
 
 			setup_debugger();
 		}
+
+		return 1;
 	}
 
 	int gl3wIsSupported(int major, int minor)

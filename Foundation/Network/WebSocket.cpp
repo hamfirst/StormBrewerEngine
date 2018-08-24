@@ -322,6 +322,20 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
 {
   Close();
 
+#ifdef _LINUX
+  char service[10];
+  snprintf(service, sizeof(service), "%d", port);
+
+  addrinfo * host_info;
+  addrinfo hints = {};
+
+  hints.ai_family = AF_INET;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_protocol = IPPROTO_TCP;
+
+  getaddrinfo(host, service, &hints, &host_info);  
+
+#else
   auto host_info = gethostbyname(host);
   if (host_info == nullptr)
   {
@@ -333,7 +347,8 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
   sockaddr_in serv_addr = {};
   serv_addr.sin_family = AF_INET;
   memcpy(&serv_addr.sin_addr, host_info->h_addr, host_info->h_length);
-  serv_addr.sin_port = htons(port);
+  serv_addr.sin_port = htons(port);  
+#endif
 
   int one = 1;
   int return_val = setsockopt(m_Socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&one, sizeof(one));
