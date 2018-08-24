@@ -11,14 +11,14 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "workspaceContains:StormBrewerEngine.cmake"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.createSBEComponent",
+                "title": "Create SB Engine Component"
             }
         ]
     },

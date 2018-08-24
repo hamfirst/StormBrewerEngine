@@ -69,6 +69,8 @@ bool GenericInput::event(QEvent * ev)
 {
   switch (ev->type())
   {
+  default: 
+    break;
   case QEvent::KeyPress:
     {
       QKeyEvent * key_event = static_cast<QKeyEvent*>(ev);

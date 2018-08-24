@@ -1,6 +1,8 @@
 
 
 #include <QTabWidget>
+#include <QSurfaceFormat>
+#include <QOpenGLFunctions>
 #include <QTimer>
 #include <QDockWidget>
 #include <QOpenGLContext>
@@ -61,6 +63,8 @@ DelegateList<void> g_GlobalUpdate;
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
 {
+  printf("Starting up editor\n");
+
 #ifdef _MSC_VER
   AllocConsole();
   AttachConsole(GetCurrentProcessId());
@@ -126,14 +130,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   UpdateRecentFiles();
 
-  m_Context = new QOpenGLContext(this);
-  m_Context->setShareContext(QOpenGLContext::globalShareContext());
-  m_Context->create();
-
-  m_Surface = std::make_unique<QOffscreenSurface>();
-  m_Surface->setFormat(m_Context->format());
-  m_Surface->create();
-
   m_EngineInitialized = false;
   m_Closing = false;
 
@@ -141,10 +137,12 @@ EditorContainer::EditorContainer(QWidget *parent) :
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
   timer->start(10);
 
+  printf("Attempting to connect to doc server\n");
   if (ProbePort(doc_server_host, 27800, 100) == false)
   {
     if (!strcmp(doc_server_host, "localhost"))
     {
+      printf("Starting new document server\n");
       QProcess::startDetached("DocumentServer");
     }
   }
@@ -160,12 +158,22 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   m_ConnectingDialog.show();
 
+  EngineInit(false, true);
+
+  printf("Creating offscreen surface\n");
+  auto global_context = QOpenGLContext::globalShareContext();
+
+  m_Context = new QOpenGLContext(this);
+  m_Context->setShareContext(global_context);
+  m_Context->create();
+
+  m_Surface = std::make_unique<QOffscreenSurface>();
+  m_Surface->setFormat(m_Context->format());
+  m_Surface->create();
+
   m_Context->makeCurrent(m_Surface.get());
 
-  Component comp;
-
   InitServerTypes();
-  EngineInit(false);
   EngineRenderInit();
   RegisterGameplayShaders();
 
@@ -710,7 +718,7 @@ void EditorContainer::HandleDocumentServerEvent(DocumentServerEvent & ev)
       }
 
       enum_hash = crc32additive(enum_hash, *data);
-      *data++;
+      data++;
     }
 
     enum_hash = crc32end(enum_hash);

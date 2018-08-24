@@ -386,7 +386,9 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
   std::unique_ptr<char[]> buffer = std::make_unique<char[]>(bufflen);
 
   int request_len = snprintf(buffer.get(), bufflen, kRequestStr, uri, host, port, origin);
-  if (send(m_Socket, buffer.get(), request_len, 0) != request_len)
+  int send_len = send(m_Socket, buffer.get(), request_len, 0);
+
+  if (send_len != request_len)
   {
     CloseSocket(m_Socket);
     return;

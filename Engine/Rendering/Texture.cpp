@@ -71,7 +71,7 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
   switch (type)
   {
   case TextureType::kGrayscale:
-#if 1
+#if 0
     format = GL_LUMINANCE;
 #else
     format = GL_RED;

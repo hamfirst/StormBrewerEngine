@@ -1,589 +1,589 @@
 []
 
 {
-    "m_Children": {
+    "m_Equations": {
+        "2": {
+            "m_Equation": "0",
+            "m_VariableName": "m_EndX"
+        },
+        "3": {
+            "m_Equation": "0",
+            "m_VariableName": "m_EndY"
+        },
         "0": {
-            "m_UI": {
-                "m_InitData": {
-                    "T": 798311039,
-                    "D": { }
-                },
-                "m_Inputs": { },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_StartX",
-                        "m_Equation": "-50"
-                    },
-                    "1": {
-                        "m_VariableName": "m_StartY",
-                        "m_Equation": "0"
-                    },
-                    "2": {
-                        "m_VariableName": "m_EndX",
-                        "m_Equation": "50"
-                    },
-                    "3": {
-                        "m_VariableName": "m_EndY",
-                        "m_Equation": "150"
-                    },
-                    "8": {
-                        "m_VariableName": "m_Shape",
-                        "m_Equation": "2"
-                    },
-                    "4": {
-                        "m_VariableName": "m_ColorR",
-                        "m_Equation": "0"
-                    },
-                    "5": {
-                        "m_VariableName": "m_ColorG",
-                        "m_Equation": "0"
-                    },
-                    "6": {
-                        "m_VariableName": "m_ColorB",
-                        "m_Equation": "0"
-                    },
-                    "7": {
-                        "m_VariableName": "m_ColorA",
-                        "m_Equation": "0.5"
-                    },
-                    "9": {
-                        "m_VariableName": "m_EdgeWidth",
-                        "m_Equation": "2"
-                    }
-                },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "Border"
+            "m_Equation": "(1.5 - PlayerIndex) * -105",
+            "m_VariableName": "m_StartX"
         },
         "1": {
+            "m_Equation": "-40",
+            "m_VariableName": "m_StartY"
+        }
+    },
+    "m_Outputs": {
+        "11": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 7,
+            "m_VariableName": "Joined"
+        },
+        "10": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 6,
+            "m_VariableName": "Joined"
+        },
+        "12": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 8,
+            "m_VariableName": "Joined"
+        },
+        "9": {
+            "m_Equation": "YInput",
+            "m_ChildIndex": 7,
+            "m_VariableName": "YInput"
+        },
+        "6": {
+            "m_Equation": "PlayerIndex",
+            "m_ChildIndex": 5,
+            "m_VariableName": "PlayerIndex"
+        },
+        "4": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 3,
+            "m_VariableName": "Joined"
+        },
+        "0": {
+            "m_Equation": "PlayerIndex == 0 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3",
+            "m_ChildIndex": 1,
+            "m_VariableName": "R"
+        },
+        "13": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 9,
+            "m_VariableName": "Joined"
+        },
+        "7": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 4,
+            "m_VariableName": "Joined"
+        },
+        "1": {
+            "m_Equation": "PlayerIndex == 2 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3",
+            "m_ChildIndex": 1,
+            "m_VariableName": "G"
+        },
+        "5": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 5,
+            "m_VariableName": "Joined"
+        },
+        "8": {
+            "m_Equation": "XInput",
+            "m_ChildIndex": 7,
+            "m_VariableName": "XInput"
+        },
+        "2": {
+            "m_Equation": "PlayerIndex == 1 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3",
+            "m_ChildIndex": 1,
+            "m_VariableName": "B"
+        },
+        "3": {
+            "m_Equation": "Joined",
+            "m_ChildIndex": 2,
+            "m_VariableName": "Joined"
+        }
+    },
+    "m_Children": {
+        "9": {
+            "m_Name": "LeaveButtonPrompt",
             "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
+                "m_Equations": {
+                    "4": {
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_ScaleY"
+                    },
+                    "2": {
+                        "m_Equation": "150",
+                        "m_VariableName": "m_PositionY"
+                    },
+                    "3": {
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_ScaleX"
+                    },
+                    "0": {
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
+                    },
+                    "1": {
+                        "m_Equation": "80",
+                        "m_VariableName": "m_PositionX"
+                    }
+                },
                 "m_InitData": {
-                    "T": 798311039,
-                    "D": { }
+                    "D": {
+                        "m_TextureFile": ".\/Images\/UI\/360_B.png"
+                    },
+                    "T": 2043328801
                 },
                 "m_Inputs": {
+                    "0": {
+                        "m_VariableName": "Joined"
+                    }
+                }
+            }
+        },
+        "7": {
+            "m_Name": "ControlTestPip",
+            "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
+                "m_Equations": {
+                    "4": {
+                        "m_Equation": "1",
+                        "m_VariableName": "m_Shape"
+                    },
+                    "2": {
+                        "m_Equation": "3 + XInput * 17",
+                        "m_VariableName": "m_EndX"
+                    },
+                    "5": {
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
+                    },
+                    "3": {
+                        "m_Equation": "73 + YInput * 17",
+                        "m_VariableName": "m_EndY"
+                    },
+                    "0": {
+                        "m_Equation": "-3 + XInput * 17",
+                        "m_VariableName": "m_StartX"
+                    },
+                    "1": {
+                        "m_Equation": "67 + YInput * 17",
+                        "m_VariableName": "m_StartY"
+                    }
+                },
+                "m_InitData": {
+                    "D": { },
+                    "T": 798311039
+                },
+                "m_Inputs": {
+                    "2": {
+                        "m_VariableName": "Joined"
+                    },
+                    "0": {
+                        "m_DefaultEquation": "",
+                        "m_VariableName": "XInput"
+                    },
+                    "1": {
+                        "m_DefaultEquation": "",
+                        "m_VariableName": "YInput"
+                    }
+                }
+            }
+        },
+        "1": {
+            "m_Name": "Bkg",
+            "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
+                "m_Equations": {
+                    "1": {
+                        "m_Equation": "0",
+                        "m_VariableName": "m_StartY"
+                    },
+                    "0": {
+                        "m_Equation": "-50",
+                        "m_VariableName": "m_StartX"
+                    },
+                    "2": {
+                        "m_Equation": "50",
+                        "m_VariableName": "m_EndX"
+                    },
+                    "3": {
+                        "m_Equation": "150",
+                        "m_VariableName": "m_EndY"
+                    },
+                    "5": {
+                        "m_Equation": "G",
+                        "m_VariableName": "m_ColorG"
+                    },
+                    "6": {
+                        "m_Equation": "B",
+                        "m_VariableName": "m_ColorB"
+                    },
+                    "4": {
+                        "m_Equation": "R",
+                        "m_VariableName": "m_ColorR"
+                    }
+                },
+                "m_InitData": {
+                    "D": { },
+                    "T": 798311039
+                },
+                "m_Inputs": {
+                    "2": {
+                        "m_VariableName": "B"
+                    },
                     "0": {
                         "m_VariableName": "R"
                     },
                     "1": {
                         "m_VariableName": "G"
-                    },
-                    "2": {
-                        "m_VariableName": "B"
                     }
-                },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_StartX",
-                        "m_Equation": "-50"
-                    },
-                    "1": {
-                        "m_VariableName": "m_StartY",
-                        "m_Equation": "0"
-                    },
-                    "2": {
-                        "m_VariableName": "m_EndX",
-                        "m_Equation": "50"
-                    },
-                    "3": {
-                        "m_VariableName": "m_EndY",
-                        "m_Equation": "150"
-                    },
-                    "4": {
-                        "m_VariableName": "m_ColorR",
-                        "m_Equation": "R"
-                    },
-                    "5": {
-                        "m_VariableName": "m_ColorG",
-                        "m_Equation": "G"
-                    },
-                    "6": {
-                        "m_VariableName": "m_ColorB",
-                        "m_Equation": "B"
-                    }
-                },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "Bkg"
+                }
+            }
         },
-        "8": {
+        "0": {
+            "m_Name": "Border",
             "m_UI": {
-                "m_InitData": {
-                    "T": 2043328801,
-                    "D": {
-                        "m_TextureFile": ".\/Images\/UI\/360_A.png"
-                    }
-                },
-                "m_Inputs": {
-                    "0": {
-                        "m_VariableName": "Joined"
-                    }
-                },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_ScaleX",
-                        "m_Equation": "0.2"
-                    },
-                    "1": {
-                        "m_VariableName": "m_ScaleY",
-                        "m_Equation": "0.2"
-                    },
-                    "2": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "500"
-                    },
-                    "3": {
-                        "m_VariableName": "m_PositionX",
-                        "m_Equation": "80"
-                    },
-                    "4": {
-                        "m_VariableName": "m_ColorA",
-                        "m_Equation": "Time % 2"
-                    },
-                    "5": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined == 0"
-                    }
-                },
+                "m_Children": { },
                 "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "JoinButtonPrompt"
-        },
-        "2": {
-            "m_UI": {
-                "m_InitData": {
-                    "T": 2038217224,
-                    "D": { }
-                },
-                "m_Inputs": {
-                    "0": {
-                        "m_VariableName": "Joined"
-                    }
-                },
                 "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_Text",
-                        "m_Equation": "\"Press\""
-                    },
-                    "1": {
-                        "m_VariableName": "m_Centered",
-                        "m_Equation": "1"
-                    },
-                    "2": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "100"
-                    },
-                    "3": {
-                        "m_VariableName": "m_ColorA",
-                        "m_Equation": "Time % 2"
-                    },
-                    "4": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined == 0"
-                    },
-                    "5": {
-                        "m_VariableName": "m_TextMode",
-                        "m_Equation": "2"
-                    },
-                    "6": {
-                        "m_VariableName": "m_SecondaryColorA",
-                        "m_Equation": "Time % 2"
+                    "9": {
+                        "m_Equation": "2",
+                        "m_VariableName": "m_EdgeWidth"
                     },
                     "7": {
-                        "m_VariableName": "m_PositionX",
-                        "m_Equation": "-10"
-                    }
-                },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "JoinText"
-        },
-        "3": {
-            "m_UI": {
-                "m_InitData": {
-                    "T": 2038217224,
-                    "D": { }
-                },
-                "m_Inputs": {
-                    "0": {
-                        "m_VariableName": "Joined"
-                    }
-                },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_Text",
-                        "m_Equation": "\"Press\""
+                        "m_Equation": "0.5",
+                        "m_VariableName": "m_ColorA"
                     },
                     "1": {
-                        "m_VariableName": "m_FontId",
-                        "m_Equation": "-1"
+                        "m_Equation": "0",
+                        "m_VariableName": "m_StartY"
+                    },
+                    "0": {
+                        "m_Equation": "-50",
+                        "m_VariableName": "m_StartX"
                     },
                     "2": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
+                        "m_Equation": "50",
+                        "m_VariableName": "m_EndX"
                     },
                     "3": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "30"
-                    },
-                    "4": {
-                        "m_VariableName": "m_ColorA",
-                        "m_Equation": "0.6"
+                        "m_Equation": "150",
+                        "m_VariableName": "m_EndY"
                     },
                     "5": {
-                        "m_VariableName": "m_SecondaryColorA",
-                        "m_Equation": "0.2"
+                        "m_Equation": "0",
+                        "m_VariableName": "m_ColorG"
+                    },
+                    "8": {
+                        "m_Equation": "2",
+                        "m_VariableName": "m_Shape"
                     },
                     "6": {
-                        "m_VariableName": "m_TextMode",
-                        "m_Equation": "1"
+                        "m_Equation": "0",
+                        "m_VariableName": "m_ColorB"
                     },
-                    "7": {
-                        "m_VariableName": "m_PositionX",
-                        "m_Equation": "-10"
+                    "4": {
+                        "m_Equation": "0",
+                        "m_VariableName": "m_ColorR"
                     }
                 },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "LeaveText"
-        },
-        "4": {
-            "m_UI": {
                 "m_InitData": {
-                    "T": 2038217224,
-                    "D": { }
+                    "D": { },
+                    "T": 798311039
                 },
-                "m_Inputs": {
-                    "0": {
-                        "m_VariableName": "Joined"
-                    }
-                },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_Text",
-                        "m_Equation": "\"To Leave\""
-                    },
-                    "1": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "15"
-                    },
-                    "2": {
-                        "m_VariableName": "m_ColorR",
-                        "m_Equation": ""
-                    },
-                    "3": {
-                        "m_VariableName": "m_ColorA",
-                        "m_Equation": "0.6"
-                    },
-                    "4": {
-                        "m_VariableName": "m_SecondaryColorA",
-                        "m_Equation": "0.2"
-                    },
-                    "5": {
-                        "m_VariableName": "m_TextMode",
-                        "m_Equation": "1"
-                    },
-                    "7": {
-                        "m_VariableName": "m_FontId",
-                        "m_Equation": "-1"
-                    },
-                    "6": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
-                    }
-                },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "LeaveText2"
+                "m_Inputs": { }
+            }
         },
         "5": {
+            "m_Name": "PlayerName",
             "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
+                "m_Equations": {
+                    "4": {
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
+                    },
+                    "2": {
+                        "m_Equation": "2",
+                        "m_VariableName": "m_TextMode"
+                    },
+                    "3": {
+                        "m_Equation": "120",
+                        "m_VariableName": "m_PositionY"
+                    },
+                    "0": {
+                        "m_Equation": "\"Player\" + [intstr PlayerIndex + 1] ",
+                        "m_VariableName": "m_Text"
+                    },
+                    "1": {
+                        "m_Equation": "",
+                        "m_VariableName": "m_ColorR"
+                    }
+                },
                 "m_InitData": {
-                    "T": 2038217224,
-                    "D": { }
+                    "D": { },
+                    "T": 2038217224
                 },
                 "m_Inputs": {
+                    "1": {
+                        "m_VariableName": "Joined"
+                    },
                     "0": {
                         "m_VariableName": "PlayerIndex"
-                    },
-                    "1": {
-                        "m_VariableName": "Joined"
                     }
-                },
+                }
+            }
+        },
+        "8": {
+            "m_Name": "JoinButtonPrompt",
+            "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
                 "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_Text",
-                        "m_Equation": "\"Player\" + [intstr PlayerIndex + 1] "
+                    "4": {
+                        "m_Equation": "Time % 2",
+                        "m_VariableName": "m_ColorA"
                     },
-                    "1": {
-                        "m_VariableName": "m_ColorR",
-                        "m_Equation": ""
+                    "5": {
+                        "m_Equation": "Joined == 0",
+                        "m_VariableName": "m_Enabled"
                     },
                     "3": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "120"
+                        "m_Equation": "80",
+                        "m_VariableName": "m_PositionX"
                     },
                     "2": {
-                        "m_VariableName": "m_TextMode",
-                        "m_Equation": "2"
+                        "m_Equation": "500",
+                        "m_VariableName": "m_PositionY"
                     },
-                    "4": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
+                    "0": {
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_ScaleX"
+                    },
+                    "1": {
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_ScaleY"
                     }
                 },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "PlayerName"
-        },
-        "7": {
-            "m_UI": {
                 "m_InitData": {
-                    "T": 798311039,
-                    "D": { }
+                    "D": {
+                        "m_TextureFile": ".\/Images\/UI\/360_A.png"
+                    },
+                    "T": 2043328801
                 },
                 "m_Inputs": {
                     "0": {
-                        "m_VariableName": "XInput",
-                        "m_DefaultEquation": ""
-                    },
-                    "1": {
-                        "m_VariableName": "YInput",
-                        "m_DefaultEquation": ""
-                    },
-                    "2": {
                         "m_VariableName": "Joined"
                     }
-                },
-                "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_StartX",
-                        "m_Equation": "-3 + XInput * 17"
-                    },
-                    "1": {
-                        "m_VariableName": "m_StartY",
-                        "m_Equation": "67 + YInput * 17"
-                    },
-                    "3": {
-                        "m_VariableName": "m_EndY",
-                        "m_Equation": "73 + YInput * 17"
-                    },
-                    "2": {
-                        "m_VariableName": "m_EndX",
-                        "m_Equation": "3 + XInput * 17"
-                    },
-                    "4": {
-                        "m_VariableName": "m_Shape",
-                        "m_Equation": "1"
-                    },
-                    "5": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
-                    }
-                },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "ControlTestPip"
+                }
+            }
         },
         "6": {
+            "m_Name": "ControlTestBkg",
             "m_UI": {
-                "m_InitData": {
-                    "T": 798311039,
-                    "D": { }
-                },
-                "m_Inputs": {
-                    "0": {
-                        "m_VariableName": "Joined"
-                    }
-                },
+                "m_Children": { },
+                "m_Outputs": { },
                 "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_StartX",
-                        "m_Equation": "-20"
-                    },
                     "1": {
-                        "m_VariableName": "m_EndX",
-                        "m_Equation": "20"
+                        "m_Equation": "20",
+                        "m_VariableName": "m_EndX"
+                    },
+                    "0": {
+                        "m_Equation": "-20",
+                        "m_VariableName": "m_StartX"
                     },
                     "3": {
-                        "m_VariableName": "m_EndY",
-                        "m_Equation": "90"
-                    },
-                    "2": {
-                        "m_VariableName": "m_StartY",
-                        "m_Equation": "50"
-                    },
-                    "4": {
-                        "m_VariableName": "m_Shape",
-                        "m_Equation": "3"
+                        "m_Equation": "90",
+                        "m_VariableName": "m_EndY"
                     },
                     "5": {
-                        "m_VariableName": "m_EdgeWidth",
-                        "m_Equation": "1"
+                        "m_Equation": "1",
+                        "m_VariableName": "m_EdgeWidth"
+                    },
+                    "2": {
+                        "m_Equation": "50",
+                        "m_VariableName": "m_StartY"
                     },
                     "6": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
+                    },
+                    "4": {
+                        "m_Equation": "3",
+                        "m_VariableName": "m_Shape"
                     }
                 },
-                "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "ControlTestBkg"
-        },
-        "9": {
-            "m_UI": {
                 "m_InitData": {
-                    "T": 2043328801,
-                    "D": {
-                        "m_TextureFile": ".\/Images\/UI\/360_B.png"
-                    }
+                    "D": { },
+                    "T": 798311039
                 },
                 "m_Inputs": {
                     "0": {
                         "m_VariableName": "Joined"
                     }
-                },
+                }
+            }
+        },
+        "4": {
+            "m_Name": "LeaveText2",
+            "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
                 "m_Equations": {
-                    "0": {
-                        "m_VariableName": "m_Enabled",
-                        "m_Equation": "Joined"
+                    "7": {
+                        "m_Equation": "-1",
+                        "m_VariableName": "m_FontId"
                     },
                     "1": {
-                        "m_VariableName": "m_PositionX",
-                        "m_Equation": "80"
+                        "m_Equation": "15",
+                        "m_VariableName": "m_PositionY"
                     },
-                    "3": {
-                        "m_VariableName": "m_ScaleX",
-                        "m_Equation": "0.2"
+                    "0": {
+                        "m_Equation": "\"To Leave\"",
+                        "m_VariableName": "m_Text"
                     },
                     "2": {
-                        "m_VariableName": "m_PositionY",
-                        "m_Equation": "150"
+                        "m_Equation": "",
+                        "m_VariableName": "m_ColorR"
+                    },
+                    "3": {
+                        "m_Equation": "0.6",
+                        "m_VariableName": "m_ColorA"
+                    },
+                    "5": {
+                        "m_Equation": "1",
+                        "m_VariableName": "m_TextMode"
+                    },
+                    "6": {
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
                     },
                     "4": {
-                        "m_VariableName": "m_ScaleY",
-                        "m_Equation": "0.2"
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_SecondaryColorA"
                     }
                 },
+                "m_InitData": {
+                    "D": { },
+                    "T": 2038217224
+                },
+                "m_Inputs": {
+                    "0": {
+                        "m_VariableName": "Joined"
+                    }
+                }
+            }
+        },
+        "2": {
+            "m_Name": "JoinText",
+            "m_UI": {
+                "m_Children": { },
                 "m_Outputs": { },
-                "m_Children": { }
-            },
-            "m_Name": "LeaveButtonPrompt"
+                "m_Equations": {
+                    "7": {
+                        "m_Equation": "-10",
+                        "m_VariableName": "m_PositionX"
+                    },
+                    "1": {
+                        "m_Equation": "1",
+                        "m_VariableName": "m_Centered"
+                    },
+                    "0": {
+                        "m_Equation": "\"Press\"",
+                        "m_VariableName": "m_Text"
+                    },
+                    "2": {
+                        "m_Equation": "100",
+                        "m_VariableName": "m_PositionY"
+                    },
+                    "3": {
+                        "m_Equation": "Time % 2",
+                        "m_VariableName": "m_ColorA"
+                    },
+                    "5": {
+                        "m_Equation": "2",
+                        "m_VariableName": "m_TextMode"
+                    },
+                    "6": {
+                        "m_Equation": "Time % 2",
+                        "m_VariableName": "m_SecondaryColorA"
+                    },
+                    "4": {
+                        "m_Equation": "Joined == 0",
+                        "m_VariableName": "m_Enabled"
+                    }
+                },
+                "m_InitData": {
+                    "D": { },
+                    "T": 2038217224
+                },
+                "m_Inputs": {
+                    "0": {
+                        "m_VariableName": "Joined"
+                    }
+                }
+            }
+        },
+        "3": {
+            "m_Name": "LeaveText",
+            "m_UI": {
+                "m_Children": { },
+                "m_Outputs": { },
+                "m_Equations": {
+                    "7": {
+                        "m_Equation": "-10",
+                        "m_VariableName": "m_PositionX"
+                    },
+                    "1": {
+                        "m_Equation": "-1",
+                        "m_VariableName": "m_FontId"
+                    },
+                    "0": {
+                        "m_Equation": "\"Press\"",
+                        "m_VariableName": "m_Text"
+                    },
+                    "2": {
+                        "m_Equation": "Joined",
+                        "m_VariableName": "m_Enabled"
+                    },
+                    "3": {
+                        "m_Equation": "30",
+                        "m_VariableName": "m_PositionY"
+                    },
+                    "5": {
+                        "m_Equation": "0.2",
+                        "m_VariableName": "m_SecondaryColorA"
+                    },
+                    "6": {
+                        "m_Equation": "1",
+                        "m_VariableName": "m_TextMode"
+                    },
+                    "4": {
+                        "m_Equation": "0.6",
+                        "m_VariableName": "m_ColorA"
+                    }
+                },
+                "m_InitData": {
+                    "D": { },
+                    "T": 2038217224
+                },
+                "m_Inputs": {
+                    "0": {
+                        "m_VariableName": "Joined"
+                    }
+                }
+            }
         }
     },
     "m_Inputs": {
-        "0": {
-            "m_VariableName": "PlayerIndex",
-            "m_DefaultEquation": "3"
-        },
-        "1": {
-            "m_VariableName": "Joined",
-            "m_DefaultEquation": ""
+        "2": {
+            "m_VariableName": "XInput"
         },
         "3": {
             "m_VariableName": "YInput"
         },
-        "2": {
-            "m_VariableName": "XInput"
-        }
-    },
-    "m_Outputs": {
-        "13": {
-            "m_ChildIndex": 9,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
         "0": {
-            "m_ChildIndex": 1,
-            "m_VariableName": "R",
-            "m_Equation": "PlayerIndex == 0 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3"
+            "m_DefaultEquation": "0",
+            "m_VariableName": "PlayerIndex"
         },
         "1": {
-            "m_ChildIndex": 1,
-            "m_VariableName": "G",
-            "m_Equation": "PlayerIndex == 2 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3"
-        },
-        "8": {
-            "m_ChildIndex": 7,
-            "m_VariableName": "XInput",
-            "m_Equation": "XInput"
-        },
-        "2": {
-            "m_ChildIndex": 1,
-            "m_VariableName": "B",
-            "m_Equation": "PlayerIndex == 1 ? 1 : PlayerIndex == 3 ? 0.5 : 0.3"
-        },
-        "3": {
-            "m_ChildIndex": 2,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "4": {
-            "m_ChildIndex": 3,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "5": {
-            "m_ChildIndex": 5,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "6": {
-            "m_ChildIndex": 5,
-            "m_VariableName": "PlayerIndex",
-            "m_Equation": "PlayerIndex"
-        },
-        "7": {
-            "m_ChildIndex": 4,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "9": {
-            "m_ChildIndex": 7,
-            "m_VariableName": "YInput",
-            "m_Equation": "YInput"
-        },
-        "10": {
-            "m_ChildIndex": 6,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "11": {
-            "m_ChildIndex": 7,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        },
-        "12": {
-            "m_ChildIndex": 8,
-            "m_VariableName": "Joined",
-            "m_Equation": "Joined"
-        }
-    },
-    "m_Equations": {
-        "0": {
-            "m_VariableName": "m_StartX",
-            "m_Equation": "ScreenWidth \/ 2 - (1.5 - PlayerIndex) * 105"
-        },
-        "1": {
-            "m_VariableName": "m_StartY",
-            "m_Equation": "80"
-        },
-        "3": {
-            "m_VariableName": "m_EndY",
-            "m_Equation": "0"
-        },
-        "2": {
-            "m_VariableName": "m_EndX",
-            "m_Equation": "0"
+            "m_DefaultEquation": "",
+            "m_VariableName": "Joined"
         }
     }
 }

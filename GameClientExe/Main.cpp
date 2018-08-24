@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 #endif
 
   InitServerTypes();
-  EngineInit(false);
+  EngineInit(false, true);
 
 #if defined(NET_USE_WEBRTC) && !defined(_WEB)
   StormWebrtcStaticInit();

@@ -23,11 +23,7 @@ public:
   void RepositionElements();
 
   template <typename T>
-  T * CreateWidget()
-  {
-    auto widget = GenericFrame::CreateWidget<T>();
-    widget->BindToFrame(this);
-  }
+  T * CreateWidget();
 
 protected:
 

@@ -3,6 +3,8 @@
 
 int main()
 {
+  printf("Starting document server\n");
+
   //try
   {
     DocumentServer server;

@@ -315,7 +315,8 @@ void DocumentServer::Run()
         printf("Modified File %s\n", file.data());
         HandleDocumentModified(path.data(), last_modified);
         break;
-
+      default:
+        break;
       }
 
       Hash file_hash = crc32(path);
@@ -897,8 +898,8 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       SendPendingChanges();
     }
     break;
-
-
+  default:
+    break;
   }
 
   return true;

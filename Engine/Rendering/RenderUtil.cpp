@@ -28,7 +28,6 @@ static const char * kQuadVertexShader = SHADER_LITERAL(
     vec2 position = mix(u_StartPos, u_EndPos, a_Position);
     position /= u_ScreenSize;
     position *= 2.0;
-    position -= vec2(1.0, 1.0);
 
     gl_Position = vec4(position, 0, 1);
     v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);

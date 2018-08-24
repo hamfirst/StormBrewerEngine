@@ -25,10 +25,15 @@ class Window;
 class ENGINE_EXPORT RenderState
 {
 public:
+  RenderState() = default;
+  ~RenderState();
+
   void InitRenderState(int screen_width, int screen_height);
 
+  void MakeCurrent();
   void BeginFrame(const Window & window);
   void FinalizeFrame(const Window & window);
+  void Release();
 
   void BindShader(const ShaderProgram & shader);
   void BindVertexBuffer(VertexBuffer & buffer);
@@ -112,6 +117,10 @@ private:
 #ifndef USE_VERTEX_ARRAY
   friend class VertexArray;
   bool m_VertexAttribEnabled[kMaxVertexAttribs] = {};
+#endif
+
+#ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
+  unsigned m_VertexArrayName;
 #endif
 };
 

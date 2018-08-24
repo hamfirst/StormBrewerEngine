@@ -18,7 +18,7 @@ public:
 
 protected:
 
-  friend bool EngineInit(bool);
+  friend bool EngineInit(bool, bool);
   friend void EngineUpdate();
 
   void Init();

@@ -160,7 +160,7 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
     }
 
     auto proj_file_path = base_path + '/' + file.filename().string();
-    if (ext == ".cpp" || ext == ".c")
+    if (ext == ".cpp" || ext == ".c" || ext == ".qrc" || ext == ".ui")
     {
       auto stem = file.stem().string();
       if (qt_proj && (stem.substr(0, 4) == "moc_" || stem.substr(0, 4) == "qrc_"))

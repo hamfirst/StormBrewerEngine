@@ -98,6 +98,11 @@ void BootstrapContext()
   glDisable(GL_CULL_FACE); CHECK_GL_RENDER_ERROR;
 }
 
+RenderState::~RenderState()
+{
+  Release();
+}
+
 void RenderState::InitRenderState(int screen_width, int screen_height)
 {
   glEnable(GL_BLEND); CHECK_GL_RENDER_ERROR;
@@ -126,6 +131,17 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
 
   m_DefaultTransferShader = MakeQuickShaderProgram(kDefaultTransferVertexShader, kDefaultTransferFragmentShader);
   m_BlurTransferShader = MakeQuickShaderProgram(kDefaultTransferVertexShader, kBlurFragmentShader);
+#endif
+
+#ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
+  glGenVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
+#endif
+}
+
+void RenderState::MakeCurrent()
+{
+#ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
+  glBindVertexArray(m_VertexArrayName); CHECK_GL_RENDER_ERROR;
 #endif
 }
 
@@ -200,6 +216,18 @@ void RenderState::FinalizeFrame(const Window & window)
 #endif
 }
 
+void RenderState::Release()
+{
+#ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
+
+  // if(m_VertexArrayName != 0)
+  // {
+  //   glDeleteVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
+  //   m_VertexArrayName = 0;
+  // }
+#endif
+}
+
 void RenderState::BindShader(const ShaderProgram & shader)
 {
   if (m_BoundShader != &shader || m_BoundShaderName != shader.m_ProgramName)
@@ -267,6 +295,11 @@ void RenderState::BindDefaultRenderTarget(const Window & window)
 
 void RenderState::Draw(int index_start, int index_end) const
 {
+  if(m_BoundVertexBuffer->IsEmpty() || index_start == index_end)
+  {
+    return;
+  }
+
   ASSERT(m_BoundVertexBuffer->m_VertexArray.m_BoundShader == m_BoundShader, "Invalid shader binding");
   m_BoundVertexBuffer->Draw(index_start, index_end);
 }

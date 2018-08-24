@@ -52,7 +52,7 @@ static const char * kFontViewerFragmentShader = SHADER_LITERAL(
   }
 );
 
-int FontViewer::m_NextFontId = -100;
+int FontViewer::m_NextFontId = -1;
 
 FontViewer::FontViewer(const char * file_path, QWidget *parent) :
   QOpenGLWidget(parent),
@@ -77,7 +77,7 @@ void FontViewer::initializeGL()
   m_RenderState.InitRenderState(width(), height());
   m_RenderUtil.LoadShaders();
 
-  g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 25);
+  //g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 25);
 
   m_Shader = MakeQuickShaderProgram(kFontViewerVertexShader, kFontViewerFragmentShader);
 
@@ -115,6 +115,7 @@ void FontViewer::paintGL()
     return;
   }
 
+  m_RenderState.MakeCurrent();
   m_RenderState.BindShader(m_Shader);
   m_RenderState.BindVertexBuffer(m_VertexBuffer);
 
@@ -149,11 +150,13 @@ void FontViewer::paintGL()
     info += input;
   }
 
+  auto screen_size = m_RenderState.GetScreenSize();
+
   auto size = g_TextManager.GetTextSize(info.data(), m_FontId, 1);
-  Vector2 text_start = Vector2(10, m_RenderState.GetScreenHeight() - 20);
+  Vector2 text_start = Vector2(30, -30) - Vector2(screen_size.x, -screen_size.y) / 2;
   Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), m_RenderState.GetScreenSize(), m_RenderState);
+  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), screen_size, m_RenderState);
 
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();

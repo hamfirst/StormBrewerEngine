@@ -28,6 +28,7 @@ public:
   void SetBufferData(const gsl::span<VertexInfo> & verts, VertexBufferType type);
   void SetBufferData(const VertexList & list, VertexBufferType type);
   int GetLoadError() const { return m_LoadError; }
+  bool IsEmpty() const { return m_IndexCount == 0; }
 
 private:
 

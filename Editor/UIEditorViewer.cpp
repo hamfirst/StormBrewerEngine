@@ -167,6 +167,8 @@ void UIEditorViewer::paintGL()
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 
+  m_RenderState.MakeCurrent();
+
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   m_RenderState.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));

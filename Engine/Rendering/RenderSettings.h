@@ -11,4 +11,8 @@
 
 #ifndef _WEB
 //#define USE_VERTEX_ARRAY
+#define REQUIRE_VERTEX_ARRAY_IN_CONTEXT
 #endif
+
+
+

@@ -25,7 +25,7 @@ public:
   virtual void GotDocumentStateChange(DocumentState state, const std::string & document_data) override;
 
   virtual void ApplyServerChange(const ReflectionChangeNotification & change) override;
-  virtual void ApplyLocalChange(const ReflectionChangeNotification & change);
+  virtual void ApplyLocalChange(const ReflectionChangeNotification & change) override;
 
   virtual void UpdateLinks() override;
 

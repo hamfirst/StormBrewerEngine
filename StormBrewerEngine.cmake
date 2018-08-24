@@ -23,6 +23,9 @@ if(WEB)
   
 elseif(MSVC)
   add_definitions(-DUNICODE -D_UNICODE)
+
+elseif(UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pragma-once-outside-header")
 endif()
 
 add_subdirectory(External)

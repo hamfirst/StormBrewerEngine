@@ -59,6 +59,12 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
   Destroy();
 
   m_ProgramName = glCreateProgram(); CHECK_GL_LOAD_ERROR;
+  if(m_ProgramName == 0)
+  {
+    ReportRenderError(__FILE__, __LINE__, -1);
+    return;
+  }
+
   auto shader_destroy_on_error = gsl::finally([&] { if (m_LoadError != 0) { glDeleteProgram(m_ProgramName); m_ProgramName = 0; } });
 
   glAttachShader(m_ProgramName, vertex_shader.m_ShaderName); CHECK_GL_LOAD_ERROR;

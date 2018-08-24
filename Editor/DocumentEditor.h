@@ -98,7 +98,7 @@ public:
     StormDataApplyChangePacket(m_ServerCopy, change);
   }
 
-  virtual void ApplyLocalChange(const ReflectionChangeNotification & change)
+  virtual void ApplyLocalChange(const ReflectionChangeNotification & change) override
   {
     if (m_Widget)
     {

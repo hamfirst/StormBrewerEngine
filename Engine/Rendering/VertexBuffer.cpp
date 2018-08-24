@@ -81,6 +81,10 @@ void VertexBuffer::SetBufferData(const gsl::span<VertexInfo> & verts, VertexBuff
   if (m_VertexBufferName == 0)
   {
     glGenBuffers(1, &m_VertexBufferName); CHECK_GL_RENDER_ERROR;
+    if(m_VertexBufferName == 0)
+    {
+      ReportRenderError(__FILE__, __LINE__, -1);
+    }
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferName); CHECK_GL_RENDER_ERROR;

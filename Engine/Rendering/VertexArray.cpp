@@ -73,6 +73,11 @@ void VertexArray::Destroy()
 
 void VertexArray::Sync(RenderState & render_state, const VertexBuffer & vertex_buffer, const ShaderProgram & shader_program, bool dirty)
 {
+  if(vertex_buffer.IsEmpty())
+  {
+    return;
+  }
+
 #ifndef USE_VERTEX_ARRAY
   dirty = false;
 #endif
@@ -145,7 +150,7 @@ void VertexArray::Sync(RenderState & render_state, const VertexBuffer & vertex_b
     auto & cur_elem = m_Current[index];
     if (cur_elem.m_Enabled)
     {
-      if (render_state.m_VertexAttribEnabled[index] == false)
+      //if (render_state.m_VertexAttribEnabled[index] == false)
       {
         glEnableVertexAttribArray(index); CHECK_GL_RENDER_ERROR;
         render_state.m_VertexAttribEnabled[index] = true;

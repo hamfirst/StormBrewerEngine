@@ -294,6 +294,7 @@ void FrameEditorBase::paintGL()
     return;
   }
 
+  m_RenderState.MakeCurrent();
   m_RenderState.EnableBlendMode();
 
   Box frame_box = Box::FromFrameCenterAndSize(Vector2{}, frame_size);

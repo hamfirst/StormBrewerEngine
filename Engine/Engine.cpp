@@ -30,7 +30,7 @@ static bool s_EGLMode = false;
 FT_Library g_FreeType;
 
 
-bool EngineInit(bool egl_mode)
+bool EngineInit(bool egl_mode, bool init_sdl_video)
 {
   NetworkInit();
   RuntimeInit();
@@ -40,7 +40,13 @@ bool EngineInit(bool egl_mode)
 
   g_ComponentTypeSystem.FinalizeComponentSystem();
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0)
+  auto sdl_flags = SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS;
+  if(init_sdl_video)
+  {
+    sdl_flags |= SDL_INIT_VIDEO;
+  }
+
+  if (SDL_Init(sdl_flags) < 0)
   {
     fprintf(stderr, "Could not start SDL");
     return false;
@@ -51,7 +57,7 @@ bool EngineInit(bool egl_mode)
   s_EGLMode = false;
 #else
   s_EGLMode = egl_mode;
-  if (s_EGLMode)
+  if (s_EGLMode && init_sdl_video)
   {
 #if SDL_REVISION_NUMBER >= 10864
     SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "true");

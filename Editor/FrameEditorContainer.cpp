@@ -17,7 +17,6 @@
 
 #include "Runtime/FrameData/FrameData.refl.meta.h"
 
-
 FrameEditorContainer::FrameEditorContainer(
   NotNullPtr<SpriteBaseEditor> editor,
   SpriteBaseDef & sprite,
@@ -269,6 +268,8 @@ void FrameEditorContainer::FrameEditorContainer::CreateFrameEditorTabs(
 
     switch (frame_data.m_Type)
     {
+      default: 
+        break;
       case FrameDataDefType::kSingleBox:
         {
           auto getter = [get_frame_data, name = std::move(name_copy1)](uint64_t frame_id) -> NullOptPtr<ROpaque<Box>>

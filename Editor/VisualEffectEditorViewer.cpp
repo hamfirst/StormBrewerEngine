@@ -195,6 +195,8 @@ void VisualEffectEditorViewer::paintGL()
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 
+  m_RenderState.MakeCurrent();
+
   m_FPSClock.Update();
 
   auto size = RenderVec2{ kDefaultResolutionWidth, kDefaultResolutionHeight } *m_Magnification.Get();

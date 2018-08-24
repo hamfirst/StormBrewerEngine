@@ -204,6 +204,7 @@ void GameContainer::Render()
 {
   m_Window.MakeCurrent();
 
+  m_RenderState.MakeCurrent();
   m_RenderState.BeginFrame(m_Window);
 
   if (m_Mode)

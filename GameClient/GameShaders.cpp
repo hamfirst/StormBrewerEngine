@@ -6,13 +6,18 @@
 
 void RegisterGameplayShaders()
 {
-  g_ShaderManager.RegisterShader(SHADER_LITERAL(
+  g_ShaderManager.RegisterShader(
+    "#version 130\n"
+
+    SHADER_LITERAL(
 
       precision highp float;
 
-      varying vec2 v_Position;
-      varying vec2 v_TexCoord;
-      varying vec4 v_Color;
+      in vec2 v_Position;
+      in vec2 v_TexCoord;
+      in vec4 v_Color;
+
+      out vec4 o_fragColor;
 
       uniform sampler2D u_Texture;
       uniform vec4 u_Color;
@@ -39,7 +44,7 @@ void RegisterGameplayShaders()
           color *= 0.5;
         }
 
-        gl_FragColor = color;
+        o_fragColor = color;
       }
     ), "EdgeGlow");
 }

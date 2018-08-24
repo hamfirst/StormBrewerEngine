@@ -551,7 +551,8 @@ void MapEditorViewer::paintGL()
   Box viewport_bounds = { window_start, window_end };
   viewport_bounds.m_Start -= Vector2(1, 1);
   viewport_bounds.m_End += Vector2(1, 1);
-
+  
+  m_RenderState.MakeCurrent();
   m_RenderState.EnableBlendMode();
   auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
   m_RenderState.BindShader(shader);

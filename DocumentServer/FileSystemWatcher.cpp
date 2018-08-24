@@ -16,6 +16,21 @@ struct FileSystemWatcherData
   HANDLE m_DirectoryHandle;
 };
 
+#elif defined(_LINUX)
+
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/inotify.h>
+
+#include <unordered_map>
+#include <string>
+
+struct FileSystemWatcherData
+{
+  int m_NotifyHandle;
+  std::unordered_map<int, std::string> m_DirectoryLookup;
+};
+
 #else
 
 struct FileSystemWatcherData
@@ -40,6 +55,16 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, StormSockets
     OPEN_EXISTING,
     FILE_FLAG_BACKUP_SEMANTICS,
     NULL);
+#elif defined(_LINUX)
+  m_Data->m_NotifyHandle = inotify_init();
+  if(m_Data->m_NotifyHandle == -1)
+  {
+    printf("Error creating notofy handle\n");
+  }
+  else
+  {
+    printf("Created notify handle\n");
+  }
 #endif
 
   m_NotifyThread = std::thread(&FileSystemWatcher::NotifyThread, this);
@@ -52,6 +77,8 @@ FileSystemWatcher::~FileSystemWatcher()
 
 #ifdef _MSC_VER
   CloseHandle(m_Data->m_DirectoryHandle);
+#elif defined(_LINUX)
+  close(m_Data->m_NotifyHandle);
 #endif
 }
 
@@ -70,8 +97,22 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::
   return ret_val;
 }
 
-void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & full_path, FileSystemDirectory & dir)
+void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & root_dir, FileSystemDirectory & dir)
 {
+  auto full_path = root_dir + local_path;
+
+#ifdef _LINUX
+  dir.m_NotifyWatch = inotify_add_watch(m_Data->m_NotifyHandle, full_path.c_str(), IN_CREATE | IN_MODIFY | IN_DELETE);
+  if(dir.m_NotifyWatch < 0)
+  {
+    printf("Error bad watch id returned (%s) %d\n", full_path.c_str(), errno);
+  }
+  else
+  {
+    m_Data->m_DirectoryLookup.emplace(std::make_pair(dir.m_NotifyWatch, local_path));
+  }
+#endif
+
   for (fs::directory_iterator dir_itr = fs::directory_iterator(full_path), end = fs::directory_iterator(); dir_itr != end; ++dir_itr)
   {
     auto info = dir_itr->status();
@@ -81,11 +122,16 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
       dir.m_Files.emplace(std::make_pair(dir_itr->path().filename().string(), fs::last_write_time(dir_itr->path(), ec)));
     }
     else if (fs::is_directory(info))
-    {
-      FileSystemDirectory sub_dir;
-      IterateDirectory(local_path + dir_itr->path().filename().string() + "/", full_path + dir_itr->path().filename().string() + "/", sub_dir);
+    {      
+      auto sub_dir_local_path = local_path + dir_itr->path().filename().string() + "/";
+      auto sub_dir_full_path = full_path + dir_itr->path().filename().string() + "/";
 
-      dir.m_Directories.emplace(std::make_pair(dir_itr->path().filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
+      auto sub_dir = std::make_unique<FileSystemDirectory>();
+      sub_dir->m_Parent = &dir;
+
+      IterateDirectory(sub_dir_local_path, root_dir, *sub_dir);
+
+      dir.m_Directories.emplace(std::make_pair(dir_itr->path().filename().string(), std::move(sub_dir)));
     }
   }
 }
@@ -143,7 +189,8 @@ NullOptPtr<FileSystemDirectory> FileSystemWatcher::GetDirectoryAtPath(const char
   return GetDirectoryAtPath(path, *itr->second.get());
 }
 
-Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> FileSystemWatcher::GetFileOrDirectoryAtPath(const char * path, FileSystemDirectory & base)
+Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> FileSystemWatcher::GetFileOrDirectoryAtPath(
+  const char * path, FileSystemDirectory & base)
 {
   std::string path_segment;
   bool got_dir = false;
@@ -204,7 +251,8 @@ Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> Fi
   return GetFileOrDirectoryAtPath(path, *itr->second.get());
 }
 
-void FileSystemWatcher::TriggerOperationForFile(const std::string & path, const std::string & filename, FileSystemOperation op, std::chrono::system_clock::time_point last_write)
+void FileSystemWatcher::TriggerOperationForFile(const std::string & path, const std::string & filename, 
+  FileSystemOperation op, std::chrono::system_clock::time_point last_write)
 {
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   m_FilesChanged.emplace(std::make_tuple(op, path, filename, last_write));
@@ -242,6 +290,131 @@ void FileSystemWatcher::NotifyThread()
 
   while (m_ExitThread == false)
   {
+#ifdef _LINUX
+    char buffer[8092];
+    auto result = read(m_Data->m_NotifyHandle, &buffer, sizeof(buffer));
+    auto notify_info = reinterpret_cast<inotify_event *>(buffer);
+    
+    while(result > 0)
+    {      
+      bool is_file = (notify_info->mask & IN_ISDIR) == 0;
+      
+      auto itr = m_Data->m_DirectoryLookup.find(notify_info->wd);
+      if(itr != m_Data->m_DirectoryLookup.end())
+      {
+        auto dir_path = itr->second;
+        auto file_name = notify_info->name;
+
+        auto local_file_path = dir_path + file_name;
+        if(notify_info->mask & IN_CREATE)
+        {
+          if (is_file)
+          {
+            auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
+            if (dir)
+            {
+              std::error_code ec;
+              auto last_write = fs::last_write_time(local_file_path.c_str(), ec);
+
+              dir->m_Files.emplace(std::make_pair(file_name, last_write));
+              TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kAdd, last_write);
+            }
+          }
+          else
+          {
+            auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
+            if (dir)
+            {
+              auto sub_dir = std::make_unique<FileSystemDirectory>();
+              sub_dir->m_Parent = dir;
+
+              auto sub_dir_path = local_file_path + "/";
+              IterateDirectory(sub_dir_path.c_str(), m_RootPath.data(), *sub_dir);
+
+              TriggerOperationForDirectoryFiles(*sub_dir, sub_dir_path, FileSystemOperation::kAdd);
+              dir->m_Directories.emplace(std::make_pair(file_name, std::move(sub_dir)));
+
+              m_Semaphore.Release(1);
+            }
+          }
+
+        }
+        else if(notify_info->mask & IN_MODIFY)
+        {
+          auto dir = GetDirectoryAtPath(dir_path.data(), m_RootDirectory);
+          if (is_file && dir)
+          {
+            auto itr = dir->m_Files.find(file_name);
+            if (itr != dir->m_Files.end())
+            {
+              std::error_code ec;
+              auto last_write = fs::last_write_time(local_file_path.data(), ec);    
+
+              if (last_write > itr->second)
+              {
+                itr->second = last_write;
+                TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kModify, last_write);
+                
+                m_Semaphore.Release(1);
+              }
+            }
+          }
+        }
+        else if(notify_info->mask & IN_DELETE)
+        {
+          auto file_info = GetFileOrDirectoryAtPath(local_file_path.data(), m_RootDirectory);
+          if (file_info)
+          {
+            auto dir = file_info->first;
+            auto file_itr = file_info->second;
+
+            if (file_itr != dir->m_Files.end())
+            {
+              dir->m_Files.erase(file_itr);
+              TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kDelete, {});
+            }
+            else
+            {
+              TriggerOperationForDirectoryFiles(*dir, local_file_path, FileSystemOperation::kDelete);
+
+              std::vector<FileSystemDirectory *> dead_dirs;
+              dead_dirs.push_back(dir);
+
+              while(dead_dirs.size() > 0)
+              {
+                auto dead_dir = dead_dirs.back();
+                dead_dirs.pop_back();
+
+                inotify_rm_watch(m_Data->m_NotifyHandle, dead_dir->m_NotifyWatch);
+                m_Data->m_DirectoryLookup.erase(dead_dir->m_NotifyWatch);
+
+                for(auto & dead_sub_dir : dead_dir->m_Directories)
+                {
+                  dead_dirs.push_back(dead_sub_dir.second.get());
+                }
+              }
+
+              if (dir->m_Parent)
+              {
+                auto parent = dir->m_Parent;
+                auto dir_itr = parent->m_Directories.find(file_name);
+                if (dir_itr != parent->m_Directories.end())
+                {
+                  parent->m_Directories.erase(dir_itr);
+                }
+              }
+
+              m_Semaphore.Release(1);
+            }
+          }
+        }
+      }
+
+      result -= sizeof(inotify_event) + notify_info->len;
+      notify_info++;
+    }
+#endif
+
 #ifdef _MSC_VER
     char buffer[8092] = {};
 
@@ -328,6 +501,8 @@ void FileSystemWatcher::NotifyThread()
                 {
                   itr->second = last_write;
                   TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kModify, last_write);
+
+                  m_Semaphore.Release(1);
                 }
               }
             }

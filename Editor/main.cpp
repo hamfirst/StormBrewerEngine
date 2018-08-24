@@ -1,5 +1,6 @@
 
-#include <QtWidgets/QApplication>
+#include <QApplication>
+#include <QSurfaceFormat>
 
 #include "StormRefl/StormReflJsonStd.h"
 
@@ -47,6 +48,19 @@ int main(int argc, char *argv[])
   NetworkInit();
   //QApplication::setAttribute(Qt::AA_UseOpenGLES);
   QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+
+  QSurfaceFormat format;
+  format.setSamples(4);
+  format.setDepthBufferSize(24);
+  format.setStencilBufferSize(8);
+  format.setVersion(3, 3);
+
+#if defined(_DEBUG) || defined(QT_DEBUG)
+  format.setProfile(QSurfaceFormat::CoreProfile);
+  format.setOption(QSurfaceFormat::DebugContext);
+#endif
+
+  QSurfaceFormat::setDefaultFormat(format);
 
   QApplication a(argc, argv);
   EditorContainer w;

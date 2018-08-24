@@ -1,11 +1,10 @@
 #pragma once
 
-#include "GenericList.h"
+#include "GenericListCreate.h"
 #include "SimpleLabelListElement.h"
 
 
-
-template <template <typename> typename ListType, typename T>
+template <template <typename> class ListType, typename T>
 GenericList * CreateSimpleLabelList(DocumentEditorWidgetBase * editor, ListType<T> & list, std::string(*adapter)(T &),
   NotNullPtr<GenericListFrame> frame, Delegate<void *> && data_ptr = {})
 {

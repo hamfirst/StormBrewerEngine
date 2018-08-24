@@ -29,6 +29,10 @@ struct FileSystemDirectory
 
   FileSystemDirectory * m_Parent = nullptr;
 
+#ifdef _LINUX
+  int m_NotifyWatch;
+#endif
+
   using FileIterator = std::unordered_map<std::string, std::chrono::system_clock::time_point>::iterator;
 };
 

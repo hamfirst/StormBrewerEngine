@@ -11,6 +11,7 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_Editor 
+            ./EditorGL.cpp
             ./SelectFromListDialog.cpp
             ./FontViewer.cpp
             ./TileSheetEditor.cpp
@@ -21,6 +22,7 @@ set(GENERIC_SRC_Editor
             ./MapEditorToolServerObjectLayerDraw.cpp
             ./TextureViewerWidget.cpp
             ./MapEditorVolume.cpp
+            ./SpriteTextureImportDialog.ui
             ./SpriteBaseAnimationFrameListEditorDialog.cpp
             ./SpriteBaseTextureLoadList.cpp
             ./SpriteBaseSkinListElement.cpp
@@ -43,6 +45,7 @@ set(GENERIC_SRC_Editor
             ./DocumentServerThread.cpp
             ./UIEditorOutputEquationList.cpp
             ./GenericList.cpp
+            ./EditorContainer.ui
             ./VisualEffectEditor.cpp
             ./MapEditorServerObjectManager.cpp
             ./SpriteBaseSkinListTextureElement.cpp
@@ -51,10 +54,13 @@ set(GENERIC_SRC_Editor
             ./DocumentValueWatcher.cpp
             ./DrawUtil.cpp
             ./MapEditorEntitySelector.cpp
+            ./ConnectingDialog.ui
             ./MapEditorTypes.refl.cpp
             ./FrameEditorSingleLine.cpp
             ./SimpleLabelListElement.cpp
             ./VisualEffectEditorEquationList.cpp
+            ./AnimationFrameEditor.ui
+            ./SelectFromListDialog.ui
             ./ServerObjectEditor.cpp
             ./UIEquationEditor.cpp
             ./UIEditorEquationList.cpp
@@ -132,10 +138,12 @@ set(GENERIC_SRC_Editor
             ./FrameEditorAnchorManager.cpp
             ./MapEditorToolEntityLayerSelect.cpp
             ./FrameEditorContainer.cpp
+            ./EditorContainer.qrc
             ./main.cpp
             ./MapEditorEntityLayerManager.cpp
             ./MapEditorToolPathCreate.cpp
             ./AudioViewer.cpp
+            ./TextInputDialog.ui
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Editor 
@@ -190,6 +198,7 @@ set(GENERIC_HEADER_Editor
             ./UIEditorEquationList.h
             ./EntityEditor.h
             ./FontViewer.h
+            ./GenericListCreate.h
             ./GenericFrame.h
             ./UIEquationEditor.h
             ./SelectFromListDialog.h

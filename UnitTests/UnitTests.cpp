@@ -221,7 +221,7 @@ int main()
 {
   //TestJson();
 
-  EngineInit(true);
+  EngineInit(true, true);
 
   auto window = g_WindowManager.CreateNewWindow("Window!", 1280, 720);
   window.MakeCurrent();

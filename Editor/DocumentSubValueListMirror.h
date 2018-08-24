@@ -64,7 +64,7 @@ private:
   Delegate<void, std::size_t> m_UpdateElementCallback;
 };
 
-template <template <typename> typename ListType, typename ElementType, typename SubElementType, typename MirrorType, typename ContextType>
+template <template <typename> class ListType, typename ElementType, typename SubElementType, typename MirrorType, typename ContextType>
 Delegate<NullOptPtr<MirrorType>, std::size_t> CreateMirrorList(
   DocumentSubValueListMirror & mirror_list, ListType<ElementType> & list,
   Delegate<void *> && get_list, czstr sub_path,
@@ -144,7 +144,7 @@ Delegate<NullOptPtr<MirrorType>, std::size_t> CreateMirrorList(
   return mirror_elem_access_del;
 }
 
-template <template <typename> typename ListType, typename ElementType, typename SubElementType, typename MirrorType, typename ContextType>
+template <template <typename> class ListType, typename ElementType, typename SubElementType, typename MirrorType, typename ContextType>
 Delegate<NullOptPtr<MirrorType>, std::size_t> CreateMirrorList(
   DocumentSubValueListMirror & mirror_list, ListType<ElementType> & list, czstr sub_path,
   SubElementType & (*GetSubElement)(ElementType & elem, NotNullPtr<ContextType> user_ptr),
