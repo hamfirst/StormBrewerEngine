@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/",
+                "${workspaceFolder}/External/",
+                "~/Qt/5.11.1/gcc_64/include/QtCore",
+                "~/Qt/5.11.1/gcc_64/include/QtGui",
+                "~/Qt/5.11.1/gcc_64/include/QtOpenGL",
+                "~/Qt/5.11.1/gcc_64/include/QtWidgets",
+                "~/Qt/5.11.1/gcc_64/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/local/bin/clang++",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "intelliSenseEngine": "Default",
+            "configurationProvider": "vector-of-bool.cmake-tools"
+        }
+    ],
+    "version": 4
+}
