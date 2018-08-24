@@ -226,3 +226,10 @@ Test/translations/*
 FinalStatic/*
 
 *.tlog
+generatecmake
+stormrefl
+Test/ClientExe
+Test/DocumentServer
+Test/Editor
+Test/ServerExe
+Wizards/sbwiz/out/*
