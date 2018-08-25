@@ -21,6 +21,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
+#include <fcntl.h>
 #endif
 
 void NetworkInit()
@@ -61,7 +62,7 @@ bool ProbePort(const char * host, int port, int timeout)
 #ifdef _MSC_VER
   ioctlsocket(sock, FIONBIO, &on);
 #else
-  ioctl(sock, FIONBIO, &on);
+  fcntl(sock, F_SETFL, O_NONBLOCK);
 #endif
 
   connect(sock, (sockaddr *)&serv_addr, sizeof(serv_addr));
@@ -77,7 +78,11 @@ bool ProbePort(const char * host, int port, int timeout)
   bool result = false;
   if (select(sock + 1, NULL, &fdset, NULL, &tv) == 1)
   {
-    if (FD_ISSET(sock, &fdset))
+    int so_error;
+    socklen_t len = sizeof so_error;
+
+    getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
+    if (so_error == 0) 
     {
       result = true;
     }

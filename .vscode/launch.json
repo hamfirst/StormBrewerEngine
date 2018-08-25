@@ -9,7 +9,7 @@
             "program": "${command:cmake.launchTargetPath}",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/Test/Assets",
+            "cwd": "${workspaceFolder}/Test",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",

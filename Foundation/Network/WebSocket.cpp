@@ -235,6 +235,7 @@ void WebSocket::GotMessage(NotNullPtr<uint8_t> message, int length, bool binary)
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
+#include <fcntl.h>
 
 #define INVALID_SOCKET -1
 
@@ -322,10 +323,6 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
 {
   Close();
 
-#ifdef _LINUX
-  char service[10];
-  snprintf(service, sizeof(service), "%d", port);
-
   addrinfo * host_info;
   addrinfo hints = {};
 
@@ -333,29 +330,35 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_protocol = IPPROTO_TCP;
 
-  getaddrinfo(host, service, &hints, &host_info);  
-
-#else
-  auto host_info = gethostbyname(host);
-  if (host_info == nullptr)
+  auto error = getaddrinfo(host, nullptr, &hints, &host_info);  
+  if(error != 0)
   {
     return;
   }
 
-  m_Socket = (int)socket(AF_INET, SOCK_STREAM, 0);
+  if(host_info->ai_family != AF_INET)
+  {
+    freeaddrinfo(host_info);
+    return;
+  }
 
-  sockaddr_in serv_addr = {};
-  serv_addr.sin_family = AF_INET;
-  memcpy(&serv_addr.sin_addr, host_info->h_addr, host_info->h_length);
-  serv_addr.sin_port = htons(port);  
-#endif
+  sockaddr_in sin = {};
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(port);
+  memcpy(&sin.sin_addr, &((sockaddr_in *)host_info->ai_addr)->sin_addr, sizeof(sin.sin_addr));
+
+  freeaddrinfo(host_info);
+
+  m_Socket = (int)socket(AF_INET, SOCK_STREAM, 0);
 
   int one = 1;
   int return_val = setsockopt(m_Socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&one, sizeof(one));
 
   if (timeout == 0)
   {
-    if (connect(m_Socket, (sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    auto result = connect(m_Socket, (sockaddr *)&sin, sizeof(sin));
+
+    if (result < 0)
     {
       CloseSocket(m_Socket);
       return;
@@ -367,10 +370,10 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
 #ifdef _MSC_VER
     ioctlsocket(m_Socket, FIONBIO, &on);
 #else
-    ioctl(m_Socket, FIONBIO, &on);
+    fcntl(m_Socket, F_SETFL, O_NONBLOCK);
 #endif
 
-    connect(m_Socket, (sockaddr *)&serv_addr, sizeof(serv_addr));
+    auto result = connect(m_Socket, (sockaddr *)&sin, sizeof(sin));
 
     fd_set fdset;
     FD_ZERO(&fdset);
@@ -380,20 +383,27 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
     tv.tv_sec = timeout / 1000;
     tv.tv_usec = (timeout % 1000) * 1000;
 
-    if (select(m_Socket + 1, NULL, &fdset, NULL, &tv) == 1)
+    if (select(m_Socket + 1, NULL, &fdset, NULL, &tv) != 1)
     {
-      if (FD_ISSET(m_Socket, &fdset) == false)
-      {
-        CloseSocket(m_Socket);
-        return;
-      }
+      CloseSocket(m_Socket);
+      return;
+    }
+
+    int so_error;
+    socklen_t len = sizeof so_error;
+
+    getsockopt(m_Socket, SOL_SOCKET, SO_ERROR, &so_error, &len);
+    if (so_error != 0) 
+    {
+      CloseSocket(m_Socket);
+      return;
     }
 
     unsigned long off = 0;
 #ifdef _MSC_VER
     ioctlsocket(m_Socket, FIONBIO, &off);
 #else
-    ioctl(m_Socket, FIONBIO, &off);
+    fcntl(m_Socket, F_SETFL, 0);
 #endif
   }
 

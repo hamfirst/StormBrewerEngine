@@ -3,47 +3,47 @@
 {
     "m_Emitters": {
         "0": {
+            "m_EmitterEquations": {
+                "3066294540": {
+                    "m_VariableName": "m_MaxParticles",
+                    "m_Equation": "100"
+                },
+                "472491818": {
+                    "m_VariableName": "m_SpawnRate",
+                    "m_Equation": "30"
+                }
+            },
             "m_ParticleEquations": {
-                "1196869079": {
-                    "m_Equation": "InvTimePct",
-                    "m_VariableName": "m_ColorA"
-                },
-                "2534731337": {
-                    "m_Equation": "2",
-                    "m_VariableName": "m_SizeX"
-                },
-                "3759398623": {
-                    "m_Equation": "2",
-                    "m_VariableName": "m_SizeY"
+                "3484393978": {
+                    "m_VariableName": "m_ForceX",
+                    "m_Equation": "[n -30, 3, RandA]"
                 },
                 "3098055020": {
-                    "m_Equation": "[n 8, 12, RandA]",
-                    "m_VariableName": "m_ForceY"
+                    "m_VariableName": "m_ForceY",
+                    "m_Equation": "[n 8, 12, RandA]"
                 },
-                "3484393978": {
-                    "m_Equation": "[n -30, 3, RandA]",
-                    "m_VariableName": "m_ForceX"
+                "3759398623": {
+                    "m_VariableName": "m_SizeY",
+                    "m_Equation": "2"
+                },
+                "1196869079": {
+                    "m_VariableName": "m_ColorA",
+                    "m_Equation": "InvTimePct"
+                },
+                "2534731337": {
+                    "m_VariableName": "m_SizeX",
+                    "m_Equation": "2"
                 }
             },
-            "m_SpawnEquations": { },
             "m_Properties": {
-                "m_LinearFilter": false,
-                "m_PrespawnParticles": 0,
-                "m_Additive": false,
-                "m_UpdateDelay": 0,
+                "m_Texture": "",
                 "m_Name": "New1",
-                "m_Texture": ""
+                "m_UpdateDelay": 0,
+                "m_Additive": false,
+                "m_LinearFilter": false,
+                "m_PrespawnParticles": 0
             },
-            "m_EmitterEquations": {
-                "472491818": {
-                    "m_Equation": "30",
-                    "m_VariableName": "m_SpawnRate"
-                },
-                "3066294540": {
-                    "m_Equation": "100",
-                    "m_VariableName": "m_MaxParticles"
-                }
-            }
+            "m_SpawnEquations": { }
         }
     }
 }

@@ -17,6 +17,7 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QSettings>
+#include <QDir>
 #include <QDebug>
 
 
@@ -63,6 +64,23 @@ DelegateList<void> g_GlobalUpdate;
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
 {
+  const char * doc_server_host = "localhost";
+  
+  printf("Attempting to connect to doc server\n");
+  if (ProbePort(doc_server_host, 27800, 100) == false)
+  {
+    if (!strcmp(doc_server_host, "localhost"))
+    {
+      printf("Starting new document server\n");
+      auto doc_server_path = QDir::cleanPath(QDir::currentPath() + QDir::separator() + "DocumentServer");
+
+      if(QProcess::startDetached(doc_server_path) == false)
+      {
+        printf("Failed to start document server from %s\n", doc_server_path.toStdString().c_str());
+      }
+    }
+  }
+
   printf("Starting up editor\n");
 
 #ifdef _MSC_VER
@@ -126,7 +144,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
   }
 
   m_RootPath = GetCanonicalRootPath();
-  const char * doc_server_host = "localhost";
 
   UpdateRecentFiles();
 
@@ -136,16 +153,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
   timer->start(10);
-
-  printf("Attempting to connect to doc server\n");
-  if (ProbePort(doc_server_host, 27800, 100) == false)
-  {
-    if (!strcmp(doc_server_host, "localhost"))
-    {
-      printf("Starting new document server\n");
-      QProcess::startDetached("DocumentServer");
-    }
-  }
 
   m_DocServerConnectionGen = 0;
   m_DocumentServerThread.Connect(doc_server_host);
