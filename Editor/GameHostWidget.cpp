@@ -8,6 +8,8 @@ GameHostWidget::GameHostWidget(EditorContainer * editor, int number_of_clients, 
   QWidget(parent),
   m_Editor(editor)
 {
+  setAttribute(Qt::WA_X11NetWmWindowTypeDialog);
+
   m_Layout = std::make_unique<QGridLayout>();
 
   for (int index = 0; index < number_of_clients; ++index)

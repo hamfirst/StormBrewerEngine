@@ -28,7 +28,7 @@ static const char * kBasicTextVertexShader = SHADER_LITERAL(
 );
 
 static const char * kBasicTextFragmentShader = SHADER_LITERAL(
-  precision highp float;
+  
 
   varying vec2 v_Position;
   varying vec2 v_TexCoord;

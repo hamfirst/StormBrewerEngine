@@ -25,6 +25,8 @@ GameClientWidget::GameClientWidget(EditorContainer * editor, int client_index, b
 {
   setFocusPolicy(Qt::ClickFocus);
   setAttribute(Qt::WA_InputMethodEnabled);
+  setAttribute(Qt::WA_X11NetWmWindowTypeDialog);
+  
   setMouseTracking(true);
 
   if (m_BotGame)

@@ -6,7 +6,6 @@
 #include "DrawUtil.h"
 
 static const char * kDrawUtilFragmentShader = SHADER_LITERAL(
-  precision highp float;
 
   varying vec2 v_Position;
   varying vec2 v_TexCoord;

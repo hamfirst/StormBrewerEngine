@@ -35,8 +35,6 @@ static const char * kDefaultTransferVertexShader = SHADER_LITERAL(
 
 static const char * kDefaultTransferFragmentShader = SHADER_LITERAL(
 
-  precision highp float;
-
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
 
@@ -51,7 +49,6 @@ static const char * kDefaultTransferFragmentShader = SHADER_LITERAL(
 );
 
 static const char * kBlurFragmentShader = SHADER_LITERAL(
-  precision highp float;
 
   varying vec2 v_TexCoord;
   varying vec4 v_Color;

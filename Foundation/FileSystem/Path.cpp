@@ -14,7 +14,17 @@ namespace fs = std::experimental::filesystem;
 bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 {
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-  auto canonical_path = fs::canonical(root_path + path);
+
+  fs::path canonical_path;
+  try
+  {
+    canonical_path = fs::canonical(path);
+  }
+  catch(...)
+  {
+    canonical_path = fs::canonical(root_path + path);
+  }
+
   path = canonical_path.string();
 #endif
 

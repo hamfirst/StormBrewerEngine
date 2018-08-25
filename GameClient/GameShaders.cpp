@@ -7,11 +7,8 @@
 void RegisterGameplayShaders()
 {
   g_ShaderManager.RegisterShader(
-    "#version 130\n"
 
-    SHADER_LITERAL(
-
-      precision highp float;
+    SHADER_LITERAL_VER(130, 
 
       in vec2 v_Position;
       in vec2 v_TexCoord;

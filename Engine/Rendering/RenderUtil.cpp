@@ -11,7 +11,7 @@
 #include <gl3w/gl3w.h>
 
 static const char * kQuadVertexShader = SHADER_LITERAL(
-  precision highp float;
+
   attribute vec2 a_Position;
   attribute vec2 a_TexCoord;
   attribute vec4 a_Color;
@@ -36,7 +36,6 @@ static const char * kQuadVertexShader = SHADER_LITERAL(
 );
 
 static const char * kQuadFragmentShader = SHADER_LITERAL(
-  precision highp float;
   uniform vec4 u_Color;
 
   void main()
@@ -46,7 +45,6 @@ static const char * kQuadFragmentShader = SHADER_LITERAL(
 );
 
 static const char * kQuadTextureFragmentShader = SHADER_LITERAL(
-  precision highp float;
 
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
