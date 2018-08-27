@@ -204,18 +204,47 @@ std::string GetRelativePath(const fs::path & root_path, const fs::path & target_
 
   if(dir_str.find(root_str) != 0)
   {
+    fprintf(stderr, "Could not find relative path (root: %s, target: %s)\n",
+        root_path.c_str(), target_dir.c_str());
     return target_dir;
   }
 
-  return target_dir.c_str() + root_str.size();
+  auto rel_path = target_dir.c_str() + root_str.size();
+  if(rel_path[0] == '/' || rel_path[0] == '\\')
+  {
+    return rel_path + 1;
+  }
+
+  return rel_path;
 }
 
 int main(int argc, char ** argv)
 {
+  if(!strcmp(argv[1], "-d"))
+  {
+    auto cur_dir = fs::canonical(".");
+    auto cur_file = fs::canonical(argv[0]);
+    printf("Current dir: %s\n", cur_dir.string().c_str());
+
+    auto cmake_file_path = FindCMakeFile(cur_dir, cur_dir.root_directory());
+    if(cmake_file_path.has_value())
+    {
+      printf("CMake path: %s\n", cmake_file_path->c_str());
+      auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), cur_file);
+      printf("CMake relative path %s\n", rel_cmake.c_str());
+    }
+    else
+    {
+      printf("CMake path not found\n");
+    }
+
+    return 0;
+  }
+
   if(argc < 5)
   {
     printf("Usage addcode <type> <name> <target_dir> <project_root_dir>\n");
-    return 0;
+    return 1;
   }
 
   auto type = std::string(argv[1]);
@@ -256,8 +285,8 @@ int main(int argc, char ** argv)
   auto meta_template_file = template_dir / (type + meta_file_ext);
   auto reg_template_file = template_dir / (type + reg_file_ext);
 
-  auto rel_path = GetRelativePath(target_dir, root_dir);
-  auto rel_cmake = GetRelativePath(target_dir, cmake_file_path->parent_path());
+  auto rel_path = GetRelativePath(root_dir, target_dir);
+  auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), target_dir);
 
   std::unordered_map<std::string, std::string> template_replacements;
   template_replacements["class_name"] = class_name;
