@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <optional>
+#include <algorithm>
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -142,14 +143,43 @@ std::optional<fs::path> FindCMakeFile(const fs::path & start_path,
     auto path = itr.path();
     if(itr.is_regular_file() && path.filename() == "CMakeLists.txt")
     {
-      return fs::canonical(start_path / "CMakeLists.txt");
+      return fs::canonical(start_path);
     }
   }
 
   return FindCMakeFile(start_path.parent_path(), root_path);
 }
 
-enum class CMakeFileType
+std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
+    const fs::path & project_path)
+{
+  std::string vcxproj_file;
+  std::string vcxproj_filters_file;
+
+  for(auto itr : fs::directory_iterator(project_path))
+  {
+    auto path = itr.path();
+    auto extension = path.extension();
+
+    if(itr.is_regular_file() && extension == ".vcxproj")
+    {
+      vcxproj_file = fs::canonical(path).string();
+    }
+    else if(itr.is_regular_file() && extension == ".filters")
+    {
+      vcxproj_filters_file = fs::canonical(path).string();
+    }
+  }
+
+  if(vcxproj_file.size() > 0 && vcxproj_filters_file.size() > 0)
+  {
+    return std::make_pair(std::move(vcxproj_file), std::move(vcxproj_filters_file));
+  }
+
+  return {};
+}
+
+enum class ProjectFileType
 {
   kCPPFile,
   kHeaderFile,
@@ -157,18 +187,18 @@ enum class CMakeFileType
 };
 
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file, 
-    CMakeFileType type)
+    ProjectFileType type)
 {
   std::string placeholder;
   switch(type)
   {
-  case CMakeFileType::kCPPFile:
+  case ProjectFileType::kCPPFile:
     placeholder = "            #CPP_PLACEHOLDER";
     break;
-  case CMakeFileType::kHeaderFile: 
+  case ProjectFileType::kHeaderFile: 
     placeholder = "            #HEADER_PLACEHOLDER";
     break;
-  case CMakeFileType::kReflFile:
+  case ProjectFileType::kReflFile:
     placeholder = "            #REFL_PLACEHOLDER";
     break;
   }
@@ -182,6 +212,98 @@ void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
 
   cmake_file.replace(pos, placeholder.size(), 
         "            " + file + "\n" + placeholder);
+}
+
+void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file,
+    ProjectFileType type)
+{
+  auto reverse_file = file;
+  std::transform(reverse_file.begin(), reverse_file.end(), reverse_file.begin(),
+      [](char c) { return c == '/' ? '\\' : c; });
+
+  std::string insert;
+
+  std::size_t pos;
+  if(type == ProjectFileType::kCPPFile)
+  {
+    pos = vcxproj_file.find("    <ClCompile Include=\"");
+    insert = "    <ClCompile Include=\"" + reverse_file + "\" />\n";
+  }
+  else if(type == ProjectFileType::kHeaderFile)
+  {
+    pos = vcxproj_file.find("    <ClInclude Include=\"");
+    insert = "    <ClInclude Include=\"" + reverse_file + "\" />\n";
+  }
+  else
+  {
+    return;
+  }
+
+  if(pos == std::string::npos)
+  {
+    return;
+  }
+
+  vcxproj_file.replace(pos, 0, insert);
+}
+
+void InsertIntoVCXProjFiltersFile(std::string & vcxproj_file, const std::string & file,
+    ProjectFileType type)
+{
+  auto reverse_file = file;
+  std::transform(reverse_file.begin(), reverse_file.end(), reverse_file.begin(),
+      [](char c) { return c == '/' ? '\\' : c; });
+
+  auto path_end = reverse_file.rfind('\\');
+  std::string filter;
+  if(path_end != std::string::npos)
+  {
+    auto filter_dir = reverse_file.substr(0, path_end);
+    filter = "      <Filter>" + filter_dir + "</Filter>\n";
+  }
+
+  std::string insert;
+
+  std::size_t pos;
+  if(type == ProjectFileType::kCPPFile)
+  {
+    pos = vcxproj_file.find("    <ClCompile Include=\"");
+    insert = "    <ClCompile Include=\"" + reverse_file + "\" ";
+
+    if(filter.size() > 0)
+    {
+      insert += ">\n" + filter + "    </ClCompile>\n";
+    }
+    else
+    {
+      insert += "/>\n";
+    }
+  }
+  else if(type == ProjectFileType::kHeaderFile)
+  {
+    pos = vcxproj_file.find("    <ClInclude Include=\"");
+    insert = "    <ClInclude Include=\"" + reverse_file + "\" ";
+
+    if(filter.size() > 0)
+    {
+      insert += ">\n" + filter + "    </ClInclude>\n";
+    }
+    else
+    {
+      insert += "/>\n";
+    }
+  }
+  else
+  {
+    return;
+  }
+
+  if(pos == std::string::npos)
+  {
+    return;
+  }
+
+  vcxproj_file.replace(pos, 0, insert);
 }
 
 bool WriteTemplate(const fs::path & target_file, const fs::path & template_file,
@@ -253,14 +375,16 @@ int main(int argc, char ** argv)
   auto root_dir = fs::canonical(argv[4]);
   auto template_dir = fs::canonical(root_dir / "Wizards/Templates/");
 
-  auto cmake_file_path = FindCMakeFile(target_dir, root_dir);
-  if(cmake_file_path.has_value() == false)
+  auto project_file_path = FindCMakeFile(target_dir, root_dir);
+  if(project_file_path.has_value() == false)
   {
     fprintf(stderr, "Could not locate cmake file\n");
     return 3025;
   }
 
-  auto cmake_file_data = ReadFileIntoString(cmake_file_path->string());
+  auto cmake_file_path = project_file_path.value() / "CMakeFile.txt";
+
+  auto cmake_file_data = ReadFileIntoString(cmake_file_path.string());
   if(cmake_file_data.has_value() == false)
   {
     fprintf(stderr, "Error reading cmake file\n");
@@ -269,9 +393,12 @@ int main(int argc, char ** argv)
 
   auto & cmake_file = cmake_file_data.value();
 
+  bool use_vcxproj = true;
+  bool use_meta = true;
+
   auto class_name = std::string(name) + type;
-  auto cpp_file_ext = ".refl.cpp";
-  auto header_file_ext = ".refl.h";
+  auto cpp_file_ext = use_meta ? ".refl.cpp" : ".cpp";
+  auto header_file_ext = use_meta ? ".refl.h" : ".h";
   auto meta_file_ext = ".refl.meta.h";
   auto reg_file_ext = ".refl.reg.cpp";
 
@@ -286,7 +413,29 @@ int main(int argc, char ** argv)
   auto reg_template_file = template_dir / (type + reg_file_ext);
 
   auto rel_path = GetRelativePath(root_dir, target_dir);
-  auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), target_dir);
+  auto rel_cmake = GetRelativePath(project_file_path.value(), target_dir);
+
+  std::string vcxproj_file;
+  std::string vcxproj_filters_file;
+
+  auto vcxproj_file_paths = FindVCXProjFiles(project_file_path.value());
+  if(use_vcxproj)
+  {
+    use_vcxproj = false;
+
+    if(vcxproj_file_paths)
+    {
+      auto vcxproj_file_data = ReadFileIntoString(vcxproj_file_paths->first);
+      auto vcxproj_filters_file_data = ReadFileIntoString(vcxproj_file_paths->second);
+
+      if(vcxproj_file_data && vcxproj_filters_file_data)
+      {
+        vcxproj_file = std::move(vcxproj_file_data.value());
+        vcxproj_filters_file = std::move(vcxproj_filters_file_data.value());
+        use_vcxproj = true;
+      }
+    }
+  }
 
   std::unordered_map<std::string, std::string> template_replacements;
   template_replacements["class_name"] = class_name;
@@ -296,26 +445,65 @@ int main(int argc, char ** argv)
   
   if(WriteTemplate(target_dir / cpp_file, cpp_template_file, template_replacements))
   {
-    InsertIntoCMakeFile(cmake_file, rel_cmake + '/' + cpp_file, CMakeFileType::kCPPFile);
+    auto file = rel_cmake + '/' + cpp_file;
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
+
+    if(use_vcxproj)
+    {
+      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
+      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
+    }
   }
 
   if(WriteTemplate(target_dir / header_file, header_template_file, template_replacements))
   {
-    InsertIntoCMakeFile(cmake_file, rel_cmake + '/' + header_file, CMakeFileType::kHeaderFile);
-    InsertIntoCMakeFile(cmake_file, rel_cmake + '/' + header_file, CMakeFileType::kReflFile);
+    auto file = rel_cmake + '/' + header_file;
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
+    
+    if(use_meta)
+    {
+      InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kReflFile);
+    }
+
+    if(use_vcxproj)
+    {
+      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
+      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
+    }
   }
 
   if(WriteTemplate(target_dir / meta_file, meta_template_file, template_replacements))
   {
-    InsertIntoCMakeFile(cmake_file, rel_cmake + '/' + meta_file, CMakeFileType::kHeaderFile);
+    auto file = rel_cmake + '/' + meta_file;
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
+  
+    if(use_vcxproj)
+    {
+      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
+      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
+    }
   }
 
   if(WriteTemplate(target_dir / reg_file, reg_template_file, template_replacements))
   {
-    InsertIntoCMakeFile(cmake_file, rel_cmake + '/' + reg_file, CMakeFileType::kCPPFile);
+    auto file = rel_cmake + '/' + reg_file;
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
+    
+    if(use_vcxproj)
+    {
+      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
+      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
+    }
   }
 
-  WriteStringToFile(cmake_file_path->string(), cmake_file);
+  WriteStringToFile(cmake_file_path, cmake_file);
+
+  if(use_vcxproj)
+  {
+    WriteStringToFile(vcxproj_file_paths->first, vcxproj_file);
+    WriteStringToFile(vcxproj_file_paths->second, vcxproj_filters_file);
+  }
+
   return 0;
 }
 
