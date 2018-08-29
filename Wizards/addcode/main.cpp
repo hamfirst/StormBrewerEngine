@@ -453,11 +453,28 @@ int main(int argc, char ** argv)
     }
   }
 
+  auto class_name_lower = class_name;
+  std::transform(class_name_lower.begin(), class_name_lower.end(), class_name_lower.begin(),
+    [](char c) { return tolower(c); });
+
+  std::string friendly_name;
+  for (auto & c : class_name)
+  {
+    if (c >= 'A' && c <= 'Z' && friendly_name.size() > 0)
+    {
+      friendly_name += ' ';
+    }
+
+    friendly_name += c;
+  }
+
   std::unordered_map<std::string, std::string> template_replacements;
   template_replacements["class_name"] = class_name;
   template_replacements["header_file"] = header_file;
   template_replacements["meta_file"] = meta_file;
   template_replacements["rel_path"] = rel_path;
+  template_replacements["class_name_lower"] = class_name_lower;
+  template_replacements["friendly_name"] = friendly_name;
   
   if(WriteTemplate(target_dir / cpp_file, cpp_template_file, template_replacements))
   {
