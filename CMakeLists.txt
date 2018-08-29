@@ -217,6 +217,15 @@ if(BUILD_TOOLS)
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generatecmake> ${CMAKE_CURRENT_SOURCE_DIR}/generatecmake
   )
 
+  add_executable(addcode Wizards/addcode/main.cpp)
+  target_link_libraries(addcode stdc++fs)
+  set_target_properties(addcode PROPERTIES CXX_STANDARD 17)
+
+  add_custom_command(TARGET addcode POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}/addcode
+      COMMENT "Copying to Target Directory"
+  )
+
   add_executable(stormrefl StormRefl/main.cpp  StormRefl/StaticLibs.cpp StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
   target_link_libraries(stormrefl
@@ -367,8 +376,8 @@ if(BUILD_TOOLS)
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ServerExe
       COMMENT "Copying to Test Directory"
   )
-
 endif()
+
 
 if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
   if(MSVC)
@@ -381,3 +390,4 @@ if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
     set_target_properties(Game PROPERTIES COMPILE_FLAGS "-O0")
   endif()
 endif()
+
