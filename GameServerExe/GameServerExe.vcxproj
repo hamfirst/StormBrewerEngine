@@ -242,9 +242,6 @@
     <ProjectReference Include="..\Runtime\Runtime.vcxproj">
       <Project>{5fdcaa08-5ff7-41b8-8600-3ec9452f04d9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Server\Server.vcxproj">
-      <Project>{bedfeb11-3655-4e60-b161-29fb34d814c4}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\StormData\StormData.vcxproj">
       <Project>{cbedcf5b-d149-46b4-b83c-7363ceb0b455}</Project>
     </ProjectReference>

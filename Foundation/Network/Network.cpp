@@ -6,6 +6,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -79,9 +80,9 @@ bool ProbePort(const char * host, int port, int timeout)
   if (select(sock + 1, NULL, &fdset, NULL, &tv) == 1)
   {
     int so_error;
-    socklen_t len = sizeof so_error;
+    socklen_t len = sizeof(so_error);
 
-    getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
+    getsockopt(sock, SOL_SOCKET, SO_ERROR, (char *)&so_error, &len);
     if (so_error == 0) 
     {
       result = true;

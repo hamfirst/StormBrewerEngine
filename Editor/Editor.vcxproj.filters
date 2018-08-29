@@ -100,59 +100,30 @@
     <ClCompile Include="EditorContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="ConnectingDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="DocumentEditorBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="DocumentServerThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DocumentEditorWidgetBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="GenericInput.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="TextureViewerWidget.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="ScrollingPanel.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
     <ClCompile Include="GenericList.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
     <ClCompile Include="AudioViewer.cpp">
       <Filter>Source Files\AssetViewers</Filter>
     </ClCompile>
@@ -165,195 +136,108 @@
     <ClCompile Include="PropertyEditorString.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorStruct.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorWidget.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorNumber.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorFile.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="GenericFrame.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorBool.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="GenericCheckbox.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SimpleLabelListElement.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
     <ClCompile Include="GenericListFrame.cpp">
       <Filter>Source Files\CommonWidgets</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorPolymorphic.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorEnum.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="PropertyEditorList.cpp">
       <Filter>Source Files\PropertyEditors</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="DocumentValueWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EntityEditor.cpp">
       <Filter>Source Files\DocumentEditors\EntityEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="DocumentSubValueListMirror.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseAnimationEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseAnimationFrameListEditorDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseAnimationListElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseAnimationListFrameElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTextureEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTextureFrameElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTextureFrameList.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTextureImportDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTextureLoadList.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseTimeline.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteBaseTimelineElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBaseEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="SpriteEditor.cpp">
       <Filter>Source Files\DocumentEditors\Sprite</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="TileSheetEditor.cpp">
       <Filter>Source Files\DocumentEditors\TileSheet</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditor.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorLayerList.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorTileSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorTileManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -363,15 +247,9 @@
     <ClCompile Include="MapEditorEntitySelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorEntityManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -396,30 +274,18 @@
     <ClCompile Include="FrameEditorSingleBox.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="FrameEditorContainer.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="FrameEditorBase.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="FrameEditorUtil.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
     <ClCompile Include="FrameEditorSingleLine.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="MapEditorVolume.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -444,42 +310,21 @@
     <ClCompile Include="FrameEditorMultiBox.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="GameServerWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameClientWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
     <ClCompile Include="GameHostWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="SelectFromListDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="ConfigEditor.cpp">
       <Filter>Source Files\DocumentEditors\ConfigEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="DocumentEditorConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -495,10 +340,6 @@
     <ClCompile Include="FrameEditorLowerEdge.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="MapEditorAnchor.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -514,70 +355,33 @@
     <ClCompile Include="UIEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEditorNodeList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEditorPropertyContainer.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEditorEquationList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIEditorOutputEquationList.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="UIOutputEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\UIEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="VisualEffectEditor.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    
     <ClCompile Include="VisualEffectEditorNodeList.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="VisualEffectEditorViewer.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
@@ -590,25 +394,6 @@
     <ClCompile Include="VisualEffectEquationEditor.cpp">
       <Filter>Source Files\DocumentEditors\VisualEffectEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="DrawUtilQt.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -618,17 +403,9 @@
     <ClCompile Include="SpriteBaseAnimationEventEditorDialog.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="SpriteBaseFrameDisplay.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="SpriteBaseSkinEditor.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
@@ -638,18 +415,6 @@
     <ClCompile Include="SpriteBaseSkinListTextureElement.cpp">
       <Filter>Source Files\DocumentEditors\SpriteBase</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="MapEditorServerObjectManager.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
@@ -662,24 +427,12 @@
     <ClCompile Include="MapEditorServerObjectSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="ServerObjectEditor.cpp">
       <Filter>Source Files\DocumentEditors\ServerObjectEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="MapEditorParalaxObjectSelector.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="MapEditorToolParalaxObjectLayerDraw.cpp">
       <Filter>Source Files\DocumentEditors\MapEditor\Tool</Filter>
     </ClCompile>
@@ -695,24 +448,15 @@
     <ClCompile Include="FrameEditorAnchorManager.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="FrameEditorAnchorEditor.cpp">
       <Filter>Source Files\DocumentEditors\FrameEditor</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="TextInputDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
+    <ClCompile Include="EditorGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="EditorContainer.ui">

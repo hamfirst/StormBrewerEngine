@@ -40,7 +40,16 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
@@ -67,7 +76,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
@@ -81,7 +91,31 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>UNICODE;WIN32;WIN64;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath></QtMoc><QtRcc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile><InitFuncName>%(Filename)</InitFuncName><Compression>default</Compression><NoCompression>true</NoCompression><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription></QtRcc><QtUic><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription></QtUic></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>UNICODE;WIN32;WIN64;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath>
+    </QtMoc>
+    <QtRcc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <InitFuncName>%(Filename)</InitFuncName>
+      <Compression>default</Compression>
+      <NoCompression>true</NoCompression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+    </QtRcc>
+    <QtUic>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+    </QtUic>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -91,7 +125,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
@@ -106,7 +141,31 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath></QtMoc><QtRcc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile><InitFuncName>%(Filename)</InitFuncName><Compression>default</Compression><NoCompression>true</NoCompression><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription></QtRcc><QtUic><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription></QtUic></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath>
+    </QtMoc>
+    <QtRcc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <InitFuncName>%(Filename)</InitFuncName>
+      <Compression>default</Compression>
+      <NoCompression>true</NoCompression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+    </QtRcc>
+    <QtUic>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+    </QtUic>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -115,7 +174,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
@@ -129,7 +189,31 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath></QtMoc><QtRcc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile><InitFuncName>%(Filename)</InitFuncName><Compression>default</Compression><NoCompression>true</NoCompression><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription></QtRcc><QtUic><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription></QtUic></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath>
+    </QtMoc>
+    <QtRcc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <InitFuncName>%(Filename)</InitFuncName>
+      <Compression>default</Compression>
+      <NoCompression>true</NoCompression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+    </QtRcc>
+    <QtUic>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+    </QtUic>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -139,7 +223,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
@@ -156,7 +241,31 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath></QtMoc><QtRcc><InitFuncName>%(Filename)</InitFuncName><OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile><InputFile>%(FullPath)</InputFile><QTDIR>$(QTDIR)</QTDIR><Compression>default</Compression><NoCompression>true</NoCompression><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription></QtRcc><QtUic><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription></QtUic></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_OPENGL_LIB;QT_WEBSOCKETS_LIB;QT_WIDGETS_LIB</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWebSockets;$(QTDIR)\include\QtWidgets;$(INHERIT)\.;$(SolutionDir)\.;$(SolutionDir)External;$(SolutionDir)External\Windows</IncludePath>
+    </QtMoc>
+    <QtRcc>
+      <InitFuncName>%(Filename)</InitFuncName>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+      <InputFile>%(FullPath)</InputFile>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <Compression>default</Compression>
+      <NoCompression>true</NoCompression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+    </QtRcc>
+    <QtUic>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+    </QtUic>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioViewer.cpp" />
     <ClCompile Include="ConfigEditor.cpp" />
@@ -195,6 +304,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="EditorContainer.cpp" />
+    <ClCompile Include="EditorGL.cpp" />
     <ClCompile Include="EntityEditor.cpp" />
     <ClCompile Include="FontViewer.cpp" />
     <ClCompile Include="FrameEditorAnchorEditor.cpp" />
@@ -236,265 +346,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="GenericCheckbox.cpp" />
     <ClCompile Include="GenericFrame.cpp">
       <SubType>
@@ -714,122 +565,26 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="EditorContainer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="EditorContainer.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="VisualEffectEditorEquationList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="DrawUtilQt.h">
       <SubType>
       </SubType>
     </ClInclude>
     <QtMoc Include="MapEditorParalaxObjectSelector.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="FrameEditorAnchorManager.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="FrameEditorAnchorEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="FrameEditorTypes.refl.h">
       <SubType>
@@ -842,22 +597,6 @@
     <ClInclude Include="GeneratedFiles\ui_TextInputDialog.h" />
     <ClInclude Include="MapEditorServerObjectManager.h" />
     <QtMoc Include="MapEditorServerObjectSelector.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="MapEditorToolAllLayers.h">
       <SubType>
@@ -868,121 +607,20 @@
       </SubType>
     </ClInclude>
     <QtMoc Include="SpriteBaseAnimationEventEditorDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="SpriteBaseFrameDisplay.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="SpriteBaseSkinEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="SpriteBaseSkinListElement.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="SpriteBaseSkinListTextureElement.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="MapEditorToolParalaxObjectLayerDraw.h" />
     <ClInclude Include="MapEditorToolParalaxObjectLayerSelect.h" />
     <ClInclude Include="MapEditorToolServerObjectLayerDraw.h" />
     <ClInclude Include="MapEditorToolServerObjectLayerSelect.h" />
     <QtMoc Include="ServerObjectEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="MapEditorTypes.refl.h">
       <SubType>
@@ -993,284 +631,36 @@
       </SubType>
     </ClInclude>
     <QtMoc Include="TextInputDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="VisualEffectEditorNodeSelection.h" />
     <QtMoc Include="VisualEffectEditorPropertyContainer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="VisualEffectEditorViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="VisualEffectEquationEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="VisualEffectEditorNodeList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="VisualEffectEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIOutputEquationEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEditorOutputEquationList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEditorEquationList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="UIEditorNode.h" />
     <QtMoc Include="UIEditorPropertyContainer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEquationEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEditorViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEditorNodeList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="UIEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="ConfigEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="DocumentEditorConfig.h" />
     <ClInclude Include="DocumentListValueWatcher.h">
@@ -1279,296 +669,57 @@
     </ClInclude>
     <ClInclude Include="DocumentSubValueListMirror.h" />
     <QtMoc Include="FrameEditorSingleBox.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="FrameEditorContainer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="FrameEditorBase.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="DrawUtil.h">
       <SubType>
       </SubType>
     </ClInclude>
     <QtMoc Include="FrameEditorSingleLine.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="FrameEditorMultiBox.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="FrameEditorLowerEdge.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="FrameEditorUtil.h">
       <SubType>
       </SubType>
     </ClInclude>
     <QtMoc Include="GameClientWidget.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GameServerWidget.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GameHostWidget.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_AnimationFrameEditor.h" />
     <QtMoc Include="TileSheetEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="MapEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="MapEditorLayerList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="MapEditorEntitySelector.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_SelectFromListDialog.h" />
     <ClInclude Include="MapEditorAnchor.h" />
     <ClInclude Include="MapEditorEffectLayer.h" />
@@ -1578,62 +729,14 @@
     </ClInclude>
     <ClInclude Include="MapEditorLayer.h" />
     <QtMoc Include="MapEditorViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="MapEditorTileSelector.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="MapEditorSelector.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="MapEditorLayerManager.h" />
     <ClInclude Include="MapEditorParalaxLayer.h">
       <SubType>
@@ -1681,188 +784,36 @@
       </SubType>
     </ClInclude>
     <QtMoc Include="SelectFromListDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="SpriteBaseTextureLoadList.h" />
     <ClInclude Include="SpriteBaseTimelineElement.h" />
     <QtMoc Include="SpriteBaseTimeline.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseTextureImportDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseTextureFrameList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseTextureFrameElement.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseTextureEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseAnimationListFrameElement.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseAnimationListElement.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseAnimationFrameListEditorDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="SpriteBaseAnimationEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <CustomBuild Include="SimpleLabelList.h">
       <SubType>
       </SubType>
@@ -1892,438 +843,89 @@
       </Command>
     </CustomBuild>
     <QtMoc Include="GenericListFrame.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="DocumentValueWatcher.h">
       <SubType>
       </SubType>
     </ClInclude>
     <QtMoc Include="EntityEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_SpriteTextureImportDialog.h" />
     <QtMoc Include="PropertyEditorPolymorphic.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorEnum.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="SimpleLabelListElement.h">
       <SubType>
       </SubType>
     </ClInclude>
     <QtMoc Include="PropertyEditor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorNumber.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorFile.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GenericFrame.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorBool.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GenericCheckbox.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="PropertyEditorWidget.h" />
     <QtMoc Include="PropertyEditorStruct.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="PropertyEditorString.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GenericList.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="ScrollingPanel.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="TextureViewerWidget.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="GenericInput.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="TextureViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="ConnectingDialog.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="FontViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="AudioViewer.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='CoreOpt|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <QtMoc Include="DocumentEditorBase.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="DocumentEditor.h" />
     <QtMoc Include="DocumentEditorWidgetBase.h">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='FinalStatic|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="DocumentServerThread.h">
       <SubType>
       </SubType>
@@ -2333,22 +935,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="EditorContainer.qrc">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
@@ -2366,9 +952,6 @@
     </ProjectReference>
     <ProjectReference Include="..\External\External.vcxproj">
       <Project>{f2c9910c-3e6e-4752-a69e-810cc743bc10}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\External\gl3w\gl3w.vcxproj">
-      <Project>{2fb39090-5866-4194-8c89-cb33a0d7f87e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\External\lodepng\LodePNG.vcxproj">
       <Project>{001c51d7-774d-4f3c-9a4c-8016a39669ee}</Project>
@@ -2424,105 +1007,28 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ConnectingDialog.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SpriteTextureImportDialog.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AnimationFrameEditor.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SelectFromListDialog.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TextInputDialog.ui">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </QtUic>
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <Import Project="$(SolutionDir)\StormRefl\StormRefl.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

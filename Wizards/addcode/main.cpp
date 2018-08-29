@@ -327,11 +327,12 @@ std::string GetRelativePath(const fs::path & root_path, const fs::path & target_
   if(dir_str.find(root_str) != 0)
   {
     fprintf(stderr, "Could not find relative path (root: %s, target: %s)\n",
-        root_path.c_str(), target_dir.c_str());
-    return target_dir;
+        root_path.string().c_str(), target_dir.string().c_str());
+    return target_dir.string();
   }
 
-  auto rel_path = target_dir.c_str() + root_str.size();
+  auto target_dir_str = target_dir.string();
+  auto rel_path = target_dir_str.c_str() + root_str.size();
   if(rel_path[0] == '/' || rel_path[0] == '\\')
   {
     return rel_path + 1;
@@ -351,7 +352,7 @@ int main(int argc, char ** argv)
     auto cmake_file_path = FindCMakeFile(cur_dir, cur_dir.root_directory());
     if(cmake_file_path.has_value())
     {
-      printf("CMake path: %s\n", cmake_file_path->c_str());
+      printf("CMake path: %s\n", cmake_file_path->string().c_str());
       auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), cur_file);
       printf("CMake relative path %s\n", rel_cmake.c_str());
     }
@@ -511,7 +512,7 @@ int main(int argc, char ** argv)
     }
   }
 
-  WriteStringToFile(cmake_file_path, cmake_file);
+  WriteStringToFile(cmake_file_path.string(), cmake_file);
 
   if(use_vcxproj)
   {

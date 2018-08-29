@@ -8,8 +8,6 @@ namespace fs = std::experimental::filesystem;
 
 #include <Windows.h>
 
-#include <codecvt>
-
 
 struct FileSystemWatcherData
 {
@@ -437,8 +435,9 @@ void FileSystemWatcher::NotifyThread()
           }
         }
 
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-        std::string conv_filename = conv.to_bytes(filename);
+        int size_needed = WideCharToMultiByte(CP_UTF8, 0, &filename[0], (int)filename.size(), nullptr, 0, nullptr, nullptr);
+        std::string conv_filename(size_needed, 0);
+        WideCharToMultiByte(CP_UTF8, 0, &filename[0], (int)filename.size(), &conv_filename[0], size_needed, nullptr, nullptr);
 
         std::string changed_filename("./" + conv_filename);
         std::string full_path = m_RootPath + conv_filename;

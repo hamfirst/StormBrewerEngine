@@ -216,6 +216,7 @@ void WebSocket::GotMessage(NotNullPtr<uint8_t> message, int length, bool binary)
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 #else
 
@@ -390,9 +391,9 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
     }
 
     int so_error;
-    socklen_t len = sizeof so_error;
+    socklen_t len = sizeof(so_error);
 
-    getsockopt(m_Socket, SOL_SOCKET, SO_ERROR, &so_error, &len);
+    getsockopt(m_Socket, SOL_SOCKET, SO_ERROR, (char *)&so_error, &len);
     if (so_error != 0) 
     {
       CloseSocket(m_Socket);
