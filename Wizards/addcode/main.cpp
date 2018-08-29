@@ -411,7 +411,7 @@ int main(int argc, char ** argv)
     }
   }
 
-  auto class_name = std::string(name) + type;
+  auto class_name = std::string(name);
   auto cpp_file_ext = use_meta ? ".refl.cpp" : ".cpp";
   auto header_file_ext = use_meta ? ".refl.h" : ".h";
   auto meta_file_ext = ".refl.meta.h";
