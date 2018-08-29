@@ -365,7 +365,7 @@ int main(int argc, char ** argv)
 
   if(argc < 5)
   {
-    printf("Usage addcode <type> <name> <target_dir> <project_root_dir>\n");
+    printf("Usage addcode <type> <name> <target_dir> <project_root_dir> <options>\n");
     return 1;
   }
 
@@ -393,8 +393,23 @@ int main(int argc, char ** argv)
 
   auto & cmake_file = cmake_file_data.value();
 
-  bool use_vcxproj = true;
-  bool use_meta = true;
+  bool use_vcxproj = false;
+  bool use_meta = false;
+
+  for(int index = 5; index < argc; ++index)
+  {
+    for(char * p = argv[index]; *p != 0; ++p)
+    {
+      if(*p == 'm')
+      {
+        use_meta = true;
+      }
+      else if(*p == 'v')
+      {
+        use_vcxproj = true;
+      }
+    }
+  }
 
   auto class_name = std::string(name) + type;
   auto cpp_file_ext = use_meta ? ".refl.cpp" : ".cpp";
