@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-
+import * as cp from 'child_process';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -25,22 +25,39 @@ export function activate(context: vscode.ExtensionContext) {
         return "";
     }
 
-    let disposable = vscode.commands.registerCommand('extension.createSBEComponent', () => {
+    let disposable = vscode.commands.registerCommand('extension.addSBECode', () => {
 
-        let valueSelection:[number, number] = [0, 0];
+        let pick = vscode.window.showQuickPick(["Component", "ServerObject", "PlayerState", "BotState", "Config", "EffectLayer", "Anchor", "Path", "Volume"]);
+        pick.then(function (selection) {
+            if(selection === undefined) {
+                return;
+            }
 
-        let options = {
-            prompt: "Enter Class Name",
-            value: "Component",
-            valueSelection: valueSelection,
-            validateInput: identifierValidator
-        };
+            let valueSelection:[number, number] = [0, 0];
 
-        let result = vscode.window.showInputBox(options);
-        if(result == undefined) {
-            return;
-        }
-
+            let options = {
+                prompt: "Enter Class Name",
+                value: "",
+                valueSelection: valueSelection,
+                validateInput: identifierValidator
+            };
+    
+            options['value'] = selection;
+    
+            let result = vscode.window.showInputBox(options);
+            if(result == undefined) {
+                return;
+            }
+    
+            result.then(function (class_name) {
+                if(class_name === undefined) {
+                    return;
+                }
+    
+                let command = "\"" + vscode.workspace.rootPath + "\"";
+                cp.exec();
+            });
+        });
     });
 
     context.subscriptions.push(disposable);

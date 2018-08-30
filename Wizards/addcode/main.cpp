@@ -31,7 +31,7 @@ std::optional<std::string> ReadFileIntoString(const std::string & file)
 
 bool WriteStringToFile(const std::string & file, const std::string & file_data)
 {
-  auto fp = fopen(file.c_str(), "wt");
+  auto fp = fopen(file.c_str(), "wb");
   if(fp == nullptr)
   {
     return false;
@@ -48,12 +48,15 @@ struct TemplateIterator
 
   char operator ()()
   {
-    return m_Index >= m_Template.size() ? 0 : m_Template[m_Index];
+    auto c = Peek();
+    m_Index++;
+    return c;
   }
 
   char Peek() const
   {
-    return m_Index + 1 >= m_Template.size() ? 0 : m_Template[m_Index + 1];
+    auto c = m_Index >= m_Template.size() ? 0 : m_Template[m_Index];
+    return c;
   }
 
   const std::string & m_Template;
@@ -89,6 +92,18 @@ std::string FormatTemplate(const std::string & templ,
           result += template_name;
           result += '}';
         }
+
+        in_template_id = false;
+      }
+      else if (c == 0)
+      {
+        result += '{';
+        result += template_name;
+        break;
+      }
+      else
+      {
+        template_name += c;
       }
     }
     else
@@ -113,8 +128,8 @@ std::string FormatTemplate(const std::string & templ,
         if(n == '"')
         {
           itr();
-          result += '"';
         }
+        result += '"';
       }
       else if(c == 0)
       {
@@ -310,7 +325,7 @@ bool WriteTemplate(const fs::path & target_file, const fs::path & template_file,
     const std::unordered_map<std::string, std::string> & template_replacements)
 {
   auto template_data = ReadFileIntoString(template_file.string());
-  if(template_data.has_value())
+  if(template_data.has_value() == false)
   {
     return false;
   }
@@ -333,12 +348,21 @@ std::string GetRelativePath(const fs::path & root_path, const fs::path & target_
 
   auto target_dir_str = target_dir.string();
   auto rel_path = target_dir_str.c_str() + root_str.size();
+
+  std::string path;
   if(rel_path[0] == '/' || rel_path[0] == '\\')
   {
-    return rel_path + 1;
+    path = rel_path + 1;
+  }
+  else
+  {
+    path = rel_path;
   }
 
-  return rel_path;
+  std::transform(path.begin(), path.end(), path.begin(), 
+    [](char c) { return c == '\\' ? '/' : c; });
+
+  return path;
 }
 
 int main(int argc, char ** argv)
@@ -383,7 +407,7 @@ int main(int argc, char ** argv)
     return 3025;
   }
 
-  auto cmake_file_path = project_file_path.value() / "CMakeFile.txt";
+  auto cmake_file_path = project_file_path.value() / "CMakeLists.txt";
 
   auto cmake_file_data = ReadFileIntoString(cmake_file_path.string());
   if(cmake_file_data.has_value() == false)

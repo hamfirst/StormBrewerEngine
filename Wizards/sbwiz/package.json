@@ -17,8 +17,8 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.createSBEComponent",
-                "title": "Create SB Engine Component"
+                "command": "extension.addSBECode",
+                "title": "Add StormBrewerEngine Code"
             }
         ]
     },
