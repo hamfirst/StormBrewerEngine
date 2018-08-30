@@ -87,6 +87,7 @@ add_subdirectory(StormNetCustomBindings)
 add_subdirectory(StormExpr)
 
 if(BUILD_TOOLS)
+  add_subdirectory(External/libgit2)
   add_subdirectory(DocumentServer)
   add_subdirectory(QTUtil)
   add_subdirectory(Editor)

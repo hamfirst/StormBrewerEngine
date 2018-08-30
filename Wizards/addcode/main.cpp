@@ -331,6 +331,8 @@ bool WriteTemplate(const fs::path & target_file, const fs::path & template_file,
   }
 
   auto formated_data = FormatTemplate(template_data.value(), template_replacements);
+  printf("%s\n", target_file.string().c_str());
+
   return WriteStringToFile(target_file.string(), formated_data);
 }
 

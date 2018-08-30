@@ -25,7 +25,12 @@ export function activate(context: vscode.ExtensionContext) {
         return "";
     }
 
-    let disposable = vscode.commands.registerCommand('extension.addSBECode', () => {
+    let disposable = vscode.commands.registerCommand('extension.addSBECode', (arg) => {
+
+        if(arg === undefined) {
+            vscode.window.showErrorMessage("Add code must be run on a folder");
+            return;
+        }
 
         let pick = vscode.window.showQuickPick(["Component", "ServerObject", "PlayerState", "BotState", "Config", "EffectLayer", "Anchor", "Path", "Volume"]);
         pick.then(function (selection) {
@@ -54,8 +59,18 @@ export function activate(context: vscode.ExtensionContext) {
                     return;
                 }
     
-                let command = "\"" + vscode.workspace.rootPath + "\"";
-                cp.exec();
+                let command = "\"" + vscode.workspace.rootPath + "/addcode\" ";
+                command += selection + " ";
+                command += class_name + " ";
+                command += "\"" + arg.path + "\" ";
+                command += "\"" + vscode.workspace.rootPath + "\" ";
+                command += "mv";
+                cp.exec(command, {}, function(error, stdout, stderr) {
+                    if(error) {
+                        vscode.window.showErrorMessage("exec error: " + error);
+                        return;
+                    }
+                });
             });
         });
     });

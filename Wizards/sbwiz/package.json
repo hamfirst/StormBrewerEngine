@@ -18,9 +18,18 @@
         "commands": [
             {
                 "command": "extension.addSBECode",
-                "title": "Add StormBrewerEngine Code"
+                "title": "AddCode",
+                "category": "StormBrewers"
             }
-        ]
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.addSBECode",
+                    "group": "navigation"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

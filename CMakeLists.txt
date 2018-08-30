@@ -272,7 +272,7 @@ if(BUILD_TOOLS)
   target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
 
   add_executable(documentserver Dummy.cpp)
-  target_link_libraries(documentserver DocumentServer Foundation StormSockets StormData asio mbedtls)
+  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls)
   target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
   target_link_libraries(documentserver GL GLU stdc++fs z rt m c dl)
 
@@ -288,7 +288,6 @@ if(BUILD_TOOLS)
   add_dependencies(GameServer stormrefl)
   add_dependencies(GameClient stormrefl)
   add_dependencies(Editor stormrefl)
-
 
   if(MSVC)
     target_link_libraries(editor Editor)
