@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="deps\http-parser\http_parser.c" />
+    <ClCompile Include="deps\regex\regex.c" />
+    <ClCompile Include="deps\zlib\adler32.c" />
+    <ClCompile Include="deps\zlib\crc32.c" />
+    <ClCompile Include="deps\zlib\deflate.c" />
+    <ClCompile Include="deps\zlib\infback.c" />
+    <ClCompile Include="deps\zlib\inffast.c" />
+    <ClCompile Include="deps\zlib\inflate.c" />
+    <ClCompile Include="deps\zlib\inftrees.c" />
+    <ClCompile Include="deps\zlib\trees.c" />
+    <ClCompile Include="deps\zlib\zutil.c" />
+    <ClCompile Include="src\annotated_commit.c" />
+    <ClCompile Include="src\apply.c" />
+    <ClCompile Include="src\attr.c" />
+    <ClCompile Include="src\attrcache.c" />
+    <ClCompile Include="src\attr_file.c" />
+    <ClCompile Include="src\blame.c" />
+    <ClCompile Include="src\blame_git.c" />
+    <ClCompile Include="src\blob.c" />
+    <ClCompile Include="src\branch.c" />
+    <ClCompile Include="src\buffer.c" />
+    <ClCompile Include="src\buf_text.c" />
+    <ClCompile Include="src\cache.c" />
+    <ClCompile Include="src\checkout.c" />
+    <ClCompile Include="src\cherrypick.c" />
+    <ClCompile Include="src\clone.c" />
+    <ClCompile Include="src\commit.c" />
+    <ClCompile Include="src\commit_list.c" />
+    <ClCompile Include="src\config.c" />
+    <ClCompile Include="src\config_cache.c" />
+    <ClCompile Include="src\config_file.c" />
+    <ClCompile Include="src\config_parse.c" />
+    <ClCompile Include="src\crlf.c" />
+    <ClCompile Include="src\date.c" />
+    <ClCompile Include="src\delta.c" />
+    <ClCompile Include="src\describe.c" />
+    <ClCompile Include="src\diff.c" />
+    <ClCompile Include="src\diff_driver.c" />
+    <ClCompile Include="src\diff_file.c" />
+    <ClCompile Include="src\diff_generate.c" />
+    <ClCompile Include="src\diff_parse.c" />
+    <ClCompile Include="src\diff_print.c" />
+    <ClCompile Include="src\diff_stats.c" />
+    <ClCompile Include="src\diff_tform.c" />
+    <ClCompile Include="src\diff_xdiff.c" />
+    <ClCompile Include="src\errors.c" />
+    <ClCompile Include="src\fetch.c" />
+    <ClCompile Include="src\fetchhead.c" />
+    <ClCompile Include="src\filebuf.c" />
+    <ClCompile Include="src\fileops.c" />
+    <ClCompile Include="src\filter.c" />
+    <ClCompile Include="src\fnmatch.c" />
+    <ClCompile Include="src\global.c" />
+    <ClCompile Include="src\graph.c" />
+    <ClCompile Include="src\hash.c" />
+    <ClCompile Include="src\hashsig.c" />
+    <ClCompile Include="src\hash\sha1dc\sha1.c" />
+    <ClCompile Include="src\hash\sha1dc\ubc_check.c" />
+    <ClCompile Include="src\ident.c" />
+    <ClCompile Include="src\idxmap.c" />
+    <ClCompile Include="src\ignore.c" />
+    <ClCompile Include="src\index.c" />
+    <ClCompile Include="src\indexer.c" />
+    <ClCompile Include="src\iterator.c" />
+    <ClCompile Include="src\merge.c" />
+    <ClCompile Include="src\merge_driver.c" />
+    <ClCompile Include="src\merge_file.c" />
+    <ClCompile Include="src\message.c" />
+    <ClCompile Include="src\mwindow.c" />
+    <ClCompile Include="src\netops.c" />
+    <ClCompile Include="src\notes.c" />
+    <ClCompile Include="src\object.c" />
+    <ClCompile Include="src\object_api.c" />
+    <ClCompile Include="src\odb.c" />
+    <ClCompile Include="src\odb_loose.c" />
+    <ClCompile Include="src\odb_mempack.c" />
+    <ClCompile Include="src\odb_pack.c" />
+    <ClCompile Include="src\offmap.c" />
+    <ClCompile Include="src\oid.c" />
+    <ClCompile Include="src\oidarray.c" />
+    <ClCompile Include="src\oidmap.c" />
+    <ClCompile Include="src\pack-objects.c" />
+    <ClCompile Include="src\pack.c" />
+    <ClCompile Include="src\parse.c" />
+    <ClCompile Include="src\patch.c" />
+    <ClCompile Include="src\patch_generate.c" />
+    <ClCompile Include="src\patch_parse.c" />
+    <ClCompile Include="src\path.c" />
+    <ClCompile Include="src\pathspec.c" />
+    <ClCompile Include="src\pool.c" />
+    <ClCompile Include="src\posix.c" />
+    <ClCompile Include="src\pqueue.c" />
+    <ClCompile Include="src\proxy.c" />
+    <ClCompile Include="src\push.c" />
+    <ClCompile Include="src\rebase.c" />
+    <ClCompile Include="src\refdb.c" />
+    <ClCompile Include="src\refdb_fs.c" />
+    <ClCompile Include="src\reflog.c" />
+    <ClCompile Include="src\refs.c" />
+    <ClCompile Include="src\refspec.c" />
+    <ClCompile Include="src\remote.c" />
+    <ClCompile Include="src\repository.c" />
+    <ClCompile Include="src\reset.c" />
+    <ClCompile Include="src\revert.c" />
+    <ClCompile Include="src\revparse.c" />
+    <ClCompile Include="src\revwalk.c" />
+    <ClCompile Include="src\settings.c" />
+    <ClCompile Include="src\sha1_lookup.c" />
+    <ClCompile Include="src\signature.c" />
+    <ClCompile Include="src\sortedcache.c" />
+    <ClCompile Include="src\stash.c" />
+    <ClCompile Include="src\status.c" />
+    <ClCompile Include="src\streams\curl.c" />
+    <ClCompile Include="src\streams\openssl.c" />
+    <ClCompile Include="src\streams\socket.c" />
+    <ClCompile Include="src\streams\stransport.c" />
+    <ClCompile Include="src\streams\tls.c" />
+    <ClCompile Include="src\strmap.c" />
+    <ClCompile Include="src\submodule.c" />
+    <ClCompile Include="src\sysdir.c" />
+    <ClCompile Include="src\tag.c" />
+    <ClCompile Include="src\thread-utils.c" />
+    <ClCompile Include="src\trace.c" />
+    <ClCompile Include="src\trailer.c" />
+    <ClCompile Include="src\transaction.c" />
+    <ClCompile Include="src\transport.c" />
+    <ClCompile Include="src\transports\auth.c" />
+    <ClCompile Include="src\transports\auth_negotiate.c" />
+    <ClCompile Include="src\transports\cred.c" />
+    <ClCompile Include="src\transports\cred_helpers.c" />
+    <ClCompile Include="src\transports\git.c" />
+    <ClCompile Include="src\transports\http.c" />
+    <ClCompile Include="src\transports\local.c" />
+    <ClCompile Include="src\transports\smart.c" />
+    <ClCompile Include="src\transports\smart_pkt.c" />
+    <ClCompile Include="src\transports\smart_protocol.c" />
+    <ClCompile Include="src\transports\ssh.c" />
+    <ClCompile Include="src\transports\winhttp.c" />
+    <ClCompile Include="src\tree-cache.c" />
+    <ClCompile Include="src\tree.c" />
+    <ClCompile Include="src\tsort.c" />
+    <ClCompile Include="src\util.c" />
+    <ClCompile Include="src\varint.c" />
+    <ClCompile Include="src\vector.c" />
+    <ClCompile Include="src\win32\dir.c" />
+    <ClCompile Include="src\win32\error.c" />
+    <ClCompile Include="src\win32\findfile.c" />
+    <ClCompile Include="src\win32\map.c" />
+    <ClCompile Include="src\win32\path_w32.c" />
+    <ClCompile Include="src\win32\posix_w32.c" />
+    <ClCompile Include="src\win32\precompiled.c" />
+    <ClCompile Include="src\win32\thread.c" />
+    <ClCompile Include="src\win32\utf-conv.c" />
+    <ClCompile Include="src\win32\w32_buffer.c" />
+    <ClCompile Include="src\win32\w32_crtdbg_stacktrace.c" />
+    <ClCompile Include="src\win32\w32_stack.c" />
+    <ClCompile Include="src\win32\w32_util.c" />
+    <ClCompile Include="src\worktree.c" />
+    <ClCompile Include="src\xdiff\xdiffi.c" />
+    <ClCompile Include="src\xdiff\xemit.c" />
+    <ClCompile Include="src\xdiff\xhistogram.c" />
+    <ClCompile Include="src\xdiff\xmerge.c" />
+    <ClCompile Include="src\xdiff\xpatience.c" />
+    <ClCompile Include="src\xdiff\xprepare.c" />
+    <ClCompile Include="src\xdiff\xutils.c" />
+    <ClCompile Include="src\zstream.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="deps\http-parser\http_parser.h" />
+    <ClInclude Include="deps\regex\regex.h" />
+    <ClInclude Include="deps\zlib\crc32.h" />
+    <ClInclude Include="deps\zlib\deflate.h" />
+    <ClInclude Include="deps\zlib\gzguts.h" />
+    <ClInclude Include="deps\zlib\inffast.h" />
+    <ClInclude Include="deps\zlib\inffixed.h" />
+    <ClInclude Include="deps\zlib\inflate.h" />
+    <ClInclude Include="deps\zlib\inftrees.h" />
+    <ClInclude Include="deps\zlib\trees.h" />
+    <ClInclude Include="deps\zlib\zconf.h" />
+    <ClInclude Include="deps\zlib\zlib.h" />
+    <ClInclude Include="deps\zlib\zutil.h" />
+    <ClInclude Include="src\annotated_commit.h" />
+    <ClInclude Include="src\apply.h" />
+    <ClInclude Include="src\array.h" />
+    <ClInclude Include="src\attr.h" />
+    <ClInclude Include="src\attrcache.h" />
+    <ClInclude Include="src\attr_file.h" />
+    <ClInclude Include="src\bitvec.h" />
+    <ClInclude Include="src\blame.h" />
+    <ClInclude Include="src\blame_git.h" />
+    <ClInclude Include="src\blob.h" />
+    <ClInclude Include="src\branch.h" />
+    <ClInclude Include="src\buffer.h" />
+    <ClInclude Include="src\buf_text.h" />
+    <ClInclude Include="src\cache.h" />
+    <ClInclude Include="src\cc-compat.h" />
+    <ClInclude Include="src\checkout.h" />
+    <ClInclude Include="src\clone.h" />
+    <ClInclude Include="src\commit.h" />
+    <ClInclude Include="src\commit_list.h" />
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\config_file.h" />
+    <ClInclude Include="src\config_parse.h" />
+    <ClInclude Include="src\delta.h" />
+    <ClInclude Include="src\diff.h" />
+    <ClInclude Include="src\diff_driver.h" />
+    <ClInclude Include="src\diff_file.h" />
+    <ClInclude Include="src\diff_generate.h" />
+    <ClInclude Include="src\diff_parse.h" />
+    <ClInclude Include="src\diff_tform.h" />
+    <ClInclude Include="src\diff_xdiff.h" />
+    <ClInclude Include="src\fetch.h" />
+    <ClInclude Include="src\fetchhead.h" />
+    <ClInclude Include="src\filebuf.h" />
+    <ClInclude Include="src\fileops.h" />
+    <ClInclude Include="src\filter.h" />
+    <ClInclude Include="src\fnmatch.h" />
+    <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\hash.h" />
+    <ClInclude Include="src\hash\sha1dc\sha1.h" />
+    <ClInclude Include="src\hash\sha1dc\ubc_check.h" />
+    <ClInclude Include="src\idxmap.h" />
+    <ClInclude Include="src\ignore.h" />
+    <ClInclude Include="src\index.h" />
+    <ClInclude Include="src\indexer.h" />
+    <ClInclude Include="src\integer.h" />
+    <ClInclude Include="src\iterator.h" />
+    <ClInclude Include="src\khash.h" />
+    <ClInclude Include="src\map.h" />
+    <ClInclude Include="src\merge.h" />
+    <ClInclude Include="src\merge_driver.h" />
+    <ClInclude Include="src\message.h" />
+    <ClInclude Include="src\mwindow.h" />
+    <ClInclude Include="src\netops.h" />
+    <ClInclude Include="src\notes.h" />
+    <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\odb.h" />
+    <ClInclude Include="src\offmap.h" />
+    <ClInclude Include="src\oid.h" />
+    <ClInclude Include="src\oidarray.h" />
+    <ClInclude Include="src\oidmap.h" />
+    <ClInclude Include="src\pack-objects.h" />
+    <ClInclude Include="src\pack.h" />
+    <ClInclude Include="src\parse.h" />
+    <ClInclude Include="src\patch.h" />
+    <ClInclude Include="src\patch_generate.h" />
+    <ClInclude Include="src\patch_parse.h" />
+    <ClInclude Include="src\path.h" />
+    <ClInclude Include="src\pathspec.h" />
+    <ClInclude Include="src\pool.h" />
+    <ClInclude Include="src\posix.h" />
+    <ClInclude Include="src\pqueue.h" />
+    <ClInclude Include="src\proxy.h" />
+    <ClInclude Include="src\push.h" />
+    <ClInclude Include="src\refdb.h" />
+    <ClInclude Include="src\refdb_fs.h" />
+    <ClInclude Include="src\reflog.h" />
+    <ClInclude Include="src\refs.h" />
+    <ClInclude Include="src\refspec.h" />
+    <ClInclude Include="src\remote.h" />
+    <ClInclude Include="src\repository.h" />
+    <ClInclude Include="src\repo_template.h" />
+    <ClInclude Include="src\revwalk.h" />
+    <ClInclude Include="src\sha1_lookup.h" />
+    <ClInclude Include="src\signature.h" />
+    <ClInclude Include="src\sortedcache.h" />
+    <ClInclude Include="src\status.h" />
+    <ClInclude Include="src\stream.h" />
+    <ClInclude Include="src\streams\curl.h" />
+    <ClInclude Include="src\streams\openssl.h" />
+    <ClInclude Include="src\streams\socket.h" />
+    <ClInclude Include="src\streams\stransport.h" />
+    <ClInclude Include="src\streams\tls.h" />
+    <ClInclude Include="src\strmap.h" />
+    <ClInclude Include="src\strnlen.h" />
+    <ClInclude Include="src\submodule.h" />
+    <ClInclude Include="src\sysdir.h" />
+    <ClInclude Include="src\tag.h" />
+    <ClInclude Include="src\thread-utils.h" />
+    <ClInclude Include="src\trace.h" />
+    <ClInclude Include="src\transaction.h" />
+    <ClInclude Include="src\transports\auth.h" />
+    <ClInclude Include="src\transports\auth_negotiate.h" />
+    <ClInclude Include="src\transports\cred.h" />
+    <ClInclude Include="src\transports\http.h" />
+    <ClInclude Include="src\transports\smart.h" />
+    <ClInclude Include="src\transports\ssh.h" />
+    <ClInclude Include="src\tree-cache.h" />
+    <ClInclude Include="src\tree.h" />
+    <ClInclude Include="src\userdiff.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\varint.h" />
+    <ClInclude Include="src\vector.h" />
+    <ClInclude Include="src\win32\dir.h" />
+    <ClInclude Include="src\win32\error.h" />
+    <ClInclude Include="src\win32\findfile.h" />
+    <ClInclude Include="src\win32\mingw-compat.h" />
+    <ClInclude Include="src\win32\msvc-compat.h" />
+    <ClInclude Include="src\win32\path_w32.h" />
+    <ClInclude Include="src\win32\posix.h" />
+    <ClInclude Include="src\win32\precompiled.h" />
+    <ClInclude Include="src\win32\reparse.h" />
+    <ClInclude Include="src\win32\thread.h" />
+    <ClInclude Include="src\win32\utf-conv.h" />
+    <ClInclude Include="src\win32\version.h" />
+    <ClInclude Include="src\win32\w32_buffer.h" />
+    <ClInclude Include="src\win32\w32_crtdbg_stacktrace.h" />
+    <ClInclude Include="src\win32\w32_stack.h" />
+    <ClInclude Include="src\win32\w32_util.h" />
+    <ClInclude Include="src\win32\win32-compat.h" />
+    <ClInclude Include="src\worktree.h" />
+    <ClInclude Include="src\xdiff\xdiff.h" />
+    <ClInclude Include="src\xdiff\xdiffi.h" />
+    <ClInclude Include="src\xdiff\xemit.h" />
+    <ClInclude Include="src\xdiff\xinclude.h" />
+    <ClInclude Include="src\xdiff\xmacros.h" />
+    <ClInclude Include="src\xdiff\xprepare.h" />
+    <ClInclude Include="src\xdiff\xtypes.h" />
+    <ClInclude Include="src\xdiff\xutils.h" />
+    <ClInclude Include="src\zstream.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{63D5F069-C2AE-46A9-8F85-A8BF380E770A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libgit2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)deps\regex;$(ProjectDir)deps\zlib;$(ProjectDir)deps\http-parser</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)deps\regex;$(ProjectDir)deps\zlib;$(ProjectDir)deps\http-parser</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)deps\regex;$(ProjectDir)deps\zlib;$(ProjectDir)deps\http-parser</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)deps\regex;$(ProjectDir)deps\zlib;$(ProjectDir)deps\http-parser</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

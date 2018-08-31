@@ -1462,7 +1462,7 @@ int git_diff_index_to_index(
 	git_index *new_index,
 	const git_diff_options *opts)
 {
-	git_diff *diff;
+	git_diff *diff = 0;
 	int error = 0;
 
 	assert(out && old_index && new_index);

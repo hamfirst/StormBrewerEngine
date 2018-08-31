@@ -1,0 +1,996 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="http_parser">
+      <UniqueIdentifier>{e22eac2e-98c5-49c0-b84a-b96bf5c8184c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="regex">
+      <UniqueIdentifier>{33a89537-c30d-40c2-896a-17aa55b187c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{34fe914d-24d2-47d4-a0d7-e5cbd720b64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git">
+      <UniqueIdentifier>{54ebad08-0474-4648-bcae-433b9cc9cccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\hash">
+      <UniqueIdentifier>{48a27ff9-42b5-4906-bd22-58483821cb4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\hash\sha1dc">
+      <UniqueIdentifier>{ab803b4c-8d06-497a-9646-1628b0e0dcfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\streams">
+      <UniqueIdentifier>{e56fa1db-88d9-4467-b0ea-7ad713e7c486}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\transports">
+      <UniqueIdentifier>{3bb2cdda-b72e-4f57-ba07-0f766a10511b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\win32">
+      <UniqueIdentifier>{22a4aa74-0c35-4ebd-9e25-8fdc08638009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="git\xdiff">
+      <UniqueIdentifier>{87e52611-8b56-4573-8618-77f11e47d91b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="deps\http-parser\http_parser.c">
+      <Filter>http_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\regex\regex.c">
+      <Filter>regex</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="deps\zlib\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\annotated_commit.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\apply.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\attr.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\attr_file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\attrcache.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\blame.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\blame_git.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\blob.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\branch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buf_text.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffer.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cache.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\checkout.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cherrypick.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clone.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\commit.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\commit_list.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config_cache.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config_file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config_parse.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crlf.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\date.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\delta.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\describe.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_driver.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_generate.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_parse.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_print.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_stats.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_tform.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diff_xdiff.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\errors.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fetch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fetchhead.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filebuf.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileops.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filter.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fnmatch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\global.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graph.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hash.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hashsig.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ident.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\idxmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ignore.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\indexer.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iterator.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\merge.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\merge_driver.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\merge_file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\message.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwindow.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\netops.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\notes.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object_api.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\odb.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\odb_loose.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\odb_mempack.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\odb_pack.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\offmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oid.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oidarray.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oidmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pack.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pack-objects.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parse.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\patch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\patch_generate.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\patch_parse.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\path.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pathspec.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pool.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\posix.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pqueue.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\proxy.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\push.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rebase.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\refdb.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\refdb_fs.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\reflog.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\refs.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\refspec.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\remote.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\repository.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\reset.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\revert.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\revparse.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\revwalk.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\settings.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sha1_lookup.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\signature.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sortedcache.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stash.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\status.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\strmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\submodule.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sysdir.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tag.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread-utils.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\trace.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\trailer.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transaction.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transport.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree-cache.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tsort.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\varint.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vector.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\worktree.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zstream.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hash\sha1dc\sha1.c">
+      <Filter>git\hash\sha1dc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hash\sha1dc\ubc_check.c">
+      <Filter>git\hash\sha1dc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\streams\curl.c">
+      <Filter>git\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="src\streams\openssl.c">
+      <Filter>git\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="src\streams\socket.c">
+      <Filter>git\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="src\streams\stransport.c">
+      <Filter>git\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="src\streams\tls.c">
+      <Filter>git\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\auth.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\auth_negotiate.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\cred.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\cred_helpers.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\git.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\http.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\local.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\smart.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\smart_pkt.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\smart_protocol.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\ssh.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transports\winhttp.c">
+      <Filter>git\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\dir.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\error.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\findfile.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\map.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\path_w32.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\posix_w32.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\precompiled.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\thread.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\utf-conv.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\w32_buffer.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\w32_crtdbg_stacktrace.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\w32_stack.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32\w32_util.c">
+      <Filter>git\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xdiffi.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xemit.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xhistogram.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xmerge.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xpatience.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xprepare.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xdiff\xutils.c">
+      <Filter>git\xdiff</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="deps\http-parser\http_parser.h">
+      <Filter>http_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\regex\regex.h">
+      <Filter>regex</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\crc32.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\gzguts.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\inflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\zlib\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\annotated_commit.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\apply.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\array.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\attr.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\attr_file.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\attrcache.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bitvec.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\blame.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\blame_git.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\blob.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\branch.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buf_text.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffer.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cache.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cc-compat.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\checkout.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clone.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\commit.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\commit_list.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config_file.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config_parse.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\delta.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_driver.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_file.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_generate.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_parse.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_tform.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\diff_xdiff.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fetch.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fetchhead.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filebuf.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fileops.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filter.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fnmatch.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hash.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\idxmap.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ignore.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\index.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\indexer.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\integer.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\iterator.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\khash.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\map.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\merge.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\merge_driver.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\message.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mwindow.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\netops.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notes.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\odb.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\offmap.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oid.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oidarray.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oidmap.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pack.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pack-objects.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parse.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\patch.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\patch_generate.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\patch_parse.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\path.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pathspec.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pool.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\posix.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pqueue.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\proxy.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\push.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\refdb.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\refdb_fs.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\reflog.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\refs.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\refspec.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\remote.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\repo_template.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\repository.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\revwalk.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sha1_lookup.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\signature.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sortedcache.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\status.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stream.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\strmap.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\strnlen.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\submodule.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sysdir.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tag.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread-utils.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\trace.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transaction.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree-cache.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\userdiff.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\varint.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vector.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\worktree.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\zstream.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hash\sha1dc\sha1.h">
+      <Filter>git\hash\sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hash\sha1dc\ubc_check.h">
+      <Filter>git\hash\sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\streams\curl.h">
+      <Filter>git\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="src\streams\openssl.h">
+      <Filter>git\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="src\streams\socket.h">
+      <Filter>git\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="src\streams\stransport.h">
+      <Filter>git\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="src\streams\tls.h">
+      <Filter>git\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\auth.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\auth_negotiate.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\cred.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\http.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\smart.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transports\ssh.h">
+      <Filter>git\transports</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\dir.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\error.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\findfile.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\mingw-compat.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\msvc-compat.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\path_w32.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\posix.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\precompiled.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\reparse.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\thread.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\utf-conv.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\version.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\w32_buffer.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\w32_crtdbg_stacktrace.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\w32_stack.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\w32_util.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win32\win32-compat.h">
+      <Filter>git\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xdiff.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xdiffi.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xemit.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xinclude.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xmacros.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xprepare.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xtypes.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xdiff\xutils.h">
+      <Filter>git\xdiff</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

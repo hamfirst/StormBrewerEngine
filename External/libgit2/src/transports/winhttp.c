@@ -116,7 +116,7 @@ typedef struct {
 static int _apply_userpass_credential(HINTERNET request, DWORD target, DWORD scheme, git_cred *cred)
 {
 	git_cred_userpass_plaintext *c = (git_cred_userpass_plaintext *)cred;
-	wchar_t *user, *pass;
+	wchar_t *user = 0, *pass = 0;
 	int user_len = 0, pass_len = 0, error = 0;
 
 	if ((error = user_len = git__utf8_to_16_alloc(&user, c->username)) < 0)

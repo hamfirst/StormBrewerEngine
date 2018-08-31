@@ -330,9 +330,9 @@ int git_commit_amend(
 	const char *message,
 	const git_tree *tree)
 {
-	git_repository *repo;
+	git_repository *repo = 0;
+  git_reference *ref = 0;
 	git_oid tree_id;
-	git_reference *ref;
 	int error;
 
 	assert(id && commit_to_amend);
