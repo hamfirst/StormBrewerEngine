@@ -61,22 +61,9 @@ Delegate<void> g_GlobalRedo;
 
 DelegateList<void> g_GlobalUpdate;
 
-#ifdef _LINUX
-
-extern "C"
-{
-  extern int g_LoadDbus;
-}
-
-#endif
-
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
-{
-#ifdef _LINUX
-  g_LoadDbus = 0;
-#endif
-  
+{  
   const char * doc_server_host = "localhost";
   
   printf("Attempting to connect to doc server\n");

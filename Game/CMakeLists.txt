@@ -4,103 +4,103 @@ include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_Game 
-            ./GameCommon.cpp
-            ./GameValidation.cpp
-            ./GameServerTypes.cpp
-            ./GameWebrtc.cpp
-            ./GameNetworkEvents.refl.cpp
-            ./GameStageManager.cpp
-            ./GameEventReconciler.cpp
-            ./GameServerEventSender.cpp
-            ./GameSharedInstanceResources.cpp
-            ./GameController.refl.cpp
             ./GameLogicContainer.cpp
             ./GameLevelList.cpp
-            ./GameNetworkExternals.refl.cpp
+            ./GameStageManager.cpp
             ./GameSharedGlobalResources.cpp
+            ./GameServerTypes.cpp
+            ./GameServerEventSender.cpp
+            ./GameController.refl.cpp
+            ./GameWebrtc.cpp
             ./GameStage.cpp
             ./GameMessages.refl.cpp
-            ./AI/PlayerAI.cpp
+            ./GameEventReconciler.cpp
+            ./GameSharedInstanceResources.cpp
+            ./GameCommon.cpp
+            ./GameNetworkEvents.refl.cpp
+            ./GameNetworkExternals.refl.cpp
+            ./GameValidation.cpp
             ./Configs/PlayerConfig.refl.reg.cpp
             ./Configs/GameConfig.refl.reg.cpp
-            ./Systems/GameLogicSystems.cpp
-            ./Data/PlayerSpawn.refl.reg.cpp
             ./ServerObjects/Player/PlayerServerObject.refl.cpp
             ./ServerObjects/Player/PlayerServerObject.refl.reg.cpp
-            ./ServerObjects/Player/States/PlayerStateIdle.refl.cpp
-            ./ServerObjects/Player/States/PlayerStateBase.refl.cpp
             ./ServerObjects/Player/States/PlayerStateJump.refl.cpp
+            ./ServerObjects/Player/States/PlayerStateBase.refl.cpp
+            ./ServerObjects/Player/States/PlayerStateIdle.refl.cpp
             ./ServerObjects/Player/States/PlayerStateMoving.refl.cpp
+            ./Systems/GameLogicSystems.cpp
+            ./AI/PlayerAI.cpp
+            ./Data/PlayerSpawn.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Game 
-            ./GameMessages.refl.meta.h
-            ./GameNetworkEvents.refl.meta.h
-            ./GameNetworkEvents.refl.h
-            ./GameStageManager.h
-            ./GameCommon.h
-            ./GameStage.h
-            ./GameNetworkExternals.refl.meta.h
-            ./GameNetworkSettings.h
-            ./GameFullState.refl.meta.h
-            ./GameController.refl.meta.h
-            ./GameNetworkExternals.refl.h
-            ./GameSettings.h
-            ./GameLevelList.h
-            ./GameSimulationEventCallbacks.h
-            ./GameFullState.refl.h
             ./GameProtocol.h
-            ./GameEventReconciler.h
-            ./GameController.refl.h
-            ./GameLevelListAsset.refl.h
-            ./GameServerTypes.h
-            ./GameNetworkData.refl.h
-            ./GameServerEventSender.h
-            ./GameLogicContainer.h
-            ./GameSharedGlobalResources.h
-            ./GameSharedInstanceResources.h
             ./GameValidation.h
+            ./GameNetworkSettings.h
+            ./GameController.refl.meta.h
+            ./GameFullState.refl.h
+            ./GameNetworkEvents.refl.h
             ./GameNetworkData.refl.meta.h
             ./GameMessages.refl.h
+            ./GameSharedInstanceResources.h
+            ./GameNetworkExternals.refl.h
+            ./GameController.refl.h
+            ./GameServerTypes.h
+            ./GameSimulationEventCallbacks.h
+            ./GameSettings.h
+            ./GameNetworkEvents.refl.meta.h
+            ./GameEventReconciler.h
+            ./GameLogicContainer.h
+            ./GameLevelListAsset.refl.h
+            ./GameMessages.refl.meta.h
             ./GameLevelListAsset.refl.meta.h
-            ./GameplayEvents/PlaceholderEvent.h
-            ./AI/PlayerAI.h
-            ./Configs/PlayerConfig.refl.meta.h
-            ./Configs/GameConfig.refl.h
+            ./GameNetworkExternals.refl.meta.h
+            ./GameSharedGlobalResources.h
+            ./GameLevelList.h
+            ./GameNetworkData.refl.h
+            ./GameStage.h
+            ./GameCommon.h
+            ./GameStageManager.h
+            ./GameFullState.refl.meta.h
+            ./GameServerEventSender.h
             ./Configs/GameConfig.refl.meta.h
+            ./Configs/GameConfig.refl.h
+            ./Configs/PlayerConfig.refl.meta.h
             ./Configs/PlayerConfig.refl.h
-            ./Systems/GameLogicSystems.h
-            ./Systems/GameDeliberateSyncSystemList.h
-            ./Data/PlayerSpawn.refl.meta.h
-            ./Data/PlayerSpawn.refl.h
-            ./ServerObjects/Player/PlayerServerObject.refl.h
             ./ServerObjects/Player/PlayerServerObject.refl.meta.h
-            ./ServerObjects/Player/States/PlayerStateBase.refl.meta.h
-            ./ServerObjects/Player/States/PlayerStateJump.refl.meta.h
-            ./ServerObjects/Player/States/PlayerStateIdle.refl.meta.h
-            ./ServerObjects/Player/States/PlayerStateJump.refl.h
+            ./ServerObjects/Player/PlayerServerObject.refl.h
             ./ServerObjects/Player/States/PlayerStateBase.refl.h
             ./ServerObjects/Player/States/PlayerStateMoving.refl.h
-            ./ServerObjects/Player/States/PlayerStateMoving.refl.meta.h
             ./ServerObjects/Player/States/PlayerStateIdle.refl.h
+            ./ServerObjects/Player/States/PlayerStateIdle.refl.meta.h
+            ./ServerObjects/Player/States/PlayerStateBase.refl.meta.h
+            ./ServerObjects/Player/States/PlayerStateJump.refl.meta.h
+            ./ServerObjects/Player/States/PlayerStateMoving.refl.meta.h
+            ./ServerObjects/Player/States/PlayerStateJump.refl.h
+            ./Systems/GameLogicSystems.h
+            ./Systems/GameDeliberateSyncSystemList.h
+            ./AI/PlayerAI.h
+            ./GameplayEvents/PlaceholderEvent.h
+            ./Data/PlayerSpawn.refl.meta.h
+            ./Data/PlayerSpawn.refl.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Game 
-            ./GameNetworkEvents.refl.h
-            ./GameNetworkExternals.refl.h
             ./GameFullState.refl.h
+            ./GameNetworkEvents.refl.h
+            ./GameMessages.refl.h
+            ./GameNetworkExternals.refl.h
             ./GameController.refl.h
             ./GameLevelListAsset.refl.h
             ./GameNetworkData.refl.h
-            ./GameMessages.refl.h
             ./Configs/GameConfig.refl.h
             ./Configs/PlayerConfig.refl.h
-            ./Data/PlayerSpawn.refl.h
             ./ServerObjects/Player/PlayerServerObject.refl.h
-            ./ServerObjects/Player/States/PlayerStateJump.refl.h
             ./ServerObjects/Player/States/PlayerStateBase.refl.h
             ./ServerObjects/Player/States/PlayerStateMoving.refl.h
             ./ServerObjects/Player/States/PlayerStateIdle.refl.h
+            ./ServerObjects/Player/States/PlayerStateJump.refl.h
+            ./Data/PlayerSpawn.refl.h
             #REFL_PLACEHOLDER
             )
 

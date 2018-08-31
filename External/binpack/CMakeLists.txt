@@ -4,21 +4,21 @@ include_directories(. ../../. ../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_binpack 
-            ./SkylineBinPack.cpp
-            ./MaxRectsBinPack.cpp
-            ./ShelfBinPack.cpp
             ./GuillotineBinPack.cpp
-            ./Rect.cpp
+            ./SkylineBinPack.cpp
             ./ShelfNextFitBinPack.cpp
+            ./ShelfBinPack.cpp
+            ./MaxRectsBinPack.cpp
+            ./Rect.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_binpack 
-            ./ShelfBinPack.h
             ./GuillotineBinPack.h
-            ./Rect.h
             ./ShelfNextFitBinPack.h
-            ./SkylineBinPack.h
+            ./Rect.h
             ./MaxRectsBinPack.h
+            ./SkylineBinPack.h
+            ./ShelfBinPack.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_binpack 

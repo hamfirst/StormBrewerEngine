@@ -4,14 +4,14 @@ include_directories(. ../../. ../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_ogg 
-            ./framing.c
             ./bitwise.c
+            ./framing.c
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_ogg 
             ./config_types.h
-            ./os_types.h
             ./ogg.h
+            ./os_types.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_ogg 

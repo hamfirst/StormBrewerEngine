@@ -383,8 +383,6 @@ X11_CheckWindowManager(_THIS)
 #endif
 }
 
-int g_LoadDbus = 1;
-
 int
 X11_VideoInit(_THIS)
 {
@@ -452,7 +450,8 @@ X11_VideoInit(_THIS)
     X11_InitTouch(_this);
 
 #if SDL_USE_LIBDBUS
-    if(g_LoadDbus) {
+    if(0) 
+    {
         SDL_DBus_Init();
     }
 #endif

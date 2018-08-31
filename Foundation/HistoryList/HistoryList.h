@@ -193,8 +193,9 @@ public:
 
     auto earliest = time_pred(*begin);
 
+    // Find the index of the first spot to place the merged list
     int dst_index = 0;
-    for (int index = m_Size - 1; m_Size >= 0; --index)
+    for (int index = m_Size - 1; index >= 0; --index)
     {
       if (m_Values[index].m_Frame <= earliest)
       {
@@ -204,7 +205,8 @@ public:
     }
 
     if (dst_index == m_Size)
-    {
+    { 
+      // Put the rest of the elements in the list
       for(auto itr = begin; itr != end; ++itr)
       {
         auto & elem = (*itr);

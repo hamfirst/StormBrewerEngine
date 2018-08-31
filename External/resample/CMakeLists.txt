@@ -4,19 +4,19 @@ include_directories(. ../../. ../.././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_resample 
-            ./stage_impl.c
-            ./smarc.c
             ./remez_lp.c
+            ./smarc.c
             ./filtering.c
             ./polyfilt.c
             ./multi_stage.c
+            ./stage_impl.c
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_resample 
-            ./polyfilt.h
             ./multi_stage.h
-            ./smarc.h
             ./remez_lp.h
+            ./smarc.h
+            ./polyfilt.h
             ./filtering.h
             ./stage_impl.h
             #HEADER_PLACEHOLDER

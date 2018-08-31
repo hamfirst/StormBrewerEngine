@@ -8,9 +8,9 @@ set(GENERIC_SRC_StormWebrtc
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_StormWebrtc 
-            ./StormWebrtc.h
             ./StormWebrtcDataChannel.h
             ./StormWebrtcConnection.h
+            ./StormWebrtc.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_StormWebrtc 

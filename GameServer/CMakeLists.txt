@@ -4,28 +4,28 @@ include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_GameServer 
-            ./GameClientConnection.cpp
-            ./GameInstanceStateData.cpp
-            ./GameInstanceStateLoading.cpp
             ./GameInstanceStateGameplay.cpp
-            ./GameServer.cpp
-            ./GameServerGlobalResources.cpp
-            ./GameInstanceStateStaging.cpp
-            ./GameInstanceManager.cpp
+            ./GameInstanceStateData.cpp
             ./GameInstance.cpp
+            ./GameInstanceManager.cpp
+            ./GameServer.cpp
+            ./GameClientConnection.cpp
+            ./GameInstanceStateStaging.cpp
+            ./GameServerGlobalResources.cpp
+            ./GameInstanceStateLoading.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_GameServer 
-            ./GameInstance.h
-            ./GameServer.h
-            ./GameInstanceStateBase.h
-            ./GameInstanceManager.h
-            ./GameClientConnection.h
-            ./GameInstanceStateGameplay.h
-            ./GameInstanceStateLoading.h
-            ./GameInstanceStateStaging.h
-            ./GameServerGlobalResources.h
             ./GameInstanceStateData.h
+            ./GameInstanceStateBase.h
+            ./GameInstance.h
+            ./GameInstanceStateLoading.h
+            ./GameInstanceStateGameplay.h
+            ./GameServerGlobalResources.h
+            ./GameClientConnection.h
+            ./GameInstanceStateStaging.h
+            ./GameServer.h
+            ./GameInstanceManager.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_GameServer 

@@ -11,25 +11,25 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_QTUtil 
-            ./QtLerpVar.cpp
-            ./AnimationTrack.cpp
-            ./QTUtil.cpp
-            ./LerpVar.cpp
-            ./DraggableList.cpp
-            ./ExpandableList.cpp
             ./FocusWatcher.cpp
+            ./QTUtil.cpp
+            ./DraggableList.cpp
+            ./QtLerpVar.cpp
+            ./LerpVar.cpp
+            ./AnimationTrack.cpp
+            ./ExpandableList.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_QTUtil 
-            ./VectorRearrange.h
-            ./QtLerpVar.h
             ./AnimationTrack.h
             ./FocusWatcher.h
-            ./LerpVar.h
-            ./ExpandableList.h
-            ./QTUtil.h
-            ./qtutil_global.h
             ./DraggableList.h
+            ./VectorRearrange.h
+            ./ExpandableList.h
+            ./qtutil_global.h
+            ./LerpVar.h
+            ./QtLerpVar.h
+            ./QTUtil.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_QTUtil 

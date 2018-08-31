@@ -10,12 +10,12 @@ set(GENERIC_SRC_UnitTests
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_UnitTests 
+            ./stdafx.h
             ./TestTypes.refl.h
             ./TestTypes.refl.meta.h
             ./targetver.h
-            ./stdafx.h
-            ./TestComponent/TestComponent.refl.meta.h
             ./TestComponent/TestComponent.refl.h
+            ./TestComponent/TestComponent.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_UnitTests 

@@ -4,17 +4,17 @@ include_directories(. ../. .././External)
 set(CMAKE_CXX_STANDARD 14)
 
 set(GENERIC_SRC_DocumentServer 
-            ./FileSystemWatcher.cpp
-            ./Main.cpp
             ./DocumentServer.cpp
+            ./Main.cpp
+            ./FileSystemWatcher.cpp
             ./FileNameDatabase.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_DocumentServer 
             ./DocumentServerMessages.refl.h
-            ./FileSystemWatcher.h
-            ./DocumentServer.h
             ./DocumentServerMessages.refl.meta.h
+            ./DocumentServer.h
+            ./FileSystemWatcher.h
             ./FileNameDatabase.h
             #HEADER_PLACEHOLDER
             )

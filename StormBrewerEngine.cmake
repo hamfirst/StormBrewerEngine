@@ -88,6 +88,8 @@ add_subdirectory(StormExpr)
 
 if(BUILD_TOOLS)
   add_subdirectory(External/libgit2)
+  add_subdirectory(Wizards/TemplateLib)
+  add_subdirectory(Wizards/addcode)
   add_subdirectory(DocumentServer)
   add_subdirectory(QTUtil)
   add_subdirectory(Editor)
