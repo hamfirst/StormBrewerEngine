@@ -35,7 +35,7 @@ class GameStage;
 
 struct GameInitSettings
 {
-  uint8_t m_StageIndex;
+  uint8_t m_StageIndex = 0;
   NET_REFL;
 };
 

@@ -254,7 +254,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
 
   cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
   cmake_file << "include_directories(. " + relative_root + " " + relative_root + "/External)\n";
-  cmake_file << "set(CMAKE_CXX_STANDARD 14)\n\n";
+  cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
 
   if (qt_proj)
   {

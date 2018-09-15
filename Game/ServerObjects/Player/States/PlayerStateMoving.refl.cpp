@@ -95,35 +95,35 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
   {
     if (player.m_Velocity.y > GameNetVal(0))
     {
-      player.m_Facing = PlayerFacing::kUp;
+      player.m_Facing = CharacterFacing::kUp;
     }
     else
     {
-      player.m_Facing = PlayerFacing::kDown;
+      player.m_Facing = CharacterFacing::kDown;
     }
   }
   else if (abs_x > abs_y)
   {
     if (player.m_Velocity.x > GameNetVal(0))
     {
-      player.m_Facing = PlayerFacing::kRight;
+      player.m_Facing = CharacterFacing::kRight;
     }
     else
     {
-      player.m_Facing = PlayerFacing::kLeft;
+      player.m_Facing = CharacterFacing::kLeft;
     }
   }
 
-  switch ((PlayerFacing)player.m_Facing)
+  switch ((CharacterFacing)player.m_Facing)
   {
-  case PlayerFacing::kLeft:
-  case PlayerFacing::kRight:
+  case CharacterFacing::kLeft:
+  case CharacterFacing::kRight:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Side_Move"));
     break;
-  case PlayerFacing::kUp:
+  case CharacterFacing::kUp:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Up_Move"));
     break;
-  case PlayerFacing::kDown:
+  case CharacterFacing::kDown:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Down_Move"));
     break;
   }
@@ -132,7 +132,7 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
 
   if (player.m_Input.m_XInput < GameNetVal(0))
   {
-    player.m_Facing = PlayerFacing::kLeft;
+    player.m_Facing = CharacterFacing::kLeft;
     if (player.m_Velocity.x < GameNetVal(0))
     {
       player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
@@ -144,7 +144,7 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
   }
   else if(player.m_Input.m_XInput > GameNetVal(0))
   {
-    player.m_Facing = PlayerFacing::kRight;
+    player.m_Facing = CharacterFacing::kRight;
     if (player.m_Velocity.x > GameNetVal(0))
     {
       player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));

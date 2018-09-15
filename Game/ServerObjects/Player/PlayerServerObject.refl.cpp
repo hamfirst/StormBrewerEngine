@@ -24,16 +24,15 @@ GLOBAL_ASSET(ConfigPtr<PlayerConfig>, "./Configs/PlayerConfig.playerconfig", g_P
 
 void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data)
 {
-  m_MoveBox = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
   m_State.SetType<PlayerStateIdle>();
 
   if (GetSlotIndex() == 0)
   {
-    m_Facing = PlayerFacing::kRight;
+    m_Facing = CharacterFacing::kRight;
   }
   else
   {
-    m_Facing = PlayerFacing::kLeft;
+    m_Facing = CharacterFacing::kLeft;
   }
 }
 
@@ -83,7 +82,8 @@ MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & 
   auto & stage = game_container.GetStage();
   auto & collision = game_container.GetSystems().GetCollisionDatabase();
 
-  MoveRequest req = Mover::CreateMoveRequest(m_Position, m_Velocity, m_MoveBox);
+  auto move_box = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
+  MoveRequest req = Mover::CreateMoveRequest(m_Position, m_Velocity, move_box);
 
 #ifdef MOVER_ONE_WAY_COLLISION
   auto result = Mover::UpdateMover(collision, req, COLLISION_LAYER_SOLID, COLLISION_LAYER_ONE_WAY);

@@ -73,16 +73,16 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
 void PlayerStateIdle::Animate(PlayerServerObject & player, GameLogicContainer & game_container)
 {
 #ifndef PLATFORMER_MOVEMENT
-  switch ((PlayerFacing)player.m_Facing)
+  switch ((CharacterFacing)player.m_Facing)
   {
-  case PlayerFacing::kLeft:
-  case PlayerFacing::kRight:
+  case CharacterFacing::kLeft:
+  case CharacterFacing::kRight:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Side_Idle"));
     break;
-  case PlayerFacing::kUp:
+  case CharacterFacing::kUp:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Up_Idle"));
     break;
-  case PlayerFacing::kDown:
+  case CharacterFacing::kDown:
     player.FrameAdvance(COMPILE_TIME_CRC32_STR("Down_Idle"));
     break;
   }

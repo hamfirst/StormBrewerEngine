@@ -6,6 +6,7 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameNetworkData.refl.h"
 
+#include "Game/ServerObjects/CharacterFacing.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateBase.refl.h"
 
 #include "Game/GameplayEvents/PlaceholderEvent.h"
@@ -16,17 +17,6 @@
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
 #include "StormNet/NetReflectionPolymorphic.h"
-
-
-enum STORM_REFL_ENUM class PlayerFacing
-{
-  kLeft,
-  kRight,
-#ifndef PLATFORMER_MOVEMENT
-  kDown,
-  kUp,
-#endif
-};
 
 
 struct PlayerServerObjectInitData : public ServerObjectInitData
@@ -97,13 +87,12 @@ public:
   NetRangedNumber<int, -1, 30> m_AnimIndex = -1;
   NetRangedNumber<int, 0, 31> m_AnimFrame = 0;
   NetRangedNumber<int, 0, 63> m_AnimDelay = 0;
-  NetEnum<PlayerFacing> m_Facing = PlayerFacing::kRight;
+  NetEnum<CharacterFacing> m_Facing = CharacterFacing::kRight;
 
   ClientInput m_Input;
 
   NetPolymorphic<PlayerStateBase> m_State;
 
 private:
-  Box m_MoveBox;
   bool m_Retransition = false;
 };

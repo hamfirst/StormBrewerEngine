@@ -153,6 +153,15 @@ std::string FormatTemplate(const std::string & templ,
           template_name.clear();
         }
       }
+      else if(c == '}')
+      {
+        auto n = itr.Peek();
+        if (n == '}')
+        {
+          itr();
+          result += '}';
+        }
+      }
       else if (c == '"')
       {
         auto n = itr.Peek();
@@ -187,7 +196,7 @@ std::optional<fs::path> FindCMakeFile(const fs::path & start_path,
   for (auto itr : fs::directory_iterator(start_path))
   {
     auto path = itr.path();
-    if (itr.is_regular_file() && path.filename() == "CMakeLists.txt")
+    if (path.filename() == "CMakeLists.txt")
     {
       return fs::canonical(start_path);
     }
@@ -207,11 +216,11 @@ std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
     auto path = itr.path();
     auto extension = path.extension();
 
-    if (itr.is_regular_file() && extension == ".vcxproj")
+    if (extension == ".vcxproj")
     {
       vcxproj_file = fs::canonical(path).string();
     }
-    else if (itr.is_regular_file() && extension == ".filters")
+    else if (extension == ".filters")
     {
       vcxproj_filters_file = fs::canonical(path).string();
     }
@@ -228,6 +237,11 @@ std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
   ProjectFileType type)
 {
+  if(file.length() == 0)
+  {
+    return;
+  }
+
   std::string placeholder;
   switch (type)
   {
@@ -249,8 +263,14 @@ void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
     return;
   }
 
+  auto sanitized_file = file;
+  if(sanitized_file[0] != '.')
+  {
+    sanitized_file = "./" + sanitized_file;
+  }
+
   cmake_file.replace(pos, placeholder.size(),
-    "            " + file + "\n" + placeholder);
+    "            " + sanitized_file + "\n" + placeholder);
 }
 
 void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file,

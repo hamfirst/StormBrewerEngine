@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-include(StormBrewerEngine.cmake)
+include(CMake/StormBrewerEngine.cmake)
 
 add_subdirectory(Game)
 

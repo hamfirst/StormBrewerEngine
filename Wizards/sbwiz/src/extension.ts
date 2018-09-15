@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        let pick = vscode.window.showQuickPick(["Component", "ServerObject", "PlayerState", "BotState", "Config", "EffectLayer", "Anchor", "Path", "Volume"]);
+        let pick = vscode.window.showQuickPick(["Class", "Refl", "Component", "ServerObject", "PlayerState", "BotState", "Config", "EffectLayer", "Anchor", "Path", "Volume"]);
         pick.then(function (selection) {
             if(selection === undefined) {
                 return;
@@ -60,11 +60,17 @@ export function activate(context: vscode.ExtensionContext) {
                 }
     
                 let command = "\"" + vscode.workspace.rootPath + "/addcode\" ";
-                command += selection + " ";
-                command += class_name + " ";
-                command += "\"" + arg.path + "\" ";
-                command += "\"" + vscode.workspace.rootPath + "\" ";
-                command += "mv";
+                command += selection + " "; // Template Name
+                command += class_name + " "; // Class Name
+                command += "\"" + arg.path + "\" "; // Target Path
+                command += "\"" + vscode.workspace.rootPath + "\" "; // Root Path
+
+                if(selection == "Class") {
+                    command += "v"; // vsxproj
+                } else {
+                    command += "mv"; // Meta + vsxproj
+                }
+
                 cp.exec(command, {}, function(error, stdout, stderr) {
                     if(error) {
                         vscode.window.showErrorMessage("exec error: " + error);

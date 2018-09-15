@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1.0)
 
 include_directories(. ../. .././External)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_Game 
             ./GameLogicContainer.cpp
@@ -31,6 +31,11 @@ set(GENERIC_SRC_Game
             ./Systems/GameLogicSystems.cpp
             ./AI/PlayerAI.cpp
             ./Data/PlayerSpawn.refl.reg.cpp
+            ./ServerObjects/Bot/BotServerObject.refl.cpp
+            ./ServerObjects/Bot/BotServerObject.refl.reg.cpp
+            ./ServerObjects/Bot/BehaviorTree/BehaviorTreeTypeDatabase.cpp
+            ./ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.cpp
+            ./ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Game 
@@ -83,6 +88,13 @@ set(GENERIC_HEADER_Game
             ./GameplayEvents/PlaceholderEvent.h
             ./Data/PlayerSpawn.refl.meta.h
             ./Data/PlayerSpawn.refl.h
+            ./ServerObjects/Bot/BotServerObject.refl.h
+            ./ServerObjects/Bot/BotServerObject.refl.meta.h
+            ./ServerObjects/CharacterFacing.refl.h
+            ./ServerObjects/CharacterFacing.refl.meta.h
+            ./ServerObjects/Bot/BehaviorTree/BehaviorTreeTypeDatabase.h
+            ./ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.h
+            ./ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Game 
@@ -101,6 +113,9 @@ set(GENERIC_REFL_Game
             ./ServerObjects/Player/States/PlayerStateIdle.refl.h
             ./ServerObjects/Player/States/PlayerStateJump.refl.h
             ./Data/PlayerSpawn.refl.h
+            ./ServerObjects/Bot/BotServerObject.refl.h
+            ./ServerObjects/CharacterFacing.refl.h
+            ./ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.h
             #REFL_PLACEHOLDER
             )
 
@@ -164,7 +179,7 @@ endif()
 foreach(REFL_FILE ${GENERIC_REFL_Game})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
   add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
-                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- --std=c++1z -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../. -I${CMAKE_CURRENT_SOURCE_DIR}/.././External -I${CLANG_HEADER_PATH}
                      MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
