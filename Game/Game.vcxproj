@@ -218,6 +218,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ServerObjects\Bot\BehaviorTree\BehaviorTreeTypeDatabase.cpp" />
+    <ClCompile Include="ServerObjects\Bot\BotServerObject.refl.cpp" />
+    <ClCompile Include="AI\BehaviorTree\BehaviorTree.cpp" />
     <ClCompile Include="AI\PlayerAI.cpp">
       <SubType>
       </SubType>
@@ -277,6 +280,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ServerObjects\Bot\BehaviorTree\States\PlayAnimationState.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Bot\BehaviorTree\States\PlayAnimationState.refl.h" />
+    <ClInclude Include="ServerObjects\Bot\BehaviorTree\BehaviorTreeTypeDatabase.h" />
+    <ClInclude Include="ServerObjects\CharacterFacing.refl.meta.h" />
+    <ClInclude Include="ServerObjects\CharacterFacing.refl.h" />
+    <ClInclude Include="ServerObjects\Bot\BotServerObject.refl.meta.h" />
+    <ClInclude Include="ServerObjects\Bot\BotServerObject.refl.h" />
+    <ClInclude Include="AI\BehaviorTree\BehaviorTree.h" />
     <ClInclude Include="AI\PlayerAI.h">
       <SubType>
       </SubType>

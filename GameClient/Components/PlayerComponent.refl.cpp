@@ -83,11 +83,11 @@ void PlayerComponent::UpdateFirst()
   render_state.m_AnimFrame = object->m_AnimFrame;
   render_state.m_AnimDelay = object->m_AnimDelay;
 
-  if (object->m_Facing == PlayerFacing::kLeft)
+  if (object->m_Facing == CharacterFacing::kLeft)
   {
     render_state.m_Matrix.x = -1.0f;
   }
-  else if (object->m_Facing == PlayerFacing::kRight)
+  else if (object->m_Facing == CharacterFacing::kRight)
   {
     render_state.m_Matrix.x = 1.0f;
   }

@@ -41,7 +41,7 @@ struct GameStateStaging
   NetSparseList<GameStateStagingPlayer, kMaxPlayers> m_Players;
   GameInitSettings m_Settings;
   NetRangedNumber<int, 0, 255> m_Countdown;
-  int m_WaitTimer;
+  int m_WaitTimer = 0;
 };
 
 struct GameStateLoadingPlayer
@@ -64,7 +64,7 @@ struct GameHistoryInput
 {
   NET_REFL;
   NetRangedNumber<int, 0, kMaxPlayers> m_PlayerIndex;
-  int m_Frame;
+  int m_Frame = 0;
   ClientInput m_Input;
 };
 
@@ -72,14 +72,14 @@ struct GameHistoryEvent
 {
   NET_REFL;
   NetRangedNumber<int, 0, kMaxPlayers> m_PlayerIndex;
-  int m_Frame;
+  int m_Frame = 0;
   NetPolymorphic<ClientNetworkEvent> m_Event;
 };
 
 struct GameHistoryClientEvent
 {
   NET_REFL;
-  int m_Frame;
+  int m_Frame = 0;
   NetPolymorphic<ClientNetworkEvent> m_Event;
 };
 
@@ -87,21 +87,21 @@ struct GameHistoryClientEvent
 struct GameHistoryExternal
 {
   NET_REFL;
-  int m_Frame;
+  int m_Frame = 0;
   NetPolymorphic<GameNetworkExternalEvent> m_Event;
 };
 
 struct GameHistoryAuthEvent
 {
   NET_REFL;
-  int m_Frame;
+  int m_Frame = 0;
   NetPolymorphic<ServerAuthNetworkEvent> m_Event;
 };
 
 struct GameHistoryClientLocal
 {
   NET_REFL;
-  int m_Frame;
+  int m_Frame = 0;
   ClientLocalData m_Data;
 };
 
@@ -110,9 +110,9 @@ struct GameGGPOServerGameState
   NET_REFL;
   STORM_REFL_NODEFAULT;
 
-  int m_AckFrame;
-  int m_ServerFrame;
-  int m_EventStartFrame;
+  int m_AckFrame = 0;
+  int m_ServerFrame = 0;
+  int m_EventStartFrame = 0;
 
   std::shared_ptr<GameFullState> m_State;
 
@@ -127,8 +127,8 @@ struct GameGGPOClientUpdate
 {
   NET_REFL;
 
-  int m_AckFrame;
-  int m_ClientFrame;
+  int m_AckFrame = 0;
+  int m_ClientFrame = 0;
   NetOptional<NetArrayList<ClientAuthData, 127>> m_Inputs;
   NetOptional<NetArrayList<GameHistoryClientEvent, 127>> m_Events;
 };

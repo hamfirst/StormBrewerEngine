@@ -81,11 +81,11 @@ void PlayerStateJump::Animate(PlayerServerObject & player, GameLogicContainer & 
 
   if (player.m_Input.m_XInput < GameNetVal(0))
   {
-    player.m_Facing = PlayerFacing::kLeft;
+    player.m_Facing = CharacterFacing::kLeft;
   }
   else if (player.m_Input.m_XInput > GameNetVal(0))
   {
-    player.m_Facing = PlayerFacing::kRight;
+    player.m_Facing = CharacterFacing::kRight;
   }
 
   player.TriggerAnimationEvents(game_container, *this);

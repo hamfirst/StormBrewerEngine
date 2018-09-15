@@ -4,50 +4,10 @@
 
 #include "PlayerServerObject.refl.h"
 #include "Game/GameNetworkData.refl.meta.h"
+#include "Game/ServerObjects/CharacterFacing.refl.meta.h"
 #include "Game/ServerObjects/Player/States/PlayerStateBase.refl.meta.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
 
-
-template <>
-struct StormReflEnumInfo<PlayerFacing>
-{
-  static constexpr int elems_n = 4;
-  static constexpr auto GetName() { return "PlayerFacing"; }
-  static constexpr auto GetNameHash() { return 0xA7D7409D; }
-  template <int N> struct elems { };
-};
-
-template <>
-struct StormReflEnumInfo<PlayerFacing>::elems<0>
-{
-  static constexpr auto GetName() { return "kLeft"; }
-  static constexpr auto GetNameHash() { return 0xD3D1260B; }
-  static constexpr auto GetValue() { return PlayerFacing::kLeft; }
-};
-
-template <>
-struct StormReflEnumInfo<PlayerFacing>::elems<1>
-{
-  static constexpr auto GetName() { return "kRight"; }
-  static constexpr auto GetNameHash() { return 0x60D8F337; }
-  static constexpr auto GetValue() { return PlayerFacing::kRight; }
-};
-
-template <>
-struct StormReflEnumInfo<PlayerFacing>::elems<2>
-{
-  static constexpr auto GetName() { return "kDown"; }
-  static constexpr auto GetNameHash() { return 0xB5495158; }
-  static constexpr auto GetValue() { return PlayerFacing::kDown; }
-};
-
-template <>
-struct StormReflEnumInfo<PlayerFacing>::elems<3>
-{
-  static constexpr auto GetName() { return "kUp"; }
-  static constexpr auto GetNameHash() { return 0x2C0A25FE; }
-  static constexpr auto GetValue() { return PlayerFacing::kUp; }
-};
 
 template <>
 struct StormReflTypeInfo<PlayerServerObjectInitData>
@@ -194,11 +154,11 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<4 + StormReflTypeInfo<S
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<5 + StormReflTypeInfo<ServerObject>::fields_n>
 {
-  using member_type = NetEnum<PlayerFacing>; // NetEnum<PlayerFacing>
+  using member_type = NetEnum<CharacterFacing>; // NetEnum<CharacterFacing>
   static constexpr auto GetName() { return "m_Facing"; }
-  static constexpr auto GetType() { return "NetEnum<PlayerFacing>"; }
+  static constexpr auto GetType() { return "NetEnum<CharacterFacing>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC03F5E41; }
-  static constexpr unsigned GetTypeNameHash() { return 0x9796B667; }
+  static constexpr unsigned GetTypeNameHash() { return 0x94981591; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<ServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_Facing; }
 };
@@ -208,8 +168,8 @@ struct StormReflTypeInfo<PlayerServerObject>::field_data<5 + StormReflTypeInfo<S
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetEnum<PlayerFacing>> & Get() { return self.m_Facing; }
-  std::add_const_t<std::remove_reference_t<NetEnum<PlayerFacing>>> & Get() const { return self.m_Facing; }
+  match_const_t<Self, NetEnum<CharacterFacing>> & Get() { return self.m_Facing; }
+  std::add_const_t<std::remove_reference_t<NetEnum<CharacterFacing>>> & Get() const { return self.m_Facing; }
   void SetDefault() { self.m_Facing = StormReflTypeInfo<PlayerServerObject>::GetDefault().m_Facing; }
 };
 
