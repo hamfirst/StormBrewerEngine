@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>com.StormBrewers.sbwizclion</id>
+    <name>StormBrewersEngine support for clion</name>
+    <vendor email="nick@stormbrewers.com" url="http://www.stormbrewers.com">StormBrewers</vendor>
+
+    <description><![CDATA[
+    Provides easy code templates for StormBrewersEngine <br>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <action id="SBWiz.AddCode" class="AddCode" text="SB Add Code" description="StormBrewerEngine Add Code From Template">
+            <add-to-group group-id="ProjectViewPopupMenu" relative-to-action="CutCopyPasteGroup" anchor="before"/>
+        </action>
+    </actions>
+
+</idea-plugin>
