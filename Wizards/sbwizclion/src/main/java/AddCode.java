@@ -87,7 +87,7 @@ class NamePopup implements Runnable
 
         String rootdir = _project.getBaseDir().getCanonicalPath();
         ArrayList<String> command = new ArrayList<>();
-        command.add("./addcode");
+        command.add(rootdir + "/addcode");
         command.add(_selectedType);
         command.add(className);
         command.add(_directory);
@@ -105,8 +105,6 @@ class NamePopup implements Runnable
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(command);
         generalCommandLine.setCharset(Charset.forName("UTF-8"));
         generalCommandLine.setWorkDirectory(rootdir);
-
-        Messages.showInfoMessage(generalCommandLine.getCommandLineString(), "Command");
 
         ProcessHandler processHandler = null;
         try {

@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.reg.cpp" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Bot\TestBot\Class.cpp" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.reg.cpp" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClCompile>
     <ClCompile Include="ServerObjects\Bot\BehaviorTree\BehaviorTreeTypeDatabase.cpp" >
       <Filter>ServerObjects\Bot\BehaviorTree</Filter>
     </ClCompile>
@@ -75,6 +90,21 @@
     <ClCompile Include="GameServerEventSender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Bot\TestBot\Class.h" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" >
+      <Filter>ServerObjects\Bot\TestBot</Filter>
+    </ClInclude>
     <ClInclude Include="ServerObjects\Bot\BehaviorTree\States\PlayAnimationState.refl.meta.h" >
       <Filter>ServerObjects\Bot\BehaviorTree\States</Filter>
     </ClInclude>
