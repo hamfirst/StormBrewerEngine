@@ -36,6 +36,8 @@ set(GENERIC_SRC_Game
             BehaviorTree/BehaviorTreeTypeDatabase.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.cpp
+            ServerObjects/Bot/TestBot/TestBot.refl.cpp
+            ServerObjects/Bot/TestBot/TestBot.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Game 
@@ -95,6 +97,8 @@ set(GENERIC_HEADER_Game
             BehaviorTree/BehaviorTreeTypeDatabase.h
             BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             BehaviorTree/States/PlayAnimationBotState.refl.h
+            ServerObjects/Bot/TestBot/TestBot.refl.h
+            ServerObjects/Bot/TestBot/TestBot.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Game 
@@ -116,6 +120,7 @@ set(GENERIC_REFL_Game
             ServerObjects/Player/States/PlayerStateIdle.refl.h
             ServerObjects/Bot/BotServerObject.refl.h
             BehaviorTree/States/PlayAnimationBotState.refl.h
+            ServerObjects/Bot/TestBot/TestBot.refl.h
             #REFL_PLACEHOLDER
             )
 
