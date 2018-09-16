@@ -1,5 +1,5 @@
 
-#include "Game/ServerObjects/Bot/BehaviorTree/States/PlayAnimationBotState.refl.meta.h"
+#include "Game/BehaviorTree/States/PlayAnimationBotState.refl.meta.h"
 
 PlayAnimationBotState::PlayAnimationBotState(uint32_t animation_hash) :
   m_AnimationHash(animation_hash)

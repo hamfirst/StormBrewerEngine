@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StormData" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StormNet" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StormRefl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StormReflMSBuildTask" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StormSockets" vcs="Git" />
+  </component>
+</project>

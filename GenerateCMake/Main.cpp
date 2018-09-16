@@ -159,7 +159,7 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
       continue;
     }
 
-    auto proj_file_path = base_path + '/' + file.filename().string();
+    auto proj_file_path = base_path.length() > 0 ? base_path + '/' + file.filename().string() : file.filename().string();
     if (ext == ".cpp" || ext == ".c" || ext == ".qrc" || ext == ".ui")
     {
       auto stem = file.stem().string();
@@ -195,7 +195,7 @@ void WritePlatformFileList(std::ofstream & cmake_file, const std::string & optio
 {
   cmake_file << "if (" + option + ")\n";
   cmake_file << "  add_definitions(-D" + define + ")\n";
-  cmake_file << "  include_directories(" + relative_root + "/External/" + dir + ")\n";
+  cmake_file << "  include_directories(${PROJECT_SOURCE_DIR}/External/" + dir + ")\n";
 
   if (include_freetype)
   {
@@ -253,7 +253,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file.open(cmake_file_path.c_str());
 
   cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
-  cmake_file << "include_directories(. " + relative_root + " " + relative_root + "/External)\n";
+  cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
 
   if (qt_proj)
@@ -318,7 +318,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file << "foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
   cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
   cmake_file << "  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
-  cmake_file << "                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/" + relative_root + " -I${CMAKE_CURRENT_SOURCE_DIR}/" + relative_root + "/External -I${CLANG_HEADER_PATH}\n";
+  cmake_file << "                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH}\n";
   cmake_file << "                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
   cmake_file << "                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
   cmake_file << "endforeach()\n\n";
@@ -354,12 +354,13 @@ void ProcessProjectFolder(const fs::path & p, const std::string & base_path, con
 
     ProjectFiles new_project_files;
 
-    std::string new_base_path = ".";
+    std::string new_base_path = "";
     GatherProjectFiles(dir_files, new_base_path, new_project_files, qt_proj);
 
     for (auto & sub_dir : dir_files.m_Directories)
     {
-      ProcessProjectFolder(sub_dir, new_base_path + "/" + sub_dir.filename().string(), "../" + relative_root, &new_project_files, qt_proj);
+      auto new_path = base_path.length() > 0 ? base_path + "/" + sub_dir.filename().string() : sub_dir.filename().string();
+      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, &new_project_files, qt_proj);
     }
 
     FinalizeProject(p, project_file.second, relative_root, new_project_files, qt_proj);
@@ -370,14 +371,15 @@ void ProcessProjectFolder(const fs::path & p, const std::string & base_path, con
 
     for (auto & sub_dir : dir_files.m_Directories)
     {
-      ProcessProjectFolder(sub_dir, base_path + "/" + sub_dir.filename().string(), "../" + relative_root, files, qt_proj);
+      auto new_path = base_path.length() > 0 ? base_path + "/" + sub_dir.filename().string() : sub_dir.filename().string();
+      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, files, qt_proj);
     }
   }
   else
   {
     for (auto & sub_dir : dir_files.m_Directories)
     {
-      ProcessProjectFolder(sub_dir, ".", "../" + relative_root, nullptr, qt_proj);
+      ProcessProjectFolder(sub_dir, "", "../" + relative_root, nullptr, qt_proj);
     }
   }
 }

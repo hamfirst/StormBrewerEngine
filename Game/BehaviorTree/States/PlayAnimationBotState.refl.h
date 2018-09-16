@@ -12,7 +12,7 @@ public:
   NET_REFL;
   STORM_REFL_NODEFAULT;
 
-  PlayAnimationBotState(uint32_t animation_hash);
+  explicit PlayAnimationBotState(uint32_t animation_hash);
 
   bool Update(BotServerObject & bot, GameLogicContainer & container);
 

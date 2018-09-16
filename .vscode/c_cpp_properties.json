@@ -3,8 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/",
-                "${workspaceFolder}/External/",
+                "${workspaceRoot}",
+                "${workspaceRoot}/External",
                 "~/Qt/5.11.1/gcc_64/include/QtCore",
                 "~/Qt/5.11.1/gcc_64/include/QtGui",
                 "~/Qt/5.11.1/gcc_64/include/QtOpenGL",
@@ -13,7 +13,6 @@
             ],
             "defines": [],
             "compilerPath": "/usr/local/bin/clang++",
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",

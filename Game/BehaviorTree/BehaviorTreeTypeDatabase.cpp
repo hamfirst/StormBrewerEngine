@@ -1,5 +1,5 @@
 
-#include "Game/ServerObjects/Bot/BehaviorTree/BehaviorTreeTypeDatabase.h"
+#include "Game/BehaviorTree/BehaviorTreeTypeDatabase.h"
 
 BehaviorTreeTypeDatabase g_BehaviorTreeTypeDatabase;
 PreMainCallList g_BehaviorTreeRegisterCallList;
