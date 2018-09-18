@@ -92,6 +92,7 @@ struct RUNTIME_EXPORT MapParalaxLayerObject
   REnum<MapParalaxLayerObjectType> m_Type;
   RString STORM_REFL_ATTR_VAL(file, paralax) m_File;
   RString m_Animation;
+  RFloat m_PresimTime;
 
   RInt m_XPosition;
   RInt m_YPosition;

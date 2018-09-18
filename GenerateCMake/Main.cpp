@@ -323,7 +323,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file << "                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
   cmake_file << "endforeach()\n\n";
 
-  cmake_file << "add_library(" + project_name + " ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
+  cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
   cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})";
 
   cmake_file.close();

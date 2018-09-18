@@ -19,7 +19,6 @@ set(GENERIC_SRC_Runtime
             Anchor/AnchorDef.refl.cpp
             Anchor/AnchorTypeDatabase.cpp
             ServerObject/ServerObjectInitDataTypeDatabase.cpp
-            ServerObject/ServerObjectOverlapSystem.cpp
             ServerObject/ServerObjectHandle.cpp
             ServerObject/ServerObjectResource.cpp
             ServerObject/ServerObjectSerialize.cpp
@@ -98,7 +97,6 @@ set(GENERIC_HEADER_Runtime
             ServerObject/ServerObjectInitDataTypeDatabase.h
             ServerObject/ServerObjectHandle.h
             ServerObject/ServerObjectRegistrationMacros.h
-            ServerObject/ServerObjectOverlapSystem.h
             ServerObject/ServerObjectResource.h
             ServerObject/ServerObjectManager.h
             ServerObject/ServerObjectMetaFuncs.h
@@ -258,5 +256,5 @@ foreach(REFL_FILE ${GENERIC_REFL_Runtime})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(Runtime ${GENERIC_SRC_Runtime} ${PLATFORM_SRC_Runtime}
+add_library(Runtime STATIC ${GENERIC_SRC_Runtime} ${PLATFORM_SRC_Runtime}
             ${GENERIC_HEADER_Runtime} ${PLATFORM_HEADER_Runtime})

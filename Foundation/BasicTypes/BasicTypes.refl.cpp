@@ -36,6 +36,11 @@ Box Box::Offset(const Vector2 & offset) const
   return b;
 }
 
+Box Box::MirrorX() const
+{
+  return Box{ Vector2(-m_End.x, m_Start.y), Vector2(-m_Start.x, m_End.y) };
+}
+
 Box Box::FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size)
 {
   Box b;
@@ -132,11 +137,11 @@ void Box::SetEdge(Box & box, int edge, Line & line)
     box.m_End.y = line.m_End.y - 1;
     break;
   case 2:
-    line.m_Start.x = line.m_Start.x;
+    box.m_Start.x = line.m_Start.x;
     box.m_End = line.m_End - Vector2(1, 1);
     break;
   case 3:
-    line.m_Start.y = line.m_Start.y;
+    box.m_Start.y = line.m_Start.y;
     box.m_End = line.m_End - Vector2(1, 1);
     break;
   }

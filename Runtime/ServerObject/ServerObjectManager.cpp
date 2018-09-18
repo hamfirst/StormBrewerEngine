@@ -338,7 +338,12 @@ void ServerObjectManager::FinalizeHandles()
 
 NullOptPtr<ServerObject> ServerObjectManager::ResolveHandle(int slot_index, int gen) const
 {
-  if (slot_index < m_StaticObjects.size())
+  if (slot_index < 0)
+  {
+    return nullptr;
+  }
+
+  if (slot_index < (int)m_StaticObjects.size())
   {
     if (gen != 0)
     {

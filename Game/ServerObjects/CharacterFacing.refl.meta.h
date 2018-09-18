@@ -8,7 +8,7 @@
 template <>
 struct StormReflEnumInfo<CharacterFacing>
 {
-  static constexpr int elems_n = 4;
+  static constexpr int elems_n = 5;
   static constexpr auto GetName() { return "CharacterFacing"; }
   static constexpr auto GetNameHash() { return 0x769239DF; }
   template <int N> struct elems { };
@@ -44,6 +44,14 @@ struct StormReflEnumInfo<CharacterFacing>::elems<3>
   static constexpr auto GetName() { return "kUp"; }
   static constexpr auto GetNameHash() { return 0x2C0A25FE; }
   static constexpr auto GetValue() { return CharacterFacing::kUp; }
+};
+
+template <>
+struct StormReflEnumInfo<CharacterFacing>::elems<4>
+{
+  static constexpr auto GetName() { return "kNone"; }
+  static constexpr auto GetNameHash() { return 0xD626C1AC; }
+  static constexpr auto GetValue() { return CharacterFacing::kNone; }
 };
 
 namespace StormReflFileInfo

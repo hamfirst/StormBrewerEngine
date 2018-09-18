@@ -4,7 +4,8 @@
 
 Any::Any() :
   m_Ptr(nullptr),
-  m_Type(0)
+  m_Type(0),
+  m_Deleter(nullptr)
 {
 
 }

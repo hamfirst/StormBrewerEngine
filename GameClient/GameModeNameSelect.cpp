@@ -37,7 +37,7 @@ void GameModeNameSelect::OnAssetsLoaded()
 
   m_Caption = m_UIManager.AllocateText("prompt");
   auto & caption_data = m_Caption->GetData();
-  caption_data.m_Centered = 1.0f;
+  caption_data.m_Justify = 0;
   caption_data.m_FontId = -1.0f;
   caption_data.m_PositionX = 0;
   caption_data.m_PositionY = 20;
@@ -47,7 +47,7 @@ void GameModeNameSelect::OnAssetsLoaded()
 
   m_Instructions = m_UIManager.AllocateText("instructions");
   auto & instructions_data = m_Instructions->GetData();
-  instructions_data.m_Centered = 1.0f;
+  instructions_data.m_Justify = 1.0f;
   instructions_data.m_FontId = -1.0f;
   instructions_data.m_PositionX = 0;
   instructions_data.m_PositionY = -60;

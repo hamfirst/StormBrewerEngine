@@ -18,6 +18,8 @@
 
 #include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 #include "Game/ServerObjects/Bot/BotServerObject.refl.meta.h"
+#include "Game/BehaviorTree/BehaviorTreeTypeDatabase.h"
+#include "Game/BehaviorTree/BehaviorTreeSerialize.h"
 
-REGISTER_SERVER_OBJECT_WITH_INIT_DATA(BotServerObject, BotServerObjectInitData, ServerObject);
+REGISTER_SERVER_OBJECT_WITH_INIT_DATA(BotServerObject, BotServerObjectInitData, GameServerObjectBase);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(BotServerObjectInitData);

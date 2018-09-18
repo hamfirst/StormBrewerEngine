@@ -47,8 +47,8 @@ struct EventMetaData
   NullOptPtr<ServerObject> m_SourceServerObject = nullptr;
   NullOptPtr<GameContainer> m_GameContainer = nullptr;
   NullOptPtr<GameLogicContainer> m_GameLogicContainer = nullptr;
-  NullOptPtr<const Box> m_Start = nullptr;
-  NullOptPtr<const Box> m_End = nullptr;
+  NullOptPtr<const Box> m_ActiveAreaStart = nullptr;
+  NullOptPtr<const Box> m_ActiveAreaEnd = nullptr;
 };
 
 

@@ -23,21 +23,28 @@ set(GENERIC_SRC_Game
             AI/PlayerAI.cpp
             Configs/PlayerConfig.refl.reg.cpp
             Configs/GameConfig.refl.reg.cpp
+            Systems/GameServerObjectOverlapSystem.cpp
+            Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
+            Data/KillVolume.refl.reg.cpp
+            Data/DealDamageAnimationEvent.refl.reg.cpp
             Data/PlayerSpawn.refl.reg.cpp
+            ServerObjects/GameServerObjectBase.refl.cpp
+            ServerObjects/GameServerObjectBase.refl.reg.cpp
             ServerObjects/Player/PlayerServerObject.refl.cpp
             ServerObjects/Player/PlayerServerObject.refl.reg.cpp
+            ServerObjects/Player/States/PlayerStateBasicAttack.refl.cpp
             ServerObjects/Player/States/PlayerStateIdle.refl.cpp
             ServerObjects/Player/States/PlayerStateBase.refl.cpp
             ServerObjects/Player/States/PlayerStateJump.refl.cpp
             ServerObjects/Player/States/PlayerStateMoving.refl.cpp
             ServerObjects/Bot/BotServerObject.refl.cpp
             ServerObjects/Bot/BotServerObject.refl.reg.cpp
+            ServerObjects/Bot/TestBot/TestBot.refl.reg.cpp
+            ServerObjects/Bot/TestBot/TestBot.refl.cpp
             BehaviorTree/BehaviorTreeTypeDatabase.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.cpp
-            ServerObjects/Bot/TestBot/TestBot.refl.cpp
-            ServerObjects/Bot/TestBot/TestBot.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_Game 
@@ -52,7 +59,6 @@ set(GENERIC_HEADER_Game
             GameFullState.refl.meta.h
             GameController.refl.meta.h
             GameNetworkExternals.refl.h
-            GameSettings.h
             GameLevelList.h
             GameSimulationEventCallbacks.h
             GameFullState.refl.h
@@ -70,35 +76,52 @@ set(GENERIC_HEADER_Game
             GameNetworkData.refl.meta.h
             GameMessages.refl.h
             GameLevelListAsset.refl.meta.h
+            GameplayEvents/DamageType.refl.meta.h
             GameplayEvents/PlaceholderEvent.h
+            GameplayEvents/DamageType.refl.h
+            GameplayEvents/DamageEvent.h
             AI/PlayerAI.h
             Configs/PlayerConfig.refl.meta.h
             Configs/GameConfig.refl.h
             Configs/GameConfig.refl.meta.h
             Configs/PlayerConfig.refl.h
             Systems/GameLogicSystems.h
+            Systems/CVCPushSystem.h
             Systems/GameDeliberateSyncSystemList.h
+            Systems/GameServerObjectOverlapRegistrationMacros.h
+            Systems/GameServerObjectOverlapSystem.h
+            Data/DealDamageAnimationEvent.refl.meta.h
             Data/PlayerSpawn.refl.meta.h
+            Data/KillVolume.refl.h
             Data/PlayerSpawn.refl.h
+            Data/DealDamageAnimationEvent.refl.h
+            Data/KillVolume.refl.meta.h
             ServerObjects/CharacterFacing.refl.h
             ServerObjects/CharacterFacing.refl.meta.h
+            ServerObjects/GameServerObjectBase.refl.h
+            ServerObjects/GameServerObjectBase.refl.meta.h
             ServerObjects/Player/PlayerServerObject.refl.h
             ServerObjects/Player/PlayerServerObject.refl.meta.h
             ServerObjects/Player/States/PlayerStateBase.refl.meta.h
+            ServerObjects/Player/States/PlayerStateBasicAttack.refl.meta.h
             ServerObjects/Player/States/PlayerStateJump.refl.meta.h
             ServerObjects/Player/States/PlayerStateIdle.refl.meta.h
             ServerObjects/Player/States/PlayerStateJump.refl.h
             ServerObjects/Player/States/PlayerStateBase.refl.h
             ServerObjects/Player/States/PlayerStateMoving.refl.h
+            ServerObjects/Player/States/PlayerStateBasicAttack.refl.h
             ServerObjects/Player/States/PlayerStateMoving.refl.meta.h
             ServerObjects/Player/States/PlayerStateIdle.refl.h
+            ServerObjects/Bot/BotBehaviorTree.h
             ServerObjects/Bot/BotServerObject.refl.h
             ServerObjects/Bot/BotServerObject.refl.meta.h
+            ServerObjects/Bot/TestBot/TestBot.refl.h
+            ServerObjects/Bot/TestBot/TestBot.refl.meta.h
+            BehaviorTree/BehaviorTree.h
+            BehaviorTree/BehaviorTreeSerialize.h
             BehaviorTree/BehaviorTreeTypeDatabase.h
             BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             BehaviorTree/States/PlayAnimationBotState.refl.h
-            ServerObjects/Bot/TestBot/TestBot.refl.h
-            ServerObjects/Bot/TestBot/TestBot.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Game 
@@ -109,18 +132,23 @@ set(GENERIC_REFL_Game
             GameLevelListAsset.refl.h
             GameNetworkData.refl.h
             GameMessages.refl.h
+            GameplayEvents/DamageType.refl.h
             Configs/GameConfig.refl.h
             Configs/PlayerConfig.refl.h
+            Data/KillVolume.refl.h
             Data/PlayerSpawn.refl.h
+            Data/DealDamageAnimationEvent.refl.h
             ServerObjects/CharacterFacing.refl.h
+            ServerObjects/GameServerObjectBase.refl.h
             ServerObjects/Player/PlayerServerObject.refl.h
             ServerObjects/Player/States/PlayerStateJump.refl.h
             ServerObjects/Player/States/PlayerStateBase.refl.h
             ServerObjects/Player/States/PlayerStateMoving.refl.h
+            ServerObjects/Player/States/PlayerStateBasicAttack.refl.h
             ServerObjects/Player/States/PlayerStateIdle.refl.h
             ServerObjects/Bot/BotServerObject.refl.h
-            BehaviorTree/States/PlayAnimationBotState.refl.h
             ServerObjects/Bot/TestBot/TestBot.refl.h
+            BehaviorTree/States/PlayAnimationBotState.refl.h
             #REFL_PLACEHOLDER
             )
 
@@ -189,5 +217,5 @@ foreach(REFL_FILE ${GENERIC_REFL_Game})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(Game ${GENERIC_SRC_Game} ${PLATFORM_SRC_Game}
+add_library(Game STATIC ${GENERIC_SRC_Game} ${PLATFORM_SRC_Game}
             ${GENERIC_HEADER_Game} ${PLATFORM_HEADER_Game})

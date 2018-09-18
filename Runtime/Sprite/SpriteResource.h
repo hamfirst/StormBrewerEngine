@@ -18,7 +18,7 @@ struct EntityRenderState;
 using SpritePtr = DocumentResourcePtr<SpriteDef, SpriteResource>;
 using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource>;
 
-class SpriteResource : public DocumentResourceBase, public FrameDataExtract
+class SpriteResource : public DocumentResourceBase
 {
 public:
   SpriteResource(Any && load_data, uint32_t path_hash);
@@ -34,9 +34,11 @@ public:
 
   int GetAnimationIndex(uint32_t animation_name_hash) const;
   int GetAnimationLength(uint32_t animation_name_hash) const;
+  int GetAnimationLengthByIndex(int animation_index) const;
   void GetDefaultFrame(AnimationState & anim_state) const;
   bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1) const;
   bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames) const;
+  bool SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const;
 
   void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
 
@@ -72,13 +74,23 @@ public:
     EventMetaData meta_dup = meta;
     auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
     {
-      meta_dup.m_Start = start;
-      meta_dup.m_End = end;
+      meta_dup.m_ActiveAreaStart = start;
+      meta_dup.m_ActiveAreaEnd = end;
       target.TriggerEventHandler(ev.GetTypeNameHash(), ev.GetValue(), meta_dup);
     };
 
     VisitEvents(visitor, state.m_AnimIndex, state.m_AnimFrame, state.m_AnimDelay);
   }
+
+  int GetAnimationFrameDuration(int animation_index, int animation_frame);
+  uint64_t GetAnimationFrameId(int animation_index, int animation_frame);
+
+  Box GetSingleBox(uint32_t data_type_name_hash);
+  Box GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id);
+  Vector2 GetAnchor(uint32_t data_type_name_hash);
+  Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id);
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash);
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id);
 
   static Box GetDefaultSingleBox();
   static FrameDataSingleLineInfo GetDefaultSingleLine();
@@ -109,6 +121,7 @@ private:
   std::vector<uint32_t> m_AnimLengths;
   std::vector<std::pair<uint32_t, uint32_t>> m_AnimEventInfo;
   std::vector<uint32_t> m_AnimTotalLengths;
+  std::vector<uint64_t> m_AnimationFrameIds;
   std::vector<Vector2> m_AnimationFrameSizes;
   std::vector<uint32_t> m_AnimationFrameDurations;
   std::vector<int> m_AnimationLowerEdges;

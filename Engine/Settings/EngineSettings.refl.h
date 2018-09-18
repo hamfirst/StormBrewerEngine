@@ -11,7 +11,7 @@ struct ENGINE_EXPORT EngineSettings
   int m_AssetLoadQueueSize = 8092;
   int m_AssetLoadThreads = 2;
 
-  int m_FontCacheSize = 512;
+  int m_FontCacheSize = 256;
 };
 
 void ENGINE_EXPORT LoadEngineSettingsFile();

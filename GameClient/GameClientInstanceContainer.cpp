@@ -331,6 +331,11 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
     authority ? *authority : m_Authority, send_timer);
 }
 
+GameLogicContainer GameClientInstanceContainer::GetDefaultLogicContainer()
+{
+  return GetLogicContainer();
+}
+
 GameController & GameClientInstanceContainer::GetGameController()
 {
   return m_GameController;

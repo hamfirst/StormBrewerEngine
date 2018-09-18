@@ -3,6 +3,7 @@
 #include "Foundation/Handle/Handle.h"
 #include "Foundation/SkipField/SkipFieldIterator.h"
 
+#include "Runtime/Animation/AnimationState.h"
 #include "Runtime/ServerObject/ServerObjectHandle.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
@@ -26,10 +27,9 @@ public:
   void Destroy(ServerObjectManager & obj_manager);
 
   virtual void InitPosition(const Vector2 & pos);
-  virtual Vector2 GetPosition(GameLogicContainer & game_container) const;
 
-  virtual czstr GetDefaultEntityBinding();
-  virtual czstr GetEntityBinding();
+  virtual czstr GetDefaultEntityBinding() const;
+  virtual czstr GetEntityBinding() const;
 
   bool IsDestroyed() const;
   int GetSlotIndex() const;
@@ -68,7 +68,7 @@ private:
 
   friend class ServerObjectSystem;
   friend class ServerObjectManager;
-  friend class ServerObjectOverlapSystem;
+  friend class GameServerObjectOverlapSystem;
 
   const Handle & GetHandle() const;
   void SetHandle(Handle & handle);

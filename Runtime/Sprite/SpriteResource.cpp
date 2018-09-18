@@ -16,8 +16,7 @@ void UpdateSpriteEngineData(Any & engine_data);
 void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
 
 SpriteResource::SpriteResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash),
-  FrameDataExtract(m_Data)
+  DocumentResourceBase(std::move(load_data), path_hash)
 {
 
 }
@@ -110,6 +109,20 @@ int SpriteResource::GetAnimationLength(uint32_t animation_name_hash) const
   }
 
   return 0;
+}
+
+int SpriteResource::GetAnimationLengthByIndex(int animation_index) const
+{
+  int anim_start = m_AnimStart[animation_index];
+  int anim_length = m_AnimLengths[animation_index];
+
+  int frame_duration = 0;
+  for (int index = anim_start; anim_length > 0; ++index, --anim_length)
+  {
+    frame_duration += m_AnimationFrameDurations[index];
+  }
+
+  return frame_duration;
 }
 
 void SpriteResource::GetDefaultFrame(AnimationState & anim_state) const
@@ -275,6 +288,22 @@ bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & 
   return true;
 }
 
+bool SpriteResource::SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const
+{
+  auto frame_start = m_AnimStart[animation_index];
+
+  anim_state.m_AnimIndex = animation_index;
+  anim_state.m_AnimFrame = animation_frame;
+  anim_state.m_AnimDelay = animation_delay;
+
+  auto & frame = m_AnimationFrameSizes[frame_start + anim_state.m_AnimFrame];
+  auto & lower_edge = m_AnimationLowerEdges[frame_start + anim_state.m_AnimFrame];
+
+  anim_state.m_FrameWidth = frame.x;
+  anim_state.m_FrameHeight = frame.y;
+  anim_state.m_LowerEdge = lower_edge;
+}
+
 void SpriteResource::Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position)
 {
   RenderSprite(m_EngineData, render_state, entity_render_state, position);
@@ -283,6 +312,132 @@ void SpriteResource::Render(RenderState & render_state, EntityRenderState & enti
 Box SpriteResource::GetDefaultSingleBox()
 {
   return Box::FromFrameCenterAndSize(Vector2{}, Vector2(4, 4));
+}
+
+int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation_frame)
+{
+  if (animation_index >= 0 && animation_index < m_AnimStart.size())
+  {
+    int anim_start = m_AnimStart[animation_index];
+    int anim_length = m_AnimLengths[animation_index];
+
+    if (animation_frame <= 0 || animation_frame >= anim_length)
+    {
+      return 0;
+    }
+
+    return m_AnimationFrameDurations[anim_start + animation_frame];
+  }
+
+  return 0;
+}
+
+uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_frame)
+{
+  if (animation_index >= 0 && animation_index < m_AnimStart.size())
+  {
+    int anim_start = m_AnimStart[animation_index];
+    int anim_length = m_AnimLengths[animation_index];
+
+    if (animation_frame < 0 || animation_frame >= anim_length)
+    {
+      return 0;
+    }
+
+    return m_AnimationFrameIds[anim_start + animation_frame];
+  }
+
+  return 0;
+}
+
+Box SpriteResource::GetSingleBox(uint32_t data_type_name_hash)
+{
+  FrameDataExtract extractor(m_Data.m_InstanceData);
+  auto result = extractor.GetSingleBox(data_type_name_hash);
+
+  if (result)
+  {
+    return result.Value();
+  }
+
+  return GetDefaultSingleBox();
+}
+
+Box SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id)
+{
+  auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
+  if (frame_data)
+  {
+    FrameDataExtract extractor(*frame_data);
+    auto result = extractor.GetSingleBox(data_type_name_hash);
+
+    if (result)
+    {
+      return result.Value();
+    }
+  }
+
+  return GetSingleBox(data_type_name_hash);
+}
+
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash)
+{
+  for (auto elem : m_Data.m_Anchors)
+  {
+    if (crc32(elem.second.m_AnchorName.data()) == data_type_name_hash)
+    {
+      return elem.second.m_DefaultPosition.Value();
+    }
+  }
+
+  return {};
+}
+
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id)
+{
+  auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
+  if (frame_data)
+  {
+    for (auto elem : frame_data->m_Anchors)
+    {
+      if (crc32(elem.second.m_AnchorName.data()) == data_type_name_hash)
+      {
+        return elem.second.m_Position.Value();
+      }
+    }
+  }
+
+  return GetAnchor(data_type_name_hash);
+}
+
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash)
+{
+  FrameDataExtract extractor(m_Data.m_InstanceData);
+  auto result = extractor.GetMultiBox(data_type_name_hash);
+
+  if (result)
+  {
+    return result.Value();
+  }
+
+  return {};
+}
+
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id)
+{
+  auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
+  if (frame_data)
+  {
+    FrameDataExtract extractor(*frame_data);
+    auto result = extractor.GetMultiBox(data_type_name_hash);
+
+    if (result)
+    {
+      return result.Value();
+    }
+  }
+
+  return GetMultiBox(data_type_name_hash);
 }
 
 FrameDataSingleLineInfo SpriteResource::GetDefaultSingleLine()
@@ -363,6 +518,7 @@ void SpriteResource::OnDataLoadComplete(const std::string & resource_data)
 
       m_AnimationFrameSizes.push_back(frame_size);
       m_AnimationFrameDurations.push_back(frame.second.m_FrameDuration);
+      m_AnimationFrameIds.push_back(frame.second.m_FrameId);
       m_AnimationLowerEdges.push_back(frame_lower_edge);
       num_frames++;
       total_length += frame.second.m_FrameDuration;

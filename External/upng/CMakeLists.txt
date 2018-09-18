@@ -80,5 +80,5 @@ foreach(REFL_FILE ${GENERIC_REFL_upng})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(upng ${GENERIC_SRC_upng} ${PLATFORM_SRC_upng}
+add_library(upng STATIC ${GENERIC_SRC_upng} ${PLATFORM_SRC_upng}
             ${GENERIC_HEADER_upng} ${PLATFORM_HEADER_upng})

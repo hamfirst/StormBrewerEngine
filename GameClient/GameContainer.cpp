@@ -170,7 +170,10 @@ GameNetworkClientInitSettings & GameContainer::GetNetworkInitSettings()
 
 bool GameContainer::AllGlobalResourcesLoaded()
 {
-  return m_LevelList.IsLevelListLoaded() && m_ClientGlobalResources->IsLoaded() && m_SharedGlobalResources->IsLoaded();
+  return m_LevelList.IsLevelListLoaded() &&
+    m_ClientGlobalResources->IsLoaded() &&
+    m_SharedGlobalResources->IsLoaded() &&
+    g_GlobalAssetList.AllAssetsLoaded();
 }
 
 void GameContainer::Update()

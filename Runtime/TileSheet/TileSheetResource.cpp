@@ -129,6 +129,16 @@ void TileSheetResource::UpdateFrameInfo(AnimationState & anim_state)
 
 void TileSheetResource::FrameAdvance(AnimationState & anim_state)
 {
+  if (anim_state.m_AnimIndex >= m_AnimFrameLengths.size())
+  {
+    return;
+  }
+
+  if (anim_state.m_AnimFrame >= m_AnimFrameLengths[anim_state.m_AnimIndex].size())
+  {
+    return;
+  }
+
   anim_state.m_AnimDelay++;
   if (anim_state.m_AnimDelay >= (int)m_AnimFrameLengths[anim_state.m_AnimIndex][anim_state.m_AnimFrame])
   {

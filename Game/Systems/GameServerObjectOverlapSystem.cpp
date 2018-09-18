@@ -1,15 +1,16 @@
 
-#include "Runtime/RuntimeCommon.h"
-#include "Runtime/ServerObject/ServerObjectOverlapSystem.h"
+#include "Game/GameCommon.h"
+#include "Game/Systems/GameServerObjectOverlapSystem.h"
+#include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Runtime/ServerObject/ServerObjectManager.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
 
-ServerObjectOverlapSystem g_ServerObjectOverlapSystem;
+GameServerObjectOverlapSystem g_ServerObjectOverlapSystem;
 PreMainCallList g_ServerObjectOverlapSystemRegister;
 PreMainCallList g_ServerObjectOverlapSystemInteractionRegister;
 
-void ServerObjectOverlapSystem::RegisterObjectType(std::size_t object_type, NotNullPtr<SpritePtr> sprite, uint32_t data_name_hash)
+void GameServerObjectOverlapSystem::RegisterObjectType(std::size_t object_type, NotNullPtr<SpritePtr> sprite, uint32_t data_name_hash)
 {
 #ifdef _DEBUG
   ASSERT(m_ObjectInfo.HasAt(object_type) == false, "Registering overlap object twice");
@@ -19,7 +20,7 @@ void ServerObjectOverlapSystem::RegisterObjectType(std::size_t object_type, NotN
   m_ObjectInfo.EmplaceAt(object_type, ObjectInfo{ sprite, data_name_hash });
 }
 
-void ServerObjectOverlapSystem::RegisterObjectInteraction(std::size_t src_object_type, std::size_t dst_object_type)
+void GameServerObjectOverlapSystem::RegisterObjectInteraction(std::size_t src_object_type, std::size_t dst_object_type)
 {
 #ifdef _DEBUG
   ASSERT(m_ObjectInfo.HasAt(src_object_type), "Object must be registered first before interation");
@@ -29,20 +30,22 @@ void ServerObjectOverlapSystem::RegisterObjectInteraction(std::size_t src_object
   m_ObjectInfo[src_object_type].m_DstTypes.push_back(dst_object_type);
 }
 
-void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager, GameLogicContainer & game_logic_container)
+void GameServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager, GameLogicContainer & game_logic_container)
 {
   struct Object
   {
-    NotNullPtr<ServerObject> m_ServerObject;
+    NotNullPtr<GameServerObjectBase> m_ServerObject;
     int m_TypeIndex;
     Box m_Box;
   };
 
   std::vector<Object> objects;
-  obj_manager.VisitObjects([&](std::size_t slot_index, ServerObject * obj)
+  obj_manager.VisitObjects([&](std::size_t slot_index, ServerObject * server_obj)
   {
-    auto pos = obj->GetPosition(game_logic_container);
-    auto type_index = obj->GetTypeIndex();
+    auto game_obj = server_obj->CastTo<GameServerObjectBase>();
+
+    auto pos = static_cast<Vector2>(game_obj->GetPosition());
+    auto type_index = game_obj->GetTypeIndex();
 
     if (m_ObjectInfo.HasAt(type_index) == false)
     {
@@ -50,13 +53,12 @@ void ServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_manager,
     }
 
     auto obj_info = m_ObjectInfo[type_index];
-
     auto box = obj_info.m_Sprite->GetResource()->GetSingleBox(obj_info.m_DataNameHash);
 
     box.m_Start += pos;
     box.m_End += pos;
 
-    objects.emplace_back(Object{ obj, type_index, box });
+    objects.emplace_back(Object{ game_obj, type_index, box });
   });
 
   EventMetaData meta_data;

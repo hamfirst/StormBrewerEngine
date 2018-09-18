@@ -12,5 +12,6 @@ enum STORM_REFL_ENUM class CharacterFacing
   kDown,
   kUp,
 #endif
+  kNone,
 };
 

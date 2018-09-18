@@ -20,5 +20,5 @@
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
-REGISTER_SERVER_OBJECT_WITH_INIT_DATA(PlayerServerObject, PlayerServerObjectInitData, ServerObject);
+REGISTER_SERVER_OBJECT_WITH_INIT_DATA(PlayerServerObject, PlayerServerObjectInitData, GameServerObjectBase);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(PlayerServerObjectInitData);

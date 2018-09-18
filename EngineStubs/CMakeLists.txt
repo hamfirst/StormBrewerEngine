@@ -79,5 +79,5 @@ foreach(REFL_FILE ${GENERIC_REFL_EngineStubs})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(EngineStubs ${GENERIC_SRC_EngineStubs} ${PLATFORM_SRC_EngineStubs}
+add_library(EngineStubs STATIC ${GENERIC_SRC_EngineStubs} ${PLATFORM_SRC_EngineStubs}
             ${GENERIC_HEADER_EngineStubs} ${PLATFORM_HEADER_EngineStubs})

@@ -6,6 +6,7 @@
 #include "Engine/Map/MapEffectLayerRenderer.h"
 #include "Engine/Entity/EntityHandle.h"
 
+
 struct CollisionDrawerInitData : public MapEffectLayerInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(CollisionDrawerInitData);

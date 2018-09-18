@@ -77,7 +77,7 @@ void GameModeEndGame::OnAssetsLoaded()
 
   m_Result = m_UIManager.AllocateText("result");
   auto & result_data = m_Result->GetData();
-  result_data.m_Centered = 1.0f;
+  result_data.m_Justify = 0.0f;
   result_data.m_FontId = -1.0f;
   result_data.m_PositionX = 0;
   result_data.m_PositionY = 80;

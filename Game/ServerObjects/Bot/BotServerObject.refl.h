@@ -6,21 +6,21 @@
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
 #include "Game/Systems/GameLogicSystems.h"
+#include "Game/BehaviorTree/BehaviorTree.h"
 #include "Game/ServerObjects/CharacterFacing.refl.h"
+#include "Game/ServerObjects/GameServerObjectBase.refl.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
-#include "StormBehavior/StormBehaviorTree.h"
-
-struct BotServerObjectInitData : public ServerObjectInitData
+struct BotServerObjectInitData : public GameServerObjectBaseInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(BotServerObjectInitData);
 };
 
-class BotServerObject : public ServerObject
+class BotServerObject : public GameServerObjectBase
 {
 public:
   DECLARE_SERVER_OBJECT;
@@ -36,21 +36,15 @@ public:
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
 
-  MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container);
-  void MoveCheckIntersectionDatabase(GameLogicContainer & game_container, GameNetVal player_radius, GameNetVal move_threshold);
+  virtual Optional<AnimationState> GetAnimationState() const override;
+  virtual void SetAnimationState(const AnimationState & anim_state) override;
 
-  bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
-  
-  virtual void InitPosition(const Vector2 & pos) override;
-  virtual Vector2 GetPosition(GameLogicContainer & game_container) const override;
-
-  virtual SpriteResource * GetSprite();
-  virtual StormBehaviorTree<BotServerObject, GameLogicContainer> * GetBehaviorTree();
+  virtual NullOptPtr<BotBehaviorTree> GetBehaviorTree();
+  virtual Optional<CharacterFacing> GetFacing() const override;
   void RetransitionBT();
 
 public:
 
-  GameNetVec2 m_Position = {};
   GameNetVec2 m_Velocity = {};
 
 #ifdef PLATFORMER_MOVEMENT

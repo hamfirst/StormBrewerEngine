@@ -25,36 +25,50 @@ UIElementText::UIElementText(const UIElementTextInitData & init_data, const UIEl
 
 void UIElementText::Update(float dt)
 {
-  auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
-  auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+  auto text_box = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
+  auto size = text_box.Size();
 
-  if (m_Data.m_Centered)
+  auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+  pos.y -= size.y / 2;
+
+  if (m_Data.m_Justify == 0)
   {
-    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_PositionX, m_Data.m_PositionY), size.Size()));
+    pos.x -= size.x / 2;
+    SetActiveArea(Box::FromBaselineAndOffset(text_box, pos));
+  }
+  else if (m_Data.m_Justify < 0)
+  {
+    pos.x -= size.x;
+    g_TextManager.SetTextPos(pos);
   }
   else
   {
-    size.m_Start += pos;
-    size.m_End += pos;
-    SetActiveArea(size);
+    g_TextManager.SetTextPos(pos);
   }
 
   SetOffset(Vector2(m_Data.m_PositionX, m_Data.m_PositionY));
 
   UIElement::Update(dt);
 
-  size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
-  pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+  text_box = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
+  size = text_box.Size();
 
-  if (m_Data.m_Centered)
+  pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY);
+  pos.y -= size.y / 2;
+
+  if (m_Data.m_Justify == 0)
   {
-    SetActiveArea(Box::FromFrameCenterAndSize(Vector2(m_Data.m_PositionX, m_Data.m_PositionY), size.Size()));
+    pos.x -= size.x / 2;
+    SetActiveArea(Box::FromBaselineAndOffset(text_box, pos));
+  }
+  else if (m_Data.m_Justify < 0)
+  {
+    pos.x -= size.x;
+    g_TextManager.SetTextPos(pos);
   }
   else
   {
-    size.m_Start += pos;
-    size.m_End += pos;
-    SetActiveArea(size);
+    g_TextManager.SetTextPos(pos);
   }
 
   SetOffset(Vector2(m_Data.m_PositionX, m_Data.m_PositionY));
@@ -94,14 +108,26 @@ void UIElementText::RenderDefault(RenderState & render_state, RenderUtil & rende
     g_TextManager.ClearTextBounds();
   }
 
-  if (m_Data.m_Centered)
+  auto text_box = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
+  auto size = text_box.Size();
+
+  auto pos = Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + offset - text_box.m_Start;
+
+  if (m_Data.m_Justify == 0)
   {
-    auto size = g_TextManager.GetTextSize(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale);
-    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) - (size.Size() / 2) + offset - size.m_Start);
+    g_TextManager.SetTextPos(pos - (size / 2));
+  }
+  else if(m_Data.m_Justify < 0)
+  {
+    pos.x -= size.x;
+    pos.y -= size.y / 2;
+
+    g_TextManager.SetTextPos(pos);
   }
   else
   {
-    g_TextManager.SetTextPos(Vector2(m_Data.m_PositionX, m_Data.m_PositionY) + offset);
+    pos.y -= size.y / 2;
+    g_TextManager.SetTextPos(pos);
   }
 
   g_TextManager.RenderText(m_Data.m_Text.c_str(), (int)m_Data.m_FontId, m_Data.m_Scale, render_state);

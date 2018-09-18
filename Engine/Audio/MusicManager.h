@@ -20,9 +20,11 @@ protected:
 
   friend bool EngineInit(bool, bool);
   friend void EngineUpdate();
+  friend void EngineCleanup();
 
   void Init();
   void Update();
+  void ShutDown();
 
 private:
 

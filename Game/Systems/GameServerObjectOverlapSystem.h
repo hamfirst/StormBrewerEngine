@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/RuntimeCommon.h"
+#include "Game/GameCommon.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
 #include "Foundation/SparseList/SparseList.h"
@@ -9,7 +9,7 @@
 class ServerObjectManager;
 class GameLogicContainer;
 
-class ServerObjectOverlapSystem
+class GameServerObjectOverlapSystem
 {
 public:
   void RegisterObjectType(std::size_t object_type, NotNullPtr<SpritePtr> sprite, uint32_t data_name_hash);
@@ -27,6 +27,6 @@ private:
   SparseList<ObjectInfo> m_ObjectInfo;
 };
 
-extern ServerObjectOverlapSystem g_ServerObjectOverlapSystem;
+extern GameServerObjectOverlapSystem g_ServerObjectOverlapSystem;
 extern PreMainCallList g_ServerObjectOverlapSystemRegister;
 extern PreMainCallList g_ServerObjectOverlapSystemInteractionRegister;

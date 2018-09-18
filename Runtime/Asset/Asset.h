@@ -4,11 +4,13 @@
 
 #include "Foundation/CallList/CallList.h"
 #include "Foundation/Any/Any.h"
+#include "Foundation/Preprocessor/Preprocessor.h"
 
-enum ClientAssetType
+enum class ClientAssetType
 {
   kAudio,
   kVfx,
+  kEntity,
 };
 
 class GlobalAssetList;
@@ -79,6 +81,19 @@ public:
     m_GlobalAssets.push_back(asset_info);
   }
 
+  template <typename AssetResourcePtr, typename ... Args>
+  void CreateGlobalAssetArray(NotNullPtr<AssetResourcePtr> resource_ptr, const char * path, Args ... args)
+  {
+    CreateGlobalAsset(*resource_ptr, path);
+    CreateGlobalAssetArray(resource_ptr + 1, args...);
+  }
+
+  template <typename AssetResourcePtr>
+  void CreateGlobalAssetArray(NotNullPtr<AssetResourcePtr> resource_ptr)
+  {
+
+  }
+
   void CreateClientAsset(ClientAssetType type, czstr path);
 
 private:
@@ -112,6 +127,11 @@ private:
 #define GLOBAL_ASSET(AssetType, AssetPath, AssetVar) \
   AssetType AssetVar; \
   ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, []() { g_GlobalAssetList.CreateGlobalAsset(AssetVar, AssetPath); } );
+
+#define GLOBAL_ASSET_ARRAY(AssetType, AssetVar, ...) \
+  AssetType AssetVar[PP_NARG(__VA_ARGS__)]; \
+  int AssetVar##Count = sizeof(AssetVar) / sizeof(AssetVar[0]); \
+  ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, []() { g_GlobalAssetList.CreateGlobalAssetArray(AssetVar, __VA_ARGS__); } );
 
 #define CLIENT_ASSET(ClientAssetType, AssetPath, AssetVar) \
   uint32_t AssetVar = crc32lowercase(AssetPath); \

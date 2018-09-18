@@ -88,5 +88,5 @@ foreach(REFL_FILE ${GENERIC_REFL_DocumentServer})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(DocumentServer ${GENERIC_SRC_DocumentServer} ${PLATFORM_SRC_DocumentServer}
+add_library(DocumentServer STATIC ${GENERIC_SRC_DocumentServer} ${PLATFORM_SRC_DocumentServer}
             ${GENERIC_HEADER_DocumentServer} ${PLATFORM_HEADER_DocumentServer})

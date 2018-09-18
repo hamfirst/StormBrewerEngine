@@ -22,7 +22,6 @@
 #include "Runtime/SpriteBase/SpriteAnimationEventRegister.h"
 #include "Runtime/Asset/Asset.h"
 #include "Runtime/ServerObject/ServerObjectSystem.h"
-#include "Runtime/ServerObject/ServerObjectOverlapSystem.h"
 #include "Runtime/ServerObject/ServerObjectInitDataTypeDatabase.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
@@ -40,8 +39,6 @@ void RuntimeInit()
 
   g_ServerObjectInitRegisterCallList.CallAll();
   g_ServerObjectSystem.FinalizeTypes();
-  g_ServerObjectOverlapSystemRegister.CallAll();
-  g_ServerObjectOverlapSystemInteractionRegister.CallAll();
 }
 
 void RuntimeCleanup()

@@ -196,6 +196,8 @@ void EngineCleanup()
   g_TextManager.ShutDown();
   g_ShaderManager.Shutdown();
 
+  g_MusicManager.ShutDown();
+
   RuntimeCleanup();
   NetworkShutdown();
 }

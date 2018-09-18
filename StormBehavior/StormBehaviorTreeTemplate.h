@@ -90,7 +90,8 @@ private:
   {    
     m_InitInfo.emplace_back(MemInitInfo{ 
       val.m_Allocate, 
-      val.m_Deallocate, 
+      val.m_Deallocate,
+      val.m_Duplicate,
       init_info.m_Destructor,
       val.m_Offset, 
       mem_offset });
@@ -381,6 +382,7 @@ private:
   {
     void (*m_Allocate)(void *, void *);
     void (*m_Deallocate)(void *);
+    void (*m_Duplicate)(const void *, void *);
     void (*m_DestroyInitInfo)(void *);
     int m_TargetOffset;
     int m_InitOffset;

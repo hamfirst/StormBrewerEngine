@@ -97,5 +97,5 @@ foreach(REFL_FILE ${GENERIC_REFL_GameServer})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(GameServer ${GENERIC_SRC_GameServer} ${PLATFORM_SRC_GameServer}
+add_library(GameServer STATIC ${GENERIC_SRC_GameServer} ${PLATFORM_SRC_GameServer}
             ${GENERIC_HEADER_GameServer} ${PLATFORM_HEADER_GameServer})

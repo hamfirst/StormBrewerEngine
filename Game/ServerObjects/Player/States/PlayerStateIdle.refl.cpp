@@ -12,6 +12,9 @@
 
 #include "Game/ServerObjects/Player/States/PlayerStateMoving.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateJump.refl.h"
+#include "Game/ServerObjects/Player/States/PlayerStateBasicAttack.refl.h"
+
+#include "Runtime/Entity/EntityResource.h"
 
 #include "StormNet/NetReflectionTypeDatabase.h"
 
@@ -27,7 +30,7 @@ void PlayerStateIdle::Move(PlayerServerObject & player, GameLogicContainer & gam
 #else
 
   player.m_Velocity.x = 0;
-  player.m_Velocity.y -= g_PlayerConfig->m_Gravity;
+  player.m_Velocity.y -= player.GetConfig()->m_Gravity;
 
   player.MoveCheckCollisionDatabase(game_container);
 
@@ -37,6 +40,13 @@ void PlayerStateIdle::Move(PlayerServerObject & player, GameLogicContainer & gam
 
 void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer & game_container)
 {
+#ifdef NET_USE_ROUND_TIMER
+  if (game_container.GetInstanceData().m_RoundState == RoundState::kPreRound)
+  {
+    return;
+  }
+#endif
+
 #ifndef PLATFORMER_MOVEMENT
 
   if (player.m_Input.m_InputStr > GameNetVal(0))
@@ -64,6 +74,13 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
   if (player.m_Input.m_XInput != GameNetVal(0))
   {
     player.TransitionToState<PlayerStateMoving>(game_container);
+    return;
+  }
+
+  if (player.m_Input.m_BlockHeld)
+  {
+    auto attack_state = player.TransitionToState<PlayerStateBasicAttack>(game_container);
+    attack_state->Setup(player, COMPILE_TIME_CRC32_STR("Kick"));
     return;
   }
 

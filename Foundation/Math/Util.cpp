@@ -2,8 +2,6 @@
 #include "Foundation/Common.h"
 #include "Foundation/Math/Util.h"
 
-#include <algorithm>
-
 
 float VecMagnitude(Vector2 v)
 {
@@ -19,7 +17,8 @@ int AccelToward(int cur_val, int target_val, int accel, int drag)
   int accel_val = offset < 0 ? drag : accel;
   accel_val = std::min(abs(offset), accel_val);
 
-  return cur_val += accel_val * accel_dir;
+  cur_val += accel_val * accel_dir;
+  return cur_val;
 }
 
 float AccelToward(float cur_val, float target_val, float accel, float drag)
@@ -29,9 +28,10 @@ float AccelToward(float cur_val, float target_val, float accel, float drag)
   float offset = target_val * cur_val < 0 ? target_val - cur_val : fabs(target_val) - fabs(cur_val);
 
   float accel_val = offset < 0 ? drag : accel;
-  accel_val = std::min(fabsf(offset), accel_val);
+  accel_val = std::fminf(fabs(offset), accel_val);
 
-  return cur_val += accel_val * accel_dir;
+  cur_val += accel_val * accel_dir;
+  return cur_val;
 }
 
 Vector2 AccelToward(const Vector2 & cur_val, const Vector2 & target_val, int accel, int drag)

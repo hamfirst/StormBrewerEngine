@@ -32,12 +32,12 @@ Component::~Component()
 
 }
 
-Entity * Component::GetEntity()
+NotNullPtr<Entity> Component::GetEntity()
 {
   return m_Entity;
 }
 
-const Entity * Component::GetEntity() const
+const NotNullPtr<Entity> Component::GetEntity() const
 {
   return m_Entity;
 }

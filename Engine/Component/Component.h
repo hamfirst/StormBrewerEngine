@@ -38,8 +38,8 @@ public:
 
   DECLARE_BASE_COMPONENT;
 
-  Entity * GetEntity();
-  const Entity * GetEntity() const;
+  NotNullPtr<Entity> GetEntity();
+  const NotNullPtr<Entity> GetEntity() const;
 
   template <typename T>
   NullOptPtr<T> CastTo()

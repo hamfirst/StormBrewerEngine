@@ -235,7 +235,6 @@
     <ClInclude Include="Configs\GameConfig.refl.meta.h">
       <Filter>Configs</Filter>
     </ClInclude>
-    <ClInclude Include="GameSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">

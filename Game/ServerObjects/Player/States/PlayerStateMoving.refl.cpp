@@ -21,7 +21,7 @@ void PlayerStateMoving::Move(PlayerServerObject & player, GameLogicContainer & g
 {
 #ifndef PLATFORMER_MOVEMENT
 
-  auto move_str = player.m_Input.m_InputStr * g_PlayerConfig->m_MoveSpeed;
+  auto move_str = player.m_Input.m_InputStr * player.GetConfig()->m_MoveSpeed;
   player.m_Velocity.x = GameNetLUT::Cos(player.m_Input.m_InputAngle) * move_str;
   player.m_Velocity.y = GameNetLUT::Sin(player.m_Input.m_InputAngle) * move_str;
 
@@ -29,10 +29,10 @@ void PlayerStateMoving::Move(PlayerServerObject & player, GameLogicContainer & g
 
 #else
 
-  auto target_velocity = player.m_Input.m_XInput * g_PlayerConfig->m_MoveSpeed;
+  auto target_velocity = player.m_Input.m_XInput * player.GetConfig()->m_MoveSpeed;
   if (player.m_Velocity.x < target_velocity)
   {
-    player.m_Velocity.x += g_PlayerConfig->m_MoveAccel;
+    player.m_Velocity.x += player.GetConfig()->m_MoveAccel;
     if (player.m_Velocity.x > target_velocity)
     {
       player.m_Velocity.x = target_velocity;
@@ -40,14 +40,14 @@ void PlayerStateMoving::Move(PlayerServerObject & player, GameLogicContainer & g
   }
   else
   {
-    player.m_Velocity.x -= g_PlayerConfig->m_MoveAccel;
+    player.m_Velocity.x -= player.GetConfig()->m_MoveAccel;
     if (player.m_Velocity.x < target_velocity)
     {
       player.m_Velocity.x = target_velocity;
     }
   }
 
-  player.m_Velocity.y -= g_PlayerConfig->m_Gravity;
+  player.m_Velocity.y -= player.GetConfig()->m_Gravity;
 
   player.MoveCheckCollisionDatabase(game_container);
 
@@ -78,6 +78,13 @@ void PlayerStateMoving::Transition(PlayerServerObject & player, GameLogicContain
   if (player.m_Input.m_XInput == GameNetVal(0) && player.m_Velocity.x == GameNetVal(0))
   {
     player.TransitionToState<PlayerStateIdle>(game_container);
+    return;
+  }
+
+  if (player.m_Input.m_BlockHeld)
+  {
+    player.TransitionToState<PlayerStateBlock>(game_container);
+    return;
   }
 
 #endif
@@ -154,7 +161,6 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
       player.FrameAdvance(COMPILE_TIME_CRC32_STR("Turn"));
     }
   }
-
 
 #endif
 

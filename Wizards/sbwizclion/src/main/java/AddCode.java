@@ -93,7 +93,7 @@ class NamePopup implements Runnable
         command.add(_directory);
         command.add(rootdir);
 
-        if(_selectedType == "Class")
+        if(_selectedType == "Class" || _selectedType == "Refl")
         {
             command.add("v");
         }

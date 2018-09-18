@@ -4,6 +4,7 @@
 #include "Engine/Asset/AudioAsset.h"
 
 #include "Runtime/VisualEffect/VisualEffectResource.h"
+#include "Runtime/Entity/EntityResource.h"
 
 EngineClientAssetLoader g_EngineClientAssetLoader;
 
@@ -11,11 +12,14 @@ void EngineClientAssetLoader::BeginLoad(Any & asset, czstr path, ClientAssetType
 {
   switch (type)
   {
-  case kAudio:
+  case ClientAssetType::kAudio:
     asset = Any(AudioAsset::Load(path));
     break;
-  case kVfx:
+  case ClientAssetType::kVfx:
     asset = Any(VisualEffectResource::Load(path));
+    break;
+  case ClientAssetType::kEntity:
+    asset = Any(EntityResource::Load(path));
     break;
   default:
     break;
@@ -31,7 +35,7 @@ bool EngineClientAssetLoader::IsLoaded(Any & asset, ClientAssetType type)
 {
   switch (type)
   {
-  case kAudio:
+  case ClientAssetType::kAudio:
     {
       auto asset_ptr = asset.Get<AssetReference<AudioAsset>>();
       if (asset_ptr)
@@ -42,9 +46,20 @@ bool EngineClientAssetLoader::IsLoaded(Any & asset, ClientAssetType type)
       return false;
     }
   break;
-  case kVfx:
+  case ClientAssetType::kVfx:
     {
       auto asset_ptr = asset.Get<VisualEffectResourcePtr>();
+      if (asset_ptr)
+      {
+        return asset_ptr->IsLoaded();
+      }
+
+      return false;
+    }
+    break;
+  case ClientAssetType::kEntity:
+    {
+      auto asset_ptr = asset.Get<EntityResourcePtr>();
       if (asset_ptr)
       {
         return asset_ptr->IsLoaded();
@@ -64,7 +79,7 @@ bool EngineClientAssetLoader::IsError(Any & asset, ClientAssetType type)
 {
   switch (type)
   {
-  case kAudio:
+  case ClientAssetType::kAudio:
     {
       auto asset_ptr = asset.Get<AssetReference<AudioAsset>>();
       if (asset_ptr)
@@ -75,9 +90,20 @@ bool EngineClientAssetLoader::IsError(Any & asset, ClientAssetType type)
       return true;
     }
   break;
-  case kVfx:
+  case ClientAssetType::kVfx:
     {
       auto asset_ptr = asset.Get<VisualEffectResourcePtr>();
+      if (asset_ptr)
+      {
+        return asset_ptr->IsError();
+      }
+
+      return true;
+    }
+    break;
+  case ClientAssetType::kEntity:
+    {
+      auto asset_ptr = asset.Get<EntityResourcePtr>();
       if (asset_ptr)
       {
         return asset_ptr->IsError();
@@ -97,7 +123,7 @@ bool EngineClientAssetLoader::LoadingFinished(Any & asset, ClientAssetType type)
 {
   switch (type)
   {
-  case kAudio:
+  case ClientAssetType::kAudio:
     {
       auto asset_ptr = asset.Get<AssetReference<AudioAsset>>();
       if (asset_ptr)
@@ -108,9 +134,20 @@ bool EngineClientAssetLoader::LoadingFinished(Any & asset, ClientAssetType type)
       return false;
     }
   break;
-  case kVfx:
+  case ClientAssetType::kVfx:
     {
       auto asset_ptr = asset.Get<VisualEffectResourcePtr>();
+      if (asset_ptr)
+      {
+        return asset_ptr->LoadingFinished();
+      }
+
+      return false;
+    }
+    break;
+  case ClientAssetType::kEntity:
+    {
+      auto asset_ptr = asset.Get<EntityResourcePtr>();
       if (asset_ptr)
       {
         return asset_ptr->LoadingFinished();

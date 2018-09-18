@@ -6,17 +6,18 @@
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
 #include "Game/Systems/GameLogicSystems.h"
+#include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 
-struct TestBotInitData : public ServerObjectInitData
+struct TestBotInitData : public BotServerObjectInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(TestBotInitData);
 };
 
-class TestBot : public ServerObject
+class TestBot : public BotServerObject
 {
 public:
   DECLARE_SERVER_OBJECT;
@@ -31,12 +32,13 @@ public:
   void Init(const TestBotInitData & init_data);
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
-  
-  virtual void InitPosition(const Vector2 & pos) override;
-  virtual Vector2 GetPosition(GameLogicContainer & game_container) const override;
 
   virtual czstr GetDefaultEntityBinding() const override;
+  virtual SpritePtr GetSprite() const override;
+
+  virtual NullOptPtr<BotBehaviorTree> GetBehaviorTree() override;
 public:
-  // Serialized variables
-  GameNetVec2 m_Position = {};
+
+  BotBehaviorTree m_Tree;
+
 };
