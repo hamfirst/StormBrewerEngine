@@ -1,0 +1,13 @@
+[]
+
+{
+    "m_Sprite": ".\/Sprites\/TestBot.sprite",
+    "m_Components": {
+        "0": {
+            "D": {
+                "m_SyncSprite": false
+            },
+            "T": 3806197531
+        }
+    }
+}
