@@ -28,6 +28,8 @@ public:
       return dst->TriggerEventHandler(src_data->m_Type, src_data->m_EventData.template Get<Event>(), src_data->m_Meta);
     };
 
+    event_data.m_Meta = meta;
+
     auto id = m_Events.size();
     m_Events.emplace_back(std::move(event_data));
 

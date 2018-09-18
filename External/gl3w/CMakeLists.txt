@@ -81,5 +81,5 @@ foreach(REFL_FILE ${GENERIC_REFL_gl3w})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(gl3w ${GENERIC_SRC_gl3w} ${PLATFORM_SRC_gl3w}
+add_library(gl3w STATIC ${GENERIC_SRC_gl3w} ${PLATFORM_SRC_gl3w}
             ${GENERIC_HEADER_gl3w} ${PLATFORM_HEADER_gl3w})

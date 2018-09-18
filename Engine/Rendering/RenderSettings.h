@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Game/GameSettings.h"
+#include "ProjectSettings/ProjectPerspective.h"
 
-#if GAME_PERSPECTIVE == PERSPECTIVE_TOPDOWN
+#if PROJECT_PERSPECTIVE == PERSPECTIVE_TOPDOWN
 #define USE_Z_ORDERING
 #endif
 

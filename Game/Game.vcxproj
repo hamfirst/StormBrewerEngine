@@ -358,7 +358,6 @@
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameServerEventSender.h" />
     <ClInclude Include="GameServerTypes.h" />
-    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameSharedGlobalResources.h" />
     <ClInclude Include="GameSharedInstanceResources.h">
       <SubType>

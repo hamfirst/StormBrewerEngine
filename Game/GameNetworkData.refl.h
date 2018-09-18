@@ -11,7 +11,7 @@
 
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
-#include "Game/GameSettings.h"
+#include "ProjectSettings/ProjectPerspective.h"
 
 #if (NET_MODE == NET_MODE_GGPO)
 static const int kMaxRewindFrames = 20;
@@ -29,6 +29,13 @@ static const int kMaxCountdown = 180;
 
 #ifdef NET_USE_ROUND_TIMER
 static const int kMaxRoundTimer = 60 * 90;
+
+enum STORM_REFL_ENUM class RoundState
+{
+  kPreRound,
+  kRound,
+  kPostRound,
+};
 #endif
 
 class GameStage;
@@ -119,7 +126,8 @@ struct GameInstanceData
 #endif
 
 #ifdef NET_USE_ROUND_TIMER
-  NetRangedNumber<int, 0, kMaxRoundTimer> m_RoundTimer = 0;
+  NetEnum<RoundState> m_RoundState;
+  NetRangedNumber<int, 0, kMaxRoundTimer> m_RoundTimer = kMaxCountdown;
 #endif
 
 #ifdef NET_USE_RANDOM

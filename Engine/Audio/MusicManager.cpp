@@ -5,7 +5,6 @@
 
 MusicManager g_MusicManager;
 
-
 void MusicManager::Init()
 {
   m_StopWatch.Start();
@@ -122,4 +121,11 @@ void MusicManager::Update()
     m_PendingMusic.Clear();
     m_Fader = 0;
   }
+}
+
+void MusicManager::ShutDown()
+{
+  StopAll();
+  m_CurrentMusic.Clear();
+  m_PendingMusic.Clear();
 }

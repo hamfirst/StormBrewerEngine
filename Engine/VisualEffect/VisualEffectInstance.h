@@ -42,9 +42,11 @@ public:
   void SetInput(uint32_t var_name_hash, float value);
   void Destroy();
 
+
   VisualEffectHandle GetHandle();
 
   bool IsComplete() const;
+  void Presim(float time);
   void StopSpawning(bool spawn_final_particle = false);
 
 private:

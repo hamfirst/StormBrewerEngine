@@ -50,18 +50,12 @@ void ServerObject::InitPosition(const Vector2 & pos)
 
 }
 
-Vector2 ServerObject::GetPosition(GameLogicContainer & game_container) const
-{
-  ASSERT(false, "Object does not implement position semantics");
-  return {};
-}
-
-czstr ServerObject::GetDefaultEntityBinding()
+czstr ServerObject::GetDefaultEntityBinding() const
 {
   return nullptr;
 }
 
-czstr ServerObject::GetEntityBinding()
+czstr ServerObject::GetEntityBinding() const
 {
   return GetDefaultEntityBinding();
 }

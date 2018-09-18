@@ -94,4 +94,3 @@ if(BUILD_TOOLS)
   add_subdirectory("${PROJECT_SOURCE_DIR}/QTUtil")
   add_subdirectory("${PROJECT_SOURCE_DIR}/Editor")
 endif()
-

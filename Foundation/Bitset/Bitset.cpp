@@ -3,6 +3,7 @@
 #include "Foundation/Bitset/Bitset.h"
 
 Bitset::Bitset() :
+  m_NumWords(0),
   m_NumBits(0)
 {
 

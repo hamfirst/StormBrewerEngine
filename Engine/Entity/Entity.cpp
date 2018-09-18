@@ -59,6 +59,11 @@ SpritePtr & Entity::GetSprite()
   return m_Sprite;
 }
 
+void Entity::SetSprite(const SpritePtr & sprite)
+{
+  m_Sprite = sprite;
+}
+
 Vector2f & Entity::GetPosition()
 {
   return m_Position;

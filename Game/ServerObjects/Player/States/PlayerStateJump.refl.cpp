@@ -32,10 +32,10 @@ bool PlayerStateJump::CanGraceJump() const
 
 void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & game_container)
 {
-  auto target_velocity = player.m_Input.m_XInput * g_PlayerConfig->m_MoveSpeed;
+  auto target_velocity = player.m_Input.m_XInput * player.GetConfig()->m_MoveSpeed;
   if (player.m_Velocity.x < target_velocity)
   {
-    player.m_Velocity.x += g_PlayerConfig->m_AirControlAccel;
+    player.m_Velocity.x += player.GetConfig()->m_AirControlAccel;
     if (player.m_Velocity.x > target_velocity)
     {
       player.m_Velocity.x = target_velocity;
@@ -43,20 +43,20 @@ void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & gam
   }
   else
   {
-    player.m_Velocity.x -= g_PlayerConfig->m_AirControlAccel;
+    player.m_Velocity.x -= player.GetConfig()->m_AirControlAccel;
     if (player.m_Velocity.x < target_velocity)
     {
       player.m_Velocity.x = target_velocity;
     }
   }
 
-  player.m_Velocity.y -= g_PlayerConfig->m_Gravity;
+  player.m_Velocity.y -= player.GetConfig()->m_Gravity;
 
   player.MoveCheckCollisionDatabase(game_container);
 
   if (player.m_Velocity.y > GameNetVal(0) && player.m_Input.m_JumpHeld == false)
   {
-    player.m_Velocity.y -= g_PlayerConfig->m_GravityJumpReduce;
+    player.m_Velocity.y -= player.GetConfig()->m_GravityJumpReduce;
   }
 }
 

@@ -1,7 +1,11 @@
 
 #pragma once
 
-#include "Game/GameSettings.h"
+#include "ProjectSettings/ProjectPerspective.h"
+
+#if PROJECT_PERSPECTIVE == PERSPECTIVE_SIDESCROLLER
+#define PLAYER_ENABLE_JUMP
+#endif
 
 #ifdef PLAYER_ENABLE_JUMP
 

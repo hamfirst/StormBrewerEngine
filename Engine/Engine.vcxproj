@@ -147,7 +147,6 @@
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -218,7 +217,6 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -255,6 +253,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Engine/EngineCommon.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);ENGINE_BUILD</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

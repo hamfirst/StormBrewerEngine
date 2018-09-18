@@ -8,11 +8,12 @@ struct SpriteBaseDef;
 class FrameDataExtract
 {
 public:
-  FrameDataExtract(SpriteBaseDef & frame_data);
+  FrameDataExtract(FrameData & frame_data);
 
-  Box GetSingleBox(uint32_t data_type_name_hash);
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash);
+  Optional<gsl::span<const Box>> GetMultiBox(uint32_t data_type_name_hash);
 
 private:
-  SpriteBaseDef & m_FrameData;
+  FrameData & m_FrameData;
 };
 

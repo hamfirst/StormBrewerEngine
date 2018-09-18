@@ -89,5 +89,5 @@ foreach(REFL_FILE ${GENERIC_REFL_UnitTests})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(UnitTests ${GENERIC_SRC_UnitTests} ${PLATFORM_SRC_UnitTests}
+add_library(UnitTests STATIC ${GENERIC_SRC_UnitTests} ${PLATFORM_SRC_UnitTests}
             ${GENERIC_HEADER_UnitTests} ${PLATFORM_HEADER_UnitTests})

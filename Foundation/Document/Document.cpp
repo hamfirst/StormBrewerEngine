@@ -531,7 +531,7 @@ void Document::CheckForCompleteLoad()
     {
       if (link.m_Error == true)
       {
-        load_success = true;
+        load_success = false;
         break;
       }
     }

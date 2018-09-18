@@ -4,7 +4,8 @@
 
 StopWatch::StopWatch() :
   m_LastUpdate(GetTimeSeconds()),
-  m_TimeScale(1.0)
+  m_TimeScale(1.0),
+  m_StartTime(0)
 {
 
 }

@@ -90,5 +90,5 @@ foreach(REFL_FILE ${GENERIC_REFL_resample})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(resample ${GENERIC_SRC_resample} ${PLATFORM_SRC_resample}
+add_library(resample STATIC ${GENERIC_SRC_resample} ${PLATFORM_SRC_resample}
             ${GENERIC_HEADER_resample} ${PLATFORM_HEADER_resample})

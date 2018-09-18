@@ -118,5 +118,5 @@ foreach(REFL_FILE ${GENERIC_REFL_StormExpr})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(StormExpr ${GENERIC_SRC_StormExpr} ${PLATFORM_SRC_StormExpr}
+add_library(StormExpr STATIC ${GENERIC_SRC_StormExpr} ${PLATFORM_SRC_StormExpr}
             ${GENERIC_HEADER_StormExpr} ${PLATFORM_HEADER_StormExpr})

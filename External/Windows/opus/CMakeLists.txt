@@ -357,5 +357,5 @@ foreach(REFL_FILE ${GENERIC_REFL_opus})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(opus ${GENERIC_SRC_opus} ${PLATFORM_SRC_opus}
+add_library(opus STATIC ${GENERIC_SRC_opus} ${PLATFORM_SRC_opus}
             ${GENERIC_HEADER_opus} ${PLATFORM_HEADER_opus})

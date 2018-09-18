@@ -346,5 +346,5 @@ foreach(REFL_FILE ${GENERIC_REFL_External})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(External ${GENERIC_SRC_External} ${PLATFORM_SRC_External}
+add_library(External STATIC ${GENERIC_SRC_External} ${PLATFORM_SRC_External}
             ${GENERIC_HEADER_External} ${PLATFORM_HEADER_External})

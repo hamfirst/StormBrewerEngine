@@ -159,6 +159,7 @@ struct Box
   }
 
   Box Offset(const Vector2 & offset) const;
+  Box MirrorX() const;
 
   static Box FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size);
   static Box FromBaselineAndOffset(const Box & baseline, const Vector2 & offset);

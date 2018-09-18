@@ -39,7 +39,6 @@ UIPrototypeTextInput::UIPrototypeTextInput(UIManager & manager, czstr name,
   m_Text = manager.AllocateTextInput("text", bkg, {}, {});
   auto text = m_Text.Get();
   auto & text_data = text->GetData();
-  text_data.m_Centered = 1.0f;
   text_data.m_PositionX = (float)(size.x / 2);
   text_data.m_PositionY = (float)(size.y / 2);
   text_data.m_FontId = -1;

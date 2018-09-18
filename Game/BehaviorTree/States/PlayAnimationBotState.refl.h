@@ -6,6 +6,7 @@
 
 #include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 
+
 class PlayAnimationBotState
 {
 public:
@@ -14,6 +15,7 @@ public:
 
   explicit PlayAnimationBotState(uint32_t animation_hash);
 
+  void Activate(BotServerObject & bot, GameLogicContainer & container);
   bool Update(BotServerObject & bot, GameLogicContainer & container);
 
 private:

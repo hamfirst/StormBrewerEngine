@@ -9,6 +9,8 @@
 #include "Game/GameFullState.refl.h"
 #include "Game/GameServerTypes.h"
 
+#include "Game/Data/KillVolume.refl.h"
+
 #include "Runtime/Collision/CollisionDatabase.h"
 #include "Runtime/Collision/IntersectionDatabase.h"
 
@@ -55,6 +57,7 @@ public:
   const std::vector<GameCollisionLine> GetCollisionLines() const;
 
   const std::vector<std::vector<Vector2>> & GetPlayerSpawns() const;
+  const std::vector<Box> & GetKillVolumes() const;
 
   Optional<ServerObjectHandle> FindStaticObject(uint32_t obj_name_hash) const;
 
@@ -78,6 +81,7 @@ private:
   std::vector<GameCollisionLine> m_CollisionLines;
 
   std::vector<std::vector<Vector2>> m_PlayerSpawns;
+  std::vector<Box> m_KillVolumes;
 
   std::unordered_map<uint32_t, ServerObjectHandle> m_StaticObjLookup;
 };

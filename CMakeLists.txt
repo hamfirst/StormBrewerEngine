@@ -383,6 +383,20 @@ if(BUILD_TOOLS)
   )
 endif()
 
+add_dependencies(Game Runtime)
+add_dependencies(Runtime Foundation)
+
+if(BUILD_CLIENT OR BUILD_TOOLS)
+  add_dependencies(GameClient Game)
+endif()
+
+if(BUILD_SERVER OR BUILD_TOOLS)
+  add_dependencies(GameServer Game)
+endif()
+
+if(BUILD_TOOLS)
+  add_dependencies(Editor DocumentServer)
+endif()
 
 if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
   if(MSVC)

@@ -101,5 +101,5 @@ foreach(REFL_FILE ${GENERIC_REFL_QTUtil})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(QTUtil ${GENERIC_SRC_QTUtil} ${PLATFORM_SRC_QTUtil}
+add_library(QTUtil STATIC ${GENERIC_SRC_QTUtil} ${PLATFORM_SRC_QTUtil}
             ${GENERIC_HEADER_QTUtil} ${PLATFORM_HEADER_QTUtil})

@@ -59,49 +59,52 @@ public:
 template <typename DataType, typename ContextType>
 struct StormBehaviorTreeTemplateState
 {
-  std::size_t m_TypeId;
-  int m_Size;
-  int m_Offset;
-  int m_Align;
-  int m_InitDataOffset;
-  const char * m_DebugName;
-  void(*m_Allocate)(void * memory, void * init_info);
-  void(*m_Deallocate)(void * ptr);
-  void(*m_Activate)(void * ptr, DataType & data_type, ContextType & context_type);
-  void(*m_Deactivate)(void * ptr, DataType & data_type, ContextType & context_type, bool abort);
-  bool(*m_Update)(void * ptr, DataType & data_type, ContextType & context_type);
+  std::size_t m_TypeId = 0;
+  int m_Size = 0;
+  int m_Offset = 0;
+  int m_Align = 0;
+  int m_InitDataOffset = 0;
+  const char * m_DebugName = nullptr;
+  void(*m_Allocate)(void * memory, void * init_info) = nullptr;
+  void(*m_Deallocate)(void * ptr) = nullptr;
+  void(*m_Duplicate)(const void * src, void * dst) = nullptr;
+  void(*m_Activate)(void * ptr, DataType & data_type, ContextType & context_type) = nullptr;
+  void(*m_Deactivate)(void * ptr, DataType & data_type, ContextType & context_type, bool abort) = nullptr;
+  bool(*m_Update)(void * ptr, DataType & data_type, ContextType & context_type) = nullptr;
 };
 
 template <typename DataType, typename ContextType>
 struct StormBehaviorTreeTemplateConditional
 {
-  std::size_t m_TypeId;
-  int m_Size;
-  int m_Offset;
-  int m_Align;
-  int m_InitDataOffset;
-  const char * m_DebugName;
-  void(*m_Allocate)(void * memory, void * init_info);
-  void(*m_Deallocate)(void * ptr);
-  bool(*m_Check)(void * ptr, const DataType & data_type, const ContextType & context_type);
-  bool m_Preempt;
-  bool m_Continuous;
+  std::size_t m_TypeId = 0;
+  int m_Size = 0;
+  int m_Offset = 0;
+  int m_Align = 0;
+  int m_InitDataOffset = 0;
+  const char * m_DebugName = nullptr;
+  void(*m_Allocate)(void * memory, void * init_info) = nullptr;
+  void(*m_Deallocate)(void * ptr) = nullptr;
+  void(*m_Duplicate)(const void * src, void * dst) = nullptr;
+  bool(*m_Check)(void * ptr, const DataType & data_type, const ContextType & context_type) = nullptr;
+  bool m_Preempt = false;
+  bool m_Continuous = false;
 };
 
 template <typename DataType, typename ContextType>
 struct StormBehaviorTreeTemplateService
 {
-  std::size_t m_TypeId;
-  int m_Size;
-  int m_Offset;
-  int m_Align;
-  int m_InitDataOffset;
-  const char * m_DebugName;
-  void(*m_Allocate)(void * memory, void * init_info);
-  void(*m_Deallocate)(void * ptr);
-  void(*m_Activate)(void * ptr, DataType & data_type, ContextType & context_type);
-  void(*m_Deactivate)(void * ptr, DataType & data_type, ContextType & context_type, bool abort);
-  void(*m_Update)(void * ptr, DataType & data_type, ContextType & context_type);
+  std::size_t m_TypeId = 0;
+  int m_Size = 0;
+  int m_Offset = 0;
+  int m_Align = 0;
+  int m_InitDataOffset = 0;
+  const char * m_DebugName = nullptr;
+  void(*m_Allocate)(void * memory, void * init_info) = nullptr;
+  void(*m_Deallocate)(void * ptr) = nullptr;
+  void(*m_Duplicate)(const void * src, void * dst) = nullptr;
+  void(*m_Activate)(void * ptr, DataType & data_type, ContextType & context_type) = nullptr;
+  void(*m_Deactivate)(void * ptr, DataType & data_type, ContextType & context_type, bool abort) = nullptr;
+  void(*m_Update)(void * ptr, DataType & data_type, ContextType & context_type) = nullptr;
 };
 
 struct StormBehaviorTreeTemplateInitInfo
@@ -186,6 +189,7 @@ public:
     }
 
     updater.m_Deallocate = [](void * mem) { auto ptr = static_cast<State *>(mem); ptr->~State(); };
+    updater.m_Duplicate = [](const void * src, void * dst) { new (dst) State(*static_cast<const State *>(src)); };
 
     if constexpr(StormBehaviorHasActivate<State>::value)
     {
@@ -334,6 +338,7 @@ private:
     }
 
     service.m_Deallocate = [](void * mem) { auto ptr = static_cast<Service *>(mem); ptr->~Service(); };
+    service.m_Duplicate = [](const void * src, void * dst) { new (dst) Service(*static_cast<const Service *>(src)); };
 
     service.m_Activate = nullptr;
     service.m_Deactivate = nullptr;
@@ -407,6 +412,7 @@ private:
     }
 
     conditional.m_Deallocate = [](void * mem) { auto ptr = static_cast<Conditional*>(mem); ptr->~Conditional(); };
+    conditional.m_Duplicate = [](const void * src, void * dst) { new (dst) Conditional(*static_cast<const Conditional *>(src)); };
 
     conditional.m_Check = [](void * ptr, const DataType & data_type, const ContextType & context_type)
     {

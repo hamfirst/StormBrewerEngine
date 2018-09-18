@@ -69,6 +69,13 @@ bool VisualEffectInstance::IsComplete() const
   return true;
 }
 
+
+void VisualEffectInstance::Presim(float time)
+{
+  StormExprStack stack;
+  m_VisualEffect->UpdateInstance(*this, time, stack, true);
+}
+
 void VisualEffectInstance::StopSpawning(bool spawn_final_particle)
 {
   m_Spawning = false;

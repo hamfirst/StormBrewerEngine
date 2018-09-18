@@ -11,6 +11,8 @@ struct Handle
   Handle()
   {
     m_Valid = 0;
+    m_Gen = 0;
+    m_Index = 0;
   }
 
   Handle(const Handle & rhs) = default;

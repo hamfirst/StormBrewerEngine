@@ -15,17 +15,28 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
 {
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
 
+  auto fs_path = fs::path(path);
+  auto filename = fs_path.filename();
+  auto parent_path = fs_path.remove_filename();
+
   fs::path canonical_path;
   try
   {
-    canonical_path = fs::canonical(path);
+    canonical_path = fs::canonical(parent_path);
   }
   catch(...)
   {
-    canonical_path = fs::canonical(root_path + path);
+    try
+    {
+      canonical_path = fs::canonical(parent_path, root_path);
+    }
+    catch(...)
+    {
+      canonical_path = parent_path;
+    }
   }
 
-  path = canonical_path.string();
+  path = (canonical_path / filename).string();
 #endif
 
   for (auto & c : path)

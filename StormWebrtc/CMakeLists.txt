@@ -82,5 +82,5 @@ foreach(REFL_FILE ${GENERIC_REFL_StormWebrtc})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(StormWebrtc ${GENERIC_SRC_StormWebrtc} ${PLATFORM_SRC_StormWebrtc}
+add_library(StormWebrtc STATIC ${GENERIC_SRC_StormWebrtc} ${PLATFORM_SRC_StormWebrtc}
             ${GENERIC_HEADER_StormWebrtc} ${PLATFORM_HEADER_StormWebrtc})

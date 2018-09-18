@@ -328,5 +328,5 @@ foreach(REFL_FILE ${GENERIC_REFL_Engine})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(Engine ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine}
+add_library(Engine STATIC ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine}
             ${GENERIC_HEADER_Engine} ${PLATFORM_HEADER_Engine})

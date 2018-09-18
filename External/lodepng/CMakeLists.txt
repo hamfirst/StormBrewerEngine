@@ -80,5 +80,5 @@ foreach(REFL_FILE ${GENERIC_REFL_LodePNG})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(LodePNG ${GENERIC_SRC_LodePNG} ${PLATFORM_SRC_LodePNG}
+add_library(LodePNG STATIC ${GENERIC_SRC_LodePNG} ${PLATFORM_SRC_LodePNG}
             ${GENERIC_HEADER_LodePNG} ${PLATFORM_HEADER_LodePNG})

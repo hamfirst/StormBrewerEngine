@@ -83,5 +83,5 @@ foreach(REFL_FILE ${GENERIC_REFL_ogg})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(ogg ${GENERIC_SRC_ogg} ${PLATFORM_SRC_ogg}
+add_library(ogg STATIC ${GENERIC_SRC_ogg} ${PLATFORM_SRC_ogg}
             ${GENERIC_HEADER_ogg} ${PLATFORM_HEADER_ogg})

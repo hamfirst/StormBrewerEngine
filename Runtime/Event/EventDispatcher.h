@@ -86,8 +86,7 @@ public:
 
   void ClearDeadHandlers()
   {
-    auto itr = std::remove_if(m_EventHandlers.begin(), m_EventHandlers.end(), [](const EventHandler & a) { return a.m_Dead; });
-    m_EventHandlers.erase(itr, m_EventHandlers.end());
+    std::remove_if(m_EventHandlers.begin(), m_EventHandlers.end(), [](const EventHandler & a) { return a.m_Dead; });
   }
 
   void ClearAllHandlers()

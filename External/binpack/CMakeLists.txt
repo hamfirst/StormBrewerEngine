@@ -90,5 +90,5 @@ foreach(REFL_FILE ${GENERIC_REFL_binpack})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(binpack ${GENERIC_SRC_binpack} ${PLATFORM_SRC_binpack}
+add_library(binpack STATIC ${GENERIC_SRC_binpack} ${PLATFORM_SRC_binpack}
             ${GENERIC_HEADER_binpack} ${PLATFORM_HEADER_binpack})

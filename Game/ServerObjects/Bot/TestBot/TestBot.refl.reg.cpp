@@ -19,5 +19,5 @@
 #include "Game/ServerObjects/Bot/TestBot/TestBot.refl.h"
 #include "Game/ServerObjects/Bot/TestBot/TestBot.refl.meta.h"
 
-REGISTER_SERVER_OBJECT_WITH_INIT_DATA(TestBot, TestBotInitData, ServerObject);
+REGISTER_SERVER_OBJECT_WITH_INIT_DATA(TestBot, TestBotInitData, BotServerObject);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(TestBotInitData);

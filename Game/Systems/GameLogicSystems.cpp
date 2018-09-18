@@ -12,3 +12,8 @@ CollisionDatabase & GameLogicSystems::GetCollisionDatabase()
 {
   return m_CollisionDatabase;
 }
+
+CVCPushSystem & GameLogicSystems::GetCVCPushSystem()
+{
+  return m_CVCPushSystem;
+}

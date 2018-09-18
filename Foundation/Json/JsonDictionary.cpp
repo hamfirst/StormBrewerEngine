@@ -29,6 +29,11 @@ JsonDictionary::JsonDictionary(JsonDictionary && rhs) :
 
 JsonDictionary & JsonDictionary::operator = (const JsonDictionary & rhs)
 {
+  if (&rhs == this)
+  {
+    return *this;
+  }
+
   m_Dict.clear();
   for (auto & elem : rhs.m_Dict)
   {
@@ -40,6 +45,11 @@ JsonDictionary & JsonDictionary::operator = (const JsonDictionary & rhs)
 
 JsonDictionary & JsonDictionary::operator = (JsonDictionary && rhs)
 {
+  if (&rhs == this)
+  {
+    return *this;
+  }
+
   m_Dict = std::move(rhs.m_Dict);
   return *this;
 }

@@ -105,7 +105,7 @@ void AssetLoader::ShutDown()
 void AssetLoader::RequestFileLoad(Asset * asset, czstr file_path, bool as_document, bool as_reload, bool load_deps)
 {
   printf("Requesting file load %s (%s)\n", file_path, as_document ? "doc" : "asset");
-  ASSERT(file_path[0] != 0, "Requesting empty file");
+  //ASSERT(file_path[0] != 0, "Requesting empty file");
   
   asset->IncRef();
 

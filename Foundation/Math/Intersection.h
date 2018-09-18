@@ -209,6 +209,12 @@ struct IntersectionVecType
   VecType & operator = (const VecType & rhs) = default;
   VecType & operator = (VecType && rhs) = default;
 
+  void SetZero()
+  {
+    x = VecCompType(0);
+    y = VecCompType(0);
+  }
+
   operator Vector2() const
   {
     return Vector2((int)IntersectionFuncs<VecCompType>::Floor(x), (int)IntersectionFuncs<VecCompType>::Floor(y));

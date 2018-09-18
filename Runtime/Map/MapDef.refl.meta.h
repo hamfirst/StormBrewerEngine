@@ -638,7 +638,7 @@ template <>
 struct StormReflTypeInfo<MapParalaxLayerObject>
 {
   using MyBase = void;
-  static constexpr int fields_n = 6;
+  static constexpr int fields_n = 7;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -752,17 +752,39 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<3, Self> : public St
 template <>
 struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<4>
 {
+  using member_type = RFloat; // RNumber<float>
+  static constexpr auto GetName() { return "m_PresimTime"; }
+  static constexpr auto GetType() { return "RNumber<float>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA41F8E10; }
+  static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_PresimTime; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<4, Self> : public StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RFloat> & Get() { return self.m_PresimTime; }
+  std::add_const_t<std::remove_reference_t<RFloat>> & Get() const { return self.m_PresimTime; }
+  void SetDefault() { self.m_PresimTime = StormReflTypeInfo<MapParalaxLayerObject>::GetDefault().m_PresimTime; }
+};
+
+template <>
+struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<5>
+{
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_XPosition"; }
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAB2A0DB2; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_XPosition; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<4, Self> : public StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<4>
+struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<5, Self> : public StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -772,19 +794,19 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<4, Self> : public St
 };
 
 template <>
-struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<5>
+struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<6>
 {
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_YPosition"; }
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xBC5119F1; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_YPosition; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<5, Self> : public StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<5>
+struct StormReflTypeInfo<MapParalaxLayerObject>::field_data<6, Self> : public StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

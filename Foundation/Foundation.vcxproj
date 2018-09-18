@@ -50,6 +50,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Blackboard\Blackboard.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Blit\Blit.h">
       <SubType>
       </SubType>
@@ -135,6 +139,7 @@
     <ClInclude Include="Pathfinding\PathfindingPath.h" />
     <ClInclude Include="Pathfinding\PathfindingPathCache.h" />
     <ClInclude Include="Pathfinding\PlatformerPathfinding.h" />
+    <ClInclude Include="Preprocessor\Preprocessor.h" />
     <ClInclude Include="Profiling\Profiling.h">
       <SubType>
       </SubType>
@@ -179,6 +184,10 @@
     <ClCompile Include="Assert\Assert.cpp" />
     <ClCompile Include="BasicTypes\BasicTypes.refl.cpp" />
     <ClCompile Include="Bitset\Bitset.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Blackboard\Blackboard.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -379,7 +388,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -452,7 +460,6 @@
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -489,6 +496,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)External;$(SolutionDir)External\Windows</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Foundation/Common.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

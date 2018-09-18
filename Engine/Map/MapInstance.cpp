@@ -71,6 +71,11 @@ void MapInstance::Update(GameContainer & game_container)
     layer.Update();
   }
 
+  for (auto & layer : m_ParalaxLayers)
+  {
+    layer.Update();
+  }
+
   for (auto & layer : m_EffectLayers)
   {
     layer.Update(game_container);

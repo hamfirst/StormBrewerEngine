@@ -354,5 +354,5 @@ foreach(REFL_FILE ${GENERIC_REFL_Editor})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(Editor ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor}
+add_library(Editor STATIC ${GENERIC_SRC_Editor} ${PLATFORM_SRC_Editor}
             ${GENERIC_HEADER_Editor} ${PLATFORM_HEADER_Editor})

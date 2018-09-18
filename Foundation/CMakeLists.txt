@@ -19,6 +19,7 @@ set(GENERIC_SRC_Foundation
             Blit/PixelBuffer.cpp
             Any/Any.cpp
             Sequencer/Sequencer.cpp
+            Blackboard/Blackboard.cpp
             PropertyMeta/PropertyFieldDatabase.cpp
             Time/FPSClock.cpp
             Time/FrameClock.cpp
@@ -67,9 +68,11 @@ set(GENERIC_HEADER_Foundation
             Blit/Blit.h
             Any/Any.h
             Sequencer/Sequencer.h
+            Blackboard/Blackboard.h
             PropertyMeta/PropertyFieldMetaData.h
             PropertyMeta/PropertyFieldDatabase.h
             PropertyMeta/PropertyFieldMetaFuncs.h
+            Preprocessor/Preprocessor.h
             SparseList/SparseList.h
             Pathfinding/Pathfinding.h
             Pathfinding/GraphPathfinding.h
@@ -188,5 +191,5 @@ foreach(REFL_FILE ${GENERIC_REFL_Foundation})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(Foundation ${GENERIC_SRC_Foundation} ${PLATFORM_SRC_Foundation}
+add_library(Foundation STATIC ${GENERIC_SRC_Foundation} ${PLATFORM_SRC_Foundation}
             ${GENERIC_HEADER_Foundation} ${PLATFORM_HEADER_Foundation})

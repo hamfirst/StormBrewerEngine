@@ -19,7 +19,7 @@ struct UIElementTextData : public UIElementDataFrameCenter
 
   float m_TextMode = 0;
   float m_FontId = -1.0f;
-  float m_Centered = 1;
+  float m_Justify = 0;
   float m_Scale = 1;
 
   float m_EnableTextBounds = 0.0f;

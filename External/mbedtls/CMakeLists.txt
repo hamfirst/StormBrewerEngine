@@ -221,5 +221,5 @@ foreach(REFL_FILE ${GENERIC_REFL_mbedtls})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(mbedtls ${GENERIC_SRC_mbedtls} ${PLATFORM_SRC_mbedtls}
+add_library(mbedtls STATIC ${GENERIC_SRC_mbedtls} ${PLATFORM_SRC_mbedtls}
             ${GENERIC_HEADER_mbedtls} ${PLATFORM_HEADER_mbedtls})

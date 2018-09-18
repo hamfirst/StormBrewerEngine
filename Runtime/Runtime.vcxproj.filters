@@ -218,9 +218,6 @@
     <ClCompile Include="ServerObject\ServerObjectResource.cpp">
       <Filter>ServerObject</Filter>
     </ClCompile>
-    <ClCompile Include="ServerObject\ServerObjectOverlapSystem.cpp">
-      <Filter>ServerObject</Filter>
-    </ClCompile>
     <ClCompile Include="Collision\DynamicCollisionDatabase.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
@@ -523,12 +520,6 @@
       <Filter>ServerObject</Filter>
     </ClInclude>
     <ClInclude Include="ServerObject\ServerObjectResource.h">
-      <Filter>ServerObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObject\ServerObjectOverlapSystem.h">
-      <Filter>ServerObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObject\ServerObjectOverlapRegistrationMacros.h">
       <Filter>ServerObject</Filter>
     </ClInclude>
     <ClInclude Include="Collision\DynamicCollisionDatabase.h">

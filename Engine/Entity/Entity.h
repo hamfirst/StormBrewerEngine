@@ -85,6 +85,7 @@ public:
   NotNullPtr<GameContainer> GetGameContainer();
 
   SpritePtr & GetSprite();
+  void SetSprite(const SpritePtr & sprite);
   Vector2f & GetPosition();
   void SetPosition(const Vector2f & position);
   int & GetLayer();

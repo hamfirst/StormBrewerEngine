@@ -25,8 +25,6 @@
 //#define NET_USE_WEBRTC
 #endif
 
-//#define NET_USE_COUNTDOWN
-//#define NET_USE_ROUND_TIMER
 #define NET_USE_RANDOM
 #define NET_ALLOW_LATE_JOIN
 #define NET_LATE_JOIN_REMOVE_BOT
@@ -35,4 +33,5 @@
 //#define NET_FILL_WITH_BOTS
 //#define NET_USE_READY
 
-
+#define NET_SYNC_OLD_STATE
+#define NET_SYNC_HISTORY_FRAMES 7

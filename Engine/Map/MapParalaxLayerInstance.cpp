@@ -54,6 +54,16 @@ MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer
       MapParalaxLayerVfx vfx;
       vfx.m_Vfx = VisualEffectResource::Load(elem.second.m_File.data());
       vfx.m_Handle = vfx_manager->CreateVisualEffect(vfx.m_Vfx, m_LayerOrder, pos)->GetHandle();
+
+      if ((float)elem.second.m_PresimTime > 0)
+      {
+        auto vfx_inst = vfx.m_Handle.Resolve();
+        if (vfx_inst)
+        {
+          vfx_inst->Presim(elem.second.m_PresimTime);
+        }
+      }
+
       m_VisualEffects.emplace_back(std::move(vfx));
     }
   }

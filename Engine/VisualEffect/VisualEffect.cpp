@@ -286,20 +286,6 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
 
       emitter.m_SpawnOverflow += props.m_UpdateTime;
 
-      if (emitter.m_ScriptData.m_SpawnRate > 0 && emitter.m_Complete == false && inst.m_Spawning)
-      {
-        auto spawn_interval = 1.0f / emitter.m_ScriptData.m_SpawnRate;
-        int num_to_spawn = (int)(emitter.m_SpawnOverflow / spawn_interval);
-
-        if (num_to_spawn > 0)
-        {
-          auto pre_sim_time = emitter.m_SpawnOverflow - spawn_interval;
-
-          emitter.m_SpawnOverflow -= (float)num_to_spawn * spawn_interval;
-          SpawnParticles(inst, (int)index, num_to_spawn, pre_sim_time, spawn_interval, props.m_UpdateTime, travel_dist, stack);
-        }
-      }
-
       particle_eval.SetBlockBasePtr(3, &emitter.m_AutoData);
       particle_eval.SetBlockBasePtr(4, &emitter.m_ScriptData);
 
@@ -341,6 +327,20 @@ void VisualEffect::UpdateInstance(VisualEffectInstance & inst, float update_time
         particle.m_AutoData.m_TimeAlive += props.m_UpdateTime;
         particle.m_AutoData.m_TimePct = particle.m_AutoData.m_TimeAlive / particle.m_ScriptData.m_MaxLifetime;
         particle.m_AutoData.m_InvTimePct = 1.0f - particle.m_AutoData.m_TimePct;
+      }
+
+      if (emitter.m_ScriptData.m_SpawnRate > 0 && emitter.m_Complete == false && inst.m_Spawning)
+      {
+        auto spawn_interval = 1.0f / emitter.m_ScriptData.m_SpawnRate;
+        int num_to_spawn = (int)(emitter.m_SpawnOverflow / spawn_interval);
+
+        if (num_to_spawn > 0)
+        {
+          auto pre_sim_time = std::max(emitter.m_SpawnOverflow - spawn_interval, 0.0f);
+          emitter.m_SpawnOverflow -= (float)num_to_spawn * spawn_interval;
+
+          SpawnParticles(inst, (int)index, num_to_spawn, pre_sim_time, spawn_interval, props.m_UpdateTime, travel_dist, stack);
+        }
       }
 
       props.m_UpdateTime = 0;
@@ -420,7 +420,7 @@ void VisualEffect::SpawnParticles(VisualEffectInstance & inst, int emitter_index
     particle.m_AutoData.m_PositionY = pos.y + spawn_data.m_SpawnOffsetY + spawn_data.m_SpawnVelocityY * pre_sim;
     particle.m_AutoData.m_VelocityX = spawn_data.m_SpawnVelocityX;
     particle.m_AutoData.m_VelocityY = spawn_data.m_SpawnVelocityY;
-    particle.m_AutoData.m_TimeAlive = 0;
+    particle.m_AutoData.m_TimeAlive = pre_sim;
     particle.m_AutoData.m_Speed = sqrtf(particle.m_AutoData.m_VelocityX * particle.m_AutoData.m_VelocityX + particle.m_AutoData.m_VelocityY * particle.m_AutoData.m_VelocityY);
     particle.m_AutoData.m_ParticleId = (float)inst.m_NextParticleId;
     particle.m_Rand = rand_block;

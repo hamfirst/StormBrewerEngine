@@ -34,6 +34,12 @@ set(GENERIC_SRC_GameClient
             GameClientCommon.cpp
             Components/PlayerComponent.refl.reg.cpp
             Components/PlayerComponent.refl.cpp
+            Components/Reusable/PlayAnimationComponent.refl.cpp
+            Components/Reusable/SyncServerObjectComponent.refl.cpp
+            Components/Reusable/PlayAnimationComponent.refl.reg.cpp
+            Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
+            Components/Reusable/AttachVfxComponent.refl.cpp
+            Components/Reusable/AttachVfxComponent.refl.reg.cpp
             EffectLayers/CollisionDrawer.refl.reg.cpp
             EffectLayers/CollisionDrawer.refl.cpp
             #CPP_PLACEHOLDER
@@ -73,6 +79,12 @@ set(GENERIC_HEADER_GameClient
             GameModeSinglePlayerBots.h
             Components/PlayerComponent.refl.meta.h
             Components/PlayerComponent.refl.h
+            Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.meta.h
+            Components/Reusable/SyncServerObjectComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.meta.h
+            Components/Reusable/AttachVfxComponent.refl.meta.h
             EffectLayers/CollisionDrawer.refl.h
             EffectLayers/CollisionDrawer.refl.meta.h
             #HEADER_PLACEHOLDER
@@ -81,6 +93,9 @@ set(GENERIC_REFL_GameClient
             GameClientSaveFileData.refl.h
             GameClientController.refl.h
             Components/PlayerComponent.refl.h
+            Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.h
             EffectLayers/CollisionDrawer.refl.h
             #REFL_PLACEHOLDER
             )
@@ -150,5 +165,5 @@ foreach(REFL_FILE ${GENERIC_REFL_GameClient})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(GameClient ${GENERIC_SRC_GameClient} ${PLATFORM_SRC_GameClient}
+add_library(GameClient STATIC ${GENERIC_SRC_GameClient} ${PLATFORM_SRC_GameClient}
             ${GENERIC_HEADER_GameClient} ${PLATFORM_HEADER_GameClient})

@@ -4,8 +4,6 @@
 
 #include "Runtime/Map/MapTile.h"
 
-#include <cinttypes>
-
 template <>
 struct StormReflJson<MapTile, void>
 {
@@ -20,7 +18,7 @@ struct StormReflJson<MapTile, void>
     uint64_t d = (h << 32) | t.m_FrameId;
 
     char val[512];
-    snprintf(val, sizeof(val), "[%" PRIu64 ", %" PRIu64 "]", p, d);
+    snprintf(val, sizeof(val), "[%zu, %zu]", p, d);
     sb += val;
   }
 
@@ -96,7 +94,7 @@ struct StormReflJson<MapAnimatedTile, void>
     uint64_t d = (h << 32) | t.m_FrameOffset;
 
     char val[512];
-    snprintf(val, sizeof(val), "[%" PRIu64 ", %" PRIu64 "]", p, d);
+    snprintf(val, sizeof(val), "[%zu, %zu]", p, d);
     sb += val;
   }
 

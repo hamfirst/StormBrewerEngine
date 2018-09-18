@@ -8,6 +8,7 @@
 #include "Runtime/ServerObject/ServerObjectSystem.h"
 
 #include "Game/Data/PlayerSpawn.refl.meta.h"
+#include "Game/Data/KillVolume.refl.meta.h"
 
 GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127),
@@ -85,7 +86,12 @@ GameStage::GameStage(const Map & map) :
 
   for (auto volume : map_data->m_Volumes)
   {
+    auto kill_volume = volume.second.m_VolumeData.GetAs<KillVolume>();
 
+    if (kill_volume)
+    {
+      m_KillVolumes.push_back(volume.second.GetBox());
+    }
   }
 
   for (auto layer : map_data->m_ServerObjectLayers)
@@ -186,6 +192,11 @@ const std::vector<GameCollisionLine> GameStage::GetCollisionLines() const
 const std::vector<std::vector<Vector2>> & GameStage::GetPlayerSpawns() const
 {
   return m_PlayerSpawns;
+}
+
+const std::vector<Box> & GameStage::GetKillVolumes() const
+{
+  return m_KillVolumes;
 }
 
 Optional<ServerObjectHandle> GameStage::FindStaticObject(uint32_t obj_name_hash) const

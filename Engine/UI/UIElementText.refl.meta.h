@@ -109,12 +109,12 @@ template <>
 struct StormReflTypeInfo<UIElementTextData>::field_data_static<3 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n>
 {
   using member_type = float; // float
-  static constexpr auto GetName() { return "m_Centered"; }
+  static constexpr auto GetName() { return "m_Justify"; }
   static constexpr auto GetType() { return "float"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x239066D4; }
+  static constexpr unsigned GetFieldNameHash() { return 0x7BE07DB0; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Centered; }
+  static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Justify; }
 };
 
 template <typename Self>
@@ -122,9 +122,9 @@ struct StormReflTypeInfo<UIElementTextData>::field_data<3 + StormReflTypeInfo<UI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, float> & Get() { return self.m_Centered; }
-  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_Centered; }
-  void SetDefault() { self.m_Centered = StormReflTypeInfo<UIElementTextData>::GetDefault().m_Centered; }
+  match_const_t<Self, float> & Get() { return self.m_Justify; }
+  std::add_const_t<std::remove_reference_t<float>> & Get() const { return self.m_Justify; }
+  void SetDefault() { self.m_Justify = StormReflTypeInfo<UIElementTextData>::GetDefault().m_Justify; }
 };
 
 template <>

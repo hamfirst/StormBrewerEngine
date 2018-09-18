@@ -36,11 +36,10 @@ public:
 
   virtual void PostUpdate(PlayerServerObject & player, GameLogicContainer & game_container) {};
 
-  virtual void Deinit(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void Cleanup(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void Destroy(PlayerServerObject & player, GameLogicContainer & game_container) {};
 
 };
 
 template <typename T>
 using PlayerStateEventHandler = EventHandler<T>;
-
-extern ConfigPtr<PlayerConfig> g_PlayerConfig;

@@ -19,9 +19,75 @@ class StormBehaviorTree
 {
 public:
   StormBehaviorTree() = default;
-  StormBehaviorTree(StormBehaviorTreeTemplate<DataType, ContextType> & bt)
+  explicit StormBehaviorTree(StormBehaviorTreeTemplate<DataType, ContextType> & bt)
   {
     SetBehaviorTree(&bt);
+  }
+
+  StormBehaviorTree(const StormBehaviorTree<DataType, ContextType> & rhs)
+  {
+    m_BehaviorTree = rhs.m_BehaviorTree;
+
+    if(m_BehaviorTree)
+    {
+      m_TreeMemory = std::make_unique<uint8_t[]>(m_BehaviorTree->m_TotalSize);
+      for(auto & elem : m_BehaviorTree->m_InitInfo)
+      {
+        void * src = rhs.m_TreeMemory.get() + elem.m_TargetOffset;
+        void * dst = m_TreeMemory.get() + elem.m_TargetOffset;
+        elem.m_Duplicate(src, dst);
+      }
+    }
+
+    m_CurrentNode = rhs.m_CurrentNode;
+    m_AdvanceNode = rhs.m_AdvanceNode;
+  }
+
+  StormBehaviorTree(StormBehaviorTree<DataType, ContextType> && rhs)
+  {
+    m_BehaviorTree = rhs.m_BehaviorTree;
+    m_TreeMemory = std::move(rhs.m_TreeMemory);
+    m_CurrentNode = rhs.m_CurrentNode;
+    m_AdvanceNode = rhs.m_AdvanceNode;
+
+    rhs.m_BehaviorTree = nullptr;
+    rhs.m_CurrentNode = -1;
+    rhs.m_AdvanceNode = false;
+  }
+
+  StormBehaviorTree & operator = (const StormBehaviorTree<DataType, ContextType> & rhs)
+  {
+    Destroy();
+    m_BehaviorTree = rhs.m_BehaviorTree;
+
+    if(m_BehaviorTree)
+    {
+      m_TreeMemory = std::make_unique<uint8_t[]>(m_BehaviorTree->m_TotalSize);
+      for(auto & elem : m_BehaviorTree->m_InitInfo)
+      {
+        void * src = rhs.m_TreeMemory.get() + elem.m_TargetOffset;
+        void * dst = m_TreeMemory.get() + elem.m_TargetOffset;
+        elem.m_Duplicate(src, dst);
+      }
+    }
+
+    m_CurrentNode = rhs.m_CurrentNode;
+    m_AdvanceNode = rhs.m_AdvanceNode;
+    return *this;
+  }
+
+  StormBehaviorTree & operator = (StormBehaviorTree<DataType, ContextType> && rhs)
+  {
+    Destroy();
+    m_BehaviorTree = rhs.m_BehaviorTree;
+    m_TreeMemory = std::move(rhs.m_TreeMemory);
+    m_CurrentNode = rhs.m_CurrentNode;
+    m_AdvanceNode = rhs.m_AdvanceNode;
+
+    rhs.m_BehaviorTree = nullptr;
+    rhs.m_CurrentNode = -1;
+    rhs.m_AdvanceNode = false;
+    return *this;
   }
 
   ~StormBehaviorTree()
@@ -40,7 +106,7 @@ public:
       for(auto & elem : m_BehaviorTree->m_InitInfo)
       {
         void * mem = m_TreeMemory.get() + elem.m_TargetOffset;
-        void * init = bt->m_InitDataMemory.get() + elem.m_InitOffset;
+        void * init = m_BehaviorTree->m_InitDataMemory.get() + elem.m_InitOffset;
         elem.m_Allocate(mem, init);
       }
     }
@@ -74,7 +140,7 @@ public:
   }
 
   template <typename Visitor>
-  void VisitNodes(Visitor && visitor)
+  void VisitNodes(Visitor && visitor) const
   {
     if(m_CurrentNode == -1)
     {
@@ -162,9 +228,9 @@ public:
     return static_cast<int>(m_BehaviorTree->m_Nodes.size());
   }
 
-  void SetCurrentNode(int node_index, bool wants_advance, DataType & data, ContextType & context)
+  void SetCurrentNode(int node_index, bool wants_advance)
   {
-    ActivateNode(node_index, m_CurrentNode, data, context, true);
+    m_CurrentNode = node_index;
     m_AdvanceNode = wants_advance;
   }
 
@@ -219,11 +285,6 @@ private:
 
   void ActivateNode(int node_index, int prev_node_index, DataType & data, ContextType & context, bool abort)
   {
-    if(node_index == prev_node_index)
-    {
-      return;
-    }
-
     std::vector<int> new_service_indices;
     std::vector<int> old_service_indices;
 
