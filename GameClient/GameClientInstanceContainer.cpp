@@ -316,6 +316,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
 {
   return GameLogicContainer(
     GetGameController(),
+    m_InitSettings,
     GetFullState().m_InstanceData,
     GetFullState().m_ServerObjectManager,
     m_ServerObjectEventSystem,
@@ -329,11 +330,6 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
 #endif
     GetStage(),
     authority ? *authority : m_Authority, send_timer);
-}
-
-GameLogicContainer GameClientInstanceContainer::GetDefaultLogicContainer()
-{
-  return GetLogicContainer();
 }
 
 GameController & GameClientInstanceContainer::GetGameController()

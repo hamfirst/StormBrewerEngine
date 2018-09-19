@@ -1,6 +1,7 @@
 #pragma once
 
 struct GameInstanceData;
+struct GameInitSettings;
 class GameController;
 class ServerObjectManager;
 class ServerObjectEventSystem;
@@ -16,6 +17,7 @@ class GameLogicContainer
 public:
   GameLogicContainer(
     GameController & game_controller,
+    const GameInitSettings & init_settings,
     GameInstanceData & global_data,
     ServerObjectManager & object_manager,
     ServerObjectEventSystem & server_object_event_system,
@@ -34,21 +36,23 @@ public:
   GameLogicContainer & operator = (const GameLogicContainer & rhs) = default;
   GameLogicContainer & operator = (GameLogicContainer && rhs) = default;
 
-  GameController & GetGameController() const;
-  GameInstanceData & GetInstanceData() const;
-  ServerObjectManager & GetObjectManager() const;
-  ServerObjectEventSystem & GetServerObjectEventSystem() const;
-  GameServerEventSender & GetEventSender() const;
-  GameSimulationEventCallbacks & GetSimEventCallbacks() const;
-  GameSharedGlobalResources & GetSharedGlobalResources() const;
-  GameSharedInstanceResources & GetSharedInstanceResources() const;
-  GameLogicSystems & GetSystems() const;
-  const GameStage & GetStage() const;
-  bool IsAuthority() const;
-  void TriggerImmediateSend() const;
+  GameController & GetGameController();
+  const GameInitSettings & GetGameInitSettings();
+  GameInstanceData & GetInstanceData();
+  ServerObjectManager & GetObjectManager();
+  ServerObjectEventSystem & GetServerObjectEventSystem();
+  GameServerEventSender & GetEventSender();
+  GameSimulationEventCallbacks & GetSimEventCallbacks();
+  GameSharedGlobalResources & GetSharedGlobalResources();
+  GameSharedInstanceResources & GetSharedInstanceResources();
+  GameLogicSystems & GetSystems();
+  const GameStage & GetStage();
+  bool IsAuthority();
+  void TriggerImmediateSend();
 
 private:
   GameController & m_GameController;
+  const GameInitSettings & m_InitSettings;
   GameInstanceData & m_InstanceData;
   ServerObjectManager & m_ObjectManager;
   ServerObjectEventSystem & m_ObjectEventSystem;
@@ -61,3 +65,5 @@ private:
   bool m_IsAuthority;
   int & m_SendTimer;
 };
+
+

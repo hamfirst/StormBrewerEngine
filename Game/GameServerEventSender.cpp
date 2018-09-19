@@ -2,6 +2,31 @@
 #include "Game/GameCommon.h"
 #include "Game/GameServerEventSender.h"
 
+void GameServerEventSender::SendCreateEntity(const GameNetVec2 & pos, uint32_t asset_hash)
+{
+  if (ReconcileEvent<PlaySoundGlobalEvent>(pos, asset_hash) == false)
+  {
+    return;
+  }
+
+  CreateEntityGlobalEvent ev;
+  ev.m_PositionX = (int16_t)((int32_t)pos.x);
+  ev.m_PositionY = (int16_t)((int32_t)pos.y);
+  ev.m_AssetHash = asset_hash;
+  BroadcastEvent(ev);
+}
+
+void GameServerEventSender::SendCameraShake(const GameNetVec2 & pos)
+{
+  if (ReconcileEvent<CameraShakeEvent>(pos) == false)
+  {
+    return;
+  }
+
+  CameraShakeEvent ev;
+  BroadcastEvent(ev);
+}
+
 void GameServerEventSender::SendSoundEvent(const GameNetVec2 & pos, uint32_t asset_hash)
 {
   if (ReconcileEvent<PlaySoundGlobalEvent>(pos, asset_hash) == false)

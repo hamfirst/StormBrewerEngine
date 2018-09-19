@@ -21,13 +21,12 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_LastAuthCommit(0),
   m_InitialState(m_Stage.CreateDefaultGameState())
 {
-  GameLogicContainer logic_container(m_Controller, m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, 
+  GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, 
     *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
     m_DeliberateSyncSystemData,
 #endif
     m_Stage, true, m_SendTimer);
-
 
   for (auto elem : loading_data.m_Players)
   {
@@ -662,7 +661,7 @@ void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_
     auto new_state = std::make_shared<GameFullState>(*sim.get());
 
     int fake_send_timer = 0;
-    GameLogicContainer logic_container(m_Controller, new_state->m_InstanceData, new_state->m_ServerObjectManager, m_ServerObjectEventSystem,
+    GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), new_state->m_InstanceData, new_state->m_ServerObjectManager, m_ServerObjectEventSystem,
       *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
       m_DeliberateSyncSystemData,
@@ -933,8 +932,8 @@ void GameInstanceStateGameplay::SendAuthEvent(std::size_t class_id, const void *
 
   if (current_frame < m_FurthestRewind)
   {
-    auto logic_container = GetLogicContainer(m_ReconcileFrame);
-    m_Controller.HandleAuthEvent(logic_container, class_id, event_ptr);
+    auto game_container = GetLogicContainer(m_ReconcileFrame);
+    m_Controller.HandleAuthEvent(game_container, class_id, event_ptr);
   }
 }
 
@@ -1068,7 +1067,7 @@ GameInstanceData & GameInstanceStateGameplay::GetCurrentInstanceData()
 
 GameLogicContainer GameInstanceStateGameplay::GetLogicContainer(int history_index)
 {
-  return GameLogicContainer(m_Controller, m_CurrentState->m_InstanceData, 
+  return GameLogicContainer(m_Controller, m_StateData.GetInitSettings(), m_CurrentState->m_InstanceData,
     m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
     *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
@@ -1136,6 +1135,12 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
   packet.m_EventStartFrame = current_frame - m_FramesToRewind - m_FramesToUpdate;
 
   auto history_frame = std::max(m_FramesToRewind + m_FramesToUpdate, current_frame - packet_frame);
+
+#ifdef NET_SYNC_OLD_STATE
+  auto sync_frames = std::min(NET_SYNC_HISTORY_FRAMES, current_frame);
+  history_frame = std::max(history_frame, sync_frames);
+#endif
+
   packet.m_State = *m_SimHistory.Get(history_frame);
   auto input_visitor = [&](int time, HistoryInput & inp)
   {

@@ -47,16 +47,7 @@ private:
   GameContainer & m_GameContainer;
 
   UIManager m_UIManager;
-
-#ifdef NET_USE_COUNTDOWN
-  UIElementPtr<UIElementText> m_CountdownCaption;
-  UIElementPtr<UIElementText> m_Countdown;
-#endif
-
-#ifdef NET_USE_ROUND_TIMER
-  UIElementPtr<UIElementText> m_RoundTimerCaption;
-  UIElementPtr<UIElementText> m_RoundTimer;
-#endif
+  UIElementHandle m_HudHandle;
 
   Optional<UIPrototypeConfirmPopup> m_QuitPopup;
   Optional<UIElementHandle> m_Tutorial;

@@ -111,6 +111,21 @@ void GameClientController::HandleAuthEvent(std::size_t event_class_id, const voi
   m_AuthEventCallbacks[event_class_id].Call(event_ptr);
 }
 
+void GameClientController::HandleCreateEntityGlobalEvent(const CreateEntityGlobalEvent & ev)
+{
+  auto entity_asset = EntityResource::Find(ev.m_AssetHash);
+  if (entity_asset.IsLoaded())
+  {
+    auto entity = m_GameContainer.GetEngineState().CreateEntity(entity_asset.GetResource());
+    entity->GetPosition() = Vector2(ev.m_PositionX, ev.m_PositionY);
+  }
+}
+
+void GameClientController::HandleCameraShakeEvent(const CameraShakeEvent & ev)
+{
+  m_GameContainer.GetClientSystems()->GetCamera().Shake(0.2f, 4.0f);
+}
+
 void GameClientController::HandlePlaySoundGlobalEvent(const PlaySoundGlobalEvent & ev)
 {
   auto audio_asset = AudioAsset::Find(ev.m_AssetHash);

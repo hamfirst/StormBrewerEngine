@@ -14,6 +14,19 @@ struct GlobalNetworkEvent
   NET_REFL;
 };
 
+struct CreateEntityGlobalEvent : public GlobalNetworkEvent
+{
+  NET_REFL;
+  uint32_t m_AssetHash;
+  int16_t m_PositionX;
+  int16_t m_PositionY;
+};
+
+struct CameraShakeEvent : public GlobalNetworkEvent
+{
+  NET_REFL;
+};
+
 struct PlaySoundGlobalEvent : public GlobalNetworkEvent
 {
   NET_REFL;
@@ -29,6 +42,12 @@ struct PlayVfxGlobalEvent : public GlobalNetworkEvent
   int16_t m_PositionX;
   int16_t m_PositionY;
 };
+
+struct TieEvent : public GlobalNetworkEvent
+{
+  NET_REFL;
+};
+
 
 struct ServerAuthNetworkEvent
 {

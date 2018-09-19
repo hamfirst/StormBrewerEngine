@@ -7,10 +7,17 @@
 
 #include "Game/GameNetworkEvents.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
+#include "Game/Configs/GameConfig.refl.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Input/ControlId.h"
 #include "Engine/Audio/AudioManager.h"
+
+#include "Runtime/UI/UIResource.h"
+
+GLOBAL_ASSET(UIResourcePtr, "./UIs/HUD.ui", g_GameClientUI);
+
+extern ConfigPtr<GameConfig> g_GameConfig;
 
 GameClientUIManager::GameClientUIManager(GameContainer & container) :
   m_GameContainer(container),
@@ -37,44 +44,7 @@ GameClientUIManager::GameClientUIManager(GameContainer & container) :
     m_FullscreenButton.Clear();
   });
 
-#ifdef NET_USE_COUNTDOWN
-  m_CountdownCaption = m_UIManager.AllocateText("countdown_caption");
-  auto & countdown_caption_data = m_CountdownCaption->GetData();
-  countdown_caption_data.m_PositionX = 0;
-  countdown_caption_data.m_PositionY = 20.0f;
-  countdown_caption_data.m_Text = "Game Starts In...";
-  countdown_caption_data.m_FontId = -1;
-  countdown_caption_data.m_TextMode = 2;
-  countdown_caption_data.m_Centered = 1;
-
-  m_Countdown = m_UIManager.AllocateText("countdown");
-  auto & countdown_data = m_Countdown->GetData();
-  countdown_data.m_PositionX = 0;
-  countdown_data.m_PositionY = 0;
-  countdown_data.m_FontId = -2;
-  countdown_data.m_TextMode = 2;
-  countdown_data.m_Centered = 1;
-#endif
-
-#ifdef NET_USE_ROUND_TIMER
-  m_RoundTimerCaption = m_UIManager.AllocateText("round_timer_caption");
-  auto & round_timer_caption_data = m_RoundTimerCaption->GetData();
-  round_timer_caption_data.m_PositionX = 0;
-  round_timer_caption_data.m_PositionY = -6;
-  round_timer_caption_data.m_Text = "Round Timer";
-  round_timer_caption_data.m_FontId = -1;
-  round_timer_caption_data.m_TextMode = 2;
-  round_timer_caption_data.m_Centered = 1;
-
-  m_RoundTimer = m_UIManager.AllocateText("round_timer");
-  auto & round_timer_data = m_RoundTimer->GetData();
-  round_timer_data.m_PositionX = 0;
-  round_timer_data.m_PositionY = -21;
-  round_timer_data.m_FontId = -2;
-  round_timer_data.m_TextMode = 2;
-  round_timer_data.m_Centered = 1;
-#endif
-
+  m_HudHandle = m_UIManager.AllocateElementFromDef("ui", *g_GameClientUI.GetData());
 }
 
 GameClientUIManager::~GameClientUIManager()
@@ -85,49 +55,21 @@ GameClientUIManager::~GameClientUIManager()
 void GameClientUIManager::Update()
 {
   auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
+  auto & obj_manager = m_GameContainer.GetInstanceData()->GetFullState().m_ServerObjectManager;
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
 
   auto resolution = camera.GetGameResolution();
-
-#ifdef NET_USE_COUNTDOWN
-  if (game_state.m_Countdown > 0)
-  {
-    m_Countdown->SetEnabled();
-    m_CountdownCaption->SetEnabled();
-    auto & countdown_data = m_Countdown->GetData();
-    countdown_data.m_Text = std::to_string((int)game_state.m_Countdown / 60 + 1);
-  }
-  else
-  {
-    m_CountdownCaption->SetDisabled();
-    m_Countdown->SetDisabled();
-  }
-#endif
-
-#ifdef NET_USE_ROUND_TIMER
-
-#ifdef NET_USE_COUNTDOWN
-  if (game_state.m_Countdown > 0)
-  {
-    m_RoundTimer->SetDisabled();
-    m_RoundTimerCaption->SetDisabled();
-  }
-  else
-  {
-    m_RoundTimer->SetEnabled();
-    m_RoundTimerCaption->SetEnabled();
-  }
-#endif
-
-  auto & round_timer_data = m_RoundTimer->GetData();
-  round_timer_data.m_Text = std::to_string((int)game_state.m_RoundTimer / 60);
-#endif
-
   auto input_state = m_GameContainer.GetWindow().GetInputState();
 
   if (input_state->GetKeyPressedThisFrame(SDL_SCANCODE_ESCAPE))
   {
     TogglePopup();
+  }
+
+  auto hud = m_HudHandle.Resolve();
+  if (hud)
+  {
+
   }
 
   m_UIManager.Update(*input_state, m_GameContainer.GetRenderState(), camera.GetPosition());

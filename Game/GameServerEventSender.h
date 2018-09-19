@@ -98,6 +98,8 @@ public:
 
   virtual void BlockRewind(std::size_t connection) {};
 
+  void SendCreateEntity(const GameNetVec2 & pos, uint32_t asset_hash);
+  void SendCameraShake(const GameNetVec2 & pos);
   void SendSoundEvent(const GameNetVec2 & pos, uint32_t asset_hash);
   void SendSoundEvent(const GameNetVec2 & pos, const GameNetVec2 & normal, uint32_t asset_hash);
   void SendVfxEvent(const GameNetVec2 & pos, uint32_t asset_hash);
