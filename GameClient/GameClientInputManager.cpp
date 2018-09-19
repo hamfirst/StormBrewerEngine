@@ -104,7 +104,9 @@ void GameClientInputManager::Update()
     }
 
     input.m_JumpHeld = input_state->GetKeyState(SDL_SCANCODE_SPACE) || input_state->GetGamepadButtonState(gamepad_index, GamepadButton::kA);
+    input.m_BlockHeld = input_state->GetKeyState(SDL_SCANCODE_Z) || input_state->GetGamepadButtonState(gamepad_index, GamepadButton::kR2);
     input.m_XInput = GameNetVal::CreateFromFloat(input_vec.x);
+    input.m_YInput = GameNetVal::CreateFromFloat(input_vec.y);
 #endif
     SendInput(client_index, input);
 

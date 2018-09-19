@@ -3,6 +3,7 @@
 
 GameLogicContainer::GameLogicContainer(
   GameController & game_controller,
+  const GameInitSettings & init_settings,
   GameInstanceData & global_data,
   ServerObjectManager & object_manager,
   ServerObjectEventSystem & server_object_event_system,
@@ -15,6 +16,7 @@ GameLogicContainer::GameLogicContainer(
   bool is_authority,
   int & send_timer) :
   m_GameController(game_controller),
+  m_InitSettings(init_settings),
   m_InstanceData(global_data),
   m_ObjectManager(object_manager),
   m_ObjectEventSystem(server_object_event_system),
@@ -30,62 +32,67 @@ GameLogicContainer::GameLogicContainer(
 
 }
 
-GameController & GameLogicContainer::GetGameController() const
+GameController & GameLogicContainer::GetGameController()
 {
   return m_GameController;
 }
 
-GameInstanceData & GameLogicContainer::GetInstanceData() const
+const GameInitSettings & GameLogicContainer::GetGameInitSettings()
+{
+  return m_InitSettings;
+}
+
+GameInstanceData & GameLogicContainer::GetInstanceData()
 {
   return m_InstanceData;
 }
 
-ServerObjectManager & GameLogicContainer::GetObjectManager() const
+ServerObjectManager & GameLogicContainer::GetObjectManager()
 {
   return m_ObjectManager;
 }
 
-ServerObjectEventSystem & GameLogicContainer::GetServerObjectEventSystem() const
+ServerObjectEventSystem & GameLogicContainer::GetServerObjectEventSystem()
 {
   return m_ObjectEventSystem;
 }
 
-GameServerEventSender & GameLogicContainer::GetEventSender() const
+GameServerEventSender & GameLogicContainer::GetEventSender()
 {
   return m_ServerEventSender;
 }
 
-GameSimulationEventCallbacks & GameLogicContainer::GetSimEventCallbacks() const
+GameSimulationEventCallbacks & GameLogicContainer::GetSimEventCallbacks()
 {
   return m_SimEventSender;
 }
 
-GameSharedGlobalResources & GameLogicContainer::GetSharedGlobalResources() const
+GameSharedGlobalResources & GameLogicContainer::GetSharedGlobalResources()
 {
   return m_SharedGlobalResources;
 }
 
-GameSharedInstanceResources & GameLogicContainer::GetSharedInstanceResources() const
+GameSharedInstanceResources & GameLogicContainer::GetSharedInstanceResources()
 {
   return m_SharedInstanceResources;
 }
 
-GameLogicSystems & GameLogicContainer::GetSystems() const
+GameLogicSystems & GameLogicContainer::GetSystems()
 {
   return m_Systems;
 }
 
-const GameStage & GameLogicContainer::GetStage() const
+const GameStage & GameLogicContainer::GetStage()
 {
   return m_Stage;
 }
 
-bool GameLogicContainer::IsAuthority() const
+bool GameLogicContainer::IsAuthority()
 {
   return m_IsAuthority;
 }
 
-void GameLogicContainer::TriggerImmediateSend() const
+void GameLogicContainer::TriggerImmediateSend()
 {
   m_SendTimer = 0;
 }

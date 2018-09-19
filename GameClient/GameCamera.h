@@ -4,8 +4,8 @@
 
 class GameContainer;
 
-static const int kDefaultResolutionWidth = 480;
-static const int kDefaultResolutionHeight = 270;
+static const int kDefaultResolutionWidth = 840;
+static const int kDefaultResolutionHeight = 480;
 
 static const Color kDefaultClearColor = Color(200, 210, 230, 255);
 

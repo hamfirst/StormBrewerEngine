@@ -19,6 +19,104 @@ struct StormReflTypeInfo<GlobalNetworkEvent>
 };
 
 template <>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>
+{
+  using MyBase = GlobalNetworkEvent;
+  static constexpr int fields_n = 3 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "CreateEntityGlobalEvent"; }
+  static constexpr auto GetNameHash() { return 0x642FDCD2; }
+  static CreateEntityGlobalEvent & GetDefault() { static CreateEntityGlobalEvent def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = uint32_t; // unsigned int
+  static constexpr auto GetName() { return "m_AssetHash"; }
+  static constexpr auto GetType() { return "unsigned int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_AssetHash; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint32_t> & Get() { return self.m_AssetHash; }
+  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_AssetHash; }
+  void SetDefault() { self.m_AssetHash = StormReflTypeInfo<CreateEntityGlobalEvent>::GetDefault().m_AssetHash; }
+};
+
+template <>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionX"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionX; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionX; }
+  void SetDefault() { self.m_PositionX = StormReflTypeInfo<CreateEntityGlobalEvent>::GetDefault().m_PositionX; }
+};
+
+template <>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  using member_type = int16_t; // short
+  static constexpr auto GetName() { return "m_PositionY"; }
+  static constexpr auto GetType() { return "short"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n, Self> : public StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int16_t> & Get() { return self.m_PositionY; }
+  std::add_const_t<std::remove_reference_t<int16_t>> & Get() const { return self.m_PositionY; }
+  void SetDefault() { self.m_PositionY = StormReflTypeInfo<CreateEntityGlobalEvent>::GetDefault().m_PositionY; }
+};
+
+template <>
+struct StormReflTypeInfo<CameraShakeEvent>
+{
+  using MyBase = GlobalNetworkEvent;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "CameraShakeEvent"; }
+  static constexpr auto GetNameHash() { return 0x2504BD60; }
+  static CameraShakeEvent & GetDefault() { static CameraShakeEvent def; return def; }
+};
+
+template <>
 struct StormReflTypeInfo<PlaySoundGlobalEvent>
 {
   using MyBase = GlobalNetworkEvent;
@@ -183,6 +281,22 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data<2 + StormReflTypeInfo<G
 };
 
 template <>
+struct StormReflTypeInfo<TieEvent>
+{
+  using MyBase = GlobalNetworkEvent;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
+  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
+  {
+    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
+  };
+  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
+  static constexpr auto GetName() { return "TieEvent"; }
+  static constexpr auto GetNameHash() { return 0xCE146734; }
+  static TieEvent & GetDefault() { static TieEvent def; return def; }
+};
+
+template <>
 struct StormReflTypeInfo<ServerAuthNetworkEvent>
 {
   using MyBase = void;
@@ -311,7 +425,7 @@ namespace StormReflFileInfo
 {
   struct GameNetworkEvents
   {
-    static const int types_n = 10;
+    static const int types_n = 13;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -324,53 +438,71 @@ namespace StormReflFileInfo
   template <>
   struct GameNetworkEvents::type_info<1>
   {
-    using type = ::PlaySoundGlobalEvent;
+    using type = ::CreateEntityGlobalEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<2>
   {
-    using type = ::PlayVfxGlobalEvent;
+    using type = ::CameraShakeEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<3>
   {
-    using type = ::ServerAuthNetworkEvent;
+    using type = ::PlaySoundGlobalEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<4>
   {
-    using type = ::PlaceholderServerAuthEvent;
+    using type = ::PlayVfxGlobalEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<5>
   {
-    using type = ::TargetNetworkEvent;
+    using type = ::TieEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<6>
   {
-    using type = ::PlaceholderTargetEvent;
+    using type = ::ServerAuthNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<7>
   {
-    using type = ::ClientNetworkEvent;
+    using type = ::PlaceholderServerAuthEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<8>
   {
-    using type = ::PlaceholderClientEvent;
+    using type = ::TargetNetworkEvent;
   };
 
   template <>
   struct GameNetworkEvents::type_info<9>
+  {
+    using type = ::PlaceholderTargetEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<10>
+  {
+    using type = ::ClientNetworkEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<11>
+  {
+    using type = ::PlaceholderClientEvent;
+  };
+
+  template <>
+  struct GameNetworkEvents::type_info<12>
   {
     using type = ::JumpEvent;
   };

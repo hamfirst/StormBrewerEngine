@@ -59,6 +59,30 @@
     </ClCompile>
     <ClCompile Include="GameClientCommon.cpp" />
     <ClCompile Include="GameShaders.cpp" />
+    <ClCompile Include="Components\Reusable\AttachVfxComponent.refl.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Reusable\AttachVfxComponent.refl.reg.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Reusable\PlayAnimationComponent.refl.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Reusable\PlayAnimationComponent.refl.reg.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Reusable\SyncServerObjectComponent.refl.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Reusable\SyncServerObjectComponent.refl.reg.cpp">
+      <Filter>Components\Reusable</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectLayers\FuturisticGridEffectLayer.refl.cpp">
+      <Filter>EffectLayers</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectLayers\FuturisticGridEffectLayer.refl.reg.cpp">
+      <Filter>EffectLayers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNetworkClient.h" />
@@ -125,6 +149,30 @@
     </ClInclude>
     <ClInclude Include="GameClientCommon.h" />
     <ClInclude Include="GameShaders.h" />
+    <ClInclude Include="Components\Reusable\AttachVfxComponent.refl.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Reusable\AttachVfxComponent.refl.meta.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Reusable\PlayAnimationComponent.refl.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Reusable\PlayAnimationComponent.refl.meta.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Reusable\SyncServerObjectComponent.refl.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Reusable\SyncServerObjectComponent.refl.meta.h">
+      <Filter>Components\Reusable</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectLayers\FuturisticGridEffectLayer.refl.h">
+      <Filter>EffectLayers</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectLayers\FuturisticGridEffectLayer.refl.meta.h">
+      <Filter>EffectLayers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -141,6 +189,9 @@
     </Filter>
     <Filter Include="Shared">
       <UniqueIdentifier>{bb922838-065b-4ec9-9107-cb69f937ad12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Reusable">
+      <UniqueIdentifier>{3782d0e3-e22a-4ff0-9d6f-a61592551dfb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

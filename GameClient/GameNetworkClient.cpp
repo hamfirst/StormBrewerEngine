@@ -126,8 +126,8 @@ void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
 #if NET_MODE == NET_MODE_GGPO
 
   auto future_frames = GetFutureFrames();
-  m_InstanceContainer->PushLocalInput(0, input, future_frames);
 
+  m_InstanceContainer->PushLocalInput(0, input, future_frames);
 
 #endif
 
@@ -248,6 +248,16 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
   }
 
   auto current_frame = m_InstanceContainer->GetGlobalInstanceData().m_FrameCount;
+
+#ifdef NET_SYNC_OLD_STATE
+  auto history_frame = game_state.m_ServerFrame - NET_SYNC_HISTORY_FRAMES;
+
+  if (current_frame > history_frame)
+  {
+    m_FrameSkip += current_frame - history_frame;
+  }
+
+#else
   auto dest_frame = std::max(game_state.m_ServerFrame, current_frame);
 
   if (current_frame > game_state.m_ServerFrame)
@@ -255,9 +265,11 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
     m_FrameSkip += current_frame - game_state.m_ServerFrame;
   }
 
-  m_LastServerFrame = game_state.m_ServerFrame;
+#endif
 
   auto frames_to_rewind = current_frame - game_state.m_State->m_InstanceData.m_FrameCount;
+
+  m_LastServerFrame = game_state.m_ServerFrame;
 
   m_InstanceContainer->Rewind(game_state.m_State->m_InstanceData.m_FrameCount, std::make_shared<GameFullState>(*game_state.m_State.get()));
   m_InstanceContainer->PurgeLocalData(game_state.m_AckFrame);
@@ -473,6 +485,10 @@ int GameNetworkClient::GetFutureFrames()
   }
 #else
   int future_frames = 0;
+#endif
+
+#ifdef NET_SYNC_OLD_STATE
+  future_frames += NET_SYNC_HISTORY_FRAMES;
 #endif
 
   return future_frames;
