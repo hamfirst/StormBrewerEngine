@@ -220,9 +220,6 @@
   <ItemGroup>
     <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.reg.cpp" />
     <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" />
-    <ClCompile Include="ServerObjects\Bot\TestBot\Class.cpp" />
-    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.reg.cpp" />
-    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" />
     <ClCompile Include="ServerObjects\Bot\BehaviorTree\BehaviorTreeTypeDatabase.cpp" />
     <ClCompile Include="ServerObjects\Bot\BotServerObject.refl.cpp" />
     <ClCompile Include="AI\BehaviorTree\BehaviorTree.cpp" />
@@ -285,9 +282,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" />
-    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" />
-    <ClInclude Include="ServerObjects\Bot\TestBot\Class.h" />
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" />
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" />
     <ClInclude Include="ServerObjects\Bot\BehaviorTree\States\PlayAnimationState.refl.meta.h" />

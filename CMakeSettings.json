@@ -1,0 +1,32 @@
+{
+  "configurations": 
+  [
+    {
+      "name": "Config",
+      "generator": "Visual Studio 15 2017 Win64",
+      "buildRoot": "${workspaceRoot}\\build\\${name}",
+      "variables": [
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "E:\\Qt\\5.11.1\\msvc2017_64"
+        },
+        {
+          "name": "BUILD_TOOLS",
+          "value": "ON"
+        },
+        {
+          "name": "SDL_SHARED",
+          "value": "OFF"
+        },
+        {
+          "name": "SDL_STATIC",
+          "value": "ON"
+        },
+        {
+          "name": "CLANG_HEADER_PATH",
+          "value": "."
+        }
+      ]
+    }
+  ]
+}

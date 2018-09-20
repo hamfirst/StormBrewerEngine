@@ -33,4 +33,4 @@ else()
               )
 endif()            
             
-add_library(StormNetCustomBindings ${GENERIC_SRC_StormNetCustomBindings} )
+add_library(StormNetCustomBindings STATIC ${GENERIC_SRC_StormNetCustomBindings} )

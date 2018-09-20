@@ -6,7 +6,7 @@
 
 class RBool;
 
-class PropertyField;
+struct PropertyField;
 class DocumentEditorWidgetBase;
 
 class PropertyEditorBool : public QWidget

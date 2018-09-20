@@ -248,6 +248,9 @@ private:
       void * mem = m_TreeMemory.get() + elem.m_TargetOffset;
       elem.m_Deallocate(mem);
     }
+
+    m_TreeMemory.reset();
+    m_BehaviorTree = nullptr;
   }
 
   template <typename RandomSource>

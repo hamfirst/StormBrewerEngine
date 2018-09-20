@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
+project(StormBrewerEngine)
+
 include(CMake/StormBrewerEngine.cmake)
 
 add_subdirectory(Game)
@@ -113,7 +115,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
       target_link_libraries(ClientExe Winmm.lib)
       target_link_libraries(ClientExe Version.lib)
       target_link_libraries(ClientExe Imm32.lib)
-      target_link_libraries(ClientExe SDL2)
+      target_link_libraries(ClientExe SDL2-static)
     elseif(ANDROID)
       target_link_libraries(ClientExe dl)
       target_link_libraries(ClientExe SDL2)
@@ -215,71 +217,94 @@ endif()
 
 if(BUILD_TOOLS)
   add_executable(generatecmake GenerateCMake/Main.cpp)
-  target_link_libraries(generatecmake stdc++fs)
+
+  if(NOT MSVC)
+	  target_link_libraries(generatecmake stdc++fs)
+  endif()
 
   add_custom_command(TARGET generatecmake POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generatecmake> ${CMAKE_CURRENT_SOURCE_DIR}/generatecmake
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generatecmake> ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
   add_executable(addcode Dummy.cpp)
-  target_link_libraries(addcode addcodelib TemplateLib git2 stdc++fs)
+  target_link_libraries(addcode addcodelib TemplateLib git2)
+
+  if(NOT MSVC)
+	target_link_libraries(addcode stdc++fs)
+  endif()
+
   set_target_properties(addcode PROPERTIES CXX_STANDARD 17)
 
   add_custom_command(TARGET addcode POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}/addcode
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}
       COMMENT "Copying to Target Directory"
   )
 
-  add_executable(stormrefl StormRefl/main.cpp  StormRefl/StaticLibs.cpp StormRefl/StormReflOutput.cpp)
+  if(MSVC)
+	  link_directories("C:\\Dev\\llvm-build\\RelWithDebInfo\\lib")
+  endif()	
+
+  add_executable(stormrefl StormRefl/main.cpp StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
-  target_link_libraries(stormrefl
-    clangFrontend
-    clangSerialization
-    clangDriver
-    clangParse
-    clangSema
-    clangAnalysis
-    clangAST
-    clangBasic
-    clangEdit
-    clangLex
-    clangTooling
-    clang
-  )
 
-  target_link_libraries(stormrefl
-    LLVMX86AsmParser # MC, MCParser, Support, X86Desc, X86Info
-    LLVMX86Desc # MC, Support, X86AsmPrinter, X86Info
-    LLVMX86AsmPrinter # MC, Support, X86Utils
-    LLVMX86Info # MC, Support, Target
-    LLVMX86Utils # Core, Support
-    LLVMipo
-    LLVMScalarOpts
-    LLVMInstCombine
-    LLVMTransformUtils
-    LLVMAnalysis
-    LLVMTarget
-    LLVMOption # Support
-    LLVMMCParser # MC, Support
-    LLVMMC # Object, Support
-    LLVMObject # BitReader, Core, Support
-    LLVMBitReader # Core, Support
-    LLVMCore # Support
-    LLVMSupport
-    LLVMDebugInfoDWARF
-    LLVMBinaryFormat
-    LLVMProfileData
-  )
+  if(MSVC)
+	  target_include_directories(stormrefl PUBLIC C:\\Dev\\llvm\\tools\\clang\\include C:\\Dev\\llvm-build\\tools\\clang\\include C:\\Dev\\llvm\\include C:\\Dev\\llvm-build\\include)
+    target_compile_options(stormrefl PRIVATE "/MD" "/O2")
+    target_link_libraries(stormrefl Mincore.lib)
+    STRING (REGEX REPLACE "[/|-]RTC(su|[1su])" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+  else()	
+	  target_compile_options(stormrefl PUBLIC -fno-rtti)
+	  target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+	  target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
+  endif()	
 
-  target_compile_options(stormrefl PUBLIC -fno-rtti)
-  target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-  target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
+	target_link_libraries(stormrefl
+	  clangFrontend
+	  clangSerialization
+	  clangDriver
+	  clangParse
+	  clangSema
+	  clangAnalysis
+	  clangAST
+	  clangBasic
+	  clangEdit
+	  clangLex
+	  clangTooling
+	  libclang
+	)
+
+	target_link_libraries(stormrefl
+	  LLVMX86AsmParser # MC, MCParser, Support, X86Desc, X86Info
+	  LLVMX86Desc # MC, Support, X86AsmPrinter, X86Info
+	  LLVMX86AsmPrinter # MC, Support, X86Utils
+	  LLVMX86Info # MC, Support, Target
+	  LLVMX86Utils # Core, Support
+	  LLVMipo
+	  LLVMScalarOpts
+	  LLVMInstCombine
+	  LLVMTransformUtils
+	  LLVMAnalysis
+	  LLVMTarget
+	  LLVMOption # Support
+	  LLVMMCParser # MC, Support
+	  LLVMMC # Object, Support
+	  LLVMObject # BitReader, Core, Support
+	  LLVMBitReader # Core, Support
+	  LLVMCore # Support
+	  LLVMSupport
+	  #LLVMDebugInfoDWARF
+	  LLVMBinaryFormat
+	  LLVMProfileData
+	)
 
   add_executable(documentserver Dummy.cpp)
-  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls)
-  target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-  target_link_libraries(documentserver GL GLU stdc++fs z rt m c dl)
-  target_link_libraries(documentserver binpack)
+  
+  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls binpack)
+
+  if(NOT MSVC)
+    target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+    target_link_libraries(documentserver GL GLU stdc++fs z rt m c dl)
+  endif()
 
   find_package(Qt5Widgets CONFIG REQUIRED)
   find_package(Qt5OpenGL CONFIG REQUIRED)
@@ -301,6 +326,8 @@ if(BUILD_TOOLS)
     target_link_libraries(editor Game)
     target_link_libraries(editor Runtime)
     target_link_libraries(editor Engine)
+
+    set_target_properties(editor PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:Editor.lib /WHOLEARCHIVE:GameClient.lib /WHOLEARCHIVE:GameServer.lib /WHOLEARCHIVE:Game.lib /WHOLEARCHIVE:Runtime.lib /WHOLEARCHIVE:Engine.lib")
   elseif(NOT WEB)
     target_link_libraries(editor -Wl,--whole-archive Editor -Wl,--no-whole-archive)
     target_link_libraries(editor -Wl,--whole-archive GameClient -Wl,--no-whole-archive)
@@ -352,33 +379,35 @@ if(BUILD_TOOLS)
     target_link_libraries(editor Winmm.lib)
     target_link_libraries(editor Version.lib)
     target_link_libraries(editor Imm32.lib)
-    target_link_libraries(editor SDL2)
+    target_link_libraries(editor SDL2-static)
   endif()
 
   if(UNIX AND NOT APPLE)
     target_link_libraries(editor SDL2-static)
   endif()
 
-  target_link_libraries(editor stdc++fs)
-  target_link_libraries(editor dl pthread)
+  if(NOT MSVC)
+    target_link_libraries(editor stdc++fs)
+    target_link_libraries(editor dl pthread)
+  endif()
 
   add_custom_command(TARGET documentserver POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test/DocumentServer
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
   )
 
   add_custom_command(TARGET editor POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test/Editor
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
   )
 
     add_custom_command(TARGET ClientExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ClientExe
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
   )
 
   add_custom_command(TARGET ServerExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ServerExe
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
   )
 endif()

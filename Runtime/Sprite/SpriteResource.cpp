@@ -290,6 +290,12 @@ bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & 
 
 void SpriteResource::SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const
 {
+  if (animation_index < 0)
+  {
+    anim_state = {};
+    return;
+  }
+
   auto frame_start = m_AnimStart[animation_index];
 
   anim_state.m_AnimIndex = animation_index;

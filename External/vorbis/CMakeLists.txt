@@ -49,4 +49,4 @@ set(GENERIC_SRC_vorbis
             ./vorbisfile.c
             ./window.c
             )
-add_library(vorbis ${GENERIC_SRC_vorbis} ${PLATFORM_SRC_vorbis} )
+add_library(vorbis STATIC ${GENERIC_SRC_vorbis} ${PLATFORM_SRC_vorbis} )

@@ -38,4 +38,4 @@ set(GENERIC_SRC_StormWebrtcClientAPI
             ./StormWebrtcClientNative.cpp
             ./StormWebrtcClientWeb.cpp
             )
-add_library(StormWebrtcClientAPI ${GENERIC_SRC_StormWebrtcClientAPI} ${PLATFORM_SRC_StormWebrtcClientAPI} )
+add_library(StormWebrtcClientAPI STATIC ${GENERIC_SRC_StormWebrtcClientAPI} ${PLATFORM_SRC_StormWebrtcClientAPI} )

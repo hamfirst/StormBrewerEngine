@@ -194,7 +194,6 @@ void FrameEditorSingleLine::DrawData()
 void FrameEditorSingleLine::DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl)
 {
   Optional<std::size_t> best_index;
-  float best_dist;
 
   auto pos = mapFromGlobal(QCursor::pos());
   auto cursor_pos = Vector2(pos.x(), pos.y());

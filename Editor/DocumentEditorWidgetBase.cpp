@@ -127,7 +127,7 @@ uint64_t DocumentEditorWidgetBase::AddChildChangeCallback(czstr path, DocumentEx
   ChildPathChangeCallbackData cb_data;
   cb_data.m_Callback = std::move(callback);
   cb_data.m_PathHash = crc64(path);
-  cb_data.m_PathLength = strlen(path);
+  cb_data.m_PathLength = static_cast<int>(strlen(path));
   cb_data.m_Defunct = false;
 
   if (m_TriggeringCallbacks)

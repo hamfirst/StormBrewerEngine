@@ -59,4 +59,4 @@ set(GENERIC_SRC_lua
             ./lvm.c
             ./lzio.c
             )
-add_library(lua ${GENERIC_SRC_lua} ${PLATFORM_SRC_lua} )
+add_library(lua STATIC ${GENERIC_SRC_lua} ${PLATFORM_SRC_lua} )

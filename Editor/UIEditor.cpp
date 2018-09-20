@@ -98,7 +98,7 @@ NullOptPtr<UIDef> UIEditor::GetUIForPath(UIDef & root, czstr path)
       path++;
     }
 
-    auto next_elem = cur_elem->m_Children.TryGet(child_index);
+    auto next_elem = cur_elem->m_Children.TryGet(static_cast<int>(child_index));
     if (next_elem == nullptr)
     {
       return nullptr;

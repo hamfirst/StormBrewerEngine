@@ -132,7 +132,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     break;
   case MapEditorLayerItemType::kManualTileLayer:
     m_PropertyEditor->LoadStruct(this, m_Map.m_ManualTileLayers[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_ManualTileLayers.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_ManualTileLayers.TryGet(static_cast<int>(index)); }, true);
 
     m_Selector->GetTileSelector()->show();
     m_Selector->GetTileSelector()->SetLayer((int)layer.m_Index);
@@ -156,7 +156,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetParalaxObjectSelector()->Clear();
     m_Selector->GetParalaxObjectSelector()->hide();
     m_PropertyEditor->LoadStruct(this, m_Map.m_EntityLayers[layer.m_Index], 
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_EntityLayers.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_EntityLayers.TryGet(static_cast<int>(index)); }, true);
     break;
   case MapEditorLayerItemType::kServerObjectLayer:
 
@@ -169,7 +169,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetParalaxObjectSelector()->Clear();
     m_Selector->GetParalaxObjectSelector()->hide();
     m_PropertyEditor->LoadStruct(this, m_Map.m_ServerObjectLayers[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_ServerObjectLayers.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_ServerObjectLayers.TryGet(static_cast<int>(index)); }, true);
     break;
   case MapEditorLayerItemType::kEntity:
 
@@ -178,8 +178,8 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_PropertyEditor->LoadStruct(this, m_Map.m_EntityLayers[layer.m_Index].m_Entities[layer.m_SubIndex], 
       [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
       { 
-        auto layer = m_Map.m_EntityLayers.TryGet(index); 
-        auto entity = layer ? layer->m_Entities.TryGet(subindex) : nullptr; 
+        auto layer = m_Map.m_EntityLayers.TryGet(static_cast<int>(index));
+        auto entity = layer ? layer->m_Entities.TryGet(static_cast<int>(subindex)) : nullptr;
         return entity;
       }, true
     );
@@ -196,7 +196,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_PropertyEditor->LoadStruct(this, m_Map.m_ServerObjectLayers[layer.m_Index].m_Objects[layer.m_SubIndex], 
       [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
       { 
-        auto layer = m_Map.m_ServerObjectLayers.TryGet(index); 
+        auto layer = m_Map.m_ServerObjectLayers.TryGet(static_cast<int>(index));
         auto server_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr; 
         return server_object;
       }, true
@@ -212,7 +212,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
     ClearSelectors();
     m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_ParalaxLayers.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_ParalaxLayers.TryGet(static_cast<int>(index)); }, true);
     break;
 
   case MapEditorLayerItemType::kCreateParalaxObject:
@@ -239,7 +239,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex], 
       [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
       { 
-        auto layer = m_Map.m_ParalaxLayers.TryGet(index); 
+        auto layer = m_Map.m_ParalaxLayers.TryGet(static_cast<int>(index));
         auto paralax_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr; 
         return paralax_object;
       }, true
@@ -255,7 +255,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
 
     ClearSelectors();
     m_PropertyEditor->LoadStruct(this, m_Map.m_EffectLayers[layer.m_Index], 
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_EffectLayers.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_EffectLayers.TryGet(static_cast<int>(index)); }, true);
     break;
 
   case MapEditorLayerItemType::kCreateVolume:
@@ -279,7 +279,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     ClearSelectors();
 
     m_PropertyEditor->LoadStruct(this, m_Map.m_Volumes[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_Volumes.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_Volumes.TryGet(static_cast<int>(index)); }, true);
 
     if (change_viewer_position)
     {
@@ -309,7 +309,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     ClearSelectors();
 
     m_PropertyEditor->LoadStruct(this, m_Map.m_Paths[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_Paths.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_Paths.TryGet(static_cast<int>(index)); }, true);
 
     if (change_viewer_position)
     {
@@ -335,7 +335,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     ClearSelectors();
 
     m_PropertyEditor->LoadStruct(this, m_Map.m_Anchors[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_Anchors.TryGet(index); }, true);
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_Anchors.TryGet(static_cast<int>(index)); }, true);
 
     if (change_viewer_position)
     {

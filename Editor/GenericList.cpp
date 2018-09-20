@@ -41,7 +41,7 @@ GenericList::GenericList(
 
   if (m_Elements.size() > 0)
   {
-    SetSelection(m_Elements.begin()->first);
+    SetSelection(static_cast<int>(m_Elements.begin()->first));
   }
 
   RepositionChildren();
@@ -95,7 +95,7 @@ void GenericList::SetAllowSelection(bool allow)
   {
     if (m_SelectedIndex == -1 && m_Elements.size() > 0)
     {
-      SetSelection(m_Elements.begin()->first);
+      SetSelection(static_cast<int>(m_Elements.begin()->first));
     }
   }
   else
@@ -121,7 +121,7 @@ void GenericList::AppendElement(void * elem)
     RepositionChildren();
     m_SizeChangedDelegate();
 
-    SetSelection(index);
+    SetSelection(static_cast<int>(index));
   }
 }
 
@@ -171,7 +171,7 @@ void GenericList::SyncNewElement(std::size_t index)
   {
     std::string element_path = m_BasePath + '[' + std::to_string(index) + ']';
     new_elem.m_CallbackId = m_Editor->AddChildChangeCallback(element_path.data(),
-      DocumentExternalChangeCallback([=](const ReflectionChangeNotification &) { UpdateElement(index); }));
+      DocumentExternalChangeCallback([=](const ReflectionChangeNotification &) { UpdateElement(static_cast<int>(index)); }));
   }
   else
   {
@@ -250,7 +250,7 @@ void GenericList::ResyncAllElements()
   if (m_Elements.size() > 0)
   {
     m_SelectedIndex = -1;
-    SetSelection(m_Elements.begin()->first);
+    SetSelection(static_cast<int>(m_Elements.begin()->first));
   }
   else
   {

@@ -45,8 +45,12 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, StormSockets
   m_ExitThread(false)
 {
 #ifdef _MSC_VER
+
+  printf("Starting file system watcher in directory %s\n", root_path.c_str());
+  fs::path root_fs_path(root_path.data());
+
   m_Data->m_DirectoryHandle = CreateFile(
-    m_RootPath.data(),
+    root_fs_path.c_str(),
     FILE_LIST_DIRECTORY,
     FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
     NULL,
