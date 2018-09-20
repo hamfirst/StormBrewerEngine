@@ -38,7 +38,7 @@ public:
   void GetDefaultFrame(AnimationState & anim_state) const;
   bool FrameAdvance(uint32_t animation_name_hash, AnimationState & anim_state, bool loop = true, int frames = 1) const;
   bool SyncToFrame(uint32_t animation_name_hash, AnimationState & anim_state, int frames) const;
-  bool SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const;
+  void SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const;
 
   void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
 
