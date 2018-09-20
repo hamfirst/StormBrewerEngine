@@ -107,7 +107,7 @@ void FrameEditorAnchorManager::RefreshOptions()
 
     if (elem.second.m_AnchorName == m_SelectedAnchor)
     {
-      selected_index = elem.first;
+      selected_index = static_cast<int>(elem.first);
     }
   }
 
@@ -232,7 +232,6 @@ void FrameEditorAnchorManager::DrawPreview(const Vector2 & frame_pos, bool alt, 
   }
 
   Optional<std::size_t> best_index;
-  float best_dist;
 
   auto pos = mapFromGlobal(QCursor::pos());
   auto cursor_pos = Vector2(pos.x(), pos.y());

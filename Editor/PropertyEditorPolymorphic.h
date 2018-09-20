@@ -7,7 +7,7 @@
 
 class RString;
 
-class PropertyField;
+struct PropertyField;
 class DocumentEditorWidgetBase;
 
 class PropertyEditorPolymorphic : public QWidget

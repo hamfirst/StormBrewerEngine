@@ -67,4 +67,4 @@ set(GENERIC_SRC_freetype
             ./type42/type42.c
             ./winfonts/winfnt.c
             )
-add_library(freetype ${GENERIC_SRC_freetype} ${PLATFORM_SRC_freetype} )
+add_library(freetype STATIC ${GENERIC_SRC_freetype} ${PLATFORM_SRC_freetype} )

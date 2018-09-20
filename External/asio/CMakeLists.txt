@@ -27,4 +27,4 @@ endif()
 set(GENERIC_SRC_asio 
             ./asio.cpp
             )
-add_library(asio ${GENERIC_SRC_asio} ${PLATFORM_SRC_asio} )
+add_library(asio STATIC ${GENERIC_SRC_asio} ${PLATFORM_SRC_asio} )

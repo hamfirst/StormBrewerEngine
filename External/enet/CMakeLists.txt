@@ -57,4 +57,4 @@ set(GENERIC_SRC_ENet
             ./unix.c
             ./win32.c
             )
-add_library(ENet ${GENERIC_SRC_ENet} )
+add_library(ENet STATIC ${GENERIC_SRC_ENet} )

@@ -42,7 +42,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   add_subdirectory("${PROJECT_SOURCE_DIR}/Engine")
   
   if (MSVC)
-    add_subdirectory("${PROJECT_SOURCE_DIR}/External/Windows/SDL2")
+    add_subdirectory("${PROJECT_SOURCE_DIR}/External/Windows/SDL_build")
     add_subdirectory("${PROJECT_SOURCE_DIR}/External/Windows/freetype2")
   endif()
   

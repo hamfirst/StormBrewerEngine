@@ -3,14 +3,14 @@
 
 int main(int argc, char ** argv)
 {
-  if(!strcmp(argv[1], "-d"))
+  if (argc >= 2 && !strcmp(argv[1], "-d"))
   {
     auto cur_dir = fs::canonical(".");
     auto cur_file = fs::canonical(argv[0]);
     printf("Current dir: %s\n", cur_dir.string().c_str());
 
     auto cmake_file_path = FindCMakeFile(cur_dir, cur_dir.root_directory());
-    if(cmake_file_path.has_value())
+    if (cmake_file_path.has_value())
     {
       printf("CMake path: %s\n", cmake_file_path->string().c_str());
       auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), cur_file);

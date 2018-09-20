@@ -114,7 +114,7 @@ void FrameEditorAnchorEditor::RefreshOptions()
 
     if (elem.second.m_AnchorName == m_SelectedAnchor)
     {
-      selected_index = elem.first;
+      selected_index = static_cast<int>(elem.first);
     }
   }
 
@@ -191,7 +191,6 @@ Vector2 FrameEditorAnchorEditor::GetPreviewData()
     return {};
   }
 
-  FrameDataLowerEdgeInfo data;
   auto data_list = m_Getter(m_FrameId);
 
   if (m_PreviewLocation)
@@ -265,7 +264,6 @@ void FrameEditorAnchorEditor::DrawData()
 void FrameEditorAnchorEditor::DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl)
 {
   Optional<std::size_t> best_index;
-  float best_dist;
 
   auto pos = mapFromGlobal(QCursor::pos());
   auto cursor_pos = Vector2(pos.x(), pos.y());

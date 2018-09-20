@@ -11,25 +11,25 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_QTUtil 
-            QtLerpVar.cpp
             AnimationTrack.cpp
-            QTUtil.cpp
-            LerpVar.cpp
             DraggableList.cpp
             ExpandableList.cpp
             FocusWatcher.cpp
+            LerpVar.cpp
+            QtLerpVar.cpp
+            QTUtil.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_QTUtil 
-            VectorRearrange.h
-            QtLerpVar.h
             AnimationTrack.h
+            DraggableList.h
+            ExpandableList.h
             FocusWatcher.h
             LerpVar.h
-            ExpandableList.h
+            QtLerpVar.h
             QTUtil.h
             qtutil_global.h
-            DraggableList.h
+            VectorRearrange.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_QTUtil 
@@ -96,7 +96,7 @@ endif()
 foreach(REFL_FILE ${GENERIC_REFL_QTUtil})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
   add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
-                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
                      MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()

@@ -7,15 +7,6 @@
     <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" >
       <Filter>ServerObjects\Bot\TestBot</Filter>
     </ClCompile>
-    <ClCompile Include="ServerObjects\Bot\TestBot\Class.cpp" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.reg.cpp" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerObjects\Bot\TestBot\TestBot.refl.cpp" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClCompile>
     <ClCompile Include="ServerObjects\Bot\BehaviorTree\BehaviorTreeTypeDatabase.cpp" >
       <Filter>ServerObjects\Bot\BehaviorTree</Filter>
     </ClCompile>
@@ -90,15 +81,6 @@
     <ClCompile Include="GameServerEventSender.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerObjects\Bot\TestBot\Class.h" >
-      <Filter>ServerObjects\Bot\TestBot</Filter>
-    </ClInclude>
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" >
       <Filter>ServerObjects\Bot\TestBot</Filter>
     </ClInclude>
