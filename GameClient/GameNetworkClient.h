@@ -51,7 +51,9 @@ class GameState;
 struct GameNetworkClientInitSettings
 {
   //const char * m_RemoteHost = "52.161.102.44";
-  const char * m_RemoteHost = "192.168.2.2";
+  //const char * m_RemoteHost = "192.168.2.2";
+  const char * m_RemoteHost = "127.0.0.1";
+
 
   int m_RemotePort = 47816;
   std::string m_UserName = "User";

@@ -235,13 +235,10 @@ if(BUILD_TOOLS)
 
   set_target_properties(addcode PROPERTIES CXX_STANDARD 17)
 
-  add_custom_command(TARGET addcode POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}
-      COMMENT "Copying to Target Directory"
-  )
-
   if(MSVC)
 	  link_directories("C:\\Dev\\llvm-build\\RelWithDebInfo\\lib")
+  else()
+    link_directories("/usr/local/lib")
   endif()	
 
   add_executable(stormrefl StormRefl/main.cpp StormRefl/StormReflOutput.cpp)
@@ -253,7 +250,7 @@ if(BUILD_TOOLS)
     target_link_libraries(stormrefl Mincore.lib)
     STRING (REGEX REPLACE "[/|-]RTC(su|[1su])" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
   else()	
-	  target_compile_options(stormrefl PUBLIC -fno-rtti)
+	  target_compile_options(stormrefl PUBLIC "-fno-rtti" "-O3")
 	  target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
 	  target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
   endif()	
@@ -270,8 +267,13 @@ if(BUILD_TOOLS)
 	  clangEdit
 	  clangLex
 	  clangTooling
-	  libclang
 	)
+
+  if(MSVC)
+    target_link_libraries(stormrefl libclang)
+  else()
+    target_link_libraries(stormrefl clang)
+  endif()
 
 	target_link_libraries(stormrefl
 	  LLVMX86AsmParser # MC, MCParser, Support, X86Desc, X86Info
@@ -391,25 +393,57 @@ if(BUILD_TOOLS)
     target_link_libraries(editor dl pthread)
   endif()
 
-  add_custom_command(TARGET documentserver POST_BUILD
+  if(MSVC)
+    add_custom_command(TARGET addcode POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}
+      COMMENT "Copying to Target Directory"
+    )
+
+    add_custom_command(TARGET documentserver POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
-  )
+    )
 
-  add_custom_command(TARGET editor POST_BUILD
+    add_custom_command(TARGET editor POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
-  )
+    )
 
     add_custom_command(TARGET ClientExe POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
-  )
+    )
 
-  add_custom_command(TARGET ServerExe POST_BUILD
+    add_custom_command(TARGET ServerExe POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
       COMMENT "Copying to Test Directory"
-  )
+    )
+  else()
+    add_custom_command(TARGET addcode POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}/addcode
+      COMMENT "Copying to Target Directory"
+    )
+
+    add_custom_command(TARGET documentserver POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test/documentserver
+      COMMENT "Copying to Test Directory"
+    )
+
+    add_custom_command(TARGET editor POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test/editor
+      COMMENT "Copying to Test Directory"
+    )
+
+    add_custom_command(TARGET ClientExe POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ClientExe
+      COMMENT "Copying to Test Directory"
+    )
+
+    add_custom_command(TARGET ServerExe POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ServerExe
+      COMMENT "Copying to Test Directory"
+    )
+  endif()
 endif()
 
 add_dependencies(Game Runtime)
@@ -424,7 +458,8 @@ if(BUILD_SERVER OR BUILD_TOOLS)
 endif()
 
 if(BUILD_TOOLS)
-  add_dependencies(Editor DocumentServer)
+  add_dependencies(Editor documentserver)
+  add_dependencies(Editor Game)
 endif()
 
 if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")

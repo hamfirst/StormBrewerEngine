@@ -2,7 +2,9 @@
 
 #include "Foundation/Optional/NullOpt.h"
 
+#include <vector>
 #include <cstdlib>
+#include <cstdio>
 #include <algorithm>
 
 template <typename T, typename TimeValue>
@@ -166,8 +168,9 @@ public:
   }
 
   template <typename IterType, typename TimePred, typename ValuePred>
-  void MergeList(IterType begin, IterType end, int list_size, TimePred && time_pred, ValuePred && value_pred)
+  void MergeList(IterType begin, IterType end, TimePred && time_pred, ValuePred && value_pred)
   {
+    auto list_size = end - begin;
     if (list_size == 0)
     {
       return;
@@ -204,90 +207,64 @@ public:
       }
     }
 
-    if (dst_index == m_Size)
-    { 
-      // Put the rest of the elements in the list
-      for(auto itr = begin; itr != end; ++itr)
-      {
-        auto & elem = (*itr);
-        ValidateElement(&m_Values[m_Size]);
-        new(&m_Values[m_Size]) ValueContainer( time_pred(elem), std::move(value_pred(elem)) );
-        m_Size++;
-      }
-
-      return;
+    std::vector<ValueContainer> list_values;
+    list_values.reserve(list_size);
+    for(auto itr = begin; itr != end; ++itr)
+    {
+      auto & elem = (*itr);
+      list_values.emplace_back(ValueContainer(time_pred(elem), std::move(value_pred(elem))));
     }
 
-    auto merge_elems = m_Size - dst_index;
-    auto buffer = (ValueContainer *)malloc(sizeof(ValueContainer) * merge_elems);
+    auto list_begin = list_values.begin();
+    auto list_end = list_values.end();
 
-    for (int index = 0, src = dst_index; index < merge_elems; ++index, ++src)
+    while(true)
     {
-      new (&buffer[index]) ValueContainer(std::move(m_Values[src]));
-    }
-
-    int buffer_index = 0;
-    int list_index = 0;
-
-    int move_elems = merge_elems;
-    ValueContainer * dst = &m_Values[dst_index];
-
-    Optional<ValueContainer> place_holder;
-
-    while (true)
-    {
-      ValueContainer * src;
-
-      if (buffer_index == merge_elems)
+      if (dst_index == m_Size)
       {
-        if (list_index == list_size)
+        // Put the rest of the elements in the list
+        for(auto itr = list_begin; itr != list_end; ++itr)
         {
-          break;
+          auto & elem = (*itr);
+          ValidateElement(&m_Values[m_Size]);
+          new(&m_Values[m_Size]) ValueContainer(std::move(elem));
+          m_Size++;
         }
 
-        place_holder.Emplace(ValueContainer(time_pred(*begin), std::move(value_pred(*begin)) ));
-        src = &place_holder.Value();
-        ++begin;
-
-        list_index++;
+        return;
       }
-      else if (list_index == list_size)
+
+      if(begin == end)
       {
-        src = &buffer[buffer_index];
-        buffer_index++;
+        return;
+      }
+
+      auto insert_time = list_begin->m_Frame;
+      auto list_time = m_Values[dst_index].m_Frame;
+
+      if(insert_time < list_time)
+      {
+        std::swap(*list_begin, m_Values[dst_index]);
+
+        for(auto swap_itr = list_begin + 1; swap_itr != list_end; ++swap_itr)
+        {
+          if(swap_itr->m_Frame < list_time)
+          {
+            std::swap(*swap_itr, *(swap_itr - 1));
+          }
+          else
+          {
+            break;
+          }
+        }
+
+        ++dst_index;
       }
       else
       {
-        if (buffer[buffer_index].m_Frame < time_pred(*begin))
-        {
-          src = &buffer[buffer_index];
-          buffer_index++;
-        }
-        else
-        {
-          place_holder.Emplace(ValueContainer( time_pred(*begin), std::move(value_pred(*begin)) ));
-          src = &place_holder.Value();
-          ++begin;
-
-          list_index++;
-        }
+        ++dst_index;
       }
-
-      if (move_elems)
-      {
-        *dst = std::move(*src);
-        move_elems--;
-      }
-      else
-      {
-        ValidateElement(dst);
-        new(dst) ValueContainer(std::move(*src));
-      }
-
-      dst++;
     }
-
-    m_Size += list_size;
   }
 
   template <typename Visitor>
@@ -299,18 +276,14 @@ public:
     }
 
     auto elem = &m_Values[m_Size - 1];
-    auto end = &m_Values[m_Size];
-    auto start = &m_Values[-1];
     while (true)
     {
-      if (elem == start)
-      {
-        elem++;
-        break;
-      }
-
       if (elem->m_Frame >= frame)
       {
+        if(elem == m_Values)
+        {
+          break;
+        }
         elem--;
       }
       else
@@ -318,6 +291,12 @@ public:
         elem++;
         break;
       }
+    }
+
+    auto end = &m_Values[m_Size];
+    if(elem == end && m_Size > 1)
+    {
+      return;
     }
 
     while (elem != end)
