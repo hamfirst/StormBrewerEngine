@@ -33,6 +33,7 @@ GameNetworkClient::GameNetworkClient(GameContainer & game) :
 #endif
 
   m_GameContainer(game),
+  m_SendTimer(0),
   m_LastPingSent(0),
   m_Ping(0)
 {
@@ -61,6 +62,7 @@ void GameNetworkClient::Update()
   {
     m_InstanceContainer->Update();
 
+    printf("Send timer %p %f %f\n", this, m_SendTimer, cur_time);
     if (m_SendTimer <= cur_time)
     {
       m_SendTimer = cur_time + 0.05;

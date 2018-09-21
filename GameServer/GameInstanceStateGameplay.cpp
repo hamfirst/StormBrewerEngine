@@ -842,7 +842,7 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
     if (size > 0)
     {
       rewind_frame = cur->m_Frame;
-      m_Inputistory.MergeList(cur, end, (int)size, [](ClientAuthData & v) { return v.m_Frame; }, 
+      m_Inputistory.MergeList(cur, end, [](ClientAuthData & v) { return v.m_Frame; },
         [&](ClientAuthData & v) { return HistoryInput{ player_info.m_PlayerIndex, v.m_Input }; });
     }
   }
@@ -874,7 +874,7 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
     if (size > 0)
     {
       rewind_frame = cur->m_Frame;
-      m_EventHistory.MergeList(cur, end, (int)size, [](GameHistoryClientEvent & v) { return v.m_Frame; }, 
+      m_EventHistory.MergeList(cur, end, [](GameHistoryClientEvent & v) { return v.m_Frame; },
         [&](GameHistoryClientEvent & v) { return HistoryEvent{ player_info.m_PlayerIndex, v.m_Event }; });
     }
   }

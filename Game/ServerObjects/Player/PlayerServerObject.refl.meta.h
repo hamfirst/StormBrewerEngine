@@ -45,11 +45,11 @@ struct StormReflTypeInfo<PlayerServerObject>
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<0 + StormReflTypeInfo<GameServerObjectBase>::fields_n>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
   static constexpr auto GetName() { return "m_Velocity"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x48F40287; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_Velocity; }
 };

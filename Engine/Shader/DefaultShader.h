@@ -31,7 +31,6 @@ static const char * kDefaultVertexShader = SHADER_LITERAL(
 );
 
 static const char * kDefaultFragmentShader = SHADER_LITERAL(
-  precision highp float;
 
   varying vec2 v_Position;
   varying vec2 v_TexCoord;
