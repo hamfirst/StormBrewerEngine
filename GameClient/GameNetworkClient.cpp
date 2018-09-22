@@ -61,8 +61,6 @@ void GameNetworkClient::Update()
   if (m_State == ClientConnectionState::kConnected)
   {
     m_InstanceContainer->Update();
-
-    printf("Send timer %p %f %f\n", this, m_SendTimer, cur_time);
     if (m_SendTimer <= cur_time)
     {
       m_SendTimer = cur_time + 0.05;

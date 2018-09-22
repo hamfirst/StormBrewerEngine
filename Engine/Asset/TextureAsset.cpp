@@ -10,6 +10,14 @@
 #include <lodepng/lodepng.h>
 
 
+TextureAsset::~TextureAsset()
+{
+  if(m_PixelBuffer)
+  {
+    free(m_PixelBuffer->GetPixelBuffer());
+  }
+}
+
 int TextureAsset::PreProcessLoadedData(Buffer & buffer, bool load_deps)
 {
   unsigned char * out_memory;

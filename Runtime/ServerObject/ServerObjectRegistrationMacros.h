@@ -76,7 +76,6 @@ void ServerObjectName::RegisterServerObject()                                   
   type_info.m_ObjectDuplicate = [](NotNullPtr<const ServerObject> rhs) -> ServerObject *                                        \
   {                                                                                                                             \
     auto ptr = s_##ServerObjectName##Allocator.Allocate(*static_cast<const ServerObjectName *>(rhs));                           \
-    StormReflCopy(*ptr, *static_cast<const ServerObjectName *>(rhs));                                                           \
     return ptr;                                                                                                                 \
   };                                                                                                                            \
                                                                                                                                 \

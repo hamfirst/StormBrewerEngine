@@ -266,8 +266,6 @@ void GameClientInstanceContainer::PushLocalInput(std::size_t client_index, const
     return;
   }
 
-  printf("Pushing input for frame %d\n", m_CurrentSim->m_InstanceData.m_FrameCount + future_frames);
-
   m_LocalInputistory.Push(m_CurrentSim->m_InstanceData.m_FrameCount + future_frames, HistoryInput{ (int)client_index, input });
 }
 

@@ -28,7 +28,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
     while(true)
     {
       m_Retransition = false;
-      behavior_tree->Update(*this, game_container, game_container.GetInstanceData().m_Random);
+      //behavior_tree->Update(*this, game_container, game_container.GetInstanceData().m_Random);
 
       if(m_Retransition == false)
       {

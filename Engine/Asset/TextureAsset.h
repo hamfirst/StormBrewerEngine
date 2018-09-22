@@ -7,6 +7,7 @@
 class ENGINE_EXPORT TextureAsset : public Asset
 {
 public:
+  ~TextureAsset();
 
   const Texture & GetTexture() const;
 
