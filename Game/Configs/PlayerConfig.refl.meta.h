@@ -22,11 +22,11 @@ struct StormReflTypeInfo<PlayerConfig>
 template <>
 struct StormReflTypeInfo<PlayerConfig>::field_data_static<0>
 {
-  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long long, 32, 16> >
+  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long, 32, 16> >
   static constexpr auto GetName() { return "m_MoveSpeed"; }
-  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long long, 32, 16> >"; }
+  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x418ABC46; }
-  static constexpr unsigned GetTypeNameHash() { return 0x363C5348; }
+  static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_MoveSpeed; }
 };
@@ -44,11 +44,11 @@ struct StormReflTypeInfo<PlayerConfig>::field_data<0, Self> : public StormReflTy
 template <>
 struct StormReflTypeInfo<PlayerConfig>::field_data_static<1>
 {
-  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long long, 32, 16> >
+  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long, 32, 16> >
   static constexpr auto GetName() { return "m_MoveAccel"; }
-  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long long, 32, 16> >"; }
+  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x13507455; }
-  static constexpr unsigned GetTypeNameHash() { return 0x363C5348; }
+  static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_MoveAccel; }
 };
