@@ -15,6 +15,7 @@ Texture::Texture()
   m_Width = 0;
   m_Height = 0;
   m_Type = TextureType::kInvalid;
+  m_LinearFilter = false;
 }
 
 Texture::Texture(Texture && rhs) noexcept

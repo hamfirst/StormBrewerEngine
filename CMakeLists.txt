@@ -244,30 +244,19 @@ if(BUILD_TOOLS)
   add_executable(stormrefl StormRefl/main.cpp StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
 
-  if(MSVC)
-	  target_include_directories(stormrefl PUBLIC C:\\Dev\\llvm\\tools\\clang\\include C:\\Dev\\llvm-build\\tools\\clang\\include C:\\Dev\\llvm\\include C:\\Dev\\llvm-build\\include)
-    target_compile_options(stormrefl PRIVATE "/MD" "/O2")
-    target_link_libraries(stormrefl Mincore.lib)
-    STRING (REGEX REPLACE "[/|-]RTC(su|[1su])" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-  else()	
-	  target_compile_options(stormrefl PUBLIC "-fno-rtti" "-O3")
-	  target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
-	  target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
-  endif()	
-
-	target_link_libraries(stormrefl
-	  clangFrontend
-	  clangSerialization
-	  clangDriver
-	  clangParse
-	  clangSema
-	  clangAnalysis
-	  clangAST
-	  clangBasic
-	  clangEdit
-	  clangLex
-	  clangTooling
-	)
+  target_link_libraries(stormrefl
+    clangFrontend
+    clangSerialization
+    clangDriver
+    clangParse
+    clangSema
+    clangAnalysis
+    clangAST
+    clangBasic
+    clangEdit
+    clangLex
+    clangTooling
+  )
 
   if(MSVC)
     target_link_libraries(stormrefl libclang)
@@ -298,6 +287,17 @@ if(BUILD_TOOLS)
 	  LLVMBinaryFormat
 	  LLVMProfileData
 	)
+
+  if(MSVC)
+    target_include_directories(stormrefl PUBLIC C:\\Dev\\llvm\\tools\\clang\\include C:\\Dev\\llvm-build\\tools\\clang\\include C:\\Dev\\llvm\\include C:\\Dev\\llvm-build\\include)
+    target_compile_options(stormrefl PRIVATE "/MD" "/O2")
+    target_link_libraries(stormrefl Mincore.lib)
+    STRING (REGEX REPLACE "[/|-]RTC(su|[1su])" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+  else()
+    target_compile_options(stormrefl PUBLIC "-fno-rtti" "-O3")
+    target_link_libraries(stormrefl -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+    target_link_libraries(stormrefl ncurses stdc++fs z rt m c dl)
+  endif()
 
   add_executable(documentserver Dummy.cpp)
   
@@ -450,6 +450,7 @@ add_dependencies(Game Runtime)
 add_dependencies(Runtime Foundation)
 
 if(BUILD_CLIENT OR BUILD_TOOLS)
+  add_dependencies(Engine Runtime)
   add_dependencies(GameClient Game)
 endif()
 

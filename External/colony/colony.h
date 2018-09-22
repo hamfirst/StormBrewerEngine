@@ -27,42 +27,42 @@
 #if defined(_MSC_VER)
 #define PLF_COLONY_FORCE_INLINE __forceinline
 
-#if _MSC_VER < 1600
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
-#elif _MSC_VER == 1600
-#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
-#elif _MSC_VER == 1700
-#define PLF_COLONY_TYPE_TRAITS_SUPPORT
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
-#elif _MSC_VER == 1800
-#define PLF_COLONY_TYPE_TRAITS_SUPPORT
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_VARIADICS_SUPPORT // Variadics, in this context, means both variadic templates and variadic macros are supported
-#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
-#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
-#elif _MSC_VER >= 1900
-#define PLF_COLONY_ALIGNMENT_SUPPORT
-#define PLF_COLONY_TYPE_TRAITS_SUPPORT
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_VARIADICS_SUPPORT
-#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
-#define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept(std::allocator_traits<the_allocator>::propagate_on_container_swap::value)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
-#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
-#endif
+	#if _MSC_VER < 1600
+		#define PLF_COLONY_NOEXCEPT throw()
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
+	#elif _MSC_VER == 1600
+		#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
+		#define PLF_COLONY_NOEXCEPT throw()
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
+	#elif _MSC_VER == 1700
+		#define PLF_COLONY_TYPE_TRAITS_SUPPORT
+		#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+		#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
+		#define PLF_COLONY_NOEXCEPT throw()
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
+	#elif _MSC_VER == 1800
+		#define PLF_COLONY_TYPE_TRAITS_SUPPORT
+		#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+		#define PLF_COLONY_VARIADICS_SUPPORT // Variadics, in this context, means both variadic templates and variadic macros are supported
+		#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
+		#define PLF_COLONY_NOEXCEPT throw()
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) throw()
+		#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
+	#elif _MSC_VER >= 1900
+		#define PLF_COLONY_ALIGNMENT_SUPPORT
+		#define PLF_COLONY_TYPE_TRAITS_SUPPORT
+		#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+		#define PLF_COLONY_VARIADICS_SUPPORT
+		#define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
+		#define PLF_COLONY_NOEXCEPT noexcept
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept(std::allocator_traits<the_allocator>::propagate_on_container_swap::value)
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
+		#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
+	#endif
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 #define PLF_COLONY_FORCE_INLINE // note: GCC creates faster code without forcing inline
 
@@ -75,12 +75,12 @@
 #endif
 #if (__GNUC__ == 4 && __GNUC_MINOR__ < 6) || __GNUC__ < 4
 #define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+			#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
+			#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
 #elif __GNUC__ < 6
 #define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
+			#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept
+			#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
 #else // C++17 support
 #define PLF_COLONY_NOEXCEPT noexcept
 #define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
@@ -98,57 +98,57 @@
 
 #elif defined(__GLIBCXX__) // Using another compiler type with libstdc++ - we are assuming full c++11 compliance for compiler - which may not be true
 #if __GLIBCXX__ >= 20080606 	// libstdc++ 4.2 and below do not support variadic templates
-#define PLF_COLONY_VARIADICS_SUPPORT
-#endif
-#if __GLIBCXX__ >= 20090421 	// libstdc++ 4.3 and below do not support initializer lists
-#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
-#endif
-#if __GLIBCXX__ >= 20160111
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept(std::allocator_traits<the_allocator>::propagate_on_container_swap::value)
-#elif __GLIBCXX__ >= 20120322
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
-#else
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#endif
-#if __GLIBCXX__ >= 20130322
-#define PLF_COLONY_ALIGNMENT_SUPPORT
-#endif
-#if __GLIBCXX__ >= 20150422 // libstdc++ v4.9 and below do not support std::is_trivially_copyable
-#define PLF_COLONY_TYPE_TRAITS_SUPPORT
-#endif
-#elif defined(_LIBCPP_VERSION) // No type trait support in libc++ to date
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_ALIGNMENT_SUPPORT
-#define PLF_COLONY_VARIADICS_SUPPORT
-#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
-#define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
-#else // Assume type traits and initializer support for non-GCC compilers and standard libraries
-#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
-#define PLF_COLONY_ALIGNMENT_SUPPORT
-#define PLF_COLONY_VARIADICS_SUPPORT
-#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
-#define PLF_COLONY_TYPE_TRAITS_SUPPORT
-#define PLF_COLONY_NOEXCEPT noexcept
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
+			#define PLF_COLONY_VARIADICS_SUPPORT
+		#endif
+		#if __GLIBCXX__ >= 20090421 	// libstdc++ 4.3 and below do not support initializer lists
+			#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
+		#endif
+		#if __GLIBCXX__ >= 20160111
+			#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+			#define PLF_COLONY_NOEXCEPT noexcept
+			#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
+			#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept(std::allocator_traits<the_allocator>::propagate_on_container_swap::value)
+		#elif __GLIBCXX__ >= 20120322
+			#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+			#define PLF_COLONY_NOEXCEPT noexcept
+			#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept
+			#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
+		#else
+			#define PLF_COLONY_NOEXCEPT throw()
+			#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
+			#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+		#endif
+		#if __GLIBCXX__ >= 20130322
+			#define PLF_COLONY_ALIGNMENT_SUPPORT
+		#endif
+		#if __GLIBCXX__ >= 20150422 // libstdc++ v4.9 and below do not support std::is_trivially_copyable
+			#define PLF_COLONY_TYPE_TRAITS_SUPPORT
+		#endif
+	#elif defined(_LIBCPP_VERSION) // No type trait support in libc++ to date
+		#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+		#define PLF_COLONY_ALIGNMENT_SUPPORT
+		#define PLF_COLONY_VARIADICS_SUPPORT
+		#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
+		#define PLF_COLONY_NOEXCEPT noexcept
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
+	#else // Assume type traits and initializer support for non-GCC compilers and standard libraries
+		#define PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+		#define PLF_COLONY_ALIGNMENT_SUPPORT
+		#define PLF_COLONY_VARIADICS_SUPPORT
+		#define PLF_COLONY_INITIALIZER_LIST_SUPPORT
+		#define PLF_COLONY_TYPE_TRAITS_SUPPORT
+		#define PLF_COLONY_NOEXCEPT noexcept
+		#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator) noexcept(std::allocator_traits<the_allocator>::is_always_equal::value)
+		#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator) noexcept
 #endif
 
 #define PLF_COLONY_MOVE_SEMANTICS_SUPPORT
 #else
 #define PLF_COLONY_FORCE_INLINE
-#define PLF_COLONY_NOEXCEPT throw()
-#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
-#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
+	#define PLF_COLONY_NOEXCEPT throw()
+	#define PLF_COLONY_NOEXCEPT_SWAP(the_allocator)
+	#define PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(the_allocator)
 #endif
 
 
@@ -166,15 +166,15 @@
 #define PLF_COLONY_DEALLOCATE(the_allocator, allocator_instance, location, size) 	std::allocator_traits<the_allocator>::deallocate(allocator_instance, location, size)
 #else
 #ifdef PLF_COLONY_VARIADICS_SUPPORT
-#define PLF_COLONY_CONSTRUCT(the_allocator, allocator_instance, location, ...)	allocator_instance.construct(location, __VA_ARGS__)
-#else
-#define PLF_COLONY_CONSTRUCT(the_allocator, allocator_instance, location, data) allocator_instance.construct(location, data)
-#endif
+		#define PLF_COLONY_CONSTRUCT(the_allocator, allocator_instance, location, ...)	allocator_instance.construct(location, __VA_ARGS__)
+	#else
+		#define PLF_COLONY_CONSTRUCT(the_allocator, allocator_instance, location, data) allocator_instance.construct(location, data)
+	#endif
 
-#define PLF_COLONY_DESTROY(the_allocator, allocator_instance, location) 			allocator_instance.destroy(location)
-#define PLF_COLONY_ALLOCATE(the_allocator, allocator_instance, size, hint)	 		allocator_instance.allocate(size, hint)
-#define PLF_COLONY_ALLOCATE_INITIALIZATION(the_allocator, size, hint) 				the_allocator::allocate(size, hint)
-#define PLF_COLONY_DEALLOCATE(the_allocator, allocator_instance, location, size) 	allocator_instance.deallocate(location, size)
+	#define PLF_COLONY_DESTROY(the_allocator, allocator_instance, location) 			allocator_instance.destroy(location)
+	#define PLF_COLONY_ALLOCATE(the_allocator, allocator_instance, size, hint)	 		allocator_instance.allocate(size, hint)
+	#define PLF_COLONY_ALLOCATE_INITIALIZATION(the_allocator, size, hint) 				the_allocator::allocate(size, hint)
+	#define PLF_COLONY_DEALLOCATE(the_allocator, allocator_instance, location, size) 	allocator_instance.deallocate(location, size)
 #endif
 
 
@@ -207,7 +207,7 @@ namespace plf
 
 
   template <class element_type, class element_allocator_type = std::allocator<element_type>, typename element_skipfield_type = unsigned short > class colony : private element_allocator_type  // Empty base class optimisation - inheriting allocator functions
-                                                                                                                                                                                               // Note: unsigned short is equivalent to uint_least16_t ie. Using 16-bit unsigned integer in best-case scenario, greater-than-16-bit unsigned integer where platform doesn't support 16-bit types
+// Note: unsigned short is equivalent to uint_least16_t ie. Using 16-bit unsigned integer in best-case scenario, greater-than-16-bit unsigned integer where platform doesn't support 16-bit types
   {
   public:
     // Standard container typedefs:
@@ -230,11 +230,11 @@ namespace plf
     typedef typename std::allocator_traits<element_allocator_type>::const_pointer						const_pointer;
 #else
     typedef typename element_allocator_type::size_type			size_type;
-    typedef typename element_allocator_type::difference_type	difference_type;
-    typedef typename element_allocator_type::reference			reference;
-    typedef typename element_allocator_type::const_reference	const_reference;
-    typedef typename element_allocator_type::pointer			pointer;
-    typedef typename element_allocator_type::const_pointer		const_pointer;
+		typedef typename element_allocator_type::difference_type	difference_type;
+		typedef typename element_allocator_type::reference			reference;
+		typedef typename element_allocator_type::const_reference	const_reference;
+		typedef typename element_allocator_type::pointer			pointer;
+		typedef typename element_allocator_type::const_pointer		const_pointer;
 #endif
 
 
@@ -271,16 +271,16 @@ namespace plf
     typedef typename std::allocator_traits<element_allocator_type>::template rebind_alloc<pointer>	pointer_allocator_type;
 #else
     typedef typename element_allocator_type::template rebind<aligned_element_type>::other	aligned_element_allocator_type;  // In case compiler supports alignment but not allocator_traits
-    typedef typename element_allocator_type::template rebind<group>::other					group_allocator_type;
-    typedef typename element_allocator_type::template rebind<skipfield_type>::other			skipfield_allocator_type;
-    typedef typename element_allocator_type::template rebind<unsigned char>::other			uchar_allocator_type;
+		typedef typename element_allocator_type::template rebind<group>::other					group_allocator_type;
+		typedef typename element_allocator_type::template rebind<skipfield_type>::other			skipfield_allocator_type;
+		typedef typename element_allocator_type::template rebind<unsigned char>::other			uchar_allocator_type;
 
-    typedef typename aligned_element_allocator_type::pointer	aligned_pointer_type;
-    typedef typename group_allocator_type::pointer 				group_pointer_type;
-    typedef typename skipfield_allocator_type::pointer 			skipfield_pointer_type;
-    typedef typename uchar_allocator_type::pointer				uchar_pointer_type;
+		typedef typename aligned_element_allocator_type::pointer	aligned_pointer_type;
+		typedef typename group_allocator_type::pointer 				group_pointer_type;
+		typedef typename skipfield_allocator_type::pointer 			skipfield_pointer_type;
+		typedef typename uchar_allocator_type::pointer				uchar_pointer_type;
 
-    typedef typename element_allocator_type::template rebind<pointer>::other pointer_allocator_type;
+		typedef typename element_allocator_type::template rebind<pointer>::other pointer_allocator_type;
 #endif
 
 
@@ -297,54 +297,54 @@ namespace plf
       const skipfield_type					size; // The element capacity of this particular group
       skipfield_type							number_of_elements; // indicates total number of active elements in group - changes with insert and erase commands - used to check for empty group in erase function, as an indication to remove the group
       group_pointer_type					erasures_list_next_group; // The next group in the intrusive singly-linked list of groups with erasures ie. with active erased-element free lists
-      typename std::allocator_traits<element_allocator_type>::size_type								group_number; // Used for comparison (> < >= <=) iterator operators (used by distance function and user)
+      size_type								group_number; // Used for comparison (> < >= <=) iterator operators (used by distance function and user)
 
 
 #ifdef PLF_COLONY_VARIADICS_SUPPORT
-      group(const skipfield_type elements_per_group, group_pointer_type const previous = NULL) :
-        last_endpoint(reinterpret_cast<aligned_pointer_type>(PLF_COLONY_ALLOCATE_INITIALIZATION(uchar_allocator_type, ((elements_per_group * (sizeof(aligned_element_type))) + ((elements_per_group + 1) * sizeof(skipfield_type))), (previous == NULL) ? 0 : previous->elements))), /* allocating to here purely because it is first in the struct sequence - actual pointer is elements, last_endpoint is only initialised to element's base value initially, then incremented by one below */
-        next_group(NULL),
-        elements(last_endpoint++),
-        skipfield(reinterpret_cast<skipfield_pointer_type>(elements + elements_per_group)),
-        previous_group(previous),
-        free_list_head(std::numeric_limits<skipfield_type>::max()),
-        size(elements_per_group),
-        number_of_elements(1),
-        erasures_list_next_group(NULL),
-        group_number((previous == NULL) ? 0 : previous->group_number + 1)
+      group(const skipfield_type elements_per_group, group_pointer_type const previous = NULL):
+              last_endpoint(reinterpret_cast<aligned_pointer_type>(PLF_COLONY_ALLOCATE_INITIALIZATION(uchar_allocator_type, ((elements_per_group * (sizeof(aligned_element_type))) + ((elements_per_group + 1) * sizeof(skipfield_type))), (previous == NULL) ? 0 : previous->elements))), /* allocating to here purely because it is first in the struct sequence - actual pointer is elements, last_endpoint is only initialised to element's base value initially, then incremented by one below */
+              next_group(NULL),
+              elements(last_endpoint++),
+              skipfield(reinterpret_cast<skipfield_pointer_type>(elements + elements_per_group)),
+              previous_group(previous),
+              free_list_head(std::numeric_limits<skipfield_type>::max()),
+              size(elements_per_group),
+              number_of_elements(1),
+              erasures_list_next_group(NULL),
+              group_number((previous == NULL) ? 0 : previous->group_number + 1)
       {
         // Static casts to unsigned int from short not necessary as C++ automatically promotes lesser types for arithmetic purposes.
         std::memset(&*skipfield, 0, sizeof(skipfield_type) * (size + 1)); // &* to avoid problems with non-trivial pointers
       }
 
 #else
-                                            // This is a hack around the fact that element_allocator_type::construct only supports copy construction in C++03 and copy elision does not occur on the vast majority of compilers in this circumstance. And to avoid running out of memory (and losing performance) from allocating the same block twice, we're allocating in this constructor and moving data in the copy constructor.
-      group(const skipfield_type elements_per_group, group_pointer_type const previous = NULL) :
-        last_endpoint(reinterpret_cast<aligned_pointer_type>(PLF_COLONY_ALLOCATE_INITIALIZATION(uchar_allocator_type, ((elements_per_group * (sizeof(aligned_element_type))) + ((elements_per_group + 1) * sizeof(skipfield_type))), (previous == NULL) ? 0 : previous->elements))),
-        elements(NULL),
-        skipfield(reinterpret_cast<skipfield_pointer_type>(last_endpoint + elements_per_group)),
-        previous_group(previous),
-        size(elements_per_group)
-      {
-        std::memset(&*skipfield, 0, sizeof(skipfield_type) * (size + 1));
-      }
+      // This is a hack around the fact that element_allocator_type::construct only supports copy construction in C++03 and copy elision does not occur on the vast majority of compilers in this circumstance. And to avoid running out of memory (and losing performance) from allocating the same block twice, we're allocating in this constructor and moving data in the copy constructor.
+			group(const skipfield_type elements_per_group, group_pointer_type const previous = NULL):
+				last_endpoint(reinterpret_cast<aligned_pointer_type>(PLF_COLONY_ALLOCATE_INITIALIZATION(uchar_allocator_type, ((elements_per_group * (sizeof(aligned_element_type))) + ((elements_per_group + 1) * sizeof(skipfield_type))), (previous == NULL) ? 0 : previous->elements))),
+				elements(NULL),
+				skipfield(reinterpret_cast<skipfield_pointer_type>(last_endpoint + elements_per_group)),
+				previous_group(previous),
+				size(elements_per_group)
+			{
+				std::memset(&*skipfield, 0, sizeof(skipfield_type) * (size + 1));
+			}
 
 
 
-      // Not a real copy constructor ie. actually a move constructor. Only used for allocator.construct in C++03 for reasons stated above:
-      group(const group &source) PLF_COLONY_NOEXCEPT:
-      uchar_allocator_type(source),
-        last_endpoint(source.last_endpoint + 1),
-        next_group(NULL),
-        elements(source.last_endpoint),
-        skipfield(source.skipfield),
-        previous_group(source.previous_group),
-        free_list_head(std::numeric_limits<skipfield_type>::max()),
-        size(source.size),
-        number_of_elements(1),
-        erasures_list_next_group(NULL),
-        group_number((source.previous_group == NULL) ? 0 : source.previous_group->group_number + 1)
-      {}
+			// Not a real copy constructor ie. actually a move constructor. Only used for allocator.construct in C++03 for reasons stated above:
+			group(const group &source) PLF_COLONY_NOEXCEPT:
+				uchar_allocator_type(source),
+				last_endpoint(source.last_endpoint + 1),
+				next_group(NULL),
+				elements(source.last_endpoint),
+				skipfield(source.skipfield),
+				previous_group(source.previous_group),
+				free_list_head(std::numeric_limits<skipfield_type>::max()),
+				size(source.size),
+				number_of_elements(1),
+				erasures_list_next_group(NULL),
+				group_number((source.previous_group == NULL) ? 0 : source.previous_group->group_number + 1)
+			{}
 #endif
 
 
@@ -421,7 +421,7 @@ namespace plf
       // Move assignment - only really necessary if the allocator uses non-standard ie. smart pointers
       inline colony_iterator & operator = (colony_iterator &&source) PLF_COLONY_NOEXCEPT // Move is a copy in this scenario
       {
-        assert(&source != this);
+        assert (&source != this);
         group_pointer = std::move(source.group_pointer);
         element_pointer = std::move(source.element_pointer);
         skipfield_pointer = std::move(source.skipfield_pointer);
@@ -432,7 +432,7 @@ namespace plf
 
       inline colony_iterator & operator = (colony_iterator<!is_const> &&source) PLF_COLONY_NOEXCEPT
       {
-        assert(&source != this);
+        assert (&source != this);
         group_pointer = std::move(source.group_pointer);
         element_pointer = std::move(source.element_pointer);
         skipfield_pointer = std::move(source.skipfield_pointer);
@@ -493,18 +493,18 @@ namespace plf
         assert(group_pointer != NULL); // covers uninitialised colony_iterator
         assert(!(element_pointer == group_pointer->last_endpoint && group_pointer->next_group != NULL)); // Assert that iterator is not already at end()
 
-#if (defined(__GNUC__) && !defined(__clang__)) && (defined(__haswell__) || defined(__skylake__) || defined(__silvermont__) || defined(__sandybridge__) || defined(__ivybridge__) || defined(__broadwell__)) // faster under gcc on core i processors post-westmere
+#if (defined(__GNUC__) && !defined(__clang__)) && (defined(__icelake_client__) || defined(__icelake_server__) || defined(__cannonlake__) || defined(__skylake_avx512__) || defined(__haswell__) || defined(__skylake__) || defined(__silvermont__) || defined(__sandybridge__) || defined(__ivybridge__) || defined(__broadwell__)) // faster under gcc on core i processors post-westmere
         skipfield_type skip = *(++skipfield_pointer);
 
-        if ((element_pointer += skip + 1) == group_pointer->last_endpoint && group_pointer->next_group != NULL) // ie. beyond end of available data
-        {
-          group_pointer = group_pointer->next_group;
-          skip = *(group_pointer->skipfield);
-          element_pointer = group_pointer->elements + skip;
-          skipfield_pointer = group_pointer->skipfield;
-        }
+				if ((element_pointer += skip + 1) == group_pointer->last_endpoint && group_pointer->next_group != NULL) // ie. beyond end of available data
+				{
+					group_pointer = group_pointer->next_group;
+					skip = *(group_pointer->skipfield);
+					element_pointer = group_pointer->elements + skip;
+					skipfield_pointer = group_pointer->skipfield;
+				}
 
-        skipfield_pointer += skip;
+				skipfield_pointer += skip;
 #else
         const skipfield_type skip = *(++skipfield_pointer);
         skipfield_pointer += skip;
@@ -639,29 +639,29 @@ namespace plf
       }
 
 
-      colony_iterator() PLF_COLONY_NOEXCEPT: group_pointer(NULL), element_pointer(NULL), skipfield_pointer(NULL) {}
+      colony_iterator() PLF_COLONY_NOEXCEPT: group_pointer(NULL), element_pointer(NULL), skipfield_pointer(NULL)  {}
 
 
 
     private:
       // Used by cend(), erase() etc:
-      colony_iterator(const group_pointer_type group_p, const aligned_pointer_type element_p, const skipfield_pointer_type skipfield_p) PLF_COLONY_NOEXCEPT : group_pointer(group_p), element_pointer(element_p), skipfield_pointer(skipfield_p) {}
+      colony_iterator(const group_pointer_type group_p, const aligned_pointer_type element_p, const skipfield_pointer_type skipfield_p) PLF_COLONY_NOEXCEPT: group_pointer(group_p), element_pointer(element_p), skipfield_pointer(skipfield_p) {}
 
 
 
     public:
 
-      inline colony_iterator(const colony_iterator &source) PLF_COLONY_NOEXCEPT :
-        group_pointer(source.group_pointer),
-        element_pointer(source.element_pointer),
-        skipfield_pointer(source.skipfield_pointer)
+      inline colony_iterator (const colony_iterator &source) PLF_COLONY_NOEXCEPT:
+              group_pointer(source.group_pointer),
+              element_pointer(source.element_pointer),
+              skipfield_pointer(source.skipfield_pointer)
       {}
 
 
       inline colony_iterator(const colony_iterator<!is_const> &source) PLF_COLONY_NOEXCEPT:
-      group_pointer(source.group_pointer),
-        element_pointer(source.element_pointer),
-        skipfield_pointer(source.skipfield_pointer)
+              group_pointer(source.group_pointer),
+              element_pointer(source.element_pointer),
+              skipfield_pointer(source.skipfield_pointer)
       {}
 
 
@@ -669,16 +669,16 @@ namespace plf
 #ifdef PLF_COLONY_MOVE_SEMANTICS_SUPPORT
       // move constructor
       inline colony_iterator(colony_iterator &&source) PLF_COLONY_NOEXCEPT:
-      group_pointer(std::move(source.group_pointer)),
-        element_pointer(std::move(source.element_pointer)),
-        skipfield_pointer(std::move(source.skipfield_pointer))
+              group_pointer(std::move(source.group_pointer)),
+              element_pointer(std::move(source.element_pointer)),
+              skipfield_pointer(std::move(source.skipfield_pointer))
       {}
 
 
       inline colony_iterator(colony_iterator<!is_const> &&source) PLF_COLONY_NOEXCEPT:
-      group_pointer(std::move(source.group_pointer)),
-        element_pointer(std::move(source.element_pointer)),
-        skipfield_pointer(std::move(source.skipfield_pointer))
+              group_pointer(std::move(source.group_pointer)),
+              element_pointer(std::move(source.element_pointer)),
+              skipfield_pointer(std::move(source.skipfield_pointer))
       {}
 #endif
 
@@ -689,7 +689,7 @@ namespace plf
 
 
 
-       // Reverse iterators:
+    // Reverse iterators:
 
     template <bool r_is_const> class colony_reverse_iterator
     {
@@ -898,26 +898,26 @@ namespace plf
 
 
 
-      colony_reverse_iterator() PLF_COLONY_NOEXCEPT
+      colony_reverse_iterator () PLF_COLONY_NOEXCEPT
       {}
 
 
 
-      colony_reverse_iterator(const colony_reverse_iterator &source) PLF_COLONY_NOEXCEPT:
-      it(source.it)
+      colony_reverse_iterator (const colony_reverse_iterator &source) PLF_COLONY_NOEXCEPT:
+              it(source.it)
       {}
 
 
 
-      colony_reverse_iterator(const typename colony::iterator &source) PLF_COLONY_NOEXCEPT:
-      it(source)
+      colony_reverse_iterator (const typename colony::iterator &source) PLF_COLONY_NOEXCEPT:
+              it(source)
       {}
 
 
 
     private:
       // Used by rend(), etc:
-      colony_reverse_iterator(const group_pointer_type group_p, const aligned_pointer_type element_p, const skipfield_pointer_type skipfield_p) PLF_COLONY_NOEXCEPT : it(group_p, element_p, skipfield_p) {}
+      colony_reverse_iterator(const group_pointer_type group_p, const aligned_pointer_type element_p, const skipfield_pointer_type skipfield_p) PLF_COLONY_NOEXCEPT: it(group_p, element_p, skipfield_p) {}
 
 
 
@@ -925,12 +925,12 @@ namespace plf
 
 #ifdef PLF_COLONY_MOVE_SEMANTICS_SUPPORT
       // move constructors
-      colony_reverse_iterator(colony_reverse_iterator &&source) PLF_COLONY_NOEXCEPT :
-        it(std::move(source.it))
+      colony_reverse_iterator (colony_reverse_iterator &&source) PLF_COLONY_NOEXCEPT:
+              it(std::move(source.it))
       {}
 
-      colony_reverse_iterator(typename colony::iterator &&source) PLF_COLONY_NOEXCEPT :
-        it(std::move(source))
+      colony_reverse_iterator (typename colony::iterator &&source) PLF_COLONY_NOEXCEPT:
+              it(std::move(source))
       {}
 #endif
 
@@ -974,14 +974,14 @@ namespace plf
 
     // Default constuctor:
 
-    colony() PLF_COLONY_NOEXCEPT :
-      element_allocator_type(element_allocator_type()),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair((sizeof(aligned_element_type) * 8 > (sizeof(*this) + sizeof(group)) * 2) ? 8 : (((sizeof(*this) + sizeof(group)) * 2) / sizeof(aligned_element_type))),
-      group_allocator_pair(std::numeric_limits<skipfield_type>::max())
+    colony() PLF_COLONY_NOEXCEPT:
+            element_allocator_type(element_allocator_type()),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair((sizeof(aligned_element_type) * 8 > (sizeof(*this) + sizeof(group)) * 2) ? 8 : (((sizeof(*this) + sizeof(group)) * 2) / sizeof(aligned_element_type))),
+            group_allocator_pair(std::numeric_limits<skipfield_type>::max())
     {
       assert(std::numeric_limits<skipfield_type>::is_integer & !std::numeric_limits<skipfield_type>::is_signed); // skipfield type must be of unsigned integer type (uchar, ushort, uint etc)
 
@@ -994,14 +994,14 @@ namespace plf
 
     // Default constuctor (allocator-extended):
 
-    explicit colony(const element_allocator_type &alloc) :
-      element_allocator_type(alloc),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair((sizeof(aligned_element_type) * 8 > (sizeof(*this) + sizeof(group)) * 2) ? 8 : (((sizeof(*this) + sizeof(group)) * 2) / sizeof(aligned_element_type))),
-      group_allocator_pair(std::numeric_limits<skipfield_type>::max())
+    explicit colony(const element_allocator_type &alloc):
+            element_allocator_type(alloc),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair((sizeof(aligned_element_type) * 8 > (sizeof(*this) + sizeof(group)) * 2) ? 8 : (((sizeof(*this) + sizeof(group)) * 2) / sizeof(aligned_element_type))),
+            group_allocator_pair(std::numeric_limits<skipfield_type>::max())
     {
       assert(std::numeric_limits<skipfield_type>::is_integer & !std::numeric_limits<skipfield_type>::is_signed);
 
@@ -1014,14 +1014,14 @@ namespace plf
 
     // Copy constructor:
 
-    colony(const colony &source) :
-      element_allocator_type(source),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair(static_cast<skipfield_type>((source.pointer_allocator_pair.min_elements_per_group > source.total_number_of_elements) ? source.pointer_allocator_pair.min_elements_per_group : ((source.total_number_of_elements > source.group_allocator_pair.max_elements_per_group) ? source.group_allocator_pair.max_elements_per_group : source.total_number_of_elements))), // Make the first colony group size the greater of min_elements_per_group or total_number_of_elements, so long as total_number_of_elements isn't larger than max_elements_per_group
-      group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
+    colony(const colony &source):
+            element_allocator_type(source),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair(static_cast<skipfield_type>((source.pointer_allocator_pair.min_elements_per_group > source.total_number_of_elements) ? source.pointer_allocator_pair.min_elements_per_group : ((source.total_number_of_elements > source.group_allocator_pair.max_elements_per_group) ? source.group_allocator_pair.max_elements_per_group : source.total_number_of_elements))), // Make the first colony group size the greater of min_elements_per_group or total_number_of_elements, so long as total_number_of_elements isn't larger than max_elements_per_group
+            group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
     {
       insert(source.begin_iterator, source.end_iterator);
       pointer_allocator_pair.min_elements_per_group = source.pointer_allocator_pair.min_elements_per_group; // reset to correct value for future clear() or erasures
@@ -1031,14 +1031,14 @@ namespace plf
 
     // Copy constructor (allocator-extended):
 
-    colony(const colony &source, const allocator_type &alloc) :
-      element_allocator_type(alloc),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair(static_cast<skipfield_type>((source.pointer_allocator_pair.min_elements_per_group > source.total_number_of_elements) ? source.pointer_allocator_pair.min_elements_per_group : ((source.total_number_of_elements > source.group_allocator_pair.max_elements_per_group) ? source.group_allocator_pair.max_elements_per_group : source.total_number_of_elements))),
-      group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
+    colony(const colony &source, const allocator_type &alloc):
+            element_allocator_type(alloc),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair(static_cast<skipfield_type>((source.pointer_allocator_pair.min_elements_per_group > source.total_number_of_elements) ? source.pointer_allocator_pair.min_elements_per_group : ((source.total_number_of_elements > source.group_allocator_pair.max_elements_per_group) ? source.group_allocator_pair.max_elements_per_group : source.total_number_of_elements))),
+            group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
     {
       insert(source.begin_iterator, source.end_iterator);
       pointer_allocator_pair.min_elements_per_group = source.pointer_allocator_pair.min_elements_per_group;
@@ -1051,11 +1051,11 @@ namespace plf
 
     inline void blank() PLF_COLONY_NOEXCEPT
     {
-#if defined(PLF_COLONY_TYPE_TRAITS_SUPPORT) && !(defined(__GNUC__) && (defined(__haswell__) || defined(__skylake__) || defined(__silvermont__) || defined(__sandybridge__) || defined(__ivybridge__) || defined(__broadwell__)))
+#if defined(PLF_COLONY_TYPE_TRAITS_SUPPORT) && !(defined(__GNUC__) && (defined(__icelake_client__) || defined(__icelake_server__) || defined(__cannonlake__) || defined(__skylake_avx512__) || defined(__haswell__) || defined(__skylake__) || defined(__silvermont__) || defined(__sandybridge__) || defined(__ivybridge__) || defined(__broadwell__)))
       // this is faster under gcc if CPU is core2 and below, faster on MSVC/clang in-general:
-      if (std::is_trivial<group_pointer_type>::value && std::is_trivial<aligned_pointer_type>::value && std::is_trivial<skipfield_pointer_type>::value && NULL == reinterpret_cast<void *>(0)) // if all pointer types are trivial, and NULL is (almost always) zero, we can just nuke it from orbit with memset:
+      if (std::is_trivial<group_pointer_type>::value && std::is_trivial<aligned_pointer_type>::value && std::is_trivial<skipfield_pointer_type>::value && NULL == reinterpret_cast<void *>(0)) // if all pointer types are trivial, and NULL is zero, we can just nuke it from orbit with memset:
       {
-        std::memset(this, 0, offsetof(colony, pointer_allocator_pair));
+        std::memset(reinterpret_cast<void *>(this), 0, offsetof(colony, pointer_allocator_pair));
       }
       else
 #endif
@@ -1083,15 +1083,15 @@ namespace plf
     // Move constructor:
 
     colony(colony &&source) PLF_COLONY_NOEXCEPT:
-    element_allocator_type(source),
-      end_iterator(std::move(source.end_iterator)),
-      begin_iterator(std::move(source.begin_iterator)),
-      first_group(std::move(source.first_group)),
-      groups_with_erasures_list_head(std::move(source.groups_with_erasures_list_head)),
-      total_number_of_elements(source.total_number_of_elements),
-      total_capacity(source.total_capacity),
-      pointer_allocator_pair(source.pointer_allocator_pair.min_elements_per_group),
-      group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
+            element_allocator_type(source),
+            end_iterator(std::move(source.end_iterator)),
+            begin_iterator(std::move(source.begin_iterator)),
+            first_group(std::move(source.first_group)),
+            groups_with_erasures_list_head(std::move(source.groups_with_erasures_list_head)),
+            total_number_of_elements(source.total_number_of_elements),
+            total_capacity(source.total_capacity),
+            pointer_allocator_pair(source.pointer_allocator_pair.min_elements_per_group),
+            group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
     {
       source.blank();
     }
@@ -1099,16 +1099,16 @@ namespace plf
 
     // Move constructor (allocator-extended):
 
-    colony(colony &&source, const allocator_type &alloc) :
-      element_allocator_type(alloc),
-      end_iterator(std::move(source.end_iterator)),
-      begin_iterator(std::move(source.begin_iterator)),
-      first_group(std::move(source.first_group)),
-      groups_with_erasures_list_head(std::move(source.groups_with_erasures_list_head)),
-      total_number_of_elements(source.total_number_of_elements),
-      total_capacity(source.total_capacity),
-      pointer_allocator_pair(source.pointer_allocator_pair.min_elements_per_group),
-      group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
+    colony(colony &&source, const allocator_type &alloc):
+            element_allocator_type(alloc),
+            end_iterator(std::move(source.end_iterator)),
+            begin_iterator(std::move(source.begin_iterator)),
+            first_group(std::move(source.first_group)),
+            groups_with_erasures_list_head(std::move(source.groups_with_erasures_list_head)),
+            total_number_of_elements(source.total_number_of_elements),
+            total_capacity(source.total_capacity),
+            pointer_allocator_pair(source.pointer_allocator_pair.min_elements_per_group),
+            group_allocator_pair(source.group_allocator_pair.max_elements_per_group)
     {
       source.blank();
     }
@@ -1118,16 +1118,16 @@ namespace plf
 
     // Fill constructor:
 
-    colony(const size_type fill_number, const element_type &element, const skipfield_type min_allocation_amount = 0, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()) :
-      element_allocator_type(alloc),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair((min_allocation_amount != 0) ? min_allocation_amount :
-      (fill_number > max_allocation_amount) ? max_allocation_amount :
-        (fill_number > 8) ? static_cast<skipfield_type>(fill_number) : 8),
-      group_allocator_pair(max_allocation_amount)
+    colony(const size_type fill_number, const element_type &element, const skipfield_type min_allocation_amount = 0, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()):
+            element_allocator_type(alloc),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair((min_allocation_amount != 0) ? min_allocation_amount :
+                                   (fill_number > max_allocation_amount) ? max_allocation_amount :
+                                   (fill_number > 8) ? static_cast<skipfield_type>(fill_number) : 8),
+            group_allocator_pair(max_allocation_amount)
     {
       assert(std::numeric_limits<skipfield_type>::is_integer & !std::numeric_limits<skipfield_type>::is_signed);
       assert((pointer_allocator_pair.min_elements_per_group > 2) & (pointer_allocator_pair.min_elements_per_group <= group_allocator_pair.max_elements_per_group));
@@ -1144,14 +1144,14 @@ namespace plf
     // Range constructor:
 
     template<typename iterator_type>
-    colony(const typename plf_enable_if_c<!std::numeric_limits<iterator_type>::is_integer, iterator_type>::type &first, const iterator_type &last, const skipfield_type min_allocation_amount = 8, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()) :
-      element_allocator_type(alloc),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair(min_allocation_amount),
-      group_allocator_pair(max_allocation_amount)
+    colony(const typename plf_enable_if_c<!std::numeric_limits<iterator_type>::is_integer, iterator_type>::type &first, const iterator_type &last, const skipfield_type min_allocation_amount = 8, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()):
+            element_allocator_type(alloc),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair(min_allocation_amount),
+            group_allocator_pair(max_allocation_amount)
     {
       assert(std::numeric_limits<skipfield_type>::is_integer & !std::numeric_limits<skipfield_type>::is_signed);
       assert((pointer_allocator_pair.min_elements_per_group > 2) & (pointer_allocator_pair.min_elements_per_group <= group_allocator_pair.max_elements_per_group));
@@ -1168,16 +1168,16 @@ namespace plf
     // Initializer-list constructor:
 
 #ifdef PLF_COLONY_INITIALIZER_LIST_SUPPORT
-    colony(const std::initializer_list<element_type> &element_list, const skipfield_type min_allocation_amount = 0, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()) :
-      element_allocator_type(alloc),
-      first_group(NULL),
-      groups_with_erasures_list_head(NULL),
-      total_number_of_elements(0),
-      total_capacity(0),
-      pointer_allocator_pair((min_allocation_amount != 0) ? min_allocation_amount :
-      (element_list.size() > max_allocation_amount) ? max_allocation_amount :
-        (element_list.size() > 8) ? static_cast<skipfield_type>(element_list.size()) : 8),
-      group_allocator_pair(max_allocation_amount)
+    colony(const std::initializer_list<element_type> &element_list, const skipfield_type min_allocation_amount = 0, const skipfield_type max_allocation_amount = std::numeric_limits<skipfield_type>::max(), const element_allocator_type &alloc = element_allocator_type()):
+            element_allocator_type(alloc),
+            first_group(NULL),
+            groups_with_erasures_list_head(NULL),
+            total_number_of_elements(0),
+            total_capacity(0),
+            pointer_allocator_pair((min_allocation_amount != 0) ? min_allocation_amount :
+                                   (element_list.size() > max_allocation_amount) ? max_allocation_amount :
+                                   (element_list.size() > 8) ? static_cast<skipfield_type>(element_list.size()) : 8),
+            group_allocator_pair(max_allocation_amount)
     {
       assert(std::numeric_limits<skipfield_type>::is_integer & !std::numeric_limits<skipfield_type>::is_signed);
       assert((pointer_allocator_pair.min_elements_per_group > 2) & (pointer_allocator_pair.min_elements_per_group <= group_allocator_pair.max_elements_per_group));
@@ -1277,7 +1277,7 @@ namespace plf
 #ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
       if (total_number_of_elements != 0 && !(std::is_trivially_destructible<element_type>::value))
 #else // If compiler doesn't support traits, iterate regardless - trivial destructors will not be called, hopefully compiler will optimise the 'destruct' loop out for POD types
-      if (total_number_of_elements != 0)
+        if (total_number_of_elements != 0)
 #endif
       {
         total_number_of_elements = 0; // to avoid double-destruction
@@ -1294,7 +1294,7 @@ namespace plf
             const skipfield_type skip = *(++skipfield_pointer);
             skipfield_pointer += skip;
             element_pointer += skip + 1;
-          } while (element_pointer != end_pointer); // ie. beyond end of available data
+          } while(element_pointer != end_pointer); // ie. beyond end of available data
 
           const group_pointer_type next_group = first_group->next_group;
           PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, first_group);
@@ -1360,154 +1360,154 @@ namespace plf
     {
       if (end_iterator.element_pointer != NULL)
       {
-        switch (((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
+        switch(((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
         {
-        case 0: // ie. there are no erased elements and end_iterator is not at end of current final group
-        {
-          const iterator return_iterator = end_iterator; /* Make copy for return before modifying end_iterator */
+          case 0: // ie. there are no erased elements and end_iterator is not at end of current final group
+          {
+            const iterator return_iterator = end_iterator; /* Make copy for return before modifying end_iterator */
 
 #ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_copy_constructible<element_type>::value) // For no good reason this compiles to faster code under GCC 7.3
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), element);
-            end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
-          }
-          else
+            if (std::is_nothrow_copy_constructible<element_type>::value) // For no good reason this compiles to faster code under GCC 7.3
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), element);
+              end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
+            }
+            else
 #endif
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), element);
-            end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer; // Shift the addition to the second operation, avoiding problems if an exception is thrown during construction
-          }
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), element);
+              end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer; // Shift the addition to the second operation, avoiding problems if an exception is thrown during construction
+            }
 
-          ++(end_iterator.group_pointer->number_of_elements);
-          ++end_iterator.skipfield_pointer;
-          ++total_number_of_elements;
+            ++(end_iterator.group_pointer->number_of_elements);
+            ++end_iterator.skipfield_pointer;
+            ++total_number_of_elements;
 
-          return return_iterator; // return value before incrementation
-        }
-        case 1: // ie. there are no erased elements and end_iterator is at end of current final group - ie. colony is full - create new group
-        {
-          end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
-          group &next_group = *(end_iterator.group_pointer->next_group);
-          const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
+            return return_iterator; // return value before incrementation
+          }
+          case 1: // ie. there are no erased elements and end_iterator is at end of current final group - ie. colony is full - create new group
+          {
+            end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
+            group &next_group = *(end_iterator.group_pointer->next_group);
+            const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
 
-          try
-          {
-#ifdef PLF_COLONY_VARIADICS_SUPPORT
-            PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
-#else
-            PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, group(new_group_size, end_iterator.group_pointer));
-#endif
-          }
-          catch (...)
-          {
-            PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
-            end_iterator.group_pointer->next_group = NULL;
-            throw;
-          }
-
-#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_move_constructible<element_type>::value)
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), element);
-          }
-          else
-#endif
-          {
             try
             {
-              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), element);
+#ifdef PLF_COLONY_VARIADICS_SUPPORT
+              PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
+#else
+              PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, group(new_group_size, end_iterator.group_pointer));
+#endif
             }
             catch (...)
             {
-              PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
               PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
               end_iterator.group_pointer->next_group = NULL;
               throw;
             }
+
+#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
+            if (std::is_nothrow_copy_constructible<element_type>::value)
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), element);
+            }
+            else
+#endif
+            {
+              try
+              {
+                PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), element);
+              }
+              catch (...)
+              {
+                PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
+                PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
+                end_iterator.group_pointer->next_group = NULL;
+                throw;
+              }
+            }
+
+            end_iterator.group_pointer = &next_group;
+            end_iterator.element_pointer = next_group.last_endpoint;
+            end_iterator.skipfield_pointer = next_group.skipfield + 1;
+            ++total_number_of_elements;
+            total_capacity += new_group_size;
+
+            return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield); /* returns value before incrementation */
           }
-
-          end_iterator.group_pointer = &next_group;
-          end_iterator.element_pointer = next_group.last_endpoint;
-          end_iterator.skipfield_pointer = next_group.skipfield + 1;
-          ++total_number_of_elements;
-          total_capacity += new_group_size;
-
-          return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield); /* returns value before incrementation */
-        }
-        default: // ie. there are erased elements, reuse previous-erased element locations
-        {
-          iterator new_location;
-          new_location.group_pointer = groups_with_erasures_list_head;
-          new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
-          new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
-          groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
-
-          if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max()) // ie. if this group does not currently have any erased elements and so is not part of the list of groups with erased elements
+          default: // ie. there are erased elements, reuse previous-erased element locations
           {
-            groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            iterator new_location;
+            new_location.group_pointer = groups_with_erasures_list_head;
+            new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
+            new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
+            groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
+
+            if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max()) // ie. if this group does not currently have any erased elements and so is not part of the list of groups with erased elements
+            {
+              groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            }
+
+            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), element);
+
+            ++(new_location.group_pointer->number_of_elements);
+
+            if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
+            { /* ie. begin_iterator was moved forwards as the result of an erasure at some point, this erased element is before the current begin, hence, set current begin iterator to this element */
+              begin_iterator = new_location;
+            }
+
+            ++total_number_of_elements;
+
+            // Code logic for next section:
+            // ============================
+            // Check whether element location we are reusing has a skipfield node before or after which is skipped (erased)
+            // if only the node to the left is skipped (ie. current node is at end of skipblock), update the start node of that skipblock
+            // if only the node to the right is skipped (ie. current node is the start node of a skipblock to the right), change next node to be the start node of the skipblock and update all subsequent nodes (decrement each by 1)
+            // if both left and right nodes are skipped (ie. current node is in middle of skipblock), do both of the above
+
+            // Explanation of the following optimization: we must avoid testing the left-hand skipfield node if we are already at the beginning of the skipfield, otherwise we create an out-of-bounds memory access.
+            // To avoid this would Normally require a branching test ie. !is_at_start && left-hand-node != 0 (&& and || operations are conditional executation of the right-hand instruction, which causes branching). But instead we subtract 'test' (which is 0 if the skipfield node is at start of skipfield, 1 if not) from the skipfield node.
+            // If not start of skipfield, this means we check to see if left-hand node is == 0 (value * 0).
+            // If at start of skipfield, we perform an unnecessary test to see if the current skipfield node's value (*(skipfield - 0))
+            // is == it's own value (value * 1). This may seem ridiculous, but it's less costly than branching - and since
+            // node == skipfield_start is almost always going to be false, this needless check is only occasional.
+
+            const skipfield_type value = *(new_location.skipfield_pointer);
+            const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
+            const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
+            const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0; // NOTE: test for whether we're at end of skipfield removed  - unnecessary due to extra unused node in skipfield (which is currently required by operator ++)
+
+            // Now we create a switch for the four different possible states (there are no additional instructions for state 0) depending on
+            // whether the left and right-hand skipfield nodes are non-zero (or out-of-bounds), by bit-shifting the right-hand test and
+            // logical-OR'ing it with the left-hand test:
+            switch (prev_skipfield | (after_skipfield << 1))
+            {
+              case 1: // previous erased consecutive elements, none following
+              {
+                *(new_location.skipfield_pointer - (value - 1)) = value - 1;
+                break;
+              }
+              case 2: // No previous consecutive erased points, at least one following ie. this was the prime erasure point
+              {
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
+                *(new_location.skipfield_pointer + 1) = value - 1;
+                break;
+              }
+              case 3: // both preceding and following consecutive erased elements
+              {
+                const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
+                const skipfield_type update_count = *start_node - value;
+                *start_node = value - 1;
+
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
+                *(new_location.skipfield_pointer + 1) = update_count;
+              }
+            }
+
+            *new_location.skipfield_pointer = 0;
+            return new_location;
           }
-
-          PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), element);
-
-          ++(new_location.group_pointer->number_of_elements);
-
-          if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
-          { /* ie. begin_iterator was moved forwards as the result of an erasure at some point, this erased element is before the current begin, hence, set current begin iterator to this element */
-            begin_iterator = new_location;
-          }
-
-          ++total_number_of_elements;
-
-          // Code logic for next section:
-          // ============================
-          // check whether location we are restoring to has a skipfield node before or after which is erased
-          // if it has only a node before which is erased (ie. at end of erasure block), update the prime erasure point
-          // if it only has a node after it which is erased, (ie. this is the prime erasure point), change next node to prime erasure point and update all subsequent erasure points (ie. decrement by 1)
-          // if it has both a node before and after which is erased (ie. is in middle of erasure block), do both of the above
-
-          // Explanation of the following optimization: we must avoid testing the left-hand skipfield node if we are already at the beginning of the skipfield, otherwise we create an out-of-bounds memory access.
-          // To avoid this would Normally require a branching test ie. !is_at_start && left-hand-node != 0 (&& and || operations are conditional executation of the right-hand instruction, which causes branching). But instead we subtract 'test' (which is 0 if the skipfield node is at start of skipfield, 1 if not) from the skipfield node.
-          // If not start of skipfield, this means we check to see if left-hand node is == 0 (value * 0).
-          // If at start of skipfield, we perform an unnecessary test to see if the current skipfield node's value (*(skipfield - 0))
-          // is == it's own value (value * 1). This may seem ridiculous, but it's less costly than branching - and since
-          // node == skipfield_start is almost always going to be false, this needless check is only occasional.
-
-          const skipfield_type value = *(new_location.skipfield_pointer);
-          const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
-          const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
-          const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0; // NOTE: test for whether we're at end of skipfield removed  - unnecessary due to extra unused node in skipfield (which is currently required by operator ++)
-
-                                                                                   // Now we create a switch for the four different possible states (there are no additional instructions for state 0) depending on
-                                                                                   // whether the left and right-hand skipfield nodes are non-zero (or out-of-bounds), by bit-shifting the right-hand test and
-                                                                                   // logical-OR'ing it with the left-hand test:
-          switch (prev_skipfield | (after_skipfield << 1))
-          {
-          case 1: // previous erased consecutive elements, none following
-          {
-            *(new_location.skipfield_pointer - (value - 1)) = value - 1;
-            break;
-          }
-          case 2: // No previous consecutive erased points, at least one following ie. this was the prime erasure point
-          {
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
-            *(new_location.skipfield_pointer + 1) = value - 1;
-            break;
-          }
-          case 3: // both preceding and following consecutive erased elements
-          {
-            const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
-            const skipfield_type update_count = *start_node - value;
-            *start_node = value - 1;
-
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
-            *(new_location.skipfield_pointer + 1) = update_count;
-          }
-          }
-
-          *new_location.skipfield_pointer = 0;
-          return new_location;
-        }
         }
       }
       else // ie. newly-constructed colony, no insertions yet and no groups
@@ -1542,141 +1542,141 @@ namespace plf
 
 
 #ifdef PLF_COLONY_MOVE_SEMANTICS_SUPPORT
-    iterator insert(element_type &&element) // Both the move-insert and emplace functions are near-identical to the regular insert function, the the exception of the element construction method.
+    iterator insert(element_type &&element) // The move-insert function is near-identical to the regular insert function, with the exception of the element construction method and is_nothrow tests.
     {
       if (end_iterator.element_pointer != NULL)
       {
-        switch (((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
+        switch(((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
         {
-        case 0:
-        {
-          const iterator return_iterator = end_iterator;
+          case 0:
+          {
+            const iterator return_iterator = end_iterator;
 
 #ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_copy_constructible<element_type>::value)
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), std::move(element));
-            end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
-          }
-          else
+            if (std::is_nothrow_move_constructible<element_type>::value)
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), std::move(element));
+              end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
+            }
+            else
 #endif
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), std::move(element));
-            end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer;
-          }
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), std::move(element));
+              end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer;
+            }
 
-          ++(end_iterator.group_pointer->number_of_elements);
-          ++end_iterator.skipfield_pointer;
-          ++total_number_of_elements;
+            ++(end_iterator.group_pointer->number_of_elements);
+            ++end_iterator.skipfield_pointer;
+            ++total_number_of_elements;
 
-          return return_iterator;
-        }
-        case 1:
-        {
-          end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
-          group &next_group = *(end_iterator.group_pointer->next_group);
-          const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
+            return return_iterator;
+          }
+          case 1:
+          {
+            end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
+            group &next_group = *(end_iterator.group_pointer->next_group);
+            const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
 
-          try
-          {
-#ifdef PLF_COLONY_VARIADICS_SUPPORT
-            PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
-#else
-            PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, group(new_group_size, end_iterator.group_pointer));
-#endif
-          }
-          catch (...)
-          {
-            PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
-            end_iterator.group_pointer->next_group = NULL;
-            throw;
-          }
-
-#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_constructible<element_type>::value)
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::move(element));
-          }
-          else
-#endif
-          {
             try
             {
-              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::move(element));
+#ifdef PLF_COLONY_VARIADICS_SUPPORT
+              PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
+#else
+              PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, group(new_group_size, end_iterator.group_pointer));
+#endif
             }
             catch (...)
             {
-              PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
               PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
               end_iterator.group_pointer->next_group = NULL;
               throw;
             }
+
+#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
+            if (std::is_nothrow_move_constructible<element_type>::value)
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::move(element));
+            }
+            else
+#endif
+            {
+              try
+              {
+                PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::move(element));
+              }
+              catch (...)
+              {
+                PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
+                PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
+                end_iterator.group_pointer->next_group = NULL;
+                throw;
+              }
+            }
+
+            end_iterator.group_pointer = &next_group;
+            end_iterator.element_pointer = next_group.last_endpoint;
+            end_iterator.skipfield_pointer = next_group.skipfield + 1;
+            ++total_number_of_elements;
+            total_capacity += new_group_size;
+
+            return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield);
           }
-
-          end_iterator.group_pointer = &next_group;
-          end_iterator.element_pointer = next_group.last_endpoint;
-          end_iterator.skipfield_pointer = next_group.skipfield + 1;
-          ++total_number_of_elements;
-          total_capacity += new_group_size;
-
-          return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield);
-        }
-        default:
-        {
-          iterator new_location;
-          new_location.group_pointer = groups_with_erasures_list_head;
-          new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
-          new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
-          groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
-
-          if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max())
+          default:
           {
-            groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            iterator new_location;
+            new_location.group_pointer = groups_with_erasures_list_head;
+            new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
+            new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
+            groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
+
+            if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max())
+            {
+              groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            }
+
+            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), std::move(element));
+
+            ++(new_location.group_pointer->number_of_elements);
+
+            if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
+            {
+              begin_iterator = new_location;
+            }
+
+            ++total_number_of_elements;
+
+            const skipfield_type value = *(new_location.skipfield_pointer);
+            const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
+            const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
+            const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0;
+
+            switch (prev_skipfield | (after_skipfield << 1))
+            {
+              case 1:
+              {
+                *(new_location.skipfield_pointer - (value - 1)) = value - 1;
+                break;
+              }
+              case 2:
+              {
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
+                *(new_location.skipfield_pointer + 1) = value - 1;
+                break;
+              }
+              case 3:
+              {
+                const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
+                const skipfield_type update_count = *start_node - value;
+                *start_node = value - 1;
+
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
+                *(new_location.skipfield_pointer + 1) = update_count;
+              }
+            }
+
+            *new_location.skipfield_pointer = 0;
+            return new_location;
           }
-
-          PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), std::move(element));
-
-          ++(new_location.group_pointer->number_of_elements);
-
-          if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
-          {
-            begin_iterator = new_location;
-          }
-
-          ++total_number_of_elements;
-
-          const skipfield_type value = *(new_location.skipfield_pointer);
-          const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
-          const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
-          const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0;
-
-          switch (prev_skipfield | (after_skipfield << 1))
-          {
-          case 1:
-          {
-            *(new_location.skipfield_pointer - (value - 1)) = value - 1;
-            break;
-          }
-          case 2:
-          {
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
-            *(new_location.skipfield_pointer + 1) = value - 1;
-            break;
-          }
-          case 3:
-          {
-            const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
-            const skipfield_type update_count = *start_node - value;
-            *start_node = value - 1;
-
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
-            *(new_location.skipfield_pointer + 1) = update_count;
-          }
-          }
-
-          *new_location.skipfield_pointer = 0;
-          return new_location;
-        }
         }
       }
       else
@@ -1684,7 +1684,7 @@ namespace plf
         initialize(pointer_allocator_pair.min_elements_per_group);
 
 #ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-        if (std::is_nothrow_copy_constructible<element_type>::value)
+        if (std::is_nothrow_move_constructible<element_type>::value)
         {
           PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), std::move(element));
         }
@@ -1714,137 +1714,137 @@ namespace plf
 
 #ifdef PLF_COLONY_VARIADICS_SUPPORT
     template<typename... arguments>
-    iterator emplace(arguments &&... parameters)
+    iterator emplace(arguments &&... parameters) // The emplace function is near-identical to the regular insert function, with the exception of the element construction method, removal of internal VARIADICS support checks, and change to is_nothrow tests.
     {
       if (end_iterator.element_pointer != NULL)
       {
-        switch (((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
+        switch(((groups_with_erasures_list_head != NULL) << 1) | (end_iterator.element_pointer == reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield)))
         {
-        case 0:
-        {
-          const iterator return_iterator = end_iterator;
+          case 0:
+          {
+            const iterator return_iterator = end_iterator;
 
 #ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_constructible<element_type, arguments ...>::value)
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), std::forward<arguments>(parameters)...);
-            end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
-          }
-          else
+            if (std::is_nothrow_constructible<element_type, arguments ...>::value)
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer++), std::forward<arguments>(parameters)...);
+              end_iterator.group_pointer->last_endpoint = end_iterator.element_pointer;
+            }
+            else
 #endif
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), std::forward<arguments>(parameters)...);
-            end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer;
-          }
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(end_iterator.element_pointer), std::forward<arguments>(parameters)...);
+              end_iterator.group_pointer->last_endpoint = ++end_iterator.element_pointer;
+            }
 
-          ++(end_iterator.group_pointer->number_of_elements);
-          ++end_iterator.skipfield_pointer;
-          ++total_number_of_elements;
+            ++(end_iterator.group_pointer->number_of_elements);
+            ++end_iterator.skipfield_pointer;
+            ++total_number_of_elements;
 
-          return return_iterator;
-        }
-        case 1:
-        {
-          end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
-          group &next_group = *(end_iterator.group_pointer->next_group);
-          const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
+            return return_iterator;
+          }
+          case 1:
+          {
+            end_iterator.group_pointer->next_group = PLF_COLONY_ALLOCATE(group_allocator_type, group_allocator_pair, 1, end_iterator.group_pointer);
+            group &next_group = *(end_iterator.group_pointer->next_group);
+            const skipfield_type new_group_size = (total_number_of_elements < static_cast<size_type>(group_allocator_pair.max_elements_per_group)) ? static_cast<const skipfield_type>(total_number_of_elements) : group_allocator_pair.max_elements_per_group;
 
-          try
-          {
-            PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
-          }
-          catch (...)
-          {
-            PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
-            end_iterator.group_pointer->next_group = NULL;
-            throw;
-          }
-
-#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
-          if (std::is_nothrow_constructible<element_type>::value)
-          {
-            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::forward<arguments>(parameters)...);
-          }
-          else
-#endif
-          {
             try
             {
-              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::forward<arguments>(parameters)...);
+              PLF_COLONY_CONSTRUCT(group_allocator_type, group_allocator_pair, &next_group, new_group_size, end_iterator.group_pointer);
             }
             catch (...)
             {
-              PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
               PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
               end_iterator.group_pointer->next_group = NULL;
               throw;
             }
+
+#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
+            if (std::is_nothrow_constructible<element_type, arguments ...>::value)
+            {
+              PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::forward<arguments>(parameters)...);
+            }
+            else
+#endif
+            {
+              try
+              {
+                PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(next_group.elements), std::forward<arguments>(parameters)...);
+              }
+              catch (...)
+              {
+                PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, &next_group);
+                PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, &next_group, 1);
+                end_iterator.group_pointer->next_group = NULL;
+                throw;
+              }
+            }
+
+            end_iterator.group_pointer = &next_group;
+            end_iterator.element_pointer = next_group.last_endpoint;
+            end_iterator.skipfield_pointer = next_group.skipfield + 1;
+            total_capacity += new_group_size;
+            ++total_number_of_elements;
+
+            return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield);
           }
-
-          end_iterator.group_pointer = &next_group;
-          end_iterator.element_pointer = next_group.last_endpoint;
-          end_iterator.skipfield_pointer = next_group.skipfield + 1;
-          total_capacity += new_group_size;
-          ++total_number_of_elements;
-
-          return iterator(end_iterator.group_pointer, next_group.elements, next_group.skipfield);
-        }
-        default:
-        {
-          iterator new_location;
-          new_location.group_pointer = groups_with_erasures_list_head;
-          new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
-          new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
-          groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
-
-          if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max())
+          default:
           {
-            groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            iterator new_location;
+            new_location.group_pointer = groups_with_erasures_list_head;
+            new_location.element_pointer = groups_with_erasures_list_head->elements + groups_with_erasures_list_head->free_list_head;
+            new_location.skipfield_pointer = groups_with_erasures_list_head->skipfield + groups_with_erasures_list_head->free_list_head;
+            groups_with_erasures_list_head->free_list_head = *(reinterpret_cast<skipfield_pointer_type>(new_location.element_pointer));
+
+            if (groups_with_erasures_list_head->free_list_head == std::numeric_limits<skipfield_type>::max())
+            {
+              groups_with_erasures_list_head = groups_with_erasures_list_head->erasures_list_next_group;
+            }
+
+            PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), std::forward<arguments>(parameters) ...);
+
+            ++(new_location.group_pointer->number_of_elements);
+
+            if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
+            {
+              begin_iterator = new_location;
+            }
+
+            ++total_number_of_elements;
+
+            const skipfield_type value = *(new_location.skipfield_pointer);
+            const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
+            const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
+            const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0;
+
+            switch (prev_skipfield | (after_skipfield << 1))
+            {
+              case 1:
+              {
+                *(new_location.skipfield_pointer - (value - 1)) = value - 1;
+                break;
+              }
+              case 2:
+              {
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
+                *(new_location.skipfield_pointer + 1) = value - 1;
+                break;
+              }
+              case 3:
+              {
+                const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
+                const skipfield_type update_count = *start_node - value;
+                *start_node = value - 1;
+
+                std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
+                *(new_location.skipfield_pointer + 1) = update_count;
+              }
+            }
+
+            *new_location.skipfield_pointer = 0;
+            return new_location;
           }
-
-          PLF_COLONY_CONSTRUCT(element_allocator_type, (*this), reinterpret_cast<pointer>(new_location.element_pointer), std::forward<arguments>(parameters) ...);
-
-          ++(new_location.group_pointer->number_of_elements);
-
-          if (new_location.group_pointer == first_group && new_location.element_pointer < begin_iterator.element_pointer)
-          {
-            begin_iterator = new_location;
-          }
-
-          ++total_number_of_elements;
-
-          const skipfield_type value = *(new_location.skipfield_pointer);
-          const bool test = (new_location.skipfield_pointer == new_location.group_pointer->skipfield);
-          const char prev_skipfield = *(new_location.skipfield_pointer - !test) != value * test;
-          const char after_skipfield = *(new_location.skipfield_pointer + 1) != 0;
-
-          switch (prev_skipfield | (after_skipfield << 1))
-          {
-          case 1:
-          {
-            *(new_location.skipfield_pointer - (value - 1)) = value - 1;
-            break;
-          }
-          case 2:
-          {
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(new_location.skipfield_pointer + 1), sizeof(skipfield_type) * (value - 2));
-            *(new_location.skipfield_pointer + 1) = value - 1;
-            break;
-          }
-          case 3:
-          {
-            const skipfield_pointer_type start_node = new_location.skipfield_pointer - (value - 1);
-            const skipfield_type update_count = *start_node - value;
-            *start_node = value - 1;
-
-            std::memmove(&*(new_location.skipfield_pointer + 2), &*(start_node + 1), sizeof(skipfield_type) * (update_count - 1));
-            *(new_location.skipfield_pointer + 1) = update_count;
-          }
-          }
-
-          *new_location.skipfield_pointer = 0;
-          return new_location;
-        }
         }
       }
       else
@@ -2052,7 +2052,7 @@ namespace plf
     // Range insert
 
     template <class iterator_type>
-    inline void insert(typename plf_enable_if_c<!std::numeric_limits<iterator_type>::is_integer, iterator_type>::type first, const iterator_type last)
+    inline void insert (typename plf_enable_if_c<!std::numeric_limits<iterator_type>::is_integer, iterator_type>::type first, const iterator_type last)
     {
       while (first != last)
       {
@@ -2065,7 +2065,7 @@ namespace plf
     // Initializer-list insert
 
 #ifdef PLF_COLONY_INITIALIZER_LIST_SUPPORT
-    inline void insert(const std::initializer_list<element_type> &element_list)
+    inline void insert (const std::initializer_list<element_type> &element_list)
     { // use range insert:
       insert(element_list.begin(), element_list.end());
     }
@@ -2122,8 +2122,8 @@ namespace plf
 
   public:
 
-    // must return iterator in case the group which the iterator is within becomes empty after the erasure and is thereby removed from the colony chain, making the prior iterator invalid and unusable:
-    iterator erase(const const_iterator &it) 	// if uninitialized/invalid iterator supplied, function could generate an exception
+    // must return iterator to subsequent non-erased element (or end()), in case the group containing the element which the iterator points to becomes empty after the erasure, and is thereafter removed from the colony chain, making the current iterator invalid and unusable in a ++ operation:
+    iterator erase(const const_iterator &it) // if uninitialized/invalid iterator supplied, function could generate an exception
     {
       assert(!empty());
       const group_pointer_type group_pointer = it.group_pointer;
@@ -2153,10 +2153,10 @@ namespace plf
 
         // Code logic for following section:
         // ---------------------------------
-        // If current skipfield node has no erased node on either side, continue as usual
-        // If node has erased node before it, add 1 to prev node value and set current node and start node of the skipblock to this.
-        // If node has erased node after it but none before it, make this node the start node of the skipblock and update subsequent nodes
-        // If node has erased nodes before and after it, set current node to left node + 1, then update all nodes after  the current node - effectively removing start node of the right-hand skipblock
+        // If current skipfield node has no skipped node on either side, continue as usual
+        // If node only has skipped node on left, set current node and start node of the skipblock to left node value + 1.
+        // If node only has skipped node on right, make this node the start node of the skipblock and update subsequent nodes.
+        // If node has skipped nodes on left and right, set current node to left node + 1, then update all nodes after the current node (add 1 per node from the current node's value)
 
         iterator return_iterator;
 
@@ -2169,72 +2169,72 @@ namespace plf
 
         switch (prev_skipfield | (after_skipfield << 1))
         {
-        case 0: // no consecutive erased elements
-        {
-          *it.skipfield_pointer = 1; // solo erase point
-
-          return_iterator.group_pointer = group_pointer;
-          return_iterator.element_pointer = it.element_pointer + 1;
-          return_iterator.skipfield_pointer = it.skipfield_pointer + 1;
-          return_iterator.check_for_end_of_group_and_progress();
-          break;
-        }
-        case 1: // previous erased consecutive elements, none following
-        {
-          *it.skipfield_pointer = *(it.skipfield_pointer - 1) + 1;
-          ++(*(it.skipfield_pointer - *(it.skipfield_pointer - 1)));
-
-          return_iterator.group_pointer = group_pointer;
-          return_iterator.element_pointer = it.element_pointer + 1;
-          return_iterator.skipfield_pointer = it.skipfield_pointer + 1;
-          return_iterator.check_for_end_of_group_and_progress();
-          break;
-        }
-        case 2: // following erased consecutive elements, none preceding
-        {
-          const skipfield_type update_count = *(it.skipfield_pointer + 1);
-          std::memmove(&*(it.skipfield_pointer + 1), &*(it.skipfield_pointer + 2), sizeof(skipfield_type) * (update_count - 1));
-          *(it.skipfield_pointer + update_count) = *(it.skipfield_pointer) = update_count + 1;
-
-          return_iterator.group_pointer = group_pointer;
-          return_iterator.element_pointer = it.element_pointer + *(it.skipfield_pointer);
-          return_iterator.skipfield_pointer = it.skipfield_pointer + *(it.skipfield_pointer);
-          return_iterator.check_for_end_of_group_and_progress();
-          break;
-        }
-        case 3: // both preceding and following consecutive erased elements
-        {
-          skipfield_pointer_type following = it.skipfield_pointer - 1;
-          skipfield_type update_value = *following;
-          skipfield_type update_count = *(following + 2) + 1;
-          *(it.skipfield_pointer - update_value) += update_count;
-
-          return_iterator.group_pointer = group_pointer;
-          return_iterator.element_pointer = it.element_pointer + update_count;
-          return_iterator.skipfield_pointer = it.skipfield_pointer + update_count;
-          return_iterator.check_for_end_of_group_and_progress();
-
-          skipfield_type vectorize = update_count >> 2;
-          update_count &= 3; // ie. % 4
-
-          while (vectorize-- != 0)
+          case 0: // no consecutive erased elements
           {
-            *(following + 1) = update_value + 1;
-            *(following + 2) = update_value + 2;
-            *(following + 3) = update_value + 3;
-            *(following + 4) = update_value + 4;
+            *it.skipfield_pointer = 1; // solo skipped node
 
-            following += 4;
-            update_value += 4;
+            return_iterator.group_pointer = group_pointer;
+            return_iterator.element_pointer = it.element_pointer + 1;
+            return_iterator.skipfield_pointer = it.skipfield_pointer + 1;
+            return_iterator.check_for_end_of_group_and_progress();
+            break;
           }
-
-          while (update_count-- != 0)
+          case 1: // previous erased consecutive elements, none following
           {
-            *(++following) = ++update_value;
-          }
+            *it.skipfield_pointer = *(it.skipfield_pointer - 1) + 1;
+            ++(*(it.skipfield_pointer - *(it.skipfield_pointer - 1)));
 
-          break;
-        }
+            return_iterator.group_pointer = group_pointer;
+            return_iterator.element_pointer = it.element_pointer + 1;
+            return_iterator.skipfield_pointer = it.skipfield_pointer + 1;
+            return_iterator.check_for_end_of_group_and_progress();
+            break;
+          }
+          case 2: // following erased consecutive elements, none preceding
+          {
+            const skipfield_type update_count = *(it.skipfield_pointer + 1);
+            std::memmove(&*(it.skipfield_pointer + 1), &*(it.skipfield_pointer + 2), sizeof(skipfield_type) * (update_count - 1));
+            *(it.skipfield_pointer + update_count) = *(it.skipfield_pointer) = update_count + 1;
+
+            return_iterator.group_pointer = group_pointer;
+            return_iterator.element_pointer = it.element_pointer + *(it.skipfield_pointer);
+            return_iterator.skipfield_pointer = it.skipfield_pointer + *(it.skipfield_pointer);
+            return_iterator.check_for_end_of_group_and_progress();
+            break;
+          }
+          case 3: // both preceding and following consecutive erased elements
+          {
+            skipfield_pointer_type following = it.skipfield_pointer - 1;
+            skipfield_type update_value = *following;
+            skipfield_type update_count = *(following + 2) + 1;
+            *(it.skipfield_pointer - update_value) += update_count;
+
+            return_iterator.group_pointer = group_pointer;
+            return_iterator.element_pointer = it.element_pointer + update_count;
+            return_iterator.skipfield_pointer = it.skipfield_pointer + update_count;
+            return_iterator.check_for_end_of_group_and_progress();
+
+            skipfield_type vectorize = update_count >> 2;
+            update_count &= 3; // ie. % 4
+
+            while (vectorize-- != 0)
+            {
+              *(following + 1) = update_value + 1;
+              *(following + 2) = update_value + 2;
+              *(following + 3) = update_value + 3;
+              *(following + 4) = update_value + 4;
+
+              following += 4;
+              update_value += 4;
+            }
+
+            while (update_count-- != 0)
+            {
+              *(++following) = ++update_value;
+            }
+
+            break;
+          }
         }
 
 
@@ -2247,80 +2247,80 @@ namespace plf
       }
 
       // else: group is empty, consolidate groups
-      switch ((group_pointer->next_group != NULL) | ((group_pointer != first_group) << 1))
+      switch((group_pointer->next_group != NULL) | ((group_pointer != first_group) << 1))
       {
-      case 0: // ie. group_pointer == first_group && group_pointer->next_group == NULL; only group in colony
-      {
-        // Reset skipfield and free list rather than clearing - leads to fewer allocations/deallocations:
-        std::memset(&*(group_pointer->skipfield), 0, sizeof(skipfield_type) * group_pointer->size); // &* to avoid problems with non-trivial pointers. Although there is one more skipfield than group_pointer->size, size + 1 is not necessary here as the end skipfield is never written to after initialization
-        group_pointer->free_list_head = std::numeric_limits<skipfield_type>::max();
-        groups_with_erasures_list_head = NULL;
-
-        // Reset begin and end iterators:
-        end_iterator.element_pointer = begin_iterator.element_pointer = group_pointer->last_endpoint = group_pointer->elements;
-        end_iterator.skipfield_pointer = begin_iterator.skipfield_pointer = group_pointer->skipfield;
-
-        return end_iterator;
-      }
-      case 1: // ie. group_pointer == first_group && group_pointer->next_group != NULL. Remove first group, change first group to next group
-      {
-        group_pointer->next_group->previous_group = NULL; // Cut off this group from the chain
-        first_group = group_pointer->next_group; // Make the next group the first group
-
-        update_subsequent_group_numbers(first_group);
-
-        if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max()) // Erasures present within the group, ie. was part of the intrusive list of groups with erasures.
+        case 0: // ie. group_pointer == first_group && group_pointer->next_group == NULL; only group in colony
         {
-          remove_from_groups_with_erasures_list(group_pointer);
+          // Reset skipfield and free list rather than clearing - leads to fewer allocations/deallocations:
+          std::memset(&*(group_pointer->skipfield), 0, sizeof(skipfield_type) * group_pointer->size); // &* to avoid problems with non-trivial pointers. Although there is one more skipfield than group_pointer->size, size + 1 is not necessary here as the end skipfield is never written to after initialization
+          group_pointer->free_list_head = std::numeric_limits<skipfield_type>::max();
+          groups_with_erasures_list_head = NULL;
+
+          // Reset begin and end iterators:
+          end_iterator.element_pointer = begin_iterator.element_pointer = group_pointer->last_endpoint = group_pointer->elements;
+          end_iterator.skipfield_pointer = begin_iterator.skipfield_pointer = group_pointer->skipfield;
+
+          return end_iterator;
         }
-
-        total_capacity -= group_pointer->size;
-        PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
-        PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
-
-        begin_iterator.group_pointer = first_group; // note: end iterator only needs to be changed if the deleted group was the final group in the chain ie. not in this case
-        begin_iterator.element_pointer = first_group->elements + *(first_group->skipfield); // If the beginning index has been erased (ie. skipfield != 0), skip to next non-erased element
-        begin_iterator.skipfield_pointer = first_group->skipfield + *(first_group->skipfield);
-
-        return begin_iterator;
-      }
-      case 3: // this is a non-first group but not final group in chain: delete the group, then link previous group to the next group in the chain:
-      {
-        group_pointer->next_group->previous_group = group_pointer->previous_group;
-        const group_pointer_type return_group = group_pointer->previous_group->next_group = group_pointer->next_group; // close the chain, removing this group from it
-
-        update_subsequent_group_numbers(return_group);
-
-        if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max())
+        case 1: // ie. group_pointer == first_group && group_pointer->next_group != NULL. Remove first group, change first group to next group
         {
-          remove_from_groups_with_erasures_list(group_pointer);
+          group_pointer->next_group->previous_group = NULL; // Cut off this group from the chain
+          first_group = group_pointer->next_group; // Make the next group the first group
+
+          update_subsequent_group_numbers(first_group);
+
+          if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max()) // Erasures present within the group, ie. was part of the intrusive list of groups with erasures.
+          {
+            remove_from_groups_with_erasures_list(group_pointer);
+          }
+
+          total_capacity -= group_pointer->size;
+          PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
+          PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
+
+          begin_iterator.group_pointer = first_group; // note: end iterator only needs to be changed if the deleted group was the final group in the chain ie. not in this case
+          begin_iterator.element_pointer = first_group->elements + *(first_group->skipfield); // If the beginning index has been erased (ie. skipfield != 0), skip to next non-erased element
+          begin_iterator.skipfield_pointer = first_group->skipfield + *(first_group->skipfield);
+
+          return begin_iterator;
         }
-
-        total_capacity -= group_pointer->size;
-        PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
-        PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
-
-        // Return next group's first non-erased element:
-        return iterator(return_group, return_group->elements + *(return_group->skipfield), return_group->skipfield + *(return_group->skipfield));
-      }
-      default: // this is a non-first group and the final group in the chain
-      {
-        if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max())
+        case 3: // this is a non-first group but not final group in chain: delete the group, then link previous group to the next group in the chain:
         {
-          remove_from_groups_with_erasures_list(group_pointer);
+          group_pointer->next_group->previous_group = group_pointer->previous_group;
+          const group_pointer_type return_group = group_pointer->previous_group->next_group = group_pointer->next_group; // close the chain, removing this group from it
+
+          update_subsequent_group_numbers(return_group);
+
+          if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max())
+          {
+            remove_from_groups_with_erasures_list(group_pointer);
+          }
+
+          total_capacity -= group_pointer->size;
+          PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
+          PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
+
+          // Return next group's first non-erased element:
+          return iterator(return_group, return_group->elements + *(return_group->skipfield), return_group->skipfield + *(return_group->skipfield));
         }
+        default: // this is a non-first group and the final group in the chain
+        {
+          if (group_pointer->free_list_head != std::numeric_limits<skipfield_type>::max())
+          {
+            remove_from_groups_with_erasures_list(group_pointer);
+          }
 
-        group_pointer->previous_group->next_group = NULL;
-        end_iterator.group_pointer = group_pointer->previous_group; // end iterator needs to be changed as element supplied was the back element of the colony
-        end_iterator.element_pointer = reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield);
-        end_iterator.skipfield_pointer = end_iterator.group_pointer->skipfield + end_iterator.group_pointer->size;
+          group_pointer->previous_group->next_group = NULL;
+          end_iterator.group_pointer = group_pointer->previous_group; // end iterator needs to be changed as element supplied was the back element of the colony
+          end_iterator.element_pointer = reinterpret_cast<aligned_pointer_type>(end_iterator.group_pointer->skipfield);
+          end_iterator.skipfield_pointer = end_iterator.group_pointer->skipfield + end_iterator.group_pointer->size;
 
-        total_capacity -= group_pointer->size;
-        PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
-        PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
+          total_capacity -= group_pointer->size;
+          PLF_COLONY_DESTROY(group_allocator_type, group_allocator_pair, group_pointer);
+          PLF_COLONY_DEALLOCATE(group_allocator_type, group_allocator_pair, group_pointer, 1);
 
-        return end_iterator;
-      }
+          return end_iterator;
+        }
       }
     }
 
@@ -2542,7 +2542,7 @@ namespace plf
         if (!(std::is_trivially_destructible<element_type>::value)) // This decision should be resolved at compile-time
 #endif
         {
-          while (current.element_pointer != iterator2.element_pointer)
+          while(current.element_pointer != iterator2.element_pointer)
           {
             PLF_COLONY_DESTROY(element_allocator_type, (*this), reinterpret_cast<pointer>(current.element_pointer));
             const skipfield_type skip = *(++current.skipfield_pointer);
@@ -2609,9 +2609,9 @@ namespace plf
     inline size_type approximate_memory_use() const PLF_COLONY_NOEXCEPT
     {
       return
-        sizeof(*this) + // sizeof colony basic structure
-        (total_capacity * (sizeof(aligned_element_type) + sizeof(skipfield_type))) + // sizeof current colony data capacity + skipfields
-        ((end_iterator.group_pointer == NULL) ? 0 : ((end_iterator.group_pointer->group_number + 1) * (sizeof(group) + sizeof(skipfield_type)))); // if colony not empty, add the memory usage of the group structures themselves, adding the extra skipfield node
+              sizeof(*this) + // sizeof colony basic structure
+              (total_capacity * (sizeof(aligned_element_type) + sizeof(skipfield_type))) + // sizeof current colony data capacity + skipfields
+              ((end_iterator.group_pointer == NULL) ? 0 : ((end_iterator.group_pointer->group_number + 1) * (sizeof(group) + sizeof(skipfield_type)))); // if colony not empty, add the memory usage of the group structures themselves, adding the extra skipfield node
     }
 
 
@@ -2656,9 +2656,9 @@ namespace plf
     inline void reinitialize(const skipfield_type min_allocation_amount, const skipfield_type max_allocation_amount) PLF_COLONY_NOEXCEPT
     {
       assert((min_allocation_amount > 2) & (min_allocation_amount <= max_allocation_amount));
+      clear();
       pointer_allocator_pair.min_elements_per_group = min_allocation_amount;
       group_allocator_pair.max_elements_per_group = max_allocation_amount;
-      clear();
     }
 
 
@@ -2673,7 +2673,7 @@ namespace plf
 
     inline colony & operator = (const colony &source)
     {
-      assert(&source != this);
+      assert (&source != this);
 
 #ifdef PLF_COLONY_MOVE_SEMANTICS_SUPPORT
       destroy_all_data();
@@ -2681,8 +2681,8 @@ namespace plf
       *this = std::move(temp); // Avoid generating 2nd temporary
 #else
       clear();
-      colony temp(source);
-      swap(temp);
+			colony temp(source);
+			swap(temp);
 #endif
 
       return *this;
@@ -2694,7 +2694,7 @@ namespace plf
     // Move assignment
     colony & operator = (colony &&source) PLF_COLONY_NOEXCEPT_MOVE_ASSIGNMENT(allocator_type)
     {
-      assert(&source != this);
+      assert (&source != this);
       destroy_all_data();
 
       end_iterator = std::move(source.end_iterator);
@@ -2715,7 +2715,7 @@ namespace plf
 
     bool operator == (const colony &rh) const PLF_COLONY_NOEXCEPT
     {
-      assert(this != &rh);
+      assert (this != &rh);
 
       if (total_number_of_elements != rh.total_number_of_elements)
       {
@@ -2816,7 +2816,7 @@ namespace plf
 
       assert(group_pointer != NULL); // covers uninitialized colony_iterator && empty group
 
-                                     // Now, run code based on the nature of the distance type - negative, positive or zero:
+      // Now, run code based on the nature of the distance type - negative, positive or zero:
       if (distance > 0) // ie. +=
       {
         // Code explanation:
@@ -2833,9 +2833,9 @@ namespace plf
 
         // Note: incrementing element_pointer is avoided until necessary to avoid needless calculations
 
-        assert(!(element_pointer == group_pointer->last_endpoint && group_pointer->next_group == NULL)); // Check that we're not already at end()
+        assert (!(element_pointer == group_pointer->last_endpoint && group_pointer->next_group == NULL)); // Check that we're not already at end()
 
-                                                                                                         // Special case for initial element pointer and initial group (we don't know how far into the group the element pointer is)
+        // Special case for initial element pointer and initial group (we don't know how far into the group the element pointer is)
         if (element_pointer != group_pointer->elements + *(group_pointer->skipfield)) // ie. != first non-erased element in group
         {
           const difference_type distance_from_end = static_cast<const difference_type>(group_pointer->last_endpoint - element_pointer);
@@ -2863,7 +2863,7 @@ namespace plf
           {
             const skipfield_pointer_type endpoint = skipfield_pointer + distance_from_end;
 
-            while (true)
+            while(true)
             {
               ++skipfield_pointer;
               skipfield_pointer += *skipfield_pointer;
@@ -2936,7 +2936,7 @@ namespace plf
           {
             ++skipfield_pointer;
             skipfield_pointer += *skipfield_pointer;
-          } while (--distance != 0);
+          } while(--distance != 0);
 
           element_pointer = group_pointer->elements + (skipfield_pointer - group_pointer->skipfield);
           return;
@@ -2978,7 +2978,7 @@ namespace plf
           {
             const skipfield_pointer_type beginning_point = group_pointer->skipfield + *(group_pointer->skipfield);
 
-            while (skipfield_pointer != beginning_point)
+            while(skipfield_pointer != beginning_point)
             {
               --skipfield_pointer;
               skipfield_pointer -= *skipfield_pointer;
@@ -3003,7 +3003,7 @@ namespace plf
 
 
         // Intermediary groups - at the start of this code block and the subsequent block, the position of the iterator is assumed to be either the first non-erased element in the next group over, or end():
-        while (static_cast<difference_type>(group_pointer->number_of_elements) < distance)
+        while(static_cast<difference_type>(group_pointer->number_of_elements) < distance)
         {
           if (group_pointer->previous_group == NULL) // we've gone beyond begin(), so bound to it
           {
@@ -3038,7 +3038,7 @@ namespace plf
           {
             --skipfield_pointer;
             skipfield_pointer -= *skipfield_pointer;
-          } while (--distance != 0);
+          } while(--distance != 0);
 
           element_pointer = group_pointer->elements + (skipfield_pointer - group_pointer->skipfield);
           return;
@@ -3063,9 +3063,9 @@ namespace plf
 
       if (distance > 0)
       {
-        assert(!(element_pointer == group_pointer->elements - 1 && group_pointer->previous_group == NULL)); // Check that we're not already at rend()
-                                                                                                            // Special case for initial element pointer and initial group (we don't know how far into the group the element pointer is)
-                                                                                                            // Since a reverse_iterator cannot == last_endpoint (ie. before rbegin()) we don't need to check for that like with iterator
+        assert (!(element_pointer == group_pointer->elements - 1 && group_pointer->previous_group == NULL)); // Check that we're not already at rend()
+        // Special case for initial element pointer and initial group (we don't know how far into the group the element pointer is)
+        // Since a reverse_iterator cannot == last_endpoint (ie. before rbegin()) we don't need to check for that like with iterator
         if (group_pointer->free_list_head == std::numeric_limits<skipfield_type>::max())
         {
           difference_type distance_from_beginning = static_cast<difference_type>(element_pointer - group_pointer->elements);
@@ -3091,7 +3091,7 @@ namespace plf
         {
           const skipfield_pointer_type beginning_point = group_pointer->skipfield + *(group_pointer->skipfield);
 
-          while (skipfield_pointer != beginning_point)
+          while(skipfield_pointer != beginning_point)
           {
             --skipfield_pointer;
             skipfield_pointer -= *skipfield_pointer;
@@ -3115,7 +3115,7 @@ namespace plf
 
 
         // Intermediary groups - at the start of this code block and the subsequent block, the position of the iterator is assumed to be the first non-erased element in the next group:
-        while (static_cast<difference_type>(group_pointer->number_of_elements) < distance)
+        while(static_cast<difference_type>(group_pointer->number_of_elements) < distance)
         {
           if (group_pointer->previous_group == NULL) // bound to rend()
           {
@@ -3150,7 +3150,7 @@ namespace plf
           {
             --skipfield_pointer;
             skipfield_pointer -= *skipfield_pointer;
-          } while (--distance != 0);
+          } while(--distance != 0);
 
           element_pointer = group_pointer->elements + (skipfield_pointer - group_pointer->skipfield);
           return;
@@ -3158,7 +3158,7 @@ namespace plf
       }
       else if (distance < 0)
       {
-        assert(!((element_pointer == (group_pointer->last_endpoint - 1) - *(group_pointer->skipfield + (group_pointer->last_endpoint - group_pointer->elements) - 1)) && group_pointer->next_group == NULL)); // Check that we're not already at rbegin()
+        assert (!((element_pointer == (group_pointer->last_endpoint - 1) - *(group_pointer->skipfield + (group_pointer->last_endpoint - group_pointer->elements) - 1)) && group_pointer->next_group == NULL)); // Check that we're not already at rbegin()
 
         if (element_pointer != group_pointer->elements + *(group_pointer->skipfield)) // ie. != first non-erased element in group
         {
@@ -3187,7 +3187,7 @@ namespace plf
           {
             const skipfield_pointer_type endpoint = skipfield_pointer + (group_pointer->last_endpoint - element_pointer);
 
-            while (true)
+            while(true)
             {
               ++skipfield_pointer;
               skipfield_pointer += *skipfield_pointer;
@@ -3225,7 +3225,7 @@ namespace plf
 
 
         // Intermediary groups - at the start of this code block and the subsequent block, the position of the iterator is assumed to be the first non-erased element in the current group, as a result of the previous code blocks:
-        while (static_cast<difference_type>(group_pointer->number_of_elements) <= distance)
+        while(static_cast<difference_type>(group_pointer->number_of_elements) <= distance)
         {
           if (group_pointer->next_group == NULL) // bound to rbegin()
           {
@@ -3264,7 +3264,7 @@ namespace plf
           {
             ++skipfield_pointer;
             skipfield_pointer += *skipfield_pointer;
-          } while (--distance != 0);
+          } while(--distance != 0);
 
           element_pointer = group_pointer->elements + (skipfield_pointer - group_pointer->skipfield);
           return;
@@ -3331,7 +3331,6 @@ namespace plf
       // skipping manual incrementation in all but the initial and final groups.
       // In the initial and final groups, manual incrementation must be used to calculate distance, if there have been no prior erasures in those groups.
       // If there are no prior erasures in either of those groups, we can use pointer arithmetic to calculate the distances for those groups.
-
 
       assert(!(first.group_pointer == NULL) && !(last.group_pointer == NULL));  // Check that they are initialized
 
@@ -3475,7 +3474,7 @@ namespace plf
       {
         skipfield_pointer_type skipfield_pointer = group_pointer->skipfield + *(group_pointer->skipfield);
 
-        while (skipfield_pointer != it.skipfield_pointer)
+        while(skipfield_pointer != it.skipfield_pointer)
         {
           ++skipfield_pointer;
           skipfield_pointer += *skipfield_pointer;
@@ -3534,8 +3533,8 @@ namespace plf
     {
       comparison_function stored_instance;
 
-      explicit sort_dereferencer(const comparison_function &function_instance) :
-        stored_instance(function_instance)
+      explicit sort_dereferencer(const comparison_function &function_instance):
+              stored_instance(function_instance)
       {}
 
       sort_dereferencer() PLF_COLONY_NOEXCEPT
@@ -3669,7 +3668,7 @@ namespace plf
         *this = std::move(source);
 #else
         clear();
-        swap(source);
+				swap(source);
 #endif
 
         return;
@@ -3719,7 +3718,7 @@ namespace plf
       if (distance_to_end != 0) // 0 == edge case
       {   // Mark unused element memory locations from back group as skipped/erased:
 
-          // Skipfield:
+        // Skipfield:
         skipfield_pointer_type current_skipfield_node = end_iterator.skipfield_pointer;
         const skipfield_type previous_node_value = *(current_skipfield_node - 1);
 
@@ -3735,7 +3734,7 @@ namespace plf
 
         skipfield_type current_skipfield_value = previous_node_value + 1;
         const skipfield_pointer_type end_node = current_skipfield_node + distance_to_end;
-        while (++current_skipfield_node != end_node)
+        while(++current_skipfield_node != end_node)
         {
           *current_skipfield_node = ++current_skipfield_value;
         }
@@ -3759,7 +3758,7 @@ namespace plf
         do
         {
           *(reinterpret_cast<skipfield_pointer_type>(current_element)) = ++next_free_list_index;
-        } while (++current_element != last_element);
+        } while(++current_element != last_element);
 
         *(reinterpret_cast<skipfield_pointer_type>(current_element)) = previous_free_list_head;
         end_iterator.group_pointer->last_endpoint = current_element + 1;
@@ -3791,29 +3790,48 @@ namespace plf
     {
       assert(&source != this);
 
-      // The below is faster than doing a move-swap, by a significant margin:
-      const iterator						swap_end_iterator = end_iterator, swap_begin_iterator = begin_iterator;
-      const group_pointer_type		swap_first_group = first_group, swap_groups_with_erasures_list_head = groups_with_erasures_list_head;
-      const size_type					swap_total_number_of_elements = total_number_of_elements, swap_total_capacity = total_capacity;
-      const skipfield_type 			swap_min_elements_per_group = pointer_allocator_pair.min_elements_per_group, swap_max_elements_per_group = group_allocator_pair.max_elements_per_group;
+#ifdef PLF_COLONY_TYPE_TRAITS_SUPPORT
+      if (std::is_trivial<group_pointer_type>::value && std::is_trivial<aligned_pointer_type>::value && std::is_trivial<skipfield_pointer_type>::value) // if all pointer types are trivial we can just copy using memcpy - much faster
+      {
+        char temp[sizeof(colony)];
+        std::memcpy(reinterpret_cast<void *>(&temp), reinterpret_cast<void *>(this), sizeof(colony));
+        std::memcpy(reinterpret_cast<void *>(this), reinterpret_cast<void *>(&source), sizeof(colony));
+        std::memcpy(reinterpret_cast<void *>(&source), reinterpret_cast<void *>(&temp), sizeof(colony));
+      }
+#ifdef PLF_COLONY_MOVE_SEMANTICS_SUPPORT
+      else if (std::is_move_assignable<group_pointer_type>::value && std::is_move_assignable<aligned_pointer_type>::value && std::is_move_assignable<skipfield_pointer_type>::value && std::is_move_constructible<group_pointer_type>::value && std::is_move_constructible<aligned_pointer_type>::value && std::is_move_constructible<skipfield_pointer_type>::value)
+      {
+        colony temp(std::move(source));
+        source = std::move(*this);
+        *this = std::move(temp);
+      }
+#endif
+      else
+#endif
+      {
+        const iterator						swap_end_iterator = end_iterator, swap_begin_iterator = begin_iterator;
+        const group_pointer_type		swap_first_group = first_group, swap_groups_with_erasures_list_head = groups_with_erasures_list_head;
+        const size_type					swap_total_number_of_elements = total_number_of_elements, swap_total_capacity = total_capacity;
+        const skipfield_type 			swap_min_elements_per_group = pointer_allocator_pair.min_elements_per_group, swap_max_elements_per_group = group_allocator_pair.max_elements_per_group;
 
-      end_iterator = source.end_iterator;
-      begin_iterator = source.begin_iterator;
-      first_group = source.first_group;
-      groups_with_erasures_list_head = source.groups_with_erasures_list_head;
-      total_number_of_elements = source.total_number_of_elements;
-      total_capacity = source.total_capacity;
-      pointer_allocator_pair.min_elements_per_group = source.pointer_allocator_pair.min_elements_per_group;
-      group_allocator_pair.max_elements_per_group = source.group_allocator_pair.max_elements_per_group;
+        end_iterator = source.end_iterator;
+        begin_iterator = source.begin_iterator;
+        first_group = source.first_group;
+        groups_with_erasures_list_head = source.groups_with_erasures_list_head;
+        total_number_of_elements = source.total_number_of_elements;
+        total_capacity = source.total_capacity;
+        pointer_allocator_pair.min_elements_per_group = source.pointer_allocator_pair.min_elements_per_group;
+        group_allocator_pair.max_elements_per_group = source.group_allocator_pair.max_elements_per_group;
 
-      source.end_iterator = swap_end_iterator;
-      source.begin_iterator = swap_begin_iterator;
-      source.first_group = swap_first_group;
-      source.groups_with_erasures_list_head = swap_groups_with_erasures_list_head;
-      source.total_number_of_elements = swap_total_number_of_elements;
-      source.total_capacity = swap_total_capacity;
-      source.pointer_allocator_pair.min_elements_per_group = swap_min_elements_per_group;
-      source.group_allocator_pair.max_elements_per_group = swap_max_elements_per_group;
+        source.end_iterator = swap_end_iterator;
+        source.begin_iterator = swap_begin_iterator;
+        source.first_group = swap_first_group;
+        source.groups_with_erasures_list_head = swap_groups_with_erasures_list_head;
+        source.total_number_of_elements = swap_total_number_of_elements;
+        source.total_capacity = swap_total_capacity;
+        source.pointer_allocator_pair.min_elements_per_group = swap_min_elements_per_group;
+        source.group_allocator_pair.max_elements_per_group = swap_max_elements_per_group;
+      }
     }
 
   };	// colony
@@ -3822,7 +3840,7 @@ namespace plf
 
 
   template <class element_type, class element_allocator_type, typename element_skipfield_type>
-  inline void swap(colony<element_type, element_allocator_type, element_skipfield_type> &a, colony<element_type, element_allocator_type, element_skipfield_type> &b) PLF_COLONY_NOEXCEPT_SWAP(element_allocator_type)
+  inline void swap (colony<element_type, element_allocator_type, element_skipfield_type> &a, colony<element_type, element_allocator_type, element_skipfield_type> &b) PLF_COLONY_NOEXCEPT_SWAP(element_allocator_type)
   {
     a.swap(b);
   }
