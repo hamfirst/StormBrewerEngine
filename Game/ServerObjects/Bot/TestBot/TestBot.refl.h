@@ -22,10 +22,9 @@ class TestBot : public BotServerObject
 public:
   DECLARE_SERVER_OBJECT;
 
-  TestBot();
-  TestBot(const TestBot & rhs);
-  TestBot(TestBot && rhs);
-  ~TestBot();
+  TestBot() = default;
+  TestBot(const TestBot & rhs) = default;
+  TestBot(TestBot && rhs) = default;
 
   TestBot & operator = (const TestBot & rhs) = default;
   TestBot & operator = (TestBot && rhs) = default;

@@ -7,6 +7,7 @@
 #include "StormNet/NetPipeVariant.h"
 #include "StormNet/NetPipeDeltaState.h"
 #include "StormNet/NetPipeDeltaStateReliable.h"
+#include "StormNet/NetReflection.h"
 
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"

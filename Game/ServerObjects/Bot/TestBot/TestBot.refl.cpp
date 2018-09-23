@@ -19,36 +19,6 @@ static StormBehaviorTreeTemplate<BotServerObject, GameLogicContainer> BehaviorTr
             )
 ;
 
-std::vector<void *> s_MemoryPtrs;
-
-TestBot::TestBot() :
-  BotServerObject()
-{
-  s_MemoryPtrs.push_back(this);
-}
-
-TestBot::TestBot(const TestBot & rhs) :
-  BotServerObject(rhs)
-{
-  s_MemoryPtrs.push_back(this);
-  m_Tree = rhs.m_Tree;
-}
-
-TestBot::TestBot(TestBot && rhs) :
-  BotServerObject(rhs)
-{
-  s_MemoryPtrs.push_back(this);
-  m_Tree = std::move(rhs.m_Tree);
-}
-
-TestBot::~TestBot()
-{
-  if(vremove_quick(s_MemoryPtrs, (void *)this) == false)
-  {
-    assert(false);
-  }
-}
-
 void TestBot::Init(const TestBotInitData & init_data)
 {
   m_Tree.SetBehaviorTree(&BehaviorTreeTemplate);
