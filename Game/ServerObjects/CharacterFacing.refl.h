@@ -15,3 +15,6 @@ enum STORM_REFL_ENUM class CharacterFacing
   kNone,
 };
 
+
+Optional<CharacterFacing> GetFacingForDirection(const GameNetVec2 & dir);
+std::pair<uint32_t, bool> GetAnimationInfoForFacingDirection(CharacterFacing facing);
