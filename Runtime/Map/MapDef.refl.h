@@ -46,6 +46,7 @@ struct RUNTIME_EXPORT MapEntity
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapEntity);
   RString m_Name;
+  RUInt m_GUID;
   RInt m_XPosition;
   RInt m_YPosition;
   EntityDef m_EntityDef;
@@ -64,6 +65,7 @@ struct RUNTIME_EXPORT MapServerObject
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapServerObject);
   RString m_Name;
+  RUInt m_GUID;
   RInt m_XPosition;
   RInt m_YPosition;
 
@@ -126,6 +128,7 @@ struct RUNTIME_EXPORT MapEffectLayer
   STORM_DATA_DEFAULT_CONSTRUCTION(MapEffectLayer);
 
   RString m_Name;
+  RUInt m_GUID;
   RInt m_LayerOrder;
 
   RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo> m_EffectLayerData;
@@ -135,6 +138,7 @@ struct RUNTIME_EXPORT MapAnchor
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapAnchor);
   RString m_Name;
+  RUInt m_GUID;
   RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorData;
 
   RString STORM_REFL_ATTR_VAL(file, sprite) m_Sprite;
@@ -161,6 +165,7 @@ struct RUNTIME_EXPORT MapPath
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPath);
   RString m_Name;
+  RUInt m_GUID;
   RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathData;
   RMergeList<MapPathPoint> m_Points;
 
@@ -203,6 +208,7 @@ struct RUNTIME_EXPORT MapVolume
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapVolume);
   RString m_Name;
+  RUInt m_GUID;
   RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeData;
   RInt m_XStart;
   RInt m_YStart;

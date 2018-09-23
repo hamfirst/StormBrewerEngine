@@ -63,6 +63,53 @@ MapLoadLink MapResource::LoadWithCallback(czstr file_path, Delegate<void, NotNul
 void MapResource::OnDataLoadComplete(const std::string & resource_data)
 {
   StormReflParseJson(m_Data, resource_data.data());
+
+  for(auto elem : m_Data.m_Anchors)
+  {
+    if(elem.second.m_GUID == 0U)
+    {
+      elem.second.m_GUID = GetRandomNumber();
+    }
+  }
+
+  for(auto elem : m_Data.m_Paths)
+  {
+    if(elem.second.m_GUID == 0U)
+    {
+      elem.second.m_GUID = GetRandomNumber();
+    }
+  }
+
+  for(auto elem : m_Data.m_Volumes)
+  {
+    if(elem.second.m_GUID == 0U)
+    {
+      elem.second.m_GUID = GetRandomNumber();
+    }
+  }
+
+  for(auto layer : m_Data.m_EntityLayers)
+  {
+    for(auto elem : layer.second.m_Entities)
+    {
+      if (elem.second.m_GUID == 0U)
+      {
+        elem.second.m_GUID = GetRandomNumber();
+      }
+    }
+  }
+
+  for(auto layer : m_Data.m_ServerObjectLayers)
+  {
+    for(auto elem : layer.second.m_Objects)
+    {
+      if (elem.second.m_GUID == 0U)
+      {
+        elem.second.m_GUID = GetRandomNumber();
+      }
+    }
+  }
+
   m_Loaded = true;
 }
 

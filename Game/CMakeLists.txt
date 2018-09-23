@@ -46,7 +46,7 @@ set(GENERIC_SRC_Game
             Systems/GameLogicSystems.cpp
             Systems/GameServerObjectOverlapSystem.cpp
             #CPP_PLACEHOLDER
-            )
+  ServerObjects/CharacterFacing.refl.cpp)
 set(GENERIC_HEADER_Game 
             GameCommon.h
             GameController.refl.h
