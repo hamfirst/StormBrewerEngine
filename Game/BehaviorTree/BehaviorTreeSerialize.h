@@ -9,10 +9,10 @@
 #include "Game/BehaviorTree/BehaviorTree.h"
 #include "Game/BehaviorTree/BehaviorTreeTypeDatabase.h"
 
-template <>
-struct NetSerializer<BotBehaviorTree, ServerObjectNetBitWriter>
+template <typename NetBitWriter>
+struct NetSerializer<BotBehaviorTree, NetBitWriter>
 {
-  void operator()(const BotBehaviorTree & val, ServerObjectNetBitWriter & writer)
+  void operator()(const BotBehaviorTree & val, NetBitWriter & writer)
   {
     writer.WriteBits(val.GetCurrentNode(), GetRequiredBits(val.GetNodeCount()));
     writer.WriteBits(val.WantsAutoAdvance(), 1);
@@ -23,10 +23,10 @@ struct NetSerializer<BotBehaviorTree, ServerObjectNetBitWriter>
   }
 };
 
-template<>
-struct NetDeserializer<BotBehaviorTree, ServerObjectNetBitReader>
+template <typename NetBitReader>
+struct NetDeserializer<BotBehaviorTree, NetBitReader>
 {
-  void operator()(BotBehaviorTree & val, ServerObjectNetBitReader & reader)
+  void operator()(BotBehaviorTree & val, NetBitReader & reader)
   {
     auto current_node = reader.ReadUBits(GetRequiredBits(val.GetNodeCount()));
     auto wants_to_advance = reader.ReadUBits(1);

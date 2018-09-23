@@ -4,6 +4,8 @@
 #include <cassert>
 #include <vector>
 
+#include <intrin.h>
+
 #include "StormBehaviorTreeTemplate.h"
 
 #define ONE_UPDATE_PER_CALL
@@ -295,7 +297,10 @@ private:
       }
     }
 
-    assert(found);
+    if (found == false)
+    {
+      __debugbreak();
+    }
 
     m_TreeMemory.reset();
     m_BehaviorTree = nullptr;

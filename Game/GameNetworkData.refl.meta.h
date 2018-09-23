@@ -91,11 +91,11 @@ struct StormReflTypeInfo<ClientInput>
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<0>
 {
-  using member_type = GameNetVal; // NetFixedPoint<long, 32, 16>
+  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
   static constexpr auto GetName() { return "m_InputAngle"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long, 32, 16>"; }
+  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x55B148EC; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D893FA0; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ClientInput::m_InputAngle; }
 };
@@ -113,11 +113,11 @@ struct StormReflTypeInfo<ClientInput>::field_data<0, Self> : public StormReflTyp
 template <>
 struct StormReflTypeInfo<ClientInput>::field_data_static<1>
 {
-  using member_type = GameNetVal; // NetFixedPoint<long, 32, 16>
+  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
   static constexpr auto GetName() { return "m_InputStr"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long, 32, 16>"; }
+  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC2CCEED1; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D893FA0; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ClientInput::m_InputStr; }
 };
