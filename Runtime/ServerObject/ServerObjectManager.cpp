@@ -36,7 +36,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
 
   for (auto & obj : dynamic_objects)
   {
-    auto ptr = CreateDynamicObjectInternal((int)obj.m_TypeIndex, obj.m_InitData.GetValue());
+    auto ptr = CreateDynamicObjectInternal((int)obj.m_TypeIndex, obj.m_InitData.GetValue(), true);
     if (ptr)
     {
       ptr->InitPosition(obj.m_InitPosition);
@@ -62,7 +62,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
   {
     auto ptr = g_ServerObjectSystem.DuplicateObject(obj.second.m_ServerObject);
     ptr->m_SlotIndex = (int)obj.first;
-    m_DynamicObjects.EmplaceAt(obj.first, DynamicObjectInfo{ ptr, obj.second.m_TypeIndex });
+    m_DynamicObjects.EmplaceAt(obj.first, DynamicObjectInfo{ ptr, obj.second.m_TypeIndex, obj.second.m_Original });
   }
 
   m_ReservedSlots = rhs.m_ReservedSlots;
@@ -209,6 +209,9 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
       auto type_index = obj->m_TypeIndex;
       so_writer.WriteBits(type_index, GetRequiredBits(g_ServerObjectSystem.m_ObjectTypes.size() - 1));
 
+      auto original = obj->m_Original;
+      so_writer.WriteBits(original ? 1 : 0, 1);
+
       auto lifetime = std::min(7, obj->m_ServerObject->m_FramesAlive);
       so_writer.WriteBits((uint64_t)lifetime, 3);
 
@@ -238,6 +241,7 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
     if (valid)
     {
       auto type_index = so_reader.ReadUBits(GetRequiredBits(g_ServerObjectSystem.m_ObjectTypes.size() - 1));
+      auto original = so_reader.ReadUBits(1) != 0;
       auto lifetime = so_reader.ReadUBits(3);
 
       if (obj)
@@ -246,13 +250,14 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
         {
           g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj->m_ServerObject, so_reader);
           obj->m_ServerObject->m_FramesAlive = (int)lifetime;
+          obj->m_Original = original;
           continue;
         }
         
         obj->m_ServerObject->Destroy(*this);
       }
 
-      auto ptr = CreateDynamicObjectInternal((int)type_index, (int)index, nullptr);
+      auto ptr = CreateDynamicObjectInternal((int)type_index, (int)index, nullptr, original);
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
       ptr->m_FramesAlive = (int)lifetime;
     }
@@ -276,7 +281,8 @@ int ServerObjectManager::GetNewDynamicObjectId()
   return -1;
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, NullOptPtr<const ServerObjectInitData> init_data)
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index,
+        NullOptPtr<const ServerObjectInitData> init_data, bool original)
 {
   auto slot_index = GetNewDynamicObjectId();
   if (slot_index == -1)
@@ -284,10 +290,11 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
     return nullptr;
   }
 
-  return CreateDynamicObjectInternal(type_index, slot_index, init_data);
+  return CreateDynamicObjectInternal(type_index, slot_index, init_data, original);
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index, NullOptPtr<const ServerObjectInitData> init_data)
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index,
+        NullOptPtr<const ServerObjectInitData> init_data, bool original)
 {
   auto ptr = g_ServerObjectSystem.AllocateObject(type_index, init_data);
   ptr->m_IsStatic = false;
@@ -297,7 +304,7 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
   ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
   ptr->m_EventDispatch = ptr->GetEventDispatch();
 
-  m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index});
+  m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
   return ptr;
 }
 
