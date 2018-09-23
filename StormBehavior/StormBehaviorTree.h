@@ -15,34 +15,25 @@ enum class StormBehaviorTreeElementType
   kState,
 };
 
-extern std::vector<void *> s_MemoryPtrs;
 
 template <typename DataType, typename ContextType>
 class StormBehaviorTree
 {
 public:
-  StormBehaviorTree()
-  {
-    s_MemoryPtrs.push_back(this);
-  }
+  StormBehaviorTree() = default;
 
   explicit StormBehaviorTree(StormBehaviorTreeTemplate<DataType, ContextType> & bt)
   {
-    s_MemoryPtrs.push_back(this);
     SetBehaviorTree(&bt);
   }
 
   StormBehaviorTree(const StormBehaviorTree<DataType, ContextType> & rhs)
   {
-    s_MemoryPtrs.push_back(this);
     m_BehaviorTree = rhs.m_BehaviorTree;
 
     if(m_BehaviorTree)
     {
       m_TreeMemory = std::make_unique<uint8_t[]>(m_BehaviorTree->m_TotalSize);
-      printf("Allocating %p, %p\n", m_TreeMemory.get(), this);
-      s_MemoryPtrs.push_back(m_TreeMemory.get());
-
       for(auto & elem : m_BehaviorTree->m_InitInfo)
       {
         void * src = rhs.m_TreeMemory.get() + elem.m_TargetOffset;
@@ -57,7 +48,6 @@ public:
 
   StormBehaviorTree(StormBehaviorTree<DataType, ContextType> && rhs)
   {
-    s_MemoryPtrs.push_back(this);
     m_BehaviorTree = rhs.m_BehaviorTree;
     m_TreeMemory = std::move(rhs.m_TreeMemory);
     m_CurrentNode = rhs.m_CurrentNode;
@@ -76,8 +66,6 @@ public:
     if(m_BehaviorTree)
     {
       m_TreeMemory = std::make_unique<uint8_t[]>(m_BehaviorTree->m_TotalSize);
-      printf("Allocating %p, %p\n", m_TreeMemory.get(), this);
-      s_MemoryPtrs.push_back(m_TreeMemory.get());
 
       for(auto & elem : m_BehaviorTree->m_InitInfo)
       {
@@ -109,19 +97,6 @@ public:
 
   ~StormBehaviorTree()
   {
-    bool found = false;
-    for(auto itr = s_MemoryPtrs.begin(), end = s_MemoryPtrs.end(); itr != end; ++itr)
-    {
-      if(*itr == this)
-      {
-        s_MemoryPtrs.erase(itr);
-        found = true;
-        break;
-      }
-    }
-
-    assert(found);
-
     Destroy();
   }
 
@@ -133,8 +108,6 @@ public:
     if(m_BehaviorTree)
     {
       m_TreeMemory = std::make_unique<uint8_t[]>(m_BehaviorTree->m_TotalSize);
-      printf("Allocating %p, %p\n", m_TreeMemory.get(), this);
-      s_MemoryPtrs.push_back(m_TreeMemory.get());
 
       for(auto & elem : m_BehaviorTree->m_InitInfo)
       {
@@ -276,23 +249,10 @@ private:
       return;
     }
 
-    printf("Destroying %p, %p\n", m_TreeMemory.get(), this);
-
     for(auto & elem : m_BehaviorTree->m_InitInfo)
     {
       void * mem = m_TreeMemory.get() + elem.m_TargetOffset;
       elem.m_Deallocate(mem);
-    }
-
-    bool found = false;
-    for(auto itr = s_MemoryPtrs.begin(), end = s_MemoryPtrs.end(); itr != end; ++itr)
-    {
-      if(*itr == m_TreeMemory.get())
-      {
-        s_MemoryPtrs.erase(itr);
-        found = true;
-        break;
-      }
     }
 
     m_TreeMemory.reset();
