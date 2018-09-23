@@ -16,6 +16,7 @@
 #include "Runtime/ServerObject/ServerObjectUpdate.h"
 #include "Runtime/ServerObject/ServerObjectSerialize.h"
 
+#include "Game/BehaviorTree/BehaviorTreeSerialize.h"
 #include "Game/ServerObjects/Bot/TestBot/TestBot.refl.h"
 #include "Game/ServerObjects/Bot/TestBot/TestBot.refl.meta.h"
 

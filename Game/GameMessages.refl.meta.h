@@ -60,11 +60,11 @@ struct StormReflTypeInfo<LoadLevelMessage>::field_data<0 + StormReflTypeInfo<Fro
 template <>
 struct StormReflTypeInfo<LoadLevelMessage>::field_data_static<1 + StormReflTypeInfo<FromServerMessage>::fields_n>
 {
-  using member_type = uint64_t; // unsigned long
+  using member_type = uint64_t; // unsigned long long
   static constexpr auto GetName() { return "m_LoadToken"; }
-  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr auto GetType() { return "unsigned long long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6FC5862D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<FromServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &LoadLevelMessage::m_LoadToken; }
 };
@@ -143,11 +143,11 @@ struct StormReflTypeInfo<JoinGameMessage>
 template <>
 struct StormReflTypeInfo<JoinGameMessage>::field_data_static<0 + StormReflTypeInfo<ToServerMessage>::fields_n>
 {
-  using member_type = uint64_t; // unsigned long
+  using member_type = uint64_t; // unsigned long long
   static constexpr auto GetName() { return "m_GameId"; }
-  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr auto GetType() { return "unsigned long long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA16AE06C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_GameId; }
 };
@@ -241,11 +241,11 @@ struct StormReflTypeInfo<FinishLoadingMessage>
 template <>
 struct StormReflTypeInfo<FinishLoadingMessage>::field_data_static<0 + StormReflTypeInfo<ToServerMessage>::fields_n>
 {
-  using member_type = uint64_t; // unsigned long
+  using member_type = uint64_t; // unsigned long long
   static constexpr auto GetName() { return "m_LoadToken"; }
-  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr auto GetType() { return "unsigned long long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6FC5862D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &FinishLoadingMessage::m_LoadToken; }
 };
