@@ -267,6 +267,8 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="\GenericComboBox.cpp" />
+    <ClCompile Include="\PropertyEditorHandle.cpp" />
     <ClCompile Include="AudioViewer.cpp" />
     <ClCompile Include="ConfigEditor.cpp" />
     <ClCompile Include="ConnectingDialog.cpp">
@@ -576,6 +578,8 @@
   <ItemGroup>
     <QtMoc Include="VisualEffectEditorEquationList.h">
     </QtMoc>
+    <ClInclude Include="\GenericComboBox.h" />
+    <ClInclude Include="\PropertyEditorHandle.h" />
     <ClInclude Include="DrawUtilQt.h">
       <SubType>
       </SubType>

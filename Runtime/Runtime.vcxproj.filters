@@ -226,6 +226,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Map\MapHandles.refl.meta.h" >
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapHandles.refl.h" >
+      <Filter>Map</Filter>
+    </ClInclude>
     <ClInclude Include="Entity\EntityDef.refl.h">
       <Filter>Entity</Filter>
     </ClInclude>

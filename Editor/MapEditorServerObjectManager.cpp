@@ -48,10 +48,11 @@ void MapEditorServerObjectManager::AddServerObject(czstr ServerObject_file, cons
   m_Editor->BeginTransaction();
 
   auto new_index = m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects.HighestIndex() + 1;
-  auto & map_ServerObject = m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects.EmplaceBack();
-  map_ServerObject.m_Name = GetFileStemForCanonicalPath(ServerObject_file);
-  map_ServerObject.m_XPosition = pos.x;
-  map_ServerObject.m_YPosition = pos.y;
+  auto & server_object = m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects.EmplaceBack();
+  server_object.m_Name = GetFileStemForCanonicalPath(ServerObject_file);
+  server_object.m_GUID = GetRandomNumber();
+  server_object.m_XPosition = pos.x;
+  server_object.m_YPosition = pos.y;
 
   std::string link_dst_path = ".m_ServerObjectLayers[" + std::to_string(m_LayerIndex) + "].m_Objects[" + std::to_string(new_index) + "].m_ServerObject";
   m_Editor->CreateLink(ServerObject_file, "", link_dst_path.data());

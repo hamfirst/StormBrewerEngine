@@ -43,6 +43,11 @@ UIResourcePtr UIResource::Find(uint32_t file_path_hash)
 
 UIResourcePtr UIResource::Load(czstr file_path)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<UIResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<UIResource *>(resource);
@@ -51,6 +56,11 @@ UIResourcePtr UIResource::Load(czstr file_path)
 
 DocumentResourceLoadCallbackLink<UIDef, UIResource> UIResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<UIResource>> && callback)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<UIResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<UIResource *>(resource);

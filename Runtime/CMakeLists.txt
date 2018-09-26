@@ -60,7 +60,7 @@ set(GENERIC_SRC_Runtime
             Volume/VolumeDef.refl.cpp
             Volume/VolumeTypeDatabase.cpp
             #CPP_PLACEHOLDER
-            )
+  Map/MapHandles.refl.cpp)
 set(GENERIC_HEADER_Runtime 
             Runtime.h
             RuntimeCommon.h
@@ -167,8 +167,11 @@ set(GENERIC_HEADER_Runtime
             Volume/VolumeDef.refl.meta.h
             Volume/VolumeTypeDatabase.h
             Volume/VolumeTypeRegister.h
+            Map/MapHandles.refl.h
+            Map/MapHandles.refl.meta.h
             #HEADER_PLACEHOLDER
             )
+
 set(GENERIC_REFL_Runtime 
             Anchor/AnchorDef.refl.h
             Component/ComponentInitData.refl.h
@@ -188,6 +191,7 @@ set(GENERIC_REFL_Runtime
             UI/UITypes.refl.h
             VisualEffect/VisualEffectDef.refl.h
             Volume/VolumeDef.refl.h
+            Map/MapHandles.refl.h
             #REFL_PLACEHOLDER
             )
 

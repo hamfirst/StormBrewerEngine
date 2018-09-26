@@ -195,6 +195,7 @@ std::pair<bool, PropertyField *> PropertyFieldDatabase::GetStructData(uint32_t t
   {
     m_StructData.emplace_back(std::make_unique<PropertyFieldStructData>());
     auto struct_data = m_StructData.back().get();
+    struct_data->m_TypeNameHash = type_name_hash;
 
     auto field = AllocateField();
     field->m_Type = PropertyFieldType::kStruct;

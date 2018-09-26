@@ -326,6 +326,20 @@ struct StormReflTypeInfo<MapEntity>::field_data<1, Self> : public StormReflTypeI
 };
 
 template <>
+struct StormReflTypeInfo<MapEntity>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapEntity>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
+};
+
+template <>
 struct StormReflTypeInfo<MapEntity>::field_data_static<2>
 {
   using member_type = RInt; // RNumber<int>
@@ -539,6 +553,20 @@ struct StormReflTypeInfo<MapServerObject>::field_data<1, Self> : public StormRef
   match_const_t<Self, RUInt> & Get() { return self.m_GUID; }
   std::add_const_t<std::remove_reference_t<RUInt>> & Get() const { return self.m_GUID; }
   void SetDefault() { self.m_GUID = StormReflTypeInfo<MapServerObject>::GetDefault().m_GUID; }
+};
+
+template <>
+struct StormReflTypeInfo<MapServerObject>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapServerObject>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
 };
 
 template <>
@@ -1222,6 +1250,20 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<1, Self> : public StormRefl
 };
 
 template <>
+struct StormReflTypeInfo<MapEffectLayer>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapEffectLayer>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
+};
+
+template <>
 struct StormReflTypeInfo<MapEffectLayer>::field_data_static<2>
 {
   using member_type = RInt; // RNumber<int>
@@ -1320,6 +1362,20 @@ struct StormReflTypeInfo<MapAnchor>::field_data<1, Self> : public StormReflTypeI
   match_const_t<Self, RUInt> & Get() { return self.m_GUID; }
   std::add_const_t<std::remove_reference_t<RUInt>> & Get() const { return self.m_GUID; }
   void SetDefault() { self.m_GUID = StormReflTypeInfo<MapAnchor>::GetDefault().m_GUID; }
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapAnchor>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
 };
 
 template <>
@@ -1539,6 +1595,20 @@ struct StormReflTypeInfo<MapPath>::field_data<1, Self> : public StormReflTypeInf
 };
 
 template <>
+struct StormReflTypeInfo<MapPath>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapPath>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
+};
+
+template <>
 struct StormReflTypeInfo<MapPath>::field_data_static<2>
 {
   using member_type = RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>; // RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>
@@ -1637,6 +1707,20 @@ struct StormReflTypeInfo<MapVolume>::field_data<1, Self> : public StormReflTypeI
   match_const_t<Self, RUInt> & Get() { return self.m_GUID; }
   std::add_const_t<std::remove_reference_t<RUInt>> & Get() const { return self.m_GUID; }
   void SetDefault() { self.m_GUID = StormReflTypeInfo<MapVolume>::GetDefault().m_GUID; }
+};
+
+template <>
+struct StormReflTypeInfo<MapVolume>::annotations<1>
+{
+  static constexpr int annotations_n = 1;
+  template <int A> struct annoation { };
+};
+
+template <>
+struct StormReflTypeInfo<MapVolume>::annotations<1>::annoation<0>
+{
+  static constexpr const char * GetAnnotation() { return "noui"; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xDF10877E; }
 };
 
 template <>

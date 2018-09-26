@@ -144,6 +144,8 @@ set(GENERIC_SRC_Editor
             VisualEffectEditorPropertyContainer.cpp
             VisualEffectEditorViewer.cpp
             VisualEffectEquationEditor.cpp
+            .//PropertyEditorHandle.cpp
+            .//GenericComboBox.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -282,6 +284,8 @@ set(GENERIC_HEADER_Editor
             VisualEffectEditorPropertyContainer.h
             VisualEffectEditorViewer.h
             VisualEffectEquationEditor.h
+            .//PropertyEditorHandle.h
+            .//GenericComboBox.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Editor 

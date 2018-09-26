@@ -854,6 +854,7 @@ const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & Map
 void MapEditor::CreateNewVolume(const Box & box)
 {
   MapVolume vol;
+  vol.m_GUID = GetRandomNumber();
   vol.m_XStart = box.m_Start.x;
   vol.m_YStart = box.m_Start.y;
   vol.m_XEnd = box.m_End.x;
@@ -881,6 +882,7 @@ const RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> & MapEditor
 void MapEditor::CreateNewPath(const Line & line)
 {
   MapPath path;
+  path.m_GUID = GetRandomNumber();
   path.m_PathData = m_PathInitData;
  
   MapPathPoint start;
@@ -915,6 +917,7 @@ const MapEditorAnchorInitData & MapEditor::GetAnchorInitData() const
 void MapEditor::CreateNewAnchor(const Vector2 & point)
 {
   MapAnchor anchor;
+  anchor.m_GUID = GetRandomNumber();
   anchor.m_AnchorData = m_AnchorInitData.m_InitData;
   anchor.m_Sprite = m_AnchorInitData.m_Sprite;
   anchor.m_X = point.x;
@@ -982,6 +985,11 @@ void MapEditor::CreateNewParalaxObject(czstr file_name, int layer_index, const V
 MapEditorTextures & MapEditor::GetTextures()
 {
   return m_Textures.Value();
+}
+
+NullOptPtr<MapDef> MapEditor::GetMap()
+{
+  return &m_Map;
 }
 
 void MapEditor::AboutToClose()

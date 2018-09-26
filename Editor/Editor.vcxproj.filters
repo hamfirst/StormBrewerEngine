@@ -94,6 +94,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="\GenericComboBox.cpp" >
+      <Filter></Filter>
+    </ClCompile>
+    <ClCompile Include="\PropertyEditorHandle.cpp" >
+      <Filter></Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -719,6 +725,12 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="\GenericComboBox.h" >
+      <Filter></Filter>
+    </ClInclude>
+    <ClInclude Include="\PropertyEditorHandle.h" >
+      <Filter></Filter>
+    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_EditorContainer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>

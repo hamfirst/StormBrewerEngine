@@ -1404,6 +1404,7 @@ void MapEditorLayerList::addEffectLayer()
 {
   MapEffectLayer effect_layer;
   effect_layer.m_Name = "Effect Layer";
+  effect_layer.m_GUID = GetRandomNumber();
 
   m_Map.m_EffectLayers.EmplaceBack(std::move(effect_layer));
 }

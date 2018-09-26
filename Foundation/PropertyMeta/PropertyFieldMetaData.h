@@ -49,6 +49,7 @@ struct PropertyFieldStructMemberData
 
 struct PropertyFieldStructData
 {
+  uint32_t m_TypeNameHash;
   std::vector<PropertyFieldStructMemberData> m_Members;
 };
 

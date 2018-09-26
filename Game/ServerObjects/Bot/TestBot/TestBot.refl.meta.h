@@ -5,13 +5,14 @@
 #include "TestBot.refl.h"
 #include "Game/ServerObjects/Bot/BotServerObject.refl.meta.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
+#include "Runtime/Map/MapHandles.refl.meta.h"
 
 
 template <>
 struct StormReflTypeInfo<TestBotInitData>
 {
   using MyBase = BotServerObjectInitData;
-  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
+  static constexpr int fields_n = 1 + StormReflTypeInfo<MyBase>::fields_n;
   template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
   template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
   {
@@ -21,6 +22,28 @@ struct StormReflTypeInfo<TestBotInitData>
   static constexpr auto GetName() { return "TestBotInitData"; }
   static constexpr auto GetNameHash() { return 0x1ACAD19B; }
   static TestBotInitData & GetDefault() { static TestBotInitData def; return def; }
+};
+
+template <>
+struct StormReflTypeInfo<TestBotInitData>::field_data_static<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n>
+{
+  using member_type = MapAnchorHandle; // MapAnchorHandle
+  static constexpr auto GetName() { return "m_Anchor"; }
+  static constexpr auto GetType() { return "MapAnchorHandle"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2A6E46B5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x6BDD357A; }
+  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n; }
+  static constexpr auto GetMemberPtr() { return &TestBotInitData::m_Anchor; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<TestBotInitData>::field_data<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n, Self> : public StormReflTypeInfo<TestBotInitData>::field_data_static<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, MapAnchorHandle> & Get() { return self.m_Anchor; }
+  std::add_const_t<std::remove_reference_t<MapAnchorHandle>> & Get() const { return self.m_Anchor; }
+  void SetDefault() { self.m_Anchor = StormReflTypeInfo<TestBotInitData>::GetDefault().m_Anchor; }
 };
 
 template <>

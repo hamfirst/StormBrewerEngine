@@ -48,6 +48,7 @@ void MapEditorEntityManager::AddEntity(czstr entity_file, const Vector2 & pos)
   auto new_index = m_Map.m_EntityLayers[m_LayerIndex].m_Entities.HighestIndex() + 1;
   auto & map_entity = m_Map.m_EntityLayers[m_LayerIndex].m_Entities.EmplaceBack();
   map_entity.m_Name = GetFileStemForCanonicalPath(entity_file);
+  map_entity.m_GUID = GetRandomNumber();
   map_entity.m_XPosition = pos.x;
   map_entity.m_YPosition = pos.y;
  

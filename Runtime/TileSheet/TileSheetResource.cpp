@@ -59,6 +59,11 @@ TileSheetPtr TileSheetResource::Find(uint32_t file_path_hash)
 
 TileSheetPtr TileSheetResource::Load(czstr file_path)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<TileSheetResource *>(resource);
@@ -67,6 +72,11 @@ TileSheetPtr TileSheetResource::Load(czstr file_path)
 
 TileSheetLoadLink TileSheetResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<TileSheetResource *>(resource);
@@ -76,6 +86,11 @@ TileSheetLoadLink TileSheetResource::LoadWithCallback(czstr file_path, Delegate<
 
 void TileSheetResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<TileSheetResource>> && callback, TileSheetLoadLink & load_link)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return;
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<TileSheetResource *>(resource);
