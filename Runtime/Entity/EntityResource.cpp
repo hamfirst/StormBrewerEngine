@@ -54,6 +54,11 @@ EntityResourcePtr EntityResource::Find(uint32_t file_path_hash)
 
 EntityResourcePtr EntityResource::Load(czstr file_path)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
@@ -62,6 +67,11 @@ EntityResourcePtr EntityResource::Load(czstr file_path)
 
 EntityLoadLink EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);
@@ -71,6 +81,11 @@ EntityLoadLink EntityResource::LoadWithCallback(czstr file_path, Delegate<void, 
 
 void EntityResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<EntityResource>> && callback, EntityLoadLink & link)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return;
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<EntityResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<EntityResource *>(resource);

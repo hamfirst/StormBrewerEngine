@@ -1,5 +1,8 @@
 
 #include <QLabel>
+#include <Foundation/PropertyMeta/PropertyFieldMetaData.h>
+
+#include "Runtime/Map/MapHandles.refl.meta.h"
 
 #include "PropertyEditorWidget.h"
 #include "PropertyEditorBool.h"
@@ -10,6 +13,7 @@
 #include "PropertyEditorStruct.h"
 #include "PropertyEditorList.h"
 #include "PropertyEditorPolymorphic.h"
+#include "PropertyEditorHandle.h"
 
 std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBase> editor, NotNullPtr<PropertyField> prop, bool create_callback,
   Delegate<void *> && data_ptr, const std::string & path, Delegate<void> && size_change_cb, czstr name, QWidget * parent)
@@ -43,9 +47,19 @@ std::unique_ptr<QWidget> PropertyEditorCreate(NotNullPtr<DocumentEditorWidgetBas
     }
   case PropertyFieldType::kStruct:
     {
-      auto widget = std::make_unique<PropertyEditorStruct>(editor, prop, create_callback, std::move(data_ptr), path, parent);
-      widget->SetSizeChangeCallback(std::move(size_change_cb));
-      return std::move(widget);
+      auto handle_type = GetMapHandleForTypeNameHash(prop->m_Struct.m_StructData->m_TypeNameHash);
+
+      if(handle_type != MapHandleType::kNone)
+      {
+        auto widget = std::make_unique<PropertyEditorHandle>(editor, prop, create_callback, std::move(data_ptr), path, parent);
+        return widget;
+      }
+      else
+      {
+        auto widget = std::make_unique<PropertyEditorStruct>(editor, prop, create_callback, std::move(data_ptr), path, parent);
+        widget->SetSizeChangeCallback(std::move(size_change_cb));
+        return std::move(widget);
+      }
     }
   default:
     {

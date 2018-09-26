@@ -139,6 +139,8 @@
     <ClCompile Include="Volume\VolumeTypeDatabase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Map\MapHandles.refl.meta.h" />
+    <ClInclude Include="Map\MapHandles.refl.h" />
     <ClInclude Include="Anchor\AnchorDef.refl.h" />
     <ClInclude Include="Anchor\AnchorDef.refl.meta.h" />
     <ClInclude Include="Anchor\AnchorTypeDatabase.h" />

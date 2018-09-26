@@ -407,3 +407,8 @@ Optional<std::string> DocumentEditorWidgetBase::GetFileNameForAssetType(czstr as
 
   return{};
 }
+
+NullOptPtr<MapDef> DocumentEditorWidgetBase::GetMap()
+{
+  return nullptr;
+}

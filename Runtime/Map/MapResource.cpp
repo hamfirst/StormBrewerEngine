@@ -45,6 +45,11 @@ Map MapResource::Find(uint32_t file_path_hash)
 
 Map MapResource::Load(czstr file_path)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<MapResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<MapResource *>(resource);
@@ -53,6 +58,11 @@ Map MapResource::Load(czstr file_path)
 
 MapLoadLink MapResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<MapResource>> && callback)
 {
+  if(file_path == nullptr || file_path[0] == 0)
+  {
+    return {};
+  }
+
   auto resource = LoadDocumentResource(file_path,
     [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<MapResource>(std::move(load_data), path_hash); });
   auto p_this = static_cast<MapResource *>(resource);

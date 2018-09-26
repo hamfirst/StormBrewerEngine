@@ -11,10 +11,12 @@
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
+#include "Runtime/Map/MapHandles.refl.h"
 
 struct TestBotInitData : public BotServerObjectInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(TestBotInitData);
+  MapAnchorHandle m_Anchor;
 };
 
 class TestBot : public BotServerObject

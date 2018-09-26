@@ -85,6 +85,7 @@ public:
   void CreateNewParalaxObject(czstr file_name, int layer_index, const Vector2 & point);
 
   MapEditorTextures & GetTextures();
+  NullOptPtr<MapDef> GetMap() override;
 public:
 
   void AboutToClose() override;

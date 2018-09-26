@@ -16,6 +16,7 @@ using DocumentBeginTransactionDelegate = Delegate<void>;
 using DocumentCommitChangesDelegate = Delegate<void>;
 
 class EditorContainer;
+struct MapDef;
 
 class DocumentEditorWidgetBase : public QWidget
 {
@@ -55,6 +56,8 @@ public:
   const std::string & GetRootPath() const;
 
   Optional<std::string> GetFileNameForAssetType(czstr asset_type);
+
+  virtual NullOptPtr<MapDef> GetMap();
 
 private:
   EditorContainer & m_EditorContainer;
