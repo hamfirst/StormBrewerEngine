@@ -1,112 +1,47 @@
 [{"m_SourceAsset":".\/ServerObjects\/TestBot.serverobject","m_RemotePath":"","m_LocalPath":".m_ServerObjectLayers[0].m_Objects[0].m_ServerObject"}]
 
 {
-    "m_PathfingindInfo": {
-        "m_CalculatedInfo": {
-            "m_Id": 1982792571,
-            "m_Surfaces": [{"m_Clearance":200,"m_EndConnections2":0,"m_StartConnections2":0,"m_P2":{"x":15,"y":-16},"m_P1":{"x":0,"y":-16},"m_EndConnections1":0,"m_StartConnections1":0},{"m_Clearance":200,"m_EndConnections2":0,"m_StartConnections2":0,"m_P2":{"x":31,"y":-48},"m_P1":{"x":16,"y":-48},"m_EndConnections1":0,"m_StartConnections1":0}],
-            "m_Connections": []
-        }
-    },
-    "m_EntityLayers": { },
-    "m_ParalaxLayers": {
-        "0": {
-            "m_Objects": {
-                "1": {
-                    "m_Animation": "",
-                    "m_Name": "Test",
-                    "m_Type": "kVfx",
-                    "m_YPosition": -40,
-                    "m_File": ".\/VisualEffects\/Test.vfx",
-                    "m_XPosition": -40
-                },
-                "0": {
-                    "m_Animation": "",
-                    "m_Name": "Test",
-                    "m_Type": "kVfx",
-                    "m_YPosition": 24,
-                    "m_File": ".\/VisualEffects\/Test.vfx",
-                    "m_XPosition": -40
-                },
-                "2": {
-                    "m_Animation": "",
-                    "m_Name": "Test",
-                    "m_Type": "kVfx",
-                    "m_YPosition": -40,
-                    "m_File": ".\/VisualEffects\/Test.vfx",
-                    "m_XPosition": -24
-                },
-                "3": {
-                    "m_Animation": "",
-                    "m_Name": "Test",
-                    "m_Type": "kVfx",
-                    "m_YPosition": -40,
-                    "m_File": ".\/VisualEffects\/Test.vfx",
-                    "m_XPosition": -8
-                }
-            },
-            "m_OffsetX": 0.000000,
-            "m_ParalaxY": 0.000000,
-            "m_Image": "",
-            "m_VelocityY": 0.000000,
-            "m_OffsetY": 0.000000,
-            "m_RepeatY": true,
-            "m_RepeatX": true,
-            "m_LayerOrder": 0,
-            "m_VelocityX": 0.000000,
-            "m_Name": "Paralax Layer",
-            "m_ParalaxX": 0.000000
-        }
-    },
-    "m_Anchors": {
-        "0": {
-            "m_AnchorData": {
-                "T": 678186780,
-                "D": {
-                    "m_Team": 0
-                }
-            },
-            "m_GUID": 2529306946,
-            "m_Name": "PlayerSpawnTest",
-            "m_X": -48,
-            "m_Y": 64,
-            "m_Sprite": ""
-        }
-    },
     "m_Paths": { },
     "m_ManualTileLayers": {
         "0": {
+            "m_Name": "Tile Layer",
+            "m_LayerOrder": 0,
+            "m_Tiles": {
+                "9": [18446743562608443320,11695311425793687552],
+                "2": [18446743974925303752,11695311425793687553],
+                "8": [18446743493888966584,11695311425793687552],
+                "0": [18446743901910859784,11695311425793687552],
+                "4": [18446743906205827016,11695311425793687553],
+                "10": [18446743562608443304,11695311425793687552],
+                "3": [107374182344,11695311425793687553],
+                "5": [38654705608,11695311425793687553],
+                "12": [18446743425169489832,11695311425793687552],
+                "18": [18446743558313476104,11695311425793687555],
+                "1": [18446744043644780488,11695311425793687553],
+                "6": [176093659080,11695311425793687553],
+                "11": [18446743493888966568,11695311425793687552],
+                "14": [18446743425169489864,11695311425793687552],
+                "7": [18446743493888966600,11695311425793687552],
+                "13": [18446743425169489848,11695311425793687552],
+                "17": [18446743489593999368,11695311425793687555],
+                "15": [18446743493888966632,11695311425793687555],
+                "16": [18446743493888966648,11695311425793687555],
+                "19": [18446743562608443384,11695311425793687555],
+                "20": [18446743562608443368,11695311425793687555]
+            },
+            "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet",
             "m_CollisionLayer": true,
             "m_Animations": {
                 "0": [107374182360,1126751474303369216]
-            },
-            "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet",
-            "m_Tiles": {
-                "11": [18446743493888966568,11695311425793687552],
-                "1": [18446744043644780488,11695311425793687553],
-                "7": [18446743493888966600,11695311425793687552],
-                "9": [18446743562608443320,11695311425793687552],
-                "12": [18446743425169489832,11695311425793687552],
-                "10": [18446743562608443304,11695311425793687552],
-                "5": [38654705608,11695311425793687553],
-                "8": [18446743493888966584,11695311425793687552],
-                "3": [107374182344,11695311425793687553],
-                "0": [18446743901910859784,11695311425793687552],
-                "4": [18446743906205827016,11695311425793687553],
-                "6": [176093659080,11695311425793687553],
-                "13": [18446743425169489848,11695311425793687552],
-                "14": [18446743425169489864,11695311425793687552],
-                "2": [18446743974925303752,11695311425793687553]
-            },
-            "m_LayerOrder": 0,
-            "m_Name": "Tile Layer"
+            }
         }
     },
     "m_ServerObjectLayers": {
         "0": {
-            "m_Name": "Server Object Layer",
             "m_Objects": {
                 "0": {
+                    "m_XPosition": 40,
+                    "m_YPosition": 8,
                     "m_Name": "TestBot",
                     "m_ServerObject": {
                         "m_InitData": {
@@ -116,11 +51,82 @@
                                 }
                             }
                         }
-                    },
-                    "m_YPosition": 8,
-                    "m_XPosition": 40
+                    }
                 }
-            }
+            },
+            "m_Name": "Server Object Layer"
+        }
+    },
+    "m_ParalaxLayers": {
+        "0": {
+            "m_ParalaxX": 0.000000,
+            "m_Name": "Paralax Layer",
+            "m_VelocityX": 0.000000,
+            "m_LayerOrder": 0,
+            "m_RepeatX": true,
+            "m_RepeatY": true,
+            "m_OffsetX": 0.000000,
+            "m_Objects": {
+                "3": {
+                    "m_XPosition": -8,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_YPosition": -40,
+                    "m_Type": "kVfx",
+                    "m_Animation": "",
+                    "m_Name": "Test"
+                },
+                "2": {
+                    "m_XPosition": -24,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_YPosition": -40,
+                    "m_Type": "kVfx",
+                    "m_Animation": "",
+                    "m_Name": "Test"
+                },
+                "1": {
+                    "m_XPosition": -40,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_YPosition": -40,
+                    "m_Type": "kVfx",
+                    "m_Animation": "",
+                    "m_Name": "Test"
+                },
+                "0": {
+                    "m_XPosition": -40,
+                    "m_File": ".\/VisualEffects\/Test.vfx",
+                    "m_YPosition": 24,
+                    "m_Type": "kVfx",
+                    "m_Animation": "",
+                    "m_Name": "Test"
+                }
+            },
+            "m_ParalaxY": 0.000000,
+            "m_Image": "",
+            "m_VelocityY": 0.000000,
+            "m_OffsetY": 0.000000
+        }
+    },
+    "m_EntityLayers": { },
+    "m_Anchors": {
+        "0": {
+            "m_Sprite": "",
+            "m_Y": 64,
+            "m_X": -48,
+            "m_Name": "PlayerSpawnTest",
+            "m_AnchorData": {
+                "D": {
+                    "m_Team": 0
+                },
+                "T": 678186780
+            },
+            "m_GUID": 2529306946
+        }
+    },
+    "m_PathfingindInfo": {
+        "m_CalculatedInfo": {
+            "m_Id": 1982792571,
+            "m_Surfaces": [{"m_EndConnections2":0,"m_Clearance":200,"m_StartConnections2":0,"m_P2":{"y":-16,"x":15},"m_P1":{"y":-16,"x":0},"m_StartConnections1":0,"m_EndConnections1":0},{"m_EndConnections2":0,"m_Clearance":200,"m_StartConnections2":0,"m_P2":{"y":-48,"x":31},"m_P1":{"y":-48,"x":16},"m_StartConnections1":0,"m_EndConnections1":0}],
+            "m_Connections": []
         }
     }
 }

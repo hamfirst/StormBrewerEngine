@@ -116,6 +116,7 @@ void VertexBuffer::SetBufferData(const VertexList & list, VertexBufferType type)
   
   m_Type = type;
   m_IndexCount = (int)list.m_Size;
+  m_Dirty = true;
 }
 
 void VertexBuffer::Draw(int index_start, int index_end) const
