@@ -217,11 +217,11 @@ void RenderState::Release()
 {
 #ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
 
-  // if(m_VertexArrayName != 0)
-  // {
-  //   glDeleteVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
-  //   m_VertexArrayName = 0;
-  // }
+   if(m_VertexArrayName != 0)
+   {
+     glDeleteVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
+     m_VertexArrayName = 0;
+   }
 #endif
 }
 
@@ -237,7 +237,8 @@ void RenderState::BindShader(const ShaderProgram & shader)
 
 void RenderState::BindVertexBuffer(VertexBuffer & buffer)
 {
-  if (m_BoundVertexBuffer != &buffer || m_BoundVertexBufferName != buffer.m_VertexBufferName || buffer.m_VertexArray.m_BoundShader != m_BoundShader)
+  if (m_BoundVertexBuffer != &buffer || m_BoundVertexBufferName != buffer.m_VertexBufferName ||
+      buffer.m_VertexArray.m_BoundShader != m_BoundShader || buffer.IsDirty())
   {
     m_BoundVertexBuffer = &buffer;
     m_BoundVertexBufferName = buffer.m_VertexBufferName;

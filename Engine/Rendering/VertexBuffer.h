@@ -29,6 +29,7 @@ public:
   void SetBufferData(const VertexList & list, VertexBufferType type);
   int GetLoadError() const { return m_LoadError; }
   bool IsEmpty() const { return m_IndexCount == 0; }
+  bool IsDirty() const { return m_Dirty; }
 
 private:
 

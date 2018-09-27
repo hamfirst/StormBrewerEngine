@@ -1198,7 +1198,7 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
       }
 
       QuadVertexBufferBuilder builder;
-      Box slice_box = { Vector2{ 0, 0 }, Vector2{ 1023, 1023 } };
+      Box slice_box = { Vector2{ 0, 0 }, Vector2{ 1024, 1024 } };
       int start_index = 0;
 
       for (auto & bucket : draw_buckets)
