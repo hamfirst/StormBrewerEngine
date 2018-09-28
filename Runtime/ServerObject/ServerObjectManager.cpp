@@ -4,6 +4,7 @@
 #include "Runtime/ServerObject/ServerObjectSystem.h"
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectSerialize.h"
+#include "Runtime/Map/MapHandles.refl.h"
 
 #include "StormNet/NetBitUtil.h"
 
@@ -11,10 +12,13 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
                                          const std::vector<ServerObjectStaticInitData> & dynamic_objects,
                                          int max_dynamic_objects, int num_reserved_slots)
 {
+  m_NumGUIDS = static_objects.size() + max_dynamic_objects;
+  m_GUIDs = std::shared_ptr<uint32_t[]>(new uint32_t[m_NumGUIDS]);
+
   int slot_index = 0;
   for (auto & obj : static_objects)
   {
-    auto ptr = g_ServerObjectSystem.AllocateObject(obj.m_TypeIndex, obj.m_InitData.GetValue());
+    auto ptr = g_ServerObjectSystem.AllocateObject(obj.m_TypeIndex);
     ptr->m_IsStatic = true;
     ptr->m_TypeIndex = (int)obj.m_TypeIndex;
     ptr->m_SlotIndex = -1;
@@ -24,6 +28,8 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_EventDispatch = ptr->GetEventDispatch();      
     ptr->InitPosition(obj.m_InitPosition);
     m_StaticObjects.emplace_back(ptr);
+
+    m_GUIDs[slot_index] = obj.m_GUID;
 
     ++slot_index;
   }
@@ -40,6 +46,9 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     if (ptr)
     {
       ptr->InitPosition(obj.m_InitPosition);
+
+      auto dynamic_slot_index = ptr->m_SlotIndex + slot_index;
+      m_GUIDs[dynamic_slot_index] = obj.m_GUID;
     }
   }
 }
@@ -67,6 +76,9 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
 
   m_ReservedSlots = rhs.m_ReservedSlots;
   m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
+
+  m_GUIDs = rhs.m_GUIDs;
+  m_NumGUIDS = rhs.m_NumGUIDS;
 }
 
 ServerObjectManager::~ServerObjectManager()
@@ -127,7 +139,7 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
   return *this;
 }
 
-NullOptPtr<ServerObject>ServerObjectManager::GetReservedSlotObject(std::size_t slot_index)
+NullOptPtr<ServerObject> ServerObjectManager::GetReservedSlotObject(std::size_t slot_index)
 {
   if (slot_index >= m_ReservedSlots)
   {
@@ -136,6 +148,40 @@ NullOptPtr<ServerObject>ServerObjectManager::GetReservedSlotObject(std::size_t s
 
   auto dynamic_object_info = m_DynamicObjects.TryGet(slot_index);
   return dynamic_object_info ? dynamic_object_info->m_ServerObject : nullptr;
+}
+
+NullOptPtr<ServerObject> ServerObjectManager::ResolveMapHandle(const MapServerObjectHandle & handle)
+{
+  uint32_t guid = handle.m_GUID;
+
+  int slot_index = -1;
+  for(int index = 0; index < m_NumGUIDS; ++index)
+  {
+    if(m_GUIDs[index] == guid)
+    {
+      slot_index = index;
+      break;
+    }
+  }
+
+  if(slot_index < 0)
+  {
+    return nullptr;
+  }
+
+  if (slot_index < (int)m_StaticObjects.size())
+  {
+    return const_cast<ServerObject *>(m_StaticObjects[slot_index]);
+  }
+
+  slot_index -= (int)m_StaticObjects.size();
+  if (m_DynamicObjects[slot_index].m_Original == false)
+  {
+    return nullptr;
+  }
+
+  auto ptr = m_DynamicObjects.TryGet(slot_index);
+  return ptr ? const_cast<ServerObject *>(ptr->m_ServerObject) : nullptr;
 }
 
 void ServerObjectManager::IncrementTimeAlive()

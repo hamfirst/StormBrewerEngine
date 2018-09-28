@@ -23,7 +23,7 @@ protected:
   friend class AudioManager;
   friend class AudioSpec;
 
-  std::shared_ptr<uint8_t> m_AudioBuffer;
+  std::shared_ptr<uint8_t[]> m_AudioBuffer;
   std::size_t m_AudioBufferSize;
 
   AudioFormat m_AudioFormat;

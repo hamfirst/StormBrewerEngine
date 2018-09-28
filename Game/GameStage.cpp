@@ -14,6 +14,8 @@ GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127),
   m_CollisionDatabase(2)
 {
+  m_Map = map->GetMapPtr();
+
   auto map_data = map.GetData();
   m_CollisionDatabase.PushMapCollision(0, ExtractMapCollision(*map_data, {}, { COMPILE_TIME_CRC32_STR("Collision"), COMPILE_TIME_CRC32_STR("OneWay") }));
 
@@ -208,4 +210,43 @@ Optional<ServerObjectHandle> GameStage::FindStaticObject(uint32_t obj_name_hash)
   }
 
   return itr->second;
+}
+
+NullOptPtr<const MapAnchor> GameStage::ResolveHandle(const MapAnchorHandle & handle) const
+{
+  for(auto elem : m_Map->m_Anchors)
+  {
+    if(elem.second.m_GUID == handle.m_GUID)
+    {
+      return &m_Map->m_Anchors[elem.first];
+    }
+  }
+
+  return nullptr;
+}
+
+NullOptPtr<const MapPath> GameStage::ResolveHandle(const MapPathHandle & handle) const
+{
+  for(auto elem : m_Map->m_Paths)
+  {
+    if(elem.second.m_GUID == handle.m_GUID)
+    {
+      return &m_Map->m_Paths[elem.first];
+    }
+  }
+
+  return nullptr;
+}
+
+NullOptPtr<const MapVolume> GameStage::ResolveHandle(const MapVolumeHandle & handle) const
+{
+  for(auto elem : m_Map->m_Volumes)
+  {
+    if(elem.second.m_GUID == handle.m_GUID)
+    {
+      return &m_Map->m_Volumes[elem.first];
+    }
+  }
+
+  return nullptr;
 }

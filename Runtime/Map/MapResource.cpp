@@ -15,9 +15,14 @@ MapResource::MapResource(Any && load_data, uint32_t path_hash) :
 
 }
 
-NotNullPtr<MapDef> MapResource::GetData()
+NotNullPtr<MapDef> MapResource::GetData() const
 {
-  return &m_Data;
+  return m_Data.get();
+}
+
+const std::shared_ptr<MapDef> & MapResource::GetMapPtr() const
+{
+  return m_Data;
 }
 
 DocumentResourceLoadCallbackLink<MapDef, MapResource> MapResource::AddLoadCallback(Delegate<void, NotNullPtr<MapResource>> && callback)
@@ -72,9 +77,10 @@ MapLoadLink MapResource::LoadWithCallback(czstr file_path, Delegate<void, NotNul
 
 void MapResource::OnDataLoadComplete(const std::string & resource_data)
 {
-  StormReflParseJson(m_Data, resource_data.data());
+  m_Data = std::make_shared<MapDef>();
+  StormReflParseJson(*m_Data, resource_data.data());
 
-  for(auto elem : m_Data.m_Anchors)
+  for(auto elem : m_Data->m_Anchors)
   {
     if(elem.second.m_GUID == 0U)
     {
@@ -82,7 +88,7 @@ void MapResource::OnDataLoadComplete(const std::string & resource_data)
     }
   }
 
-  for(auto elem : m_Data.m_Paths)
+  for(auto elem : m_Data->m_Paths)
   {
     if(elem.second.m_GUID == 0U)
     {
@@ -90,7 +96,7 @@ void MapResource::OnDataLoadComplete(const std::string & resource_data)
     }
   }
 
-  for(auto elem : m_Data.m_Volumes)
+  for(auto elem : m_Data->m_Volumes)
   {
     if(elem.second.m_GUID == 0U)
     {
@@ -98,7 +104,7 @@ void MapResource::OnDataLoadComplete(const std::string & resource_data)
     }
   }
 
-  for(auto layer : m_Data.m_EntityLayers)
+  for(auto layer : m_Data->m_EntityLayers)
   {
     for(auto elem : layer.second.m_Entities)
     {
@@ -109,7 +115,7 @@ void MapResource::OnDataLoadComplete(const std::string & resource_data)
     }
   }
 
-  for(auto layer : m_Data.m_ServerObjectLayers)
+  for(auto layer : m_Data->m_ServerObjectLayers)
   {
     for(auto elem : layer.second.m_Objects)
     {
