@@ -9,7 +9,7 @@
 
 #include "Runtime/Animation/AnimationState.h"
 
-void BotServerObject::Init(const BotServerObjectInitData & init_data)
+void BotServerObject::Init(const BotServerObjectInitData & init_data, GameLogicContainer & game_container)
 {
 
 }

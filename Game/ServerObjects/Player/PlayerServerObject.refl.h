@@ -47,7 +47,7 @@ public:
   PlayerServerObject & operator = (const PlayerServerObject & rhs) = default;
   PlayerServerObject & operator = (PlayerServerObject && rhs) = default;
 
-  void Init(const PlayerServerObjectInitData & init_data);
+  void Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container);
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
   void UpdateLast(GameLogicContainer & game_container);

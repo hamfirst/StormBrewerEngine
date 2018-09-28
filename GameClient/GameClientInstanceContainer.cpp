@@ -16,7 +16,7 @@ GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_co
   m_Authority(authority),
   m_ConfirmedRemoteFrame(0),
   m_SendTimer(0),
-  m_NumLocalClients(num_local_clients)
+  m_NumLocalClients(static_cast<std::size_t>(num_local_clients))
 {
   m_ClientData.resize(num_local_clients);
 
@@ -57,11 +57,12 @@ void GameClientInstanceContainer::Load(const GameInitSettings & init_settings, u
   {
     m_Loaded = true;
     m_Stage = std::make_unique<GameStage>(map);
+    m_Systems.Emplace(m_Stage->GetCollisionDatabase());
 
     m_DefaultSim = std::make_shared<GameFullState>(m_Stage->CreateDefaultGameState());
+
     m_CurrentSim = m_DefaultSim;
     m_SimHistory.Push(m_CurrentSim);
-    m_Systems.Emplace(m_Stage->GetCollisionDatabase());
   });
 
   m_SharedResources.Emplace(init_settings);
@@ -87,6 +88,8 @@ void GameClientInstanceContainer::Update()
 
   auto & controller = GetGameController();
   auto logic_container = GetLogicContainer();
+
+  m_Stage->InitAllObjects(logic_container);
        
   auto remote_input_visitor = [&](int frame_count, HistoryInput & elem)
   {

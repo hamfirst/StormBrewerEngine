@@ -11,6 +11,8 @@ class ServerObjectUpdateList;
 class ServerObjectNetBitWriter;
 class ServerObjectNetBitReader;
 
+class GameLogicContainer;
+
 struct ServerObjectTypeInfo
 {
   uint32_t m_TypeNameHash;
@@ -24,7 +26,8 @@ struct ServerObjectTypeInfo
   NotNullPtr<ServerObject>(*m_ObjectCreate)();
   NotNullPtr<ServerObject>(*m_ObjectDuplicate)(NotNullPtr<const ServerObject> rhs);
 
-  void(*m_ObjectInit)(NotNullPtr<ServerObject> object, NullOptPtr<const ServerObjectInitData> init_data);
+  void(*m_ObjectInit)(NotNullPtr<ServerObject> object, NullOptPtr<const ServerObjectInitData> init_data,
+          GameLogicContainer & game_container);
   void(*m_ObjectCopy)(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs);
   void(*m_ObjectResetHandles)(NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager);
   void(*m_ObjectDestroy)(NotNullPtr<ServerObject> object);
@@ -52,7 +55,7 @@ private:
 
   NotNullPtr<ServerObject> AllocateObject(std::size_t type_index);
   NotNullPtr<ServerObject> DuplicateObject(NotNullPtr<const ServerObject> rhs);
-  void InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data);
+  void InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data, GameLogicContainer & game_container);
   void CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs);
   void FreeObject(NotNullPtr<ServerObject> object);
   void ResetObjectHandles(NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager);

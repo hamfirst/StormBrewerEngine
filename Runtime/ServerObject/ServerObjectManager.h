@@ -9,6 +9,7 @@
 class ServerObject;
 class ServerObjectInitData;
 class ServerObjectHandle;
+class GameLogicContainer;
 
 struct MapServerObjectHandle;
 
@@ -34,16 +35,16 @@ public:
   ServerObjectManager & operator = (const ServerObjectManager & rhs);
 
   template <typename T>
-  NullOptPtr<T> CreateDynamicObject(NullOptPtr<ServerObjectInitData> init_data = nullptr)
+  NullOptPtr<T> CreateDynamicObject(GameLogicContainer & game_container, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, init_data, false);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, init_data, false, game_container);
     return static_cast<T *>(ptr);
   }
 
   template <typename T>
-  NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot, NullOptPtr<ServerObjectInitData> init_data = nullptr)
+  NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot, GameLogicContainer & game_container, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, (int)reserved_slot, init_data, false);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, (int)reserved_slot, init_data, false, game_container);
     return static_cast<T *>(ptr);
   }
 
@@ -103,11 +104,15 @@ protected:
 
   friend class GameStage;
 
+  void InitAllObjects(const std::vector<ServerObjectStaticInitData> & static_objects,
+                      const std::vector<ServerObjectStaticInitData> & dynamic_objects,
+                      GameLogicContainer & game_container);
+
   int GetNewDynamicObjectId();
   NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index,
-          NullOptPtr<const ServerObjectInitData> init_data, bool orignal);
+          NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container);
   NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, int slot_index,
-          NullOptPtr<const ServerObjectInitData> init_data, bool original);
+          NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container);
   void DestroyDynamicObjectInternal(NotNullPtr<ServerObject> ptr);
 
   void FinalizeHandles();
@@ -128,6 +133,7 @@ private:
   SparseList<DynamicObjectInfo> m_DynamicObjects;
   int m_ReservedSlots;
   int m_MaxDynamicObjects;
+  bool m_Initialized;
 
   std::shared_ptr<uint32_t[]> m_GUIDs;
   int m_NumGUIDS;

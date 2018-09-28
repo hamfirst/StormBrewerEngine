@@ -19,18 +19,19 @@ static StormBehaviorTreeTemplate<BotServerObject, GameLogicContainer> BehaviorTr
             )
 ;
 
-void TestBot::Init(const TestBotInitData & init_data)
+TestBot::TestBot()
 {
   m_Tree.SetBehaviorTree(&BehaviorTreeTemplate);
-  m_Handle = init_data.m_ServerObject;
+}
+
+void TestBot::Init(const TestBotInitData & init_data, GameLogicContainer & game_container)
+{
+
 }
 
 void TestBot::UpdateFirst(GameLogicContainer & game_container)
 {
   BotServerObject::UpdateFirst(game_container);
-
-  auto so = game_container.GetObjectManager().ResolveMapHandle(m_Handle);
-  printf("%p\n", so);
 }
 
 void TestBot::UpdateMiddle(GameLogicContainer & game_container)

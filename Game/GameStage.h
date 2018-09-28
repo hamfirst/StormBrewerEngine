@@ -49,8 +49,6 @@ public:
   GameStage(const Map & map);
   ~GameStage();
 
-  GameFullState CreateDefaultGameState() const;
-
   const StaticCollisionDatabase & GetCollisionDatabase() const;
   std::vector<Vector2> FindPath(const Vector2 & start, const Vector2 & end, int max_iterations) const;
 
@@ -68,6 +66,13 @@ public:
 
 private:
   friend class GameInstance;
+  friend class GameClientInstanceContainer;
+  friend class GameInstanceStateGameplay;
+
+  GameFullState CreateDefaultGameState() const;
+  void InitAllObjects(GameLogicContainer & game_container) const;
+
+private:
 
   std::shared_ptr<MapDef> m_Map;
 
