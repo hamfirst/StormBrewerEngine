@@ -9,6 +9,7 @@
 
 #include "Game/Data/PlayerSpawn.refl.meta.h"
 #include "Game/Data/KillVolume.refl.meta.h"
+#include "Game/GameLogicContainer.h"
 
 GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127),
@@ -122,11 +123,6 @@ GameStage::GameStage(const Map & map) :
 GameStage::~GameStage()
 {
 
-}
-
-GameFullState GameStage::CreateDefaultGameState() const
-{
-  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjects, m_DynamicObjectCount, kMaxPlayers) };
 }
 
 const StaticCollisionDatabase & GameStage::GetCollisionDatabase() const
@@ -249,4 +245,14 @@ NullOptPtr<const MapVolume> GameStage::ResolveHandle(const MapVolumeHandle & han
   }
 
   return nullptr;
+}
+
+GameFullState GameStage::CreateDefaultGameState() const
+{
+  return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjects, m_DynamicObjectCount, kMaxPlayers) };
+}
+
+void GameStage::InitAllObjects(GameLogicContainer & game_container) const
+{
+  game_container.GetObjectManager().InitAllObjects(m_StaticObjects, m_DynamicObjects, game_container);
 }

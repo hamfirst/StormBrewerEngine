@@ -35,7 +35,7 @@ public:
   GameServerObjectBase & operator = (const GameServerObjectBase & rhs) = default;
   GameServerObjectBase & operator = (GameServerObjectBase && rhs) = default;
 
-  void Init(const GameServerObjectBaseInitData & init_data);
+  void Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container);
 
   virtual void InitPosition(const Vector2 & pos) override;
 

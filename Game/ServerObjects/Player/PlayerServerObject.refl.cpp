@@ -21,7 +21,7 @@
 GLOBAL_ASSET(SpritePtr, "./Sprites/Player.sprite", g_PlayerSprite);
 GLOBAL_ASSET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig, "./Configs/PlayerConfig.playerconfig");
 
-void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data)
+void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container)
 {
   m_State.SetType<PlayerStateIdle>();
 }

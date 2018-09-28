@@ -26,9 +26,9 @@ NotNullPtr<ServerObject> ServerObjectSystem::DuplicateObject(NotNullPtr<const Se
   return object;
 }
 
-void ServerObjectSystem::InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data)
+void ServerObjectSystem::InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data, GameLogicContainer & game_container)
 {
-  m_ObjectTypes[object->m_TypeIndex].m_ObjectInit(object, init_data);
+  m_ObjectTypes[object->m_TypeIndex].m_ObjectInit(object, init_data, game_container);
 }
 
 void ServerObjectSystem::CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs)

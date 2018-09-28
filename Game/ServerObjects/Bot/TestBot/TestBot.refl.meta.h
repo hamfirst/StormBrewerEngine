@@ -12,7 +12,7 @@ template <>
 struct StormReflTypeInfo<TestBotInitData>
 {
   using MyBase = BotServerObjectInitData;
-  static constexpr int fields_n = 1 + StormReflTypeInfo<MyBase>::fields_n;
+  static constexpr int fields_n = 0 + StormReflTypeInfo<MyBase>::fields_n;
   template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
   template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
   {
@@ -22,28 +22,6 @@ struct StormReflTypeInfo<TestBotInitData>
   static constexpr auto GetName() { return "TestBotInitData"; }
   static constexpr auto GetNameHash() { return 0x1ACAD19B; }
   static TestBotInitData & GetDefault() { static TestBotInitData def; return def; }
-};
-
-template <>
-struct StormReflTypeInfo<TestBotInitData>::field_data_static<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n>
-{
-  using member_type = MapServerObjectHandle; // MapServerObjectHandle
-  static constexpr auto GetName() { return "m_ServerObject"; }
-  static constexpr auto GetType() { return "MapServerObjectHandle"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x223A5929; }
-  static constexpr unsigned GetTypeNameHash() { return 0x831F1675; }
-  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &TestBotInitData::m_ServerObject; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<TestBotInitData>::field_data<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n, Self> : public StormReflTypeInfo<TestBotInitData>::field_data_static<0 + StormReflTypeInfo<BotServerObjectInitData>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, MapServerObjectHandle> & Get() { return self.m_ServerObject; }
-  std::add_const_t<std::remove_reference_t<MapServerObjectHandle>> & Get() const { return self.m_ServerObject; }
-  void SetDefault() { self.m_ServerObject = StormReflTypeInfo<TestBotInitData>::GetDefault().m_ServerObject; }
 };
 
 template <>

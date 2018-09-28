@@ -12,7 +12,7 @@
 
 CLIENT_ASSET(ClientAssetType::kEntity, "./Entities/DefaultServerObject.entity", g_DefaultServerObjectEntity);
 
-void GameServerObjectBase::Init(const GameServerObjectBaseInitData & init_data)
+void GameServerObjectBase::Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container)
 {
   
 }

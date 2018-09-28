@@ -200,7 +200,7 @@ void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_in
 {
   auto & obj_manager = game.GetObjectManager();
 
-  auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index);
+  auto player_obj = obj_manager.CreateDynamicObject<PlayerServerObject>(player_index, game);
   StormReflSefDefault(*player_obj);
 
   SetPlayerToSpawn(game, player_index);

@@ -32,7 +32,7 @@ public:
   BotServerObject & operator = (const BotServerObject & rhs) = default;
   BotServerObject & operator = (BotServerObject && rhs) = default;
 
-  void Init(const BotServerObjectInitData & init_data);
+  void Init(const BotServerObjectInitData & init_data, GameLogicContainer & game_container);
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
 

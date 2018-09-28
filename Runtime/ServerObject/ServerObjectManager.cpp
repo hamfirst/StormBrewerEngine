@@ -12,6 +12,8 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
                                          const std::vector<ServerObjectStaticInitData> & dynamic_objects,
                                          int max_dynamic_objects, int num_reserved_slots)
 {
+  m_Initialized = false;
+
   m_NumGUIDS = static_objects.size() + max_dynamic_objects;
   m_GUIDs = std::shared_ptr<uint32_t[]>(new uint32_t[m_NumGUIDS]);
 
@@ -40,16 +42,21 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
   m_DynamicObjectGen.resize(max_dynamic_objects);
   m_DynamicObjects.Reserve(max_dynamic_objects);
 
+  slot_index = num_reserved_slots;
+
   for (auto & obj : dynamic_objects)
   {
-    auto ptr = CreateDynamicObjectInternal((int)obj.m_TypeIndex, obj.m_InitData.GetValue(), true);
-    if (ptr)
-    {
-      ptr->InitPosition(obj.m_InitPosition);
+    auto dynamic_slot_index = static_objects.size() + slot_index;
+    auto ptr = g_ServerObjectSystem.AllocateObject((int)obj.m_TypeIndex);
+    ptr->m_IsStatic = false;
+    ptr->m_TypeIndex = (int)obj.m_TypeIndex;
+    ptr->m_SlotIndex = slot_index;
+    ptr->m_ServerObjectHandle.m_SlotId = slot_index + (int)m_StaticObjects.size();
+    ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
+    ptr->m_EventDispatch = ptr->GetEventDispatch();
 
-      auto dynamic_slot_index = ptr->m_SlotIndex + slot_index;
-      m_GUIDs[dynamic_slot_index] = obj.m_GUID;
-    }
+    m_DynamicObjects.EmplaceAt(dynamic_slot_index, DynamicObjectInfo{ptr, obj.m_TypeIndex, true});
+    m_GUIDs[dynamic_slot_index] = obj.m_GUID;
   }
 }
 
@@ -238,6 +245,7 @@ int ServerObjectManager::GetMaxDynamicObjects() const
 void ServerObjectManager::Serialize(NetBitWriter & writer) const
 {
   ServerObjectNetBitWriter so_writer(writer, this);
+  writer.WriteBits(m_Initialized, 1);
   for (auto & obj : m_StaticObjects)
   {
     auto type_index = obj->m_TypeIndex;
@@ -273,16 +281,18 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
 void ServerObjectManager::Deserialize(NetBitReader & reader)
 {
   ServerObjectNetBitReader so_reader(reader, this);
+  m_Initialized = reader.ReadUBits(1) != 0;
+
   for (auto & obj : m_StaticObjects)
   {
     auto type_index = obj->m_TypeIndex;
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj, so_reader);
   }
 
-  for (std::size_t index = 0; index < m_MaxDynamicObjects; ++index)
+  for (std::size_t slot_index = 0; slot_index < m_MaxDynamicObjects; ++slot_index)
   {
     auto valid = so_reader.ReadUBits(1);
-    auto obj = m_DynamicObjects.TryGet(index);
+    auto obj = m_DynamicObjects.TryGet(slot_index);
 
     if (valid)
     {
@@ -303,15 +313,63 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
         obj->m_ServerObject->Destroy(*this);
       }
 
-      auto ptr = CreateDynamicObjectInternal((int)type_index, (int)index, nullptr, original);
-      g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
+      auto ptr = g_ServerObjectSystem.AllocateObject(type_index);
+      ptr->m_IsStatic = false;
+      ptr->m_TypeIndex = (int)type_index;
+      ptr->m_SlotIndex = (int)slot_index;
+      ptr->m_ServerObjectHandle.m_SlotId = (int)slot_index + (int)m_StaticObjects.size();
+      ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
+      ptr->m_EventDispatch = ptr->GetEventDispatch();
       ptr->m_FramesAlive = (int)lifetime;
+
+      m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
+
+      g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
     }
     else if(obj)
     {
       obj->m_ServerObject->Destroy(*this);
     }
   }
+}
+
+void ServerObjectManager::InitAllObjects(
+        const std::vector<ServerObjectStaticInitData> & static_objects,
+        const std::vector<ServerObjectStaticInitData> & dynamic_objects,
+        GameLogicContainer & game_container)
+{
+  if(m_Initialized)
+  {
+    return;
+  }
+
+  int slot_index = 0;
+  for (auto & obj : static_objects)
+  {
+    auto type_index = m_StaticObjects[slot_index]->m_TypeIndex;
+    g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(m_StaticObjects[slot_index],
+      obj.m_InitData.GetValue(), game_container);
+
+    ++slot_index;
+  }
+
+  slot_index = m_ReservedSlots;
+  for (auto & obj : dynamic_objects)
+  {
+    auto ptr = m_DynamicObjects[slot_index].m_ServerObject;
+    if (ptr && m_DynamicObjects[slot_index].m_Original)
+    {
+      auto type_index = ptr->m_TypeIndex;
+      ptr->InitPosition(obj.m_InitPosition);
+
+      g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(ptr,
+        obj.m_InitData.GetValue(), game_container);
+    }
+
+    ++slot_index;
+  }
+
+  m_Initialized = true;
 }
 
 int ServerObjectManager::GetNewDynamicObjectId()
@@ -328,7 +386,7 @@ int ServerObjectManager::GetNewDynamicObjectId()
 }
 
 NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index,
-        NullOptPtr<const ServerObjectInitData> init_data, bool original)
+        NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
 {
   auto slot_index = GetNewDynamicObjectId();
   if (slot_index == -1)
@@ -336,13 +394,13 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
     return nullptr;
   }
 
-  return CreateDynamicObjectInternal(type_index, slot_index, init_data, original);
+  return CreateDynamicObjectInternal(type_index, slot_index, init_data, original, game_container);
 }
 
 NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index,
-        NullOptPtr<const ServerObjectInitData> init_data, bool original)
+        NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
 {
-  auto ptr = g_ServerObjectSystem.AllocateObject(type_index, init_data);
+  auto ptr = g_ServerObjectSystem.AllocateObject(type_index);
   ptr->m_IsStatic = false;
   ptr->m_TypeIndex = type_index;
   ptr->m_SlotIndex = slot_index;
@@ -351,6 +409,12 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
   ptr->m_EventDispatch = ptr->GetEventDispatch();
 
   m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
+
+  if(m_Initialized)
+  {
+    g_ServerObjectSystem.InitObject(ptr, init_data, game_container);
+  }
+
   return ptr;
 }
 

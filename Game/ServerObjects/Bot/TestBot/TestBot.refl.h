@@ -23,14 +23,14 @@ class TestBot : public BotServerObject
 public:
   DECLARE_SERVER_OBJECT;
 
-  TestBot() = default;
+  TestBot();
   TestBot(const TestBot & rhs) = default;
   TestBot(TestBot && rhs) = default;
 
   TestBot & operator = (const TestBot & rhs) = default;
   TestBot & operator = (TestBot && rhs) = default;
 
-  void Init(const TestBotInitData & init_data);
+  void Init(const TestBotInitData & init_data, GameLogicContainer & game_container);
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
 

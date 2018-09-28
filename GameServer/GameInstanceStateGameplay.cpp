@@ -28,6 +28,8 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
 #endif
     m_Stage, true, m_SendTimer);
 
+  m_Stage.InitAllObjects(logic_container);
+
   for (auto elem : loading_data.m_Players)
   {
     auto & player_info = m_PlayerInfo.EmplaceAt(elem.first);
