@@ -217,11 +217,12 @@ void RenderState::Release()
 {
 #ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
 
-   if(m_VertexArrayName != 0)
-   {
-     glDeleteVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
-     m_VertexArrayName = 0;
-   }
+  // Having this (for some reason) breaks QT
+//   if(m_VertexArrayName != 0)
+//   {
+//     glDeleteVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
+//     m_VertexArrayName = 0;
+//   }
 #endif
 }
 

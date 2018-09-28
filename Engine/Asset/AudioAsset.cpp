@@ -27,7 +27,7 @@ struct WAVE_HEADER {
 
 struct AudioInfo
 {
-  std::shared_ptr<uint8_t> m_AudioBuffer;
+  std::shared_ptr<uint8_t[]> m_AudioBuffer;
   std::size_t m_AudioSize;
   AudioFormat m_Format;
   int m_Channels;
@@ -39,7 +39,7 @@ public:
 
   struct VorbisDecodeInfo
   {
-    std::shared_ptr<uint8_t> m_Data;
+    std::shared_ptr<uint8_t[]> m_Data;
     std::size_t m_Size;
     int m_NumChannels;
   };
@@ -281,7 +281,7 @@ public:
       }
     }
 
-    auto final_buffer = std::shared_ptr<uint8_t>(new uint8_t[total_samples * sizeof(float)]);
+    auto final_buffer = std::shared_ptr<uint8_t[]>(new uint8_t[total_samples * sizeof(float)]);
     auto dst = reinterpret_cast<float *>(final_buffer.get());
 
     for (auto & elem : blocks)
@@ -406,7 +406,7 @@ int AudioAsset::DecodeWavFile(Buffer & buffer)
     return 4;
   }
 
-  auto audio_buffer = std::shared_ptr<uint8_t>(new uint8_t[header->data_size]);
+  auto audio_buffer = std::shared_ptr<uint8_t[]>(new uint8_t[header->data_size]);
   memcpy(audio_buffer.get(), header + 1, header->data_size);
 
   buffer = MoveToBuffer(AudioInfo{ std::move(audio_buffer), header->data_size, format, header->channels });

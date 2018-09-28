@@ -35,7 +35,7 @@ private:
 
   AssetReference<AudioAsset> m_AudioAsset;
 
-  std::shared_ptr<uint8_t> m_AudioBuffer;
+  std::shared_ptr<uint8_t[]> m_AudioBuffer;
   std::size_t m_AudioBufferSize;
 
   AudioFormat m_AudioFormat;

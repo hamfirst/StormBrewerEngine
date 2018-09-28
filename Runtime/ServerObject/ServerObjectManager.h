@@ -10,11 +10,14 @@ class ServerObject;
 class ServerObjectInitData;
 class ServerObjectHandle;
 
+struct MapServerObjectHandle;
+
 struct ServerObjectStaticInitData
 {
   std::size_t m_TypeIndex;
   ServerObjectInitDataPolyType m_InitData;
   Vector2 m_InitPosition;
+  uint32_t m_GUID;
 };
 
 class ServerObjectManager
@@ -68,6 +71,22 @@ public:
     return static_cast<NullOptPtr<T>>(GetReservedSlotObjectInternal(slot_index, T::TypeIndex));
   }
 
+  NullOptPtr<ServerObject> ResolveMapHandle(const MapServerObjectHandle & handle);
+
+  template <typename T>
+  NullOptPtr<T> ResolveMapHandleAs(const MapServerObjectHandle & handle)
+  {
+    static_assert(std::is_base_of<ServerObject, T>::value, "Must resolve to server object type");
+    auto ptr = ResolveMapHandle(handle);
+
+    if(ptr)
+    {
+      return ptr->CastTo<T>();
+    }
+
+    return nullptr;
+  }
+
   void IncrementTimeAlive();
   void CreateUpdateList(ServerObjectUpdateList & update_list);
 
@@ -81,6 +100,8 @@ protected:
 
   friend class ServerObject;
   friend class ServerObjectHandle;
+
+  friend class GameStage;
 
   int GetNewDynamicObjectId();
   NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index,
@@ -107,5 +128,8 @@ private:
   SparseList<DynamicObjectInfo> m_DynamicObjects;
   int m_ReservedSlots;
   int m_MaxDynamicObjects;
+
+  std::shared_ptr<uint32_t[]> m_GUIDs;
+  int m_NumGUIDS;
 };
 

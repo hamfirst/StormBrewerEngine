@@ -50,8 +50,9 @@ private:
 
   friend class ServerObjectManager;
 
-  NotNullPtr<ServerObject> AllocateObject(std::size_t type_index, NullOptPtr<const ServerObjectInitData> init_data);
+  NotNullPtr<ServerObject> AllocateObject(std::size_t type_index);
   NotNullPtr<ServerObject> DuplicateObject(NotNullPtr<const ServerObject> rhs);
+  void InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data);
   void CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs);
   void FreeObject(NotNullPtr<ServerObject> object);
   void ResetObjectHandles(NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager);

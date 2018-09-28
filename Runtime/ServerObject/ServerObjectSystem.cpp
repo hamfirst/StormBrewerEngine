@@ -8,12 +8,11 @@
 ServerObjectSystem g_ServerObjectSystem;
 PreMainCallList g_ServerObjectRegisterCallList;
 
-NotNullPtr<ServerObject> ServerObjectSystem::AllocateObject(std::size_t type_index, NullOptPtr<const ServerObjectInitData> init_data)
+NotNullPtr<ServerObject> ServerObjectSystem::AllocateObject(std::size_t type_index)
 {
   auto object = m_ObjectTypes[type_index].m_ObjectCreate();
   object->m_TypeIndex = (int)type_index;
 
-  m_ObjectTypes[type_index].m_ObjectInit(object, init_data);
   return object;
 }
 
@@ -25,6 +24,11 @@ NotNullPtr<ServerObject> ServerObjectSystem::DuplicateObject(NotNullPtr<const Se
   object->m_EventDispatch = rhs->m_EventDispatch;
   object->m_FramesAlive = rhs->m_FramesAlive;
   return object;
+}
+
+void ServerObjectSystem::InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data)
+{
+  m_ObjectTypes[object->m_TypeIndex].m_ObjectInit(object, init_data);
 }
 
 void ServerObjectSystem::CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs)

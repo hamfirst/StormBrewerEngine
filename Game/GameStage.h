@@ -13,6 +13,7 @@
 
 #include "Runtime/Collision/CollisionDatabase.h"
 #include "Runtime/Collision/IntersectionDatabase.h"
+#include "Runtime/Map/MapHandles.refl.h"
 
 #ifndef MAP_PLATFORMER_PATHFINDING
 struct GamePathfindingGridElement
@@ -61,8 +62,14 @@ public:
 
   Optional<ServerObjectHandle> FindStaticObject(uint32_t obj_name_hash) const;
 
+  NullOptPtr<const MapAnchor> ResolveHandle(const MapAnchorHandle & handle) const;
+  NullOptPtr<const MapPath> ResolveHandle(const MapPathHandle & handle) const;
+  NullOptPtr<const MapVolume> ResolveHandle(const MapVolumeHandle & handle) const;
+
 private:
   friend class GameInstance;
+
+  std::shared_ptr<MapDef> m_Map;
 
   std::vector<ServerObjectStaticInitData> m_StaticObjects;
   std::vector<ServerObjectStaticInitData> m_DynamicObjects;
@@ -84,4 +91,5 @@ private:
   std::vector<Box> m_KillVolumes;
 
   std::unordered_map<uint32_t, ServerObjectHandle> m_StaticObjLookup;
+  std::unordered_map<uint32_t, int> m_ServerObjectHandleLookup;
 };

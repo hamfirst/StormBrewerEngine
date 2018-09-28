@@ -16,7 +16,6 @@
 struct TestBotInitData : public BotServerObjectInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(TestBotInitData);
-  MapAnchorHandle m_Anchor;
 };
 
 class TestBot : public BotServerObject
