@@ -11,7 +11,7 @@ template <>
 struct StormReflTypeInfo<PlayerStateBasicAttackSettings>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -62,6 +62,50 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data<1, Self> : 
   match_const_t<Self, bool> & Get() { return self.m_RetainMovement; }
   std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_RetainMovement; }
   void SetDefault() { self.m_RetainMovement = StormReflTypeInfo<PlayerStateBasicAttackSettings>::GetDefault().m_RetainMovement; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<2>
+{
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "m_ApplyGravity"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x664F734B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_ApplyGravity; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data<2, Self> : public StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, bool> & Get() { return self.m_ApplyGravity; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_ApplyGravity; }
+  void SetDefault() { self.m_ApplyGravity = StormReflTypeInfo<PlayerStateBasicAttackSettings>::GetDefault().m_ApplyGravity; }
+};
+
+template <>
+struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<3>
+{
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "m_InterruptIfNoGround"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x6F4B264F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_InterruptIfNoGround; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data<3, Self> : public StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, bool> & Get() { return self.m_InterruptIfNoGround; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.m_InterruptIfNoGround; }
+  void SetDefault() { self.m_InterruptIfNoGround = StormReflTypeInfo<PlayerStateBasicAttackSettings>::GetDefault().m_InterruptIfNoGround; }
 };
 
 template <>

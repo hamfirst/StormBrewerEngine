@@ -11,7 +11,12 @@
 
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
+
 #include "ProjectSettings/ProjectPerspective.h"
+
+#if PROJECT_PERSPECTIVE == PERSPECTIVE_SIDESCROLLER
+#define PLATFORMER_MOVEMENT
+#endif
 
 #if (NET_MODE == NET_MODE_GGPO)
 static const int kMaxRewindFrames = 20;
@@ -65,6 +70,7 @@ struct ClientInput
 
   bool m_JumpHeld;
   GameNetVal m_XInput;
+  GameNetVal m_YInput;
 
 #else
 

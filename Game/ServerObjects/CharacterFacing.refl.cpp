@@ -33,6 +33,16 @@ Optional<CharacterFacing> GetFacingForDirection(const GameNetVec2 & dir)
     return {};
   }
 
+#ifdef PLATFORMER_MOVEMENT
+  if(dir.x > GameNetVal(0))
+  {
+    return CharacterFacing::kRight;
+  }
+  else
+  {
+    return CharacterFacing::kLeft;
+  }
+#else
   if(dir.x.Abs() > dir.y.Abs())
   {
     if(dir.x > GameNetVal(0))
@@ -55,4 +65,5 @@ Optional<CharacterFacing> GetFacingForDirection(const GameNetVec2 & dir)
       return CharacterFacing::kDown;
     }
   }
+#endif
 }

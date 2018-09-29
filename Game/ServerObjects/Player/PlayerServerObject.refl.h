@@ -98,8 +98,10 @@ public:
 #ifdef PLATFORMER_MOVEMENT
   bool m_OnGround = true;
 
+#ifdef MOVER_ONE_WAY_COLLISION
   bool m_FallThrough = false;
   bool m_OnOneWayCollision = false;
+#endif
 #endif
 
   NetRangedNumber<int, -1, 30> m_AnimIndex = -1;
@@ -114,9 +116,7 @@ public:
 
   ClientInput m_Input;
 
-#ifdef MOVER_ONE_WAY_COLLISION
-  bool m_FallThrough = false;
-#endif
+
 
   NetPolymorphic<PlayerStateBase> m_State;
   PlayerConfigPtr m_Config;

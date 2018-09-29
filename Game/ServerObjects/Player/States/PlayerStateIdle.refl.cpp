@@ -77,13 +77,6 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
     return;
   }
 
-  if (player.m_Input.m_BlockHeld)
-  {
-    auto attack_state = player.TransitionToState<PlayerStateBasicAttack>(game_container);
-    attack_state->Setup(player, COMPILE_TIME_CRC32_STR("Kick"));
-    return;
-  }
-
 #endif
 }
 
