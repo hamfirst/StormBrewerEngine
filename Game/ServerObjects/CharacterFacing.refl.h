@@ -3,6 +3,7 @@
 
 #include "Game/GameCommon.h"
 #include "Game/GameServerTypes.h"
+#include "Game/GameNetworkData.refl.h"
 
 enum STORM_REFL_ENUM class CharacterFacing
 {

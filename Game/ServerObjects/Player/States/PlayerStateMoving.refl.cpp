@@ -81,12 +81,6 @@ void PlayerStateMoving::Transition(PlayerServerObject & player, GameLogicContain
     return;
   }
 
-  if (player.m_Input.m_BlockHeld)
-  {
-    player.TransitionToState<PlayerStateBlock>(game_container);
-    return;
-  }
-
 #endif
 }
 

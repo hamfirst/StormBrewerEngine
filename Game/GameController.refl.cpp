@@ -427,6 +427,7 @@ bool GameController::ValidateInput(std::size_t player_index, GameLogicContainer 
   input.m_InputStr.Clamp(0, 1);
 #else
   input.m_XInput.Clamp(-1, 1);
+  input.m_YInput.Clamp(-1, 1);
 #endif
   return true;
 }
