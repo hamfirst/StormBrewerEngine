@@ -5,10 +5,13 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
+#include "Game/GameCollision.refl.h"
 #include "Game/Systems/GameLogicSystems.h"
 
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.meta.h"
+#include "GameServerObjectBase.refl.h"
+
 
 CLIENT_ASSET(ClientAssetType::kEntity, "./Entities/DefaultServerObject.entity", g_DefaultServerObjectEntity);
 
@@ -90,6 +93,16 @@ void GameServerObjectBase::PushDealDamageBox(const Box & b, const DamageEvent & 
   *dmg = damage_event;
 }
 
+void GameServerObjectBase::PushDealDamageBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  if(sprite)
+  {
+    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    PushDealDamageBox(box, damage_event, game_container);
+  }
+}
+
 void GameServerObjectBase::PushReceiveDamageBox(const Box & b, GameLogicContainer & game_container)
 {
   auto facing = GetFacing();
@@ -102,6 +115,79 @@ void GameServerObjectBase::PushReceiveDamageBox(const Box & b, GameLogicContaine
 
   box = box.Offset(m_Position);
   game_container.GetServerObjectEventSystem().PushEventReceiver<DamageEvent>(GetObjectHandle(), box);
+}
+
+void GameServerObjectBase::PushReceiveDamageBox(uint32_t box_name_hash, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  if(sprite)
+  {
+    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    PushReceiveDamageBox(box, game_container);
+  }
+}
+
+void GameServerObjectBase::PushReceiveDamageBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  auto animation_state = GetAnimationState();
+  if(sprite && animation_state)
+  {
+    auto frame_id = sprite->GetAnimationFrameId(animation_state->m_AnimIndex, animation_state->m_AnimFrame);
+
+    auto boxes = sprite->GetMultiBox(multi_box_name_hash, frame_id);
+    for (auto &box : boxes)
+    {
+      PushReceiveDamageBox(box, game_container);
+    }
+  }
+}
+
+void GameServerObjectBase::PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container)
+{
+  game_container.GetSystems().GetCollisionDatabase().PushDynamicCollision(b,
+          (uint32_t)GameCollisionType::kCollisionDamagable, CollisionDatabaseObjectInfo(GetObjectHandle()));
+}
+
+void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  if(sprite)
+  {
+    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    PushReceiveDamageCollisionBox(box, game_container);
+  }
+}
+
+void GameServerObjectBase::PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  auto animation_state = GetAnimationState();
+  if(sprite && animation_state)
+  {
+    auto frame_id = sprite->GetAnimationFrameId(animation_state->m_AnimIndex, animation_state->m_AnimFrame);
+
+    auto boxes = sprite->GetMultiBox(multi_box_name_hash, frame_id);
+    for (auto &box : boxes)
+    {
+      PushReceiveDamageCollisionBox(box, game_container);
+    }
+  }
+}
+
+void GameServerObjectBase::PushCVCBox(const Box & b, GameLogicContainer & game_container)
+{
+  game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(b, this);
+}
+
+void GameServerObjectBase::PushCVCBox(uint32_t box_name_hash, GameLogicContainer &game_container)
+{
+  auto sprite = GetSprite();
+  if(sprite)
+  {
+    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    PushCVCBox(box, game_container);
+  }
 }
 
 SpritePtr GameServerObjectBase::GetSprite() const

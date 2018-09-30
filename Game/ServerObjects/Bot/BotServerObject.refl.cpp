@@ -23,18 +23,26 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
 {
   auto behavior_tree = GetBehaviorTree();
 
-  if(behavior_tree)
+  if (behavior_tree)
   {
-    while(true)
+    while (true)
     {
       m_Retransition = false;
       behavior_tree->Update(*this, game_container, game_container.GetInstanceData().m_Random);
 
-      if(m_Retransition == false)
+      if (m_Retransition == false)
       {
         break;
       }
     }
+  }
+
+  auto sprite = GetSprite();
+
+  if (sprite)
+  {
+    auto box = sprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
+    game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
   }
 }
 

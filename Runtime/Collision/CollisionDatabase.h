@@ -12,6 +12,7 @@ public:
   std::vector<CollisionDatabaseCheckResult> QueryAllDynamic(const Box & box, uint32_t collision_layer_mask) const;
   uint32_t CheckLineOfSight(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const;
 
+  Optional<CollisionDatabaseTraceResult> TracePath(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const;
   Optional<CollisionDatabaseTraceResult> TracePath(const Box & box, const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const;
 
   uint32_t CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const;

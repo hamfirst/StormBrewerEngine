@@ -116,8 +116,6 @@ public:
 
   ClientInput m_Input;
 
-
-
   NetPolymorphic<PlayerStateBase> m_State;
   PlayerConfigPtr m_Config;
 

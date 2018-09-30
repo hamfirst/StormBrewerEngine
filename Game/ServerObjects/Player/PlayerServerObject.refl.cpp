@@ -5,6 +5,7 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
+#include "Game/GameCollision.refl.h"
 #include "Game/Systems/GameLogicSystems.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
@@ -43,8 +44,8 @@ void PlayerServerObject::UpdateMiddle(GameLogicContainer & game_container)
   m_State->Animate(*this, game_container);
   m_State->PostUpdate(*this, game_container);
 
-  auto box = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
-  game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
+  PushCVCBox(COMPILE_TIME_CRC32_STR("MoveBox"), game_container);
+  PushReceiveDamageBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), game_container);
 }
 
 void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
@@ -68,13 +69,7 @@ void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
     }
   }
 
-  auto frame_id = g_PlayerSprite->GetAnimationFrameId(m_AnimIndex, m_AnimFrame);
 
-  auto hurt_boxes = g_PlayerSprite->GetMultiBox(COMPILE_TIME_CRC32_STR("ReceiveDamage"), frame_id);
-  for (auto & box : hurt_boxes)
-  {
-    PushReceiveDamageBox(box, game_container);
-  }
 }
 
 void PlayerServerObject::ResetState(GameLogicContainer & game_container)

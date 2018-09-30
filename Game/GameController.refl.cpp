@@ -9,6 +9,7 @@
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
 #include "Game/AI/PlayerAI.h"
+#include "Game/Systems/GameLogicSystems.h"
 #include "Game/Configs/GameConfig.refl.meta.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
 
@@ -493,6 +494,11 @@ void GameController::Update(GameLogicContainer & game)
 #endif
 
   auto & event_system = game.GetServerObjectEventSystem();
+  auto & collision = game.GetSystems().GetCollisionDatabase();
+  auto & cvc = game.GetSystems().GetCVCPushSystem();
+
+  collision.ResetDynamicCollision();
+  cvc.Clear();
 
   update_list.CallFirst(game);
   event_system.FinalizeEvents(game.GetObjectManager());
@@ -500,6 +506,8 @@ void GameController::Update(GameLogicContainer & game)
   event_system.FinalizeEvents(game.GetObjectManager());
   update_list.CallLast(game);
   event_system.FinalizeEvents(game.GetObjectManager());
+
+  cvc.ProcessCVC(game);
 
   for (auto player : game_data.m_Players)
   {

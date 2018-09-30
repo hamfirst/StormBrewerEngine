@@ -282,6 +282,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="\GameCollision.refl.meta.h" />
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" />
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.h" />
     <ClInclude Include="ServerObjects\Bot\BehaviorTree\States\PlayAnimationState.refl.meta.h" />

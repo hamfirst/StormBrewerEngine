@@ -122,10 +122,13 @@ set(GENERIC_HEADER_Game
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
+            GameCollision.refl.h
+            GameCollision.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_Game 
             GameController.refl.h
+            GameCollision.refl.h
             GameFullState.refl.h
             GameLevelListAsset.refl.h
             GameMessages.refl.h
