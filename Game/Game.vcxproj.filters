@@ -81,6 +81,9 @@
     <ClCompile Include="GameServerEventSender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="\GameCollision.refl.meta.h" >
+      <Filter></Filter>
+    </ClInclude>
     <ClInclude Include="ServerObjects\Bot\TestBot\TestBot.refl.meta.h" >
       <Filter>ServerObjects\Bot\TestBot</Filter>
     </ClInclude>

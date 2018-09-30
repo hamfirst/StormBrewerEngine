@@ -244,7 +244,7 @@ if(BUILD_TOOLS)
 	  link_directories("C:\\Dev\\llvm-build\\RelWithDebInfo\\lib")
   else()
     link_directories("/usr/local/lib")
-  endif()	
+  endif()
 
   add_executable(stormrefl StormRefl/main.cpp StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
@@ -305,7 +305,7 @@ if(BUILD_TOOLS)
   endif()
 
   add_executable(documentserver Dummy.cpp)
-  
+
   target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls binpack)
 
   if(NOT MSVC)

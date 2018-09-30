@@ -44,6 +44,12 @@ uint32_t CollisionDatabase::CheckLineOfSight(const Vector2 & start, const Vector
   return m_StaticCollision.CheckLineOfSight(start, end, collision_layer_mask);
 }
 
+Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
+{
+  Box b = {};
+  return TracePath(b, start, end, collision_layer_mask);
+}
+
 Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Box & box, const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
 {
   Optional<CollisionDatabaseTraceResult> out;

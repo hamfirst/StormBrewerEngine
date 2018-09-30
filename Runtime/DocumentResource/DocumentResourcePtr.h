@@ -118,6 +118,11 @@ public:
     m_Resource.Clear();
   }
 
+  operator bool()
+  {
+    return IsLoaded();
+  }
+
 protected:
   NotNullPtr<DataType> m_Data;
   DocumentResourceReference<ResourceType> m_Resource;
