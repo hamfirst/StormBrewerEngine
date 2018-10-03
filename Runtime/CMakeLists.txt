@@ -17,8 +17,7 @@ set(GENERIC_SRC_Runtime
             Config/ConfigManager.cpp
             DocumentResource/DocumentResourceBase.cpp
             DocumentResource/DocumentResourceManager.cpp
-            DocumentResource/DocumentResourceReference.cpp
-            DocumentResource/DocumentResourceReferenceBase.cpp
+  DocumentResource/DocumentResourceReferenceBase.cpp
             Entity/EntityDef.refl.cpp
             Entity/EntityResource.cpp
             FrameData/FrameData.refl.cpp

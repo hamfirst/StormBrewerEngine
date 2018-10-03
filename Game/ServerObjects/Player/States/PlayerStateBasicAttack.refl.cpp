@@ -17,15 +17,13 @@
 
 NET_REGISTER_TYPE(PlayerStateBasicAttack, PlayerStateBase);
 
-extern SpritePtr g_PlayerSprite;
-
 void PlayerStateBasicAttack::Setup(PlayerServerObject & player, uint32_t animation_hash, const PlayerStateBasicAttackSettings & settings,
   const Optional<PlayerStateBasicAttackDamageSettings> & damage_settings, bool inherit_movement)
 {
   m_AnimationHash = animation_hash;
   m_Settings = settings;
 
-  player.m_AnimIndex = g_PlayerSprite->GetAnimationIndex(m_AnimationHash);
+  player.m_AnimIndex = player.GetSprite()->GetAnimationIndex(m_AnimationHash);
   player.m_AnimFrame = 0;
   player.m_AnimDelay = 0;
 
@@ -54,20 +52,22 @@ void PlayerStateBasicAttack::Move(PlayerServerObject & player, GameLogicContaine
   }
 #endif
 
+  auto sprite = player.GetSprite();
+
   m_AnimationVelocity.SetZero();
   if (m_Settings.m_ApplyMovement)
   {
-    uint64_t cur_frame_id = g_PlayerSprite->GetAnimationFrameId(player.m_AnimIndex, player.m_AnimFrame);
-    Vector2 cur_anchor_position = g_PlayerSprite->GetAnchor(COMPILE_TIME_CRC32_STR("Movement"), cur_frame_id);
+    uint64_t cur_frame_id = sprite->GetAnimationFrameId(player.m_AnimIndex, player.m_AnimFrame);
+    Vector2 cur_anchor_position = sprite->GetAnchor(COMPILE_TIME_CRC32_STR("Movement"), cur_frame_id);
 
     Vector2 prev_anchor_position = {};
     if (player.m_AnimFrame > 0)
     {
-      uint64_t prev_frame_id = g_PlayerSprite->GetAnimationFrameId(player.m_AnimIndex, player.m_AnimFrame - 1);
-      prev_anchor_position = g_PlayerSprite->GetAnchor(COMPILE_TIME_CRC32_STR("Movement"), prev_frame_id);
+      uint64_t prev_frame_id = sprite->GetAnimationFrameId(player.m_AnimIndex, player.m_AnimFrame - 1);
+      prev_anchor_position = sprite->GetAnchor(COMPILE_TIME_CRC32_STR("Movement"), prev_frame_id);
     }
 
-    auto frame_duration = g_PlayerSprite->GetAnimationFrameDuration(player.m_AnimIndex, player.m_AnimFrame);
+    auto frame_duration = sprite->GetAnimationFrameDuration(player.m_AnimIndex, player.m_AnimFrame);
     if (frame_duration > 0)
     {
       auto animation_movement = GameNetVec2(GameNetVal(cur_anchor_position.x - prev_anchor_position.x), 
@@ -129,20 +129,14 @@ void PlayerStateBasicAttack::PostUpdate(PlayerServerObject & player, GameLogicCo
 {
   if (m_DamageSettings)
   {
-    auto frame_id = g_PlayerSprite->GetAnimationFrameId(player.m_AnimIndex, player.m_AnimFrame);
+    DamageEvent dmg;
+    dmg.m_Amount = m_DamageSettings->m_DamageAmount;
+    dmg.m_DamageType = m_DamageSettings->m_DamageType;
+    dmg.m_AttackId = player.m_AttackId;
+    dmg.m_Source = player.GetSlotIndex();
+    dmg.m_Direction = player.m_Facing;
 
-    auto hit_boxes = g_PlayerSprite->GetMultiBox(COMPILE_TIME_CRC32_STR("DealDamage"), frame_id);
-    for (auto & box : hit_boxes)
-    {
-      DamageEvent dmg;
-      dmg.m_Amount = m_DamageSettings->m_DamageAmount;
-      dmg.m_DamageType = m_DamageSettings->m_DamageType;
-      dmg.m_AttackId = player.m_AttackId;
-      dmg.m_Source = player.GetSlotIndex();
-      dmg.m_Direction = player.m_Facing;
-
-      player.PushDealDamageBox(box, dmg, game_container);
-    }
+    player.PushDealDamageEventBoxes(COMPILE_TIME_CRC32_STR("DealDamage"), dmg, game_container);
   }
 }
 

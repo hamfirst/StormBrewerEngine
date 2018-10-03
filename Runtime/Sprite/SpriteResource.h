@@ -24,7 +24,7 @@ public:
   SpriteResource(Any && load_data, uint32_t path_hash);
 
   NotNullPtr<SpriteDef> GetData();
-  DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
+  SpriteLoadLink AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback, DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> & load_link);
 
   static SpritePtr Find(uint32_t file_path_hash);

@@ -26,7 +26,7 @@ NotNullPtr<SpriteDef> SpriteResource::GetData()
   return &m_Data;
 }
 
-DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback)
+SpriteLoadLink SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback)
 {
   if (m_Loaded)
   {

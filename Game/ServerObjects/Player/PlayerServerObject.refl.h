@@ -34,6 +34,7 @@ extern ConfigPtr<PlayerConfig> g_PlayerConfig[];
 extern int g_PlayerConfigCount;
 
 using PlayerConfigPtr = NetReflectionStaticListPtr<ConfigPtr<PlayerConfig>, g_PlayerConfig, &g_PlayerConfigCount>;
+struct PlayerServerObjectConfigResources;
 
 class PlayerServerObject : public GameServerObjectBase
 {
@@ -72,6 +73,7 @@ public:
   virtual Optional<CharacterFacing> GetFacing() const override;
 
   const ConfigPtr<PlayerConfig> & GetConfig() const;
+  virtual czstr GetEntityBinding() const override;
   virtual czstr GetDefaultEntityBinding() const override;
 
   template <typename State>
@@ -90,7 +92,6 @@ public:
 
     return m_State.Get<State>();
   }
-
 
 public:
   GameNetVec2 m_Velocity = {};

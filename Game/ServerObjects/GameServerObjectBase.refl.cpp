@@ -75,7 +75,7 @@ void GameServerObjectBase::ResetAnimState()
   SetAnimationState(AnimationState{});
 }
 
-void GameServerObjectBase::PushDealDamageBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container)
+void GameServerObjectBase::PushDealDamageEventBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container)
 {
   EventMetaData new_meta(this, &game_container);
 
@@ -93,17 +93,33 @@ void GameServerObjectBase::PushDealDamageBox(const Box & b, const DamageEvent & 
   *dmg = damage_event;
 }
 
-void GameServerObjectBase::PushDealDamageBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
+void GameServerObjectBase::PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
+{
+  auto sprite = GetSprite();
+  auto animation_state = GetAnimationState();
+  if(sprite && animation_state)
+  {
+    auto frame_id = sprite->GetAnimationFrameId(animation_state->m_AnimIndex, animation_state->m_AnimFrame);
+
+    auto boxes = sprite->GetMultiBox(multi_box_name_hash, frame_id);
+    for (auto &box : boxes)
+    {
+      PushReceiveDamageEventBox(box, game_container);
+    }
+  }
+}
+
+void GameServerObjectBase::PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
 {
   auto sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
-    PushDealDamageBox(box, damage_event, game_container);
+    PushDealDamageEventBox(box, damage_event, game_container);
   }
 }
 
-void GameServerObjectBase::PushReceiveDamageBox(const Box & b, GameLogicContainer & game_container)
+void GameServerObjectBase::PushReceiveDamageEventBox(const Box & b, GameLogicContainer & game_container)
 {
   auto facing = GetFacing();
 
@@ -117,17 +133,17 @@ void GameServerObjectBase::PushReceiveDamageBox(const Box & b, GameLogicContaine
   game_container.GetServerObjectEventSystem().PushEventReceiver<DamageEvent>(GetObjectHandle(), box);
 }
 
-void GameServerObjectBase::PushReceiveDamageBox(uint32_t box_name_hash, GameLogicContainer & game_container)
+void GameServerObjectBase::PushReceiveDamageEventBox(uint32_t box_name_hash, GameLogicContainer & game_container)
 {
   auto sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
-    PushReceiveDamageBox(box, game_container);
+    PushReceiveDamageEventBox(box, game_container);
   }
 }
 
-void GameServerObjectBase::PushReceiveDamageBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
+void GameServerObjectBase::PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
 {
   auto sprite = GetSprite();
   auto animation_state = GetAnimationState();
@@ -138,7 +154,7 @@ void GameServerObjectBase::PushReceiveDamageBoxes(uint32_t multi_box_name_hash, 
     auto boxes = sprite->GetMultiBox(multi_box_name_hash, frame_id);
     for (auto &box : boxes)
     {
-      PushReceiveDamageBox(box, game_container);
+      PushReceiveDamageEventBox(box, game_container);
     }
   }
 }

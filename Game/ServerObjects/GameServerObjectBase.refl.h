@@ -50,11 +50,12 @@ public:
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
   void ResetAnimState();
 
-  void PushDealDamageBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushDealDamageBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushReceiveDamageBox(const Box & b, GameLogicContainer & game_container);
-  void PushReceiveDamageBox(uint32_t box_name_hash, GameLogicContainer & game_container);
-  void PushReceiveDamageBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
+  void PushDealDamageEventBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBox(const Box & b, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBox(uint32_t box_name_hash, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
   void PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container);
   void PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container);
   void PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
