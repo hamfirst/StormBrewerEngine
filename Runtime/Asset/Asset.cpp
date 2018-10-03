@@ -6,6 +6,7 @@
 
 GlobalAssetList g_GlobalAssetList;
 PreMainCallList g_GlobalAssetListRegister;
+PreMainCallList g_GlobalDependentAssetRegister;
 
 void GlobalAssetList::BeginAssetLoad(NotNullPtr<ClientAssetLoader> client_asset_loader)
 {
@@ -16,6 +17,14 @@ void GlobalAssetList::BeginAssetLoad(NotNullPtr<ClientAssetLoader> client_asset_
     for (std::size_t index = 0, end = m_GlobalAssets.size(); index < end; ++index)
     {
       m_GlobalAssets[index].BeginLoad(index);
+    }
+
+    for (std::size_t index = 0, end = m_DependentAssetContainers.size(); index < end; ++index)
+    {
+      auto & dep = m_DependentAssetContainers[index];
+      dep.BeginLoad(dep.m_BaseAssetList, dep.m_BaseAssetListCount,
+              dep.m_DependentAssetContainerList, dep.m_DependentAssetContainerListCount,
+              dep.m_LoadLinks, dep.m_LoadFunc);
     }
 
     for (std::size_t index = 0, end = m_ClientAssets.size(); index < end; ++index)
@@ -30,8 +39,17 @@ void GlobalAssetList::BeginAssetLoad(NotNullPtr<ClientAssetLoader> client_asset_
 void GlobalAssetList::UnloadAllAssets()
 {
   m_RefCount--;
+  ASSERT(m_RefCount >= 0, "Calling UnloadAllAssets too many times");
+
   if (m_RefCount == 0)
   {
+    m_GlobalDependentAssets.clear();
+
+    for (auto & asset_info : m_DependentAssetContainers)
+    {
+      asset_info.Unload(asset_info.m_DependentAssetContainerList, asset_info.m_DependentAssetContainerListCount, asset_info.m_LoadLinks);
+    }
+
     for (auto & asset_info : m_GlobalAssets)
     {
       asset_info.Unload(asset_info.m_Asset);
@@ -42,8 +60,6 @@ void GlobalAssetList::UnloadAllAssets()
       m_ClientAssetLoader->Unload(asset_info.m_Asset, asset_info.m_Type);
     }
   }
-
-  ASSERT(m_RefCount >= 0, "Calling unmatched UnloadAllAssets");
 }
 
 bool GlobalAssetList::AllAssetsLoaded()
@@ -51,6 +67,14 @@ bool GlobalAssetList::AllAssetsLoaded()
   for (auto & asset_info : m_GlobalAssets)
   {
     if (asset_info.IsLoaded(asset_info.m_Asset) == false)
+    {
+      return false;
+    }
+  }
+
+  for (auto & asset_info : m_GlobalDependentAssets)
+  {
+    if (asset_info.IsLoaded(asset_info.m_Asset.GetRaw()) == false)
     {
       return false;
     }

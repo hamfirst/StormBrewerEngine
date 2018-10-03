@@ -35,6 +35,7 @@ void RuntimeInit()
   g_MapEffectLayerRegisterCallList.CallAll();
   g_UIElementRegisterCallList.CallAll();
   g_GlobalAssetListRegister.CallAll();
+  g_GlobalDependentAssetRegister.CallAll();
   g_SpriteAnimationEventRegisterCallList.CallAll();
 
   g_ServerObjectInitRegisterCallList.CallAll();
