@@ -11,8 +11,8 @@
 Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
 
-TileSheetResource::TileSheetResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+TileSheetResource::TileSheetResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -64,8 +64,8 @@ TileSheetPtr TileSheetResource::Load(czstr file_path)
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<TileSheetResource *>(resource);
   return TileSheetPtr(DocumentResourceReference<TileSheetResource>(p_this));
 }
@@ -77,8 +77,8 @@ TileSheetLoadLink TileSheetResource::LoadWithCallback(czstr file_path, Delegate<
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<TileSheetResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
@@ -91,8 +91,8 @@ void TileSheetResource::LoadWithCallback(czstr file_path, Delegate<void, NotNull
     return;
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<TileSheetResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<TileSheetResource *>(resource);
 
   p_this->AddLoadCallback(std::move(callback), load_link);

@@ -114,7 +114,7 @@ void GameServerObjectBase::PushDealDamageEventBox(uint32_t box_name_hash, const 
   auto sprite = GetSprite();
   if(sprite)
   {
-    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
     PushDealDamageEventBox(box, damage_event, game_container);
   }
 }
@@ -138,7 +138,7 @@ void GameServerObjectBase::PushReceiveDamageEventBox(uint32_t box_name_hash, Gam
   auto sprite = GetSprite();
   if(sprite)
   {
-    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
     PushReceiveDamageEventBox(box, game_container);
   }
 }
@@ -170,7 +170,7 @@ void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash,
   auto sprite = GetSprite();
   if(sprite)
   {
-    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
     PushReceiveDamageCollisionBox(box, game_container);
   }
 }
@@ -201,7 +201,7 @@ void GameServerObjectBase::PushCVCBox(uint32_t box_name_hash, GameLogicContainer
   auto sprite = GetSprite();
   if(sprite)
   {
-    auto box = sprite->GetSingleBox(box_name_hash).Offset(m_Position);
+    auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
     PushCVCBox(box, game_container);
   }
 }
@@ -226,7 +226,7 @@ MoverResult GameServerObjectBase::MoveCheckCollisionDatabase(GameLogicContainer 
   auto & collision = game_container.GetSystems().GetCollisionDatabase();
 
   auto sprite = GetSprite();
-  auto move_box = sprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
+  auto move_box = sprite->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox"));
 
   MoveRequest req = Mover::CreateMoveRequest(m_Position, velocity, move_box);
 

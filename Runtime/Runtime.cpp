@@ -27,18 +27,12 @@
 
 void RuntimeInit()
 {
+  g_TypeDatabaseRegisterCallList.CallAll();
   g_ConfigRegistrationCallList.CallAll();
   g_ServerObjectRegisterCallList.CallAll();
-  g_AnchorRegisterCallList.CallAll();
-  g_VolumeRegisterCallList.CallAll();
-  g_PathRegisterCallList.CallAll();
-  g_MapEffectLayerRegisterCallList.CallAll();
   g_UIElementRegisterCallList.CallAll();
   g_GlobalAssetListRegister.CallAll();
   g_GlobalDependentAssetRegister.CallAll();
-  g_SpriteAnimationEventRegisterCallList.CallAll();
-
-  g_ServerObjectInitRegisterCallList.CallAll();
   g_ServerObjectSystem.FinalizeTypes();
 }
 

@@ -120,7 +120,7 @@ void ComponentName::RegisterComponent()                                         
   ComponentName::TypeIndex =                                                                                                    \
     g_ComponentTypeSystem.RegisterComponentType(type_info);                                                                     \
                                                                                                                                 \
-  ComponentInitDataTypeDatabase::RegisterType<ComponentName, InitData Base>();                                                  \
+  TypeDatabase<ComponentInitData>::Get().RegisterType<InitData>();                                                              \
 }                                                                                                                               \
                                                                                                                                 \
 ADD_PREMAIN_CALL(g_ComponentRegisterCallList, ComponentName, []() { ComponentName::RegisterComponent(); });                     \

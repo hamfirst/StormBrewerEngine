@@ -62,11 +62,11 @@ struct StormReflTypeInfo<MapPropertiesInfo>
 template <>
 struct StormReflTypeInfo<MapPropertiesInfo>::field_data_static<0>
 {
-  using member_type = RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>; // RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>
+  using member_type = RPolymorphic<MapPropertiesDef, void, true>; // RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>
   static constexpr auto GetName() { return "m_MapProperties"; }
-  static constexpr auto GetType() { return "RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x841C9243; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFD5B17FA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x6DB54CE0; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPropertiesInfo::m_MapProperties; }
 };
@@ -76,8 +76,8 @@ struct StormReflTypeInfo<MapPropertiesInfo>::field_data<0, Self> : public StormR
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>> & Get() { return self.m_MapProperties; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>>> & Get() const { return self.m_MapProperties; }
+  match_const_t<Self, RPolymorphic<MapPropertiesDef, void, true>> & Get() { return self.m_MapProperties; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapPropertiesDef, void, true>>> & Get() const { return self.m_MapProperties; }
   void SetDefault() { self.m_MapProperties = StormReflTypeInfo<MapPropertiesInfo>::GetDefault().m_MapProperties; }
 };
 
@@ -1288,11 +1288,11 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<2, Self> : public StormRefl
 template <>
 struct StormReflTypeInfo<MapEffectLayer>::field_data_static<3>
 {
-  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>; // RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>
+  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>; // RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>
   static constexpr auto GetName() { return "m_EffectLayerData"; }
-  static constexpr auto GetType() { return "RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1AE0B1F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB5F26F00; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2FE182EA; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_EffectLayerData; }
 };
@@ -1302,8 +1302,8 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<3, Self> : public StormRefl
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>> & Get() { return self.m_EffectLayerData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>>> & Get() const { return self.m_EffectLayerData; }
+  match_const_t<Self, RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>> & Get() { return self.m_EffectLayerData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>>> & Get() const { return self.m_EffectLayerData; }
   void SetDefault() { self.m_EffectLayerData = StormReflTypeInfo<MapEffectLayer>::GetDefault().m_EffectLayerData; }
 };
 
@@ -1381,11 +1381,11 @@ struct StormReflTypeInfo<MapAnchor>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapAnchor>::field_data_static<2>
 {
-  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
   static constexpr auto GetName() { return "m_AnchorData"; }
-  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x73BF9C78; }
-  static constexpr unsigned GetTypeNameHash() { return 0x07A3C796; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_AnchorData; }
 };
@@ -1395,8 +1395,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>> & Get() { return self.m_AnchorData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>> & Get() const { return self.m_AnchorData; }
+  match_const_t<Self, RPolymorphic<AnchorDataBase>> & Get() { return self.m_AnchorData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase>>> & Get() const { return self.m_AnchorData; }
   void SetDefault() { self.m_AnchorData = StormReflTypeInfo<MapAnchor>::GetDefault().m_AnchorData; }
 };
 
@@ -1611,11 +1611,11 @@ struct StormReflTypeInfo<MapPath>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapPath>::field_data_static<2>
 {
-  using member_type = RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>; // RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>
+  using member_type = RPolymorphic<PathDataBase>; // RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>
   static constexpr auto GetName() { return "m_PathData"; }
-  static constexpr auto GetType() { return "RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x07EB2D9C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x556A64B3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x404592FC; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_PathData; }
 };
@@ -1625,8 +1625,8 @@ struct StormReflTypeInfo<MapPath>::field_data<2, Self> : public StormReflTypeInf
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>> & Get() { return self.m_PathData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>>> & Get() const { return self.m_PathData; }
+  match_const_t<Self, RPolymorphic<PathDataBase>> & Get() { return self.m_PathData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<PathDataBase>>> & Get() const { return self.m_PathData; }
   void SetDefault() { self.m_PathData = StormReflTypeInfo<MapPath>::GetDefault().m_PathData; }
 };
 
@@ -1726,11 +1726,11 @@ struct StormReflTypeInfo<MapVolume>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapVolume>::field_data_static<2>
 {
-  using member_type = RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>; // RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>
+  using member_type = RPolymorphic<VolumeDataBase>; // RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>
   static constexpr auto GetName() { return "m_VolumeData"; }
-  static constexpr auto GetType() { return "RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1971791; }
-  static constexpr unsigned GetTypeNameHash() { return 0xEA7AD4B2; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF08E00EE; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_VolumeData; }
 };
@@ -1740,8 +1740,8 @@ struct StormReflTypeInfo<MapVolume>::field_data<2, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>> & Get() { return self.m_VolumeData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>>> & Get() const { return self.m_VolumeData; }
+  match_const_t<Self, RPolymorphic<VolumeDataBase>> & Get() { return self.m_VolumeData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<VolumeDataBase>>> & Get() const { return self.m_VolumeData; }
   void SetDefault() { self.m_VolumeData = StormReflTypeInfo<MapVolume>::GetDefault().m_VolumeData; }
 };
 

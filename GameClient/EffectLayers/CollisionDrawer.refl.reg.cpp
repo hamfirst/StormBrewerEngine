@@ -11,5 +11,5 @@
 #include "GameClient/EffectLayers/CollisionDrawer.refl.h"
 #include "GameClient/EffectLayers/CollisionDrawer.refl.meta.h"
 
-REGISTER_EFFECT_LAYER_DATA(CollisionDrawer, CollisionDrawerInitData);
+REGISTER_TYPE(CollisionDrawerInitData, MapEffectLayerInitData);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(CollisionDrawerInitData);

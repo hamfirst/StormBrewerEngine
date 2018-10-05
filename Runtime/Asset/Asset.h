@@ -233,7 +233,7 @@ private:
   AssetType * AssetVar; \
   int AssetVar##Count; \
   ADD_PREMAIN_CALL(g_GlobalDependentAssetRegister, AssetVar, []() { \
-    g_GlobalAssetList.CreateDependentAssetContainerList(&BaseAssetArray, &BaseAssetArray##Count, \
+    g_GlobalAssetList.CreateDependentAssetContainerList(BaseAssetArray, &BaseAssetArray##Count, \
             &AssetVar, &AssetVar##Count, LoadFunc); \
   });
 

@@ -22,11 +22,11 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>
 template <>
 struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<0>
 {
-  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x07A3C796; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_InitData; }
 };
@@ -36,8 +36,8 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data<0, Self> : public 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>> & Get() { return self.m_InitData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>> & Get() const { return self.m_InitData; }
+  match_const_t<Self, RPolymorphic<AnchorDataBase>> & Get() { return self.m_InitData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase>>> & Get() const { return self.m_InitData; }
   void SetDefault() { self.m_InitData = StormReflTypeInfo<MapEditorAnchorInitData>::GetDefault().m_InitData; }
 };
 

@@ -101,14 +101,17 @@ GameStage::GameStage(const Map & map) :
   {
     for (auto obj : layer.second.m_Objects)
     {
-      auto type_index = g_ServerObjectSystem.GetTypeIndexForInitDataTypeNameHash(obj.second.m_ServerObject.m_InitData.GetTypeNameHash());
+      auto type_index = g_ServerObjectSystem.GetTypeIndexForInitDataTypeNameHash(
+              obj.second.m_ServerObject.m_InitData.GetTypeNameHash());
+
       if (type_index)
       {
         Vector2 pos = Vector2((int)obj.second.m_XPosition, obj.second.m_YPosition);
         ServerObjectStaticInitData init_data{ type_index.Value(), obj.second.m_ServerObject.m_InitData, pos };
         if (obj.second.m_ServerObject.m_IsStatic)
         {
-          m_StaticObjLookup.insert(std::make_pair(crc32(obj.second.m_Name.data()), ServerObjectHandle::ConstructFromStaticIndex((int)m_StaticObjects.size())));
+          m_StaticObjLookup.insert(std::make_pair(crc32(obj.second.m_Name.data()),
+                  ServerObjectHandle::ConstructFromStaticIndex((int)m_StaticObjects.size())));
           m_StaticObjects.emplace_back(std::move(init_data));
         }
         else

@@ -145,32 +145,6 @@ NotNullPtr<ServerObjectEventDispatch> ServerObjectName::GetEventDispatch()      
   return &EventDispatch;                                                                                                        \
 }                                                                                                                               \
 
-
-template <typename DataType, typename ... BaseTypes>
-void ServerObjectInitTypeDatabase::RegisterType()
-{
-  static_assert(std::is_base_of<ServerObjectInitData, DataType>::value, "Registering type that is not of the right base class");
-  static_assert(std::is_same<ServerObjectInitData, DataType>::value || sizeof...(BaseTypes) > 0, "Registering type that does not have a base class specified");
-
-  ServerObjectInitDataTypeInfo type_info;
-  InitTypeInfo<DataType>(type_info);
-
-  auto type_name_hash = StormReflTypeInfo<DataType>::GetNameHash();
-
-  type_info.m_BaseTypes.emplace_back(std::make_pair(type_name_hash, [](void * ptr) {return ptr; }));
-
-  type_info.RegisterPropertyFields = [](PropertyFieldDatabase & property_db)
-  {
-    auto prop = GetProperyMetaData<DataType>(property_db);
-    property_db.RegisterStructWithAlternateName(StormReflTypeInfo<DataType>::GetNameHash(), prop);
-    return prop;
-  };
-
-  m_TypeList.emplace(std::make_pair(type_name_hash, type_info));
-}
-
-extern PreMainCallList g_ServerObjectInitRegisterCallList;
-
 #define SERVER_OBJECT_CONSTRUCT_NOBASE          0
 #define SERVER_OBJECT_CONSTRUCT_BASE(BaseClass) COMPILE_TIME_CRC32_STR(#BaseClass)
 
@@ -185,7 +159,6 @@ extern PreMainCallList g_ServerObjectInitRegisterCallList;
 
 #define REGISTER_SERVER_OBJECT_WITH_INIT_DATA(ServerObjectName, InitData, BaseClass) \
   REGISTER_SERVER_OBJECT_CODE(ServerObjectName, InitData, SERVER_OBJECT_INIT_DATA(InitData), SERVER_OBJECT_CONSTRUCT_BASE(BaseClass)) \
-  ADD_PREMAIN_CALL(g_ServerObjectInitRegisterCallList, InitData, ([]() { ServerObjectInitTypeDatabase::RegisterType<InitData, ServerObjectInitData>(); }));   
-
+  REGISTER_TYPE(InitData, ServerObjectInitData)
 
 #define SERVER_OBJECT_EVENT_HANDLER STORM_REFL_FUNC

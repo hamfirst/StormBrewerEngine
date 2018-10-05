@@ -21,7 +21,7 @@ using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResourc
 class SpriteResource : public DocumentResourceBase
 {
 public:
-  SpriteResource(Any && load_data, uint32_t path_hash);
+  SpriteResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<SpriteDef> GetData();
   SpriteLoadLink AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
@@ -72,7 +72,7 @@ public:
   void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta)
   {
     EventMetaData meta_dup = meta;
-    auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
+    auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase> & ev, const Box * start, const Box * end)
     {
       meta_dup.m_ActiveAreaStart = start;
       meta_dup.m_ActiveAreaEnd = end;
@@ -85,8 +85,10 @@ public:
   int GetAnimationFrameDuration(int animation_index, int animation_frame);
   uint64_t GetAnimationFrameId(int animation_index, int animation_frame);
 
-  Box GetSingleBox(uint32_t data_type_name_hash);
-  Box GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id);
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash);
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id);
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box = GetDefaultSingleBox());
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box = GetDefaultSingleBox());
   Vector2 GetAnchor(uint32_t data_type_name_hash);
   Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id);
   gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash);
@@ -104,7 +106,7 @@ private:
   friend class SpriteEngineData;
   struct AnimEventInfo
   {
-    RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
+    RPolymorphic<SpriteAnimationEventDataBase> m_EventData;
     int m_FrameIndex;
     int m_FrameDelay;
     int m_EventBoxStart;

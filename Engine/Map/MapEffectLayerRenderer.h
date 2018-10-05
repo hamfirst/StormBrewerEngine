@@ -4,9 +4,11 @@
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 
+#include "Runtime/Map/MapEffectLayerDef.refl.h"
+
 class GameContainer;
 
-class MapEffectLayerRenderer
+class MapEffectLayerRenderer : public MapEffectLayerLogicBase
 {
 public:
   MapEffectLayerRenderer();

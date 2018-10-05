@@ -7,8 +7,8 @@
 
 #include <sb/vector.h>
 
-UIResource::UIResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+UIResource::UIResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -48,8 +48,8 @@ UIResourcePtr UIResource::Load(czstr file_path)
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<UIResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+            { return std::make_unique<UIResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<UIResource *>(resource);
   return UIResourcePtr(DocumentResourceReference<UIResource>(p_this));
 }
@@ -61,8 +61,8 @@ DocumentResourceLoadCallbackLink<UIDef, UIResource> UIResource::LoadWithCallback
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<UIResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<UIResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<UIResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
