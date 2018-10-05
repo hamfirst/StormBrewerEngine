@@ -81,6 +81,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
     m_DynamicObjects.EmplaceAt(obj.first, DynamicObjectInfo{ ptr, obj.second.m_TypeIndex, obj.second.m_Original });
   }
 
+  m_Initialized = rhs.m_Initialized;
   m_ReservedSlots = rhs.m_ReservedSlots;
   m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
 
@@ -140,6 +141,7 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
     }
   }
 
+  m_Initialized = rhs.m_Initialized;
   m_ReservedSlots = rhs.m_ReservedSlots;
   m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
 
