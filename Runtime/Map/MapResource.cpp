@@ -9,8 +9,8 @@
 
 #include <sb/vector.h>
 
-MapResource::MapResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+MapResource::MapResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -55,8 +55,8 @@ Map MapResource::Load(czstr file_path)
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<MapResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<MapResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<MapResource *>(resource);
   return Map(DocumentResourceReference<MapResource>(p_this));
 }
@@ -68,8 +68,8 @@ MapLoadLink MapResource::LoadWithCallback(czstr file_path, Delegate<void, NotNul
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<MapResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<MapResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<MapResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));

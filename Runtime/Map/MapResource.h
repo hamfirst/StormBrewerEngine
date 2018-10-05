@@ -16,7 +16,7 @@ using MapLoadLink = DocumentResourceLoadCallbackLink<MapDef, MapResource>;
 class MapResource : public DocumentResourceBase
 {
 public:
-  MapResource(Any && load_data, uint32_t path_hash);
+  MapResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<MapDef> GetData() const;
   const std::shared_ptr<MapDef> & GetMapPtr() const;

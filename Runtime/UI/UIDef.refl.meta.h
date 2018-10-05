@@ -250,11 +250,11 @@ struct StormReflTypeInfo<UIDef>
 template <>
 struct StormReflTypeInfo<UIDef>::field_data_static<0>
 {
-  using member_type = RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>
+  using member_type = RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>; // RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4B1250EF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1FEE54D3; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_InitData; }
 };
@@ -264,8 +264,8 @@ struct StormReflTypeInfo<UIDef>::field_data<0, Self> : public StormReflTypeInfo<
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>> & Get() { return self.m_InitData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>>> & Get() const { return self.m_InitData; }
+  match_const_t<Self, RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>> & Get() { return self.m_InitData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo>>> & Get() const { return self.m_InitData; }
   void SetDefault() { self.m_InitData = StormReflTypeInfo<UIDef>::GetDefault().m_InitData; }
 };
 

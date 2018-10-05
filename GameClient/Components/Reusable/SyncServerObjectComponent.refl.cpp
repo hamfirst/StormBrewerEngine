@@ -32,7 +32,7 @@ void SyncServerObjectComponent::UpdateFirst()
 
   if (server_obj)
   {
-#ifndef NET_SYNC_OLD_STATE
+#ifdef NET_SYNC_OLD_STATE
     auto associated_player = server_obj->GetAssociatedPlayer();
     bool is_local = false;
 
@@ -54,7 +54,7 @@ void SyncServerObjectComponent::UpdateFirst()
 
     if (is_local == false)
     {
-      server_obj = GetEntity()->GetServerObject(NET_SYNC_HISTORY_FRAMES);
+      server_obj = static_cast<GameServerObjectBase *>(GetEntity()->GetServerObject(NET_SYNC_HISTORY_FRAMES));
     }
 #endif
 
@@ -71,6 +71,16 @@ void SyncServerObjectComponent::UpdateFirst()
     if (m_SyncSprite)
     {
       GetEntity()->SetSprite(server_obj->GetSprite());
+    }
+
+    auto facing = server_obj->GetFacing();
+    if(facing && facing.Value() == CharacterFacing::kLeft)
+    {
+      GetEntity()->SetRotation(true, false);
+    }
+    else
+    {
+      GetEntity()->SetRotation(false, false);
     }
   }
 }

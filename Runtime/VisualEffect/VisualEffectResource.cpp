@@ -9,8 +9,8 @@
 
 Any CreateVisualEffectEngineData(VisualEffectDef & visual_effect);
 
-VisualEffectResource::VisualEffectResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+VisualEffectResource::VisualEffectResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -50,8 +50,8 @@ VisualEffectResourcePtr VisualEffectResource::Load(czstr file_path)
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<VisualEffectResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<VisualEffectResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<VisualEffectResource *>(resource);
   return VisualEffectResourcePtr(DocumentResourceReference<VisualEffectResource>(p_this));
 }
@@ -63,8 +63,8 @@ DocumentResourceLoadCallbackLink<VisualEffectDef, VisualEffectResource> VisualEf
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<VisualEffectResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<VisualEffectResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<VisualEffectResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));

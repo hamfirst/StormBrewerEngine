@@ -205,6 +205,7 @@ std::optional<fs::path> FindCMakeFile(const fs::path & start_path,
   return FindCMakeFile(start_path.parent_path(), root_path);
 }
 
+/*
 std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
   const fs::path & project_path)
 {
@@ -233,6 +234,7 @@ std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
 
   return {};
 }
+*/
 
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
   ProjectFileType type)
@@ -273,6 +275,7 @@ void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
     "            " + sanitized_file + "\n" + placeholder);
 }
 
+/*
 void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file,
   ProjectFileType type)
 {
@@ -364,6 +367,7 @@ void InsertIntoVCXProjFiltersFile(std::string & vcxproj_file, const std::string 
 
   vcxproj_file.replace(pos, 0, insert);
 }
+ */
 
 bool WriteTemplate(const fs::path & target_file, const fs::path & template_file,
   const std::unordered_map<std::string, std::string> & template_replacements)

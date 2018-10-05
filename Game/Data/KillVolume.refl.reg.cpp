@@ -14,4 +14,4 @@
 #include "Game/Data/KillVolume.refl.meta.h"
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(KillVolume);
-REGISTER_VOLUME_DATA(KillVolume);
+REGISTER_TYPE(KillVolume, VolumeDataBase);

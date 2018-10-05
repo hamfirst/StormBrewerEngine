@@ -65,10 +65,10 @@ int main(int argc, char ** argv)
       {
         use_meta = true;
       }
-      else if(*p == 'v')
-      {
-        use_vcxproj = true;
-      }
+//      else if(*p == 'v')
+//      {
+//        use_vcxproj = true;
+//      }
     }
   }
 
@@ -91,27 +91,27 @@ int main(int argc, char ** argv)
   auto rel_path = GetRelativePath(root_dir, target_dir);
   auto rel_cmake = GetRelativePath(project_file_path.value(), target_dir);
 
-  std::string vcxproj_file;
-  std::string vcxproj_filters_file;
-
-  auto vcxproj_file_paths = FindVCXProjFiles(project_file_path.value());
-  if(use_vcxproj)
-  {
-    use_vcxproj = false;
-
-    if(vcxproj_file_paths)
-    {
-      auto vcxproj_file_data = ReadFileIntoString(vcxproj_file_paths->first);
-      auto vcxproj_filters_file_data = ReadFileIntoString(vcxproj_file_paths->second);
-
-      if(vcxproj_file_data && vcxproj_filters_file_data)
-      {
-        vcxproj_file = std::move(vcxproj_file_data.value());
-        vcxproj_filters_file = std::move(vcxproj_filters_file_data.value());
-        use_vcxproj = true;
-      }
-    }
-  }
+//  std::string vcxproj_file;
+//  std::string vcxproj_filters_file;
+//
+//  auto vcxproj_file_paths = FindVCXProjFiles(project_file_path.value());
+//  if(use_vcxproj)
+//  {
+//    use_vcxproj = false;
+//
+//    if(vcxproj_file_paths)
+//    {
+//      auto vcxproj_file_data = ReadFileIntoString(vcxproj_file_paths->first);
+//      auto vcxproj_filters_file_data = ReadFileIntoString(vcxproj_file_paths->second);
+//
+//      if(vcxproj_file_data && vcxproj_filters_file_data)
+//      {
+//        vcxproj_file = std::move(vcxproj_file_data.value());
+//        vcxproj_filters_file = std::move(vcxproj_filters_file_data.value());
+//        use_vcxproj = true;
+//      }
+//    }
+//  }
 
   auto class_name_lower = class_name;
   std::transform(class_name_lower.begin(), class_name_lower.end(), class_name_lower.begin(),
@@ -142,11 +142,11 @@ int main(int argc, char ** argv)
     auto file = rel_cmake + '/' + cpp_file;
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
 
-    if(use_vcxproj)
-    {
-      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
-      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
-    }
+//    if(use_vcxproj)
+//    {
+//      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
+//      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
+//    }
   }
 
   if(WriteTemplate(target_dir / header_file, header_template_file, template_replacements))
@@ -160,11 +160,11 @@ int main(int argc, char ** argv)
       InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kReflFile);
     }
 
-    if(use_vcxproj)
-    {
-      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
-      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
-    }
+//    if(use_vcxproj)
+//    {
+//      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
+//      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
+//    }
   }
 
   if(WriteTemplate(target_dir / meta_file, meta_template_file, template_replacements))
@@ -173,11 +173,11 @@ int main(int argc, char ** argv)
     auto file = rel_cmake + '/' + meta_file;
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
   
-    if(use_vcxproj)
-    {
-      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
-      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
-    }
+//    if(use_vcxproj)
+//    {
+//      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kHeaderFile);
+//      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kHeaderFile);
+//    }
   }
 
   if(WriteTemplate(target_dir / reg_file, reg_template_file, template_replacements))
@@ -186,20 +186,20 @@ int main(int argc, char ** argv)
     auto file = rel_cmake + '/' + reg_file;
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
     
-    if(use_vcxproj)
-    {
-      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
-      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
-    }
+//    if(use_vcxproj)
+//    {
+//      InsertIntoVCXProjFile(vcxproj_file, file, ProjectFileType::kCPPFile);
+//      InsertIntoVCXProjFiltersFile(vcxproj_filters_file, file, ProjectFileType::kCPPFile);
+//    }
   }
 
   WriteStringToFile(cmake_file_path.string(), cmake_file);
 
-  if(use_vcxproj)
-  {
-    WriteStringToFile(vcxproj_file_paths->first, vcxproj_file);
-    WriteStringToFile(vcxproj_file_paths->second, vcxproj_filters_file);
-  }
+//  if(use_vcxproj)
+//  {
+//    WriteStringToFile(vcxproj_file_paths->first, vcxproj_file);
+//    WriteStringToFile(vcxproj_file_paths->second, vcxproj_filters_file);
+//  }
 
   GitFinalize();
   return 0;

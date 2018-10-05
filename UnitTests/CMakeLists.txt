@@ -5,81 +5,27 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_UnitTests 
             UnitTests.cpp
-            TestComponent/TestComponent.refl.cpp
             TestComponent/TestComponent.refl.reg.cpp
+            TestComponent/TestComponent.refl.cpp
             #CPP_PLACEHOLDER
             )
+
 set(GENERIC_HEADER_UnitTests 
             stdafx.h
-            targetver.h
             TestTypes.refl.h
             TestTypes.refl.meta.h
+            targetver.h
             TestComponent/TestComponent.refl.h
             TestComponent/TestComponent.refl.meta.h
             #HEADER_PLACEHOLDER
             )
+
 set(GENERIC_REFL_UnitTests 
             TestTypes.refl.h
             TestComponent/TestComponent.refl.h
             #REFL_PLACEHOLDER
             )
 
-if (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Windows)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Web)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
-if (IOS)
-  add_definitions(-D_IOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/IOS)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
-if (APPLE AND NOT IOS)
-  add_definitions(-D_MACOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/MacOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
-if (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Android)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
-if (UNIX AND NOT APPLE)
-  add_definitions(-D_LINUX)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_UnitTests 
-            )
-
-set(PLATFORM_HEADER_UnitTests 
-            )
-endif()
 
 foreach(REFL_FILE ${GENERIC_REFL_UnitTests})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
@@ -89,5 +35,4 @@ foreach(REFL_FILE ${GENERIC_REFL_UnitTests})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(UnitTests STATIC ${GENERIC_SRC_UnitTests} ${PLATFORM_SRC_UnitTests}
-            ${GENERIC_HEADER_UnitTests} ${PLATFORM_HEADER_UnitTests})
+add_library(UnitTests STATIC ${GENERIC_SRC_UnitTests} ${GENERIC_HEADER_UnitTests})

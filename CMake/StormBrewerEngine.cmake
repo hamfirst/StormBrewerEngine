@@ -11,6 +11,30 @@ CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID A
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_DEBUG_POSTFIX "")
 
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+endif()
+
+if (WEB)
+  add_definitions(-D_WEB)
+endif()
+
+if (IOS)
+  add_definitions(-D_IOS)
+endif()
+
+if (APPLE AND NOT IOS)
+  add_definitions(-D_MACOS)
+endif()
+
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+endif()
+
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+endif()
+
 if(WEB)
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 -s DISABLE_EXCEPTION_CATCHING=0")

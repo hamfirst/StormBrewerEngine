@@ -31,15 +31,7 @@ void PlayerServerObjectConfigResourcesLoad(const ConfigPtr<PlayerConfig> & confi
 }
 
 GLOBAL_ASSET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig, "./Configs/PlayerConfig.playerconfig");
-//GLOBAL_DEPENDENT_ASSET_ARRAY(PlayerServerObjectConfigResources, g_PlayerConfigResources, g_PlayerConfig, PlayerServerObjectConfigResourcesLoad);
-
-PlayerServerObjectConfigResources * g_PlayerConfigResources;
-int g_PlayerConfigResourcesCount;
-ADD_PREMAIN_CALL(g_GlobalDependentAssetRegister, AssetVar, ([]() {
-  g_GlobalAssetList.CreateDependentAssetContainerList<ConfigPtr<PlayerConfig>, PlayerServerObjectConfigResources>(g_PlayerConfig, &g_PlayerConfigCount,
-          &g_PlayerConfigResources, &g_PlayerConfigResourcesCount, PlayerServerObjectConfigResourcesLoad);
-}));
-
+GLOBAL_DEPENDENT_ASSET_ARRAY(PlayerServerObjectConfigResources, g_PlayerConfigResources, g_PlayerConfig, PlayerServerObjectConfigResourcesLoad);
 
 void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container)
 {
@@ -70,7 +62,7 @@ void PlayerServerObject::UpdateMiddle(GameLogicContainer & game_container)
 
 void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
 {
-  auto box = GetSprite()->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
+  auto box = GetSprite()->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox"));
   box = box.Offset(m_Position);
 
   for (auto & kill_vol : game_container.GetStage().GetKillVolumes())

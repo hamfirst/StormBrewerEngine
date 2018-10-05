@@ -58,11 +58,11 @@ struct StormReflTypeInfo<EntityDef>::annotations<0>::annoation<0>
 template <>
 struct StormReflTypeInfo<EntityDef>::field_data_static<1>
 {
-  using member_type = RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >; // RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo, false> >
+  using member_type = RMergeList<RPolymorphic<ComponentInitData> >; // RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >
   static constexpr auto GetName() { return "m_Components"; }
-  static constexpr auto GetType() { return "RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo, false> >"; }
+  static constexpr auto GetType() { return "RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x64F11C30; }
-  static constexpr unsigned GetTypeNameHash() { return 0x90771E5E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2CECCE09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Components; }
 };
@@ -72,8 +72,8 @@ struct StormReflTypeInfo<EntityDef>::field_data<1, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >> & Get() { return self.m_Components; }
-  std::add_const_t<std::remove_reference_t<RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >>> & Get() const { return self.m_Components; }
+  match_const_t<Self, RMergeList<RPolymorphic<ComponentInitData> >> & Get() { return self.m_Components; }
+  std::add_const_t<std::remove_reference_t<RMergeList<RPolymorphic<ComponentInitData> >>> & Get() const { return self.m_Components; }
   void SetDefault() { self.m_Components = StormReflTypeInfo<EntityDef>::GetDefault().m_Components; }
 };
 

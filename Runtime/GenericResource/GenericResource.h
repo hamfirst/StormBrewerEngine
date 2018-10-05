@@ -13,8 +13,8 @@ class GenericResource : public DocumentResourceBase
 {
 public:
 
-  GenericResource(Any && load_data, uint32_t path_hash) :
-    DocumentResourceBase(std::move(load_data), path_hash)
+  GenericResource(Any && load_data, uint32_t path_hash, czstr path) :
+    DocumentResourceBase(std::move(load_data), path_hash, path)
   {
 
   }
@@ -42,8 +42,8 @@ public:
       return {};
     }
 
-    auto resource = LoadDocumentResource(file_path,
-      [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<GenericResource<ResourceData>>(std::move(load_data), path_hash); });
+    auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+            { return std::make_unique<GenericResource<ResourceData>>(std::move(load_data), path_hash, path); });
     auto p_this = static_cast<GenericResource<ResourceData> *>(resource);
     return DocumentResourcePtr<ResourceData, GenericResource<ResourceData>>(DocumentResourceReference<GenericResource<ResourceData>>(p_this));
   }
@@ -55,8 +55,8 @@ public:
       return {};
     }
 
-    auto resource = LoadDocumentResource(file_path,
-      [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<GenericResource<ResourceData>>(std::move(load_data), path_hash); });
+    auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+            { return std::make_unique<GenericResource<ResourceData>>(std::move(load_data), path_hash, path); });
     auto p_this = static_cast<GenericResource<ResourceData> *>(resource);
 
     return p_this->AddLoadCallback(std::move(callback));

@@ -116,11 +116,11 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>
 template <>
 struct StormReflTypeInfo<SpriteBaseDefAnimFrame>::field_data_static<0>
 {
-  using member_type = RNumber<uint64_t>; // RNumber<unsigned long long>
+  using member_type = RNumber<uint64_t>; // RNumber<unsigned long>
   static constexpr auto GetName() { return "m_FrameId"; }
-  static constexpr auto GetType() { return "RNumber<unsigned long long>"; }
+  static constexpr auto GetType() { return "RNumber<unsigned long>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xEE74565B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x656FF0F1; }
+  static constexpr unsigned GetTypeNameHash() { return 0xFD825A3A; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimFrame::m_FrameId; }
 };
@@ -217,11 +217,11 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public
 template <>
 struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
 {
-  using member_type = RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>
+  using member_type = RPolymorphic<SpriteAnimationEventDataBase>; // RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>
   static constexpr auto GetName() { return "m_EventData"; }
-  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x5C470443; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEA49E70D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }
 };
@@ -231,8 +231,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<2, Self> : public
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>> & Get() { return self.m_EventData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>>> & Get() const { return self.m_EventData; }
+  match_const_t<Self, RPolymorphic<SpriteAnimationEventDataBase>> & Get() { return self.m_EventData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventDataBase>>> & Get() const { return self.m_EventData; }
   void SetDefault() { self.m_EventData = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_EventData; }
 };
 
@@ -634,11 +634,11 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data<4, Self> : public StormReflT
 template <>
 struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<5>
 {
-  using member_type = RMap<uint64_t, FrameData>; // RMap<unsigned long long, FrameData>
+  using member_type = RMap<uint64_t, FrameData>; // RMap<unsigned long, FrameData>
   static constexpr auto GetName() { return "m_FrameData"; }
-  static constexpr auto GetType() { return "RMap<unsigned long long, FrameData>"; }
+  static constexpr auto GetType() { return "RMap<unsigned long, FrameData>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1FD97BDF; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDE01B17E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x38B9B832; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_FrameData; }
 };

@@ -41,7 +41,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
 
   if (sprite)
   {
-    auto box = sprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
+    auto box = sprite->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
     game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
   }
 }

@@ -15,7 +15,7 @@ using VisualEffectLoadLink = DocumentResourceLoadCallbackLink<VisualEffectDef, V
 class VisualEffectResource : public DocumentResourceBase
 {
 public:
-  VisualEffectResource(Any && load_data, uint32_t path_hash);
+  VisualEffectResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<VisualEffectDef> GetData();
   DocumentResourceLoadCallbackLink<VisualEffectDef, VisualEffectResource> AddLoadCallback(Delegate<void, NotNullPtr<VisualEffectResource>> && callback);

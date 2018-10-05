@@ -53,7 +53,7 @@ void GameServerObjectOverlapSystem::CheckOverlaps(ServerObjectManager & obj_mana
     }
 
     auto obj_info = m_ObjectInfo[type_index];
-    auto box = obj_info.m_Sprite->GetResource()->GetSingleBox(obj_info.m_DataNameHash);
+    auto box = obj_info.m_Sprite->GetResource()->GetSingleBoxDefault(obj_info.m_DataNameHash);
 
     box.m_Start += pos;
     box.m_End += pos;
