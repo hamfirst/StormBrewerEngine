@@ -172,6 +172,8 @@ struct Box
   static Line GetEdge(const Box & box, int edge);
   static void SetEdge(Box & box, int edge, Line & line);
   static bool OffsetEdge(Box & box, int edge, int offset);
+
+  static bool IntersectsLine(const Box & b, const Line & l);
 };
 
 struct Color

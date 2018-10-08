@@ -235,3 +235,52 @@ bool Box::OffsetEdge(Box & box, int edge, int offset)
 
   return true;
 }
+
+bool Box::IntersectsLine(const Box & b, const Line & l)
+{
+  if(l.m_Start.x < b.m_Start.x && l.m_End.x < b.m_Start.x)
+  {
+    return false;
+  }
+
+  if(l.m_Start.y < b.m_Start.y && l.m_End.y < b.m_Start.y)
+  {
+    return false;
+  }
+
+  if(l.m_Start.x > b.m_End.x && l.m_End.x > b.m_End.x)
+  {
+    return false;
+  }
+
+  if(l.m_Start.y > b.m_End.y && l.m_End.y > b.m_End.y)
+  {
+    return false;
+  }
+
+  auto dx = l.m_End.x - l.m_Start.x;
+  auto dy = l.m_End.y - l.m_Start.y;
+
+  auto n = Vector2(-dy, dx);
+
+  auto p1 = SelectVectorXY(b.m_Start, b.m_End, 0x00) - l.m_Start;
+  auto p2 = SelectVectorXY(b.m_Start, b.m_End, 0x01) - l.m_Start;
+  auto p3 = SelectVectorXY(b.m_Start, b.m_End, 0x10) - l.m_Start;
+  auto p4 = SelectVectorXY(b.m_Start, b.m_End, 0x11) - l.m_Start;
+
+  auto d1 = DotVector2(p1, n);
+  auto d2 = DotVector2(p2, n);
+  auto d3 = DotVector2(p3, n);
+  auto d4 = DotVector2(p4, n);
+
+  auto dd1 = d1 * d2;
+  auto dd2 = d2 * d3;
+  auto dd3 = d3 * d4;
+
+  if(dd1 < 0 || dd2 < 0 || dd3 < 0)
+  {
+    return true;
+  }
+
+  return false;
+}

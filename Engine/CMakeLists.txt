@@ -247,7 +247,7 @@ set(GENERIC_HEADER_Engine
             Settings/EngineSettings.refl.h
             Settings/EngineSettings.refl.meta.h
             #HEADER_PLACEHOLDER
-            )
+  Text/TextWrap.h)
 
 set(GENERIC_REFL_Engine 
             UI/UIElementText.refl.h
