@@ -116,7 +116,7 @@ void FontViewer::paintGL()
   {
     return;
   }
-  
+
   m_RenderState.MakeCurrent();
   m_RenderState.BindShader(m_Shader);
   m_RenderState.BindVertexBuffer(m_VertexBuffer);
