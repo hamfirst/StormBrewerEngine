@@ -116,7 +116,7 @@ void TextRenderer::AddGlyphToBuffer(float x, float y, float scale, const GlyphIn
   buffer.m_Verts.AddVert(text_vert);
 }
 
-void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, float scale, int sel_start, int sel_end, int cursor_pos,
+void TextRenderer::CreateVertexBufferForString(const std::string_view & utf8_str, float scale, int sel_start, int sel_end, int cursor_pos,
   const TextSettings & settings, TextBufferBuilder & buffer, std::vector<Box> & glyph_positions)
 {
   glyph_positions.clear();
@@ -124,6 +124,8 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
   float line_height = (int)(((float)m_Face->height / (float)m_Face->units_per_EM) * (float)m_FontSize) * scale;
   float ascender = (int)(((float)m_Face->bbox.yMax / (float)m_Face->units_per_EM) * (float)m_FontSize) * scale;
   float descender = (int)(((float)m_Face->bbox.yMin / (float)m_Face->units_per_EM) * (float)m_FontSize) * scale;
+
+  auto len = utf8_str.length();
 
 #ifdef _MSC_VER
   char32_t * wide_buffer = (char32_t *)_alloca(sizeof(char32_t) * len);
@@ -139,7 +141,7 @@ void TextRenderer::CreateVertexBufferForString(czstr utf8_str, std::size_t len, 
   float x = (float)settings.m_TextPos.x;
   float y = (float)settings.m_TextPos.y;
 
-  converter.in(mb, utf8_str, utf8_str + len, from_next, wide_buffer, wide_buffer + len, to_next);
+  converter.in(mb, utf8_str.data(), utf8_str.data() + len, from_next, wide_buffer, wide_buffer + len, to_next);
   std::size_t num_glyphs = to_next - wide_buffer;
   glyph_positions.reserve(num_glyphs);
 
@@ -305,7 +307,7 @@ void TextRenderer::BindGlyphTexture(RenderState & render_state, int texture_stag
   render_state.BindTexture(m_Texture, texture_stage);
 }
 
-Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len, float scale)
+Box TextRenderer::GetTextSize(const std::string_view & utf8_str, float scale)
 {
   float line_height = (((float)m_Face->height / (float)m_Face->units_per_EM) * (float)m_FontSize * scale);
   float ascender = (((float)m_Face->bbox.yMax / (float)m_Face->units_per_EM) * (float)m_FontSize * scale);
@@ -315,6 +317,8 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len, float scale)
   float sy = descender;
   float ex = 0;
   float ey = ascender;
+
+  auto len = utf8_str.length();
 
 #ifdef _MSC_VER
   char32_t * wide_buffer = (char32_t *)_alloca(sizeof(char32_t) * len);
@@ -328,7 +332,7 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len, float scale)
   const char * from_next;
   char32_t * to_next;
 
-  converter.in(mb, utf8_str, utf8_str + len, from_next, wide_buffer, wide_buffer + len, to_next);
+  converter.in(mb, utf8_str.data(), utf8_str.data() + len, from_next, wide_buffer, wide_buffer + len, to_next);
 
   for (float line_x = 0; wide_buffer != to_next; wide_buffer++)
   {
@@ -370,6 +374,76 @@ Box TextRenderer::GetTextSize(czstr utf8_str, std::size_t len, float scale)
   size.m_End.y = (int)ey;
 
   return size;
+}
+
+bool TextRenderer::VisitTextSize(Delegate<bool, const Box &, char32_t, czstr> & callback, const std::string_view & utf8_str, float scale)
+{
+  float line_height = (((float)m_Face->height / (float)m_Face->units_per_EM) * (float)m_FontSize * scale);
+  float ascender = (((float)m_Face->bbox.yMax / (float)m_Face->units_per_EM) * (float)m_FontSize * scale);
+  float descender = (((float)m_Face->bbox.yMin / (float)m_Face->units_per_EM) * (float)m_FontSize * scale);
+
+  float sx = -1;
+  float sy = descender;
+  float ex = 0;
+  float ey = ascender;
+
+  auto len = utf8_str.length();
+
+  std::codecvt_utf8<char32_t> converter;
+
+  std::mbstate_t mb = {};
+  auto ptr = utf8_str.data();
+  auto end = utf8_str.data() + len;
+  const char * from_next;
+  char32_t * to_next;
+  float line_x = 0;
+
+  while (ptr != end)
+  {
+    char32_t code_point;
+    converter.in(mb, ptr, ptr + len, from_next, &code_point, &code_point + 1, to_next);
+
+    ptr = from_next;
+
+    if (code_point == '\n')
+    {
+      line_x = 0;
+      sy -= line_height + 2;
+    }
+    else if (code_point != '\r')
+    {
+      AddGlyph(code_point);
+      auto glyph_itr = m_GlyphMap.find(code_point);
+
+      auto &glyph = glyph_itr->second;
+
+      if (glyph.m_Valid == false)
+      {
+        continue;
+      }
+
+      if (line_x == 0)
+      {
+        sx = std::min((float) glyph.m_BufferLeft, sx);
+      }
+
+      line_x += (float) glyph.m_Advance * scale;
+      ex = std::max(line_x, ex);
+    }
+
+    Box size;
+    size.m_Start.x = (int)sx;
+    size.m_Start.y = (int)sy;
+    size.m_End.x = (int)ex;
+    size.m_End.y = (int)ey;
+
+    if (callback(size, code_point, ptr) == false)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 void TextRenderer::AddString(czstr utf8_str, std::size_t len)

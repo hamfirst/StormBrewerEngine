@@ -10,7 +10,9 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/ShaderLiteral.h"
 #include "Engine/Text/TextManager.h"
+#include "Engine/Text/TextWrap.h"
 #include "Engine/Settings/EngineSettings.refl.h"
+
 
 
 static const char * kFontViewerVertexShader = SHADER_LITERAL(
@@ -114,7 +116,7 @@ void FontViewer::paintGL()
   {
     return;
   }
-
+  
   m_RenderState.MakeCurrent();
   m_RenderState.BindShader(m_Shader);
   m_RenderState.BindVertexBuffer(m_VertexBuffer);
