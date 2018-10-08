@@ -82,12 +82,17 @@ MapEditorViewer::MapEditorViewer(NotNullPtr<MapEditor> editor, MapDef & map, QWi
       m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
 
       m_GameContainer->Update();
+      m_PlayModeRenderReady = true;
     }
   });
 }
 
 MapEditorViewer::~MapEditorViewer()
 {
+  if(m_PlayMode)
+  {
+    StopPlayMode();
+  }
 }
 
 void MapEditorViewer::SetGridWidth(int width)
@@ -401,6 +406,7 @@ void MapEditorViewer::StartPlayMode()
   auto window_box = Box{ Vector2{ window_pos.x(), window_pos.y() }, Vector2{ window_pos.x() + window_geo.width(), window_pos.y() + window_geo.height() } };
 
   m_Panning = false;
+  m_PanningSpace = false;
   if (m_Tool && m_Dragging)
   {
     m_Tool->DrawCancel();
@@ -408,6 +414,7 @@ void MapEditorViewer::StartPlayMode()
   }
 
   SyncMouse();
+  ASSERT(m_HasMouse == false, "Something is still holding onto the mouse in play mode");
 
   m_FakeWindow = std::make_unique<FakeWindow>(
     window_box,
@@ -434,9 +441,12 @@ void MapEditorViewer::StartPlayMode()
 
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
 
-  m_GameContainer = std::make_unique<GameContainer>(m_FakeWindow->GetWindow());
+  auto init_settings = std::make_unique<GameContainerInitSettings>();
+  init_settings->m_AutoBotGame = true;
+  m_GameContainer = std::make_unique<GameContainer>(m_FakeWindow->GetWindow(), std::move(init_settings));
 
   m_PlayMode = true;
+  m_PlayModeRenderReady = false;
 }
 
 void MapEditorViewer::StopPlayMode()
@@ -475,7 +485,7 @@ Vector2 MapEditorViewer::GetSnappedCursorPos()
 
 void MapEditorViewer::SyncMouse()
 {
-  bool should_have_mouse = m_Dragging || m_Panning;
+  bool should_have_mouse = m_Dragging || m_Panning || m_PanningSpace;
   if (should_have_mouse && m_HasMouse == false)
   {
     grabMouse();
@@ -512,7 +522,11 @@ void MapEditorViewer::paintGL()
 {
   if (m_PlayMode)
   {
-    m_GameContainer->Render();
+    if(m_PlayModeRenderReady)
+    {
+      m_GameContainer->GetRenderState().ResetState();
+      m_GameContainer->Render();
+    }
     return;
   }
 
@@ -993,20 +1007,6 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
     return;
   }
 
-  if (event->key() == Qt::Key_F5)
-  {
-    if (m_PlayMode)
-    {
-      StopPlayMode();
-    }
-    else
-    {
-      StartPlayMode();
-    }
-
-    return;
-  }
-
   if (m_PlayMode)
   {
     auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
@@ -1020,6 +1020,11 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
     {
       m_Tool->Delete();
     }
+  }
+  else if(event->key() == Qt::Key_Space)
+  {
+    m_PanningSpace = true;
+    SyncMouse();
   }
   else if (event->key() == Qt::Key_G)
   {
@@ -1059,6 +1064,12 @@ void MapEditorViewer::keyReleaseEvent(QKeyEvent * event)
     auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
     m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, false);
     return;
+  }
+
+  if(event->key() == Qt::Key_Space)
+  {
+    m_PanningSpace = false;
+    SyncMouse();
   }
 }
 
@@ -1144,7 +1155,7 @@ void MapEditorViewer::mouseMoveEvent(QMouseEvent *event)
   bool shift = (bool)(event->modifiers() & Qt::ShiftModifier);
   bool ctrl = (bool)(event->modifiers() & Qt::ControlModifier);
 
-  if (m_Panning)
+  if (m_Panning || m_PanningSpace)
   {
     auto diff_pos = p - m_CursorPos;
 
@@ -1221,13 +1232,16 @@ void MapEditorViewer::mouseReleaseEvent(QMouseEvent * event)
 
 void MapEditorViewer::wheelEvent(QWheelEvent *event)
 {
-  if (event->delta() < 0)
+  m_MagnificationDelta += event->delta();
+  if (m_MagnificationDelta < -QWheelEvent::DefaultDeltasPerStep)
   {
     m_Magnification *= 0.8f;
+    m_MagnificationDelta += QWheelEvent::DefaultDeltasPerStep;
   }
-  else
+  else if(m_MagnificationDelta > QWheelEvent::DefaultDeltasPerStep)
   {
     m_Magnification *= 1.25f;
+    m_MagnificationDelta -= QWheelEvent::DefaultDeltasPerStep;
   }
 }
 
@@ -1315,6 +1329,15 @@ void MapEditorViewer::dropEvent(QDropEvent * event)
     return;
   }
 }
+
+void MapEditorViewer::closeEvent(QCloseEvent * event)
+{
+  if(m_PlayMode)
+  {
+    StopPlayMode();
+  }
+}
+
 
 void MapEditorViewer::tick()
 {

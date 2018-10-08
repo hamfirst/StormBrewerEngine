@@ -64,7 +64,7 @@ void GameModeLogo::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
    
-    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
+    render_util.DrawTexturedQuad(texture->GetSize() / -2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
   }
 }
 

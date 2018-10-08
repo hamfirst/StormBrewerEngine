@@ -142,6 +142,32 @@ void RenderState::MakeCurrent()
 #endif
 }
 
+void RenderState::ResetState()
+{
+  m_BlendEnabled = false;
+  m_ScissorEnabled = false;
+  m_BlendMode = RenderingBlendMode::kNone;
+
+  m_BoundShader = nullptr;
+  m_BoundShaderName = 0;
+
+  m_BoundVertexBuffer = nullptr;
+  m_BoundVertexBufferName = 0;
+
+  m_BoundTexture = nullptr;
+  m_BoundTextureName = 0;
+
+  m_BoundRenderTarget = nullptr;
+  m_BoundRenderTargetName = 0;
+
+#ifndef USE_VERTEX_ARRAY
+  for(int index = 0; index < kMaxVertexAttribs; ++index)
+  {
+    m_VertexAttribEnabled[index] = {};
+  }
+#endif
+}
+
 void RenderState::BeginFrame(const Window & window)
 {
 #ifdef USE_RENDER_TARGET

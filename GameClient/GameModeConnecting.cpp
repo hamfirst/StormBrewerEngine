@@ -100,7 +100,7 @@ void GameModeConnecting::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
 
-    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
+    render_util.DrawTexturedQuad(texture_size / -2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
 
     const char * status_msg = "";
     switch (container.GetClient().GetConnectionState())
