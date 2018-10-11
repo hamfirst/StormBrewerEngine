@@ -197,6 +197,7 @@ void GameModeSinglePlayerBots::Render()
 
   auto camera_res = camera.GetGameResolution();
 
+  render_state.SetScreenSize(container.GetWindow().GetSize());
   render_state.SetRenderSize(camera.GetGameResolution());
   render_state.SetFramePct((float)m_FrameClock.GetFramePercent());
 
