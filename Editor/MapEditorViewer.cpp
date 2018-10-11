@@ -24,6 +24,7 @@
 #include "Runtime/Map/MapDef.refl.h"
 
 #include "GameClient/GameContainer.h"
+#include "GameClient/GameCamera.h"
 
 #include "MapEditorViewer.h"
 #include "MapEditor.h"
@@ -407,6 +408,7 @@ void MapEditorViewer::StartPlayMode()
 
   m_Panning = false;
   m_PanningSpace = false;
+
   if (m_Tool && m_Dragging)
   {
     m_Tool->DrawCancel();
@@ -459,6 +461,9 @@ void MapEditorViewer::StopPlayMode()
   m_PlayMode = false;
   m_GameContainer.reset();
   m_FakeWindow.reset();
+
+
+  m_CursorPos = QCursor::pos();
 }
 
 Vector2 MapEditorViewer::GetScreenCenterPos()
@@ -488,11 +493,13 @@ void MapEditorViewer::SyncMouse()
   bool should_have_mouse = m_Dragging || m_Panning || m_PanningSpace;
   if (should_have_mouse && m_HasMouse == false)
   {
+    grabKeyboard();
     grabMouse();
     m_HasMouse = true;
   }
   else if (should_have_mouse == false && m_HasMouse)
   {
+    releaseKeyboard();
     releaseMouse();
     m_HasMouse = false;
   }
@@ -524,6 +531,18 @@ void MapEditorViewer::paintGL()
   {
     if(m_PlayModeRenderReady)
     {
+      RenderVec2 window_start = TransformFromScreenSpaceToMapSpace(RenderVec2(0, height() - 1));
+      RenderVec2 window_end = TransformFromScreenSpaceToMapSpace(RenderVec2(width() - 1, 0));
+
+      auto render_size = window_end - window_start;
+      auto systems = m_GameContainer->GetClientSystems();
+
+      if(systems)
+      {
+        auto & camera = systems->GetCamera();
+        camera.SetGameResolution(render_size);
+      }
+
       m_GameContainer->GetRenderState().ResetState();
       m_GameContainer->Render();
     }
@@ -1023,8 +1042,11 @@ void MapEditorViewer::keyPressEvent(QKeyEvent * event)
   }
   else if(event->key() == Qt::Key_Space)
   {
-    m_PanningSpace = true;
-    SyncMouse();
+    if(event->isAutoRepeat() == false)
+    {
+      m_PanningSpace = true;
+      SyncMouse();
+    }
   }
   else if (event->key() == Qt::Key_G)
   {
@@ -1068,8 +1090,11 @@ void MapEditorViewer::keyReleaseEvent(QKeyEvent * event)
 
   if(event->key() == Qt::Key_Space)
   {
-    m_PanningSpace = false;
-    SyncMouse();
+    if(event->isAutoRepeat() == false)
+    {
+      m_PanningSpace = false;
+      SyncMouse();
+    }
   }
 }
 
@@ -1155,7 +1180,7 @@ void MapEditorViewer::mouseMoveEvent(QMouseEvent *event)
   bool shift = (bool)(event->modifiers() & Qt::ShiftModifier);
   bool ctrl = (bool)(event->modifiers() & Qt::ControlModifier);
 
-  if (m_Panning || m_PanningSpace)
+  if (m_Panning || m_PanningSpace || (ctrl && shift))
   {
     auto diff_pos = p - m_CursorPos;
 

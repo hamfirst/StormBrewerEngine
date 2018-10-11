@@ -110,7 +110,7 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
   BootstrapContext();
 
   m_BlendEnabled = true;
-  m_BlendMode = RenderingBlendMode::kAlpha;
+  m_BlendMode = RenderingBlendMode::kNone;
 
   m_ScreenWidth = screen_width;
   m_ScreenHeight = screen_height;

@@ -180,6 +180,7 @@ void GameModeEndGame::Render()
   auto & input_manager = container.GetClientSystems()->GetInputManager();
   auto & camera = container.GetClientSystems()->GetCamera();
 
+  render_state.SetScreenSize(container.GetWindow().GetSize());
   render_state.SetRenderSize(camera.GetGameResolution());
 
   render_util.SetClearColor(kDefaultClearColor);
