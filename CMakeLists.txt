@@ -3,10 +3,15 @@ cmake_minimum_required(VERSION 3.0)
 project(StormBrewerEngine)
 
 include(CMake/StormBrewerEngine.cmake)
+include(CMake/cotire.cmake)
 
 add_subdirectory(Game)
 
 set(CLIENT_LINK)
+
+if(MSVC)
+  add_definitions(-D_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING)
+endif()
 
 if(BUILD_CLIENT OR BUILD_TOOLS)
   add_subdirectory(GameClient)
@@ -482,6 +487,3 @@ if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
   endif()
 endif()
 
-if(MSVC)
-  add_definitions(-D_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING)
-endif()

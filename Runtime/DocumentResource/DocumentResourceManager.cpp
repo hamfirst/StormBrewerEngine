@@ -13,6 +13,11 @@ DocumentResourceManager::DocumentResourceManager() :
 
 }
 
+DocumentResourceManager::~DocumentResourceManager()
+{
+  ASSERT(m_Documents.size() == 0, "Not all document resources have unloaded properly");
+}
+
 NullOptPtr<DocumentResourceBase> DocumentResourceManager::FindDocumentResource(uint32_t file_path_hash)
 {
   auto itr = m_Documents.find(file_path_hash);
@@ -102,6 +107,7 @@ void DocumentResourceManager::DestroyDocument(uint32_t path_hash)
   auto itr = m_Documents.find(path_hash);
   if (itr == m_Documents.end())
   {
+    ASSERT(false, "Could not find document to destroy");
     return;
   }
 

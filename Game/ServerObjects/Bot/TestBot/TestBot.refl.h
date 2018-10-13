@@ -35,7 +35,7 @@ public:
   void UpdateMiddle(GameLogicContainer & game_container);
 
   virtual czstr GetDefaultEntityBinding() const override;
-  virtual SpritePtr GetSprite() const override;
+  virtual const SpritePtr & GetSprite() const override;
 
   virtual NullOptPtr<BotBehaviorTree> GetBehaviorTree() override;
 public:

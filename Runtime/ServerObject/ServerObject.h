@@ -49,7 +49,7 @@ public:
   }
 
   template <typename EventType>
-  bool SendEvent(EventType & ev, const EventMetaData & meta)
+  bool SendEvent(const EventType & ev, const EventMetaData & meta)
   {
     return TriggerEventHandler(EventType::TypeNameHash, &ev, meta);
   }
@@ -76,7 +76,7 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
-  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta);
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
 
 private:
   bool m_IsStatic = false;

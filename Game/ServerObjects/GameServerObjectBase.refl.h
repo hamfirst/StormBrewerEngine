@@ -70,7 +70,7 @@ public:
 
   GameNetVec2 MoveCheckIntersectionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity, GameNetVal player_radius, GameNetVal move_threshold);
 
-  virtual SpritePtr GetSprite() const;
+  virtual const SpritePtr & GetSprite() const;
   virtual Optional<CharacterFacing> GetFacing() const;
 
   template <typename Target>

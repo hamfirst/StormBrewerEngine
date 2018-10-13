@@ -37,7 +37,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
     }
   }
 
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
 
   if (sprite)
   {
@@ -48,7 +48,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
 
 Optional<AnimationState> BotServerObject::GetAnimationState() const
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
 
   if(sprite.GetResource())
   {

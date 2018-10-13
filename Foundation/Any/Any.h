@@ -1,6 +1,7 @@
 #pragma once
 
 #include <typeinfo>
+#include <type_traits>
 #include <utility>
 
 #include "Foundation/Optional/NullOpt.h"
@@ -131,7 +132,8 @@ public:
   }
 
   template <typename T>
-  explicit StaticAny(const T & t, std::enable_if_t<std::is_same<std::decay_t<T>, StaticAny<BufferSize, AlignType>>::value == false> * Enable = 0)
+  explicit StaticAny(const T & t, std::enable_if_t<!std::is_same_v<std::decay_t<T>, StaticAny<BufferSize, AlignType>>> * Enable = 0)
+    noexcept(std::is_nothrow_copy_constructible<T>::value)
   {
     using Type = T;
     new (m_Buffer) Type(t);
@@ -154,17 +156,24 @@ public:
       m_Mover = nullptr;
     }
 
-
     m_Deleter = [](void * ptr) { static_cast<Type *>(ptr)->~Type(); };
     m_Type = typeid(Type).hash_code();
   }
 
   template <typename T>
-  explicit StaticAny(T && t, std::enable_if_t<!std::is_same_v<std::decay_t<T>, Any> && std::is_rvalue_reference_v<decltype(t)>> * Enable = 0)
+  explicit StaticAny(T && t, std::enable_if_t<!std::is_same_v<std::decay_t<T>, Any>> * Enable = 0)
+    noexcept(std::is_nothrow_move_constructible<T>::value)
   {
     using Type = std::decay_t<T>;
 
-    new (m_Buffer) Type(std::forward<Type>(t));
+    if constexpr (std::is_rvalue_reference_v<decltype(t)>)
+    {
+      new (m_Buffer) Type(std::forward<Type>(t));
+    }
+    else
+    {
+      new (m_Buffer) Type(t);
+    }
 
     if constexpr (std::is_copy_constructible_v<Type>)
     {
@@ -184,7 +193,12 @@ public:
       m_Mover = nullptr;
     }
 
-    m_Deleter = [](void * ptr) { static_cast<Type *>(ptr)->~Type(); };
+    m_Deleter = [](void * ptr) 
+    {
+      auto t = static_cast<Type *>(ptr);
+      t->~Type();
+    };
+
     m_Type = typeid(Type).hash_code();
   }
 

@@ -4,29 +4,29 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameServer 
-            GameInstanceStateGameplay.cpp
-            GameInstanceStateData.cpp
+            GameClientConnection.cpp
             GameInstance.cpp
             GameInstanceManager.cpp
-            GameServer.cpp
-            GameClientConnection.cpp
-            GameInstanceStateStaging.cpp
-            GameServerGlobalResources.cpp
+            GameInstanceStateData.cpp
+            GameInstanceStateGameplay.cpp
             GameInstanceStateLoading.cpp
+            GameInstanceStateStaging.cpp
+            GameServer.cpp
+            GameServerGlobalResources.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameServer 
-            GameInstanceStateData.h
-            GameInstanceStateBase.h
-            GameInstance.h
-            GameInstanceStateLoading.h
-            GameInstanceStateGameplay.h
-            GameServerGlobalResources.h
             GameClientConnection.h
+            GameInstance.h
+            GameInstanceManager.h
+            GameInstanceStateBase.h
+            GameInstanceStateData.h
+            GameInstanceStateGameplay.h
+            GameInstanceStateLoading.h
             GameInstanceStateStaging.h
             GameServer.h
-            GameInstanceManager.h
+            GameServerGlobalResources.h
             #HEADER_PLACEHOLDER
             )
 
@@ -44,3 +44,4 @@ foreach(REFL_FILE ${GENERIC_REFL_GameServer})
 endforeach()
 
 add_library(GameServer STATIC ${GENERIC_SRC_GameServer} ${GENERIC_HEADER_GameServer})
+

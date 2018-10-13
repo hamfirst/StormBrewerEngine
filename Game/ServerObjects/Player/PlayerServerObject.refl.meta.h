@@ -45,11 +45,11 @@ struct StormReflTypeInfo<PlayerServerObject>
 template <>
 struct StormReflTypeInfo<PlayerServerObject>::field_data_static<0 + StormReflTypeInfo<GameServerObjectBase>::fields_n>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Velocity"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x48F40287; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerServerObject::m_Velocity; }
 };
@@ -361,7 +361,7 @@ struct StormReflFuncInfo<PlayerServerObject>
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>
 {
-  using func_ptr_type = bool (PlayerServerObject::*)(PlaceholderEvent &, const EventMetaData &);
+  using func_ptr_type = bool (PlayerServerObject::*)(const PlaceholderEvent &, const EventMetaData &);
   using return_type = bool;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "HandlePlaceholderEvent"; }
@@ -377,11 +377,11 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>::param_info<0>
 {
-  using param_type = PlaceholderEvent &;
+  using param_type = const PlaceholderEvent &;
   static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "PlaceholderEvent &"; }
+  static constexpr auto GetType() { return "const PlaceholderEvent &"; }
   static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF8BBABC7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB0413EBA; }
 };
 
 template <>
@@ -397,7 +397,7 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<0 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<1 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>
 {
-  using func_ptr_type = bool (PlayerServerObject::*)(DamageEvent &, const EventMetaData &);
+  using func_ptr_type = bool (PlayerServerObject::*)(const DamageEvent &, const EventMetaData &);
   using return_type = bool;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "HandleDamageEvent"; }
@@ -413,11 +413,11 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<1 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<1 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>::param_info<0>
 {
-  using param_type = DamageEvent &;
+  using param_type = const DamageEvent &;
   static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "DamageEvent &"; }
+  static constexpr auto GetType() { return "const DamageEvent &"; }
   static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0x91C9C6C7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x18F056E3; }
 };
 
 template <>
@@ -433,7 +433,7 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<1 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<2 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>
 {
-  using func_ptr_type = bool (PlayerServerObject::*)(DealDamageAnimationEvent &, const EventMetaData &);
+  using func_ptr_type = bool (PlayerServerObject::*)(const DealDamageAnimationEvent &, const EventMetaData &);
   using return_type = bool;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "HandleDealDamageEvent"; }
@@ -449,11 +449,11 @@ struct StormReflFuncInfo<PlayerServerObject>::func_data_static<2 + StormReflFunc
 template <>
 struct StormReflFuncInfo<PlayerServerObject>::func_data_static<2 + StormReflFuncInfo<GameServerObjectBase>::funcs_n>::param_info<0>
 {
-  using param_type = DealDamageAnimationEvent &;
+  using param_type = const DealDamageAnimationEvent &;
   static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "DealDamageAnimationEvent &"; }
+  static constexpr auto GetType() { return "const DealDamageAnimationEvent &"; }
   static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0x03A397C0; }
+  static constexpr unsigned GetTypeNameHash() { return 0x558C63ED; }
 };
 
 template <>

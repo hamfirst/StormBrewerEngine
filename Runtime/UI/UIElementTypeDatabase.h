@@ -21,6 +21,8 @@ class UIElementTypeDatabase :
         public StormDataTypeDatabaseSingleton<UIElementTypeDatabase>
 {
 public:
+  UIElementTypeDatabase() = default;
+
   template <typename RuntimeClass, typename InitDataType, typename RuntimeDataType>
   void RegisterType();
 

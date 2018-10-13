@@ -79,7 +79,7 @@ public:
     m_EventSystem->PushEventReceiver(this, box, Event::TypeNameHash);
   }
 
-  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta);
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
 
   NotNullPtr<EngineState> GetEngineState();
   NotNullPtr<GameContainer> GetGameContainer();

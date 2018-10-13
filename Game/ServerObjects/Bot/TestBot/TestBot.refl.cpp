@@ -44,7 +44,7 @@ czstr TestBot::GetDefaultEntityBinding() const
   return "./Entities/TestBot.entity";
 }
 
-SpritePtr TestBot::GetSprite() const
+const SpritePtr & TestBot::GetSprite() const
 {
   return g_TestBotEntity->GetSprite();
 }

@@ -11,3 +11,4 @@ set(GENERIC_HEADER_GameServerExe
             )
 
 add_library(GameServerExe STATIC ${GENERIC_SRC_GameServerExe} ${GENERIC_HEADER_GameServerExe})
+

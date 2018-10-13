@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 
 include(CMakeDependentOption)
 
-
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
 CMAKE_DEPENDENT_OPTION(BUILD_TOOLS "Build Client" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
@@ -118,3 +117,4 @@ if(BUILD_TOOLS)
   add_subdirectory("${PROJECT_SOURCE_DIR}/QTUtil")
   add_subdirectory("${PROJECT_SOURCE_DIR}/Editor")
 endif()
+

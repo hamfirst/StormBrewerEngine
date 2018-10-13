@@ -5,18 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_DocumentServer 
             DocumentServer.cpp
-            Main.cpp
-            FileSystemWatcher.cpp
             FileNameDatabase.cpp
+            filesystemwatcher.cpp
+            Main.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_DocumentServer 
+            DocumentServer.h
             DocumentServerMessages.refl.h
             DocumentServerMessages.refl.meta.h
-            DocumentServer.h
-            FileSystemWatcher.h
             FileNameDatabase.h
+            FileSystemWatcher.h
             #HEADER_PLACEHOLDER
             )
 
@@ -35,3 +35,4 @@ foreach(REFL_FILE ${GENERIC_REFL_DocumentServer})
 endforeach()
 
 add_library(DocumentServer STATIC ${GENERIC_SRC_DocumentServer} ${GENERIC_HEADER_DocumentServer})
+

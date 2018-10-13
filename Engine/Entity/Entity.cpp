@@ -39,7 +39,7 @@ Entity::~Entity()
 
 }
 
-bool Entity::TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta)
+bool Entity::TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
 {
   return m_EventDispatch.TriggerEvent(event_type, ev);
 }

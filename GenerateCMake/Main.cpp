@@ -17,6 +17,7 @@ struct ProjectFiles
   std::vector<std::string> m_CPPFiles;
   std::vector<std::string> m_HeaderFiles;
   std::vector<std::string> m_ReflFiles;
+  std::string m_PCHFile;
 };
 
 struct GenerateOptions
@@ -25,6 +26,7 @@ struct GenerateOptions
   bool m_IncludePlatformFiles = false;
   bool m_Refl = false;
   bool m_Placeholder = false;
+  bool m_PCH = false;
 };
 
 
@@ -111,24 +113,29 @@ std::pair<bool, fs::path> HasProjectFile(DirectoryFiles & dir)
 
 void ProcessOption(const std::string & option, GenerateOptions & out)
 {
-  if(option == "qt")
+  if (option == "qt")
   {
     out.m_QTProj = true;
   }
 
-  if(option == "platform")
+  if (option == "platform")
   {
     out.m_IncludePlatformFiles = true;
   }
 
-  if(option == "refl")
+  if (option == "refl")
   {
     out.m_Refl = true;
   }
 
-  if(option == "placeholder")
+  if (option == "placeholder")
   {
     out.m_Placeholder = true;
+  }
+
+  if (option == "pch")
+  {
+    out.m_PCH = true;
   }
 }
 
@@ -142,8 +149,8 @@ GenerateOptions ReadGenerateOptions(const fs::path & path)
   std::string option;
   while(!options_file.eof())
   {
-    char c;
-    if(options_file.readsome(&c, 1) == 0)
+    char c = options_file.get();
+    if (c == std::ifstream::traits_type::eof())
     {
       break;
     }
@@ -221,6 +228,11 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
       {
         files.m_ReflFiles.push_back(proj_file_path);
       }
+
+      if (filename.find("Common.h") != std::string::npos)
+      {
+        files.m_PCHFile = filename;
+      }
     }
   }
 }
@@ -270,6 +282,16 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   std::cout << "Project root: " << p << "\n";
   std::cout << "Project name: " << project_name << "\n";
   std::cout << "Relative root: " << relative_root << "\n";
+  std::cout << "Qt Project: " << (options.m_QTProj ? "Yes" : "No") << "\n";
+  std::cout << "Include Platform Files: " << (options.m_IncludePlatformFiles ? "Yes" : "No") << "\n";
+  std::cout << "Include CMake Placeholder: " << (options.m_Placeholder ? "Yes" : "No") << "\n";
+  std::cout << "Include Refl Options: " << (options.m_Refl ? "Yes" : "No") << "\n";
+  std::cout << "Create PCH: " << (options.m_PCH ? "Yes" : "No") << "\n";
+
+  if (options.m_PCH)
+  {
+    std::cout << "PCH File: " << files.m_PCHFile << "\n";
+  }
 
   std::cout << "Project headers:\n";
   for (auto & file : files.m_HeaderFiles)
@@ -292,6 +314,11 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
   cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
+
+  if (options.m_PCH && files.m_PCHFile.size() > 0)
+  {
+    cmake_file << "include(\"${PROJECT_SOURCE_DIR}/CMake/cotire.cmake\")\n\n";
+  }
 
   if (options.m_QTProj)
   {
@@ -400,7 +427,13 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   else
   {
     cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ";
-    cmake_file << "${GENERIC_HEADER_" + project_name + "})\n";
+    cmake_file << "${GENERIC_HEADER_" + project_name + "})\n\n";
+  }
+
+  if (options.m_PCH && files.m_PCHFile.size() > 0)
+  {
+    cmake_file << "set_target_properties(" + project_name + " PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT " + files.m_PCHFile + ")\n";
+    cmake_file << "cotire(" + project_name + ")\n";
   }
 
   cmake_file.close();

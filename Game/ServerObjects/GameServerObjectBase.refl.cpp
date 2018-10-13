@@ -15,6 +15,8 @@
 
 CLIENT_ASSET(ClientAssetType::kEntity, "./Entities/DefaultServerObject.entity", g_DefaultServerObjectEntity);
 
+SpritePtr g_DefaultEmptrySpritePtr;
+
 void GameServerObjectBase::Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container)
 {
   
@@ -58,7 +60,7 @@ void GameServerObjectBase::SetAssociatedPlayer(int associated_player) const
 bool GameServerObjectBase::FrameAdvance(uint32_t anim_name_hash, bool loop, int frames)
 {
   auto anim_state = GetAnimationState();
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   if (anim_state && sprite.IsLoaded())
   {
     bool result = sprite->FrameAdvance(anim_name_hash, anim_state.Value(), loop, frames);
@@ -95,7 +97,7 @@ void GameServerObjectBase::PushDealDamageEventBox(const Box & b, const DamageEve
 
 void GameServerObjectBase::PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   auto animation_state = GetAnimationState();
   if(sprite && animation_state)
   {
@@ -111,7 +113,7 @@ void GameServerObjectBase::PushDealDamageEventBoxes(uint32_t multi_box_name_hash
 
 void GameServerObjectBase::PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
@@ -135,7 +137,7 @@ void GameServerObjectBase::PushReceiveDamageEventBox(const Box & b, GameLogicCon
 
 void GameServerObjectBase::PushReceiveDamageEventBox(uint32_t box_name_hash, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
@@ -145,7 +147,7 @@ void GameServerObjectBase::PushReceiveDamageEventBox(uint32_t box_name_hash, Gam
 
 void GameServerObjectBase::PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   auto animation_state = GetAnimationState();
   if(sprite && animation_state)
   {
@@ -167,7 +169,7 @@ void GameServerObjectBase::PushReceiveDamageCollisionBox(const Box & b, GameLogi
 
 void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
@@ -177,7 +179,7 @@ void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash,
 
 void GameServerObjectBase::PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   auto animation_state = GetAnimationState();
   if(sprite && animation_state)
   {
@@ -198,7 +200,7 @@ void GameServerObjectBase::PushCVCBox(const Box & b, GameLogicContainer & game_c
 
 void GameServerObjectBase::PushCVCBox(uint32_t box_name_hash, GameLogicContainer &game_container)
 {
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   if(sprite)
   {
     auto box = sprite->GetSingleBoxDefault(box_name_hash).Offset(m_Position);
@@ -206,9 +208,9 @@ void GameServerObjectBase::PushCVCBox(uint32_t box_name_hash, GameLogicContainer
   }
 }
 
-SpritePtr GameServerObjectBase::GetSprite() const
+const SpritePtr & GameServerObjectBase::GetSprite() const
 {
-  return {};
+  return g_DefaultEmptrySpritePtr;
 }
 
 Optional<CharacterFacing> GameServerObjectBase::GetFacing() const
@@ -225,7 +227,7 @@ MoverResult GameServerObjectBase::MoveCheckCollisionDatabase(GameLogicContainer 
   auto & stage = game_container.GetStage();
   auto & collision = game_container.GetSystems().GetCollisionDatabase();
 
-  auto sprite = GetSprite();
+  auto & sprite = GetSprite();
   auto move_box = sprite->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox"));
 
   MoveRequest req = Mover::CreateMoveRequest(m_Position, velocity, move_box);

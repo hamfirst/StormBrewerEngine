@@ -118,7 +118,7 @@ public:
     m_Resource.Clear();
   }
 
-  operator bool()
+  operator bool() const
   {
     return IsLoaded();
   }

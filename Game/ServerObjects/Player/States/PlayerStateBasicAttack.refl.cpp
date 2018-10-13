@@ -140,7 +140,7 @@ void PlayerStateBasicAttack::PostUpdate(PlayerServerObject & player, GameLogicCo
   }
 }
 
-bool PlayerStateBasicAttack::HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta)
+bool PlayerStateBasicAttack::HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta)
 {
   auto player = static_cast<PlayerServerObject *>(meta.m_SourceServerObject);
   return player->HandleDealDamageEvent(ev, meta);
