@@ -61,15 +61,15 @@ public:
   void Jump(GameLogicContainer & game_container);
 #endif
 
-  bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta);
-  bool SERVER_OBJECT_EVENT_HANDLER HandleDamageEvent(DamageEvent & ev, const EventMetaData & meta);
-  bool SERVER_OBJECT_EVENT_HANDLER HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandleDamageEvent(const DamageEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta);
 
   virtual Optional<AnimationState> GetAnimationState() const override;
   virtual void SetAnimationState(const AnimationState & anim_state) override;
   virtual Optional<int> GetAssociatedPlayer() const override;
 
-  virtual SpritePtr GetSprite() const override;
+  virtual const SpritePtr & GetSprite() const override;
   virtual Optional<CharacterFacing> GetFacing() const override;
 
   const ConfigPtr<PlayerConfig> & GetConfig() const;

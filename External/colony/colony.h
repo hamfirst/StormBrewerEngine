@@ -297,7 +297,12 @@ namespace plf
       const skipfield_type					size; // The element capacity of this particular group
       skipfield_type							number_of_elements; // indicates total number of active elements in group - changes with insert and erase commands - used to check for empty group in erase function, as an indication to remove the group
       group_pointer_type					erasures_list_next_group; // The next group in the intrusive singly-linked list of groups with erasures ie. with active erased-element free lists
-      size_type								group_number; // Used for comparison (> < >= <=) iterator operators (used by distance function and user)
+
+#ifdef PLF_COLONY_ALLOCATOR_TRAITS_SUPPORT
+      typename std::allocator_traits<element_allocator_type>::size_type group_number;  // Used for comparison (> < >= <=) iterator operators (used by distance function and user)
+#else
+      size_type								group_number;
+#endif
 
 
 #ifdef PLF_COLONY_VARIADICS_SUPPORT

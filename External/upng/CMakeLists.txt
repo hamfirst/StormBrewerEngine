@@ -12,3 +12,4 @@ set(GENERIC_HEADER_upng
             )
 
 add_library(upng STATIC ${GENERIC_SRC_upng} ${GENERIC_HEADER_upng})
+

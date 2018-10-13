@@ -402,6 +402,8 @@ void MapEditorViewer::StartPlayMode()
     return;
   }
 
+  makeCurrent();
+
   auto window_geo = geometry();
   auto window_pos = mapToGlobal(QPoint(window_geo.x(), window_geo.y()));
   auto window_box = Box{ Vector2{ window_pos.x(), window_pos.y() }, Vector2{ window_pos.x() + window_geo.width(), window_pos.y() + window_geo.height() } };
@@ -457,6 +459,8 @@ void MapEditorViewer::StopPlayMode()
   {
     return;
   }
+
+  makeCurrent();
 
   m_PlayMode = false;
   m_GameContainer.reset();

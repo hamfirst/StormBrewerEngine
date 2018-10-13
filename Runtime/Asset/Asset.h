@@ -111,7 +111,7 @@ public:
 
     container_info.BeginLoad = [](void * base_asset_list, int * base_asset_list_count,
                                   void * dependent_asset_list, int * dependent_asset_list_count,
-                                  std::vector<StaticAny<40>> & load_links, StaticAny<8> & load_func)
+                                  std::unique_ptr<StaticAny<40>[]> & load_links, StaticAny<8> & load_func)
     {
       auto base_asset_list_ptr = static_cast<BaseAsset *>(base_asset_list);
       auto dependent_asset_container_list_ptr = static_cast<DependentAssetContainer **>(dependent_asset_list);
@@ -119,7 +119,7 @@ public:
 
       *dependent_asset_list_count = *base_asset_list_count;
       *dependent_asset_container_list_ptr = new DependentAssetContainer[*base_asset_list_count];
-      load_links.reserve(*base_asset_list_count);
+      load_links = std::make_unique<StaticAny<40>[]>(*base_asset_list_count);
 
       for(int index = 0; index < *base_asset_list_count; ++index)
       {
@@ -127,21 +127,20 @@ public:
         auto resource = base_asset->GetResource();
         if(resource)
         {
-          load_links.emplace_back(
-                  resource->AddLoadCallback([=](auto asset_resource)
-                                            { LoadFunc(*base_asset, (*dependent_asset_container_list_ptr)[index]); }));
+          load_links[index] = StaticAny<40>(
+            resource->AddLoadCallback([=](auto asset_resource) { LoadFunc(*base_asset, (*dependent_asset_container_list_ptr)[index]); }));
         }
       }
     };
 
     container_info.Unload = [](void * dependent_asset_list, int * dependent_asset_list_count,
-                               std::vector<StaticAny<40>> & load_links)
+                               std::unique_ptr<StaticAny<40>[]> & load_links)
     {
       auto dependent_asset_container_list_ptr = static_cast<DependentAssetContainer **>(dependent_asset_list);
       delete [] *dependent_asset_container_list_ptr;
 
       *dependent_asset_list_count = 0;
-      load_links.clear();
+      load_links.reset();
     };
 
     m_DependentAssetContainers.emplace_back(std::move(container_info));
@@ -151,12 +150,13 @@ public:
   auto CreateDependentAsset(const char * path)
   {
     auto asset_ref = AssetType::Load(path);
+    auto asset_ref_any = StaticAny<40>(asset_ref);
     using AssetRefType = decltype(asset_ref);
 
     m_GlobalDependentAssets.emplace_back(DependentGlobalAssetInfo{
       [](void * asset) { return static_cast<AssetRefType  *>(asset)->IsLoaded(); },
       [](void * asset) { return static_cast<AssetRefType  *>(asset)->IsError(); },
-      StaticAny<40>(asset_ref)
+      std::move(asset_ref_any)
     });
 
     return asset_ref;
@@ -182,17 +182,17 @@ private:
   {
     void(*BeginLoad)(void * base_asset_list, int * base_asset_list_count,
                      void * dependent_asset_list, int * dependent_asset_list_count,
-                     std::vector<StaticAny<40>> & load_links, StaticAny<8> & load_func);
+                     std::unique_ptr<StaticAny<40>[]> & load_links, StaticAny<8> & load_func);
 
     void(*Unload)(void * dependent_asset_list, int * dependent_asset_list_count,
-                  std::vector<StaticAny<40>> & load_links);
+                  std::unique_ptr<StaticAny<40>[]> & load_links);
 
     void * m_BaseAssetList;
     int * m_BaseAssetListCount;
     void * m_DependentAssetContainerList;
     int * m_DependentAssetContainerListCount;
 
-    std::vector<StaticAny<40>> m_LoadLinks;
+    std::unique_ptr<StaticAny<40>[]> m_LoadLinks;
     StaticAny<8> m_LoadFunc;
   };
 

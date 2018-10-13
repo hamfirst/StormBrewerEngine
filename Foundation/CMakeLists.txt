@@ -3,130 +3,132 @@ cmake_minimum_required(VERSION 3.1.0)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)
 set(CMAKE_CXX_STANDARD 17)
 
+include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
+
 set(GENERIC_SRC_Foundation 
             Common.cpp
-            Document/DocumentCompiler.cpp
-            Document/Document.cpp
-            Lerp/LerpVar.cpp
-            Lerp/LerpFuncs.cpp
-            TypeDatabase/TypeDatabase.cpp
-            Time/FPSClock.cpp
-            Time/StopWatch.cpp
-            Time/FrameClock.cpp
-            Time/Time.cpp
-            Json/JsonArray.cpp
-            Json/JsonDictionary.cpp
-            Json/Json.cpp
+            Allocator/Allocator2D.cpp
+            Allocator/IdAllocator.cpp
+            Any/Any.cpp
+            Assert/Assert.cpp
             BasicTypes/BasicTypes.refl.cpp
             Bitset/Bitset.cpp
+            Blackboard/Blackboard.cpp
+            Blit/Blit.cpp
+            Blit/PixelBuffer.cpp
+            Buffer/Buffer.cpp
+            Buffer/BufferUtil.cpp
+            Document/Document.cpp
+            Document/DocumentCompiler.cpp
             FileSystem/Directory.cpp
             FileSystem/File.cpp
             FileSystem/Path.cpp
-            Random/RandomGenerator.cpp
-            Random/Random.cpp
-            Any/Any.cpp
-            Sequencer/Sequencer.cpp
-            Thread/Semaphore.cpp
-            Assert/Assert.cpp
+            Json/Json.cpp
+            Json/JsonArray.cpp
+            Json/JsonDictionary.cpp
+            Lerp/LerpFuncs.cpp
+            Lerp/LerpVar.cpp
+            Math/Util.cpp
             Network/Network.cpp
             Network/WebSocket.cpp
             Profiling/Profiling.cpp
-            Blit/Blit.cpp
-            Blit/PixelBuffer.cpp
             PropertyMeta/PropertyFieldDatabase.cpp
-            Blackboard/Blackboard.cpp
+            Random/Random.cpp
+            Random/RandomGenerator.cpp
+            Sequencer/Sequencer.cpp
             SpatialDatabase/SpatialDatabase.cpp
-            Math/Util.cpp
-            Allocator/IdAllocator.cpp
-            Allocator/Allocator2D.cpp
-            Buffer/BufferUtil.cpp
-            Buffer/Buffer.cpp
+            Thread/Semaphore.cpp
+            Time/FPSClock.cpp
+            Time/FrameClock.cpp
+            Time/StopWatch.cpp
+            Time/Time.cpp
+            TypeDatabase/TypeDatabase.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_Foundation 
             Common.h
+            Allocator/Allocator2D.h
+            Allocator/IdAllocator.h
+            Any/Any.h
+            Assert/Assert.h
+            BasicTypes/BasicTypeFuncs.h
+            BasicTypes/BasicTypeHash.h
+            BasicTypes/BasicTypes.refl.h
+            BasicTypes/BasicTypes.refl.meta.h
+            Bitset/Bitset.h
+            Blackboard/Blackboard.h
+            Blit/Blit.h
+            Blit/PixelBuffer.h
+            Buffer/Buffer.h
+            Buffer/BufferUtil.h
+            CallList/CallList.h
+            CircularBuffer/CircularBuffer.h
+            CircularBuffer/CircularQueue.h
+            Delegate/Delegate.h
+            Delegate/DelegateLink.h
+            Delegate/DelegateList.h
+            Document/Document.h
             Document/DocumentCompiler.h
+            Document/DocumentLoader.h
             Document/DocumentTypes.refl.h
             Document/DocumentTypes.refl.meta.h
-            Document/DocumentLoader.h
-            Document/Document.h
-            Lerp/LerpFuncs.h
-            Lerp/LerpVar.h
-            TypeDatabase/TypeDatabase.h
-            Time/Time.h
-            Time/FPSClock.h
-            Time/StopWatch.h
-            Time/FrameClock.h
-            SparseList/SparseList.h
-            Variant/Variant.h
+            FileSystem/Directory.h
+            FileSystem/File.h
+            FileSystem/Path.h
+            Frame/Frame.h
+            Handle/Handle.h
+            Handle/HandleList.h
+            HistoryList/HistoryList.h
             Json/Json.h
             Json/JsonArray.h
             Json/JsonDictionary.h
             Json/JsonType.h
-            BasicTypes/BasicTypeHash.h
-            BasicTypes/BasicTypeFuncs.h
-            BasicTypes/BasicTypes.refl.meta.h
-            BasicTypes/BasicTypes.refl.h
-            Bitset/Bitset.h
-            Waveform/Waveform.h
-            Handle/Handle.h
-            Handle/HandleList.h
-            SkipField/SkipFieldIterator.h
-            SkipField/SkipField.h
-            CallList/CallList.h
-            FileSystem/File.h
-            FileSystem/Path.h
-            FileSystem/Directory.h
-            Random/Random.h
-            Random/RandomGenerator.h
-            Optional/Optional.h
-            Optional/NullOpt.h
-            Any/Any.h
-            Sequencer/Sequencer.h
-            Thread/MessageQueue.h
-            Thread/Semaphore.h
-            Frame/Frame.h
-            Assert/Assert.h
-            Network/Network.h
-            Network/WebSocket.h
-            Profiling/Profiling.h
-            HistoryList/HistoryList.h
-            Blit/PixelBuffer.h
-            Blit/Blit.h
-            PropertyMeta/PropertyFieldMetaData.h
-            PropertyMeta/PropertyFieldDatabase.h
-            PropertyMeta/PropertyFieldMetaFuncs.h
-            Delegate/DelegateList.h
-            Delegate/DelegateLink.h
-            Delegate/Delegate.h
-            Blackboard/Blackboard.h
-            SpatialDatabase/SpatialDatabase.h
-            Preprocessor/Preprocessor.h
+            Lerp/LerpFuncs.h
+            Lerp/LerpVar.h
             Math/Intersection.h
+            Math/LineDrawing.h
             Math/Math.h
             Math/Util.h
-            Math/LineDrawing.h
-            Allocator/Allocator2D.h
-            Allocator/IdAllocator.h
-            Buffer/Buffer.h
-            Buffer/BufferUtil.h
-            Pathfinding/Pathfinding.h
+            Network/Network.h
+            Network/WebSocket.h
+            Optional/NullOpt.h
+            Optional/Optional.h
             Pathfinding/GraphPathfinding.h
             Pathfinding/GridPathfinding.h
-            Pathfinding/PathfindingPathCache.h
+            Pathfinding/Pathfinding.h
             Pathfinding/PathfindingPath.h
+            Pathfinding/PathfindingPathCache.h
             Pathfinding/PlatformerPathfinding.h
+            Preprocessor/Preprocessor.h
+            Profiling/Profiling.h
+            PropertyMeta/PropertyFieldDatabase.h
+            PropertyMeta/PropertyFieldMetaData.h
+            PropertyMeta/PropertyFieldMetaFuncs.h
+            Random/Random.h
+            Random/RandomGenerator.h
+            Sequencer/Sequencer.h
+            SkipField/SkipField.h
+            SkipField/SkipFieldIterator.h
+            SparseList/SparseList.h
+            SpatialDatabase/SpatialDatabase.h
+            Thread/MessageQueue.h
+            Thread/Semaphore.h
+            Time/FPSClock.h
+            Time/FrameClock.h
+            Time/StopWatch.h
+            Time/Time.h
+            TypeDatabase/TypeDatabase.h
             Update/UpdateBucketList.h
             Update/UpdateRegistrationTemplates.h
-            CircularBuffer/CircularBuffer.h
-            CircularBuffer/CircularQueue.h
+            Variant/Variant.h
+            Waveform/Waveform.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_Foundation 
-            Document/DocumentTypes.refl.h
             BasicTypes/BasicTypes.refl.h
+            Document/DocumentTypes.refl.h
             #REFL_PLACEHOLDER
             )
 
@@ -140,3 +142,6 @@ foreach(REFL_FILE ${GENERIC_REFL_Foundation})
 endforeach()
 
 add_library(Foundation STATIC ${GENERIC_SRC_Foundation} ${GENERIC_HEADER_Foundation})
+
+set_target_properties(Foundation PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT Common.h)
+cotire(Foundation)

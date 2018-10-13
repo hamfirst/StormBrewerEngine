@@ -43,7 +43,7 @@ public:
   void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
 
   template <typename Visitor>
-  void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay)
+  void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay) const
   {
     if (animation_index >= m_AnimEventInfo.size())
     {
@@ -69,10 +69,10 @@ public:
   }
 
   template <typename Target, typename AnimState>
-  void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta)
+  void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta) const
   {
     EventMetaData meta_dup = meta;
-    auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase> & ev, const Box * start, const Box * end)
+    auto visitor = [&](const RPolymorphic<SpriteAnimationEventDataBase> & ev, const Box * start, const Box * end)
     {
       meta_dup.m_ActiveAreaStart = start;
       meta_dup.m_ActiveAreaEnd = end;
@@ -82,17 +82,17 @@ public:
     VisitEvents(visitor, state.m_AnimIndex, state.m_AnimFrame, state.m_AnimDelay);
   }
 
-  int GetAnimationFrameDuration(int animation_index, int animation_frame);
-  uint64_t GetAnimationFrameId(int animation_index, int animation_frame);
+  int GetAnimationFrameDuration(int animation_index, int animation_frame) const;
+  uint64_t GetAnimationFrameId(int animation_index, int animation_frame) const;
 
-  Optional<Box> GetSingleBox(uint32_t data_type_name_hash);
-  Optional<Box> GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id);
-  Box GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box = GetDefaultSingleBox());
-  Box GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box = GetDefaultSingleBox());
-  Vector2 GetAnchor(uint32_t data_type_name_hash);
-  Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id);
-  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash);
-  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id);
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash) const;
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id) const;
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box = GetDefaultSingleBox()) const;
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box = GetDefaultSingleBox()) const;
+  Vector2 GetAnchor(uint32_t data_type_name_hash) const;
+  Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id) const;
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash) const;
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id) const;
 
   static Box GetDefaultSingleBox();
   static FrameDataSingleLineInfo GetDefaultSingleLine();

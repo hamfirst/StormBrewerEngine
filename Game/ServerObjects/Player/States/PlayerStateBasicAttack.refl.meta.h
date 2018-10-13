@@ -258,7 +258,7 @@ struct StormReflFuncInfo<PlayerStateBasicAttack>
 template <>
 struct StormReflFuncInfo<PlayerStateBasicAttack>::func_data_static<0 + StormReflFuncInfo<PlayerStateBase>::funcs_n>
 {
-  using func_ptr_type = bool (PlayerStateBasicAttack::*)(DealDamageAnimationEvent &, const EventMetaData &);
+  using func_ptr_type = bool (PlayerStateBasicAttack::*)(const DealDamageAnimationEvent &, const EventMetaData &);
   using return_type = bool;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "HandleDealDamageEvent"; }
@@ -274,11 +274,11 @@ struct StormReflFuncInfo<PlayerStateBasicAttack>::func_data_static<0 + StormRefl
 template <>
 struct StormReflFuncInfo<PlayerStateBasicAttack>::func_data_static<0 + StormReflFuncInfo<PlayerStateBase>::funcs_n>::param_info<0>
 {
-  using param_type = DealDamageAnimationEvent &;
+  using param_type = const DealDamageAnimationEvent &;
   static constexpr auto GetName() { return "ev"; }
-  static constexpr auto GetType() { return "DealDamageAnimationEvent &"; }
+  static constexpr auto GetType() { return "const DealDamageAnimationEvent &"; }
   static constexpr unsigned GetNameHash() { return 0xE0355914; }
-  static constexpr unsigned GetTypeNameHash() { return 0x03A397C0; }
+  static constexpr unsigned GetTypeNameHash() { return 0x558C63ED; }
 };
 
 template <>

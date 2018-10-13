@@ -335,7 +335,7 @@ Box SpriteResource::GetDefaultSingleBox()
   return Box::FromFrameCenterAndSize(Vector2{}, Vector2(4, 4));
 }
 
-int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation_frame)
+int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation_frame) const
 {
   if (animation_index >= 0 && animation_index < m_AnimStart.size())
   {
@@ -353,7 +353,7 @@ int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation
   return 0;
 }
 
-uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_frame)
+uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_frame) const
 {
   if (animation_index >= 0 && animation_index < m_AnimStart.size())
   {
@@ -371,7 +371,7 @@ uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_
   return 0;
 }
 
-Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash)
+Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash) const
 {
   FrameDataExtract extractor(m_Data.m_InstanceData);
   auto result = extractor.GetSingleBoxDefault(data_type_name_hash);
@@ -384,7 +384,7 @@ Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash)
   return {};
 }
 
-Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id)
+Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)
@@ -401,19 +401,19 @@ Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_
   return {};
 }
 
-Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box)
+Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box) const
 {
   auto box = GetSingleBox(data_type_name_hash);
   return box ? box.Value() : default_box;
 }
 
-Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box)
+Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box) const
 {
   auto box = GetSingleBox(data_type_name_hash, frame_id);
   return box ? box.Value() : default_box;
 }
 
-Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash)
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash) const
 {
   for (auto elem : m_Data.m_Anchors)
   {
@@ -426,7 +426,7 @@ Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash)
   return {};
 }
 
-Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id)
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)
@@ -443,7 +443,7 @@ Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_i
   return GetAnchor(data_type_name_hash);
 }
 
-gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash)
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash) const
 {
   FrameDataExtract extractor(m_Data.m_InstanceData);
   auto result = extractor.GetMultiBox(data_type_name_hash);
@@ -456,7 +456,7 @@ gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash)
   return {};
 }
 
-gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id)
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)

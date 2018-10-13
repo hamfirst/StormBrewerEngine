@@ -16,7 +16,7 @@ DocumentResourceBase::DocumentResourceBase(Any && load_data, uint32_t path_hash,
 
 DocumentResourceBase::~DocumentResourceBase()
 {
-
+  m_LoadData.Clear();
 }
 
 void DocumentResourceBase::IncRef()

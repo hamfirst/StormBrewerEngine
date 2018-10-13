@@ -62,6 +62,8 @@ class TypeDatabase : public StormDataTypeDatabase<BaseType, TypeDatabaseTypeInfo
 public:
   using TypeInfo = TypeDatabaseTypeInfo<BaseType, LogicBaseType>;
 
+  TypeDatabase() = default;
+
   template <typename DataType, typename LogicType>
   void RegisterType()
   {
@@ -86,6 +88,8 @@ class TypeDatabase<BaseType, void> :
 {
 public:
   using TypeInfo = TypeDatabaseTypeInfo<BaseType, void>;
+
+  TypeDatabase() = default;
 
   template <typename DataType>
   void RegisterType()

@@ -173,12 +173,12 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
 }
 #endif
 
-bool PlayerServerObject::HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandlePlaceholderEvent(const PlaceholderEvent & ev, const EventMetaData & meta)
 {
   return true;
 }
 
-bool PlayerServerObject::HandleDamageEvent(DamageEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandleDamageEvent(const DamageEvent & ev, const EventMetaData & meta)
 {
   auto & game = *meta.m_GameLogicContainer;
 
@@ -223,7 +223,7 @@ bool PlayerServerObject::HandleDamageEvent(DamageEvent & ev, const EventMetaData
   return true;
 }
 
-bool PlayerServerObject::HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta)
 {
   auto & game_container = *meta.m_GameLogicContainer;
 
@@ -263,7 +263,7 @@ Optional<int> PlayerServerObject::GetAssociatedPlayer() const
   return GetSlotIndex();
 }
 
-SpritePtr PlayerServerObject::GetSprite() const
+const SpritePtr & PlayerServerObject::GetSprite() const
 {
   return g_PlayerConfigResources[m_Config.CurrentIndex()].m_PlayerEntity->GetSprite();
 }

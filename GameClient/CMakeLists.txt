@@ -4,104 +4,160 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameClient 
-            GameClientController.refl.cpp
-            GameServerEventResponder.cpp
-            GameModeLoadingGlobal.cpp
-            GameModeConnecting.cpp
-            GameModeMainMenu.cpp
-            GameContainer.cpp
-            GameShaders.cpp
-            GameClientInputManager.cpp
-            GameModeOnlineGameplay.cpp
-            GameModeNameSelect.cpp
-            GameModeLocalMultiplayer.cpp
-            GameClientInstanceResources.cpp
-            GameClientUIManager.cpp
-            GameClientSave.cpp
-            GameClientEntitySync.cpp
-            GameModeSinglePlayerBots.cpp
-            GameClientSystems.cpp
-            GameClientInstanceContainer.cpp
-            GameModeLogo.cpp
-            GameNetworkClient.cpp
-            GameClientGlobalResources.cpp
-            GameModeEndGame.cpp
             GameCamera.cpp
-            GameMode.cpp
-            GameModeOfflineStaging.cpp
             GameClientCommon.cpp
+            GameClientController.refl.cpp
+            GameClientEntitySync.cpp
+            GameClientGlobalResources.cpp
+            GameClientInputManager.cpp
+            GameClientInstanceContainer.cpp
+            GameClientInstanceResources.cpp
             GameClientLevelLoader.cpp
+            GameClientSave.cpp
+            GameClientSystems.cpp
+            GameClientUIManager.cpp
+            GameContainer.cpp
+            GameMode.cpp
+            GameModeConnecting.cpp
+            GameModeEndGame.cpp
+            GameModeLoadingGlobal.cpp
+            GameModeLocalMultiplayer.cpp
+            GameModeLogo.cpp
+            GameModeMainMenu.cpp
+            GameModeNameSelect.cpp
+            GameModeOfflineStaging.cpp
+            GameModeOnlineGameplay.cpp
+            GameModeSinglePlayerBots.cpp
             GameModeTutorial.cpp
+            GameNetworkClient.cpp
+            GameServerEventResponder.cpp
+            GameShaders.cpp
             Components/PlayerComponent.refl.cpp
             Components/PlayerComponent.refl.reg.cpp
+            Components/Reusable/AttachVfxComponent.refl.cpp
             Components/Reusable/AttachVfxComponent.refl.reg.cpp
             Components/Reusable/PlayAnimationComponent.refl.cpp
             Components/Reusable/PlayAnimationComponent.refl.reg.cpp
-            Components/Reusable/AttachVfxComponent.refl.cpp
-            Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
             Components/Reusable/SyncServerObjectComponent.refl.cpp
+            Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
             EffectLayers/CollisionDrawer.refl.cpp
             EffectLayers/CollisionDrawer.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameClient 
-            GameClientEntitySync.h
-            GameModeLogo.h
-            GameContainer.h
-            GameModeTutorial.h
-            GameClientInputManager.h
-            GameModeSinglePlayerBots.h
-            GameModeConnecting.h
-            GameClientSave.h
-            GameClientInstanceResources.h
-            GameClientSaveFileData.refl.h
-            GameShaders.h
-            GameClientCommon.h
-            GameModeLocalMultiplayer.h
-            GameModeNameSelect.h
-            GameModeEndGame.h
-            GameModeOnlineGameplay.h
-            GameModeLoadingGlobal.h
-            GameClientUIManager.h
-            GameMode.h
-            GameModeOfflineStaging.h
-            GameClientSystems.h
-            GameClientInstanceContainer.h
-            GameClientGlobalResources.h
-            GameClientLevelLoader.h
-            GameClientController.refl.meta.h
-            GameNetworkClient.h
-            GameClientController.refl.h
-            GameClientSaveFileData.refl.meta.h
-            GameModeMainMenu.h
-            GameClientEventSender.h
             GameCamera.h
+            GameClientCommon.h
+            GameClientController.refl.h
+            GameClientController.refl.meta.h
+            GameClientEntitySync.h
+            GameClientEventSender.h
+            GameClientGlobalResources.h
+            GameClientInputManager.h
+            GameClientInstanceContainer.h
+            GameClientInstanceResources.h
+            GameClientLevelLoader.h
+            GameClientSave.h
+            GameClientSaveFileData.refl.h
+            GameClientSaveFileData.refl.meta.h
+            GameClientSystems.h
+            GameClientUIManager.h
+            GameContainer.h
+            GameMode.h
+            GameModeConnecting.h
+            GameModeEndGame.h
+            GameModeLoadingGlobal.h
+            GameModeLocalMultiplayer.h
+            GameModeLogo.h
+            GameModeMainMenu.h
+            GameModeNameSelect.h
+            GameModeOfflineStaging.h
+            GameModeOnlineGameplay.h
+            GameModeSinglePlayerBots.h
+            GameModeTutorial.h
+            GameNetworkClient.h
             GameServerEventResponder.h
-            Components/PlayerComponent.refl.meta.h
+            GameShaders.h
             Components/PlayerComponent.refl.h
-            Components/Reusable/SyncServerObjectComponent.refl.h
-            Components/Reusable/PlayAnimationComponent.refl.h
-            Components/Reusable/SyncServerObjectComponent.refl.meta.h
-            Components/Reusable/AttachVfxComponent.refl.meta.h
+            Components/PlayerComponent.refl.meta.h
             Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/AttachVfxComponent.refl.meta.h
+            Components/Reusable/PlayAnimationComponent.refl.h
             Components/Reusable/PlayAnimationComponent.refl.meta.h
-            EffectLayers/CollisionDrawer.refl.meta.h
+            Components/Reusable/SyncServerObjectComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.meta.h
             EffectLayers/CollisionDrawer.refl.h
+            EffectLayers/CollisionDrawer.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_GameClient 
-            GameClientSaveFileData.refl.h
             GameClientController.refl.h
+            GameClientSaveFileData.refl.h
             Components/PlayerComponent.refl.h
-            Components/Reusable/SyncServerObjectComponent.refl.h
-            Components/Reusable/PlayAnimationComponent.refl.h
             Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.h
             EffectLayers/CollisionDrawer.refl.h
             #REFL_PLACEHOLDER
             )
 
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Windows)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
+if (WEB)
+  add_definitions(-D_WEB)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Web)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/IOS)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
+if (APPLE AND NOT IOS)
+  add_definitions(-D_MACOS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/MacOS)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Android)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
+  include_directories(/usr/include/freetype2)
+  set(PLATFORM_SRC_GameClient 
+            )
+
+set(PLATFORM_HEADER_GameClient 
+            )
+endif()
 
 foreach(REFL_FILE ${GENERIC_REFL_GameClient})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
@@ -111,4 +167,5 @@ foreach(REFL_FILE ${GENERIC_REFL_GameClient})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-add_library(GameClient STATIC ${GENERIC_SRC_GameClient} ${GENERIC_HEADER_GameClient})
+add_library(GameClient STATIC ${GENERIC_SRC_GameClient} ${PLATFORM_SRC_GameClient}
+            ${GENERIC_HEADER_GameClient} ${PLATFORM_HEADER_GameClient})

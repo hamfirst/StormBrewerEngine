@@ -80,7 +80,7 @@ int ServerObject::GetTypeIndex() const
   return m_TypeIndex;
 }
 
-bool ServerObject::TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta)
+bool ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
 {
   if (m_EventDispatch == nullptr)
   {

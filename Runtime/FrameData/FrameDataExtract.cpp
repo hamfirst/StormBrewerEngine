@@ -4,7 +4,7 @@
 #include "Runtime/SpriteBase/SpriteBaseDef.refl.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
-FrameDataExtract::FrameDataExtract(FrameData & frame_data) :
+FrameDataExtract::FrameDataExtract(const FrameData & frame_data) :
   m_FrameData(frame_data)
 {
 

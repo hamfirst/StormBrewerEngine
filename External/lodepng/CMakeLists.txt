@@ -12,3 +12,4 @@ set(GENERIC_HEADER_lodepng
             )
 
 add_library(lodepng STATIC ${GENERIC_SRC_lodepng} ${GENERIC_HEADER_lodepng})
+

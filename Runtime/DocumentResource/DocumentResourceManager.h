@@ -12,6 +12,7 @@ class RUNTIME_EXPORT DocumentResourceManager
 {
 public:
   DocumentResourceManager();
+  ~DocumentResourceManager();
 
 protected:
   NullOptPtr<DocumentResourceBase> FindDocumentResource(uint32_t file_path_hash);
