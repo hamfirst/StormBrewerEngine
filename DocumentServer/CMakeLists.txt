@@ -5,18 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_DocumentServer 
             DocumentServer.cpp
-            FileNameDatabase.cpp
-            filesystemwatcher.cpp
             Main.cpp
+            FileSystemWatcher.cpp
+            FileNameDatabase.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_DocumentServer 
-            DocumentServer.h
             DocumentServerMessages.refl.h
-            DocumentServerMessages.refl.meta.h
-            FileNameDatabase.h
+            DocumentServer.h
             FileSystemWatcher.h
+            FileNameDatabase.h
             #HEADER_PLACEHOLDER
             )
 

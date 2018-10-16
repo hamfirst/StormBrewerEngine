@@ -22,6 +22,43 @@ struct StormReflTypeInfo<BotServerObjectInitData>
   static constexpr auto GetName() { return "BotServerObjectInitData"; }
   static constexpr auto GetNameHash() { return 0x1C601FCD; }
   static BotServerObjectInitData & GetDefault() { static BotServerObjectInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<BotServerObjectInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xE8EFD458 == type_name_hash) return static_cast<GameServerObjectBaseInitData *>(c);
+    if(0x2D36BDE7 == type_name_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotServerObjectInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xE8EFD458 == type_name_hash) return static_cast<const GameServerObjectBaseInitData *>(c);
+    if(0x2D36BDE7 == type_name_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<BotServerObjectInitData *>(ptr);
+    if(typeid(BotServerObjectInitData).hash_code() == type_id_hash) return c;
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return static_cast<GameServerObjectBaseInitData *>(c);
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotServerObjectInitData *>(ptr);
+    if(typeid(BotServerObjectInitData).hash_code() == type_id_hash) return c;
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return static_cast<const GameServerObjectBaseInitData *>(c);
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -38,6 +75,43 @@ struct StormReflTypeInfo<BotServerObject>
   static constexpr auto GetName() { return "BotServerObject"; }
   static constexpr auto GetNameHash() { return 0xF3F6D91E; }
   static BotServerObject & GetDefault() { static BotServerObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<BotServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x25DA07B6 == type_name_hash) return static_cast<GameServerObjectBase *>(c);
+    if(0x9D89FBB7 == type_name_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x25DA07B6 == type_name_hash) return static_cast<const GameServerObjectBase *>(c);
+    if(0x9D89FBB7 == type_name_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<BotServerObject *>(ptr);
+    if(typeid(BotServerObject).hash_code() == type_id_hash) return c;
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return static_cast<GameServerObjectBase *>(c);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotServerObject *>(ptr);
+    if(typeid(BotServerObject).hash_code() == type_id_hash) return c;
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return static_cast<const GameServerObjectBase *>(c);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

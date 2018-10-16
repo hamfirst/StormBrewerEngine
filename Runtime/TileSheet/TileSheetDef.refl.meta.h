@@ -20,6 +20,39 @@ struct StormReflTypeInfo<TileSheetDef>
   static constexpr auto GetName() { return "TileSheetDef"; }
   static constexpr auto GetNameHash() { return 0xF790F69F; }
   static TileSheetDef & GetDefault() { static TileSheetDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<TileSheetDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x48F83F55 == type_name_hash) return static_cast<SpriteBaseDef *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const TileSheetDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x48F83F55 == type_name_hash) return static_cast<const SpriteBaseDef *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<TileSheetDef *>(ptr);
+    if(typeid(TileSheetDef).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return static_cast<SpriteBaseDef *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const TileSheetDef *>(ptr);
+    if(typeid(TileSheetDef).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return static_cast<const SpriteBaseDef *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

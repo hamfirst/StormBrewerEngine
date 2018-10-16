@@ -22,6 +22,47 @@ struct StormReflTypeInfo<TestBotInitData>
   static constexpr auto GetName() { return "TestBotInitData"; }
   static constexpr auto GetNameHash() { return 0x1ACAD19B; }
   static TestBotInitData & GetDefault() { static TestBotInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<TestBotInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x1C601FCD == type_name_hash) return static_cast<BotServerObjectInitData *>(c);
+    if(0xE8EFD458 == type_name_hash) return static_cast<GameServerObjectBaseInitData *>(c);
+    if(0x2D36BDE7 == type_name_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const TestBotInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x1C601FCD == type_name_hash) return static_cast<const BotServerObjectInitData *>(c);
+    if(0xE8EFD458 == type_name_hash) return static_cast<const GameServerObjectBaseInitData *>(c);
+    if(0x2D36BDE7 == type_name_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<TestBotInitData *>(ptr);
+    if(typeid(TestBotInitData).hash_code() == type_id_hash) return c;
+    if(typeid(BotServerObjectInitData).hash_code() == type_id_hash) return static_cast<BotServerObjectInitData *>(c);
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return static_cast<GameServerObjectBaseInitData *>(c);
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const TestBotInitData *>(ptr);
+    if(typeid(TestBotInitData).hash_code() == type_id_hash) return c;
+    if(typeid(BotServerObjectInitData).hash_code() == type_id_hash) return static_cast<const BotServerObjectInitData *>(c);
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return static_cast<const GameServerObjectBaseInitData *>(c);
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -38,6 +79,47 @@ struct StormReflTypeInfo<TestBot>
   static constexpr auto GetName() { return "TestBot"; }
   static constexpr auto GetNameHash() { return 0x8EF3BA04; }
   static TestBot & GetDefault() { static TestBot def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<TestBot *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xF3F6D91E == type_name_hash) return static_cast<BotServerObject *>(c);
+    if(0x25DA07B6 == type_name_hash) return static_cast<GameServerObjectBase *>(c);
+    if(0x9D89FBB7 == type_name_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const TestBot *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xF3F6D91E == type_name_hash) return static_cast<const BotServerObject *>(c);
+    if(0x25DA07B6 == type_name_hash) return static_cast<const GameServerObjectBase *>(c);
+    if(0x9D89FBB7 == type_name_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<TestBot *>(ptr);
+    if(typeid(TestBot).hash_code() == type_id_hash) return c;
+    if(typeid(BotServerObject).hash_code() == type_id_hash) return static_cast<BotServerObject *>(c);
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return static_cast<GameServerObjectBase *>(c);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const TestBot *>(ptr);
+    if(typeid(TestBot).hash_code() == type_id_hash) return c;
+    if(typeid(BotServerObject).hash_code() == type_id_hash) return static_cast<const BotServerObject *>(c);
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return static_cast<const GameServerObjectBase *>(c);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

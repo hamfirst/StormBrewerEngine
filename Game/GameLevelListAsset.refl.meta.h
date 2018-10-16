@@ -16,6 +16,35 @@ struct StormReflTypeInfo<GameLevelListAsset>
   static constexpr auto GetName() { return "GameLevelListAsset"; }
   static constexpr auto GetNameHash() { return 0x6F8BA414; }
   static GameLevelListAsset & GetDefault() { static GameLevelListAsset def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameLevelListAsset *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameLevelListAsset *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameLevelListAsset *>(ptr);
+    if(typeid(GameLevelListAsset).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameLevelListAsset *>(ptr);
+    if(typeid(GameLevelListAsset).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

@@ -17,6 +17,35 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>
   static constexpr auto GetName() { return "MapEditorAnchorInitData"; }
   static constexpr auto GetNameHash() { return 0x9DED0DA2; }
   static MapEditorAnchorInitData & GetDefault() { static MapEditorAnchorInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEditorAnchorInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEditorAnchorInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEditorAnchorInitData *>(ptr);
+    if(typeid(MapEditorAnchorInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEditorAnchorInitData *>(ptr);
+    if(typeid(MapEditorAnchorInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

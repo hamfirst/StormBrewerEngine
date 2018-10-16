@@ -57,3 +57,4 @@ public:
 private:
   GameNetVec2 m_AnimationVelocity;
 };
+

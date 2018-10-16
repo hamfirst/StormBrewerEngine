@@ -66,6 +66,35 @@ struct StormReflTypeInfo<FrameDataSingleBox>
   static constexpr auto GetName() { return "FrameDataSingleBox"; }
   static constexpr auto GetNameHash() { return 0x29848608; }
   static FrameDataSingleBox & GetDefault() { static FrameDataSingleBox def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleBox *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleBox *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleBox *>(ptr);
+    if(typeid(FrameDataSingleBox).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleBox *>(ptr);
+    if(typeid(FrameDataSingleBox).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -123,6 +152,35 @@ struct StormReflTypeInfo<FrameDataMultiBox>
   static constexpr auto GetName() { return "FrameDataMultiBox"; }
   static constexpr auto GetNameHash() { return 0x58C706A2; }
   static FrameDataMultiBox & GetDefault() { static FrameDataMultiBox def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataMultiBox *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataMultiBox *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataMultiBox *>(ptr);
+    if(typeid(FrameDataMultiBox).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataMultiBox *>(ptr);
+    if(typeid(FrameDataMultiBox).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -180,6 +238,35 @@ struct StormReflTypeInfo<FrameDataSingleLineInfo>
   static constexpr auto GetName() { return "FrameDataSingleLineInfo"; }
   static constexpr auto GetNameHash() { return 0x24E2064A; }
   static FrameDataSingleLineInfo & GetDefault() { static FrameDataSingleLineInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleLineInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleLineInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleLineInfo *>(ptr);
+    if(typeid(FrameDataSingleLineInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleLineInfo *>(ptr);
+    if(typeid(FrameDataSingleLineInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -237,6 +324,35 @@ struct StormReflTypeInfo<FrameDataSingleLine>
   static constexpr auto GetName() { return "FrameDataSingleLine"; }
   static constexpr auto GetNameHash() { return 0x19E2C8B8; }
   static FrameDataSingleLine & GetDefault() { static FrameDataSingleLine def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleLine *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleLine *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataSingleLine *>(ptr);
+    if(typeid(FrameDataSingleLine).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataSingleLine *>(ptr);
+    if(typeid(FrameDataSingleLine).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -294,6 +410,35 @@ struct StormReflTypeInfo<FrameDataLowerEdgeInfo>
   static constexpr auto GetName() { return "FrameDataLowerEdgeInfo"; }
   static constexpr auto GetNameHash() { return 0xBED4CEA6; }
   static FrameDataLowerEdgeInfo & GetDefault() { static FrameDataLowerEdgeInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataLowerEdgeInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataLowerEdgeInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataLowerEdgeInfo *>(ptr);
+    if(typeid(FrameDataLowerEdgeInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataLowerEdgeInfo *>(ptr);
+    if(typeid(FrameDataLowerEdgeInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -329,6 +474,35 @@ struct StormReflTypeInfo<FrameDataLowerEdge>
   static constexpr auto GetName() { return "FrameDataLowerEdge"; }
   static constexpr auto GetNameHash() { return 0xCBE12067; }
   static FrameDataLowerEdge & GetDefault() { static FrameDataLowerEdge def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataLowerEdge *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataLowerEdge *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataLowerEdge *>(ptr);
+    if(typeid(FrameDataLowerEdge).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataLowerEdge *>(ptr);
+    if(typeid(FrameDataLowerEdge).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -386,6 +560,35 @@ struct StormReflTypeInfo<FrameDataAnchorElement>
   static constexpr auto GetName() { return "FrameDataAnchorElement"; }
   static constexpr auto GetNameHash() { return 0x39BF778B; }
   static FrameDataAnchorElement & GetDefault() { static FrameDataAnchorElement def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataAnchorElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataAnchorElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataAnchorElement *>(ptr);
+    if(typeid(FrameDataAnchorElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataAnchorElement *>(ptr);
+    if(typeid(FrameDataAnchorElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -443,6 +646,35 @@ struct StormReflTypeInfo<FrameData>
   static constexpr auto GetName() { return "FrameData"; }
   static constexpr auto GetNameHash() { return 0x4108D867; }
   static FrameData & GetDefault() { static FrameData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameData *>(ptr);
+    if(typeid(FrameData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameData *>(ptr);
+    if(typeid(FrameData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -566,6 +798,35 @@ struct StormReflTypeInfo<FrameDataDefElem>
   static constexpr auto GetName() { return "FrameDataDefElem"; }
   static constexpr auto GetNameHash() { return 0x064912EC; }
   static FrameDataDefElem & GetDefault() { static FrameDataDefElem def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataDefElem *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataDefElem *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataDefElem *>(ptr);
+    if(typeid(FrameDataDefElem).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataDefElem *>(ptr);
+    if(typeid(FrameDataDefElem).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -623,6 +884,35 @@ struct StormReflTypeInfo<FrameDataDef>
   static constexpr auto GetName() { return "FrameDataDef"; }
   static constexpr auto GetNameHash() { return 0x3E2BBD40; }
   static FrameDataDef & GetDefault() { static FrameDataDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameDataDef *>(ptr);
+    if(typeid(FrameDataDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameDataDef *>(ptr);
+    if(typeid(FrameDataDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

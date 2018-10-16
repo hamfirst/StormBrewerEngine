@@ -16,6 +16,35 @@ struct StormReflTypeInfo<GameConfig>
   static constexpr auto GetName() { return "GameConfig"; }
   static constexpr auto GetNameHash() { return 0x2470BC89; }
   static GameConfig & GetDefault() { static GameConfig def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameConfig *>(ptr);
+    if(typeid(GameConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameConfig *>(ptr);
+    if(typeid(GameConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

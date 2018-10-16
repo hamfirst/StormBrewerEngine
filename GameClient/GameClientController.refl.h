@@ -43,4 +43,3 @@ private:
   std::vector<Delegate<void, const void *>> m_AuthEventCallbacks;
 
 };
-

@@ -17,6 +17,35 @@ struct StormReflTypeInfo<FrameCopyData>
   static constexpr auto GetName() { return "FrameCopyData"; }
   static constexpr auto GetNameHash() { return 0x7053E070; }
   static FrameCopyData & GetDefault() { static FrameCopyData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameCopyData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameCopyData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameCopyData *>(ptr);
+    if(typeid(FrameCopyData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameCopyData *>(ptr);
+    if(typeid(FrameCopyData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

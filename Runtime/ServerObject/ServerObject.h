@@ -124,6 +124,34 @@ struct StormReflTypeInfo<ServerObject>
   static constexpr auto GetName() { return "ServerObject"; }
   static constexpr auto GetNameHash() { return COMPILE_TIME_CRC32_STR("ServerObject"); }
   static ServerObject & GetDefault() { static ServerObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObject *>(ptr);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObject *>(ptr);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
 };
 
 template <>

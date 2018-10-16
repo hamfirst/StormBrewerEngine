@@ -22,6 +22,39 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>
   static constexpr auto GetName() { return "DealDamageAnimationEvent"; }
   static constexpr auto GetNameHash() { return 0xCA028F12; }
   static DealDamageAnimationEvent & GetDefault() { static DealDamageAnimationEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DealDamageAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x0131E8FB == type_name_hash) return static_cast<SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DealDamageAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x0131E8FB == type_name_hash) return static_cast<const SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DealDamageAnimationEvent *>(ptr);
+    if(typeid(DealDamageAnimationEvent).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteAnimationEventDataBase).hash_code() == type_id_hash) return static_cast<SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DealDamageAnimationEvent *>(ptr);
+    if(typeid(DealDamageAnimationEvent).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteAnimationEventDataBase).hash_code() == type_id_hash) return static_cast<const SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
