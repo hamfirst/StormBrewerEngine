@@ -20,6 +20,43 @@ struct StormReflTypeInfo<GameClientController>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "GameClientController"; }
   static constexpr auto GetNameHash() { return 0xAABB1F25; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameClientController *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x657920D0 == type_name_hash) return static_cast<StormRelfEmptyBase *>(c);
+    if(0x20B281C7 == type_name_hash) return static_cast<GameSimulationEventCallbacks *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameClientController *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x657920D0 == type_name_hash) return static_cast<const StormRelfEmptyBase *>(c);
+    if(0x20B281C7 == type_name_hash) return static_cast<const GameSimulationEventCallbacks *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameClientController *>(ptr);
+    if(typeid(GameClientController).hash_code() == type_id_hash) return c;
+    if(typeid(StormRelfEmptyBase).hash_code() == type_id_hash) return static_cast<StormRelfEmptyBase *>(c);
+    if(typeid(GameSimulationEventCallbacks).hash_code() == type_id_hash) return static_cast<GameSimulationEventCallbacks *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameClientController *>(ptr);
+    if(typeid(GameClientController).hash_code() == type_id_hash) return c;
+    if(typeid(StormRelfEmptyBase).hash_code() == type_id_hash) return static_cast<const StormRelfEmptyBase *>(c);
+    if(typeid(GameSimulationEventCallbacks).hash_code() == type_id_hash) return static_cast<const GameSimulationEventCallbacks *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

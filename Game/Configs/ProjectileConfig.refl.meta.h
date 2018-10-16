@@ -16,6 +16,35 @@ struct StormReflTypeInfo<ProjectileConfig>
   static constexpr auto GetName() { return "ProjectileConfig"; }
   static constexpr auto GetNameHash() { return 0x2E56CBC8; }
   static ProjectileConfig & GetDefault() { static ProjectileConfig def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ProjectileConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ProjectileConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ProjectileConfig *>(ptr);
+    if(typeid(ProjectileConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ProjectileConfig *>(ptr);
+    if(typeid(ProjectileConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

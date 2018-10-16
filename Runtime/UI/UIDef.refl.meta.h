@@ -17,6 +17,35 @@ struct StormReflTypeInfo<UIElementInitDataBase>
   static constexpr auto GetName() { return "UIElementInitDataBase"; }
   static constexpr auto GetNameHash() { return 0x17C45A05; }
   static UIElementInitDataBase & GetDefault() { static UIElementInitDataBase def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementInitDataBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementInitDataBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementInitDataBase *>(ptr);
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementInitDataBase *>(ptr);
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -30,6 +59,35 @@ struct StormReflTypeInfo<UIDefInputVariable>
   static constexpr auto GetName() { return "UIDefInputVariable"; }
   static constexpr auto GetNameHash() { return 0x3CB97660; }
   static UIDefInputVariable & GetDefault() { static UIDefInputVariable def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefInputVariable *>(ptr);
+    if(typeid(UIDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefInputVariable *>(ptr);
+    if(typeid(UIDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -109,6 +167,35 @@ struct StormReflTypeInfo<UIDefEquation>
   static constexpr auto GetName() { return "UIDefEquation"; }
   static constexpr auto GetNameHash() { return 0xF7D63B3C; }
   static UIDefEquation & GetDefault() { static UIDefEquation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefEquation *>(ptr);
+    if(typeid(UIDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefEquation *>(ptr);
+    if(typeid(UIDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -166,6 +253,35 @@ struct StormReflTypeInfo<UIDefOutputEquation>
   static constexpr auto GetName() { return "UIDefOutputEquation"; }
   static constexpr auto GetNameHash() { return 0x1E88E9E6; }
   static UIDefOutputEquation & GetDefault() { static UIDefOutputEquation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefOutputEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefOutputEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefOutputEquation *>(ptr);
+    if(typeid(UIDefOutputEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefOutputEquation *>(ptr);
+    if(typeid(UIDefOutputEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -245,6 +361,35 @@ struct StormReflTypeInfo<UIDef>
   static constexpr auto GetName() { return "UIDef"; }
   static constexpr auto GetNameHash() { return 0x1B05DE82; }
   static UIDef & GetDefault() { static UIDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIDef *>(ptr);
+    if(typeid(UIDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDef *>(ptr);
+    if(typeid(UIDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -368,6 +513,35 @@ struct StormReflTypeInfo<UIDefChild>
   static constexpr auto GetName() { return "UIDefChild"; }
   static constexpr auto GetNameHash() { return 0x41225F04; }
   static UIDefChild & GetDefault() { static UIDefChild def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefChild *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefChild *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIDefChild *>(ptr);
+    if(typeid(UIDefChild).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIDefChild *>(ptr);
+    if(typeid(UIDefChild).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

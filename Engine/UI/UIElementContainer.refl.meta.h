@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementContainerInitData>
   static constexpr auto GetName() { return "UIElementContainerInitData"; }
   static constexpr auto GetNameHash() { return 0x86439F54; }
   static UIElementContainerInitData & GetDefault() { static UIElementContainerInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementContainerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementContainerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementContainerInitData *>(ptr);
+    if(typeid(UIElementContainerInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementContainerInitData *>(ptr);
+    if(typeid(UIElementContainerInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -37,6 +70,43 @@ struct StormReflTypeInfo<UIElementContainerData>
   static constexpr auto GetName() { return "UIElementContainerData"; }
   static constexpr auto GetNameHash() { return 0x29015F17; }
   static UIElementContainerData & GetDefault() { static UIElementContainerData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementContainerData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementContainerData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementContainerData *>(ptr);
+    if(typeid(UIElementContainerData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementContainerData *>(ptr);
+    if(typeid(UIElementContainerData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

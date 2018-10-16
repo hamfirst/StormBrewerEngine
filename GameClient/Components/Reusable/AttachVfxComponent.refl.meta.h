@@ -20,6 +20,39 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>
   static constexpr auto GetName() { return "AttachVfxComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x96E294A9; }
   static AttachVfxComponentInitData & GetDefault() { static AttachVfxComponentInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<AttachVfxComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const AttachVfxComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<AttachVfxComponentInitData *>(ptr);
+    if(typeid(AttachVfxComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const AttachVfxComponentInitData *>(ptr);
+    if(typeid(AttachVfxComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

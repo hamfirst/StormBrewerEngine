@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementTextInitData>
   static constexpr auto GetName() { return "UIElementTextInitData"; }
   static constexpr auto GetNameHash() { return 0x797CBA08; }
   static UIElementTextInitData & GetDefault() { static UIElementTextInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInitData *>(ptr);
+    if(typeid(UIElementTextInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInitData *>(ptr);
+    if(typeid(UIElementTextInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -37,6 +70,43 @@ struct StormReflTypeInfo<UIElementTextData>
   static constexpr auto GetName() { return "UIElementTextData"; }
   static constexpr auto GetNameHash() { return 0xF2808E39; }
   static UIElementTextData & GetDefault() { static UIElementTextData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextData *>(ptr);
+    if(typeid(UIElementTextData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextData *>(ptr);
+    if(typeid(UIElementTextData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

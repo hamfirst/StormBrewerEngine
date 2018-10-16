@@ -18,6 +18,35 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>
   static constexpr auto GetName() { return "PlayerStateBasicAttackSettings"; }
   static constexpr auto GetNameHash() { return 0x92F8B625; }
   static PlayerStateBasicAttackSettings & GetDefault() { static PlayerStateBasicAttackSettings def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttackSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttackSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttackSettings *>(ptr);
+    if(typeid(PlayerStateBasicAttackSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttackSettings *>(ptr);
+    if(typeid(PlayerStateBasicAttackSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -119,6 +148,35 @@ struct StormReflTypeInfo<PlayerStateBasicAttackDamageSettings>
   static constexpr auto GetName() { return "PlayerStateBasicAttackDamageSettings"; }
   static constexpr auto GetNameHash() { return 0xAB94091A; }
   static PlayerStateBasicAttackDamageSettings & GetDefault() { static PlayerStateBasicAttackDamageSettings def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttackDamageSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttackDamageSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttackDamageSettings *>(ptr);
+    if(typeid(PlayerStateBasicAttackDamageSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttackDamageSettings *>(ptr);
+    if(typeid(PlayerStateBasicAttackDamageSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -179,6 +237,43 @@ struct StormReflTypeInfo<PlayerStateBasicAttack>
   static constexpr auto GetName() { return "PlayerStateBasicAttack"; }
   static constexpr auto GetNameHash() { return 0x8B41490B; }
   static PlayerStateBasicAttack & GetDefault() { static PlayerStateBasicAttack def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttack *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<PlayerStateEventHandler<PlayerStateBasicAttack> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttack *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<const PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<const PlayerStateEventHandler<PlayerStateBasicAttack> *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateBasicAttack *>(ptr);
+    if(typeid(PlayerStateBasicAttack).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateBasicAttack>).hash_code() == type_id_hash) return static_cast<PlayerStateEventHandler<PlayerStateBasicAttack> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateBasicAttack *>(ptr);
+    if(typeid(PlayerStateBasicAttack).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<const PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateBasicAttack>).hash_code() == type_id_hash) return static_cast<const PlayerStateEventHandler<PlayerStateBasicAttack> *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

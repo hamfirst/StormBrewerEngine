@@ -17,6 +17,35 @@ struct StormReflTypeInfo<VisualEffectDefInputVariable>
   static constexpr auto GetName() { return "VisualEffectDefInputVariable"; }
   static constexpr auto GetNameHash() { return 0xE6E02AA9; }
   static VisualEffectDefInputVariable & GetDefault() { static VisualEffectDefInputVariable def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefInputVariable *>(ptr);
+    if(typeid(VisualEffectDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefInputVariable *>(ptr);
+    if(typeid(VisualEffectDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -52,6 +81,35 @@ struct StormReflTypeInfo<VisualEffectDefEquation>
   static constexpr auto GetName() { return "VisualEffectDefEquation"; }
   static constexpr auto GetNameHash() { return 0xF9958751; }
   static VisualEffectDefEquation & GetDefault() { static VisualEffectDefEquation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEquation *>(ptr);
+    if(typeid(VisualEffectDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEquation *>(ptr);
+    if(typeid(VisualEffectDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -109,6 +167,35 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>
   static constexpr auto GetName() { return "VisualEffectDefEmitterProperties"; }
   static constexpr auto GetNameHash() { return 0x7362FF01; }
   static VisualEffectDefEmitterProperties & GetDefault() { static VisualEffectDefEmitterProperties def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitterProperties *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitterProperties *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitterProperties *>(ptr);
+    if(typeid(VisualEffectDefEmitterProperties).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitterProperties *>(ptr);
+    if(typeid(VisualEffectDefEmitterProperties).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -290,6 +377,35 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>
   static constexpr auto GetName() { return "VisualEffectDefEmitter"; }
   static constexpr auto GetNameHash() { return 0x5A4272CF; }
   static VisualEffectDefEmitter & GetDefault() { static VisualEffectDefEmitter def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitter *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitter *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitter *>(ptr);
+    if(typeid(VisualEffectDefEmitter).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitter *>(ptr);
+    if(typeid(VisualEffectDefEmitter).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -391,6 +507,35 @@ struct StormReflTypeInfo<VisualEffectDef>
   static constexpr auto GetName() { return "VisualEffectDef"; }
   static constexpr auto GetNameHash() { return 0x7BB44461; }
   static VisualEffectDef & GetDefault() { static VisualEffectDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDef *>(ptr);
+    if(typeid(VisualEffectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDef *>(ptr);
+    if(typeid(VisualEffectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

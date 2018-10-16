@@ -17,6 +17,35 @@ struct StormReflTypeInfo<FromServerMessage>
   static constexpr auto GetName() { return "FromServerMessage"; }
   static constexpr auto GetNameHash() { return 0x038F16E6; }
   static FromServerMessage & GetDefault() { static FromServerMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FromServerMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FromServerMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FromServerMessage *>(ptr);
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FromServerMessage *>(ptr);
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -33,6 +62,39 @@ struct StormReflTypeInfo<LoadLevelMessage>
   static constexpr auto GetName() { return "LoadLevelMessage"; }
   static constexpr auto GetNameHash() { return 0x36A8A4D8; }
   static LoadLevelMessage & GetDefault() { static LoadLevelMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<LoadLevelMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x038F16E6 == type_name_hash) return static_cast<FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const LoadLevelMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x038F16E6 == type_name_hash) return static_cast<const FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<LoadLevelMessage *>(ptr);
+    if(typeid(LoadLevelMessage).hash_code() == type_id_hash) return c;
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return static_cast<FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const LoadLevelMessage *>(ptr);
+    if(typeid(LoadLevelMessage).hash_code() == type_id_hash) return c;
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return static_cast<const FromServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -93,6 +155,39 @@ struct StormReflTypeInfo<PongMessage>
   static constexpr auto GetName() { return "PongMessage"; }
   static constexpr auto GetNameHash() { return 0x9936163C; }
   static PongMessage & GetDefault() { static PongMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PongMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x038F16E6 == type_name_hash) return static_cast<FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PongMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x038F16E6 == type_name_hash) return static_cast<const FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PongMessage *>(ptr);
+    if(typeid(PongMessage).hash_code() == type_id_hash) return c;
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return static_cast<FromServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PongMessage *>(ptr);
+    if(typeid(PongMessage).hash_code() == type_id_hash) return c;
+    if(typeid(FromServerMessage).hash_code() == type_id_hash) return static_cast<const FromServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -106,6 +201,35 @@ struct StormReflTypeInfo<ToServerMessage>
   static constexpr auto GetName() { return "ToServerMessage"; }
   static constexpr auto GetNameHash() { return 0x4C3A63B8; }
   static ToServerMessage & GetDefault() { static ToServerMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ToServerMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ToServerMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ToServerMessage *>(ptr);
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ToServerMessage *>(ptr);
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -122,6 +246,39 @@ struct StormReflTypeInfo<PingMessage>
   static constexpr auto GetName() { return "PingMessage"; }
   static constexpr auto GetNameHash() { return 0x9428667B; }
   static PingMessage & GetDefault() { static PingMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PingMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PingMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PingMessage *>(ptr);
+    if(typeid(PingMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PingMessage *>(ptr);
+    if(typeid(PingMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -138,6 +295,39 @@ struct StormReflTypeInfo<JoinGameMessage>
   static constexpr auto GetName() { return "JoinGameMessage"; }
   static constexpr auto GetNameHash() { return 0xF8762C60; }
   static JoinGameMessage & GetDefault() { static JoinGameMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<JoinGameMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const JoinGameMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<JoinGameMessage *>(ptr);
+    if(typeid(JoinGameMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const JoinGameMessage *>(ptr);
+    if(typeid(JoinGameMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -220,6 +410,39 @@ struct StormReflTypeInfo<ReadyMessage>
   static constexpr auto GetName() { return "ReadyMessage"; }
   static constexpr auto GetNameHash() { return 0xE2CFDB46; }
   static ReadyMessage & GetDefault() { static ReadyMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ReadyMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ReadyMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ReadyMessage *>(ptr);
+    if(typeid(ReadyMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ReadyMessage *>(ptr);
+    if(typeid(ReadyMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -236,6 +459,39 @@ struct StormReflTypeInfo<FinishLoadingMessage>
   static constexpr auto GetName() { return "FinishLoadingMessage"; }
   static constexpr auto GetNameHash() { return 0x0A4980F3; }
   static FinishLoadingMessage & GetDefault() { static FinishLoadingMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FinishLoadingMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FinishLoadingMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4C3A63B8 == type_name_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FinishLoadingMessage *>(ptr);
+    if(typeid(FinishLoadingMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<ToServerMessage *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FinishLoadingMessage *>(ptr);
+    if(typeid(FinishLoadingMessage).hash_code() == type_id_hash) return c;
+    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<const ToServerMessage *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

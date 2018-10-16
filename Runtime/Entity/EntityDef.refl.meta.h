@@ -17,6 +17,35 @@ struct StormReflTypeInfo<EntityDef>
   static constexpr auto GetName() { return "EntityDef"; }
   static constexpr auto GetNameHash() { return 0x511C9D4F; }
   static EntityDef & GetDefault() { static EntityDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<EntityDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const EntityDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<EntityDef *>(ptr);
+    if(typeid(EntityDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const EntityDef *>(ptr);
+    if(typeid(EntityDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

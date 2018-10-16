@@ -16,6 +16,35 @@ struct StormReflTypeInfo<MapEffectLayerInitData>
   static constexpr auto GetName() { return "MapEffectLayerInitData"; }
   static constexpr auto GetNameHash() { return 0x14A370F8; }
   static MapEffectLayerInitData & GetDefault() { static MapEffectLayerInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayerInitData *>(ptr);
+    if(typeid(MapEffectLayerInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayerInitData *>(ptr);
+    if(typeid(MapEffectLayerInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

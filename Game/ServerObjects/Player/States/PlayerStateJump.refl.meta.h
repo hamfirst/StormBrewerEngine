@@ -20,6 +20,43 @@ struct StormReflTypeInfo<PlayerStateJump>
   static constexpr auto GetName() { return "PlayerStateJump"; }
   static constexpr auto GetNameHash() { return 0xEF7B4AE6; }
   static PlayerStateJump & GetDefault() { static PlayerStateJump def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateJump *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<PlayerStateEventHandler<PlayerStateJump> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateJump *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<const PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<const PlayerStateEventHandler<PlayerStateJump> *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateJump *>(ptr);
+    if(typeid(PlayerStateJump).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateJump>).hash_code() == type_id_hash) return static_cast<PlayerStateEventHandler<PlayerStateJump> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateJump *>(ptr);
+    if(typeid(PlayerStateJump).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<const PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateJump>).hash_code() == type_id_hash) return static_cast<const PlayerStateEventHandler<PlayerStateJump> *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

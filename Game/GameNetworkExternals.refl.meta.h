@@ -16,6 +16,35 @@ struct StormReflTypeInfo<GameNetworkExternalEvent>
   static constexpr auto GetName() { return "GameNetworkExternalEvent"; }
   static constexpr auto GetNameHash() { return 0xDD637770; }
   static GameNetworkExternalEvent & GetDefault() { static GameNetworkExternalEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameNetworkExternalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameNetworkExternalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameNetworkExternalEvent *>(ptr);
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameNetworkExternalEvent *>(ptr);
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -32,6 +61,39 @@ struct StormReflTypeInfo<PlayerJoinedEvent>
   static constexpr auto GetName() { return "PlayerJoinedEvent"; }
   static constexpr auto GetNameHash() { return 0x2EC69003; }
   static PlayerJoinedEvent & GetDefault() { static PlayerJoinedEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerJoinedEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xDD637770 == type_name_hash) return static_cast<GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerJoinedEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xDD637770 == type_name_hash) return static_cast<const GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerJoinedEvent *>(ptr);
+    if(typeid(PlayerJoinedEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerJoinedEvent *>(ptr);
+    if(typeid(PlayerJoinedEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<const GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -114,6 +176,39 @@ struct StormReflTypeInfo<PlayerLeaveEvent>
   static constexpr auto GetName() { return "PlayerLeaveEvent"; }
   static constexpr auto GetNameHash() { return 0x7CDAAD89; }
   static PlayerLeaveEvent & GetDefault() { static PlayerLeaveEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerLeaveEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xDD637770 == type_name_hash) return static_cast<GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerLeaveEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xDD637770 == type_name_hash) return static_cast<const GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerLeaveEvent *>(ptr);
+    if(typeid(PlayerLeaveEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerLeaveEvent *>(ptr);
+    if(typeid(PlayerLeaveEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<const GameNetworkExternalEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

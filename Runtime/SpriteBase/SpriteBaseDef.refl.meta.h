@@ -18,6 +18,35 @@ struct StormReflTypeInfo<SpriteBaseDefTexture>
   static constexpr auto GetName() { return "SpriteBaseDefTexture"; }
   static constexpr auto GetNameHash() { return 0xEFFE2CC8; }
   static SpriteBaseDefTexture & GetDefault() { static SpriteBaseDefTexture def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefTexture *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefTexture *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefTexture *>(ptr);
+    if(typeid(SpriteBaseDefTexture).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefTexture *>(ptr);
+    if(typeid(SpriteBaseDefTexture).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -111,6 +140,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>
   static constexpr auto GetName() { return "SpriteBaseDefAnimFrame"; }
   static constexpr auto GetNameHash() { return 0x226CF952; }
   static SpriteBaseDefAnimFrame & GetDefault() { static SpriteBaseDefAnimFrame def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimFrame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimFrame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimFrame *>(ptr);
+    if(typeid(SpriteBaseDefAnimFrame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimFrame *>(ptr);
+    if(typeid(SpriteBaseDefAnimFrame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -168,6 +226,35 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>
   static constexpr auto GetName() { return "SpriteBaseAnimationEvent"; }
   static constexpr auto GetNameHash() { return 0x89FDF2FA; }
   static SpriteBaseAnimationEvent & GetDefault() { static SpriteBaseAnimationEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseAnimationEvent *>(ptr);
+    if(typeid(SpriteBaseAnimationEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseAnimationEvent *>(ptr);
+    if(typeid(SpriteBaseAnimationEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -269,6 +356,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>
   static constexpr auto GetName() { return "SpriteBaseDefAnimation"; }
   static constexpr auto GetNameHash() { return 0xDF11BF28; }
   static SpriteBaseDefAnimation & GetDefault() { static SpriteBaseDefAnimation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimation *>(ptr);
+    if(typeid(SpriteBaseDefAnimation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimation *>(ptr);
+    if(typeid(SpriteBaseDefAnimation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -348,6 +464,35 @@ struct StormReflTypeInfo<SpriteBaseDefSkinElement>
   static constexpr auto GetName() { return "SpriteBaseDefSkinElement"; }
   static constexpr auto GetNameHash() { return 0xC2ABD8EA; }
   static SpriteBaseDefSkinElement & GetDefault() { static SpriteBaseDefSkinElement def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkinElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkinElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkinElement *>(ptr);
+    if(typeid(SpriteBaseDefSkinElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkinElement *>(ptr);
+    if(typeid(SpriteBaseDefSkinElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -405,6 +550,35 @@ struct StormReflTypeInfo<SpriteBaseDefSkin>
   static constexpr auto GetName() { return "SpriteBaseDefSkin"; }
   static constexpr auto GetNameHash() { return 0xD5CD380A; }
   static SpriteBaseDefSkin & GetDefault() { static SpriteBaseDefSkin def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkin *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkin *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkin *>(ptr);
+    if(typeid(SpriteBaseDefSkin).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkin *>(ptr);
+    if(typeid(SpriteBaseDefSkin).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -462,6 +636,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnchor>
   static constexpr auto GetName() { return "SpriteBaseDefAnchor"; }
   static constexpr auto GetNameHash() { return 0x22944068; }
   static SpriteBaseDefAnchor & GetDefault() { static SpriteBaseDefAnchor def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnchor *>(ptr);
+    if(typeid(SpriteBaseDefAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnchor *>(ptr);
+    if(typeid(SpriteBaseDefAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -519,6 +722,35 @@ struct StormReflTypeInfo<SpriteBaseDef>
   static constexpr auto GetName() { return "SpriteBaseDef"; }
   static constexpr auto GetNameHash() { return 0x48F83F55; }
   static SpriteBaseDef & GetDefault() { static SpriteBaseDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDef *>(ptr);
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDef *>(ptr);
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

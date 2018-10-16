@@ -16,6 +16,35 @@ struct StormReflTypeInfo<GlobalNetworkEvent>
   static constexpr auto GetName() { return "GlobalNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xBD3E127B; }
   static GlobalNetworkEvent & GetDefault() { static GlobalNetworkEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GlobalNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GlobalNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GlobalNetworkEvent *>(ptr);
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GlobalNetworkEvent *>(ptr);
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -32,6 +61,39 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>
   static constexpr auto GetName() { return "CreateEntityGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0x642FDCD2; }
   static CreateEntityGlobalEvent & GetDefault() { static CreateEntityGlobalEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<CreateEntityGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const CreateEntityGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<CreateEntityGlobalEvent *>(ptr);
+    if(typeid(CreateEntityGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const CreateEntityGlobalEvent *>(ptr);
+    if(typeid(CreateEntityGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -114,6 +176,39 @@ struct StormReflTypeInfo<CameraShakeEvent>
   static constexpr auto GetName() { return "CameraShakeEvent"; }
   static constexpr auto GetNameHash() { return 0x2504BD60; }
   static CameraShakeEvent & GetDefault() { static CameraShakeEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<CameraShakeEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const CameraShakeEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<CameraShakeEvent *>(ptr);
+    if(typeid(CameraShakeEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const CameraShakeEvent *>(ptr);
+    if(typeid(CameraShakeEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -130,6 +225,39 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>
   static constexpr auto GetName() { return "PlaySoundGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0x5199D34C; }
   static PlaySoundGlobalEvent & GetDefault() { static PlaySoundGlobalEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlaySoundGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaySoundGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlaySoundGlobalEvent *>(ptr);
+    if(typeid(PlaySoundGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaySoundGlobalEvent *>(ptr);
+    if(typeid(PlaySoundGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -212,6 +340,39 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>
   static constexpr auto GetName() { return "PlayVfxGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0xEA5024F2; }
   static PlayVfxGlobalEvent & GetDefault() { static PlayVfxGlobalEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayVfxGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayVfxGlobalEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayVfxGlobalEvent *>(ptr);
+    if(typeid(PlayVfxGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayVfxGlobalEvent *>(ptr);
+    if(typeid(PlayVfxGlobalEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -294,6 +455,39 @@ struct StormReflTypeInfo<TieEvent>
   static constexpr auto GetName() { return "TieEvent"; }
   static constexpr auto GetNameHash() { return 0xCE146734; }
   static TieEvent & GetDefault() { static TieEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<TieEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const TieEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBD3E127B == type_name_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<TieEvent *>(ptr);
+    if(typeid(TieEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const TieEvent *>(ptr);
+    if(typeid(TieEvent).hash_code() == type_id_hash) return c;
+    if(typeid(GlobalNetworkEvent).hash_code() == type_id_hash) return static_cast<const GlobalNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -307,6 +501,35 @@ struct StormReflTypeInfo<ServerAuthNetworkEvent>
   static constexpr auto GetName() { return "ServerAuthNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xE24857C1; }
   static ServerAuthNetworkEvent & GetDefault() { static ServerAuthNetworkEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ServerAuthNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerAuthNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ServerAuthNetworkEvent *>(ptr);
+    if(typeid(ServerAuthNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerAuthNetworkEvent *>(ptr);
+    if(typeid(ServerAuthNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -323,6 +546,39 @@ struct StormReflTypeInfo<PlaceholderServerAuthEvent>
   static constexpr auto GetName() { return "PlaceholderServerAuthEvent"; }
   static constexpr auto GetNameHash() { return 0x29691225; }
   static PlaceholderServerAuthEvent & GetDefault() { static PlaceholderServerAuthEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderServerAuthEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xE24857C1 == type_name_hash) return static_cast<ServerAuthNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderServerAuthEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xE24857C1 == type_name_hash) return static_cast<const ServerAuthNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderServerAuthEvent *>(ptr);
+    if(typeid(PlaceholderServerAuthEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ServerAuthNetworkEvent).hash_code() == type_id_hash) return static_cast<ServerAuthNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderServerAuthEvent *>(ptr);
+    if(typeid(PlaceholderServerAuthEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ServerAuthNetworkEvent).hash_code() == type_id_hash) return static_cast<const ServerAuthNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -336,6 +592,35 @@ struct StormReflTypeInfo<TargetNetworkEvent>
   static constexpr auto GetName() { return "TargetNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0x40E708F3; }
   static TargetNetworkEvent & GetDefault() { static TargetNetworkEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<TargetNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const TargetNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<TargetNetworkEvent *>(ptr);
+    if(typeid(TargetNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const TargetNetworkEvent *>(ptr);
+    if(typeid(TargetNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -374,6 +659,39 @@ struct StormReflTypeInfo<PlaceholderTargetEvent>
   static constexpr auto GetName() { return "PlaceholderTargetEvent"; }
   static constexpr auto GetNameHash() { return 0xF23AD6F7; }
   static PlaceholderTargetEvent & GetDefault() { static PlaceholderTargetEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderTargetEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x40E708F3 == type_name_hash) return static_cast<TargetNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderTargetEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x40E708F3 == type_name_hash) return static_cast<const TargetNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderTargetEvent *>(ptr);
+    if(typeid(PlaceholderTargetEvent).hash_code() == type_id_hash) return c;
+    if(typeid(TargetNetworkEvent).hash_code() == type_id_hash) return static_cast<TargetNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderTargetEvent *>(ptr);
+    if(typeid(PlaceholderTargetEvent).hash_code() == type_id_hash) return c;
+    if(typeid(TargetNetworkEvent).hash_code() == type_id_hash) return static_cast<const TargetNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -387,6 +705,35 @@ struct StormReflTypeInfo<ClientNetworkEvent>
   static constexpr auto GetName() { return "ClientNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xC69662C2; }
   static ClientNetworkEvent & GetDefault() { static ClientNetworkEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ClientNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ClientNetworkEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ClientNetworkEvent *>(ptr);
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ClientNetworkEvent *>(ptr);
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -403,6 +750,39 @@ struct StormReflTypeInfo<PlaceholderClientEvent>
   static constexpr auto GetName() { return "PlaceholderClientEvent"; }
   static constexpr auto GetNameHash() { return 0xEEBE0324; }
   static PlaceholderClientEvent & GetDefault() { static PlaceholderClientEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderClientEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xC69662C2 == type_name_hash) return static_cast<ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderClientEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xC69662C2 == type_name_hash) return static_cast<const ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlaceholderClientEvent *>(ptr);
+    if(typeid(PlaceholderClientEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return static_cast<ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlaceholderClientEvent *>(ptr);
+    if(typeid(PlaceholderClientEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return static_cast<const ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -419,6 +799,39 @@ struct StormReflTypeInfo<JumpEvent>
   static constexpr auto GetName() { return "JumpEvent"; }
   static constexpr auto GetNameHash() { return 0x940BF099; }
   static JumpEvent & GetDefault() { static JumpEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<JumpEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xC69662C2 == type_name_hash) return static_cast<ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const JumpEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xC69662C2 == type_name_hash) return static_cast<const ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<JumpEvent *>(ptr);
+    if(typeid(JumpEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return static_cast<ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const JumpEvent *>(ptr);
+    if(typeid(JumpEvent).hash_code() == type_id_hash) return c;
+    if(typeid(ClientNetworkEvent).hash_code() == type_id_hash) return static_cast<const ClientNetworkEvent *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

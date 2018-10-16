@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementTextInputInitData>
   static constexpr auto GetName() { return "UIElementTextInputInitData"; }
   static constexpr auto GetNameHash() { return 0x167AED4B; }
   static UIElementTextInputInitData & GetDefault() { static UIElementTextInputInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputInitData *>(ptr);
+    if(typeid(UIElementTextInputInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputInitData *>(ptr);
+    if(typeid(UIElementTextInputInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -37,6 +70,43 @@ struct StormReflTypeInfo<UIElementTextInputData>
   static constexpr auto GetName() { return "UIElementTextInputData"; }
   static constexpr auto GetNameHash() { return 0xC49A2076; }
   static UIElementTextInputData & GetDefault() { static UIElementTextInputData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputData *>(ptr);
+    if(typeid(UIElementTextInputData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputData *>(ptr);
+    if(typeid(UIElementTextInputData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

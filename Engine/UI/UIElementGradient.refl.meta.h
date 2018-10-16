@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementGradientInitData>
   static constexpr auto GetName() { return "UIElementGradientInitData"; }
   static constexpr auto GetNameHash() { return 0x6549A493; }
   static UIElementGradientInitData & GetDefault() { static UIElementGradientInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementGradientInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementGradientInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementGradientInitData *>(ptr);
+    if(typeid(UIElementGradientInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementGradientInitData *>(ptr);
+    if(typeid(UIElementGradientInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -37,6 +70,43 @@ struct StormReflTypeInfo<UIElementGradientData>
   static constexpr auto GetName() { return "UIElementGradientData"; }
   static constexpr auto GetNameHash() { return 0x1438BA0B; }
   static UIElementGradientData & GetDefault() { static UIElementGradientData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementGradientData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementGradientData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementGradientData *>(ptr);
+    if(typeid(UIElementGradientData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementGradientData *>(ptr);
+    if(typeid(UIElementGradientData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

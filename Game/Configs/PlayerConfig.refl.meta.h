@@ -17,6 +17,35 @@ struct StormReflTypeInfo<PlayerConfig>
   static constexpr auto GetName() { return "PlayerConfig"; }
   static constexpr auto GetNameHash() { return 0xFE5D6668; }
   static PlayerConfig & GetDefault() { static PlayerConfig def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerConfig *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerConfig *>(ptr);
+    if(typeid(PlayerConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerConfig *>(ptr);
+    if(typeid(PlayerConfig).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

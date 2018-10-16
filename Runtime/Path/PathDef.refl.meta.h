@@ -16,6 +16,35 @@ struct StormReflTypeInfo<PathDataBase>
   static constexpr auto GetName() { return "PathDataBase"; }
   static constexpr auto GetNameHash() { return 0x3BD8C7EA; }
   static PathDataBase & GetDefault() { static PathDataBase def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PathDataBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PathDataBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PathDataBase *>(ptr);
+    if(typeid(PathDataBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PathDataBase *>(ptr);
+    if(typeid(PathDataBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

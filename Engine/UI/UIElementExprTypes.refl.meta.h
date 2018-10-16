@@ -16,6 +16,35 @@ struct StormReflTypeInfo<UIGlobalBlock>
   static constexpr auto GetName() { return "UIGlobalBlock"; }
   static constexpr auto GetNameHash() { return 0x45A889EB; }
   static UIGlobalBlock & GetDefault() { static UIGlobalBlock def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIGlobalBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIGlobalBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIGlobalBlock *>(ptr);
+    if(typeid(UIGlobalBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIGlobalBlock *>(ptr);
+    if(typeid(UIGlobalBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -95,6 +124,35 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>
   static constexpr auto GetName() { return "UIAutoCalculatedBlock"; }
   static constexpr auto GetNameHash() { return 0x4167197E; }
   static UIAutoCalculatedBlock & GetDefault() { static UIAutoCalculatedBlock def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIAutoCalculatedBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIAutoCalculatedBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIAutoCalculatedBlock *>(ptr);
+    if(typeid(UIAutoCalculatedBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIAutoCalculatedBlock *>(ptr);
+    if(typeid(UIAutoCalculatedBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

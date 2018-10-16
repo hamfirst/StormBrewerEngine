@@ -45,6 +45,39 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>
   static constexpr auto GetName() { return "PlayAnimationComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x35DD3172; }
   static PlayAnimationComponentInitData & GetDefault() { static PlayAnimationComponentInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationComponentInitData *>(ptr);
+    if(typeid(PlayAnimationComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationComponentInitData *>(ptr);
+    if(typeid(PlayAnimationComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
