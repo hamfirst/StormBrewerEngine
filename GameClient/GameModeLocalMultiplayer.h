@@ -12,19 +12,19 @@ class GameModeLocalMultiplayer : public GameMode, public GameClientEventSender
 {
 public:
   GameModeLocalMultiplayer(GameContainer & game, const std::vector<bool> & attached_players, const GameInitSettings game_settings);
-  ~GameModeLocalMultiplayer();
+  ~GameModeLocalMultiplayer() override;
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
+  void Update() override;
+  void Render() override;
 
-  virtual bool IsLoaded() override;
+  bool IsLoaded() override;
 
 protected:
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
+  void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
 private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;

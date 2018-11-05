@@ -15,8 +15,11 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
   m_GameId(0)
 {
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandlePing, this);
+  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleCreatePrivateGame, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleJoinGame, this);
+  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleReady, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleFinishLoading, this);
+  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleTextChat, this);
 
 #if NET_MODE == NET_MODE_GGPO
   m_Protocol.GetReceiverChannel<1>().RegisterCallback(&GameClientConnection::HandleClientDataUpdate, this);
@@ -72,6 +75,11 @@ void GameClientConnection::SendLoadLevel(const LoadLevelMessage & load_msg)
   m_Protocol.GetSenderChannel<0>().SendMessage(load_msg);
 }
 
+void GameClientConnection::SendTextChat(const GotTextChatMessage & text_msg)
+{
+  m_Protocol.GetSenderChannel<0>().SendMessage(text_msg);
+}
+
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
 void GameClientConnection::SendDeliberateSync(void * data, int type_index)
 {
@@ -109,6 +117,27 @@ void GameClientConnection::HandlePing(const PingMessage & request)
   m_Protocol.GetSenderChannel<0>().SendMessage(PongMessage{});
 }
 
+void GameClientConnection::HandleCreatePrivateGame(const CreatePrivateGameMessage & request)
+{
+  if (m_GameInstance != nullptr)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  if (ValidUserName(request.m_JoinInfo.m_UserName.data()) == false)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  if (m_Server.GetGameInstanceManager().CreatePrivateGame(this, request) == false)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+}
+
 void GameClientConnection::HandleJoinGame(const JoinGameMessage & request)
 {
   if (m_GameInstance != nullptr)
@@ -117,7 +146,7 @@ void GameClientConnection::HandleJoinGame(const JoinGameMessage & request)
     return;
   }
 
-  if (ValidUserName(request.m_UserName.data()) == false)
+  if (ValidUserName(request.m_JoinInfo.m_UserName.data()) == false)
   {
     m_Server.DisconnectClient(m_ConnectionId);
     return;
@@ -150,6 +179,17 @@ void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & requ
   }
 
   m_GameInstance->HandlePlayerLoaded(this, request);
+}
+
+void GameClientConnection::HandleTextChat(const SendTextChatMessage &request)
+{
+  if (m_GameInstance == nullptr)
+  {
+    m_Server.DisconnectClient(m_ConnectionId);
+    return;
+  }
+
+  m_GameInstance->HandleTextChat(this, request);
 }
 
 

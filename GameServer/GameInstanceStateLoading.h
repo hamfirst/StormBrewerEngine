@@ -9,13 +9,13 @@ class GameInstanceStateLoading : public GameInstanceStateBase
 public:
   GameInstanceStateLoading(GameInstanceStateData & state_data, const GameStateStaging & staging_data);
 
-  virtual bool JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game) override;
-  virtual void RemovePlayer(std::size_t client_index) override;
+  bool JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game) override;
+  void RemovePlayer(std::size_t client_index) override;
 
-  virtual void Update() override;
+  void Update() override;
 
-  virtual void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
-  virtual void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
+  void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
+  void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
 
 protected:
 

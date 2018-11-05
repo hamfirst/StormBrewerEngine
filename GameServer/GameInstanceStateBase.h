@@ -32,13 +32,15 @@ public:
 
   virtual ~GameInstanceStateBase() {};
 
-  virtual bool JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game) { return false; };
+  virtual bool JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game) { return false; };
   virtual void RemovePlayer(std::size_t client_index) {};
 
   virtual void Update() {};
 
   virtual void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) {};
   virtual void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) {};
+  virtual void HandlePlayerKick(std::size_t client_index, const KickPlayerMessage & msg) {};
+  virtual void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) {};
 
 #if NET_MODE == NET_MODE_GGPO
 

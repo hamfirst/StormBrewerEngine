@@ -17,6 +17,7 @@ struct GameInstanceStatePlayer
   NullOptPtr<GameClientConnection> m_Client;
   std::string m_UserName;
   uint32_t m_RandomSeed;
+  bool m_GameLeader;
 };
 
 template <typename State>
@@ -53,6 +54,7 @@ public:
   void ChangeInitSettings(const GameInitSettings & init_settings);
 
   const GameStage & GetStage() const;
+  uint32_t GetPrivateRoomId() const;
 
   GameSharedGlobalResources & GetSharedResources();
 

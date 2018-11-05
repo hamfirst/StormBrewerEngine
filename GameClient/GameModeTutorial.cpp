@@ -20,7 +20,7 @@
 
 #include <ctime>
 
-GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings game_settings) :
+GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings & game_settings) :
   GameMode(game),
   m_Paused(false)
 {

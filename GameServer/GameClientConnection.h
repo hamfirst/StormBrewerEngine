@@ -27,6 +27,7 @@ public:
 #endif
 
   void SendLoadLevel(const LoadLevelMessage & load_msg);
+  void SendTextChat(const GotTextChatMessage & text_msg);
 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
   void SendDeliberateSync(void * data, int type_index);
@@ -41,9 +42,11 @@ public:
 private:
 
   void HandlePing(const PingMessage & request);
+  void HandleCreatePrivateGame(const CreatePrivateGameMessage & request);
   void HandleJoinGame(const JoinGameMessage & request);
   void HandleReady(const ReadyMessage & request);
   void HandleFinishLoading(const FinishLoadingMessage & request);
+  void HandleTextChat(const SendTextChatMessage & request);
 
 #if NET_MODE == NET_MODE_GGPO
 

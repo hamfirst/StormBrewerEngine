@@ -265,6 +265,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="\GameModeJoinPrivateGame.cpp" />
+    <ClCompile Include="\GameModeOnlineStaging.cpp" />
+    <ClCompile Include="\GameModeCreatePrivateGame.cpp" />
     <ClCompile Include="Components\PlayerComponent.refl.cpp" />
     <ClCompile Include="Components\PlayerComponent.refl.reg.cpp" />
     <ClCompile Include="Components\Reusable\AttachVfxComponent.refl.cpp" />
@@ -381,6 +384,9 @@
     <ClCompile Include="GameShaders.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="\GameModeJoinPrivateGame.h" />
+    <ClInclude Include="\GameModeOnlineStaging.h" />
+    <ClInclude Include="\GameModeCreatePrivateGame.h" />
     <ClInclude Include="Components\PlayerComponent.refl.h" />
     <ClInclude Include="Components\PlayerComponent.refl.meta.h" />
     <ClInclude Include="Components\Reusable\AttachVfxComponent.refl.h" />

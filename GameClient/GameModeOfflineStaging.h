@@ -15,13 +15,13 @@ class GameModeOfflineStaging : public GameMode
 {
 public:
   GameModeOfflineStaging(GameContainer & game);
-  ~GameModeOfflineStaging();
+  ~GameModeOfflineStaging() override;
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
+  void Update() override;
+  void Render() override;
 
 protected:
 

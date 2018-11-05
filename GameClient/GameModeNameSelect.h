@@ -12,24 +12,35 @@
 #include "Engine/UI/Prototype/UIPrototypeMuteButton.h"
 #include "Engine/UI/Prototype/UIPrototypeFullscreenButton.h"
 
+enum class GameModeNameSelectNextScreen
+{
+  kJoinOnline,
+  kCreatePrivate,
+  kJoinPrivate,
+};
+
 class GameModeNameSelect : public GameMode
 {
 public:
-  GameModeNameSelect(GameContainer & game);
-  ~GameModeNameSelect();
+  GameModeNameSelect(GameContainer & game, GameModeNameSelectNextScreen next_screen);
+  ~GameModeNameSelect() override;
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
+  void Update() override;
+  void Render() override;
 
 protected:
 
   void Submit();
   void Back();
 
+  void GoToNextMode();
+
 private:
+
+  GameModeNameSelectNextScreen m_NextMode;
 
   Sequencer m_Sequencer;
   UIManager m_UIManager;

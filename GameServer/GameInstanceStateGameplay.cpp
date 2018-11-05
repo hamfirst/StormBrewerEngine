@@ -22,7 +22,7 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_InitialState(m_Stage.CreateDefaultGameState())
 {
   GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData, m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, 
-    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources.get(), m_Systems, 
+    *this, *this, m_StateData.GetSharedResources(), *m_InstanceResources, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
     m_DeliberateSyncSystemData,
 #endif
@@ -127,7 +127,7 @@ GameInstanceStateGameplay::~GameInstanceStateGameplay()
 
 }
 
-bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game)
+bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
 {
 #ifdef NET_ALLOW_LATE_JOIN
 
@@ -193,11 +193,11 @@ void GameInstanceStateGameplay::RemovePlayer(std::size_t client_index)
   if (player_info.m_PlayerIndex != -1)
   {
     PlayerLeaveEvent ev;
-    ev.m_PlayerIndex = player_info.m_PlayerIndex;
+    ev.m_PlayerIndex = static_cast<uint8_t>(player_info.m_PlayerIndex);
 
-    m_PendingExternals.emplace_back(std::move(ev));
+    m_PendingExternals.emplace_back(ev);
 
-    m_PlayerIdAllocator.Release(player_info.m_PlayerIndex);
+    m_PlayerIdAllocator.Release(static_cast<std::size_t>(player_info.m_PlayerIndex));
   }
   
 #ifdef NET_ALLOW_OBSERVERS
@@ -420,11 +420,11 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
   auto player_id = m_PlayerIdAllocator.Allocate();
 #ifdef NET_LATE_JOIN_REMOVE_BOT
 
-  for (auto player_info : m_CurrentState->m_InstanceData.m_Players)
+  for (auto test_player_info : m_CurrentState->m_InstanceData.m_Players)
   {
-    if (player_info.second.m_AIPlayerInfo)
+    if (test_player_info.second.m_AIPlayerInfo)
     {
-      player_id = player_info.first;
+      player_id = test_player_info.first;
       break;
     }
   }
@@ -463,7 +463,7 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
     player_info.m_PlayerIndex = (int)player_id;
 
     PlayerJoinedEvent ev;
-    ev.m_PlayerIndex = (int)player_id;
+    ev.m_PlayerIndex = (uint8_t)player_id;
     ev.m_UserName = client_info.m_UserName;
     ev.m_RandomSeed = client_info.m_RandomSeed;
 
@@ -617,6 +617,47 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
     //      return;
     //    }
     //  }
+}
+
+void GameInstanceStateGameplay::HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg)
+{
+  auto & client_info = m_StateData.GetClient(client_index);
+  auto & player_info = m_PlayerInfo[client_index];
+
+  GotTextChatMessage out_text;
+
+  out_text.m_Message = msg.m_Message;
+  out_text.m_UserName = client_info.m_UserName;
+
+  int team = player_info.m_PlayerIndex == -1 ? -1 :
+                  static_cast<int>(m_CurrentState->m_InstanceData.m_Players[player_info.m_PlayerIndex].m_Team);
+
+  if(msg.m_TeamOnly)
+  {
+    auto visitor = [&](auto client_index, auto & client_data)
+    {
+      auto & test_player_info = m_PlayerInfo[client_index];
+
+      int test_team = test_player_info.m_PlayerIndex == -1 ? -1 :
+                      static_cast<int>(m_CurrentState->m_InstanceData.m_Players[test_player_info.m_PlayerIndex].m_Team);
+
+      if(team == test_team)
+      {
+        client_data.m_Client->SendTextChat(out_text);
+      }
+    };
+
+    m_StateData.VisitPlayers(visitor);
+  }
+  else
+  {
+    auto visitor = [&](auto client_index, auto & client_data)
+    {
+      client_data.m_Client->SendTextChat(out_text);
+    };
+
+    m_StateData.VisitPlayers(visitor);
+  }
 }
 
 
