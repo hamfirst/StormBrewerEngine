@@ -30,10 +30,8 @@ struct PlayerServerObjectInitData : public GameServerObjectBaseInitData
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(PlayerServerObjectInitData);
 };
 
-extern ConfigPtr<PlayerConfig> g_PlayerConfig[];
-extern int g_PlayerConfigCount;
-
-using PlayerConfigPtr = NetReflectionStaticListPtr<ConfigPtr<PlayerConfig>, g_PlayerConfig, &g_PlayerConfigCount>;
+EXTERN_GLOBAL_ASSAET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig);
+DECLARE_STATIC_LIST_TYPE(PlayerConfigPtr, g_PlayerConfig);
 
 class PlayerServerObject : public GameServerObjectBase
 {
@@ -60,18 +58,19 @@ public:
   void Jump(GameLogicContainer & game_container);
 #endif
 
-  bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta);
-  bool SERVER_OBJECT_EVENT_HANDLER HandleDamageEvent(DamageEvent & ev, const EventMetaData & meta);
-  bool SERVER_OBJECT_EVENT_HANDLER HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandleDamageEvent(const DamageEvent & ev, const EventMetaData & meta);
+  bool SERVER_OBJECT_EVENT_HANDLER HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta);
 
   virtual Optional<AnimationState> GetAnimationState() const override;
   virtual void SetAnimationState(const AnimationState & anim_state) override;
   virtual Optional<int> GetAssociatedPlayer() const override;
 
-  virtual SpritePtr GetSprite() const override;
+  virtual const SpritePtr & GetSprite() const override;
   virtual Optional<CharacterFacing> GetFacing() const override;
 
   const ConfigPtr<PlayerConfig> & GetConfig() const;
+  virtual czstr GetEntityBinding() const override;
   virtual czstr GetDefaultEntityBinding() const override;
 
   template <typename State>
@@ -90,7 +89,6 @@ public:
 
     return m_State.Get<State>();
   }
-
 
 public:
   GameNetVec2 m_Velocity = {};
@@ -115,8 +113,6 @@ public:
   bool m_Invulnerable = false;
 
   ClientInput m_Input;
-
-
 
   NetPolymorphic<PlayerStateBase> m_State;
   PlayerConfigPtr m_Config;

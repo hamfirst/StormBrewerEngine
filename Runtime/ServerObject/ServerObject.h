@@ -8,6 +8,7 @@
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
 #include "Runtime/ServerObject/ServerObjectEventSystem.h"
+#include "Runtime/ServerObject/ServerObjectTypeInfo.h"
 #include "Runtime/Event/Event.h"
 
 #include "StormRefl/StormReflMetaInfoBase.h"
@@ -30,6 +31,7 @@ public:
 
   virtual czstr GetDefaultEntityBinding() const;
   virtual czstr GetEntityBinding() const;
+  virtual void InitStaticComponents();
 
   bool IsDestroyed() const;
   int GetSlotIndex() const;
@@ -49,9 +51,73 @@ public:
   }
 
   template <typename EventType>
-  bool SendEvent(EventType & ev, const EventMetaData & meta)
+  bool SendEvent(const EventType & ev, const EventMetaData & meta)
   {
     return TriggerEventHandler(EventType::TypeNameHash, &ev, meta);
+  }
+
+  const ServerObjectTypeInfo & GetTypeInfo() const;
+
+  template <typename ComponentType>
+  NullOptPtr<ComponentType> GetComponent()
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      if(elem.m_TypeIdHash == typeid(ComponentType).hash_code())
+      {
+        return elem.m_Get(this);
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<const ComponentType> GetComponent() const
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      if(elem.m_TypeIdHash == typeid(ComponentType).hash_code())
+      {
+        return elem.m_ConstGet(this);
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<ComponentType> FindComponent()
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      auto ptr = elem.m_Get(this);
+      auto comp = elem.m_Cast(typeid(ComponentType).hash_code(), ptr);
+
+      if(comp)
+      {
+        return comp;
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<const ComponentType> FindComponent() const
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      auto ptr = elem.m_ConstGet(this);
+      auto comp = elem.m_ConstCast(typeid(ComponentType).hash_code(), ptr);
+
+      if(comp)
+      {
+        return comp;
+      }
+    }
+
+    return nullptr;
   }
 
 protected:
@@ -76,10 +142,11 @@ private:
   void SetIterator(const SkipFieldIterator & itr);
   const SkipFieldIterator & GetIterator() const;
 
-  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta);
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta);
 
 private:
   bool m_IsStatic = false;
+  bool m_IsUnsynced = false;
   int m_TypeIndex = 0;
   int m_SlotIndex = 0;
   int m_FramesAlive = 0;
@@ -124,6 +191,34 @@ struct StormReflTypeInfo<ServerObject>
   static constexpr auto GetName() { return "ServerObject"; }
   static constexpr auto GetNameHash() { return COMPILE_TIME_CRC32_STR("ServerObject"); }
   static ServerObject & GetDefault() { static ServerObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObject *>(ptr);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObject *>(ptr);
+    if(typeid(ServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
 };
 
 template <>

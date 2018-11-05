@@ -9,7 +9,7 @@
 #endif
 
 
-struct FileData final
+struct FileData
 {
 #if !defined(_ANDROID) && !defined(_IOS)
   FILE * m_File;
@@ -27,7 +27,7 @@ enum class FileOpenMode
   kRead,
 };
 
-class File final
+class File
 {
 public:
   File();

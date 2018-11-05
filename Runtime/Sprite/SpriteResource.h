@@ -21,10 +21,10 @@ using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResourc
 class SpriteResource : public DocumentResourceBase
 {
 public:
-  SpriteResource(Any && load_data, uint32_t path_hash);
+  SpriteResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<SpriteDef> GetData();
-  DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
+  SpriteLoadLink AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback);
   void AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback, DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> & load_link);
 
   static SpritePtr Find(uint32_t file_path_hash);
@@ -43,7 +43,7 @@ public:
   void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
 
   template <typename Visitor>
-  void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay)
+  void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay) const
   {
     if (animation_index >= m_AnimEventInfo.size())
     {
@@ -69,10 +69,10 @@ public:
   }
 
   template <typename Target, typename AnimState>
-  void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta)
+  void SendEventsTo(Target & target, AnimState & state, const EventMetaData & meta) const
   {
     EventMetaData meta_dup = meta;
-    auto visitor = [&](RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> & ev, const Box * start, const Box * end)
+    auto visitor = [&](const RPolymorphic<SpriteAnimationEventDataBase> & ev, const Box * start, const Box * end)
     {
       meta_dup.m_ActiveAreaStart = start;
       meta_dup.m_ActiveAreaEnd = end;
@@ -82,15 +82,17 @@ public:
     VisitEvents(visitor, state.m_AnimIndex, state.m_AnimFrame, state.m_AnimDelay);
   }
 
-  int GetAnimationFrameDuration(int animation_index, int animation_frame);
-  uint64_t GetAnimationFrameId(int animation_index, int animation_frame);
+  int GetAnimationFrameDuration(int animation_index, int animation_frame) const;
+  uint64_t GetAnimationFrameId(int animation_index, int animation_frame) const;
 
-  Box GetSingleBox(uint32_t data_type_name_hash);
-  Box GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id);
-  Vector2 GetAnchor(uint32_t data_type_name_hash);
-  Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id);
-  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash);
-  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id);
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash) const;
+  Optional<Box> GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id) const;
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box = GetDefaultSingleBox()) const;
+  Box GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box = GetDefaultSingleBox()) const;
+  Vector2 GetAnchor(uint32_t data_type_name_hash) const;
+  Vector2 GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id) const;
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash) const;
+  gsl::span<const Box> GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id) const;
 
   static Box GetDefaultSingleBox();
   static FrameDataSingleLineInfo GetDefaultSingleLine();
@@ -104,7 +106,7 @@ private:
   friend class SpriteEngineData;
   struct AnimEventInfo
   {
-    RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo> m_EventData;
+    RPolymorphic<SpriteAnimationEventDataBase> m_EventData;
     int m_FrameIndex;
     int m_FrameDelay;
     int m_EventBoxStart;

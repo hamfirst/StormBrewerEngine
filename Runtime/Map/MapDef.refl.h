@@ -4,6 +4,7 @@
 #include <StormData/StormDataTypes.h>
 
 #include "Foundation/BasicTypes/BasicTypes.refl.h"
+#include "Foundation/TypeDatabase/TypeDatabase.h"
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/Entity/EntityDef.refl.h"
@@ -26,7 +27,7 @@
 struct RUNTIME_EXPORT MapPropertiesInfo
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPropertiesInfo);
-  RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true> m_MapProperties;
+  RPolymorphic<MapPropertiesDef, void, true> m_MapProperties;
 };
 
 struct RUNTIME_EXPORT MapManualTileLayer
@@ -131,7 +132,7 @@ struct RUNTIME_EXPORT MapEffectLayer
   RUInt STORM_REFL_ATTR(noui) m_GUID;
   RInt m_LayerOrder;
 
-  RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo> m_EffectLayerData;
+  RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase> m_EffectLayerData;
 };
 
 struct RUNTIME_EXPORT MapAnchor
@@ -139,7 +140,7 @@ struct RUNTIME_EXPORT MapAnchor
   STORM_DATA_DEFAULT_CONSTRUCTION(MapAnchor);
   RString m_Name;
   RUInt STORM_REFL_ATTR(noui) m_GUID;
-  RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_AnchorData;
+  RPolymorphic<AnchorDataBase> m_AnchorData;
 
   RString STORM_REFL_ATTR_VAL(file, sprite) m_Sprite;
 
@@ -166,7 +167,7 @@ struct RUNTIME_EXPORT MapPath
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPath);
   RString m_Name;
   RUInt STORM_REFL_ATTR(noui) m_GUID;
-  RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathData;
+  RPolymorphic<PathDataBase> m_PathData;
   RMergeList<MapPathPoint> m_Points;
 
   template <typename Visitor>
@@ -209,7 +210,7 @@ struct RUNTIME_EXPORT MapVolume
   STORM_DATA_DEFAULT_CONSTRUCTION(MapVolume);
   RString m_Name;
   RUInt STORM_REFL_ATTR(noui) m_GUID;
-  RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeData;
+  RPolymorphic<VolumeDataBase> m_VolumeData;
   RInt m_XStart;
   RInt m_YStart;
   RInt m_XEnd;

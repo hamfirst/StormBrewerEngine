@@ -25,6 +25,7 @@
 #include <new>
 #include <vector>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <memory>
 

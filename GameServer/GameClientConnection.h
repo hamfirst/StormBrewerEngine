@@ -30,7 +30,7 @@ public:
   void SendTextChat(const GotTextChatMessage & text_msg);
 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
-  void SendDeliberateSync(void * data, int type_index);
+  void SendDeliberateSystemSync(void * data, int type_index);
 #endif
 
   void ForceDisconnect();

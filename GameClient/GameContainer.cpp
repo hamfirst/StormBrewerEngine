@@ -44,7 +44,9 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_Updating(false)
 {
   auto resolution = m_Window.GetSize();
+
   m_RenderState.InitRenderState(resolution.x, resolution.y);
+  m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
   m_RenderState.EnableBlendMode();
 
   m_RenderUtil.SetClearColor(Color(100, 149, 237, 255));
@@ -177,7 +179,6 @@ void GameContainer::Update()
 {
   m_Updating = true;
   m_RenderState.SetScreenSize(m_Window.GetSize());
-  m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
 
   m_Save.Update();
 

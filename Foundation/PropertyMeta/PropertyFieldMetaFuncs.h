@@ -450,7 +450,7 @@ struct PropertyMetaData<RMap<K, T>>
 };
 
 template <class Base, class TypeDatabase, class TypeInfo, bool DefaultFirstNonBase>
-struct PropertyMetaData<RPolymorphic<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase>>
+struct PropertyMetaData<RPolymorphicBase<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase>>
 {
   static PropertyField * GetMetaData(PropertyFieldDatabase & property_db)
   {
@@ -468,14 +468,14 @@ struct PropertyMetaData<RPolymorphic<Base, TypeDatabase, TypeInfo, DefaultFirstN
         list->m_PossibleValues.emplace_back(std::move(option));
       };
 
-      StormDataTypeDatabaseVisitTypes(typename TypeDatabase::VisitorInfo{}, visitor);
+      StormDataTypeDatabaseVisitTypes(TypeDatabase::Get(), visitor);
 
       poly_data.second->m_Poly.GetType = 
-        [](void * obj) { auto * p = static_cast<RPolymorphic<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); return p->GetTypeNameHash(); };
+        [](void * obj) { auto * p = static_cast<RPolymorphicBase<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); return p->GetTypeNameHash(); };
       poly_data.second->m_Poly.SetType = 
-        [](void * obj, uint32_t type) { auto * p = static_cast<RPolymorphic<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); p->SetTypeFromNameHash(type); };
+        [](void * obj, uint32_t type) { auto * p = static_cast<RPolymorphicBase<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); p->SetTypeFromNameHash(type); };
       poly_data.second->m_Poly.GetValue = 
-        [](void * obj) -> void * { auto * p = static_cast<RPolymorphic<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); return p->GetValue(); };
+        [](void * obj) -> void * { auto * p = static_cast<RPolymorphicBase<Base, TypeDatabase, TypeInfo, DefaultFirstNonBase> *>(obj); return p->GetValue(); };
 
     };
 

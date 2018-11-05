@@ -11,95 +11,26 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_QTUtil 
-            AnimationTrack.cpp
-            DraggableList.cpp
-            ExpandableList.cpp
             FocusWatcher.cpp
-            LerpVar.cpp
-            QtLerpVar.cpp
             QTUtil.cpp
-            #CPP_PLACEHOLDER
+            DraggableList.cpp
+            QtLerpVar.cpp
+            LerpVar.cpp
+            AnimationTrack.cpp
+            ExpandableList.cpp
             )
+
 set(GENERIC_HEADER_QTUtil 
             AnimationTrack.h
-            DraggableList.h
-            ExpandableList.h
             FocusWatcher.h
+            DraggableList.h
+            VectorRearrange.h
+            ExpandableList.h
+            qtutil_global.h
             LerpVar.h
             QtLerpVar.h
             QTUtil.h
-            qtutil_global.h
-            VectorRearrange.h
-            #HEADER_PLACEHOLDER
-            )
-set(GENERIC_REFL_QTUtil 
-            #REFL_PLACEHOLDER
             )
 
-if (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Windows)
-  set(PLATFORM_SRC_QTUtil 
-            )
+add_library(QTUtil STATIC ${GENERIC_SRC_QTUtil} ${GENERIC_HEADER_QTUtil})
 
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Web)
-  set(PLATFORM_SRC_QTUtil 
-            )
-
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-if (IOS)
-  add_definitions(-D_IOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/IOS)
-  set(PLATFORM_SRC_QTUtil 
-            )
-
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-if (APPLE AND NOT IOS)
-  add_definitions(-D_MACOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/MacOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_QTUtil 
-            )
-
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-if (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Android)
-  set(PLATFORM_SRC_QTUtil 
-            )
-
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-if (UNIX AND NOT APPLE)
-  add_definitions(-D_LINUX)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_QTUtil 
-            )
-
-set(PLATFORM_HEADER_QTUtil 
-            )
-endif()
-
-foreach(REFL_FILE ${GENERIC_REFL_QTUtil})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
-  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
-                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
-endforeach()
-
-add_library(QTUtil STATIC ${GENERIC_SRC_QTUtil} ${PLATFORM_SRC_QTUtil}
-            ${GENERIC_HEADER_QTUtil} ${PLATFORM_HEADER_QTUtil})

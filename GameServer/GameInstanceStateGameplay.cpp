@@ -113,7 +113,7 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   {
     for (std::size_t index = 0; index < deliberate_data_type_size; ++index)
     {
-      player.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
+      player.m_Client->SendDeliberateSystemSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
     }
   };
 
@@ -475,7 +475,7 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
 
   for (std::size_t index = 0; index < deliberate_data_type_size; ++index)
   {
-    client_info.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
+    client_info.m_Client->SendDeliberateSystemSync(m_DeliberateSyncSystemDataPtrs[index], (int)index);
   }
 
 #endif
@@ -1090,7 +1090,7 @@ void GameInstanceStateGameplay::SyncDeliberateSyncSystem(int system_index)
 {
   auto sync_visitor = [&](std::size_t client_index, GameInstanceStatePlayer & player)
   {
-    player.m_Client->SendDeliberateSync(m_DeliberateSyncSystemDataPtrs[system_index], (int)system_index);
+    player.m_Client->SendDeliberateSystemSync(m_DeliberateSyncSystemDataPtrs[system_index], (int)system_index);
   };
 
   m_StateData.VisitPlayers(sync_visitor);

@@ -22,7 +22,7 @@ std::string FormatTemplate(const std::string & templ,
 
 std::optional<fs::path> FindCMakeFile(const fs::path & start_path, const fs::path & root_path);
 
-std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(const fs::path & project_path);
+//std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(const fs::path & project_path);
 
 enum class ProjectFileType
 {
@@ -33,9 +33,9 @@ enum class ProjectFileType
 
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file, ProjectFileType type);
 
-void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file, ProjectFileType type);
+//void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file, ProjectFileType type);
 
-void InsertIntoVCXProjFiltersFile(std::string & vcxproj_file, const std::string & file, ProjectFileType type);
+//void InsertIntoVCXProjFiltersFile(std::string & vcxproj_file, const std::string & file, ProjectFileType type);
 
 bool WriteTemplate(const fs::path & target_file, const fs::path & template_file,
   const std::unordered_map<std::string, std::string> & template_replacements);

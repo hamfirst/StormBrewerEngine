@@ -9,10 +9,3 @@
 
 #include "Runtime/Map/MapEffectLayerTypeDatabase.h"
 
-PreMainCallList g_MapEffectLayerRegisterCallList;
-
-#ifdef _MSC_VER
-std::unordered_map<uint32_t, MapEffectLayerDataTypeInfo> StormDataTypeDatabase<MapEffectLayerInitData, MapEffectLayerDataTypeInfo>::m_TypeList;
-#endif
-
-template class StormDataTypeDatabase<MapEffectLayerInitData, MapEffectLayerDataTypeInfo>;

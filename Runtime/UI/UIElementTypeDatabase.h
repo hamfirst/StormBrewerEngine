@@ -16,15 +16,15 @@ struct UIElementDataTypeInfo : public StormDataTypeInfo
   std::vector<UIRuntimeFieldDesc> m_RuntimeDesc;
 };
 
-extern template
-std::unordered_map<uint32_t, UIElementDataTypeInfo> StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>::m_TypeList;
-extern template class StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>;
-
-class UIElementTypeDatabase : public StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>
+class UIElementTypeDatabase :
+        public StormDataTypeDatabase<UIElementInitDataBase, UIElementDataTypeInfo>,
+        public StormDataTypeDatabaseSingleton<UIElementTypeDatabase>
 {
 public:
+  UIElementTypeDatabase() = default;
+
   template <typename RuntimeClass, typename InitDataType, typename RuntimeDataType>
-  static void RegisterType();
+  void RegisterType();
 
   void RegisterTypes(PropertyFieldDatabase & property_db);
 };

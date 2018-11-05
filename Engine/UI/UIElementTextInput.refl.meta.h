@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementTextInputInitData>
   static constexpr auto GetName() { return "UIElementTextInputInitData"; }
   static constexpr auto GetNameHash() { return 0x167AED4B; }
   static UIElementTextInputInitData & GetDefault() { static UIElementTextInputInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputInitData *>(ptr);
+    if(typeid(UIElementTextInputInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputInitData *>(ptr);
+    if(typeid(UIElementTextInputInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -37,6 +70,43 @@ struct StormReflTypeInfo<UIElementTextInputData>
   static constexpr auto GetName() { return "UIElementTextInputData"; }
   static constexpr auto GetNameHash() { return 0xC49A2076; }
   static UIElementTextInputData & GetDefault() { static UIElementTextInputData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextInputData *>(ptr);
+    if(typeid(UIElementTextInputData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextInputData *>(ptr);
+    if(typeid(UIElementTextInputData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -49,6 +119,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<0 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_Prompt; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_Prompt; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_Prompt; }
 };
 
 template <typename Self>
@@ -71,6 +143,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<1 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_TextMode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_TextMode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_TextMode; }
 };
 
 template <typename Self>
@@ -93,6 +167,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<2 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_FontId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_FontId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_FontId; }
 };
 
 template <typename Self>
@@ -115,6 +191,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<3 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_Justify; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_Justify; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_Justify; }
 };
 
 template <typename Self>
@@ -137,6 +215,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<4 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_Scale; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_Scale; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_Scale; }
 };
 
 template <typename Self>
@@ -159,6 +239,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<5 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_EnableTextBounds; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_EnableTextBounds; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_EnableTextBounds; }
 };
 
 template <typename Self>
@@ -181,6 +263,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<6 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 6 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_TextBoundsStartX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_TextBoundsStartX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_TextBoundsStartX; }
 };
 
 template <typename Self>
@@ -203,6 +287,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<7 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 7 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_TextBoundsStartY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_TextBoundsStartY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_TextBoundsStartY; }
 };
 
 template <typename Self>
@@ -225,6 +311,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<8 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 8 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_TextBoundsEndX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_TextBoundsEndX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_TextBoundsEndX; }
 };
 
 template <typename Self>
@@ -247,6 +335,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<9 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 9 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_TextBoundsEndY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_TextBoundsEndY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_TextBoundsEndY; }
 };
 
 template <typename Self>
@@ -269,6 +359,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<10 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 10 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SecondaryColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorR; }
 };
 
 template <typename Self>
@@ -291,6 +383,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<11 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 11 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SecondaryColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorG; }
 };
 
 template <typename Self>
@@ -313,6 +407,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<12 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 12 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SecondaryColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorB; }
 };
 
 template <typename Self>
@@ -335,6 +431,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<13 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 13 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SecondaryColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SecondaryColorA; }
 };
 
 template <typename Self>
@@ -357,6 +455,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<14 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 14 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionColorR; }
 };
 
 template <typename Self>
@@ -379,6 +479,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<15 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 15 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionColorG; }
 };
 
 template <typename Self>
@@ -401,6 +503,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<16 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 16 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionColorB; }
 };
 
 template <typename Self>
@@ -423,6 +527,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<17 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 17 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionColorA; }
 };
 
 template <typename Self>
@@ -445,6 +551,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<18 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 18 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionBkgColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorR; }
 };
 
 template <typename Self>
@@ -467,6 +575,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<19 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 19 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionBkgColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorG; }
 };
 
 template <typename Self>
@@ -489,6 +599,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<20 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 20 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionBkgColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorB; }
 };
 
 template <typename Self>
@@ -511,6 +623,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<21 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 21 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_SelectionBkgColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_SelectionBkgColorA; }
 };
 
 template <typename Self>
@@ -533,6 +647,8 @@ struct StormReflTypeInfo<UIElementTextInputData>::field_data_static<22 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 22 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextInputData::m_Active; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextInputData *>(obj); return &ptr->m_Active; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextInputData *>(obj); return &ptr->m_Active; }
 };
 
 template <typename Self>

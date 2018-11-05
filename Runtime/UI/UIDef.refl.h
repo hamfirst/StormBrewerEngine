@@ -43,7 +43,7 @@ struct RUNTIME_EXPORT UIDef
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UIDef);
 
-  RPolymorphic<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo> m_InitData;
+  RPolymorphicBase<UIElementInitDataBase, UIElementTypeDatabase, UIElementDataTypeInfo> m_InitData;
 
   RMergeList<UIDefInputVariable> m_Inputs;
   RMergeList<UIDefEquation> m_Equations;

@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>
   static constexpr auto GetName() { return "UIElementTextureSliceInitData"; }
   static constexpr auto GetNameHash() { return 0xD7A2154A; }
   static UIElementTextureSliceInitData & GetDefault() { static UIElementTextureSliceInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextureSliceInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextureSliceInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextureSliceInitData *>(ptr);
+    if(typeid(UIElementTextureSliceInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextureSliceInitData *>(ptr);
+    if(typeid(UIElementTextureSliceInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -33,6 +66,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<0 + S
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_SpriteFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_SpriteFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_SpriteFile; }
 };
 
 template <typename Self>
@@ -69,6 +104,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<1 + S
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_SliceHorizontally; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_SliceHorizontally; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_SliceHorizontally; }
 };
 
 template <typename Self>
@@ -91,6 +128,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<2 + S
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_SliceVertically; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_SliceVertically; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_SliceVertically; }
 };
 
 template <typename Self>
@@ -113,6 +152,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<3 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_StartX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_StartX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_StartX; }
 };
 
 template <typename Self>
@@ -135,6 +176,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<4 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_StartY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_StartY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_StartY; }
 };
 
 template <typename Self>
@@ -157,6 +200,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<5 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_EndX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_EndX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_EndX; }
 };
 
 template <typename Self>
@@ -179,6 +224,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<6 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 6 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_EndY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_EndY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_EndY; }
 };
 
 template <typename Self>
@@ -201,6 +248,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<7 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 7 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_StartCutX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_StartCutX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_StartCutX; }
 };
 
 template <typename Self>
@@ -223,6 +272,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<8 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 8 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_StartCutY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_StartCutY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_StartCutY; }
 };
 
 template <typename Self>
@@ -245,6 +296,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<9 + S
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 9 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_EndCutX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_EndCutX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_EndCutX; }
 };
 
 template <typename Self>
@@ -267,6 +320,8 @@ struct StormReflTypeInfo<UIElementTextureSliceInitData>::field_data_static<10 + 
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 10 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextureSliceInitData::m_EndCutY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextureSliceInitData *>(obj); return &ptr->m_EndCutY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextureSliceInitData *>(obj); return &ptr->m_EndCutY; }
 };
 
 template <typename Self>
@@ -293,6 +348,43 @@ struct StormReflTypeInfo<UIElementTextureSliceData>
   static constexpr auto GetName() { return "UIElementTextureSliceData"; }
   static constexpr auto GetNameHash() { return 0x11A3711C; }
   static UIElementTextureSliceData & GetDefault() { static UIElementTextureSliceData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextureSliceData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextureSliceData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x7B3842A1 == type_name_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementTextureSliceData *>(ptr);
+    if(typeid(UIElementTextureSliceData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementTextureSliceData *>(ptr);
+    if(typeid(UIElementTextureSliceData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataStartEnd).hash_code() == type_id_hash) return static_cast<const UIElementDataStartEnd *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

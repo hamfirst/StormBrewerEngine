@@ -51,16 +51,27 @@ public:
   
   void LoadFont(czstr font_path, int font_id, int font_size);
   bool IsFontLoaded(int font_id);
-
-  void AddTextToBuffer(czstr text, int font_id, float scale, TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void AddTextToBuffer(const std::string_view & text, int font_id, float scale,
+          TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
   void AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, float scale, TextBufferBuilder & vertex_builder, const char * prompt = "");
   void RenderBuffer(TextBufferBuilder & vertex_builder, RenderState & render_state);
 
-  void RenderText(czstr text, int font_id, float scale, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
+  void RenderText(const std::string_view & text, int font_id, float scale, RenderState & render_state, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
   void RenderInputText(std::shared_ptr<TextInputContext> & context, int font_id, float scale, RenderState & render_state, const char * prompt = "");
 
-  Box GetTextSize(czstr text, int font_id, float scale);
+  Box GetTextSize(const std::string_view & text, int font_id, float scale);
   Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, float scale, const char * prompt = "");
+
+  template <typename Visitor>
+  bool VisitTextSize(Visitor && visitor, const std::string_view & text, int font_id, float scale)
+  {
+    Delegate<bool, const Box &, char32_t, czstr> callback = [&](const Box & box, char32_t codepoint, czstr text)
+    {
+      return visitor(box, codepoint, text);
+    };
+
+    return VisitTextSizeInternal(callback, text, font_id, scale);
+  }
 
   bool BindGlyphTexture(RenderState & render_state, int font_id, int texture_stage);
 
@@ -78,6 +89,7 @@ public:
 
 private:
   void LoadBackupFont(czstr font_path);
+  bool VisitTextSizeInternal(Delegate<bool, const Box &, char32_t, czstr> & callback, const std::string_view & text, int font_id, float scale);
 
   std::vector<Box> m_GlyphPositions;
 

@@ -46,7 +46,7 @@ public:
 
   virtual void PostUpdate(PlayerServerObject & player, GameLogicContainer & game_container) override;
 
-  bool STORM_REFL_FUNC HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta);
+  bool STORM_REFL_FUNC HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta);
 
 public:
 
@@ -57,3 +57,4 @@ public:
 private:
   GameNetVec2 m_AnimationVelocity;
 };
+

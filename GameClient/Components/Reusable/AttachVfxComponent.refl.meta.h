@@ -20,6 +20,39 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>
   static constexpr auto GetName() { return "AttachVfxComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x96E294A9; }
   static AttachVfxComponentInitData & GetDefault() { static AttachVfxComponentInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<AttachVfxComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const AttachVfxComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<AttachVfxComponentInitData *>(ptr);
+    if(typeid(AttachVfxComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const AttachVfxComponentInitData *>(ptr);
+    if(typeid(AttachVfxComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -32,6 +65,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<0 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_VfxFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_VfxFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_VfxFile; }
 };
 
 template <typename Self>
@@ -68,6 +103,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<1 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_SpawnFinalParticle; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_SpawnFinalParticle; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_SpawnFinalParticle; }
 };
 
 template <typename Self>
@@ -90,6 +127,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<2 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_AttachAnchor; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_AttachAnchor; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_AttachAnchor; }
 };
 
 template <typename Self>
@@ -112,6 +151,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<3 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_LayerOffset; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_LayerOffset; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_LayerOffset; }
 };
 
 template <typename Self>

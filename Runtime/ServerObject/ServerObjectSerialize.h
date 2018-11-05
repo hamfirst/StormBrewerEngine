@@ -28,6 +28,26 @@ public:
   operator NetBitWriter & ();
   operator const NetBitWriter & () const;
 
+  template <typename T>
+  const T * GetParentObjectAs()
+  {
+    m_Writer.GetParentObjectAs<T>();
+  }
+
+  template <typename T>
+  void SetParentObject(const T * t)
+  {
+    m_Writer.SetParentObject<T>(t);
+  }
+
+  void SetParentObject(const void * ptr, const void * (*cast)(std::size_t, const void *))
+  {
+    m_Writer.SetParentObject(ptr, cast);
+  }
+
+  auto GetParentObjectRaw() const { return m_Writer.GetParentObjectRaw(); }
+  auto GetParentObjectCast() const { return m_Writer.GetParentObjectCast(); }
+
 private:
   NetBitWriter & m_Writer;
   NotNullPtr<const ServerObjectManager> m_ServerObjectManager;
@@ -47,6 +67,26 @@ public:
 
   operator NetBitReader & ();
   operator const NetBitReader & () const;
+
+  template <typename T>
+  const T * GetParentObjectAs()
+  {
+    m_Reader.GetParentObjectAs<T>();
+  }
+
+  template <typename T>
+  void SetParentObject(const T * t)
+  {
+    m_Reader.SetParentObject<T>(t);
+  }
+
+  void SetParentObject(const void * ptr, const void * (*cast)(std::size_t, const void *))
+  {
+    m_Reader.SetParentObject(ptr, cast);
+  }
+
+  auto GetParentObjectRaw() const { return m_Reader.GetParentObjectRaw(); }
+  auto GetParentObjectCast() const { return m_Reader.GetParentObjectCast(); }
 
 private:
   NetBitReader & m_Reader;

@@ -12,6 +12,6 @@ struct RUNTIME_EXPORT EntityDef
 
   RString STORM_REFL_ATTR_VAL(file, sprite) m_Sprite;
 
-  RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo>> m_Components;
+  RMergeList<RPolymorphic<ComponentInitData>> m_Components;
 };
 

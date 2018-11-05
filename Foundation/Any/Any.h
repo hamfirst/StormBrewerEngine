@@ -1,6 +1,8 @@
 #pragma once
 
 #include <typeinfo>
+#include <type_traits>
+#include <utility>
 
 #include "Foundation/Optional/NullOpt.h"
 
@@ -130,23 +132,74 @@ public:
   }
 
   template <typename T>
-  explicit StaticAny(const T & t, std::enable_if_t<std::is_same<std::decay_t<T>, StaticAny<BufferSize, AlignType>>::value == false> * Enable = 0)
+  explicit StaticAny(const T & t, std::enable_if_t<!std::is_same_v<std::decay_t<T>, StaticAny<BufferSize, AlignType>>> * Enable = 0)
+    noexcept(std::is_nothrow_copy_constructible<T>::value)
   {
-    new (m_Buffer) T(t);
-    m_Copier = [](const void * src, void * dst) { new(dst) T(*(const T *)src); };
-    m_Mover = [](void * src, void * dst) { new(dst) T(std::move(*(T *)src)); };
-    m_Deleter = [](void * ptr) { static_cast<T *>(ptr)->~T(); };
-    m_Type = typeid(T).hash_code();
+    using Type = T;
+    new (m_Buffer) Type(t);
+
+    if constexpr (std::is_copy_constructible_v<Type>)
+    {
+      m_Copier = [](const void * src, void * dst) { new(dst) Type(*(const Type *)src); };
+    }
+    else
+    {
+      m_Copier = nullptr;
+    }
+
+    if constexpr (std::is_move_constructible_v<Type>)
+    {
+      m_Mover = [](void * src, void * dst) { new(dst) Type(std::move(*(Type *)src)); };
+    }
+    else
+    {
+      m_Mover = nullptr;
+    }
+
+    m_Deleter = [](void * ptr) { static_cast<Type *>(ptr)->~Type(); };
+    m_Type = typeid(Type).hash_code();
   }
 
   template <typename T>
-  explicit StaticAny(T && t, std::enable_if_t<std::is_same<std::decay_t<T>, Any>::value == false> * Enable = 0)
+  explicit StaticAny(T && t, std::enable_if_t<!std::is_same_v<std::decay_t<T>, Any>> * Enable = 0)
+    noexcept(std::is_nothrow_move_constructible<T>::value)
   {
-    new (m_Buffer) T(std::move(t));
-    m_Copier = [](const void * src, void * dst) { new(dst) T(*(const T *)src); };
-    m_Mover = [](void * src, void * dst) { new(dst) T(std::move(*(T *)src)); };
-    m_Deleter = [](void * ptr) { static_cast<T *>(ptr)->~T(); };
-    m_Type = typeid(T).hash_code();
+    using Type = std::decay_t<T>;
+
+    if constexpr (std::is_rvalue_reference_v<decltype(t)>)
+    {
+      new (m_Buffer) Type(std::forward<Type>(t));
+    }
+    else
+    {
+      new (m_Buffer) Type(t);
+    }
+
+    if constexpr (std::is_copy_constructible_v<Type>)
+    {
+      m_Copier = [](const void * src, void * dst) { new(dst) Type(*(const Type *)src); };
+    }
+    else
+    {
+      m_Copier = nullptr;
+    }
+
+    if constexpr (std::is_move_constructible_v<Type>)
+    {
+      m_Mover = [](void * src, void * dst) { new(dst) Type(std::move(*(Type *)src)); };
+    }
+    else
+    {
+      m_Mover = nullptr;
+    }
+
+    m_Deleter = [](void * ptr) 
+    {
+      auto t = static_cast<Type *>(ptr);
+      t->~Type();
+    };
+
+    m_Type = typeid(Type).hash_code();
   }
 
   StaticAny(const StaticAny<BufferSize, AlignType> & rhs) :
@@ -230,6 +283,16 @@ public:
   NullOptPtr<const T> Get() const
   {
     return m_Type == typeid(T).hash_code() ? reinterpret_cast<const T *>(&m_Buffer[0]) : nullptr;
+  }
+
+  void * GetRaw()
+  {
+    return m_Type != 0 ? &m_Buffer[0] : nullptr;
+  }
+
+  const void * GetRaw() const
+  {
+    return m_Type != 0 ? &m_Buffer[0] : nullptr;
   }
 
   operator bool() const

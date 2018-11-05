@@ -262,7 +262,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     ClearSelectors();
 
     {
-      auto property_data = GetProperyMetaData<RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>>(GetPropertyFieldDatabase());
+      auto property_data = GetProperyMetaData<RPolymorphic<VolumeDataBase>>(GetPropertyFieldDatabase());
       m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_VolumeInitData; }, "");
     }
 
@@ -292,7 +292,7 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     ClearSelectors();
 
     {
-      auto property_data = GetProperyMetaData<RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>>(GetPropertyFieldDatabase());
+      auto property_data = GetProperyMetaData<RPolymorphic<PathDataBase>>(GetPropertyFieldDatabase());
       m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_PathInitData; }, "");
     }
 
@@ -846,7 +846,7 @@ void MapEditor::ClearSelectors()
   m_Selector->GetServerObjectSelector()->Clear();
 }
 
-const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & MapEditor::GetVolumeInitData() const
+const RPolymorphic<VolumeDataBase> & MapEditor::GetVolumeInitData() const
 {
   return m_VolumeInitData;
 }
@@ -874,7 +874,7 @@ void MapEditor::CreateNewVolume(const Box & box)
   m_Map.m_Volumes.EmplaceBack(vol);
 }
 
-const RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> & MapEditor::GetPathInitData() const
+const RPolymorphic<PathDataBase> & MapEditor::GetPathInitData() const
 {
   return m_PathInitData;
 }

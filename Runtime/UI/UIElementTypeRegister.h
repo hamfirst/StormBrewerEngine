@@ -45,7 +45,7 @@ void UIElementTypeDatabase::RegisterType()
   static_assert(std::is_base_of<UIElementInitDataBase, InitDataType>::value, "Registering type that is not of the right base class");
 
   UIElementDataTypeInfo type_info;
-  InitTypeInfo<InitDataType>(type_info);
+  StormDataInitTypeInfo<InitDataType>(type_info);
 
   UICreateRuntimeInfo<RuntimeDataType>(type_info.m_RuntimeDesc);
 
@@ -65,4 +65,4 @@ void UIElementTypeDatabase::RegisterType()
 extern RUNTIME_EXPORT PreMainCallList g_UIElementRegisterCallList;
 
 #define REGISTER_UIELEMENT_DATA(RuntimeClass, InitDataType, RuntimeDataType) \
-  ADD_PREMAIN_CALL(g_UIElementRegisterCallList, RuntimeClass, ([]() { UIElementTypeDatabase::RegisterType<RuntimeClass, InitDataType, RuntimeDataType>(); }));   
+  ADD_PREMAIN_CALL(g_UIElementRegisterCallList, RuntimeClass, ([]() { UIElementTypeDatabase::Get().RegisterType<RuntimeClass, InitDataType, RuntimeDataType>(); }));

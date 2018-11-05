@@ -13,6 +13,11 @@ DocumentResourceManager::DocumentResourceManager() :
 
 }
 
+DocumentResourceManager::~DocumentResourceManager()
+{
+  ASSERT(m_Documents.size() == 0, "Not all document resources have unloaded properly");
+}
+
 NullOptPtr<DocumentResourceBase> DocumentResourceManager::FindDocumentResource(uint32_t file_path_hash)
 {
   auto itr = m_Documents.find(file_path_hash);
@@ -24,7 +29,8 @@ NullOptPtr<DocumentResourceBase> DocumentResourceManager::FindDocumentResource(u
   return nullptr;
 }
 
-NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t))
+NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(czstr file_path,
+        std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t, czstr))
 {
   uint32_t path_hash = crc32lowercase(file_path);
 
@@ -41,7 +47,7 @@ NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(c
         p_this->HandleResourceLoadResult(path_hash, resource_data);
       }, this);
 
-    auto resource = ResourceCreator(std::move(load_data), path_hash);
+    auto resource = ResourceCreator(std::move(load_data), path_hash, file_path);
     resource->m_ResourceManager = this;
 
     auto result = m_Documents.emplace(std::make_pair(path_hash, std::move(resource)));
@@ -101,6 +107,7 @@ void DocumentResourceManager::DestroyDocument(uint32_t path_hash)
   auto itr = m_Documents.find(path_hash);
   if (itr == m_Documents.end())
   {
+    ASSERT(false, "Could not find document to destroy");
     return;
   }
 

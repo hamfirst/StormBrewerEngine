@@ -546,7 +546,7 @@ Optional<MapParalaxLayerObjectType> MapEditorParalaxLayer::GetParalaxTypeForPath
 {
   std::string path = file_path;
   ConvertToCanonicalPath(path, GetCanonicalRootPath());
-  auto ext = GetFileExtensionForCanonicalPath(path);
+  auto ext = GetFileExtensionForPath(path);
 
   if (ext == "png")
   {

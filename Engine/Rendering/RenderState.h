@@ -9,6 +9,7 @@
 
 enum class RenderingBlendMode
 {
+  kNone,
   kAlpha,
   kAdditive,
 };
@@ -31,6 +32,7 @@ public:
   void InitRenderState(int screen_width, int screen_height);
 
   void MakeCurrent();
+  void ResetState();
   void BeginFrame(const Window & window);
   void FinalizeFrame(const Window & window);
   void Release();
@@ -90,7 +92,7 @@ private:
 
   bool m_BlendEnabled = false;
   bool m_ScissorEnabled = false;
-  RenderingBlendMode m_BlendMode = RenderingBlendMode::kAlpha;
+  RenderingBlendMode m_BlendMode = RenderingBlendMode::kNone;
 
   float m_FramePct = 0;
 
@@ -120,7 +122,7 @@ private:
 #endif
 
 #ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
-  unsigned m_VertexArrayName;
+  unsigned m_VertexArrayName = 0;
 #endif
 };
 

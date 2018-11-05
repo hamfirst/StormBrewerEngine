@@ -42,8 +42,6 @@ set(GENERIC_SRC_GameClient
             Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
             EffectLayers/CollisionDrawer.refl.cpp
             EffectLayers/CollisionDrawer.refl.reg.cpp
-            .//GameModeOnlineStaging.cpp
-            .//GameModeJoinPrivateGame.cpp
             #CPP_PLACEHOLDER
             )
 set(GENERIC_HEADER_GameClient 
@@ -89,8 +87,6 @@ set(GENERIC_HEADER_GameClient
             Components/Reusable/SyncServerObjectComponent.refl.meta.h
             EffectLayers/CollisionDrawer.refl.h
             EffectLayers/CollisionDrawer.refl.meta.h
-            .//GameModeOnlineStaging.h
-            .//GameModeJoinPrivateGame.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_GameClient 

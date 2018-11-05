@@ -12,10 +12,12 @@ class RUNTIME_EXPORT DocumentResourceManager
 {
 public:
   DocumentResourceManager();
+  ~DocumentResourceManager();
 
 protected:
   NullOptPtr<DocumentResourceBase> FindDocumentResource(uint32_t file_path_hash);
-  NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase> (*ResourceCreator)(Any &&, uint32_t));
+  NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path,
+          std::unique_ptr<DocumentResourceBase> (*ResourceCreator)(Any &&, uint32_t, czstr));
   void HandleResourceLoadResult(uint32_t path_hash, NullOptPtr<std::string> resource_data);
   void DestroyDocument(uint32_t path_hash);
 

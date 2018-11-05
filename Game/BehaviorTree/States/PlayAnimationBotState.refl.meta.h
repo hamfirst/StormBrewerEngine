@@ -17,6 +17,35 @@ struct StormReflTypeInfo<PlayAnimationBotState>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "PlayAnimationBotState"; }
   static constexpr auto GetNameHash() { return 0x0A06114B; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationBotState *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationBotState *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationBotState *>(ptr);
+    if(typeid(PlayAnimationBotState).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationBotState *>(ptr);
+    if(typeid(PlayAnimationBotState).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

@@ -16,6 +16,35 @@ struct StormReflTypeInfo<GameClientSaveData>
   static constexpr auto GetName() { return "GameClientSaveData"; }
   static constexpr auto GetNameHash() { return 0x80854010; }
   static GameClientSaveData & GetDefault() { static GameClientSaveData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameClientSaveData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameClientSaveData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameClientSaveData *>(ptr);
+    if(typeid(GameClientSaveData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameClientSaveData *>(ptr);
+    if(typeid(GameClientSaveData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -28,6 +57,8 @@ struct StormReflTypeInfo<GameClientSaveData>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameClientSaveData::m_WatchedTutorial; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameClientSaveData *>(obj); return &ptr->m_WatchedTutorial; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameClientSaveData *>(obj); return &ptr->m_WatchedTutorial; }
 };
 
 template <typename Self>

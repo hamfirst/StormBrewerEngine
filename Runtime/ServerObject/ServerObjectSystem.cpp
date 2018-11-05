@@ -223,3 +223,8 @@ czstr ServerObjectSystem::GetEntityBindingForInitDataTypeNameHash(uint32_t init_
 
   return nullptr;
 }
+
+const ServerObjectTypeInfo & ServerObjectSystem::GetTypeInfo(int type_index) const
+{
+  return m_ObjectTypes[type_index];
+}

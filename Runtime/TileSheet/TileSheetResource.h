@@ -16,7 +16,7 @@ using TileSheetLoadLink = DocumentResourceLoadCallbackLink<TileSheetDef, TileShe
 class TileSheetResource : public DocumentResourceBase
 {
 public:
-  TileSheetResource(Any && load_data, uint32_t path_hash);
+  TileSheetResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<TileSheetDef> GetData();
   DocumentResourceLoadCallbackLink<TileSheetDef, TileSheetResource> AddLoadCallback(Delegate<void, NotNullPtr<TileSheetResource>> && callback);

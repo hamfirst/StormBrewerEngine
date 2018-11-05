@@ -11,5 +11,5 @@ bool CreateDirectory(const std::string & path);
 
 std::string GetFileNameForCanonicalPath(const std::string & path);
 std::string GetFileStemForCanonicalPath(const std::string & path);
-std::string GetFileExtensionForCanonicalPath(const std::string & path);
+std::string GetFileExtensionForPath(const std::string & path);
 

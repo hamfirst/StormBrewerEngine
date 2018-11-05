@@ -20,6 +20,39 @@ struct StormReflTypeInfo<KillVolume>
   static constexpr auto GetName() { return "KillVolume"; }
   static constexpr auto GetNameHash() { return 0xB1B659F0; }
   static KillVolume & GetDefault() { static KillVolume def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<KillVolume *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x420476BB == type_name_hash) return static_cast<VolumeDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const KillVolume *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x420476BB == type_name_hash) return static_cast<const VolumeDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<KillVolume *>(ptr);
+    if(typeid(KillVolume).hash_code() == type_id_hash) return c;
+    if(typeid(VolumeDataBase).hash_code() == type_id_hash) return static_cast<VolumeDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const KillVolume *>(ptr);
+    if(typeid(KillVolume).hash_code() == type_id_hash) return c;
+    if(typeid(VolumeDataBase).hash_code() == type_id_hash) return static_cast<const VolumeDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

@@ -26,7 +26,7 @@ struct GameContainerInitSettings
 {
   bool m_AutoConnect = false;
   bool m_AutoBotGame = false;
-  std::string m_UserName;
+  std::string m_UserName = "Player";
 };
 
 class GameContainer

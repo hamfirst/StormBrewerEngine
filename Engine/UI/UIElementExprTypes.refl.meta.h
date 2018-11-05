@@ -16,6 +16,35 @@ struct StormReflTypeInfo<UIGlobalBlock>
   static constexpr auto GetName() { return "UIGlobalBlock"; }
   static constexpr auto GetNameHash() { return 0x45A889EB; }
   static UIGlobalBlock & GetDefault() { static UIGlobalBlock def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIGlobalBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIGlobalBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIGlobalBlock *>(ptr);
+    if(typeid(UIGlobalBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIGlobalBlock *>(ptr);
+    if(typeid(UIGlobalBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -28,6 +57,8 @@ struct StormReflTypeInfo<UIGlobalBlock>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIGlobalBlock::m_Time; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIGlobalBlock *>(obj); return &ptr->m_Time; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIGlobalBlock *>(obj); return &ptr->m_Time; }
 };
 
 template <typename Self>
@@ -50,6 +81,8 @@ struct StormReflTypeInfo<UIGlobalBlock>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIGlobalBlock::m_ScreenWidth; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIGlobalBlock *>(obj); return &ptr->m_ScreenWidth; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIGlobalBlock *>(obj); return &ptr->m_ScreenWidth; }
 };
 
 template <typename Self>
@@ -72,6 +105,8 @@ struct StormReflTypeInfo<UIGlobalBlock>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UIGlobalBlock::m_ScreenHeight; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIGlobalBlock *>(obj); return &ptr->m_ScreenHeight; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIGlobalBlock *>(obj); return &ptr->m_ScreenHeight; }
 };
 
 template <typename Self>
@@ -95,6 +130,35 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>
   static constexpr auto GetName() { return "UIAutoCalculatedBlock"; }
   static constexpr auto GetNameHash() { return 0x4167197E; }
   static UIAutoCalculatedBlock & GetDefault() { static UIAutoCalculatedBlock def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIAutoCalculatedBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIAutoCalculatedBlock *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIAutoCalculatedBlock *>(ptr);
+    if(typeid(UIAutoCalculatedBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIAutoCalculatedBlock *>(ptr);
+    if(typeid(UIAutoCalculatedBlock).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -107,6 +171,8 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIAutoCalculatedBlock::m_TimeAlive; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIAutoCalculatedBlock *>(obj); return &ptr->m_TimeAlive; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIAutoCalculatedBlock *>(obj); return &ptr->m_TimeAlive; }
 };
 
 template <typename Self>
@@ -129,6 +195,8 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIAutoCalculatedBlock::m_Width; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIAutoCalculatedBlock *>(obj); return &ptr->m_Width; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIAutoCalculatedBlock *>(obj); return &ptr->m_Width; }
 };
 
 template <typename Self>
@@ -151,6 +219,8 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UIAutoCalculatedBlock::m_Height; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIAutoCalculatedBlock *>(obj); return &ptr->m_Height; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIAutoCalculatedBlock *>(obj); return &ptr->m_Height; }
 };
 
 template <typename Self>
@@ -173,6 +243,8 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UIAutoCalculatedBlock::m_ScreenX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIAutoCalculatedBlock *>(obj); return &ptr->m_ScreenX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIAutoCalculatedBlock *>(obj); return &ptr->m_ScreenX; }
 };
 
 template <typename Self>
@@ -195,6 +267,8 @@ struct StormReflTypeInfo<UIAutoCalculatedBlock>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &UIAutoCalculatedBlock::m_ScreenY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIAutoCalculatedBlock *>(obj); return &ptr->m_ScreenY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIAutoCalculatedBlock *>(obj); return &ptr->m_ScreenY; }
 };
 
 template <typename Self>

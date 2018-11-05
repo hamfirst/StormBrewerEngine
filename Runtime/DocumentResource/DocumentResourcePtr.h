@@ -112,10 +112,15 @@ public:
     return m_Resource && (m_Resource->IsError() || m_Resource->IsLoaded());
   }
 
-  void Clear()
+  virtual void Clear()
   {
     m_Data = nullptr;
     m_Resource.Clear();
+  }
+
+  operator bool() const
+  {
+    return IsLoaded();
   }
 
 protected:
@@ -140,26 +145,17 @@ public:
 
   }
 
-  DocumentResourceLoadCallbackLink(const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs) :
-    DocumentResourcePtr<DataType, ResourceType>(rhs)
-  {
-    m_Link = rhs.m_Link;
-  }
+  DocumentResourceLoadCallbackLink(const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs) = delete;
 
-  DocumentResourceLoadCallbackLink(DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs) :
+  DocumentResourceLoadCallbackLink(DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs) noexcept :
     DocumentResourcePtr<DataType, ResourceType>(std::move(rhs))
   {
     m_Link = std::move(rhs.m_Link);
   }
 
-  DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs)
-  {
-    m_Link = rhs.m_Link;
-    DocumentResourcePtr<DataType, ResourceType>::operator = (rhs);
-    return *this;
-  }
+  DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (const DocumentResourceLoadCallbackLink<DataType, ResourceType> & rhs) = delete;
 
-  DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs)
+  DocumentResourceLoadCallbackLink<DataType, ResourceType> & operator = (DocumentResourceLoadCallbackLink<DataType, ResourceType> && rhs) noexcept
   {
     m_Link = std::move(rhs.m_Link);
     DocumentResourcePtr<DataType, ResourceType>::operator = (std::move(rhs));
@@ -168,6 +164,7 @@ public:
 
   void Clear()
   {
+    DocumentResourcePtr<DataType, ResourceType>::Clear();
     m_Link.Clear();
     DocumentResourcePtr<DataType, ResourceType>::Clear();
   }

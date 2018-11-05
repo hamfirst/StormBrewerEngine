@@ -37,14 +37,21 @@ public:
   template <typename T>
   NullOptPtr<T> CreateDynamicObject(GameLogicContainer & game_container, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, init_data, false, game_container);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, false, init_data, false, game_container);
     return static_cast<T *>(ptr);
   }
 
   template <typename T>
   NullOptPtr<T> CreateDynamicObject(std::size_t reserved_slot, GameLogicContainer & game_container, NullOptPtr<ServerObjectInitData> init_data = nullptr)
   {
-    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, (int)reserved_slot, init_data, false, game_container);
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, (int)reserved_slot, false, init_data, false, game_container);
+    return static_cast<T *>(ptr);
+  }
+
+  template <typename T>
+  NullOptPtr<T> CreateUnsyncedDynamicObject(GameLogicContainer & game_container, NullOptPtr<ServerObjectInitData> init_data = nullptr)
+  {
+    auto ptr = CreateDynamicObjectInternal((int)T::TypeIndex, -1, true, init_data, false, game_container);
     return static_cast<T *>(ptr);
   }
 
@@ -60,6 +67,11 @@ public:
     for (auto elem : m_DynamicObjects)
     {
       visitor(elem.first + object_index, elem.second.m_ServerObject);
+    }
+
+    for (auto & elem : m_UnsyncedObjects)
+    {
+      visitor(-1, elem.m_ServerObject);
     }
   }
 
@@ -82,7 +94,7 @@ public:
 
     if(ptr)
     {
-      return ptr->CastTo<T>();
+      return ptr->template CastTo<T>();
     }
 
     return nullptr;
@@ -109,9 +121,9 @@ protected:
                       GameLogicContainer & game_container);
 
   int GetNewDynamicObjectId();
-  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index,
+  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, bool unsynced,
           NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container);
-  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, int slot_index,
+  NullOptPtr<ServerObject> CreateDynamicObjectInternal(int type_index, int slot_index, bool unsynced,
           NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container);
   void DestroyDynamicObjectInternal(NotNullPtr<ServerObject> ptr);
 
@@ -131,6 +143,8 @@ private:
   std::vector<NotNullPtr<ServerObject>> m_StaticObjects;
   std::vector<int> m_DynamicObjectGen;
   SparseList<DynamicObjectInfo> m_DynamicObjects;
+  std::vector<DynamicObjectInfo> m_UnsyncedObjects;
+
   int m_ReservedSlots;
   int m_MaxDynamicObjects;
   bool m_Initialized;

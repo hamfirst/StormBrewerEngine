@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 
 include(CMakeDependentOption)
 
-
 option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
 CMAKE_DEPENDENT_OPTION(BUILD_TOOLS "Build Client" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
@@ -10,6 +9,30 @@ CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID A
 
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_DEBUG_POSTFIX "")
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+endif()
+
+if (WEB)
+  add_definitions(-D_WEB)
+endif()
+
+if (IOS)
+  add_definitions(-D_IOS)
+endif()
+
+if (APPLE AND NOT IOS)
+  add_definitions(-D_MACOS)
+endif()
+
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+endif()
+
+if (UNIX AND NOT APPLE)
+  add_definitions(-D_LINUX)
+endif()
 
 if(WEB)
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
@@ -94,3 +117,4 @@ if(BUILD_TOOLS)
   add_subdirectory("${PROJECT_SOURCE_DIR}/QTUtil")
   add_subdirectory("${PROJECT_SOURCE_DIR}/Editor")
 endif()
+

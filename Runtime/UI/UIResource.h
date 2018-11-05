@@ -15,7 +15,7 @@ using UILoadLink = DocumentResourceLoadCallbackLink<UIDef, UIResource>;
 class UIResource : public DocumentResourceBase
 {
 public:
-  UIResource(Any && load_data, uint32_t path_hash);
+  UIResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<UIDef> GetData();
   DocumentResourceLoadCallbackLink<UIDef, UIResource> AddLoadCallback(Delegate<void, NotNullPtr<UIResource>> && callback);

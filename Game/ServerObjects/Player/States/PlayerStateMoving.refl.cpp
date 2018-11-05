@@ -134,26 +134,12 @@ void PlayerStateMoving::Animate(PlayerServerObject & player, GameLogicContainer 
   if (player.m_Input.m_XInput < GameNetVal(0))
   {
     player.m_Facing = CharacterFacing::kLeft;
-    if (player.m_Velocity.x < GameNetVal(0))
-    {
-      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
-    }
-    else
-    {
-      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Turn"));
-    }
+    player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
   }
   else if(player.m_Input.m_XInput > GameNetVal(0))
   {
     player.m_Facing = CharacterFacing::kRight;
-    if (player.m_Velocity.x > GameNetVal(0))
-    {
-      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
-    }
-    else
-    {
-      player.FrameAdvance(COMPILE_TIME_CRC32_STR("Turn"));
-    }
+    player.FrameAdvance(COMPILE_TIME_CRC32_STR("Run"));
   }
 
 #endif

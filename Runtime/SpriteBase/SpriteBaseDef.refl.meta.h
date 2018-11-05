@@ -18,6 +18,35 @@ struct StormReflTypeInfo<SpriteBaseDefTexture>
   static constexpr auto GetName() { return "SpriteBaseDefTexture"; }
   static constexpr auto GetNameHash() { return 0xEFFE2CC8; }
   static SpriteBaseDefTexture & GetDefault() { static SpriteBaseDefTexture def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefTexture *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefTexture *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefTexture *>(ptr);
+    if(typeid(SpriteBaseDefTexture).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefTexture *>(ptr);
+    if(typeid(SpriteBaseDefTexture).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -30,6 +59,8 @@ struct StormReflTypeInfo<SpriteBaseDefTexture>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefTexture::m_Filename; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefTexture *>(obj); return &ptr->m_Filename; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefTexture *>(obj); return &ptr->m_Filename; }
 };
 
 template <typename Self>
@@ -66,6 +97,8 @@ struct StormReflTypeInfo<SpriteBaseDefTexture>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefTexture::m_FrameWidth; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefTexture *>(obj); return &ptr->m_FrameWidth; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefTexture *>(obj); return &ptr->m_FrameWidth; }
 };
 
 template <typename Self>
@@ -88,6 +121,8 @@ struct StormReflTypeInfo<SpriteBaseDefTexture>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefTexture::m_FrameHeight; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefTexture *>(obj); return &ptr->m_FrameHeight; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefTexture *>(obj); return &ptr->m_FrameHeight; }
 };
 
 template <typename Self>
@@ -111,6 +146,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>
   static constexpr auto GetName() { return "SpriteBaseDefAnimFrame"; }
   static constexpr auto GetNameHash() { return 0x226CF952; }
   static SpriteBaseDefAnimFrame & GetDefault() { static SpriteBaseDefAnimFrame def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimFrame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimFrame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimFrame *>(ptr);
+    if(typeid(SpriteBaseDefAnimFrame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimFrame *>(ptr);
+    if(typeid(SpriteBaseDefAnimFrame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -123,6 +187,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xFD825A3A; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimFrame::m_FrameId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnimFrame *>(obj); return &ptr->m_FrameId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnimFrame *>(obj); return &ptr->m_FrameId; }
 };
 
 template <typename Self>
@@ -145,6 +211,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnimFrame>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimFrame::m_FrameDuration; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnimFrame *>(obj); return &ptr->m_FrameDuration; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnimFrame *>(obj); return &ptr->m_FrameDuration; }
 };
 
 template <typename Self>
@@ -168,6 +236,35 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>
   static constexpr auto GetName() { return "SpriteBaseAnimationEvent"; }
   static constexpr auto GetNameHash() { return 0x89FDF2FA; }
   static SpriteBaseAnimationEvent & GetDefault() { static SpriteBaseAnimationEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseAnimationEvent *>(ptr);
+    if(typeid(SpriteBaseAnimationEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseAnimationEvent *>(ptr);
+    if(typeid(SpriteBaseAnimationEvent).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -180,6 +277,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_Frame; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseAnimationEvent *>(obj); return &ptr->m_Frame; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseAnimationEvent *>(obj); return &ptr->m_Frame; }
 };
 
 template <typename Self>
@@ -202,6 +301,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_FrameDelay; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseAnimationEvent *>(obj); return &ptr->m_FrameDelay; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseAnimationEvent *>(obj); return &ptr->m_FrameDelay; }
 };
 
 template <typename Self>
@@ -217,13 +318,15 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public
 template <>
 struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
 {
-  using member_type = RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>; // RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>
+  using member_type = RPolymorphic<SpriteAnimationEventDataBase>; // RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>
   static constexpr auto GetName() { return "m_EventData"; }
-  static constexpr auto GetType() { return "RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x5C470443; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEA49E70D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseAnimationEvent *>(obj); return &ptr->m_EventData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseAnimationEvent *>(obj); return &ptr->m_EventData; }
 };
 
 template <typename Self>
@@ -231,8 +334,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<2, Self> : public
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>> & Get() { return self.m_EventData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventDataBase, SpriteAnimationEventTypeDatabase, SpriteAnimationEventDataTypeInfo>>> & Get() const { return self.m_EventData; }
+  match_const_t<Self, RPolymorphic<SpriteAnimationEventDataBase>> & Get() { return self.m_EventData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<SpriteAnimationEventDataBase>>> & Get() const { return self.m_EventData; }
   void SetDefault() { self.m_EventData = StormReflTypeInfo<SpriteBaseAnimationEvent>::GetDefault().m_EventData; }
 };
 
@@ -246,6 +349,8 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x69BF77B3; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventArea; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseAnimationEvent *>(obj); return &ptr->m_EventArea; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseAnimationEvent *>(obj); return &ptr->m_EventArea; }
 };
 
 template <typename Self>
@@ -269,6 +374,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>
   static constexpr auto GetName() { return "SpriteBaseDefAnimation"; }
   static constexpr auto GetNameHash() { return 0xDF11BF28; }
   static SpriteBaseDefAnimation & GetDefault() { static SpriteBaseDefAnimation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnimation *>(ptr);
+    if(typeid(SpriteBaseDefAnimation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnimation *>(ptr);
+    if(typeid(SpriteBaseDefAnimation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -281,6 +415,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimation::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnimation *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnimation *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -303,6 +439,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xB67B45D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimation::m_Frames; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnimation *>(obj); return &ptr->m_Frames; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnimation *>(obj); return &ptr->m_Frames; }
 };
 
 template <typename Self>
@@ -325,6 +463,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnimation>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0xAE386DE0; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnimation::m_Events; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnimation *>(obj); return &ptr->m_Events; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnimation *>(obj); return &ptr->m_Events; }
 };
 
 template <typename Self>
@@ -348,6 +488,35 @@ struct StormReflTypeInfo<SpriteBaseDefSkinElement>
   static constexpr auto GetName() { return "SpriteBaseDefSkinElement"; }
   static constexpr auto GetNameHash() { return 0xC2ABD8EA; }
   static SpriteBaseDefSkinElement & GetDefault() { static SpriteBaseDefSkinElement def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkinElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkinElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkinElement *>(ptr);
+    if(typeid(SpriteBaseDefSkinElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkinElement *>(ptr);
+    if(typeid(SpriteBaseDefSkinElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -360,6 +529,8 @@ struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkinElement::m_Texture; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefSkinElement *>(obj); return &ptr->m_Texture; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefSkinElement *>(obj); return &ptr->m_Texture; }
 };
 
 template <typename Self>
@@ -382,6 +553,8 @@ struct StormReflTypeInfo<SpriteBaseDefSkinElement>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkinElement::m_Replacement; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefSkinElement *>(obj); return &ptr->m_Replacement; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefSkinElement *>(obj); return &ptr->m_Replacement; }
 };
 
 template <typename Self>
@@ -405,6 +578,35 @@ struct StormReflTypeInfo<SpriteBaseDefSkin>
   static constexpr auto GetName() { return "SpriteBaseDefSkin"; }
   static constexpr auto GetNameHash() { return 0xD5CD380A; }
   static SpriteBaseDefSkin & GetDefault() { static SpriteBaseDefSkin def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkin *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkin *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefSkin *>(ptr);
+    if(typeid(SpriteBaseDefSkin).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefSkin *>(ptr);
+    if(typeid(SpriteBaseDefSkin).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -417,6 +619,8 @@ struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkin::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefSkin *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefSkin *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -439,6 +643,8 @@ struct StormReflTypeInfo<SpriteBaseDefSkin>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xB3C42BAE; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefSkin::m_TextureReplacements; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefSkin *>(obj); return &ptr->m_TextureReplacements; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefSkin *>(obj); return &ptr->m_TextureReplacements; }
 };
 
 template <typename Self>
@@ -462,6 +668,35 @@ struct StormReflTypeInfo<SpriteBaseDefAnchor>
   static constexpr auto GetName() { return "SpriteBaseDefAnchor"; }
   static constexpr auto GetNameHash() { return 0x22944068; }
   static SpriteBaseDefAnchor & GetDefault() { static SpriteBaseDefAnchor def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDefAnchor *>(ptr);
+    if(typeid(SpriteBaseDefAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDefAnchor *>(ptr);
+    if(typeid(SpriteBaseDefAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -474,6 +709,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnchor>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnchor::m_AnchorName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnchor *>(obj); return &ptr->m_AnchorName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnchor *>(obj); return &ptr->m_AnchorName; }
 };
 
 template <typename Self>
@@ -496,6 +733,8 @@ struct StormReflTypeInfo<SpriteBaseDefAnchor>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1BBED1BD; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDefAnchor::m_DefaultPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDefAnchor *>(obj); return &ptr->m_DefaultPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDefAnchor *>(obj); return &ptr->m_DefaultPosition; }
 };
 
 template <typename Self>
@@ -519,6 +758,35 @@ struct StormReflTypeInfo<SpriteBaseDef>
   static constexpr auto GetName() { return "SpriteBaseDef"; }
   static constexpr auto GetNameHash() { return 0x48F83F55; }
   static SpriteBaseDef & GetDefault() { static SpriteBaseDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<SpriteBaseDef *>(ptr);
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const SpriteBaseDef *>(ptr);
+    if(typeid(SpriteBaseDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -531,6 +799,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x5DA9DA67; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_Textures; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_Textures; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_Textures; }
 };
 
 template <typename Self>
@@ -553,6 +823,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x0656A0B5; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_Animations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_Animations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_Animations; }
 };
 
 template <typename Self>
@@ -575,6 +847,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x3064FA4B; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_Skins; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_Skins; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_Skins; }
 };
 
 template <typename Self>
@@ -597,6 +871,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x717DB626; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_Anchors; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_Anchors; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_Anchors; }
 };
 
 template <typename Self>
@@ -619,6 +895,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x4108D867; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_InstanceData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_InstanceData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_InstanceData; }
 };
 
 template <typename Self>
@@ -641,6 +919,8 @@ struct StormReflTypeInfo<SpriteBaseDef>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x38B9B832; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseDef::m_FrameData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SpriteBaseDef *>(obj); return &ptr->m_FrameData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SpriteBaseDef *>(obj); return &ptr->m_FrameData; }
 };
 
 template <typename Self>

@@ -16,6 +16,35 @@ struct StormReflTypeInfo<EngineSettings>
   static constexpr auto GetName() { return "EngineSettings"; }
   static constexpr auto GetNameHash() { return 0x372CF65D; }
   static EngineSettings & GetDefault() { static EngineSettings def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<EngineSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const EngineSettings *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<EngineSettings *>(ptr);
+    if(typeid(EngineSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const EngineSettings *>(ptr);
+    if(typeid(EngineSettings).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -28,6 +57,8 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_AssetLoadQueueSize; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_AssetLoadQueueSize; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EngineSettings *>(obj); return &ptr->m_AssetLoadQueueSize; }
 };
 
 template <typename Self>
@@ -50,6 +81,8 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_AssetLoadThreads; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_AssetLoadThreads; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EngineSettings *>(obj); return &ptr->m_AssetLoadThreads; }
 };
 
 template <typename Self>
@@ -72,6 +105,8 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_FontCacheSize; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_FontCacheSize; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EngineSettings *>(obj); return &ptr->m_FontCacheSize; }
 };
 
 template <typename Self>
