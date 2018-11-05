@@ -65,6 +65,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<0 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_VfxFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_VfxFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_VfxFile; }
 };
 
 template <typename Self>
@@ -101,6 +103,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<1 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_SpawnFinalParticle; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_SpawnFinalParticle; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_SpawnFinalParticle; }
 };
 
 template <typename Self>
@@ -123,6 +127,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<2 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_AttachAnchor; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_AttachAnchor; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_AttachAnchor; }
 };
 
 template <typename Self>
@@ -145,6 +151,8 @@ struct StormReflTypeInfo<AttachVfxComponentInitData>::field_data_static<3 + Stor
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &AttachVfxComponentInitData::m_LayerOffset; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AttachVfxComponentInitData *>(obj); return &ptr->m_LayerOffset; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AttachVfxComponentInitData *>(obj); return &ptr->m_LayerOffset; }
 };
 
 template <typename Self>

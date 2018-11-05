@@ -50,6 +50,7 @@ set(GENERIC_HEADER_Foundation
             Common.h
             Document/DocumentCompiler.h
             Document/DocumentTypes.refl.h
+            Document/DocumentTypes.refl.meta.h
             Document/DocumentLoader.h
             Document/Document.h
             Lerp/LerpFuncs.h
@@ -67,6 +68,7 @@ set(GENERIC_HEADER_Foundation
             Json/JsonType.h
             BasicTypes/BasicTypeHash.h
             BasicTypes/BasicTypeFuncs.h
+            BasicTypes/BasicTypes.refl.meta.h
             BasicTypes/BasicTypes.refl.h
             Bitset/Bitset.h
             Waveform/Waveform.h
@@ -122,7 +124,7 @@ set(GENERIC_HEADER_Foundation
             CircularBuffer/CircularBuffer.h
             CircularBuffer/CircularQueue.h
             #HEADER_PLACEHOLDER
-            )
+  Castable/Castable.h)
 
 set(GENERIC_REFL_Foundation 
             Document/DocumentTypes.refl.h

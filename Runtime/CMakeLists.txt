@@ -67,32 +67,41 @@ set(GENERIC_SRC_Runtime
 set(GENERIC_HEADER_Runtime 
             Runtime.h
             RuntimeCommon.h
+            Entity/EntityDef.refl.meta.h
             Entity/EntityResource.h
             Entity/EntityDef.refl.h
             GenericResource/GenericResource.h
             Map/MapPropertiesTypeRegister.h
             Map/MapEffectLayerTypeRegister.h
             Map/MapEffectLayerTypeDatabase.h
+            Map/MapEffectLayerDef.refl.meta.h
             Map/MapHandles.refl.h
             Map/MapResource.h
+            Map/MapHandles.refl.meta.h
             Map/MapDef.refl.h
             Map/MapCollision.h
             Map/MapMetaExtractor.h
             Map/MapTileJson.h
+            Map/MapDef.refl.meta.h
             Map/MapPropertiesDef.refl.h
+            Map/MapPropertiesDef.refl.meta.h
             Map/MapEffectLayerDef.refl.h
             Map/MapTile.h
             Map/MapPropertiesTypeDatabase.h
             Volume/VolumeTypeDatabase.h
             Volume/VolumeTypeRegister.h
             Volume/VolumeDef.refl.h
+            Volume/VolumeDef.refl.meta.h
             Sprite/SpriteDef.refl.h
+            Sprite/SpriteDef.refl.meta.h
             Sprite/SpriteResource.h
             FrameData/FrameData.refl.h
+            FrameData/FrameData.refl.meta.h
             FrameData/FrameDataExtract.h
             Component/ComponentInitDataTypeDatabaseRegister.h
             Component/ComponentInitData.refl.h
             Component/ComponentInitDataTypeDatabase.h
+            Component/ComponentInitData.refl.meta.h
             Collision/CollisionDatabase.h
             Collision/StaticCollisionDatabase.h
             Collision/DynamicCollisionDatabase.h
@@ -101,6 +110,8 @@ set(GENERIC_HEADER_Runtime
             UI/UIElementTypeRegister.h
             UI/UITypes.refl.h
             UI/UIResource.h
+            UI/UITypes.refl.meta.h
+            UI/UIDef.refl.meta.h
             UI/UIElementTypeDatabase.h
             UI/UIDef.refl.h
             Animation/AnimationState.h
@@ -110,15 +121,18 @@ set(GENERIC_HEADER_Runtime
             Config/ConfigList.h
             Mover/Mover.h
             Path/PathTypeDatabase.h
+            Path/PathDef.refl.meta.h
             Path/PathTypeRegister.h
             Path/PathDef.refl.h
             Event/EventDispatcher.h
             Event/EventHandler.h
             Event/EventSystem.h
             Event/Event.h
+            TileSheet/TileSheetDef.refl.meta.h
             TileSheet/TileSheetResource.h
             TileSheet/TileSheetDef.refl.h
             VisualEffect/VisualEffectResource.h
+            VisualEffect/VisualEffectDef.refl.meta.h
             VisualEffect/VisualEffectDef.refl.h
             Asset/Asset.h
             ServerObject/ServerObjectManager.h
@@ -127,10 +141,12 @@ set(GENERIC_HEADER_Runtime
             ServerObject/ServerObjectEventRegister.h
             ServerObject/ServerObjectInitDataTypeDatabase.h
             ServerObject/ServerObjectSystem.h
+            ServerObject/ServerObjectDef.refl.meta.h
             ServerObject/ServerObjectInitData.refl.h
             ServerObject/ServerTypesNet.h
             ServerObject/ServerObjectUpdate.h
             ServerObject/ServerObjectHandle.h
+            ServerObject/ServerObjectInitData.refl.meta.h
             ServerObject/ServerObjectOverlapRegistrationMacros.h
             ServerObject/ServerObjectEventDispatch.h
             ServerObject/ServerTypesJson.h
@@ -148,13 +164,16 @@ set(GENERIC_HEADER_Runtime
             DocumentResource/DocumentResourceManager.h
             SpriteBase/SpriteAnimationEventRegister.h
             SpriteBase/SpriteAnimationEventTypeDatabase.h
+            SpriteBase/SpriteAnimationEventDef.refl.meta.h
+            SpriteBase/SpriteBaseDef.refl.meta.h
             SpriteBase/SpriteAnimationEventDef.refl.h
             SpriteBase/SpriteBaseDef.refl.h
             Anchor/AnchorTypeDatabase.h
+            Anchor/AnchorDef.refl.meta.h
             Anchor/AnchorTypeRegister.h
             Anchor/AnchorDef.refl.h
             #HEADER_PLACEHOLDER
-            )
+  ServerObject/ServerObjectComponent.h ServerObject/ServerObjectComponentSerialize.h ServerObject/ServerObjectTypeInfo.h)
 
 set(GENERIC_REFL_Runtime 
             Entity/EntityDef.refl.h

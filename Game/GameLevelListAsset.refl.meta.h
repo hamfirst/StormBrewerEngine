@@ -57,6 +57,8 @@ struct StormReflTypeInfo<GameLevelListAsset>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameLevelListAsset::m_Levels; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelListAsset *>(obj); return &ptr->m_Levels; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelListAsset *>(obj); return &ptr->m_Levels; }
 };
 
 template <typename Self>

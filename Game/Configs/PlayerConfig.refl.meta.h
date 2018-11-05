@@ -58,6 +58,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_EntityFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_EntityFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_EntityFile; }
 };
 
 template <typename Self>
@@ -94,6 +96,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_MoveSpeed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_MoveSpeed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_MoveSpeed; }
 };
 
 template <typename Self>
@@ -116,6 +120,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_MoveAccel; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_MoveAccel; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_MoveAccel; }
 };
 
 template <typename Self>
@@ -138,6 +144,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_AirControlAccel; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_AirControlAccel; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_AirControlAccel; }
 };
 
 template <typename Self>
@@ -160,6 +168,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_JumpSpeed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_JumpSpeed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_JumpSpeed; }
 };
 
 template <typename Self>
@@ -182,6 +192,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_Gravity; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_Gravity; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_Gravity; }
 };
 
 template <typename Self>
@@ -204,6 +216,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_GravityJumpReduce; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_GravityJumpReduce; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_GravityJumpReduce; }
 };
 
 template <typename Self>
@@ -226,6 +240,8 @@ struct StormReflTypeInfo<PlayerConfig>::field_data_static<7>
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &PlayerConfig::m_FallthroughThreshold; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerConfig *>(obj); return &ptr->m_FallthroughThreshold; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerConfig *>(obj); return &ptr->m_FallthroughThreshold; }
 };
 
 template <typename Self>

@@ -13,34 +13,68 @@ DynamicCollisionDatabase::DynamicCollisionDatabase()
 
 }
 
-Optional<CollisionDatabaseCheckResult> DynamicCollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const
+Optional<CollisionDatabaseCheckResult> DynamicCollisionDatabase::CheckCollisionAny(const Box & box,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
   std::vector<std::size_t> elem_ids;
   m_Collision.Query(box, elem_ids);
 
-  for (auto & elem : elem_ids)
+  if(obj_mask)
   {
-    if (m_Objects[elem].m_Mask & collision_layer_mask)
+    for (auto &elem : elem_ids)
     {
-      return Optional<CollisionDatabaseCheckResult>(m_Objects[elem]);
+      if (m_Objects[elem].m_Mask & collision_layer_mask)
+      {
+        if(m_Objects[elem].m_ObjectId == -1 || obj_mask->Get(m_Objects[elem].m_ObjectId) == false)
+        {
+          return Optional<CollisionDatabaseCheckResult>(m_Objects[elem]);
+        }
+      }
+    }
+  }
+  else
+  {
+    for (auto &elem : elem_ids)
+    {
+      if (m_Objects[elem].m_Mask & collision_layer_mask)
+      {
+        return Optional<CollisionDatabaseCheckResult>(m_Objects[elem]);
+      }
     }
   }
 
   return {};
 }
 
-std::vector<CollisionDatabaseCheckResult> DynamicCollisionDatabase::QueryAll(const Box & box, uint32_t collision_layer_mask) const
+std::vector<CollisionDatabaseCheckResult> DynamicCollisionDatabase::QueryAll(const Box & box,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
   std::vector<std::size_t> elem_ids;
   m_Collision.Query(box, elem_ids);
 
   std::vector<CollisionDatabaseCheckResult> hits;
 
-  for (auto & elem : elem_ids)
+  if(obj_mask)
   {
-    if (m_Objects[elem].m_Mask & collision_layer_mask)
+    for (auto &elem : elem_ids)
     {
-      hits.emplace_back(m_Objects[elem]);
+      if (m_Objects[elem].m_Mask & collision_layer_mask)
+      {
+        if(m_Objects[elem].m_ObjectId == -1 || obj_mask->Get(m_Objects[elem].m_ObjectId) == false)
+        {
+          hits.emplace_back(m_Objects[elem]);
+        }
+      }
+    }
+  }
+  else
+  {
+    for (auto &elem : elem_ids)
+    {
+      if (m_Objects[elem].m_Mask & collision_layer_mask)
+      {
+        hits.emplace_back(m_Objects[elem]);
+      }
     }
   }
 
@@ -51,12 +85,21 @@ void DynamicCollisionDatabase::ResetCollision()
 {
   m_Objects.clear();
   m_Collision.Clear();
+
+  m_NextCollisionId = 0;
 }
 
-void DynamicCollisionDatabase::PushCollision(const Box & box, uint32_t collision_mask, CollisionDatabaseObjectInfo && obj_info)
+void DynamicCollisionDatabase::PushCollision(const Box & box, uint32_t collision_mask,
+        CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id)
 {
+  if(collision_id.IsValid() == false)
+  {
+    collision_id = m_NextCollisionId;
+    m_NextCollisionId++;
+  }
+
   auto index = m_Objects.size();
 
-  m_Objects.emplace_back(CollisionDatabaseCheckResult{ std::move(obj_info), collision_mask });
+  m_Objects.emplace_back(CollisionDatabaseCheckResult{ std::move(obj_info), collision_mask, collision_id.Value() });
   m_Collision.Insert(box, (uint32_t)index);
 }

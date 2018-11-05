@@ -119,6 +119,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<0 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_Angle; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_Angle; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_Angle; }
 };
 
 template <typename Self>
@@ -141,6 +143,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<1 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BLColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BLColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BLColorR; }
 };
 
 template <typename Self>
@@ -163,6 +167,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<2 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BLColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BLColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BLColorG; }
 };
 
 template <typename Self>
@@ -185,6 +191,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<3 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BLColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BLColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BLColorB; }
 };
 
 template <typename Self>
@@ -207,6 +215,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<4 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BLColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BLColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BLColorA; }
 };
 
 template <typename Self>
@@ -229,6 +239,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<5 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BRColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BRColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BRColorR; }
 };
 
 template <typename Self>
@@ -251,6 +263,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<6 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 6 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BRColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BRColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BRColorG; }
 };
 
 template <typename Self>
@@ -273,6 +287,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<7 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 7 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BRColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BRColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BRColorB; }
 };
 
 template <typename Self>
@@ -295,6 +311,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<8 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 8 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_BRColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_BRColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_BRColorA; }
 };
 
 template <typename Self>
@@ -317,6 +335,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<9 + StormRefl
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 9 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TLColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TLColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TLColorR; }
 };
 
 template <typename Self>
@@ -339,6 +359,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<10 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 10 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TLColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TLColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TLColorG; }
 };
 
 template <typename Self>
@@ -361,6 +383,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<11 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 11 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TLColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TLColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TLColorB; }
 };
 
 template <typename Self>
@@ -383,6 +407,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<12 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 12 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TLColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TLColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TLColorA; }
 };
 
 template <typename Self>
@@ -405,6 +431,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<13 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 13 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TRColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TRColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TRColorR; }
 };
 
 template <typename Self>
@@ -427,6 +455,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<14 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 14 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TRColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TRColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TRColorG; }
 };
 
 template <typename Self>
@@ -449,6 +479,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<15 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 15 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TRColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TRColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TRColorB; }
 };
 
 template <typename Self>
@@ -471,6 +503,8 @@ struct StormReflTypeInfo<UIElementGradientData>::field_data_static<16 + StormRef
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 16 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementGradientData::m_TRColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementGradientData *>(obj); return &ptr->m_TRColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementGradientData *>(obj); return &ptr->m_TRColorA; }
 };
 
 template <typename Self>

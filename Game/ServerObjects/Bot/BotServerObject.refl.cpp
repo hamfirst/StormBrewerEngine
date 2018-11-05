@@ -16,7 +16,7 @@ void BotServerObject::Init(const BotServerObjectInitData & init_data, GameLogicC
 
 void BotServerObject::UpdateFirst(GameLogicContainer & game_container)
 {
-
+  GameServerObjectBase::UpdateFirst(game_container);
 }
 
 void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)

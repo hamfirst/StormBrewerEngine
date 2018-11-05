@@ -57,6 +57,8 @@ struct StormReflTypeInfo<MapHandleBase>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapHandleBase::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapHandleBase *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapHandleBase *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>

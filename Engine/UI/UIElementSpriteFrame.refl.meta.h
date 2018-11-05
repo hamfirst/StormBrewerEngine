@@ -66,6 +66,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<0 + St
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameInitData::m_SpriteFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameInitData *>(obj); return &ptr->m_SpriteFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameInitData *>(obj); return &ptr->m_SpriteFile; }
 };
 
 template <typename Self>
@@ -102,6 +104,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameInitData>::field_data_static<1 + St
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameInitData::m_AnimationFrame; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameInitData *>(obj); return &ptr->m_AnimationFrame; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameInitData *>(obj); return &ptr->m_AnimationFrame; }
 };
 
 template <typename Self>
@@ -177,6 +181,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameData>::field_data_static<0 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameData::m_ScaleX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameData *>(obj); return &ptr->m_ScaleX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameData *>(obj); return &ptr->m_ScaleX; }
 };
 
 template <typename Self>
@@ -199,6 +205,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameData>::field_data_static<1 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameData::m_ScaleY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameData *>(obj); return &ptr->m_ScaleY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameData *>(obj); return &ptr->m_ScaleY; }
 };
 
 template <typename Self>
@@ -221,6 +229,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameData>::field_data_static<2 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameData::m_Angle; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameData *>(obj); return &ptr->m_Angle; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameData *>(obj); return &ptr->m_Angle; }
 };
 
 template <typename Self>
@@ -243,6 +253,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameData>::field_data_static<3 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameData::m_Animation; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameData *>(obj); return &ptr->m_Animation; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameData *>(obj); return &ptr->m_Animation; }
 };
 
 template <typename Self>
@@ -265,6 +277,8 @@ struct StormReflTypeInfo<UIElementSpriteFrameData>::field_data_static<4 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementSpriteFrameData::m_FrameAdvance; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementSpriteFrameData *>(obj); return &ptr->m_FrameAdvance; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementSpriteFrameData *>(obj); return &ptr->m_FrameAdvance; }
 };
 
 template <typename Self>

@@ -58,6 +58,8 @@ struct StormReflTypeInfo<EntityDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Sprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EntityDef *>(obj); return &ptr->m_Sprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EntityDef *>(obj); return &ptr->m_Sprite; }
 };
 
 template <typename Self>
@@ -94,6 +96,8 @@ struct StormReflTypeInfo<EntityDef>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x2CECCE09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Components; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EntityDef *>(obj); return &ptr->m_Components; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EntityDef *>(obj); return &ptr->m_Components; }
 };
 
 template <typename Self>

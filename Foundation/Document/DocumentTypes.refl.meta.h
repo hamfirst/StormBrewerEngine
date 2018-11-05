@@ -57,6 +57,8 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_SourceAsset; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_SourceAsset; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DocumentLink *>(obj); return &ptr->m_SourceAsset; }
 };
 
 template <typename Self>
@@ -79,6 +81,8 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_RemotePath; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_RemotePath; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DocumentLink *>(obj); return &ptr->m_RemotePath; }
 };
 
 template <typename Self>
@@ -101,6 +105,8 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_LocalPath; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_LocalPath; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DocumentLink *>(obj); return &ptr->m_LocalPath; }
 };
 
 template <typename Self>

@@ -5,6 +5,7 @@
 #include "Foundation/CallList/CallList.h"
 #include "Foundation/Any/Any.h"
 #include "Foundation/Preprocessor/Preprocessor.h"
+#include "Foundation/FileSystem/Directory.h"
 
 enum class ClientAssetType
 {
@@ -27,6 +28,11 @@ public:
   virtual bool IsLoaded(Any & asset, ClientAssetType type) { return true; }
   virtual bool IsError(Any & asset, ClientAssetType type) { return false; }
   virtual bool LoadingFinished(Any & asset, ClientAssetType type) { return true; }
+};
+
+struct EmptyGlobalAssetInfo
+{
+
 };
 
 class GlobalAssetList
@@ -93,6 +99,16 @@ public:
   void CreateGlobalAssetArray(NotNullPtr<AssetResourcePtr> resource_ptr)
   {
 
+  }
+
+  template <typename AssetResourcePtr>
+  void CreateGlobalDirectoryAssetArray(NotNullPtr<AssetResourcePtr> resource_ptr, const std::vector<std::string> & files)
+  {
+    for(auto & elem : files)
+    {
+      CreateGlobalAsset(*resource_ptr, elem.data());
+      resource_ptr++;
+    }
   }
 
   template <typename BaseAsset, typename DependentAssetContainer>
@@ -225,9 +241,21 @@ private:
   ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, []() { g_GlobalAssetList.CreateGlobalAsset(AssetVar, AssetPath); } );
 
 #define GLOBAL_ASSET_ARRAY(AssetType, AssetVar, ...) \
-  AssetType AssetVar[PP_NARG(__VA_ARGS__)]; \
-  int AssetVar##Count = sizeof(AssetVar) / sizeof(AssetVar[0]); \
-  ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, []() { g_GlobalAssetList.CreateGlobalAssetArray(AssetVar, __VA_ARGS__); } );
+  AssetType * AssetVar; \
+  int AssetVar##Count = PP_NARG(__VA_ARGS__); \
+  ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, \
+          []() { static auto ptr = std::make_unique<AssetType[]>(PP_NARG(__VA_ARGS__)); \
+                 AssetVar = ptr.get(); \
+                 g_GlobalAssetList.CreateGlobalAssetArray(AssetVar, __VA_ARGS__); } );
+
+#define GLOBAL_ASSET_DIRECTORY(AssetType, AssetVar, AssetDir, Extension)  \
+  AssetType * AssetVar; \
+  int AssetVar##Count = 0; \
+  ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, \
+          []() { auto files = GetFilesInDirectory(AssetDir, Extension); \
+                 static auto ptr = std::make_unique<AssetType[]>(files.size()); \
+                 AssetVar = ptr.get(); \
+                 g_GlobalAssetList.CreateGlobalDirectoryAssetArray(AssetVar, files); } );
 
 #define GLOBAL_DEPENDENT_ASSET_ARRAY(AssetType, AssetVar, BaseAssetArray, LoadFunc) \
   AssetType * AssetVar; \
@@ -236,6 +264,13 @@ private:
     g_GlobalAssetList.CreateDependentAssetContainerList(BaseAssetArray, &BaseAssetArray##Count, \
             &AssetVar, &AssetVar##Count, LoadFunc); \
   });
+
+#define EXTERN_GLOBAL_ASSAET_ARRAY(AssetType, AssetVar) \
+  extern AssetType * AssetVar; \
+  extern int AssetVar##Count;
+
+#define DECLARE_STATIC_LIST_TYPE(StaticListTypeName, AssetVar) \
+  using StaticListTypeName = NetReflectionStaticListPtr<std::template decay_t<decltype(AssetVar[0])>, &AssetVar, &AssetVar##Count, true>;
 
 #define CLIENT_ASSET(ClientAssetType, AssetPath, AssetVar) \
   uint32_t AssetVar = crc32lowercase(AssetPath); \

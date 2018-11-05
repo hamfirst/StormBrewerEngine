@@ -57,6 +57,8 @@ struct StormReflTypeInfo<GameClientSaveData>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameClientSaveData::m_WatchedTutorial; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameClientSaveData *>(obj); return &ptr->m_WatchedTutorial; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameClientSaveData *>(obj); return &ptr->m_WatchedTutorial; }
 };
 
 template <typename Self>

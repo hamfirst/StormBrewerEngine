@@ -90,6 +90,8 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<0 + 
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_Animation; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_Animation; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayAnimationComponentInitData *>(obj); return &ptr->m_Animation; }
 };
 
 template <typename Self>
@@ -112,6 +114,8 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<1 + 
   static constexpr unsigned GetTypeNameHash() { return 0xC0607559; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_LoopMode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_LoopMode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayAnimationComponentInitData *>(obj); return &ptr->m_LoopMode; }
 };
 
 template <typename Self>

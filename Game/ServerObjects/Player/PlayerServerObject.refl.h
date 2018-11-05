@@ -30,11 +30,8 @@ struct PlayerServerObjectInitData : public GameServerObjectBaseInitData
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(PlayerServerObjectInitData);
 };
 
-extern ConfigPtr<PlayerConfig> g_PlayerConfig[];
-extern int g_PlayerConfigCount;
-
-using PlayerConfigPtr = NetReflectionStaticListPtr<ConfigPtr<PlayerConfig>, g_PlayerConfig, &g_PlayerConfigCount>;
-struct PlayerServerObjectConfigResources;
+EXTERN_GLOBAL_ASSAET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig);
+DECLARE_STATIC_LIST_TYPE(PlayerConfigPtr, g_PlayerConfig);
 
 class PlayerServerObject : public GameServerObjectBase
 {

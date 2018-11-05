@@ -8,17 +8,35 @@
 #include "Game/Systems/GameLogicSystems.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Game/Configs/ProjectileConfig.refl.h"
+#include "Game/ServerObjects/Projectile/Motion/ProjectileMotionBase.refl.h"
 
+#include "Runtime/Asset/Asset.h"
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Config/ConfigResource.h"
 
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.h"
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
+#include "Runtime/ServerObject/ServerObjectComponent.h"
+
+EXTERN_GLOBAL_ASSAET_ARRAY(ConfigPtr<ProjectileConfig>, g_ProjectileConfigs);
+DECLARE_STATIC_LIST_TYPE(ProjectileConfigPtr, g_ProjectileConfigs);
+
+struct ProjectileServerObjectSpawnData
+{
+  STORM_REFL;
+
+  GameNetVec2 m_Position;
+  GameNetVec2 m_Direction;
+  int m_TeamIndex;
+  ServerObjectHandle m_OwnerHandle;
+  const ConfigPtr<ProjectileConfig> * m_Config;
+};
 
 struct ProjectileServerObjectInitData : public GameServerObjectBaseInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION_DERIVED(ProjectileServerObjectInitData);
+  ProjectileServerObjectSpawnData STORM_REFL_IGNORE m_SpawnData;
 };
 
 class ProjectileServerObject : public GameServerObjectBase
@@ -37,10 +55,21 @@ public:
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
 
-  static void SpawnProjectile(const GameNetVec2 & pos, const GameNetVec2 & dir, int owner_index,
-          const ConfigPtr<ProjectileConfig> & config);
+  void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result);
+  void HandleRangeExpired();
+
+  static NotNullPtr<ProjectileServerObject> SpawnProjectile(const GameNetVec2 & pos, const GameNetVec2 & dir,
+          int team_index, const ServerObjectHandle & handle,
+          const ConfigPtr<ProjectileConfig> & config, GameLogicContainer & game_container);
 
   virtual czstr GetDefaultEntityBinding() const override;
+  virtual void InitStaticComponents() override;
 public:
-  // Serialized variables
+
+  GameNetVec2 m_Direction = {};
+  NetRangedNumber<int, -1, kMaxTeams - 1> m_Team;
+  ServerObjectHandle m_Owner;
+  ProjectileConfigPtr m_Config;
+
+  ServerObjectComponent<ProjectileMotionBase, ProjectileMotionBaseConfig> m_Motion;
 };

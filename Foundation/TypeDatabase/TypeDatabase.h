@@ -26,12 +26,25 @@ struct TypeDatabaseTypeInfo<BaseType, void> : public StormDataTypeInfo
   PropertyField * (*RegisterPropertyFields)(PropertyFieldDatabase & property_db);
 };
 
-template <typename DataType, typename LogicBaseType, typename LogicTypeInfo>
+template <typename DataType, typename LogicType, typename LogicTypeInfo>
 struct TypeDatabaseInitLogicInfo
 {
   static void Process(LogicTypeInfo & logic_type_info)
   {
     ASSERT(false, "Init logic info not implemented for this logic base type");
+  }
+};
+
+struct TypeDatabaseEmptyLogicTypeInfo
+{
+
+};
+
+template <typename DataType, typename LogicType>
+struct TypeDatabaseInitLogicInfo<DataType, LogicType, TypeDatabaseEmptyLogicTypeInfo>
+{
+  static void Process(TypeDatabaseEmptyLogicTypeInfo & logic_type_info)
+  {
   }
 };
 
@@ -110,8 +123,8 @@ using RPolymorphic = RPolymorphicBase<BaseType, TypeDatabase<BaseType, LogicBase
 extern PreMainCallList g_TypeDatabaseRegisterCallList;
 
 #define REGISTER_TYPE(Type, Base)  ADD_PREMAIN_CALL(g_TypeDatabaseRegisterCallList, Type##Base, \
-  [] { TypeDatabase<Base>::Get().RegisterType<Type>(); })
+  ([] { TypeDatabase<Base>::Get().RegisterType<Type>(); }))
 
 #define REGISTER_LOGIC_TYPE(Type, Base, Logic, LogicBase)  ADD_PREMAIN_CALL(g_TypeDatabaseRegisterCallList, Type##Base, \
-  [] { TypeDatabase<Base, LogicBase>::Get().RegisterType<Type, Logic>(); })
+  ([] { TypeDatabase<Base, LogicBase>::Get().RegisterType<Type, Logic>(); }))
 

@@ -66,6 +66,8 @@ struct StormReflTypeInfo<PlayerSpawn>::field_data_static<0 + StormReflTypeInfo<A
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<AnchorDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerSpawn::m_Team; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerSpawn *>(obj); return &ptr->m_Team; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerSpawn *>(obj); return &ptr->m_Team; }
 };
 
 template <typename Self>

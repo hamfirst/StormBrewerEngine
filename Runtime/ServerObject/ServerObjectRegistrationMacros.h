@@ -1,12 +1,79 @@
 #pragma once
-
+#include "StormRefl/StormReflMetaFuncs.h"
 #include "StormData/StormDataTypeDatabaseRegister.h"
 
 #include "Foundation/Update/UpdateRegistrationTemplates.h"
 #include "Foundation/PropertyMeta/PropertyFieldMetaFuncs.h"
 #include "Foundation/CallList/CallList.h"
 
+#include "Runtime/ServerObject/ServerObjectTypeInfo.h"
 #include "Runtime/ServerObject/ServerObjectInitDataTypeDatabase.h"
+#include "Runtime/ServerObject/ServerObjectComponent.h"
+
+template <typename ParentType, typename FieldInfo, typename FieldType>
+struct ServerObjectRegisterComponent
+{
+  static void Process(std::vector<ServerObjectComponentInfo> & comp_info)
+  {
+
+  }
+};
+
+template <typename ParentType, typename FieldInfo, typename BaseClass, typename BaseConfig>
+struct ServerObjectRegisterComponent<ParentType, FieldInfo, ServerObjectComponent<BaseClass, BaseConfig>>
+{
+  static void Process(std::vector<ServerObjectComponentInfo> & comp_info)
+  {
+    ServerObjectComponentInfo field_info;
+    field_info.m_TypeIdHash = typeid(BaseClass).hash_code();
+    field_info.m_TypeNameHash = StormReflTypeInfo<BaseClass>::GetNameHash();
+    field_info.m_Get = &FieldInfo::GetFromParent;
+    field_info.m_ConstGet = &FieldInfo::GetFromParentConst;
+    field_info.m_Cast = static_cast<void * (*)(std::size_t, void *)>(&StormReflTypeInfo<BaseClass>::CastFromTypeIdHash);
+    field_info.m_ConstCast = static_cast<const void * (*)(std::size_t, const void *)>(&StormReflTypeInfo<BaseClass>::CastFromTypeIdHash);
+    comp_info.push_back(field_info);
+  }
+};
+
+template <typename Comp>
+struct ServerObjectSerializeComponent
+{
+  static void Serialize(const Comp & comp, ServerObjectNetBitWriter & writer)
+  {
+
+  }
+
+  static void Deserialize(Comp & comp, ServerObjectNetBitReader & reader)
+  {
+
+  }
+};
+
+template <typename BaseClass, typename BaseConfig>
+struct ServerObjectSerializeComponent<ServerObjectComponent<BaseClass, BaseConfig>>
+{
+  static void Serialize(const ServerObjectComponent<BaseClass, BaseConfig> & comp, ServerObjectNetBitWriter & writer)
+  {
+    comp.Serialize(writer);
+  }
+
+  static void Deserialize(ServerObjectComponent<BaseClass, BaseConfig> & comp, ServerObjectNetBitReader & reader)
+  {
+    comp.Deserialize(reader);
+  }
+};
+
+template <typename Comp>
+void ServerObjectComponentSerialize(const Comp & comp, ServerObjectNetBitWriter & writer)
+{
+  ServerObjectSerializeComponent<Comp>::Serialize(comp, writer);
+}
+
+template <typename Comp>
+void ServerObjectComponentDeserialize(Comp & comp, ServerObjectNetBitReader & reader)
+{
+  ServerObjectSerializeComponent<Comp>::Deserialize(comp, reader);
+}
 
 #define DECLARE_SERVER_OBJECT                                                                                                   \
   STORM_REFL;                                                                                                                   \
@@ -24,6 +91,7 @@
   static bool CanCastToType(uint32_t type_name_hash);                                                                           \
   virtual bool CastToInternal(uint32_t type_name_hash) const override;                                                          \
   virtual NotNullPtr<ServerObjectEventDispatch> GetEventDispatch() override;                                                    \
+
 
 #define DECLARE_BASE_SERVER_OBJECT                                                                                              \
   STORM_REFL;                                                                                                                   \
@@ -111,10 +179,34 @@ void ServerObjectName::RegisterServerObject()                                   
     DeserializeServerObject(*static_cast<ServerObjectName *>(object), reader);                                                  \
   };                                                                                                                            \
                                                                                                                                 \
+  type_info.m_ComponentSerialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitWriter & writer)                       \
+  {                                                                                                                             \
+    StormReflVisitEach(*static_cast<ServerObjectName *>(object),                                                                \
+            [&](auto & field){ ServerObjectComponentSerialize(field.Get(), writer); });                                         \
+  };                                                                                                                            \
+                                                                                                                                \
+  type_info.m_ComponentDeserialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitReader & reader)                     \
+  {                                                                                                                             \
+    StormReflVisitEach(*static_cast<ServerObjectName *>(object),                                                                \
+            [&](auto & field){ ServerObjectComponentDeserialize(field.Get(), reader); });                                       \
+  };                                                                                                                            \
+                                                                                                                                \
+  type_info.m_ComponentDeserialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitReader & reader)                     \
+  {                                                                                                                             \
+    DeserializeServerObject(*static_cast<ServerObjectName *>(object), reader);                                                  \
+  };                                                                                                                            \
+                                                                                                                                \
   type_info.m_AddToUpdateList = [](NotNullPtr<ServerObject> object, ServerObjectUpdateList & l)                                 \
   {                                                                                                                             \
     RegisterUpdate(*static_cast<ServerObjectName *>(object), l);                                                                \
   };                                                                                                                            \
+                                                                                                                                \
+  StormReflVisitStatic<ServerObjectName>::VisitEach([&](auto field)                                                             \
+  {                                                                                                                             \
+    using FieldInfoType = decltype(field);                                                                                      \
+    using MemberType = typename decltype(field)::member_type;                                                                   \
+    ServerObjectRegisterComponent<ServerObjectName, FieldInfoType, MemberType>::Process(type_info.m_ComponentInfo);             \
+  });                                                                                                                           \
                                                                                                                                 \
   g_ServerObjectSystem.RegisterType(type_info);                                                                                 \
   RegisterServerObjectEvents<ServerObjectName>();                                                                               \

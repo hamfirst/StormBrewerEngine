@@ -70,16 +70,23 @@ set(GENERIC_HEADER_GameClient
             GameClientInstanceContainer.h
             GameClientGlobalResources.h
             GameClientLevelLoader.h
+            GameClientController.refl.meta.h
             GameNetworkClient.h
             GameClientController.refl.h
+            GameClientSaveFileData.refl.meta.h
             GameModeMainMenu.h
             GameClientEventSender.h
             GameCamera.h
             GameServerEventResponder.h
+            Components/PlayerComponent.refl.meta.h
             Components/PlayerComponent.refl.h
             Components/Reusable/SyncServerObjectComponent.refl.h
             Components/Reusable/PlayAnimationComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.meta.h
+            Components/Reusable/AttachVfxComponent.refl.meta.h
             Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.meta.h
+            EffectLayers/CollisionDrawer.refl.meta.h
             EffectLayers/CollisionDrawer.refl.h
             #HEADER_PLACEHOLDER
             )

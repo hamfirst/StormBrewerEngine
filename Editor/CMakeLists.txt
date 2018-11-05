@@ -220,6 +220,7 @@ set(GENERIC_HEADER_Editor
             FrameEditorUtil.h
             VisualEffectEditorEquationList.h
             MapEditorEntitySelector.h
+            FrameEditorTypes.refl.meta.h
             SpriteBaseTextureFrameList.h
             GenericInput.h
             MapEditorParalaxLayerManager.h
@@ -261,6 +262,7 @@ set(GENERIC_HEADER_Editor
             PropertyEditorPolymorphic.h
             SelectFromListDialog.h
             MapEditorToolEntityLayerDraw.h
+            MapEditorTypes.refl.meta.h
             GenericList.h
             DocumentEditorBase.h
             MapEditorToolVolumeEditor.h

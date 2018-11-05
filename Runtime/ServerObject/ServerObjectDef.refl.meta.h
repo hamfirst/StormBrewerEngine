@@ -58,6 +58,8 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_IsStatic; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_IsStatic; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ServerObjectDef *>(obj); return &ptr->m_IsStatic; }
 };
 
 template <typename Self>
@@ -80,6 +82,8 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x98B2E037; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_InitData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_InitData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ServerObjectDef *>(obj); return &ptr->m_InitData; }
 };
 
 template <typename Self>

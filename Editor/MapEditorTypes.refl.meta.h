@@ -58,6 +58,8 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_InitData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEditorAnchorInitData *>(obj); return &ptr->m_InitData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEditorAnchorInitData *>(obj); return &ptr->m_InitData; }
 };
 
 template <typename Self>
@@ -80,6 +82,8 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_Sprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEditorAnchorInitData *>(obj); return &ptr->m_Sprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEditorAnchorInitData *>(obj); return &ptr->m_Sprite; }
 };
 
 template <typename Self>

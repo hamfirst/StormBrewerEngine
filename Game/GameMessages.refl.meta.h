@@ -107,6 +107,8 @@ struct StormReflTypeInfo<LoadLevelMessage>::field_data_static<0 + StormReflTypeI
   static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<FromServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &LoadLevelMessage::m_Settings; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<LoadLevelMessage *>(obj); return &ptr->m_Settings; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LoadLevelMessage *>(obj); return &ptr->m_Settings; }
 };
 
 template <typename Self>
@@ -129,6 +131,8 @@ struct StormReflTypeInfo<LoadLevelMessage>::field_data_static<1 + StormReflTypeI
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<FromServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &LoadLevelMessage::m_LoadToken; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<LoadLevelMessage *>(obj); return &ptr->m_LoadToken; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LoadLevelMessage *>(obj); return &ptr->m_LoadToken; }
 };
 
 template <typename Self>
@@ -340,6 +344,8 @@ struct StormReflTypeInfo<JoinGameMessage>::field_data_static<0 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_GameId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<JoinGameMessage *>(obj); return &ptr->m_GameId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const JoinGameMessage *>(obj); return &ptr->m_GameId; }
 };
 
 template <typename Self>
@@ -362,6 +368,8 @@ struct StormReflTypeInfo<JoinGameMessage>::field_data_static<1 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_UserName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<JoinGameMessage *>(obj); return &ptr->m_UserName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const JoinGameMessage *>(obj); return &ptr->m_UserName; }
 };
 
 template <typename Self>
@@ -384,6 +392,8 @@ struct StormReflTypeInfo<JoinGameMessage>::field_data_static<2 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &JoinGameMessage::m_Settings; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<JoinGameMessage *>(obj); return &ptr->m_Settings; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const JoinGameMessage *>(obj); return &ptr->m_Settings; }
 };
 
 template <typename Self>
@@ -504,6 +514,8 @@ struct StormReflTypeInfo<FinishLoadingMessage>::field_data_static<0 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ToServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &FinishLoadingMessage::m_LoadToken; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<FinishLoadingMessage *>(obj); return &ptr->m_LoadToken; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const FinishLoadingMessage *>(obj); return &ptr->m_LoadToken; }
 };
 
 template <typename Self>

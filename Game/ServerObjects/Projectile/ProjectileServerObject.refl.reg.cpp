@@ -15,6 +15,7 @@
 #include "Runtime/ServerObject/ServerObjectSystem.h"
 #include "Runtime/ServerObject/ServerObjectUpdate.h"
 #include "Runtime/ServerObject/ServerObjectSerialize.h"
+#include "Runtime/ServerObject/ServerObjectComponentSerialize.h"
 
 #include "Game/ServerObjects/Projectile/ProjectileServerObject.refl.h"
 #include "Game/ServerObjects/Projectile/ProjectileServerObject.refl.meta.h"

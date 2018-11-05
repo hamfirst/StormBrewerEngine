@@ -226,7 +226,7 @@ void EditorContainer::OpenEditorForFile(czstr file)
 
   std::size_t len = strlen(file);
 
-  auto extension = GetFileExtensionForCanonicalPath(std::string(file));
+  auto extension = GetFileExtensionForPath(std::string(file));
   if (extension.length() == 0)
   {
     QMessageBox::warning(this, "Error opening file", QString(file) + QString(" has no extension"));
@@ -505,7 +505,7 @@ void EditorContainer::newFile()
 
     auto file_name = GetFileNameForCanonicalPath(std::string(canonical_filename));
 
-    auto extension = GetFileExtensionForCanonicalPath(canonical_filename);
+    auto extension = GetFileExtensionForPath(canonical_filename);
 
     auto extension_hash = crc32(extension);
     auto editor = CreateEditorForFile(canonical_filename.data(), extension_hash);
@@ -571,7 +571,7 @@ void EditorContainer::newConfigFile()
 
   auto file_name = GetFileNameForCanonicalPath(std::string(canonical_filename));
 
-  auto extension = GetFileExtensionForCanonicalPath(canonical_filename);
+  auto extension = GetFileExtensionForPath(canonical_filename);
 
   auto extension_hash = crc32(extension);
   auto editor = CreateEditorForFile(canonical_filename.data(), extension_hash);
