@@ -8,6 +8,7 @@
 #include "Runtime/ServerObject/ServerObjectRegistrationMacros.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
 #include "Runtime/ServerObject/ServerObjectEventSystem.h"
+#include "Runtime/ServerObject/ServerObjectTypeInfo.h"
 #include "Runtime/Event/Event.h"
 
 #include "StormRefl/StormReflMetaInfoBase.h"
@@ -30,6 +31,7 @@ public:
 
   virtual czstr GetDefaultEntityBinding() const;
   virtual czstr GetEntityBinding() const;
+  virtual void InitStaticComponents();
 
   bool IsDestroyed() const;
   int GetSlotIndex() const;
@@ -52,6 +54,70 @@ public:
   bool SendEvent(const EventType & ev, const EventMetaData & meta)
   {
     return TriggerEventHandler(EventType::TypeNameHash, &ev, meta);
+  }
+
+  const ServerObjectTypeInfo & GetTypeInfo() const;
+
+  template <typename ComponentType>
+  NullOptPtr<ComponentType> GetComponent()
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      if(elem.m_TypeIdHash == typeid(ComponentType).hash_code())
+      {
+        return elem.m_Get(this);
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<const ComponentType> GetComponent() const
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      if(elem.m_TypeIdHash == typeid(ComponentType).hash_code())
+      {
+        return elem.m_ConstGet(this);
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<ComponentType> FindComponent()
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      auto ptr = elem.m_Get(this);
+      auto comp = elem.m_Cast(typeid(ComponentType).hash_code(), ptr);
+
+      if(comp)
+      {
+        return comp;
+      }
+    }
+
+    return nullptr;
+  }
+
+  template <typename ComponentType>
+  NullOptPtr<const ComponentType> FindComponent() const
+  {
+    for(auto & elem : GetTypeInfo().m_ComponentInfo)
+    {
+      auto ptr = elem.m_ConstGet(this);
+      auto comp = elem.m_ConstCast(typeid(ComponentType).hash_code(), ptr);
+
+      if(comp)
+      {
+        return comp;
+      }
+    }
+
+    return nullptr;
   }
 
 protected:
@@ -80,6 +146,7 @@ private:
 
 private:
   bool m_IsStatic = false;
+  bool m_IsUnsynced = false;
   int m_TypeIndex = 0;
   int m_SlotIndex = 0;
   int m_FramesAlive = 0;

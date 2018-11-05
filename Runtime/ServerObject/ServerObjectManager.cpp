@@ -27,8 +27,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_FramesAlive = 0;
     ptr->m_ServerObjectHandle.m_SlotId = slot_index;
     ptr->m_ServerObjectHandle.m_Gen = 0;
-    ptr->m_EventDispatch = ptr->GetEventDispatch();      
-    ptr->InitPosition(obj.m_InitPosition);
+    ptr->m_EventDispatch = ptr->GetEventDispatch();
     m_StaticObjects.emplace_back(ptr);
 
     m_GUIDs[slot_index] = obj.m_GUID;
@@ -79,6 +78,13 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
     auto ptr = g_ServerObjectSystem.DuplicateObject(obj.second.m_ServerObject);
     ptr->m_SlotIndex = (int)obj.first;
     m_DynamicObjects.EmplaceAt(obj.first, DynamicObjectInfo{ ptr, obj.second.m_TypeIndex, obj.second.m_Original });
+  }
+
+  for (auto obj : rhs.m_UnsyncedObjects)
+  {
+    auto ptr = g_ServerObjectSystem.DuplicateObject(obj.m_ServerObject);
+    ptr->m_SlotIndex = -1;
+    m_UnsyncedObjects.emplace_back(DynamicObjectInfo{ ptr, obj.m_TypeIndex, obj.m_Original });
   }
 
   m_Initialized = rhs.m_Initialized;
@@ -139,6 +145,21 @@ ServerObjectManager & ServerObjectManager::operator = (const ServerObjectManager
         m_DynamicObjects[index].m_ServerObject->Destroy(*this);
       }
     }
+  }
+
+  for(auto & obj : m_UnsyncedObjects)
+  {
+    g_ServerObjectSystem.FreeObject(obj.m_ServerObject);
+  }
+
+  m_UnsyncedObjects.clear();
+
+  for (auto obj : rhs.m_UnsyncedObjects)
+  {
+    auto ptr = g_ServerObjectSystem.DuplicateObject(obj.m_ServerObject);
+    ptr->m_SlotIndex = -1;
+    ptr->m_IsUnsynced = true;
+    m_UnsyncedObjects.emplace_back(DynamicObjectInfo{ ptr, obj.m_TypeIndex, obj.m_Original });
   }
 
   m_Initialized = rhs.m_Initialized;
@@ -204,6 +225,11 @@ void ServerObjectManager::IncrementTimeAlive()
   {
     obj.second.m_ServerObject->m_FramesAlive++;
   }
+
+  for (auto & obj : m_UnsyncedObjects)
+  {
+    obj.m_ServerObject->m_FramesAlive++;
+  }
 }
 
 void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
@@ -219,6 +245,12 @@ void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
   for (auto obj : m_DynamicObjects)
   {
     auto ptr = obj.second.m_ServerObject;
+    update_objs.emplace_back(std::make_pair(ptr->m_TypeIndex, ptr));
+  }
+
+  for (auto & obj : m_UnsyncedObjects)
+  {
+    auto ptr = obj.m_ServerObject;
     update_objs.emplace_back(std::make_pair(ptr->m_TypeIndex, ptr));
   }
 
@@ -272,6 +304,7 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
       so_writer.WriteBits((uint64_t)lifetime, 3);
 
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectSerialize(obj->m_ServerObject, so_writer);
+      g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentSerialize(obj->m_ServerObject, so_writer);
     }
     else
     {
@@ -289,6 +322,8 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
   {
     auto type_index = obj->m_TypeIndex;
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj, so_reader);
+    obj->InitStaticComponents();
+    g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentDeserialize(obj, so_reader);
   }
 
   for (std::size_t slot_index = 0; slot_index < m_MaxDynamicObjects; ++slot_index)
@@ -309,6 +344,9 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
           g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(obj->m_ServerObject, so_reader);
           obj->m_ServerObject->m_FramesAlive = (int)lifetime;
           obj->m_Original = original;
+
+          obj->m_ServerObject->InitStaticComponents();
+          g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentDeserialize(obj->m_ServerObject, so_reader);
           continue;
         }
         
@@ -327,6 +365,8 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
       m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
 
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectDeserialize(ptr, so_reader);
+      ptr->InitStaticComponents();
+      g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentDeserialize(ptr, so_reader);
     }
     else if(obj)
     {
@@ -352,6 +392,8 @@ void ServerObjectManager::InitAllObjects(
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(m_StaticObjects[slot_index],
       obj.m_InitData.GetValue(), game_container);
 
+    m_StaticObjects[slot_index]->InitPosition(obj.m_InitPosition);
+    m_StaticObjects[slot_index]->InitStaticComponents();
     ++slot_index;
   }
 
@@ -362,10 +404,12 @@ void ServerObjectManager::InitAllObjects(
     if (ptr && m_DynamicObjects[slot_index].m_Original)
     {
       auto type_index = ptr->m_TypeIndex;
-      ptr->InitPosition(obj.m_InitPosition);
 
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(ptr,
         obj.m_InitData.GetValue(), game_container);
+
+      ptr->InitPosition(obj.m_InitPosition);
+      ptr->InitStaticComponents();
     }
 
     ++slot_index;
@@ -387,7 +431,7 @@ int ServerObjectManager::GetNewDynamicObjectId()
   return -1;
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index,
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, bool unsynced,
         NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
 {
   auto slot_index = GetNewDynamicObjectId();
@@ -396,25 +440,38 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
     return nullptr;
   }
 
-  return CreateDynamicObjectInternal(type_index, slot_index, init_data, original, game_container);
+  return CreateDynamicObjectInternal(type_index, slot_index, unsynced, init_data, original, game_container);
 }
 
-NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index,
+NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index, bool unsynced,
         NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
 {
   auto ptr = g_ServerObjectSystem.AllocateObject(type_index);
   ptr->m_IsStatic = false;
+  ptr->m_IsUnsynced = unsynced;
   ptr->m_TypeIndex = type_index;
   ptr->m_SlotIndex = slot_index;
-  ptr->m_ServerObjectHandle.m_SlotId = slot_index + (int)m_StaticObjects.size();
-  ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
   ptr->m_EventDispatch = ptr->GetEventDispatch();
 
-  m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
+  if(unsynced == false)
+  {
+    ptr->m_ServerObjectHandle.m_SlotId = slot_index + (int) m_StaticObjects.size();
+    ptr->m_ServerObjectHandle.m_Gen = m_DynamicObjectGen[slot_index];
+
+    m_DynamicObjects.EmplaceAt((std::size_t)slot_index, DynamicObjectInfo{ptr, (std::size_t)type_index, original});
+  }
+  else
+  {
+    ptr->m_ServerObjectHandle.m_SlotId = -1;
+    ptr->m_ServerObjectHandle.m_Gen = 0;
+
+    m_UnsyncedObjects.emplace_back(DynamicObjectInfo{ptr, (std::size_t)type_index, false});
+  }
 
   if(m_Initialized)
   {
     g_ServerObjectSystem.InitObject(ptr, init_data, game_container);
+    ptr->InitStaticComponents();
   }
 
   return ptr;
@@ -422,6 +479,22 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
 
 void ServerObjectManager::DestroyDynamicObjectInternal(NotNullPtr<ServerObject> ptr)
 {
+  if(ptr->m_IsUnsynced)
+  {
+    for(std::size_t index = 0, end = m_UnsyncedObjects.size(); index < end; ++index)
+    {
+      auto & elem = m_UnsyncedObjects[index];
+      if(elem.m_ServerObject == ptr)
+      {
+        g_ServerObjectSystem.FreeObject(elem.m_ServerObject);
+        vremove_index_quick(m_UnsyncedObjects, index);
+        return;
+      }
+    }
+    ASSERT(false, "Attempting to delete unsynced object that was not in the object list")
+    return;
+  }
+
   auto slot_index = ptr->m_ServerObjectHandle.m_SlotId - m_StaticObjects.size();
   ASSERT(slot_index >= 0, "Attempting to free a static object");
 
@@ -449,10 +522,16 @@ void ServerObjectManager::FinalizeHandles()
     g_ServerObjectSystem.ResetObjectHandles(obj.second.m_ServerObject, *this);
   }
 
+  for (auto & obj : m_UnsyncedObjects)
+  {
+    g_ServerObjectSystem.ResetObjectHandles(obj.m_ServerObject, *this);
+  }
+
   for (auto & gen : m_DynamicObjectGen)
   {
     gen = 0;
   }
+
 }
 
 NullOptPtr<ServerObject> ServerObjectManager::ResolveHandle(int slot_index, int gen) const

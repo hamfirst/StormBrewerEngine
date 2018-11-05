@@ -119,6 +119,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<0 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Text; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_Text; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_Text; }
 };
 
 template <typename Self>
@@ -141,6 +143,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<1 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextMode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_TextMode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_TextMode; }
 };
 
 template <typename Self>
@@ -163,6 +167,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<2 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_FontId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_FontId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_FontId; }
 };
 
 template <typename Self>
@@ -185,6 +191,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<3 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Justify; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_Justify; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_Justify; }
 };
 
 template <typename Self>
@@ -207,6 +215,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<4 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_Scale; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_Scale; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_Scale; }
 };
 
 template <typename Self>
@@ -229,6 +239,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<5 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_EnableTextBounds; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_EnableTextBounds; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_EnableTextBounds; }
 };
 
 template <typename Self>
@@ -251,6 +263,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<6 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 6 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsStartX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_TextBoundsStartX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_TextBoundsStartX; }
 };
 
 template <typename Self>
@@ -273,6 +287,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<7 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 7 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsStartY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_TextBoundsStartY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_TextBoundsStartY; }
 };
 
 template <typename Self>
@@ -295,6 +311,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<8 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 8 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsEndX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_TextBoundsEndX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_TextBoundsEndX; }
 };
 
 template <typename Self>
@@ -317,6 +335,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<9 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 9 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_TextBoundsEndY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_TextBoundsEndY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_TextBoundsEndY; }
 };
 
 template <typename Self>
@@ -339,6 +359,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<10 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 10 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorR; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_SecondaryColorR; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_SecondaryColorR; }
 };
 
 template <typename Self>
@@ -361,6 +383,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<11 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 11 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorG; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_SecondaryColorG; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_SecondaryColorG; }
 };
 
 template <typename Self>
@@ -383,6 +407,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<12 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 12 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorB; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_SecondaryColorB; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_SecondaryColorB; }
 };
 
 template <typename Self>
@@ -405,6 +431,8 @@ struct StormReflTypeInfo<UIElementTextData>::field_data_static<13 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 13 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementTextData::m_SecondaryColorA; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementTextData *>(obj); return &ptr->m_SecondaryColorA; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementTextData *>(obj); return &ptr->m_SecondaryColorA; }
 };
 
 template <typename Self>

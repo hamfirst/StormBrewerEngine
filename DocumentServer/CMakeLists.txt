@@ -13,6 +13,7 @@ set(GENERIC_SRC_DocumentServer
 
 set(GENERIC_HEADER_DocumentServer 
             DocumentServerMessages.refl.h
+            DocumentServerMessages.refl.meta.h
             DocumentServer.h
             FileSystemWatcher.h
             FileNameDatabase.h

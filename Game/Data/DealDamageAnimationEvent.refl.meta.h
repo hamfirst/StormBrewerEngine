@@ -67,6 +67,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<0 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Amount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Amount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_Amount; }
 };
 
 template <typename Self>
@@ -89,6 +91,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<1 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xBDF26CA6; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Direction; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Direction; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_Direction; }
 };
 
 template <typename Self>
@@ -111,6 +115,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<2 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0x33D1B477; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_DamageType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_DamageType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_DamageType; }
 };
 
 template <typename Self>

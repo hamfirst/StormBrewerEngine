@@ -168,7 +168,7 @@ std::string GetFileStemForCanonicalPath(const std::string & path)
   return file_name.substr(0, index);
 }
 
-std::string GetFileExtensionForCanonicalPath(const std::string & path)
+std::string GetFileExtensionForPath(const std::string & path)
 {
   auto path_index = path.rfind('/');
   auto ext_index = path.rfind('.');

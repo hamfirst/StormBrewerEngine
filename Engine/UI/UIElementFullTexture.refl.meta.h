@@ -66,6 +66,8 @@ struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0 + St
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureInitData::m_TextureFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureInitData *>(obj); return &ptr->m_TextureFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureInitData *>(obj); return &ptr->m_TextureFile; }
 };
 
 template <typename Self>
@@ -155,6 +157,8 @@ struct StormReflTypeInfo<UIElementFullTextureData>::field_data_static<0 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureData::m_ScaleX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureData *>(obj); return &ptr->m_ScaleX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureData *>(obj); return &ptr->m_ScaleX; }
 };
 
 template <typename Self>
@@ -177,6 +181,8 @@ struct StormReflTypeInfo<UIElementFullTextureData>::field_data_static<1 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureData::m_ScaleY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureData *>(obj); return &ptr->m_ScaleY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureData *>(obj); return &ptr->m_ScaleY; }
 };
 
 template <typename Self>

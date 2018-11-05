@@ -119,6 +119,8 @@ struct StormReflTypeInfo<UIElementShapeData>::field_data_static<0 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementShapeData::m_Shape; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementShapeData *>(obj); return &ptr->m_Shape; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementShapeData *>(obj); return &ptr->m_Shape; }
 };
 
 template <typename Self>
@@ -141,6 +143,8 @@ struct StormReflTypeInfo<UIElementShapeData>::field_data_static<1 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataStartEnd>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementShapeData::m_EdgeWidth; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementShapeData *>(obj); return &ptr->m_EdgeWidth; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementShapeData *>(obj); return &ptr->m_EdgeWidth; }
 };
 
 template <typename Self>

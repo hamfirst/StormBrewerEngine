@@ -69,6 +69,8 @@ struct StormReflTypeInfo<PlayerStateJump>::field_data_static<0 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0xFCA4CDC9; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<PlayerStateBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerStateJump::m_JumpGraceFrames; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateJump *>(obj); return &ptr->m_JumpGraceFrames; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerStateJump *>(obj); return &ptr->m_JumpGraceFrames; }
 };
 
 template <typename Self>

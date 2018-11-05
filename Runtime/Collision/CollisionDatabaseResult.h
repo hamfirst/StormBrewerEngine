@@ -18,4 +18,5 @@ struct CollisionDatabaseCheckResult
 {
   CollisionDatabaseObjectInfo m_HitObject;
   uint32_t m_Mask;
+  int m_ObjectId;
 };

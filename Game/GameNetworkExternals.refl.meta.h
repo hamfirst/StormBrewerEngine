@@ -106,6 +106,8 @@ struct StormReflTypeInfo<PlayerJoinedEvent>::field_data_static<0 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerJoinedEvent::m_UserName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerJoinedEvent *>(obj); return &ptr->m_UserName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerJoinedEvent *>(obj); return &ptr->m_UserName; }
 };
 
 template <typename Self>
@@ -128,6 +130,8 @@ struct StormReflTypeInfo<PlayerJoinedEvent>::field_data_static<1 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerJoinedEvent::m_RandomSeed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerJoinedEvent *>(obj); return &ptr->m_RandomSeed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerJoinedEvent *>(obj); return &ptr->m_RandomSeed; }
 };
 
 template <typename Self>
@@ -150,6 +154,8 @@ struct StormReflTypeInfo<PlayerJoinedEvent>::field_data_static<2 + StormReflType
   static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerJoinedEvent::m_PlayerIndex; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerJoinedEvent *>(obj); return &ptr->m_PlayerIndex; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerJoinedEvent *>(obj); return &ptr->m_PlayerIndex; }
 };
 
 template <typename Self>
@@ -221,6 +227,8 @@ struct StormReflTypeInfo<PlayerLeaveEvent>::field_data_static<0 + StormReflTypeI
   static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerLeaveEvent::m_PlayerIndex; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerLeaveEvent *>(obj); return &ptr->m_PlayerIndex; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerLeaveEvent *>(obj); return &ptr->m_PlayerIndex; }
 };
 
 template <typename Self>

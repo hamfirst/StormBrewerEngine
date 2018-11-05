@@ -124,6 +124,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<0 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_Velocity; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_Velocity; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_Velocity; }
 };
 
 template <typename Self>
@@ -146,6 +148,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<1 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_OnGround; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_OnGround; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_OnGround; }
 };
 
 template <typename Self>
@@ -168,6 +172,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<2 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0xB3BD22BD; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimIndex; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimIndex; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_AnimIndex; }
 };
 
 template <typename Self>
@@ -190,6 +196,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<3 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x72324C82; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimFrame; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimFrame; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_AnimFrame; }
 };
 
 template <typename Self>
@@ -212,6 +220,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<4 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x46CFECEB; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimDelay; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimDelay; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_AnimDelay; }
 };
 
 template <typename Self>
@@ -234,6 +244,8 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<5 + StormReflTypeIn
   static constexpr unsigned GetTypeNameHash() { return 0x94981591; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_Facing; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_Facing; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotServerObject *>(obj); return &ptr->m_Facing; }
 };
 
 template <typename Self>

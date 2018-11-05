@@ -65,6 +65,8 @@ struct StormReflTypeInfo<SyncServerObjectComponentInitData>::field_data_static<0
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &SyncServerObjectComponentInitData::m_SyncSprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<SyncServerObjectComponentInitData *>(obj); return &ptr->m_SyncSprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const SyncServerObjectComponentInitData *>(obj); return &ptr->m_SyncSprite; }
 };
 
 template <typename Self>

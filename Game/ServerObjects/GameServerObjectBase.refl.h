@@ -36,6 +36,7 @@ public:
   GameServerObjectBase & operator = (GameServerObjectBase && rhs) = default;
 
   void Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container);
+  void UpdateFirst(GameLogicContainer & container);
 
   virtual void InitPosition(const Vector2 & pos) override;
 
@@ -72,6 +73,7 @@ public:
 
   virtual const SpritePtr & GetSprite() const;
   virtual Optional<CharacterFacing> GetFacing() const;
+  virtual Optional<int> GetCollisionId() const;
 
   template <typename Target>
   void TriggerAnimationEvents(GameLogicContainer & game_container, Target & target)
@@ -86,6 +88,7 @@ public:
 private:
 
   friend class GameServerObjectOverlapSystem;
+  Optional<int> m_CollisionId;
 
 public:
   GameNetVec2 m_Position = {};

@@ -14,10 +14,11 @@ CollisionDatabase::CollisionDatabase(const StaticCollisionDatabase & static_coll
 
 }
 
-Optional<CollisionDatabaseCheckResult> CollisionDatabase::CheckCollisionAny(const Box & box, uint32_t collision_layer_mask) const
+Optional<CollisionDatabaseCheckResult> CollisionDatabase::CheckCollisionAny(const Box & box,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
   auto result_mask = m_StaticCollision.CheckCollision(box, collision_layer_mask);
-  auto result = m_DynamicCollision.CheckCollisionAny(box, collision_layer_mask);
+  auto result = m_DynamicCollision.CheckCollisionAny(box, collision_layer_mask, obj_mask);
   if (result)
   {
     result->m_Mask |= result_mask;
@@ -34,9 +35,10 @@ Optional<CollisionDatabaseCheckResult> CollisionDatabase::CheckCollisionAny(cons
   return out;
 }
 
-std::vector<CollisionDatabaseCheckResult> CollisionDatabase::QueryAllDynamic(const Box & box, uint32_t collision_layer_mask) const
+std::vector<CollisionDatabaseCheckResult> CollisionDatabase::QueryAllDynamic(const Box & box,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
-  return m_DynamicCollision.QueryAll(box, collision_layer_mask);
+  return m_DynamicCollision.QueryAll(box, collision_layer_mask, obj_mask);
 }
 
 uint32_t CollisionDatabase::CheckLineOfSight(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
@@ -44,13 +46,15 @@ uint32_t CollisionDatabase::CheckLineOfSight(const Vector2 & start, const Vector
   return m_StaticCollision.CheckLineOfSight(start, end, collision_layer_mask);
 }
 
-Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
+Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Vector2 & start, const Vector2 & end,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
   Box b = {};
-  return TracePath(b, start, end, collision_layer_mask);
+  return TracePath(b, start, end, collision_layer_mask, obj_mask);
 }
 
-Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Box & box, const Vector2 & start, const Vector2 & end, uint32_t collision_layer_mask) const
+Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Box & box, const Vector2 & start, const Vector2 & end,
+        uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask) const
 {
   Optional<CollisionDatabaseTraceResult> out;
   VisitPointsAlongLine(start, end, [&](const Vector2 & p) 
@@ -59,7 +63,7 @@ Optional<CollisionDatabaseTraceResult> CollisionDatabase::TracePath(const Box & 
     b.m_Start += p;
     b.m_End += p;
 
-    auto result = CheckCollisionAny(b, collision_layer_mask);
+    auto result = CheckCollisionAny(b, collision_layer_mask, obj_mask);
     if (result)
     {
       out.Emplace();
@@ -90,7 +94,8 @@ void CollisionDatabase::ResetDynamicCollision()
   m_DynamicCollision.ResetCollision();
 }
 
-void CollisionDatabase::PushDynamicCollision(const Box & box, uint32_t collision_mask, CollisionDatabaseObjectInfo && obj_info)
+void CollisionDatabase::PushDynamicCollision(const Box & box, uint32_t collision_mask,
+        CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id)
 {
-  m_DynamicCollision.PushCollision(box, collision_mask, std::move(obj_info));
+  m_DynamicCollision.PushCollision(box, collision_mask, std::move(obj_info), collision_id);
 }

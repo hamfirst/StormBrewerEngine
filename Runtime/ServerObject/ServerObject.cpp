@@ -9,6 +9,7 @@
 #include "Runtime/ServerObject/ServerObjectSystem.h"
 #include "Runtime/ServerObject/ServerObjectUpdate.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
+#include "Runtime/ServerObject/ServerObjectComponent.h"
 
 #include "Foundation/SkipField/SkipField.h"
 #include "Foundation/Update/UpdateRegistrationTemplates.h"
@@ -60,6 +61,11 @@ czstr ServerObject::GetEntityBinding() const
   return GetDefaultEntityBinding();
 }
 
+void ServerObject::InitStaticComponents()
+{
+
+}
+
 bool ServerObject::IsDestroyed() const
 {
   return false;
@@ -88,6 +94,11 @@ bool ServerObject::TriggerEventHandler(uint32_t event_type, const void * ev, con
   }
 
   return m_EventDispatch->TriggerEventHandler(this, event_type, ev, meta);
+}
+
+const ServerObjectTypeInfo & ServerObject::GetTypeInfo() const
+{
+  return g_ServerObjectSystem.GetTypeInfo(m_TypeIndex);
 }
 
 void ServerObject::SetEventDispatch(NotNullPtr<ServerObjectEventDispatch> event_dispatch)

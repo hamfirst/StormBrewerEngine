@@ -157,21 +157,31 @@ set(GENERIC_HEADER_Engine
             UI/UIElement.h
             UI/UIElementText.refl.h
             UI/UIElementFullTexture.refl.h
+            UI/UIElementTextInput.refl.meta.h
             UI/UIElementSpriteFrame.refl.h
+            UI/UIElementExprTypes.refl.meta.h
             UI/UIElementHandle.h
             UI/UIElementExprFuncs.h
             UI/UIElementShape.refl.h
             UI/UIElementContainer.refl.h
             UI/UIElementExprBinding.h
+            UI/UICustomPropertyData.refl.meta.h
             UI/UIElementTextureSlice.refl.h
+            UI/UIElementFullTexture.refl.meta.h
+            UI/UIElementContainer.refl.meta.h
             UI/UIClickable.h
             UI/UIClickablePtr.h
+            UI/UIElementText.refl.meta.h
+            UI/UIElementTextureSlice.refl.meta.h
+            UI/UIElementSpriteFrame.refl.meta.h
             UI/UIElementTextInput.refl.h
             UI/UIElementExprTypes.refl.h
             UI/UICustomPropertyData.refl.h
             UI/UIManager.h
             UI/UIElementPtr.h
             UI/UIElementGradient.refl.h
+            UI/UIElementGradient.refl.meta.h
+            UI/UIElementShape.refl.meta.h
             UI/Prototype/UIPrototypeTextInput.h
             UI/Prototype/UIPrototypeTutorialPopup.h
             UI/Prototype/UIPrototypeButton.h
@@ -198,6 +208,7 @@ set(GENERIC_HEADER_Engine
             Rendering/Rendering.h
             Rendering/VertexList.h
             Rendering/GeometryVertexBufferBuilder.h
+            VisualEffect/VisualEffectTypes.refl.meta.h
             VisualEffect/VisualEffectInstance.h
             VisualEffect/VisualEffectFuncs.h
             VisualEffect/VisualEffectTypes.refl.h
@@ -237,6 +248,7 @@ set(GENERIC_HEADER_Engine
             Shader/ShaderManager.h
             Shader/DefaultShader.h
             Settings/EngineSettings.refl.h
+            Settings/EngineSettings.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 

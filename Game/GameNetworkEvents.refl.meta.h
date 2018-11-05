@@ -106,6 +106,8 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<0 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_AssetHash; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_AssetHash; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const CreateEntityGlobalEvent *>(obj); return &ptr->m_AssetHash; }
 };
 
 template <typename Self>
@@ -128,6 +130,8 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<1 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionX; }
 };
 
 template <typename Self>
@@ -150,6 +154,8 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<2 + StormRe
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionY; }
 };
 
 template <typename Self>
@@ -270,6 +276,8 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<0 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_AssetHash; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_AssetHash; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaySoundGlobalEvent *>(obj); return &ptr->m_AssetHash; }
 };
 
 template <typename Self>
@@ -292,6 +300,8 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<1 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionX; }
 };
 
 template <typename Self>
@@ -314,6 +324,8 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<2 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionY; }
 };
 
 template <typename Self>
@@ -385,6 +397,8 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<0 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_AssetHash; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_AssetHash; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayVfxGlobalEvent *>(obj); return &ptr->m_AssetHash; }
 };
 
 template <typename Self>
@@ -407,6 +421,8 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<1 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionX; }
 };
 
 template <typename Self>
@@ -429,6 +445,8 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<2 + StormReflTyp
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionY; }
 };
 
 template <typename Self>
@@ -633,6 +651,8 @@ struct StormReflTypeInfo<TargetNetworkEvent>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4CE63414; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &TargetNetworkEvent::m_Target; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<TargetNetworkEvent *>(obj); return &ptr->m_Target; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const TargetNetworkEvent *>(obj); return &ptr->m_Target; }
 };
 
 template <typename Self>

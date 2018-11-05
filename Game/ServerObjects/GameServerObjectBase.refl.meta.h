@@ -116,6 +116,8 @@ struct StormReflTypeInfo<GameServerObjectBase>::field_data_static<0 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &GameServerObjectBase::m_Position; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerObjectBase *>(obj); return &ptr->m_Position; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerObjectBase *>(obj); return &ptr->m_Position; }
 };
 
 template <typename Self>

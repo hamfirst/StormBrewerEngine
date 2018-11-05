@@ -40,6 +40,7 @@ void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, Game
 
 void PlayerServerObject::UpdateFirst(GameLogicContainer & game_container)
 {
+  GameServerObjectBase::UpdateFirst(game_container);
   m_ProcessedAttacks.clear();
 }
 

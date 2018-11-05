@@ -22,6 +22,12 @@ void GameServerObjectBase::Init(const GameServerObjectBaseInitData & init_data, 
   
 }
 
+void GameServerObjectBase::UpdateFirst(GameLogicContainer & container)
+{
+  m_CollisionId.Clear();
+
+}
+
 void GameServerObjectBase::InitPosition(const Vector2 & pos)
 {
   m_Position = GameNetVec2(pos.x, pos.y);
@@ -164,7 +170,7 @@ void GameServerObjectBase::PushReceiveDamageEventBoxes(uint32_t multi_box_name_h
 void GameServerObjectBase::PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container)
 {
   game_container.GetSystems().GetCollisionDatabase().PushDynamicCollision(b,
-          (uint32_t)GameCollisionType::kCollisionDamagable, CollisionDatabaseObjectInfo(GetObjectHandle()));
+          (uint32_t)GameCollisionType::kCollisionDamagable, CollisionDatabaseObjectInfo(GetObjectHandle()), m_CollisionId);
 }
 
 void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container)
@@ -216,6 +222,12 @@ const SpritePtr & GameServerObjectBase::GetSprite() const
 Optional<CharacterFacing> GameServerObjectBase::GetFacing() const
 {
   return {};
+}
+
+
+Optional<int> GameServerObjectBase::GetCollisionId() const
+{
+  return m_CollisionId;
 }
 
 #ifdef MOVER_ONE_WAY_COLLISION

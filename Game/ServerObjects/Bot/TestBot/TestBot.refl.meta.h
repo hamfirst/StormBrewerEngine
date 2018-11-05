@@ -132,6 +132,8 @@ struct StormReflTypeInfo<TestBot>::field_data_static<0 + StormReflTypeInfo<BotSe
   static constexpr unsigned GetTypeNameHash() { return 0xD4BF05A2; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<BotServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &TestBot::m_Tree; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<TestBot *>(obj); return &ptr->m_Tree; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const TestBot *>(obj); return &ptr->m_Tree; }
 };
 
 template <typename Self>
