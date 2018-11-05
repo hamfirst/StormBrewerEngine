@@ -17,12 +17,8 @@ GameInstanceStateData::GameInstanceStateData(NotNullPtr<GameInstance> instance, 
 GameInstanceStatePlayer & GameInstanceStateData::GetClient(std::size_t index)
 {
   auto ptr = m_Players.TryGet(index);
-  if (ptr)
-  {
-    return *ptr;
-  }
-
-  throw false;
+  ASSERT(ptr, "Fetching invalid client");
+  return *ptr;
 }
 
 const GameInitSettings & GameInstanceStateData::GetInitSettings() const
@@ -38,6 +34,11 @@ void GameInstanceStateData::ChangeInitSettings(const GameInitSettings & init_set
 const GameStage & GameInstanceStateData::GetStage() const
 {
   return *m_StageManager.GetStage(m_InitSettings);
+}
+
+uint32_t GameInstanceStateData::GetPrivateRoomId() const
+{
+  return m_Instance->m_PrivateRoomId;
 }
 
 GameSharedGlobalResources & GameInstanceStateData::GetSharedResources()

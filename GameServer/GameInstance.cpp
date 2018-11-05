@@ -4,6 +4,7 @@
 #include "GameServer/GameClientConnection.h"
 #include "GameServer/GameInstanceStateBase.h"
 #include "GameServer/GameInstanceStateStaging.h"
+#include "GameServer/GameInstanceStatePrivateGameStaging.h"
 #include "GameServer.h"
 
 #include "Game/GameMessages.refl.meta.h"
@@ -15,10 +16,11 @@
 #include <ctime>
 
 
-GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings, 
+GameInstance::GameInstance(GameServer & server, uint64_t game_id, uint32_t private_room_id, const GameInitSettings & settings,
                            GameSharedGlobalResources & global_resources, GameStageManager & stage_manager) :
   m_Server(server),
   m_GameId(game_id),
+  m_PrivateRoomId(private_room_id),
   m_StateData(this, settings, global_resources, stage_manager)
 {
   Reset();
@@ -41,13 +43,21 @@ void GameInstance::Update()
 
 void GameInstance::Reset()
 {
-  m_State = std::make_unique<GameInstanceStateStaging>(m_StateData);
+  if(m_PrivateRoomId == 0)
+  {
+    m_State = std::make_unique<GameInstanceStateStaging>(m_StateData);
+  }
+  else
+  {
+    m_State = std::make_unique<GameInstanceStatePrivateGameStaging>(m_StateData);
+  }
 }
 
-bool GameInstance::JoinPlayer(GameClientConnection * client, const JoinGameMessage & join_game)
+bool GameInstance::JoinPlayer(GameClientConnection * client, const GameJoinInfo & join_game, bool game_leader)
 {
   auto player_index = m_StateData.m_IdAllocator.Allocate();
-  m_StateData.m_Players.EmplaceAt(player_index, GameInstanceStatePlayer{ client, join_game.m_UserName, (uint32_t)rand() });
+  m_StateData.m_Players.EmplaceAt(player_index, 
+          GameInstanceStatePlayer{ client, join_game.m_UserName, GetRandomNumber(), game_leader });
 
   if (m_State->JoinPlayer(player_index, join_game) == false)
   {
@@ -79,6 +89,12 @@ void GameInstance::HandlePlayerLoaded(GameClientConnection * client, const Finis
 {
   auto player_index = GetPlayerIndex(client);
   m_State->HandlePlayerLoaded(player_index, finish_loading);
+}
+
+void GameInstance::HandleTextChat(GameClientConnection * client, const SendTextChatMessage & text_message)
+{
+  auto player_index = GetPlayerIndex(client);
+  m_State->HandleTextChat(player_index, text_message);
 }
 
 #if NET_MODE == NET_MODE_GGPO

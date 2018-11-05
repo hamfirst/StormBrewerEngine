@@ -14,7 +14,7 @@ set(GENERIC_SRC_GameServer
             GameServer.cpp
             GameServerGlobalResources.cpp
             #CPP_PLACEHOLDER
-            )
+  GameInstanceStatePrivateGameStaging.cpp)
 set(GENERIC_HEADER_GameServer 
             GameClientConnection.h
             GameInstance.h
@@ -27,7 +27,7 @@ set(GENERIC_HEADER_GameServer
             GameServer.h
             GameServerGlobalResources.h
             #HEADER_PLACEHOLDER
-            )
+  GameInstanceStatePrivateGameStaging.h)
 set(GENERIC_REFL_GameServer 
             #REFL_PLACEHOLDER
             )

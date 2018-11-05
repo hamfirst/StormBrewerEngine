@@ -46,7 +46,7 @@ void GameModeOfflineStaging::OnAssetsLoaded()
 
   m_TitleImage = m_UIManager.AllocateFullTexture("logo", nullptr, logo_init, logo_data);
 
-  m_Start.Emplace(m_UIManager, "start", nullptr, Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30), Vector2(150, 25)), 
+  m_Start.Emplace(m_UIManager, "start", nullptr, Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30 - half_res.y), Vector2(150, 25)),
     "Start", &container.GetClientGlobalResources().UISoundEffects);
   m_Start->SetOnClickCallback([this] { Start(); });
 

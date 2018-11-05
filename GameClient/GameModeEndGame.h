@@ -23,13 +23,13 @@ class GameModeEndGame : public GameMode
 public:
   GameModeEndGame(GameContainer & game, std::unique_ptr<GameClientInstanceContainer> && instance_container, 
                                         std::unique_ptr<GameClientSystems> && client_systems, EndGamePlayAgainMode mode);
-  ~GameModeEndGame();
+  virtual ~GameModeEndGame();
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
+  void Update() override;
+  void Render() override;
 
 protected:
 

@@ -264,11 +264,6 @@ void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
   }
 
   auto sanitized_file = file;
-  if(sanitized_file[0] != '.')
-  {
-    sanitized_file = "./" + sanitized_file;
-  }
-
   cmake_file.replace(pos, placeholder.size(),
     "            " + sanitized_file + "\n" + placeholder);
 }

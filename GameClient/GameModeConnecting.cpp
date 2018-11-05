@@ -4,6 +4,7 @@
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
+#include "GameClient/GameModeOnlineStaging.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -28,7 +29,6 @@ void GameModeConnecting::Initialize()
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
   GetAssets().LoadAsset<TextureAsset>("./Images/stormbrewers_logo.png", "logo");
-
 }
 
 void GameModeConnecting::OnAssetsLoaded()
@@ -38,13 +38,15 @@ void GameModeConnecting::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
+  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
+
   m_Back.Emplace(m_UIManager, "back", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(render_state.GetRenderWidth() - 35, 30), Vector2(60, 25)), "Back", &container.GetClientGlobalResources().UISoundEffects, true);
+    Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30 - half_res.y), Vector2(60, 25)), "Back", &container.GetClientGlobalResources().UISoundEffects, true);
   m_Back->SetOnClickCallback([this]() { Back(); });
 
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, render_state.GetRenderSize() - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, render_state.GetRenderSize() - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, render_state.GetRenderSize() - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
+  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, half_res - Vector2(60, 20), false, &container.GetClientGlobalResources().UISoundEffects);
+  m_MusicButton.Emplace(m_UIManager, "music", nullptr, half_res - Vector2(100, 20), true, &container.GetClientGlobalResources().UISoundEffects);
+  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, half_res - Vector2(20, 20), container.GetWindow(), &container.GetClientGlobalResources().UISoundEffects);
 
   m_FrameClock.Start();
 }
@@ -53,6 +55,12 @@ void GameModeConnecting::Update()
 {
   auto & container = GetContainer();
   container.GetWindow().Update();
+
+  if(container.GetClient().InPrivateGameStaging())
+  {
+    container.SwitchMode(GameModeDef<GameModeOnlineStaging>{});
+    return;
+  }
 
   if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
@@ -100,7 +108,7 @@ void GameModeConnecting::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
 
-    render_util.DrawTexturedQuad(window_size / 2 - texture_size / 2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
+    render_util.DrawTexturedQuad(texture_size / -2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
 
     const char * status_msg = "";
     switch (container.GetClient().GetConnectionState())

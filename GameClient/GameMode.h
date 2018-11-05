@@ -11,7 +11,7 @@ class GameMode
 {
 public:
 
-  GameMode(GameContainer & game);
+  explicit GameMode(GameContainer & game);
   virtual ~GameMode();
 
   virtual void Initialize();

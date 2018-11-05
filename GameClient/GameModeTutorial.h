@@ -14,20 +14,20 @@
 class GameModeTutorial : public GameMode, public GameClientEventSender
 {
 public:
-  GameModeTutorial(GameContainer & game, const GameInitSettings game_settings);
-  ~GameModeTutorial();
+  GameModeTutorial(GameContainer & game, const GameInitSettings & game_settings);
+  ~GameModeTutorial() override;
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
+  void Update() override;
+  void Render() override;
 
-  virtual bool IsLoaded() override;
+  bool IsLoaded() override;
 
 protected:
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
+  void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
   void Pause();
   void Resume();

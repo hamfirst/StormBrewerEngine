@@ -37,6 +37,11 @@ public:
   void Pause();
   void Unpause();
 
+  void GrabMouse(NotNullPtr<UIElement> elem);
+  void GrabMouse(NotNullPtr<UIClickable> clickable);
+  void ReleaseMouse(NotNullPtr<UIElement> elem);
+  void ReleaseMouse(NotNullPtr<UIClickable> clickable);
+
   UIElementPtr<UIElementContainer> AllocateContainer(czstr name, NullOptPtr<UIElement> parent = nullptr,
     const UIElementContainerInitData & init_data = {}, const UIElementContainerData & data = {});
 
@@ -100,6 +105,10 @@ private:
 
   std::vector<NotNullPtr<UIElement>> m_RootElements;
   std::vector<NotNullPtr<UIClickable>> m_Clickables;
+
+  NotNullPtr<UIElement> m_GrabbedMouseElement = nullptr;
+  NotNullPtr<UIClickable> m_GrabbedMouseClickable = nullptr;
+
   bool m_HasSelectedElement = false;
 
   UIGlobalBlock m_GlobalBlock;

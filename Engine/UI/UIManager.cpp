@@ -113,6 +113,32 @@ void UIManager::Unpause()
   m_Paused = false;
 }
 
+void UIManager::GrabMouse(NotNullPtr<UIElement> elem)
+{
+  m_GrabbedMouseElement = nullptr;
+}
+
+void UIManager::GrabMouse(NotNullPtr<UIClickable> clickable)
+{
+  m_GrabbedMouseClickable = clickable;
+}
+
+void UIManager::ReleaseMouse(NotNullPtr<UIElement> elem)
+{
+  if(elem == m_GrabbedMouseElement)
+  {
+    m_GrabbedMouseElement = nullptr;
+  }
+}
+
+void UIManager::ReleaseMouse(NotNullPtr<UIClickable> clickable)
+{
+  if(clickable == m_GrabbedMouseClickable)
+  {
+    m_GrabbedMouseClickable = nullptr;
+  }
+}
+
 UIElementPtr<UIElementContainer> UIManager::AllocateContainer(czstr name, NullOptPtr<UIElement> parent,
   const UIElementContainerInitData & init_data, const UIElementContainerData & data)
 {
@@ -570,7 +596,8 @@ void UIManager::ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, 
 
   UIElement * cur_hover_element = nullptr;
   UIClickable * cur_hover_clickable = nullptr;
-  if (pointer_state.m_InFocus)
+
+  auto CheckAllElements = [&]()
   {
     for (auto elem : elements)
     {
@@ -592,6 +619,69 @@ void UIManager::ProcessActiveAreas(std::vector<std::pair<NotNullPtr<UIElement>, 
         cur_hover_clickable = elem;
         break;
       }
+    }
+  };
+
+
+  if (pointer_state.m_InFocus)
+  {
+    if(m_GrabbedMouseElement)
+    {
+      Optional<Box> active_area;
+      for (auto elem : elements)
+      {
+        if(elem.first == m_GrabbedMouseElement)
+        {
+          active_area = elem.second;
+          break;
+        }
+      }
+
+      if(active_area == false)
+      {
+        m_GrabbedMouseElement = nullptr;
+        CheckAllElements();
+      }
+      else
+      {
+        if (PointInBox(active_area.Value(), ui_pos))
+        {
+          cur_hover_element = m_GrabbedMouseElement;
+        }
+      }
+    }
+    else if(m_GrabbedMouseClickable)
+    {
+      bool found = false;
+      for (auto elem : m_Clickables)
+      {
+        if(elem == m_GrabbedMouseClickable)
+        {
+          found = true;
+          break;
+        }
+      }
+
+      if(found == false)
+      {
+        m_GrabbedMouseClickable = nullptr;
+        CheckAllElements();
+      }
+      else
+      {
+        auto box = m_GrabbedMouseClickable->m_ActiveArea;
+        box.m_Start -= clickable_offset;
+        box.m_End -= clickable_offset;
+
+        if (PointInBox(box, pointer_pos))
+        {
+          cur_hover_clickable = m_GrabbedMouseClickable;
+        }
+      }
+    }
+    else
+    {
+      CheckAllElements();
     }
   }
 

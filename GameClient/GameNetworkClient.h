@@ -56,21 +56,34 @@ struct GameNetworkClientInitSettings
 
 
   int m_RemotePort = 47816;
-  std::string m_UserName = "User";
+  std::string m_UserName = "";
   std::string m_Fingerprint = "78:0A:DC:3D:8D:75:D6:A8:D3:93:E9:2D:3C:78:6C:7E:E8:DB:A5:7F:7F:FD:3E:4F:09:05:93:7E:6D:60:15:67";
+
+  GameInitSettings m_InitSettings = {};
+  bool m_CreatePrivateGame = false;
+  uint32_t m_JoinPrivateGameKey = 0;
+};
+
+struct GameNetworkClientTextData
+{
+  std::string m_UserName;
+  std::string m_Text;
+  int m_Team;
 };
 
 class GameNetworkClient : public ClientBase, public GameClientEventSender
 {
 public:
-  GameNetworkClient(GameContainer & game);
+  explicit GameNetworkClient(GameContainer & game);
 
-  virtual void Update() override;
+  void Update() override;
   bool SkipUpdate();
 
-  ClientConnectionState GetConnectionState();
+  ClientConnectionState GetConnectionState() const;
+  bool InPrivateGameStaging() const;
 
   void SendJoinGame();
+  void SendCreatePrivateGame();
 
   void UpdateInput(ClientInput && input, bool send_immediate);
   NullOptPtr<GameClientInstanceContainer> GetClientInstanceData();
@@ -81,11 +94,20 @@ public:
   std::unique_ptr<GameClientInstanceContainer> ConvertToOffline();
   void FinalizeLevelLoad();
 
+  template <typename Visitor>
+  void VisitTextChat(Visitor && visitor) const
+  {
+    for(auto itr = m_TextData.rbegin(), end = m_TextData.rend(); itr != end; ++itr)
+    {
+      visitor(*itr);
+    }
+  }
 
 private:
 
   void HandlePong(const PongMessage & msg);
   void HandleLoadLevel(const LoadLevelMessage & load);
+  void HandleTextMessage(const GotTextChatMessage & text);
 
   void HandleStagingUpdate(const GameStateStaging & state);
   void HandleLoadingUpdate(const GameStateLoading & state);
@@ -107,11 +129,11 @@ private:
   void SendPing();
   void SendClientUpdate();
 
-  virtual void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
+  void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
-  virtual void InitConnection(ProtocolType & protocol) override;
-  virtual void ConnectionFailed() override;
-  virtual void Disconnected() override;
+  void InitConnection(ProtocolType & protocol) override;
+  void ConnectionFailed() override;
+  void Disconnected() override;
 
 #if NET_MODE == NET_MODE_GGPO
   int GetFutureFrames();
@@ -131,6 +153,8 @@ private:
 
   ProtocolType * m_Protocol = nullptr;
   uint64_t m_LoadToken;
+
+  std::vector<GameNetworkClientTextData> m_TextData;
 
 #if NET_MODE == NET_MODE_GGPO
 

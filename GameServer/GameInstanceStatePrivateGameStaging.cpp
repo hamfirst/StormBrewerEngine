@@ -1,5 +1,5 @@
 
-#include "GameServer/GameInstanceStateStaging.h"
+#include "GameServer/GameInstanceStatePrivateGameStaging.h"
 #include "GameServer/GameInstanceStateLoading.h"
 #include "GameServer/GameInstanceStateData.h"
 #include "GameServer/GameClientConnection.h"
@@ -7,18 +7,15 @@
 #include "Game/GameController.refl.h"
 #include "Game/GameNetworkSettings.h"
 
+static const int kSendInterval = 10 * 60;
 
-static const int kTimeToWaitForPlayers = 5 * 60;
-static const int kSendInterval = 2 * 60;
-
-GameInstanceStateStaging::GameInstanceStateStaging(GameInstanceStateData & state_data) :
-  GameInstanceStateBase(state_data),
-  m_TimeToWaitForPlayers(kTimeToWaitForPlayers + 1),
-  m_SendTimer(0)
+GameInstanceStatePrivateGameStaging::GameInstanceStatePrivateGameStaging(GameInstanceStateData & state_data) :
+        GameInstanceStateBase(state_data),
+        m_SendTimer(0)
 {
   m_State.m_Settings = state_data.GetInitSettings();
   m_State.m_Countdown = 0;
-  m_State.m_PrivateRoomId = 0;
+  m_State.m_PrivateRoomId = state_data.GetPrivateRoomId();
 
   auto visitor = [this](auto client_index, auto & client_data)
   {
@@ -28,7 +25,7 @@ GameInstanceStateStaging::GameInstanceStateStaging(GameInstanceStateData & state
   m_StateData.VisitPlayers(visitor);
 }
 
-bool GameInstanceStateStaging::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
+bool GameInstanceStatePrivateGameStaging::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
 {
   if (m_State.m_Players.Size() >= kMaxPlayers)
   {
@@ -39,15 +36,36 @@ bool GameInstanceStateStaging::JoinPlayer(std::size_t client_index, const GameJo
   return true;
 }
 
-void GameInstanceStateStaging::RemovePlayer(std::size_t client_index)
+void GameInstanceStatePrivateGameStaging::RemovePlayer(std::size_t client_index)
 {
+  auto & player_data = m_StateData.GetClient(client_index);
+  if(player_data.m_GameLeader)
+  {
+    Optional<std::size_t> new_leader_index;
+    auto visitor = [&](auto test_client_index, auto & client_data)
+    {
+      if(new_leader_index.IsValid() == false && test_client_index != client_index)
+      {
+        new_leader_index = test_client_index;
+      }
+    };
+
+    m_StateData.VisitPlayers(visitor);
+
+    if(new_leader_index)
+    {
+      auto & new_leader_player_data = m_StateData.GetClient(new_leader_index.Value());
+      new_leader_player_data.m_GameLeader = true;
+      m_State.m_Players[client_index].m_GameLeader = true;
+    }
+  }
+
   m_State.m_Players.RemoveAt(client_index);
+  m_SendTimer = 0;
 }
 
-void GameInstanceStateStaging::Update()
+void GameInstanceStatePrivateGameStaging::Update()
 {
-  m_State.m_WaitTimer = m_TimeToWaitForPlayers;
-
   if (m_SendTimer == 0)
   {
     auto visitor = [&](auto client_index, auto & client_data)
@@ -63,8 +81,7 @@ void GameInstanceStateStaging::Update()
     m_SendTimer--;
   }
 
-  m_TimeToWaitForPlayers--;
-  bool ready = CheckGameReady() || m_TimeToWaitForPlayers <= 0;
+  bool ready = CheckGameReady();
 
   if (m_State.m_Countdown == 0)
   {
@@ -90,26 +107,36 @@ void GameInstanceStateStaging::Update()
   }
 }
 
-void GameInstanceStateStaging::HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg)
+void GameInstanceStatePrivateGameStaging::HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg)
 {
-#if NET_USE_READY
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   m_State.m_Players[client_index].m_Ready = msg.m_Ready;
 #endif
 }
 
-void GameInstanceStateStaging::HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg)
+void GameInstanceStatePrivateGameStaging::HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg)
 {
 
 }
 
-void GameInstanceStateStaging::HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg)
+void GameInstanceStatePrivateGameStaging::HandlePlayerKick(std::size_t client_index, const KickPlayerMessage & msg)
+{
+  auto & player_data = m_StateData.GetClient(client_index);
+  if(player_data.m_GameLeader == false)
+  {
+    return;
+  }
+
+  player_data.m_Client->ForceDisconnect();
+}
+
+void GameInstanceStatePrivateGameStaging::HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg)
 {
   GotTextChatMessage out_text;
   auto team = static_cast<int>(m_State.m_Players[client_index].m_Team);
 
   out_text.m_Message = msg.m_Message;
   out_text.m_UserName = m_State.m_Players[client_index].m_UserName;
-  out_text.m_Team = m_State.m_Players[client_index].m_Team;
 
   if(msg.m_TeamOnly)
   {
@@ -134,7 +161,7 @@ void GameInstanceStateStaging::HandleTextChat(std::size_t client_index, const Se
   }
 }
 
-void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
+void GameInstanceStatePrivateGameStaging::AddPlayer(std::size_t client_index)
 {
   m_State.m_Players.EmplaceAt(client_index);
 
@@ -142,6 +169,7 @@ void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
   auto & player_data = m_StateData.GetClient(client_index);
 
   staging_player.m_UserName = player_data.m_UserName;
+  staging_player.m_GameLeader = player_data.m_GameLeader;
 
 #ifdef NET_USE_RANDOM_TEAM
   auto team_counts = GameController::GetTeamCounts(m_State);
@@ -153,7 +181,7 @@ void GameInstanceStateStaging::AddPlayer(std::size_t client_index)
   staging_player.m_Team = team;
 }
 
-bool GameInstanceStateStaging::CheckGameReady()
+bool GameInstanceStatePrivateGameStaging::CheckGameReady()
 {
   auto team_counts = GameController::GetTeamCounts(m_State);
   if(GameController::DoAllTeamsHavePlayers(team_counts) == false)
@@ -161,7 +189,7 @@ bool GameInstanceStateStaging::CheckGameReady()
     return false;
   }
 
-#if defined(NET_USE_READY)
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   bool ready = true;
   auto visitor = [&](auto client_index, auto & client_data)
   {

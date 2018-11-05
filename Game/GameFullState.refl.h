@@ -27,8 +27,9 @@ struct GameStateStagingPlayer
 {
   NET_REFL;
   std::string m_UserName;
+  bool m_GameLeader = false;
 
-#ifdef NET_USE_READY
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   bool m_Ready = false;
 #endif
 
@@ -41,6 +42,7 @@ struct GameStateStaging
   NetSparseList<GameStateStagingPlayer, kMaxPlayers> m_Players;
   GameInitSettings m_Settings;
   NetRangedNumber<int, 0, 255> m_Countdown;
+  uint32_t m_PrivateRoomId = 0;
   int m_WaitTimer = 0;
 };
 

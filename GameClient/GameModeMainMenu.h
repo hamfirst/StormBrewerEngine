@@ -14,15 +14,15 @@
 class GameModeMainMenu : public GameMode
 {
 public:
-  GameModeMainMenu(GameContainer & game);
-  ~GameModeMainMenu();
+  explicit GameModeMainMenu(GameContainer & game);
+  ~GameModeMainMenu() override;
 
-  virtual void Initialize() override;
-  virtual void OnAssetsLoaded() override;
+  void Initialize() override;
+  void OnAssetsLoaded() override;
 
-  virtual void Update() override;
-  virtual void Render() override;
-  virtual void InputEvent() override;
+  void Update() override;
+  void Render() override;
+  void InputEvent() override;
 
 protected:
 
@@ -30,6 +30,8 @@ protected:
   void PlayOffline();
   void Tutorial();
   void PlaySingleplayer();
+  void CreatePrivateMatch();
+  void JoinPrivateMatch();
 
 private:
 
@@ -45,6 +47,8 @@ private:
   Optional<UIPrototypeButton> m_PlayOnline;
   Optional<UIPrototypeButton> m_PlayOffline;
   Optional<UIPrototypeButton> m_PlaySingleplayer;
+  Optional<UIPrototypeButton> m_CreateOnlineMatch;
+  Optional<UIPrototypeButton> m_JoinOnlineMatch;
   Optional<UIPrototypeButton> m_Tutorial;
   Optional<UIPrototypeButton> m_Host;
   Optional<UIPrototypeButton> m_Join;

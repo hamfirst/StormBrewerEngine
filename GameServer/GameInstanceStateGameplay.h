@@ -37,42 +37,43 @@ class GameInstanceStateGameplay : public GameInstanceStateBase, public GameSimul
 {
 public:
   GameInstanceStateGameplay(GameInstanceStateData & state_data, const GameStateLoading & loading_data, std::unique_ptr<GameSharedInstanceResources> && resources);
-  ~GameInstanceStateGameplay();
+  ~GameInstanceStateGameplay() override;
 
-  virtual bool JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game) override;
-  virtual void RemovePlayer(std::size_t client_index) override;
+  bool JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game) override;
+  void RemovePlayer(std::size_t client_index) override;
 
-  virtual void Update() override;
+  void Update() override;
 
-  virtual void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
-  virtual void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
+  void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
+  void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
+  void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) override;
 
 #if NET_MODE == NET_MODE_GGPO
 
   void ProcessExternals();
   void BatchUpdate(int frames_to_rewind, int frames_to_update);
   void ComputeMaxRewind();
-  virtual void UpdatePlayer(std::size_t client_index, GameGGPOClientUpdate & update_data) override;
+  void UpdatePlayer(std::size_t client_index, GameGGPOClientUpdate & update_data) override;
 
-  virtual void SendAuthEvent(std::size_t class_id, const void * event_ptr) override;
-  virtual bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) override;
-  virtual void BlockRewind(std::size_t connection) override;
+  void SendAuthEvent(std::size_t class_id, const void * event_ptr) override;
+  bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) override;
+  void BlockRewind(std::size_t connection) override;
 
 #else
 
-  virtual void UpdatePlayer(std::size_t client_index, ClientAuthData & update_data) override;
-  virtual void HandleClientEvent(std::size_t client_index, std::size_t class_id, void * event_ptr) override;
+  void UpdatePlayer(std::size_t client_index, ClientAuthData & update_data) override;
+  void HandleClientEvent(std::size_t client_index, std::size_t class_id, void * event_ptr) override;
 
-  virtual void SendGlobalEvent(std::size_t class_id, const void * event_ptr) override;
-  virtual void SendGlobalEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id) override;
-  virtual void SendEntityEvent(std::size_t class_id, const void * event_ptr, ServerObjectHandle object_handle) override;
-  virtual void SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) override;
+  void SendGlobalEvent(std::size_t class_id, const void * event_ptr) override;
+  void SendGlobalEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id) override;
+  void SendEntityEvent(std::size_t class_id, const void * event_ptr, ServerObjectHandle object_handle) override;
+  void SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) override;
 
 #endif
 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
 
-  virtual void SyncDeliberateSyncSystem(int system_index) override;
+  void SyncDeliberateSyncSystem(int system_index) override;
 
 #endif
 

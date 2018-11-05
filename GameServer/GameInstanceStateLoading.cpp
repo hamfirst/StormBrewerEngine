@@ -23,12 +23,12 @@ GameInstanceStateLoading::GameInstanceStateLoading(GameInstanceStateData & state
   }
 }
 
-bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const JoinGameMessage & join_game)
+bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
 {
   if (m_State.m_Players.Size() >= kMaxPlayers)
   {
     return false;
-}
+  }
 
 #ifdef NET_ALLOW_LATE_JOIN
 

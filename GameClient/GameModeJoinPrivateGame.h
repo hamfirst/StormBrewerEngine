@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Foundation/Time/StopWatch.h"
-#include "Foundation/Time/FrameClock.h"
+#include "Foundation/Sequencer/Sequencer.h"
 
 #include "GameClient/GameMode.h"
 
@@ -12,11 +12,11 @@
 #include "Engine/UI/Prototype/UIPrototypeMuteButton.h"
 #include "Engine/UI/Prototype/UIPrototypeFullscreenButton.h"
 
-class GameModeConnecting : public GameMode
+class GameModeJoinPrivateGame : public GameMode
 {
 public:
-  GameModeConnecting(GameContainer & game);
-  ~GameModeConnecting();
+  explicit GameModeJoinPrivateGame(GameContainer & game);
+  ~GameModeJoinPrivateGame() override;
 
   void Initialize() override;
   void OnAssetsLoaded() override;
@@ -26,21 +26,24 @@ public:
 
 protected:
 
+  void Submit();
   void Back();
 
-protected:
+private:
 
+  Sequencer m_Sequencer;
   UIManager m_UIManager;
-  Optional<UIPrototypeButton> m_Back;
+
+  UIElementPtr<UIElementText> m_Caption;
+  UIElementPtr<UIElementShape> m_Fader;
 
   Optional<UIPrototypeMuteButton> m_MuteButton;
   Optional<UIPrototypeMuteButton> m_MusicButton;
   Optional<UIPrototypeFullscreenButton> m_FullscreenButton;
 
-  bool m_ConnectFailed;
-
-  double m_LastConnect;
-  FrameClock m_FrameClock;
+  Optional<UIPrototypeTextInput> m_Input;
+  Optional<UIPrototypeButton> m_Okay;
+  Optional<UIPrototypeButton> m_Back;
 };
 
 

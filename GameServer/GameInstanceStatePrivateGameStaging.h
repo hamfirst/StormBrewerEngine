@@ -4,10 +4,10 @@
 
 #include "Game/GameFullState.refl.h"
 
-class GameInstanceStateStaging : public GameInstanceStateBase
+class GameInstanceStatePrivateGameStaging : public GameInstanceStateBase
 {
 public:
-  explicit GameInstanceStateStaging(GameInstanceStateData & state_data);
+  explicit GameInstanceStatePrivateGameStaging(GameInstanceStateData & state_data);
 
   bool JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game) override;
   void RemovePlayer(std::size_t client_index) override;
@@ -16,6 +16,7 @@ public:
 
   void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
   void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
+  void HandlePlayerKick(std::size_t client_index, const KickPlayerMessage & msg) override;
   void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) override;
 
 protected:
@@ -26,6 +27,5 @@ protected:
 private:
 
   GameStateStaging m_State;
-  int m_TimeToWaitForPlayers;
   int m_SendTimer;
 };

@@ -103,17 +103,56 @@ bool GameNetworkClient::SkipUpdate()
   return false;
 }
 
-ClientConnectionState GameNetworkClient::GetConnectionState()
+ClientConnectionState GameNetworkClient::GetConnectionState() const
 {
   return m_State;
 }
 
+bool GameNetworkClient::InPrivateGameStaging() const
+{
+  if(m_StagingState)
+  {
+    return m_StagingState->m_PrivateRoomId != 0;
+  }
+
+  return false;
+}
+
 void GameNetworkClient::SendJoinGame()
 {
-  JoinGameMessage join_msg = {};
-  join_msg.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
+  if(m_GameContainer.GetNetworkInitSettings().m_JoinPrivateGameKey != 0)
+  {
+    JoinGameMessage join_msg = {};
+    join_msg.m_PrivateRoomId = m_GameContainer.GetNetworkInitSettings().m_JoinPrivateGameKey;
+    join_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
+    join_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
 
-  m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
+    m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
+  }
+  else if(m_GameContainer.GetNetworkInitSettings().m_CreatePrivateGame)
+  {
+    CreatePrivateGameMessage create_msg = {};
+    create_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
+    create_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
+
+    m_Protocol->GetSenderChannel<0>().SendMessage(create_msg);
+  }
+  else
+  {
+    JoinGameMessage join_msg = {};
+    join_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
+    join_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
+
+    m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
+  }
+}
+
+void GameNetworkClient::SendCreatePrivateGame()
+{
+  CreatePrivateGameMessage create_msg = {};
+  create_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
+
+  m_Protocol->GetSenderChannel<0>().SendMessage(create_msg);
 }
 
 void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
@@ -186,6 +225,16 @@ void GameNetworkClient::HandleLoadLevel(const LoadLevelMessage & load)
   m_FinalizedLoad = false;
 
   m_LoadToken = load.m_LoadToken;
+}
+
+void GameNetworkClient::HandleTextMessage(const GotTextChatMessage & text)
+{
+  GameNetworkClientTextData text_data;
+  text_data.m_UserName = text.m_UserName;
+  text_data.m_Text = text.m_Message;
+  text_data.m_Team = text.m_Team;
+
+  m_TextData.emplace_back(std::move(text_data));
 }
 
 void GameNetworkClient::HandleStagingUpdate(const GameStateStaging & state)
@@ -441,6 +490,7 @@ void GameNetworkClient::InitConnection(ProtocolType & protocol)
 
   m_Protocol->GetReceiverChannel<0>().RegisterCallback(&GameNetworkClient::HandlePong, this);
   m_Protocol->GetReceiverChannel<0>().RegisterCallback(&GameNetworkClient::HandleLoadLevel, this);
+  m_Protocol->GetReceiverChannel<0>().RegisterCallback(&GameNetworkClient::HandleTextMessage, this);
 
 #if NET_MODE == NET_MODE_GGPO
 
