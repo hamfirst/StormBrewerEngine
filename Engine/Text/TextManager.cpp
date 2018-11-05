@@ -13,6 +13,7 @@
 #include "Engine/Asset/AssetLoader.h"
 
 #include <codecvt>
+#include "Engine/Text/TextWrap.h"
 
 TextManager g_TextManager;
 
@@ -22,7 +23,6 @@ std::vector<std::unique_ptr<TextBackupFont>> s_BackupFonts;
 TextManager::TextManager() :
   m_TextVertexBuffer(true)
 {
-
 }
 
 void TextManager::Init()
@@ -63,7 +63,8 @@ bool TextManager::IsFontLoaded(int font_id)
   return font->Loaded();
 }
 
-void TextManager::AddTextToBuffer(czstr text, int font_id, float scale, TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
+void TextManager::AddTextToBuffer(const std::string_view & text, int font_id, float scale,
+        TextBufferBuilder & vertex_builder, int sel_start, int sel_end, int cursor_pos)
 {
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
@@ -87,7 +88,7 @@ void TextManager::AddTextToBuffer(czstr text, int font_id, float scale, TextBuff
   }
 
   m_GlyphPositions.clear();
-  font->CreateVertexBufferForString(text, strlen(text), scale, sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
+  font->CreateVertexBufferForString(text, scale, sel_start, sel_end, cursor_pos, m_Settings, vertex_builder, m_GlyphPositions);
 }
 
 void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, float scale, TextBufferBuilder & vertex_builder, const char * prompt)
@@ -162,7 +163,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   render_state.Draw();
 }
 
-void TextManager::RenderText(czstr text, int font_id, float scale, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
+void TextManager::RenderText(const std::string_view & text, int font_id, float scale, RenderState & render_state, int sel_start, int sel_end, int cursor_pos)
 {
   TextBufferBuilder buffer_builder;
   AddTextToBuffer(text, font_id, scale, buffer_builder, sel_start, sel_end, cursor_pos);
@@ -176,7 +177,7 @@ void TextManager::RenderInputText(std::shared_ptr<TextInputContext> & context, i
   RenderBuffer(buffer_builder, render_state);
 }
 
-Box TextManager::GetTextSize(czstr text, int font_id, float scale)
+Box TextManager::GetTextSize(const std::string_view & text, int font_id, float scale)
 {
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
@@ -190,7 +191,7 @@ Box TextManager::GetTextSize(czstr text, int font_id, float scale)
     return{};
   }
 
-  return font->GetTextSize(text, strlen(text), scale);
+  return font->GetTextSize(text, scale);
 }
 
 Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, float scale, const char * prompt)
@@ -286,4 +287,21 @@ void TextManager::LoadBackupFont(czstr font_path)
   {
     s_BackupFonts.emplace_back(std::make_unique<TextBackupFont>(std::move(*buffer)));
   }
+}
+
+bool TextManager::VisitTextSizeInternal(Delegate<bool, const Box &, char32_t, czstr> & callback, const std::string_view & text, int font_id, float scale)
+{
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
+  {
+    return true;
+  }
+
+  auto & font = itr->second;
+  if (font->Loaded() == false)
+  {
+    return true;
+  }
+
+  return font->VisitTextSize(callback, text, scale);
 }

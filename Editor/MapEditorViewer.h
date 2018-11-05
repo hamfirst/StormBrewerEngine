@@ -126,6 +126,7 @@ protected:
   void dragEnterEvent(QDragEnterEvent * event) override;
   void dropEvent(QDropEvent * event) override;
 
+  void closeEvent(QCloseEvent * event) override;
 public slots:
 
   void tick();
@@ -160,11 +161,14 @@ private:
   bool m_DrawGrid = true;
 
   RenderVec2 m_Center = {};
+  int m_MagnificationDelta = 0;
   QtLerpVar m_Magnification;
 
   bool m_PlayMode = false;
+  bool m_PlayModeRenderReady = false;
   bool m_Dragging = false;
   bool m_Panning = false;
+  bool m_PanningSpace = false;
   bool m_HasMouse = false;
 
   Optional<Vector2> m_LastDrawPos;

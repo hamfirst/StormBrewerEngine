@@ -21,6 +21,39 @@ struct StormReflTypeInfo<UIElementFullTextureInitData>
   static constexpr auto GetName() { return "UIElementFullTextureInitData"; }
   static constexpr auto GetNameHash() { return 0x79CAB921; }
   static UIElementFullTextureInitData & GetDefault() { static UIElementFullTextureInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementFullTextureInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementFullTextureInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x17C45A05 == type_name_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementFullTextureInitData *>(ptr);
+    if(typeid(UIElementFullTextureInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementFullTextureInitData *>(ptr);
+    if(typeid(UIElementFullTextureInitData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementInitDataBase).hash_code() == type_id_hash) return static_cast<const UIElementInitDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -33,6 +66,8 @@ struct StormReflTypeInfo<UIElementFullTextureInitData>::field_data_static<0 + St
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementInitDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureInitData::m_TextureFile; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureInitData *>(obj); return &ptr->m_TextureFile; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureInitData *>(obj); return &ptr->m_TextureFile; }
 };
 
 template <typename Self>
@@ -73,6 +108,43 @@ struct StormReflTypeInfo<UIElementFullTextureData>
   static constexpr auto GetName() { return "UIElementFullTextureData"; }
   static constexpr auto GetNameHash() { return 0x1DC7E1C5; }
   static UIElementFullTextureData & GetDefault() { static UIElementFullTextureData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementFullTextureData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementFullTextureData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x4076AA02 == type_name_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(0xC8F14E8A == type_name_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UIElementFullTextureData *>(ptr);
+    if(typeid(UIElementFullTextureData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<UIElementDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UIElementFullTextureData *>(ptr);
+    if(typeid(UIElementFullTextureData).hash_code() == type_id_hash) return c;
+    if(typeid(UIElementDataFrameCenter).hash_code() == type_id_hash) return static_cast<const UIElementDataFrameCenter *>(c);
+    if(typeid(UIElementDataBase).hash_code() == type_id_hash) return static_cast<const UIElementDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -85,6 +157,8 @@ struct StormReflTypeInfo<UIElementFullTextureData>::field_data_static<0 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureData::m_ScaleX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureData *>(obj); return &ptr->m_ScaleX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureData *>(obj); return &ptr->m_ScaleX; }
 };
 
 template <typename Self>
@@ -107,6 +181,8 @@ struct StormReflTypeInfo<UIElementFullTextureData>::field_data_static<1 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<UIElementDataFrameCenter>::fields_n; }
   static constexpr auto GetMemberPtr() { return &UIElementFullTextureData::m_ScaleY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIElementFullTextureData *>(obj); return &ptr->m_ScaleY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIElementFullTextureData *>(obj); return &ptr->m_ScaleY; }
 };
 
 template <typename Self>

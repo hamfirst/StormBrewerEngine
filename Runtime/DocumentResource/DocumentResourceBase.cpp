@@ -3,19 +3,20 @@
 #include "Runtime/DocumentResource/DocumentResourceBase.h"
 #include "Runtime/DocumentResource/DocumentResourceManager.h"
 
-DocumentResourceBase::DocumentResourceBase(Any && load_data, uint32_t file_name_hash) :
+DocumentResourceBase::DocumentResourceBase(Any && load_data, uint32_t path_hash, czstr path) :
   m_LoadData(std::move(load_data)),
   m_RefCount(0),
   m_Loaded(false),
   m_Error(false),
-  m_FileNameHash(file_name_hash)
+  m_FileName(path),
+  m_FileNameHash(path_hash)
 {
 
 }
 
 DocumentResourceBase::~DocumentResourceBase()
 {
-
+  m_LoadData.Clear();
 }
 
 void DocumentResourceBase::IncRef()
@@ -42,6 +43,11 @@ bool DocumentResourceBase::IsError() const
   return m_Error;
 }
 
+czstr DocumentResourceBase::GetFileName() const
+{
+  return m_FileName.c_str();
+}
+
 uint64_t DocumentResourceBase::GetFileNameHash() const
 {
   return m_FileNameHash;
@@ -52,7 +58,8 @@ NullOptPtr<DocumentResourceBase> DocumentResourceBase::FindDocumentResource(uint
   return g_DocumentResourceManager.FindDocumentResource(file_path_hash);
 }
 
-NotNullPtr<DocumentResourceBase> DocumentResourceBase::LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t))
+NotNullPtr<DocumentResourceBase> DocumentResourceBase::LoadDocumentResource(czstr file_path,
+        std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t, czstr))
 {
   return g_DocumentResourceManager.LoadDocumentResource(file_path, ResourceCreator);
 }

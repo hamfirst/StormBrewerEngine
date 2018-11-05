@@ -22,6 +22,39 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>
   static constexpr auto GetName() { return "DealDamageAnimationEvent"; }
   static constexpr auto GetNameHash() { return 0xCA028F12; }
   static DealDamageAnimationEvent & GetDefault() { static DealDamageAnimationEvent def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DealDamageAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x0131E8FB == type_name_hash) return static_cast<SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DealDamageAnimationEvent *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x0131E8FB == type_name_hash) return static_cast<const SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DealDamageAnimationEvent *>(ptr);
+    if(typeid(DealDamageAnimationEvent).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteAnimationEventDataBase).hash_code() == type_id_hash) return static_cast<SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DealDamageAnimationEvent *>(ptr);
+    if(typeid(DealDamageAnimationEvent).hash_code() == type_id_hash) return c;
+    if(typeid(SpriteAnimationEventDataBase).hash_code() == type_id_hash) return static_cast<const SpriteAnimationEventDataBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -34,6 +67,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<0 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Amount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Amount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_Amount; }
 };
 
 template <typename Self>
@@ -56,6 +91,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<1 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0xBDF26CA6; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Direction; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Direction; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_Direction; }
 };
 
 template <typename Self>
@@ -78,6 +115,8 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<2 + StormR
   static constexpr unsigned GetTypeNameHash() { return 0x33D1B477; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_DamageType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_DamageType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DealDamageAnimationEvent *>(obj); return &ptr->m_DamageType; }
 };
 
 template <typename Self>

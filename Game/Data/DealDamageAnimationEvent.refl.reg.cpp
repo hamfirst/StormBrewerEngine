@@ -15,6 +15,6 @@
 #include "Game/Data/DealDamageAnimationEvent.refl.meta.h"
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(DealDamageAnimationEvent);
-REGISTER_SPRITE_ANIM_EVENT_DATA(DealDamageAnimationEvent);
+REGISTER_TYPE(DealDamageAnimationEvent, SpriteAnimationEventDataBase);
 
 uint32_t DealDamageAnimationEvent::TypeNameHash = StormReflTypeInfo<DealDamageAnimationEvent>::GetNameHash();

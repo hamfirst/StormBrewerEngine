@@ -20,6 +20,39 @@ struct StormReflTypeInfo<CollisionDrawerInitData>
   static constexpr auto GetName() { return "CollisionDrawerInitData"; }
   static constexpr auto GetNameHash() { return 0x46FFA8DB; }
   static CollisionDrawerInitData & GetDefault() { static CollisionDrawerInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<CollisionDrawerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x14A370F8 == type_name_hash) return static_cast<MapEffectLayerInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const CollisionDrawerInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x14A370F8 == type_name_hash) return static_cast<const MapEffectLayerInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<CollisionDrawerInitData *>(ptr);
+    if(typeid(CollisionDrawerInitData).hash_code() == type_id_hash) return c;
+    if(typeid(MapEffectLayerInitData).hash_code() == type_id_hash) return static_cast<MapEffectLayerInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const CollisionDrawerInitData *>(ptr);
+    if(typeid(CollisionDrawerInitData).hash_code() == type_id_hash) return c;
+    if(typeid(MapEffectLayerInitData).hash_code() == type_id_hash) return static_cast<const MapEffectLayerInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

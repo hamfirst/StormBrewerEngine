@@ -17,7 +17,18 @@ struct ProjectFiles
   std::vector<std::string> m_CPPFiles;
   std::vector<std::string> m_HeaderFiles;
   std::vector<std::string> m_ReflFiles;
+  std::string m_PCHFile;
 };
+
+struct GenerateOptions
+{
+  bool m_QTProj = false;
+  bool m_IncludePlatformFiles = false;
+  bool m_Refl = false;
+  bool m_Placeholder = false;
+  bool m_PCH = false;
+};
+
 
 bool FindPlatformString(const std::string & file_path, const std::string & platform)
 {
@@ -90,8 +101,8 @@ std::pair<bool, fs::path> HasProjectFile(DirectoryFiles & dir)
 {
   for (auto & file : dir.m_Files)
   {
-    auto ext = file.extension().string();
-    if (ext == ".vcxproj")
+    auto filename = file.filename().string();
+    if (filename == "CMakeLists.gen")
     {
       return std::make_pair(true, file);
     }
@@ -100,32 +111,63 @@ std::pair<bool, fs::path> HasProjectFile(DirectoryFiles & dir)
   return std::make_pair(false, fs::path{});
 }
 
-bool HasNogenFile(DirectoryFiles & dir)
+void ProcessOption(const std::string & option, GenerateOptions & out)
 {
-  for (auto & file : dir.m_Files)
+  if (option == "qt")
   {
-    auto fn = file.filename().string();
-    if (fn == "CMakeLists.nogen")
-    {
-      return true;
-    }
+    out.m_QTProj = true;
   }
 
-  return false;
+  if (option == "platform")
+  {
+    out.m_IncludePlatformFiles = true;
+  }
+
+  if (option == "refl")
+  {
+    out.m_Refl = true;
+  }
+
+  if (option == "placeholder")
+  {
+    out.m_Placeholder = true;
+  }
+
+  if (option == "pch")
+  {
+    out.m_PCH = true;
+  }
 }
 
-bool HasQtFile(DirectoryFiles & dir)
+GenerateOptions ReadGenerateOptions(const fs::path & path)
 {
-  for (auto & file : dir.m_Files)
+  std::ifstream options_file;
+  options_file.open(path.c_str());
+
+  GenerateOptions options;
+
+  std::string option;
+  while(!options_file.eof())
   {
-    auto fn = file.filename().string();
-    if (fn == "CMakeLists.qt")
+    char c = options_file.get();
+    if (c == std::ifstream::traits_type::eof())
     {
-      return true;
+      break;
+    }
+
+    if(c == '\r' || c == '\n')
+    {
+      ProcessOption(option, options);
+      option.clear();
+    }
+    else
+    {
+      option += c;
     }
   }
 
-  return false;
+  ProcessOption(option, options);
+  return options;
 }
 
 bool IsReservedDirectoryName(const std::string & dir_name)
@@ -148,13 +190,14 @@ bool IsReservedDirectoryName(const std::string & dir_name)
   return false;
 }
 
-void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_path, ProjectFiles & files, bool qt_proj)
+void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_path,
+        ProjectFiles & files, const GenerateOptions & options)
 {
   for (auto & file : dir.m_Files)
   {
     auto ext = file.extension().string();
 
-    if (qt_proj && file.string().find("GeneratedFiles") != std::string::npos)
+    if (options.m_QTProj && file.string().find("GeneratedFiles") != std::string::npos)
     {
       continue;
     }
@@ -163,7 +206,7 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
     if (ext == ".cpp" || ext == ".c" || ext == ".qrc" || ext == ".ui")
     {
       auto stem = file.stem().string();
-      if (qt_proj && (stem.substr(0, 4) == "moc_" || stem.substr(0, 4) == "qrc_"))
+      if (options.m_QTProj && (stem.substr(0, 4) == "moc_" || stem.substr(0, 4) == "qrc_"))
       {
         continue;
       }
@@ -173,7 +216,7 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
     else if (ext == ".h")
     {
       auto stem = file.stem().string();
-      if (qt_proj && (stem.substr(0, 3) == "ui_"))
+      if (options.m_QTProj && (stem.substr(0, 3) == "ui_"))
       {
         continue;
       }
@@ -184,6 +227,11 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
       if (filename.length() > 7 && filename.substr(filename.length() - 7) == ".refl.h")
       {
         files.m_ReflFiles.push_back(proj_file_path);
+      }
+
+      if (filename.find("Common.h") != std::string::npos)
+      {
+        files.m_PCHFile = filename;
       }
     }
   }
@@ -226,13 +274,24 @@ void WritePlatformFileList(std::ofstream & cmake_file, const std::string & optio
   cmake_file << "endif()\n";
 }
 
-void FinalizeProject(const fs::path & p, const fs::path & project_file, const std::string & relative_root, ProjectFiles & files, bool qt_proj)
+void FinalizeProject(const fs::path & p, const fs::path & project_file, const std::string & relative_root,
+        ProjectFiles & files, const GenerateOptions & options)
 {
-  auto project_name = project_file.stem().string();
+  auto project_name = project_file.parent_path().filename().string();
 
   std::cout << "Project root: " << p << "\n";
   std::cout << "Project name: " << project_name << "\n";
   std::cout << "Relative root: " << relative_root << "\n";
+  std::cout << "Qt Project: " << (options.m_QTProj ? "Yes" : "No") << "\n";
+  std::cout << "Include Platform Files: " << (options.m_IncludePlatformFiles ? "Yes" : "No") << "\n";
+  std::cout << "Include CMake Placeholder: " << (options.m_Placeholder ? "Yes" : "No") << "\n";
+  std::cout << "Include Refl Options: " << (options.m_Refl ? "Yes" : "No") << "\n";
+  std::cout << "Create PCH: " << (options.m_PCH ? "Yes" : "No") << "\n";
+
+  if (options.m_PCH)
+  {
+    std::cout << "PCH File: " << files.m_PCHFile << "\n";
+  }
 
   std::cout << "Project headers:\n";
   for (auto & file : files.m_HeaderFiles)
@@ -256,7 +315,12 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
 
-  if (qt_proj)
+  if (options.m_PCH && files.m_PCHFile.size() > 0)
+  {
+    cmake_file << "include(\"${PROJECT_SOURCE_DIR}/CMake/cotire.cmake\")\n\n";
+  }
+
+  if (options.m_QTProj)
   {
     cmake_file << "set(CMAKE_AUTOMOC ON)\n";
     cmake_file << "set(CMAKE_AUTOUIC ON)\n";
@@ -277,8 +341,12 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     }
   }
 
-  cmake_file << "            #CPP_PLACEHOLDER\n";
-  cmake_file << "            )\n";
+  if(options.m_Placeholder)
+  {
+    cmake_file << "            #CPP_PLACEHOLDER\n";
+  }
+
+  cmake_file << "            )\n\n";
 
   cmake_file << "set(GENERIC_HEADER_" + project_name + " \n";
 
@@ -290,46 +358,89 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     }
   }
 
-  cmake_file << "            #HEADER_PLACEHOLDER\n";
-  cmake_file << "            )\n";
-
-
-  cmake_file << "set(GENERIC_REFL_" + project_name + " \n";
-
-  for (auto & file : files.m_ReflFiles)
+  if(options.m_Placeholder)
   {
-    if (!IsAnyPlatformFile(file))
-    {
-      cmake_file << "            " + file + "\n";
-    }
+    cmake_file << "            #HEADER_PLACEHOLDER\n";
   }
 
-  cmake_file << "            #REFL_PLACEHOLDER\n";
   cmake_file << "            )\n\n";
 
-  WritePlatformFileList(cmake_file, "MSVC", "_WINDOWS", "Windows", project_name, relative_root, files, false, [](const std::string & file) { return IsWindowsPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "WEB", "_WEB", "Web", project_name, relative_root, files, false, [](const std::string & file) { return IsWebPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "IOS", "_IOS", "IOS", project_name, relative_root, files, false, [](const std::string & file) { return IsIOSPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "APPLE AND NOT IOS", "_MACOS", "MacOS", project_name, relative_root, files, true, [](const std::string & file) { return IsMacOSPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "ANDROID", "_ANDROID", "Android", project_name, relative_root, files, false, [](const std::string & file) { return IsAndroidOSPlatformFile(file); });
-  WritePlatformFileList(cmake_file, "UNIX AND NOT APPLE", "_LINUX", "Linux", project_name, relative_root, files, true, [](const std::string & file) { return IsLinuxPlatformFile(file); });
+  if(options.m_Refl)
+  {
+    cmake_file << "set(GENERIC_REFL_" + project_name + " \n";
 
-  cmake_file << "\n";
-  cmake_file << "foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
-  cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
-  cmake_file << "  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
-  cmake_file << "                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS\n";
-  cmake_file << "                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
-  cmake_file << "                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
-  cmake_file << "endforeach()\n\n";
+    for (auto &file : files.m_ReflFiles)
+    {
+      if (!IsAnyPlatformFile(file))
+      {
+        cmake_file << "            " + file + "\n";
+      }
+    }
 
-  cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
-  cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})";
+    if(options.m_Placeholder)
+    {
+      cmake_file << "            #REFL_PLACEHOLDER\n";
+    }
+
+    cmake_file << "            )\n\n";
+  }
+
+  if(options.m_IncludePlatformFiles)
+  {
+    WritePlatformFileList(cmake_file, "MSVC", "_WINDOWS", "Windows", project_name, relative_root, files, false,
+                          [](const std::string &file)
+                          { return IsWindowsPlatformFile(file); });
+    WritePlatformFileList(cmake_file, "WEB", "_WEB", "Web", project_name, relative_root, files, false,
+                          [](const std::string &file)
+                          { return IsWebPlatformFile(file); });
+    WritePlatformFileList(cmake_file, "IOS", "_IOS", "IOS", project_name, relative_root, files, false,
+                          [](const std::string &file)
+                          { return IsIOSPlatformFile(file); });
+    WritePlatformFileList(cmake_file, "APPLE AND NOT IOS", "_MACOS", "MacOS", project_name, relative_root, files, true,
+                          [](const std::string &file)
+                          { return IsMacOSPlatformFile(file); });
+    WritePlatformFileList(cmake_file, "ANDROID", "_ANDROID", "Android", project_name, relative_root, files, false,
+                          [](const std::string &file)
+                          { return IsAndroidOSPlatformFile(file); });
+    WritePlatformFileList(cmake_file, "UNIX AND NOT APPLE", "_LINUX", "Linux", project_name, relative_root, files, true,
+                          [](const std::string &file)
+                          { return IsLinuxPlatformFile(file); });
+  }
+
+  if(options.m_Refl)
+  {
+    cmake_file << "\n";
+    cmake_file << "foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
+    cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
+    cmake_file << "  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
+    cmake_file << "                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS\n";
+    cmake_file << "                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
+    cmake_file << "                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
+    cmake_file << "endforeach()\n\n";
+  }
+
+  if(options.m_IncludePlatformFiles)
+  {
+    cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
+    cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})\n";
+  }
+  else
+  {
+    cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ";
+    cmake_file << "${GENERIC_HEADER_" + project_name + "})\n\n";
+  }
+
+  if (options.m_PCH && files.m_PCHFile.size() > 0)
+  {
+    cmake_file << "set_target_properties(" + project_name + " PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT " + files.m_PCHFile + ")\n";
+    cmake_file << "cotire(" + project_name + ")\n";
+  }
 
   cmake_file.close();
 }
 
-void ProcessProjectFolder(const fs::path & p, const std::string & base_path, const std::string & relative_root, ProjectFiles * files, bool qt_proj)
+void ProcessProjectFolder(const fs::path & p, const std::string & base_path, const std::string & relative_root,
+        ProjectFiles * files, const GenerateOptions & options)
 {
   if (IsReservedDirectoryName(p.filename().string()))
   {
@@ -342,51 +453,43 @@ void ProcessProjectFolder(const fs::path & p, const std::string & base_path, con
   auto project_file = HasProjectFile(dir_files);
   if (project_file.first)
   {
-    if (HasNogenFile(dir_files))
-    {
-      return;
-    }
-
-    if (HasQtFile(dir_files))
-    {
-      qt_proj = true;
-    }
+    auto options = ReadGenerateOptions(project_file.second);
 
     ProjectFiles new_project_files;
 
     std::string new_base_path = "";
-    GatherProjectFiles(dir_files, new_base_path, new_project_files, qt_proj);
+    GatherProjectFiles(dir_files, new_base_path, new_project_files, options);
 
     for (auto & sub_dir : dir_files.m_Directories)
     {
       auto new_path = base_path.length() > 0 ? base_path + "/" + sub_dir.filename().string() : sub_dir.filename().string();
-      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, &new_project_files, qt_proj);
+      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, &new_project_files, options);
     }
 
-    FinalizeProject(p, project_file.second, relative_root, new_project_files, qt_proj);
+    FinalizeProject(p, project_file.second, relative_root, new_project_files, options);
   }
   else if (files)
   {
-    GatherProjectFiles(dir_files, base_path, *files, qt_proj);
+    GatherProjectFiles(dir_files, base_path, *files, options);
 
     for (auto & sub_dir : dir_files.m_Directories)
     {
       auto new_path = base_path.length() > 0 ? base_path + "/" + sub_dir.filename().string() : sub_dir.filename().string();
-      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, files, qt_proj);
+      ProcessProjectFolder(sub_dir, new_path, "../" + relative_root, files, options);
     }
   }
   else
   {
     for (auto & sub_dir : dir_files.m_Directories)
     {
-      ProcessProjectFolder(sub_dir, "", "../" + relative_root, nullptr, qt_proj);
+      ProcessProjectFolder(sub_dir, "", "../" + relative_root, nullptr, options);
     }
   }
 }
 
 int main()
 {
-  ProcessProjectFolder(fs::current_path(), ".", ".", nullptr, false);
+  ProcessProjectFolder(fs::current_path(), ".", ".", nullptr, {});
   return 0;
 }
 

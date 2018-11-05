@@ -17,6 +17,35 @@ struct StormReflTypeInfo<EntityDef>
   static constexpr auto GetName() { return "EntityDef"; }
   static constexpr auto GetNameHash() { return 0x511C9D4F; }
   static EntityDef & GetDefault() { static EntityDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<EntityDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const EntityDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<EntityDef *>(ptr);
+    if(typeid(EntityDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const EntityDef *>(ptr);
+    if(typeid(EntityDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -29,6 +58,8 @@ struct StormReflTypeInfo<EntityDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Sprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EntityDef *>(obj); return &ptr->m_Sprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EntityDef *>(obj); return &ptr->m_Sprite; }
 };
 
 template <typename Self>
@@ -58,13 +89,15 @@ struct StormReflTypeInfo<EntityDef>::annotations<0>::annoation<0>
 template <>
 struct StormReflTypeInfo<EntityDef>::field_data_static<1>
 {
-  using member_type = RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >; // RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo, false> >
+  using member_type = RMergeList<RPolymorphic<ComponentInitData> >; // RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >
   static constexpr auto GetName() { return "m_Components"; }
-  static constexpr auto GetType() { return "RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo, false> >"; }
+  static constexpr auto GetType() { return "RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x64F11C30; }
-  static constexpr unsigned GetTypeNameHash() { return 0x90771E5E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2CECCE09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Components; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<EntityDef *>(obj); return &ptr->m_Components; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const EntityDef *>(obj); return &ptr->m_Components; }
 };
 
 template <typename Self>
@@ -72,8 +105,8 @@ struct StormReflTypeInfo<EntityDef>::field_data<1, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >> & Get() { return self.m_Components; }
-  std::add_const_t<std::remove_reference_t<RMergeList<RPolymorphic<ComponentInitData, ComponentInitDataTypeDatabase, ComponentInitDataTypeInfo> >>> & Get() const { return self.m_Components; }
+  match_const_t<Self, RMergeList<RPolymorphic<ComponentInitData> >> & Get() { return self.m_Components; }
+  std::add_const_t<std::remove_reference_t<RMergeList<RPolymorphic<ComponentInitData> >>> & Get() const { return self.m_Components; }
   void SetDefault() { self.m_Components = StormReflTypeInfo<EntityDef>::GetDefault().m_Components; }
 };
 

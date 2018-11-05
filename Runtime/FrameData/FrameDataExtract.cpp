@@ -4,13 +4,13 @@
 #include "Runtime/SpriteBase/SpriteBaseDef.refl.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
-FrameDataExtract::FrameDataExtract(FrameData & frame_data) :
+FrameDataExtract::FrameDataExtract(const FrameData & frame_data) :
   m_FrameData(frame_data)
 {
 
 }
 
-Optional<Box> FrameDataExtract::GetSingleBox(uint32_t data_type_name_hash)
+Optional<Box> FrameDataExtract::GetSingleBoxDefault(uint32_t data_type_name_hash)
 {
   for (auto elem : m_FrameData.m_SingleBoxData)
   {

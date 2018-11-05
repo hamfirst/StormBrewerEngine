@@ -4,10 +4,10 @@
     "m_Sprite": ".\/Sprites\/TestBot.sprite",
     "m_Components": {
         "0": {
+            "T": 4226357423,
             "D": {
                 "m_SyncSprite": false
-            },
-            "T": 3806197531
+            }
         }
     }
 }

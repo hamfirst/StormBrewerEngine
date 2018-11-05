@@ -7,8 +7,8 @@
 
 #include <sb/vector.h>
 
-ServerObjectResource::ServerObjectResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+ServerObjectResource::ServerObjectResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -54,16 +54,16 @@ ServerObjectResourcePtr ServerObjectResource::Find(uint32_t file_path_hash)
 
 ServerObjectResourcePtr ServerObjectResource::Load(czstr file_path)
 {
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<ServerObjectResource *>(resource);
   return ServerObjectResourcePtr(DocumentResourceReference<ServerObjectResource>(p_this));
 }
 
 ServerObjectLoadLink ServerObjectResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<ServerObjectResource>> && callback)
 {
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<ServerObjectResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
@@ -71,8 +71,8 @@ ServerObjectLoadLink ServerObjectResource::LoadWithCallback(czstr file_path, Del
 
 void ServerObjectResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<ServerObjectResource>> && callback, ServerObjectLoadLink & link)
 {
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<ServerObjectResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<ServerObjectResource *>(resource);
 
   p_this->AddLoadCallback(std::move(callback), link);

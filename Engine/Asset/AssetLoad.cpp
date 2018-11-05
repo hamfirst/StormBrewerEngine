@@ -108,11 +108,11 @@ GenericAssetReference LoadAsset(czstr file_path)
       return{};
     }
 
-    extension = GetFileExtensionForCanonicalPath(path);
+    extension = GetFileExtensionForPath(path);
   }
   else
   {
-    extension = GetFileExtensionForCanonicalPath(file_path);
+    extension = GetFileExtensionForPath(file_path);
   }
 
   if (extension == "png")

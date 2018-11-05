@@ -81,7 +81,7 @@ void GameClientConnection::SendTextChat(const GotTextChatMessage & text_msg)
 }
 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
-void GameClientConnection::SendDeliberateSync(void * data, int type_index)
+void GameClientConnection::SendDeliberateSystemSync(void * data, int type_index)
 {
   m_Protocol.GetSenderChannel<2>().SendMessage(type_index, data);
 }

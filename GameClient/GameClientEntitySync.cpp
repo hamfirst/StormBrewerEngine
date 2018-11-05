@@ -132,7 +132,7 @@ void GameClientEntitySync::DestroyAll()
   m_Entities.Clear();
 }
 
-void GameClientEntitySync::SendEntityEvent(int entity_index, uint32_t type_name_hash, void * ev)
+void GameClientEntitySync::SendEntityEvent(int entity_index, uint32_t type_name_hash, const void * ev)
 {
   auto entity = m_Entities[entity_index].Resolve();
 

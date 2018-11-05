@@ -19,6 +19,35 @@ struct StormReflTypeInfo<GameController>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameController"; }
   static constexpr auto GetNameHash() { return 0x51F17D8D; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameController *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameController *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameController *>(ptr);
+    if(typeid(GameController).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameController *>(ptr);
+    if(typeid(GameController).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>

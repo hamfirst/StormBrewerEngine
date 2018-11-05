@@ -110,7 +110,7 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
   BootstrapContext();
 
   m_BlendEnabled = true;
-  m_BlendMode = RenderingBlendMode::kAlpha;
+  m_BlendMode = RenderingBlendMode::kNone;
 
   m_ScreenWidth = screen_width;
   m_ScreenHeight = screen_height;
@@ -139,6 +139,32 @@ void RenderState::MakeCurrent()
 {
 #ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
   glBindVertexArray(m_VertexArrayName); CHECK_GL_RENDER_ERROR;
+#endif
+}
+
+void RenderState::ResetState()
+{
+  m_BlendEnabled = false;
+  m_ScissorEnabled = false;
+  m_BlendMode = RenderingBlendMode::kNone;
+
+  m_BoundShader = nullptr;
+  m_BoundShaderName = 0;
+
+  m_BoundVertexBuffer = nullptr;
+  m_BoundVertexBufferName = 0;
+
+  m_BoundTexture = nullptr;
+  m_BoundTextureName = 0;
+
+  m_BoundRenderTarget = nullptr;
+  m_BoundRenderTargetName = 0;
+
+#ifndef USE_VERTEX_ARRAY
+  for(int index = 0; index < kMaxVertexAttribs; ++index)
+  {
+    m_VertexAttribEnabled[index] = {};
+  }
 #endif
 }
 

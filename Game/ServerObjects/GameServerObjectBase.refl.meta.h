@@ -22,6 +22,39 @@ struct StormReflTypeInfo<GameServerObjectBaseInitData>
   static constexpr auto GetName() { return "GameServerObjectBaseInitData"; }
   static constexpr auto GetNameHash() { return 0xE8EFD458; }
   static GameServerObjectBaseInitData & GetDefault() { static GameServerObjectBaseInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerObjectBaseInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x2D36BDE7 == type_name_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerObjectBaseInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x2D36BDE7 == type_name_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerObjectBaseInitData *>(ptr);
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerObjectBaseInitData *>(ptr);
+    if(typeid(GameServerObjectBaseInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ServerObjectInitData).hash_code() == type_id_hash) return static_cast<const ServerObjectInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -38,6 +71,39 @@ struct StormReflTypeInfo<GameServerObjectBase>
   static constexpr auto GetName() { return "GameServerObjectBase"; }
   static constexpr auto GetNameHash() { return 0x25DA07B6; }
   static GameServerObjectBase & GetDefault() { static GameServerObjectBase def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerObjectBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x9D89FBB7 == type_name_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerObjectBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x9D89FBB7 == type_name_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerObjectBase *>(ptr);
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return c;
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<ServerObject *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerObjectBase *>(ptr);
+    if(typeid(GameServerObjectBase).hash_code() == type_id_hash) return c;
+    if(typeid(ServerObject).hash_code() == type_id_hash) return static_cast<const ServerObject *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -50,6 +116,8 @@ struct StormReflTypeInfo<GameServerObjectBase>::field_data_static<0 + StormReflT
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &GameServerObjectBase::m_Position; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerObjectBase *>(obj); return &ptr->m_Position; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerObjectBase *>(obj); return &ptr->m_Position; }
 };
 
 template <typename Self>

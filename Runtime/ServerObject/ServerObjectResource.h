@@ -15,7 +15,7 @@ using ServerObjectLoadLink = DocumentResourceLoadCallbackLink<ServerObjectDef, S
 class ServerObjectResource : public DocumentResourceBase
 {
 public:
-  ServerObjectResource(Any && load_data, uint32_t path_hash);
+  ServerObjectResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<ServerObjectDef> GetData();
   ServerObjectLoadLink AddLoadCallback(Delegate<void, NotNullPtr<ServerObjectResource>> && callback);

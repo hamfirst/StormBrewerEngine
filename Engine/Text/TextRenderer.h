@@ -26,11 +26,12 @@ public:
   TextRenderer(const AssetReference<FontAsset> & asset_ref, int font_size, std::vector<std::unique_ptr<TextBackupFont>> & backup_fonts);
   ~TextRenderer();
 
-  void CreateVertexBufferForString(czstr utf8_str, std::size_t len, float scale, int sel_start, int sel_end, int cursor_pos,
+  void CreateVertexBufferForString(const std::string_view & utf8_str, float scale, int sel_start, int sel_end, int cursor_pos,
     const TextSettings & settings, TextBufferBuilder & buffer, std::vector<Box> & glyph_positions);
 
   void BindGlyphTexture(RenderState & render_state, int texture_stage);
-  Box GetTextSize(czstr utf8_str, std::size_t len, float scale);
+  Box GetTextSize(const std::string_view & utf8_str, float scale);
+  bool VisitTextSize(Delegate<bool, const Box &, char32_t, czstr> & callback, const std::string_view & utf8_str, float scale);
 
   bool Loaded() { return m_Loaded; }
   

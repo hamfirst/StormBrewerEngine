@@ -5,6 +5,7 @@
 #include "Game/GameLogicContainer.h"
 #include "Game/GameServerEventSender.h"
 #include "Game/GameStage.h"
+#include "Game/GameCollision.refl.h"
 #include "Game/Systems/GameLogicSystems.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
@@ -16,10 +17,21 @@
 #include "Game/Configs/PlayerConfig.refl.meta.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
+#include "Runtime/Entity/EntityResource.h"
 #include "Runtime/Animation/AnimationState.h"
 
-GLOBAL_ASSET(SpritePtr, "./Sprites/Player.sprite", g_PlayerSprite);
+struct PlayerServerObjectConfigResources
+{
+  EntityResourcePtr m_PlayerEntity;
+};
+
+void PlayerServerObjectConfigResourcesLoad(const ConfigPtr<PlayerConfig> & config, PlayerServerObjectConfigResources & resources)
+{
+  resources.m_PlayerEntity = g_GlobalAssetList.CreateDependentAsset<EntityResource>(config->m_EntityFile.c_str());
+}
+
 GLOBAL_ASSET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig, "./Configs/PlayerConfig.playerconfig");
+GLOBAL_DEPENDENT_ASSET_ARRAY(PlayerServerObjectConfigResources, g_PlayerConfigResources, g_PlayerConfig, PlayerServerObjectConfigResourcesLoad);
 
 void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container)
 {
@@ -28,6 +40,7 @@ void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, Game
 
 void PlayerServerObject::UpdateFirst(GameLogicContainer & game_container)
 {
+  GameServerObjectBase::UpdateFirst(game_container);
   m_ProcessedAttacks.clear();
 }
 
@@ -43,13 +56,14 @@ void PlayerServerObject::UpdateMiddle(GameLogicContainer & game_container)
   m_State->Animate(*this, game_container);
   m_State->PostUpdate(*this, game_container);
 
-  auto box = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
-  game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
+  PushCVCBox(COMPILE_TIME_CRC32_STR("MoveBox"), game_container);
+  PushReceiveDamageEventBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), game_container);
+  PushReceiveDamageCollisionBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), game_container);
 }
 
 void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
 {
-  auto box = g_PlayerSprite->GetSingleBox(COMPILE_TIME_CRC32_STR("MoveBox"));
+  auto box = GetSprite()->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox"));
   box = box.Offset(m_Position);
 
   for (auto & kill_vol : game_container.GetStage().GetKillVolumes())
@@ -68,13 +82,7 @@ void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
     }
   }
 
-  auto frame_id = g_PlayerSprite->GetAnimationFrameId(m_AnimIndex, m_AnimFrame);
 
-  auto hurt_boxes = g_PlayerSprite->GetMultiBox(COMPILE_TIME_CRC32_STR("ReceiveDamage"), frame_id);
-  for (auto & box : hurt_boxes)
-  {
-    PushReceiveDamageBox(box, game_container);
-  }
 }
 
 void PlayerServerObject::ResetState(GameLogicContainer & game_container)
@@ -166,12 +174,12 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
 }
 #endif
 
-bool PlayerServerObject::HandlePlaceholderEvent(PlaceholderEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandlePlaceholderEvent(const PlaceholderEvent & ev, const EventMetaData & meta)
 {
   return true;
 }
 
-bool PlayerServerObject::HandleDamageEvent(DamageEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandleDamageEvent(const DamageEvent & ev, const EventMetaData & meta)
 {
   auto & game = *meta.m_GameLogicContainer;
 
@@ -216,7 +224,7 @@ bool PlayerServerObject::HandleDamageEvent(DamageEvent & ev, const EventMetaData
   return true;
 }
 
-bool PlayerServerObject::HandleDealDamageEvent(DealDamageAnimationEvent & ev, const EventMetaData & meta)
+bool PlayerServerObject::HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta)
 {
   auto & game_container = *meta.m_GameLogicContainer;
 
@@ -229,7 +237,7 @@ bool PlayerServerObject::HandleDealDamageEvent(DealDamageAnimationEvent & ev, co
     dmg.m_Source = GetSlotIndex();
     dmg.m_Direction = m_Facing.ToEnum();
 
-    PushDealDamageBox(*b, dmg, game_container);
+    PushDealDamageEventBox(*b, dmg, game_container);
   }
 
   return true;
@@ -256,14 +264,19 @@ Optional<int> PlayerServerObject::GetAssociatedPlayer() const
   return GetSlotIndex();
 }
 
-SpritePtr PlayerServerObject::GetSprite() const
+const SpritePtr & PlayerServerObject::GetSprite() const
 {
-  return g_PlayerSprite;
+  return g_PlayerConfigResources[m_Config.CurrentIndex()].m_PlayerEntity->GetSprite();
 }
 
 Optional<CharacterFacing> PlayerServerObject::GetFacing() const
 {
   return m_Facing.ToEnum();
+}
+
+czstr PlayerServerObject::GetEntityBinding() const
+{
+  return GetConfig()->m_EntityFile.c_str();
 }
 
 czstr PlayerServerObject::GetDefaultEntityBinding() const

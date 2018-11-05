@@ -17,18 +17,49 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>
   static constexpr auto GetName() { return "MapEditorAnchorInitData"; }
   static constexpr auto GetNameHash() { return 0x9DED0DA2; }
   static MapEditorAnchorInitData & GetDefault() { static MapEditorAnchorInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEditorAnchorInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEditorAnchorInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEditorAnchorInitData *>(ptr);
+    if(typeid(MapEditorAnchorInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEditorAnchorInitData *>(ptr);
+    if(typeid(MapEditorAnchorInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<0>
 {
-  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x07A3C796; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_InitData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEditorAnchorInitData *>(obj); return &ptr->m_InitData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEditorAnchorInitData *>(obj); return &ptr->m_InitData; }
 };
 
 template <typename Self>
@@ -36,8 +67,8 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data<0, Self> : public 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>> & Get() { return self.m_InitData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>> & Get() const { return self.m_InitData; }
+  match_const_t<Self, RPolymorphic<AnchorDataBase>> & Get() { return self.m_InitData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase>>> & Get() const { return self.m_InitData; }
   void SetDefault() { self.m_InitData = StormReflTypeInfo<MapEditorAnchorInitData>::GetDefault().m_InitData; }
 };
 
@@ -51,6 +82,8 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_Sprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEditorAnchorInitData *>(obj); return &ptr->m_Sprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEditorAnchorInitData *>(obj); return &ptr->m_Sprite; }
 };
 
 template <typename Self>

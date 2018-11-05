@@ -7,7 +7,10 @@
 #include ""{rel_path}/{header_file}""
 #include ""{rel_path}/{meta_file}""
 
-void {class_name}::Init(const {class_name}InitData & init_data)
+czstr g_{class_name}EntityFile = "./Entities/Entity.entity";
+GLOBAL_ASSET(EntityResourcePtr, g_{class_name}EntityFile, g_{class_name}Entity);
+
+void {class_name}::Init(const {class_name}InitData & init_data, GameLogicContainer & game_container)
 {{
 
 }}
@@ -22,17 +25,7 @@ void {class_name}::UpdateMiddle(GameLogicContainer & game_container)
 
 }}
 
-void {class_name}::InitPosition(const Vector2 & pos)
-{{
-  m_Position = GameNetVec2(pos.x, pos.y);
-}}
-
-Vector2 {class_name}::GetPosition(GameLogicContainer & game_container) const
-{{
-  return m_Position;
-}}
-
 czstr {class_name}::GetDefaultEntityBinding() const
 {{
-  return {entity_binding};
+  return g_{class_name}EntityFile;
 }}

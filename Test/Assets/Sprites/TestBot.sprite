@@ -1,27 +1,44 @@
 []
 
 {
+    "m_InstanceData": {
+        "m_SingleBoxData": {
+            "0": {
+                "m_FrameDataName": "MoveBox",
+                "m_Data": {
+                    "m_End": {
+                        "y": 10,
+                        "x": 11
+                    },
+                    "m_Start": {
+                        "y": -14,
+                        "x": -12
+                    }
+                }
+            }
+        }
+    },
     "m_Textures": {
         "0": {
+            "m_FrameWidth": 32,
             "m_FrameHeight": 32,
-            "m_Filename": ".\/Images\/Ghost.png",
-            "m_FrameWidth": 32
+            "m_Filename": ".\/Images\/Ghost.png"
         }
     },
     "m_Animations": {
         "0": {
+            "m_Events": { },
             "m_Name": "Idle",
             "m_Frames": {
-                "1": {
-                    "m_FrameDuration": 20,
-                    "m_FrameId": "17582823552581632001"
-                },
                 "0": {
-                    "m_FrameDuration": 18,
-                    "m_FrameId": "17582823552581632000"
+                    "m_FrameId": "17582823552581632000",
+                    "m_FrameDuration": 18
+                },
+                "1": {
+                    "m_FrameId": "17582823552581632001",
+                    "m_FrameDuration": 20
                 }
-            },
-            "m_Events": { }
+            }
         }
     }
 }

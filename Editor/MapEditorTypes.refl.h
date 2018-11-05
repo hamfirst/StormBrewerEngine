@@ -9,7 +9,7 @@
 struct MapEditorAnchorInitData
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(MapEditorAnchorInitData);
-  RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo> m_InitData;
+  RPolymorphic<AnchorDataBase> m_InitData;
 
   RString STORM_REFL_ATTR_VAL(file, sprite) m_Sprite;
 };

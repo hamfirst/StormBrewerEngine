@@ -27,7 +27,7 @@ DocumentResourceReferenceBase::DocumentResourceReferenceBase(const DocumentResou
 
 DocumentResourceReferenceBase::DocumentResourceReferenceBase(DocumentResourceReferenceBase && rhs) noexcept
 {
-  m_Resource = std::move(rhs.m_Resource);
+  m_Resource = rhs.m_Resource;
   rhs.m_Resource = nullptr;
 }
 

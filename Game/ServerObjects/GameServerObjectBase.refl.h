@@ -36,6 +36,7 @@ public:
   GameServerObjectBase & operator = (GameServerObjectBase && rhs) = default;
 
   void Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container);
+  void UpdateFirst(GameLogicContainer & container);
 
   virtual void InitPosition(const Vector2 & pos) override;
 
@@ -49,8 +50,18 @@ public:
 
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
   void ResetAnimState();
-  void PushDealDamageBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushReceiveDamageBox(const Box & b, GameLogicContainer & game_container);
+
+  void PushDealDamageEventBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBox(const Box & b, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBox(uint32_t box_name_hash, GameLogicContainer & game_container);
+  void PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
+  void PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container);
+  void PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container);
+  void PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
+  void PushCVCBox(const Box & b, GameLogicContainer & game_container);
+  void PushCVCBox(uint32_t box_name_hash, GameLogicContainer & game_container);
 
 #ifdef MOVER_ONE_WAY_COLLISION
   MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity, bool fallthrough = false);
@@ -60,8 +71,9 @@ public:
 
   GameNetVec2 MoveCheckIntersectionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity, GameNetVal player_radius, GameNetVal move_threshold);
 
-  virtual SpritePtr GetSprite() const;
+  virtual const SpritePtr & GetSprite() const;
   virtual Optional<CharacterFacing> GetFacing() const;
+  virtual Optional<int> GetCollisionId() const;
 
   template <typename Target>
   void TriggerAnimationEvents(GameLogicContainer & game_container, Target & target)
@@ -76,6 +88,7 @@ public:
 private:
 
   friend class GameServerObjectOverlapSystem;
+  Optional<int> m_CollisionId;
 
 public:
   GameNetVec2 m_Position = {};

@@ -45,6 +45,39 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>
   static constexpr auto GetName() { return "PlayAnimationComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x35DD3172; }
   static PlayAnimationComponentInitData & GetDefault() { static PlayAnimationComponentInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x6DB2F865 == type_name_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayAnimationComponentInitData *>(ptr);
+    if(typeid(PlayAnimationComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<ComponentInitData *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayAnimationComponentInitData *>(ptr);
+    if(typeid(PlayAnimationComponentInitData).hash_code() == type_id_hash) return c;
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return static_cast<const ComponentInitData *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -57,6 +90,8 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<0 + 
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_Animation; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_Animation; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayAnimationComponentInitData *>(obj); return &ptr->m_Animation; }
 };
 
 template <typename Self>
@@ -79,6 +114,8 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<1 + 
   static constexpr unsigned GetTypeNameHash() { return 0xC0607559; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_LoopMode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_LoopMode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayAnimationComponentInitData *>(obj); return &ptr->m_LoopMode; }
 };
 
 template <typename Self>

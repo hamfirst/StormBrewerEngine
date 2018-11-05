@@ -16,6 +16,7 @@ class RUNTIME_EXPORT DocumentResourceBase
 public:
   bool IsLoaded() const;
   bool IsError() const;
+  czstr GetFileName() const;
   uint64_t GetFileNameHash() const;
 
   virtual ~DocumentResourceBase();
@@ -23,7 +24,7 @@ public:
 protected:
   friend class DocumentResourceReferenceBase;
 
-  DocumentResourceBase(Any && load_data, uint32_t file_name_hash);
+  DocumentResourceBase(Any && load_data, uint32_t path_hash, czstr path);
 
   void IncRef();
   void DecRef();
@@ -31,7 +32,8 @@ protected:
 protected:
 
   static NullOptPtr<DocumentResourceBase> FindDocumentResource(uint32_t file_path_hash);
-  static NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path, std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t));
+  static NotNullPtr<DocumentResourceBase> LoadDocumentResource(czstr file_path,
+          std::unique_ptr<DocumentResourceBase>(*ResourceCreator)(Any &&, uint32_t, czstr));
 
   virtual void OnDataLoadComplete(const std::string & resource_data);
   virtual void CallAssetLoadCallbacks();
@@ -47,5 +49,6 @@ protected:
   bool m_Error;
 
   NotNullPtr<DocumentResourceManager> m_ResourceManager;
+  std::string m_FileName;
   uint32_t m_FileNameHash;
 };

@@ -16,6 +16,35 @@ struct StormReflTypeInfo<MapHandleBase>
   static constexpr auto GetName() { return "MapHandleBase"; }
   static constexpr auto GetNameHash() { return 0xABCB7450; }
   static MapHandleBase & GetDefault() { static MapHandleBase def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapHandleBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapHandleBase *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapHandleBase *>(ptr);
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapHandleBase *>(ptr);
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -28,6 +57,8 @@ struct StormReflTypeInfo<MapHandleBase>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapHandleBase::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapHandleBase *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapHandleBase *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -68,6 +99,39 @@ struct StormReflTypeInfo<MapEntityHandle>
   static constexpr auto GetName() { return "MapEntityHandle"; }
   static constexpr auto GetNameHash() { return 0x9904F950; }
   static MapEntityHandle & GetDefault() { static MapEntityHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntityHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntityHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntityHandle *>(ptr);
+    if(typeid(MapEntityHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntityHandle *>(ptr);
+    if(typeid(MapEntityHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -84,6 +148,39 @@ struct StormReflTypeInfo<MapEffectLayerHandle>
   static constexpr auto GetName() { return "MapEffectLayerHandle"; }
   static constexpr auto GetNameHash() { return 0xBCE8D836; }
   static MapEffectLayerHandle & GetDefault() { static MapEffectLayerHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayerHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayerHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayerHandle *>(ptr);
+    if(typeid(MapEffectLayerHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayerHandle *>(ptr);
+    if(typeid(MapEffectLayerHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -100,6 +197,39 @@ struct StormReflTypeInfo<MapServerObjectHandle>
   static constexpr auto GetName() { return "MapServerObjectHandle"; }
   static constexpr auto GetNameHash() { return 0x831F1675; }
   static MapServerObjectHandle & GetDefault() { static MapServerObjectHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObjectHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObjectHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObjectHandle *>(ptr);
+    if(typeid(MapServerObjectHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObjectHandle *>(ptr);
+    if(typeid(MapServerObjectHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -116,6 +246,39 @@ struct StormReflTypeInfo<MapAnchorHandle>
   static constexpr auto GetName() { return "MapAnchorHandle"; }
   static constexpr auto GetNameHash() { return 0x6BDD357A; }
   static MapAnchorHandle & GetDefault() { static MapAnchorHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapAnchorHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapAnchorHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapAnchorHandle *>(ptr);
+    if(typeid(MapAnchorHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapAnchorHandle *>(ptr);
+    if(typeid(MapAnchorHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -132,6 +295,39 @@ struct StormReflTypeInfo<MapPathHandle>
   static constexpr auto GetName() { return "MapPathHandle"; }
   static constexpr auto GetNameHash() { return 0xFDA1CFC8; }
   static MapPathHandle & GetDefault() { static MapPathHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathHandle *>(ptr);
+    if(typeid(MapPathHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathHandle *>(ptr);
+    if(typeid(MapPathHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -148,6 +344,39 @@ struct StormReflTypeInfo<MapVolumeHandle>
   static constexpr auto GetName() { return "MapVolumeHandle"; }
   static constexpr auto GetNameHash() { return 0x9E0BB55F; }
   static MapVolumeHandle & GetDefault() { static MapVolumeHandle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapVolumeHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapVolumeHandle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xABCB7450 == type_name_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapVolumeHandle *>(ptr);
+    if(typeid(MapVolumeHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<MapHandleBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapVolumeHandle *>(ptr);
+    if(typeid(MapVolumeHandle).hash_code() == type_id_hash) return c;
+    if(typeid(MapHandleBase).hash_code() == type_id_hash) return static_cast<const MapHandleBase *>(c);
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

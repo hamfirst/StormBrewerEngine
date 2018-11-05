@@ -26,7 +26,7 @@ std::size_t ComponentTypeSystem::RegisterComponentType(const ComponentTypeCreati
   auto type_index = m_ComponentInfo.size();
 
   m_ComponentInfo.emplace_back(comp_info);
-  m_ComponentTypeLookup.emplace(std::make_pair(comp_info.m_ComponentTypeNameHash, type_index));
+  m_ComponentTypeLookup.emplace(std::make_pair(comp_info.m_InitDataTypeNameHash, type_index));
   return type_index;
 }
 
@@ -171,12 +171,12 @@ void ComponentTypeSystem::FinalizeComponentSystem()
 
 void ComponentTypeSystem::LoadPropertyDatabase(PropertyFieldDatabase & property_db)
 {
-  auto visitor = [&](uint32_t type_name_hash, const ComponentInitDataTypeInfo & type_info)
+  auto visitor = [&](uint32_t type_name_hash, const TypeDatabaseTypeInfo<ComponentInitData> & type_info)
   {
     type_info.RegisterPropertyFields(property_db);
   };
 
-  StormDataTypeDatabaseVisitTypes(StormDataTypeDatabaseVistorInfo<ComponentInitData, ComponentInitDataTypeInfo>{}, visitor);
+  StormDataTypeDatabaseVisitTypes(TypeDatabase<ComponentInitData>::Get(), visitor);
 }
 
 ComponentSystem::ComponentSystem()

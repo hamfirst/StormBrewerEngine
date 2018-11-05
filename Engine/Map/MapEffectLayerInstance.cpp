@@ -14,7 +14,7 @@ MapEffectLayerInstance::MapEffectLayerInstance(MapDef & map, std::size_t layer_i
   auto effect_type_info = layer_data.m_EffectLayerData.GetTypeInfo();
   if (effect_type_info)
   {
-    m_Renderer = effect_type_info->m_CreateCodeObj(layer_data.m_EffectLayerData.GetValue());
+    m_Renderer = effect_type_info->m_LogicTypeInfo.m_CreateCodeObj(layer_data.m_EffectLayerData.GetValue());
   }
 }
 

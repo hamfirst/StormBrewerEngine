@@ -16,6 +16,35 @@ struct StormReflTypeInfo<ComponentInitData>
   static constexpr auto GetName() { return "ComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x6DB2F865; }
   static ComponentInitData & GetDefault() { static ComponentInitData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ComponentInitData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ComponentInitData *>(ptr);
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ComponentInitData *>(ptr);
+    if(typeid(ComponentInitData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 namespace StormReflFileInfo

@@ -69,10 +69,10 @@ public:
   void ClearPropertyPanel();
   void ClearSelectors();
 
-  const RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> & GetVolumeInitData() const;
+  const RPolymorphic<VolumeDataBase> & GetVolumeInitData() const;
   void CreateNewVolume(const Box & box);
 
-  const RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> & GetPathInitData() const;
+  const RPolymorphic<PathDataBase> & GetPathInitData() const;
   void CreateNewPath(const Line & line);
 
   const MapEditorAnchorInitData & GetAnchorInitData() const;
@@ -110,8 +110,8 @@ private:
   std::unique_ptr<MapEditorLayerList> m_LayerList;
   std::unique_ptr<MapEditorViewer> m_Viewer;
 
-  RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo> m_VolumeInitData;
-  RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo> m_PathInitData;
+  RPolymorphic<VolumeDataBase> m_VolumeInitData;
+  RPolymorphic<PathDataBase> m_PathInitData;
   MapEditorAnchorInitData m_AnchorInitData;
 
   MapParalaxLayerObject m_ParalaxInitData;

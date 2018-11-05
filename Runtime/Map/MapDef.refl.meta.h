@@ -57,18 +57,49 @@ struct StormReflTypeInfo<MapPropertiesInfo>
   static constexpr auto GetName() { return "MapPropertiesInfo"; }
   static constexpr auto GetNameHash() { return 0x3D3EA581; }
   static MapPropertiesInfo & GetDefault() { static MapPropertiesInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPropertiesInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPropertiesInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPropertiesInfo *>(ptr);
+    if(typeid(MapPropertiesInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPropertiesInfo *>(ptr);
+    if(typeid(MapPropertiesInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<MapPropertiesInfo>::field_data_static<0>
 {
-  using member_type = RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>; // RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>
+  using member_type = RPolymorphic<MapPropertiesDef, void, true>; // RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>
   static constexpr auto GetName() { return "m_MapProperties"; }
-  static constexpr auto GetType() { return "RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x841C9243; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFD5B17FA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x6DB54CE0; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPropertiesInfo::m_MapProperties; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPropertiesInfo *>(obj); return &ptr->m_MapProperties; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPropertiesInfo *>(obj); return &ptr->m_MapProperties; }
 };
 
 template <typename Self>
@@ -76,8 +107,8 @@ struct StormReflTypeInfo<MapPropertiesInfo>::field_data<0, Self> : public StormR
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>> & Get() { return self.m_MapProperties; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<MapPropertiesDef, MapPropertiesTypeDatabase, MapPropertiesDataTypeInfo, true>>> & Get() const { return self.m_MapProperties; }
+  match_const_t<Self, RPolymorphic<MapPropertiesDef, void, true>> & Get() { return self.m_MapProperties; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapPropertiesDef, void, true>>> & Get() const { return self.m_MapProperties; }
   void SetDefault() { self.m_MapProperties = StormReflTypeInfo<MapPropertiesInfo>::GetDefault().m_MapProperties; }
 };
 
@@ -92,6 +123,35 @@ struct StormReflTypeInfo<MapManualTileLayer>
   static constexpr auto GetName() { return "MapManualTileLayer"; }
   static constexpr auto GetNameHash() { return 0x274F5F21; }
   static MapManualTileLayer & GetDefault() { static MapManualTileLayer def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapManualTileLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapManualTileLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapManualTileLayer *>(ptr);
+    if(typeid(MapManualTileLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapManualTileLayer *>(ptr);
+    if(typeid(MapManualTileLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -104,6 +164,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_TileSheet; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_TileSheet; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_TileSheet; }
 };
 
 template <typename Self>
@@ -140,6 +202,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -162,6 +226,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_LayerOrder; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_LayerOrder; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_LayerOrder; }
 };
 
 template <typename Self>
@@ -184,6 +250,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_CollisionLayer; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_CollisionLayer; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_CollisionLayer; }
 };
 
 template <typename Self>
@@ -206,6 +274,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x0B814CDB; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_Tiles; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_Tiles; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_Tiles; }
 };
 
 template <typename Self>
@@ -242,6 +312,8 @@ struct StormReflTypeInfo<MapManualTileLayer>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x3B9D9349; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapManualTileLayer::m_Animations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapManualTileLayer *>(obj); return &ptr->m_Animations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapManualTileLayer *>(obj); return &ptr->m_Animations; }
 };
 
 template <typename Self>
@@ -279,6 +351,35 @@ struct StormReflTypeInfo<MapEntity>
   static constexpr auto GetName() { return "MapEntity"; }
   static constexpr auto GetNameHash() { return 0x81BB600D; }
   static MapEntity & GetDefault() { static MapEntity def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntity *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntity *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntity *>(ptr);
+    if(typeid(MapEntity).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntity *>(ptr);
+    if(typeid(MapEntity).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -291,6 +392,8 @@ struct StormReflTypeInfo<MapEntity>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEntity::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntity *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntity *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -313,6 +416,8 @@ struct StormReflTypeInfo<MapEntity>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapEntity::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntity *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntity *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -349,6 +454,8 @@ struct StormReflTypeInfo<MapEntity>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapEntity::m_XPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntity *>(obj); return &ptr->m_XPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntity *>(obj); return &ptr->m_XPosition; }
 };
 
 template <typename Self>
@@ -371,6 +478,8 @@ struct StormReflTypeInfo<MapEntity>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapEntity::m_YPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntity *>(obj); return &ptr->m_YPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntity *>(obj); return &ptr->m_YPosition; }
 };
 
 template <typename Self>
@@ -393,6 +502,8 @@ struct StormReflTypeInfo<MapEntity>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x511C9D4F; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapEntity::m_EntityDef; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntity *>(obj); return &ptr->m_EntityDef; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntity *>(obj); return &ptr->m_EntityDef; }
 };
 
 template <typename Self>
@@ -416,6 +527,35 @@ struct StormReflTypeInfo<MapEntityLayer>
   static constexpr auto GetName() { return "MapEntityLayer"; }
   static constexpr auto GetNameHash() { return 0x0D3F8557; }
   static MapEntityLayer & GetDefault() { static MapEntityLayer def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntityLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntityLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEntityLayer *>(ptr);
+    if(typeid(MapEntityLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEntityLayer *>(ptr);
+    if(typeid(MapEntityLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -428,6 +568,8 @@ struct StormReflTypeInfo<MapEntityLayer>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEntityLayer::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntityLayer *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntityLayer *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -450,6 +592,8 @@ struct StormReflTypeInfo<MapEntityLayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapEntityLayer::m_LayerOrder; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntityLayer *>(obj); return &ptr->m_LayerOrder; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntityLayer *>(obj); return &ptr->m_LayerOrder; }
 };
 
 template <typename Self>
@@ -472,6 +616,8 @@ struct StormReflTypeInfo<MapEntityLayer>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x31E722AE; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapEntityLayer::m_Entities; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEntityLayer *>(obj); return &ptr->m_Entities; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEntityLayer *>(obj); return &ptr->m_Entities; }
 };
 
 template <typename Self>
@@ -509,6 +655,35 @@ struct StormReflTypeInfo<MapServerObject>
   static constexpr auto GetName() { return "MapServerObject"; }
   static constexpr auto GetNameHash() { return 0xAC5C2595; }
   static MapServerObject & GetDefault() { static MapServerObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObject *>(ptr);
+    if(typeid(MapServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObject *>(ptr);
+    if(typeid(MapServerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -521,6 +696,8 @@ struct StormReflTypeInfo<MapServerObject>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapServerObject::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObject *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObject *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -543,6 +720,8 @@ struct StormReflTypeInfo<MapServerObject>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapServerObject::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObject *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObject *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -579,6 +758,8 @@ struct StormReflTypeInfo<MapServerObject>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapServerObject::m_XPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObject *>(obj); return &ptr->m_XPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObject *>(obj); return &ptr->m_XPosition; }
 };
 
 template <typename Self>
@@ -601,6 +782,8 @@ struct StormReflTypeInfo<MapServerObject>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapServerObject::m_YPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObject *>(obj); return &ptr->m_YPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObject *>(obj); return &ptr->m_YPosition; }
 };
 
 template <typename Self>
@@ -623,6 +806,8 @@ struct StormReflTypeInfo<MapServerObject>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x97B44C7B; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapServerObject::m_ServerObject; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObject *>(obj); return &ptr->m_ServerObject; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObject *>(obj); return &ptr->m_ServerObject; }
 };
 
 template <typename Self>
@@ -646,6 +831,35 @@ struct StormReflTypeInfo<MapServerObjectLayer>
   static constexpr auto GetName() { return "MapServerObjectLayer"; }
   static constexpr auto GetNameHash() { return 0xCC04DD43; }
   static MapServerObjectLayer & GetDefault() { static MapServerObjectLayer def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObjectLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObjectLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapServerObjectLayer *>(ptr);
+    if(typeid(MapServerObjectLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapServerObjectLayer *>(ptr);
+    if(typeid(MapServerObjectLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -658,6 +872,8 @@ struct StormReflTypeInfo<MapServerObjectLayer>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapServerObjectLayer::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObjectLayer *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObjectLayer *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -680,6 +896,8 @@ struct StormReflTypeInfo<MapServerObjectLayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xEA9F1507; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapServerObjectLayer::m_Objects; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapServerObjectLayer *>(obj); return &ptr->m_Objects; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapServerObjectLayer *>(obj); return &ptr->m_Objects; }
 };
 
 template <typename Self>
@@ -717,6 +935,35 @@ struct StormReflTypeInfo<MapParalaxLayerObject>
   static constexpr auto GetName() { return "MapParalaxLayerObject"; }
   static constexpr auto GetNameHash() { return 0xF8B4CF99; }
   static MapParalaxLayerObject & GetDefault() { static MapParalaxLayerObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapParalaxLayerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapParalaxLayerObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapParalaxLayerObject *>(ptr);
+    if(typeid(MapParalaxLayerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapParalaxLayerObject *>(ptr);
+    if(typeid(MapParalaxLayerObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -729,6 +976,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -751,6 +1000,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xEA67D680; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_Type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_Type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_Type; }
 };
 
 template <typename Self>
@@ -773,6 +1024,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_File; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_File; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_File; }
 };
 
 template <typename Self>
@@ -809,6 +1062,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_Animation; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_Animation; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_Animation; }
 };
 
 template <typename Self>
@@ -831,6 +1086,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_PresimTime; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_PresimTime; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_PresimTime; }
 };
 
 template <typename Self>
@@ -853,6 +1110,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_XPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_XPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_XPosition; }
 };
 
 template <typename Self>
@@ -875,6 +1134,8 @@ struct StormReflTypeInfo<MapParalaxLayerObject>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayerObject::m_YPosition; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayerObject *>(obj); return &ptr->m_YPosition; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayerObject *>(obj); return &ptr->m_YPosition; }
 };
 
 template <typename Self>
@@ -898,6 +1159,35 @@ struct StormReflTypeInfo<MapParalaxLayer>
   static constexpr auto GetName() { return "MapParalaxLayer"; }
   static constexpr auto GetNameHash() { return 0xF0494FF1; }
   static MapParalaxLayer & GetDefault() { static MapParalaxLayer def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapParalaxLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapParalaxLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapParalaxLayer *>(ptr);
+    if(typeid(MapParalaxLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapParalaxLayer *>(ptr);
+    if(typeid(MapParalaxLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -910,6 +1200,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -932,6 +1224,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_LayerOrder; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_LayerOrder; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_LayerOrder; }
 };
 
 template <typename Self>
@@ -954,6 +1248,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_Image; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_Image; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_Image; }
 };
 
 template <typename Self>
@@ -990,6 +1286,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_RepeatX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_RepeatX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_RepeatX; }
 };
 
 template <typename Self>
@@ -1012,6 +1310,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_RepeatY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_RepeatY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_RepeatY; }
 };
 
 template <typename Self>
@@ -1034,6 +1334,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_OffsetX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_OffsetX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_OffsetX; }
 };
 
 template <typename Self>
@@ -1056,6 +1358,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_OffsetY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_OffsetY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_OffsetY; }
 };
 
 template <typename Self>
@@ -1078,6 +1382,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<7>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_ParalaxX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_ParalaxX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_ParalaxX; }
 };
 
 template <typename Self>
@@ -1100,6 +1406,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<8>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_ParalaxY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_ParalaxY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_ParalaxY; }
 };
 
 template <typename Self>
@@ -1122,6 +1430,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<9>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_VelocityX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_VelocityX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_VelocityX; }
 };
 
 template <typename Self>
@@ -1144,6 +1454,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<10>
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_VelocityY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_VelocityY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_VelocityY; }
 };
 
 template <typename Self>
@@ -1166,6 +1478,8 @@ struct StormReflTypeInfo<MapParalaxLayer>::field_data_static<11>
   static constexpr unsigned GetTypeNameHash() { return 0xAA26087C; }
   static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &MapParalaxLayer::m_Objects; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapParalaxLayer *>(obj); return &ptr->m_Objects; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapParalaxLayer *>(obj); return &ptr->m_Objects; }
 };
 
 template <typename Self>
@@ -1203,6 +1517,35 @@ struct StormReflTypeInfo<MapEffectLayer>
   static constexpr auto GetName() { return "MapEffectLayer"; }
   static constexpr auto GetNameHash() { return 0xD5960B85; }
   static MapEffectLayer & GetDefault() { static MapEffectLayer def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayer *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapEffectLayer *>(ptr);
+    if(typeid(MapEffectLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapEffectLayer *>(ptr);
+    if(typeid(MapEffectLayer).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1215,6 +1558,8 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEffectLayer *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEffectLayer *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -1237,6 +1582,8 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEffectLayer *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEffectLayer *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -1273,6 +1620,8 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_LayerOrder; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEffectLayer *>(obj); return &ptr->m_LayerOrder; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEffectLayer *>(obj); return &ptr->m_LayerOrder; }
 };
 
 template <typename Self>
@@ -1288,13 +1637,15 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<2, Self> : public StormRefl
 template <>
 struct StormReflTypeInfo<MapEffectLayer>::field_data_static<3>
 {
-  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>; // RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>
+  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>; // RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>
   static constexpr auto GetName() { return "m_EffectLayerData"; }
-  static constexpr auto GetType() { return "RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1AE0B1F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB5F26F00; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2FE182EA; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_EffectLayerData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapEffectLayer *>(obj); return &ptr->m_EffectLayerData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapEffectLayer *>(obj); return &ptr->m_EffectLayerData; }
 };
 
 template <typename Self>
@@ -1302,8 +1653,8 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<3, Self> : public StormRefl
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>> & Get() { return self.m_EffectLayerData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<MapEffectLayerInitData, MapEffectLayerTypeDatabase, MapEffectLayerDataTypeInfo>>> & Get() const { return self.m_EffectLayerData; }
+  match_const_t<Self, RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>> & Get() { return self.m_EffectLayerData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>>> & Get() const { return self.m_EffectLayerData; }
   void SetDefault() { self.m_EffectLayerData = StormReflTypeInfo<MapEffectLayer>::GetDefault().m_EffectLayerData; }
 };
 
@@ -1318,6 +1669,35 @@ struct StormReflTypeInfo<MapAnchor>
   static constexpr auto GetName() { return "MapAnchor"; }
   static constexpr auto GetNameHash() { return 0xE8C23518; }
   static MapAnchor & GetDefault() { static MapAnchor def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapAnchor *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapAnchor *>(ptr);
+    if(typeid(MapAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapAnchor *>(ptr);
+    if(typeid(MapAnchor).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1330,6 +1710,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -1352,6 +1734,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -1381,13 +1765,15 @@ struct StormReflTypeInfo<MapAnchor>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapAnchor>::field_data_static<2>
 {
-  using member_type = RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>; // RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
   static constexpr auto GetName() { return "m_AnchorData"; }
-  static constexpr auto GetType() { return "RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x73BF9C78; }
-  static constexpr unsigned GetTypeNameHash() { return 0x07A3C796; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_AnchorData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_AnchorData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_AnchorData; }
 };
 
 template <typename Self>
@@ -1395,8 +1781,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data<2, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>> & Get() { return self.m_AnchorData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase, AnchorTypeDatabase, AnchorDataTypeInfo>>> & Get() const { return self.m_AnchorData; }
+  match_const_t<Self, RPolymorphic<AnchorDataBase>> & Get() { return self.m_AnchorData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<AnchorDataBase>>> & Get() const { return self.m_AnchorData; }
   void SetDefault() { self.m_AnchorData = StormReflTypeInfo<MapAnchor>::GetDefault().m_AnchorData; }
 };
 
@@ -1410,6 +1796,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_Sprite; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_Sprite; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_Sprite; }
 };
 
 template <typename Self>
@@ -1446,6 +1834,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_X; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_X; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_X; }
 };
 
 template <typename Self>
@@ -1468,6 +1858,8 @@ struct StormReflTypeInfo<MapAnchor>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_Y; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapAnchor *>(obj); return &ptr->m_Y; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapAnchor *>(obj); return &ptr->m_Y; }
 };
 
 template <typename Self>
@@ -1491,6 +1883,35 @@ struct StormReflTypeInfo<MapPathPoint>
   static constexpr auto GetName() { return "MapPathPoint"; }
   static constexpr auto GetNameHash() { return 0x90DF0F70; }
   static MapPathPoint & GetDefault() { static MapPathPoint def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathPoint *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathPoint *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathPoint *>(ptr);
+    if(typeid(MapPathPoint).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathPoint *>(ptr);
+    if(typeid(MapPathPoint).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1503,6 +1924,8 @@ struct StormReflTypeInfo<MapPathPoint>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPathPoint::m_X; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathPoint *>(obj); return &ptr->m_X; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathPoint *>(obj); return &ptr->m_X; }
 };
 
 template <typename Self>
@@ -1525,6 +1948,8 @@ struct StormReflTypeInfo<MapPathPoint>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPathPoint::m_Y; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathPoint *>(obj); return &ptr->m_Y; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathPoint *>(obj); return &ptr->m_Y; }
 };
 
 template <typename Self>
@@ -1548,6 +1973,35 @@ struct StormReflTypeInfo<MapPath>
   static constexpr auto GetName() { return "MapPath"; }
   static constexpr auto GetNameHash() { return 0x08E80CDA; }
   static MapPath & GetDefault() { static MapPath def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPath *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPath *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPath *>(ptr);
+    if(typeid(MapPath).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPath *>(ptr);
+    if(typeid(MapPath).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1560,6 +2014,8 @@ struct StormReflTypeInfo<MapPath>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPath *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPath *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -1582,6 +2038,8 @@ struct StormReflTypeInfo<MapPath>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPath *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPath *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -1611,13 +2069,15 @@ struct StormReflTypeInfo<MapPath>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapPath>::field_data_static<2>
 {
-  using member_type = RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>; // RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>
+  using member_type = RPolymorphic<PathDataBase>; // RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>
   static constexpr auto GetName() { return "m_PathData"; }
-  static constexpr auto GetType() { return "RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x07EB2D9C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x556A64B3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x404592FC; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_PathData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPath *>(obj); return &ptr->m_PathData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPath *>(obj); return &ptr->m_PathData; }
 };
 
 template <typename Self>
@@ -1625,8 +2085,8 @@ struct StormReflTypeInfo<MapPath>::field_data<2, Self> : public StormReflTypeInf
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>> & Get() { return self.m_PathData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<PathDataBase, PathTypeDatabase, PathDataTypeInfo>>> & Get() const { return self.m_PathData; }
+  match_const_t<Self, RPolymorphic<PathDataBase>> & Get() { return self.m_PathData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<PathDataBase>>> & Get() const { return self.m_PathData; }
   void SetDefault() { self.m_PathData = StormReflTypeInfo<MapPath>::GetDefault().m_PathData; }
 };
 
@@ -1640,6 +2100,8 @@ struct StormReflTypeInfo<MapPath>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0xE00E4311; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_Points; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPath *>(obj); return &ptr->m_Points; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPath *>(obj); return &ptr->m_Points; }
 };
 
 template <typename Self>
@@ -1663,6 +2125,35 @@ struct StormReflTypeInfo<MapVolume>
   static constexpr auto GetName() { return "MapVolume"; }
   static constexpr auto GetNameHash() { return 0x3609E9BB; }
   static MapVolume & GetDefault() { static MapVolume def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapVolume *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapVolume *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapVolume *>(ptr);
+    if(typeid(MapVolume).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapVolume *>(ptr);
+    if(typeid(MapVolume).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1675,6 +2166,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -1697,6 +2190,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_GUID; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_GUID; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_GUID; }
 };
 
 template <typename Self>
@@ -1726,13 +2221,15 @@ struct StormReflTypeInfo<MapVolume>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapVolume>::field_data_static<2>
 {
-  using member_type = RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>; // RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>
+  using member_type = RPolymorphic<VolumeDataBase>; // RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>
   static constexpr auto GetName() { return "m_VolumeData"; }
-  static constexpr auto GetType() { return "RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1971791; }
-  static constexpr unsigned GetTypeNameHash() { return 0xEA7AD4B2; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF08E00EE; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_VolumeData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_VolumeData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_VolumeData; }
 };
 
 template <typename Self>
@@ -1740,8 +2237,8 @@ struct StormReflTypeInfo<MapVolume>::field_data<2, Self> : public StormReflTypeI
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>> & Get() { return self.m_VolumeData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<VolumeDataBase, VolumeTypeDatabase, VolumeDataTypeInfo>>> & Get() const { return self.m_VolumeData; }
+  match_const_t<Self, RPolymorphic<VolumeDataBase>> & Get() { return self.m_VolumeData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<VolumeDataBase>>> & Get() const { return self.m_VolumeData; }
   void SetDefault() { self.m_VolumeData = StormReflTypeInfo<MapVolume>::GetDefault().m_VolumeData; }
 };
 
@@ -1755,6 +2252,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_XStart; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_XStart; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_XStart; }
 };
 
 template <typename Self>
@@ -1777,6 +2276,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_YStart; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_YStart; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_YStart; }
 };
 
 template <typename Self>
@@ -1799,6 +2300,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_XEnd; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_XEnd; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_XEnd; }
 };
 
 template <typename Self>
@@ -1821,6 +2324,8 @@ struct StormReflTypeInfo<MapVolume>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_YEnd; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapVolume *>(obj); return &ptr->m_YEnd; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapVolume *>(obj); return &ptr->m_YEnd; }
 };
 
 template <typename Self>
@@ -1844,6 +2349,35 @@ struct StormReflTypeInfo<MapPathfindingSurface>
   static constexpr auto GetName() { return "MapPathfindingSurface"; }
   static constexpr auto GetNameHash() { return 0x98EE40AC; }
   static MapPathfindingSurface & GetDefault() { static MapPathfindingSurface def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingSurface *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingSurface *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingSurface *>(ptr);
+    if(typeid(MapPathfindingSurface).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingSurface *>(ptr);
+    if(typeid(MapPathfindingSurface).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1856,6 +2390,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_P1; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_P1; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_P1; }
 };
 
 template <typename Self>
@@ -1878,6 +2414,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_P2; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_P2; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_P2; }
 };
 
 template <typename Self>
@@ -1900,6 +2438,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_Clearance; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_Clearance; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_Clearance; }
 };
 
 template <typename Self>
@@ -1922,6 +2462,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_StartConnections1; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_StartConnections1; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_StartConnections1; }
 };
 
 template <typename Self>
@@ -1944,6 +2486,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_EndConnections1; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_EndConnections1; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_EndConnections1; }
 };
 
 template <typename Self>
@@ -1966,6 +2510,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_StartConnections2; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_StartConnections2; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_StartConnections2; }
 };
 
 template <typename Self>
@@ -1988,6 +2534,8 @@ struct StormReflTypeInfo<MapPathfindingSurface>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurface::m_EndConnections2; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurface *>(obj); return &ptr->m_EndConnections2; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurface *>(obj); return &ptr->m_EndConnections2; }
 };
 
 template <typename Self>
@@ -2011,6 +2559,35 @@ struct StormReflTypeInfo<MapPathfindingSurfaceConnection>
   static constexpr auto GetName() { return "MapPathfindingSurfaceConnection"; }
   static constexpr auto GetNameHash() { return 0x412196E6; }
   static MapPathfindingSurfaceConnection & GetDefault() { static MapPathfindingSurfaceConnection def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingSurfaceConnection *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingSurfaceConnection *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingSurfaceConnection *>(ptr);
+    if(typeid(MapPathfindingSurfaceConnection).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingSurfaceConnection *>(ptr);
+    if(typeid(MapPathfindingSurfaceConnection).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -2023,6 +2600,8 @@ struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurfaceConnection::m_SurfaceIndex; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurfaceConnection *>(obj); return &ptr->m_SurfaceIndex; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurfaceConnection *>(obj); return &ptr->m_SurfaceIndex; }
 };
 
 template <typename Self>
@@ -2045,6 +2624,8 @@ struct StormReflTypeInfo<MapPathfindingSurfaceConnection>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingSurfaceConnection::m_P1; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingSurfaceConnection *>(obj); return &ptr->m_P1; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingSurfaceConnection *>(obj); return &ptr->m_P1; }
 };
 
 template <typename Self>
@@ -2068,6 +2649,35 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>
   static constexpr auto GetName() { return "MapPathfindingCalculatedInfo"; }
   static constexpr auto GetNameHash() { return 0x68B8A4ED; }
   static MapPathfindingCalculatedInfo & GetDefault() { static MapPathfindingCalculatedInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingCalculatedInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingCalculatedInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingCalculatedInfo *>(ptr);
+    if(typeid(MapPathfindingCalculatedInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingCalculatedInfo *>(ptr);
+    if(typeid(MapPathfindingCalculatedInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -2080,6 +2690,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_Id; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_Id; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_Id; }
 };
 
 template <typename Self>
@@ -2102,6 +2714,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_GridWidth; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridWidth; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridWidth; }
 };
 
 template <typename Self>
@@ -2124,6 +2738,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_GridHeight; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridHeight; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridHeight; }
 };
 
 template <typename Self>
@@ -2146,6 +2762,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_StartX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_StartX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_StartX; }
 };
 
 template <typename Self>
@@ -2168,6 +2786,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_StartY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_StartY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_StartY; }
 };
 
 template <typename Self>
@@ -2190,6 +2810,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_SizeX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_SizeX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_SizeX; }
 };
 
 template <typename Self>
@@ -2212,6 +2834,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_SizeY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_SizeY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_SizeY; }
 };
 
 template <typename Self>
@@ -2234,6 +2858,8 @@ struct StormReflTypeInfo<MapPathfindingCalculatedInfo>::field_data_static<7>
   static constexpr unsigned GetTypeNameHash() { return 0x496EAD29; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingCalculatedInfo::m_GridInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingCalculatedInfo *>(obj); return &ptr->m_GridInfo; }
 };
 
 template <typename Self>
@@ -2257,6 +2883,35 @@ struct StormReflTypeInfo<MapPathfindingInfo>
   static constexpr auto GetName() { return "MapPathfindingInfo"; }
   static constexpr auto GetNameHash() { return 0xD6EED399; }
   static MapPathfindingInfo & GetDefault() { static MapPathfindingInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapPathfindingInfo *>(ptr);
+    if(typeid(MapPathfindingInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapPathfindingInfo *>(ptr);
+    if(typeid(MapPathfindingInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -2269,6 +2924,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_GridWidth; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_GridWidth; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_GridWidth; }
 };
 
 template <typename Self>
@@ -2291,6 +2948,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_GridHeight; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_GridHeight; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_GridHeight; }
 };
 
 template <typename Self>
@@ -2313,6 +2972,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_MaximumClearanceX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_MaximumClearanceX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_MaximumClearanceX; }
 };
 
 template <typename Self>
@@ -2335,6 +2996,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_MaximumClearanceY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_MaximumClearanceY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_MaximumClearanceY; }
 };
 
 template <typename Self>
@@ -2357,6 +3020,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x8C9238EC; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_CollisionMask; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_CollisionMask; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_CollisionMask; }
 };
 
 template <typename Self>
@@ -2379,6 +3044,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_Valid; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_Valid; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_Valid; }
 };
 
 template <typename Self>
@@ -2415,6 +3082,8 @@ struct StormReflTypeInfo<MapPathfindingInfo>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x3AAC98AB; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapPathfindingInfo::m_CalculatedInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapPathfindingInfo *>(obj); return &ptr->m_CalculatedInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapPathfindingInfo *>(obj); return &ptr->m_CalculatedInfo; }
 };
 
 template <typename Self>
@@ -2452,6 +3121,35 @@ struct StormReflTypeInfo<MapDef>
   static constexpr auto GetName() { return "MapDef"; }
   static constexpr auto GetNameHash() { return 0x06A138E3; }
   static MapDef & GetDefault() { static MapDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapDef *>(ptr);
+    if(typeid(MapDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapDef *>(ptr);
+    if(typeid(MapDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -2464,6 +3162,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x3D3EA581; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_PropertiesInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_PropertiesInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_PropertiesInfo; }
 };
 
 template <typename Self>
@@ -2486,6 +3186,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xD6EED399; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_PathfingindInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_PathfingindInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_PathfingindInfo; }
 };
 
 template <typename Self>
@@ -2508,6 +3210,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0xBEE03213; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ManualTileLayers; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_ManualTileLayers; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_ManualTileLayers; }
 };
 
 template <typename Self>
@@ -2530,6 +3234,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x27E07A3E; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ServerObjectLayers; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_ServerObjectLayers; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_ServerObjectLayers; }
 };
 
 template <typename Self>
@@ -2552,6 +3258,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x0F0562FD; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_EntityLayers; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_EntityLayers; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_EntityLayers; }
 };
 
 template <typename Self>
@@ -2574,6 +3282,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0xA01CA52C; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ParalaxLayers; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_ParalaxLayers; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_ParalaxLayers; }
 };
 
 template <typename Self>
@@ -2596,6 +3306,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x6700788B; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_EffectLayers; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_EffectLayers; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_EffectLayers; }
 };
 
 template <typename Self>
@@ -2618,6 +3330,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<7>
   static constexpr unsigned GetTypeNameHash() { return 0x5C53BF10; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Anchors; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_Anchors; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_Anchors; }
 };
 
 template <typename Self>
@@ -2640,6 +3354,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<8>
   static constexpr unsigned GetTypeNameHash() { return 0x65F883E4; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Paths; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_Paths; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_Paths; }
 };
 
 template <typename Self>
@@ -2662,6 +3378,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<9>
   static constexpr unsigned GetTypeNameHash() { return 0x1352869E; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_Volumes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDef *>(obj); return &ptr->m_Volumes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDef *>(obj); return &ptr->m_Volumes; }
 };
 
 template <typename Self>

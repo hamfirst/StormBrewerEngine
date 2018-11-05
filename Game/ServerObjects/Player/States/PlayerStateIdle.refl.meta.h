@@ -20,6 +20,43 @@ struct StormReflTypeInfo<PlayerStateIdle>
   static constexpr auto GetName() { return "PlayerStateIdle"; }
   static constexpr auto GetNameHash() { return 0x94ECF9E5; }
   static PlayerStateIdle & GetDefault() { static PlayerStateIdle def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateIdle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<PlayerStateEventHandler<PlayerStateIdle> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateIdle *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x887CB291 == type_name_hash) return static_cast<const PlayerStateBase *>(c);
+    if(0x8FB16778 == type_name_hash) return static_cast<const PlayerStateEventHandler<PlayerStateIdle> *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<PlayerStateIdle *>(ptr);
+    if(typeid(PlayerStateIdle).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateIdle>).hash_code() == type_id_hash) return static_cast<PlayerStateEventHandler<PlayerStateIdle> *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const PlayerStateIdle *>(ptr);
+    if(typeid(PlayerStateIdle).hash_code() == type_id_hash) return c;
+    if(typeid(PlayerStateBase).hash_code() == type_id_hash) return static_cast<const PlayerStateBase *>(c);
+    if(typeid(PlayerStateEventHandler<PlayerStateIdle>).hash_code() == type_id_hash) return static_cast<const PlayerStateEventHandler<PlayerStateIdle> *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>

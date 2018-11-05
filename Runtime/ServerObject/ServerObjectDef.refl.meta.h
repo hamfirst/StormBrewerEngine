@@ -17,6 +17,35 @@ struct StormReflTypeInfo<ServerObjectDef>
   static constexpr auto GetName() { return "ServerObjectDef"; }
   static constexpr auto GetNameHash() { return 0x97B44C7B; }
   static ServerObjectDef & GetDefault() { static ServerObjectDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObjectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObjectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<ServerObjectDef *>(ptr);
+    if(typeid(ServerObjectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const ServerObjectDef *>(ptr);
+    if(typeid(ServerObjectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -29,6 +58,8 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_IsStatic; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_IsStatic; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ServerObjectDef *>(obj); return &ptr->m_IsStatic; }
 };
 
 template <typename Self>
@@ -44,13 +75,15 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data<0, Self> : public StormRef
 template <>
 struct StormReflTypeInfo<ServerObjectDef>::field_data_static<1>
 {
-  using member_type = RPolymorphic<ServerObjectInitData, ServerObjectInitTypeDatabase, ServerObjectInitDataTypeInfo>; // RPolymorphic<ServerObjectInitData, ServerObjectInitTypeDatabase, ServerObjectInitDataTypeInfo, false>
+  using member_type = RPolymorphic<ServerObjectInitData>; // RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData, void>, TypeDatabaseTypeInfo<ServerObjectInitData, void>, false>
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphic<ServerObjectInitData, ServerObjectInitTypeDatabase, ServerObjectInitDataTypeInfo, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData, void>, TypeDatabaseTypeInfo<ServerObjectInitData, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x7AE8EB46; }
+  static constexpr unsigned GetTypeNameHash() { return 0x98B2E037; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_InitData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_InitData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ServerObjectDef *>(obj); return &ptr->m_InitData; }
 };
 
 template <typename Self>
@@ -58,8 +91,8 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data<1, Self> : public StormRef
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, RPolymorphic<ServerObjectInitData, ServerObjectInitTypeDatabase, ServerObjectInitDataTypeInfo>> & Get() { return self.m_InitData; }
-  std::add_const_t<std::remove_reference_t<RPolymorphic<ServerObjectInitData, ServerObjectInitTypeDatabase, ServerObjectInitDataTypeInfo>>> & Get() const { return self.m_InitData; }
+  match_const_t<Self, RPolymorphic<ServerObjectInitData>> & Get() { return self.m_InitData; }
+  std::add_const_t<std::remove_reference_t<RPolymorphic<ServerObjectInitData>>> & Get() const { return self.m_InitData; }
   void SetDefault() { self.m_InitData = StormReflTypeInfo<ServerObjectDef>::GetDefault().m_InitData; }
 };
 

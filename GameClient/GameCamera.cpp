@@ -14,8 +14,6 @@ GameCamera::GameCamera(GameContainer & container) :
 
 void GameCamera::Update()
 {
-  SetGameResolution(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
-
   RenderVec2 shake = {};
 
   auto cur_time = (float)GetTimeSeconds();

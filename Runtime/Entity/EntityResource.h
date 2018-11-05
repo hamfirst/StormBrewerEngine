@@ -16,7 +16,7 @@ using EntityLoadLink = DocumentResourceLoadCallbackLink<EntityDef, EntityResourc
 class EntityResource : public DocumentResourceBase
 {
 public:
-  EntityResource(Any && load_data, uint32_t path_hash);
+  EntityResource(Any && load_data, uint32_t path_hash, czstr path);
 
   NotNullPtr<EntityDef> GetData();
   EntityLoadLink AddLoadCallback(Delegate<void, NotNullPtr<EntityResource>> && callback);

@@ -10,12 +10,12 @@ template <bool ProperSignature>
 struct EventHandlerRegisterHelper
 {
   template <typename T, typename FuncPtr, typename ParamType>
-  static void Process(FuncPtr func_ptr, std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> & handlers)
+  static void Process(FuncPtr func_ptr, std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> & handlers)
   {
-    handlers.push_back(std::make_pair(ParamType::TypeNameHash, [func_ptr](void * ptr, void * ev, const EventMetaData & meta)
+    handlers.push_back(std::make_pair(ParamType::TypeNameHash, [func_ptr](void * ptr, const void * ev, const EventMetaData & meta)
     {
       T * p_this = static_cast<T *>(ptr);
-      ParamType * param = static_cast<ParamType *>(ev);
+      auto param = static_cast<const ParamType *>(ev);
       return (p_this->*func_ptr)(*param, meta);
     }));
   }
@@ -25,7 +25,7 @@ template <>
 struct EventHandlerRegisterHelper<false>
 {
   template <typename FuncPtr, typename ParamType, typename ... Args>
-  static void Process(FuncPtr ptr, std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, Args...>>> & handlers)
+  static void Process(FuncPtr ptr, std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, Args...>>> & handlers)
   {
 
   }
@@ -36,9 +36,9 @@ class EventHandler
 {
 public:
 
-  static std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> RegisterEventHandlers()
+  static std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> RegisterEventHandlers()
   {
-    std::vector<std::pair<uint32_t, Delegate<bool, void *, void *, const EventMetaData &>>> handlers;
+    std::vector<std::pair<uint32_t, Delegate<bool, void *, const void *, const EventMetaData &>>> handlers;
     auto visitor = [&](auto f)
     {
       using FuncType = decltype(f);
@@ -54,7 +54,7 @@ public:
     return handlers;
   }
 
-  bool TriggerEventHandler(uint32_t event_type, void * ev, const EventMetaData & meta)
+  bool TriggerEventHandler(uint32_t event_type, const void * ev, const EventMetaData & meta)
   {
     T * t = static_cast<T *>(this);
     static auto handlers = RegisterEventHandlers();

@@ -30,7 +30,7 @@ public:
     return static_cast<const ResourceType *>(m_Resource);
   }
 
-  operator bool() const
+  explicit operator bool() const
   {
     return m_Resource != 0;
   }

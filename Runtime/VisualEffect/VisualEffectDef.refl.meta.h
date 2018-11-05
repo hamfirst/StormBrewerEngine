@@ -17,6 +17,35 @@ struct StormReflTypeInfo<VisualEffectDefInputVariable>
   static constexpr auto GetName() { return "VisualEffectDefInputVariable"; }
   static constexpr auto GetNameHash() { return 0xE6E02AA9; }
   static VisualEffectDefInputVariable & GetDefault() { static VisualEffectDefInputVariable def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefInputVariable *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefInputVariable *>(ptr);
+    if(typeid(VisualEffectDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefInputVariable *>(ptr);
+    if(typeid(VisualEffectDefInputVariable).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -29,6 +58,8 @@ struct StormReflTypeInfo<VisualEffectDefInputVariable>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefInputVariable::m_VariableName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefInputVariable *>(obj); return &ptr->m_VariableName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefInputVariable *>(obj); return &ptr->m_VariableName; }
 };
 
 template <typename Self>
@@ -52,6 +83,35 @@ struct StormReflTypeInfo<VisualEffectDefEquation>
   static constexpr auto GetName() { return "VisualEffectDefEquation"; }
   static constexpr auto GetNameHash() { return 0xF9958751; }
   static VisualEffectDefEquation & GetDefault() { static VisualEffectDefEquation def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEquation *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEquation *>(ptr);
+    if(typeid(VisualEffectDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEquation *>(ptr);
+    if(typeid(VisualEffectDefEquation).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -64,6 +124,8 @@ struct StormReflTypeInfo<VisualEffectDefEquation>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEquation::m_VariableName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEquation *>(obj); return &ptr->m_VariableName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEquation *>(obj); return &ptr->m_VariableName; }
 };
 
 template <typename Self>
@@ -86,6 +148,8 @@ struct StormReflTypeInfo<VisualEffectDefEquation>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEquation::m_Equation; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEquation *>(obj); return &ptr->m_Equation; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEquation *>(obj); return &ptr->m_Equation; }
 };
 
 template <typename Self>
@@ -109,6 +173,35 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>
   static constexpr auto GetName() { return "VisualEffectDefEmitterProperties"; }
   static constexpr auto GetNameHash() { return 0x7362FF01; }
   static VisualEffectDefEmitterProperties & GetDefault() { static VisualEffectDefEmitterProperties def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitterProperties *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitterProperties *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitterProperties *>(ptr);
+    if(typeid(VisualEffectDefEmitterProperties).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitterProperties *>(ptr);
+    if(typeid(VisualEffectDefEmitterProperties).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -121,6 +214,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -143,6 +238,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_Texture; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Texture; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Texture; }
 };
 
 template <typename Self>
@@ -179,6 +276,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_PrespawnParticles; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_PrespawnParticles; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_PrespawnParticles; }
 };
 
 template <typename Self>
@@ -201,6 +300,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_UpdateDelay; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_UpdateDelay; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_UpdateDelay; }
 };
 
 template <typename Self>
@@ -223,6 +324,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_Additive; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Additive; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Additive; }
 };
 
 template <typename Self>
@@ -245,6 +348,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_LinearFilter; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_LinearFilter; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_LinearFilter; }
 };
 
 template <typename Self>
@@ -267,6 +372,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitterProperties>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitterProperties::m_Trail; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Trail; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitterProperties *>(obj); return &ptr->m_Trail; }
 };
 
 template <typename Self>
@@ -290,6 +397,35 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>
   static constexpr auto GetName() { return "VisualEffectDefEmitter"; }
   static constexpr auto GetNameHash() { return 0x5A4272CF; }
   static VisualEffectDefEmitter & GetDefault() { static VisualEffectDefEmitter def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitter *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitter *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDefEmitter *>(ptr);
+    if(typeid(VisualEffectDefEmitter).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDefEmitter *>(ptr);
+    if(typeid(VisualEffectDefEmitter).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -302,6 +438,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x7362FF01; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitter::m_Properties; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitter *>(obj); return &ptr->m_Properties; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitter *>(obj); return &ptr->m_Properties; }
 };
 
 template <typename Self>
@@ -324,6 +462,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1FFFEAB5; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitter::m_EmitterEquations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitter *>(obj); return &ptr->m_EmitterEquations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitter *>(obj); return &ptr->m_EmitterEquations; }
 };
 
 template <typename Self>
@@ -346,6 +486,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1FFFEAB5; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitter::m_SpawnEquations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitter *>(obj); return &ptr->m_SpawnEquations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitter *>(obj); return &ptr->m_SpawnEquations; }
 };
 
 template <typename Self>
@@ -368,6 +510,8 @@ struct StormReflTypeInfo<VisualEffectDefEmitter>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1FFFEAB5; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDefEmitter::m_ParticleEquations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDefEmitter *>(obj); return &ptr->m_ParticleEquations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDefEmitter *>(obj); return &ptr->m_ParticleEquations; }
 };
 
 template <typename Self>
@@ -391,6 +535,35 @@ struct StormReflTypeInfo<VisualEffectDef>
   static constexpr auto GetName() { return "VisualEffectDef"; }
   static constexpr auto GetNameHash() { return 0x7BB44461; }
   static VisualEffectDef & GetDefault() { static VisualEffectDef def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDef *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<VisualEffectDef *>(ptr);
+    if(typeid(VisualEffectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const VisualEffectDef *>(ptr);
+    if(typeid(VisualEffectDef).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -403,6 +576,8 @@ struct StormReflTypeInfo<VisualEffectDef>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x8CCF59A8; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_Inputs; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDef *>(obj); return &ptr->m_Inputs; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDef *>(obj); return &ptr->m_Inputs; }
 };
 
 template <typename Self>
@@ -425,6 +600,8 @@ struct StormReflTypeInfo<VisualEffectDef>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x38BD84A3; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_Emitters; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDef *>(obj); return &ptr->m_Emitters; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDef *>(obj); return &ptr->m_Emitters; }
 };
 
 template <typename Self>
@@ -447,6 +624,8 @@ struct StormReflTypeInfo<VisualEffectDef>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_UpdateBoundsX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDef *>(obj); return &ptr->m_UpdateBoundsX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDef *>(obj); return &ptr->m_UpdateBoundsX; }
 };
 
 template <typename Self>
@@ -469,6 +648,8 @@ struct StormReflTypeInfo<VisualEffectDef>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &VisualEffectDef::m_UpdateBoundsY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<VisualEffectDef *>(obj); return &ptr->m_UpdateBoundsY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const VisualEffectDef *>(obj); return &ptr->m_UpdateBoundsY; }
 };
 
 template <typename Self>

@@ -15,8 +15,8 @@ Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
 void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
 
-SpriteResource::SpriteResource(Any && load_data, uint32_t path_hash) :
-  DocumentResourceBase(std::move(load_data), path_hash)
+SpriteResource::SpriteResource(Any && load_data, uint32_t path_hash, czstr path) :
+  DocumentResourceBase(std::move(load_data), path_hash, path)
 {
 
 }
@@ -26,7 +26,7 @@ NotNullPtr<SpriteDef> SpriteResource::GetData()
   return &m_Data;
 }
 
-DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource> SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback)
+SpriteLoadLink SpriteResource::AddLoadCallback(Delegate<void, NotNullPtr<SpriteResource>> && callback)
 {
   if (m_Loaded)
   {
@@ -67,8 +67,8 @@ SpritePtr SpriteResource::Load(czstr file_path)
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path, 
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<SpriteResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<SpriteResource *>(resource);
   return SpritePtr(DocumentResourceReference<SpriteResource>(p_this));
 }
@@ -80,8 +80,8 @@ SpriteLoadLink SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, 
     return {};
   }
 
-  auto resource = LoadDocumentResource(file_path, 
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<SpriteResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<SpriteResource *>(resource);
 
   return p_this->AddLoadCallback(std::move(callback));
@@ -94,8 +94,8 @@ void SpriteResource::LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr
     return;
   }
 
-  auto resource = LoadDocumentResource(file_path,
-    [](Any && load_data, uint32_t path_hash) -> std::unique_ptr<DocumentResourceBase> { return std::make_unique<SpriteResource>(std::move(load_data), path_hash); });
+  auto resource = LoadDocumentResource(file_path, [](Any && load_data, uint32_t path_hash, czstr path) -> std::unique_ptr<DocumentResourceBase>
+          { return std::make_unique<SpriteResource>(std::move(load_data), path_hash, path); });
   auto p_this = static_cast<SpriteResource *>(resource);
 
   p_this->AddLoadCallback(std::move(callback), load_link);
@@ -335,7 +335,7 @@ Box SpriteResource::GetDefaultSingleBox()
   return Box::FromFrameCenterAndSize(Vector2{}, Vector2(4, 4));
 }
 
-int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation_frame)
+int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation_frame) const
 {
   if (animation_index >= 0 && animation_index < m_AnimStart.size())
   {
@@ -353,7 +353,7 @@ int SpriteResource::GetAnimationFrameDuration(int animation_index, int animation
   return 0;
 }
 
-uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_frame)
+uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_frame) const
 {
   if (animation_index >= 0 && animation_index < m_AnimStart.size())
   {
@@ -371,26 +371,26 @@ uint64_t SpriteResource::GetAnimationFrameId(int animation_index, int animation_
   return 0;
 }
 
-Box SpriteResource::GetSingleBox(uint32_t data_type_name_hash)
+Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash) const
 {
   FrameDataExtract extractor(m_Data.m_InstanceData);
-  auto result = extractor.GetSingleBox(data_type_name_hash);
+  auto result = extractor.GetSingleBoxDefault(data_type_name_hash);
 
   if (result)
   {
     return result.Value();
   }
 
-  return GetDefaultSingleBox();
+  return {};
 }
 
-Box SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id)
+Optional<Box> SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)
   {
     FrameDataExtract extractor(*frame_data);
-    auto result = extractor.GetSingleBox(data_type_name_hash);
+    auto result = extractor.GetSingleBoxDefault(data_type_name_hash);
 
     if (result)
     {
@@ -398,10 +398,22 @@ Box SpriteResource::GetSingleBox(uint32_t data_type_name_hash, uint64_t frame_id
     }
   }
 
-  return GetSingleBox(data_type_name_hash);
+  return {};
 }
 
-Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash)
+Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, const Box & default_box) const
+{
+  auto box = GetSingleBox(data_type_name_hash);
+  return box ? box.Value() : default_box;
+}
+
+Box SpriteResource::GetSingleBoxDefault(uint32_t data_type_name_hash, uint64_t frame_id, const Box & default_box) const
+{
+  auto box = GetSingleBox(data_type_name_hash, frame_id);
+  return box ? box.Value() : default_box;
+}
+
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash) const
 {
   for (auto elem : m_Data.m_Anchors)
   {
@@ -414,7 +426,7 @@ Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash)
   return {};
 }
 
-Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id)
+Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)
@@ -431,7 +443,7 @@ Vector2 SpriteResource::GetAnchor(uint32_t data_type_name_hash, uint64_t frame_i
   return GetAnchor(data_type_name_hash);
 }
 
-gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash)
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash) const
 {
   FrameDataExtract extractor(m_Data.m_InstanceData);
   auto result = extractor.GetMultiBox(data_type_name_hash);
@@ -444,7 +456,7 @@ gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash)
   return {};
 }
 
-gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id)
+gsl::span<const Box> SpriteResource::GetMultiBox(uint32_t data_type_name_hash, uint64_t frame_id) const
 {
   auto frame_data = m_Data.m_FrameData.TryGet(frame_id);
   if (frame_data)

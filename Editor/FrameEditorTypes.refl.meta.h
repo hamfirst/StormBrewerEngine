@@ -17,6 +17,35 @@ struct StormReflTypeInfo<FrameCopyData>
   static constexpr auto GetName() { return "FrameCopyData"; }
   static constexpr auto GetNameHash() { return 0x7053E070; }
   static FrameCopyData & GetDefault() { static FrameCopyData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<FrameCopyData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameCopyData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<FrameCopyData *>(ptr);
+    if(typeid(FrameCopyData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const FrameCopyData *>(ptr);
+    if(typeid(FrameCopyData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -29,6 +58,8 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Valid; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Valid; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const FrameCopyData *>(obj); return &ptr->m_Valid; }
 };
 
 template <typename Self>
@@ -51,6 +82,8 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xCD6F2DAB; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const FrameCopyData *>(obj); return &ptr->m_Type; }
 };
 
 template <typename Self>
@@ -73,6 +106,8 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const FrameCopyData *>(obj); return &ptr->m_Data; }
 };
 
 template <typename Self>
