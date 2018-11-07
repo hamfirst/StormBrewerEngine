@@ -30,7 +30,9 @@ public:
   ~EngineState();
 
   NotNullPtr<Entity> CreateEntity();
-  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object = nullptr, bool activate = true);
+  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> resource,
+          NullOptPtr<const ServerObject> server_object = nullptr,
+          NullOptPtr<const ServerObjectManager> obj_manager = nullptr, bool activate = true);
   void DestroyAllEntities();
 
   std::size_t LoadMap(NotNullPtr<MapResource> map);

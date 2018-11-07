@@ -10,22 +10,22 @@ GameHostWidget::GameHostWidget(EditorContainer * editor, int number_of_clients, 
 {
   setAttribute(Qt::WA_X11NetWmWindowTypeDialog);
 
-  m_Layout = std::make_unique<QGridLayout>();
+  m_Layout = new QGridLayout();
 
   for (int index = 0; index < number_of_clients; ++index)
   {
-    m_Clients.emplace_back(std::make_unique<GameClientWidget>(editor, index, false, this));
+    m_Clients.emplace_back(new GameClientWidget(editor, index, false, this));
   }
 
-  m_Server = std::make_unique<GameServerWidget>(this);
+  m_Server = new GameServerWidget(this);
 
   if (number_of_clients == 1)
   {
     m_Layout->setColumnStretch(0, 2);
     m_Layout->setColumnStretch(1, 1);
 
-    m_Layout->addWidget(m_Clients[0].get(), 0, 0);
-    m_Layout->addWidget(m_Server.get(), 0, 1);
+    m_Layout->addWidget(m_Clients[0], 0, 0);
+    m_Layout->addWidget(m_Server, 0, 1);
   }
   else
   {
@@ -37,15 +37,15 @@ GameHostWidget::GameHostWidget(EditorContainer * editor, int number_of_clients, 
 
     for (int index = 0; index < number_of_clients; ++index)
     {
-      m_Layout->addWidget(m_Clients[index].get(), index % 2, index / 2);
+      m_Layout->addWidget(m_Clients[index], index % 2, index / 2);
     }
 
     m_Layout->setColumnStretch(cols, 1);
-    m_Layout->addWidget(m_Server.get(), 0, cols, 1, 2);
+    m_Layout->addWidget(m_Server, 0, cols, 1, 2);
   }
 
   setMinimumSize(1266, 800);
-  setLayout(m_Layout.get());
+  setLayout(m_Layout);
 }
 
 void GameHostWidget::closeEvent(QCloseEvent * ev)

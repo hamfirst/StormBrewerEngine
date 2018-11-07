@@ -1,0 +1,34 @@
+[]
+
+{
+    "m_Emitters": {
+        "0": {
+            "m_ParticleEquations": {
+                "1196869079": {
+                    "m_VariableName": "m_ColorA",
+                    "m_Equation": "InvTimePct"
+                },
+                "3245731331": {
+                    "m_VariableName": "m_MaxLifetime",
+                    "m_Equation": "0.5"
+                }
+            },
+            "m_EmitterEquations": {
+                "472491818": {
+                    "m_VariableName": "m_SpawnRate",
+                    "m_Equation": "60"
+                }
+            },
+            "m_SpawnEquations": { },
+            "m_Properties": {
+                "m_UpdateDelay": 0,
+                "m_LinearFilter": false,
+                "m_Name": "Emitter1",
+                "m_Trail": true,
+                "m_Texture": "",
+                "m_Additive": false,
+                "m_PrespawnParticles": 0
+            }
+        }
+    }
+}

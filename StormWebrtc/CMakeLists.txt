@@ -9,8 +9,8 @@ set(GENERIC_SRC_StormWebrtc
             )
 set(GENERIC_HEADER_StormWebrtc 
             StormWebrtc.h
-            StormWebrtcConnection.h
             StormWebrtcDataChannel.h
+            StormWebrtcConnection.h
             #HEADER_PLACEHOLDER
             )
 set(GENERIC_REFL_StormWebrtc 

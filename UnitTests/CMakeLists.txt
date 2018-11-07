@@ -11,12 +11,12 @@ set(GENERIC_SRC_UnitTests
             )
 
 set(GENERIC_HEADER_UnitTests 
-            stdafx.h
             TestTypes.refl.h
             TestTypes.refl.meta.h
             targetver.h
-            TestComponent/TestComponent.refl.h
+            stdafx.h
             TestComponent/TestComponent.refl.meta.h
+            TestComponent/TestComponent.refl.h
             #HEADER_PLACEHOLDER
             )
 

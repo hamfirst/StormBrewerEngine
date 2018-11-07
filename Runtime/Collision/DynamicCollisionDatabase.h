@@ -18,6 +18,7 @@ public:
           uint32_t collision_layer_mask, NullOptPtr<CollisionObjectMask> obj_mask = nullptr) const;
 
   void ResetCollision();
+  void GetCollisionId(Optional<int> & collision_id);
   void PushCollision(const Box & box, uint32_t collision_mask,
           CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id);
 

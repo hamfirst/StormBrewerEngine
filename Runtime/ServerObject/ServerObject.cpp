@@ -61,6 +61,11 @@ czstr ServerObject::GetEntityBinding() const
   return GetDefaultEntityBinding();
 }
 
+Optional<int> ServerObject::GetAssociatedPlayer(GameLogicContainer & game_container) const
+{
+  return {};
+}
+
 void ServerObject::InitStaticComponents()
 {
 

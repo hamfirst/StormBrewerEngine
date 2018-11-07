@@ -4,6 +4,7 @@
 #include "Engine/EngineState.h"
 
 #include "Runtime/Entity/EntityResource.h"
+#include "Runtime/ServerObject/ServerObject.h"
 
 #include "GameClient/GameClientEntitySync.h"
 #include "GameClient/GameContainer.h"
@@ -22,7 +23,16 @@ GameClientEntitySync::~GameClientEntitySync()
 
 void GameClientEntitySync::ActivateEntities()
 {
-  for (auto ent : m_Entities)
+  for (auto ent : m_HistoryEntities)
+  {
+    auto entity = ent.second.Resolve();
+    if (entity)
+    {
+      entity->Activate();
+    }
+  }
+
+  for (auto ent : m_CurrentEntities)
   {
     auto entity = ent.second.Resolve();
     if (entity)
@@ -34,24 +44,58 @@ void GameClientEntitySync::ActivateEntities()
   m_ActivateEntities = true;
 }
 
-void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container)
+bool GameClientEntitySync::IsLocal(NotNullPtr<ServerObject> server_obj, GameLogicContainer & game_container)
+{
+  auto associated_player = server_obj->GetAssociatedPlayer(game_container);
+
+  if (associated_player)
+  {
+    auto instance_data = m_GameContainer.GetInstanceData();
+    auto num_local_clients = instance_data->GetNumLocalData();
+
+    for (std::size_t index = 0; index < num_local_clients; ++index)
+    {
+      auto & local_data = instance_data->GetClientLocalData(index);
+      if (local_data.m_PlayerIndex == associated_player.Value())
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+void GameClientEntitySync::SyncEntityList(SparseList<EntityHandle> & entity_list,
+        ServerObjectManager & obj_manager, GameLogicContainer & game_container, bool process_local, bool process_nonlocal)
 {
   auto & engine_state = m_GameContainer.GetEngineState();
 
   std::size_t last_index = 0;
   auto visitor = [&] (std::size_t index, NotNullPtr<ServerObject> obj)
   {
-    EntityHandle cur_handle;
-    if (m_Entities.HasAt(index))
+    auto is_local = IsLocal(obj, game_container);
+    if(is_local && !process_local)
     {
-      cur_handle = m_Entities[index];
+      return;
+    }
+
+    if(!is_local && !process_nonlocal)
+    {
+      return;
+    }
+
+    EntityHandle cur_handle;
+    if (entity_list.HasAt(index))
+    {
+      cur_handle = entity_list[index];
     }
 
     while (index != last_index)
     {
-      if (m_Entities.HasAt(last_index))
+      if (entity_list.HasAt(last_index))
       {
-        auto entity = m_Entities[last_index].Resolve();
+        auto entity = entity_list[last_index].Resolve();
         if (entity)
         {
           entity->ServerDestroy();
@@ -74,6 +118,7 @@ void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container
         auto asset_hash = crc32lowercase(entity_asset);
         if (asset_hash == entity->GetAssetNameHash())
         {
+          entity->m_ServerObjectManager = &obj_manager;
           entity->ServerUpdate();
           return;
         }
@@ -89,8 +134,8 @@ void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container
         return;
       }
 
-      auto new_entity = engine_state.CreateEntity(entity_resource.GetResource(), obj, m_ActivateEntities);
-      m_Entities.InsertAt(index, new_entity->GetHandle());
+      auto new_entity = engine_state.CreateEntity(entity_resource.GetResource(), obj, &obj_manager, m_ActivateEntities);
+      entity_list.InsertAt(index, new_entity->GetHandle());
       new_entity->ServerUpdate();
     }
     else
@@ -103,14 +148,13 @@ void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container
     }
   };
 
-  auto & obj_manager = instance_container.GetFullState().m_ServerObjectManager;
   obj_manager.VisitObjects(visitor);
 
-  while ((int)last_index <= m_Entities.HighestIndex())
+  while ((int)last_index <= entity_list.HighestIndex())
   {
-    if (m_Entities.HasAt(last_index))
+    if (entity_list.HasAt(last_index))
     {
-      auto entity = m_Entities[last_index].Resolve();
+      auto entity = entity_list[last_index].Resolve();
       if (entity)
       {
         entity->ServerDestroy();
@@ -122,23 +166,43 @@ void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container
   }
 }
 
+void GameClientEntitySync::Sync(GameClientInstanceContainer & instance_container)
+{
+#ifdef NET_SYNC_OLD_STATE
+
+  auto history_container = instance_container.GetLogicContainer(NET_SYNC_HISTORY_FRAMES);
+  auto current_container = instance_container.GetLogicContainer();
+
+  SyncEntityList(m_HistoryEntities, history_container.GetObjectManager(), history_container, false, true);
+  SyncEntityList(m_CurrentEntities, current_container.GetObjectManager(), current_container, true, false);
+#else
+  SyncEntityList(m_CurrentEntities, current_container.GetObjectManager(), current_container, true, true);
+#endif
+}
+
 void GameClientEntitySync::DestroyAll()
 {
-  for (auto ent : m_Entities)
+  for (auto ent : m_HistoryEntities)
   {
     ent.second.Destroy();
   }
 
-  m_Entities.Clear();
+  for (auto ent : m_CurrentEntities)
+  {
+    ent.second.Destroy();
+  }
+
+  m_HistoryEntities.Clear();
+  m_CurrentEntities.Clear();
 }
 
 void GameClientEntitySync::SendEntityEvent(int entity_index, uint32_t type_name_hash, const void * ev)
 {
-  auto entity = m_Entities[entity_index].Resolve();
-
-  if (entity)
-  {
-    entity->TriggerEventHandler(type_name_hash, ev, EventMetaData(&m_GameContainer));
-  }
+//  auto entity = m_Entities[entity_index].Resolve();
+//
+//  if (entity)
+//  {
+//    entity->TriggerEventHandler(type_name_hash, ev, EventMetaData(&m_GameContainer));
+//  }
 }
 

@@ -171,6 +171,8 @@ struct StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameStateStagingPlayer::m_GameLeader; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStagingPlayer *>(obj); return &ptr->m_GameLeader; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStagingPlayer *>(obj); return &ptr->m_GameLeader; }
 };
 
 template <typename Self>
@@ -193,6 +195,8 @@ struct StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &GameStateStagingPlayer::m_Ready; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStagingPlayer *>(obj); return &ptr->m_Ready; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStagingPlayer *>(obj); return &ptr->m_Ready; }
 };
 
 template <typename Self>
@@ -353,6 +357,8 @@ struct StormReflTypeInfo<GameStateStaging>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameStateStaging::m_PrivateRoomId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_PrivateRoomId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_PrivateRoomId; }
 };
 
 template <typename Self>

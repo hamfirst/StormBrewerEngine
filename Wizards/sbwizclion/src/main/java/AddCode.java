@@ -93,13 +93,9 @@ class NamePopup implements Runnable
         command.add(_directory);
         command.add(rootdir);
 
-        if(_selectedType == "Class")
+        if(_selectedType != "Class")
         {
-            command.add("v");
-        }
-        else
-        {
-            command.add("mv");
+            command.add("m");
         }
 
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(command);
@@ -135,6 +131,7 @@ class TemplateList implements ListPopupStep<String>
                 {
                         "Class",
                         "Refl",
+                        "ReflCpp",
                         "Component",
                         "ServerObject",
                         "PlayerState",

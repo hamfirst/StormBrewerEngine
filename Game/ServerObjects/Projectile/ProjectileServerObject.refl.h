@@ -55,15 +55,18 @@ public:
   void UpdateFirst(GameLogicContainer & game_container);
   void UpdateMiddle(GameLogicContainer & game_container);
 
-  void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result);
-  void HandleRangeExpired();
+  void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result, GameLogicContainer & game_container);
+  void HandleRangeExpired(GameLogicContainer & game_container);
 
   static NotNullPtr<ProjectileServerObject> SpawnProjectile(const GameNetVec2 & pos, const GameNetVec2 & dir,
           int team_index, const ServerObjectHandle & handle,
           const ConfigPtr<ProjectileConfig> & config, GameLogicContainer & game_container);
 
+  virtual czstr GetEntityBinding() const override;
   virtual czstr GetDefaultEntityBinding() const override;
+  virtual Optional<int> GetAssociatedPlayer(GameLogicContainer & game_container) const override;
   virtual void InitStaticComponents() override;
+
 public:
 
   GameNetVec2 m_Direction = {};
@@ -72,4 +75,5 @@ public:
   ProjectileConfigPtr m_Config;
 
   ServerObjectComponent<ProjectileMotionBase, ProjectileMotionBaseConfig> m_Motion;
+  ServerObjectComponent<ProjectileResponseBase, ProjectileResponseBaseConfig> m_Response;
 };

@@ -10,11 +10,13 @@
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
-
 #include "Game/ServerObjects/Player/States/PlayerStateIdle.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateJump.refl.h"
 
+#include "Game/ServerObjects/Projectile/ProjectileServerObject.refl.meta.h"
+
 #include "Game/Configs/PlayerConfig.refl.meta.h"
+#include "Game/Configs/ProjectileConfig.refl.meta.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Entity/EntityResource.h"
@@ -23,11 +25,13 @@
 struct PlayerServerObjectConfigResources
 {
   EntityResourcePtr m_PlayerEntity;
+  ConfigPtr<ProjectileConfig> m_ProjectileConfig;
 };
 
 void PlayerServerObjectConfigResourcesLoad(const ConfigPtr<PlayerConfig> & config, PlayerServerObjectConfigResources & resources)
 {
   resources.m_PlayerEntity = g_GlobalAssetList.CreateDependentAsset<EntityResource>(config->m_EntityFile.c_str());
+  resources.m_ProjectileConfig = g_GlobalAssetList.CreateDependentAsset<GenericResource<ProjectileConfig>>(config->m_ProjectileFile.c_str());
 }
 
 GLOBAL_ASSET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig, "./Configs/PlayerConfig.playerconfig");
@@ -82,7 +86,13 @@ void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
     }
   }
 
-
+  --m_RefireTime;
+  if(m_RefireTime == 0)
+  {
+    ProjectileServerObject::SpawnProjectile(m_Position, GetDirectionForFacing(m_Facing), GetTeam(game_container), GetObjectHandle(),
+            g_PlayerConfigResources[m_Config.CurrentIndex()].m_ProjectileConfig, game_container);
+    m_RefireTime = 20;
+  }
 }
 
 void PlayerServerObject::ResetState(GameLogicContainer & game_container)
@@ -259,9 +269,14 @@ void PlayerServerObject::SetAnimationState(const AnimationState & anim_state)
   m_AnimDelay = anim_state.m_AnimDelay;
 }
 
-Optional<int> PlayerServerObject::GetAssociatedPlayer() const
+Optional<int> PlayerServerObject::GetAssociatedPlayer(GameLogicContainer & game_container) const
 {
   return GetSlotIndex();
+}
+
+int PlayerServerObject::GetTeam(GameLogicContainer & game_container) const
+{
+  return game_container.GetInstanceData().m_Players[GetSlotIndex()].m_Team;
 }
 
 const SpritePtr & PlayerServerObject::GetSprite() const
@@ -281,7 +296,8 @@ czstr PlayerServerObject::GetEntityBinding() const
 
 czstr PlayerServerObject::GetDefaultEntityBinding() const
 {
-  return "./Entities/Player.entity";
+  static PlayerConfig config;
+  return config.m_EntityFile.c_str();
 }
 
 const ConfigPtr<PlayerConfig> & PlayerServerObject::GetConfig() const

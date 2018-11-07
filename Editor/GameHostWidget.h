@@ -22,9 +22,9 @@ private:
 
   NotNullPtr<EditorContainer> m_Editor;
 
-  std::unique_ptr<QGridLayout> m_Layout;
+  QGridLayout * m_Layout;
 
-  std::vector<std::unique_ptr<GameClientWidget>> m_Clients;
-  std::unique_ptr<GameServerWidget> m_Server;
+  std::vector<GameClientWidget *> m_Clients;
+  GameServerWidget * m_Server;
 };
 

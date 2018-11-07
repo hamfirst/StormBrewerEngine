@@ -335,6 +335,26 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
     authority ? *authority : m_Authority, send_timer);
 }
 
+GameLogicContainer GameClientInstanceContainer::GetLogicContainer(std::size_t history_index)
+{
+  return GameLogicContainer(
+    GetGameController(),
+    m_InitSettings,
+    GetHistoryState(history_index).m_InstanceData,
+    GetHistoryState(history_index).m_ServerObjectManager,
+    m_ServerObjectEventSystem,
+    m_ServerEventResponder,
+    GetClientController(),
+    m_GameContainer.GetSharedGlobalResources(),
+    GetSharedResources(),
+    GetSystems(),
+#ifdef DELIBERATE_SYNC_SYSTEM_LIST
+    m_DeliberateSyncSystemData,
+#endif
+    GetStage(),
+    m_Authority, s_BogusSendTimer);
+}
+
 GameController & GameClientInstanceContainer::GetGameController()
 {
   return m_GameController;
@@ -387,7 +407,14 @@ GameFullState & GameClientInstanceContainer::GetDefaultState()
 
 GameFullState & GameClientInstanceContainer::GetHistoryState(std::size_t history_index)
 {
-  return *m_SimHistory.Get((int)history_index)->get();
+  history_index = std::min(history_index, m_SimHistory.Count());
+  auto history = m_SimHistory.Get((int)history_index);
+  if(history)
+  {
+    return *(history->get());
+  }
+
+  return GetFullState();
 }
 
 GameInstanceData & GameClientInstanceContainer::GetGlobalInstanceData()

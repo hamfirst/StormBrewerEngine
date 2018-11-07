@@ -32,32 +32,6 @@ void SyncServerObjectComponent::UpdateFirst()
 
   if (server_obj)
   {
-#ifdef NET_SYNC_OLD_STATE
-    auto associated_player = server_obj->GetAssociatedPlayer();
-    bool is_local = false;
-
-    if (associated_player)
-    {
-      auto num_local_clients = GetEntity()->GetGameContainer()->GetInstanceData()->GetNumLocalData();
-
-      for (std::size_t index = 0; index < num_local_clients; ++index)
-      {
-        auto & local_data = GetEntity()->GetGameContainer()->GetInstanceData()->GetClientLocalData(index);
-        if (local_data.m_PlayerIndex == associated_player.Value())
-        {
-          is_local = true;
-          break;
-        }
-      }
-    }
-
-
-    if (is_local == false)
-    {
-      server_obj = static_cast<GameServerObjectBase *>(GetEntity()->GetServerObject(NET_SYNC_HISTORY_FRAMES));
-    }
-#endif
-
 	  auto position = (Vector2)server_obj->GetPosition();
     GetEntity()->SetPosition(position);
 

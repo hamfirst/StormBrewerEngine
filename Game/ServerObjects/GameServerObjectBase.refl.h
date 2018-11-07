@@ -45,7 +45,6 @@ public:
 
   virtual Optional<AnimationState> GetAnimationState() const;
   virtual void SetAnimationState(const AnimationState & anim_state);
-  virtual Optional<int> GetAssociatedPlayer() const;
   virtual void SetAssociatedPlayer(int associated_player) const;
 
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);

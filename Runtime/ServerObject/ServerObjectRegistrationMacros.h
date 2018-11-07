@@ -81,8 +81,6 @@ void ServerObjectComponentDeserialize(Comp & comp, ServerObjectNetBitReader & re
   static czstr TypeName;                                                                                                        \
   static uint32_t TypeNameHash;                                                                                                 \
   static std::size_t TypeIndex;                                                                                                 \
-  static const uint32_t * BaseTypes;                                                                                            \
-  static uint32_t NumBaseTypes;                                                                                                 \
   static ServerObjectEventDispatch EventDispatch;                                                                               \
                                                                                                                                 \
   virtual uint32_t GetTypeNameHash() const override;                                                                            \
@@ -99,8 +97,6 @@ void ServerObjectComponentDeserialize(Comp & comp, ServerObjectNetBitReader & re
   static czstr TypeName;                                                                                                        \
   static uint32_t TypeNameHash;                                                                                                 \
   static std::size_t TypeIndex;                                                                                                 \
-  static const uint32_t * BaseTypes;                                                                                            \
-  static uint32_t NumBaseTypes;                                                                                                 \
   static ServerObjectEventDispatch EventDispatch;                                                                               \
                                                                                                                                 \
   virtual uint32_t GetTypeNameHash() const;                                                                                     \
@@ -115,8 +111,6 @@ void ServerObjectComponentDeserialize(Comp & comp, ServerObjectNetBitReader & re
 czstr ServerObjectName::TypeName = #ServerObjectName;                                                                           \
 uint32_t ServerObjectName::TypeNameHash = COMPILE_TIME_CRC32_STR(#ServerObjectName);                                            \
 std::size_t ServerObjectName::TypeIndex = 0;                                                                                    \
-const uint32_t * ServerObjectName::BaseTypes = nullptr;                                                                         \
-uint32_t ServerObjectName::NumBaseTypes = 0;                                                                                    \
 ServerObjectEventDispatch ServerObjectName::EventDispatch;                                                                      \
 SkipField<ServerObjectName> s_##ServerObjectName##Allocator;                                                                    \
                                                                                                                                 \
@@ -129,10 +123,7 @@ void ServerObjectName::RegisterServerObject()                                   
 {                                                                                                                               \
   ServerObjectTypeInfo type_info;                                                                                               \
   type_info.m_TypeNameHash = ServerObjectName::TypeNameHash;                                                                    \
-  type_info.m_BaseClassTypeNameHash = BaseClassHash;                                                                            \
   type_info.m_InitDataTypeNameHash = COMPILE_TIME_CRC32_STR(#InitData);                                                         \
-  type_info.m_BaseListClassesPtr = &ServerObjectName::BaseTypes;                                                                \
-  type_info.m_NumBaseClassesPtr = &ServerObjectName::NumBaseTypes;                                                              \
   type_info.m_TypeIndexPtr = &ServerObjectName::TypeIndex;                                                                      \
                                                                                                                                 \
   type_info.m_ObjectCreate = []() -> ServerObject *                                                                             \
@@ -214,22 +205,15 @@ void ServerObjectName::RegisterServerObject()                                   
                                                                                                                                 \
 ADD_PREMAIN_CALL(g_ServerObjectRegisterCallList, ServerObjectName, []() { ServerObjectName::RegisterServerObject(); });         \
                                                                                                                                 \
-bool ServerObjectName::CanCastToType(uint32_t type_index)                                                                       \
+bool ServerObjectName::CanCastToType(uint32_t type_name_hash)                                                                   \
 {                                                                                                                               \
-  for (uint32_t base_type = 0; base_type < ServerObjectName::NumBaseTypes; ++base_type)                                         \
-  {                                                                                                                             \
-    if (ServerObjectName::BaseTypes[base_type] == type_index)                                                                   \
-    {                                                                                                                           \
-      return true;                                                                                                              \
-    }                                                                                                                           \
-  }                                                                                                                             \
-                                                                                                                                \
-  return false;                                                                                                                 \
+  char crap;                                                                                                                    \
+  return StormReflTypeInfo<ServerObjectName>::CastFromTypeNameHash(type_name_hash, &crap) != nullptr;                           \
 }                                                                                                                               \
                                                                                                                                 \
-bool ServerObjectName::CastToInternal(uint32_t type_index) const                                                                \
+bool ServerObjectName::CastToInternal(uint32_t type_name_hash) const                                                            \
 {                                                                                                                               \
-  return ServerObjectName::CanCastToType(type_index);                                                                           \
+  return ServerObjectName::CanCastToType(type_name_hash);                                                                       \
 }                                                                                                                               \
                                                                                                                                 \
 NotNullPtr<ServerObjectEventDispatch> ServerObjectName::GetEventDispatch()                                                      \

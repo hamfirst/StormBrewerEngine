@@ -89,14 +89,19 @@ void DynamicCollisionDatabase::ResetCollision()
   m_NextCollisionId = 0;
 }
 
-void DynamicCollisionDatabase::PushCollision(const Box & box, uint32_t collision_mask,
-        CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id)
+void DynamicCollisionDatabase::GetCollisionId(Optional<int> & collision_id)
 {
   if(collision_id.IsValid() == false)
   {
     collision_id = m_NextCollisionId;
     m_NextCollisionId++;
   }
+}
+
+void DynamicCollisionDatabase::PushCollision(const Box & box, uint32_t collision_mask,
+        CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id)
+{
+  GetCollisionId(collision_id);
 
   auto index = m_Objects.size();
 

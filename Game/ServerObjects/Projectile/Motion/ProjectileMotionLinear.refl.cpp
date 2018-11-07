@@ -27,7 +27,6 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
   auto owner = proj.m_Owner.ResolveTo<GameServerObjectBase>(game_container.GetObjectManager());
   if(owner && owner->GetCollisionId())
   {
-
     CollisionObjectMask coll_mask;
     coll_mask.Set(owner->GetCollisionId().Value());
 
@@ -36,7 +35,7 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
 
     if (result)
     {
-      proj.HandleImpact(&result.Value());
+      proj.HandleImpact(&result.Value(), game_container);
       return;
     }
   }
@@ -46,7 +45,7 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
 
     if (result)
     {
-      proj.HandleImpact(&result.Value());
+      proj.HandleImpact(&result.Value(), game_container);
       return;
     }
   }
@@ -56,7 +55,7 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
   m_RangeRemaining -= (GameNetVal)config->m_Speed;
   if(m_RangeRemaining < GameNetVal(0))
   {
-    proj.HandleRangeExpired();
+    proj.HandleRangeExpired(game_container);
     return;
   }
 }

@@ -67,3 +67,22 @@ Optional<CharacterFacing> GetFacingForDirection(const GameNetVec2 & dir)
   }
 #endif
 }
+
+GameNetVec2 GetDirectionForFacing(const CharacterFacing & facing)
+{
+  switch(facing)
+  {
+    case CharacterFacing::kLeft:
+      return GameNetVec2(GameNetVal(-1), GameNetVal(0));
+    case CharacterFacing::kRight:
+      return GameNetVec2(GameNetVal(1), GameNetVal(0));
+#ifndef PLATFORMER_MOVEMENT
+    case CharacterFacing::kUp:
+      return GameNetVec2(GameNetVal(0), GameNetVal(1));
+    case CharacterFacing::kDown:
+      return GameNetVec2(GameNetVal(0), GameNetVal(-1));
+#endif
+    default:
+      return GameNetVec2(GameNetVal(0), GameNetVal(0));
+  }
+}
