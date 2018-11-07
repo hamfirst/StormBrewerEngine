@@ -75,6 +75,26 @@ public:
     }
   }
 
+  template <typename Visitor>
+  void VisitObjects(Visitor && visitor) const
+  {
+    std::size_t object_index = 0;
+    for (std::size_t end = m_StaticObjects.size(); object_index < end; ++object_index)
+    {
+      visitor(object_index, m_StaticObjects[object_index]);
+    }
+
+    for (auto elem : m_DynamicObjects)
+    {
+      visitor(elem.first + object_index, elem.second.m_ServerObject);
+    }
+
+    for (auto & elem : m_UnsyncedObjects)
+    {
+      visitor(-1, elem.m_ServerObject);
+    }
+  }
+
   NullOptPtr<ServerObject> GetReservedSlotObject(std::size_t slot_index);
 
   template <typename T>

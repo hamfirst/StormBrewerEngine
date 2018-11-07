@@ -64,7 +64,8 @@ public:
 
   virtual Optional<AnimationState> GetAnimationState() const override;
   virtual void SetAnimationState(const AnimationState & anim_state) override;
-  virtual Optional<int> GetAssociatedPlayer() const override;
+  virtual Optional<int> GetAssociatedPlayer(GameLogicContainer & game_container) const override;
+  virtual int GetTeam(GameLogicContainer & game_container) const;
 
   virtual const SpritePtr & GetSprite() const override;
   virtual Optional<CharacterFacing> GetFacing() const override;
@@ -111,6 +112,8 @@ public:
 
   NetRangedNumber<int, 0, 31> m_AttackId = 0;
   bool m_Invulnerable = false;
+
+  NetRangedNumber<int, 0, 20> m_RefireTime = 0;
 
   ClientInput m_Input;
 

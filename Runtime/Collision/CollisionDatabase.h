@@ -22,6 +22,7 @@ public:
   uint32_t CheckClearance(const Vector2 & pos, uint32_t maximum_clearance, uint32_t collision_layer_mask) const;
 
   void ResetDynamicCollision();
+  void GetCollisionId(Optional<int> & collision_id);
   void PushDynamicCollision(const Box & box, uint32_t collision_mask,
           CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id);
 

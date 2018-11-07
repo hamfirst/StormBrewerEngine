@@ -20,16 +20,18 @@ template class EventDispatch<Entity, ComponentHandle>;
 NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game);
 NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer> game, int history_index);
 
-Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, const ServerObjectHandle & server_object, NotNullPtr<GameContainer> game) :
+Entity::Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system,
+        const ServerObjectHandle & server_object, NullOptPtr<const ServerObjectManager> obj_manager, NotNullPtr<GameContainer> game) :
   m_EngineState(engine_state),
   m_EventSystem(event_system),
-  m_ServerObject(server_object),
   m_GameContainer(game),
   m_Parent(nullptr),
   m_Bucket(0),
   m_Activated(false),
   m_Layer(0),
-  m_AssetHash(0)
+  m_AssetHash(0),
+  m_ServerObject(server_object),
+  m_ServerObjectManager(obj_manager)
 {
 
 }

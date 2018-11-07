@@ -42,7 +42,7 @@ EntitySystem::~EntitySystem()
 NotNullPtr<Entity> EntitySystem::CreateEntity(bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, nullptr, m_GameContainer);
 
   if (activate)
   {
@@ -55,7 +55,7 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(bool activate)
 NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, m_GameContainer);
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), ServerObjectHandle{}, nullptr, m_GameContainer);
 
   if (entity_def->m_Sprite.length() > 0)
   {
@@ -73,10 +73,13 @@ NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityDef> entity_def, 
   return ptr;
 }
 
-NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_resource, NullOptPtr<ServerObject> server_object, bool activate)
+NotNullPtr<Entity> EntitySystem::CreateEntity(NotNullPtr<EntityResource> entity_resource,
+        NullOptPtr<const ServerObject> server_object, NullOptPtr<const ServerObjectManager> obj_manager, bool activate)
 {
   auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
-  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), server_object ? server_object->GetObjectHandle() : ServerObjectHandle{}, m_GameContainer);
+  auto obj_handle = server_object ? server_object->GetObjectHandle() : ServerObjectHandle{};
+
+  auto ptr = allocator->Allocate(m_EngineState, m_EventSystem.get(), obj_handle, obj_manager, m_GameContainer);
 
   ptr->m_Sprite = entity_resource->m_Sprite;
   ptr->m_AssetHash = entity_resource->m_FileNameHash;

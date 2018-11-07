@@ -254,6 +254,7 @@ private:
   ADD_PREMAIN_CALL(g_GlobalAssetListRegister, AssetVar, \
           []() { auto files = GetFilesInDirectory(AssetDir, Extension); \
                  static auto ptr = std::make_unique<AssetType[]>(files.size()); \
+                 AssetVar##Count = (int)files.size(); \
                  AssetVar = ptr.get(); \
                  g_GlobalAssetList.CreateGlobalDirectoryAssetArray(AssetVar, files); } );
 

@@ -31,6 +31,8 @@ public:
 
   virtual czstr GetDefaultEntityBinding() const;
   virtual czstr GetEntityBinding() const;
+
+  virtual Optional<int> GetAssociatedPlayer(GameLogicContainer & game_container) const;
   virtual void InitStaticComponents();
 
   bool IsDestroyed() const;
@@ -42,7 +44,7 @@ public:
   template <typename Type>
   NullOptPtr<Type> CastTo()
   {
-    if (CastToInternal((uint32_t)Type::TypeIndex))
+    if (CastToInternal((uint32_t)Type::TypeNameHash))
     {
       return static_cast<Type *>(this);
     }
@@ -169,7 +171,7 @@ NullOptPtr<T> ServerObjectHandle::ResolveTo(const ServerObjectManager & object_m
     return nullptr;
   }
 
-  if (ptr->CastToInternal((uint32_t)T::TypeIndex))
+  if (ptr->CastToInternal((uint32_t)T::TypeNameHash))
   {
     return static_cast<T *>(ptr);
   }

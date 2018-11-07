@@ -27,10 +27,7 @@ struct ServerObjectTypeInfo
 {
   uint32_t m_TypeNameHash;
   uint32_t m_TypeIndex;
-  uint32_t m_BaseClassTypeNameHash;
   uint32_t m_InitDataTypeNameHash;
-  NotNullPtr<const uint32_t *> m_BaseListClassesPtr;
-  NotNullPtr<uint32_t> m_NumBaseClassesPtr;
   NotNullPtr<std::size_t> m_TypeIndexPtr;
 
   std::vector<ServerObjectComponentInfo> m_ComponentInfo;

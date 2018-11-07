@@ -22,13 +22,13 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
   fs::path canonical_path;
   try
   {
-    canonical_path = fs::canonical(parent_path);
+    canonical_path = fs::canonical(parent_path, root_path);
   }
   catch(...)
   {
     try
     {
-      canonical_path = fs::canonical(parent_path, root_path);
+      canonical_path = fs::canonical(parent_path);
     }
     catch(...)
     {
@@ -105,11 +105,25 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   if (std::experimental::filesystem::path(path).is_absolute())
   {
-    return path;
+    try
+    {
+      return fs::canonical(path).string();
+    }
+    catch(...)
+    {
+      return path;
+    }
   }
   else
   {
-    return root_path + path;
+    try
+    {
+      return fs::canonical(path, root_path).string();
+    }
+    catch(...)
+    {
+      return root_path + '/' + path;
+    }
   }
 #else
   return path;

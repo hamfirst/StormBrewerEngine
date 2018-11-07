@@ -1,41 +1,89 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1.0)
 
-include_directories(. ../. .././External)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)
 set(CMAKE_CXX_STANDARD 17)
 
+set(GENERIC_SRC_StormWebrtcClientAPI 
+            StormWebrtcClientNative.cpp
+            StormWebrtcClient.cpp
+            StormWebrtcClientWeb.cpp
+            #CPP_PLACEHOLDER
+            )
+set(GENERIC_HEADER_StormWebrtcClientAPI 
+            StormWebrtcClientTypes.h
+            StormWebrtcClientNative.h
+            StormWebrtcClientWeb.h
+            StormWebrtcClient.h
+            #HEADER_PLACEHOLDER
+            )
+set(GENERIC_REFL_StormWebrtcClientAPI 
+            #REFL_PLACEHOLDER
+            )
+
+if (MSVC)
+  add_definitions(-D_WINDOWS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Windows)
+  set(PLATFORM_SRC_StormWebrtcClientAPI 
+            )
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
+            )
+endif()
 if (WEB)
   add_definitions(-D_WEB)
-  include_directories(.././External/Web)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Web)
   set(PLATFORM_SRC_StormWebrtcClientAPI 
             )
-elseif (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(.././External/Windows)
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
+            )
+endif()
+if (IOS)
+  add_definitions(-D_IOS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/IOS)
   set(PLATFORM_SRC_StormWebrtcClientAPI 
             )
-elseif (APPLE)
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
+            )
+endif()
+if (APPLE AND NOT IOS)
   add_definitions(-D_MACOS)
+  include_directories(${PROJECT_SOURCE_DIR}/External/MacOS)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_StormWebrtcClientAPI 
             )
-elseif (UNIX)
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
+            )
+endif()
+if (ANDROID)
+  add_definitions(-D_ANDROID)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Android)
+  set(PLATFORM_SRC_StormWebrtcClientAPI 
+            )
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
+            )
+endif()
+if (UNIX AND NOT APPLE)
   add_definitions(-D_LINUX)
+  include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
   include_directories(/usr/include/freetype2)
   set(PLATFORM_SRC_StormWebrtcClientAPI 
+            )
+
+set(PLATFORM_HEADER_StormWebrtcClientAPI 
             )
 endif()
 
-add_definitions(-D__Userspace__)
-add_definitions(-D__Userspace_os_${CMAKE_SYSTEM_NAME})
-add_definitions(-D_GNU_SOURCE)
-add_definitions(-DINET)
-add_definitions(-DINET6)
-add_definitions(-DSCTP_PROCESS_LEVEL_LOCKS)
-add_definitions(-DSCTP_SIMPLE_ALLOCATOR)
+foreach(REFL_FILE ${GENERIC_REFL_StormWebrtcClientAPI})
+  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
+                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
+                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
+endforeach()
 
-set(GENERIC_SRC_StormWebrtcClientAPI 
-            ./StormWebrtcClient.cpp
-            ./StormWebrtcClientNative.cpp
-            ./StormWebrtcClientWeb.cpp
-            )
-add_library(StormWebrtcClientAPI STATIC ${GENERIC_SRC_StormWebrtcClientAPI} ${PLATFORM_SRC_StormWebrtcClientAPI} )
+add_library(StormWebrtcClientAPI STATIC ${GENERIC_SRC_StormWebrtcClientAPI} ${PLATFORM_SRC_StormWebrtcClientAPI}
+            ${GENERIC_HEADER_StormWebrtcClientAPI} ${PLATFORM_HEADER_StormWebrtcClientAPI})

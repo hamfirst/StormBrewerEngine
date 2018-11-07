@@ -92,7 +92,7 @@ public:
     }
   }
 
-  ServerObjectComponent(ServerObjectComponent<BaseClass, BaseConfig> && rhs)
+  ServerObjectComponent(ServerObjectComponent<BaseClass, BaseConfig> && rhs) noexcept
   {
     m_Object = rhs.m_Object;
     m_TypeInfo = rhs.m_TypeInfo;
@@ -184,7 +184,7 @@ public:
       }
     }
 
-    ASSERT(false, "Could not locate config for server object component");
+    //ASSERT(false, "Could not locate config for server object component");
 
     if(m_Object)
     {
@@ -195,18 +195,22 @@ public:
     }
   }
 
-  template <typename ConfigClass>
-  static void RegisterConfigType(czstr asset_path, NotNullPtr<const ConfigClass> config,
-          const ServerObjectComponentLogicInfo & logic_info)
+  static void RegisterConfigType(czstr asset_path, const RPolymorphic<BaseConfig, BaseClass> & poly)
   {
     auto asset_path_hash = crc32lowercase(asset_path);
-    auto data_path_hash = crc32(StormDataGetPath(*config));
+    auto data_path_hash = crc32(StormDataGetPath(poly));
+
+    auto type_info = TypeDatabase<BaseConfig, BaseClass>::Get().GetTypeInfo(poly.GetTypeNameHash());
+    if(type_info == nullptr)
+    {
+      return;
+    }
 
     for(auto & elem : m_ConfigInfo)
     {
       if(elem.m_AssetPath == asset_path_hash && elem.m_DataPath == data_path_hash)
       {
-        elem.m_Config = ConstCastable<ConfigClass>(*config);
+        elem.m_Config = ConstCastable<BaseConfig>(poly.GetValue(), type_info->ConstCast);
         return;
       }
     }
@@ -214,9 +218,9 @@ public:
     ConfigInfo info;
     info.m_AssetPath = asset_path_hash;
     info.m_DataPath = data_path_hash;
-    info.m_Config = ConstCastable<ConfigClass>(*config);
-    info.m_TypeIndex = logic_info.m_TypeIndex;
-    info.m_TypeInfo = logic_info.m_TypeInfo;
+    info.m_Config = ConstCastable<BaseConfig>(poly.GetValue(), type_info->ConstCast);
+    info.m_TypeIndex = type_info->m_LogicTypeInfo.m_TypeIndex;
+    info.m_TypeInfo = type_info->m_LogicTypeInfo.m_TypeInfo;
     m_ConfigInfo.emplace_back(std::move(info));
   }
 
@@ -280,6 +284,11 @@ public:
   const BaseClass & operator * () const
   {
     return *m_Object;
+  }
+
+  operator bool () const
+  {
+    return m_Object;
   }
 
 private:

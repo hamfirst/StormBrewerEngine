@@ -25,7 +25,7 @@ void GameServerObjectBase::Init(const GameServerObjectBaseInitData & init_data, 
 void GameServerObjectBase::UpdateFirst(GameLogicContainer & container)
 {
   m_CollisionId.Clear();
-
+  container.GetSystems().GetCollisionDatabase().GetCollisionId(m_CollisionId);
 }
 
 void GameServerObjectBase::InitPosition(const Vector2 & pos)
@@ -51,11 +51,6 @@ Optional<AnimationState> GameServerObjectBase::GetAnimationState() const
 void GameServerObjectBase::SetAnimationState(const AnimationState & anim_state)
 {
 
-}
-
-Optional<int> GameServerObjectBase::GetAssociatedPlayer() const
-{
-  return {};
 }
 
 void GameServerObjectBase::SetAssociatedPlayer(int associated_player) const

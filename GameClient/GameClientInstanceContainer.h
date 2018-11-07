@@ -63,6 +63,7 @@ public:
   void HandleLocalServerAuthorityEvent(std::size_t class_id, const void * ev);
 
   GameLogicContainer GetLogicContainer(NullOptPtr<bool> authority = nullptr, int & send_timer = s_BogusSendTimer);
+  GameLogicContainer GetLogicContainer(std::size_t history_index);
 
   GameController & GetGameController();
   GameClientEventSender & GetEventSender();

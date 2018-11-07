@@ -54,4 +54,9 @@ public:
   {
     return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::GetData();
   }
+
+  bool operator == (const ConfigPtr<ConfigDataType> & rhs) const
+  {
+    return DocumentResourcePtr<ConfigDataType, GenericResource<ConfigDataType>>::m_Resource == rhs.m_Resource;
+  }
 };

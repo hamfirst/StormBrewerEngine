@@ -94,6 +94,11 @@ void CollisionDatabase::ResetDynamicCollision()
   m_DynamicCollision.ResetCollision();
 }
 
+void CollisionDatabase::GetCollisionId(Optional<int> & collision_id)
+{
+  m_DynamicCollision.GetCollisionId(collision_id);
+}
+
 void CollisionDatabase::PushDynamicCollision(const Box & box, uint32_t collision_mask,
         CollisionDatabaseObjectInfo && obj_info, Optional<int> & collision_id)
 {

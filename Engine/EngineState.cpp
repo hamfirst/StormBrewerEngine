@@ -28,9 +28,10 @@ NotNullPtr<Entity> EngineState::CreateEntity()
   return m_EntitySystem->CreateEntity(true);
 }
 
-NotNullPtr<Entity> EngineState::CreateEntity(NotNullPtr<EntityResource> resource, NullOptPtr<ServerObject> server_object, bool activate)
+NotNullPtr<Entity> EngineState::CreateEntity(NotNullPtr<EntityResource> resource,
+        NullOptPtr<const ServerObject> server_object, NullOptPtr<const ServerObjectManager> obj_manager, bool activate)
 {
-  return m_EntitySystem->CreateEntity(resource, server_object, activate);
+  return m_EntitySystem->CreateEntity(resource, server_object, obj_manager, activate);
 }
 
 void EngineState::DestroyAllEntities()

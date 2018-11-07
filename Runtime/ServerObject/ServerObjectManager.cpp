@@ -284,6 +284,7 @@ void ServerObjectManager::Serialize(NetBitWriter & writer) const
   {
     auto type_index = obj->m_TypeIndex;
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectSerialize(obj, so_writer);
+    g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentSerialize(obj, so_writer);
   }
 
   for (std::size_t index = 0; index < m_MaxDynamicObjects; ++index)
@@ -491,7 +492,7 @@ void ServerObjectManager::DestroyDynamicObjectInternal(NotNullPtr<ServerObject> 
         return;
       }
     }
-    ASSERT(false, "Attempting to delete unsynced object that was not in the object list")
+    ASSERT(false, "Attempting to delete unsynced object that was not in the object list");
     return;
   }
 

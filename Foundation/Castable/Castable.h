@@ -29,6 +29,12 @@ public:
     m_ObjectCast = nullptr;
   }
 
+  Castable(NotNullPtr<T> obj, void * (*cast_func)(std::size_t, void *))
+  {
+    m_Object = obj;
+    m_ObjectCast = cast_func;
+  }
+
   template <typename R>
   explicit Castable(R & r)
   {
@@ -142,6 +148,12 @@ public:
   {
     m_Object = nullptr;
     m_ObjectCast = nullptr;
+  }
+
+  ConstCastable(NotNullPtr<const T> obj, const void * (*cast_func)(std::size_t, const void *))
+  {
+    m_Object = obj;
+    m_ObjectCast = cast_func;
   }
 
   template <typename R>

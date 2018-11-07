@@ -1,0 +1,21 @@
+[]
+
+{
+    "m_Components": {
+        "1": {
+            "D": {
+                "m_SyncSprite": false
+            },
+            "T": 4226357423
+        },
+        "0": {
+            "D": {
+                "m_LayerOffset": 0,
+                "m_AttachAnchor": "",
+                "m_VfxFile": ".\/VisualEffects\/DefaultProjectile.vfx",
+                "m_SpawnFinalParticle": true
+            },
+            "T": 2531431593
+        }
+    }
+}

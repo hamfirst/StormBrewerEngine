@@ -10,7 +10,8 @@ struct PlayerConfig
 public:
   STORM_DATA_DEFAULT_CONSTRUCTION(PlayerConfig);
 
-  RString STORM_REFL_ATTR_VAL(file, sprite) m_EntityFile = "./Entities/Player.entity";
+  RString STORM_REFL_ATTR_VAL(file, entity) m_EntityFile = "./Entities/Player.entity";
+  RString STORM_REFL_ATTR_VAL(file, config) m_ProjectileFile = "./Configs/TestProjectile.projectileconfig";
 
   RDeterministicFloat<GameNetVal> m_MoveSpeed = "2.0";
   RDeterministicFloat<GameNetVal> m_MoveAccel = "5.0";

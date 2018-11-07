@@ -161,41 +161,6 @@ void ServerObjectSystem::FinalizeType(ServerObjectTypeInfo & type)
   }
 
   type.m_ObjectDestroy(object);
-
-  if (*type.m_BaseListClassesPtr != nullptr)
-  {
-    return;
-  }
-
-  auto base_class = type.m_BaseClassTypeNameHash;
-  if (base_class == 0)
-  {
-    auto base_class_list = static_cast<uint32_t *>(malloc(sizeof(uint32_t)));
-    *base_class_list = type.m_TypeIndex;
-
-    *type.m_BaseListClassesPtr = base_class_list;
-    *type.m_NumBaseClassesPtr = 1;
-    return;
-  }
-
-  for (auto & base_type : m_ObjectTypes)
-  {
-    if (base_type.m_TypeNameHash == base_class)
-    {
-      FinalizeType(base_type);
-
-      auto base_class_list = static_cast<uint32_t *>(malloc(sizeof(uint32_t) * (*base_type.m_NumBaseClassesPtr + 1)));
-      *base_class_list = type.m_TypeIndex;
-
-      memcpy(base_class_list + 1, *base_type.m_BaseListClassesPtr, sizeof(uint32_t) * (*base_type.m_NumBaseClassesPtr));
-
-      *type.m_BaseListClassesPtr = base_class_list;
-      *type.m_NumBaseClassesPtr = *base_type.m_NumBaseClassesPtr + 1;
-      return;
-    }
-  }
-
-  ASSERT(false, "Could not find base class");
 }
 
 Optional<std::size_t> ServerObjectSystem::GetTypeIndexForInitDataTypeNameHash(uint32_t init_data_type_name_hash)

@@ -34,7 +34,8 @@ using EntityCustomDraw = Delegate<void, const Box &, const RenderVec2 &, RenderS
 class ENGINE_EXPORT Entity
 {
 public:
-  Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system, const ServerObjectHandle & server_object, NotNullPtr<GameContainer> game);
+  Entity(NotNullPtr<EngineState> engine_state, NotNullPtr<EntityEventSystem> event_system,
+          const ServerObjectHandle & server_object, NullOptPtr<const ServerObjectManager> obj_manager, NotNullPtr<GameContainer> game);
   ~Entity();
 
   Entity(const Entity & rhs) = delete;
@@ -104,36 +105,15 @@ public:
   NullOptPtr<ServerObject> GetServerObject(int history_index = 0);
 
   template <typename ServerObjectType>
-  NullOptPtr<ServerObjectType> GetServerObjectAs(int history_index = 0, bool require_exact_history = false)
+  NullOptPtr<ServerObjectType> GetServerObjectAs()
   {
-    auto obj_manager = GetServerObjectManager();
-    auto obj = obj_manager ? m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager) : nullptr;
-
-    if (history_index == 0)
-    {
-      return obj;
-    }
-
-    if (obj == nullptr)
+    if(m_ServerObjectManager == nullptr)
     {
       return nullptr;
     }
 
-    if (history_index > obj->GetLifetime())
-    {
-      if (require_exact_history)
-      {
-        return nullptr;
-      }
-
-      history_index = obj->GetLifetime();
-    }
-
-    history_index = std::min(history_index, obj->GetLifetime());
-    obj_manager = GetServerObjectManager(history_index);
-    return m_ServerObject.ResolveTo<ServerObjectType>(*obj_manager);
+    return m_ServerObject.ResolveTo<ServerObjectType>(*m_ServerObjectManager);
   }
-
 
   void SetRotation(bool flip_x, bool flip_y, float rotation = 0);
   void SetCustomDrawingCallback(EntityCustomDraw && draw_callback);
@@ -201,6 +181,8 @@ private:
 
   EntityHandle m_Handle;
   SkipFieldIterator m_Iterator;
+
+  NullOptPtr<const ServerObjectManager> m_ServerObjectManager;
   ServerObjectHandle m_ServerObject;
 
   std::vector<std::pair<uint32_t, NotNullPtr<Component>>> m_Components;

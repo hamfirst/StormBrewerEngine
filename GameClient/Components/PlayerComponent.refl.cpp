@@ -48,9 +48,9 @@ void PlayerComponent::ServerUpdate()
 {
   auto info = GetServerObjectInfo();
   
-  m_DeadReckonOffset = m_DeadReckonPos + m_DeadReckonOffset - info.m_HistoryPos;
+  m_DeadReckonOffset = m_DeadReckonPos + m_DeadReckonOffset - info.m_CurrentPos;
   m_DeadReckonDec = m_DeadReckonOffset / (float)kServerUpdateRate / 2.0f;
-  m_DeadReckonPos = info.m_HistoryPos;
+  m_DeadReckonPos = info.m_CurrentPos;
 }
 
 void PlayerComponent::ServerDestroy()
@@ -70,9 +70,9 @@ void PlayerComponent::UpdateFirst()
   }
   else
   {
-    object = info.m_HistoryObject;
-    GetEntity()->SetPosition(info.m_HistoryPos + m_DeadReckonOffset);
-    m_DeadReckonPos = info.m_HistoryPos;
+    object = info.m_CurrentObject;
+    GetEntity()->SetPosition(info.m_CurrentPos + m_DeadReckonOffset);
+    m_DeadReckonPos = info.m_CurrentPos;
     m_DeadReckonOffset -= m_DeadReckonDec;
   }
 
@@ -99,9 +99,7 @@ PlayerServerObjectInfo PlayerComponent::GetServerObjectInfo()
 {
   PlayerServerObjectInfo info;
   info.m_CurrentObject = GetEntity()->GetServerObjectAs<PlayerServerObject>();
-  info.m_HistoryObject = GetEntity()->GetServerObjectAs<PlayerServerObject>(7);
   info.m_CurrentPos = Vector2f(info.m_CurrentObject->m_Position.x, info.m_CurrentObject->m_Position.y);
-  info.m_HistoryPos = Vector2f(info.m_HistoryObject->m_Position.x, info.m_HistoryObject->m_Position.y);
 
   auto instance_data = GetEntity()->GetGameContainer()->GetInstanceData();
 

@@ -54,5 +54,10 @@ public:
   {
     return Resolve();
   }
+
+  bool operator == (const DocumentResourceReference<ResourceType> & rhs) const
+  {
+    return Resolve() == rhs.Resolve();
+  }
 };
 

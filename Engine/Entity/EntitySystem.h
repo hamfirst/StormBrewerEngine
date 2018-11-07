@@ -47,7 +47,8 @@ private:
 
   NotNullPtr<Entity> CreateEntity(bool activate);
   NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityDef> entity_def, bool activate);
-  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> entity_resource, NullOptPtr<ServerObject> server_object, bool activate);
+  NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> entity_resource,
+          NullOptPtr<const ServerObject> server_object, NullOptPtr<const ServerObjectManager> obj_manager, bool activate);
   void AddComponentsToEntity(NotNullPtr<EntityDef> entity_def, NotNullPtr<Entity> entity);
 
   void DestroyEntity(NotNullPtr<Entity> entity);
