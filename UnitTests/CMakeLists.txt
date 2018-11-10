@@ -5,18 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_UnitTests 
             UnitTests.cpp
-            TestComponent/TestComponent.refl.reg.cpp
             TestComponent/TestComponent.refl.cpp
+            TestComponent/TestComponent.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_UnitTests 
+            stdafx.h
+            targetver.h
             TestTypes.refl.h
             TestTypes.refl.meta.h
-            targetver.h
-            stdafx.h
-            TestComponent/TestComponent.refl.meta.h
             TestComponent/TestComponent.refl.h
+            TestComponent/TestComponent.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
@@ -25,7 +25,6 @@ set(GENERIC_REFL_UnitTests
             TestComponent/TestComponent.refl.h
             #REFL_PLACEHOLDER
             )
-
 
 foreach(REFL_FILE ${GENERIC_REFL_UnitTests})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})

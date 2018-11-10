@@ -51,14 +51,17 @@ bool GameClientEntitySync::IsLocal(NotNullPtr<ServerObject> server_obj, GameLogi
   if (associated_player)
   {
     auto instance_data = m_GameContainer.GetInstanceData();
-    auto num_local_clients = instance_data->GetNumLocalData();
-
-    for (std::size_t index = 0; index < num_local_clients; ++index)
+    if (instance_data)
     {
-      auto & local_data = instance_data->GetClientLocalData(index);
-      if (local_data.m_PlayerIndex == associated_player.Value())
+      auto num_local_clients = instance_data->GetNumLocalData();
+
+      for (std::size_t index = 0; index < num_local_clients; ++index)
       {
-        return true;
+        auto & local_data = instance_data->GetClientLocalData(index);
+        if (local_data.m_PlayerIndex == associated_player.Value())
+        {
+          return true;
+        }
       }
     }
   }

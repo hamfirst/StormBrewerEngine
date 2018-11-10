@@ -68,5 +68,7 @@ if (UNIX AND NOT APPLE)
 set(PLATFORM_HEADER_gl3w 
             )
 endif()
+
+
 add_library(gl3w STATIC ${GENERIC_SRC_gl3w} ${PLATFORM_SRC_gl3w}
             ${GENERIC_HEADER_gl3w} ${PLATFORM_HEADER_gl3w})

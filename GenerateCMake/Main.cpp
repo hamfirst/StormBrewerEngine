@@ -17,6 +17,7 @@ struct ProjectFiles
   std::vector<std::string> m_CPPFiles;
   std::vector<std::string> m_HeaderFiles;
   std::vector<std::string> m_ReflFiles;
+  std::vector<std::string> m_NatvisFiles;
   std::string m_PCHFile;
 };
 
@@ -234,6 +235,10 @@ void GatherProjectFiles(const DirectoryFiles & dir, const std::string & base_pat
         files.m_PCHFile = filename;
       }
     }
+    else if (ext == ".natvis")
+    {
+      files.m_NatvisFiles.push_back(proj_file_path);
+    }
   }
 }
 
@@ -405,11 +410,11 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     WritePlatformFileList(cmake_file, "UNIX AND NOT APPLE", "_LINUX", "Linux", project_name, relative_root, files, true,
                           [](const std::string &file)
                           { return IsLinuxPlatformFile(file); });
+    cmake_file << "\n\n";
   }
 
   if(options.m_Refl)
   {
-    cmake_file << "\n";
     cmake_file << "foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
     cmake_file << "  string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
     cmake_file << "  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
@@ -429,6 +434,20 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ";
     cmake_file << "${GENERIC_HEADER_" + project_name + "})\n\n";
   }
+
+
+  if (files.m_NatvisFiles.size() > 0)
+  {
+    cmake_file << "\n";
+    cmake_file << "if(MSVC)\n";
+    for (auto & file : files.m_NatvisFiles)
+    {
+      cmake_file << "  target_sources(" + project_name + " INTERFACE $<INSTALL_INTERFACE:" + file + "> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/" + file + ">)\n";
+    }
+
+    cmake_file << "endif()\n\n";
+  }
+
 
   if (options.m_PCH && files.m_PCHFile.size() > 0)
   {

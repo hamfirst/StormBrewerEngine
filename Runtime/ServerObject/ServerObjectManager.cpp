@@ -268,7 +268,7 @@ void ServerObjectManager::CreateUpdateList(ServerObjectUpdateList & update_list)
 
 int ServerObjectManager::GetHandleBits() const
 {
-  return GetRequiredBits(m_StaticObjects.size() + m_DynamicObjects.Size());
+  return GetRequiredBits(m_StaticObjects.size() + m_MaxDynamicObjects);
 }
 
 int ServerObjectManager::GetMaxDynamicObjects() const
@@ -369,9 +369,12 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
       ptr->InitStaticComponents();
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ComponentDeserialize(ptr, so_reader);
     }
-    else if(obj)
+    else
     {
-      obj->m_ServerObject->Destroy(*this);
+      if (obj)
+      {
+        obj->m_ServerObject->Destroy(*this);
+      }
     }
   }
 }

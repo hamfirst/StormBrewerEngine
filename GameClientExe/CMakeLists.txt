@@ -66,5 +66,7 @@ if (UNIX AND NOT APPLE)
 set(PLATFORM_HEADER_GameClientExe 
             )
 endif()
+
+
 add_library(GameClientExe STATIC ${GENERIC_SRC_GameClientExe} ${PLATFORM_SRC_GameClientExe}
             ${GENERIC_HEADER_GameClientExe} ${PLATFORM_HEADER_GameClientExe})
