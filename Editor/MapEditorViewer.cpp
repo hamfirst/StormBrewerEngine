@@ -931,7 +931,7 @@ void MapEditorViewer::paintGL()
   if (m_SelectionBox)
   {
     GeometryVertexBufferBuilder builder;
-    builder.FilledRectangle(m_SelectionBox.Value(), Color(0.7, 0.9, 1.0f, 0.4f));
+    builder.FilledRectangle(m_SelectionBox.Value(), Color(0.7f, 0.9f, 1.0f, 0.4f));
     builder.FillVertexBuffer(m_DrawBuffer);
 
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);

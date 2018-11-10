@@ -8,4 +8,15 @@
     </Expand>
   </Type>
 
+  <Type Name="SparseList&lt;*&gt;">
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">m_HighestIndex + 1</Item>
+      <Item Name="[capacity]" ExcludeView="simple">m_Capacity</Item>
+      <ArrayItems>
+        <Size>m_HighestIndex + 1</Size>
+        <ValuePointer>m_Values</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
 </AutoVisualizer>

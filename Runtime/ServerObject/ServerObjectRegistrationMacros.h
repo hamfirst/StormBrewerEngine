@@ -182,11 +182,6 @@ void ServerObjectName::RegisterServerObject()                                   
             [&](auto & field){ ServerObjectComponentDeserialize(field.Get(), reader); });                                       \
   };                                                                                                                            \
                                                                                                                                 \
-  type_info.m_ComponentDeserialize = [](NotNullPtr<ServerObject> object, ServerObjectNetBitReader & reader)                     \
-  {                                                                                                                             \
-    DeserializeServerObject(*static_cast<ServerObjectName *>(object), reader);                                                  \
-  };                                                                                                                            \
-                                                                                                                                \
   type_info.m_AddToUpdateList = [](NotNullPtr<ServerObject> object, ServerObjectUpdateList & l)                                 \
   {                                                                                                                             \
     RegisterUpdate(*static_cast<ServerObjectName *>(object), l);                                                                \

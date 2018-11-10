@@ -462,6 +462,8 @@ void EditorContainer::engineUpdate()
   {
     HandleDocumentServerEvent(ev);
   }
+
+  m_DeadWidgets.clear();
 }
 
 void EditorContainer::newFile()
@@ -694,6 +696,7 @@ void EditorContainer::NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget)
   {
     if (itr->get() == host_widget)
     {
+      m_DeadWidgets.emplace_back(std::move(*itr));
       m_HostWidgets.erase(itr);
       return;
     }

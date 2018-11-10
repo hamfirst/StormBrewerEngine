@@ -11,6 +11,18 @@
                 "3245731331": {
                     "m_VariableName": "m_MaxLifetime",
                     "m_Equation": "0.5"
+                },
+                "3286795273": {
+                    "m_VariableName": "m_ColorR",
+                    "m_Equation": "0"
+                },
+                "2922733794": {
+                    "m_VariableName": "m_ColorG",
+                    "m_Equation": "0"
+                },
+                "3730805869": {
+                    "m_VariableName": "m_ColorB",
+                    "m_Equation": "0"
                 }
             },
             "m_EmitterEquations": {
@@ -21,13 +33,13 @@
             },
             "m_SpawnEquations": { },
             "m_Properties": {
+                "m_Texture": "",
                 "m_UpdateDelay": 0,
+                "m_Additive": false,
                 "m_LinearFilter": false,
                 "m_Name": "Emitter1",
-                "m_Trail": true,
-                "m_Texture": "",
-                "m_Additive": false,
-                "m_PrespawnParticles": 0
+                "m_PrespawnParticles": 0,
+                "m_Trail": true
             }
         }
     }

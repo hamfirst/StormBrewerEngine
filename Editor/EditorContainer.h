@@ -123,4 +123,5 @@ private:
   PropertyFieldDatabase m_PropertyDatabase;
 
   std::vector<std::unique_ptr<QWidget>> m_HostWidgets;
+  std::vector<std::unique_ptr<QWidget>> m_DeadWidgets;
 };

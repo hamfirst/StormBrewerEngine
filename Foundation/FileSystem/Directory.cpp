@@ -19,17 +19,23 @@ std::vector<std::string> GetFilesInDirectory(czstr path)
 
   WIN32_FIND_DATAA ffd;
 
+  dir_path += "\\*";
   auto hfind = FindFirstFileA(dir_path.data(), &ffd);
   if (hfind == INVALID_HANDLE_VALUE)
   {
     return files;
   }
 
+  auto root_path = GetCanonicalRootPath();
+
   while(true)
   {
-    files.emplace_back(JoinPath(path, ffd.cFileName));
+    auto file_path = std::string(path) + '/' + ffd.cFileName;
+    ConvertToCanonicalPath(file_path, root_path);
 
-    if (FindNextFileA(hfind, &ffd) != 0)
+    files.emplace_back(file_path);
+
+    if (FindNextFileA(hfind, &ffd) == 0)
     {
       break;
     }
@@ -43,10 +49,15 @@ std::vector<std::string> GetFilesInDirectory(czstr path)
     return files;
   }
 
+  auto root_path = GetCanonicalRootPath();
+
   auto dp = readdir(dirent);
   while (dp != NULL)
   {
-    files.emplace_back(dp->d_name);
+    auto file_path = std::string(path) + '/' + dp->d_name;
+    ConvertToCanonicalPath(file_path, root_path);
+
+    files.emplace_back(file_path);
     dp = readdir(dirent);
   }
 
@@ -66,21 +77,26 @@ std::vector<std::string> GetFilesInDirectory(czstr path, czstr extension)
 
   WIN32_FIND_DATAA ffd;
 
+  dir_path += "\\*";
   auto hfind = FindFirstFileA(dir_path.data(), &ffd);
   if (hfind == INVALID_HANDLE_VALUE)
   {
     return files;
   }
 
+  auto root_path = GetCanonicalRootPath();
+
   while(true)
   {
-    auto path = JoinPath(path, ffd.cFileName);
-    if(GetFileExtensionForPath(path) == extension)
+    if(GetFileExtensionForPath(ffd.cFileName) == extension)
     {
-      files.emplace_back(path);
+      auto file_path = std::string(path) + '/' + ffd.cFileName;
+      ConvertToCanonicalPath(file_path, root_path);
+
+      files.emplace_back(file_path);
     }
 
-    if (FindNextFileA(hfind, &ffd) != 0)
+    if (FindNextFileA(hfind, &ffd) == 0)
     {
       break;
     }

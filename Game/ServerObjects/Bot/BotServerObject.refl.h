@@ -48,7 +48,7 @@ public:
   GameNetVec2 m_Velocity = {};
 
 #ifdef PLATFORMER_MOVEMENT
-  bool m_OnGround;
+  bool m_OnGround = false;
 #endif
 
   NetRangedNumber<int, -1, 30> m_AnimIndex = -1;
