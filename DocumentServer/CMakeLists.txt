@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(GENERIC_SRC_DocumentServer 
             DocumentServer.cpp
             FileNameDatabase.cpp
-            filesystemwatcher.cpp
+            FileSystemWatcher.cpp
             Main.cpp
             #CPP_PLACEHOLDER
             )

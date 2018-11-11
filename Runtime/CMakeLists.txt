@@ -176,7 +176,7 @@ set(GENERIC_HEADER_Runtime
             Volume/VolumeTypeDatabase.h
             Volume/VolumeTypeRegister.h
             #HEADER_PLACEHOLDER
-            )
+  ServerObject/ServerObjectComponentFuncs.h)
 
 set(GENERIC_REFL_Runtime 
             Anchor/AnchorDef.refl.h
