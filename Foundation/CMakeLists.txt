@@ -125,7 +125,7 @@ set(GENERIC_HEADER_Foundation
             Variant/Variant.h
             Waveform/Waveform.h
             #HEADER_PLACEHOLDER
-            )
+  Allocator/PoolAllocator.h)
 
 set(GENERIC_REFL_Foundation 
             BasicTypes/BasicTypes.refl.h

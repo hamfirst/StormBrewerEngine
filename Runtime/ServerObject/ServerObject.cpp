@@ -10,6 +10,7 @@
 #include "Runtime/ServerObject/ServerObjectUpdate.h"
 #include "Runtime/ServerObject/ServerObjectEventDispatch.h"
 #include "Runtime/ServerObject/ServerObjectComponent.h"
+#include "Runtime/ServerObject/ServerObjectComponentFuncs.h"
 
 #include "Foundation/SkipField/SkipField.h"
 #include "Foundation/Update/UpdateRegistrationTemplates.h"

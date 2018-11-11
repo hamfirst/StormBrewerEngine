@@ -83,8 +83,8 @@ public:
     }
     else
     {
-      m_Object = static_cast<BaseClass *>(rhs.m_TypeInfo->m_HeapCreate());
       m_TypeInfo = rhs.m_TypeInfo;
+      m_Object = static_cast<BaseClass *>(rhs.m_TypeInfo->m_HeapCreate(m_TypeInfo->m_Allocator));
       m_Config = rhs.m_Config;
       m_Object->m_Config = m_Config;
 
@@ -107,7 +107,7 @@ public:
   {
     if(m_Object)
     {
-      m_TypeInfo->m_HeapDestroy(m_Object);
+      m_TypeInfo->m_HeapDestroy(m_Object, m_TypeInfo->m_Allocator);
     }
   }
 
@@ -122,7 +122,7 @@ public:
 
     if(m_Object)
     {
-      m_TypeInfo->m_HeapDestroy(m_Object);
+      m_TypeInfo->m_HeapDestroy(m_Object, m_TypeInfo->m_Allocator);
     }
 
     if(rhs.m_Object == nullptr)
@@ -132,8 +132,8 @@ public:
     }
     else
     {
-      m_Object = static_cast<BaseClass *>(rhs.m_TypeInfo->m_HeapCreate());
       m_TypeInfo = rhs.m_TypeInfo;
+      m_Object = static_cast<BaseClass *>(rhs.m_TypeInfo->m_HeapCreate(m_TypeInfo->m_Allocator));
       m_Config = rhs.m_Config;
       m_Object->m_Config = rhs.m_Config;
 
@@ -147,7 +147,7 @@ public:
   {
     if(m_Object)
     {
-      m_TypeInfo->m_HeapDestroy(m_Object);
+      m_TypeInfo->m_HeapDestroy(m_Object, m_TypeInfo->m_Allocator);
     }
 
     m_Object = rhs.m_Object;
@@ -175,8 +175,8 @@ public:
           return;
         }
 
-        m_Object = static_cast<BaseClass *>(elem.m_TypeInfo->m_HeapCreate());
         m_TypeInfo = elem.m_TypeInfo;
+        m_Object = static_cast<BaseClass *>(elem.m_TypeInfo->m_HeapCreate(m_TypeInfo->m_Allocator));
         m_Config = elem.m_Config;
         m_Object->m_Config = elem.m_Config;
 
@@ -188,7 +188,7 @@ public:
 
     if(m_Object)
     {
-      m_TypeInfo->m_HeapDestroy(m_Object);
+      m_TypeInfo->m_HeapDestroy(m_Object, m_TypeInfo->m_Allocator);
       m_Object = nullptr;
       m_TypeInfo = nullptr;
       m_Config = {};
@@ -239,7 +239,7 @@ public:
   {
     if(m_Object)
     {
-      m_TypeInfo->m_HeapDestroy(m_Object);
+      m_TypeInfo->m_HeapDestroy(m_Object, m_TypeInfo->m_Allocator);
       m_Object = nullptr;
       m_TypeInfo = nullptr;
       m_Config.Clear();
