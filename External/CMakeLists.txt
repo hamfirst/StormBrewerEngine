@@ -267,7 +267,8 @@ set(GENERIC_HEADER_External
             Windows/EGL/eglplatform.h
             Windows/KHR/khrplatform.h
             #HEADER_PLACEHOLDER
-  ../Foundation/TypeDatabase/TypeDatabase.h)
+  )
+
 set(GENERIC_REFL_External 
             #REFL_PLACEHOLDER
             )

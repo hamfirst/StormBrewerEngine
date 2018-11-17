@@ -5,7 +5,10 @@ project(StormBrewerEngine)
 include(CMake/StormBrewerEngine.cmake)
 include(CMake/cotire.cmake)
 
-add_subdirectory(Game)
+include_directories("${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/Tools ${PROJECT_SOURCE_DIR}/Shared ${PROJECT_SOURCE_DIR}/Project")
+
+add_subdirectory(Project/Game)
+add_subdirectory(Project/GameShared)
 
 set(CLIENT_LINK)
 
@@ -14,8 +17,8 @@ if(MSVC)
 endif()
 
 if(BUILD_CLIENT OR BUILD_TOOLS)
-  add_subdirectory(GameClient)
-  add_subdirectory(GameClientExe)
+  add_subdirectory(Project/GameClient)
+  add_subdirectory(Project/GameClientExe)
 
   if(ANDROID)
     add_library(ClientExe SHARED Dummy.cpp)
@@ -42,11 +45,11 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     include_directories(${PROJECT_SOURCE_DIR} External External/Web)
 
     file(GLOB_RECURSE ClientSrc
-      ${PROJECT_SOURCE_DIR}/GameClientExe/*.cpp
-      ${PROJECT_SOURCE_DIR}/GameClient/*.cpp
-      ${PROJECT_SOURCE_DIR}/Game/*.cpp
-      ${PROJECT_SOURCE_DIR}/Runtime/*.cpp
-      ${PROJECT_SOURCE_DIR}/Engine/*.cpp)
+      ${PROJECT_SOURCE_DIR}/Project/GameClientExe/*.cpp
+      ${PROJECT_SOURCE_DIR}/Project/GameClient/*.cpp
+      ${PROJECT_SOURCE_DIR}/Project/Game/*.cpp
+      ${PROJECT_SOURCE_DIR}/Shared/Runtime/*.cpp
+      ${PROJECT_SOURCE_DIR}/Shared/Engine/*.cpp)
 
     add_executable(ClientExe ${ClientSrc})
   else()
@@ -57,6 +60,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     target_link_libraries(ClientExe GameClientExe)
     target_link_libraries(ClientExe GameClient)
     target_link_libraries(ClientExe Game)
+    target_link_libraries(ClientExe GameShared)
     target_link_libraries(ClientExe Runtime)
     target_link_libraries(ClientExe Engine)
     target_link_libraries(ClientExe SDL2main)
@@ -66,12 +70,14 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     target_link_libraries(ClientExe -Wl,-all_load GameClientExe -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load GameClient -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load Game -Wl,-noall_load)
+    target_link_libraries(ClientExe -Wl,-all_load GameShared -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load Runtime -Wl,-noall_load)
     target_link_libraries(ClientExe -Wl,-all_load Engine -Wl,-noall_load)
   elseif(NOT WEB)
     target_link_libraries(ClientExe -Wl,--whole-archive GameClientExe -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive GameClient -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive Game -Wl,--no-whole-archive)
+    target_link_libraries(ClientExe -Wl,--whole-archive GameShared -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
     target_link_libraries(ClientExe -Wl,--whole-archive Engine -Wl,--no-whole-archive)
   endif()
@@ -173,8 +179,8 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 endif()
 
 if(BUILD_SERVER OR BUILD_TOOLS)
-  add_subdirectory(GameServer)
-  add_subdirectory(GameServerExe)
+  add_subdirectory(Project/GameServer)
+  add_subdirectory(Project/GameServerExe)
 
   add_executable(ServerExe Dummy.cpp)
 
@@ -182,6 +188,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     target_link_libraries(ServerExe GameServerExe)
     target_link_libraries(ServerExe GameServer)
     target_link_libraries(ServerExe Game)
+    target_link_libraries(ServerExe GameShared)
     target_link_libraries(ServerExe Runtime)
 
     set_target_properties(ServerExe PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:GameServerExe.lib /WHOLEARCHIVE:GameServer.lib /WHOLEARCHIVE:Game.lib /WHOLEARCHIVE:Runtime.lib")
@@ -190,6 +197,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     target_link_libraries(ServerExe -Wl,--whole-archive GameServerExe -Wl,--no-whole-archive)
     target_link_libraries(ServerExe -Wl,--whole-archive GameServer -Wl,--no-whole-archive)
     target_link_libraries(ServerExe -Wl,--whole-archive Game -Wl,--no-whole-archive)
+    target_link_libraries(ServerExe -Wl,--whole-archive GameShared -Wl,--no-whole-archive)
     target_link_libraries(ServerExe -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
   endif()
 
@@ -226,7 +234,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
 endif()
 
 if(BUILD_TOOLS)
-  add_executable(generatecmake GenerateCMake/Main.cpp)
+  add_executable(generatecmake Tools/GenerateCMake/Main.cpp)
 
   if(NOT MSVC)
 	  target_link_libraries(generatecmake stdc++fs)
@@ -240,7 +248,7 @@ if(BUILD_TOOLS)
   target_link_libraries(addcode addcodelib TemplateLib git2)
 
   if(NOT MSVC)
-	target_link_libraries(addcode stdc++fs)
+	  target_link_libraries(addcode stdc++fs)
   endif()
 
   set_target_properties(addcode PROPERTIES CXX_STANDARD 17)
@@ -251,7 +259,7 @@ if(BUILD_TOOLS)
     link_directories("/usr/local/lib")
   endif()
 
-  add_executable(stormrefl StormRefl/main.cpp StormRefl/StormReflOutput.cpp)
+  add_executable(stormrefl StormTech/StormRefl/main.cpp StormTech/StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
 
   target_link_libraries(stormrefl
@@ -336,6 +344,7 @@ if(BUILD_TOOLS)
     target_link_libraries(editor GameClient)
     target_link_libraries(editor GameServer)
     target_link_libraries(editor Game)
+    target_link_libraries(editor GameShared)
     target_link_libraries(editor Runtime)
     target_link_libraries(editor Engine)
 
@@ -345,6 +354,7 @@ if(BUILD_TOOLS)
     target_link_libraries(editor -Wl,--whole-archive GameClient -Wl,--no-whole-archive)
     target_link_libraries(editor -Wl,--whole-archive GameServer -Wl,--no-whole-archive)
     target_link_libraries(editor -Wl,--whole-archive Game -Wl,--no-whole-archive)
+    target_link_libraries(editor -Wl,--whole-archive GameShared -Wl,--no-whole-archive)
     target_link_libraries(editor -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
     target_link_libraries(editor -Wl,--whole-archive Engine -Wl,--no-whole-archive)
   endif()
@@ -480,10 +490,12 @@ if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
     set_target_properties(GameClient PROPERTIES COMPILE_FLAGS "/Od")
     set_target_properties(GameServer PROPERTIES COMPILE_FLAGS "/Od")
     set_target_properties(Game PROPERTIES COMPILE_FLAGS "/Od")
+    set_target_properties(GameShared PROPERTIES COMPILE_FLAGS "/Od")
   else()
     set_target_properties(GameClient PROPERTIES COMPILE_FLAGS "-O0")
     set_target_properties(GameServer PROPERTIES COMPILE_FLAGS "-O0")
     set_target_properties(Game PROPERTIES COMPILE_FLAGS "-O0")
+    set_target_properties(GameShared PROPERTIES COMPILE_FLAGS "-O0")
   endif()
 endif()
 

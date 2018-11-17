@@ -1,2 +1,0 @@
-cls
-clang++ -I.. -I../External "-IC:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\8.1\Include\um" "-IC:\Program Files (x86)\Windows Kits\8.1\Include\shared" UnitTests.cpp
