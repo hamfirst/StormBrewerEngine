@@ -1,0 +1,1750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
+    <generated>
+      <config projectName="StormBrewerEngine" targetName="SDL2-static" />
+      <config projectName="StormBrewerEngine" targetName="Engine_pch" />
+      <config projectName="StormBrewerEngine" targetName="Editor_autogen" />
+      <config projectName="StormBrewerEngine" targetName="stormrefl" />
+      <config projectName="StormBrewerEngine" targetName="GameShared_unity" />
+      <config projectName="StormBrewerEngine" targetName="resample" />
+      <config projectName="StormBrewerEngine" targetName="usrsctp-static" />
+      <config projectName="StormBrewerEngine" targetName="Game_pch" />
+      <config projectName="StormBrewerEngine" targetName="GameClientExe" />
+      <config projectName="StormBrewerEngine" targetName="QTUtil" />
+      <config projectName="StormBrewerEngine" targetName="StormSocketCPP" />
+      <config projectName="StormBrewerEngine" targetName="StormNet" />
+      <config projectName="StormBrewerEngine" targetName="Foundation_pch" />
+      <config projectName="StormBrewerEngine" targetName="Game_unity" />
+      <config projectName="StormBrewerEngine" targetName="StormNetBindingsEnet" />
+      <config projectName="StormBrewerEngine" targetName="StormData" />
+      <config projectName="StormBrewerEngine" targetName="GameServerExe" />
+      <config projectName="StormBrewerEngine" targetName="TemplateLib" />
+      <config projectName="StormBrewerEngine" targetName="asio" />
+      <config projectName="StormBrewerEngine" targetName="libgit2_clar" />
+      <config projectName="StormBrewerEngine" targetName="Engine" />
+      <config projectName="StormBrewerEngine" targetName="usrsctp" />
+      <config projectName="StormBrewerEngine" targetName="editor" />
+      <config projectName="StormBrewerEngine" targetName="SDL2main" />
+      <config projectName="StormBrewerEngine" targetName="lua" />
+      <config projectName="StormBrewerEngine" targetName="gl3w" />
+      <config projectName="StormBrewerEngine" targetName="Engine_unity" />
+      <config projectName="StormBrewerEngine" targetName="Foundation_unity" />
+      <config projectName="StormBrewerEngine" targetName="EngineStubs" />
+      <config projectName="StormBrewerEngine" targetName="Runtime_unity" />
+      <config projectName="StormBrewerEngine" targetName="Foundation" />
+      <config projectName="StormBrewerEngine" targetName="StormNetCustomBindings" />
+      <config projectName="StormBrewerEngine" targetName="all_unity" />
+      <config projectName="StormBrewerEngine" targetName="GameServer" />
+      <config projectName="StormBrewerEngine" targetName="ogg" />
+      <config projectName="StormBrewerEngine" targetName="binpack" />
+      <config projectName="StormBrewerEngine" targetName="Runtime" />
+      <config projectName="StormBrewerEngine" targetName="GameShared" />
+      <config projectName="StormBrewerEngine" targetName="clean_cotire" />
+      <config projectName="StormBrewerEngine" targetName="ServerExe" />
+      <config projectName="StormBrewerEngine" targetName="addcodelib" />
+      <config projectName="StormBrewerEngine" targetName="GameClient" />
+      <config projectName="StormBrewerEngine" targetName="all_pch" />
+      <config projectName="StormBrewerEngine" targetName="StormWebrtcServerAPI" />
+      <config projectName="StormBrewerEngine" targetName="External" />
+      <config projectName="StormBrewerEngine" targetName="QTUtil_autogen" />
+      <config projectName="StormBrewerEngine" targetName="Editor" />
+      <config projectName="StormBrewerEngine" targetName="StormWebrtc" />
+      <config projectName="StormBrewerEngine" targetName="git2" />
+      <config projectName="StormBrewerEngine" targetName="git2internal" />
+      <config projectName="StormBrewerEngine" targetName="mbedtls" />
+      <config projectName="StormBrewerEngine" targetName="lodepng" />
+      <config projectName="StormBrewerEngine" targetName="GameShared_pch" />
+      <config projectName="StormBrewerEngine" targetName="StormExpr" />
+      <config projectName="StormBrewerEngine" targetName="DocumentServer" />
+      <config projectName="StormBrewerEngine" targetName="vorbis" />
+      <config projectName="StormBrewerEngine" targetName="Runtime_pch" />
+      <config projectName="StormBrewerEngine" targetName="Game" />
+      <config projectName="StormBrewerEngine" targetName="uninstall" />
+      <config projectName="StormBrewerEngine" targetName="ClientExe" />
+      <config projectName="StormBrewerEngine" targetName="StormWebrtcClientAPI" />
+      <config projectName="StormBrewerEngine" targetName="documentserver" />
+      <config projectName="StormBrewerEngine" targetName="ENet" />
+      <config projectName="StormBrewerEngine" targetName="addcode" />
+      <config projectName="StormBrewerEngine" targetName="generatecmake" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DBUILD_TOOLS=ON -DCMAKE_PREFIX_PATH=~/Qt/5.11.1/gcc_64 -DCLANG_HEADER_PATH=/usr/local/lib/clang/8.0.0/include -DSDL_SHARED=OFF -DSDL_STATIC=ON" GENERATION_DIR="build" BUILD_OPTIONS="-j 4" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.meta.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/StormBehavior.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/StormBehavior.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/StormBehaviorTree.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/StormBehaviorTreeTemplate.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormBehavior/StormBehaviorTreeTemplateBuilder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormData.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormData.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormData.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangeNotifier.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangeNotifier.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangePacket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangePacket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangePacketHelpers.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangePacketHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangeType.refl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataChangeType.refl.meta.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataDelta.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataEnum.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataJson.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataJsonUtil.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataJsonUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataListUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataMap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataNumber.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataOpaque.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataParent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataParentInfo.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataPath.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataPath.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataPathHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataPolymorphic.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataSparseList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataString.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataSync.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataTypeDatabase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataTypeDatabaseRegister.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataTypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExpr.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExpr.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprBinding.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprBinding.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprDynamicBlock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprDynamicBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprEval.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprEval.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprEvalBuilder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprEvalBuilder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprFunctionList.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprFunctionList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprFunctionReg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprHash.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprHash.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprLiteralBlock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprLiteralBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprLiteralBlockBuilder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprLiteralBlockBuilder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprOperator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprOperator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprOps.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprOps.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprReflBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStack.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStack.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStatementBlock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStatementBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStatementBlockElement.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprStatementBlockElement.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValue.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValue.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueBlock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueBlockList.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueBlockList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueInitBlock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueInitBlock.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueInitBlockList.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueInitBlockList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueProvider.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormExpr/StormExprValueProvider.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBindingHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBindings.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReaderBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReaderBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReaderVector.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitReaderVector.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitWriter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitWriter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitWriterVector.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetBitWriterVector.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetClient.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetClientBackend.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetClientBackendEnet.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetClientBackendEnet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetClientInterface.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetDeserialize.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetDeserializeDelta.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetException.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetLerp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetMessageSender.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetMetaUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeDeltaState.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeDeltaStateReliable.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeFullState.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeFullStateSeq.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeMessage.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeMode.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPipeVariant.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetPoolAllocator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetProtocol.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetProtocolFuncs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetProtocolReceiver.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetProtocolSender.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetRandom.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetRandom.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflection.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionArrayList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionBitBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionBitBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionCommon.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionDependent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionEnum.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionFixedPoint.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionFixedPointLUT.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionFixedPointRange.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionMap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionNumber.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionOptional.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionPolymorphic.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionPtr.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionRandom.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionSparseList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionStaticList.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionString.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionStruct.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTuple.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabase.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabaseRegister.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetReplayStreamReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetSerialize.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetSerializeDelta.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetServer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetServerBackend.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetServerBackendEnet.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetServerBackendEnet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetServerInterface.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetStateStore.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterEnet.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterEnet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterMemory.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterMemory.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterNull.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterNull.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterReplayStream.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/NetTransmitterReplayStream.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNet.natvis" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNet.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNet.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNetBindingsEnet.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNetBindingsEnet.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNet/StormNetVsTemplate.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetClientBackendWebrtc.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetClientBackendWebrtc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetClientBackendWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetClientBackendWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetServerBackendWebrtc.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetServerBackendWebrtc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetServerBackendWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetServerBackendWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterClientWebrtc.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterClientWebrtc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterClientWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterClientWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterServerWebrtc.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterServerWebrtc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterServerWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/NetTransmitterServerWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/StormNetBindingsWebrtc.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/StormNetBindingsWebrtc.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/StormNetBindingsWebsocket.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormNetCustomBindings/StormNetBindingsWebsocket.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StaticLibs.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormRefl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormRefl.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormRefl.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflJson.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflJsonStd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaCall.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaCallHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaCallJson.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaCallJsonHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaEnum.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaEnumHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaFuncs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaHelpers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaInfoBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormRefl/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormReflMSBuildTask/ParseHeader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormReflMSBuildTask/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormReflMSBuildTask/StormReflMsBuildTask.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormReflMSBuildTask/StormReflMsBuildTask.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormFixedBlockAllocator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormFixedBlockAllocator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormGenIndex.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpBodyReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpBodyReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpHeaderValues.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpHeaderValues.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpRequestReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpRequestReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpRequestWriter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpRequestWriter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpResponseReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpResponseReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpResponseWriter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormHttpResponseWriter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMemOps.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageHeaderReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageHeaderReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageHeaderValues.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageHeaderValues.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageQueue.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageReaderCursor.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageReaderCursor.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageReaderData.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageReaderUtil.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageReaderUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageWriter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormMessageWriter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormProfiling.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormProfiling.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSemaphore.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSemaphore.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSha1.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSha1.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketBackend.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketBackend.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketCPP.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketCPP.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketClientFrontendHttp.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketClientFrontendHttp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketClientFrontendWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketClientFrontendWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketConnection.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketConnectionHttp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketConnectionId.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketConnectionId.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketConnectionWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontend.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendBase.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendHttpBase.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendHttpBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendWebsocketBase.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendWebsocketBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketIOOperation.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketLog.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketLog.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketRequest.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendHttp.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendHttp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerTypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerWebsocket.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerWebsocket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerWin.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerWin.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormUrlUtil.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormUrlUtil.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketHeaderValues.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketHeaderValues.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageWriter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageWriter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtc.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtc.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtc.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtcConnection.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtc/StormWebrtcDataChannel.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClient.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClient.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientAPI.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientAPI.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientNative.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientNative.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientTypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientWeb.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/StormWebrtcClientWeb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcClientAPI/WebRTC.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServerAPI.vcxproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServerAPI.vcxproj.filters" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServerImpl.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcServerImpl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcStun.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StormTech/StormWebrtcServerAPI/StormWebrtcStun.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FUSProjectUsageTrigger">
+    <session id="-885762955">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="20" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.6" value="3" />
+          <entry key="project.open.time.7" value="11" />
+          <entry key="project.open.time.8" value="6" />
+          <entry key="project.opened" value="22" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="Build All (disassembly)" value="3" />
+          <entry key="c" value="2" />
+          <entry key="cmake" value="2" />
+          <entry key="codecvt" value="1" />
+          <entry key="cpp" value="371" />
+          <entry key="editor (disassembly)" value="19" />
+          <entry key="filters" value="7" />
+          <entry key="gen" value="40" />
+          <entry key="h" value="573" />
+          <entry key="hpp" value="1" />
+          <entry key="java" value="1" />
+          <entry key="nogen" value="17" />
+          <entry key="sln" value="1" />
+          <entry key="string_view" value="1" />
+          <entry key="tcc" value="1" />
+          <entry key="tuple" value="1" />
+          <entry key="txt" value="62" />
+          <entry key="vcxproj" value="16" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CMakeLists.txt" value="64" />
+          <entry key="Disassembly" value="22" />
+          <entry key="ObjectiveC" value="951" />
+          <entry key="PLAIN_TEXT" value="82" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="GDB" value="70" />
+          <entry key="cmake" value="16" />
+          <entry key="cpp" value="16540" />
+          <entry key="gen" value="196" />
+          <entry key="h" value="36171" />
+          <entry key="mm" value="58" />
+          <entry key="txt" value="502" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CMakeLists.txt" value="518" />
+          <entry key="GDBCommands" value="70" />
+          <entry key="ObjectiveC" value="52769" />
+          <entry key="PLAIN_TEXT" value="196" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
+      <usages-collector id="statistics.cidr.testingFrameworks.usages" />
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="632">
+              <caret line="123" column="20" selection-start-line="123" selection-start-column="20" selection-end-line="123" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementTextureSlice.refl.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="513">
+              <caret line="211" column="34" selection-start-line="211" selection-start-column="34" selection-end-line="211" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="230">
+              <caret line="92" column="117" selection-start-line="92" selection-start-column="117" selection-end-line="92" selection-end-column="117" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="37">
+              <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="658">
+              <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1274">
+              <caret line="15" column="117" selection-start-line="15" selection-start-column="117" selection-end-line="15" selection-end-column="117" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>GameCOmmon</find>
+      <find>Game/GameCommon</find>
+      <find>Game/GameLo</find>
+      <find>GameSharedGlobalResources</find>
+      <find>UISoundEffects</find>
+      <find>UIPrototype</find>
+      <find>UISoundPrototypeEffects</find>
+      <find>m_Sfx</find>
+      <find>.UISoundEffects</find>
+      <find>GetClientGlobalResources</find>
+      <find>AllocateElementFromDef</find>
+      <find>::Pla</find>
+      <find>m_HeapCreate</find>
+      <find>m_HeapCreate =</find>
+      <find>new</find>
+      <find>m_Ptr =</find>
+      <find>m_Ptr</find>
+      <find>addcode</find>
+      <find>noui</find>
+      <find>::render</find>
+      <find>AtlasBaseDef</find>
+      <find>`</find>
+      <find>crc32</find>
+      <find>GetDefaultScreenSpaceShader</find>
+      <find>m_Data.m_StartY</find>
+      <find>m_InitData.m_StartY</find>
+      <find>m_InitData.m_EndCutX</find>
+      <find>RenderAtlas</find>
+      <find>m_InitData.m_EndX</find>
+      <find>Sprite</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>GetSingleBoxDefault</replace>
+      <replace>SendDeliberateSystemSync</replace>
+      <replace>spawn_data.</replace>
+      <replace>NullOptPtr&lt;CollisionObjectMask&gt; obj_mask</replace>
+      <replace>NetPoolAllocator</replace>
+      <replace>#include &quot;GameShared/GameLogicContainer.h&quot;</replace>
+      <replace>GameShared/GameSharedCommon</replace>
+      <replace>AtlasDef</replace>
+      <replace>position.m_StartY</replace>
+      <replace>elem_def.m_StartY</replace>
+      <replace>elem_def.m_EndOffsetX</replace>
+      <replace>position.m_End.x</replace>
+      <replace>Atlas</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/Foundation</dir>
+      <dir>$PROJECT_DIR$</dir>
+      <dir>$PROJECT_DIR$/Project/GameShared</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Project/GameServer/GameServer.h" />
+        <option value="$PROJECT_DIR$/Project/GameServerExe/Main.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceStateGameplay.h" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameNetworkClient.h" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceStateGameplay.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstance.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameClientInstanceContainer.h" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceManager.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/GameServerWidget.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeLoadingGlobal.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Asset/Asset.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/UI/Prototype/UIPrototypeButton.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/UI/Prototype/UIPrototypeButton.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeJoinPrivateGame.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeNameSelect.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeOnlineStaging.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeTutorial.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeLocalMultiplayer.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeOnlineGameplay.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeSinglePlayerBots.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeOfflineStaging.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.cpp" />
+        <option value="$PROJECT_DIR$/Project/Game/ServerObjects/Player/PlayerServerObject.refl.h" />
+        <option value="$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/ProjectileServerObject.refl.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/UI/Prototype/UISoundPrototypeEffects.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameServer.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceStateLoading.h" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/UI/Prototype/UISoundPrototypeEffects.h" />
+        <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceStateLoading.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameClientInstanceContainer.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Asset/AssetReference.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabaseRegister.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabase.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormNet/NetPoolAllocator.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormNet/NetReflectionPolymorphic.h" />
+        <option value="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.h" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteDef.refl.h" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" />
+        <option value="$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="19" />
+    <option name="y" value="25" />
+    <option name="width" value="1882" />
+    <option name="height" value="1036" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Bitwise operation issuesJavaScript</id>
+          </State>
+          <State>
+            <id>C/C++</id>
+          </State>
+          <State>
+            <id>Control flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>DOM issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Data flowJavaScript</id>
+          </State>
+          <State>
+            <id>GeneralC/C++</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsJavaScript</id>
+          </State>
+          <State>
+            <id>RELAX NG</id>
+          </State>
+          <State>
+            <id>Unused codeC/C++</id>
+          </State>
+        </expanded-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <autoscrollToSource ProjectPane="true" />
+      <autoscrollFromSource ProjectPane="true" />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+              <item name="Asset" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+              <item name="UI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="EngineStubs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+              <item name="StormBehavior" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ChangesTree.GroupingKeys" value="" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/nick/Dev/StormBrewerEngine/Game/ServerObjects/Player/States/PlayerStateJump.refl.meta.h" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/typescript/lib" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Build All">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="editor" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientExe" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ClientExe" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="ClientExe">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DocumentServer" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="DocumentServer" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ENet" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ENet" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Editor" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Editor" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Editor_autogen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Editor_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Engine" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Engine" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EngineStubs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="EngineStubs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Engine_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Engine_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Engine_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Engine_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="External" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="External" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Foundation" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Foundation" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Foundation_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Foundation_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Foundation_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Foundation_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Game" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Game" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameClient" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameClient" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameClientExe" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameClientExe" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameServer" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameServer" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameServerExe" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameServerExe" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameShared" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameShared" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameShared_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameShared_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameShared_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="GameShared_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Game_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Game_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Game_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Game_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QTUtil" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="QTUtil" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QTUtil_autogen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="QTUtil_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Runtime" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Runtime" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Runtime_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Runtime_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Runtime_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Runtime_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SDL2-static" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="SDL2-static" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SDL2main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="SDL2main" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerExe" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ServerExe" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="ServerExe">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormData" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormData" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormExpr" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormExpr" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormNet" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormNet" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormNetBindingsEnet" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormNetBindingsEnet" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormNetCustomBindings" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormNetCustomBindings" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormSocketCPP" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormSocketCPP" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormWebrtc" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormWebrtc" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormWebrtcClientAPI" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormWebrtcClientAPI" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StormWebrtcServerAPI" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="StormWebrtcServerAPI" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TemplateLib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="TemplateLib" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="addcode" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="addcode" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="addcode">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="addcodelib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="addcodelib" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="all_pch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="all_pch" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="all_unity" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="all_unity" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="asio" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="asio" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="binpack" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="binpack" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="clean_cotire" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="clean_cotire" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="documentserver" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="documentserver" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="documentserver">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="editor" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="editor" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="editor">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="generatecmake" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="generatecmake" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="generatecmake">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="git2" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="git2" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="git2internal" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="git2internal" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gl3w" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="gl3w" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="libgit2_clar" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="libgit2_clar" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="libgit2_clar">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="lodepng" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="lodepng" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="lua" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="lua" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mbedtls" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="mbedtls" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ogg" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ogg" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="resample" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="resample" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="stormrefl" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="stormrefl" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="stormrefl">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="usrsctp-static" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="usrsctp-static" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="usrsctp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="usrsctp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="vorbis" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="vorbis" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Build All" />
+      <item itemvalue="Application.addcode" />
+      <item itemvalue="Application.ClientExe" />
+      <item itemvalue="Application.documentserver" />
+      <item itemvalue="Application.editor" />
+      <item itemvalue="Application.generatecmake" />
+      <item itemvalue="Application.ServerExe" />
+      <item itemvalue="Application.stormrefl" />
+      <item itemvalue="Application.DocumentServer" />
+      <item itemvalue="Application.Editor" />
+      <item itemvalue="Application.Editor_autogen" />
+      <item itemvalue="Application.all_pch" />
+      <item itemvalue="Application.all_unity" />
+      <item itemvalue="Application.clean_cotire" />
+      <item itemvalue="Application.Engine" />
+      <item itemvalue="Application.Engine_pch" />
+      <item itemvalue="Application.Engine_unity" />
+      <item itemvalue="Application.EngineStubs" />
+      <item itemvalue="Application.External" />
+      <item itemvalue="Application.asio" />
+      <item itemvalue="Application.binpack" />
+      <item itemvalue="Application.ENet" />
+      <item itemvalue="Application.gl3w" />
+      <item itemvalue="Application.git2" />
+      <item itemvalue="Application.git2internal" />
+      <item itemvalue="Application.libgit2_clar" />
+      <item itemvalue="Application.SDL2-static" />
+      <item itemvalue="Application.SDL2main" />
+      <item itemvalue="Application.uninstall" />
+      <item itemvalue="Application.lodepng" />
+      <item itemvalue="Application.lua" />
+      <item itemvalue="Application.mbedtls" />
+      <item itemvalue="Application.ogg" />
+      <item itemvalue="Application.resample" />
+      <item itemvalue="Application.usrsctp" />
+      <item itemvalue="Application.usrsctp-static" />
+      <item itemvalue="Application.vorbis" />
+      <item itemvalue="Application.Foundation" />
+      <item itemvalue="Application.Foundation_pch" />
+      <item itemvalue="Application.Foundation_unity" />
+      <item itemvalue="Application.Game" />
+      <item itemvalue="Application.Game_pch" />
+      <item itemvalue="Application.Game_unity" />
+      <item itemvalue="Application.GameClient" />
+      <item itemvalue="Application.GameClientExe" />
+      <item itemvalue="Application.GameServer" />
+      <item itemvalue="Application.GameServerExe" />
+      <item itemvalue="Application.GameShared" />
+      <item itemvalue="Application.GameShared_pch" />
+      <item itemvalue="Application.GameShared_unity" />
+      <item itemvalue="Application.QTUtil" />
+      <item itemvalue="Application.QTUtil_autogen" />
+      <item itemvalue="Application.Runtime" />
+      <item itemvalue="Application.Runtime_pch" />
+      <item itemvalue="Application.Runtime_unity" />
+      <item itemvalue="Application.StormData" />
+      <item itemvalue="Application.StormExpr" />
+      <item itemvalue="Application.StormNet" />
+      <item itemvalue="Application.StormNetCustomBindings" />
+      <item itemvalue="Application.StormSocketCPP" />
+      <item itemvalue="Application.StormWebrtc" />
+      <item itemvalue="Application.StormWebrtcClientAPI" />
+      <item itemvalue="Application.StormWebrtcServerAPI" />
+      <item itemvalue="Application.addcodelib" />
+      <item itemvalue="Application.TemplateLib" />
+      <item itemvalue="Application.StormNetBindingsEnet" />
+    </list>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="" />
+      <created>1537074844553</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1537074844553</updated>
+      <workItem from="1537074847500" duration="88000" />
+      <workItem from="1537074955402" duration="2438000" />
+      <workItem from="1537078777850" duration="2228000" />
+      <workItem from="1537128301178" duration="3494000" />
+      <workItem from="1537413674181" duration="322000" />
+      <workItem from="1537430496953" duration="39231000" />
+      <workItem from="1538283787093" duration="97000" />
+      <workItem from="1538283900474" duration="94558000" />
+      <workItem from="1538722767936" duration="16550000" />
+      <workItem from="1538991757067" duration="26810000" />
+      <workItem from="1539420227856" duration="728000" />
+      <workItem from="1539421146463" duration="24828000" />
+      <workItem from="1539763005482" duration="1760000" />
+      <workItem from="1539764804302" duration="20517000" />
+      <workItem from="1540101792842" duration="9959000" />
+      <workItem from="1540508796137" duration="2000" />
+      <workItem from="1540883115479" duration="95801000" />
+      <workItem from="1541845213596" duration="22315000" />
+      <workItem from="1541975709065" duration="14012000" />
+      <workItem from="1542357236919" duration="17734000" />
+      <workItem from="1542439318618" duration="54000" />
+      <workItem from="1542439388735" duration="18207000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="411733000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="19" y="25" width="1882" height="1036" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14137554" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32893288" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.28272828" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.40264025" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32785088" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32893288" />
+      <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.3520352" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.17931794" />
+      <window_info anchor="bottom" id="TypeScript" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/StormData" />
+      <path value="$PROJECT_DIR$/StormNet" />
+      <path value="$PROJECT_DIR$/StormRefl" />
+      <path value="$PROJECT_DIR$/StormReflMSBuildTask" />
+      <path value="$PROJECT_DIR$/StormSockets" />
+    </ignored-roots>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Editor/MapEditorViewer.cpp</url>
+          <line>1363</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Runtime/ServerObject/ServerObjectManager.cpp</url>
+          <line>471</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="&amp;this-&gt;m_FirstBlock-&gt;m_BlockMem[4088]" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>&amp;this-&gt;m_FirstBlock-&gt;m_BlockMem[4088]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>g_ProjectileConfigsCount</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>g_ProjectileConfigs</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>g_ComponentTypeSystem</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>g_ProjectileServerObjectEntity</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>g_PlayerConfigResources</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>&amp;rhs</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetReferenceBase.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/Game/ServerObjects/Player/PlayerServerObject.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/ProjectileServerObject.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/Prototype/UISoundPrototypeEffects.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameServer/GameServer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameServer/GameInstanceStateLoading.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameContainer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="155" selection-start-line="155" selection-end-line="155" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/Prototype/UISoundPrototypeEffects.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="46" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/Prototype/UIPrototypeButton.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="121" selection-start-line="121" selection-end-line="121" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameServer/GameInstanceStateLoading.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="126" column="1" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="626" column="60" selection-start-line="626" selection-start-column="60" selection-end-line="626" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameClientInstanceContainer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2924">
+          <caret line="172" selection-start-line="172" selection-end-line="172" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/MapEditorTileManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21267">
+          <caret line="1251" column="9" selection-start-line="1251" selection-start-column="9" selection-end-line="1251" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetReference.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormNet/NetPoolAllocator.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#1025#1044#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabaseRegister.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormNet/NetReflectionPolymorphic.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormNet/NetReflectionTypeDatabase.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="238" selection-start-line="31" selection-start-column="238" selection-end-line="31" selection-end-column="238" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameClientInstanceContainer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7055">
+          <caret line="415" column="1" selection-start-line="415" selection-start-column="1" selection-end-line="415" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Asset/Asset.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/Templates/ReflCpp.refl.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/CMakeLists.gen">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="103" column="28" selection-start-line="103" selection-start-column="28" selection-end-line="103" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/sbwizclion/src/main/java/AddCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="97" column="19" selection-start-line="97" selection-start-column="12" selection-end-line="97" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6540" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/addcode/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="38" column="59" selection-start-line="38" selection-start-column="59" selection-end-line="38" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="253" column="59" selection-start-line="253" selection-start-column="59" selection-end-line="253" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Map/MapHandles.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteDef.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/SpriteBase/SpriteBaseDef.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1036" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="52" selection-start-line="9" selection-start-column="52" selection-end-line="9" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteResource.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteResource.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Sprite/SpriteEngineData.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="40" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Sprite/SpriteEngineData.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="18" selection-end-line="353" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetTypeMacros.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="44" column="8" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/TextureAsset.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="113" column="13" selection-start-line="113" selection-start-column="13" selection-end-line="113" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetLoader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7088">
+          <caret line="109" column="13" selection-start-line="109" selection-start-column="13" selection-end-line="109" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementGradient.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="85" column="34" selection-start-line="85" selection-start-column="34" selection-end-line="85" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementShape.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementTextureSlice.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="211" column="34" selection-start-line="211" selection-start-column="34" selection-end-line="211" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="37">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="658">
+          <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1274">
+          <caret line="15" column="117" selection-start-line="15" selection-start-column="117" selection-end-line="15" selection-end-column="117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="92" column="117" selection-start-line="92" selection-start-column="117" selection-end-line="92" selection-end-column="117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="123" column="20" selection-start-line="123" selection-start-column="20" selection-end-line="123" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
