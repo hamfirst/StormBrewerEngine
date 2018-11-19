@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="StormExprValue.h" />
+    <ClInclude Include="StormExprStack.h" />
+    <ClInclude Include="StormExprEval.h" />
+    <ClInclude Include="StormExprOps.h" />
+    <ClInclude Include="StormExprValueBlock.h" />
+    <ClInclude Include="StormExprValueInitBlock.h" />
+    <ClInclude Include="StormExprHash.h" />
+    <ClInclude Include="StormExprLiteralBlockBuilder.h" />
+    <ClInclude Include="StormExprEvalBuilder.h" />
+    <ClInclude Include="StormExprOperator.h" />
+    <ClInclude Include="StormExprValueBlockList.h" />
+    <ClInclude Include="StormExprStatementBlock.h" />
+    <ClInclude Include="StormExprStatementBlockElement.h" />
+    <ClInclude Include="StormExprValueInitBlockList.h" />
+    <ClInclude Include="StormExprFunctionList.h" />
+    <ClInclude Include="StormExprValueProvider.h" />
+    <ClInclude Include="StormExprLiteralBlock.h" />
+    <ClInclude Include="StormExprBinding.h" />
+    <ClInclude Include="StormExprDynamicBlock.h" />
+    <ClInclude Include="StormExprReflBlock.h" />
+    <ClInclude Include="StormExprFunctionReg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StormExprValue.cpp" />
+    <ClCompile Include="StormExprStack.cpp" />
+    <ClCompile Include="StormExprEval.cpp" />
+    <ClCompile Include="StormExprOps.cpp" />
+    <ClCompile Include="StormExprValueBlock.cpp" />
+    <ClCompile Include="StormExprValueInitBlock.cpp" />
+    <ClCompile Include="StormExprHash.cpp" />
+    <ClCompile Include="StormExprLiteralBlockBuilder.cpp" />
+    <ClCompile Include="StormExprEvalBuilder.cpp" />
+    <ClCompile Include="StormExprOperator.cpp" />
+    <ClCompile Include="StormExprValueBlockList.cpp" />
+    <ClCompile Include="StormExprStatementBlock.cpp" />
+    <ClCompile Include="StormExprStatementBlockElement.cpp" />
+    <ClCompile Include="StormExprValueInitBlockList.cpp" />
+    <ClCompile Include="StormExprFunctionList.cpp" />
+    <ClCompile Include="StormExprValueProvider.cpp" />
+    <ClCompile Include="StormExprLiteralBlock.cpp" />
+    <ClCompile Include="StormExprBinding.cpp" />
+    <ClCompile Include="StormExprDynamicBlock.cpp" />
+  </ItemGroup>
+</Project>

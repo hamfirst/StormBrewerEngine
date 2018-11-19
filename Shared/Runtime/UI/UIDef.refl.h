@@ -1,8 +1,8 @@
 #pragma once
 
-#include <StormRefl/StormRefl.h>
-#include <StormData/StormData.h>
-#include <StormData/StormDataTypes.h>
+#include "StormRefl/StormRefl.h"
+#include "StormData/StormData.h"
+#include "StormData/StormDataTypes.h"
 
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/UI/UIElementTypeDatabase.h"

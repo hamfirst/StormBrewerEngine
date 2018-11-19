@@ -105,6 +105,7 @@ set(GENERIC_SRC_Engine
             Audio/MusicManager.cpp
             Shader/ShaderManager.cpp
             Settings/EngineSettings.refl.cpp
+            Atlas/AtlasEngineData.cpp
             #CPP_PLACEHOLDER
   UI/Prototype/UISoundPrototypeEffects.cpp)
 
@@ -249,6 +250,7 @@ set(GENERIC_HEADER_Engine
             Shader/DefaultShader.h
             Settings/EngineSettings.refl.h
             Settings/EngineSettings.refl.meta.h
+            Atlas/AtlasEngineData.h
             #HEADER_PLACEHOLDER
             )
 

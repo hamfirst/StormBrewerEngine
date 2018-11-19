@@ -61,6 +61,8 @@ set(GENERIC_SRC_Runtime
             SpriteBase/SpriteAnimationEventDef.refl.cpp
             Anchor/AnchorDef.refl.cpp
             Anchor/AnchorTypeDatabase.cpp
+            Atlas/AtlasDef.refl.cpp
+            Atlas/AtlasResource.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -176,6 +178,9 @@ set(GENERIC_HEADER_Runtime
             Anchor/AnchorDef.refl.meta.h
             Anchor/AnchorTypeRegister.h
             Anchor/AnchorDef.refl.h
+            Atlas/AtlasDef.refl.h
+            Atlas/AtlasDef.refl.meta.h
+            Atlas/AtlasResource.h
             #HEADER_PLACEHOLDER
             )
 
@@ -199,6 +204,7 @@ set(GENERIC_REFL_Runtime
             SpriteBase/SpriteAnimationEventDef.refl.h
             SpriteBase/SpriteBaseDef.refl.h
             Anchor/AnchorDef.refl.h
+            Atlas/AtlasDef.refl.h
             #REFL_PLACEHOLDER
             )
 

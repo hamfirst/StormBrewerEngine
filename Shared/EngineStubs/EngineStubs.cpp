@@ -6,6 +6,7 @@
 #include "Foundation/Document/Document.h"
 #include "Foundation/Document/DocumentCompiler.h"
 
+#include "Runtime/Atlas/AtlasDef.refl.h"
 #include "Runtime/Sprite/SpriteDef.refl.h"
 #include "Runtime/Animation/AnimationState.h"
 #include "Runtime/Map/MapDef.refl.h"
@@ -79,6 +80,19 @@ private:
   DefaultDocumentAssetLoader m_AssetLoader;
   DocumentCompiler m_Compiler;
 };
+
+Any CreateAtlasEngineData(AtlasDef & Atlas)
+{
+  return {};
+}
+
+void UpdateAtlasEngineData(Any & engine_data)
+{
+}
+
+void RenderAtlas(Any & engine_data, RenderState & render_state, czstr name, const Box & position, const Color & color)
+{
+}
 
 
 Any CreateSpriteEngineData(SpriteBaseDef & sprite)
