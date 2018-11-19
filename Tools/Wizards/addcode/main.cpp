@@ -34,7 +34,9 @@ int main(int argc, char ** argv)
   auto name = std::string(argv[2]);
   auto target_dir = fs::canonical(argv[3]);
   auto root_dir = fs::canonical(argv[4]);
-  auto template_dir = fs::canonical(root_dir / "Wizards/Templates/");
+  auto template_dir = fs::canonical(root_dir / "Tools/Wizards/Templates/");
+
+  printf("Template dir %s\n", template_dir.string().data());
 
   auto project_file_path = FindCMakeFile(target_dir, root_dir);
   if(project_file_path.has_value() == false)
