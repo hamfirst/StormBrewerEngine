@@ -236,6 +236,16 @@ std::optional<std::pair<std::string, std::string>> FindVCXProjFiles(
 }
 */
 
+std::string GetCMakePath(const std::string & rel_path, const std::string & file)
+{
+  if(rel_path.empty())
+  {
+    return file;
+  }
+
+  return rel_path + '/' + file;
+}
+
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file,
   ProjectFileType type)
 {

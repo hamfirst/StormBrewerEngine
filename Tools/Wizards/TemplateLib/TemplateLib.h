@@ -31,6 +31,7 @@ enum class ProjectFileType
   kReflFile,
 };
 
+std::string GetCMakePath(const std::string & rel_path, const std::string & file);
 void InsertIntoCMakeFile(std::string & cmake_file, const std::string & file, ProjectFileType type);
 
 //void InsertIntoVCXProjFile(std::string & vcxproj_file, const std::string & file, ProjectFileType type);
