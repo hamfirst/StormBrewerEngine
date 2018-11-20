@@ -146,6 +146,12 @@ set(GENERIC_SRC_Editor
             FrameEditorContainer.cpp
             PropertyEditorWidget.cpp
             GenericComboBox.cpp
+            AtlasEditor.cpp
+            AtlasTextureLoadList.cpp
+            AtlasTextureEditor.cpp
+            AtlasTextureImportDialog.cpp
+            GeometryEditorBase.cpp
+            AtlasElementEditor.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -286,6 +292,12 @@ set(GENERIC_HEADER_Editor
             SpriteBaseSkinListElement.h
             VisualEffectEditor.h
             FrameEditorSingleBox.h
+            AtlasEditor.h
+            AtlasTextureLoadList.h
+            AtlasTextureEditor.h
+            AtlasTextureImportDialog.h
+            GeometryEditorBase.h
+            AtlasElementEditor.h
             #HEADER_PLACEHOLDER
             )
 

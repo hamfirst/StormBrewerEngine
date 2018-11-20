@@ -261,7 +261,7 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
       fprintf(fp, "};\n\n");
 
       fprintf(fp, "template <typename Self>\n");
-      fprintf(fp, "struct StormReflTypeInfo<%s>::field_data<%d%s, Self> : public StormReflTypeInfo<%s>::field_data_static<%d%s>\n", 
+      fprintf(fp, "struct StormReflTypeInfo<%s>::field_data<%zd%s, Self> : public StormReflTypeInfo<%s>::field_data_static<%zd%s>\n",
         cl.m_Name.c_str(), index, base_str.c_str(), cl.m_Name.c_str(), index, base_str.c_str());
       fprintf(fp, "{\n");
       fprintf(fp, "  Self & self;\n");
@@ -279,16 +279,16 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
       if (field.m_Attrs.size() > 0)
       {
         fprintf(fp, "template <>\n");
-        fprintf(fp, "struct StormReflTypeInfo<%s>::annotations<%d%s>\n", cl.m_Name.c_str(), index, base_str.c_str());
+        fprintf(fp, "struct StormReflTypeInfo<%s>::annotations<%zd%s>\n", cl.m_Name.c_str(), index, base_str.c_str());
         fprintf(fp, "{\n");
-        fprintf(fp, "  static constexpr int annotations_n = %d;\n", field.m_Attrs.size());
+        fprintf(fp, "  static constexpr int annotations_n = %zd;\n", field.m_Attrs.size());
         fprintf(fp, "  template <int A> struct annoation { };\n");
         fprintf(fp, "};\n\n");
 
         for (std::size_t attr_index = 0; attr_index < field.m_Attrs.size(); attr_index++)
         {
           fprintf(fp, "template <>\n");
-          fprintf(fp, "struct StormReflTypeInfo<%s>::annotations<%d%s>::annoation<%d>\n", cl.m_Name.c_str(), index, base_str.c_str(), attr_index);
+          fprintf(fp, "struct StormReflTypeInfo<%s>::annotations<%zd%s>::annoation<%zd>\n", cl.m_Name.c_str(), index, base_str.c_str(), attr_index);
           fprintf(fp, "{\n");
           fprintf(fp, "  static constexpr const char * GetAnnotation() { return \"%s\"; }\n", field.m_Attrs[attr_index].c_str());
           fprintf(fp, "  static constexpr uint32_t GetAnnotationHash() { return 0x%08X; }\n", crc32(field.m_Attrs[attr_index]));

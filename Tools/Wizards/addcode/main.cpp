@@ -114,14 +114,14 @@ int main(int argc, char ** argv)
   if(WriteTemplate(target_dir / cpp_file, cpp_template_file, template_replacements))
   {
     GitAddFile(target_dir / cpp_file, root_dir);
-    auto file = rel_cmake + '/' + cpp_file;
+    auto file = GetCMakePath(rel_cmake, cpp_file);
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
   }
 
   if(WriteTemplate(target_dir / header_file, header_template_file, template_replacements))
   {
     GitAddFile(target_dir / header_file, root_dir);
-    auto file = rel_cmake + '/' + header_file;
+    auto file = GetCMakePath(rel_cmake, header_file);
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
     
     if(use_meta)
@@ -133,14 +133,14 @@ int main(int argc, char ** argv)
   if(WriteTemplate(target_dir / meta_file, meta_template_file, template_replacements))
   {
     GitAddFile(target_dir / meta_file, root_dir);
-    auto file = rel_cmake + '/' + meta_file;
+    auto file = GetCMakePath(rel_cmake, meta_file);
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
   }
 
   if(WriteTemplate(target_dir / reg_file, reg_template_file, template_replacements))
   {
     GitAddFile(target_dir / reg_file, root_dir);
-    auto file = rel_cmake + '/' + reg_file;
+    auto file = GetCMakePath(rel_cmake, reg_file);
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
   }
 
