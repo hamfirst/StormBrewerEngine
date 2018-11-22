@@ -34,6 +34,9 @@ protected:
   template <typename Visitor>
   void VisitPoints(Visitor && visitor, NotNullPtr<AtlasDefElementPosition> elem_ptr);
 
+  template <typename Visitor>
+  void VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefElementPosition> elem_ptr);
+
   virtual bool UpperLeftOrigin() const override;
 
 protected:

@@ -30,8 +30,17 @@ struct ProxyPoint
 
   bool x_reverse;
   bool y_reverse;
-};
 
+  int GetX() const
+  {
+    return xb + (x_reverse ? -x : (int)x);
+  }
+
+  int GetY() const
+  {
+    return yb + (y_reverse ? -y : (int)y);
+  }
+};
 
 AtlasElementEditor::AtlasElementEditor(
         NotNullPtr<AtlasEditor> editor,
@@ -206,6 +215,29 @@ void AtlasElementEditor::VisitPoints(Visitor && visitor, NotNullPtr<AtlasDefElem
   }
 }
 
+template <typename Visitor>
+void AtlasElementEditor::VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefElementPosition> elem_ptr)
+{
+  visitor(0, elem_ptr->m_StartX, elem_ptr->m_StartY, elem_ptr->m_EndX, elem_ptr->m_StartY);
+  visitor(1, elem_ptr->m_StartX, elem_ptr->m_StartY, elem_ptr->m_StartX, elem_ptr->m_EndY);
+  visitor(2, elem_ptr->m_EndX, elem_ptr->m_StartY, elem_ptr->m_EndX, elem_ptr->m_EndY);
+  visitor(3, elem_ptr->m_StartX, elem_ptr->m_EndY, elem_ptr->m_EndX, elem_ptr->m_EndY);
+
+  if(elem_ptr->m_Type == AtlasDefType::k3SliceVertical ||
+     elem_ptr->m_Type == AtlasDefType::k9Slice)
+  {
+    visitor(4, elem_ptr->m_StartX, elem_ptr->m_StartY + elem_ptr->m_StartOffsetY, elem_ptr->m_EndX, elem_ptr->m_StartY + elem_ptr->m_StartOffsetY);
+    visitor(5, elem_ptr->m_StartX, elem_ptr->m_EndY - elem_ptr->m_EndOffsetY, elem_ptr->m_EndX, elem_ptr->m_EndY - elem_ptr->m_EndOffsetY);
+  }
+
+  if(elem_ptr->m_Type == AtlasDefType::k3SliceHorizontal ||
+     elem_ptr->m_Type == AtlasDefType::k9Slice)
+  {
+    visitor(6, elem_ptr->m_StartX + elem_ptr->m_StartOffsetX, elem_ptr->m_StartY, elem_ptr->m_StartX + elem_ptr->m_StartOffsetX, elem_ptr->m_EndY);
+    visitor(7, elem_ptr->m_EndX - elem_ptr->m_EndOffsetX, elem_ptr->m_StartY, elem_ptr->m_EndX - elem_ptr->m_EndOffsetX, elem_ptr->m_EndY);
+  }
+}
+
 bool AtlasElementEditor::UpperLeftOrigin() const
 {
   return false;
@@ -219,10 +251,15 @@ void AtlasElementEditor::DrawData()
     return;
   }
 
+  VisitEdges([this](int edge_index, int sx, int sy, int ex, int ey)
+  {
+    DrawLine(Vector2(sx, sy), Vector2(ex, ey));
+  }, &preview_data.Value());
+
   VisitPoints([this](int point_index, const ProxyPoint & point)
   {
-    int x = point.xb + point.x_reverse ? -point.x : (int)point.x;
-    int y = point.yb + point.y_reverse ? -point.y : (int)point.y;
+    int x = point.GetX();
+    int y = point.GetY();
 
     if(m_PreviewPoint && m_PreviewPoint.Value() == point_index)
     {
@@ -250,13 +287,15 @@ void AtlasElementEditor::DrawPreview(const Vector2 & frame_pos, bool alt, bool s
   m_PreviewPoint.Clear();
   VisitPoints([this, cursor_pos](int point_index, const ProxyPoint & point)
   {
-    auto pos = Vector2(point.xb + point.x_reverse ? -point.x : (int)point.y, point.yb + point.y_reverse ? -point.y : (int)point.y);
+    auto pos = Vector2(point.GetX(), point.GetY());
     auto screen_pos = TransformFrameToScreen(pos);
     if (ManhattanDist(screen_pos, cursor_pos) < 20)
     {
       m_PreviewPoint = point_index;
     }
   }, &preview_data.Value());
+
+  repaint();
 }
 
 void AtlasElementEditor::DrawLeave()
@@ -288,14 +327,17 @@ void AtlasElementEditor::DrawMove(const Vector2 & pos, bool alt, bool shift, boo
 
 void AtlasElementEditor::DrawEnd(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
-  if (m_PreviewOffset->x != 0 && m_PreviewOffset->y != 0)
-  {
-    auto preview_data = GetPreviewData();
-    WriteData(preview_data.Value());
-  }
+  bool valid_offset = m_PreviewOffset->x != 0 || m_PreviewOffset->y != 0;
+  auto preview_data = GetPreviewData();
 
   m_PreviewOffset.Clear();
   m_DrawStart.Clear();
+
+  if (valid_offset)
+  {
+    WriteData(preview_data.Value());
+  }
+
   repaint();
 }
 
