@@ -14,36 +14,39 @@
 #include "AtlasTextureImportDialog.h"
 
 
-AtlasTextureEditor::AtlasTextureEditor(NotNullPtr<AtlasEditor> editor, AtlasDef & atlas, QWidget * parent) :
+AtlasTextureEditor::AtlasTextureEditor(NotNullPtr<AtlasEditor> editor, AtlasDef & atlas, Delegate<void, int> && add_element_cb, QWidget * parent) :
         QWidget(parent),
         m_Editor(editor),
         m_Atlas(atlas),
+        m_AddElementCallback(std::move(add_element_cb)),
         m_Layout(std::make_unique<QGridLayout>()),
         m_Texture(std::make_unique<TextureViewerWidget>()),
         m_TextureListFrame(std::make_unique<GenericListFrame>("Texture Files", true, true, this)),
-        m_TextureProperties(std::make_unique<GenericFrame>("Properties", this)),
+        m_AddNewElement(std::make_unique<QPushButton>("Add New Element", this)),
         m_SelectedTextureUpdater(editor)
 {
+  m_AddNewElement->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  connect(m_AddNewElement.get(), &QPushButton::pressed, this, &AtlasTextureEditor::handleAddElement);
+
   m_Layout->setColumnStretch(0, 2);
   m_Layout->setColumnMinimumWidth(0, 100);
 
   m_Layout->setColumnStretch(1, 1);
   m_Layout->setColumnMinimumWidth(1, 100);
 
-  m_Layout->setRowStretch(0, 3);
+  m_Layout->setRowStretch(0, 7);
   m_Layout->setRowMinimumHeight(0, 100);
 
   m_Layout->setRowStretch(1, 2);
-  m_Layout->setRowMinimumHeight(1, 100);
+  m_Layout->setRowMinimumHeight(1, 200);
 
   m_Layout->addWidget(m_Texture.get(), 0, 0, 1, 2);
   m_Layout->addWidget(m_TextureListFrame.get(), 1, 0);
-  m_Layout->addWidget(m_TextureProperties.get(), 1, 1);
+  m_Layout->addWidget(m_AddNewElement.get(), 1, 1);
 
-  m_PropertyEditor = m_TextureProperties->CreateWidget<PropertyEditor>();
 
   m_TextureList = CreateSimpleLabelList<RMergeList, AtlasDefTexture>(m_Editor, m_Atlas.m_Textures,
-                                                                          [](AtlasDefTexture & tex) { return tex.m_Filename.ToString(); }, m_TextureListFrame.get());
+          [](AtlasDefTexture & tex) { return tex.m_Filename.ToString(); }, m_TextureListFrame.get());
 
   m_TextureListFrame->SetAddDelegate([=] { OpenAddTextureFileDialog(); });
   m_TextureList->SetSelectionCallback(GenericListSelectionDelegate(&AtlasTextureEditor::HandleSelectionChanged, this));
@@ -87,19 +90,27 @@ void AtlasTextureEditor::handleImportDialogClosed()
   }
 }
 
+void AtlasTextureEditor::handleAddElement()
+{
+  if(m_Atlas.m_Textures.HighestIndex() < 0)
+  {
+    return;
+  }
+
+  m_AddElementCallback(m_TextureList->GetSelection());
+}
+
 void AtlasTextureEditor::HandleSelectionChanged(int selection)
 {
   if (selection == -1)
   {
     m_Texture->UnloadTexture();
-    m_PropertyEditor->Unload();
 
     m_SelectedTextureUpdater.ClearPath();
   }
   else
   {
     m_Texture->LoadTexture(m_Atlas.m_Textures[selection].m_Filename.data());
-    m_PropertyEditor->LoadStruct(m_Editor, m_Atlas.m_Textures[selection], true);
 
     auto texture_widget_update = [=]()
     {

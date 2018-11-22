@@ -34,9 +34,9 @@ struct StormReflEnumInfo<AtlasDefType>::elems<1>
 template <>
 struct StormReflEnumInfo<AtlasDefType>::elems<2>
 {
-  static constexpr auto GetName() { return "k3SliceVerticle"; }
+  static constexpr auto GetName() { return "k3SliceVertical"; }
   static constexpr auto GetNameHash() { return 0xFA5B27CC; }
-  static constexpr auto GetValue() { return AtlasDefType::k3SliceVerticle; }
+  static constexpr auto GetValue() { return AtlasDefType::k3SliceVertical; }
 };
 
 template <>
@@ -136,10 +136,268 @@ struct StormReflTypeInfo<AtlasDefTexture>::annotations<0>::annoation<0>
 };
 
 template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 9;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "AtlasDefElementPosition"; }
+  static constexpr auto GetNameHash() { return 0xA116D4B1; }
+  static AtlasDefElementPosition & GetDefault() { static AtlasDefElementPosition def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<AtlasDefElementPosition *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const AtlasDefElementPosition *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<AtlasDefElementPosition *>(ptr);
+    if(typeid(AtlasDefElementPosition).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const AtlasDefElementPosition *>(ptr);
+    if(typeid(AtlasDefElementPosition).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<0>
+{
+  using member_type = REnum<AtlasDefType>; // REnum<AtlasDefType>
+  static constexpr auto GetName() { return "m_Type"; }
+  static constexpr auto GetType() { return "REnum<AtlasDefType>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
+  static constexpr unsigned GetTypeNameHash() { return 0x10B463C8; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_Type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_Type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_Type; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<0, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, REnum<AtlasDefType>> & Get() { return self.m_Type; }
+  std::add_const_t<std::remove_reference_t<REnum<AtlasDefType>>> & Get() const { return self.m_Type; }
+  void SetDefault() { self.m_Type = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_Type; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<1>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_StartX"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x87158667; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_StartX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<1, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_StartX; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartX; }
+  void SetDefault() { self.m_StartX = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_StartX; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<2>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_StartY"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF012B6F1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_StartY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<2, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_StartY; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartY; }
+  void SetDefault() { self.m_StartY = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_StartY; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<3>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_EndX"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3549DC7D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_EndX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<3, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_EndX; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndX; }
+  void SetDefault() { self.m_EndX = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_EndX; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<4>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_EndY"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x424EECEB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_EndY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<4, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_EndY; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndY; }
+  void SetDefault() { self.m_EndY = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_EndY; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<5>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_StartOffsetX"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x6AFBDEBC; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartOffsetX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<5, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_StartOffsetX; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartOffsetX; }
+  void SetDefault() { self.m_StartOffsetX = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_StartOffsetX; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<6>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_StartOffsetY"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x1DFCEE2A; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartOffsetY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<6, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_StartOffsetY; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartOffsetY; }
+  void SetDefault() { self.m_StartOffsetY = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_StartOffsetY; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<7>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_EndOffsetX"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xFD14B24F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndOffsetX; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetX; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetX; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<7, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<7>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_EndOffsetX; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndOffsetX; }
+  void SetDefault() { self.m_EndOffsetX = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_EndOffsetX; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<8>
+{
+  using member_type = RInt; // RNumber<int>
+  static constexpr auto GetName() { return "m_EndOffsetY"; }
+  static constexpr auto GetType() { return "RNumber<int>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x8A1382D9; }
+  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr auto GetFieldIndex() { return 8; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndOffsetY; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetY; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetY; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<8, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<8>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RInt> & Get() { return self.m_EndOffsetY; }
+  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndOffsetY; }
+  void SetDefault() { self.m_EndOffsetY = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_EndOffsetY; }
+};
+
+template <>
 struct StormReflTypeInfo<AtlasDefElement>
 {
   using MyBase = void;
-  static constexpr int fields_n = 11;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -242,15 +500,15 @@ struct StormReflTypeInfo<AtlasDefElement>::field_data<1, Self> : public StormRef
 template <>
 struct StormReflTypeInfo<AtlasDefElement>::field_data_static<2>
 {
-  using member_type = REnum<AtlasDefType>; // REnum<AtlasDefType>
-  static constexpr auto GetName() { return "m_Type"; }
-  static constexpr auto GetType() { return "REnum<AtlasDefType>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
-  static constexpr unsigned GetTypeNameHash() { return 0x10B463C8; }
+  using member_type = AtlasDefElementPosition; // AtlasDefElementPosition
+  static constexpr auto GetName() { return "m_Data"; }
+  static constexpr auto GetType() { return "AtlasDefElementPosition"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
+  static constexpr unsigned GetTypeNameHash() { return 0xA116D4B1; }
   static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_Type; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_Type; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_Type; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_Data; }
 };
 
 template <typename Self>
@@ -258,201 +516,9 @@ struct StormReflTypeInfo<AtlasDefElement>::field_data<2, Self> : public StormRef
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, REnum<AtlasDefType>> & Get() { return self.m_Type; }
-  std::add_const_t<std::remove_reference_t<REnum<AtlasDefType>>> & Get() const { return self.m_Type; }
-  void SetDefault() { self.m_Type = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_Type; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<3>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_StartX"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x87158667; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_StartX; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_StartX; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_StartX; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<3, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<3>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_StartX; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartX; }
-  void SetDefault() { self.m_StartX = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_StartX; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<4>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_StartY"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xF012B6F1; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 4; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_StartY; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_StartY; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_StartY; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<4, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<4>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_StartY; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartY; }
-  void SetDefault() { self.m_StartY = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_StartY; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<5>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_EndX"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x3549DC7D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 5; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_EndX; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_EndX; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_EndX; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<5, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<5>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_EndX; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndX; }
-  void SetDefault() { self.m_EndX = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_EndX; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<6>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_EndY"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x424EECEB; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 6; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_EndY; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_EndY; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_EndY; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<6, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<6>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_EndY; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndY; }
-  void SetDefault() { self.m_EndY = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_EndY; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<7>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_StartOffsetX"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x6AFBDEBC; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 7; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_StartOffsetX; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_StartOffsetX; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_StartOffsetX; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<7, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<7>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_StartOffsetX; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartOffsetX; }
-  void SetDefault() { self.m_StartOffsetX = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_StartOffsetX; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<8>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_StartOffsetY"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x1DFCEE2A; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 8; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_StartOffsetY; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_StartOffsetY; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_StartOffsetY; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<8, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<8>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_StartOffsetY; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_StartOffsetY; }
-  void SetDefault() { self.m_StartOffsetY = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_StartOffsetY; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<9>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_EndOffsetX"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xFD14B24F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 9; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_EndOffsetX; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_EndOffsetX; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_EndOffsetX; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<9, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<9>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_EndOffsetX; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndOffsetX; }
-  void SetDefault() { self.m_EndOffsetX = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_EndOffsetX; }
-};
-
-template <>
-struct StormReflTypeInfo<AtlasDefElement>::field_data_static<10>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_EndOffsetY"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x8A1382D9; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr auto GetFieldIndex() { return 10; }
-  static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_EndOffsetY; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_EndOffsetY; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElement *>(obj); return &ptr->m_EndOffsetY; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<AtlasDefElement>::field_data<10, Self> : public StormReflTypeInfo<AtlasDefElement>::field_data_static<10>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_EndOffsetY; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndOffsetY; }
-  void SetDefault() { self.m_EndOffsetY = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_EndOffsetY; }
+  match_const_t<Self, AtlasDefElementPosition> & Get() { return self.m_Data; }
+  std::add_const_t<std::remove_reference_t<AtlasDefElementPosition>> & Get() const { return self.m_Data; }
+  void SetDefault() { self.m_Data = StormReflTypeInfo<AtlasDefElement>::GetDefault().m_Data; }
 };
 
 template <>
@@ -549,7 +615,7 @@ namespace StormReflFileInfo
 {
   struct AtlasDef
   {
-    static const int types_n = 3;
+    static const int types_n = 4;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -562,11 +628,17 @@ namespace StormReflFileInfo
   template <>
   struct AtlasDef::type_info<1>
   {
-    using type = ::AtlasDefElement;
+    using type = ::AtlasDefElementPosition;
   };
 
   template <>
   struct AtlasDef::type_info<2>
+  {
+    using type = ::AtlasDefElement;
+  };
+
+  template <>
+  struct AtlasDef::type_info<3>
   {
     using type = ::AtlasDef;
   };

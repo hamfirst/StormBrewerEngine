@@ -9,12 +9,9 @@
 
 #include "Runtime/Atlas/AtlasDef.refl.h"
 
-#include "SpriteBaseAnimationEditor.h"
 #include "AtlasTextureEditor.h"
-#include "SpriteBaseSkinEditor.h"
-#include "SpriteBaseTextureFrameList.h"
-#include "SpriteBaseTextureLoadList.h"
-#include "SpriteBaseTextureImportDialog.h"
+#include "AtlasElementEditorContainer.h"
+#include "AtlasTextureLoadList.h"
 
 class AtlasEditor : public DocumentEditorWidgetBase
 {
@@ -26,12 +23,16 @@ public:
 
 protected:
 
+  void AddNewElement(int texture_index);
+
+protected:
+
   AtlasDef & m_Atlas;
-  SpriteBaseTextureLoadList m_TextureAccess;
+  AtlasTextureLoadList m_TextureAccess;
 
   std::unique_ptr<QTabWidget> m_TabWidget;
   std::unique_ptr<QHBoxLayout> m_Layout;
 
   std::unique_ptr<AtlasTextureEditor> m_TextureEditor;
-  std::unique_ptr<SpriteBaseTextureFrameList> m_FrameList;
+  std::unique_ptr<AtlasElementEditorContainer> m_ElementEditor;
 };

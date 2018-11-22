@@ -51,27 +51,29 @@ void AtlasEngineData::Load()
       continue;
     }
 
-    switch((AtlasDefType)elem.second.m_Type)
+    auto & elem_data = elem.second.m_Data;
+
+    switch((AtlasDefType)elem_data.m_Type)
     {
       case AtlasDefType::kImage:
-        lookup_data.m_MinSize.x = elem.second.m_EndX - elem.second.m_StartX + 1;
-        lookup_data.m_MinSize.y = elem.second.m_EndY - elem.second.m_StartY + 1;
+        lookup_data.m_MinSize.x = elem_data.m_EndX - elem_data.m_StartX + 1;
+        lookup_data.m_MinSize.y = elem_data.m_EndY - elem_data.m_StartY + 1;
         break;
       case AtlasDefType::kRepeat:
         lookup_data.m_MinSize.x = 0;
         lookup_data.m_MinSize.y = 0;
         break;
       case AtlasDefType::k3SliceHorizontal:
-        lookup_data.m_MinSize.x = elem.second.m_StartOffsetX + elem.second.m_EndOffsetX;
-        lookup_data.m_MinSize.y = elem.second.m_EndY - elem.second.m_StartY + 1;
+        lookup_data.m_MinSize.x = elem_data.m_StartOffsetX + elem_data.m_EndOffsetX;
+        lookup_data.m_MinSize.y = elem_data.m_EndY - elem_data.m_StartY + 1;
         break;
-      case AtlasDefType::k3SliceVerticle:
-        lookup_data.m_MinSize.x = elem.second.m_EndX - elem.second.m_StartX + 1;
-        lookup_data.m_MinSize.x = elem.second.m_StartOffsetY + elem.second.m_EndOffsetY;
+      case AtlasDefType::k3SliceVertical:
+        lookup_data.m_MinSize.x = elem_data.m_EndX - elem_data.m_StartX + 1;
+        lookup_data.m_MinSize.x = elem_data.m_StartOffsetY + elem_data.m_EndOffsetY;
         break;
       case AtlasDefType::k9Slice:
-        lookup_data.m_MinSize.x = elem.second.m_StartOffsetX + elem.second.m_EndOffsetX;
-        lookup_data.m_MinSize.x = elem.second.m_StartOffsetY + elem.second.m_EndOffsetY;
+        lookup_data.m_MinSize.x = elem_data.m_StartOffsetX + elem_data.m_EndOffsetX;
+        lookup_data.m_MinSize.x = elem_data.m_StartOffsetY + elem_data.m_EndOffsetY;
         break;
     }
 
@@ -106,7 +108,7 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
     return;
   }
 
-  auto & elem_def = m_Atlas.m_Elements[index_lookup->m_Index];
+  auto & elem_def = m_Atlas.m_Elements[index_lookup->m_Index].m_Data;
   auto & texture = m_Textures[index_lookup->m_TextureIndex];
 
   if(texture.IsLoaded() == false)
@@ -230,7 +232,7 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, texture_height };
     buffer_builder.AddQuad(quad);
   }
-  else if (elem_def.m_Type == AtlasDefType::k3SliceVerticle)
+  else if (elem_def.m_Type == AtlasDefType::k3SliceVertical)
   {
     int width = (int)(position.m_End.x - position.m_Start.x);
     int texture_width = (int)(position.m_End.x - elem_def.m_StartX);

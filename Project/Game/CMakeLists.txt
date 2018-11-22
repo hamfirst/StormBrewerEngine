@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
-set(GENERIC_SRC_Game
+set(GENERIC_SRC_Game 
             GameServerTypes.cpp
             GameServerEventSender.cpp
             GameController.refl.cpp
             GameStage.cpp
             GameMessages.refl.cpp
-  GameCommon.cpp
+            GameCommon.cpp
             GameNetworkEvents.refl.cpp
             GameNetworkExternals.refl.cpp
             Configs/ProjectileConfig.refl.reg.cpp
@@ -51,7 +51,7 @@ set(GENERIC_HEADER_Game
             GameNetworkEvents.refl.h
             GameNetworkData.refl.meta.h
             GameMessages.refl.h
-  GameNetworkExternals.refl.h
+            GameNetworkExternals.refl.h
             GameController.refl.h
             GameServerTypes.h
             GameSimulationEventCallbacks.h

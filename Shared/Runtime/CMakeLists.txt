@@ -41,6 +41,8 @@ set(GENERIC_SRC_Runtime
             VisualEffect/VisualEffectDef.refl.cpp
             VisualEffect/VisualEffectResource.cpp
             Asset/Asset.cpp
+            Atlas/AtlasResource.cpp
+            Atlas/AtlasDef.refl.cpp
             ServerObject/ServerObjectInitData.refl.cpp
             ServerObject/ServerObjectHandle.cpp
             ServerObject/ServerObjectDef.refl.cpp
@@ -61,8 +63,6 @@ set(GENERIC_SRC_Runtime
             SpriteBase/SpriteAnimationEventDef.refl.cpp
             Anchor/AnchorDef.refl.cpp
             Anchor/AnchorTypeDatabase.cpp
-            Atlas/AtlasDef.refl.cpp
-            Atlas/AtlasResource.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -137,6 +137,9 @@ set(GENERIC_HEADER_Runtime
             VisualEffect/VisualEffectDef.refl.meta.h
             VisualEffect/VisualEffectDef.refl.h
             Asset/Asset.h
+            Atlas/AtlasDef.refl.h
+            Atlas/AtlasResource.h
+            Atlas/AtlasDef.refl.meta.h
             ServerObject/ServerObjectManager.h
             ServerObject/ServerObjectSerialize.h
             ServerObject/ServerObjectDef.refl.h
@@ -178,9 +181,6 @@ set(GENERIC_HEADER_Runtime
             Anchor/AnchorDef.refl.meta.h
             Anchor/AnchorTypeRegister.h
             Anchor/AnchorDef.refl.h
-            Atlas/AtlasDef.refl.h
-            Atlas/AtlasDef.refl.meta.h
-            Atlas/AtlasResource.h
             #HEADER_PLACEHOLDER
             )
 
@@ -199,12 +199,12 @@ set(GENERIC_REFL_Runtime
             Path/PathDef.refl.h
             TileSheet/TileSheetDef.refl.h
             VisualEffect/VisualEffectDef.refl.h
+            Atlas/AtlasDef.refl.h
             ServerObject/ServerObjectDef.refl.h
             ServerObject/ServerObjectInitData.refl.h
             SpriteBase/SpriteAnimationEventDef.refl.h
             SpriteBase/SpriteBaseDef.refl.h
             Anchor/AnchorDef.refl.h
-            Atlas/AtlasDef.refl.h
             #REFL_PLACEHOLDER
             )
 

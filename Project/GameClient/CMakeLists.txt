@@ -24,7 +24,7 @@ set(GENERIC_SRC_GameClient
             GameClientInstanceContainer.cpp
             GameModeLogo.cpp
             GameNetworkClient.cpp
-  GameModeEndGame.cpp
+            GameModeEndGame.cpp
             GameCamera.cpp
             GameMode.cpp
             GameModeOfflineStaging.cpp
@@ -70,7 +70,7 @@ set(GENERIC_HEADER_GameClient
             GameClientSystems.h
             GameModeOnlineStaging.h
             GameClientInstanceContainer.h
-  GameClientLevelLoader.h
+            GameClientLevelLoader.h
             GameClientController.refl.meta.h
             GameNetworkClient.h
             GameClientController.refl.h
