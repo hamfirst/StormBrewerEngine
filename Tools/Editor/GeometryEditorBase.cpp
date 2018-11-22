@@ -77,6 +77,11 @@ NullOptPtr<TextureAsset> GeometryEditorBase::GetTexture()
   return nullptr;
 }
 
+bool GeometryEditorBase::UpperLeftOrigin() const
+{
+  return false;
+}
+
 Vector2 GeometryEditorBase::TransformScreenToFrame(const Vector2 & pos)
 {
   auto p = pos;
@@ -145,11 +150,6 @@ void GeometryEditorBase::DrawCornerControl(const Vector2 & pos)
 void GeometryEditorBase::DrawHighlightedCornerControl(const Vector2 & pos)
 {
   DrawUtil::DrawHighlightedCornerControl(m_GeometryBuidler.Value(), pos, m_Magnification);
-}
-
-void GeometryEditorBase::RefreshWatcher()
-{
-
 }
 
 void GeometryEditorBase::DrawData()
@@ -228,9 +228,14 @@ void GeometryEditorBase::paintGL()
 
   auto f = context()->functions();
 
+  f->glClearColor(color.r, color.g, color.b, color.a);
+  f->glClear(GL_COLOR_BUFFER_BIT);
+
   auto frame_size = GetFrameSize();
   auto frame_id = GetFrameId();
   auto texture = GetTexture();
+
+  bool upper_left_origin = UpperLeftOrigin();
 
   if(texture == nullptr)
   {
@@ -238,41 +243,40 @@ void GeometryEditorBase::paintGL()
   }
 
   Vector2 texture_size = texture->GetSize();
+  Box border_rect;
 
   if (texture_size.x == 0 || texture_size.y == 0)
   {
     return;
   }
 
+  RenderVec4 matrix = RenderVec4{1.0f, 0.0f, 0.0f, 1.0f};
+  if (m_MirrorX)
+  {
+    matrix.x *= -1.0f;
+  }
+
+  if (m_MirrorY)
+  {
+    matrix.w *= -1.0f;
+  }
+
+  auto screen_start = TransformScreenToFrame(Vector2(0, 0));
+  auto screen_end = TransformScreenToFrame(Vector2(width() - 1, height() - 1));
+
+  RenderVec2 resolution{width(), height()};
+  resolution /= m_Magnification;
+
   m_RenderState.MakeCurrent();
   m_RenderState.EnableBlendMode();
 
+  auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+
   if(frame_size)
   {
-    Box frame_box = Box::FromFrameCenterAndSize(Vector2{}, *frame_size);
+    Box frame_box = upper_left_origin ? Box::FromPoints({}, *frame_size) : Box::FromFrameCenterAndSize(Vector2{}, *frame_size);
+    border_rect = frame_box;
 
-    RenderVec2 resolution{width(), height()};
-    resolution /= m_Magnification;
-
-    auto screen_start = TransformScreenToFrame(Vector2(0, 0));
-    auto screen_end = TransformScreenToFrame(Vector2(width() - 1, height() - 1));
-
-    LineVertexBufferBuilder line_builder;
-    LineVertexBuilderInfo line;
-    line.m_TextureSize = Vector2(1, 1);
-
-    RenderVec4 matrix = RenderVec4{1.0f, 0.0f, 0.0f, 1.0f};
-    if (m_MirrorX)
-    {
-      matrix.x *= -1.0f;
-    }
-
-    if (m_MirrorY)
-    {
-      matrix.w *= -1.0f;
-    }
-
-    auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
     m_RenderState.BindShader(default_shader);
     default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
     default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
@@ -287,84 +291,10 @@ void GeometryEditorBase::paintGL()
 
     m_RenderState.BindVertexBuffer(m_VertexBuffer);
     m_RenderState.Draw();
-
-    frame_box.m_End += Vector2(1, 1);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
-
-    if (m_Magnification >= 4)
-    {
-      for (int x = screen_start.x - 1; x <= screen_end.x + 1; x++)
-      {
-        line.m_Start.x = x;
-        line.m_Start.y = screen_start.y + 1;
-        line.m_End.x = x;
-        line.m_End.y = screen_end.y - 1;
-        line.m_Color = Color(128, 128, 128, 50);
-        line_builder.AddLine(line);
-      }
-
-      for (int y = screen_end.y - 1; y <= screen_start.y + 1; y++)
-      {
-        line.m_Start.x = screen_start.x - 1;
-        line.m_Start.y = y;
-        line.m_End.x = screen_end.x + 1;
-        line.m_End.y = y;
-        line.m_Color = Color(128, 128, 128, 50);
-        line_builder.AddLine(line);
-      }
-
-      for (int x = frame_box.m_Start.x; x <= frame_box.m_End.x; x++)
-      {
-        line.m_Start.x = x;
-        line.m_Start.y = frame_box.m_Start.y;
-        line.m_End.x = x;
-        line.m_End.y = frame_box.m_End.y;
-        line.m_Color = Color(0, 0, 0, 128);
-        line_builder.AddLine(line);
-      }
-
-      for (int y = frame_box.m_Start.y; y <= frame_box.m_End.y; y++)
-      {
-        line.m_Start.x = frame_box.m_Start.x;
-        line.m_Start.y = y;
-        line.m_End.x = frame_box.m_End.x;
-        line.m_End.y = y;
-        line.m_Color = Color(0, 0, 0, 128);
-        line_builder.AddLine(line);
-      }
-
-      m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
-
-      line_builder.FillVertexBuffer(m_VertexBuffer);
-      m_RenderState.BindVertexBuffer(m_VertexBuffer);
-      m_RenderState.Draw();
-    }
   }
   else
   {
-    RenderVec2 resolution{width(), height()};
-    resolution /= m_Magnification;
 
-    auto screen_start = TransformScreenToFrame(Vector2(0, 0));
-    auto screen_end = TransformScreenToFrame(Vector2(width() - 1, height() - 1));
-
-    LineVertexBufferBuilder line_builder;
-    LineVertexBuilderInfo line;
-    line.m_TextureSize = Vector2(1, 1);
-
-    RenderVec4 matrix = RenderVec4{1.0f, 0.0f, 0.0f, 1.0f};
-    if (m_MirrorX)
-    {
-      matrix.x *= -1.0f;
-    }
-
-    if (m_MirrorY)
-    {
-      matrix.w *= -1.0f;
-    }
-
-    auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
     m_RenderState.BindShader(default_shader);
     default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
     default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
@@ -373,12 +303,14 @@ void GeometryEditorBase::paintGL()
 
     m_RenderState.BindTexture(*texture);
 
+    Box texture_box = upper_left_origin ? Box::FromPoints({}, texture_size) : Box::FromFrameCenterAndSize(Vector2{}, texture_size);
+    border_rect = texture_box;
 
     QuadVertexBufferBuilder builder;
     QuadVertexBuilderInfo quad;
 
-    quad.m_Position = Box::FromFrameCenterAndSize(Vector2{}, texture_size);
-    quad.m_TexCoords = Box::FromFrameCenterAndSize(Vector2{}, texture_size);
+    quad.m_Position = texture_box;
+    quad.m_TexCoords = Box::FromPoints({}, texture_size);
     quad.m_TextureSize = texture->GetSize();
     quad.m_Color = Color(255, 255, 255, 255);
     builder.AddQuad(quad);
@@ -387,69 +319,75 @@ void GeometryEditorBase::paintGL()
 
     m_RenderState.BindVertexBuffer(m_VertexBuffer);
     m_RenderState.Draw();
+  }
 
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
 
-    if (m_Magnification >= 4)
+  LineVertexBufferBuilder line_builder;
+  LineVertexBuilderInfo line;
+  line.m_TextureSize = Vector2(1, 1);
+
+
+
+  if (m_Magnification >= 4)
+  {
+    for (int x = screen_start.x - 1; x <= screen_end.x + 1; x++)
     {
-      for (int x = screen_start.x - 1; x <= screen_end.x + 1; x++)
-      {
-        line.m_Start.x = x;
-        line.m_Start.y = screen_start.y + 1;
-        line.m_End.x = x;
-        line.m_End.y = screen_end.y - 1;
-        line.m_Color = Color(128, 128, 128, 50);
-        line_builder.AddLine(line);
-      }
-
-      for (int y = screen_end.y - 1; y <= screen_start.y + 1; y++)
-      {
-        line.m_Start.x = screen_start.x - 1;
-        line.m_Start.y = y;
-        line.m_End.x = screen_end.x + 1;
-        line.m_End.y = y;
-        line.m_Color = Color(128, 128, 128, 50);
-        line_builder.AddLine(line);
-      }
-
-      for (int x = 0; x <= texture_size.x; x++)
-      {
-        line.m_Start.x = x;
-        line.m_Start.y = 0;
-        line.m_End.x = x;
-        line.m_End.y = texture_size.y;
-        line.m_Color = Color(0, 0, 0, 128);
-        line_builder.AddLine(line);
-      }
-
-      for (int y = 0; y <= texture_size.y; y++)
-      {
-        line.m_Start.x = 0;
-        line.m_Start.y = y;
-        line.m_End.x = texture_size.x;
-        line.m_End.y = y;
-        line.m_Color = Color(0, 0, 0, 128);
-        line_builder.AddLine(line);
-      }
-
-      m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
-
-      line_builder.FillVertexBuffer(m_VertexBuffer);
-      m_RenderState.BindVertexBuffer(m_VertexBuffer);
-      m_RenderState.Draw();
+      line.m_Start.x = x;
+      line.m_Start.y = screen_start.y + 1;
+      line.m_End.x = x;
+      line.m_End.y = screen_end.y - 1;
+      line.m_Color = Color(128, 128, 128, 50);
+      line_builder.AddLine(line);
     }
 
-    m_RenderState.BindShader(m_Shader);
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{m_Center} * -1.0f);
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
+    for (int y = screen_end.y - 1; y <= screen_start.y + 1; y++)
+    {
+      line.m_Start.x = screen_start.x - 1;
+      line.m_Start.y = y;
+      line.m_End.x = screen_end.x + 1;
+      line.m_End.y = y;
+      line.m_Color = Color(128, 128, 128, 50);
+      line_builder.AddLine(line);
+    }
 
-    m_GeometryBuidler.Emplace();
-    m_GeometryBuidler->Rectangle(Vector2{}, texture_size, 3.0f / m_Magnification, Color(0, 0, 0, 255));
+    for (int x = border_rect.m_Start.x; x <= border_rect.m_End.x; x++)
+    {
+      line.m_Start.x = x;
+      line.m_Start.y = border_rect.m_Start.y;
+      line.m_End.x = x;
+      line.m_End.y = border_rect.m_End.y;
+      line.m_Color = Color(0, 0, 0, 128);
+      line_builder.AddLine(line);
+    }
+
+    for (int y = border_rect.m_Start.y; y <= border_rect.m_End.y; y++)
+    {
+      line.m_Start.x = border_rect.m_Start.x;
+      line.m_Start.y = y;
+      line.m_End.x = border_rect.m_End.x;
+      line.m_End.y = y;
+      line.m_Color = Color(0, 0, 0, 128);
+      line_builder.AddLine(line);
+    }
+
+    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+
+    line_builder.FillVertexBuffer(m_VertexBuffer);
+    m_RenderState.BindVertexBuffer(m_VertexBuffer);
+    m_RenderState.Draw();
   }
+
+  m_RenderState.BindShader(m_Shader);
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{m_Center} * -1.0f);
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
+
+  m_GeometryBuidler.Emplace();
+  m_GeometryBuidler->Rectangle(border_rect, 3.0f / m_Magnification, Color(0, 0, 0, 255));
 
   DrawData();
 
@@ -598,16 +536,21 @@ void GeometryEditorBase::mouseReleaseEvent(QMouseEvent * event)
 
 void GeometryEditorBase::wheelEvent(QWheelEvent *event)
 {
-  if (event->delta() < 0)
+  m_WheelDelta += event->delta();
+  while (m_WheelDelta > 120)
   {
     if (m_Magnification > 1)
     {
       m_Magnification -= m_Magnification / 6 + 1;
     }
+
+    m_WheelDelta -= 120;
   }
-  else
+
+  while(m_WheelDelta < 0)
   {
     m_Magnification += m_Magnification / 6 + 1;
+    m_WheelDelta += 120;
   }
 
   emit magnificationChanged(m_Magnification);

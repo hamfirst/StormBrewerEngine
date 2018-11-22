@@ -45,6 +45,7 @@ protected:
   virtual Optional<Vector2> GetFrameSize();
   virtual uint64_t GetFrameId();
   virtual NullOptPtr<TextureAsset> GetTexture();
+  virtual bool UpperLeftOrigin() const;
 
   Vector2 TransformScreenToFrame(const Vector2 & pos);
   Vector2 TransformFrameToScreen(const Vector2 & pos);
@@ -58,8 +59,6 @@ protected:
   void DrawHighlightedLine(const Vector2 & a, const Vector2 & b);
   void DrawCornerControl(const Vector2 & pos);
   void DrawHighlightedCornerControl(const Vector2 & pos);
-
-  virtual void RefreshWatcher();
 
   virtual void DrawData();
   virtual void DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl);
@@ -93,6 +92,7 @@ protected:
 
   RenderVec2 m_Center = {};
   int m_Magnification = 4;
+  int m_WheelDelta = 0;
 
   bool m_MirrorX = false;
   bool m_MirrorY = false;

@@ -27,12 +27,15 @@ set(GENERIC_SRC_Editor
             ConnectingDialog.ui
             MapEditorToolVolumeMultiEditor.cpp
             MapEditorEffectLayer.cpp
+            AtlasTextureImportDialog.cpp
             VisualEffectEditorNodeList.cpp
             MapEditorToolAnchorEditor.cpp
             MapEditorEntityLayerManager.cpp
             UIEditorNodeList.cpp
             FrameEditorAnchorManager.cpp
+            AtlasTextureEditor.cpp
             SpriteBaseAnimationEditor.cpp
+            AtlasElementEditorContainer.cpp
             SpriteBaseSkinListElement.cpp
             DocumentEditorWidgetBase.cpp
             GameClientWidget.cpp
@@ -58,6 +61,7 @@ set(GENERIC_SRC_Editor
             MapEditorEntitySelector.cpp
             SpriteBaseSkinEditor.cpp
             MapEditorVolume.cpp
+            GeometryEditorBase.cpp
             MapEditorToolServerObjectLayerSelect.cpp
             MapEditorToolPathCreate.cpp
             MapEditorToolServerObjectLayerDraw.cpp
@@ -71,6 +75,7 @@ set(GENERIC_SRC_Editor
             FrameEditorAnchorEditor.cpp
             MapEditorVolumeManager.cpp
             MapEditorToolEntityLayerDraw.cpp
+            AtlasTextureImportDialog.ui
             TextureViewer.cpp
             FontViewer.cpp
             VisualEffectEditorEquationList.cpp
@@ -102,10 +107,12 @@ set(GENERIC_SRC_Editor
             MapEditorParalaxObjectSelector.cpp
             MapEditorTileSelector.cpp
             UIEquationEditor.cpp
+            AtlasElementEditor.cpp
             GenericList.cpp
             VisualEffectEditorPropertyContainer.cpp
             UIEditorEquationList.cpp
             SimpleLabelListElement.cpp
+            AtlasEditor.cpp
             SelectFromListDialog.ui
             UIEditorViewer.cpp
             EditorContainer.qrc
@@ -145,13 +152,8 @@ set(GENERIC_SRC_Editor
             MapEditorToolManualTileLayerPreview.cpp
             FrameEditorContainer.cpp
             PropertyEditorWidget.cpp
-            GenericComboBox.cpp
-            AtlasEditor.cpp
             AtlasTextureLoadList.cpp
-            AtlasTextureEditor.cpp
-            AtlasTextureImportDialog.cpp
-            GeometryEditorBase.cpp
-            AtlasElementEditor.cpp
+            GenericComboBox.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -162,6 +164,7 @@ set(GENERIC_HEADER_Editor
             PropertyEditorNumber.h
             DrawUtil.h
             MapEditorLayer.h
+            AtlasElementEditor.h
             SpriteBaseAnimationFrameListEditorDialog.h
             MapEditorParalaxLayer.h
             UIEditor.h
@@ -215,6 +218,7 @@ set(GENERIC_HEADER_Editor
             FrameEditorContainer.h
             SpriteBaseTextureFrameElement.h
             DocumentValueWatcher.h
+            AtlasElementEditorContainer.h
             PropertyEditorEnum.h
             MapEditorVolume.h
             MapEditorTypes.refl.h
@@ -240,10 +244,12 @@ set(GENERIC_HEADER_Editor
             MapEditorToolAllLayers.h
             PropertyEditorBool.h
             FrameEditorMultiBox.h
+            GeometryEditorBase.h
             PropertyEditor.h
             MapEditorToolAnchorEditor.h
             VisualEffectEditorViewer.h
             DocumentEditorConfig.h
+            AtlasTextureImportDialog.h
             SpriteBaseSkinListTextureElement.h
             MapEditorServerObjectSelector.h
             PropertyEditorWidget.h
@@ -254,6 +260,7 @@ set(GENERIC_HEADER_Editor
             MapEditorToolVolumeCreate.h
             SpriteBaseAnimationEventEditorDialog.h
             MapEditorVolumeManager.h
+            AtlasTextureEditor.h
             MapEditorToolVolumeMultiEditor.h
             PropertyEditorList.h
             PropertyEditorHandle.h
@@ -267,11 +274,13 @@ set(GENERIC_HEADER_Editor
             TextureViewerWidget.h
             PropertyEditorPolymorphic.h
             SelectFromListDialog.h
+            AtlasEditor.h
             MapEditorToolEntityLayerDraw.h
             MapEditorTypes.refl.meta.h
             GenericList.h
             DocumentEditorBase.h
             MapEditorToolVolumeEditor.h
+            AtlasTextureLoadList.h
             MapEditorAnchor.h
             SpriteBaseTextureEditor.h
             DrawUtilQt.h
@@ -292,12 +301,6 @@ set(GENERIC_HEADER_Editor
             SpriteBaseSkinListElement.h
             VisualEffectEditor.h
             FrameEditorSingleBox.h
-            AtlasEditor.h
-            AtlasTextureLoadList.h
-            AtlasTextureEditor.h
-            AtlasTextureImportDialog.h
-            GeometryEditorBase.h
-            AtlasElementEditor.h
             #HEADER_PLACEHOLDER
             )
 

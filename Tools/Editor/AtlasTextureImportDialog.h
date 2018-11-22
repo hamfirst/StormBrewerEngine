@@ -10,7 +10,7 @@
 
 #include "TextureViewerWidget.h"
 
-#include "ui_SpriteTextureImportDialog.h"
+#include "ui_AtlasTextureImportDialog.h"
 
 class AtlasTextureImportDialog : public QDialog
 {
@@ -22,22 +22,16 @@ public:
 
 protected:
 
-  void TextureLoaded(NullOptPtr<TextureAsset> asset);
-
   virtual void closeEvent(QCloseEvent * ev) override;
-
-public slots:
-  void handleFrameWidthChanged(const QString & val);
-  void handleFrameHeightChanged(const QString & val);
 
 signals:
   void closed();
 
 private:
 
-  Ui::SpriteTextureImport ui;
+  Ui::AtlasTextureImport ui;
 
-  TextureAsset::LoadCallbackLink m_TextureReference;
+  TextureAsset::AssetRef m_TextureReference;
   std::unique_ptr<TextureViewerWidget> m_TextureView;
 
   AtlasDefTexture m_Data;

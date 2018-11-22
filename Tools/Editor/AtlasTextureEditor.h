@@ -4,6 +4,7 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QPushButton>
 
 #include "Runtime/Atlas/AtlasDef.refl.h"
 
@@ -21,7 +22,7 @@ class AtlasTextureEditor : public QWidget
 {
   Q_OBJECT;
 public:
-  AtlasTextureEditor(NotNullPtr<AtlasEditor> editor, AtlasDef & sprite, QWidget * parent = nullptr);
+  AtlasTextureEditor(NotNullPtr<AtlasEditor> editor, AtlasDef & sprite, Delegate<void, int> && add_element_cb, QWidget * parent = nullptr);
 
 protected:
 
@@ -32,22 +33,23 @@ public slots:
 
   void handleImportDialogAccepted();
   void handleImportDialogClosed();
+  void handleAddElement();
 
 
 private:
   NotNullPtr<AtlasEditor> m_Editor;
 
   AtlasDef & m_Atlas;
+  Delegate<void, int> m_AddElementCallback;
 
   std::unique_ptr<QGridLayout> m_Layout;
   std::unique_ptr<TextureViewerWidget> m_Texture;
   std::unique_ptr<GenericListFrame> m_TextureListFrame;
-  std::unique_ptr<GenericFrame> m_TextureProperties;
+  std::unique_ptr<QPushButton> m_AddNewElement;
 
   std::vector<std::unique_ptr<AtlasTextureImportDialog>> m_ImportDialogs;
 
   GenericList * m_TextureList;
-  PropertyEditor * m_PropertyEditor;
 
   DocumentValueWatcher m_SelectedTextureUpdater;
 };

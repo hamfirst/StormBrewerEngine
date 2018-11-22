@@ -20,11 +20,10 @@
       <config projectName="StormBrewerEngine" targetName="StormData" />
       <config projectName="StormBrewerEngine" targetName="GameServerExe" />
       <config projectName="StormBrewerEngine" targetName="TemplateLib" />
-      <config projectName="StormBrewerEngine" targetName="http-parser" />
       <config projectName="StormBrewerEngine" targetName="asio" />
       <config projectName="StormBrewerEngine" targetName="libgit2_clar" />
-      <config projectName="StormBrewerEngine" targetName="Engine" />
       <config projectName="StormBrewerEngine" targetName="usrsctp" />
+      <config projectName="StormBrewerEngine" targetName="Engine" />
       <config projectName="StormBrewerEngine" targetName="editor" />
       <config projectName="StormBrewerEngine" targetName="SDL2main" />
       <config projectName="StormBrewerEngine" targetName="lua" />
@@ -77,26 +76,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureLoadList.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureLoadList.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/Runtime.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/Runtime.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasEditor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -126,11 +130,11 @@
           <entry key="c" value="3" />
           <entry key="cmake" value="2" />
           <entry key="codecvt" value="1" />
-          <entry key="cpp" value="388" />
+          <entry key="cpp" value="418" />
           <entry key="editor (disassembly)" value="19" />
           <entry key="filters" value="7" />
           <entry key="gen" value="40" />
-          <entry key="h" value="594" />
+          <entry key="h" value="623" />
           <entry key="hpp" value="1" />
           <entry key="java" value="2" />
           <entry key="nogen" value="17" />
@@ -146,7 +150,7 @@
         <counts>
           <entry key="CMakeLists.txt" value="66" />
           <entry key="Disassembly" value="22" />
-          <entry key="ObjectiveC" value="990" />
+          <entry key="ObjectiveC" value="1049" />
           <entry key="PLAIN_TEXT" value="83" />
         </counts>
       </usages-collector>
@@ -154,9 +158,9 @@
         <counts>
           <entry key="GDB" value="70" />
           <entry key="cmake" value="16" />
-          <entry key="cpp" value="17487" />
+          <entry key="cpp" value="21534" />
           <entry key="gen" value="196" />
-          <entry key="h" value="36874" />
+          <entry key="h" value="38024" />
           <entry key="mm" value="58" />
           <entry key="txt" value="502" />
         </counts>
@@ -165,7 +169,7 @@
         <counts>
           <entry key="CMakeLists.txt" value="518" />
           <entry key="GDBCommands" value="70" />
-          <entry key="ObjectiveC" value="54419" />
+          <entry key="ObjectiveC" value="59616" />
           <entry key="PLAIN_TEXT" value="196" />
         </counts>
       </usages-collector>
@@ -181,64 +185,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="288" column="25" selection-start-line="288" selection-start-column="25" selection-end-line="288" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="19" column="41" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="43" column="65" selection-start-line="43" selection-start-column="65" selection-end-line="43" selection-end-column="65" />
+            <state relative-caret-position="-40">
+              <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -246,26 +196,83 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="639">
-              <caret line="56" column="5" lean-forward="true" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+            <state relative-caret-position="163">
+              <caret line="258" selection-start-line="258" selection-end-line="258" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseEditor.h">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
+            <state relative-caret-position="-12">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
+              <folding>
+                <element signature="e#707#725#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="31" column="1" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+            <state relative-caret-position="335">
+              <caret line="46" column="48" selection-start-line="46" selection-start-column="48" selection-end-line="47" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="780">
+              <caret line="364" column="64" selection-start-line="364" selection-start-column="64" selection-end-line="364" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="199">
+              <caret line="178" column="34" selection-start-line="178" selection-start-column="34" selection-end-line="178" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="164" column="13" selection-start-line="164" selection-start-column="13" selection-end-line="164" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/UIEditorNodeList.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="216" column="34" selection-start-line="216" selection-start-column="34" selection-end-line="216" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorWidget.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/Runtime.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -274,29 +281,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>GetClientGlobalResources</find>
-      <find>AllocateElementFromDef</find>
-      <find>::Pla</find>
-      <find>m_HeapCreate</find>
-      <find>m_HeapCreate =</find>
-      <find>new</find>
-      <find>m_Ptr =</find>
-      <find>m_Ptr</find>
-      <find>addcode</find>
-      <find>noui</find>
-      <find>::render</find>
-      <find>AtlasBaseDef</find>
-      <find>`</find>
-      <find>crc32</find>
-      <find>GetDefaultScreenSpaceShader</find>
       <find>m_Data.m_StartY</find>
       <find>m_InitData.m_StartY</find>
       <find>m_InitData.m_EndCutX</find>
       <find>RenderAtlas</find>
-      <find>m_InitData.m_EndX</find>
       <find>Sprite</find>
       <find>Re</find>
-      <find>SpriteBase</find>
       <find>sprite</find>
       <find>m_Editor</find>
       <find>FrameEditorBase</find>
@@ -304,6 +294,23 @@
       <find>frame</find>
       <find>TransformFrameToScreen</find>
       <find>AddQuad</find>
+      <find>m_InitData.m_EndX</find>
+      <find>RefreshWatcher</find>
+      <find>elem.second</find>
+      <find>Verticle</find>
+      <find>m_Data.</find>
+      <find>m_DrawStart</find>
+      <find>m_PreviewOffset</find>
+      <find>m_TextureList</find>
+      <find>Texture</find>
+      <find>SpriteBase</find>
+      <find>Elements Files</find>
+      <find>&amp;QPushButton::</find>
+      <find>crc</find>
+      <find>QPushButton::pressed</find>
+      <find>QWheelEvent</find>
+      <find>::wheel</find>
+      <find>texture</find>
     </findStrings>
     <replaceStrings>
       <replace>GetSingleBoxDefault</replace>
@@ -317,9 +324,11 @@
       <replace>position.m_StartY</replace>
       <replace>elem_def.m_StartY</replace>
       <replace>elem_def.m_EndOffsetX</replace>
-      <replace>position.m_End.x</replace>
-      <replace>Atlas</replace>
       <replace>GeometryEditorBase</replace>
+      <replace>position.m_End.x</replace>
+      <replace>elem_data</replace>
+      <replace>Vertical</replace>
+      <replace>Atlas</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/Foundation</dir>
@@ -333,12 +342,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeOnlineStaging.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeTutorial.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeLocalMultiplayer.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeOnlineGameplay.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeSinglePlayerBots.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameModeOfflineStaging.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.cpp" />
         <option value="$PROJECT_DIR$/Project/Game/ServerObjects/Player/PlayerServerObject.refl.h" />
@@ -359,13 +362,10 @@
         <option value="$PROJECT_DIR$/StormTech/StormNet/NetReflectionPolymorphic.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/UI/UIDef.refl.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteDef.refl.h" />
-        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" />
         <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" />
         <option value="$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" />
         <option value="$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.cpp" />
         <option value="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" />
@@ -373,17 +373,26 @@
         <option value="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureLoadList.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureLoadList.cpp" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasEditor.h" />
-        <option value="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp" />
-        <option value="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" />
-        <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" />
+        <option value="$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasEditor.h" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.h" />
+        <option value="$PROJECT_DIR$/Shared/Runtime/Runtime.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" />
+        <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" />
+        <option value="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" />
       </list>
     </option>
   </component>
@@ -400,8 +409,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="width" value="1910" />
-    <option name="height" value="1053" />
+    <option name="x" value="19" />
+    <option name="y" value="25" />
+    <option name="width" value="1882" />
+    <option name="height" value="1036" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -455,6 +466,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -465,6 +477,41 @@
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+              <item name="Editor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+              <item name="Editor" type="462c0819:PsiDirectoryNode" />
+              <item name="Editor_autogen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+              <item name="Editor" type="462c0819:PsiDirectoryNode" />
+              <item name="Editor_autogen" type="462c0819:PsiDirectoryNode" />
+              <item name="include" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Shared" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -472,6 +519,13 @@
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Shared" type="462c0819:PsiDirectoryNode" />
               <item name="Engine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
@@ -479,6 +533,43 @@
               <item name="Shared" type="462c0819:PsiDirectoryNode" />
               <item name="Engine" type="462c0819:PsiDirectoryNode" />
               <item name="Rendering" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Foundation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Foundation" type="462c0819:PsiDirectoryNode" />
+              <item name="BasicTypes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+              <item name="StormData" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
@@ -493,63 +584,12 @@
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="addcode" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="sbwizclion" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="sbwizclion" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="sbwizclion" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="sbwizclion" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Wizards" type="462c0819:PsiDirectoryNode" />
-              <item name="TemplateLib" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -559,7 +599,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/typescript/lib" />
   </component>
   <component name="RunDashboard">
@@ -850,11 +890,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="http-parser" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="http-parser" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="libgit2_clar" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="libgit2_clar" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="libgit2_clar">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -934,7 +969,6 @@
       <item itemvalue="Application.binpack" />
       <item itemvalue="Application.ENet" />
       <item itemvalue="Application.gl3w" />
-      <item itemvalue="Application.http-parser" />
       <item itemvalue="Application.git2" />
       <item itemvalue="Application.git2internal" />
       <item itemvalue="Application.libgit2_clar" />
@@ -1019,28 +1053,28 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="426748000" />
+    <option name="totallyTimeSpent" value="472415000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1910" height="1053" extended-state="0" />
+    <frame x="19" y="25" width="1882" height="1036" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23229614" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19159389" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32893288" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.28272828" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.40264025" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.40264025" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32785088" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3278328" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32893288" />
       <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.35129312" />
-      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.24030173" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" weight="0.31133112" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1085,6 +1119,16 @@
           <url>file://$PROJECT_DIR$/Runtime/ServerObject/ServerObjectManager.cpp</url>
           <line>471</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.h</url>
+          <line>29</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h</url>
+          <line>16</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1134,221 +1178,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/SpriteBase/SpriteBaseDef.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1036" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="52" selection-start-line="9" selection-start-column="52" selection-end-line="9" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteResource.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="133" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteResource.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Sprite/SpriteEngineData.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="40" selection-end-line="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Sprite/SpriteEngineData.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="18" selection-end-line="353" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetTypeMacros.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="562">
-          <caret line="44" column="8" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/TextureAsset.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="503">
-          <caret line="113" column="13" selection-start-line="113" selection-start-column="13" selection-end-line="113" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Asset/AssetLoader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7088">
-          <caret line="109" column="13" selection-start-line="109" selection-start-column="13" selection-end-line="109" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementGradient.refl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="85" column="34" selection-start-line="85" selection-start-column="34" selection-end-line="85" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementShape.refl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="121" column="44" selection-start-line="121" selection-start-column="44" selection-end-line="121" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIElementTextureSlice.refl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3376">
-          <caret line="211" column="34" selection-start-line="211" selection-start-column="34" selection-end-line="211" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/EngineStubs/EngineStubs.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1472">
-          <caret line="92" column="117" selection-start-line="92" selection-start-column="117" selection-end-line="92" selection-end-column="117" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="117" selection-start-line="15" selection-start-column="117" selection-end-line="15" selection-end-column="117" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StormTech/StormRefl/StormReflOutput.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3038">
-          <caret line="290" column="85" selection-start-line="290" selection-start-column="85" selection-end-line="290" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/External/usrsctplib/netinet/sctp_input.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="4641" column="55" selection-start-line="4641" selection-start-column="55" selection-end-line="4641" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Wizards/sbwizclion/src/main/java/AddCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="98" column="9" lean-forward="true" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="242" column="16" lean-forward="true" selection-start-line="242" selection-start-column="16" selection-end-line="242" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="33" column="24" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="116" column="50" lean-forward="true" selection-start-line="116" selection-start-column="50" selection-end-line="116" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureLoadList.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="43" selection-end-line="39" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureLoadList.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="96" selection-end-line="99" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
           <caret line="149" column="32" selection-start-line="149" selection-start-column="12" selection-end-line="149" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="18" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="19" column="19" selection-end-line="120" />
         </state>
       </provider>
     </entry>
@@ -1362,59 +1195,10 @@
     <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureImportDialog.cpp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureImportDialog.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="30" column="47" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureLoadList.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
           <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="32" column="40" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="44" selection-start-line="44" selection-end-line="46" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1040">
-          <caret line="65" column="52" selection-start-line="65" selection-start-column="52" selection-end-line="65" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="752">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="31" column="1" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1439,27 +1223,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="288" column="25" selection-start-line="288" selection-start-column="25" selection-end-line="288" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="496">
@@ -1474,10 +1237,298 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="411" column="6" selection-start-line="411" selection-start-column="6" selection-end-line="411" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorLowerEdge.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-221">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="62" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentValueWatcher.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="607">
+          <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleLine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="259" column="35" selection-start-line="259" selection-start-column="22" selection-end-line="259" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="282" column="3" selection-start-line="282" selection-start-column="3" selection-end-line="283" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/GenericList.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="27" lean-forward="true" selection-end-line="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SimpleLabelList.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="43" selection-start-line="43" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8.2.1/bits/unique_ptr.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="78" column="16" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureImportDialog.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="30" column="47" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="39" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/Tools/Editor/Editor_autogen/include/ui_AtlasTextureImportDialog.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/GenericListFrame.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/GenericList.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="318" column="17" selection-start-line="318" selection-start-column="17" selection-end-line="318" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="92" column="33" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="19" column="2" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="48" column="30" selection-start-line="48" selection-start-column="30" selection-end-line="48" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/MapEditorEntitySelector.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="47" column="31" selection-start-line="47" selection-start-column="31" selection-end-line="47" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/TextureViewerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="224" column="26" selection-start-line="224" selection-start-column="26" selection-end-line="224" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/TextureViewerWidget.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasTextureEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="99" column="22" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-40">
+          <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Runtime.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/UIEditorNodeList.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="216" column="34" selection-start-line="216" selection-start-column="34" selection-end-line="216" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="164" column="13" selection-start-line="164" selection-start-column="13" selection-end-line="164" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="46" column="48" selection-start-line="46" selection-start-column="48" selection-end-line="47" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="178" column="34" selection-start-line="178" selection-start-column="34" selection-end-line="178" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-12">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#707#725#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="364" column="64" selection-start-line="364" selection-start-column="64" selection-end-line="364" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="639">
-          <caret line="56" column="5" lean-forward="true" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+        <state relative-caret-position="163">
+          <caret line="258" selection-start-line="258" selection-end-line="258" />
         </state>
       </provider>
     </entry>

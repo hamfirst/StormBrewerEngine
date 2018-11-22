@@ -13,7 +13,7 @@ enum STORM_REFL_ENUM class AtlasDefType
 {
   kImage,
   kRepeat,
-  k3SliceVerticle,
+  k3SliceVertical,
   k3SliceHorizontal,
   k9Slice
 };
@@ -26,12 +26,9 @@ public:
   RString STORM_REFL_ATTR_VAL(file, image) m_Filename;
 };
 
-struct RUNTIME_EXPORT AtlasDefElement
+struct RUNTIME_EXPORT AtlasDefElementPosition
 {
-  STORM_DATA_DEFAULT_CONSTRUCTION(AtlasDefElement);
-
-  RUInt STORM_REFL_ATTR(noui) m_TextureHash;
-  RString m_Name;
+  STORM_DATA_DEFAULT_CONSTRUCTION(AtlasDefElementPosition);
   REnum<AtlasDefType> m_Type;
 
   RInt m_StartX = 0;
@@ -43,6 +40,16 @@ struct RUNTIME_EXPORT AtlasDefElement
   RInt m_StartOffsetY = 4;
   RInt m_EndOffsetX = 4;
   RInt m_EndOffsetY = 4;
+};
+
+struct RUNTIME_EXPORT AtlasDefElement
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(AtlasDefElement);
+
+  RUInt STORM_REFL_ATTR(noui) m_TextureHash;
+  RString m_Name;
+
+  AtlasDefElementPosition m_Data;
 };
 
 struct RUNTIME_EXPORT AtlasDef
