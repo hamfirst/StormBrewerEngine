@@ -9,15 +9,15 @@
     "m_Elements": {
         "0": {
             "m_Data": {
-                "m_EndOffsetX": 4,
-                "m_EndY": 32,
-                "m_StartY": 4,
-                "m_StartOffsetX": 4,
-                "m_StartX": 0,
-                "m_EndX": 75,
+                "m_EndOffsetY": 5,
+                "m_StartX": 22,
+                "m_StartOffsetX": 5,
                 "m_StartOffsetY": 4,
-                "m_Type": "kImage",
-                "m_EndOffsetY": 4
+                "m_Type": "k9Slice",
+                "m_EndOffsetX": 7,
+                "m_EndY": 34,
+                "m_StartY": 4,
+                "m_EndX": 75
             },
             "m_TextureHash": 105456208,
             "m_Name": "New Element"

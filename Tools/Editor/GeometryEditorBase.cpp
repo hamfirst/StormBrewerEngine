@@ -519,10 +519,11 @@ void GeometryEditorBase::mouseReleaseEvent(QMouseEvent * event)
   {
     if (m_Dragging)
     {
-      Vector2 pos = Vector2(p.x(), p.y());
-      DrawEnd(pos, alt, shift, ctrl);
       m_Dragging = false;
       SyncMouse();
+
+      Vector2 pos = Vector2(p.x(), p.y());
+      DrawEnd(pos, alt, shift, ctrl);
     }
   }
 
@@ -537,20 +538,20 @@ void GeometryEditorBase::mouseReleaseEvent(QMouseEvent * event)
 void GeometryEditorBase::wheelEvent(QWheelEvent *event)
 {
   m_WheelDelta += event->delta();
-  while (m_WheelDelta > 120)
+  while (m_WheelDelta < 0)
   {
     if (m_Magnification > 1)
     {
       m_Magnification -= m_Magnification / 6 + 1;
     }
 
-    m_WheelDelta -= 120;
+    m_WheelDelta += 120;
   }
 
-  while(m_WheelDelta < 0)
+  while(m_WheelDelta > 120)
   {
     m_Magnification += m_Magnification / 6 + 1;
-    m_WheelDelta += 120;
+    m_WheelDelta -= 120;
   }
 
   emit magnificationChanged(m_Magnification);
