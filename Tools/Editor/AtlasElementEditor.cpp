@@ -51,6 +51,7 @@ AtlasElementEditor::AtlasElementEditor(
         m_Editor(editor),
         m_Atlas(atlas),
         m_TextureAccess(texture_access),
+        m_LocalChange(false),
         m_SelectedElementIndex(-1)
 {
   RefreshWatcher();
@@ -59,6 +60,7 @@ AtlasElementEditor::AtlasElementEditor(
 void AtlasElementEditor::SetSelectedElement(int elem_index)
 {
   m_SelectedElementIndex = elem_index;
+  RefreshWatcher();
 }
 
 void AtlasElementEditor::HandleDataUpdate()
@@ -130,7 +132,7 @@ Optional<AtlasDefElementPosition> AtlasElementEditor::GetPreviewData()
 
         if(point.y_modify)
         {
-          point.y += point.y_reverse ? -m_PreviewOffset->y : m_PreviewOffset->y;
+          point.y += point.y_reverse ? m_PreviewOffset->y : -m_PreviewOffset->y;
         }
 
         if(&point.x == &data_ptr->m_StartX)
@@ -238,10 +240,15 @@ void AtlasElementEditor::VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefEleme
   }
 }
 
-bool AtlasElementEditor::UpperLeftOrigin() const
+Vector2 OrientPoint(const Vector2 & point, const Vector2 & tex_size)
 {
-  return false;
+  auto out = point;
+  out.x -= tex_size.x / 2;
+  out.y = tex_size.y - out.y;
+  out.y -= tex_size.y / 2;
+  return out;
 }
+
 
 void AtlasElementEditor::DrawData()
 {
@@ -251,23 +258,30 @@ void AtlasElementEditor::DrawData()
     return;
   }
 
-  VisitEdges([this](int edge_index, int sx, int sy, int ex, int ey)
+  auto texture = GetTexture();
+  if(texture == nullptr)
   {
-    DrawLine(Vector2(sx, sy), Vector2(ex, ey));
+    return;
+  }
+
+  auto tex_size = texture->GetSize();
+  VisitEdges([&](int edge_index, int sx, int sy, int ex, int ey)
+  {
+    DrawLine(OrientPoint(Vector2(sx, sy), tex_size), OrientPoint(Vector2(ex, ey), tex_size));
   }, &preview_data.Value());
 
-  VisitPoints([this](int point_index, const ProxyPoint & point)
+  VisitPoints([&](int point_index, const ProxyPoint & point)
   {
     int x = point.GetX();
     int y = point.GetY();
 
     if(m_PreviewPoint && m_PreviewPoint.Value() == point_index)
     {
-      DrawHighlightedCornerControl(Vector2(x, y));
+      DrawHighlightedCornerControl(OrientPoint(Vector2(x, y), tex_size));
     }
     else
     {
-      DrawCornerControl(Vector2(x, y));
+      DrawCornerControl(OrientPoint(Vector2(x, y), tex_size));
     }
 
   }, &preview_data.Value());
@@ -284,10 +298,16 @@ void AtlasElementEditor::DrawPreview(const Vector2 & frame_pos, bool alt, bool s
     return;
   }
 
-  m_PreviewPoint.Clear();
-  VisitPoints([this, cursor_pos](int point_index, const ProxyPoint & point)
+  auto texture = GetTexture();
+  if(texture == nullptr)
   {
-    auto pos = Vector2(point.GetX(), point.GetY());
+    return;
+  }
+
+  m_PreviewPoint.Clear();
+  VisitPoints([&](int point_index, const ProxyPoint & point)
+  {
+    auto pos = OrientPoint(Vector2(point.GetX(), point.GetY()), texture->GetSize());
     auto screen_pos = TransformFrameToScreen(pos);
     if (ManhattanDist(screen_pos, cursor_pos) < 20)
     {

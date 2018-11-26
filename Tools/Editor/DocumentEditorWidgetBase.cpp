@@ -98,7 +98,7 @@ uint64_t DocumentEditorWidgetBase::AddParentChangeCallback(czstr path, DocumentE
   return callback_id;
 }
 
-void DocumentEditorWidgetBase::RemovParentChangeCallback(uint64_t callback_id)
+void DocumentEditorWidgetBase::RemoveParentChangeCallback(uint64_t callback_id)
 {
   if (m_TriggeringCallbacks)
   {

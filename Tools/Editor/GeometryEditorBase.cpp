@@ -77,11 +77,6 @@ NullOptPtr<TextureAsset> GeometryEditorBase::GetTexture()
   return nullptr;
 }
 
-bool GeometryEditorBase::UpperLeftOrigin() const
-{
-  return false;
-}
-
 Vector2 GeometryEditorBase::TransformScreenToFrame(const Vector2 & pos)
 {
   auto p = pos;
@@ -93,9 +88,9 @@ Vector2 GeometryEditorBase::TransformScreenToFrame(const Vector2 & pos)
   p /= m_Magnification;
   p.x += (int)m_Center.x;
   p.y += (int)m_Center.y;
+
   return p;
 }
-
 
 Vector2 GeometryEditorBase::TransformFrameToScreen(const Vector2 & pos)
 {
@@ -235,8 +230,6 @@ void GeometryEditorBase::paintGL()
   auto frame_id = GetFrameId();
   auto texture = GetTexture();
 
-  bool upper_left_origin = UpperLeftOrigin();
-
   if(texture == nullptr)
   {
     return;
@@ -272,41 +265,31 @@ void GeometryEditorBase::paintGL()
 
   auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
 
+  RenderVec2 center = m_Center;
+  center *= -1.0f;
+
+  m_RenderState.BindShader(default_shader);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), center);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
+
+  m_RenderState.BindTexture(*texture);
+  QuadVertexBufferBuilder builder;
+
   if(frame_size)
   {
-    Box frame_box = upper_left_origin ? Box::FromPoints({}, *frame_size) : Box::FromFrameCenterAndSize(Vector2{}, *frame_size);
+    Box frame_box = Box::FromFrameCenterAndSize(Vector2{}, *frame_size);
     border_rect = frame_box;
 
-    m_RenderState.BindShader(default_shader);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{m_Center} * -1.0f);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
-
-    m_RenderState.BindTexture(*texture);
-
-    QuadVertexBufferBuilder builder;
     builder.AddFrame(frame_box, texture_size, *frame_size, frame_id & 0xFFFF, Color(255, 255, 255, 255));
     builder.FillVertexBuffer(m_VertexBuffer);
-
-    m_RenderState.BindVertexBuffer(m_VertexBuffer);
-    m_RenderState.Draw();
   }
   else
   {
-
-    m_RenderState.BindShader(default_shader);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{m_Center} * -1.0f);
-    default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
-
-    m_RenderState.BindTexture(*texture);
-
-    Box texture_box = upper_left_origin ? Box::FromPoints({}, texture_size) : Box::FromFrameCenterAndSize(Vector2{}, texture_size);
+    Box texture_box = Box::FromFrameCenterAndSize(Vector2{}, texture_size);
     border_rect = texture_box;
 
-    QuadVertexBufferBuilder builder;
     QuadVertexBuilderInfo quad;
 
     quad.m_Position = texture_box;
@@ -314,12 +297,13 @@ void GeometryEditorBase::paintGL()
     quad.m_TextureSize = texture->GetSize();
     quad.m_Color = Color(255, 255, 255, 255);
     builder.AddQuad(quad);
-
-    builder.FillVertexBuffer(m_VertexBuffer);
-
-    m_RenderState.BindVertexBuffer(m_VertexBuffer);
-    m_RenderState.Draw();
   }
+
+
+  builder.FillVertexBuffer(m_VertexBuffer);
+
+  m_RenderState.BindVertexBuffer(m_VertexBuffer);
+  m_RenderState.Draw();
 
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
@@ -327,8 +311,6 @@ void GeometryEditorBase::paintGL()
   LineVertexBufferBuilder line_builder;
   LineVertexBuilderInfo line;
   line.m_TextureSize = Vector2(1, 1);
-
-
 
   if (m_Magnification >= 4)
   {

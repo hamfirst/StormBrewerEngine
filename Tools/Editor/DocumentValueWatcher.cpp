@@ -76,7 +76,7 @@ void DocumentValueWatcher::ClearPath()
 
   if (m_ParentCallbackId != 0)
   {
-    m_Editor->RemovParentChangeCallback(m_ParentCallbackId);
+    m_Editor->RemoveParentChangeCallback(m_ParentCallbackId);
     m_ParentCallbackId = 0;
   }
 

@@ -45,7 +45,7 @@ Box Box::FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & fr
 {
   Box b;
   b.m_Start = frame_center - frame_size / 2;
-  b.m_End = b.m_Start + frame_size - Vector2(1, 1);
+  b.m_End = b.m_Start + frame_size;
   return b;
 }
 
@@ -77,11 +77,11 @@ Vector2 Box::GetPoint(const Box & box, int point)
   case 0:
     return box.m_Start;
   case 1:
-    return Vector2(box.m_Start.x, box.m_End.y + 1);
+    return Vector2(box.m_Start.x, box.m_End.y);
   case 2:
-    return Vector2(box.m_End.x + 1, box.m_Start.y);
+    return Vector2(box.m_End.x, box.m_Start.y);
   case 3:
-    return box.m_End + Vector2(1, 1);
+    return box.m_End;
   }
 
   return{};
@@ -96,14 +96,14 @@ void Box::SetPoint(Box & box, int point, const Vector2 & pos)
     break;
   case 1:
     box.m_Start.x = pos.x;
-    box.m_End.y = pos.y - 1;
+    box.m_End.y = pos.y;
     break;
   case 2:
-    box.m_End.x = pos.x - 1;
+    box.m_End.x = pos.x;
     box.m_Start.y = pos.y;
     break;
   case 3:
-    box.m_End = pos - Vector2(1, 1);
+    box.m_End = pos;
   }
 }
 
@@ -112,13 +112,13 @@ Line Box::GetEdge(const Box & box, int edge)
   switch (edge)
   {
   case 0:
-    return Line{ box.m_Start, Vector2(box.m_End.x + 1, box.m_Start.y) };
+    return Line{ box.m_Start, Vector2(box.m_End.x, box.m_Start.y) };
   case 1:
-    return Line{ box.m_Start, Vector2(box.m_Start.x, box.m_End.y + 1) };
+    return Line{ box.m_Start, Vector2(box.m_Start.x, box.m_End.y) };
   case 2:
-    return Line{ Vector2(box.m_Start.x, box.m_End.y + 1), box.m_End + Vector2(1, 1) };
+    return Line{ Vector2(box.m_Start.x, box.m_End.y), box.m_End };
   case 3:
-    return Line{ Vector2(box.m_End.x + 1, box.m_Start.y), box.m_End + Vector2(1, 1) };
+    return Line{ Vector2(box.m_End.x, box.m_Start.y), box.m_End };
   }
 
   return{};
@@ -130,19 +130,19 @@ void Box::SetEdge(Box & box, int edge, Line & line)
   {
   case 0:
     box.m_Start = line.m_Start;
-    box.m_End.x = line.m_End.x - 1;
+    box.m_End.x = line.m_End.x;
     break;
   case 1:
     box.m_Start = line.m_Start;
-    box.m_End.y = line.m_End.y - 1;
+    box.m_End.y = line.m_End.y;
     break;
   case 2:
     box.m_Start.x = line.m_Start.x;
-    box.m_End = line.m_End - Vector2(1, 1);
+    box.m_End = line.m_End;
     break;
   case 3:
     box.m_Start.y = line.m_Start.y;
-    box.m_End = line.m_End - Vector2(1, 1);
+    box.m_End = line.m_End;
     break;
   }
 }

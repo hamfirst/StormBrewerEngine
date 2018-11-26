@@ -37,8 +37,6 @@ protected:
   template <typename Visitor>
   void VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefElementPosition> elem_ptr);
 
-  virtual bool UpperLeftOrigin() const override;
-
 protected:
   virtual void DrawData();
   virtual void DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl);

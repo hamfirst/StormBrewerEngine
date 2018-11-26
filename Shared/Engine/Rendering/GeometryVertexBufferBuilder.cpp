@@ -193,11 +193,11 @@ void GeometryVertexBufferBuilder::Rectangle(const Box & box, float thickness, co
 {
   float sx = (float)(box.m_Start.x);
   float sy = (float)(box.m_Start.y);
-  float ex = (float)(box.m_End.x + 1);
-  float ey = (float)(box.m_End.y + 1);
+  float ex = (float)(box.m_End.x);
+  float ey = (float)(box.m_End.y);
 
   Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
-  Line(Vector2f{ sx + 1, sy }, Vector2f{ sx + 1, ey }, thickness, c);
+  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
   Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
   Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
 }
