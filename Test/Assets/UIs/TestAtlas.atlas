@@ -3,24 +3,24 @@
 {
     "m_Textures": {
         "0": {
-            "m_Filename": ".\/Images\/Tutorial.png"
+            "m_Filename": ".\/Images\/TutorialBubble.png"
         }
     },
     "m_Elements": {
         "0": {
             "m_Data": {
-                "m_EndOffsetY": 5,
-                "m_StartX": 22,
-                "m_StartOffsetX": 5,
+                "m_EndOffsetY": 11,
+                "m_StartX": 0,
+                "m_StartOffsetX": 7,
                 "m_StartOffsetY": 4,
                 "m_Type": "k9Slice",
-                "m_EndOffsetX": 7,
-                "m_EndY": 34,
-                "m_StartY": 4,
-                "m_EndX": 75
+                "m_EndOffsetX": 8,
+                "m_EndY": 31,
+                "m_StartY": 0,
+                "m_EndX": 38
             },
-            "m_TextureHash": 105456208,
-            "m_Name": "New Element"
+            "m_TextureHash": 1024070447,
+            "m_Name": "Bubble"
         }
     }
 }

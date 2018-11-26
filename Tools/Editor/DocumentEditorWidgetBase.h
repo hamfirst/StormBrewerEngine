@@ -30,7 +30,7 @@ public:
   void RemoveChangeCallback(uint64_t path_hash, uint64_t callback_id);
 
   uint64_t AddParentChangeCallback(czstr path, DocumentExternalChangeCallback && callback);
-  void RemovParentChangeCallback(uint64_t callback_id);
+  void RemoveParentChangeCallback(uint64_t callback_id);
 
   uint64_t AddChildChangeCallback(czstr path, DocumentExternalChangeCallback && callback);
   void RemoveChildChangeCallback(uint64_t callback_id);

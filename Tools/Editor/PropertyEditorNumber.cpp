@@ -21,10 +21,12 @@ PropertyEditorNumber::PropertyEditorNumber(DocumentEditorWidgetBase * editor, Pr
   if (create_callback)
   {
     m_CallbackId = m_Editor->AddChangeCallback(m_PathHash, DocumentExternalChangeCallback(&PropertyEditorNumber::HandleServerUpdate, this));
+    m_ParentCallbackId = m_Editor->AddParentChangeCallback(path.data(), DocumentExternalChangeCallback(&PropertyEditorNumber::HandleServerUpdate, this));
   }
   else
   {
     m_CallbackId = 0;
+    m_ParentCallbackId = 0;
   }
 
   setMinimumHeight(std::max(m_Input->minimumHeight(), 20));
@@ -33,6 +35,7 @@ PropertyEditorNumber::PropertyEditorNumber(DocumentEditorWidgetBase * editor, Pr
 PropertyEditorNumber::~PropertyEditorNumber()
 {
   m_Editor->RemoveChangeCallback(m_PathHash, m_CallbackId);
+  m_Editor->RemoveParentChangeCallback(m_ParentCallbackId);
 }
 
 void PropertyEditorNumber::resizeEvent(QResizeEvent * ev)

@@ -52,7 +52,7 @@ GenericList::~GenericList()
   if (m_Editor)
   {
     m_Editor->RemoveChangeCallback(crc64(m_BasePath), m_ChangeCallbackId);
-    m_Editor->RemovParentChangeCallback(m_ParentCallbackId);
+    m_Editor->RemoveParentChangeCallback(m_ParentCallbackId);
 
     for (auto & elem : m_Elements)
     {

@@ -37,6 +37,7 @@ private:
 
   uint64_t m_PathHash;
   uint64_t m_CallbackId;
+  uint64_t m_ParentCallbackId;
 
   std::unique_ptr<GenericInput> m_Input;
   bool m_LocalChange;

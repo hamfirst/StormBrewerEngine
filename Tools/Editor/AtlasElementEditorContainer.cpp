@@ -58,6 +58,18 @@ void AtlasElementEditorContainer::SetSelectedElement(int selection)
 void AtlasElementEditorContainer::AddNewElement()
 {
   auto elem_index = m_ElemList->GetSelection();
+  if(elem_index == -1)
+  {
+    if(m_Atlas.m_Textures.HighestIndex() < 0)
+    {
+      return;
+    }
+
+    auto first_elem = m_Atlas.m_Textures.begin();
+    AddNewElement(first_elem->first);
+    return;
+  }
+
   if(m_Atlas.m_Elements.HasAt(elem_index) == false)
   {
     return;

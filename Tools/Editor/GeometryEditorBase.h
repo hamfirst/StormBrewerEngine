@@ -45,7 +45,6 @@ protected:
   virtual Optional<Vector2> GetFrameSize();
   virtual uint64_t GetFrameId();
   virtual NullOptPtr<TextureAsset> GetTexture();
-  virtual bool UpperLeftOrigin() const;
 
   Vector2 TransformScreenToFrame(const Vector2 & pos);
   Vector2 TransformFrameToScreen(const Vector2 & pos);

@@ -23,8 +23,8 @@ void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & qua
     return;
   }
   
-  int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x;
-  int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y;
+  int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x + 1;
+  int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y + 1;
 
   QuadVertexBuilderInfo result_quad = quad;
 
