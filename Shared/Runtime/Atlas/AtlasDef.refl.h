@@ -5,8 +5,6 @@
 #include "StormData/StormDataTypes.h"
 
 #include "Runtime/RuntimeCommon.h"
-#include "Runtime/UI/UIElementTypeDatabase.h"
-#include "Runtime/UI/UITypes.refl.h"
 
 
 enum STORM_REFL_ENUM class AtlasDefType

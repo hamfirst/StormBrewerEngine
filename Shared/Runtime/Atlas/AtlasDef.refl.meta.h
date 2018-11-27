@@ -3,7 +3,6 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "AtlasDef.refl.h"
-#include "Runtime/UI/UITypes.refl.meta.h"
 
 
 template <>
@@ -35,7 +34,7 @@ template <>
 struct StormReflEnumInfo<AtlasDefType>::elems<2>
 {
   static constexpr auto GetName() { return "k3SliceVertical"; }
-  static constexpr auto GetNameHash() { return 0xFA5B27CC; }
+  static constexpr auto GetNameHash() { return 0x3629E125; }
   static constexpr auto GetValue() { return AtlasDefType::k3SliceVertical; }
 };
 
