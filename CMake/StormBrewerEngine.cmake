@@ -94,7 +94,9 @@ else()
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/enet")
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/usrsctplib")
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/mbedtls")
-
+  add_subdirectory("${PROJECT_SOURCE_DIR}/External/yajl")
+  add_subdirectory("${PROJECT_SOURCE_DIR}/External/libbson")
+  add_subdirectory("${PROJECT_SOURCE_DIR}/External/mongoc")
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/asio")
   
   add_subdirectory("${PROJECT_SOURCE_DIR}/Shared/EngineStubs")

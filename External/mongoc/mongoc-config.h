@@ -23,7 +23,9 @@
  * MONGOC_ENABLE_SSL_SECURE_CHANNEL is set from configure to determine if we are
  * compiled with Native SSL support on Windows
  */
+#ifdef _MSC_VER
 #define MONGOC_ENABLE_SSL_SECURE_CHANNEL 1
+#endif
 
 #if MONGOC_ENABLE_SSL_SECURE_CHANNEL != 1
 #  undef MONGOC_ENABLE_SSL_SECURE_CHANNEL
@@ -34,7 +36,10 @@
  * MONGOC_ENABLE_CRYPTO_CNG is set from configure to determine if we are
  * compiled with Native Crypto support on Windows
  */
+
+#ifdef _MSC_VER
 #define MONGOC_ENABLE_CRYPTO_CNG 1
+#endif
 
 #if MONGOC_ENABLE_CRYPTO_CNG != 1
 #  undef MONGOC_ENABLE_CRYPTO_CNG
@@ -67,7 +72,9 @@
  * MONGOC_ENABLE_SSL_OPENSSL is set from configure to determine if we are
  * compiled with OpenSSL support.
  */
-#define MONGOC_ENABLE_SSL_OPENSSL 0
+#ifndef _MSC_VER
+#define MONGOC_ENABLE_SSL_OPENSSL 1
+#endif
 
 #if MONGOC_ENABLE_SSL_OPENSSL != 1
 #  undef MONGOC_ENABLE_SSL_OPENSSL
