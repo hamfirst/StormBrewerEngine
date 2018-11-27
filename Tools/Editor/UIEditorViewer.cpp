@@ -26,13 +26,8 @@ UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget 
   m_Editor(editor),
   m_UI(ui),
   m_Watcher(editor),
-  m_ToolBar(std::make_unique<QToolBar>(this)),
-  m_Center(std::make_unique<QCheckBox>("From Center")),
   m_PlayMode(true)
 {
-  m_ToolBar->addWidget(m_Center.get());
-  connect(m_Center.get(), &QCheckBox::stateChanged, this, &UIEditorViewer::centerChanged);
-
   setFocusPolicy(Qt::ClickFocus);
   setMouseTracking(true);
 
@@ -45,42 +40,9 @@ UIEditorViewer::~UIEditorViewer()
 
 }
 
-void UIEditorViewer::ChangeSelection(const UIEditorNodeSelection & layer)
-{
-  m_Selection = layer;
-  repaint();
-}
-
-void UIEditorViewer::ClearSelection()
-{
-  m_Selection.Clear();
-  repaint();
-}
-
 void UIEditorViewer::Refresh()
 {
-  m_RootReference.Clear();
-
-  UIElementContainerData container_data;
-
-  if (m_Center->isChecked())
-  {
-    container_data.m_StartX = kDefaultResolutionWidth / 2;
-    container_data.m_StartY = kDefaultResolutionHeight / 2;
-    container_data.m_EndX = kDefaultResolutionWidth;
-    container_data.m_EndY = kDefaultResolutionHeight;
-  }
-  else
-  {
-    container_data.m_StartX = 0;
-    container_data.m_StartY = 0;
-    container_data.m_EndX = kDefaultResolutionWidth;
-    container_data.m_EndY = kDefaultResolutionHeight;
-  }
-
   m_UIManager.Emplace(m_FakeWindow->GetWindow());
-  m_RootReference = m_UIManager->AllocateContainer("container", nullptr, {}, container_data);
-  m_UIManager->AllocateElementFromDef("root", m_UI, m_RootReference->Get(), true);
   m_UIManager->Update(*m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 }
 

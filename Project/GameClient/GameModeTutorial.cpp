@@ -31,8 +31,6 @@ GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings 
 
 GameModeTutorial::~GameModeTutorial()
 {
-  m_TutorialPopup.Clear();
-  m_Fader.Clear();
   m_ClientSystems.reset();
 }
 
@@ -68,54 +66,12 @@ void GameModeTutorial::OnAssetsLoaded()
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();
 
-  m_Fader = m_ClientSystems->GetUIManager().GetUIManager().AllocateShape("fader", nullptr);
-  m_Fader->SetActive();
-  auto & fader_data = m_Fader->GetData();
-  fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
-  fader_data.m_Shape = kUIElementShapeFilledRectangle;
-
   m_FrameClock.Start();
 
   //g_MusicManager.FadeTo(GetContainer().GetClientGlobalResources().GameplayLoop, 0.5f, 0.2f, 2.0f);
   //g_MusicManager.PlayClip(GetContainer().GetClientGlobalResources().GameplayStart, 0.2f, true);
 
   m_ClientSystems->GetUIManager().DisablePopup();
-
-  m_Sequencer.Push(1.0f, [this](float v )
-  {
-    m_Fader->GetData().m_ColorA = 1.0f - v;
-  });
-
-  m_Sequencer.Push(4.0, [this](float v) 
-  {
-    if (v == 1.0f)
-    {
-
-      Box box;
-      box.m_Start = { 100, 100 };
-      box.m_End = box.m_Start + Vector2{ 200, 130 };
-
-      m_TutorialPopup.Emplace(m_ClientSystems->GetUIManager().GetUIManager(), "tutorial", nullptr, box, "Tutorial message!");
-      m_TutorialPopup->SetOnOkayCallback([this] { Resume(); m_TutorialPopup->Hide(); });
-
-      Pause();
-    }
-  });
-
-  m_Sequencer.Push(1.0f, [this](float v)
-  {    
-    m_Fader->GetData().m_ColorA = v;
-
-    if (v == 1.0f)
-    {
-      Resume();
-      m_Paused = true;
-
-      auto & container = GetContainer();
-      container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, true);
-    }
-  });
 }
 
 void GameModeTutorial::Update()

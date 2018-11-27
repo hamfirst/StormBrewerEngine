@@ -7,14 +7,8 @@
 
 #include "PropertyEditorWidget.h"
 #include "DocumentValueWatcher.h"
-#include "UIEditorNode.h"
-#include "UIEditorEquationList.h"
-#include "UIEditorOutputEquationList.h"
 
 class UIEditor;
-class UIEditorNodeList;
-class UIEditorEquationList;
-class UIEditorOutputEquationList;
 
 class UIEditorPropertyContainer : public QWidget
 {
@@ -23,8 +17,6 @@ class UIEditorPropertyContainer : public QWidget
 public:
   UIEditorPropertyContainer(NotNullPtr<UIEditor> editor, UIDef & ui, Delegate<void> && size_change_cb, QWidget * parent = nullptr);
 
-  void ChangeSelection(const UIEditorNodeSelection & selection);
-  void ClearSelection();
 
 protected:
   void RepositionChildren();
@@ -39,10 +31,4 @@ private:
   UIDef & m_UI;
 
   Delegate<void> m_SizeChanged;
-
-  std::unique_ptr<QWidget> m_InitDataProperties;
-  std::unique_ptr<QWidget> m_ElementName;
-  std::unique_ptr<QWidget> m_InputsList;
-  std::unique_ptr<UIEditorEquationList> m_Equations;
-  std::unique_ptr<UIEditorOutputEquationList> m_OutputEquations;
 };

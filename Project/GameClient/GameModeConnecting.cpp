@@ -40,14 +40,6 @@ void GameModeConnecting::OnAssetsLoaded()
 
   auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 
-  m_Back.Emplace(m_UIManager, "back", nullptr,
-    Box::FromFrameCenterAndSize(Vector2(half_res.x - 85, 30 - half_res.y), Vector2(60, 25)), "Back", nullptr, true);
-  m_Back->SetOnClickCallback([this]() { Back(); });
-
-  m_MuteButton.Emplace(m_UIManager, "mute", nullptr, half_res - Vector2(60, 20), false);
-  m_MusicButton.Emplace(m_UIManager, "music", nullptr, half_res - Vector2(100, 20), true);
-  m_FullscreenButton.Emplace(m_UIManager, "fullscreen", nullptr, half_res - Vector2(20, 20), container.GetWindow());
-
   m_FrameClock.Start();
 }
 

@@ -4,8 +4,6 @@
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientInstanceContainer.h"
 
-#include "Engine/UI/Prototype/UIPrototypeTutorialPopup.h"
-
 #include "Engine/Camera/Camera.h"
 
 #include "Foundation/Time/FrameClock.h"
@@ -36,9 +34,6 @@ private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
   std::unique_ptr<GameClientSystems> m_ClientSystems;
 
-  UIElementPtr<UIElementShape> m_Fader;
-
-  Optional<UIPrototypeTutorialPopup> m_TutorialPopup;
   Sequencer m_Sequencer;
 
   FrameClock m_FrameClock;

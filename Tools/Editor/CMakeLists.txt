@@ -38,14 +38,12 @@ set(GENERIC_SRC_Editor
             VisualEffectEditorNodeList.cpp
             PropertyEditorWidget.cpp
             SpriteBaseTextureImportDialog.cpp
-            UIEditorNodeList.cpp
             PropertyEditorPolymorphic.cpp
             AtlasTextureEditor.cpp
             AtlasTextureImportDialog.cpp
             SpriteBaseAnimationEventEditorDialog.cpp
             MapEditorToolManualTileLayerPreview.cpp
             DocumentServerThread.cpp
-            UIEditorOutputEquationList.cpp
             GenericList.cpp
             EditorContainer.ui
             VisualEffectEditor.cpp
@@ -67,8 +65,6 @@ set(GENERIC_SRC_Editor
             AnimationFrameEditor.ui
             SelectFromListDialog.ui
             ServerObjectEditor.cpp
-            UIEquationEditor.cpp
-            UIEditorEquationList.cpp
             FrameEditorSingleBox.cpp
             DocumentEditorBase.cpp
             MapEditorServerObjectSelector.cpp
@@ -127,7 +123,6 @@ set(GENERIC_SRC_Editor
             FrameEditorUtil.cpp
             EditorContainer.cpp
             FrameEditorMultiBox.cpp
-            UIOutputEquationEditor.cpp
             DocumentListValueWatcher.cpp
             MapEditorVolumeManager.cpp
             MapEditorToolManualTileLayerSelect.cpp
@@ -170,7 +165,6 @@ set(GENERIC_HEADER_Editor
             DrawUtil.h
             SpriteBaseAnimationEditor.h
             PropertyEditorStruct.h
-            UIEditorOutputEquationList.h
             MapEditorToolPathMultiEditor.h
             MapEditorVolumeManager.h
             TextureViewer.h
@@ -179,7 +173,6 @@ set(GENERIC_HEADER_Editor
             GeometryEditorBase.h
             MapEditorViewer.h
             ScrollingPanel.h
-            UIEditorNode.h
             SpriteBaseTextureImportDialog.h
             VisualEffectEditorEquationList.h
             UIEditorViewer.h
@@ -210,12 +203,10 @@ set(GENERIC_HEADER_Editor
             VisualEffectEquationEditor.h
             MapEditorAnchor.h
             GameClientWidget.h
-            UIEditorEquationList.h
             EntityEditor.h
             FontViewer.h
             GenericListCreate.h
             GenericFrame.h
-            UIEquationEditor.h
             SelectFromListDialog.h
             PropertyEditorFile.h
             MapEditorServerObjectSelector.h
@@ -239,7 +230,6 @@ set(GENERIC_HEADER_Editor
             AtlasElementEditorContainer.h
             MapEditorTileManager.h
             MapEditorTypes.refl.h
-            UIOutputEquationEditor.h
             MapEditorToolAnchorEditor.h
             SpriteBaseSkinListTextureElement.h
             MapEditorTileSelector.h
@@ -276,7 +266,6 @@ set(GENERIC_HEADER_Editor
             DocumentServerThread.h
             SpriteBaseSkinListElement.h
             TextureViewerWidget.h
-            UIEditorNodeList.h
             MapEditorToolVolumeEditor.h
             GenericListFrame.h
             MapEditorTypes.refl.meta.h

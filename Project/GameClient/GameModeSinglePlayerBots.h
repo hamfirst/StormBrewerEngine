@@ -31,7 +31,6 @@ private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
   std::unique_ptr<GameClientSystems> m_ClientSystems;
 
-  UIElementPtr<UIElementShape> m_Fader;
   Sequencer m_Sequencer;
 
   FrameClock m_FrameClock;
