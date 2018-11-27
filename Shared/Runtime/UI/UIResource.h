@@ -34,6 +34,4 @@ private:
 
   UIDef m_Data;
   DelegateList<void, NotNullPtr<UIResource>> m_LoadCallbacks;
-
-  SpritePtr m_Sprite;
 };

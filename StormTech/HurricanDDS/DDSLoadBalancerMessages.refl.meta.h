@@ -16,6 +16,35 @@ struct StormReflTypeInfo<DDSLoadBalancerNode>
   static constexpr auto GetName() { return "DDSLoadBalancerNode"; }
   static constexpr auto GetNameHash() { return 0xFB6E154B; }
   static DDSLoadBalancerNode & GetDefault() { static DDSLoadBalancerNode def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerNode *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerNode *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerNode *>(ptr);
+    if(typeid(DDSLoadBalancerNode).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerNode *>(ptr);
+    if(typeid(DDSLoadBalancerNode).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -28,6 +57,8 @@ struct StormReflTypeInfo<DDSLoadBalancerNode>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerNode::m_IpAddr; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerNode *>(obj); return &ptr->m_IpAddr; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerNode *>(obj); return &ptr->m_IpAddr; }
 };
 
 template <typename Self>
@@ -50,6 +81,8 @@ struct StormReflTypeInfo<DDSLoadBalancerNode>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerNode::m_Port; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerNode *>(obj); return &ptr->m_Port; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerNode *>(obj); return &ptr->m_Port; }
 };
 
 template <typename Self>
@@ -72,6 +105,8 @@ struct StormReflTypeInfo<DDSLoadBalancerNode>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerNode::m_Cpu; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerNode *>(obj); return &ptr->m_Cpu; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerNode *>(obj); return &ptr->m_Cpu; }
 };
 
 template <typename Self>
@@ -95,6 +130,35 @@ struct StormReflTypeInfo<DDSLoadBalancerInfo>
   static constexpr auto GetName() { return "DDSLoadBalancerInfo"; }
   static constexpr auto GetNameHash() { return 0xB598CC59; }
   static DDSLoadBalancerInfo & GetDefault() { static DDSLoadBalancerInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerInfo *>(ptr);
+    if(typeid(DDSLoadBalancerInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerInfo *>(ptr);
+    if(typeid(DDSLoadBalancerInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -107,6 +171,8 @@ struct StormReflTypeInfo<DDSLoadBalancerInfo>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xF19BA7B2; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerInfo::m_Nodes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerInfo *>(obj); return &ptr->m_Nodes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerInfo *>(obj); return &ptr->m_Nodes; }
 };
 
 template <typename Self>
@@ -130,6 +196,35 @@ struct StormReflTypeInfo<DDSLoadBalancerResponse>
   static constexpr auto GetName() { return "DDSLoadBalancerResponse"; }
   static constexpr auto GetNameHash() { return 0x87DCE360; }
   static DDSLoadBalancerResponse & GetDefault() { static DDSLoadBalancerResponse def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSLoadBalancerResponse *>(ptr);
+    if(typeid(DDSLoadBalancerResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSLoadBalancerResponse *>(ptr);
+    if(typeid(DDSLoadBalancerResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -142,6 +237,8 @@ struct StormReflTypeInfo<DDSLoadBalancerResponse>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerResponse::host; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerResponse *>(obj); return &ptr->host; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerResponse *>(obj); return &ptr->host; }
 };
 
 template <typename Self>
@@ -164,6 +261,8 @@ struct StormReflTypeInfo<DDSLoadBalancerResponse>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSLoadBalancerResponse::port; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSLoadBalancerResponse *>(obj); return &ptr->port; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSLoadBalancerResponse *>(obj); return &ptr->port; }
 };
 
 template <typename Self>

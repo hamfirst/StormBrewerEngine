@@ -3,7 +3,6 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "VisualEffectDef.refl.h"
-#include "Runtime/UI/UITypes.refl.meta.h"
 
 
 template <>

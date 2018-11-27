@@ -228,6 +228,35 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeRequest>
   static constexpr auto GetName() { return "DDSServerToServerHandshakeRequest"; }
   static constexpr auto GetNameHash() { return 0xE5C15768; }
   static DDSServerToServerHandshakeRequest & GetDefault() { static DDSServerToServerHandshakeRequest def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeRequest *>(ptr);
+    if(typeid(DDSServerToServerHandshakeRequest).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeRequest *>(ptr);
+    if(typeid(DDSServerToServerHandshakeRequest).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -240,6 +269,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeRequest>::field_data_static<0
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeRequest::m_Version; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Version; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Version; }
 };
 
 template <typename Self>
@@ -262,6 +293,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeRequest>::field_data_static<1
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeRequest::m_NodeId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_NodeId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_NodeId; }
 };
 
 template <typename Self>
@@ -284,6 +317,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeRequest>::field_data_static<2
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeRequest::m_Secret; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Secret; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Secret; }
 };
 
 template <typename Self>
@@ -306,6 +341,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeRequest>::field_data_static<3
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeRequest::m_Challenge; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Challenge; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeRequest *>(obj); return &ptr->m_Challenge; }
 };
 
 template <typename Self>
@@ -329,6 +366,35 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeResponse>
   static constexpr auto GetName() { return "DDSServerToServerHandshakeResponse"; }
   static constexpr auto GetNameHash() { return 0x1D7C3A9C; }
   static DDSServerToServerHandshakeResponse & GetDefault() { static DDSServerToServerHandshakeResponse def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeResponse *>(ptr);
+    if(typeid(DDSServerToServerHandshakeResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeResponse *>(ptr);
+    if(typeid(DDSServerToServerHandshakeResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -341,6 +407,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeResponse>::field_data_static<
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeResponse::m_NodeId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_NodeId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_NodeId; }
 };
 
 template <typename Self>
@@ -363,6 +431,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeResponse>::field_data_static<
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeResponse::m_Secret; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_Secret; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_Secret; }
 };
 
 template <typename Self>
@@ -385,6 +455,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeResponse>::field_data_static<
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeResponse::m_Challenge; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_Challenge; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_Challenge; }
 };
 
 template <typename Self>
@@ -407,6 +479,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeResponse>::field_data_static<
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeResponse::m_ChallengeResponse; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_ChallengeResponse; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeResponse *>(obj); return &ptr->m_ChallengeResponse; }
 };
 
 template <typename Self>
@@ -430,6 +504,35 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeFinalize>
   static constexpr auto GetName() { return "DDSServerToServerHandshakeFinalize"; }
   static constexpr auto GetNameHash() { return 0x06DDC26C; }
   static DDSServerToServerHandshakeFinalize & GetDefault() { static DDSServerToServerHandshakeFinalize def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeFinalize *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeFinalize *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSServerToServerHandshakeFinalize *>(ptr);
+    if(typeid(DDSServerToServerHandshakeFinalize).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSServerToServerHandshakeFinalize *>(ptr);
+    if(typeid(DDSServerToServerHandshakeFinalize).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -442,6 +545,8 @@ struct StormReflTypeInfo<DDSServerToServerHandshakeFinalize>::field_data_static<
   static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSServerToServerHandshakeFinalize::m_Challenge; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSServerToServerHandshakeFinalize *>(obj); return &ptr->m_Challenge; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSServerToServerHandshakeFinalize *>(obj); return &ptr->m_Challenge; }
 };
 
 template <typename Self>
@@ -465,6 +570,35 @@ struct StormReflTypeInfo<DDSExportedMessage>
   static constexpr auto GetName() { return "DDSExportedMessage"; }
   static constexpr auto GetNameHash() { return 0x264CC319; }
   static DDSExportedMessage & GetDefault() { static DDSExportedMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedMessage *>(ptr);
+    if(typeid(DDSExportedMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedMessage *>(ptr);
+    if(typeid(DDSExportedMessage).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -477,6 +611,8 @@ struct StormReflTypeInfo<DDSExportedMessage>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xF571F29B; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSExportedMessage::m_Type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedMessage *>(obj); return &ptr->m_Type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedMessage *>(obj); return &ptr->m_Type; }
 };
 
 template <typename Self>
@@ -499,6 +635,8 @@ struct StormReflTypeInfo<DDSExportedMessage>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSExportedMessage::m_Message; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedMessage *>(obj); return &ptr->m_Message; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedMessage *>(obj); return &ptr->m_Message; }
 };
 
 template <typename Self>
@@ -522,6 +660,35 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>
   static constexpr auto GetName() { return "DDSExportedAggregateSubscriptionChange"; }
   static constexpr auto GetNameHash() { return 0x132F7E4C; }
   static DDSExportedAggregateSubscriptionChange & GetDefault() { static DDSExportedAggregateSubscriptionChange def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedAggregateSubscriptionChange *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedAggregateSubscriptionChange *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedAggregateSubscriptionChange *>(ptr);
+    if(typeid(DDSExportedAggregateSubscriptionChange).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedAggregateSubscriptionChange *>(ptr);
+    if(typeid(DDSExportedAggregateSubscriptionChange).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -534,6 +701,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>::field_data_sta
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscriptionChange::m_Change; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_Change; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_Change; }
 };
 
 template <typename Self>
@@ -556,6 +725,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>::field_data_sta
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscriptionChange::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -571,13 +742,15 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>::field_data<1, 
 template <>
 struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>::field_data_static<2>
 {
-  using member_type = std::vector<std::pair<DDSNodeId, DDSKey> >; // std::vector<std::pair<unsigned int, unsigned long long>, std::allocator<std::pair<unsigned int, unsigned long long> > >
+  using member_type = std::vector<std::pair<DDSNodeId, DDSKey> >; // std::vector<std::pair<unsigned int, unsigned long>, std::allocator<std::pair<unsigned int, unsigned long> > >
   static constexpr auto GetName() { return "m_PendingAckNodes"; }
-  static constexpr auto GetType() { return "std::vector<std::pair<unsigned int, unsigned long long>, std::allocator<std::pair<unsigned int, unsigned long long> > >"; }
+  static constexpr auto GetType() { return "std::vector<std::pair<unsigned int, unsigned long>, std::allocator<std::pair<unsigned int, unsigned long> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4C90E874; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD6263F31; }
+  static constexpr unsigned GetTypeNameHash() { return 0x40067597; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscriptionChange::m_PendingAckNodes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_PendingAckNodes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_PendingAckNodes; }
 };
 
 template <typename Self>
@@ -600,6 +773,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscriptionChange>::field_data_sta
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscriptionChange::m_WaitForAllClearGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_WaitForAllClearGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscriptionChange *>(obj); return &ptr->m_WaitForAllClearGen; }
 };
 
 template <typename Self>
@@ -623,18 +798,49 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>
   static constexpr auto GetName() { return "DDSExportedAggregateSubscription"; }
   static constexpr auto GetNameHash() { return 0xD3C648CF; }
   static DDSExportedAggregateSubscription & GetDefault() { static DDSExportedAggregateSubscription def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedAggregateSubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedAggregateSubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedAggregateSubscription *>(ptr);
+    if(typeid(DDSExportedAggregateSubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedAggregateSubscription *>(ptr);
+    if(typeid(DDSExportedAggregateSubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopyKey"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB13E0DFA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_SharedLocalCopyKey; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
 };
 
 template <typename Self>
@@ -657,6 +863,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xA0FBD99A; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_Changes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_Changes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_Changes; }
 };
 
 template <typename Self>
@@ -672,13 +880,15 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data<1, Self> 
 template <>
 struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<2>
 {
-  using member_type = std::vector<std::pair<DDSNodeId, DDSKey> >; // std::vector<std::pair<unsigned int, unsigned long long>, std::allocator<std::pair<unsigned int, unsigned long long> > >
+  using member_type = std::vector<std::pair<DDSNodeId, DDSKey> >; // std::vector<std::pair<unsigned int, unsigned long>, std::allocator<std::pair<unsigned int, unsigned long> > >
   static constexpr auto GetName() { return "m_SubscribedNodes"; }
-  static constexpr auto GetType() { return "std::vector<std::pair<unsigned int, unsigned long long>, std::allocator<std::pair<unsigned int, unsigned long long> > >"; }
+  static constexpr auto GetType() { return "std::vector<std::pair<unsigned int, unsigned long>, std::allocator<std::pair<unsigned int, unsigned long> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2BE503C3; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD6263F31; }
+  static constexpr unsigned GetTypeNameHash() { return 0x40067597; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_SubscribedNodes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_SubscribedNodes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_SubscribedNodes; }
 };
 
 template <typename Self>
@@ -701,6 +911,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_DataPath; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataPath; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataPath; }
 };
 
 template <typename Self>
@@ -723,6 +935,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_HasChangesWaiting; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_HasChangesWaiting; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_HasChangesWaiting; }
 };
 
 template <typename Self>
@@ -745,6 +959,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_DataSubscription; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataSubscription; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataSubscription; }
 };
 
 template <typename Self>
@@ -767,6 +983,8 @@ struct StormReflTypeInfo<DDSExportedAggregateSubscription>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &DDSExportedAggregateSubscription::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedAggregateSubscription *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -790,18 +1008,49 @@ struct StormReflTypeInfo<DDSExportedObject>
   static constexpr auto GetName() { return "DDSExportedObject"; }
   static constexpr auto GetNameHash() { return 0xE6435CE3; }
   static DDSExportedObject & GetDefault() { static DDSExportedObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSExportedObject *>(ptr);
+    if(typeid(DDSExportedObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSExportedObject *>(ptr);
+    if(typeid(DDSExportedObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSExportedObject>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -824,6 +1073,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xF6059719; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_State; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_State; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_State; }
 };
 
 template <typename Self>
@@ -846,6 +1097,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_ActiveObject; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_ActiveObject; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_ActiveObject; }
 };
 
 template <typename Self>
@@ -868,6 +1121,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_DatabaseObject; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_DatabaseObject; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_DatabaseObject; }
 };
 
 template <typename Self>
@@ -890,6 +1145,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_ObjectDataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_ObjectDataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_ObjectDataGen; }
 };
 
 template <typename Self>
@@ -912,6 +1169,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_DatabaseDataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_DatabaseDataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_DatabaseDataGen; }
 };
 
 template <typename Self>
@@ -934,6 +1193,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x6C768773; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_PendingMessages; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_PendingMessages; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_PendingMessages; }
 };
 
 template <typename Self>
@@ -956,6 +1217,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<7>
   static constexpr unsigned GetTypeNameHash() { return 0x1CD204EB; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_Subscriptions; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_Subscriptions; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_Subscriptions; }
 };
 
 template <typename Self>
@@ -978,6 +1241,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<8>
   static constexpr unsigned GetTypeNameHash() { return 0xC0089DA6; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_RequestedSubscriptions; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_RequestedSubscriptions; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_RequestedSubscriptions; }
 };
 
 template <typename Self>
@@ -1000,6 +1265,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<9>
   static constexpr unsigned GetTypeNameHash() { return 0xEE891514; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_AggregateSubscriptions; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_AggregateSubscriptions; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_AggregateSubscriptions; }
 };
 
 template <typename Self>
@@ -1022,6 +1289,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<10>
   static constexpr unsigned GetTypeNameHash() { return 0x98A2ECF2; }
   static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_RequestedAggregateSubscriptions; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_RequestedAggregateSubscriptions; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_RequestedAggregateSubscriptions; }
 };
 
 template <typename Self>
@@ -1044,6 +1313,8 @@ struct StormReflTypeInfo<DDSExportedObject>::field_data_static<11>
   static constexpr unsigned GetTypeNameHash() { return 0x9F2C3407; }
   static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &DDSExportedObject::m_SharedSubscriptions; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSExportedObject *>(obj); return &ptr->m_SharedSubscriptions; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSExportedObject *>(obj); return &ptr->m_SharedSubscriptions; }
 };
 
 template <typename Self>
@@ -1067,6 +1338,35 @@ struct StormReflTypeInfo<DDSDataObjectListSync>
   static constexpr auto GetName() { return "DDSDataObjectListSync"; }
   static constexpr auto GetNameHash() { return 0xD5BF11BC; }
   static DDSDataObjectListSync & GetDefault() { static DDSDataObjectListSync def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDataObjectListSync *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDataObjectListSync *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDataObjectListSync *>(ptr);
+    if(typeid(DDSDataObjectListSync).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDataObjectListSync *>(ptr);
+    if(typeid(DDSDataObjectListSync).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1079,6 +1379,8 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_TargetNode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_TargetNode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_TargetNode; }
 };
 
 template <typename Self>
@@ -1101,6 +1403,8 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_DataObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_DataObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_DataObjectType; }
 };
 
 template <typename Self>
@@ -1123,6 +1427,8 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_RoutingTableGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_RoutingTableGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_RoutingTableGen; }
 };
 
 template <typename Self>
@@ -1138,13 +1444,15 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data<2, Self> : public St
 template <>
 struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<3>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_KeyRangeMin"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xDF42EE40; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_KeyRangeMin; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_KeyRangeMin; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_KeyRangeMin; }
 };
 
 template <typename Self>
@@ -1160,13 +1468,15 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data<3, Self> : public St
 template <>
 struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<4>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_KeyRangeMax"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE34FD119; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_KeyRangeMax; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_KeyRangeMax; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_KeyRangeMax; }
 };
 
 template <typename Self>
@@ -1189,6 +1499,8 @@ struct StormReflTypeInfo<DDSDataObjectListSync>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x88B81936; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSDataObjectListSync::m_Objects; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDataObjectListSync *>(obj); return &ptr->m_Objects; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDataObjectListSync *>(obj); return &ptr->m_Objects; }
 };
 
 template <typename Self>
@@ -1212,18 +1524,49 @@ struct StormReflTypeInfo<DDSUnlockObject>
   static constexpr auto GetName() { return "DDSUnlockObject"; }
   static constexpr auto GetNameHash() { return 0x5C6CB43B; }
   static DDSUnlockObject & GetDefault() { static DDSUnlockObject def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSUnlockObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSUnlockObject *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSUnlockObject *>(ptr);
+    if(typeid(DDSUnlockObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSUnlockObject *>(ptr);
+    if(typeid(DDSUnlockObject).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSUnlockObject>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSUnlockObject::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSUnlockObject *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSUnlockObject *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -1246,6 +1589,8 @@ struct StormReflTypeInfo<DDSUnlockObject>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSUnlockObject::m_ObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSUnlockObject *>(obj); return &ptr->m_ObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSUnlockObject *>(obj); return &ptr->m_ObjectType; }
 };
 
 template <typename Self>
@@ -1268,6 +1613,8 @@ struct StormReflTypeInfo<DDSUnlockObject>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSUnlockObject::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSUnlockObject *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSUnlockObject *>(obj); return &ptr->m_Data; }
 };
 
 template <typename Self>
@@ -1294,6 +1641,39 @@ struct StormReflTypeInfo<DDSResponderCallData>
   static constexpr auto GetName() { return "DDSResponderCallData"; }
   static constexpr auto GetNameHash() { return 0xEAA1DA8E; }
   static DDSResponderCallData & GetDefault() { static DDSResponderCallData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSResponderCallData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x87E6D78C == type_name_hash) return static_cast<DDSResponderCallBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSResponderCallData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x87E6D78C == type_name_hash) return static_cast<const DDSResponderCallBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSResponderCallData *>(ptr);
+    if(typeid(DDSResponderCallData).hash_code() == type_id_hash) return c;
+    if(typeid(DDSResponderCallBase).hash_code() == type_id_hash) return static_cast<DDSResponderCallBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSResponderCallData *>(ptr);
+    if(typeid(DDSResponderCallData).hash_code() == type_id_hash) return c;
+    if(typeid(DDSResponderCallBase).hash_code() == type_id_hash) return static_cast<const DDSResponderCallBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1310,6 +1690,39 @@ struct StormReflTypeInfo<DDSTargetedMessage>
   static constexpr auto GetName() { return "DDSTargetedMessage"; }
   static constexpr auto GetNameHash() { return 0xF2AC566F; }
   static DDSTargetedMessage & GetDefault() { static DDSTargetedMessage def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSTargetedMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x3AF384DD == type_name_hash) return static_cast<DDSTargetedMessageBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSTargetedMessage *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x3AF384DD == type_name_hash) return static_cast<const DDSTargetedMessageBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSTargetedMessage *>(ptr);
+    if(typeid(DDSTargetedMessage).hash_code() == type_id_hash) return c;
+    if(typeid(DDSTargetedMessageBase).hash_code() == type_id_hash) return static_cast<DDSTargetedMessageBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSTargetedMessage *>(ptr);
+    if(typeid(DDSTargetedMessage).hash_code() == type_id_hash) return c;
+    if(typeid(DDSTargetedMessageBase).hash_code() == type_id_hash) return static_cast<const DDSTargetedMessageBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1326,6 +1739,39 @@ struct StormReflTypeInfo<DDSTargetedMessageWithResponder>
   static constexpr auto GetName() { return "DDSTargetedMessageWithResponder"; }
   static constexpr auto GetNameHash() { return 0x6C6F4C91; }
   static DDSTargetedMessageWithResponder & GetDefault() { static DDSTargetedMessageWithResponder def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSTargetedMessageWithResponder *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBA9BF921 == type_name_hash) return static_cast<DDSTargetedMessageWithResponderBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSTargetedMessageWithResponder *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xBA9BF921 == type_name_hash) return static_cast<const DDSTargetedMessageWithResponderBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSTargetedMessageWithResponder *>(ptr);
+    if(typeid(DDSTargetedMessageWithResponder).hash_code() == type_id_hash) return c;
+    if(typeid(DDSTargetedMessageWithResponderBase).hash_code() == type_id_hash) return static_cast<DDSTargetedMessageWithResponderBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSTargetedMessageWithResponder *>(ptr);
+    if(typeid(DDSTargetedMessageWithResponder).hash_code() == type_id_hash) return c;
+    if(typeid(DDSTargetedMessageWithResponderBase).hash_code() == type_id_hash) return static_cast<const DDSTargetedMessageWithResponderBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1342,6 +1788,39 @@ struct StormReflTypeInfo<DDSCreateSubscription>
   static constexpr auto GetName() { return "DDSCreateSubscription"; }
   static constexpr auto GetNameHash() { return 0x5976877E; }
   static DDSCreateSubscription & GetDefault() { static DDSCreateSubscription def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSCreateSubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x64CEBCD5 == type_name_hash) return static_cast<DDSCreateSubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSCreateSubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x64CEBCD5 == type_name_hash) return static_cast<const DDSCreateSubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSCreateSubscription *>(ptr);
+    if(typeid(DDSCreateSubscription).hash_code() == type_id_hash) return c;
+    if(typeid(DDSCreateSubscriptionBase).hash_code() == type_id_hash) return static_cast<DDSCreateSubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSCreateSubscription *>(ptr);
+    if(typeid(DDSCreateSubscription).hash_code() == type_id_hash) return c;
+    if(typeid(DDSCreateSubscriptionBase).hash_code() == type_id_hash) return static_cast<const DDSCreateSubscriptionBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1358,6 +1837,39 @@ struct StormReflTypeInfo<DDSDestroySubscription>
   static constexpr auto GetName() { return "DDSDestroySubscription"; }
   static constexpr auto GetNameHash() { return 0xB0B1734A; }
   static DDSDestroySubscription & GetDefault() { static DDSDestroySubscription def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDestroySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xF427137A == type_name_hash) return static_cast<DDSDestroySubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDestroySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xF427137A == type_name_hash) return static_cast<const DDSDestroySubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDestroySubscription *>(ptr);
+    if(typeid(DDSDestroySubscription).hash_code() == type_id_hash) return c;
+    if(typeid(DDSDestroySubscriptionBase).hash_code() == type_id_hash) return static_cast<DDSDestroySubscriptionBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDestroySubscription *>(ptr);
+    if(typeid(DDSDestroySubscription).hash_code() == type_id_hash) return c;
+    if(typeid(DDSDestroySubscriptionBase).hash_code() == type_id_hash) return static_cast<const DDSDestroySubscriptionBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1374,6 +1886,39 @@ struct StormReflTypeInfo<DDSSubscriptionDeleted>
   static constexpr auto GetName() { return "DDSSubscriptionDeleted"; }
   static constexpr auto GetNameHash() { return 0x4A863944; }
   static DDSSubscriptionDeleted & GetDefault() { static DDSSubscriptionDeleted def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSubscriptionDeleted *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xA49AD769 == type_name_hash) return static_cast<DDSSubscriptionDeletedBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSubscriptionDeleted *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0xA49AD769 == type_name_hash) return static_cast<const DDSSubscriptionDeletedBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSubscriptionDeleted *>(ptr);
+    if(typeid(DDSSubscriptionDeleted).hash_code() == type_id_hash) return c;
+    if(typeid(DDSSubscriptionDeletedBase).hash_code() == type_id_hash) return static_cast<DDSSubscriptionDeletedBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSubscriptionDeleted *>(ptr);
+    if(typeid(DDSSubscriptionDeleted).hash_code() == type_id_hash) return c;
+    if(typeid(DDSSubscriptionDeletedBase).hash_code() == type_id_hash) return static_cast<const DDSSubscriptionDeletedBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1390,6 +1935,39 @@ struct StormReflTypeInfo<DDSValidateTokenRequest>
   static constexpr auto GetName() { return "DDSValidateTokenRequest"; }
   static constexpr auto GetNameHash() { return 0xB8FFF6D8; }
   static DDSValidateTokenRequest & GetDefault() { static DDSValidateTokenRequest def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSValidateTokenRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x64B10987 == type_name_hash) return static_cast<DDSValidateTokenRequestBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSValidateTokenRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x64B10987 == type_name_hash) return static_cast<const DDSValidateTokenRequestBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSValidateTokenRequest *>(ptr);
+    if(typeid(DDSValidateTokenRequest).hash_code() == type_id_hash) return c;
+    if(typeid(DDSValidateTokenRequestBase).hash_code() == type_id_hash) return static_cast<DDSValidateTokenRequestBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSValidateTokenRequest *>(ptr);
+    if(typeid(DDSValidateTokenRequest).hash_code() == type_id_hash) return c;
+    if(typeid(DDSValidateTokenRequestBase).hash_code() == type_id_hash) return static_cast<const DDSValidateTokenRequestBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1406,6 +1984,39 @@ struct StormReflTypeInfo<DDSValidateTokenResponse>
   static constexpr auto GetName() { return "DDSValidateTokenResponse"; }
   static constexpr auto GetNameHash() { return 0xD640B7B1; }
   static DDSValidateTokenResponse & GetDefault() { static DDSValidateTokenResponse def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSValidateTokenResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x9A90A8D1 == type_name_hash) return static_cast<DDSValidateTokenResponseBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSValidateTokenResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    if(0x9A90A8D1 == type_name_hash) return static_cast<const DDSValidateTokenResponseBase *>(c);
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSValidateTokenResponse *>(ptr);
+    if(typeid(DDSValidateTokenResponse).hash_code() == type_id_hash) return c;
+    if(typeid(DDSValidateTokenResponseBase).hash_code() == type_id_hash) return static_cast<DDSValidateTokenResponseBase *>(c);
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSValidateTokenResponse *>(ptr);
+    if(typeid(DDSValidateTokenResponse).hash_code() == type_id_hash) return c;
+    if(typeid(DDSValidateTokenResponseBase).hash_code() == type_id_hash) return static_cast<const DDSValidateTokenResponseBase *>(c);
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -1419,18 +2030,49 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>
   static constexpr auto GetName() { return "DDSCreateSharedLocalCopySubscription"; }
   static constexpr auto GetNameHash() { return 0x559D8F9D; }
   static DDSCreateSharedLocalCopySubscription & GetDefault() { static DDSCreateSharedLocalCopySubscription def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSCreateSharedLocalCopySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSCreateSharedLocalCopySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSCreateSharedLocalCopySubscription *>(ptr);
+    if(typeid(DDSCreateSharedLocalCopySubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSCreateSharedLocalCopySubscription *>(ptr);
+    if(typeid(DDSCreateSharedLocalCopySubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -1453,6 +2095,8 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_stati
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_ObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_ObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_ObjectType; }
 };
 
 template <typename Self>
@@ -1468,13 +2112,15 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data<1, Se
 template <>
 struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_static<2>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopyKey"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB13E0DFA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_SharedLocalCopyKey; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
 };
 
 template <typename Self>
@@ -1490,13 +2136,15 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data<2, Se
 template <>
 struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_static<3>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -1519,6 +2167,8 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_stati
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_DataPath; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataPath; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataPath; }
 };
 
 template <typename Self>
@@ -1541,6 +2191,8 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_stati
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_DataSubscription; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataSubscription; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataSubscription; }
 };
 
 template <typename Self>
@@ -1563,6 +2215,8 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_stati
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -1585,6 +2239,8 @@ struct StormReflTypeInfo<DDSCreateSharedLocalCopySubscription>::field_data_stati
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &DDSCreateSharedLocalCopySubscription::m_ReturnNode; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_ReturnNode; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSCreateSharedLocalCopySubscription *>(obj); return &ptr->m_ReturnNode; }
 };
 
 template <typename Self>
@@ -1608,18 +2264,49 @@ struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>
   static constexpr auto GetName() { return "DDSDestroySharedLocalCopySubscription"; }
   static constexpr auto GetNameHash() { return 0xD65E130E; }
   static DDSDestroySharedLocalCopySubscription & GetDefault() { static DDSDestroySharedLocalCopySubscription def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDestroySharedLocalCopySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDestroySharedLocalCopySubscription *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSDestroySharedLocalCopySubscription *>(ptr);
+    if(typeid(DDSDestroySharedLocalCopySubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSDestroySharedLocalCopySubscription *>(ptr);
+    if(typeid(DDSDestroySharedLocalCopySubscription).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSDestroySharedLocalCopySubscription::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -1642,6 +2329,8 @@ struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data_stat
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSDestroySharedLocalCopySubscription::m_ObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_ObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_ObjectType; }
 };
 
 template <typename Self>
@@ -1657,13 +2346,15 @@ struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data<1, S
 template <>
 struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data_static<2>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopyKey"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB13E0DFA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSDestroySharedLocalCopySubscription::m_SharedLocalCopyKey; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_SharedLocalCopyKey; }
 };
 
 template <typename Self>
@@ -1679,13 +2370,15 @@ struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data<2, S
 template <>
 struct StormReflTypeInfo<DDSDestroySharedLocalCopySubscription>::field_data_static<3>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSDestroySharedLocalCopySubscription::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSDestroySharedLocalCopySubscription *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -1709,18 +2402,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyInit>
   static constexpr auto GetName() { return "DDSSharedLocalCopyInit"; }
   static constexpr auto GetNameHash() { return 0xB5391CEB; }
   static DDSSharedLocalCopyInit & GetDefault() { static DDSSharedLocalCopyInit def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyInit *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyInit *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyInit *>(ptr);
+    if(typeid(DDSSharedLocalCopyInit).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyInit *>(ptr);
+    if(typeid(DDSSharedLocalCopyInit).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyInit>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopyKey"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB13E0DFA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyInit::m_SharedLocalCopyKey; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyInit *>(obj); return &ptr->m_SharedLocalCopyKey; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyInit *>(obj); return &ptr->m_SharedLocalCopyKey; }
 };
 
 template <typename Self>
@@ -1736,13 +2460,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyInit>::field_data<0, Self> : public S
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyInit>::field_data_static<1>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyInit::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyInit *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyInit *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -1765,6 +2491,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyInit>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyInit::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyInit *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyInit *>(obj); return &ptr->m_Data; }
 };
 
 template <typename Self>
@@ -1787,6 +2515,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyInit>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyInit::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyInit *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyInit *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -1810,18 +2540,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyHostDestroyed>
   static constexpr auto GetName() { return "DDSSharedLocalCopyHostDestroyed"; }
   static constexpr auto GetNameHash() { return 0xB78C002D; }
   static DDSSharedLocalCopyHostDestroyed & GetDefault() { static DDSSharedLocalCopyHostDestroyed def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyHostDestroyed *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyHostDestroyed *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyHostDestroyed *>(ptr);
+    if(typeid(DDSSharedLocalCopyHostDestroyed).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyHostDestroyed *>(ptr);
+    if(typeid(DDSSharedLocalCopyHostDestroyed).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyHostDestroyed>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopy"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF469AE04; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyHostDestroyed::m_SharedLocalCopy; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyHostDestroyed *>(obj); return &ptr->m_SharedLocalCopy; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyHostDestroyed *>(obj); return &ptr->m_SharedLocalCopy; }
 };
 
 template <typename Self>
@@ -1837,13 +2598,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyHostDestroyed>::field_data<0, Self> :
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyHostDestroyed>::field_data_static<1>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyHostDestroyed::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyHostDestroyed *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyHostDestroyed *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -1867,18 +2630,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyChange>
   static constexpr auto GetName() { return "DDSSharedLocalCopyChange"; }
   static constexpr auto GetNameHash() { return 0x05E86196; }
   static DDSSharedLocalCopyChange & GetDefault() { static DDSSharedLocalCopyChange def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyChange *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyChange *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyChange *>(ptr);
+    if(typeid(DDSSharedLocalCopyChange).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyChange *>(ptr);
+    if(typeid(DDSSharedLocalCopyChange).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyChange>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopy"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF469AE04; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyChange::m_SharedLocalCopy; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyChange *>(obj); return &ptr->m_SharedLocalCopy; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyChange *>(obj); return &ptr->m_SharedLocalCopy; }
 };
 
 template <typename Self>
@@ -1894,13 +2688,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyChange>::field_data<0, Self> : public
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyChange>::field_data_static<1>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyChange::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyChange *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyChange *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -1923,6 +2719,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyChange>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyChange::m_Change; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyChange *>(obj); return &ptr->m_Change; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyChange *>(obj); return &ptr->m_Change; }
 };
 
 template <typename Self>
@@ -1945,6 +2743,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyChange>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyChange::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyChange *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyChange *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -1968,18 +2768,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>
   static constexpr auto GetName() { return "DDSSharedLocalCopyFastForward"; }
   static constexpr auto GetNameHash() { return 0x801F25EC; }
   static DDSSharedLocalCopyFastForward & GetDefault() { static DDSSharedLocalCopyFastForward def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyFastForward *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyFastForward *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyFastForward *>(ptr);
+    if(typeid(DDSSharedLocalCopyFastForward).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyFastForward *>(ptr);
+    if(typeid(DDSSharedLocalCopyFastForward).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopy"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF469AE04; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyFastForward::m_SharedLocalCopy; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_SharedLocalCopy; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_SharedLocalCopy; }
 };
 
 template <typename Self>
@@ -1995,13 +2826,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>::field_data<0, Self> : p
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>::field_data_static<1>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyFastForward::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -2024,6 +2857,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x7AC297EA; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyFastForward::m_Changes; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_Changes; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_Changes; }
 };
 
 template <typename Self>
@@ -2046,6 +2881,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyFastForward>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyFastForward::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyFastForward *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -2069,18 +2906,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>
   static constexpr auto GetName() { return "DDSSharedLocalCopyAck"; }
   static constexpr auto GetNameHash() { return 0xB30AE436; }
   static DDSSharedLocalCopyAck & GetDefault() { static DDSSharedLocalCopyAck def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyAck *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyAck *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyAck *>(ptr);
+    if(typeid(DDSSharedLocalCopyAck).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyAck *>(ptr);
+    if(typeid(DDSSharedLocalCopyAck).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<0>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -2103,6 +2971,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_ObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_ObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_ObjectType; }
 };
 
 template <typename Self>
@@ -2118,13 +2988,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data<1, Self> : public St
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<2>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SharedLocalCopy"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF469AE04; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_SharedLocalCopy; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_SharedLocalCopy; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_SharedLocalCopy; }
 };
 
 template <typename Self>
@@ -2140,13 +3012,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data<2, Self> : public St
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<3>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_SubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0097192; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_SubscriptionId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_SubscriptionId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_SubscriptionId; }
 };
 
 template <typename Self>
@@ -2169,6 +3043,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_NodeId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_NodeId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_NodeId; }
 };
 
 template <typename Self>
@@ -2191,6 +3067,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -2213,6 +3091,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyAck>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyAck::m_RoutingTableGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyAck *>(obj); return &ptr->m_RoutingTableGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyAck *>(obj); return &ptr->m_RoutingTableGen; }
 };
 
 template <typename Self>
@@ -2236,6 +3116,35 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>
   static constexpr auto GetName() { return "DDSSharedLocalCopyDatabaseElem"; }
   static constexpr auto GetNameHash() { return 0x7C014622; }
   static DDSSharedLocalCopyDatabaseElem & GetDefault() { static DDSSharedLocalCopyDatabaseElem def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyDatabaseElem *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyDatabaseElem *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyDatabaseElem *>(ptr);
+    if(typeid(DDSSharedLocalCopyDatabaseElem).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyDatabaseElem *>(ptr);
+    if(typeid(DDSSharedLocalCopyDatabaseElem).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -2248,6 +3157,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_DataGen; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataGen; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataGen; }
 };
 
 template <typename Self>
@@ -2270,6 +3181,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Data; }
 };
 
 template <typename Self>
@@ -2292,6 +3205,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<2>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_DataSub; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataSub; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataSub; }
 };
 
 template <typename Self>
@@ -2314,6 +3229,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_DataValid; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataValid; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_DataValid; }
 };
 
 template <typename Self>
@@ -2329,13 +3246,15 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data<3, Self> : 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<4>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_Key"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_Key; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Key; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Key; }
 };
 
 template <typename Self>
@@ -2358,6 +3277,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<5>
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_ObjectType; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_ObjectType; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_ObjectType; }
 };
 
 template <typename Self>
@@ -2380,6 +3301,8 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseElem>::field_data_static<6>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseElem::m_Path; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Path; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseElem *>(obj); return &ptr->m_Path; }
 };
 
 template <typename Self>
@@ -2403,18 +3326,49 @@ struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseDump>
   static constexpr auto GetName() { return "DDSSharedLocalCopyDatabaseDump"; }
   static constexpr auto GetNameHash() { return 0x7C955F69; }
   static DDSSharedLocalCopyDatabaseDump & GetDefault() { static DDSSharedLocalCopyDatabaseDump def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyDatabaseDump *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyDatabaseDump *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<DDSSharedLocalCopyDatabaseDump *>(ptr);
+    if(typeid(DDSSharedLocalCopyDatabaseDump).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const DDSSharedLocalCopyDatabaseDump *>(ptr);
+    if(typeid(DDSSharedLocalCopyDatabaseDump).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
 struct StormReflTypeInfo<DDSSharedLocalCopyDatabaseDump>::field_data_static<0>
 {
-  using member_type = std::map<DDSKey, DDSSharedLocalCopyDatabaseElem>; // std::map<unsigned long long, DDSSharedLocalCopyDatabaseElem, std::less<unsigned long long>, std::allocator<std::pair<const unsigned long long, DDSSharedLocalCopyDatabaseElem> > >
+  using member_type = std::map<DDSKey, DDSSharedLocalCopyDatabaseElem>; // std::map<unsigned long, DDSSharedLocalCopyDatabaseElem, std::less<unsigned long>, std::allocator<std::pair<const unsigned long, DDSSharedLocalCopyDatabaseElem> > >
   static constexpr auto GetName() { return "m_Copies"; }
-  static constexpr auto GetType() { return "std::map<unsigned long long, DDSSharedLocalCopyDatabaseElem, std::less<unsigned long long>, std::allocator<std::pair<const unsigned long long, DDSSharedLocalCopyDatabaseElem> > >"; }
+  static constexpr auto GetType() { return "std::map<unsigned long, DDSSharedLocalCopyDatabaseElem, std::less<unsigned long>, std::allocator<std::pair<const unsigned long, DDSSharedLocalCopyDatabaseElem> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x94408454; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFD1A5440; }
+  static constexpr unsigned GetTypeNameHash() { return 0xA39677D8; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSSharedLocalCopyDatabaseDump::m_Copies; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSSharedLocalCopyDatabaseDump *>(obj); return &ptr->m_Copies; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const DDSSharedLocalCopyDatabaseDump *>(obj); return &ptr->m_Copies; }
 };
 
 template <typename Self>

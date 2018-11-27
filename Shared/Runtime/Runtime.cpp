@@ -19,7 +19,6 @@
 #include "Runtime/Path/PathTypeRegister.h"
 #include "Runtime/Anchor/AnchorTypeRegister.h"
 #include "Runtime/Config/ConfigManager.h"
-#include "Runtime/UI/UIElementTypeRegister.h"
 #include "Runtime/SpriteBase/SpriteAnimationEventRegister.h"
 #include "Runtime/Asset/Asset.h"
 #include "Runtime/ServerObject/ServerObjectSystem.h"
@@ -31,7 +30,6 @@ void RuntimeInit()
   g_TypeDatabaseRegisterCallList.CallAll();
   g_ConfigRegistrationCallList.CallAll();
   g_ServerObjectRegisterCallList.CallAll();
-  g_UIElementRegisterCallList.CallAll();
   g_GlobalAssetListRegister.CallAll();
   g_GlobalDependentAssetRegister.CallAll();
   g_ServerObjectSystem.FinalizeTypes();
@@ -56,5 +54,4 @@ void RuntimeRegisterTypes(PropertyFieldDatabase & property_db)
   GetProperyMetaData<VisualEffectDef>(property_db);
 
   g_ConfigTypeManager.RegisterConfigProperties(property_db);
-  g_UIElementTypeDatabase.RegisterTypes(property_db);
 }
