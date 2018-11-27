@@ -35,7 +35,7 @@ void AtlasEngineData::Load()
     std::size_t texture_index = 0;
     for(auto tex : m_Atlas.m_Textures)
     {
-      auto file_name_hash = crc32(tex.second.m_Filename.data());
+      auto file_name_hash = crc32lowercase(tex.second.m_Filename.data());
       if(file_name_hash == elem.second.m_TextureHash)
       {
         lookup_data.m_TextureIndex = texture_index;
@@ -165,14 +165,14 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
     int repeat_width = (int)(position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
     int repeat_height = (int)(position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
 
-    int repeat_texture_width = (int)(position.m_End.x - elem_def.m_StartX - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
-    int repeat_texture_height = (int)(position.m_End.x - elem_def.m_StartX - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
+    int repeat_texture_width = (int)(elem_def.m_EndX - elem_def.m_StartX - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
+    int repeat_texture_height = (int)(elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
 
     // Left side
     quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y + elem_def.m_StartOffsetY };
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_StartOffsetX, repeat_height };
     quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY + elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, repeat_texture_height };
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_StartY + repeat_texture_height };
     buffer_builder.AddRepeatingQuad(quad);
 
     // Right side
@@ -238,7 +238,7 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
     int texture_width = (int)(position.m_End.x - elem_def.m_StartX);
 
     int repeat_height = (int)(position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
-    int repeat_texture_height = (int)(position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
+    int repeat_texture_height = (int)(elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
 
     // Bottom side
     quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
@@ -278,7 +278,7 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
     buffer_builder.AddRepeatingQuad(quad);
   }
 
-  buffer_builder.FillVertexBuffer(m_VertexBuffer);
+  buffer_builder.FillVertexBufferInvertY(m_VertexBuffer, pos);
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   render_state.BindShader(shader);

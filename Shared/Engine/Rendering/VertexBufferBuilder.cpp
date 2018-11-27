@@ -23,8 +23,8 @@ void QuadVertexBufferBuilder::AddRepeatingQuad(const QuadVertexBuilderInfo & qua
     return;
   }
   
-  int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x + 1;
-  int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y + 1;
+  int width = quad.m_Position.m_End.x - quad.m_Position.m_Start.x;
+  int height = quad.m_Position.m_End.y - quad.m_Position.m_Start.y;
 
   QuadVertexBuilderInfo result_quad = quad;
 
@@ -105,7 +105,7 @@ VertexBuffer QuadVertexBufferBuilder::CreateVertexBuffer()
   // 2 = 11
   // 3 = 10
 
-  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+  const uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
 
   for (auto & quad : m_Quads)
   {
@@ -132,7 +132,7 @@ VertexBuffer QuadVertexBufferBuilder::SliceVertexBuffer(const Box & bounds)
 {
   VertexList verts;
 
-  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+  const uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
 
   for (auto & quad : m_Quads)
   {
@@ -171,7 +171,7 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
 {
   VertexList verts;
 
-  uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+  const uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
 
   for (auto & quad : m_Quads)
   {
@@ -183,6 +183,35 @@ void QuadVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
       vert_info.m_Position = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, index < 2 ? index : 5 - index);
       vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index));
       vert_info.m_TexCoord /= static_cast<RenderVec2>(quad.m_TextureSize);
+      vert_info.m_Color = quad.m_Color;
+
+      verts.AddVert(vert_info);
+    }
+  }
+
+  vertex_buffer.SetBufferData(verts, VertexBufferType::kTriangles);
+}
+
+void QuadVertexBufferBuilder::FillVertexBufferInvertY(VertexBuffer & vertex_buffer, const Box & bounds)
+{
+  VertexList verts;
+
+  const uint32_t index_vals[6] = { 0, 1, 2, 0, 2, 3 };
+  auto bounds_size = bounds.Size();
+
+  for (auto & quad : m_Quads)
+  {
+    for (uint32_t vert = 0; vert < 6; vert++)
+    {
+      uint32_t index = index_vals[vert];
+
+      VertexInfo vert_info;
+      vert_info.m_Position = SelectVectorXY(quad.m_Position.m_Start, quad.m_Position.m_End, index < 2 ? index : 5 - index);
+      vert_info.m_Position.y = bounds.m_End.y - vert_info.m_Position.y + bounds.m_Start.y;
+
+      vert_info.m_TexCoord = SelectVectorXY(quad.m_TexCoords.m_Start, quad.m_TexCoords.m_End, (index < 2 ? index : 5 - index));
+      vert_info.m_TexCoord /= static_cast<RenderVec2>(quad.m_TextureSize);
+      vert_info.m_TexCoord.y = 1.0f - vert_info.m_TexCoord.y;
       vert_info.m_Color = quad.m_Color;
 
       verts.AddVert(vert_info);
