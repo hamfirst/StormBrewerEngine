@@ -5,7 +5,6 @@
 #include "Foundation/Time/FrameClock.h"
 
 #include "Engine/UI/UIManager.h"
-#include "Engine/UI/Prototype/UIPrototypeButton.h"
 
 #include "GameClient/GameMode.h"
 #include "GameClient/GameClientInstanceContainer.h"
@@ -44,13 +43,8 @@ private:
   EndGamePlayAgainMode m_Mode;
   GameClientEventSender m_DefaultSender;
 
-  Sequencer m_Sequencer;
+  StopWatch m_StopWatch;
   UIManager m_UIManager;
   FrameClock m_FrameClock;
-
-  UIElementPtr<UIElementShape> m_Fader;
-  UIElementPtr<UIElementText> m_Result;
-  Optional<UIPrototypeButton> m_PlayAgain;
-  Optional<UIPrototypeButton> m_Quit;
 };
 

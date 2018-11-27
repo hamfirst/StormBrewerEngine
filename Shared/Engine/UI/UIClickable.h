@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIElementHandle.h"
 
 #include "Foundation/SkipField/SkipFieldIterator.h"
 
 class RenderState;
 class RenderUtil;
+class UIManager;
 
 enum class UIClickableState
 {

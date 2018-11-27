@@ -19,7 +19,6 @@
 
 #include "QTUtil/QtLerpVar.h"
 
-#include "UIEditorNode.h"
 #include "DocumentValueWatcher.h"
 
 class UIEditor;
@@ -30,10 +29,6 @@ class UIEditorViewer : public QOpenGLWidget
 public:
   UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget *parent = nullptr);
   ~UIEditorViewer();
-
-  void ChangeSelection(const UIEditorNodeSelection & layer);
-  void ClearSelection();
-
 
 protected:
 
@@ -77,19 +72,13 @@ private:
 
   DocumentValueWatcher m_Watcher;
 
-  std::unique_ptr<QToolBar> m_ToolBar;
-  std::unique_ptr<QCheckBox> m_Center;
-
   Optional<FakeWindow> m_FakeWindow;
   Optional<UIManager> m_UIManager;
-  Optional<UIElementPtr<UIElementContainer>> m_RootReference;
 
   DelegateLink<void> m_UpdateDelegate;
 
   RenderState m_RenderState;
   RenderUtil m_RenderUtil;
-
-  Optional<UIEditorNodeSelection> m_Selection;
 
   bool m_PlayMode;
   bool m_ImeMode;

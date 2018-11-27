@@ -54,33 +54,6 @@ void GameModeEndGame::Initialize()
 
 void GameModeEndGame::OnAssetsLoaded()
 {
-  auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
-
-  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
-
-  m_Fader = m_UIManager.AllocateShape("fader", nullptr);
-  m_Fader->SetActive();
-  auto & fader_data = m_Fader->GetData();
-  fader_data.SetColor(Color(255, 255, 255, 0));
-  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
-  fader_data.m_Shape = kUIElementShapeFilledRectangle;
-
-  m_PlayAgain.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(Vector2(0, 0), Vector2(150, 50)), "Play Again");
-  m_PlayAgain->SetOnClickCallback([this] { PlayAgain(); });
-
-  m_Quit.Emplace(m_UIManager, "playagain", nullptr, Box::FromFrameCenterAndSize(Vector2(0, -50), Vector2(150, 25)), "Quit To Main Menu");
-  m_Quit->SetOnClickCallback([this] { Quit(); });
-
-  m_Result = m_UIManager.AllocateText("result");
-  auto & result_data = m_Result->GetData();
-  result_data.m_FontId = -1.0f;
-  result_data.m_PositionX = 0;
-  result_data.m_PositionY = 80;
-  result_data.m_Text = m_Victory ? "Victory" : "Defeat";
-  result_data.m_TextMode = 2.0f;
-
   g_MusicManager.FadeOut(0.1f);
   if (m_Victory)
   {
@@ -91,22 +64,12 @@ void GameModeEndGame::OnAssetsLoaded()
     //g_MusicManager.PlayClip(container.GetClientGlobalResources().DefeatMusic, 0.5f, true);
   }
 
-  m_Sequencer.Push(0.5f, [this](float val) { });
-  m_Sequencer.Push(0.5f, [this](float val) {
-    auto & fader_data = m_Fader->GetData();
-    fader_data.m_ColorA = val;
-  });
-
-  m_Sequencer.Push(0.0f, [this](float val) { m_Fader->SetInactive(); });
-
+  m_StopWatch.Start();
   m_FrameClock.Start();
 }
 
 void GameModeEndGame::Update()
 {
-
-  m_Sequencer.Update();
-
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
 
@@ -124,14 +87,14 @@ void GameModeEndGame::Update()
   auto visual_effects = engine_state.GetVisualEffectManager();
   auto map_system = engine_state.GetMapSystem();
 
-  if (m_FrameClock.ShouldSkipFrameUpdate() == false && m_Fader->GetData().m_ColorA != 1.0f)
+  if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
     m_FrameClock.BeginFrame();
     container.GetWindow().Update();
 
     input_manager.Update();
 
-    if (m_Sequencer.IsComplete() == false)
+    if (m_StopWatch.GetTimeSinceStart() < 2.0f)
     {
       entity_system->BeginFrame();
       m_InstanceContainer->Update();
@@ -205,8 +168,6 @@ void GameModeEndGame::Render()
 
 void GameModeEndGame::PlayAgain()
 {
-  m_Fader->SetActive();
-
   auto & container = GetContainer();
 
   switch (m_Mode)
@@ -227,8 +188,6 @@ void GameModeEndGame::PlayAgain()
 
 void GameModeEndGame::Quit()
 {
-  m_Fader->SetActive();
-
   auto & container = GetContainer();
   container.SwitchMode(GameModeDef<GameModeMainMenu>{});
 }

@@ -59,29 +59,9 @@ set(GENERIC_SRC_Engine
             Map/MapEffectLayerInstance.cpp
             Settings/EngineSettings.refl.cpp
             Camera/Camera.cpp
-            UI/UIElementGradient.refl.cpp
-            UI/UIElementContainer.refl.cpp
             UI/UIClickablePtr.cpp
-            UI/UIElementShape.refl.cpp
-            UI/UIElementExprFuncs.cpp
-            UI/UIElementText.refl.cpp
-            UI/UIElementTextInput.refl.cpp
-            UI/UIElementSpriteFrame.refl.cpp
-            UI/UIElementTextureSlice.refl.cpp
-            UI/UIElementFullTexture.refl.cpp
-            UI/UIElement.cpp
-            UI/UIElementExprBinding.cpp
-            UI/UIElementHandle.cpp
             UI/UIClickable.cpp
             UI/UIManager.cpp
-            UI/Prototype/UISoundPrototypeEffects.cpp
-            UI/Prototype/UIPrototypeTutorialPopup.cpp
-            UI/Prototype/UIPrototypeSlider.cpp
-            UI/Prototype/UIPrototypeMuteButton.cpp
-            UI/Prototype/UIPrototypeConfirmPopup.cpp
-            UI/Prototype/UIPrototypeButton.cpp
-            UI/Prototype/UIPrototypeTextInput.cpp
-            UI/Prototype/UIPrototypeFullscreenButton.cpp
             Component/Component.cpp
             Component/ComponentSystem.cpp
             Component/ComponentHandle.cpp
@@ -182,42 +162,9 @@ set(GENERIC_HEADER_Engine
             Settings/EngineSettings.refl.h
             Settings/EngineSettings.refl.meta.h
             Camera/Camera.h
-            UI/UIElement.h
-            UI/UIElementText.refl.h
-            UI/UIElementGradient.refl.meta.h
-            UI/UIElementShape.refl.meta.h
-            UI/UIElementGradient.refl.h
-            UI/UICustomPropertyData.refl.h
-            UI/UIElementTextureSlice.refl.h
             UI/UIManager.h
-            UI/UIElementExprBinding.h
-            UI/UIElementText.refl.meta.h
-            UI/UIElementTextInput.refl.meta.h
-            UI/UIElementHandle.h
-            UI/UIElementTextInput.refl.h
             UI/UIClickable.h
-            UI/UIElementFullTexture.refl.h
             UI/UIClickablePtr.h
-            UI/UIElementExprTypes.refl.h
-            UI/UIElementPtr.h
-            UI/UIElementExprFuncs.h
-            UI/UIElementTextureSlice.refl.meta.h
-            UI/UIElementSpriteFrame.refl.meta.h
-            UI/UIElementSpriteFrame.refl.h
-            UI/UIElementExprTypes.refl.meta.h
-            UI/UICustomPropertyData.refl.meta.h
-            UI/UIElementContainer.refl.meta.h
-            UI/UIElementFullTexture.refl.meta.h
-            UI/UIElementContainer.refl.h
-            UI/UIElementShape.refl.h
-            UI/Prototype/UIPrototypeTutorialPopup.h
-            UI/Prototype/UIPrototypeFullscreenButton.h
-            UI/Prototype/UIPrototypeMuteButton.h
-            UI/Prototype/UIPrototypeButton.h
-            UI/Prototype/UIPrototypeSlider.h
-            UI/Prototype/UIPrototypeTextInput.h
-            UI/Prototype/UISoundPrototypeEffects.h
-            UI/Prototype/UIPrototypeConfirmPopup.h
             Component/ComponentIterator.h
             Component/ComponentHandle.h
             Component/ComponentList.h
@@ -258,16 +205,6 @@ set(GENERIC_HEADER_Engine
 set(GENERIC_REFL_Engine 
             VisualEffect/VisualEffectTypes.refl.h
             Settings/EngineSettings.refl.h
-            UI/UIElementText.refl.h
-            UI/UIElementGradient.refl.h
-            UI/UICustomPropertyData.refl.h
-            UI/UIElementTextureSlice.refl.h
-            UI/UIElementTextInput.refl.h
-            UI/UIElementFullTexture.refl.h
-            UI/UIElementExprTypes.refl.h
-            UI/UIElementSpriteFrame.refl.h
-            UI/UIElementContainer.refl.h
-            UI/UIElementShape.refl.h
             #REFL_PLACEHOLDER
             )
 

@@ -35,7 +35,6 @@ GameModeSinglePlayerBots::GameModeSinglePlayerBots(GameContainer & game, const G
 
 GameModeSinglePlayerBots::~GameModeSinglePlayerBots()
 {
-  m_Fader.Clear();
   m_ClientSystems.reset();
 }
 
@@ -71,12 +70,6 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
 
   m_FrameClock.Start();
 
-  m_Fader = container.GetClientSystems()->GetUIManager().GetUIManager().AllocateShape("fader", nullptr);
-  m_Fader->SetActive();
-  auto & fader_data = m_Fader->GetData();
-  fader_data.SetColor(Color(255, 255, 255, 255));
-  fader_data.SetBounds(Box::FromPoints(-half_res, half_res));
-  fader_data.m_Shape = kUIElementShapeFilledRectangle;
 
   if (m_ShowTutorial)
   {
@@ -84,7 +77,7 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
   }
   else
   {
-    m_Sequencer.Push(0.5f, [this](float v) { m_Fader->GetData().m_ColorA = 1.0f - v; if (v == 1.0f) m_Fader->SetDisabled(); });
+    //m_Sequencer.Push(0.5f, [this](float v) { m_Fader->GetData().m_ColorA = 1.0f - v; if (v == 1.0f) m_Fader->SetDisabled(); });
   }
 
   //g_MusicManager.FadeTo(GetContainer().GetClientGlobalResources().GameplayLoop, 0.5f, 0.2f, 2.0f);
@@ -112,7 +105,7 @@ void GameModeSinglePlayerBots::Update()
   if (m_ShowTutorial && m_ClientSystems->GetUIManager().IsPopupOpen() == false)
   {
     m_ShowTutorial = false;
-    m_Sequencer.Push(0.5f, [this](float v) { m_Fader->GetData().m_ColorA = 1.0f - v; if (v == 1.0f) m_Fader->SetDisabled(); });
+    //m_Sequencer.Push(0.5f, [this](float v) { m_Fader->GetData().m_ColorA = 1.0f - v; if (v == 1.0f) m_Fader->SetDisabled(); });
   }
 
   auto & engine_state = container.GetEngineState();
