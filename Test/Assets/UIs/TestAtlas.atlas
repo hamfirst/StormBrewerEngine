@@ -1,26 +1,26 @@
 []
 
 {
-    "m_Textures": {
-        "0": {
-            "m_Filename": ".\/Images\/TutorialBubble.png"
-        }
-    },
     "m_Elements": {
         "0": {
             "m_Data": {
-                "m_EndOffsetY": 11,
-                "m_StartX": 0,
-                "m_StartOffsetX": 7,
-                "m_StartOffsetY": 4,
-                "m_Type": "k9Slice",
-                "m_EndOffsetX": 8,
-                "m_EndY": 31,
+                "m_EndOffsetX": 32,
+                "m_EndY": 64,
                 "m_StartY": 0,
-                "m_EndX": 38
+                "m_EndX": 64,
+                "m_StartX": 0,
+                "m_StartOffsetX": 29,
+                "m_EndOffsetY": 36,
+                "m_Type": "k9Slice",
+                "m_StartOffsetY": 25
             },
-            "m_TextureHash": 1024070447,
-            "m_Name": "Bubble"
+            "m_Name": "Bubble",
+            "m_TextureHash": 1024070447
+        }
+    },
+    "m_Textures": {
+        "0": {
+            "m_Filename": ".\/Images\/TutorialBubble.png"
         }
     }
 }

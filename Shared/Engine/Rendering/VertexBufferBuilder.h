@@ -29,6 +29,7 @@ public:
   VertexBuffer SliceVertexBuffer(const Box & bounds);
 
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
+  void FillVertexBufferInvertY(VertexBuffer & vertex_buffer, const Box & bounds);
 
 private:
 

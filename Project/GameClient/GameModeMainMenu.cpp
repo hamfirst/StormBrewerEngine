@@ -12,6 +12,10 @@
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/MusicManager.h"
 
+#include "Runtime/Atlas/AtlasResource.h"
+
+GLOBAL_ASSET(AtlasPtr, "./UIs/TestAtlas.atlas", g_TestAtlas);
+
 czstr g_AccountName = nullptr;
 
 GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
@@ -132,6 +136,7 @@ void GameModeMainMenu::Render()
   render_state.EnableBlendMode();
 
   m_UIManager.Render(render_state, render_util);
+  g_TestAtlas->Render(render_state, "Bubble", Box::FromPoints(Vector2(0, 0), Vector2(128, 128)));
 }
 
 void GameModeMainMenu::InputEvent()

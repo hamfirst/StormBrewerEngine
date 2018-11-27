@@ -77,25 +77,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/Images/TutorialBubble.png" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/Images/TutorialBubble.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/Assets/Images/GameTitle.png" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/Images/GameTitle.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/TestAtlas.atlas" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/TestAtlas.atlas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/DocumentListValueWatcher.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/DocumentListValueWatcher.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/DocumentValueWatcher.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/DocumentValueWatcher.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/GenericList.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/GenericList.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -110,13 +97,14 @@
     <session id="-885762955">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="23" />
+          <entry key="project.closed" value="24" />
+          <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="12" />
           <entry key="project.open.time.8" value="6" />
-          <entry key="project.opened" value="26" />
+          <entry key="project.opened" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -125,11 +113,11 @@
           <entry key="c" value="3" />
           <entry key="cmake" value="2" />
           <entry key="codecvt" value="1" />
-          <entry key="cpp" value="431" />
+          <entry key="cpp" value="440" />
           <entry key="editor (disassembly)" value="19" />
           <entry key="filters" value="7" />
           <entry key="gen" value="40" />
-          <entry key="h" value="634" />
+          <entry key="h" value="641" />
           <entry key="hpp" value="1" />
           <entry key="java" value="2" />
           <entry key="nogen" value="17" />
@@ -145,7 +133,7 @@
         <counts>
           <entry key="CMakeLists.txt" value="66" />
           <entry key="Disassembly" value="22" />
-          <entry key="ObjectiveC" value="1073" />
+          <entry key="ObjectiveC" value="1089" />
           <entry key="PLAIN_TEXT" value="83" />
         </counts>
       </usages-collector>
@@ -153,9 +141,9 @@
         <counts>
           <entry key="GDB" value="70" />
           <entry key="cmake" value="16" />
-          <entry key="cpp" value="23344" />
+          <entry key="cpp" value="23839" />
           <entry key="gen" value="196" />
-          <entry key="h" value="38072" />
+          <entry key="h" value="38104" />
           <entry key="mm" value="58" />
           <entry key="txt" value="502" />
         </counts>
@@ -164,7 +152,7 @@
         <counts>
           <entry key="CMakeLists.txt" value="518" />
           <entry key="GDBCommands" value="70" />
-          <entry key="ObjectiveC" value="61474" />
+          <entry key="ObjectiveC" value="62001" />
           <entry key="PLAIN_TEXT" value="196" />
         </counts>
       </usages-collector>
@@ -180,94 +168,91 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp">
+        <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="108" selection-start-line="108" selection-end-line="108" />
+            <state relative-caret-position="-1227">
+              <caret line="144" column="51" selection-start-line="144" selection-start-column="51" selection-end-line="144" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Project/GameClient/GameContainer.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="198" selection-start-line="198" selection-end-line="198" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/DocumentResource/DocumentResourcePtr.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="92" selection-start-line="92" selection-end-line="92" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="182" selection-start-line="182" selection-end-line="182" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/RenderState.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="444" selection-start-line="444" selection-end-line="444" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="70" selection-start-line="70" selection-end-line="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="477">
+              <caret line="105" selection-start-line="105" selection-end-line="105" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="23" column="70" selection-start-line="23" selection-start-column="70" selection-end-line="23" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="78" column="35" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="32" column="33" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="208">
-              <caret line="66" column="40" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="40" />
+              <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditor.h">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
+            <state relative-caret-position="57">
+              <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="599">
-              <caret line="313" column="35" selection-start-line="313" selection-start-column="35" selection-end-line="313" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
-              <folding>
-                <element signature="e#707#725#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypeFuncs.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-748">
-              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            <state relative-caret-position="415">
+              <caret line="31" column="59" selection-start-line="31" selection-start-column="59" selection-end-line="31" selection-end-column="79" />
             </state>
           </provider>
         </entry>
@@ -338,8 +323,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.h" />
         <option value="$PROJECT_DIR$/Shared/Engine/UI/Prototype/UISoundPrototypeEffects.h" />
         <option value="$PROJECT_DIR$/Project/GameServer/GameInstanceStateLoading.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" />
@@ -366,7 +349,6 @@
         <option value="$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp" />
         <option value="$PROJECT_DIR$/StormTech/StormData/StormDataMergeList.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" />
         <option value="$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasDef.refl.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasTextureImportDialog.cpp" />
@@ -379,7 +361,6 @@
         <option value="$PROJECT_DIR$/Shared/Runtime/Runtime.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/Shader/DefaultShader.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" />
         <option value="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp" />
         <option value="$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h" />
@@ -389,6 +370,10 @@
         <option value="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp" />
         <option value="$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h" />
+        <option value="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp" />
       </list>
     </option>
   </component>
@@ -398,291 +383,15 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules" />
-  </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/@types/mocha/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/@types/node/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ajv/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ansi-cyan/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ansi-red/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ansi-regex/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ansi-styles/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ansi-wrap/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/argparse/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/arr-diff/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/arr-flatten/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/arr-union/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/array-differ/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/array-slice/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/array-union/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/array-uniq/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/array-unique/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/arrify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/asn1/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/assert-plus/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/asynckit/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/aws-sign2/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/aws4/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/babel-code-frame/node_modules/chalk/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/babel-code-frame/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/balanced-match/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/bcrypt-pbkdf/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/block-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/brace-expansion/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/braces/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/browser-stdout/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/buffer-crc32/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/buffer-from/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/builtin-modules/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/caseless/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/chalk/node_modules/ansi-styles/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/chalk/node_modules/supports-color/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/chalk/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/clone-buffer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/clone-stats/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/cloneable-readable/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/co/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/color-convert/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/color-name/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/combined-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/commander/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/concat-map/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/convert-source-map/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/core-util-is/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/dashdash/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/debug/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/deep-assign/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/delayed-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/diff/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/duplexer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/duplexify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ecc-jsbn/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/end-of-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/escape-string-regexp/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/esprima/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/esutils/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/event-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/expand-brackets/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/expand-range/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/extend-shallow/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/extend/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/extglob/node_modules/is-extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/extsprintf/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fast-deep-equal/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fast-json-stable-stringify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fd-slicer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/filename-regex/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fill-range/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/first-chunk-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/for-in/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/for-own/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/forever-agent/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/form-data/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/from/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fs.realpath/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/fstream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/getpass/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-base/node_modules/glob-parent/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-base/node_modules/is-extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-base/node_modules/is-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-base/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-parent/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/node_modules/glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/node_modules/isarray/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/node_modules/readable-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/node_modules/string_decoder/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/node_modules/through2/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/graceful-fs/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/growl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-chmod/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-filter/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-gunzip/node_modules/isarray/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-gunzip/node_modules/readable-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-gunzip/node_modules/string_decoder/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-gunzip/node_modules/through2/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-gunzip/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-remote-src-vscode/node_modules/clone-stats/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-remote-src-vscode/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-remote-src-vscode/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-remote-src-vscode/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-sourcemaps/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-sourcemaps/node_modules/replace-ext/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-sourcemaps/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-sourcemaps/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-symdest/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-untar/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-untar/node_modules/replace-ext/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-untar/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-untar/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-vinyl-zip/node_modules/clone-stats/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-vinyl-zip/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-vinyl-zip/node_modules/queue/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-vinyl-zip/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/gulp-vinyl-zip/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/har-schema/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/har-validator/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/has-ansi/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/has-flag/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/he/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/http-signature/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/inflight/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/inherits/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-buffer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-dotfile/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-equal-shallow/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-extendable/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-number/node_modules/kind-of/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-number/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-obj/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-posix-bracket/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-primitive/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-typedarray/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-utf8/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is-valid-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/is/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/isarray/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/isobject/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/isstream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/js-tokens/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/js-yaml/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/jsbn/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/json-schema-traverse/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/json-schema/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/json-stable-stringify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/json-stringify-safe/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/jsonify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/jsprim/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/kind-of/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/lazystream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/lodash.isequal/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/map-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/math-random/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/merge-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/micromatch/node_modules/arr-diff/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/micromatch/node_modules/is-extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/micromatch/node_modules/is-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/micromatch/node_modules/kind-of/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/micromatch/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mime-db/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mime-types/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/minimatch/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/minimist/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mkdirp/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mocha/node_modules/commander/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mocha/node_modules/diff/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mocha/node_modules/has-flag/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mocha/node_modules/supports-color/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/mocha/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ms/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/multimatch/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/node.extend/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/normalize-path/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/oauth-sign/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/object-assign/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/object.omit/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/once/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/ordered-read-streams/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/parse-glob/node_modules/is-extglob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/parse-glob/node_modules/is-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/parse-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/path-dirname/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/path-is-absolute/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/path-parse/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/pause-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/pend/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/performance-now/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/plugin-error/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/preserve/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/process-nextick-args/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/psl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/punycode/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/qs/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/querystringify/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/queue/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/randomatic/node_modules/is-number/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/randomatic/node_modules/kind-of/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/randomatic/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/readable-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/regex-cache/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/remove-trailing-separator/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/repeat-element/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/repeat-string/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/replace-ext/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/request/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/requires-port/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/resolver/baz/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/resolver/browser_field/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/resolver/dot_main/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/resolver/dot_slash_main/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/resolve/test/resolver/incorrect_main/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/rimraf/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/safe-buffer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/safer-buffer/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/semver/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/source-map-support/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/source-map/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/split/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/sprintf-js/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/sshpk/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/stat-mode/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/stream-combiner/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/stream-shift/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/streamfilter/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/streamifier/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/string_decoder/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/strip-ansi/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/strip-bom-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/strip-bom/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/supports-color/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tar/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/through/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/through2-filter/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/through2/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/to-absolute-glob/node_modules/extend-shallow/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/to-absolute-glob/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tough-cookie/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tslib/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tslint/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tsutils/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tunnel-agent/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/tweetnacl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/typescript/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/unique-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/url-parse/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/util-deprecate/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/uuid/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vali-date/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/verror/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl-fs/node_modules/clone/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl-fs/node_modules/replace-ext/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl-fs/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl-fs/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl-source-stream/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vinyl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/vscode/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/wrappy/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/xtend/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/yauzl/package.json" />
-      <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/yazl/package.json" />
       <path value="$PROJECT_DIR$/Tools/Wizards/sbwiz/package.json" />
     </packageJsonPaths>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="19" />
-    <option name="y" value="25" />
+    <option name="y" value="19" />
     <option name="width" value="1882" />
     <option name="height" value="1036" />
   </component>
@@ -783,6 +492,17 @@
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Project" type="462c0819:PsiDirectoryNode" />
+              <item name="GameClient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Shared" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -836,7 +556,28 @@
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Shared" type="462c0819:PsiDirectoryNode" />
               <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="Asset" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
               <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="DocumentResource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="Sprite" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
@@ -893,7 +634,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.editor">
+  <component name="RunManager" selected="Application.ClientExe">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="editor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1335,23 +1076,24 @@
       <workItem from="1542616086432" duration="3595000" />
       <workItem from="1542619800420" duration="7849000" />
       <workItem from="1543203000727" duration="8783000" />
+      <workItem from="1543213884094" duration="8039000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="492336000" />
+    <option name="totallyTimeSpent" value="500375000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="19" y="25" width="1882" height="1036" extended-state="0" />
+    <frame x="19" y="19" width="1882" height="1036" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1937773" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19607843" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32893288" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.28162816" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.40154016" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.28100988" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4006586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -1360,7 +1102,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32893288" />
       <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.35129312" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" weight="0.31133112" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" weight="0.31064764" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1417,14 +1159,9 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp</url>
-          <line>67</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp</url>
-          <line>248</line>
-          <option name="timeStamp" value="11" />
+          <url>file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp</url>
+          <line>175</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1474,56 +1211,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="282" column="3" selection-start-line="282" selection-start-column="3" selection-end-line="283" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/GenericList.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="27" lean-forward="true" selection-end-line="120" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SimpleLabelList.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="43" selection-start-line="43" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/8.2.1/bits/unique_ptr.h" />
     <entry file="file://$PROJECT_DIR$/Tools/Editor/SpriteBaseTextureImportDialog.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -1658,20 +1345,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="128" column="23" selection-start-line="128" selection-start-column="23" selection-end-line="128" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/Shader/ShaderManager.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -1686,31 +1359,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1972">
-          <caret line="116" column="90" selection-start-line="116" selection-start-column="90" selection-end-line="116" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/VisualEffectEditorViewer.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
           <caret line="143" column="3" selection-start-line="143" selection-start-column="3" selection-end-line="143" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2975">
-          <caret line="175" column="25" selection-start-line="175" selection-start-column="25" selection-end-line="175" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="34" selection-start-line="114" selection-start-column="34" selection-end-line="114" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -1745,16 +1397,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypeFuncs.h">
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-748">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="1696">
+          <caret line="118" selection-start-line="118" selection-end-line="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1248">
+          <caret line="78" column="35" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="512">
+          <caret line="32" column="34" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1056">
+          <caret line="66" column="41" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditor.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
+        <state relative-caret-position="608">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#707#725#0" expanded="true" />
@@ -1762,59 +1449,111 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditor.h">
+    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypeFuncs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="313" column="35" selection-start-line="313" selection-start-column="35" selection-end-line="313" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditorContainer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="108" selection-start-line="108" selection-end-line="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="32" column="33" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentSubValueListMirror.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="66" column="40" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/DocumentEditorWidgetBase.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="78" column="35" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="35" />
+        <state relative-caret-position="16">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/PropertyEditorNumber.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="23" column="70" selection-start-line="23" selection-start-column="70" selection-end-line="23" selection-end-column="70" />
+        <state relative-caret-position="263">
+          <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/AtlasElementEditor.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="74" column="3" selection-start-line="74" selection-start-column="3" selection-end-line="74" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Asset/Asset.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="238" column="8" selection-start-line="238" selection-start-column="8" selection-end-line="238" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Sprite/SpriteResource.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameContainer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="198" selection-start-line="198" selection-end-line="198" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/DocumentResource/DocumentResourcePtr.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/RenderState.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="444" selection-start-line="444" selection-end-line="444" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="182" selection-start-line="182" selection-end-line="182" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="31" column="59" selection-start-line="31" selection-start-column="59" selection-end-line="31" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1227">
+          <caret line="144" column="51" selection-start-line="144" selection-start-column="51" selection-end-line="144" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Atlas/AtlasResource.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="105" selection-start-line="105" selection-end-line="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Atlas/AtlasEngineData.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
         </state>
       </provider>
     </entry>
