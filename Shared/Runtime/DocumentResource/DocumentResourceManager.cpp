@@ -4,7 +4,7 @@
 #include "Runtime/RuntimeCommon.h"
 #include "Runtime/DocumentResource/DocumentResourceManager.h"
 
-extern DocumentResourceLoader * g_ResourceLoader;
+extern DocumentResourceLoader * g_DocumentResourceLoader;
 DocumentResourceManager g_DocumentResourceManager;
 
 DocumentResourceManager::DocumentResourceManager() :
@@ -40,7 +40,7 @@ NotNullPtr<DocumentResourceBase> DocumentResourceManager::LoadDocumentResource(c
     m_PendingDocumentLoad = path_hash;
     m_PendingDocumentLoaded = false;
 
-    auto load_data = g_ResourceLoader->LoadResource(file_path,
+    auto load_data = g_DocumentResourceLoader->LoadResource(file_path,
       [](uint32_t path_hash, NullOptPtr<std::string> resource_data, void * user_ptr)
       { 
         auto p_this = static_cast<DocumentResourceManager *>(user_ptr);
@@ -111,6 +111,6 @@ void DocumentResourceManager::DestroyDocument(uint32_t path_hash)
     return;
   }
 
-  g_ResourceLoader->UnloadResource(path_hash, std::move(itr->second->m_LoadData));
+  g_DocumentResourceLoader->UnloadResource(path_hash, std::move(itr->second->m_LoadData));
   m_Documents.erase(itr);
 }

@@ -4,7 +4,7 @@
 #include "Engine/Asset/DocumentAsset.h"
 
 DocumentAssetLoader g_DocumentAssetLoader;
-DocumentResourceLoader * g_ResourceLoader = &g_DocumentAssetLoader;
+DocumentResourceLoader * g_DocumentResourceLoader = &g_DocumentAssetLoader;
 
 Any DocumentAssetLoader::LoadResource(czstr path, DocumentResourceLoaderCallback load_callback, void * user_ptr)
 {
