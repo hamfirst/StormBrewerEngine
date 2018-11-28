@@ -12,6 +12,7 @@
 #include "Runtime/Map/MapDef.refl.h"
 #include "Runtime/VisualEffect/VisualEffectDef.refl.h"
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
+#include "Runtime/BinaryResource/BinaryResourceLoader.h"
 
 #include <experimental/filesystem>
 
@@ -81,6 +82,59 @@ private:
   DocumentCompiler m_Compiler;
 };
 
+class DefaultBinaryResourceLoader : public BinaryResourceLoader
+{
+public:
+  DefaultBinaryResourceLoader()
+  {
+    m_RootPath = GetCanonicalRootPath();
+  }
+
+  struct BinaryData
+  {
+    Buffer m_AssetData;
+    uint32_t m_PathHash;
+  };
+
+
+  virtual Any LoadResource(czstr path, BinaryResourceLoaderCallback load_callback, void * user_ptr) override
+  {
+    auto path_str = GetFullPath(path, m_RootPath);
+
+    File file = FileOpen(path_str.data(), FileOpenMode::kRead);
+    if (file.GetFileOpenError() != 0)
+    {
+      load_callback(crc32lowercase(path), nullptr, 0, user_ptr);
+      return {};
+    }
+
+    BinaryData data;
+    data.m_AssetData = file.ReadFileFull();
+    data.m_PathHash = crc32lowercase(path);
+    FileClose(file);
+
+    std::error_code ec;
+    load_callback(data.m_PathHash, data.m_AssetData.Get(), data.m_AssetData.GetSize(), user_ptr);
+
+    m_LoadedBinaries.emplace(std::make_pair(data.m_PathHash, std::move(data)));
+    return {};
+  }
+
+  virtual void UnloadResource(uint32_t path_hash, Any && load_data) override
+  {
+    auto itr = m_LoadedBinaries.find(path_hash);
+    if(itr != m_LoadedBinaries.end())
+    {
+      m_LoadedBinaries.erase(itr);
+    }
+  }
+
+private:
+
+  std::string m_RootPath;
+  std::unordered_map<uint32_t, BinaryData> m_LoadedBinaries;
+};
+
 Any CreateAtlasEngineData(AtlasDef & Atlas)
 {
   return {};
@@ -93,7 +147,6 @@ void UpdateAtlasEngineData(Any & engine_data)
 void RenderAtlas(Any & engine_data, RenderState & render_state, czstr name, const Box & position, const Color & color)
 {
 }
-
 
 Any CreateSpriteEngineData(SpriteBaseDef & sprite)
 {
@@ -120,5 +173,9 @@ Any CreateVisualEffectEngineData(VisualEffectDef & visual_effect)
   return{};
 }
 
-DefaultDocumentResourceLoader g_DefaultLoader;
-DocumentResourceLoader * g_ResourceLoader = &g_DefaultLoader;
+DefaultDocumentResourceLoader g_DefaultDocumentLoader;
+DocumentResourceLoader * g_DocumentResourceLoader = &g_DefaultDocumentLoader;
+
+DefaultBinaryResourceLoader g_DefaultBinaryLoader;
+BinaryResourceLoader * g_BinaryResourceLoader = &g_DefaultBinaryLoader;
+
