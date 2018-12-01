@@ -21181,8 +21181,9 @@ namespace sol {
 					lua_pop(L, 1);
 					break;
 				case lib::os:
-					luaL_requiref(L, "os", luaopen_os, 1);
-					lua_pop(L, 1);
+					assert(false);
+					//luaL_requiref(L, "os", luaopen_os, 1);
+					//lua_pop(L, 1);
 					break;
 				case lib::debug:
 					luaL_requiref(L, "debug", luaopen_debug, 1);

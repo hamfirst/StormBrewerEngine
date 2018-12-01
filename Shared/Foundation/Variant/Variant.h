@@ -98,6 +98,8 @@ template <typename ... PossibleTypes>
 class Variant
 {
 public:
+  static const int kNumTypes = sizeof...(PossibleTypes);
+
   Variant() = default;
 
   Variant(const Variant & rhs) :

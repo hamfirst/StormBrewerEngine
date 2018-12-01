@@ -264,6 +264,38 @@ public:
     }
   }
 
+  template <typename Type, typename ... Args>
+  void Emplace(Args && ... args)
+  {
+    new (m_Buffer) Type(std::forward<Args>(args)...);
+
+    if constexpr (std::is_copy_constructible_v<Type>)
+    {
+      m_Copier = [](const void * src, void * dst) { new(dst) Type(*(const Type *)src); };
+    }
+    else
+    {
+      m_Copier = nullptr;
+    }
+
+    if constexpr (std::is_move_constructible_v<Type>)
+    {
+      m_Mover = [](void * src, void * dst) { new(dst) Type(std::move(*(Type *)src)); };
+    }
+    else
+    {
+      m_Mover = nullptr;
+    }
+
+    m_Deleter = [](void * ptr)
+    {
+      auto t = static_cast<Type *>(ptr);
+      t->~Type();
+    };
+
+    m_Type = typeid(Type).hash_code();
+  }
+
   void Clear()
   {
     if (m_Type != 0)
