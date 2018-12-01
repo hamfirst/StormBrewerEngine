@@ -43,8 +43,9 @@ set(GENERIC_SRC_Foundation
             Json/JsonArray.cpp
             Profiling/Profiling.cpp
             Math/Util.cpp
+            Script/ScriptState.cpp
             #CPP_PLACEHOLDER
-            )
+  Script/ScriptObject.cpp Script/ScriptObject.h Script/ScriptValue.h Script/ScriptInternal.h Script/ScriptClass.cpp Script/ScriptClass.h Script/ScriptValue.cpp)
 
 set(GENERIC_HEADER_Foundation 
             Common.h
@@ -125,6 +126,7 @@ set(GENERIC_HEADER_Foundation
             Math/Math.h
             Math/LineDrawing.h
             Math/Intersection.h
+            Script/ScriptState.h
             #HEADER_PLACEHOLDER
             )
 
