@@ -3,38 +3,22 @@
 
 int main(int argc, char ** argv)
 {
-  if (argc >= 2 && !strcmp(argv[1], "-d"))
+  if(argc < 3)
   {
-    auto cur_dir = fs::canonical(".");
-    auto cur_file = fs::canonical(argv[0]);
-    printf("Current dir: %s\n", cur_dir.string().c_str());
-
-    auto cmake_file_path = FindCMakeFile(cur_dir, cur_dir.root_directory());
-    if (cmake_file_path.has_value())
-    {
-      printf("CMake path: %s\n", cmake_file_path->string().c_str());
-      auto rel_cmake = GetRelativePath(cmake_file_path->parent_path(), cur_file);
-      printf("CMake relative path %s\n", rel_cmake.c_str());
-    }
-    else
-    {
-      printf("CMake path not found\n");
-    }
-
-    return 0;
-  }
-
-  if(argc < 5)
-  {
-    printf("Usage addcode <type> <name> <target_dir> <project_root_dir> <options>\n");
-    return 1;
+    fprintf(stderr, "Usage: addcode <TemplateType> <ClassName>\n");
+    return -1;
   }
 
   auto type = std::string(argv[1]);
   auto name = std::string(argv[2]);
-  auto target_dir = fs::canonical(argv[3]);
-  auto root_dir = fs::canonical(argv[4]);
+  auto target_dir = fs::canonical(fs::current_path());
+  auto root_dir = fs::canonical(argv[0]).parent_path();
   auto template_dir = fs::canonical(root_dir / "Tools/Wizards/Templates/");
+
+  printf("Type: %s\n", type.data());
+  printf("Name: %s\n", name.data());
+  printf("Target dir: %s\n", target_dir.string().data());
+  printf("Root dir: %s\n", root_dir.string().data());
 
   printf("Template dir %s\n", template_dir.string().data());
 
@@ -56,32 +40,25 @@ int main(int argc, char ** argv)
 
   auto & cmake_file = cmake_file_data.value();
 
-  bool use_meta = false;
-
-  for(int index = 5; index < argc; ++index)
-  {
-    for(char * p = argv[index]; *p != 0; ++p)
-    {
-      if(*p == 'm')
-      {
-        use_meta = true;
-      }
-    }
-  }
-
   auto class_name = std::string(name);
-  auto cpp_file_ext = use_meta ? ".refl.cpp" : ".cpp";
-  auto header_file_ext = use_meta ? ".refl.h" : ".h";
+  auto cpp_file_ext = ".cpp";
+  auto header_file_ext = ".h";
+  auto cpp_refl_file_ext = ".refl.cpp";
+  auto header_refl_file_ext = ".refl.h";
   auto meta_file_ext = ".refl.meta.h";
   auto reg_file_ext = ".refl.reg.cpp";
 
   auto cpp_file = class_name + cpp_file_ext;
   auto header_file = class_name + header_file_ext;
+  auto cpp_refl_file = class_name + cpp_refl_file_ext;
+  auto header_refl_file = class_name + header_refl_file_ext;
   auto meta_file = class_name + meta_file_ext;
   auto reg_file = class_name + reg_file_ext;
 
   auto cpp_template_file = template_dir / (type + cpp_file_ext);
   auto header_template_file = template_dir / (type + header_file_ext);
+  auto cpp_refl_template_file = template_dir / (type + cpp_refl_file_ext);
+  auto header_refl_template_file = template_dir / (type + header_refl_file_ext);
   auto meta_template_file = template_dir / (type + meta_file_ext);
   auto reg_template_file = template_dir / (type + reg_file_ext);
 
@@ -106,7 +83,8 @@ int main(int argc, char ** argv)
   std::unordered_map<std::string, std::string> template_replacements;
   template_replacements["class_name"] = class_name;
   template_replacements["header_file"] = header_file;
-  template_replacements["meta_file"] = meta_file;
+  template_replacements["refl_header_file"] = header_refl_file;
+  template_replacements["refl_meta_file"] = meta_file;
   template_replacements["rel_path"] = rel_path;
   template_replacements["class_name_lower"] = class_name_lower;
   template_replacements["friendly_name"] = friendly_name;
@@ -118,16 +96,26 @@ int main(int argc, char ** argv)
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
   }
 
+  if(WriteTemplate(target_dir / cpp_refl_file, cpp_refl_template_file, template_replacements))
+  {
+    GitAddFile(target_dir / cpp_refl_file, root_dir);
+    auto file = GetCMakePath(rel_cmake, cpp_refl_file);
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kCPPFile);
+  }
+
   if(WriteTemplate(target_dir / header_file, header_template_file, template_replacements))
   {
     GitAddFile(target_dir / header_file, root_dir);
     auto file = GetCMakePath(rel_cmake, header_file);
     InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
-    
-    if(use_meta)
-    {
-      InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kReflFile);
-    }
+  }
+
+  if(WriteTemplate(target_dir / header_refl_file, header_refl_template_file, template_replacements))
+  {
+    GitAddFile(target_dir / header_refl_file, root_dir);
+    auto file = GetCMakePath(rel_cmake, header_refl_file);
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kHeaderFile);
+    InsertIntoCMakeFile(cmake_file, file, ProjectFileType::kReflFile);
   }
 
   if(WriteTemplate(target_dir / meta_file, meta_template_file, template_replacements))

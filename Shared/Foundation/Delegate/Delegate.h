@@ -266,3 +266,16 @@ private:
   unsigned char m_Buffer[kMaxDelegateSize];
   NullOptPtr<DelegateCallbacks<ReturnType, Args...>> m_Callbacks;
 };
+
+template <typename LambdaT, typename Lambda, typename ReturnType, typename ... Args>
+auto CreateDelegateFromLambdaDetail(LambdaT && lambda, ReturnType (Lambda::*Func)(Args...) const)
+{
+  return Delegate<ReturnType, Args...>(std::forward<LambdaT>(lambda));
+}
+
+template <typename Lambda>
+auto CreateDelegateFromLambda(Lambda && lambda)
+{
+  using LambdaType = typename std::template decay_t<Lambda>;
+  return CreateDelegateFromLambdaDetail(lambda, &LambdaType::operator ());
+}

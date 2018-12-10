@@ -41,7 +41,7 @@ void ScriptObject::Clear()
 {
   if(m_ScriptState)
   {
-    ScriptInternal::DeleteScriptObject(m_ScriptState, m_GlobalId);
+    ScriptInternal::DeleteGlobalObject(m_ScriptState, m_GlobalId);
     m_ScriptState = nullptr;
     m_GlobalId = 0;
   }
@@ -87,9 +87,4 @@ bool ScriptObject::Call(czstr name, std::initializer_list<ScriptValue> args, Nul
   }
 
   return false;
-}
-
-int ScriptObject::GetGlobalId() const
-{
-  return m_GlobalId;
 }

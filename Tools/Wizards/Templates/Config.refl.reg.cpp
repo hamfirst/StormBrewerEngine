@@ -9,8 +9,8 @@
 
 #include ""Runtime/Config/ConfigRegistrationMacros.h""
 
-#include ""{rel_path}/{header_file}""
-#include ""{rel_path}/{meta_file}""
+#include ""{rel_path}/{refl_header_file}""
+#include ""{rel_path}/{refl_meta_file}""
 
 REGISTER_CONFIG_TYPE({class_name}, ""{friendly_name}"", ""{class_name_lower}"", ""Configs"");
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL({class_name});

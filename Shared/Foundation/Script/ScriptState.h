@@ -10,6 +10,7 @@ class ScriptState
 {
 public:
   ScriptState();
+  ~ScriptState();
   ScriptState(const ScriptState & rhs) = delete;
   ScriptState(ScriptState && rhs) = delete;
 
@@ -23,11 +24,13 @@ public:
 
   ScriptObject CreateScriptObject();
 
-  bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val);
-
+  bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
 
 private:
   friend class ScriptInternal;
+  friend class ScriptClassBase;
+  friend class ScriptClassInternal;
+  friend class ScriptFuncs;
 
 private:
 

@@ -4,92 +4,92 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameClient 
-            GameClientSystems.cpp
-            GameClientInstanceContainer.cpp
-            GameModeLocalMultiplayer.cpp
-            GameModeLogo.cpp
-            GameNetworkClient.cpp
-            GameContainer.cpp
-            GameModeNameSelect.cpp
+            GameClientController.refl.cpp
             GameServerEventResponder.cpp
             GameModeLoadingGlobal.cpp
             GameModeConnecting.cpp
-            GameClientUIManager.cpp
-            GameModeOnlineGameplay.cpp
             GameModeMainMenu.cpp
-            GameModeOfflineStaging.cpp
-            GameClientController.refl.cpp
-            GameClientInstanceResources.cpp
-            GameMode.cpp
-            GameModeTutorial.cpp
-            GameClientLevelLoader.cpp
-            GameClientInputManager.cpp
-            GameModeSinglePlayerBots.cpp
-            GameClientEntitySync.cpp
+            GameContainer.cpp
             GameShaders.cpp
+            GameClientInputManager.cpp
+            GameModeOnlineGameplay.cpp
+            GameModeNameSelect.cpp
+            GameModeLocalMultiplayer.cpp
+            GameClientInstanceResources.cpp
+            GameClientUIManager.cpp
+            GameClientSave.cpp
+            GameClientEntitySync.cpp
+            GameModeSinglePlayerBots.cpp
+            GameClientSystems.cpp
+            GameClientInstanceContainer.cpp
+            GameModeLogo.cpp
+            GameNetworkClient.cpp
+            GameModeEndGame.cpp
             GameCamera.cpp
+            GameMode.cpp
+            GameModeOfflineStaging.cpp
             GameModeJoinPrivateGame.cpp
             GameModeOnlineStaging.cpp
-            GameModeEndGame.cpp
-            GameClientSave.cpp
             GameClientCommon.cpp
-            Components/PlayerComponent.refl.reg.cpp
+            GameClientLevelLoader.cpp
+            GameModeTutorial.cpp
             Components/PlayerComponent.refl.cpp
-            Components/Reusable/PlayAnimationComponent.refl.cpp
-            Components/Reusable/SyncServerObjectComponent.refl.cpp
-            Components/Reusable/PlayAnimationComponent.refl.reg.cpp
-            Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
-            Components/Reusable/AttachVfxComponent.refl.cpp
+            Components/PlayerComponent.refl.reg.cpp
             Components/Reusable/AttachVfxComponent.refl.reg.cpp
-            EffectLayers/CollisionDrawer.refl.reg.cpp
+            Components/Reusable/PlayAnimationComponent.refl.cpp
+            Components/Reusable/PlayAnimationComponent.refl.reg.cpp
+            Components/Reusable/AttachVfxComponent.refl.cpp
+            Components/Reusable/SyncServerObjectComponent.refl.reg.cpp
+            Components/Reusable/SyncServerObjectComponent.refl.cpp
             EffectLayers/CollisionDrawer.refl.cpp
+            EffectLayers/CollisionDrawer.refl.reg.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameClient 
-            GameClientInputManager.h
             GameClientEntitySync.h
-            GameClientInstanceResources.h
-            GameModeTutorial.h
-            GameClientEventSender.h
-            GameClientSystems.h
-            GameModeEndGame.h
-            GameClientCommon.h
+            GameModeLogo.h
             GameContainer.h
-            GameModeOfflineStaging.h
-            GameNetworkClient.h
-            GameModeNameSelect.h
-            GameModeJoinPrivateGame.h
+            GameModeTutorial.h
+            GameClientInputManager.h
+            GameModeSinglePlayerBots.h
+            GameModeConnecting.h
+            GameClientSave.h
+            GameClientInstanceResources.h
             GameClientSaveFileData.refl.h
             GameShaders.h
-            GameModeOnlineGameplay.h
-            GameClientController.refl.meta.h
-            GameClientSave.h
-            GameCamera.h
-            GameModeConnecting.h
-            GameModeLogo.h
+            GameClientCommon.h
             GameModeLocalMultiplayer.h
+            GameModeNameSelect.h
+            GameModeEndGame.h
+            GameModeOnlineGameplay.h
+            GameModeLoadingGlobal.h
+            GameClientUIManager.h
+            GameMode.h
+            GameModeOfflineStaging.h
+            GameClientSystems.h
             GameModeOnlineStaging.h
             GameClientInstanceContainer.h
-            GameMode.h
-            GameClientController.refl.h
-            GameServerEventResponder.h
-            GameClientSaveFileData.refl.meta.h
-            GameClientUIManager.h
-            GameModeLoadingGlobal.h
-            GameModeMainMenu.h
             GameClientLevelLoader.h
-            GameModeSinglePlayerBots.h
+            GameClientController.refl.meta.h
+            GameNetworkClient.h
+            GameClientController.refl.h
+            GameClientSaveFileData.refl.meta.h
+            GameModeMainMenu.h
+            GameModeJoinPrivateGame.h
+            GameClientEventSender.h
+            GameCamera.h
+            GameServerEventResponder.h
             Components/PlayerComponent.refl.meta.h
             Components/PlayerComponent.refl.h
-            Components/Reusable/AttachVfxComponent.refl.h
-            Components/Reusable/PlayAnimationComponent.refl.meta.h
             Components/Reusable/SyncServerObjectComponent.refl.h
             Components/Reusable/PlayAnimationComponent.refl.h
             Components/Reusable/SyncServerObjectComponent.refl.meta.h
             Components/Reusable/AttachVfxComponent.refl.meta.h
-            EffectLayers/CollisionDrawer.refl.h
+            Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.meta.h
             EffectLayers/CollisionDrawer.refl.meta.h
+            EffectLayers/CollisionDrawer.refl.h
             #HEADER_PLACEHOLDER
             )
 
@@ -97,9 +97,9 @@ set(GENERIC_REFL_GameClient
             GameClientSaveFileData.refl.h
             GameClientController.refl.h
             Components/PlayerComponent.refl.h
-            Components/Reusable/AttachVfxComponent.refl.h
             Components/Reusable/SyncServerObjectComponent.refl.h
             Components/Reusable/PlayAnimationComponent.refl.h
+            Components/Reusable/AttachVfxComponent.refl.h
             EffectLayers/CollisionDrawer.refl.h
             #REFL_PLACEHOLDER
             )

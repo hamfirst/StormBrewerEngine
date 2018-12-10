@@ -6,10 +6,15 @@
 
 #include "Foundation/Time/StopWatch.h"
 
+#include "Foundation/Script/ScriptState.h"
+#include "Foundation/Script/ScriptInterface.h"
+
 #include "StormExpr/StormExprFunctionList.h"
 
 class InputState;
 class Window;
+
+class UIScriptLoader;
 
 template <typename Type>
 class SkipField;
@@ -20,6 +25,9 @@ public:
 
   UIManager(Window & container_window);
   ~UIManager();
+
+  void LoadScripts();
+  bool FinishedLoading() const;
 
   void Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset = Vector2(0, 0));
   void Render(RenderState & render_state, RenderUtil & render_util);
@@ -43,6 +51,11 @@ protected:
 
 private:
   Window & m_ContainerWindow;
+
+  Optional<ScriptState> m_ScriptState;
+  Optional<ScriptInterface> m_ScriptInterface;
+
+  std::unique_ptr<UIScriptLoader> m_Loader;
 
   std::vector<NotNullPtr<UIClickable>> m_Clickables;
 

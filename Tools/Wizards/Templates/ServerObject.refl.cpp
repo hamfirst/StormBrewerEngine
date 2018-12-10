@@ -4,8 +4,8 @@
 #include ""Game/GameController.refl.h""
 #include ""Game/GameServerEventSender.h""
 
-#include ""{rel_path}/{header_file}""
-#include ""{rel_path}/{meta_file}""
+#include ""{rel_path}/{refl_header_file}""
+#include ""{rel_path}/{refl_meta_file}""
 
 czstr g_{class_name}EntityFile = "./Entities/Entity.entity";
 GLOBAL_ASSET(EntityResourcePtr, g_{class_name}EntityFile, g_{class_name}Entity);
