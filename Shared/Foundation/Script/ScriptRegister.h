@@ -38,13 +38,14 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
     using FieldInfo = decltype(f);
     using MemberType = typename FieldInfo::member_type;
 
-    c.template AddMember<MemberType, FieldInfo::GetMemberPtr()>(f.GetFieldName());
+    constexpr auto field_ptr = FieldInfo::GetMemberPtr();
+    //c.template AddMember<MemberType, field_ptr>(f.GetName());
   });
 
   StormReflFuncVisitor<ClassT>::VisitFuncs([&](auto f)
   {
-    auto reg_info = ScriptFuncRegisterClassInfo(f.GetFunctionPtr());
-    reg_info.Register(f.GetName());
+//    auto reg_info = ScriptFuncRegisterClassInfo(f.GetFunctionPtr());
+//    reg_info.Register(f.GetName());
   });
 }
 

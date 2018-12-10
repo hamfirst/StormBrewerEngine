@@ -41,6 +41,22 @@ Box Box::MirrorX() const
   return Box{ Vector2(-m_End.x, m_Start.y), Vector2(-m_Start.x, m_End.y) };
 }
 
+Box Box::FromStartAndWidthHeight(int start_x, int start_y, int width, int height)
+{
+  Box b;
+  b.m_Start = Vector2(start_x, start_y);
+  b.m_End = b.m_Start + Vector2(width, height);
+  return b;
+}
+
+Box Box::FromStartAndWidthHeight(const Vector2 & start, const Vector2 & width_height)
+{
+  Box b;
+  b.m_Start = start;
+  b.m_End = b.m_Start + width_height;
+  return b;
+}
+
 Box Box::FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size)
 {
   Box b;

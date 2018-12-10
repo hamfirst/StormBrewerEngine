@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "Foundation/Common.h"
+
 class ScriptState;
 
 class ScriptClassInstance

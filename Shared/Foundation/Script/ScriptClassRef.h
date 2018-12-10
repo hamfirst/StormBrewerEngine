@@ -56,6 +56,11 @@ public:
     return *this;
   }
 
+  bool operator == (const ScriptClassRef<T> & rhs) const
+  {
+    return m_RefData == rhs.m_RefData;
+  }
+
   void Clear()
   {
     if(m_RefData)
@@ -105,15 +110,24 @@ public:
     return Get();
   }
 
-  operator bool() const
+  bool IsValid() const
+  {
+    return Get() != nullptr;
+  }
+
+  explicit operator bool() const
   {
     return m_RefData != nullptr;
+  }
+
+  bool operator !() const
+  {
+    return m_RefData == nullptr;
   }
 
 private:
   template <typename ClassT>
   friend class ScriptClass;
-
   friend class ScriptFuncs;
 
   explicit ScriptClassRef(NullOptPtr<ScriptClassRefData> ref_data)

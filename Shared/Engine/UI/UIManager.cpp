@@ -2,12 +2,14 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UIScriptLoader.h"
+#include "Engine/UI/UIClickable.refl.meta.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Window/Window.h"
 
 #include "Foundation/SkipField/SkipField.h"
+#include "Foundation/Script/ScriptRegister.h"
 
 #include <sb/vector.h>
 
@@ -29,6 +31,10 @@ void UIManager::LoadScripts()
 {
   m_ScriptState.Emplace();
   m_ScriptInterface.Emplace(m_ScriptState.GetPtr());
+  m_ClickableClass.Emplace("Clickable", m_ScriptState.GetPtr(),
+          [this](){ auto clickable = new UIClickable(this); return clickable; },
+          [this](void * ptr) { delete static_cast<UIClickable *>(ptr); });
+  m_ClickableClass->Register();
 
   m_Loader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
   m_Loader->InitLoad();
@@ -39,7 +45,7 @@ bool UIManager::FinishedLoading() const
   return m_Loader && m_Loader->Complete();
 }
 
-void UIManager::Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
+void UIManager::Update(InputState & input_state, RenderState & render_state)
 {
   if(m_Loader)
   {
@@ -52,7 +58,7 @@ void UIManager::Update(InputState & input_state, RenderState & render_state, con
     update_time = 0;
   }
 
-  ProcessActiveAreas(input_state, render_state, clickable_offset);
+  ProcessActiveAreas(input_state, render_state);
 }
 
 void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
@@ -93,16 +99,9 @@ void UIManager::ReleaseMouse(NotNullPtr<UIClickable> clickable)
   }
 }
 
-UIClickablePtr UIManager::AllocateClickable(const Box & active_area)
+ScriptClassRef<UIClickable> UIManager::AllocateClickable()
 {
-  UIClickable::UIClickableConstructorTag crap;
-
-  auto ptr = s_UIClickableAllocator.Allocate(crap);
-  ptr->m_ActiveArea = active_area;
-  ptr->m_Manager = this;
-
-  m_Clickables.push_back(ptr);
-  return UIClickablePtr(ptr);
+  return m_ClickableClass->CreateInstance();
 }
 
 bool UIManager::HasSelectedElement() const
@@ -110,24 +109,82 @@ bool UIManager::HasSelectedElement() const
   return m_HasSelectedElement;
 }
 
-void UIManager::ReleaseClickable(NotNullPtr<UIClickable> clickable)
+void UIManager::AddClickableToRoot(ScriptClassRef<UIClickable> & clickable)
 {
-  s_UIClickableAllocator.Release(clickable);
+  m_RootClickables.push_back(clickable);
 }
 
-void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
+void UIManager::RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable)
 {
+  for(std::size_t index = 0, end = m_RootClickables.size(); index < end; ++index)
+  {
+    auto & elem = m_RootClickables[index];
+    if(elem.Get() == clickable)
+    {
+      m_RootClickables.erase(m_RootClickables.begin() + index);
+      break;
+    }
+  }
+}
+
+void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list)
+{
+  if(clickable->Width <= 0 || clickable->Height <= 0)
+  {
+    clickable->m_ActiveArea.Clear();
+  }
+  else
+  {
+    if (parent)
+    {
+      if (parent->m_ActiveArea)
+      {
+        auto active_area_start = parent->m_ActiveArea->m_Start + Vector2(clickable->X, clickable->Y);
+        auto active_area = Box::FromStartAndWidthHeight(active_area_start, Vector2(clickable->Width, clickable->Height));
+
+        parent->m_ActiveArea = ClipBox(active_area, parent->m_ActiveArea.Value());
+      }
+      else
+      {
+        clickable->m_ActiveArea.Clear();
+      }
+    }
+    else
+    {
+      clickable->m_ActiveArea = Box::FromStartAndWidthHeight(clickable->X, clickable->Y, clickable->Width, clickable->Height);
+    }
+  }
+
+  list.push_back(clickable);
+
+  for(auto & child : clickable->m_Children)
+  {
+    AddToClickableList(child.Get(), clickable, list);
+  }
+}
+
+void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & render_state)
+{
+  static std::vector<UIClickable *> clickables;
+  clickables.clear();
+
+  for(auto & elem : m_RootClickables)
+  {
+    AddToClickableList(elem.Get(), nullptr, clickables);
+  }
+
   m_HasSelectedElement = false;
 
   NullOptPtr<UIClickable> cur_pressed_clickable = nullptr;
-  for (auto elem : m_Clickables)
+  for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
   {
-    if (elem->m_State == UIClickableState::kPressed)
+    auto & elem = *itr;
+    if (elem->State == (int)UIClickableState::kPressed)
     {
       if (cur_pressed_clickable)
       {
-        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
-        elem->m_State = UIClickableState::kActive;
+        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
+        elem->State = (int)UIClickableState::kActive;
       }
       else
       {
@@ -146,27 +203,27 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
 
   auto CheckAllElements = [&]()
   {
-    for (auto elem : m_Clickables)
+    for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
-      auto box = elem->m_ActiveArea;
-      box.m_Start -= clickable_offset;
-      box.m_End -= clickable_offset;
-
-      if (PointInBox(box, pointer_pos))
+      auto & elem = *itr;
+      if(elem->m_ActiveArea)
       {
-        cur_hover_clickable = elem;
-        break;
+        auto box = elem->m_ActiveArea.Value();
+        if (PointInBox(box, pointer_pos))
+        {
+          cur_hover_clickable = elem;
+          break;
+        }
       }
     }
   };
-
 
   if (pointer_state.m_InFocus)
   {
     if(m_GrabbedMouseClickable)
     {
       bool found = false;
-      for (auto elem : m_Clickables)
+      for (auto elem : clickables)
       {
         if(elem == m_GrabbedMouseClickable)
         {
@@ -182,13 +239,14 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
       }
       else
       {
-        auto box = m_GrabbedMouseClickable->m_ActiveArea;
-        box.m_Start -= clickable_offset;
-        box.m_End -= clickable_offset;
-
-        if (PointInBox(box, pointer_pos))
+        if(m_GrabbedMouseClickable->m_ActiveArea)
         {
-          cur_hover_clickable = m_GrabbedMouseClickable;
+          auto box = m_GrabbedMouseClickable->m_ActiveArea.Value();
+
+          if (PointInBox(box, pointer_pos))
+          {
+            cur_hover_clickable = m_GrabbedMouseClickable;
+          }
         }
       }
     }
@@ -196,12 +254,13 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
 
   if (cur_pressed_clickable)
   {
-    for (auto elem : m_Clickables)
+    for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
-      if (elem->m_State == UIClickableState::kHover)
+      auto & elem = *itr;
+      if (elem->State == (int)UIClickableState::kHover)
       {
-        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
-        elem->m_State = UIClickableState::kActive;
+        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
+        elem->State = (int)UIClickableState::kActive;
       }
     }
 
@@ -209,8 +268,8 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
     {
       if (cur_pressed_clickable)
       {
-        cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
-        cur_pressed_clickable->m_State = UIClickableState::kActive;
+        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
+        cur_pressed_clickable->State = (int)UIClickableState::kActive;
       }
     }
     else if (input_state.GetMouseButtonState(kMouseLeftButton) == false)
@@ -219,20 +278,20 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
       {
         if (cur_hover_clickable == cur_pressed_clickable)
         {
-          cur_pressed_clickable->m_OnClick();
-          cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kHover);
-          cur_pressed_clickable->m_State = UIClickableState::kHover;
+          cur_pressed_clickable->OnClick();
+          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kHover);
+          cur_pressed_clickable->State = (int)UIClickableState::kHover;
         }
         else
         {
-          cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
-          cur_pressed_clickable->m_State = UIClickableState::kActive;
+          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
+          cur_pressed_clickable->State = (int)UIClickableState::kActive;
         }
       }
       else if(cur_pressed_clickable)
       {
-        cur_pressed_clickable->m_OnStateChange(cur_pressed_clickable->m_State, UIClickableState::kActive);
-        cur_pressed_clickable->m_State = UIClickableState::kActive;
+        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
+        cur_pressed_clickable->State = (int)UIClickableState::kActive;
       }
     }
   }
@@ -243,27 +302,28 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
       cur_hover_clickable = nullptr;
     }
 
-    for (auto elem : m_Clickables)
+    for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
-      if (elem != cur_hover_clickable && elem->m_State == UIClickableState::kHover)
+      auto & elem = *itr;
+      if (elem != cur_hover_clickable && elem->State == (int)UIClickableState::kHover)
       {
-        elem->m_OnStateChange(elem->m_State, UIClickableState::kActive);
-        elem->m_State = UIClickableState::kActive;
+        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
+        elem->State = (int)UIClickableState::kActive;
       }
     }
 
-    if (cur_hover_clickable != nullptr && cur_hover_clickable->m_State != UIClickableState::kHover)
+    if (cur_hover_clickable != nullptr && cur_hover_clickable->State != (int)UIClickableState::kHover)
     {
-      cur_hover_clickable->m_OnStateChange(cur_hover_clickable->m_State, UIClickableState::kHover);
-      cur_hover_clickable->m_State = UIClickableState::kHover;
+      cur_hover_clickable->OnStateChange(cur_hover_clickable->State, (int)UIClickableState::kHover);
+      cur_hover_clickable->State = (int)UIClickableState::kHover;
     }
 
     if (input_state.GetMousePressedThisFrame(kMouseLeftButton))
     {
       if (cur_hover_clickable != nullptr)
       {
-        cur_hover_clickable->m_OnStateChange(cur_hover_clickable->m_State, UIClickableState::kPressed);
-        cur_hover_clickable->m_State = UIClickableState::kPressed;
+        cur_hover_clickable->OnStateChange(cur_hover_clickable->State, (int)UIClickableState::kPressed);
+        cur_hover_clickable->State = (int)UIClickableState::kPressed;
       }
     }
   }

@@ -29,7 +29,6 @@ public:
   bool IsBlocking();
   bool WantsToQuit();
 
-  UIClickablePtr CreateClickable(const Box & active_area);
   UIManager & GetUIManager();
 
 protected:

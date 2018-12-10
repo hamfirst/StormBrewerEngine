@@ -44,9 +44,7 @@ set(GENERIC_SRC_Engine
             Component/ComponentUpdateBucketList.cpp
             Component/Component.cpp
             UI/UIManager.cpp
-  UI/UIClickable.cpp
-            UI/UIClickablePtr.cpp
-            Rendering/RenderTarget.cpp
+  Rendering/RenderTarget.cpp
             Rendering/VertexBufferBuilder.cpp
             Rendering/Shader.cpp
             Rendering/ShaderProgram.cpp
@@ -89,6 +87,7 @@ set(GENERIC_SRC_Engine
             Audio/MusicManager.cpp
             Shader/ShaderManager.cpp
             Settings/EngineSettings.refl.cpp
+            UI/UIClickable.refl.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -138,9 +137,7 @@ set(GENERIC_HEADER_Engine
             Component/Component.h
             Component/ComponentUpdateRegistrationTemplates.h
             Component/ComponentHandle.h
-  UI/UIClickable.h
-            UI/UIClickablePtr.h
-            UI/UIManager.h
+  UI/UIManager.h
             Rendering/Shader.h
             Rendering/VertexBufferBuilder.h
             Rendering/VertexDefinition.h
@@ -203,12 +200,15 @@ set(GENERIC_HEADER_Engine
             Shader/DefaultShader.h
             Settings/EngineSettings.refl.h
             Settings/EngineSettings.refl.meta.h
+            UI/UIClickable.refl.h
+            UI/UIClickable.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_Engine
   VisualEffect/VisualEffectTypes.refl.h
             Settings/EngineSettings.refl.h
+            UI/UIClickable.refl.h
             #REFL_PLACEHOLDER
             )
 
