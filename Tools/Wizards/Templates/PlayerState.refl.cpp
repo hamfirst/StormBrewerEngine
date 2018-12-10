@@ -6,8 +6,8 @@
 
 #include ""Game/ServerObjects/Player/PlayerServerObject.refl.h""
 
-#include ""{rel_path}/{header_file}""
-#include ""{rel_path}/{meta_file}""
+#include ""{rel_path}/{refl_header_file}""
+#include ""{rel_path}/{refl_meta_file}""
 
 #include ""StormNet/NetReflectionTypeDatabase.h""
 

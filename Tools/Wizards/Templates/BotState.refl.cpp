@@ -7,8 +7,8 @@
 #include ""Game/ServerObjects/Bot/BotServerObject.refl.h""
 #include ""Game/ServerObjects/Bot/BotSettings.h""
 
-#include ""{rel_path}/{header_file}""
-#include ""{rel_path}/{meta_file}""
+#include ""{rel_path}/{refl_header_file}""
+#include ""{rel_path}/{refl_meta_file}""
 
 #include ""StormNet/NetReflectionTypeDatabase.h""
 

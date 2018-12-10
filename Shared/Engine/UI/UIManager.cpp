@@ -1,6 +1,7 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIManager.h"
+#include "Engine/UI/UIScriptLoader.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Shader/ShaderManager.h"
@@ -24,8 +25,27 @@ UIManager::~UIManager()
 
 }
 
+void UIManager::LoadScripts()
+{
+  m_ScriptState.Emplace();
+  m_ScriptInterface.Emplace(m_ScriptState.GetPtr());
+
+  m_Loader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
+  m_Loader->InitLoad();
+}
+
+bool UIManager::FinishedLoading() const
+{
+  return m_Loader && m_Loader->Complete();
+}
+
 void UIManager::Update(InputState & input_state, RenderState & render_state, const Vector2 & clickable_offset)
 {
+  if(m_Loader)
+  {
+    m_Loader->Update();
+  }
+
   auto update_time = m_UpdateTimer.GetTimeSinceLastCheck();
   if (m_Paused)
   {

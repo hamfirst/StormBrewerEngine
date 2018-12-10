@@ -401,8 +401,6 @@ void AudioManager::AudioCallback(void * userdata, uint8_t * stream, int len)
         int out = smarc_resample(s_AudioResamplerFilter, s_AudioResampler[channel], input_buffer, kResampleInputSize, output_buffer, kResampleInputSize * 2);
 
         s_ResampleOutputBuffer[channel].BlockWrite(output_buffer, out);
-
-        //s_ResampleOutputBuffer[channel].BlockWrite(input_buffer, kResampleInputSize);
       }
     }
   }
@@ -434,7 +432,21 @@ void AudioManager::GenerateAudio(uint8_t * stream, int len)
 //
 //  return;
 
-  ;memset(stream, 0, len);
+//  memset(stream, 0, len);
+//  float * sample_ptr = (float *)stream;
+//  float * end = sample_ptr + len / sizeof(float);
+//
+//  float prev = 0.0f;
+//
+//  while(sample_ptr != end)
+//  {
+//    auto sample = GetRandomUnitFloat() - 0.5f;
+//    *sample_ptr = (prev + sample) / 2.0f;
+//    prev = *sample_ptr;
+//    ++sample_ptr;
+//  }
+//
+//  return;
 
 #ifndef _WEB
   std::lock_guard<std::mutex> l(m_AudioMutex);

@@ -3,7 +3,7 @@
 
 #include "StormRefl/StormRefl.h"
 
-struct ReflStruct
+struct {class_name};
 {
   STORM_REFL;
 

@@ -6,7 +6,12 @@
 
 ScriptState::ScriptState()
 {
-  m_LuaState = ScriptInternal::InitState();
+  m_LuaState = ScriptInternal::InitState(this);
+}
+
+ScriptState::~ScriptState()
+{
+  ScriptInternal::CloseState(m_LuaState);
 }
 
 void ScriptState::SetErrorDelegate(Delegate<void, czstr> && error_output)

@@ -1,5 +1,8 @@
 #include "Foundation/Common.h"
+#include "Foundation/Script/ScriptObject.h"
 #include "Foundation/Script/ScriptValue.h"
+#include "Foundation/Script/ScriptClass.h"
+#include "Foundation/Script/ScriptFuncPtr.h"
 
 
 void ScriptValueCoerce(const ScriptValue & val, int & value)
@@ -26,7 +29,7 @@ void ScriptValueCoerce(const ScriptValue & val, int & value)
       break;
   }
 
-  static_assert(ScriptValue::kNumTypes == 6);
+  static_assert(ScriptValue::kNumTypes == 11);
 }
 
 void ScriptValueCoerce(const ScriptValue & val, float & value)
@@ -53,7 +56,7 @@ void ScriptValueCoerce(const ScriptValue & val, float & value)
       break;
   }
 
-  static_assert(ScriptValue::kNumTypes == 6);
+  static_assert(ScriptValue::kNumTypes == 11);
 }
 
 void ScriptValueCoerce(const ScriptValue & val, bool & value)
@@ -74,7 +77,7 @@ void ScriptValueCoerce(const ScriptValue & val, bool & value)
       break;
   }
 
-  static_assert(ScriptValue::kNumTypes == 6);
+  static_assert(ScriptValue::kNumTypes == 11);
 }
 
 void ScriptValueCoerce(const ScriptValue & val, std::string & value)
@@ -82,16 +85,16 @@ void ScriptValueCoerce(const ScriptValue & val, std::string & value)
   switch(val.GetCurrentTypeIndex())
   {
     default:
-      val.clear();
+      value.clear();
       break;
     case 0:
       value = std::to_string(val.GetAs<int>());
       break;
     case 1:
-      value = td::to_string(val.GetAs<float>());
+      value = std::to_string(val.GetAs<float>());
       break;
     case 2:
-      value = td::to_string(val.GetAs<bool>());
+      value = std::to_string(val.GetAs<bool>());
       break;
     case 3:
       value = val.GetAs<czstr>();
@@ -101,5 +104,5 @@ void ScriptValueCoerce(const ScriptValue & val, std::string & value)
       break;
   }
 
-  static_assert(ScriptValue::kNumTypes == 6);
+  static_assert(ScriptValue::kNumTypes == 11);
 }
