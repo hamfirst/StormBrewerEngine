@@ -38,7 +38,7 @@ public:
   template <typename T>
   static void PullValue(void * state, ScriptClassRef<T> & val)
   {
-    return FetchValue<T>(state, -1, val);
+    FetchValue<T>(state, -1, val);
   }
 
   static bool FetchValue(void * state, int pos, int & val);
@@ -62,7 +62,7 @@ public:
     }
 
     val = ScriptClassRef<T>(instance_info.first);
-    return val;
+    return val.IsValid();
   }
 
   static bool CheckArgCount(void * state, int args);

@@ -39,7 +39,10 @@ public:
 
 private:
 
+  template <typename T>
   friend class ScriptClass;
+
+  friend class ScriptClassBase;
 
   ScriptFuncPtr m_FuncPtr;
   Delegate<ReturnType, Args...> m_Delegate;
@@ -58,4 +61,4 @@ struct ScriptClassIsDelegateT<ScriptClassDelegate<ReturnType, Args...>> : public
 };
 
 template <typename T>
-bool ScriptClassIsDelegate = ScriptClassIsDelegateT<T>::value;
+constexpr bool ScriptClassIsDelegate = ScriptClassIsDelegateT<T>::value;

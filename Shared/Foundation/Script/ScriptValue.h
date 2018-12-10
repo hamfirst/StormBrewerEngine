@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Foundation/Common.h"
 #include "Foundation/Variant/Variant.h"
 
 class ScriptObject;

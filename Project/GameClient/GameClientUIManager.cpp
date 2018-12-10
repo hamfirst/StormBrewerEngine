@@ -48,7 +48,7 @@ void GameClientUIManager::Update()
     TogglePopup();
   }
 
-  m_UIManager.Update(*input_state, m_GameContainer.GetRenderState(), camera.GetPosition());
+  m_UIManager.Update(*input_state, m_GameContainer.GetRenderState());
 }
 
 void GameClientUIManager::Render()
@@ -79,11 +79,6 @@ bool GameClientUIManager::IsBlocking()
 bool GameClientUIManager::WantsToQuit()
 {
   return m_WantsToQuit;
-}
-
-UIClickablePtr GameClientUIManager::CreateClickable(const Box & active_area)
-{
-  return m_UIManager.AllocateClickable(active_area);
 }
 
 UIManager & GameClientUIManager::GetUIManager()

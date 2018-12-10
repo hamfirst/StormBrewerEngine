@@ -106,7 +106,7 @@ public:
         return 0;
       }
 
-      std::tuple<Args...> args;
+      std::tuple<std::decay_t<Args>...> args;
       using sequence = std::make_index_sequence<sizeof...(Args)>;
 
       PullArgs(args, sequence{}, lua_state);
@@ -203,7 +203,7 @@ private:
       }
     };
 
-    ScriptFuncs::PullValue(state, del->m_FuncPtr);
+    ScriptFuncs::PullValue(state, del.m_FuncPtr);
   }
 
 private:
