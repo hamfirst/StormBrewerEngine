@@ -5,7 +5,7 @@
 #include "Foundation/Script/ScriptClassRef.h"
 
 class ScriptClassBase;
-class ScriptClassInstanceInfo;
+struct ScriptClassInstanceInfo;
 
 class ScriptFuncs
 {

@@ -96,7 +96,7 @@ public:
     auto lua_state = GetState(script_state);
 
     lua_getglobal(lua_state, "global_objs");
-    lua_pushnumber(lua_state, global_id);
+    lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
     lua_newtable(lua_state);
     lua_settable(lua_state, -3);
     lua_pop(lua_state, 1);
@@ -111,11 +111,11 @@ public:
 
     auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
     lua_getglobal(lua_state, "global_objs");
-    lua_pushnumber(lua_state, global_id);
+    lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
     lua_pushvalue(lua_state, -3);
     lua_settable(lua_state, -3);
     lua_pop(lua_state, 2);
-    return global_id;
+    return static_cast<int>(global_id);
   }
 
   static void DeleteGlobalObject(NotNullPtr<ScriptState> script_state, int global_id)
@@ -330,7 +330,7 @@ public:
       {
         auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
         lua_getglobal(lua_state, "global_objs");
-        lua_pushnumber(lua_state, global_id);
+        lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
         lua_pushvalue(lua_state, -3);
         lua_settable(lua_state, -3);
         lua_pop(lua_state, 2);
@@ -340,7 +340,7 @@ public:
       {
         auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
         lua_getglobal(lua_state, "global_objs");
-        lua_pushnumber(lua_state, global_id);
+        lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
         lua_pushvalue(lua_state, -3);
         lua_settable(lua_state, -3);
         lua_pop(lua_state, 2);
@@ -350,7 +350,7 @@ public:
       {
         auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
         lua_getglobal(lua_state, "global_objs");
-        lua_pushnumber(lua_state, global_id);
+        lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
         lua_pushvalue(lua_state, -3);
         lua_settable(lua_state, -3);
         lua_pop(lua_state, 2);

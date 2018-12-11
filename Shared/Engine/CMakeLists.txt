@@ -88,6 +88,7 @@ set(GENERIC_SRC_Engine
             Shader/ShaderManager.cpp
             Settings/EngineSettings.refl.cpp
             UI/UIClickable.refl.cpp
+            UI/UIScriptLoader.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -202,6 +203,7 @@ set(GENERIC_HEADER_Engine
             Settings/EngineSettings.refl.meta.h
             UI/UIClickable.refl.h
             UI/UIClickable.refl.meta.h
+            UI/UIScriptLoader.h
             #HEADER_PLACEHOLDER
             )
 
