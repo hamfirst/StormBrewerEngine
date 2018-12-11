@@ -37,7 +37,11 @@ DDSNodeState::DDSNodeState(
   m_SharedLocalCopyDatabase(*this),
   m_Database(std::make_unique<DDSDatabaseConnectionPool>(database_settings))
 {
+#ifdef _MSC_VER
+  m_LocalInterface = (uint32_t)inet_addr(node_server_settings.ListenSettings.LocalInterface);
+#else
   inet_pton(AF_INET, node_server_settings.ListenSettings.LocalInterface, &m_LocalInterface);
+#endif
   m_LocalPort = node_server_settings.ListenSettings.Port;
   m_LastCPUUsageSync = time(nullptr);
   

@@ -20,7 +20,8 @@ struct ScriptFuncRegisterInfo
   template <ReturnTypeT (ClassT::*Func)(ArgsT...)>
   void Register(czstr name, ScriptClass<ClassT> & c)
   {
-    c.template AddFunction<ReturnTypeT, ArgsT..., Func>(name);
+    auto adder = c.template GetFunctionAdder<ReturnTypeT, ArgsT...>();
+    adder.AddFunction<Func>(name);
   }
 };
 
@@ -39,13 +40,15 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
     using MemberType = typename FieldInfo::member_type;
 
     constexpr auto field_ptr = FieldInfo::GetMemberPtr();
-    //c.template AddMember<MemberType, field_ptr>(f.GetName());
+    c.template AddMember<MemberType, field_ptr>(f.GetName());
   });
 
   StormReflFuncVisitor<ClassT>::VisitFuncs([&](auto f)
   {
-//    auto reg_info = ScriptFuncRegisterClassInfo(f.GetFunctionPtr());
-//    reg_info.Register(f.GetName());
+    using FieldInfo = decltype(f);
+
+    auto reg_info = ScriptFuncRegisterClassInfo(f.GetFunctionPtr());
+    reg_info.Register<FieldInfo::GetFunctionPtr()>(f.GetName(), c);
   });
 }
 

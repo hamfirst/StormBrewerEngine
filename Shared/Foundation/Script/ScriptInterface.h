@@ -28,7 +28,7 @@ public:
   ScriptInterface(ScriptInterface && rhs) = delete;
 
   ScriptInterface & operator = (const ScriptInterface & rhs) = delete;
-  ScriptInterface & operator = (ScriptInterface & rhs) = delete;
+  ScriptInterface & operator = (ScriptInterface && rhs) = delete;
 
   const std::shared_ptr<ScriptObject> & GetObject() const;
 

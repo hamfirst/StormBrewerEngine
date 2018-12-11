@@ -40,6 +40,12 @@ public:
 private:
 
   template <typename T>
+  friend struct ScriptClassPushMember;
+
+  template <typename T>
+  friend struct ScriptClassAssignMember;
+
+  template <typename T>
   friend class ScriptClass;
 
   friend class ScriptClassBase;
@@ -47,18 +53,3 @@ private:
   ScriptFuncPtr m_FuncPtr;
   Delegate<ReturnType, Args...> m_Delegate;
 };
-
-template <typename T>
-struct ScriptClassIsDelegateT : public std::false_type
-{
-
-};
-
-template <typename ReturnType, typename ... Args>
-struct ScriptClassIsDelegateT<ScriptClassDelegate<ReturnType, Args...>> : public std::true_type
-{
-
-};
-
-template <typename T>
-constexpr bool ScriptClassIsDelegate = ScriptClassIsDelegateT<T>::value;
