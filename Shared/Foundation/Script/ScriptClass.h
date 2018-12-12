@@ -25,6 +25,10 @@ protected:
   friend class ScriptClassInternal;
   friend struct ScriptClassRefData;
 
+
+  template <typename T, typename ReturnValue, typename ... Args>
+  friend class ScriptClassFunctionAdder;
+
   std::string m_Name;
   std::unordered_map<uint32_t, void(*)(const void *, void *)> m_ReadMethods;
   std::unordered_map<uint32_t, void(*)(void *, void *)> m_WriteMethods;
@@ -44,7 +48,7 @@ public:
 
 private:
 
-  template <typename T>
+  template <typename ClassT>
   friend class ScriptClass;
 
   ScriptClassFunctionAdder(NotNullPtr<ScriptClass<T>> c) :
@@ -53,8 +57,8 @@ private:
 
   }
 
-  template <typename ... Args, std::size_t ... I>
-  static void PullArgs(std::tuple<Args...> & arg, std::index_sequence<I...> seq, void * state)
+  template <typename ... TArgs, std::size_t ... I>
+  static void PullArgs(std::tuple<TArgs...> & arg, std::index_sequence<I...> seq, void * state)
   {
     std::initializer_list<bool> l = { ScriptFuncs::FetchValue(state, I + 1, std::get<I>(arg))... };
   }
@@ -94,11 +98,11 @@ struct ScriptClassAssignMember
 template <typename ReturnType, typename ... Args>
 struct ScriptClassAssignMember<ScriptClassDelegate<ReturnType, Args...>>
 {
-  template <typename Arg, typename ... Args>
-  static void PushArgs(void * state, Arg && arg, Args && ... args)
+  template <typename Arg, typename ... TArgs>
+  static void PushArgs(void * state, Arg && arg, TArgs && ... args)
   {
     ScriptFuncs::PushValue(state, std::forward<Arg>(arg));
-    PushArgs(state, std::forward<Args>(args)...);
+    PushArgs(state, std::forward<TArgs>(args)...);
   }
 
   static void PushArgs(void * state)
