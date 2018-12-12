@@ -432,7 +432,7 @@ void AudioManager::GenerateAudio(uint8_t * stream, int len)
 //
 //  return;
 
-//  memset(stream, 0, len);
+  memset(stream, 0, len);
 //  float * sample_ptr = (float *)stream;
 //  float * end = sample_ptr + len / sizeof(float);
 //

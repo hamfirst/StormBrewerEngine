@@ -80,38 +80,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.meta.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/Components/PlayerComponent.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/Components/Reusable/AttachVfxComponent.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/Components/Reusable/PlayAnimationComponent.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/Components/Reusable/SyncServerObjectComponent.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/EffectLayers/CollisionDrawer.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameClientController.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameClientSaveFileData.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameClientUIManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickablePtr.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickablePtr.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/BasicTypes/BasicTypes.refl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/Configs/PlayerConfig.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/Configs/PlayerConfig.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/GameController.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/GameController.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/GameMessages.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/GameMessages.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/ServerObjects/Bot/BotServerObject.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/ServerObjects/Bot/BotServerObject.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/ServerObjects/GameServerObjectBase.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/ServerObjects/GameServerObjectBase.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/ServerObjects/Player/PlayerServerObject.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/ServerObjects/Player/PlayerServerObject.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/Motion/ProjectileMotionLinear.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/Motion/ProjectileMotionLinear.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/ProjectileServerObject.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/ServerObjects/Projectile/ProjectileServerObject.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassDelegate.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassDelegate.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassRef.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassRef.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptFuncs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptFuncs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptValue.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Foundation/Script/ScriptValue.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/FrameEditorTypes.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/MapEditorTypes.refl.meta.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/Templates/ReflCpp.refl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/Templates/ReflCpp.refl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Runtime/SpriteBase/SpriteBaseDef.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Runtime/SpriteBase/SpriteBaseDef.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSCoordinatorProtocolMessages.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSCoordinatorProtocolMessages.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSResponder.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSResponder.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSRoutingTable.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSRoutingTable.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSServerToServerMessages.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSServerToServerMessages.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSSharedMessages.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSSharedMessages.refl.meta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSThrottle.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/HurricanDDS/DDSThrottle.refl.meta.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -130,17 +118,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3485">
-              <caret line="205" column="38" selection-start-line="205" selection-start-column="38" selection-end-line="205" selection-end-column="38" />
+            <state relative-caret-position="191">
+              <caret line="255" selection-start-line="255" selection-end-line="255" />
+              <folding>
+                <element signature="e#1348#1387#0" expanded="true" />
+                <element signature="e#2364#2398#0" expanded="true" />
+                <element signature="e#3816#3863#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="142">
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h">
+        <entry file="file://$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="499">
-              <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
+            <state relative-caret-position="287">
+              <caret line="434" selection-start-line="434" selection-end-line="434" />
             </state>
           </provider>
         </entry>
@@ -307,7 +309,6 @@
         <option value="$PROJECT_DIR$/Shared/Runtime/BinaryResource/BinaryResource.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/BinaryResource/GenericBinaryResource.h" />
         <option value="$PROJECT_DIR$/Shared/Runtime/BinaryResource/GenericBinaryResource.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/UI/UIScriptLoader.h" />
         <option value="$PROJECT_DIR$/Shared/Engine/UI/UIScriptLoader.cpp" />
         <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptObject.cpp" />
@@ -332,10 +333,11 @@
         <option value="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.h" />
         <option value="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" />
         <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassDelegate.h" />
-        <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h" />
         <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClassRef.h" />
         <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptFuncs.h" />
+        <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h" />
         <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h" />
+        <option value="$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp" />
       </list>
     </option>
   </component>
@@ -1058,18 +1060,18 @@
       <workItem from="1543813445518" duration="11571000" />
       <workItem from="1543907649510" duration="35366000" />
       <workItem from="1544408430506" duration="17051000" />
-      <workItem from="1544431437329" duration="1335000" />
+      <workItem from="1544431437329" duration="10303000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="657025000" />
+    <option name="totallyTimeSpent" value="665993000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="19" y="25" width="934" height="1036" extended-state="6" />
+    <frame x="19" y="25" width="1882" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920508" visible="true" weight="0.4332579" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920508" visible="true" weight="0.20906113" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5007949" side_tool="true" weight="0.20469432" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -1084,7 +1086,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32857144" />
       <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.34945056" />
-      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.30879122" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" weight="0.30879122" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1194,13 +1196,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2074">
           <caret line="122" selection-start-line="122" selection-end-line="122" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2041">
-          <caret line="434" selection-start-line="434" selection-start-column="2" selection-end-line="448" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1440,13 +1435,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3485">
-          <caret line="205" column="38" selection-start-line="205" selection-start-column="38" selection-end-line="205" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/StormTech/StormRefl/StormReflMetaHelpers.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="697">
@@ -1499,10 +1487,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptClass.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="255" selection-start-line="255" selection-end-line="255" />
+          <folding>
+            <element signature="e#1348#1387#0" expanded="true" />
+            <element signature="e#2364#2398#0" expanded="true" />
+            <element signature="e#3816#3863#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Foundation/Script/ScriptRegister.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
+        <state relative-caret-position="142">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Shared/Engine/Audio/AudioManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="434" selection-start-line="434" selection-end-line="434" />
         </state>
       </provider>
     </entry>
