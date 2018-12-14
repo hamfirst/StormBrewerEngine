@@ -17,18 +17,19 @@ class RenderState;
 class RenderUtil;
 
 class UIScriptLoader;
+class UIScriptInterface;
 
 class UIManager
 {
 public:
 
-  UIManager(Window & container_window);
+  UIManager();
   ~UIManager();
 
   void LoadScripts();
   bool FinishedLoading() const;
 
-  void Update(InputState & input_state, RenderState & render_state);
+  void Update(float delta_time, InputState & input_state, RenderState & render_state);
   void Render(RenderState & render_state, RenderUtil & render_util);
 
   void Pause();
@@ -47,21 +48,25 @@ protected:
 
   void AddClickableToRoot(ScriptClassRef<UIClickable> & clickable);
   void RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable);
+  void TrashClickable(NotNullPtr<UIClickable> clickable);
+  void RemoveDeadClickables();
 
   void AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list);
-  void ProcessActiveAreas(InputState & input_state, RenderState & render_state);
+  void ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state);
 
 private:
 
-  Window & m_ContainerWindow;
+  friend class UIScriptInterface;
 
   Optional<ScriptState> m_ScriptState;
-  Optional<ScriptInterface> m_ScriptInterface;
+  Optional<ScriptInterface> m_InterfaceObject;
   Optional<ScriptClass<UIClickable>> m_ClickableClass;
 
-  std::unique_ptr<UIScriptLoader> m_Loader;
+  std::unique_ptr<UIScriptLoader> m_ScriptLoader;
+  std::unique_ptr<UIScriptInterface> m_ScriptInterface;
 
   std::vector<ScriptClassRef<UIClickable>> m_RootClickables;
+  std::vector<NotNullPtr<UIClickable>> m_DeadClickables;
 
   NotNullPtr<UIClickable> m_GrabbedMouseClickable = nullptr;
   bool m_HasSelectedElement = false;

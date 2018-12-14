@@ -17,11 +17,11 @@ struct ScriptFuncRegisterInfo
   using Class = ClassT;
   using ArgsTuple = std::tuple<ArgsT...>;
 
-  template <ReturnTypeT (ClassT::*Func)(ArgsT...)>
+  template <typename FieldInfoType>
   void Register(czstr name, ScriptClass<ClassT> & c)
   {
-    auto adder = c.template GetFunctionAdder<ReturnTypeT, ArgsT...>();
-    adder.template AddFunction<Func>(name);
+    auto adder = c.template GetFunctionAdder<FieldInfoType, ReturnTypeT, ArgsT...>();
+    adder.AddFunction(name);
   }
 };
 
@@ -38,9 +38,31 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
   {
     using FieldInfo = decltype(f);
     using MemberType = typename FieldInfo::member_type;
+    using ScriptClassT = ScriptClass<ClassT>;
 
-    auto func_ptr = &ScriptClass<ClassT>::template AddMember<MemberType, FieldInfo::GetMemberPtr()>;
-    (c.*func_ptr)(f.GetName());
+    auto hash = COMPILE_TIME_CRC32_STR(FieldInfo::GetName());
+
+    auto read_method = [](const void * ptr, void * state)
+    {
+      auto obj = static_cast<const ClassT *>(ptr);
+      auto mem_ptr = FieldInfo::GetMemberPtr();
+      auto & val = obj->*mem_ptr;
+
+      ScriptClassPushMember<MemberType>::Process(val, state);
+    };
+
+    c.m_ReadMethods.emplace(std::make_pair(hash, read_method));
+
+    auto write_method = [](void * ptr, void * state)
+    {
+      auto obj = static_cast<ClassT *>(ptr);
+      auto mem_ptr = FieldInfo::GetMemberPtr();
+      auto & val = obj->*mem_ptr;
+
+      ScriptClassAssignMember<MemberType>::Process(val, state);
+    };
+
+    c.m_WriteMethods.emplace(std::make_pair(hash, write_method));
   });
 
   StormReflFuncVisitor<ClassT>::VisitFuncs([&](auto f)
@@ -48,7 +70,7 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
     using FieldInfo = decltype(f);
 
     auto reg_info = ScriptFuncRegisterClassInfo(f.GetFunctionPtr());
-    reg_info.template Register<FieldInfo::GetFunctionPtr()>(f.GetName(), c);
+    reg_info.template Register<FieldInfo>(f.GetName(), c);
   });
 }
 

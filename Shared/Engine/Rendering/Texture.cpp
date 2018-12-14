@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/RenderErrorMacros.h"
+#include "Texture.h"
 
 #include <gl3w/gl3w.h>
 
@@ -84,8 +85,22 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
   case TextureType::kRGBA:
     format = GL_RGBA;
     break;
+  case TextureType::kFRGBA:
+    format = GL_RGBA;
+    break;
   case TextureType::kInvalid:
     return;
+  }
+
+  GLenum gl_type;
+  switch(type)
+  {
+  default:
+    gl_type = GL_UNSIGNED_BYTE;
+    break;
+  case TextureType::kFRGBA:
+    gl_type = GL_FLOAT;
+    break;
   }
 
   glGenTextures(1, &m_TextureName); CHECK_GL_RENDER_ERROR;

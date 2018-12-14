@@ -44,6 +44,8 @@ void NetClientBackendEnet::Update()
   {
     switch (e.type)
     {
+    case ENET_EVENT_TYPE_NONE:
+      break;
     case ENET_EVENT_TYPE_CONNECT:
       m_Connected = true;
       m_Interface->GotConnection(&m_Transmitter);

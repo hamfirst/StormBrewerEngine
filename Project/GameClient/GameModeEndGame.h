@@ -44,7 +44,6 @@ private:
   GameClientEventSender m_DefaultSender;
 
   StopWatch m_StopWatch;
-  UIManager m_UIManager;
   FrameClock m_FrameClock;
 };
 

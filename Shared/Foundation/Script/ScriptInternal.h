@@ -20,9 +20,58 @@ struct ScriptClassInstanceInfo
 class ScriptInternal
 {
 public:
+
+  static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize)
+  {
+    (void)ud; (void)osize;  /* not used */
+    if (nsize == 0)
+    {
+      free(ptr);
+      return NULL;
+    }
+    else
+    {
+      return realloc(ptr, nsize);
+    }
+  }
+
+  static int StackDump(lua_State * lua_state)
+  {
+    int i;
+    int top = lua_gettop(lua_state);
+    for (i = 1; i <= top; i++)
+    {
+      int t = lua_type(lua_state, i);
+      printf("%d. ", i);
+      switch (t)
+      {
+      case LUA_TSTRING:  /* strings */
+        printf("`%s'", lua_tostring(lua_state, i));
+        break;
+
+      case LUA_TBOOLEAN:  /* booleans */
+        printf(lua_toboolean(lua_state, i) ? "true" : "false");
+        break;
+
+      case LUA_TNUMBER:  /* numbers */
+        printf("%g", lua_tonumber(lua_state, i));
+        break;
+
+      default:  /* other values */
+        printf("%s", lua_typename(lua_state, t));
+        break;
+      }
+      printf("\n");  /* put a separator */
+    }
+
+    printf("\n");  /* end the listing */
+    return 0;
+  }
+
   static lua_State * InitState(NotNullPtr<ScriptState> script_state)
   {
-    auto lua_state = lua_newstate(nullptr, nullptr, script_state);
+    auto lua_state = lua_newstate(l_alloc, nullptr, script_state);
+    lua_atpanic(lua_state, StackDump);
 
     luaL_requiref(lua_state, "base", luaopen_base, 1);
     lua_pop(lua_state, 1);
@@ -102,6 +151,15 @@ public:
     lua_pop(lua_state, 1);
 
     return ScriptObject(script_state, static_cast<int>(global_id));
+  }
+
+  static void CreateGlobalFromScriptObject(czstr name, const ScriptValue & value, NotNullPtr<ScriptState> script_state)
+  {
+    auto lua_state = GetState(script_state);
+
+    PushScriptValue(lua_state, value);
+    lua_setglobal(lua_state, name);
+    lua_pop(lua_state, 1);
   }
 
   static int CreateGlobalObjectFromStack(int pos, NotNullPtr<ScriptState> script_state)
@@ -216,7 +274,7 @@ public:
     lua_gettable(lua_state, -2);
     lua_pushstring(lua_state, name);
     PushScriptValue(lua_state, value);
-    lua_settable(lua_state, -2);
+    lua_settable(lua_state, -3);
     lua_pop(lua_state, 2);
   }
 
@@ -228,7 +286,7 @@ public:
     lua_gettable(lua_state, -2);
     lua_pushstring(lua_state, name);
     lua_pushlightuserdata(lua_state, ptr);
-    lua_settable(lua_state, -2);
+    lua_settable(lua_state, -3);
     lua_pop(lua_state, 2);
   }
 
@@ -240,7 +298,7 @@ public:
     lua_gettable(lua_state, -2);
     lua_pushstring(lua_state, name);
     lua_pushcfunction(lua_state, Func);
-    lua_settable(lua_state, -2);
+    lua_settable(lua_state, -3);
     lua_pop(lua_state, 2);
   }
 
@@ -250,7 +308,7 @@ public:
     lua_getglobal(lua_state, table_name);
     lua_pushstring(lua_state, func_name);
     lua_pushcfunction(lua_state, Func);
-    lua_settable(lua_state, -2);
+    lua_settable(lua_state, -3);
     lua_pop(lua_state, 1);
   }
 
@@ -260,7 +318,17 @@ public:
     lua_getglobal(lua_state, table_name);
     lua_pushstring(lua_state, ptr_name);
     lua_pushlightuserdata(lua_state, ptr);
-    lua_settable(lua_state, -2);
+    lua_settable(lua_state, -3);
+    lua_pop(lua_state, 1);
+  }
+
+  static void DeleteGlobal(czstr name, NotNullPtr<ScriptState> script_state)
+  {
+    auto lua_state = GetState(script_state);
+    lua_pushglobaltable(lua_state);
+    lua_pushstring(lua_state, name);
+    lua_pushnil(lua_state);
+    lua_settable(lua_state, -3);
     lua_pop(lua_state, 1);
   }
 

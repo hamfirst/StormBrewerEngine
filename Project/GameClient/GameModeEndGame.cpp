@@ -22,8 +22,7 @@ GameModeEndGame::GameModeEndGame(GameContainer & game, std::unique_ptr<GameClien
   GameMode(game),
   m_InstanceContainer(std::move(instance_container)),
   m_ClientSystems(std::move(client_systems)),
-  m_Mode(mode),
-  m_UIManager(game.GetWindow())
+  m_Mode(mode)
 {
 
 }
@@ -74,9 +73,7 @@ void GameModeEndGame::Update()
   auto & render_state = container.GetRenderState();
 
   container.GetWindow().Update();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.UpdateUIManager();
 
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();
@@ -163,7 +160,7 @@ void GameModeEndGame::Render()
   input_manager.Render();
   ui_manager.Render();
 
-  m_UIManager.Render(render_state, render_util);
+  container.RenderUIManager();
 }
 
 void GameModeEndGame::PlayAgain()

@@ -48,9 +48,12 @@ public:
 
   void Init();
   void ShutDown();
+
+  Optional<int> FindFontId(czstr font_path, int font_size);
   
   void LoadFont(czstr font_path, int font_id, int font_size);
   bool IsFontLoaded(int font_id);
+  bool AllFontsLoaded();
   void AddTextToBuffer(const std::string_view & text, int font_id, float scale,
           TextBufferBuilder & vertex_builder, int sel_start = -1, int sel_end = -1, int cursor_pos = -1);
   void AddTextToBuffer(std::shared_ptr<TextInputContext> & context, int font_id, float scale, TextBufferBuilder & vertex_builder, const char * prompt = "");
@@ -94,8 +97,6 @@ private:
   std::vector<Box> m_GlyphPositions;
 
   TextSettings m_Settings;
-
-  ShaderProgram m_TextShader;
   VertexBuffer m_TextVertexBuffer;
 };
 

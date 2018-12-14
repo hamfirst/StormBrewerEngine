@@ -38,13 +38,13 @@ protected:
   void VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefElementPosition> elem_ptr);
 
 protected:
-  virtual void DrawData();
-  virtual void DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl);
-  virtual void DrawLeave();
-  virtual bool DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl);
-  virtual void DrawMove(const Vector2 & pos, bool alt, bool shift, bool ctrl);
-  virtual void DrawEnd(const Vector2 & pos, bool alt, bool shift, bool ctrl);
-  virtual void DrawCancel();
+  virtual void DrawData() override;
+  virtual void DrawPreview(const Vector2 & frame_pos, bool alt, bool shift, bool ctrl) override;
+  virtual void DrawLeave() override;
+  virtual bool DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl) override;
+  virtual void DrawMove(const Vector2 & pos, bool alt, bool shift, bool ctrl) override;
+  virtual void DrawEnd(const Vector2 & pos, bool alt, bool shift, bool ctrl) override;
+  virtual void DrawCancel() override;
 
 
   virtual NullOptPtr<TextureAsset> GetTexture() override;

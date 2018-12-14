@@ -30,7 +30,7 @@ public:
   static void LoadWithCallback(czstr file_path, Delegate<void, NotNullPtr<GenericBinaryResource>> && callback, GenericBinaryResourceLoadLink & load_link);
 
 protected:
-  virtual void OnDataLoadComplete(const void * data, std::size_t length);
+  virtual void OnDataLoadComplete(const void * data, std::size_t length) override;
   virtual void CallAssetLoadCallbacks() override;
 
 private:

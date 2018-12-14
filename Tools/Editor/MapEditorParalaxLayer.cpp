@@ -301,6 +301,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
 
     render_state.BindTexture(*texture);
     render_state.BindVertexBuffer(buffer);

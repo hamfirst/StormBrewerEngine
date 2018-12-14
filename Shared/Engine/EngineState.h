@@ -21,6 +21,7 @@ class VisualEffectManager;
 class ComponentUpdateBucketList;
 class ServerObject;
 class GameContainer;
+class UIManager;
 
 class EngineState
 {
@@ -46,6 +47,7 @@ public:
   NotNullPtr<ComponentSystem> GetComponentSystem();
   NotNullPtr<MapSystem> GetMapSystem();
   NotNullPtr<VisualEffectManager> GetVisualEffectManager();
+  NotNullPtr<UIManager> GetUIManager();
 
 private:
 
@@ -60,5 +62,6 @@ private:
   std::unique_ptr<ComponentSystem> m_ComponentSystem;
   std::unique_ptr<MapSystem> m_MapSystem;
   std::unique_ptr<VisualEffectManager> m_VisualEffectManager;
+  std::unique_ptr<UIManager> m_UIManager;
 };
 

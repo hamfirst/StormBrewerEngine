@@ -33,6 +33,8 @@ UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget 
 
   m_Watcher.SetPath("", false, true, [] {return true; });
   m_Watcher.SetAllUpdateCallbacks([this] {Refresh(); });
+
+  m_FrameTimer.Start();
 }
 
 UIEditorViewer::~UIEditorViewer()
@@ -42,8 +44,9 @@ UIEditorViewer::~UIEditorViewer()
 
 void UIEditorViewer::Refresh()
 {
-  m_UIManager.Emplace(m_FakeWindow->GetWindow());
-  m_UIManager->Update(*m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
+
+  m_UIManager.Emplace();
+  m_UIManager->Update(0.0f, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 }
 
 void UIEditorViewer::initializeGL()
@@ -87,6 +90,8 @@ void UIEditorViewer::initializeGL()
 
 void UIEditorViewer::Update()
 {
+  auto delta_time = static_cast<float>(m_FrameTimer.GetTimeSinceLastCheck());
+
   if (!m_FakeWindow)
   {
     return;
@@ -97,7 +102,7 @@ void UIEditorViewer::Update()
 
   if (m_PlayMode)
   {
-    m_UIManager->Update(*m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
+    m_UIManager->Update(delta_time, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
   }
 
   repaint();
@@ -138,6 +143,7 @@ void UIEditorViewer::paintGL()
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), Vector2f(kDefaultResolutionWidth, kDefaultResolutionHeight) * -0.5f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
 
   GeometryVertexBufferBuilder builder;
   builder.Rectangle(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)), 2.0f, Color(255, 255, 255, 255));

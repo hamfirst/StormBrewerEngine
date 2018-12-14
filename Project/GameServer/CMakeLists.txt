@@ -4,31 +4,31 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameServer 
-            GameInstanceStateGameplay.cpp
-            GameInstanceStateData.cpp
-            GameInstance.cpp
-            GameInstanceManager.cpp
-            GameServer.cpp
-            GameInstanceStatePrivateGameStaging.cpp
             GameClientConnection.cpp
-            GameInstanceStateStaging.cpp
-            GameServerGlobalResources.cpp
+            GameInstanceStateData.cpp
             GameInstanceStateLoading.cpp
+            GameInstanceStateGameplay.cpp
+            GameInstanceStatePrivateGameStaging.cpp
+            GameServer.cpp
+            GameServerGlobalResources.cpp
+            GameInstanceStateStaging.cpp
+            GameInstanceManager.cpp
+            GameInstance.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameServer 
-            GameInstanceStateData.h
-            GameInstanceStateBase.h
-            GameInstance.h
-            GameInstanceStateLoading.h
-            GameInstanceStateGameplay.h
-            GameServerGlobalResources.h
             GameInstanceStatePrivateGameStaging.h
-            GameClientConnection.h
-            GameInstanceStateStaging.h
+            GameInstance.h
             GameServer.h
+            GameInstanceStateBase.h
             GameInstanceManager.h
+            GameClientConnection.h
+            GameInstanceStateGameplay.h
+            GameInstanceStateLoading.h
+            GameInstanceStateStaging.h
+            GameServerGlobalResources.h
+            GameInstanceStateData.h
             #HEADER_PLACEHOLDER
             )
 

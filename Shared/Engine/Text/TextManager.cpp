@@ -5,11 +5,11 @@
 
 #include "Engine/Text/TextManager.h"
 #include "Engine/Text/TextRenderer.h"
-#include "Engine/Text/TextShaders.h"
 #include "Engine/Input/TextInputContext.h"
 #include "Engine/Rendering/Shader.h"
 #include "Engine/Rendering/RenderErrorMacros.h"
 #include "Engine/Rendering/RenderState.h"
+#include "Engine/Shader/ShaderManager.h"
 #include "Engine/Asset/AssetLoader.h"
 
 #include <codecvt>
@@ -27,8 +27,6 @@ TextManager::TextManager() :
 
 void TextManager::Init()
 {
-  m_TextShader = MakeQuickShaderProgram(kBasicTextVertexShader, kBasicTextFragmentShader);
-
 #ifdef _MSC_VER
   //LoadBackupFont("C:\\Windows\\Fonts\\arial.ttf");
   //LoadBackupFont("C:\\Windows\\Fonts\\gulim.ttc");
@@ -46,6 +44,20 @@ void TextManager::ShutDown()
   s_Fonts.clear();
 }
 
+Optional<int> TextManager::FindFontId(czstr font_path, int font_size)
+{
+  auto path_hash = crc32lowercase(font_path);
+  for(auto && elem : s_Fonts)
+  {
+    if(elem.second->GetFontAssetHash() == path_hash && elem.second->GetFontSize() == font_size)
+    {
+      return elem.first;
+    }
+  }
+
+  return {};
+}
+
 void TextManager::LoadFont(czstr font_path, int font_id, int font_size)
 {
   s_Fonts.emplace(std::make_pair(font_id, std::make_unique<TextRenderer>(FontAsset::Load(font_path), font_size, s_BackupFonts)));
@@ -56,11 +68,24 @@ bool TextManager::IsFontLoaded(int font_id)
   auto itr = s_Fonts.find(font_id);
   if (itr == s_Fonts.end())
   {
-    return false ;
+    return false;
   }
 
   auto & font = itr->second;
   return font->Loaded();
+}
+
+bool TextManager::AllFontsLoaded()
+{
+  for(auto & elem : s_Fonts)
+  {
+    if(elem.second->Loaded() == false)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 void TextManager::AddTextToBuffer(const std::string_view & text, int font_id, float scale,
@@ -151,14 +176,15 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kTriangles);
 
-  render_state.BindShader(m_TextShader);
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  render_state.BindShader(shader);
   render_state.BindVertexBuffer(m_TextVertexBuffer);
 
   font->BindGlyphTexture(render_state, 0);
 
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_GlyphTexture"), 0);
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetRenderWidth(), (float)render_state.GetRenderHeight());
-  m_TextShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetRenderWidth(), (float)render_state.GetRenderHeight());
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
 
   render_state.Draw();
 }

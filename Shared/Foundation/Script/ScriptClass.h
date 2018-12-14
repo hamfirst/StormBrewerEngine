@@ -26,7 +26,7 @@ protected:
   friend struct ScriptClassRefData;
 
 
-  template <typename T, typename ReturnValue, typename ... Args>
+  template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
   friend class ScriptClassFunctionAdder;
 
   std::string m_Name;
@@ -38,12 +38,11 @@ protected:
 template <typename T>
 class ScriptClass;
 
-template <typename T, typename ReturnValue, typename ... Args>
+template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
 class ScriptClassFunctionAdder
 {
 public:
 
-  template <ReturnValue(T::*Func)(Args...)>
   void AddFunction(czstr name);
 
 private:
@@ -60,7 +59,7 @@ private:
   template <typename ... TArgs, std::size_t ... I>
   static void PullArgs(std::tuple<TArgs...> & arg, std::index_sequence<I...> seq, void * state)
   {
-    std::initializer_list<bool> l = { ScriptFuncs::FetchValue(state, I + 1, std::get<I>(arg))... };
+    std::initializer_list<bool> l = { ScriptFuncs::FetchValue(state, I + 2, std::get<I>(arg))... };
   }
 
 private:
@@ -155,32 +154,6 @@ public:
 
   }
 
-  template <typename MemberType, MemberType T::*MemberPtr>
-  void AddMember(czstr name)
-  {
-    auto hash = crc32(name);
-
-    auto read_method = [](const void * ptr, void * state)
-    {
-      auto obj = static_cast<const T *>(ptr);
-      auto & val = obj->*MemberPtr;
-
-      ScriptClassPushMember<MemberType>::Process(val, state);
-    };
-
-    m_ReadMethods.emplace(std::make_pair(hash, read_method));
-
-    auto write_method = [](void * ptr, void * state)
-    {
-      auto obj = static_cast<T *>(ptr);
-      auto & val = obj->*MemberPtr;
-
-      ScriptClassAssignMember<MemberType>::Process(val, state);
-    };
-
-    m_WriteMethods.emplace(std::make_pair(hash, write_method));
-  }
-
 
   ScriptClassRef<T> CreateInstance()
   {
@@ -191,18 +164,21 @@ public:
     return ScriptClassRef<T>(ref_data);
   }
 
-  template <typename ReturnValue, typename ... Args>
-  ScriptClassFunctionAdder<T, ReturnValue, Args...> GetFunctionAdder()
+  template <typename FieldInfo, typename ReturnValue, typename ... Args>
+  ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...> GetFunctionAdder()
   {
-    return ScriptClassFunctionAdder<T, ReturnValue, Args...>(this);
+    return ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...>(this);
   }
 
   void Register();
 
 private:
 
-  template <typename ClassT, typename ReturnValue, typename ... Args>
+  template <typename ClassT, typename FieldInfo, typename ReturnValue, typename ... Args>
   friend class ScriptClassFunctionAdder;
+
+  template <typename ClassT>
+  friend void ScriptClassRegister(ScriptClass<ClassT> & c);
 
   virtual void * CreateNewObject() override
   {
@@ -226,32 +202,34 @@ private:
 
 };
 
-template <typename T, typename ReturnValue, typename ... Args>
+template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
 struct ScriptClassFunctionCaller
 {
-  template <ReturnValue(T::*Func)(Args...), typename ArgsTuple, std::size_t ... Index>
+  template <typename ArgsTuple, std::size_t ... Index>
   static int Process(void * state, T & obj, ArgsTuple && args_tuple, const std::index_sequence<Index...> & seq)
   {
+    constexpr auto Func = FieldInfo::GetFunctionPtr();
     auto result = (obj.*Func)(std::get<Index>(args_tuple)...);
     ScriptFuncs::PushValue(state, result);
     return 1;
   }
 };
 
-template <typename T, typename ... Args>
-struct ScriptClassFunctionCaller<T, void, Args...>
+template <typename T, typename FieldInfo, typename ... Args>
+struct ScriptClassFunctionCaller<T, FieldInfo, void, Args...>
 {
-  template <void(T::*Func)(Args...), typename ArgsTuple, std::size_t ... Index>
+  template <typename ArgsTuple, std::size_t ... Index>
   static int Process(void * state, T & obj, ArgsTuple && args_tuple, const std::index_sequence<Index...> & seq)
   {
+    constexpr auto Func = FieldInfo::GetFunctionPtr();
     (obj.*Func)(std::get<Index>(args_tuple)...);
     return 0;
   }
 };
 
 
-template <typename T, typename ReturnValue, typename ... Args>  template <ReturnValue(T::*Func)(Args...)>
-void ScriptClassFunctionAdder<T, ReturnValue, Args...>::AddFunction(czstr name)
+template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
+void ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...>::AddFunction(czstr name)
 {
   auto hash = crc32(name);
 
@@ -275,7 +253,7 @@ void ScriptClassFunctionAdder<T, ReturnValue, Args...>::AddFunction(czstr name)
     using sequence = std::make_index_sequence<sizeof...(Args)>;
 
     PullArgs(args, sequence{}, lua_state);
-    return ScriptClassFunctionCaller<T, ReturnValue, Args...>::template Process<Func>(lua_state, *obj, args, sequence{});
+    return ScriptClassFunctionCaller<T, FieldInfo, ReturnValue, Args...>::template Process(lua_state, *obj, args, sequence{});
   };
 
   m_Class->m_CallMethods.emplace(std::make_pair(hash, call_method));

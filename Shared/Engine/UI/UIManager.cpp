@@ -2,6 +2,7 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UIScriptLoader.h"
+#include "Engine/UI/UIScriptInterface.h"
 #include "Engine/UI/UIClickable.refl.meta.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
@@ -15,8 +16,7 @@
 
 SkipField<UIClickable> s_UIClickableAllocator;
 
-UIManager::UIManager(Window & container_window) :
-  m_ContainerWindow(container_window),
+UIManager::UIManager() :
   m_Paused(false)
 {
   m_UpdateTimer.Start();
@@ -24,32 +24,65 @@ UIManager::UIManager(Window & container_window) :
 
 UIManager::~UIManager()
 {
+  m_InterfaceObject.Clear();
+  m_ClickableClass.Clear();
 
+  m_ScriptLoader.reset();
+  m_ScriptInterface.reset();
+
+  m_ScriptState.Clear();
+  for(auto & elem : m_RootClickables)
+  {
+    TrashClickable(elem);
+  }
+
+  RemoveDeadClickables();
 }
 
 void UIManager::LoadScripts()
 {
   m_ScriptState.Emplace();
-  m_ScriptInterface.Emplace(m_ScriptState.GetPtr());
+
   m_ClickableClass.Emplace("Clickable", m_ScriptState.GetPtr(),
           [this](){ auto clickable = new UIClickable(this); return clickable; },
-          [this](void * ptr) { delete static_cast<UIClickable *>(ptr); });
+          [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
   m_ClickableClass->Register();
 
-  m_Loader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
-  m_Loader->InitLoad();
+  m_ScriptInterface = std::make_unique<UIScriptInterface>(this);
+  m_InterfaceObject.Emplace(m_ScriptState.GetPtr());
+  auto & ui_interface = m_InterfaceObject.Value();
+  auto script_interface = m_ScriptInterface.get();
+
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTexture);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureTint);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScale);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScaleTint);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudio);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudioVolumePan);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayMusic);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayMusicVolume);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeToMusic);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeToMusicVolume);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeOutMusic);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, StopMusic);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawText);
+
+  m_ScriptState->BindAsGlobal("ui", ui_interface.GetObject());
+
+  m_ScriptLoader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
+  m_ScriptLoader->InitLoad();
 }
 
 bool UIManager::FinishedLoading() const
 {
-  return m_Loader && m_Loader->Complete();
+  return m_ScriptLoader && m_ScriptLoader->Complete();
 }
 
-void UIManager::Update(InputState & input_state, RenderState & render_state)
+void UIManager::Update(float delta_time, InputState & input_state, RenderState & render_state)
 {
-  if(m_Loader)
+  if(m_ScriptLoader)
   {
-    m_Loader->Update();
+    m_ScriptLoader->Update();
   }
 
   auto update_time = m_UpdateTimer.GetTimeSinceLastCheck();
@@ -58,7 +91,7 @@ void UIManager::Update(InputState & input_state, RenderState & render_state)
     update_time = 0;
   }
 
-  ProcessActiveAreas(input_state, render_state);
+  ProcessActiveAreas(delta_time, input_state, render_state);
 }
 
 void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
@@ -72,8 +105,33 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
 
   auto base_offset = RenderVec2{};
+
+  static std::vector<UIClickable *> clickables;
+  clickables.clear();
+
+  for(auto & elem : m_RootClickables)
+  {
+    AddToClickableList(elem.Get(), nullptr, clickables);
+  }
+
+  m_ScriptInterface->BeginRendering(&render_state, &render_util);
+  for(auto & elem : clickables)
+  {
+    if (elem->m_Dead == false)
+    {
+      if(elem->m_ActiveArea)
+      {
+        m_ScriptInterface->SetActiveArea(elem->m_ActiveArea.Value());
+        elem->OnRender();
+      }
+    }
+  }
+  m_ScriptInterface->EndRendering();
+
+  RemoveDeadClickables();
 }
 
 void UIManager::Pause()
@@ -127,6 +185,32 @@ void UIManager::RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable)
   }
 }
 
+void UIManager::TrashClickable(NotNullPtr<UIClickable> clickable)
+{
+  if(clickable == nullptr || clickable->m_Dead)
+  {
+    return;
+  }
+
+  clickable->m_Dead = true;
+  m_DeadClickables.push_back(clickable);
+
+  for(auto & elem : clickable->m_Children)
+  {
+    TrashClickable(elem.Get());
+  }
+}
+
+void UIManager::RemoveDeadClickables()
+{
+  for(auto itr = m_DeadClickables.rbegin(), end = m_DeadClickables.rend(); itr != end; ++itr)
+  {
+    delete (*itr);
+  }
+
+  m_DeadClickables.clear();
+}
+
 void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list)
 {
   if(clickable->Width <= 0 || clickable->Height <= 0)
@@ -163,7 +247,7 @@ void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr
   }
 }
 
-void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & render_state)
+void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state)
 {
   static std::vector<UIClickable *> clickables;
   clickables.clear();
@@ -173,12 +257,25 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
     AddToClickableList(elem.Get(), nullptr, clickables);
   }
 
+  for(auto & elem : clickables)
+  {
+    if(elem->m_Dead == false)
+    {
+      elem->OnUpdate(delta_time);
+    }
+  }
+
   m_HasSelectedElement = false;
 
   NullOptPtr<UIClickable> cur_pressed_clickable = nullptr;
   for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
   {
     auto & elem = *itr;
+    if(elem->m_Dead)
+    {
+      continue;
+    }
+
     if (elem->State == (int)UIClickableState::kPressed)
     {
       if (cur_pressed_clickable)
@@ -206,6 +303,11 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
     for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
       auto & elem = *itr;
+      if(elem->m_Dead)
+      {
+        continue;
+      }
+
       if(elem->m_ActiveArea)
       {
         auto box = elem->m_ActiveArea.Value();
@@ -225,6 +327,11 @@ void UIManager::ProcessActiveAreas(InputState & input_state, RenderState & rende
       bool found = false;
       for (auto elem : clickables)
       {
+        if(elem->m_Dead)
+        {
+          continue;
+        }
+
         if(elem == m_GrabbedMouseClickable)
         {
           found = true;

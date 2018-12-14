@@ -47,6 +47,8 @@ void NetServerBackendWebsocket::Update()
   {
     switch (event.Type)
     {
+    case StormSockets::StormSocketEventType::ClientConnected:
+      break;
     case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
       printf("A new client connected from %x:%u.\n", event.RemoteIP, event.RemotePort);
 

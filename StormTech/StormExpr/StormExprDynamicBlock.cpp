@@ -27,6 +27,8 @@ void StormExprDynamicBlock::Link(const StormExprDynamicBlockVariable & var, cons
 {
   switch (var.m_Type)
   {
+  case StormExprValueType::kNothing:
+    break;
   case StormExprValueType::kFloat:
     float_init_block.AddValue(variable_name, StormExprValueProvider(m_Floats.data(), &m_Floats[var.m_Index]));
     break;

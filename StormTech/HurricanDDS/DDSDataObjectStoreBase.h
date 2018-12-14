@@ -10,7 +10,7 @@
 class DDSDataObjectStoreBase
 {
 public:
-  ~DDSDataObjectStoreBase() {}
+  virtual ~DDSDataObjectStoreBase() = default;
 
   virtual uint32_t GetDataClassNameHash() const = 0;
   virtual uint32_t GetDatabaseClassNameHash() const = 0;

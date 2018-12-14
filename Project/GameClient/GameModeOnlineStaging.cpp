@@ -11,8 +11,7 @@
 #include "Engine/Text/TextManager.h"
 
 GameModeOnlineStaging::GameModeOnlineStaging(GameContainer & game) :
-  GameMode(game),
-  m_UIManager(game.GetWindow())
+  GameMode(game)
 {
 
 }

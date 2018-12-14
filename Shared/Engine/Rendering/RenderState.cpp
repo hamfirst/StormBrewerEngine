@@ -11,6 +11,7 @@
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Window/Window.h"
+#include "Rendering.h"
 
 #include <gl3w/gl3w.h>
 
@@ -351,6 +352,8 @@ void RenderState::EnableBlendMode(RenderingBlendMode mode)
   {
     switch (mode)
     {
+    case RenderingBlendMode::kNone:
+      break;
     case RenderingBlendMode::kAlpha:
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); CHECK_GL_RENDER_ERROR;
       break;
