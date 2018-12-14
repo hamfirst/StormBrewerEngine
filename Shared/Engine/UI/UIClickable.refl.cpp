@@ -15,25 +15,31 @@ UIClickable::~UIClickable()
   Destroy();
 }
 
+
+ScriptClassRef<UIClickable> UIClickable::GetParent()
+{
+  return m_Parent;
+}
+
 void UIClickable::SetParent(ScriptClassRef<UIClickable> & self, const ScriptClassRef<UIClickable> & parent)
 {
-  if(parent == Parent)
+  if(parent == m_Parent)
   {
     return;
   }
 
-  if(!Parent)
+  if(!m_Parent)
   {
     m_Manager->RemoveClickableFromRoot(this);
   }
   else
   {
-    for(std::size_t index = 0, end = Parent->m_Children.size(); index < end; ++index)
+    for(std::size_t index = 0, end = m_Parent->m_Children.size(); index < end; ++index)
     {
-      auto & child = Parent->m_Children[index];
+      auto & child = m_Parent->m_Children[index];
       if(child.Get() == this)
       {
-        Parent->m_Children.erase(Parent->m_Children.begin() + index);
+        m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
         break;
       }
     }
@@ -41,7 +47,12 @@ void UIClickable::SetParent(ScriptClassRef<UIClickable> & self, const ScriptClas
 
   if(parent)
   {
-    Parent->m_Children.push_back(self);
+    if(m_Parent->m_Dead)
+    {
+      m_Manager->TrashClickable(this);
+    }
+
+    m_Parent->m_Children.push_back(self);
   }
   else
   {
@@ -61,18 +72,18 @@ ScriptClassRef<UIClickable> UIClickable::GetChild(int index)
 
 void UIClickable::Destroy()
 {
-  if(!Parent)
+  if(!m_Parent)
   {
     m_Manager->RemoveClickableFromRoot(this);
   }
   else
   {
-    for(std::size_t index = 0, end = Parent->m_Children.size(); index < end; ++index)
+    for(std::size_t index = 0, end = m_Parent->m_Children.size(); index < end; ++index)
     {
-      auto & child = Parent->m_Children[index];
+      auto & child = m_Parent->m_Children[index];
       if(child.Get() == this)
       {
-        Parent->m_Children.erase(Parent->m_Children.begin() + index);
+        m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
         break;
       }
     }

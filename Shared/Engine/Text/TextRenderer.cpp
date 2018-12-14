@@ -446,6 +446,16 @@ bool TextRenderer::VisitTextSize(Delegate<bool, const Box &, char32_t, czstr> & 
   return true;
 }
 
+int TextRenderer::GetFontSize() const
+{
+  return m_FontSize;
+}
+
+uint32_t TextRenderer::GetFontAssetHash() const
+{
+  return crc32lowercase(m_Font->GetFileName());
+}
+
 void TextRenderer::AddString(czstr utf8_str, std::size_t len)
 {
 #ifdef _MSC_VER

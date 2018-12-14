@@ -4,6 +4,7 @@ enum class VolumeCategory
 {
   kSoundEffects,
   kMusic,
+  kUI,
   kCustom1,
   kCustom2,
   kCustom3,

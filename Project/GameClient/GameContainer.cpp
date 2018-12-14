@@ -44,6 +44,9 @@ GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContaine
   m_RenderUtil.LoadShaders();
 
   g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);
+  m_EngineState.GetUIManager()->LoadScripts();
+
+  m_FrameClock.Start();
 
   SetInitialMode();
 }
@@ -147,11 +150,13 @@ GameNetworkClientInitSettings & GameContainer::GetNetworkInitSettings()
 
 bool GameContainer::AllGlobalResourcesLoaded()
 {
-  return m_LevelList.IsLevelListLoaded();
+  return m_LevelList.IsLevelListLoaded() && m_EngineState.GetUIManager()->FinishedLoading();
 }
 
 void GameContainer::Update()
 {
+  m_DeltaTime = static_cast<float>(m_FrameClock.GetTimeSinceLastCheck());
+
   m_Updating = true;
   m_RenderState.SetScreenSize(m_Window.GetSize());
 
@@ -173,7 +178,10 @@ void GameContainer::Update()
   {
     m_Mode = std::move(m_NextMode);
   }
+
   m_Updating = false;
+
+
 }
 
 void GameContainer::Render()
@@ -214,4 +222,19 @@ void GameContainer::InputEvent()
   }
 
   m_Updating = false;
+}
+
+void GameContainer::UpdateUIManager()
+{
+  auto & render_state = GetRenderState();
+
+  auto input_state = GetWindow().GetInputState();
+  GetEngineState().GetUIManager()->Update(m_DeltaTime, *input_state, render_state);
+}
+
+void GameContainer::RenderUIManager()
+{
+  auto & render_state = GetRenderState();
+  auto & render_util = GetRenderUtil();
+  GetEngineState().GetUIManager()->Render(render_state, render_util);
 }

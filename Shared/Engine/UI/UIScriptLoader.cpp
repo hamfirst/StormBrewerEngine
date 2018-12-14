@@ -8,6 +8,7 @@
 #include "Foundation/FileSystem/Directory.h"
 #include "Foundation/FileSystem/File.h"
 
+
 UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state)
 {
   m_State = kIdle;
@@ -47,31 +48,27 @@ void UIScriptLoader::Update()
         auto old_textures = std::move(m_TextureAssets);
         auto old_audio = std::move(m_AudioAssets);
         auto old_music = std::move(m_MusicAssets);
-        auto old_fonts = std::move(m_FontAssets);
         auto old_atlases = std::move(m_AtlasAssets);
         auto old_sprites = std::move(m_SpriteAssets);
+
+
+        ScriptInterface loader_interface(m_ScriptState);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, DebugPrint);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadTexture);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadAudio);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadMusic);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadFont);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadAtlas);
+        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadSprite);
+
+        m_ScriptState->BindAsGlobal("loader", loader_interface.GetObject());
 
         for(auto & script_file : m_ScriptResources)
         {
           m_ScriptState->LoadScript(script_file->GetData(), script_file->GetLength(), script_file->GetFileName());
         }
 
-        ScriptInterface loader_interface(m_ScriptState);
-
-        loader_interface.AddFunction("LoadTexture",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadTexture(path); }));
-        loader_interface.AddFunction("LoadAudio",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadAudio(path); }));
-        loader_interface.AddFunction("LoadMusic",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadMusic(path); }));
-        loader_interface.AddFunction("LoadFont",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadFont(path); }));
-        loader_interface.AddFunction("LoadAtlas",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadAtlas(path); }));
-        loader_interface.AddFunction("LoadSprite",
-                                     CreateDelegateFromLambda([this](std::string path){ LoadSprite(path); }));
-
-        m_ScriptState->Call("LoadAssets", { loader_interface.GetObject() });
+        m_ScriptState->ClearGlobal("loader");
         m_State = kLoadingAssets;
       }
       break;
@@ -123,14 +120,6 @@ bool UIScriptLoader::AllAssetsLoaded() const
     }
   }
 
-  for(auto & asset : m_FontAssets)
-  {
-    if(asset.IsLoaded() == false)
-    {
-      return false;
-    }
-  }
-
   for(auto & asset : m_AtlasAssets)
   {
     if(asset.IsLoaded() == false)
@@ -147,6 +136,11 @@ bool UIScriptLoader::AllAssetsLoaded() const
     }
   }
 
+  if(g_TextManager.AllFontsLoaded() == false)
+  {
+    return false;
+  }
+
   return true;
 }
 
@@ -155,44 +149,94 @@ bool UIScriptLoader::Complete() const
   return m_State == kComplete;
 }
 
+void UIScriptLoader::DebugPrint()
+{
+  printf("Textures:\n");
+  for(std::size_t index = 0, end = m_TextureAssets.size(); index < end; ++index)
+  {
+    auto & elem = m_TextureAssets[index];
+    printf("%zd. %s\n", index, elem->GetFileName().c_str());
+  }
+  printf("\n");
+
+  printf("Sounds:\n");
+  for(std::size_t index = 0, end = m_AudioAssets.size(); index < end; ++index)
+  {
+    auto & elem = m_AudioAssets[index];
+    printf("%zd. %s\n", index, elem->GetFileName().c_str());
+  }
+  printf("\n");
+
+  printf("Music:\n");
+  for(std::size_t index = 0, end = m_MusicAssets.size(); index < end; ++index)
+  {
+    auto & elem = m_MusicAssets[index];
+    printf("%zd. %s\n", index, elem->GetFileName().c_str());
+  }
+  printf("\n");
+
+  printf("Atlases:\n");
+  for(std::size_t index = 0, end = m_AtlasAssets.size(); index < end; ++index)
+  {
+    auto & elem = m_AtlasAssets[index];
+    printf("%zd. %s\n", index, elem->GetFileName());
+  }
+  printf("\n");
+
+  printf("Sprites:\n");
+  for(std::size_t index = 0, end = m_SpriteAssets.size(); index < end; ++index)
+  {
+    auto & elem = m_SpriteAssets[index];
+    printf("%zd. %s\n", index, elem->GetFileName());
+  }
+  printf("\n");
+}
+
 int UIScriptLoader::LoadTexture(std::string path)
 {
   int id = static_cast<int>(m_TextureAssets.size());
   m_TextureAssets.emplace_back(TextureAsset::Load(path.data()));
-  return id;
+  return id | kTextureId;
 }
 
 int UIScriptLoader::LoadAudio(std::string path)
 {
   int id = static_cast<int>(m_AudioAssets.size());
   m_AudioAssets.emplace_back(AudioAsset::Load(path.data()));
-  return id;
+  return id | kAudioId;
 }
 
 int UIScriptLoader::LoadMusic(std::string path)
 {
   int id = static_cast<int>(m_MusicAssets.size());
   m_MusicAssets.emplace_back(MusicAsset::Load(path.data()));
-  return id;
+  return id | kMusicId;
 }
 
-int UIScriptLoader::LoadFont(std::string path)
+int UIScriptLoader::LoadFont(std::string path, int size)
 {
-  int id = static_cast<int>(m_FontAssets.size());
-  m_FontAssets.emplace_back(FontAsset::Load(path.data()));
-  return id;
+  auto test_font_id = g_TextManager.FindFontId(path.c_str(), size);
+  if(test_font_id)
+  {
+    return test_font_id.Value();
+  }
+
+  g_TextManager.LoadFont(path.c_str(), m_NextFontId, size);
+  auto id = m_NextFontId;
+  m_NextFontId++;
+  return id | kFontId;
 }
 
 int UIScriptLoader::LoadAtlas(std::string path)
 {
   int id = static_cast<int>(m_AtlasAssets.size());
   m_AtlasAssets.emplace_back(AtlasResource::Load(path.data()));
-  return id;
+  return id | kAtlasId;
 }
 
 int UIScriptLoader::LoadSprite(std::string path)
 {
   int id = static_cast<int>(m_AudioAssets.size());
   m_SpriteAssets.emplace_back(SpriteResource::Load(path.data()));
-  return id;
+  return id | kSpriteId;
 }

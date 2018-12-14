@@ -32,21 +32,20 @@ public:
 
   int State = 0;
   int Priority = 0;
-  bool Enabled = true;
-
-  ScriptClassRef<UIClickable> Parent;
 
   ScriptClassDelegate<void, int, int> OnStateChange;
   ScriptClassDelegate<void> OnClick;
   ScriptClassDelegate<void, float> OnUpdate;
-  ScriptClassDelegate<void, ScriptObject> OnRender;
+  ScriptClassDelegate<void> OnRender;
 
   int X = 0;
   int Y = 0;
   int Width = 0;
   int Height = 0;
 
+  ScriptClassRef<UIClickable> STORM_REFL_FUNC GetParent();
   void STORM_REFL_FUNC SetParent(ScriptClassRef<UIClickable> & self, const ScriptClassRef<UIClickable> & parent);
+
   int STORM_REFL_FUNC GetNumChildren();
   ScriptClassRef<UIClickable> STORM_REFL_FUNC GetChild(int index);
 
@@ -59,7 +58,10 @@ private:
 private:
 
   NotNullPtr<UIManager> m_Manager;
+  ScriptClassRef<UIClickable> m_Parent;
+
   std::vector<ScriptClassRef<UIClickable>> m_Children;
 
   Optional<Box> m_ActiveArea;
+  bool m_Dead = false;
 };

@@ -17,6 +17,8 @@ void StormExprBinding::Update(int function_index, StormExprEval & eval, void * b
 {
   switch (m_Type)
   {
+  case StormExprValueType::kNothing:
+    break;
   case StormExprValueType::kFloat:
     {
       float val;
@@ -42,8 +44,10 @@ void StormExprBinding::Update(int function_index, StormExprEval & eval, void * b
 
 void StormExprBinding::Update(int function_index, StormExprEval & eval, void * base_ptr, StormExprStack & stack)
 {
-    switch (m_Type)
+  switch (m_Type)
   {
+  case StormExprValueType::kNothing:
+    break;
   case StormExprValueType::kFloat:
     {
       float val;

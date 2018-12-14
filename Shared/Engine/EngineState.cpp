@@ -6,6 +6,7 @@
 #include "Engine/Component/ComponentSystem.h"
 #include "Engine/Map/MapSystem.h"
 #include "Engine/VisualEffect/VisualEffectManager.h"
+#include "Engine/UI/UIManager.h"
 
 #include "Runtime/Map/MapResource.h"
 
@@ -13,7 +14,8 @@ EngineState::EngineState(NotNullPtr<GameContainer> game) :
   m_EntitySystem(std::make_unique<EntitySystem>(this, game)),
   m_ComponentSystem(std::make_unique<ComponentSystem>()),
   m_MapSystem(std::make_unique<MapSystem>(this)),
-  m_VisualEffectManager(std::make_unique<VisualEffectManager>())
+  m_VisualEffectManager(std::make_unique<VisualEffectManager>()),
+  m_UIManager(std::make_unique<UIManager>())
 {
 
 }
@@ -72,4 +74,9 @@ NotNullPtr<MapSystem> EngineState::GetMapSystem()
 NotNullPtr<VisualEffectManager> EngineState::GetVisualEffectManager()
 {
   return m_VisualEffectManager.get();
+}
+
+NotNullPtr<UIManager> EngineState::GetUIManager()
+{
+  return m_UIManager.get();
 }

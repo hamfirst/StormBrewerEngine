@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Foundation/Common.h"
+#include "Foundation/Time/StopWatch.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
+#include "Engine/UI/UIManager.h"
 #include "Engine/EngineState.h"
 
 #include "GameShared/GameStageManager.h"
@@ -85,8 +87,13 @@ public:
     }
   }
 
+  void UpdateUIManager();
+  void RenderUIManager();
+
 private:
   EngineState m_EngineState;
+  StopWatch m_FrameClock;
+  float m_DeltaTime = 0;
 
   Window m_Window;
   std::unique_ptr<GameMode> m_Mode;
@@ -105,7 +112,7 @@ private:
   RenderState m_RenderState;
   RenderUtil m_RenderUtil;
 
-  bool m_Updating;
+  bool m_Updating = false;
 };
 
 

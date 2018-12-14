@@ -28,7 +28,6 @@ protected:
 private:
 
   Sequencer m_Sequencer;
-  UIManager m_UIManager;
 
 
   bool m_Attached[kMaxPlayers];

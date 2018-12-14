@@ -10,8 +10,7 @@
 #include "Engine/Text/TextManager.h"
 
 GameModeJoinPrivateGame::GameModeJoinPrivateGame(GameContainer & game) :
-        GameMode(game),
-        m_UIManager(game.GetWindow())
+        GameMode(game)
 {
 
 }
@@ -43,9 +42,7 @@ void GameModeJoinPrivateGame::Update()
   auto & render_state = container.GetRenderState();
 
   container.GetWindow().Update();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.UpdateUIManager();
 }
 
 void GameModeJoinPrivateGame::Render()
@@ -58,8 +55,7 @@ void GameModeJoinPrivateGame::Render()
   RenderUtil::Clear();
 
   render_state.EnableBlendMode();
-
-  m_UIManager.Render(render_state, render_util);
+  container.RenderUIManager();
 }
 
 void GameModeJoinPrivateGame::Submit(czstr game_code_str)

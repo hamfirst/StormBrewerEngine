@@ -38,7 +38,6 @@ private:
   GameModeNameSelectNextScreen m_NextMode;
 
   Sequencer m_Sequencer;
-  UIManager m_UIManager;
 };
 
 

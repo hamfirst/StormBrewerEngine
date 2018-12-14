@@ -46,3 +46,28 @@ static const char * kDefaultFragmentShader = SHADER_LITERAL(
   }
 );
 
+static const char * kDefaultScreenSpaceFragmentShader = SHADER_LITERAL(
+
+  varying vec2 v_Position;
+  varying vec2 v_TexCoord;
+  varying vec4 v_Color;
+
+  uniform sampler2D u_Texture;
+  uniform vec4 u_Color;
+  uniform vec4 u_Bounds;
+
+  void main()
+  {
+    bool oob =
+            v_Position.x < u_Bounds.x ||
+            v_Position.y < u_Bounds.y ||
+            v_Position.x > u_Bounds.z ||
+            v_Position.y > u_Bounds.w;
+
+    vec4 color = texture2D(u_Texture, fract(v_TexCoord)) * v_Color * u_Color;
+    gl_FragColor = oob ? vec4(0, 0, 0, 0) : color;
+  }
+);
+
+
+

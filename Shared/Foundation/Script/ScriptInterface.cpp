@@ -22,7 +22,8 @@ struct ScriptInterfaceInitFunc
 
       lua_pushstring(state, "ptr");
       lua_gettable(state, 1);
-      auto interface_ptr = lua_touserdata(state, 2);
+      auto interface_ptr = lua_touserdata(state, -1);
+      lua_pop(state, 1);
 
       if(interface_ptr == nullptr)
       {
@@ -58,6 +59,11 @@ ScriptInterface::ScriptInterface(NotNullPtr<ScriptState> script_state) :
 
   m_Object = std::make_shared<ScriptObject>(script_state->CreateScriptObject());
   ScriptInternal::WriteTablePointer("ptr", *m_Object, this, script_state);
+}
+
+ScriptInterface::~ScriptInterface()
+{
+  ScriptInternal::WriteTablePointer("ptr", *m_Object, nullptr, m_ScriptState);
 }
 
 const std::shared_ptr<ScriptObject> & ScriptInterface::GetObject() const

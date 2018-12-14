@@ -8,6 +8,8 @@
 class DDSSharedObjectBase
 {
 public:
+  virtual ~DDSSharedObjectBase() = default;
+
   virtual uint32_t GetObjectClassNameHash() = 0;
   virtual int GetObjectTypeId() = 0;
 
@@ -22,6 +24,8 @@ public:
 class DDSSharedObjectCopyBase
 {
 public:
+  virtual ~DDSSharedObjectCopyBase() = default;
+
   virtual uint32_t GetObjectClassNameHash() = 0;
   virtual int GetObjectTypeId() = 0;
 

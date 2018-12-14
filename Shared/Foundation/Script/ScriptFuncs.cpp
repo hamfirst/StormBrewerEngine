@@ -119,7 +119,8 @@ bool ScriptFuncs::FetchValue(void * state, int pos, bool & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
-  val = lua_tostring(lua_state, pos);
+  auto str = lua_tostring(lua_state, pos);
+  val = str ? str : nullptr;
   return true;
 }
 ;
@@ -131,7 +132,6 @@ bool ScriptFuncs::FetchValue(void * state, int pos, ScriptObject & val)
     val = {};
     return false;
   }
-
 
   auto script_state = static_cast<ScriptState *>(lua_getmanager(lua_state));
   auto global_id = ScriptInternal::CreateGlobalObjectFromStack(pos, script_state);
@@ -188,7 +188,8 @@ std::pair<NullOptPtr<ScriptClassRefData>, std::size_t> ScriptFuncs::FetchInstanc
 bool ScriptFuncs::CheckArgCount(void * state, int args)
 {
   auto lua_state = static_cast<lua_State *>(state);
-  return lua_gettop(lua_state) == args + 1; // One extra for self
+  auto num_args = lua_gettop(lua_state);
+  return num_args == args + 1; // One extra for self
 }
 
 bool ScriptFuncs::CallFunc(void * state, int num_args, int num_results)

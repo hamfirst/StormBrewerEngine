@@ -22,7 +22,6 @@ extern ConfigPtr<GameConfig> g_GameConfig;
 
 GameClientUIManager::GameClientUIManager(GameContainer & container) :
   m_GameContainer(container),
-  m_UIManager(container.GetWindow()),
   m_WantsToQuit(false),
   m_DisabledPopup(false)
 {
@@ -48,12 +47,12 @@ void GameClientUIManager::Update()
     TogglePopup();
   }
 
-  m_UIManager.Update(*input_state, m_GameContainer.GetRenderState());
+  m_GameContainer.UpdateUIManager();
 }
 
 void GameClientUIManager::Render()
 {
-  m_UIManager.Render(m_GameContainer.GetRenderState(), m_GameContainer.GetRenderUtil());
+  m_GameContainer.RenderUIManager();
 }
 
 void GameClientUIManager::ShowTutorial()
@@ -73,7 +72,7 @@ void GameClientUIManager::DisablePopup()
 
 bool GameClientUIManager::IsBlocking()
 {
-  return m_UIManager.HasSelectedElement();
+  return GetUIManager().HasSelectedElement();
 }
 
 bool GameClientUIManager::WantsToQuit()
@@ -83,7 +82,7 @@ bool GameClientUIManager::WantsToQuit()
 
 UIManager & GameClientUIManager::GetUIManager()
 {
-  return m_UIManager;
+  return *m_GameContainer.GetEngineState().GetUIManager();
 }
 
 void GameClientUIManager::Quit()

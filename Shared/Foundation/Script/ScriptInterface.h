@@ -27,6 +27,8 @@ public:
   ScriptInterface(const ScriptInterface & rhs) = delete;
   ScriptInterface(ScriptInterface && rhs) = delete;
 
+  ~ScriptInterface();
+
   ScriptInterface & operator = (const ScriptInterface & rhs) = delete;
   ScriptInterface & operator = (ScriptInterface && rhs) = delete;
 
@@ -44,7 +46,7 @@ public:
         return 0;
       }
 
-      std::tuple<Args...> args;
+      std::tuple<std::decay_t<Args>...> args;
       using sequence = std::make_index_sequence<sizeof...(Args)>;
 
       PullArgs(args, sequence{}, lua_state);
@@ -70,6 +72,12 @@ public:
     m_NextFuncId++;
   }
 
+  template <typename C, typename ReturnValue, typename ... Args>
+  void AddFunction(czstr name, NotNullPtr<C> c, ReturnValue (C::*Func)(Args...))
+  {
+    AddFunction(name, CreateDelegateFromLambda([=](Args ... args) { (c->*Func)(args...); }));
+  }
+
 private:
 
   template <int Index>
@@ -80,7 +88,7 @@ private:
   template <typename ... Args, std::size_t ... I>
   static void PullArgs(std::tuple<Args...> & arg, std::index_sequence<I...> seq, void * state)
   {
-    auto l = { ScriptFuncs::FetchValue(state, I + 1, std::get<I>(arg))... };
+    std::initializer_list<bool> l = { ScriptFuncs::FetchValue(state, I + 2, std::get<I>(arg))... };
   }
 
 private:
@@ -92,3 +100,5 @@ private:
   StaticAny<128> m_Delegates[kScriptInterfaceMaxFunctions];
 
 };
+
+#define BIND_SCRIPT_INTERFACE(ScriptInterface, Ptr, FuncName) (ScriptInterface).AddFunction(#FuncName, Ptr, &std::decay_t<decltype(*Ptr)>::FuncName);

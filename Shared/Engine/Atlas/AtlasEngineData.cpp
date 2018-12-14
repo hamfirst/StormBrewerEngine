@@ -284,6 +284,7 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
   render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0, 0 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
 
   render_state.BindTexture(*texture);
   render_state.BindVertexBuffer(m_VertexBuffer);

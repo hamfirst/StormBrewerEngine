@@ -17,8 +17,7 @@
 czstr g_AccountName = nullptr;
 
 GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
-  GameMode(game),
-  m_UIManager(game.GetWindow())
+  GameMode(game)
 {
 
 }
@@ -52,9 +51,7 @@ void GameModeMainMenu::Update()
   auto & render_state = container.GetRenderState();
 
   container.GetWindow().Update();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.UpdateUIManager();
 }
 
 void GameModeMainMenu::Render()
@@ -72,10 +69,7 @@ void GameModeMainMenu::Render()
 void GameModeMainMenu::InputEvent()
 {
   auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.RenderUIManager();
 }
 
 void GameModeMainMenu::PlayOnline()

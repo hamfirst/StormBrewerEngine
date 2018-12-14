@@ -45,6 +45,8 @@ void NetServerBackendEnet::Update()
   {
     switch (e.type)
     {
+    case ENET_EVENT_TYPE_NONE:
+      break;
     case ENET_EVENT_TYPE_CONNECT:
       printf("A new client connected from %x:%u.\n",
         e.peer->address.host,

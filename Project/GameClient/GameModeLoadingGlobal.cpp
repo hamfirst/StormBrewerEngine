@@ -35,6 +35,7 @@ void GameModeLoadingGlobal::Update()
 {
   auto & container = GetContainer();
   container.GetWindow().Update();
+  container.UpdateUIManager();
 
   if(container.GetSave().IsLoaded() &&
      g_GlobalAssetList.AllAssetsLoaded())

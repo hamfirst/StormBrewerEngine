@@ -25,7 +25,6 @@ protected:
 
 protected:
 
-  UIManager m_UIManager;
 
   bool m_ConnectFailed;
 

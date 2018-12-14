@@ -5,6 +5,7 @@
 #include <QCheckBox>
 
 #include "Foundation/Delegate/DelegateLink.h"
+#include "Foundation/Time/StopWatch.h"
 
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/VertexBuffer.h"
@@ -70,6 +71,7 @@ private:
   NotNullPtr<UIEditor> m_Editor;
   UIDef & m_UI;
 
+  StopWatch m_FrameTimer;
   DocumentValueWatcher m_Watcher;
 
   Optional<FakeWindow> m_FakeWindow;

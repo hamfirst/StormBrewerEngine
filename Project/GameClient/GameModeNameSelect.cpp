@@ -14,8 +14,7 @@
 
 GameModeNameSelect::GameModeNameSelect(GameContainer & game, GameModeNameSelectNextScreen next_mode) :
   GameMode(game),
-  m_NextMode(next_mode),
-  m_UIManager(game.GetWindow())
+  m_NextMode(next_mode)
 {
   
 }
@@ -53,9 +52,7 @@ void GameModeNameSelect::Update()
   auto & render_state = container.GetRenderState();
 
   container.GetWindow().Update();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.UpdateUIManager();
 }
 
 void GameModeNameSelect::Render()
@@ -69,7 +66,7 @@ void GameModeNameSelect::Render()
 
   render_state.EnableBlendMode();
 
-  m_UIManager.Render(render_state, render_util);
+  container.RenderUIManager();
 }
 
 void GameModeNameSelect::Submit(czstr user_name)

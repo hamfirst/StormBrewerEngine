@@ -9,6 +9,8 @@ PreMainCallList g_ShaderRegisterList;
 void ShaderManager::Init()
 {
   m_DefaultShader = MakeQuickShaderProgram(kDefaultVertexShader, kDefaultFragmentShader);
+
+  m_DefaultScreenSpaceShader = MakeQuickShaderProgram(kDefaultVertexShader, kDefaultScreenSpaceFragmentShader);
   g_ShaderRegisterList.CallAll();
 }
 

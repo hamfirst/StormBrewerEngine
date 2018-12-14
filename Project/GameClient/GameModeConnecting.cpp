@@ -11,7 +11,6 @@
 
 GameModeConnecting::GameModeConnecting(GameContainer & game) :
   GameMode(game),
-  m_UIManager(game.GetWindow()),
   m_ConnectFailed(false),
   m_LastConnect(0)
 {
@@ -78,11 +77,6 @@ void GameModeConnecting::Update()
       container.StartNetworkClient();
     }
   }
-
-  auto & render_state = container.GetRenderState();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
 }
 
 void GameModeConnecting::Render()
@@ -116,6 +110,7 @@ void GameModeConnecting::Render()
       status_msg = "Loading...";
       break;
     case ClientConnectionState::kStaging:
+    case ClientConnectionState::kConnected:
       status_msg = "Waiting for other players...";
       break;
     }
@@ -181,7 +176,7 @@ void GameModeConnecting::Render()
     }
   }
 
-  m_UIManager.Render(render_state, render_util);
+  container.RenderUIManager();
 }
 
 void GameModeConnecting::Back()

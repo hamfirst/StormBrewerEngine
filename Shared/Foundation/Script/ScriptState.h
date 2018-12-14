@@ -25,6 +25,8 @@ public:
   ScriptObject CreateScriptObject();
 
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
+  void BindAsGlobal(czstr name, const ScriptValue & value);
+  void ClearGlobal(czstr name);
 
 private:
   friend class ScriptInternal;

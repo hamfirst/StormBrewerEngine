@@ -41,7 +41,6 @@ private:
 
   GameContainer & m_GameContainer;
 
-  UIManager m_UIManager;
 
   bool m_WantsToQuit;
   bool m_DisabledPopup;

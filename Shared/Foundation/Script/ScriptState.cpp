@@ -7,6 +7,8 @@
 ScriptState::ScriptState()
 {
   m_LuaState = ScriptInternal::InitState(this);
+
+  m_ErrorOutput = [](czstr message) { printf("%s\n", message); };
 }
 
 ScriptState::~ScriptState()
@@ -50,3 +52,12 @@ bool ScriptState::Call(czstr name, std::initializer_list<ScriptValue> args, Null
   return false;
 }
 
+void ScriptState::BindAsGlobal(czstr name, const ScriptValue & value)
+{
+  ScriptInternal::CreateGlobalFromScriptObject(name, value, this);
+}
+
+void ScriptState::ClearGlobal(czstr name)
+{
+  ScriptInternal::DeleteGlobal(name, this);
+}

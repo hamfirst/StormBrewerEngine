@@ -273,6 +273,7 @@ void GeometryEditorBase::paintGL()
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), center);
   default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
+  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
 
   m_RenderState.BindTexture(*texture);
   QuadVertexBufferBuilder builder;

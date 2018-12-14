@@ -40,6 +40,7 @@ protected:
 private:
 
   ShaderProgram m_DefaultShader;
+  ShaderProgram m_DefaultScreenSpaceShader;
 
   struct ShaderInfo
   {

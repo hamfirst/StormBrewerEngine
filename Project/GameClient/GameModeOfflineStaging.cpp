@@ -13,8 +13,7 @@
 GLOBAL_ASSET(UIResourcePtr, "./UIs/Staging.ui", g_GameClientStagingUI);
 
 GameModeOfflineStaging::GameModeOfflineStaging(GameContainer & game) :
-  GameMode(game),
-  m_UIManager(game.GetWindow())
+  GameMode(game)
 {
   for (int index = 0; index < kMaxPlayers; ++index)
   {
@@ -50,9 +49,7 @@ void GameModeOfflineStaging::Update()
   auto & render_state = container.GetRenderState();
 
   container.GetWindow().Update();
-
-  auto input_state = container.GetWindow().GetInputState();
-  m_UIManager.Update(*input_state, render_state);
+  container.UpdateUIManager();
 }
 
 void GameModeOfflineStaging::Render()
@@ -65,8 +62,7 @@ void GameModeOfflineStaging::Render()
   render_util.Clear();
 
   render_state.EnableBlendMode();
-
-  m_UIManager.Render(render_state, render_util);
+  container.RenderUIManager();
 }
 
 void GameModeOfflineStaging::Start()
