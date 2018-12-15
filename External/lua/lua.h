@@ -142,7 +142,7 @@ extern const char lua_ident[];
 /*
 ** state manipulation
 */
-LUA_API lua_State *(lua_newstate) (lua_Alloc f, void *ud, void *manager);
+LUA_API lua_State *(lua_newstate) (lua_Alloc f, void *ud);
 LUA_API void       (lua_close) (lua_State *L);
 LUA_API void *     (lua_getmanager) (lua_State *L);
 LUA_API lua_State *(lua_newthread) (lua_State *L);

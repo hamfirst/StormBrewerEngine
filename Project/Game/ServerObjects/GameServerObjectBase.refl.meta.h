@@ -109,11 +109,11 @@ struct StormReflTypeInfo<GameServerObjectBase>
 template <>
 struct StormReflTypeInfo<GameServerObjectBase>::field_data_static<0 + StormReflTypeInfo<ServerObject>::fields_n>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Position"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB00030DB; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &GameServerObjectBase::m_Position; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerObjectBase *>(obj); return &ptr->m_Position; }
