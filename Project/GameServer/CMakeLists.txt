@@ -5,30 +5,30 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameServer 
             GameClientConnection.cpp
+            GameInstance.cpp
+            GameInstanceManager.cpp
             GameInstanceStateData.cpp
-            GameInstanceStateLoading.cpp
             GameInstanceStateGameplay.cpp
+            GameInstanceStateLoading.cpp
             GameInstanceStatePrivateGameStaging.cpp
+            GameInstanceStateStaging.cpp
             GameServer.cpp
             GameServerGlobalResources.cpp
-            GameInstanceStateStaging.cpp
-            GameInstanceManager.cpp
-            GameInstance.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameServer 
-            GameInstanceStatePrivateGameStaging.h
-            GameInstance.h
-            GameServer.h
-            GameInstanceStateBase.h
-            GameInstanceManager.h
             GameClientConnection.h
+            GameInstance.h
+            GameInstanceManager.h
+            GameInstanceStateBase.h
+            GameInstanceStateData.h
             GameInstanceStateGameplay.h
             GameInstanceStateLoading.h
+            GameInstanceStatePrivateGameStaging.h
             GameInstanceStateStaging.h
+            GameServer.h
             GameServerGlobalResources.h
-            GameInstanceStateData.h
             #HEADER_PLACEHOLDER
             )
 

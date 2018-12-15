@@ -54,11 +54,11 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>
 template <>
 struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<0>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Position"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB00030DB; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_Position; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_Position; }
@@ -78,11 +78,11 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data<0, Self> :
 template <>
 struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<1>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Direction"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE26AF0A8; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_Direction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_Direction; }
@@ -280,11 +280,11 @@ struct StormReflTypeInfo<ProjectileServerObject>
 template <>
 struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<0 + StormReflTypeInfo<GameServerObjectBase>::fields_n>
 {
-  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long, 32, 16> >
+  using member_type = GameNetVec2; // IntersectionVecType<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Direction"; }
-  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE26AF0A8; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9DD48B4; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Direction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Direction; }
