@@ -6,48 +6,56 @@
 void ScriptFuncs::PushValue(void * state, const int & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   lua_pushnumber(lua_state, val);
 }
 
 void ScriptFuncs::PushValue(void * state, const float & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   lua_pushnumber(lua_state, val);
 }
 
 void ScriptFuncs::PushValue(void * state, const bool & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   lua_pushboolean(lua_state, val);
 }
 
 void ScriptFuncs::PushValue(void * state, const std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   lua_pushstring(lua_state, val.data());
 }
 
 void ScriptFuncs::PushValue(void * state, const ScriptObject & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
 }
 
 void ScriptFuncs::PushValue(void * state, const ScriptClassInstance & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
 }
 
 void ScriptFuncs::PushValue(void * state, const ScriptFuncPtr & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
 }
 
 void ScriptFuncs::PushInstance(void * state, ScriptClassRefData * ref_data, std::size_t type_id_hash)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
   auto ptr = static_cast<ScriptClassInstanceInfo *>(lua_newuserdata(lua_state, sizeof(ScriptClassInstanceInfo)));
 
   ptr->m_RefData = ref_data;
@@ -59,24 +67,28 @@ void ScriptFuncs::PushInstance(void * state, ScriptClassRefData * ref_data, std:
 void ScriptFuncs::PullValue(void * state, int & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<int>(lua_tonumber(lua_state, -1));
 }
 
 void ScriptFuncs::PullValue(void * state, float & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<float>(lua_tonumber(lua_state, -1));
 }
 
 void ScriptFuncs::PullValue(void * state, bool & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<bool>(lua_toboolean(lua_state, -1));
 }
 
 void ScriptFuncs::PullValue(void * state, std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = lua_tostring(lua_state, -1);
 }
 
@@ -98,6 +110,7 @@ void ScriptFuncs::PullValue(void * state, ScriptFuncPtr & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, int & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<int>(lua_tonumber(lua_state, pos));
   return true;
 }
@@ -105,6 +118,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, int & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, float & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<float>(lua_tonumber(lua_state, pos));
   return true;
 }
@@ -112,6 +126,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, float & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, bool & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   val = static_cast<bool>(lua_toboolean(lua_state, pos));
   return true;
 }
@@ -119,6 +134,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, bool & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   auto str = lua_tostring(lua_state, pos);
   val = str ? str : nullptr;
   return true;
@@ -127,6 +143,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, std::string & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, ScriptObject & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   if (lua_istable(lua_state, pos) == false)
   {
     val = {};
@@ -143,6 +160,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, ScriptObject & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, ScriptClassInstance & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   if (lua_type(lua_state, pos) != LUA_TUSERDATA)
   {
     val = {};
@@ -159,6 +177,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, ScriptClassInstance & val)
 bool ScriptFuncs::FetchValue(void * state, int pos, ScriptFuncPtr & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   if (lua_isfunction(lua_state, pos) == false)
   {
     val = {};
@@ -175,6 +194,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, ScriptFuncPtr & val)
 std::pair<NullOptPtr<ScriptClassRefData>, std::size_t> ScriptFuncs::FetchInstanceInfo(void * state, int pos)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state);
   if(lua_type(lua_state, pos) != LUA_TUSERDATA)
   {
     return std::make_pair(nullptr, 0);
@@ -210,6 +230,7 @@ bool ScriptFuncs::CallFunc(void * state, int num_args, int num_results)
 void ScriptFuncs::Discard(void * state, int num_stack_vals)
 {
   auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, -num_stack_vals);
   lua_pop(lua_state, num_stack_vals);
 }
 

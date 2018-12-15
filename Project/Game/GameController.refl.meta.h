@@ -86,11 +86,11 @@ struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<0>
 template <>
 struct StormReflFuncInfo<GameController>::func_data_static<0>::param_info<1>
 {
-  using param_type = std::size_t;
+  using param_type = size_t;
   static constexpr auto GetName() { return "player_index"; }
-  static constexpr auto GetType() { return "std::size_t"; }
+  static constexpr auto GetType() { return "size_t"; }
   static constexpr unsigned GetNameHash() { return 0x3F011C47; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD3351223; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8883767D; }
 };
 
 template <>
@@ -132,11 +132,11 @@ struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<0>
 template <>
 struct StormReflFuncInfo<GameController>::func_data_static<1>::param_info<1>
 {
-  using param_type = std::size_t;
+  using param_type = size_t;
   static constexpr auto GetName() { return "player_index"; }
-  static constexpr auto GetType() { return "std::size_t"; }
+  static constexpr auto GetType() { return "size_t"; }
   static constexpr unsigned GetNameHash() { return 0x3F011C47; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD3351223; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8883767D; }
 };
 
 template <>
