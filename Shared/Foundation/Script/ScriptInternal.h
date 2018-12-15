@@ -17,6 +17,28 @@ struct ScriptClassInstanceInfo
   std::size_t m_TypeNameHash;
 };
 
+struct ScriptStackCheck
+{
+  ScriptStackCheck(lua_State * lua_state, int expected_change = 0)
+  {
+    state = lua_state;
+    top = lua_gettop(state);
+    change = expected_change;
+    ASSERT(top >= 0, "Stack is messed up");
+  }
+
+  ~ScriptStackCheck()
+  {
+    auto new_top = lua_gettop(state);    
+    ASSERT(new_top >= 0, "Stack is messed up");
+    ASSERT(top + change == new_top, "Stack size is incorrect");
+  }
+
+  lua_State * state;
+  int top;
+  int change;
+};
+
 class ScriptInternal
 {
 public:
@@ -26,12 +48,15 @@ public:
     (void)ud; (void)osize;  /* not used */
     if (nsize == 0)
     {
+      //printf("Freeing %p\n",  ptr);
       free(ptr);
       return NULL;
     }
     else
     {
-      return realloc(ptr, nsize);
+      auto new_ptr = realloc(ptr, nsize);
+      //printf("Allocating %p, (%p)\n", new_ptr, ptr);
+      return new_ptr;
     }
   }
 
@@ -70,9 +95,9 @@ public:
 
   static lua_State * InitState(NotNullPtr<ScriptState> script_state)
   {
-    auto lua_state = lua_newstate(l_alloc, nullptr, script_state);
+    auto lua_state = lua_newstate(l_alloc, script_state);
     lua_atpanic(lua_state, StackDump);
-
+    
     luaL_requiref(lua_state, "base", luaopen_base, 1);
     lua_pop(lua_state, 1);
 
@@ -123,6 +148,7 @@ public:
   static bool LoadScriptBlock(NotNullPtr<ScriptState> script_state, const void * data, std::size_t length, czstr module_name)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     auto result = luaL_loadbuffer(lua_state, static_cast<const char *>(data), length, module_name);
 
     if(result == LUA_OK)
@@ -143,6 +169,7 @@ public:
   {
     auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
 
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, static_cast<lua_Number>(global_id));
@@ -156,15 +183,16 @@ public:
   static void CreateGlobalFromScriptObject(czstr name, const ScriptValue & value, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
 
     PushScriptValue(lua_state, value);
     lua_setglobal(lua_state, name);
-    lua_pop(lua_state, 1);
   }
 
   static int CreateGlobalObjectFromStack(int pos, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_pushvalue(lua_state, pos);
 
     auto global_id = script_state->m_GlobalIdAllocator.Allocate() + 1;
@@ -179,6 +207,7 @@ public:
   static void DeleteGlobalObject(NotNullPtr<ScriptState> script_state, int global_id)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
 
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, global_id);
@@ -189,15 +218,10 @@ public:
     script_state->m_GlobalIdAllocator.Release(static_cast<std::size_t>(global_id) - 1);
   }
 
-  static void LoadGlobalValue(czstr name, NotNullPtr<ScriptState> script_state)
-  {
-    auto lua_state = GetState(script_state);
-    lua_getglobal(lua_state, name);
-  }
-
   static void CreateGlobalTable(czstr name, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_pushglobaltable(lua_state);
     lua_pushstring(lua_state, name);
     lua_newtable(lua_state);
@@ -205,8 +229,16 @@ public:
     lua_pop(lua_state, 1);
   }
 
+  static void LoadGlobalValue(czstr name, NotNullPtr<ScriptState> script_state)
+  {
+    auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state, 1);
+    lua_getglobal(lua_state, name);
+  }
+
   static void LoadGlobalObject(int global_id, lua_State * lua_state)
   {
+    ScriptStackCheck check(lua_state, 1);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, global_id);
     lua_gettable(lua_state, -2);
@@ -222,6 +254,7 @@ public:
   static void LoadTableValue(czstr name, const ScriptObject & object, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state, 1);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, object.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -234,6 +267,7 @@ public:
   static void * ReadTablePointer(czstr pointer_name, const ScriptObject & object, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, object.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -247,6 +281,7 @@ public:
   static void * ReadGlobalTablePointer(czstr pointer_name, czstr table_name, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, table_name);
     lua_pushstring(lua_state, pointer_name);
     lua_gettable(lua_state, -2);
@@ -258,6 +293,7 @@ public:
   static NullOptPtr<ScriptClassInstanceInfo> ReadInstanceInfo(const ScriptClassInstance & instance, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, instance.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -269,6 +305,7 @@ public:
   static void WriteTableValue(czstr name, const ScriptObject & object, const ScriptValue & value, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, object.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -281,6 +318,7 @@ public:
   static void WriteTablePointer(czstr name, const ScriptObject & object, void * ptr, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, object.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -293,6 +331,7 @@ public:
   static void WriteTableFunction(czstr name, const ScriptObject & object, int (*Func)(lua_State *), NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, "global_objs");
     lua_pushnumber(lua_state, object.m_GlobalId);
     lua_gettable(lua_state, -2);
@@ -305,6 +344,7 @@ public:
   static void WriteGlobalTableFunction(czstr func_name, czstr table_name, int (*Func)(lua_State *), NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, table_name);
     lua_pushstring(lua_state, func_name);
     lua_pushcfunction(lua_state, Func);
@@ -315,6 +355,7 @@ public:
   static void WriteGlobalTablePointer(czstr ptr_name, czstr table_name, void * ptr, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_getglobal(lua_state, table_name);
     lua_pushstring(lua_state, ptr_name);
     lua_pushlightuserdata(lua_state, ptr);
@@ -325,6 +366,7 @@ public:
   static void DeleteGlobal(czstr name, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
     lua_pushglobaltable(lua_state);
     lua_pushstring(lua_state, name);
     lua_pushnil(lua_state);
@@ -364,6 +406,7 @@ public:
   static ScriptValue SaveScriptValueFromStack(NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state, -1);
 
     switch(lua_type(lua_state, -1))
     {
@@ -432,31 +475,37 @@ public:
 
   static void PushValue(lua_State * state, int t)
   {
+    ScriptStackCheck check(state, 1);
     lua_pushnumber(state, t);
   }
 
   static void PushValue(lua_State * state, float t)
   {
+    ScriptStackCheck check(state, 1);
     lua_pushnumber(state, t);
   }
 
   static void PushValue(lua_State * state, bool t)
   {
+    ScriptStackCheck check(state, 1);
     lua_pushboolean(state, t);
   }
 
   static void PushValue(lua_State * state, czstr t)
   {
+    ScriptStackCheck check(state, 1);
     lua_pushstring(state, t);
   }
 
   static void PushValue(lua_State * state, const std::string & t)
   {
+    ScriptStackCheck check(state, 1);
     lua_pushstring(state, t.data());
   }
 
   static void PushValue(lua_State * state, const ScriptObject & t)
   {
+    ScriptStackCheck check(state, 1);
     lua_getglobal(state, "global_objs");
     lua_pushnumber(state, t.m_GlobalId);
     lua_gettable(state, -2);
@@ -465,6 +514,7 @@ public:
 
   static void PushValue(lua_State * state, const ScriptClassInstance & t)
   {
+    ScriptStackCheck check(state, 1);
     lua_getglobal(state, "global_objs");
     lua_pushnumber(state, t.m_GlobalId);
     lua_gettable(state, -2);
@@ -473,6 +523,7 @@ public:
 
   static void PushValue(lua_State * state, const ScriptFuncPtr & t)
   {
+    ScriptStackCheck check(state, 1);
     lua_getglobal(state, "global_objs");
     lua_pushnumber(state, t.m_GlobalId);
     lua_gettable(state, -2);
@@ -481,6 +532,7 @@ public:
 
   static void PushScriptValue(lua_State * state, const ScriptValue & val)
   {
+    ScriptStackCheck check(state, 1);
     switch(val.GetCurrentTypeIndex())
     {
       case -1:

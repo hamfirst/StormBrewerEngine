@@ -261,7 +261,6 @@ LUA_API lua_State *lua_newthread (lua_State *L) {
   L1 = &cast(LX *, luaM_newobject(L, LUA_TTHREAD, sizeof(LX)))->l;
   L1->marked = luaC_white(g);
   L1->tt = LUA_TTHREAD;
-  L1->manager = L->manager;
   /* link it on list 'allgc' */
   L1->next = g->allgc;
   g->allgc = obj2gco(L1);
@@ -293,7 +292,7 @@ void luaE_freethread (lua_State *L, lua_State *L1) {
 }
 
 
-LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud, void *manager) {
+LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   int i;
   lua_State *L;
   global_State *g;
@@ -305,7 +304,6 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud, void *manager) {
   L->tt = LUA_TTHREAD;
   g->currentwhite = bitmask(WHITE0BIT);
   L->marked = luaC_white(g);
-  L->manager = manager;
   preinit_thread(L, g);
   g->frealloc = f;
   g->ud = ud;
@@ -347,5 +345,5 @@ LUA_API void lua_close (lua_State *L) {
 }
 
 LUA_API void * (lua_getmanager) (lua_State *L) {
-  return L->manager;
+  return L->l_G->ud;
 }

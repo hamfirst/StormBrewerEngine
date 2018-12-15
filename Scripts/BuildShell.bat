@@ -1,1 +1,1 @@
-start cmd.exe /k "%~dp0\SetBuildVars.bat"
+start cmd.exe /k "%~dp0\Scripts\SetBuildVars.bat"
