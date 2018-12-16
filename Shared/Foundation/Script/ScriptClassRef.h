@@ -105,7 +105,7 @@ public:
     return Get();
   }
 
-  T * operator -> () const
+  const T * operator -> () const
   {
     return Get();
   }
@@ -128,13 +128,37 @@ public:
 private:
   template <typename ClassT>
   friend class ScriptClass;
+
+  template <typename ClassT>
+  friend class ScriptClassInstanceBase;
+
   friend class ScriptFuncs;
 
   explicit ScriptClassRef(NullOptPtr<ScriptClassRefData> ref_data)
   {
     m_RefData = ref_data;
+    m_RefData->IncRef();
   }
 
 private:
   ScriptClassRefData * m_RefData = nullptr;
 };
+
+template <typename T>
+class ScriptClassInstanceBase
+{
+public:
+
+  ScriptClassRef<T> GetClassRef()
+  {
+    return ScriptClassRef<T>(m_RefData);
+  }
+
+protected:
+
+  template <typename ClassT>
+  friend class ScriptClass;
+
+  NotNullPtr<ScriptClassRefData> m_RefData;
+};
+

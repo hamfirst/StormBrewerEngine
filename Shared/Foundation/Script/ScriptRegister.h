@@ -40,7 +40,7 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
     using MemberType = typename FieldInfo::member_type;
     using ScriptClassT = ScriptClass<ClassT>;
 
-    auto hash = COMPILE_TIME_CRC32_STR(FieldInfo::GetName());
+    auto hash = FieldInfo::GetFieldNameHash();
 
     auto read_method = [](const void * ptr, void * state)
     {
@@ -75,7 +75,8 @@ void ScriptClassRegister(ScriptClass<ClassT> & c)
 }
 
 template <typename T>
-void ScriptClass<T>::Register()
+void ScriptClass<T>::Register(NotNullPtr<ScriptState> state)
 {
   ScriptClassRegister(*this);
+  RegisterBase(state);
 }

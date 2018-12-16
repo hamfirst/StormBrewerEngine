@@ -8,11 +8,21 @@
 #include "Foundation/FileSystem/Directory.h"
 #include "Foundation/FileSystem/File.h"
 
-
-UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state)
+UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state) :
+  m_LoaderInterface(script_state)
 {
   m_State = kIdle;
   m_ScriptState = script_state;
+
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, DebugPrint);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadTexture);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadAudio);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadMusic);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadFont);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadAtlas);
+  BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadSprite);
+
+  m_ScriptState->BindAsGlobal("loader", m_LoaderInterface.GetObject());
 }
 
 void UIScriptLoader::InitLoad()
@@ -45,37 +55,22 @@ void UIScriptLoader::Update()
     case kLoadingScripts:
       if(AllScriptsLoaded())
       {
-        auto old_textures = std::move(m_TextureAssets);
-        auto old_audio = std::move(m_AudioAssets);
-        auto old_music = std::move(m_MusicAssets);
-        auto old_atlases = std::move(m_AtlasAssets);
-        auto old_sprites = std::move(m_SpriteAssets);
-
-
-        ScriptInterface loader_interface(m_ScriptState);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, DebugPrint);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadTexture);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadAudio);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadMusic);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadFont);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadAtlas);
-        BIND_SCRIPT_INTERFACE(loader_interface, this, LoadSprite);
-
-        m_ScriptState->BindAsGlobal("loader", loader_interface.GetObject());
-
         for(auto & script_file : m_ScriptResources)
         {
           m_ScriptState->LoadScript(script_file->GetData(), script_file->GetLength(), script_file->GetFileName());
         }
 
-        m_ScriptState->ClearGlobal("loader");
         m_State = kLoadingAssets;
       }
       break;
     case kLoadingAssets:
       if(AllAssetsLoaded())
       {
-        m_State = kComplete;
+        m_ScriptState->Call("FinalizeLoad", {});
+        if(AllAssetsLoaded())
+        {
+          m_State = kComplete;
+        }
       }
       break;
   }

@@ -10,20 +10,39 @@ struct ScriptClassInstanceInfo;
 class ScriptFuncs
 {
 public:
-  static void PushValue(void * state, const int & val);
-  static void PushValue(void * state, const float & val);
-  static void PushValue(void * state, const bool & val);
-  static void PushValue(void * state, const std::string & val);
-  static void PushValue(void * state, const ScriptObject & val);
-  static void PushValue(void * state, const ScriptClassInstance & val);
-  static void PushValue(void * state, const ScriptFuncPtr & val);
+  static int PushValue(void * state, const int & val);
+  static int PushValue(void * state, const float & val);
+  static int PushValue(void * state, const bool & val);
+  static int PushValue(void * state, const std::string & val);
+  static int PushValue(void * state, const ScriptObject & val);
+  static int PushValue(void * state, const ScriptClassInstance & val);
+  static int PushValue(void * state, const ScriptFuncPtr & val);
 
-  static void PushInstance(void * state, ScriptClassRefData * ref_data, std::size_t type_id_hash);
+  static int PushInstance(void * state, ScriptClassRefData * ref_data, std::size_t type_id_hash);
 
   template <typename T>
-  static void PushValue(void * state, const ScriptClassRef<T> & val)
+  static int PushValue(void * state, const ScriptClassRef<T> & val)
   {
-    PushInstance(state, val.m_RefData, typeid(T).hash_code());
+    return PushInstance(state, val.m_RefData, typeid(T).hash_code());
+  }
+
+  template <typename First, typename Second>
+  static int PushValue(void * state, const std::pair<First, Second> & pair)
+  {
+    return PushValue(state, pair.first) + PushValue(state, pair.second);
+  }
+
+  template <typename ... Args, std::size_t ... I>
+  static int PushValueTuple(void * state, const std::tuple<Args...> & val, const std::integer_sequence<std::size_t, I...> & seq)
+  {
+    return (PushValue(state, std::get<I>(val)) + ...);
+  }
+
+  template <typename ... Args>
+  static int PushValue(void * state, const std::tuple<Args...> & val)
+  {
+    auto seq = std::make_index_sequence<sizeof...(Args)>{};
+    return PushValueTuple(state, val, seq);
   }
 
   static void PullValue(void * state, int & val);

@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Foundation/Script/ScriptState.h"
+#include "Foundation/Script/ScriptInterface.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Asset/AudioAsset.h"
@@ -56,13 +57,14 @@ private:
 
   State m_State;
   NotNullPtr<ScriptState> m_ScriptState;
+  ScriptInterface m_LoaderInterface;
 
   std::vector<GenericBinaryResourcePtr> m_ScriptResources;
 
   std::vector<TextureAsset::AssetRef> m_TextureAssets;
   std::vector<AudioAsset::AssetRef> m_AudioAssets;
   std::vector<MusicAsset::AssetRef> m_MusicAssets;
-  int m_NextFontId = 0;
+  int m_NextFontId = 100;
 
   std::vector<AtlasPtr> m_AtlasAssets;
   std::vector<SpritePtr> m_SpriteAssets;

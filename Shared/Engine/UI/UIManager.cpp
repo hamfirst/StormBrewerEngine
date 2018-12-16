@@ -24,13 +24,7 @@ UIManager::UIManager() :
 
 UIManager::~UIManager()
 {
-  m_InterfaceObject.Clear();
-  m_ClickableClass.Clear();
-
-  m_ScriptLoader.reset();
-  m_ScriptInterface.reset();
-
-  m_ScriptState.Clear();
+  m_Destroying = true;
   for(auto & elem : m_RootClickables)
   {
     TrashClickable(elem);
@@ -41,12 +35,14 @@ UIManager::~UIManager()
 
 void UIManager::LoadScripts()
 {
+  m_ClickableClass.Emplace("Clickable",
+                           [this](){ auto clickable = new UIClickable(this); return clickable; },
+                           [this](ScriptClassRef<UIClickable> & ref) { AddClickableToRoot(ref); },
+                           [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
+
   m_ScriptState.Emplace();
 
-  m_ClickableClass.Emplace("Clickable", m_ScriptState.GetPtr(),
-          [this](){ auto clickable = new UIClickable(this); return clickable; },
-          [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
-  m_ClickableClass->Register();
+  m_ClickableClass->Register(m_ScriptState.GetPtr());
 
   m_ScriptInterface = std::make_unique<UIScriptInterface>(this);
   m_InterfaceObject.Emplace(m_ScriptState.GetPtr());
@@ -66,6 +62,16 @@ void UIManager::LoadScripts()
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeOutMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, StopMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawText);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureText);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLine);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLineThickness);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawRectangle);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawFilledRectangle);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawEllipse);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawFilledEllipse);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FlushGeometry);
 
   m_ScriptState->BindAsGlobal("ui", ui_interface.GetObject());
 
@@ -167,7 +173,7 @@ bool UIManager::HasSelectedElement() const
   return m_HasSelectedElement;
 }
 
-void UIManager::AddClickableToRoot(ScriptClassRef<UIClickable> & clickable)
+void UIManager::AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable)
 {
   m_RootClickables.push_back(clickable);
 }
@@ -177,7 +183,7 @@ void UIManager::RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable)
   for(std::size_t index = 0, end = m_RootClickables.size(); index < end; ++index)
   {
     auto & elem = m_RootClickables[index];
-    if(elem.Get() == clickable)
+    if(elem == clickable)
     {
       m_RootClickables.erase(m_RootClickables.begin() + index);
       break;
@@ -276,12 +282,12 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       continue;
     }
 
-    if (elem->State == (int)UIClickableState::kPressed)
+    if (elem->m_State == (int)UIClickableState::kPressed)
     {
       if (cur_pressed_clickable)
       {
-        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
-        elem->State = (int)UIClickableState::kActive;
+        elem->OnStateChange(elem->m_State, (int)UIClickableState::kActive);
+        elem->m_State = (int)UIClickableState::kActive;
       }
       else
       {
@@ -364,10 +370,10 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
       auto & elem = *itr;
-      if (elem->State == (int)UIClickableState::kHover)
+      if (elem->m_State == (int)UIClickableState::kHover)
       {
-        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
-        elem->State = (int)UIClickableState::kActive;
+        elem->OnStateChange(elem->m_State, (int)UIClickableState::kActive);
+        elem->m_State = (int)UIClickableState::kActive;
       }
     }
 
@@ -375,8 +381,8 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     {
       if (cur_pressed_clickable)
       {
-        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
-        cur_pressed_clickable->State = (int)UIClickableState::kActive;
+        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
+        cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
       }
     }
     else if (input_state.GetMouseButtonState(kMouseLeftButton) == false)
@@ -386,19 +392,19 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
         if (cur_hover_clickable == cur_pressed_clickable)
         {
           cur_pressed_clickable->OnClick();
-          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kHover);
-          cur_pressed_clickable->State = (int)UIClickableState::kHover;
+          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kHover);
+          cur_pressed_clickable->m_State = (int)UIClickableState::kHover;
         }
         else
         {
-          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
-          cur_pressed_clickable->State = (int)UIClickableState::kActive;
+          cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
+          cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
         }
       }
       else if(cur_pressed_clickable)
       {
-        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->State, (int)UIClickableState::kActive);
-        cur_pressed_clickable->State = (int)UIClickableState::kActive;
+        cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
+        cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
       }
     }
   }
@@ -412,25 +418,25 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
     {
       auto & elem = *itr;
-      if (elem != cur_hover_clickable && elem->State == (int)UIClickableState::kHover)
+      if (elem != cur_hover_clickable && elem->m_State == (int)UIClickableState::kHover)
       {
-        elem->OnStateChange(elem->State, (int)UIClickableState::kActive);
-        elem->State = (int)UIClickableState::kActive;
+        elem->OnStateChange(elem->m_State, (int)UIClickableState::kActive);
+        elem->m_State = (int)UIClickableState::kActive;
       }
     }
 
-    if (cur_hover_clickable != nullptr && cur_hover_clickable->State != (int)UIClickableState::kHover)
+    if (cur_hover_clickable != nullptr && cur_hover_clickable->m_State != (int)UIClickableState::kHover)
     {
-      cur_hover_clickable->OnStateChange(cur_hover_clickable->State, (int)UIClickableState::kHover);
-      cur_hover_clickable->State = (int)UIClickableState::kHover;
+      cur_hover_clickable->OnStateChange(cur_hover_clickable->m_State, (int)UIClickableState::kHover);
+      cur_hover_clickable->m_State = (int)UIClickableState::kHover;
     }
 
     if (input_state.GetMousePressedThisFrame(kMouseLeftButton))
     {
       if (cur_hover_clickable != nullptr)
       {
-        cur_hover_clickable->OnStateChange(cur_hover_clickable->State, (int)UIClickableState::kPressed);
-        cur_hover_clickable->State = (int)UIClickableState::kPressed;
+        cur_hover_clickable->OnStateChange(cur_hover_clickable->m_State, (int)UIClickableState::kPressed);
+        cur_hover_clickable->m_State = (int)UIClickableState::kPressed;
       }
     }
   }

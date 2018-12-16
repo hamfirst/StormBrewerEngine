@@ -51,6 +51,7 @@ struct StormReflTypeInfo<PlayerStateBase>
 template <>
 struct StormReflFuncInfo<PlayerStateBase>
 {
+  using MyBase = void;
   static constexpr int funcs_n = 0;
   template <int N> struct func_data_static {};
 };

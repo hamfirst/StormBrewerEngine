@@ -9,17 +9,23 @@
 
 struct lua_State;
 
+
 class ScriptClassBase
 {
 protected:
-  ScriptClassBase(czstr name, NotNullPtr<ScriptState> script_state);
+  ScriptClassBase(czstr name);
+  virtual ~ScriptClassBase() = default;
 
   virtual void * CreateNewObject() = 0;
+  virtual void BootstrapObject(NullOptPtr<ScriptClassRefData> ref_data) = 0;
   virtual void DestroyObject(void * obj) = 0;
   virtual std::size_t GetTypeNameHash() = 0;
 
+  void RegisterBase(NotNullPtr<ScriptState> script_state);
+
   static void * ReadObjPointer(void * state);
   static ScriptClassBase * ReadClassPointer(void * state);
+
 
 protected:
   friend class ScriptClassInternal;
@@ -90,7 +96,7 @@ struct ScriptClassAssignMember
 {
   static void Process(T & val, void * state)
   {
-    ScriptFuncs::PushValue(state, val);
+    ScriptFuncs::PullValue(state, val);
   }
 };
 
@@ -145,22 +151,32 @@ template <typename T>
 class ScriptClass : public ScriptClassBase
 {
 public:
-  ScriptClass(czstr name, NotNullPtr<ScriptState> script_state,
-    Delegate<NotNullPtr<T>> && new_obj_cb, Delegate<void, NotNullPtr<T>> && delete_obj_cb) :
-    ScriptClassBase(name, script_state),
+  ScriptClass(czstr name,
+    Delegate<NotNullPtr<T>> && new_obj_cb,
+    Delegate<void, ScriptClassRef<T> &> && bootstrap_obj_cb,
+    Delegate<void, NotNullPtr<T>> && delete_obj_cb) :
+    ScriptClassBase(name),
     m_NewObject(std::move(new_obj_cb)),
+    m_BootstrapObject(std::move(bootstrap_obj_cb)),
     m_DeleteObject(std::move(delete_obj_cb))
   {
 
   }
 
-
   ScriptClassRef<T> CreateInstance()
   {
     auto ref_data = new ScriptClassRefData;
-    ref_data->m_RefCount = 1;
+    ref_data->m_RefCount = 0;
     ref_data->m_Instance = CreateNewObject();
     ref_data->m_Class = this;
+
+    NotNullPtr<T> obj = static_cast<NotNullPtr<T>>(ref_data->m_Instance);
+    if constexpr (std::template is_convertible_v<T &, ScriptClassInstanceBase<T> &>)
+    {
+      auto inst = static_cast<NullOptPtr<ScriptClassInstanceBase<T>>>(obj);
+      inst->m_RefData = ref_data;
+    }
+
     return ScriptClassRef<T>(ref_data);
   }
 
@@ -170,7 +186,7 @@ public:
     return ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...>(this);
   }
 
-  void Register();
+  void Register(NotNullPtr<ScriptState> state);
 
 private:
 
@@ -183,6 +199,20 @@ private:
   virtual void * CreateNewObject() override
   {
     return m_NewObject();
+  }
+
+  virtual void BootstrapObject(NullOptPtr<ScriptClassRefData> ref_data) override
+  {
+    ScriptClassRef<T> ref(ref_data);
+
+    if constexpr (std::template is_convertible_v<T &, ScriptClassInstanceBase<T> &>)
+    {
+      auto obj = static_cast<T *>(ref_data->m_Instance);
+      auto inst = static_cast<NullOptPtr<ScriptClassInstanceBase<T>>>(obj);
+      inst->m_RefData = ref_data;
+    }
+
+    m_BootstrapObject(ref);
   }
 
   virtual void DestroyObject(void * obj) override
@@ -198,8 +228,8 @@ private:
 private:
 
   Delegate<NotNullPtr<T>> m_NewObject;
+  Delegate<void, ScriptClassRef<T> &> m_BootstrapObject;
   Delegate<void, NotNullPtr<T>> m_DeleteObject;
-
 };
 
 template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
@@ -210,8 +240,7 @@ struct ScriptClassFunctionCaller
   {
     constexpr auto Func = FieldInfo::GetFunctionPtr();
     auto result = (obj.*Func)(std::get<Index>(args_tuple)...);
-    ScriptFuncs::PushValue(state, result);
-    return 1;
+    return ScriptFuncs::PushValue(state, result);
   }
 };
 
@@ -231,7 +260,7 @@ struct ScriptClassFunctionCaller<T, FieldInfo, void, Args...>
 template <typename T, typename FieldInfo, typename ReturnValue, typename ... Args>
 void ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...>::AddFunction(czstr name)
 {
-  auto hash = crc32(name);
+  auto hash = FieldInfo::GetFunctionNameHash();
 
   auto call_method = [](lua_State * lua_state) -> int
   {

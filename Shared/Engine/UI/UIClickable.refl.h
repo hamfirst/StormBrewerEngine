@@ -17,11 +17,12 @@ enum class UIClickableState
   kPressed,
 };
 
-class UIClickable
+class UIClickable : public ScriptClassInstanceBase<UIClickable>
 {
 public:
   STORM_REFL;
   STORM_REFL_FUNCS;
+  STORM_REFL_NO_BASE;
 
   STORM_REFL_NODEFAULT;
 
@@ -30,8 +31,6 @@ public:
   UIClickable(NotNullPtr<UIManager> manager);
   ~UIClickable();
 
-  int State = 0;
-  int Priority = 0;
 
   ScriptClassDelegate<void, int, int> OnStateChange;
   ScriptClassDelegate<void> OnClick;
@@ -43,8 +42,10 @@ public:
   int Width = 0;
   int Height = 0;
 
+  int STORM_REFL_FUNC GetState();
+
   ScriptClassRef<UIClickable> STORM_REFL_FUNC GetParent();
-  void STORM_REFL_FUNC SetParent(ScriptClassRef<UIClickable> & self, const ScriptClassRef<UIClickable> & parent);
+  void STORM_REFL_FUNC SetParent(ScriptClassRef<UIClickable> & parent);
 
   int STORM_REFL_FUNC GetNumChildren();
   ScriptClassRef<UIClickable> STORM_REFL_FUNC GetChild(int index);
@@ -58,6 +59,8 @@ private:
 private:
 
   NotNullPtr<UIManager> m_Manager;
+
+  int m_State = 0;
   ScriptClassRef<UIClickable> m_Parent;
 
   std::vector<ScriptClassRef<UIClickable>> m_Children;
