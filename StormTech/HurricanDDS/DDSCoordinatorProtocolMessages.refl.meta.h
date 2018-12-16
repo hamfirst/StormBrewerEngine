@@ -197,11 +197,11 @@ struct StormReflTypeInfo<DDSCoordinatorHandshakeRequest>
 template <>
 struct StormReflTypeInfo<DDSCoordinatorHandshakeRequest>::field_data_static<0>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_Challenge"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0B29A84A; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorHandshakeRequest::m_Challenge; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorHandshakeRequest *>(obj); return &ptr->m_Challenge; }
@@ -287,11 +287,11 @@ struct StormReflTypeInfo<DDSCoordinatorHandshakeResponse>
 template <>
 struct StormReflTypeInfo<DDSCoordinatorHandshakeResponse>::field_data_static<0>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_ChallengeResponse"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5C674F6E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorHandshakeResponse::m_ChallengeResponse; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorHandshakeResponse *>(obj); return &ptr->m_ChallengeResponse; }
@@ -311,11 +311,11 @@ struct StormReflTypeInfo<DDSCoordinatorHandshakeResponse>::field_data<0, Self> :
 template <>
 struct StormReflTypeInfo<DDSCoordinatorHandshakeResponse>::field_data_static<1>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_ChallengeRequest"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFACEC5C3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorHandshakeResponse::m_ChallengeRequest; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorHandshakeResponse *>(obj); return &ptr->m_ChallengeRequest; }
@@ -377,11 +377,11 @@ struct StormReflTypeInfo<DDSCoordinatorHandshakeFinalize>
 template <>
 struct StormReflTypeInfo<DDSCoordinatorHandshakeFinalize>::field_data_static<0>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_ChallengeResponse"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5C674F6E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorHandshakeFinalize::m_ChallengeResponse; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorHandshakeFinalize *>(obj); return &ptr->m_ChallengeResponse; }
@@ -563,11 +563,11 @@ struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data<0, Self> 
 template <>
 struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data_static<1>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_ClientSecret"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD5D9E49E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorNodeInitialization::m_ClientSecret; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorNodeInitialization *>(obj); return &ptr->m_ClientSecret; }
@@ -587,11 +587,11 @@ struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data<1, Self> 
 template <>
 struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data_static<2>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_ServerSecret"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD6351A20; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorNodeInitialization::m_ServerSecret; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorNodeInitialization *>(obj); return &ptr->m_ServerSecret; }
@@ -635,11 +635,11 @@ struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data<3, Self> 
 template <>
 struct StormReflTypeInfo<DDSCoordinatorNodeInitialization>::field_data_static<4>
 {
-  using member_type = int64_t; // long long
+  using member_type = int64_t; // long
   static constexpr auto GetName() { return "m_NetworkTime"; }
-  static constexpr auto GetType() { return "long long"; }
+  static constexpr auto GetType() { return "long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8B7AF0AF; }
-  static constexpr unsigned GetTypeNameHash() { return 0x40FF8523; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3B97A968; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorNodeInitialization::m_NetworkTime; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorNodeInitialization *>(obj); return &ptr->m_NetworkTime; }
@@ -1013,11 +1013,11 @@ struct StormReflTypeInfo<DDSCoordinatorSharedObjectDeltaMessage>::field_data<1, 
 template <>
 struct StormReflTypeInfo<DDSCoordinatorSharedObjectDeltaMessage>::field_data_static<2>
 {
-  using member_type = uint64_t; // unsigned long long
+  using member_type = uint64_t; // unsigned long
   static constexpr auto GetName() { return "m_Index"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0D45F761; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSCoordinatorSharedObjectDeltaMessage::m_Index; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSCoordinatorSharedObjectDeltaMessage *>(obj); return &ptr->m_Index; }

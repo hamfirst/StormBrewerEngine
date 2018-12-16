@@ -31,11 +31,16 @@ public:
     auto obj = ptr->CreateNewObject();
     auto info = static_cast<ScriptClassInstanceInfo *>(lua_newuserdata(state, sizeof(ScriptClassInstanceInfo)));
 
+    lua_getglobal(state, ptr->m_Name.c_str());
+    lua_setmetatable(state, -2);
+
     info->m_RefData = new ScriptClassRefData;
     info->m_RefData->m_Class = ptr;
     info->m_RefData->m_Instance = obj;
     info->m_RefData->m_RefCount = 1;
     info->m_TypeNameHash = ptr->GetTypeNameHash();
+
+    ptr->BootstrapObject(info->m_RefData);
     return 1;
   }
 
@@ -178,6 +183,7 @@ public:
     {
       auto func = member_itr->second;
       func(inst_info->m_RefData->m_Instance, state);
+      return 0;
     }
 
     ScriptFuncs::ReportError(state, "Invalid member variable");
@@ -185,17 +191,20 @@ public:
   }
 };
 
-ScriptClassBase::ScriptClassBase(czstr name, NotNullPtr<ScriptState> script_state)
+ScriptClassBase::ScriptClassBase(czstr name)
 {
   m_Name = name;
+}
 
-  ScriptInternal::CreateGlobalTable(name, script_state);
-  ScriptInternal::WriteGlobalTablePointer("ptr", name, this, script_state);
+void ScriptClassBase::RegisterBase(NotNullPtr<ScriptState> script_state)
+{
+  ScriptInternal::CreateGlobalTable(m_Name.c_str(), script_state);
+  ScriptInternal::WriteGlobalTablePointer("ptr", m_Name.c_str(), this, script_state);
 
-  ScriptInternal::WriteGlobalTableFunction("__index", name, ScriptClassInternal::ScriptClassRead, script_state);
-  ScriptInternal::WriteGlobalTableFunction("__newindex", name, ScriptClassInternal::ScriptClassWrite, script_state);
-  ScriptInternal::WriteGlobalTableFunction("__gc", name, ScriptClassInternal::ScriptClassRelease, script_state);
-  ScriptInternal::WriteGlobalTableFunction("new", name, ScriptClassInternal::ScriptClassNew, script_state);
+  ScriptInternal::WriteGlobalTableFunction("__index", m_Name.c_str(), ScriptClassInternal::ScriptClassRead, script_state);
+  ScriptInternal::WriteGlobalTableFunction("__newindex", m_Name.c_str(), ScriptClassInternal::ScriptClassWrite, script_state);
+  ScriptInternal::WriteGlobalTableFunction("__gc", m_Name.c_str(), ScriptClassInternal::ScriptClassRelease, script_state);
+  ScriptInternal::WriteGlobalTableFunction("new", m_Name.c_str(), ScriptClassInternal::ScriptClassNew, script_state);
 }
 
 void * ScriptClassBase::ReadObjPointer(void * state)

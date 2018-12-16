@@ -298,7 +298,6 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
     }
   }
 
-
   for (auto & cl : class_funcs)
   {
     fprintf(fp, "template <>\n");
@@ -307,6 +306,7 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
 
     if (cl.m_Base.size() == 0)
     {
+      fprintf(fp, "  using MyBase = void;\n", cl.m_Base.c_str());
       fprintf(fp, "  static constexpr int funcs_n = %zd;\n", cl.m_Funcs.size());
       fprintf(fp, "  template <int N> struct func_data_static {};\n");
     }

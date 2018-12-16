@@ -19,6 +19,8 @@ using ScriptInterfaceForwardDelegate = int (*)(int, ScriptInterface *, lua_State
 
 extern ScriptInterfaceCallback g_ScriptInterfaceCallbackFuncs[kScriptInterfaceMaxFunctions];
 
+
+
 class ScriptInterface
 {
 public:
@@ -53,11 +55,10 @@ public:
 
       auto delegate = interface->m_Delegates[index].Get<Delegate<ReturnValue, Args...>>();
 
-      if constexpr(!std::is_same_v<ReturnValue, void>)
+      if constexpr(!std::is_void_v<ReturnValue>)
       {
         auto result = std::apply(*delegate, args);
-        ScriptFuncs::PushValue(lua_state, result);
-        return 1;
+        return ScriptFuncs::PushValue(lua_state, result);
       }
       else
       {
@@ -75,7 +76,7 @@ public:
   template <typename C, typename ReturnValue, typename ... Args>
   void AddFunction(czstr name, NotNullPtr<C> c, ReturnValue (C::*Func)(Args...))
   {
-    AddFunction(name, CreateDelegateFromLambda([=](Args ... args) { (c->*Func)(args...); }));
+    AddFunction(name, CreateDelegateFromLambda([=](Args ... args) { return (c->*Func)(args...); }));
   }
 
 private:

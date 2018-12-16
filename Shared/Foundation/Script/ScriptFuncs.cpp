@@ -3,65 +3,80 @@
 #include "Foundation/Script/ScriptInternal.h"
 #include "Foundation/Script/ScriptFuncs.h"
 
-void ScriptFuncs::PushValue(void * state, const int & val)
+int ScriptFuncs::PushValue(void * state, const int & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   lua_pushnumber(lua_state, val);
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const float & val)
+int ScriptFuncs::PushValue(void * state, const float & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   lua_pushnumber(lua_state, val);
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const bool & val)
+int ScriptFuncs::PushValue(void * state, const bool & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   lua_pushboolean(lua_state, val);
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const std::string & val)
+int ScriptFuncs::PushValue(void * state, const std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   lua_pushstring(lua_state, val.data());
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const ScriptObject & val)
+int ScriptFuncs::PushValue(void * state, const ScriptObject & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const ScriptClassInstance & val)
+int ScriptFuncs::PushValue(void * state, const ScriptClassInstance & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
+  return 1;
 }
 
-void ScriptFuncs::PushValue(void * state, const ScriptFuncPtr & val)
+int ScriptFuncs::PushValue(void * state, const ScriptFuncPtr & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
   ScriptInternal::LoadGlobalObject(val.m_GlobalId, lua_state);
+  return 1;
 }
 
-void ScriptFuncs::PushInstance(void * state, ScriptClassRefData * ref_data, std::size_t type_id_hash)
+int ScriptFuncs::PushInstance(void * state, ScriptClassRefData * ref_data, std::size_t type_id_hash)
 {
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, 1);
+
+  if(ref_data == nullptr)
+  {
+    lua_pushnil(lua_state);
+    return 1;
+  }
+
   auto ptr = static_cast<ScriptClassInstanceInfo *>(lua_newuserdata(lua_state, sizeof(ScriptClassInstanceInfo)));
 
   ptr->m_RefData = ref_data;
   ptr->m_TypeNameHash = type_id_hash;
 
   ref_data->IncRef();
+  return 1;
 }
 
 void ScriptFuncs::PullValue(void * state, int & val)

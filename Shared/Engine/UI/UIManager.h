@@ -46,7 +46,7 @@ protected:
 
   friend class UIClickable;
 
-  void AddClickableToRoot(ScriptClassRef<UIClickable> & clickable);
+  void AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable);
   void RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable);
   void TrashClickable(NotNullPtr<UIClickable> clickable);
   void RemoveDeadClickables();
@@ -58,9 +58,10 @@ private:
 
   friend class UIScriptInterface;
 
+  Optional<ScriptClass<UIClickable>> m_ClickableClass;
+
   Optional<ScriptState> m_ScriptState;
   Optional<ScriptInterface> m_InterfaceObject;
-  Optional<ScriptClass<UIClickable>> m_ClickableClass;
 
   std::unique_ptr<UIScriptLoader> m_ScriptLoader;
   std::unique_ptr<UIScriptInterface> m_ScriptInterface;
@@ -72,6 +73,7 @@ private:
   bool m_HasSelectedElement = false;
 
   StopWatch m_UpdateTimer;
-  bool m_Paused;
+  bool m_Paused = false;
+  bool m_Destroying = false;
 };
 

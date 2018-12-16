@@ -64,6 +64,7 @@ void GameModeMainMenu::Render()
   render_util.Clear();
 
   render_state.EnableBlendMode();
+  container.RenderUIManager();
 }
 
 void GameModeMainMenu::InputEvent()

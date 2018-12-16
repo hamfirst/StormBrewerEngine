@@ -1,6 +1,10 @@
 
 #pragma once
 
+#include "Foundation/Optional/Optional.h"
+
+#include "Engine/Rendering/GeometryVertexBufferBuilder.h"
+
 class UIManager;
 class RenderState;
 class RenderUtil;
@@ -31,12 +35,25 @@ public:
   void StopMusic();
 
   void DrawText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a);
+  void DrawTextScaled(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, float scale);
+  std::pair<int, int> MeasureText(int font_id, const std::string & text);
+  std::pair<int, int> MeasureTextScaled(int font_id, const std::string & text, float scale);
+
+  void DrawLine(int sx, int sy, int ex, int ey, float r, float g, float b, float a);
+  void DrawLineThickness(int sx, int sy, int ex, int ey, float r, float g, float b, float a, float thickness);
+  void DrawRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a);
+  void DrawFilledRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a);
+  void DrawEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs);
+  void DrawFilledEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs);
+
+  void FlushGeometry();
 private:
 
   void RenderTextureInternal(int texture_id, int x, int y, float r, float g, float b, float a, float scale_x, float scale_y);
   void PlayAudioInternal(int audio_id, float volume, float pan);
   void PlayMusicInternal(int music_id, float volume, float fade_out_time, float fade_in_time);
   void DrawTextInternal(int font_id, czstr text, int x, int y, float r, float g, float b, float a, float scale);
+  std::pair<int, int> MeasureTextInternal(int font_id, const std::string & text, float scale);
 
 private:
 
@@ -44,4 +61,6 @@ private:
   NullOptPtr<RenderState> m_RenderState = nullptr;
   NullOptPtr<RenderUtil> m_RenderUtil = nullptr;
   Box m_ActiveArea;
+
+  Optional<GeometryVertexBufferBuilder> m_GeometryBuffer;
 };

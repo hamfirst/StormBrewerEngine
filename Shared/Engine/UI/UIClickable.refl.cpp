@@ -5,7 +5,8 @@
 
 #include "sb/vector.h"
 
-UIClickable::UIClickable(NotNullPtr<UIManager> manager)
+UIClickable::UIClickable(NotNullPtr<UIManager> manager) :
+  m_Manager(manager)
 {
 
 }
@@ -15,13 +16,17 @@ UIClickable::~UIClickable()
   Destroy();
 }
 
+int UIClickable::GetState()
+{
+  return m_State;
+}
 
 ScriptClassRef<UIClickable> UIClickable::GetParent()
 {
   return m_Parent;
 }
 
-void UIClickable::SetParent(ScriptClassRef<UIClickable> & self, const ScriptClassRef<UIClickable> & parent)
+void UIClickable::SetParent(ScriptClassRef<UIClickable> & parent)
 {
   if(parent == m_Parent)
   {
@@ -45,18 +50,19 @@ void UIClickable::SetParent(ScriptClassRef<UIClickable> & self, const ScriptClas
     }
   }
 
-  if(parent)
+  if(parent.IsValid())
   {
-    if(m_Parent->m_Dead)
+    if(parent->m_Dead)
     {
       m_Manager->TrashClickable(this);
     }
 
-    m_Parent->m_Children.push_back(self);
+    parent->m_Children.push_back(GetClassRef());
+    m_Parent = parent;
   }
   else
   {
-    m_Manager->AddClickableToRoot(self);
+    m_Manager->AddClickableToRoot(GetClassRef());
   }
 }
 
@@ -74,17 +80,23 @@ void UIClickable::Destroy()
 {
   if(!m_Parent)
   {
-    m_Manager->RemoveClickableFromRoot(this);
+    if(m_Manager->m_Destroying == false)
+    {
+      m_Manager->RemoveClickableFromRoot(this);
+    }
   }
   else
   {
     for(std::size_t index = 0, end = m_Parent->m_Children.size(); index < end; ++index)
     {
-      auto & child = m_Parent->m_Children[index];
-      if(child.Get() == this)
+      if(m_Parent->m_Dead == false)
       {
-        m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
-        break;
+        auto &child = m_Parent->m_Children[index];
+        if (child.Get() == this)
+        {
+          m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
+          break;
+        }
       }
     }
   }
