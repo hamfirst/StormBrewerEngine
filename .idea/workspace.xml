@@ -147,8 +147,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="269" column="62" selection-start-line="269" selection-start-column="62" selection-end-line="269" selection-end-column="62" />
+            <state relative-caret-position="318">
+              <caret line="262" column="19" selection-start-line="262" selection-start-column="19" selection-end-line="262" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -1206,23 +1206,23 @@
       <workItem from="1544603584110" duration="2331000" />
       <workItem from="1544605936506" duration="1855000" />
       <workItem from="1544607814765" duration="34258000" />
-      <workItem from="1544751695889" duration="41531000" />
+      <workItem from="1544751695889" duration="41569000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="745968000" />
+    <option name="totallyTimeSpent" value="746006000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="19" y="25" width="1882" height="1036" extended-state="6" />
+    <frame x="19" y="25" width="934" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920508" visible="true" weight="0.21779476" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920508" visible="true" weight="0.45135745" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5007949" side_tool="true" weight="0.20469432" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3265306" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49945414" visible="true" weight="0.2791209" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.2791209" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2989011" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1715,8 +1715,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="269" column="62" selection-start-line="269" selection-start-column="62" selection-end-line="269" selection-end-column="62" />
+        <state relative-caret-position="318">
+          <caret line="262" column="19" selection-start-line="262" selection-start-column="19" selection-end-line="262" selection-end-column="19" />
         </state>
       </provider>
     </entry>
