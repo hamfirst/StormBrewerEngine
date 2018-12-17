@@ -4,20 +4,20 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_resample 
-            filtering.c
-            multi_stage.c
-            polyfilt.c
-            remez_lp.c
-            smarc.c
             stage_impl.c
+            smarc.c
+            remez_lp.c
+            filtering.c
+            polyfilt.c
+            multi_stage.c
             )
 
 set(GENERIC_HEADER_resample 
-            filtering.h
-            multi_stage.h
             polyfilt.h
-            remez_lp.h
+            multi_stage.h
             smarc.h
+            remez_lp.h
+            filtering.h
             stage_impl.h
             )
 

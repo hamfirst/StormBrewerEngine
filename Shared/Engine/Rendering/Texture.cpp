@@ -70,6 +70,7 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
   Destroy();
 
   GLenum format;
+  int bpp = 1;
   switch (type)
   {
   case TextureType::kGrayscale:
@@ -78,15 +79,19 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
 #else
     format = GL_RED;
 #endif
+    bpp = 1;
     break;
   case TextureType::kRGB:
     format = GL_RGB;
+    bpp = 3;
     break;
   case TextureType::kRGBA:
     format = GL_RGBA;
+    bpp = 4;
     break;
   case TextureType::kFRGBA:
     format = GL_RGBA;
+    bpp = 4;
     break;
   case TextureType::kInvalid:
     return;
@@ -100,19 +105,25 @@ void Texture::CreateEmptyTexture(int width, int height, TextureType type)
     break;
   case TextureType::kFRGBA:
     gl_type = GL_FLOAT;
+    bpp *= 4;
     break;
   }
 
   glGenTextures(1, &m_TextureName); CHECK_GL_RENDER_ERROR;
   auto texture_destroy_on_error = gsl::finally([&] { if (m_LoadError != 0) { glDeleteTextures(1, &m_TextureName); m_TextureName = 0; } });
 
+  auto mem_size = bpp * width * height;
+  auto mem = std::make_unique<uint8_t[]>(bpp * width * height);
+  memset(mem.get(), 0, mem_size);
+
   glBindTexture(GL_TEXTURE_2D, m_TextureName); CHECK_GL_RENDER_ERROR;
-  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr); CHECK_GL_RENDER_ERROR;
+  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, mem.get()); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); CHECK_GL_RENDER_ERROR;
   glBindTexture(GL_TEXTURE_2D, 0); CHECK_GL_RENDER_ERROR;
+
 
   m_Width = width;
   m_Height = height;

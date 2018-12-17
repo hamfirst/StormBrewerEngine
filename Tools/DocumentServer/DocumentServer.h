@@ -4,16 +4,16 @@
 #include <map>
 #include <chrono>
 
-#include "FileSystemWatcher.h"
 #include "FileNameDatabase.h"
 #include "DocumentServerMessages.refl.h"
 
 #include <StormSockets/StormSocketConnectionId.h>
 #include <StormSockets/StormSemaphore.h>
 
-#include <Foundation/Buffer/Buffer.h>
-#include <Foundation/Document/Document.h>
-#include <Foundation/Document/DocumentCompiler.h>
+#include "Foundation/Buffer/Buffer.h"
+#include "Foundation/Document/Document.h"
+#include "Foundation/Document/DocumentCompiler.h"
+#include "Foundation/FileSystem/FileSystemWatcher.h"
 
 namespace StormSockets
 {

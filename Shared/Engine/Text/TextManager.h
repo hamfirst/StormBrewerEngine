@@ -10,6 +10,7 @@
 #include "Engine/Rendering/VertexBuffer.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Text/TextBufferBuilder.h"
+#include "Engine/Text/TextRenderMode.refl.h"
 
 class TextRenderer;
 class TextBackupFont;
@@ -17,12 +18,6 @@ class TextInputContext;
 
 static const int kInvalidFontId = -1000000;
 
-enum class TextRenderMode
-{
-  kNormal,
-  kShadowed,
-  kOutlined,
-};
 
 struct TextSettings
 {

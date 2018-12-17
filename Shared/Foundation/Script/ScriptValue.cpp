@@ -5,6 +5,37 @@
 #include "Foundation/Script/ScriptFuncPtr.h"
 
 
+bool ScriptValueParse(czstr data, ScriptValue & out)
+{
+  if(*data == 0)
+  {
+    out = {};
+    return false;
+  }
+
+  char * end_ptr;
+  auto integer = std::strtol(data, &end_ptr, 10);
+  if(*end_ptr)
+  {
+    auto number = std::strtod(data, &end_ptr);
+    if(*end_ptr)
+    {
+      out = ScriptValue(std::string(data));
+      return true;
+    }
+    else
+    {
+      out = static_cast<float>(number);
+      return true;
+    }
+  }
+  else
+  {
+    out = static_cast<int>(integer);
+    return true;
+  }
+}
+
 void ScriptValueCoerce(const ScriptValue & val, int & value)
 {
   switch(val.GetCurrentTypeIndex())

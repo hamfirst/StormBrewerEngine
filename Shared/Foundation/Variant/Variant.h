@@ -62,22 +62,42 @@ struct VariantInitialize<Type, PossibleTypes...>
 {
   static void InitCopiers(VariantCopier * copier_list)
   {
-    *copier_list = [](const void * src, void * dst)
+    if constexpr(std::is_copy_constructible_v<Type>)
     {
-      const Type * src_t = static_cast<const Type *>(src);
-      new(dst) Type(*src_t);
-    };
+      *copier_list = [](const void * src, void * dst)
+      {
+        const Type * src_t = static_cast<const Type *>(src);
+        new(dst) Type(*src_t);
+      };
+    }
+    else
+    {
+      *copier_list = [](const void * src, void * dst)
+      {
+        ASSERT(false, "Attempt to copy uncopyable type");
+      };
+    }
 
     VariantInitialize<PossibleTypes...>::InitCopiers(copier_list + 1);
   }
 
   static void InitMovers(VariantMover * mover_list)
   {
-    *mover_list = [](void * src, void * dst)
+    if constexpr(std::is_move_constructible_v<Type>)
     {
-      Type * src_t = static_cast<Type *>(src);
-      new(dst) Type(std::move(*src_t));
-    };
+      *mover_list = [](void * src, void * dst)
+      {
+        Type * src_t = static_cast<Type *>(src);
+        new(dst) Type(std::move(*src_t));
+      };
+    }
+    else
+    {
+      *mover_list = [](void * src, void * dst)
+      {
+        ASSERT(false, "Attempt to move umovable type");
+      };
+    }
 
     VariantInitialize<PossibleTypes...>::InitMovers(mover_list + 1);
   }

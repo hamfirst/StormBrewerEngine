@@ -15,6 +15,8 @@
 
 #include "GameClient/GameCamera.h"
 
+#include "Foundation/FileSystem/Path.h"
+
 #include "EditorContainer.h"
 #include "UIEditorViewer.h"
 #include "UIEditor.h"
@@ -25,8 +27,7 @@ UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget 
   QOpenGLWidget(parent),
   m_Editor(editor),
   m_UI(ui),
-  m_Watcher(editor),
-  m_PlayMode(true)
+  m_Watcher(editor)
 {
   setFocusPolicy(Qt::ClickFocus);
   setMouseTracking(true);
@@ -35,6 +36,13 @@ UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget 
   m_Watcher.SetAllUpdateCallbacks([this] {Refresh(); });
 
   m_FrameTimer.Start();
+
+  auto root_path = GetCanonicalRootPath();
+  auto script_path = GetFullPath(JoinPath(root_path, "./UIs/Scripts"), root_path);
+
+  m_FileSystemWatcher.Emplace(script_path, Delegate<void>{});
+
+  Refresh();
 }
 
 UIEditorViewer::~UIEditorViewer()
@@ -44,8 +52,30 @@ UIEditorViewer::~UIEditorViewer()
 
 void UIEditorViewer::Refresh()
 {
+  auto old_manager = std::move(m_UIManager);
 
-  m_UIManager.Emplace();
+  m_UIManager = std::make_unique<UIManager>(m_FakeWindow->GetWindow());
+  m_UIManager->LoadScripts();
+
+  auto & interface = m_UIManager->CreateGameInterface();
+  for(auto elem : m_UI.m_Variables)
+  {
+    ScriptValue val;
+    if(ScriptValueParse(elem.second.m_Value.c_str(), val))
+    {
+      interface.AddVariable(elem.second.m_Name.data(), val);
+    }
+  }
+
+  for(auto elem : m_UI.m_Functions)
+  {
+    ScriptValue val;
+    if(ScriptValueParse(elem.second.m_Value.c_str(), val))
+    {
+      interface.AddDebugStubFunction(elem.second.m_Name.data(), std::move(val));
+    }
+  }
+
   m_UIManager->Update(0.0f, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 }
 
@@ -100,22 +130,20 @@ void UIEditorViewer::Update()
   auto pos = mapToGlobal(QPoint(0, 0));
   m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
 
-  if (m_PlayMode)
+  bool reload = false;
+  while(m_FileSystemWatcher->GetFileChange())
   {
-    m_UIManager->Update(delta_time, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
+    reload = true;
   }
 
+  if(reload)
+  {
+    Refresh();
+  }
+
+  m_UIManager->Update(delta_time, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
+
   repaint();
-}
-
-void UIEditorViewer::StartPlayMode()
-{
-  m_PlayMode = true;
-}
-
-void UIEditorViewer::StopPlayMode()
-{
-  m_PlayMode = false;
 }
 
 void UIEditorViewer::resizeGL(int w, int h)
@@ -144,16 +172,14 @@ void UIEditorViewer::paintGL()
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), Vector2f(kDefaultResolutionWidth, kDefaultResolutionHeight) * -0.5f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   GeometryVertexBufferBuilder builder;
   builder.Rectangle(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)), 2.0f, Color(255, 255, 255, 255));
   builder.DrawDefault(m_RenderState, m_RenderUtil);
 
-  if (m_UIManager)
-  {
-    m_RenderState.SetRenderSize(Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
-    m_UIManager->Render(m_RenderState, m_RenderUtil);
-  }
+  m_RenderState.SetRenderSize(Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
+  m_UIManager->Render(m_RenderState, m_RenderUtil);
 }
 
 void UIEditorViewer::showEvent(QShowEvent * ev)
@@ -173,15 +199,15 @@ void UIEditorViewer::keyPressEvent(QKeyEvent * event)
     return;
   }
 
-  //if (m_ImeMode)
-  //{
-  //  auto text = event->text().toStdString();
-  //  m_FakeWindow->HandleTextInputCommit(text.data());
-  //  event->text();
-  //}
+  if (m_ImeMode)
+  {
+    auto text = event->text().toStdString();
+    m_FakeWindow->HandleTextInputCommit(text.data());
+    event->text();
+  }
 
-  //auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
-  //m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, true);
+  auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
+  m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, true);
 }
 
 void UIEditorViewer::keyReleaseEvent(QKeyEvent * event)
@@ -191,8 +217,8 @@ void UIEditorViewer::keyReleaseEvent(QKeyEvent * event)
     return;
   }
 
-  //auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
-  //m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, false);
+  auto scan_code = KeyboardState::ScanCodeFromQtCode(event->key());
+  m_FakeWindow->HandleKeyPressMessage(SDL_GetKeyFromScancode((SDL_Scancode)scan_code), scan_code, false);
 }
 
 void UIEditorViewer::mousePressEvent(QMouseEvent * event)
@@ -207,25 +233,25 @@ void UIEditorViewer::mousePressEvent(QMouseEvent * event)
     Refresh();
   }
 
-  //int button;
-  //if (event->button() == Qt::LeftButton)
-  //{
-  //  button = kMouseLeftButton;
-  //}
-  //else if (event->button() == Qt::MiddleButton)
-  //{
-  //  button = kMouseMiddleButton;
-  //}
-  //else if (event->button() == Qt::RightButton)
-  //{
-  //  button = kMouseRightButton;
-  //}
-  //else
-  //{
-  //  return;
-  //}
+  int button;
+  if (event->button() == Qt::LeftButton)
+  {
+    button = kMouseLeftButton;
+  }
+  else if (event->button() == Qt::MiddleButton)
+  {
+    button = kMouseMiddleButton;
+  }
+  else if (event->button() == Qt::RightButton)
+  {
+    button = kMouseRightButton;
+  }
+  else
+  {
+    return;
+  }
 
-  //m_FakeWindow->HandleMouseButtonPressMessage(button, true);
+  m_FakeWindow->HandleMouseButtonPressMessage(button, true);
 }
 
 void UIEditorViewer::mouseMoveEvent(QMouseEvent *event)
@@ -235,7 +261,7 @@ void UIEditorViewer::mouseMoveEvent(QMouseEvent *event)
     return;
   }
 
-  //m_FakeWindow->HandleMouseMoveMessage(event->x(), event->y());
+  m_FakeWindow->HandleMouseMoveMessage(event->x(), event->y());
 }
 
 void UIEditorViewer::mouseReleaseEvent(QMouseEvent * event)
@@ -245,25 +271,25 @@ void UIEditorViewer::mouseReleaseEvent(QMouseEvent * event)
     return;
   }
 
-  //int button;
-  //if (event->button() == Qt::LeftButton)
-  //{
-  //  button = kMouseLeftButton;
-  //}
-  //else if (event->button() == Qt::MiddleButton)
-  //{
-  //  button = kMouseMiddleButton;
-  //}
-  //else if (event->button() == Qt::RightButton)
-  //{
-  //  button = kMouseRightButton;
-  //}
-  //else
-  //{
-  //  return;
-  //}
+  int button;
+  if (event->button() == Qt::LeftButton)
+  {
+    button = kMouseLeftButton;
+  }
+  else if (event->button() == Qt::MiddleButton)
+  {
+    button = kMouseMiddleButton;
+  }
+  else if (event->button() == Qt::RightButton)
+  {
+    button = kMouseRightButton;
+  }
+  else
+  {
+    return;
+  }
 
-  //m_FakeWindow->HandleMouseButtonPressMessage(button, false);
+  m_FakeWindow->HandleMouseButtonPressMessage(button, false);
 }
 
 void UIEditorViewer::moveEvent(QMoveEvent * event)
@@ -273,8 +299,8 @@ void UIEditorViewer::moveEvent(QMoveEvent * event)
     return;
   }
 
-  //auto pos = mapToGlobal(QPoint(0, 0));
-  //m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
+  auto pos = mapToGlobal(QPoint(0, 0));
+  m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
 }
 
 void UIEditorViewer::focusInEvent(QFocusEvent * event)

@@ -5,6 +5,7 @@
 #include <QCheckBox>
 
 #include "Foundation/Delegate/DelegateLink.h"
+#include "Foundation/FileSystem/FileSystemWatcher.h"
 #include "Foundation/Time/StopWatch.h"
 
 #include "Engine/Rendering/ShaderProgram.h"
@@ -35,9 +36,6 @@ protected:
 
   void Refresh();
   void Update();
-
-  void StartPlayMode();
-  void StopPlayMode();
 
 protected:
 
@@ -74,14 +72,14 @@ private:
   StopWatch m_FrameTimer;
   DocumentValueWatcher m_Watcher;
 
+  Optional<FileSystemWatcher> m_FileSystemWatcher;
+
   Optional<FakeWindow> m_FakeWindow;
-  Optional<UIManager> m_UIManager;
+  std::unique_ptr<UIManager> m_UIManager;
 
   DelegateLink<void> m_UpdateDelegate;
 
   RenderState m_RenderState;
   RenderUtil m_RenderUtil;
-
-  bool m_PlayMode;
   bool m_ImeMode;
 };

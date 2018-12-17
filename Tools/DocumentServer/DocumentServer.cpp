@@ -5,26 +5,24 @@
 #include <sb/vector.h>
 #include <experimental/filesystem>
 
-#include <StormRefl/StormReflJsonStd.h>
+#include "StormRefl/StormReflJsonStd.h"
 
-#include <StormData/StormDataChangePacket.h>
+#include "StormData/StormDataChangePacket.h"
 
-#include <StormSockets/StormSocketBackend.h>
-#include <StormSockets/StormSocketServerFrontendWebsocket.h>
+#include "StormSockets/StormSocketBackend.h"
+#include "StormSockets/StormSocketServerFrontendWebsocket.h"
 
-#include <Foundation/FileSystem/File.h>
-#include <Foundation/FileSystem/Path.h>
-#include <Foundation/Document/Document.h>
+#include "Foundation/FileSystem/File.h"
+#include "Foundation/FileSystem/Path.h"
+#include "Foundation/Document/Document.h"
 
 namespace fs = std::experimental::filesystem;
 
 DocumentServer::DocumentServer() :
   m_DocumentCompiler(this)
 {
-  m_Semaphore.Init(0);
-
   m_RootPath = GetCanonicalRootPath();
-  m_FilesystemWatcher = std::make_unique<FileSystemWatcher>(m_RootPath, m_Semaphore);
+  m_FilesystemWatcher = std::make_unique<FileSystemWatcher>(m_RootPath, [this] { m_Semaphore.Release(1); });
 
   StormSockets::StormSocketInitSettings backend_settings;
   backend_settings.NumIOThreads = 1;

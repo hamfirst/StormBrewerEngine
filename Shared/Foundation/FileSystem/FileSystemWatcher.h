@@ -8,10 +8,9 @@
 #include <unordered_map>
 #include <chrono>
 
-#include <StormSockets/StormSemaphore.h>
-
-#include <Foundation/Optional/NullOpt.h>
-#include <Foundation/Optional/Optional.h>
+#include "Foundation/Optional/NullOpt.h"
+#include "Foundation/Optional/Optional.h"
+#include "Foundation/Thread/Semaphore.h"
 
 enum class FileSystemOperation
 {
@@ -39,7 +38,7 @@ struct FileSystemDirectory
 class FileSystemWatcher
 {
 public:
-  FileSystemWatcher(const std::string & root_path, StormSockets::StormSemaphore & semaphore);
+  FileSystemWatcher(const std::string & root_path, Delegate<void> && notify);
   ~FileSystemWatcher();
 
   Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> GetFileChange();
@@ -62,7 +61,7 @@ private:
   std::string m_RootPath;
   FileSystemDirectory m_RootDirectory;
 
-  StormSockets::StormSemaphore & m_Semaphore;
+  Delegate<void> m_Notify;
 
   std::mutex m_QueueMutex;
   std::thread m_NotifyThread;

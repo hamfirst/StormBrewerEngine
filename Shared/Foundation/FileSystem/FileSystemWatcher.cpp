@@ -38,10 +38,10 @@ struct FileSystemWatcherData
 
 #endif
 
-FileSystemWatcher::FileSystemWatcher(const std::string & root_path, StormSockets::StormSemaphore & semaphore) :
+FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<void> && notify) :
   m_RootPath(root_path),
   m_Data(std::make_unique<FileSystemWatcherData>()),
-  m_Semaphore(semaphore),
+  m_Notify(notify),
   m_ExitThread(false)
 {
 #ifdef _MSC_VER
@@ -261,7 +261,7 @@ void FileSystemWatcher::TriggerOperationForFile(const std::string & path, const 
 
   lock.unlock();
 
-  m_Semaphore.Release(1);
+  m_Notify();
 }
 
 void FileSystemWatcher::TriggerOperationForDirectoryFiles(FileSystemDirectory & base, const std::string & base_path, FileSystemOperation op)
@@ -288,7 +288,7 @@ void FileSystemWatcher::NotifyThread()
   IterateDirectory("./", m_RootPath.data(), m_RootDirectory);
   TriggerOperationForDirectoryFiles(m_RootDirectory, "./", FileSystemOperation::kAdd);
 
-  m_Semaphore.Release(1);
+  m_Notify();
 
   while (m_ExitThread == false)
   {
@@ -336,7 +336,7 @@ void FileSystemWatcher::NotifyThread()
               TriggerOperationForDirectoryFiles(*sub_dir, sub_dir_path, FileSystemOperation::kAdd);
               dir->m_Directories.emplace(std::make_pair(file_name, std::move(sub_dir)));
 
-              m_Semaphore.Release(1);
+              m_Notify();
             }
           }
 
@@ -357,7 +357,7 @@ void FileSystemWatcher::NotifyThread()
                 itr->second = last_write;
                 TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kModify, last_write);
                 
-                m_Semaphore.Release(1);
+                m_Notify();
               }
             }
           }
@@ -406,7 +406,7 @@ void FileSystemWatcher::NotifyThread()
                 }
               }
 
-              m_Semaphore.Release(1);
+              m_Notify();
             }
           }
         }

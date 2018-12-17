@@ -9,7 +9,7 @@
 
 class UIManager;
 
-enum class UIClickableState
+enum STORM_REFL_ENUM class UIClickableState
 {
   kDisabled,
   kActive,
@@ -37,6 +37,7 @@ public:
   ScriptClassDelegate<void, float> OnUpdate;
   ScriptClassDelegate<void> OnRender;
 
+  bool Enabled = true;
   int X = 0;
   int Y = 0;
   int Width = 0;
@@ -53,8 +54,10 @@ public:
 private:
 
   friend class UIManager;
+  friend class UITextInput;
 
   void Destroy();
+  Optional<Box> CalculateActiveArea();
 
 private:
 

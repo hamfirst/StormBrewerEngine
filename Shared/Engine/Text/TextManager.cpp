@@ -137,7 +137,7 @@ void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, i
   }
   else
   {
-    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, -1, -1, cursor_pos);
+    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, -1, -1, context->IsTextInputActive() ? cursor_pos : -1);
   }
 }
 
@@ -163,13 +163,10 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   RenderVec4 screen_bounds = { -1, -1, 1, 1 };
   if (m_Settings.m_TextBounds)
   {
-    screen_bounds.x = (float)m_Settings.m_TextBounds->m_Start.x / (float)render_state.GetRenderWidth();
-    screen_bounds.y = (float)m_Settings.m_TextBounds->m_Start.y / (float)render_state.GetRenderHeight();
-    screen_bounds.w = (float)m_Settings.m_TextBounds->m_End.x / (float)render_state.GetRenderWidth();
-    screen_bounds.z = (float)m_Settings.m_TextBounds->m_End.y / (float)render_state.GetRenderHeight();
-
-    screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
-    screen_bounds *= 2.0f;
+    screen_bounds.x = 2.0f * ((float)m_Settings.m_TextBounds->m_Start.x - 0.5f) / (float)render_state.GetRenderWidth();
+    screen_bounds.y = 2.0f * ((float)m_Settings.m_TextBounds->m_Start.y - 0.5f) / (float)render_state.GetRenderHeight();
+    screen_bounds.z = 2.0f * ((float)m_Settings.m_TextBounds->m_End.x - 0.5f) / (float)render_state.GetRenderWidth();
+    screen_bounds.w = 2.0f * ((float)m_Settings.m_TextBounds->m_End.y - 0.5f) / (float)render_state.GetRenderHeight();
   }
 
   render_state.EnableBlendMode();
@@ -182,9 +179,18 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
 
   font->BindGlyphTexture(render_state, 0);
 
+  auto color_matrix = Mat4f(1.0f, 0.0f, 0.0f, 0.0f,
+                            1.0f, 0.0f, 0.0f, 0.0f,
+                            1.0f, 0.0f, 0.0f, 0.0f,
+                            1.0f, 0.0f, 0.0f, 0.0f);
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ render_state.GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0, 0 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (float)render_state.GetRenderWidth(), (float)render_state.GetRenderHeight());
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), color_matrix);
 
   render_state.Draw();
 }

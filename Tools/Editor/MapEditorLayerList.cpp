@@ -335,9 +335,10 @@ bool MapEditorLayerList::IsLayerHidden(const MapEditorLayerSelection & layer)
       auto layer_ptr = m_Editor->GetEffectManager().GetLayerManager(layer.m_Index);
       return layer_ptr ? layer_ptr->IsHidden() : false;
     }
+  default:
+    return false;
   }
 
-  return false;
 }
 
 void MapEditorLayerList::SetHideLayer(const MapEditorLayerSelection & layer, bool hidden)

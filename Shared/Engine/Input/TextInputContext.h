@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "Engine/EngineCommon.h"
 
 class ENGINE_EXPORT TextInputContext : public std::enable_shared_from_this<TextInputContext>
 {

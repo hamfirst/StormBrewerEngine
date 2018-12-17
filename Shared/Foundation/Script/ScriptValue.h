@@ -17,6 +17,8 @@ using ScriptValue = Variant<int, float, bool, czstr, std::string,
 #include "Foundation/Script/ScriptObject.h"
 #include "Foundation/Script/ScriptClassInstance.h"
 
+bool ScriptValueParse(czstr data, ScriptValue & out);
+
 void ScriptValueCoerce(const ScriptValue & value, int & val);
 void ScriptValueCoerce(const ScriptValue & value, float & val);
 void ScriptValueCoerce(const ScriptValue & value, bool & val);

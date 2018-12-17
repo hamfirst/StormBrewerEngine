@@ -83,6 +83,9 @@ void TextRenderer::AddGlyphToBuffer(float x, float y, float scale, const GlyphIn
   start_tex /= RenderVec2{ g_EngineSettings.m_FontCacheSize, g_EngineSettings.m_FontCacheSize };
   end_tex /= RenderVec2{ g_EngineSettings.m_FontCacheSize, g_EngineSettings.m_FontCacheSize };
 
+  start_tex.y = 1.0f - start_tex.y;
+  end_tex.y = 1.0f - end_tex.y;
+
   // 00 = 10   0 = 2
   // 01 = 00   1 = 0
   // 10 = 11   2 = 3
