@@ -263,17 +263,20 @@ void GeometryEditorBase::paintGL()
   m_RenderState.MakeCurrent();
   m_RenderState.EnableBlendMode();
 
-  auto & default_shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
 
   RenderVec2 center = m_Center;
   center *= -1.0f;
 
-  m_RenderState.BindShader(default_shader);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), center);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+  m_RenderState.BindShader(shader);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState.GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), center);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   m_RenderState.BindTexture(*texture);
   QuadVertexBufferBuilder builder;
@@ -306,8 +309,8 @@ void GeometryEditorBase::paintGL()
   m_RenderState.BindVertexBuffer(m_VertexBuffer);
   m_RenderState.Draw();
 
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  default_shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
 
   LineVertexBufferBuilder line_builder;
   LineVertexBuilderInfo line;

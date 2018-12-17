@@ -25,8 +25,8 @@ NullOptPtr<ServerObjectManager> GetServerObjectManager(NotNullPtr<GameContainer>
   return instance_data ? &instance_data->GetHistoryState(history_index).m_ServerObjectManager : nullptr;
 }
 
-GameContainer::GameContainer(const Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings) :
-  m_EngineState(this),
+GameContainer::GameContainer(Window & window, std::unique_ptr<GameContainerInitSettings> && init_settings) :
+  m_EngineState(this, window),
   m_LevelList(),
   m_Window(window),
   m_InitSettings(std::move(init_settings)),

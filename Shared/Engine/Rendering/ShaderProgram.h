@@ -40,6 +40,8 @@ public:
   void SetUniform(Hash uniform_name, const RenderVec3 & v);
   void SetUniform(Hash uniform_name, const RenderVec4 & v);
 
+  void SetUniform(Hash uniform_name, const Mat4f & v);
+
 protected:
 
   int GetUniformIndex(Hash uniform_name) const;

@@ -3,6 +3,8 @@
 #include "Engine/UI/UIScriptInterface.h"
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UIScriptLoader.h"
+#include "Engine/UI/UIClickable.refl.h"
+#include "Engine/UI/UITextInput.refl.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
@@ -58,7 +60,7 @@ void UIScriptInterface::RenderTextureScaleTint(int texture_id, int x, int y, flo
 
 void UIScriptInterface::PlayAudio(int audio_id)
 {
-  PlayAudioInternal(audio_id, 1.0f, 1.0f);
+  PlayAudioInternal(audio_id, 1.0f, 0.0f);
 }
 
 void UIScriptInterface::PlayAudioVolumePan(int audio_id, float volume, float pan)
@@ -96,14 +98,32 @@ void UIScriptInterface::StopMusic()
   g_MusicManager.StopAll();
 }
 
-void UIScriptInterface::DrawText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a)
+void UIScriptInterface::DrawText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode)
 {
-  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, 1.0f);
+  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, 1.0f, mode);
 }
 
-void UIScriptInterface::DrawTextScaled(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, float scale)
+void UIScriptInterface::DrawCenteredText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode)
 {
-  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, scale);
+  auto text_size = MeasureTextInternal(font_id, text, 1.0f);
+  x -= text_size.first / 2;
+  y -= text_size.second / 2;
+
+  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, 1.0f, mode);
+}
+
+void UIScriptInterface::DrawTextScaled(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode, float scale)
+{
+  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, scale, mode);
+}
+
+void UIScriptInterface::DrawCenteredTextScaled(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode, float scale)
+{
+  auto text_size = MeasureTextInternal(font_id, text, scale);
+  x -= text_size.first / 2;
+  y -= text_size.second / 2;
+
+  DrawTextInternal(font_id, text.c_str(), x, y, r, g, b, a, scale, mode);
 }
 
 std::pair<int, int> UIScriptInterface::MeasureText(int font_id, const std::string & text)
@@ -112,6 +132,44 @@ std::pair<int, int> UIScriptInterface::MeasureText(int font_id, const std::strin
 }
 
 std::pair<int, int> UIScriptInterface::MeasureTextScaled(int font_id, const std::string & text, float scale)
+{
+  return MeasureTextInternal(font_id, text, scale);
+}
+
+void UIScriptInterface::DrawTextInput(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, int mode)
+{
+  DrawTextInternal(font_id, text, x, y, r, g, b, a, 1.0f, mode);
+}
+
+void UIScriptInterface::DrawCenteredTextInput(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, int mode)
+{
+  auto text_size = MeasureTextInternal(font_id, text, 1.0f);
+  x -= text_size.first / 2;
+  y -= text_size.second / 2;
+
+  DrawTextInternal(font_id, text, x, y, r, g, b, a, 1.0f, mode);
+}
+
+void UIScriptInterface::DrawTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, int mode, float scale)
+{
+  DrawTextInternal(font_id, text, x, y, r, g, b, a, scale, mode);
+}
+
+void UIScriptInterface::DrawCenteredTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, int mode, float scale)
+{
+  auto text_size = MeasureTextInternal(font_id, text, scale);
+  x -= text_size.first / 2;
+  y -= text_size.second / 2;
+
+  DrawTextInternal(font_id, text, x, y, r, g, b, a, scale, mode);
+}
+
+std::pair<int, int> UIScriptInterface::MeasureTextInput(int font_id, ScriptClassRef<UITextInput> & text)
+{
+  return MeasureTextInternal(font_id, text, 1.0f);
+}
+
+std::pair<int, int> UIScriptInterface::MeasureTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, float scale)
 {
   return MeasureTextInternal(font_id, text, scale);
 }
@@ -159,9 +217,13 @@ void UIScriptInterface::RenderTextureInternal(int texture_id, int x, int y, floa
   screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
   screen_bounds *= 2.0f;
 
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ scale_x, 0, 0, scale_y });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   m_RenderState->BindTexture(*texture);
   m_RenderState->BindVertexBuffer(vertex_buffer);
@@ -255,17 +317,18 @@ void UIScriptInterface::FlushGeometry()
   m_RenderState->BindShader(shader);
 
   RenderVec4 screen_bounds;
-  screen_bounds.x = (float)m_ActiveArea.m_Start.x / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.y = (float)m_ActiveArea.m_Start.y / (float)m_RenderState->GetRenderHeight();
-  screen_bounds.w = (float)m_ActiveArea.m_End.x / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.z = (float)m_ActiveArea.m_End.y / (float)m_RenderState->GetRenderHeight();
+  screen_bounds.x = 2.0f * ((float)m_ActiveArea.m_Start.x - 0.5f) / (float)m_RenderState->GetRenderWidth();
+  screen_bounds.y = 2.0f * ((float)m_ActiveArea.m_Start.y - 0.5f) / (float)m_RenderState->GetRenderHeight();
+  screen_bounds.z = 2.0f * ((float)m_ActiveArea.m_End.x - 0.5f) / (float)m_RenderState->GetRenderWidth();
+  screen_bounds.w = 2.0f * ((float)m_ActiveArea.m_End.y - 0.5f) / (float)m_RenderState->GetRenderHeight();
 
-  screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
-  screen_bounds *= 2.0f;
-
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   m_RenderState->BindTexture(m_RenderUtil->GetDefaultTexture());
   m_RenderState->BindVertexBuffer(vertex_buffer);
@@ -315,9 +378,18 @@ void UIScriptInterface::PlayMusicInternal(int music_id, float volume, float fade
   }
 }
 
-void UIScriptInterface::DrawTextInternal(int font_id, czstr text, int x, int y, float r, float g, float b, float a, float scale)
+void UIScriptInterface::DrawTextInternal(int font_id, czstr text, int x, int y, float r, float g, float b, float a, float scale, int mode)
 {
-  g_TextManager.RenderText(text, font_id, scale, *m_RenderState);
+  if((font_id & UIScriptLoader::kIdMask) != UIScriptLoader::kFontId)
+  {
+    return;
+  }
+
+  g_TextManager.SetTextPos(Vector2(x, y) + m_ActiveArea.m_Start);
+  g_TextManager.SetPrimaryColor(Color(r, g, b, a));
+  g_TextManager.SetTextMode(static_cast<TextRenderMode>(mode));
+  g_TextManager.SetTextBounds(m_ActiveArea);
+  g_TextManager.RenderText(text, font_id & UIScriptLoader::kIndexMask, scale, *m_RenderState);
 }
 
 std::pair<int, int> UIScriptInterface::MeasureTextInternal(int font_id, const std::string & text, float scale)
@@ -328,6 +400,33 @@ std::pair<int, int> UIScriptInterface::MeasureTextInternal(int font_id, const st
   }
 
   auto box = g_TextManager.GetTextSize(text, font_id & UIScriptLoader::kIndexMask, scale);
+  auto size = box.m_End;
+
+  return std::make_pair(size.x, size.y);
+}
+
+void UIScriptInterface::DrawTextInternal(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, float scale, int mode)
+{
+  if((font_id & UIScriptLoader::kIdMask) != UIScriptLoader::kFontId)
+  {
+    return;
+  }
+
+  g_TextManager.SetTextPos(Vector2(x, y) + m_ActiveArea.m_Start);
+  g_TextManager.SetPrimaryColor(Color(r, g, b, a));
+  g_TextManager.SetTextMode(static_cast<TextRenderMode>(mode));
+  g_TextManager.SetTextBounds(m_ActiveArea);
+  g_TextManager.RenderInputText(text->m_TextInput, font_id & UIScriptLoader::kIndexMask, scale, *m_RenderState, text->Prompt.c_str());
+}
+
+std::pair<int, int> UIScriptInterface::MeasureTextInternal(int font_id, ScriptClassRef<UITextInput> & text, float scale)
+{
+  if((font_id & UIScriptLoader::kIdMask) != UIScriptLoader::kFontId)
+  {
+    return std::make_pair(0, 0);
+  }
+
+  auto box = g_TextManager.GetTextSize(text->m_TextInput, font_id & UIScriptLoader::kIndexMask, scale);
   auto size = box.m_End;
 
   return std::make_pair(size.x, size.y);

@@ -146,6 +146,9 @@ void ShaderProgram::CreateProgram(const Shader & vertex_shader, const Shader & f
       data_size = 16;
       break;
 
+    case GL_FLOAT_MAT4:
+      data_size = 64;
+      break;
     default:
       ASSERT(false, "Bad uniform type length");
     }
@@ -268,6 +271,14 @@ void ShaderProgram::SetUniform(Hash uniform_name, const RenderVec4 & v)
   int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
   if (CheckDataDeltaAndSize(m_UniformData.get() + m_Uniforms[uniform_index].m_DataOffset, m_Uniforms[uniform_index].m_DataSize, v) == false) return;
   glUniform4f(m_Uniforms[uniform_index].m_LocationIndex, v.x, v.y, v.z, v.w); CHECK_GL_RENDER_ERROR;
+  SetData(m_UniformData.get() + m_Uniforms[uniform_index].m_DataOffset, v);
+}
+
+void ShaderProgram::SetUniform(Hash uniform_name, const Mat4f & v)
+{
+  int uniform_index = GetUniformIndex(uniform_name); if (uniform_index == -1) return;
+  if (CheckDataDeltaAndSize(m_UniformData.get() + m_Uniforms[uniform_index].m_DataOffset, m_Uniforms[uniform_index].m_DataSize, v) == false) return;
+  glUniformMatrix4fv(m_Uniforms[uniform_index].m_LocationIndex, 1, GL_FALSE, &v[0][0]); CHECK_GL_RENDER_ERROR;
   SetData(m_UniformData.get() + m_Uniforms[uniform_index].m_DataOffset, v);
 }
 

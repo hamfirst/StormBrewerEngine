@@ -6,7 +6,8 @@
 #include "sb/vector.h"
 
 UIClickable::UIClickable(NotNullPtr<UIManager> manager) :
-  m_Manager(manager)
+  m_Manager(manager),
+  m_State(static_cast<int>(UIClickableState::kActive))
 {
 
 }
@@ -100,4 +101,28 @@ void UIClickable::Destroy()
       }
     }
   }
+}
+
+Optional<Box> UIClickable::CalculateActiveArea()
+{
+  if(Width <= 0 || Height <= 0)
+  {
+    return {};
+  }
+
+  Box b = Box::FromStartAndWidthHeight(X, Y, Width, Height);
+
+  if(m_Parent.IsValid())
+  {
+    auto parent_box = m_Parent->CalculateActiveArea();
+    if(parent_box.IsValid() == false)
+    {
+      return {};
+    }
+
+    b = b.Offset(parent_box->m_Start);
+    return ClipBox(b, parent_box.Value());
+  }
+
+  return b;
 }

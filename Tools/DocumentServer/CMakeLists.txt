@@ -4,19 +4,17 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_DocumentServer 
+            Main.cpp
             DocumentServer.cpp
             FileNameDatabase.cpp
-            FileSystemWatcher.cpp
-            Main.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_DocumentServer 
-            DocumentServer.h
             DocumentServerMessages.refl.h
+            DocumentServer.h
             DocumentServerMessages.refl.meta.h
             FileNameDatabase.h
-            FileSystemWatcher.h
             #HEADER_PLACEHOLDER
             )
 

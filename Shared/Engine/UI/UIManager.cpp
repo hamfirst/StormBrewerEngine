@@ -4,8 +4,10 @@
 #include "Engine/UI/UIScriptLoader.h"
 #include "Engine/UI/UIScriptInterface.h"
 #include "Engine/UI/UIClickable.refl.meta.h"
+#include "Engine/UI/UITextInput.refl.meta.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
+#include "Engine/Text/TextRenderMode.refl.meta.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Window/Window.h"
 
@@ -13,10 +15,12 @@
 #include "Foundation/Script/ScriptRegister.h"
 
 #include <sb/vector.h>
+#include <Shared/Runtime/UI/UIDef.refl.h>
 
 SkipField<UIClickable> s_UIClickableAllocator;
 
-UIManager::UIManager() :
+UIManager::UIManager(Window & container_window) :
+  m_ContainerWindow(container_window),
   m_Paused(false)
 {
   m_UpdateTimer.Start();
@@ -40,13 +44,22 @@ void UIManager::LoadScripts()
                            [this](ScriptClassRef<UIClickable> & ref) { AddClickableToRoot(ref); },
                            [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
 
+
+  m_TextInputClass.Emplace("TextInput",
+                           [this](){ auto clickable = new UITextInput(m_ContainerWindow.CreateTextInputContext()); return clickable; },
+                           [this](ScriptClassRef<UITextInput> & ref) { },
+                           [this](void * ptr) { delete static_cast<UITextInput *>(ptr); });
+
   m_ScriptState.Emplace();
 
   m_ClickableClass->Register(m_ScriptState.GetPtr());
+  m_TextInputClass->Register(m_ScriptState.GetPtr());
+  ScriptAddEnumAsGlobals<UIClickableState>(m_ScriptState.GetPtr());
+  ScriptAddEnumAsGlobals<TextRenderMode>(m_ScriptState.GetPtr());
 
   m_ScriptInterface = std::make_unique<UIScriptInterface>(this);
-  m_InterfaceObject.Emplace(m_ScriptState.GetPtr());
-  auto & ui_interface = m_InterfaceObject.Value();
+  m_UIInterfaceObject.Emplace(m_ScriptState.GetPtr());
+  auto & ui_interface = m_UIInterfaceObject.Value();
   auto script_interface = m_ScriptInterface.get();
 
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTexture);
@@ -62,9 +75,17 @@ void UIManager::LoadScripts()
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeOutMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, StopMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawText);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredText);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredTextScaled);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureText);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextInput);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredTextInput);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextInputScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredTextInputScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextInput);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextInputScaled);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLine);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLineThickness);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawRectangle);
@@ -112,6 +133,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   auto base_offset = RenderVec2{};
 
@@ -168,6 +190,28 @@ ScriptClassRef<UIClickable> UIManager::AllocateClickable()
   return m_ClickableClass->CreateInstance();
 }
 
+void UIManager::PushUIDef(const UIDef & def)
+{
+  if(m_CleanupFunc.empty() == false)
+  {
+    m_ScriptState->Call(m_CleanupFunc.c_str(), {});
+  }
+
+  m_ScriptState->Call(def.m_InitFunction.c_str(), {});
+  m_CleanupFunc = def.m_CleanupFunction;
+}
+
+ScriptInterface & UIManager::CreateGameInterface()
+{
+  m_GameInterfaceObject.Emplace(m_ScriptState.GetPtr());
+  return m_GameInterfaceObject.Value();
+}
+
+bool UIManager::Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val)
+{
+  return m_ScriptState->Call(name, args, return_val);
+}
+
 bool UIManager::HasSelectedElement() const
 {
   return m_HasSelectedElement;
@@ -219,7 +263,7 @@ void UIManager::RemoveDeadClickables()
 
 void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list)
 {
-  if(clickable->Width <= 0 || clickable->Height <= 0)
+  if(clickable->Width <= 0 || clickable->Height <= 0 || clickable->Enabled == false)
   {
     clickable->m_ActiveArea.Clear();
   }
@@ -280,6 +324,17 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     if(elem->m_Dead)
     {
       continue;
+    }
+
+    if(elem->m_State != (int)UIClickableState::kDisabled && elem->Enabled == false)
+    {
+      elem->OnStateChange(elem->m_State, (int)UIClickableState::kDisabled);
+      elem->m_State = (int)UIClickableState::kDisabled;
+    }
+    else if(elem->m_State == (int)UIClickableState::kDisabled && elem->Enabled == true)
+    {
+      elem->OnStateChange(elem->m_State, (int)UIClickableState::kActive);
+      elem->m_State = (int)UIClickableState::kActive;
     }
 
     if (elem->m_State == (int)UIClickableState::kPressed)
@@ -363,6 +418,10 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
         }
       }
     }
+    else
+    {
+      CheckAllElements();
+    }
   }
 
   if (cur_pressed_clickable)
@@ -379,7 +438,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
 
     if (pointer_state.m_InFocus == false)
     {
-      if (cur_pressed_clickable)
+      if (cur_pressed_clickable && cur_pressed_clickable->Enabled)
       {
         cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
         cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
@@ -387,7 +446,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
     else if (input_state.GetMouseButtonState(kMouseLeftButton) == false)
     {
-      if (cur_hover_clickable != nullptr)
+      if (cur_hover_clickable  && cur_hover_clickable->Enabled)
       {
         if (cur_hover_clickable == cur_pressed_clickable)
         {
@@ -401,7 +460,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
           cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
         }
       }
-      else if(cur_pressed_clickable)
+      else if(cur_pressed_clickable && cur_pressed_clickable->Enabled)
       {
         cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
         cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
@@ -425,7 +484,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       }
     }
 
-    if (cur_hover_clickable != nullptr && cur_hover_clickable->m_State != (int)UIClickableState::kHover)
+    if (cur_hover_clickable != nullptr && cur_hover_clickable->m_State != (int)UIClickableState::kHover && cur_hover_clickable->Enabled)
     {
       cur_hover_clickable->OnStateChange(cur_hover_clickable->m_State, (int)UIClickableState::kHover);
       cur_hover_clickable->m_State = (int)UIClickableState::kHover;
@@ -433,7 +492,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
 
     if (input_state.GetMousePressedThisFrame(kMouseLeftButton))
     {
-      if (cur_hover_clickable != nullptr)
+      if (cur_hover_clickable != nullptr && cur_hover_clickable->Enabled)
       {
         cur_hover_clickable->OnStateChange(cur_hover_clickable->m_State, (int)UIClickableState::kPressed);
         cur_hover_clickable->m_State = (int)UIClickableState::kPressed;
@@ -441,7 +500,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
   }
 
-  if (cur_hover_clickable || cur_pressed_clickable)
+  if ((cur_hover_clickable && cur_hover_clickable->Enabled) || (cur_pressed_clickable && cur_pressed_clickable->Enabled))
   {
     m_HasSelectedElement = true;
   }

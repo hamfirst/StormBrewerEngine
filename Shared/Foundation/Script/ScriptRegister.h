@@ -4,6 +4,7 @@
 #include "StormRefl/StormRefl.h"
 #include "StormRefl/StormReflMetaFuncs.h"
 #include "StormRefl/StormReflMetaCall.h"
+#include "StormRefl/StormReflMetaEnum.h"
 
 #include "Foundation/Script/ScriptClass.h"
 
@@ -79,4 +80,12 @@ void ScriptClass<T>::Register(NotNullPtr<ScriptState> state)
 {
   ScriptClassRegister(*this);
   RegisterBase(state);
+}
+
+template <typename EnumType>
+void ScriptAddEnumAsGlobals(NotNullPtr<ScriptState> state)
+{
+  StormReflVisitEnumValues<EnumType>::VisitEach([&](auto f){
+    state->BindAsGlobal(f.GetName(), static_cast<int>(f.GetValue()));
+  });
 }

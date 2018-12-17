@@ -10,12 +10,12 @@
 
 #include "Runtime/Map/MapResource.h"
 
-EngineState::EngineState(NotNullPtr<GameContainer> game) :
+EngineState::EngineState(NotNullPtr<GameContainer> game, Window & window) :
   m_EntitySystem(std::make_unique<EntitySystem>(this, game)),
   m_ComponentSystem(std::make_unique<ComponentSystem>()),
   m_MapSystem(std::make_unique<MapSystem>(this)),
   m_VisualEffectManager(std::make_unique<VisualEffectManager>()),
-  m_UIManager(std::make_unique<UIManager>())
+  m_UIManager(std::make_unique<UIManager>(window))
 {
 
 }

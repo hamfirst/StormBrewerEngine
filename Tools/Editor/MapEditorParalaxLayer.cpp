@@ -298,10 +298,14 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     buffer.SetBufferData(verts, VertexBufferType::kTriangles);
     auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
     render_state.BindShader(shader);
+
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ render_state.GetRenderSize() });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
     render_state.BindTexture(*texture);
     render_state.BindVertexBuffer(buffer);

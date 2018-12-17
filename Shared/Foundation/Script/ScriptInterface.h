@@ -19,8 +19,6 @@ using ScriptInterfaceForwardDelegate = int (*)(int, ScriptInterface *, lua_State
 
 extern ScriptInterfaceCallback g_ScriptInterfaceCallbackFuncs[kScriptInterfaceMaxFunctions];
 
-
-
 class ScriptInterface
 {
 public:
@@ -79,6 +77,9 @@ public:
     AddFunction(name, CreateDelegateFromLambda([=](Args ... args) { return (c->*Func)(args...); }));
   }
 
+  void AddVariable(czstr name, const ScriptValue & value);
+  void AddDebugStubFunction(czstr name, ScriptValue && return_value);
+
 private:
 
   template <int Index>
@@ -100,6 +101,8 @@ private:
   ScriptInterfaceForwardDelegate m_ForwardDelegates[kScriptInterfaceMaxFunctions];
   StaticAny<128> m_Delegates[kScriptInterfaceMaxFunctions];
 
+  int m_NextDebugFuncId;
+  std::vector<ScriptValue> m_DebugStubReturnValues;
 };
 
 #define BIND_SCRIPT_INTERFACE(ScriptInterface, Ptr, FuncName) (ScriptInterface).AddFunction(#FuncName, Ptr, &std::decay_t<decltype(*Ptr)>::FuncName);

@@ -22,12 +22,13 @@ class ComponentUpdateBucketList;
 class ServerObject;
 class GameContainer;
 class UIManager;
+class Window;
 
 class EngineState
 {
 public:
 
-  EngineState(NotNullPtr<GameContainer> game);
+  EngineState(NotNullPtr<GameContainer> game, Window & window);
   ~EngineState();
 
   NotNullPtr<Entity> CreateEntity();

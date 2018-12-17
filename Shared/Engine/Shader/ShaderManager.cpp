@@ -40,7 +40,7 @@ ShaderProgram & ShaderManager::GetDefaultWorldSpaceShader()
 
 ShaderProgram & ShaderManager::GetDefaultScreenSpaceShader()
 {
-  return m_DefaultShader;
+  return m_DefaultScreenSpaceShader;
 }
 
 void ShaderManager::RegisterShader(ShaderProgram && shader_prgram, czstr shader_name)

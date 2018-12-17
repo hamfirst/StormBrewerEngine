@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
-#include "Engine/UI/UIClickable.refl.h"
 
 #include "Foundation/Time/StopWatch.h"
 
@@ -16,14 +15,17 @@ class Window;
 class RenderState;
 class RenderUtil;
 
+class UIDef;
 class UIScriptLoader;
 class UIScriptInterface;
+
+class UIClickable;
+class UITextInput;
 
 class UIManager
 {
 public:
-
-  UIManager();
+  UIManager(Window & container_window);
   ~UIManager();
 
   void LoadScripts();
@@ -39,6 +41,11 @@ public:
   void ReleaseMouse(NotNullPtr<UIClickable> clickable);
 
   ScriptClassRef<UIClickable> AllocateClickable();
+
+  void PushUIDef(const UIDef & def);
+  ScriptInterface & CreateGameInterface();
+
+  bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
 
   bool HasSelectedElement() const;
 
@@ -58,16 +65,22 @@ private:
 
   friend class UIScriptInterface;
 
+  Window & m_ContainerWindow;
+
   Optional<ScriptClass<UIClickable>> m_ClickableClass;
+  Optional<ScriptClass<UITextInput>> m_TextInputClass;
 
   Optional<ScriptState> m_ScriptState;
-  Optional<ScriptInterface> m_InterfaceObject;
+  Optional<ScriptInterface> m_UIInterfaceObject;
+  Optional<ScriptInterface> m_GameInterfaceObject;
 
   std::unique_ptr<UIScriptLoader> m_ScriptLoader;
   std::unique_ptr<UIScriptInterface> m_ScriptInterface;
 
   std::vector<ScriptClassRef<UIClickable>> m_RootClickables;
   std::vector<NotNullPtr<UIClickable>> m_DeadClickables;
+
+  std::string m_CleanupFunc;
 
   NotNullPtr<UIClickable> m_GrabbedMouseClickable = nullptr;
   bool m_HasSelectedElement = false;
