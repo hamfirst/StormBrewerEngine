@@ -16,25 +16,30 @@ UIEditor::UIEditor(EditorContainer & editor_container, PropertyFieldDatabase & p
   DocumentEditorWidgetBase(editor_container, property_db, root_path, std::move(change_link_callback), std::move(begin_transaction_callback), std::move(commit_change_callback), parent),
   m_UI(ui),
   m_Layout(std::make_unique<QGridLayout>()),
-  m_PropertiesPanel(std::make_unique<ScrollingPanel>(this)),
+  m_UIProperties(std::make_unique<GenericFrame>("UI Properties", this)),
+  m_Output(std::make_unique<QTextEdit>(this)),
+  m_Viewer(std::make_unique<UIEditorViewer>(this, m_UI, this)),
   m_IgnoreSelectionChanges(false)
 {
 
-  m_Layout->setColumnStretch(0, 1);
+  m_Layout->setColumnStretch(0, 3);
   m_Layout->setColumnMinimumWidth(0, 100);
 
-  m_Layout->setColumnStretch(1, 3);
+  m_Layout->setColumnStretch(1, 1);
   m_Layout->setColumnMinimumWidth(1, 100);
 
-  m_Layout->setColumnStretch(2, 1);
-  m_Layout->setColumnMinimumWidth(2, 300);
+  m_Layout->setRowStretch(0, 5);
+  m_Layout->setRowMinimumHeight(0, 400);
+
+  m_Layout->setRowStretch(1, 1);
+  m_Layout->setRowMinimumHeight(1, 100);
 
   m_Layout->addWidget(m_Viewer.get(), 0, 0);
-  m_Layout->addWidget(m_PropertiesPanel.get(), 0, 1);
+  m_Layout->addWidget(m_UIProperties.get(), 0, 1);
+  m_Layout->addWidget(m_Output.get(), 1, 0, 1, 2);
 
-  auto property_container = std::make_unique<UIEditorPropertyContainer>(this, m_UI, [this]() { m_PropertiesPanel->recalculate(); });
-  m_PropertiesContainer = property_container.get();
-  m_PropertiesPanel->SetChildWidget(std::move(property_container));
+  m_PropertyEditor = m_UIProperties->CreateWidget<PropertyEditor>();
+  m_PropertyEditor->LoadStruct(this, m_UI, true);
 
   setLayout(m_Layout.get());
 }

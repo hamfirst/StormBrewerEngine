@@ -18,7 +18,7 @@ class UIScriptLoader
 public:
   UIScriptLoader(NotNullPtr<ScriptState> script_state);
 
-  void InitLoad();
+  void InitLoad(Delegate<void> && load_complete_callback);
   void Update();
 
   bool AllScriptsLoaded() const;
@@ -68,4 +68,6 @@ private:
 
   std::vector<AtlasPtr> m_AtlasAssets;
   std::vector<SpritePtr> m_SpriteAssets;
+
+  Delegate<void> m_LoadCompleteCallback;
 };

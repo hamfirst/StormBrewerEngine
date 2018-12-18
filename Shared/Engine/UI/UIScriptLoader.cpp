@@ -25,9 +25,10 @@ UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state) :
   m_ScriptState->BindAsGlobal("loader", m_LoaderInterface.GetObject());
 }
 
-void UIScriptLoader::InitLoad()
+void UIScriptLoader::InitLoad(Delegate<void> && load_complete_callback)
 {
   m_State = kLoadingScripts;
+  m_LoadCompleteCallback = std::move(load_complete_callback);
 
   auto old_scripts = std::move(m_ScriptResources);
 
@@ -69,6 +70,7 @@ void UIScriptLoader::Update()
         m_ScriptState->Call("FinalizeLoad", {});
         if(AllAssetsLoaded())
         {
+          m_LoadCompleteCallback();
           m_State = kComplete;
         }
       }

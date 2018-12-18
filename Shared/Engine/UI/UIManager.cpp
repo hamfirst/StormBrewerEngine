@@ -37,7 +37,7 @@ UIManager::~UIManager()
   RemoveDeadClickables();
 }
 
-void UIManager::LoadScripts()
+void UIManager::LoadScripts(Delegate<void> && load_complete_callback)
 {
   m_ClickableClass.Emplace("Clickable",
                            [this](){ auto clickable = new UIClickable(this); return clickable; },
@@ -97,7 +97,7 @@ void UIManager::LoadScripts()
   m_ScriptState->BindAsGlobal("ui", ui_interface.GetObject());
 
   m_ScriptLoader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
-  m_ScriptLoader->InitLoad();
+  m_ScriptLoader->InitLoad(std::move(load_complete_callback));
 }
 
 bool UIManager::FinishedLoading() const
