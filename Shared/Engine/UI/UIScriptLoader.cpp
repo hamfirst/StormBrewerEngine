@@ -38,6 +38,12 @@ void UIScriptLoader::InitLoad(Delegate<void> && load_complete_callback)
     m_ScriptResources.emplace_back(GenericBinaryResource::Load(script_file.c_str()));
   }
 
+  script_files = GetFilesInDirectory("./UIs/Elements", "lua");
+  for(auto & script_file : script_files)
+  {
+    m_ScriptResources.emplace_back(GenericBinaryResource::Load(script_file.c_str()));
+  }
+
   script_files = GetFilesInDirectory("./UIs/Scripts", "lua");
   for(auto & script_file : script_files)
   {
