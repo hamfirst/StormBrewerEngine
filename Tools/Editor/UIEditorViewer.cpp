@@ -37,12 +37,6 @@ UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget 
 
   m_FrameTimer.Start();
 
-  auto root_path = GetCanonicalRootPath();
-  auto script_path = GetFullPath(JoinPath(root_path, "./UIs/Scripts"), root_path);
-
-  m_FileSystemWatcher.Emplace(script_path, Delegate<void>{});
-
-  Refresh();
 }
 
 UIEditorViewer::~UIEditorViewer()
@@ -52,10 +46,10 @@ UIEditorViewer::~UIEditorViewer()
 
 void UIEditorViewer::Refresh()
 {
-  auto old_manager = std::move(m_UIManager);
+  auto old_manager = m_UIManager ? std::move(m_UIManager) : std::unique_ptr<UIManager>();
 
   m_UIManager = std::make_unique<UIManager>(m_FakeWindow->GetWindow());
-  m_UIManager->LoadScripts();
+  m_UIManager->LoadScripts([this] { m_UIManager->PushUIDef(m_UI); });
 
   auto & interface = m_UIManager->CreateGameInterface();
   for(auto elem : m_UI.m_Variables)
@@ -115,7 +109,12 @@ void UIEditorViewer::initializeGL()
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
   m_UpdateDelegate = g_GlobalUpdate.AddDelegate([this] { Update(); });
 
+  auto root_path = GetCanonicalRootPath();
+  auto script_path = GetFullPath(JoinPath(root_path, "./UIs/Scripts/"), root_path);
+  m_FileSystemWatcher.Emplace(script_path, Delegate<void>{});
+
   Refresh();
+
 }
 
 void UIEditorViewer::Update()

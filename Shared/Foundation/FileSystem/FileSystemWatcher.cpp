@@ -1,5 +1,7 @@
 
-#include "FileSystemWatcher.h"
+#include "Foundation/Common.h"
+#include "Foundation/FileSystem/FileSystemWatcher.h"
+#include "Foundation/FileSystem/Path.h"
 
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
@@ -74,14 +76,14 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
 
 FileSystemWatcher::~FileSystemWatcher()
 {
-  m_ExitThread = true;
-  m_NotifyThread.join();
-
 #ifdef _MSC_VER
   CloseHandle(m_Data->m_DirectoryHandle);
 #elif defined(_LINUX)
   close(m_Data->m_NotifyHandle);
 #endif
+
+  m_ExitThread = true;
+  m_NotifyThread.join();
 }
 
 Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> FileSystemWatcher::GetFileChange()
@@ -101,7 +103,7 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::
 
 void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & root_dir, FileSystemDirectory & dir)
 {
-  auto full_path = root_dir + local_path;
+  auto full_path = JoinPath(root_dir, local_path);
 
 #ifdef _LINUX
   dir.m_NotifyWatch = inotify_add_watch(m_Data->m_NotifyHandle, full_path.c_str(), IN_CREATE | IN_MODIFY | IN_DELETE);
@@ -293,6 +295,22 @@ void FileSystemWatcher::NotifyThread()
   while (m_ExitThread == false)
   {
 #ifdef _LINUX
+
+    fd_set rfds, errfds;
+    FD_ZERO(&rfds); FD_ZERO(&errfds);
+    FD_SET(m_Data->m_NotifyHandle, &rfds);
+    FD_SET(m_Data->m_NotifyHandle, &errfds);
+
+    timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 10000;
+    auto num_fds = select(FD_SETSIZE, &rfds, NULL, &errfds, &tv);
+
+    if(num_fds == 0)
+    {
+      continue;
+    }
+
     char buffer[8092];
     auto result = read(m_Data->m_NotifyHandle, &buffer, sizeof(buffer));
     auto notify_info = reinterpret_cast<inotify_event *>(buffer);

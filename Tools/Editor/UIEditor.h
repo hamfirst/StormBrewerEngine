@@ -2,6 +2,7 @@
 
 #include <QTabWidget>
 #include <QGridLayout>
+#include <QTextEdit>
 
 #include <memory>
 
@@ -12,7 +13,6 @@
 #include "PropertyEditor.h"
 #include "ScrollingPanel.h"
 #include "UIEditorViewer.h"
-#include "UIEditorPropertyContainer.h"
 
 class UIEditorPropertyContainer;
 
@@ -29,8 +29,8 @@ private:
   UIDef & m_UI;
 
   std::unique_ptr<QGridLayout> m_Layout;
-  std::unique_ptr<ScrollingPanel> m_PropertiesPanel;
-  NotNullPtr<UIEditorPropertyContainer> m_PropertiesContainer;
+  std::unique_ptr<GenericFrame> m_UIProperties;
+  std::unique_ptr<QTextEdit> m_Output;
 
   std::unique_ptr<UIEditorViewer> m_Viewer;
 

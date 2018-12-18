@@ -28,7 +28,7 @@ public:
   UIManager(Window & container_window);
   ~UIManager();
 
-  void LoadScripts();
+  void LoadScripts(Delegate<void> && load_complete_callback = {});
   bool FinishedLoading() const;
 
   void Update(float delta_time, InputState & input_state, RenderState & render_state);

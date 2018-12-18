@@ -82,8 +82,7 @@ set(GENERIC_SRC_Editor
             TextureViewer.cpp
             MapEditorTileSelector.cpp
             SpriteEditor.cpp
-            UIEditorPropertyContainer.cpp
-            PropertyEditorFile.cpp
+  PropertyEditorFile.cpp
             MapEditorToolParalaxObjectLayerDraw.cpp
             MapEditorToolVolumeCreate.cpp
             PropertyEditorList.cpp
@@ -217,8 +216,7 @@ set(GENERIC_HEADER_Editor
             MapEditorToolManualTileLayerSelect.h
             AtlasElementEditor.h
             MapEditorLayerManager.h
-            UIEditorPropertyContainer.h
-            FrameEditorAnchorManager.h
+  FrameEditorAnchorManager.h
             TextInputDialog.h
             MapEditorToolEntityLayerSelect.h
             DocumentListValueWatcher.h
