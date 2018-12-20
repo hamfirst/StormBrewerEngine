@@ -18,7 +18,7 @@ class UIScriptLoader
 public:
   UIScriptLoader(NotNullPtr<ScriptState> script_state);
 
-  void InitLoad(Delegate<void> && load_complete_callback);
+  void InitLoad(bool immediate_load, Delegate<void> && load_complete_callback);
   void Update();
 
   bool AllScriptsLoaded() const;
@@ -64,7 +64,7 @@ private:
   std::vector<TextureAsset::AssetRef> m_TextureAssets;
   std::vector<AudioAsset::AssetRef> m_AudioAssets;
   std::vector<MusicAsset::AssetRef> m_MusicAssets;
-  int m_NextFontId = 100;
+  static int m_NextFontId;
 
   std::vector<AtlasPtr> m_AtlasAssets;
   std::vector<SpritePtr> m_SpriteAssets;

@@ -7,6 +7,9 @@
 #include "Foundation/Script/ScriptInterface.h"
 #include "Foundation/FileSystem/Directory.h"
 #include "Foundation/FileSystem/File.h"
+#include "Foundation/FileSystem/Path.h"
+
+int UIScriptLoader::m_NextFontId = 100;
 
 UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state) :
   m_LoaderInterface(script_state)
@@ -25,26 +28,71 @@ UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state) :
   m_ScriptState->BindAsGlobal("loader", m_LoaderInterface.GetObject());
 }
 
-void UIScriptLoader::InitLoad(Delegate<void> && load_complete_callback)
+void UIScriptLoader::InitLoad(bool immediate_load, Delegate<void> && load_complete_callback)
 {
-  m_State = kLoadingScripts;
-  m_LoadCompleteCallback = std::move(load_complete_callback);
 
   auto old_scripts = std::move(m_ScriptResources);
+  m_LoadCompleteCallback = std::move(load_complete_callback);
+
+  if(immediate_load)
+  {
+    auto root_path = GetCanonicalRootPath();
+
+    auto script_files = GetFilesInDirectory("./UIs/Scripts/Init", "lua");
+    std::sort(script_files.begin(), script_files.end());
+    for(auto & script_file : script_files)
+    {
+      auto script_binary_file = FileReadFull(GetFullPath(script_file, root_path).c_str());
+      if(script_binary_file)
+      {
+        m_ScriptState->LoadScript(script_binary_file->Get(), script_binary_file->GetSize(), script_file.c_str());
+      }
+    }
+
+    script_files = GetFilesInDirectory("./UIs/Scripts/Elements", "lua");
+    std::sort(script_files.begin(), script_files.end());
+    for(auto & script_file : script_files)
+    {
+      auto script_binary_file = FileReadFull(GetFullPath(script_file, root_path).c_str());
+      if(script_binary_file)
+      {
+        m_ScriptState->LoadScript(script_binary_file->Get(), script_binary_file->GetSize(), script_file.c_str());
+      }
+    }
+
+    script_files = GetFilesInDirectory("./UIs/Scripts", "lua");
+    std::sort(script_files.begin(), script_files.end());
+    for(auto & script_file : script_files)
+    {
+      auto script_binary_file = FileReadFull(GetFullPath(script_file, root_path).c_str());
+      if(script_binary_file)
+      {
+        m_ScriptState->LoadScript(script_binary_file->Get(), script_binary_file->GetSize(), script_file.c_str());
+      }
+    }
+
+    m_State = kLoadingAssets;
+    return;
+  }
+
+  m_State = kLoadingScripts;
 
   auto script_files = GetFilesInDirectory("./UIs/Scripts/Init", "lua");
+  std::sort(script_files.begin(), script_files.end());
   for(auto & script_file : script_files)
   {
     m_ScriptResources.emplace_back(GenericBinaryResource::Load(script_file.c_str()));
   }
 
-  script_files = GetFilesInDirectory("./UIs/Elements", "lua");
+  script_files = GetFilesInDirectory("./UIs/Scripts/Elements", "lua");
+  std::sort(script_files.begin(), script_files.end());
   for(auto & script_file : script_files)
   {
     m_ScriptResources.emplace_back(GenericBinaryResource::Load(script_file.c_str()));
   }
 
   script_files = GetFilesInDirectory("./UIs/Scripts", "lua");
+  std::sort(script_files.begin(), script_files.end());
   for(auto & script_file : script_files)
   {
     m_ScriptResources.emplace_back(GenericBinaryResource::Load(script_file.c_str()));
@@ -221,7 +269,7 @@ int UIScriptLoader::LoadFont(std::string path, int size)
   auto test_font_id = g_TextManager.FindFontId(path.c_str(), size);
   if(test_font_id)
   {
-    return test_font_id.Value();
+    return test_font_id.Value() | kFontId;
   }
 
   g_TextManager.LoadFont(path.c_str(), m_NextFontId, size);

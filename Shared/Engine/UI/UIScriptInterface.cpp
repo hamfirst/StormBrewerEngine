@@ -33,9 +33,10 @@ void UIScriptInterface::EndRendering()
   m_RenderUtil = nullptr;
 }
 
-void UIScriptInterface::SetActiveArea(const Box & active_area)
+void UIScriptInterface::SetActiveArea(const Box & active_area, bool clip)
 {
   m_ActiveArea = active_area;
+  m_Clip = clip;
 }
 
 void UIScriptInterface::RenderTexture(int texture_id, int x, int y)
@@ -56,6 +57,24 @@ void UIScriptInterface::RenderTextureScale(int texture_id, int x, int y, float s
 void UIScriptInterface::RenderTextureScaleTint(int texture_id, int x, int y, float scale_x, float scale_y, float r, float g, float b, float a)
 {
   RenderTextureInternal(texture_id, x, y, r, g, b, a, scale_x, scale_y);
+}
+
+std::pair<int, int> UIScriptInterface::GetTextureSize(int texture_id)
+{
+  if((texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kTextureId)
+  {
+    return std::make_pair(0, 0);
+  }
+
+  auto & texture_ref = m_UIManager->m_ScriptLoader->m_TextureAssets[texture_id & UIScriptLoader::kIndexMask];
+  auto texture = texture_ref.Resolve();
+  if(texture == nullptr || texture->IsLoaded() == false)
+  {
+    return std::make_pair(0, 0);
+  }
+
+  auto size = texture->GetSize();
+  return std::make_pair(size.x, size.y);
 }
 
 void UIScriptInterface::PlayAudio(int audio_id)
@@ -196,7 +215,7 @@ void UIScriptInterface::RenderTextureInternal(int texture_id, int x, int y, floa
   QuadVertexBufferBuilder buffer_builder;
 
   QuadVertexBuilderInfo quad;
-  quad.m_Position = Box::FromFrameCenterAndSize(Vector2(x, y), texture->GetSize());
+  quad.m_Position = Box::FromStartAndWidthHeight(Vector2(x, y), texture->GetSize());
   quad.m_Color = Color(r, g, b, a);
   quad.m_TexCoords = Box::FromPoints(Vector2{}, texture->GetSize());
   quad.m_TextureSize = texture->GetSize();
@@ -209,13 +228,17 @@ void UIScriptInterface::RenderTextureInternal(int texture_id, int x, int y, floa
   m_RenderState->BindShader(shader);
 
   RenderVec4 screen_bounds;
-  screen_bounds.x = (float)m_ActiveArea.m_Start.x / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.y = (float)m_ActiveArea.m_Start.y / (float)m_RenderState->GetRenderHeight();
-  screen_bounds.w = (float)m_ActiveArea.m_End.x / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.z = (float)m_ActiveArea.m_End.y / (float)m_RenderState->GetRenderHeight();
-
-  screen_bounds -= RenderVec4{ 0.5f, 0.5f, 0.5f, 0.5f };
-  screen_bounds *= 2.0f;
+  if(m_Clip)
+  {
+    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+  }
+  else
+  {
+    screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
+  }
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
@@ -317,10 +340,17 @@ void UIScriptInterface::FlushGeometry()
   m_RenderState->BindShader(shader);
 
   RenderVec4 screen_bounds;
-  screen_bounds.x = 2.0f * ((float)m_ActiveArea.m_Start.x - 0.5f) / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.y = 2.0f * ((float)m_ActiveArea.m_Start.y - 0.5f) / (float)m_RenderState->GetRenderHeight();
-  screen_bounds.z = 2.0f * ((float)m_ActiveArea.m_End.x - 0.5f) / (float)m_RenderState->GetRenderWidth();
-  screen_bounds.w = 2.0f * ((float)m_ActiveArea.m_End.y - 0.5f) / (float)m_RenderState->GetRenderHeight();
+  if(m_Clip)
+  {
+    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+  }
+  else
+  {
+    screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
+  }
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
@@ -388,7 +418,16 @@ void UIScriptInterface::DrawTextInternal(int font_id, czstr text, int x, int y, 
   g_TextManager.SetTextPos(Vector2(x, y) + m_ActiveArea.m_Start);
   g_TextManager.SetPrimaryColor(Color(r, g, b, a));
   g_TextManager.SetTextMode(static_cast<TextRenderMode>(mode));
-  g_TextManager.SetTextBounds(m_ActiveArea);
+
+  if(m_Clip)
+  {
+    g_TextManager.SetTextBounds(m_ActiveArea);
+  }
+  else
+  {
+    g_TextManager.ClearTextBounds();
+  }
+
   g_TextManager.RenderText(text, font_id & UIScriptLoader::kIndexMask, scale, *m_RenderState);
 }
 
@@ -416,7 +455,7 @@ void UIScriptInterface::DrawTextInternal(int font_id, ScriptClassRef<UITextInput
   g_TextManager.SetPrimaryColor(Color(r, g, b, a));
   g_TextManager.SetTextMode(static_cast<TextRenderMode>(mode));
   g_TextManager.SetTextBounds(m_ActiveArea);
-  g_TextManager.RenderInputText(text->m_TextInput, font_id & UIScriptLoader::kIndexMask, scale, *m_RenderState, text->Prompt.c_str());
+  g_TextManager.RenderInputText(text->m_TextInput, font_id & UIScriptLoader::kIndexMask, scale, *m_RenderState, "");
 }
 
 std::pair<int, int> UIScriptInterface::MeasureTextInternal(int font_id, ScriptClassRef<UITextInput> & text, float scale)

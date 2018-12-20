@@ -38,6 +38,7 @@ public:
   ScriptClassDelegate<void> OnRender;
 
   bool Enabled = true;
+  bool Clip = true;
   int X = 0;
   int Y = 0;
   int Width = 0;

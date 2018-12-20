@@ -251,7 +251,7 @@ public:
     m_Callbacks = nullptr;
   }
 
-  bool IsValid()
+  bool IsValid() const
   {
     return m_Callbacks != nullptr;
   }
@@ -260,7 +260,13 @@ public:
   {
     return m_Callbacks != nullptr;
   }
-  
+
+  operator bool() const
+  {
+    return m_Callbacks != nullptr;
+  }
+
+
 private:
 
   unsigned char m_Buffer[kMaxDelegateSize];

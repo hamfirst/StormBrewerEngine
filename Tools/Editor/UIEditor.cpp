@@ -41,8 +41,39 @@ UIEditor::UIEditor(EditorContainer & editor_container, PropertyFieldDatabase & p
   m_PropertyEditor = m_UIProperties->CreateWidget<PropertyEditor>();
   m_PropertyEditor->LoadStruct(this, m_UI, true);
 
+  m_Output->setReadOnly(true);
+
   setLayout(m_Layout.get());
 }
 
+void UIEditor::DisplayError(czstr error)
+{
+  m_NumOutputLines++;
+  if(m_NumOutputLines > 50)
+  {
+    return;
+  }
+
+  auto vertical_scroll = m_Output->verticalScrollBar();
+  bool at_end = true;
+
+  if(vertical_scroll)
+  {
+    at_end = vertical_scroll->value() == vertical_scroll->maximum();
+  }
+
+  m_Output->append(error);
+
+  if(vertical_scroll)
+  {
+    vertical_scroll->setValue(vertical_scroll->maximum());
+  }
+}
+
+void UIEditor::ClearErrors()
+{
+  m_Output->setText("");
+  m_NumOutputLines = 0;
+}
 
 REGISTER_EDITOR("UI", UIEditor, UIDef, ".ui", "UIs");

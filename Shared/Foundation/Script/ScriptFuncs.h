@@ -87,6 +87,7 @@ public:
   static bool CheckArgCount(void * state, int args);
   static bool CallFunc(void * state, int num_args, int num_results);
   static void Discard(void * state, int num_stack_vals);
+  static void ReportMessage(void * state, czstr message);
   static void ReportError(void * state, czstr message);
 };
 

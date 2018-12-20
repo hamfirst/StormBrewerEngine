@@ -249,10 +249,22 @@ void ScriptFuncs::Discard(void * state, int num_stack_vals)
   lua_pop(lua_state, num_stack_vals);
 }
 
+void ScriptFuncs::ReportMessage(void * state, czstr message)
+{
+  auto lua_state = static_cast<lua_State *>(state);
+  auto script_state = static_cast<ScriptState *>(lua_getmanager(lua_state));
+
+  script_state->m_ErrorOutput(message);
+}
+
 void ScriptFuncs::ReportError(void * state, czstr message)
 {
   auto lua_state = static_cast<lua_State *>(state);
   auto script_state = static_cast<ScriptState *>(lua_getmanager(lua_state));
+
+  luaL_traceback(lua_state, lua_state, nullptr, 0);
+  script_state->m_ErrorOutput(lua_tostring(lua_state, -1));
+  lua_pop(lua_state, 1);
 
   script_state->m_ErrorOutput(message);
 }

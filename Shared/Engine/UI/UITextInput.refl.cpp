@@ -7,7 +7,17 @@
 UITextInput::UITextInput(std::shared_ptr<TextInputContext> && context) :
   m_TextInput(std::move(context))
 {
-
+  m_TextInput->SetValidator([this](const char * text){
+    if(IsInvalidInput.IsValid())
+    {
+      bool invalid = IsInvalidInput(text);
+      return !invalid;
+    }
+    else
+    {
+      return true;
+    }
+  });
 }
 
 void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)

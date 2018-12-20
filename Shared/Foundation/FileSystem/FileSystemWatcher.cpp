@@ -65,10 +65,6 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
   {
     printf("Error creating notofy handle\n");
   }
-  else
-  {
-    printf("Created notify handle\n");
-  }
 #endif
 
   m_NotifyThread = std::thread(&FileSystemWatcher::NotifyThread, this);
@@ -106,7 +102,10 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
   auto full_path = JoinPath(root_dir, local_path);
 
 #ifdef _LINUX
-  dir.m_NotifyWatch = inotify_add_watch(m_Data->m_NotifyHandle, full_path.c_str(), IN_CREATE | IN_MODIFY | IN_DELETE);
+
+  auto actual_path = GetFullPath(full_path, root_dir);
+
+  dir.m_NotifyWatch = inotify_add_watch(m_Data->m_NotifyHandle, actual_path.c_str(), IN_CREATE | IN_MODIFY | IN_DELETE);
   if(dir.m_NotifyWatch < 0)
   {
     printf("Error bad watch id returned (%s) %d\n", full_path.c_str(), errno);
@@ -326,6 +325,8 @@ void FileSystemWatcher::NotifyThread()
         auto file_name = notify_info->name;
 
         auto local_file_path = dir_path + file_name;
+        auto full_path = GetFullPath(local_file_path, m_RootPath);
+
         if(notify_info->mask & IN_CREATE)
         {
           if (is_file)
@@ -334,7 +335,7 @@ void FileSystemWatcher::NotifyThread()
             if (dir)
             {
               std::error_code ec;
-              auto last_write = fs::last_write_time(local_file_path.c_str(), ec);
+              auto last_write = fs::last_write_time(full_path.c_str(), ec);
 
               dir->m_Files.emplace(std::make_pair(file_name, last_write));
               TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kAdd, last_write);
@@ -368,9 +369,10 @@ void FileSystemWatcher::NotifyThread()
             if (itr != dir->m_Files.end())
             {
               std::error_code ec;
-              auto last_write = fs::last_write_time(local_file_path.data(), ec);    
+              auto last_write = fs::last_write_time(full_path.data(), ec);
+              auto cached_last_write = itr->second;
 
-              if (last_write > itr->second)
+              if (last_write > cached_last_write)
               {
                 itr->second = last_write;
                 TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kModify, last_write);

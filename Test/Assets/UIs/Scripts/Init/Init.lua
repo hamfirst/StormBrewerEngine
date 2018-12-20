@@ -12,7 +12,9 @@ function FinalizeLoad()
     post_load_funcs = {}
     next_post_load_index = 0
 
-    for k, v, in pairs(load_funcs) do
+    for k, v in pairs(load_funcs) do
         v()
     end
 end
+
+font = loader:LoadFont("./Fonts/FFF.ttf", 7);
