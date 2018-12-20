@@ -225,6 +225,12 @@ void UIEditorViewer::keyPressEvent(QKeyEvent * event)
     return;
   }
 
+  if(event->key() == Qt::Key_F4)
+  {
+    m_UIManager->ClearUI();
+    return;
+  }
+
   if (m_ImeMode)
   {
     auto text = event->text().toStdString();
@@ -245,7 +251,11 @@ void UIEditorViewer::keyReleaseEvent(QKeyEvent * event)
 
   if(event->key() == Qt::Key_F5)
   {
-    Refresh();
+    return;
+  }
+
+  if(event->key() == Qt::Key_F4)
+  {
     return;
   }
 

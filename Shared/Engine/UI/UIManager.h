@@ -44,6 +44,7 @@ public:
   ScriptClassRef<UIClickable> AllocateClickable();
 
   void PushUIDef(const UIDef & def);
+  void ClearUI();
   ScriptInterface & CreateGameInterface();
 
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
@@ -55,7 +56,7 @@ protected:
   friend class UIClickable;
 
   void AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable);
-  void RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable);
+  void RemoveClickableFromRoot(const ScriptClassRef<UIClickable> & clickable);
   void TrashClickable(NotNullPtr<UIClickable> clickable);
   void RemoveDeadClickables();
 

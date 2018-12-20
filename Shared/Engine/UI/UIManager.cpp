@@ -120,11 +120,15 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
     m_ScriptLoader->Update();
   }
 
+  RemoveDeadClickables();
+
   if(m_ScriptLoader->Complete())
   {
-    m_ScriptState->Call("ProcessLerps", { delta_time });
     m_ScriptState->BindAsGlobal("ScreenWidth", render_state.GetRenderWidth());
     m_ScriptState->BindAsGlobal("ScreenHeight", render_state.GetRenderHeight());
+
+    m_ScriptState->Call("ProcessLerps", { delta_time });
+    RemoveDeadClickables();
   }
 
   auto update_time = m_UpdateTimer.GetTimeSinceLastCheck();
@@ -212,8 +216,22 @@ void UIManager::PushUIDef(const UIDef & def)
     m_ScriptState->Call(m_CleanupFunc.c_str(), {});
   }
 
+  RemoveDeadClickables();
+
   m_ScriptState->Call(def.m_InitFunction.c_str(), {});
   m_CleanupFunc = def.m_CleanupFunction;
+  RemoveDeadClickables();
+}
+
+void UIManager::ClearUI()
+{
+  if(m_CleanupFunc.empty() == false)
+  {
+    m_ScriptState->Call(m_CleanupFunc.c_str(), {});
+    m_CleanupFunc.clear();
+  }
+
+  RemoveDeadClickables();
 }
 
 ScriptInterface & UIManager::CreateGameInterface()
@@ -225,7 +243,10 @@ ScriptInterface & UIManager::CreateGameInterface()
 
 bool UIManager::Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val)
 {
-  return m_ScriptState->Call(name, args, return_val);
+  bool success = m_ScriptState->Call(name, args, return_val);
+  RemoveDeadClickables();
+
+  return success;
 }
 
 bool UIManager::HasSelectedElement() const
@@ -238,7 +259,7 @@ void UIManager::AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable
   m_RootClickables.push_back(clickable);
 }
 
-void UIManager::RemoveClickableFromRoot(NotNullPtr<UIClickable> clickable)
+void UIManager::RemoveClickableFromRoot(const ScriptClassRef<UIClickable> & clickable)
 {
   for(std::size_t index = 0, end = m_RootClickables.size(); index < end; ++index)
   {

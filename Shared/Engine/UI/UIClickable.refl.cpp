@@ -36,7 +36,7 @@ void UIClickable::SetParent(ScriptClassRef<UIClickable> & parent)
 
   if(!m_Parent)
   {
-    m_Manager->RemoveClickableFromRoot(this);
+    m_Manager->RemoveClickableFromRoot(GetClassRef());
   }
   else
   {
@@ -83,7 +83,7 @@ void UIClickable::Destroy()
   {
     if(m_Manager->m_Destroying == false)
     {
-      m_Manager->RemoveClickableFromRoot(this);
+      m_Manager->RemoveClickableFromRoot(GetClassRef());
     }
   }
   else

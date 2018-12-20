@@ -2,7 +2,7 @@
 active_lerps = {}
 next_lerp_id = 0
 
-function AddLerp(obj, var_name, target_val, t)
+function AddLerp(obj, var_name, target_val, t, onfinish)
   local cur_val = obj[var_name]
 
   lerp = {
@@ -11,7 +11,8 @@ function AddLerp(obj, var_name, target_val, t)
     delta = 1 / t,
     start = cur_val,
     target = target_val,
-    t = 0
+    t = 0,
+    onfinish = onfinish
   }
 
   local lerp_id = next_lerp_id
@@ -32,11 +33,17 @@ end
 
 function ProcessLerps(dt)
   for k, v in pairs(active_lerps) do
-    local cur_val = v.obj[v.var_name]
+    local elem = v.obj
+    local cur_val = elem[v.var_name]
     v.t = v.t + v.delta * dt
 
     if v.t >= 1 then
-      v.obj[v.var_name] = v.target
+      elem[v.var_name] = v.target
+
+      if v.onfinish ~= nil then
+        v.onfinish()
+      end
+
       active_lerps[k] = nil
     else
       v.obj[v.var_name] = (v.target * v.t) + (v.start * (1 - v.t))
