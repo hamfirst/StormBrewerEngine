@@ -13,6 +13,9 @@
 #include "Engine/Audio/MusicManager.h"
 
 #include "Runtime/Atlas/AtlasResource.h"
+#include "Runtime/UI/UIResource.h"
+
+GLOBAL_ASSET(UIResourcePtr, "./UI/Test.ui", g_MainMenuUI);
 
 czstr g_AccountName = nullptr;
 
@@ -40,7 +43,10 @@ void GameModeMainMenu::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
+  container.SetUI(g_MainMenuUI);
+
   //g_MusicManager.CutTo(GetContainer().GetClientGlobalResources().MainMenuMusic, 0.5f);
+
 }
 
 void GameModeMainMenu::Update()

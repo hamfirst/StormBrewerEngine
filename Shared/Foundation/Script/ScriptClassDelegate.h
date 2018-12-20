@@ -37,6 +37,11 @@ public:
     return m_Delegate.Call(std::forward<Args>(args)...);
   }
 
+  bool IsValid() const
+  {
+    return m_Delegate.IsValid();
+  }
+
 private:
 
   template <typename T>

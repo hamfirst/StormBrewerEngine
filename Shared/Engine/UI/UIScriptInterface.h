@@ -21,12 +21,13 @@ public:
 
   void BeginRendering(NotNullPtr<RenderState> render_state, NullOptPtr<RenderUtil> render_util);
   void EndRendering();
-  void SetActiveArea(const Box & active_area);
+  void SetActiveArea(const Box & active_area, bool clip);
 
   void RenderTexture(int texture_id, int x, int y);
   void RenderTextureTint(int texture_id, int x, int y, float r, float g, float b, float a);
   void RenderTextureScale(int texture_id, int x, int y, float scale_x, float scale_y);
   void RenderTextureScaleTint(int texture_id, int x, int y, float scale_x, float scale_y, float r, float g, float b, float a);
+  std::pair<int, int> GetTextureSize(int texture_id);
 
   void PlayAudio(int audio_id);
   void PlayAudioVolumePan(int audio_id, float volume, float pan);
@@ -76,6 +77,7 @@ private:
   NullOptPtr<RenderState> m_RenderState = nullptr;
   NullOptPtr<RenderUtil> m_RenderUtil = nullptr;
   Box m_ActiveArea;
+  bool m_Clip;
 
   Optional<GeometryVertexBufferBuilder> m_GeometryBuffer;
 };

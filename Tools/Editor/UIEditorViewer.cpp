@@ -46,10 +46,20 @@ UIEditorViewer::~UIEditorViewer()
 
 void UIEditorViewer::Refresh()
 {
+  m_Editor->ClearErrors();
+
+  std::time_t t = std::time(nullptr);
+  char time_str[100];
+  std::strftime(time_str, sizeof(time_str), "Loading Scripts: %T", std::localtime(&t));
+
+  m_Editor->DisplayError(time_str);
+
   auto old_manager = m_UIManager ? std::move(m_UIManager) : std::unique_ptr<UIManager>();
+  auto screen_size = Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight);
 
   m_UIManager = std::make_unique<UIManager>(m_FakeWindow->GetWindow());
-  m_UIManager->LoadScripts([this] { m_UIManager->PushUIDef(m_UI); });
+  m_UIManager->LoadScripts(screen_size, true,
+          [this] { m_UIManager->PushUIDef(m_UI); }, [this](czstr err) { m_Editor->DisplayError(err); });
 
   auto & interface = m_UIManager->CreateGameInterface();
   for(auto elem : m_UI.m_Variables)
@@ -140,6 +150,7 @@ void UIEditorViewer::Update()
     Refresh();
   }
 
+  m_FakeWindow->GetWindow().Update();
   m_UIManager->Update(delta_time, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 
   repaint();
@@ -156,28 +167,38 @@ void UIEditorViewer::resizeGL(int w, int h)
 
 void UIEditorViewer::paintGL()
 {
-  Color color(100, 149, 237, 255);
+  Color color(255, 255, 255, 255);
 
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 
   m_RenderState.MakeCurrent();
 
-  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
-  m_RenderState.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), Vector2f(kDefaultResolutionWidth, kDefaultResolutionHeight) * -0.5f);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+  m_RenderState.SetScreenSize(Vector2f(width(), height()));
+  m_RenderState.SetRenderSize(Vector2f(width(), height()));
 
   GeometryVertexBufferBuilder builder;
-  builder.Rectangle(Box::FromPoints(Vector2(0, 0), Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)), 2.0f, Color(255, 255, 255, 255));
-  builder.DrawDefault(m_RenderState, m_RenderUtil);
+  builder.Rectangle(Box::FromFrameCenterAndSize({}, Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)),
+          1.0f, Color(0.0f, 0.0f, 0.0f, 1.0f));
 
-  m_RenderState.SetRenderSize(Vector2f(kDefaultResolutionWidth + 100, kDefaultResolutionHeight + 100));
+  auto & vertex_buffer = m_RenderUtil.GetScratchBuffer();
+  builder.FillVertexBuffer(vertex_buffer);
+
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  m_RenderState.BindShader(shader);
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState.GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0.0, 0.0 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+
+  m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+  m_RenderState.BindVertexBuffer(vertex_buffer);
+  m_RenderState.Draw();
+
   m_UIManager->Render(m_RenderState, m_RenderUtil);
 }
 
@@ -198,6 +219,12 @@ void UIEditorViewer::keyPressEvent(QKeyEvent * event)
     return;
   }
 
+  if(event->key() == Qt::Key_F5)
+  {
+    Refresh();
+    return;
+  }
+
   if (m_ImeMode)
   {
     auto text = event->text().toStdString();
@@ -213,6 +240,12 @@ void UIEditorViewer::keyReleaseEvent(QKeyEvent * event)
 {
   if (!m_FakeWindow)
   {
+    return;
+  }
+
+  if(event->key() == Qt::Key_F5)
+  {
+    Refresh();
     return;
   }
 
@@ -259,6 +292,11 @@ void UIEditorViewer::mouseMoveEvent(QMouseEvent *event)
   {
     return;
   }
+
+
+//  auto pointer_pos = (Vector2)m_RenderState.ScreenPixelsToRenderPixels(Vector2(event->x(), event->y()));
+//  auto info = std::to_string(pointer_pos.x) + " " + std::to_string(pointer_pos.y);
+//  m_Editor->DisplayError(info.c_str());
 
   m_FakeWindow->HandleMouseMoveMessage(event->x(), event->y());
 }

@@ -24,6 +24,9 @@ public:
     DocumentChangeLinkDelegate && change_link_callback, DocumentBeginTransactionDelegate && begin_transaction_callback,
     DocumentCommitChangesDelegate && commit_change_callback, QWidget *parent = nullptr);
 
+  void DisplayError(czstr error);
+  void ClearErrors();
+
 private:
 
   UIDef & m_UI;
@@ -31,6 +34,7 @@ private:
   std::unique_ptr<QGridLayout> m_Layout;
   std::unique_ptr<GenericFrame> m_UIProperties;
   std::unique_ptr<QTextEdit> m_Output;
+  int m_NumOutputLines = 0;
 
   std::unique_ptr<UIEditorViewer> m_Viewer;
 

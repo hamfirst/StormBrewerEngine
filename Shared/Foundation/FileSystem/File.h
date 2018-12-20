@@ -65,5 +65,6 @@ bool FileExists(czstr path);
 bool FileDelete(czstr path);
 
 std::string FileReadFullAsString(czstr path);
+Optional<Buffer> FileReadFull(czstr path);
 
 

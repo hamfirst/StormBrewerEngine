@@ -1,15 +1,18 @@
 
 #pragma once
 
-#include "lua/lua.hpp"
 
 #include "Foundation/Script/ScriptState.h"
 #include "Foundation/Script/ScriptObject.h"
 #include "Foundation/Script/ScriptValue.h"
 #include "Foundation/Script/ScriptClass.h"
+#include "Foundation/Script/ScriptFuncs.h"
 #include "Foundation/Script/ScriptFuncPtr.h"
 #include "Foundation/Script/ScriptClassInstance.h"
 #include "Foundation/Script/ScriptClassRef.h"
+
+#include "lua/lua.hpp"
+
 
 struct ScriptClassInstanceInfo
 {
@@ -93,6 +96,31 @@ public:
     return 0;
   }
 
+  static int Print(lua_State *L)
+  {
+    std::string output;
+
+    int n = lua_gettop(L);  /* number of arguments */
+    int i;
+    lua_getglobal(L, "tostring");
+    for (i=1; i<=n; i++) {
+      const char *s;
+      size_t l;
+      lua_pushvalue(L, -1);  /* function to be called */
+      lua_pushvalue(L, i);   /* value to print */
+      lua_call(L, 1, 1);
+      s = lua_tolstring(L, -1, &l);  /* get result */
+      if (s == NULL)
+        return luaL_error(L, "'tostring' must return a string to 'print'");
+      if (i>1) output += "\t";
+      output += s;
+      lua_pop(L, 1);  /* pop result */
+    }
+
+    ScriptFuncs::ReportMessage(L, output.c_str());
+    return 0;
+  }
+
   static lua_State * InitState(NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = lua_newstate(l_alloc, script_state);
@@ -129,6 +157,11 @@ public:
     lua_pushstring(lua_state, "global_objs");
     lua_newtable(lua_state);
     lua_settable(lua_state, -3);
+
+    lua_pushstring(lua_state, "print");
+    lua_pushcfunction(lua_state, Print);
+    lua_settable(lua_state, -3);
+
     lua_pop(lua_state, 1);
 
     return lua_state;

@@ -100,7 +100,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
   g_DocumentRegistrationCallList.CallAll();
 
   ui.setupUi(this);
-  resize(1000, 600);
+  resize(1280, 720);
 
   auto new_config = ui.menu_New->addAction("Config");
   connect(new_config, &QAction::triggered, this, &EditorContainer::newConfigFile);

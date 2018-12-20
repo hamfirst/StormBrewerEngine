@@ -9,6 +9,8 @@
 #include "Engine/UI/UIManager.h"
 #include "Engine/EngineState.h"
 
+#include "Runtime/UI/UIResource.h"
+
 #include "GameShared/GameStageManager.h"
 
 #include "GameClient/GameMode.h"
@@ -89,6 +91,7 @@ public:
 
   void UpdateUIManager();
   void RenderUIManager();
+  void SetUI(const UIResourcePtr & ui);
 
 private:
   EngineState m_EngineState;

@@ -44,7 +44,7 @@ GameContainer::GameContainer(Window & window, std::unique_ptr<GameContainerInitS
   m_RenderUtil.LoadShaders();
 
   g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);
-  m_EngineState.GetUIManager()->LoadScripts();
+  m_EngineState.GetUIManager()->LoadScripts(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
 
   m_FrameClock.Start();
 
@@ -237,4 +237,9 @@ void GameContainer::RenderUIManager()
   auto & render_state = GetRenderState();
   auto & render_util = GetRenderUtil();
   GetEngineState().GetUIManager()->Render(render_state, render_util);
+}
+
+void GameContainer::SetUI(const UIResourcePtr & ui)
+{
+  GetEngineState().GetUIManager()->PushUIDef(*ui.GetData());
 }

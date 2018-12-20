@@ -37,20 +37,27 @@ UIManager::~UIManager()
   RemoveDeadClickables();
 }
 
-void UIManager::LoadScripts(Delegate<void> && load_complete_callback)
+void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
+        Delegate<void> && load_complete_callback, Delegate<void, czstr> && error_output)
 {
   m_ClickableClass.Emplace("Clickable",
                            [this](){ auto clickable = new UIClickable(this); return clickable; },
                            [this](ScriptClassRef<UIClickable> & ref) { AddClickableToRoot(ref); },
                            [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
 
-
-  m_TextInputClass.Emplace("TextInput",
+  m_TextInputClass.Emplace("TextInputContext",
                            [this](){ auto clickable = new UITextInput(m_ContainerWindow.CreateTextInputContext()); return clickable; },
                            [this](ScriptClassRef<UITextInput> & ref) { },
                            [this](void * ptr) { delete static_cast<UITextInput *>(ptr); });
 
   m_ScriptState.Emplace();
+  m_ScriptState->BindAsGlobal("ScreenWidth", screen_size.x);
+  m_ScriptState->BindAsGlobal("ScreenHeight", screen_size.y);
+
+  if(error_output.IsValid())
+  {
+    m_ScriptState->SetErrorDelegate(std::move(error_output));
+  }
 
   m_ClickableClass->Register(m_ScriptState.GetPtr());
   m_TextInputClass->Register(m_ScriptState.GetPtr());
@@ -66,6 +73,7 @@ void UIManager::LoadScripts(Delegate<void> && load_complete_callback)
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureTint);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScale);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScaleTint);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetTextureSize);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudio);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudioVolumePan);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayMusic);
@@ -97,7 +105,7 @@ void UIManager::LoadScripts(Delegate<void> && load_complete_callback)
   m_ScriptState->BindAsGlobal("ui", ui_interface.GetObject());
 
   m_ScriptLoader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
-  m_ScriptLoader->InitLoad(std::move(load_complete_callback));
+  m_ScriptLoader->InitLoad(immediate_load, std::move(load_complete_callback));
 }
 
 bool UIManager::FinishedLoading() const
@@ -110,6 +118,13 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
   if(m_ScriptLoader)
   {
     m_ScriptLoader->Update();
+  }
+
+  if(m_ScriptLoader->Complete())
+  {
+    m_ScriptState->Call("ProcessLerps", { delta_time });
+    m_ScriptState->BindAsGlobal("ScreenWidth", render_state.GetRenderWidth());
+    m_ScriptState->BindAsGlobal("ScreenHeight", render_state.GetRenderHeight());
   }
 
   auto update_time = m_UpdateTimer.GetTimeSinceLastCheck();
@@ -152,7 +167,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
     {
       if(elem->m_ActiveArea)
       {
-        m_ScriptInterface->SetActiveArea(elem->m_ActiveArea.Value());
+        m_ScriptInterface->SetActiveArea(elem->m_ActiveArea.Value(), elem->Clip);
         elem->OnRender();
       }
     }
@@ -204,6 +219,7 @@ void UIManager::PushUIDef(const UIDef & def)
 ScriptInterface & UIManager::CreateGameInterface()
 {
   m_GameInterfaceObject.Emplace(m_ScriptState.GetPtr());
+  m_ScriptState->BindAsGlobal("game", m_GameInterfaceObject->GetObject());
   return m_GameInterfaceObject.Value();
 }
 
@@ -355,7 +371,6 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
   auto pointer_pos = (Vector2)render_state.ScreenPixelsToRenderPixels(pointer_state.m_Pos);
 
   Vector2 ui_pos = pointer_pos;
-  //ui_pos += render_state.GetRenderSize() / 2;
 
   UIClickable * cur_hover_clickable = nullptr;
 

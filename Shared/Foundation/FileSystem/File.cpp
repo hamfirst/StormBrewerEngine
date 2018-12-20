@@ -268,3 +268,16 @@ std::string FileReadFullAsString(czstr path)
   return str;
 }
 
+
+Optional<Buffer> FileReadFull(czstr path)
+{
+  auto file = FileOpen(path, FileOpenMode::kRead);
+  if (file.GetFileOpenError())
+  {
+    return{};
+  }
+
+  Buffer buffer(file.GetFileLength());
+  file.Read(gsl::make_span(buffer.Get(), file.GetFileLength()));
+  return buffer;
+}
