@@ -73,7 +73,7 @@ template <>
 struct StormReflFuncInfo<UITextInput>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 2;
+  static constexpr int funcs_n = 3;
   template <int N> struct func_data_static {};
 };
 
@@ -106,6 +106,22 @@ struct StormReflFuncInfo<UITextInput>::func_data_static<0>::param_info<0>
 template <>
 struct StormReflFuncInfo<UITextInput>::func_data_static<1>
 {
+  using func_ptr_type = bool (UITextInput::*)();
+  using return_type = bool;
+  static constexpr int params_n = 0;
+  static constexpr auto GetName() { return "IsCurrent"; }
+  static constexpr auto GetReturnType() { return "bool"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x38C5E568; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0x55813692; }
+  static constexpr auto GetFunctionIndex() { return 1; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &UITextInput::IsCurrent; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<UITextInput>::func_data_static<2>
+{
   using func_ptr_type = std::string (UITextInput::*)();
   using return_type = std::string;
   static constexpr int params_n = 0;
@@ -113,7 +129,7 @@ struct StormReflFuncInfo<UITextInput>::func_data_static<1>
   static constexpr auto GetReturnType() { return "std::string"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xF2569B8A; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xC508D6F7; }
-  static constexpr auto GetFunctionIndex() { return 1; }
+  static constexpr auto GetFunctionIndex() { return 2; }
   static constexpr func_ptr_type GetFunctionPtr() { return &UITextInput::GetText; }
   template <int i>
   struct param_info { };

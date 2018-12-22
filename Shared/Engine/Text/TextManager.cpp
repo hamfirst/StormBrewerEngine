@@ -137,7 +137,7 @@ void TextManager::AddTextToBuffer(std::shared_ptr<TextInputContext> & context, i
   }
   else
   {
-    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, -1, -1, context->IsTextInputActive() ? cursor_pos : -1);
+    AddTextToBuffer(text.data(), font_id, scale, vertex_builder, -1, -1, context->IsTextInputActive() && show_cursor ? cursor_pos : -1);
   }
 }
 

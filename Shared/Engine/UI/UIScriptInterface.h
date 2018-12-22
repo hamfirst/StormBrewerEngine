@@ -22,6 +22,7 @@ public:
   void BeginRendering(NotNullPtr<RenderState> render_state, NullOptPtr<RenderUtil> render_util);
   void EndRendering();
   void SetActiveArea(const Box & active_area, bool clip);
+  void ToggleFullscreen();
 
   void RenderTexture(int texture_id, int x, int y);
   void RenderTextureTint(int texture_id, int x, int y, float r, float g, float b, float a);
@@ -31,6 +32,8 @@ public:
 
   void PlayAudio(int audio_id);
   void PlayAudioVolumePan(int audio_id, float volume, float pan);
+  float GetAudioVolume();
+  void SetAudioVolume(float volume);
 
   void PlayMusic(int music_id);
   void PlayMusicVolume(int music_id, float volume);
@@ -38,6 +41,8 @@ public:
   void FadeToMusicVolume(int music_id, float volume, float fade_out_time, float fade_in_time);
   void FadeOutMusic(float fade_out_time);
   void StopMusic();
+  float GetMusicVolume();
+  void SetMusicVolume(float volume);
 
   void DrawText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode);
   void DrawCenteredText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode);

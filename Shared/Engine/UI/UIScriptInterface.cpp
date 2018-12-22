@@ -12,6 +12,7 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/MusicManager.h"
+#include "Engine/Window/Window.h"
 #include "UIScriptLoader.h"
 
 
@@ -37,6 +38,12 @@ void UIScriptInterface::SetActiveArea(const Box & active_area, bool clip)
 {
   m_ActiveArea = active_area;
   m_Clip = clip;
+}
+
+void UIScriptInterface::ToggleFullscreen()
+{
+  auto & window = m_UIManager->m_ContainerWindow;
+  window.SetFullscreen(!window.IsFullScreen());
 }
 
 void UIScriptInterface::RenderTexture(int texture_id, int x, int y)
@@ -87,6 +94,18 @@ void UIScriptInterface::PlayAudioVolumePan(int audio_id, float volume, float pan
   PlayAudioInternal(audio_id, volume, pan);
 }
 
+float UIScriptInterface::GetAudioVolume()
+{
+  return g_AudioManager.GetVolumeForCategory(VolumeCategory::kSoundEffects);
+}
+
+void UIScriptInterface::SetAudioVolume(float volume)
+{
+  g_AudioManager.SetVolumeCategory(VolumeCategory::kSoundEffects, volume);
+  g_AudioManager.SetVolumeCategory(VolumeCategory::kUI, volume);
+}
+
+
 void UIScriptInterface::PlayMusic(int music_id)
 {
   PlayMusicInternal(music_id, 1.0f, 0.0f, 0.0f);
@@ -115,6 +134,16 @@ void UIScriptInterface::FadeOutMusic(float fade_out_time)
 void UIScriptInterface::StopMusic()
 {
   g_MusicManager.StopAll();
+}
+
+float UIScriptInterface::GetMusicVolume()
+{
+  return g_AudioManager.GetVolumeForCategory(VolumeCategory::kMusic);
+}
+
+void UIScriptInterface::SetMusicVolume(float volume)
+{
+  g_AudioManager.SetVolumeCategory(VolumeCategory::kMusic, volume);
 }
 
 void UIScriptInterface::DrawText(int font_id, const std::string & text, int x, int y, float r, float g, float b, float a, int mode)

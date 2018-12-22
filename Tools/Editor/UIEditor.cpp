@@ -48,11 +48,22 @@ UIEditor::UIEditor(EditorContainer & editor_container, PropertyFieldDatabase & p
 
 void UIEditor::DisplayError(czstr error)
 {
-  m_NumOutputLines++;
-  if(m_NumOutputLines > 50)
+  auto cur_time = GetTimeSeconds();
+  if(cur_time - m_LastOutput < 0.2)
   {
-    return;
+    m_NumOutputLines++;
+    if (m_NumOutputLines > 50)
+    {
+      m_LastOutput = cur_time;
+      return;
+    }
   }
+  else
+  {
+    m_NumOutputLines = 0;
+  }
+
+  m_LastOutput = cur_time;
 
   auto vertical_scroll = m_Output->verticalScrollBar();
   bool at_end = true;

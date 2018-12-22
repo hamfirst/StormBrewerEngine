@@ -35,6 +35,7 @@ private:
   std::unique_ptr<GenericFrame> m_UIProperties;
   std::unique_ptr<QTextEdit> m_Output;
   int m_NumOutputLines = 0;
+  double m_LastOutput = 0;
 
   std::unique_ptr<UIEditorViewer> m_Viewer;
 

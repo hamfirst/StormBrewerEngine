@@ -33,9 +33,14 @@ public:
 
 
   ScriptClassDelegate<void, int, int> OnStateChange;
-  ScriptClassDelegate<void> OnClick;
   ScriptClassDelegate<void, float> OnUpdate;
   ScriptClassDelegate<void> OnRender;
+
+
+  ScriptClassDelegate<void, int, int> OnMouseEnter;
+  ScriptClassDelegate<void> OnMouseLeave;
+  ScriptClassDelegate<void, int, int> OnMouseMove;
+  ScriptClassDelegate<void, int, int> OnClick;
 
   bool Enabled = true;
   bool Clip = true;

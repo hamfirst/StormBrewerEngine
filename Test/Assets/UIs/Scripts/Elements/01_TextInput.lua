@@ -25,19 +25,19 @@ function TextInput:Render()
   ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, r, g, b, 1)
   ui:FlushGeometry()
 
-  if text == "" then
-    if self.prompt ~= "" then
+  if text == "" and self.prompt ~= "" then
 
-      r = 0.51
-      g = 0.50
-      b = 0.52
+    r = 0.51
+    g = 0.50
+    b = 0.52
 
-      local text_width, text_height = ui:MeasureText(font, self.prompt)
-      ui:DrawText(font, self.prompt, 5, self.height / 2 - text_height / 2 + 1, r, g, b, 1, kNormal)
-    end
-  else
+    local text_width, text_height = ui:MeasureText(font, self.prompt)
+    ui:DrawText(font, self.prompt, 10, self.height / 2 - text_height / 2 + 1, r, g, b, 1, kNormal)
+  end
+
+  if self:IsCurrent() then
     local text_width, text_height = ui:MeasureTextInput(font, self.context)
-    ui:DrawTextInput(font, self.context, 5, self.height / 2 - text_height / 2 + 1, r, g, b, 1, kNormal)
+    ui:DrawTextInput(font, self.context, 5, self.height / 2 - text_height / 2 + 1, 0, 0, 0, 1, kNormal)
   end
 end
 
@@ -47,6 +47,10 @@ end
 
 function TextInput:MakeCurrent()
   self.context:MakeCurrent(self.clickable)
+end
+
+function TextInput:IsCurrent()
+  return self.context:IsCurrent()
 end
 
 function TextInput:Clicked()

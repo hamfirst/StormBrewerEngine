@@ -32,6 +32,18 @@ function Elem:setup(o)
     o:StateChanged(old_state, new_state)
   end
 
+  o.clickable.OnMouseEnter = function(x, y)
+    o:MouseEntered(x, y)
+  end
+
+  o.clickable.OnMouseMove = function(x, y)
+    o:MouseMoved(x, y)
+  end
+
+  o.clickable.OnMouseLeave = function()
+    o:MouseLeft()
+  end
+
   o.clickable.OnClick = function()
     o:Clicked()
   end
@@ -54,6 +66,18 @@ function Elem:Render()
 end
 
 function Elem:StateChanged(old_state, new_state)
+
+end
+
+function Elem:MouseEntered(x, y)
+
+end
+
+function Elem:MouseMoved(x, y)
+
+end
+
+function Elem:MouseLeft()
 
 end
 

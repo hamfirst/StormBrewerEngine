@@ -69,6 +69,7 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   auto & ui_interface = m_UIInterfaceObject.Value();
   auto script_interface = m_ScriptInterface.get();
 
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, ToggleFullscreen);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTexture);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureTint);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScale);
@@ -76,12 +77,16 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetTextureSize);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudio);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudioVolumePan);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetAudioVolume);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, SetAudioVolume);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayMusicVolume);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeToMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeToMusicVolume);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FadeOutMusic);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, StopMusic);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetMusicVolume);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, SetMusicVolume);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawText);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredText);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextScaled);
@@ -344,6 +349,16 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     AddToClickableList(elem.Get(), nullptr, clickables);
   }
 
+  NullOptPtr<UIClickable> prev_hover_clickable = nullptr;
+  for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
+  {
+    auto & elem = *itr;
+    if(elem->m_State == (int)UIClickableState::kHover)
+    {
+      prev_hover_clickable = elem;
+    }
+  }
+
   for(auto & elem : clickables)
   {
     if(elem->m_Dead == false)
@@ -417,6 +432,11 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
   };
 
+  auto GetRelativePos = [&](UIClickable * clickable)
+  {
+    return ui_pos - clickable->m_ActiveArea->m_Start;
+  };
+
   if (pointer_state.m_InFocus)
   {
     if(m_GrabbedMouseClickable)
@@ -486,7 +506,8 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       {
         if (cur_hover_clickable == cur_pressed_clickable)
         {
-          cur_pressed_clickable->OnClick();
+          auto relative_pos = GetRelativePos(cur_hover_clickable);
+          cur_pressed_clickable->OnClick(relative_pos.x, relative_pos.y);
           cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kHover);
           cur_pressed_clickable->m_State = (int)UIClickableState::kHover;
         }
@@ -536,8 +557,30 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
   }
 
+  if(prev_hover_clickable && prev_hover_clickable->m_Dead == false && prev_hover_clickable != cur_hover_clickable)
+  {
+    prev_hover_clickable->OnMouseLeave();
+  }
+
+  if(cur_hover_clickable)
+  {
+    auto relative_pos = GetRelativePos(cur_hover_clickable);
+    if(cur_hover_clickable != prev_hover_clickable)
+    {
+      cur_hover_clickable->OnMouseEnter(relative_pos.x, relative_pos.y);
+    }
+
+    if(m_PrevCursorPos.x != ui_pos.x || m_PrevCursorPos.y != ui_pos.y)
+    {
+      cur_hover_clickable->OnMouseMove(relative_pos.x, relative_pos.y);
+    }
+  }
+
   if ((cur_hover_clickable && cur_hover_clickable->Enabled) || (cur_pressed_clickable && cur_pressed_clickable->Enabled))
   {
     m_HasSelectedElement = true;
   }
+
+  m_PrevCursorPos = ui_pos;
+  RemoveDeadClickables();
 }

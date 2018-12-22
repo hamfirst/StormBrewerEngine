@@ -29,6 +29,11 @@ void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)
   }
 }
 
+bool UITextInput::IsCurrent()
+{
+  return m_TextInput->IsTextInputActive();
+}
+
 std::string UITextInput::GetText()
 {
   return m_TextInput->GetCurrentInput();
