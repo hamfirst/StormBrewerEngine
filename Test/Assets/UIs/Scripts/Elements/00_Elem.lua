@@ -24,8 +24,8 @@ function Elem:setup(o)
     o.clickable.Height = o.height
   end
 
-  o.clickable.OnRender = function()
-    o:Render()
+  o.clickable.OnDraw = function()
+    o:Draw()
   end
 
   o.clickable.OnStateChange = function(old_state, new_state)
@@ -61,7 +61,7 @@ function Elem:Update(dt)
 
 end
 
-function Elem:Render()
+function Elem:Draw()
 
 end
 

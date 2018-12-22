@@ -70,10 +70,10 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   auto script_interface = m_ScriptInterface.get();
 
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, ToggleFullscreen);
-  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTexture);
-  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureTint);
-  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScale);
-  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, RenderTextureScaleTint);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTexture);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextureTint);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextureScale);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextureScaleTint);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetTextureSize);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudio);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, PlayAudioVolumePan);
@@ -177,7 +177,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
       if(elem->m_ActiveArea)
       {
         m_ScriptInterface->SetActiveArea(elem->m_ActiveArea.Value(), elem->Clip);
-        elem->OnRender();
+        elem->OnDraw();
       }
     }
   }
@@ -315,10 +315,12 @@ void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr
     {
       if (parent->m_ActiveArea)
       {
-        auto active_area_start = parent->m_ActiveArea->m_Start + Vector2(clickable->X, clickable->Y);
+        auto & parent_active_area = parent->m_ActiveArea.Value();
+
+        auto active_area_start = parent_active_area.m_Start + Vector2(clickable->X, clickable->Y);
         auto active_area = Box::FromStartAndWidthHeight(active_area_start, Vector2(clickable->Width, clickable->Height));
 
-        parent->m_ActiveArea = ClipBox(active_area, parent->m_ActiveArea.Value());
+        clickable->m_ActiveArea = ClipBox(active_area, parent_active_area);
       }
       else
       {

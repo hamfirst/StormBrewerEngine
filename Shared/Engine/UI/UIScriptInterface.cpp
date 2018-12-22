@@ -46,24 +46,24 @@ void UIScriptInterface::ToggleFullscreen()
   window.SetFullscreen(!window.IsFullScreen());
 }
 
-void UIScriptInterface::RenderTexture(int texture_id, int x, int y)
+void UIScriptInterface::DrawTexture(int texture_id, int x, int y)
 {
-  RenderTextureInternal(texture_id, x, y, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+  DrawTextureInternal(texture_id, x, y, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void UIScriptInterface::RenderTextureTint(int texture_id, int x, int y, float r, float g, float b, float a)
+void UIScriptInterface::DrawTextureTint(int texture_id, int x, int y, float r, float g, float b, float a)
 {
-  RenderTextureInternal(texture_id, x, y, r, g, b, a, 1.0f, 1.0f);
+  DrawTextureInternal(texture_id, x, y, r, g, b, a, 1.0f, 1.0f);
 }
 
-void UIScriptInterface::RenderTextureScale(int texture_id, int x, int y, float scale_x, float scale_y)
+void UIScriptInterface::DrawTextureScale(int texture_id, int x, int y, float scale_x, float scale_y)
 {
-  RenderTextureInternal(texture_id, x, y, 1.0f, 1.0f, 1.0f, 1.0f, scale_x, scale_y);
+  DrawTextureInternal(texture_id, x, y, 1.0f, 1.0f, 1.0f, 1.0f, scale_x, scale_y);
 }
 
-void UIScriptInterface::RenderTextureScaleTint(int texture_id, int x, int y, float scale_x, float scale_y, float r, float g, float b, float a)
+void UIScriptInterface::DrawTextureScaleTint(int texture_id, int x, int y, float scale_x, float scale_y, float r, float g, float b, float a)
 {
-  RenderTextureInternal(texture_id, x, y, r, g, b, a, scale_x, scale_y);
+  DrawTextureInternal(texture_id, x, y, r, g, b, a, scale_x, scale_y);
 }
 
 std::pair<int, int> UIScriptInterface::GetTextureSize(int texture_id)
@@ -222,7 +222,7 @@ std::pair<int, int> UIScriptInterface::MeasureTextInputScaled(int font_id, Scrip
   return MeasureTextInternal(font_id, text, scale);
 }
 
-void UIScriptInterface::RenderTextureInternal(int texture_id, int x, int y, float r, float g, float b, float a, float scale_x, float scale_y)
+void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float r, float g, float b, float a, float scale_x, float scale_y)
 {
   if(m_RenderState == nullptr)
   {

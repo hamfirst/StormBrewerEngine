@@ -8,7 +8,7 @@ function TextInput:setup(o)
   o.context = TextInputContext:new()
 end
 
-function TextInput:Render()
+function TextInput:Draw()
 
   local r, g, b = 0, 0, 0
   local cur_state = self:GetState()

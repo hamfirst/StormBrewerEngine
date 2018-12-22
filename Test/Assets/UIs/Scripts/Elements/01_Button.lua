@@ -8,7 +8,7 @@ Button.text = ""
 Button.alpha = 1.0
 Button.scale = 1.0
 
-function Button:Render()
+function Button:Draw()
 
   local r, g, b = 0, 0, 0
   local cur_state = self:GetState()

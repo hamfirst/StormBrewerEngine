@@ -137,14 +137,14 @@ template <>
 struct StormReflTypeInfo<UIClickable>::field_data_static<2>
 {
   using member_type = ScriptClassDelegate<void>; // ScriptClassDelegate<void>
-  static constexpr auto GetName() { return "OnRender"; }
+  static constexpr auto GetName() { return "OnDraw"; }
   static constexpr auto GetType() { return "ScriptClassDelegate<void>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x6C24056F; }
+  static constexpr unsigned GetFieldNameHash() { return 0x984A1D1B; }
   static constexpr unsigned GetTypeNameHash() { return 0x3E032AB0; }
   static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &UIClickable::OnRender; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnRender; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->OnRender; }
+  static constexpr auto GetMemberPtr() { return &UIClickable::OnDraw; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnDraw; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->OnDraw; }
 };
 
 template <typename Self>
@@ -152,8 +152,8 @@ struct StormReflTypeInfo<UIClickable>::field_data<2, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, ScriptClassDelegate<void>> & Get() { return self.OnRender; }
-  std::add_const_t<std::remove_reference_t<ScriptClassDelegate<void>>> & Get() const { return self.OnRender; }
+  match_const_t<Self, ScriptClassDelegate<void>> & Get() { return self.OnDraw; }
+  std::add_const_t<std::remove_reference_t<ScriptClassDelegate<void>>> & Get() const { return self.OnDraw; }
 };
 
 template <>
