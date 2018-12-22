@@ -9,8 +9,8 @@ function AudioControl:setup(o)
   o.width, o.height = ui:GetTextureSize(audio_on_texture)
 end
 
-function AudioControl:Render()
-  
+function AudioControl:Draw()
+
   local texture_id = 0
   if ui:GetAudioVolume() > 0 then
     texture_id = audio_on_texture
@@ -19,7 +19,7 @@ function AudioControl:Render()
   end
 
   self.width, self.height = ui:GetTextureSize(texture_id)
-  ui:RenderTexture(texture_id, 0, 0)
+  ui:DrawTexture(texture_id, 0, 0)
 end
 
 function AudioControl:Clicked()

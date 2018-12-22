@@ -26,6 +26,12 @@ function InitMenu()
   local default_controls = PushMenuElement(DefaultControls:new())
   default_controls.x = ScreenWidth / 2 - 120
   default_controls.y = ScreenHeight / 2 - 40
+
+  local popup = PushMenuElement(ConfirmPopup:new())
+  popup.x = -400
+  popup.y = -100
+  popup.width = 300
+  popup.height = 150
   
   local fader = PushMenuElement(Fader:new())
   fader:FadeToClear()

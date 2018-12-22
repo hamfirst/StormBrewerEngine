@@ -34,7 +34,7 @@ public:
 
   ScriptClassDelegate<void, int, int> OnStateChange;
   ScriptClassDelegate<void, float> OnUpdate;
-  ScriptClassDelegate<void> OnRender;
+  ScriptClassDelegate<void> OnDraw;
 
 
   ScriptClassDelegate<void, int, int> OnMouseEnter;

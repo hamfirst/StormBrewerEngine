@@ -9,7 +9,7 @@ function MusicControl:setup(o)
   o.width, o.height = ui:GetTextureSize(music_on_texture)
 end
 
-function MusicControl:Render()
+function MusicControl:Draw()
 
   local texture_id = 0
   if ui:GetMusicVolume() > 0 then
@@ -19,7 +19,7 @@ function MusicControl:Render()
   end
 
   self.width, self.height = ui:GetTextureSize(texture_id)
-  ui:RenderTexture(texture_id, 0, 0)
+  ui:DrawTexture(texture_id, 0, 0)
 end
 
 function MusicControl:Clicked()

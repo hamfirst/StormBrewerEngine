@@ -6,7 +6,7 @@ Fader.y = ScreenHeight / -2
 Fader.width = ScreenWidth
 Fader.height = ScreenHeight
 
-function Fader:Render()
+function Fader:Draw()
 
   if self.alpha == 0 then
     return

@@ -7,7 +7,7 @@ function Texture:SetTexture(texture_id)
   self.width, self.height = ui:GetTextureSize(texture_id)
 end
 
-function Texture:Render()
+function Texture:Draw()
 
   if self.alpha == 0 then
     return
@@ -18,7 +18,7 @@ function Texture:Render()
   if width > 0 and height > 0 then
     local scale_x = self.width / width
     local scale_y = self.height / height
-    ui:RenderTextureScaleTint(self.texture_id, 0, 0, scale_x, scale_y, 1, 1, 1, self.alpha)
+    ui:DrawTextureScaleTint(self.texture_id, 0, 0, scale_x, scale_y, 1, 1, 1, self.alpha)
   end
 
 end
