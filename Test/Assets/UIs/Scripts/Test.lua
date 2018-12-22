@@ -32,6 +32,7 @@ function InitMenu()
   popup.y = -100
   popup.width = 300
   popup.height = 150
+  --popup:SetEnabled(false)
   
   local fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
