@@ -24,6 +24,7 @@ TextInputContext::~TextInputContext()
 void TextInputContext::MakeCurrent(NullOptPtr<Box> input_box)
 {
   g_WindowManager.SetTextInputContext(m_WindowId, shared_from_this(), input_box);
+  m_LastModification = GetTimeSeconds();
 }
 
 void TextInputContext::Unbind()
@@ -140,6 +141,11 @@ void TextInputContext::CommitInput(czstr input)
   if (m_AllowFirstInput == false)
   {
     m_AllowFirstInput = true;
+    return;
+  }
+
+  if(*input <= 0x1F)
+  {
     return;
   }
 

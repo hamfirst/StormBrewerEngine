@@ -1,11 +1,6 @@
 
-logo = loader:LoadTexture("./Images/stormbrewers_logo.png")
-
 function InitMenu()
   print("Testing menu ")
-
-  local texture = PushMenuElement(Texture:new())
-  texture:SetTexture(logo)
 
   local button = PushMenuElement(Button:new())
   button.x = 0
@@ -27,6 +22,10 @@ function InitMenu()
   input.width = 100
   input.height = 15
   input.prompt = "Input"
+
+  local default_controls = PushMenuElement(DefaultControls:new())
+  default_controls.x = ScreenWidth / 2 - 120
+  default_controls.y = ScreenHeight / 2 - 40
   
   local fader = PushMenuElement(Fader:new())
   fader:FadeToClear()

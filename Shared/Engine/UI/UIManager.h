@@ -83,6 +83,7 @@ private:
   std::vector<NotNullPtr<UIClickable>> m_DeadClickables;
 
   std::string m_CleanupFunc;
+  Vector2 m_PrevCursorPos = Vector2(-10000, -10000);
 
   NotNullPtr<UIClickable> m_GrabbedMouseClickable = nullptr;
   bool m_HasSelectedElement = false;

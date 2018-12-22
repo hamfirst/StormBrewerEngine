@@ -13,7 +13,13 @@ function Texture:Render()
     return
   end
 
-  ui:RenderTextureTint(self.texture_id, 0, 0, 1, 1, 1, self.alpha)
+  local width, height = ui:GetTextureSize(self.texture_id)
+
+  if width > 0 and height > 0 then
+    local scale_x = self.width / width
+    local scale_y = self.height / height
+    ui:RenderTextureScaleTint(self.texture_id, 0, 0, scale_x, scale_y, 1, 1, 1, self.alpha)
+  end
 
 end
 
