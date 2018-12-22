@@ -81,20 +81,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIClickable.refl.meta.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/00_Elem.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/00_Elem.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Button.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Button.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Fader.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Fader.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_TextInput.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_TextInput.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Texture.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Texture.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_AudioControl.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_AudioControl.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_FullScreenControl.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_FullScreenControl.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_MusicControl.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_MusicControl.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Test.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Test.lua" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -159,8 +145,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="52" selection-start-line="52" selection-end-line="52" />
+            <state relative-caret-position="207">
+              <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -931,12 +917,12 @@
       <workItem from="1545116157912" duration="28960000" />
       <workItem from="1545294462232" duration="6522000" />
       <workItem from="1545379176920" duration="11009000" />
-      <workItem from="1545489461003" duration="6383000" />
+      <workItem from="1545489461003" duration="8234000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="835233000" />
+    <option name="totallyTimeSpent" value="837084000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-1" width="1920" height="1055" extended-state="6" />
@@ -947,7 +933,7 @@
       <window_info id="Favorites" order="2" sideWeight="0.5007949" side_tool="true" weight="0.20469432" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3265306" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49945414" visible="true" weight="0.27712137" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.27712137" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.29752955" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1360,8 +1346,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="207">
+          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
         </state>
       </provider>
     </entry>
