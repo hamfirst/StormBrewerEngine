@@ -39,12 +39,15 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   auto normal = Vector2f(dir.y, -dir.x);
   auto thick = normal * (thickness / 2);
 
-  AddVert(a + thick, c);
-  AddVert(b + thick, c);
-  AddVert(b - thick, c);
-  AddVert(a + thick, c);
-  AddVert(b - thick, c);
-  AddVert(a - thick, c);
+  auto start = a + Vector2f(0.5f, 0.5f) - dir * Vector2f(0.5f, 0.5f);
+  auto end = b + Vector2f(0.5f, 0.5f) + dir * Vector2f(0.5f, 0.5f);
+
+  AddVert(start + thick, c);
+  AddVert(end + thick, c);
+  AddVert(end - thick, c);
+  AddVert(start + thick, c);
+  AddVert(end - thick, c);
+  AddVert(start - thick, c);
 }
 
 void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c)
@@ -62,12 +65,15 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   auto start_thick = normal * (start_thickness / 2);
   auto end_thick = normal * (end_thickness / 2);
 
-  AddVert(a + start_thick, c);
-  AddVert(b + end_thick, c);
-  AddVert(b - end_thick, c);
-  AddVert(a + start_thick, c);
-  AddVert(b - end_thick, c);
-  AddVert(a - start_thick, c);
+  auto start = a + Vector2f(0.5f, 0.5f) - dir * Vector2f(0.5f, 0.5f);
+  auto end = b + Vector2f(0.5f, 0.5f) + dir * Vector2f(0.5f, 0.5f);
+
+  AddVert(start + start_thick, c);
+  AddVert(end + end_thick, c);
+  AddVert(end - end_thick, c);
+  AddVert(start + start_thick, c);
+  AddVert(end - end_thick, c);
+  AddVert(start - start_thick, c);
 }
 
 void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs)

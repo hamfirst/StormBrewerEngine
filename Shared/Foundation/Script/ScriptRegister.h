@@ -86,6 +86,6 @@ template <typename EnumType>
 void ScriptAddEnumAsGlobals(NotNullPtr<ScriptState> state)
 {
   StormReflVisitEnumValues<EnumType>::VisitEach([&](auto f){
-    state->BindAsGlobal(f.GetName(), static_cast<int>(f.GetValue()));
+    state->SetGlobal(f.GetName(), static_cast<int>(f.GetValue()));
   });
 }

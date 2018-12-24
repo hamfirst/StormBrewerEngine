@@ -58,13 +58,17 @@ public:
   std::pair<int, int> MeasureTextInput(int font_id, ScriptClassRef<UITextInput> & text);
   std::pair<int, int> MeasureTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, float scale);
 
+  void DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame);
+  std::tuple<int, int, int> FrameAdvance(int sprite_id, std::string & anim_name, int anim_index, int anim_frame, int anim_delay, bool loop);
+
+  void DrawAtlas(int atlas_id, std::string & elem_name, int x, int y, int width, int height);
+
   void DrawLine(int sx, int sy, int ex, int ey, float r, float g, float b, float a);
   void DrawLineThickness(int sx, int sy, int ex, int ey, float r, float g, float b, float a, float thickness);
   void DrawRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a);
   void DrawFilledRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a);
   void DrawEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs);
   void DrawFilledEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs);
-
   void FlushGeometry();
 private:
 

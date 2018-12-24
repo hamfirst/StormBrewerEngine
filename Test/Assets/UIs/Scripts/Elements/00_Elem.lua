@@ -106,3 +106,7 @@ function Elem:SetClip(enabled)
   self.clickable.Clip = enabled
 end
 
+function Elem:Destroyed()
+
+end
+

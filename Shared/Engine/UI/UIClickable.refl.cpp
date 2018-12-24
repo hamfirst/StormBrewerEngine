@@ -100,6 +100,8 @@ void UIClickable::Destroy()
         }
       }
     }
+
+    m_Parent.Clear();
   }
 }
 

@@ -32,6 +32,11 @@ public:
   void Render(RenderState & render_state, czstr name, const Box & pos, const Color & color = Color(255, 255, 255, 255));
   void Render(RenderState & render_state, czstr name, const Vector2 & pos, const Color & color = Color(255, 255, 255, 255));
 
+  template <typename T>
+  NullOptPtr<T> GetEngineData()
+  {
+    return m_EngineData.Get<T>();
+  }
 protected:
   virtual void OnDataLoadComplete(const std::string & resource_data) override;
   virtual void CallAssetLoadCallbacks() override;

@@ -13,9 +13,12 @@
 
 #include "Foundation/SkipField/SkipField.h"
 #include "Foundation/Script/ScriptRegister.h"
+#include "Foundation/Script/ScriptFuncs.h"
+#include "Foundation/Lerp/LerpFuncs.h"
+
+#include "Runtime/UI/UIDef.refl.h"
 
 #include <sb/vector.h>
-#include <Shared/Runtime/UI/UIDef.refl.h>
 
 SkipField<UIClickable> s_UIClickableAllocator;
 
@@ -37,6 +40,11 @@ UIManager::~UIManager()
   RemoveDeadClickables();
 }
 
+#define BIND_EASING_FUNC(EasingType) \
+m_ScriptState->SetGlobalFunction("EaseIn" #EasingType, ScriptFunctionBinder<float, float>::Process<EaseIn ## EasingType>()); \
+m_ScriptState->SetGlobalFunction("EaseOut" #EasingType, ScriptFunctionBinder<float, float>::Process<EaseOut ## EasingType>()); \
+m_ScriptState->SetGlobalFunction("EaseInOut" #EasingType, ScriptFunctionBinder<float, float>::Process<EaseInOut ## EasingType>()); \
+
 void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
         Delegate<void> && load_complete_callback, Delegate<void, czstr> && error_output)
 {
@@ -51,8 +59,17 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
                            [this](void * ptr) { delete static_cast<UITextInput *>(ptr); });
 
   m_ScriptState.Emplace();
-  m_ScriptState->BindAsGlobal("ScreenWidth", screen_size.x);
-  m_ScriptState->BindAsGlobal("ScreenHeight", screen_size.y);
+  UpdateScriptGlobals(screen_size);
+
+  BIND_EASING_FUNC(Step);
+  BIND_EASING_FUNC(Linear);
+  BIND_EASING_FUNC(Sine);
+  BIND_EASING_FUNC(Quadratic);
+  BIND_EASING_FUNC(Cubic);
+  BIND_EASING_FUNC(Quartic);
+  BIND_EASING_FUNC(Quintic);
+  BIND_EASING_FUNC(Bounce);
+  BIND_EASING_FUNC(Elastic);
 
   if(error_output.IsValid())
   {
@@ -99,6 +116,9 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawCenteredTextInputScaled);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextInput);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, MeasureTextInputScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawSprite);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FrameAdvance);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawAtlas);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLine);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLineThickness);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawRectangle);
@@ -107,7 +127,7 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawFilledEllipse);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FlushGeometry);
 
-  m_ScriptState->BindAsGlobal("ui", ui_interface.GetObject());
+  m_ScriptState->SetGlobal("ui", ui_interface.GetObject());
 
   m_ScriptLoader = std::make_unique<UIScriptLoader>(m_ScriptState.GetPtr());
   m_ScriptLoader->InitLoad(immediate_load, std::move(load_complete_callback));
@@ -129,8 +149,8 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
 
   if(m_ScriptLoader->Complete())
   {
-    m_ScriptState->BindAsGlobal("ScreenWidth", render_state.GetRenderWidth());
-    m_ScriptState->BindAsGlobal("ScreenHeight", render_state.GetRenderHeight());
+    m_ScriptState->SetGlobal("ScreenWidth", render_state.GetRenderWidth());
+    m_ScriptState->SetGlobal("ScreenHeight", render_state.GetRenderHeight());
 
     m_ScriptState->Call("ProcessLerps", { delta_time });
     RemoveDeadClickables();
@@ -147,6 +167,8 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
 
 void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
 {
+  UpdateScriptGlobals(render_state.GetRenderSize());
+
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   auto render_size = (RenderVec2)render_state.GetRenderSize();
 
@@ -163,6 +185,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
 
   static std::vector<UIClickable *> clickables;
   clickables.clear();
+
 
   for(auto & elem : m_RootClickables)
   {
@@ -228,6 +251,11 @@ void UIManager::PushUIDef(const UIDef & def)
   RemoveDeadClickables();
 }
 
+void UIManager::PushUIDef(const UIResourcePtr & ui)
+{
+  PushUIDef(*ui.GetData());
+}
+
 void UIManager::ClearUI()
 {
   if(m_CleanupFunc.empty() == false)
@@ -242,7 +270,7 @@ void UIManager::ClearUI()
 ScriptInterface & UIManager::CreateGameInterface()
 {
   m_GameInterfaceObject.Emplace(m_ScriptState.GetPtr());
-  m_ScriptState->BindAsGlobal("game", m_GameInterfaceObject->GetObject());
+  m_ScriptState->SetGlobal("game", m_GameInterfaceObject->GetObject());
   return m_GameInterfaceObject.Value();
 }
 
@@ -252,6 +280,11 @@ bool UIManager::Call(czstr name, std::initializer_list<ScriptValue> args, NullOp
   RemoveDeadClickables();
 
   return success;
+}
+
+void UIManager::SetGlobal(czstr name, const ScriptValue & value)
+{
+  m_ScriptState->SetGlobal(name, value);
 }
 
 bool UIManager::HasSelectedElement() const
@@ -301,6 +334,21 @@ void UIManager::RemoveDeadClickables()
   }
 
   m_DeadClickables.clear();
+}
+
+void UIManager::UpdateScriptGlobals(const Vector2 & screen_size)
+{
+  m_ScriptState->SetGlobal("screen_width", screen_size.x);
+  m_ScriptState->SetGlobal("screen_height", screen_size.y);
+  m_ScriptState->SetGlobal("half_screen_width", screen_size.x / 2);
+  m_ScriptState->SetGlobal("half_screen_height", screen_size.y / 2);
+
+  auto screen_box = Box::FromFrameCenterAndSize({}, screen_size);
+
+  m_ScriptState->SetGlobal("screen_start_x", screen_box.m_Start.x);
+  m_ScriptState->SetGlobal("screen_start_y", screen_box.m_Start.y);
+  m_ScriptState->SetGlobal("screen_end_x", screen_box.m_End.x);
+  m_ScriptState->SetGlobal("screen_end_y", screen_box.m_End.y);
 }
 
 void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list)

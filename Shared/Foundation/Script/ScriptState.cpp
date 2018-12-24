@@ -52,9 +52,14 @@ bool ScriptState::Call(czstr name, std::initializer_list<ScriptValue> args, Null
   return false;
 }
 
-void ScriptState::BindAsGlobal(czstr name, const ScriptValue & value)
+void ScriptState::SetGlobal(czstr name, const ScriptValue & value)
 {
   ScriptInternal::CreateGlobalFromScriptObject(name, value, this);
+}
+
+void ScriptState::SetGlobalFunction(czstr name, int (*Func)(lua_State * state))
+{
+  ScriptInternal::CreateGlobalFromFunction(name, Func, this);
 }
 
 void ScriptState::ClearGlobal(czstr name)

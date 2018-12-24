@@ -23,7 +23,9 @@ public:
 
   void Load();
 
-  void Render(RenderState & render_state, czstr name, const Box & position, const Color & color = Color(255, 255, 255, 255));
+  void SetupRender(RenderState & render_state, czstr name, const Box & position, const Color & color = Color(255, 255, 255, 255));
+  void Render(RenderState & render_state, czstr name, const Box & position,
+          const Color & color = Color(255, 255, 255, 255), ShaderProgram & shader = g_ShaderManager.GetDefaultWorldSpaceShader());
 
 private:
   AtlasDef & m_Atlas;

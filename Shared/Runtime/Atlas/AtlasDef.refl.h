@@ -38,6 +38,9 @@ struct RUNTIME_EXPORT AtlasDefElementPosition
   RInt m_StartOffsetY = 4;
   RInt m_EndOffsetX = 4;
   RInt m_EndOffsetY = 4;
+
+  RBool m_RepeatHorizontal = true;
+  RBool m_RepeatVertical = true;
 };
 
 struct RUNTIME_EXPORT AtlasDefElement

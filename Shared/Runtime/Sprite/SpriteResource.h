@@ -14,6 +14,7 @@ class AnimationState;
 class RenderState;
 
 struct EntityRenderState;
+class SpriteEngineData;
 
 using SpritePtr = DocumentResourcePtr<SpriteDef, SpriteResource>;
 using SpriteLoadLink = DocumentResourceLoadCallbackLink<SpriteDef, SpriteResource>;
@@ -41,6 +42,12 @@ public:
   void SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const;
 
   void Render(RenderState & render_state, EntityRenderState & entity_render_state, Vector2 position);
+
+  template <typename T>
+  NullOptPtr<T> GetEngineData()
+  {
+    return m_EngineData.Get<T>();
+  }
 
   template <typename Visitor>
   void VisitEvents(Visitor && visitor, int animation_index, int animation_frame, int animation_frame_delay) const

@@ -18,10 +18,15 @@ static const char * kDefaultVertexShader = SHADER_LITERAL(
 
   void main()
   {
+    vec2 screen_start = floor(u_ScreenSize / 2.0) * -1.0;
+    vec2 screen_end = screen_start + u_ScreenSize;
+
     vec2 position = vec2(dot(u_Matrix.xy, a_Position), dot(u_Matrix.zw, a_Position));
     position += u_Offset;
+    position -= screen_start;
     position /= u_ScreenSize;
     position *= 2.0;
+    position -= vec2(1.0, 1.0);
 
     gl_Position = vec4(position, 0, 1);
     v_Position = position;

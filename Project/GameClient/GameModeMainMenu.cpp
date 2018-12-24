@@ -7,15 +7,17 @@
 #include "GameClient/GameModeOfflineStaging.h"
 #include "GameClient/GameContainer.h"
 
+#include "Engine/Engine.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/MusicManager.h"
+#include "Engine/UI/UIManager.h"
 
-#include "Runtime/Atlas/AtlasResource.h"
 #include "Runtime/UI/UIResource.h"
 
-GLOBAL_ASSET(UIResourcePtr, "./UI/Test.ui", g_MainMenuUI);
+GLOBAL_ASSET(UIResourcePtr, "./UIs/MainMenu.ui", g_MainMenuUI);
+
 
 czstr g_AccountName = nullptr;
 
@@ -32,7 +34,6 @@ GameModeMainMenu::~GameModeMainMenu()
 
 void GameModeMainMenu::Initialize()
 {
-  GetAssets().LoadAsset<TextureAsset>("./Images/GameTitle.png");
 
 }
 
@@ -43,10 +44,20 @@ void GameModeMainMenu::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
-  container.SetUI(g_MainMenuUI);
+  auto ui = container.GetUIManager();
 
-  //g_MusicManager.CutTo(GetContainer().GetClientGlobalResources().MainMenuMusic, 0.5f);
+  auto & game_interface = ui->CreateGameInterface();
 
+  BIND_SCRIPT_INTERFACE(game_interface, this, PlayOnline);
+  BIND_SCRIPT_INTERFACE(game_interface, this, PlayOffline);
+  BIND_SCRIPT_INTERFACE(game_interface, this, Tutorial);
+  BIND_SCRIPT_INTERFACE(game_interface, this, PlaySingleplayer);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CreatePrivateMatch);
+  BIND_SCRIPT_INTERFACE(game_interface, this, JoinPrivateMatch);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CanQuit);
+  BIND_SCRIPT_INTERFACE(game_interface, this, Quit);
+
+  container.GetUIManager()->PushUIDef(g_MainMenuUI);
 }
 
 void GameModeMainMenu::Update()
@@ -131,4 +142,18 @@ void GameModeMainMenu::JoinPrivateMatch()
   }
 
   container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinOnline);
+}
+
+bool GameModeMainMenu::CanQuit()
+{
+#if defined(_WEB) || defined(_ANDROID) || defined(_IOS)
+  return false;
+#else
+  return true;
+#endif
+}
+
+void GameModeMainMenu::Quit()
+{
+  EngineQuit();
 }

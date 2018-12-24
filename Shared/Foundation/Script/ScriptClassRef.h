@@ -56,6 +56,11 @@ public:
     return *this;
   }
 
+  ~ScriptClassRef()
+  {
+    Clear();
+  }
+
   bool operator == (const ScriptClassRef<T> & rhs) const
   {
     return m_RefData == rhs.m_RefData;
@@ -117,12 +122,12 @@ public:
 
   explicit operator bool() const
   {
-    return m_RefData != nullptr;
+    return IsValid();
   }
 
   bool operator !() const
   {
-    return m_RefData == nullptr;
+    return !IsValid();
   }
 
 private:

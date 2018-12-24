@@ -20,7 +20,18 @@ bool ScriptValueParse(czstr data, ScriptValue & out)
     auto number = std::strtod(data, &end_ptr);
     if(*end_ptr)
     {
-      out = ScriptValue(std::string(data));
+      if(!strcmp(data, "true"))
+      {
+        out = ScriptValue(true);
+      }
+      else if(!strcmp(data, "false"))
+      {
+        out = ScriptValue(false);
+      }
+      else
+      {
+        out = ScriptValue(std::string(data));
+      }
       return true;
     }
     else

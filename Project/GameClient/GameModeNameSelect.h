@@ -28,7 +28,9 @@ public:
 
 protected:
 
-  void Submit(czstr user_name);
+  bool Submit(std::string & user_name);
+  bool CheckValidUserName(std::string & user_name);
+  bool CheckSubmitValidUserName(std::string & user_name);
   void Back();
 
   void GoToNextMode();

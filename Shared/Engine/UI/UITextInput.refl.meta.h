@@ -9,7 +9,7 @@ template <>
 struct StormReflTypeInfo<UITextInput>
 {
   using MyBase = void;
-  static constexpr int fields_n = 1;
+  static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -67,6 +67,29 @@ struct StormReflTypeInfo<UITextInput>::field_data<0, Self> : public StormReflTyp
   field_data(Self & self) : self(self) {}
   match_const_t<Self, ScriptClassDelegate<bool, std::string>> & Get() { return self.IsInvalidInput; }
   std::add_const_t<std::remove_reference_t<ScriptClassDelegate<bool, std::string>>> & Get() const { return self.IsInvalidInput; }
+};
+
+template <>
+struct StormReflTypeInfo<UITextInput>::field_data_static<1>
+{
+  using member_type = ScriptClassDelegate<void>; // ScriptClassDelegate<void>
+  static constexpr auto GetName() { return "OnEnter"; }
+  static constexpr auto GetType() { return "ScriptClassDelegate<void>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA342ACB3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3E032AB0; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &UITextInput::OnEnter; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UITextInput *>(obj); return &ptr->OnEnter; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UITextInput *>(obj); return &ptr->OnEnter; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UITextInput>::field_data<1, Self> : public StormReflTypeInfo<UITextInput>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, ScriptClassDelegate<void>> & Get() { return self.OnEnter; }
+  std::add_const_t<std::remove_reference_t<ScriptClassDelegate<void>>> & Get() const { return self.OnEnter; }
 };
 
 template <>

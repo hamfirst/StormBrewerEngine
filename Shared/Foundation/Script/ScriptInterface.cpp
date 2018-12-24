@@ -55,9 +55,43 @@ struct ScriptInterfaceInitFunc
         return 0;
       }
 
-      ScriptInternal::StackDump(state);
-
       auto interface = static_cast<ScriptInterface *>(interface_ptr);
+      int top = lua_gettop(state);
+
+      std::string message = interface->m_DebugStubFunctionNames[Index] + " Called With " + std::to_string(top - 1) + " Args";
+
+      if(top >= 2)
+      {
+        message += ":\n";
+      }
+
+      for (int i = 2; i <= top; i++)
+      {
+        int t = lua_type(state, i);
+        message += std::to_string(i - 1) + ". ";
+        switch (t)
+        {
+          case LUA_TSTRING:  /* strings */
+            message += lua_tostring(state, i);
+            break;
+
+          case LUA_TBOOLEAN:  /* booleans */
+            message += lua_toboolean(state, i) ? "true" : "false";
+            break;
+
+          case LUA_TNUMBER:  /* numbers */
+            message += std::to_string(lua_tonumber(state, i));
+            break;
+
+          default:  /* other values */
+            message += lua_typename(state, t);
+            break;
+        }
+        message += "\n";  /* put a separator */
+      }
+
+      ScriptFuncs::ReportMessage(state, message.c_str());
+
       ScriptInternal::PushScriptValue(state, interface->m_DebugStubReturnValues[Index]);
       return 1;
     };
@@ -107,8 +141,9 @@ void ScriptInterface::AddVariable(czstr name, const ScriptValue & value)
 
 void ScriptInterface::AddDebugStubFunction(czstr name, ScriptValue && return_value)
 {
-  ScriptInternal::WriteTableFunction(name, *m_Object, g_ScriptInterfaceCallbackFuncs[m_NextDebugFuncId], m_ScriptState);
+  ScriptInternal::WriteTableFunction(name, *m_Object, g_ScriptDebugStubFuncs[m_NextDebugFuncId], m_ScriptState);
   m_DebugStubReturnValues.emplace_back(std::move(return_value));
+  m_DebugStubFunctionNames.emplace_back(name);
   m_NextDebugFuncId++;
 
   ASSERT(m_NextDebugFuncId == (int)m_DebugStubReturnValues.size(), "Stub function failed sanity check");
