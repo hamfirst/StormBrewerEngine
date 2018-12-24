@@ -18,6 +18,19 @@ UITextInput::UITextInput(std::shared_ptr<TextInputContext> && context) :
       return true;
     }
   });
+
+  m_TextInput->SetEnterDelegate([this](const char * text){
+    if(OnEnter.IsValid())
+    {
+      OnEnter();
+    }
+  });
+}
+
+UITextInput::~UITextInput()
+{
+  m_TextInput->SetValidator({});
+  m_TextInput->SetEnterDelegate({});
 }
 
 void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)

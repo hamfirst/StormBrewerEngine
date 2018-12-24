@@ -224,7 +224,7 @@ bool ScriptFuncs::CheckArgCount(void * state, int args)
 {
   auto lua_state = static_cast<lua_State *>(state);
   auto num_args = lua_gettop(lua_state);
-  return num_args == args + 1; // One extra for self
+  return num_args == args;
 }
 
 bool ScriptFuncs::CallFunc(void * state, int num_args, int num_results)

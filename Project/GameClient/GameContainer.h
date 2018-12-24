@@ -91,7 +91,9 @@ public:
 
   void UpdateUIManager();
   void RenderUIManager();
-  void SetUI(const UIResourcePtr & ui);
+  void ClearUIManager();
+  NotNullPtr<UIManager> GetUIManager();
+
 
 private:
   EngineState m_EngineState;

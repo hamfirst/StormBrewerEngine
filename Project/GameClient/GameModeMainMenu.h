@@ -28,6 +28,9 @@ protected:
   void PlaySingleplayer();
   void CreatePrivateMatch();
   void JoinPrivateMatch();
+  
+  bool CanQuit();
+  void Quit();
 
 private:
 

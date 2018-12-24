@@ -24,8 +24,10 @@ public:
 public:
 
   UITextInput(std::shared_ptr<TextInputContext> && context);
+  ~UITextInput();
 
   ScriptClassDelegate<bool, std::string> IsInvalidInput;
+  ScriptClassDelegate<void> OnEnter;
 
   void STORM_REFL_FUNC MakeCurrent(ScriptClassRef<UIClickable> container);
   bool STORM_REFL_FUNC IsCurrent();

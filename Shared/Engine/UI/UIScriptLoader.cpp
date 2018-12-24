@@ -25,7 +25,7 @@ UIScriptLoader::UIScriptLoader(NotNullPtr<ScriptState> script_state) :
   BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadAtlas);
   BIND_SCRIPT_INTERFACE(m_LoaderInterface, this, LoadSprite);
 
-  m_ScriptState->BindAsGlobal("loader", m_LoaderInterface.GetObject());
+  m_ScriptState->SetGlobal("loader", m_LoaderInterface.GetObject());
 }
 
 void UIScriptLoader::InitLoad(bool immediate_load, Delegate<void> && load_complete_callback)

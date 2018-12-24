@@ -40,7 +40,7 @@ public:
     auto call_method = [](int index, ScriptInterface * interface, lua_State * lua_state) -> int
     {
       static const int num_args = sizeof...(Args);
-      if(ScriptFuncs::CheckArgCount(lua_state, num_args) == false)
+      if(ScriptFuncs::CheckArgCount(lua_state, num_args + 1) == false) // One extra for self
       {
         ScriptFuncs::ReportError(lua_state, "Called function with improper number of arguments");
         return 0;
@@ -102,6 +102,7 @@ private:
   StaticAny<128> m_Delegates[kScriptInterfaceMaxFunctions];
 
   int m_NextDebugFuncId;
+  std::vector<std::string> m_DebugStubFunctionNames;
   std::vector<ScriptValue> m_DebugStubReturnValues;
 };
 

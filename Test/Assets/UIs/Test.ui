@@ -1,5 +1,6 @@
 []
 
 {
-    "m_Variables": { }
+    "m_Variables": { },
+    "m_InitFunction": "InitTestMenu"
 }

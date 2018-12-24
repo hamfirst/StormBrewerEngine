@@ -125,15 +125,21 @@ public:
   Variant(const Variant & rhs) :
     m_TypeIndex(rhs.m_TypeIndex)
   {
-    VariantCopier copier = GetCopier();
-    copier(&rhs.m_Buffer, &m_Buffer);
+    if(m_TypeIndex != -1)
+    {
+      VariantCopier copier = GetCopier();
+      copier(&rhs.m_Buffer, &m_Buffer);
+    }
   }
 
   Variant(Variant && rhs) :
     m_TypeIndex(rhs.m_TypeIndex)
   {
-    VariantMover mover = GetMover();
-    mover(&rhs.m_Buffer, &m_Buffer);
+    if(m_TypeIndex != -1)
+    {
+      VariantMover mover = GetMover();
+      mover(&rhs.m_Buffer, &m_Buffer);
+    }
   }
 
   ~Variant()

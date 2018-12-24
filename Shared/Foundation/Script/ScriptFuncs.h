@@ -7,6 +7,8 @@
 class ScriptClassBase;
 struct ScriptClassInstanceInfo;
 
+struct lua_State;
+
 class ScriptFuncs
 {
 public:
@@ -91,3 +93,51 @@ public:
   static void ReportError(void * state, czstr message);
 };
 
+template <typename ReturnValue, typename ... Args>
+struct ScriptFunctionBinder
+{
+  using LuaFuncType = int (*)(lua_State *);
+
+  template <ReturnValue (*Func)(Args...)>
+  static LuaFuncType Process()
+  {
+    auto call_method = [](lua_State * lua_state) -> int
+    {
+      static const int num_args = sizeof...(Args);
+      if (ScriptFuncs::CheckArgCount(lua_state, num_args) == false)
+      {
+        ScriptFuncs::ReportError(lua_state, "Called function with improper number of arguments");
+        return 0;
+      }
+
+      std::tuple<std::decay_t<Args>...> args;
+      using sequence = std::make_index_sequence<sizeof...(Args)>;
+
+      PullArgs(args, sequence{}, lua_state);
+      if constexpr(std::is_void_v<ReturnValue>)
+      {
+        std::apply(Func, args);
+        return 0;
+      }
+      else
+      {
+        auto val = std::apply(Func, args);
+        return ScriptFuncs::PushValue(lua_state, val);
+      }
+    };
+
+    return call_method;
+  }
+
+  template <typename ... TArgs, std::size_t ... I>
+  static void PullArgs(std::tuple<TArgs...> & arg, std::index_sequence<I...> seq, void * state)
+  {
+    std::initializer_list<bool> l = { ScriptFuncs::FetchValue(state, I + 1, std::get<I>(arg))... };
+  }
+};
+
+template <typename ReturnValue, typename ... Args>
+auto ScriptFunctionGetBinder(ReturnValue (*Func)(Args...))
+{
+  return ScriptFunctionBinder<ReturnValue, Args...>{};
+}

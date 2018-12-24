@@ -78,6 +78,10 @@ void UIEditorViewer::Refresh()
     {
       interface.AddDebugStubFunction(elem.second.m_Name.data(), std::move(val));
     }
+    else
+    {
+      interface.AddDebugStubFunction(elem.second.m_Name.data(), {});
+    }
   }
 
   m_UIManager->Update(0.0f, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);

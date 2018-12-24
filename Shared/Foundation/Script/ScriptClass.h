@@ -128,7 +128,7 @@ struct ScriptClassAssignMember<ScriptClassDelegate<ReturnType, Args...>>
       }
       else
       {
-        auto result = ScriptFuncs::CallFunc(state, sizeof...(Args), 0);
+        auto result = ScriptFuncs::CallFunc(state, sizeof...(Args), 1);
         if (result == false)
         {
           return {};
@@ -272,7 +272,7 @@ void ScriptClassFunctionAdder<T, FieldInfo, ReturnValue, Args...>::AddFunction(c
     }
 
     static const int num_args = sizeof...(Args);
-    if (ScriptFuncs::CheckArgCount(lua_state, num_args) == false)
+    if (ScriptFuncs::CheckArgCount(lua_state, num_args + 1) == false) // One extra for self
     {
       ScriptFuncs::ReportError(lua_state, "Called function with improper number of arguments");
       return 0;

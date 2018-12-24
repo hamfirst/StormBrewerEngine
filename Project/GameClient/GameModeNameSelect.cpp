@@ -4,13 +4,17 @@
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeJoinPrivateGame.h"
 #include "GameClient/GameContainer.h"
+#include "GameClient/GameModeNameSelect.h"
 
 #include "GameShared/GameValidation.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
-#include "GameModeNameSelect.h"
+#include "Engine/UI/UIManager.h"
 
+#include "Runtime/UI/UIResource.h"
+
+GLOBAL_ASSET(UIResourcePtr, "./UIs/NameSelect.ui", g_NameSelectUI);
 
 GameModeNameSelect::GameModeNameSelect(GameContainer & game, GameModeNameSelectNextScreen next_mode) :
   GameMode(game),
@@ -41,7 +45,15 @@ void GameModeNameSelect::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
-  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
+  auto ui = container.GetUIManager();
+
+  auto & game_interface = ui->CreateGameInterface();
+  BIND_SCRIPT_INTERFACE(game_interface, this, Submit);
+  BIND_SCRIPT_INTERFACE(game_interface, this, Back);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CheckValidUserName);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CheckSubmitValidUserName);
+
+  container.GetUIManager()->PushUIDef(g_NameSelectUI);
 }
 
 void GameModeNameSelect::Update()
@@ -69,11 +81,11 @@ void GameModeNameSelect::Render()
   container.RenderUIManager();
 }
 
-void GameModeNameSelect::Submit(czstr user_name)
+bool GameModeNameSelect::Submit(std::string & user_name)
 {
-  if (ValidUserName(user_name) == false)
+  if (ValidUserName(user_name.c_str()) == false)
   {
-    return;
+    return false;
   }
 
   auto & container = GetContainer();
@@ -81,6 +93,17 @@ void GameModeNameSelect::Submit(czstr user_name)
   net_init_settings.m_UserName = user_name;
 
   GoToNextMode();
+  return true;
+}
+
+bool GameModeNameSelect::CheckValidUserName(std::string & user_name)
+{
+  return ValidUserName(user_name.c_str(), true);
+}
+
+bool GameModeNameSelect::CheckSubmitValidUserName(std::string & user_name)
+{
+  return ValidUserName(user_name.c_str());
 }
 
 void GameModeNameSelect::Back()
@@ -101,6 +124,7 @@ void GameModeNameSelect::GoToNextMode()
   else
   {
     net_init_settings.m_CreatePrivateGame = (m_NextMode == GameModeNameSelectNextScreen::kCreatePrivate);
+    container.ClearUIManager();
     container.StartNetworkClient();
     container.SwitchMode(GameModeDef<GameModeConnecting>{});
   }

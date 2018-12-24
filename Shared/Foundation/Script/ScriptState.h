@@ -6,6 +6,8 @@
 
 class ScriptObject;
 
+struct lua_State;
+
 class ScriptState
 {
 public:
@@ -25,7 +27,8 @@ public:
   ScriptObject CreateScriptObject();
 
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
-  void BindAsGlobal(czstr name, const ScriptValue & value);
+  void SetGlobal(czstr name, const ScriptValue & value);
+  void SetGlobalFunction(czstr name, int (*Func)(lua_State * state));
   void ClearGlobal(czstr name);
 
 private:

@@ -1,5 +1,5 @@
 
-function InitMenu()
+function InitTestMenu()
   print("Testing menu ")
 
   local button = PushMenuElement(Button:new())
@@ -23,9 +23,7 @@ function InitMenu()
   input.height = 15
   input.prompt = "Input"
 
-  local default_controls = PushMenuElement(DefaultControls:new())
-  default_controls.x = ScreenWidth / 2 - 120
-  default_controls.y = ScreenHeight / 2 - 40
+  CreateDefualtControls();
 
   local popup = PushMenuElement(ConfirmPopup:new())
   popup.x = -400
@@ -44,10 +42,5 @@ function InitMenu()
   button2.Pressed = function()
     fader:FadeToSolid()
   end
-end
-
-function CleanupMenu()
-  print("Cleaning up menu")
-  ClearMenuElements()
 end
 

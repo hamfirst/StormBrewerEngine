@@ -8,6 +8,8 @@
 #include "Foundation/Script/ScriptInterface.h"
 #include "Foundation/Script/ScriptClass.h"
 
+#include "Runtime/UI/UIResource.h"
+
 #include "StormExpr/StormExprFunctionList.h"
 
 class InputState;
@@ -44,10 +46,12 @@ public:
   ScriptClassRef<UIClickable> AllocateClickable();
 
   void PushUIDef(const UIDef & def);
+  void PushUIDef(const UIResourcePtr & ui);
   void ClearUI();
   ScriptInterface & CreateGameInterface();
 
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
+  void SetGlobal(czstr name, const ScriptValue & value);
 
   bool HasSelectedElement() const;
 
@@ -59,6 +63,8 @@ protected:
   void RemoveClickableFromRoot(const ScriptClassRef<UIClickable> & clickable);
   void TrashClickable(NotNullPtr<UIClickable> clickable);
   void RemoveDeadClickables();
+
+  void UpdateScriptGlobals(const Vector2 & screen_size);
 
   void AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list);
   void ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state);

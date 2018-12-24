@@ -239,7 +239,12 @@ void GameContainer::RenderUIManager()
   GetEngineState().GetUIManager()->Render(render_state, render_util);
 }
 
-void GameContainer::SetUI(const UIResourcePtr & ui)
+void GameContainer::ClearUIManager()
 {
-  GetEngineState().GetUIManager()->PushUIDef(*ui.GetData());
+  GetEngineState().GetUIManager()->ClearUI();
+}
+
+NotNullPtr<UIManager> GameContainer::GetUIManager()
+{
+  return GetEngineState().GetUIManager();
 }

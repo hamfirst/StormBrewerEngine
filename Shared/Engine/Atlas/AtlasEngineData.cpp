@@ -88,22 +88,22 @@ void AtlasEngineData::Load()
   m_Reloading = false;
 }
 
-void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box & pos, const Color & color)
+void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const Box & pos, const Color & color)
 {
   auto name_hash = crc32lowercase(name);
   auto position = pos;
 
   ElementLookupData * index_lookup = nullptr;
-  for(auto & elem : m_ElementLookup)
+  for (auto & elem : m_ElementLookup)
   {
-    if(elem.m_NameHash == name_hash)
+    if (elem.m_NameHash == name_hash)
     {
       index_lookup = &elem;
       break;
     }
   }
 
-  if(index_lookup == nullptr)
+  if (index_lookup == nullptr)
   {
     return;
   }
@@ -111,17 +111,17 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
   auto & elem_def = m_Atlas.m_Elements[index_lookup->m_Index].m_Data;
   auto & texture = m_Textures[index_lookup->m_TextureIndex];
 
-  if(texture.IsLoaded() == false)
+  if (texture.IsLoaded() == false)
   {
     return;
   }
 
   auto pos_size = position.Size();
-  if(pos_size.x < index_lookup->m_MinSize.x)
+  if (pos_size.x < index_lookup->m_MinSize.x)
   {
     position.m_End.x = position.m_Start.x + index_lookup->m_MinSize.x;
   }
-  if(pos_size.y < index_lookup->m_MinSize.y)
+  if (pos_size.y < index_lookup->m_MinSize.y)
   {
     position.m_End.y = position.m_Start.y + index_lookup->m_MinSize.y;
   }
@@ -135,153 +135,257 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
   if (elem_def.m_Type == AtlasDefType::k9Slice)
   {
     // Bottom left
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_StartOffsetX, elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_StartOffsetX, elem_def.m_StartOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_StartOffsetY};
     buffer_builder.AddQuad(quad);
 
     // Top left
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_StartOffsetX, elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_StartOffsetX, elem_def.m_EndOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_EndOffsetY};
     buffer_builder.AddQuad(quad);
 
     // Bottom right
-    quad.m_Position.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_StartOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_StartOffsetY};
     buffer_builder.AddQuad(quad);
 
     // Top right
-    quad.m_Position.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_EndOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
+                                      position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
+                                       position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_EndOffsetY};
     buffer_builder.AddQuad(quad);
 
-    int repeat_width = (int)(position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
-    int repeat_height = (int)(position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
+    int repeat_width = (int) (position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
+    int repeat_height = (int) (position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
 
-    int repeat_texture_width = (int)(elem_def.m_EndX - elem_def.m_StartX - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
-    int repeat_texture_height = (int)(elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
+    int repeat_texture_width = (int) (elem_def.m_EndX - elem_def.m_StartX - elem_def.m_StartOffsetX -
+                                      elem_def.m_EndOffsetX);
+    int repeat_texture_height = (int) (elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY -
+                                       elem_def.m_EndOffsetY);
 
     // Left side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y + elem_def.m_StartOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_StartOffsetX, repeat_height };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY + elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, elem_def.m_StartY + repeat_texture_height };
-    buffer_builder.AddRepeatingQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y + elem_def.m_StartOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_StartOffsetX, repeat_height};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_StartY + elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_End =
+            quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_StartY + repeat_texture_height};
+    if (elem_def.m_RepeatVertical)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
 
     // Right side
-    quad.m_Position.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y + elem_def.m_StartOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_EndOffsetX, repeat_height };
-    quad.m_TexCoords.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY + elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, repeat_texture_height };
-    buffer_builder.AddRepeatingQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
+                                      position.m_Start.y + elem_def.m_StartOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, repeat_height};
+    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
+                                       elem_def.m_StartY + elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, repeat_texture_height};
+    if (elem_def.m_RepeatVertical)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
+
 
     // Bottom side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x + elem_def.m_StartOffsetX, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ repeat_width, elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX + elem_def.m_StartOffsetX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ repeat_texture_width, elem_def.m_StartOffsetY };
-    buffer_builder.AddRepeatingQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_Start.x + elem_def.m_StartOffsetX, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, elem_def.m_StartOffsetY};
+    if (elem_def.m_RepeatHorizontal)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
 
     // Top side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x + elem_def.m_StartOffsetX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ repeat_width, elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX + elem_def.m_StartOffsetX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ repeat_texture_width, elem_def.m_EndOffsetY };
-    buffer_builder.AddRepeatingQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_Start.x + elem_def.m_StartOffsetX,
+                                      position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX,
+                                       position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, elem_def.m_EndOffsetY};
+    if (elem_def.m_RepeatHorizontal)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
+
 
     // Center
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x + elem_def.m_StartOffsetX, position.m_Start.y + elem_def.m_StartOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ repeat_width, repeat_height };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX + elem_def.m_StartOffsetX, elem_def.m_StartY + elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ repeat_texture_width, repeat_texture_height };
-    buffer_builder.AddRepeatingQuad(quad);
+    if (elem_def.m_RepeatVertical && elem_def.m_RepeatHorizontal)
+    {
+      quad.m_Position.m_Start = Vector2{position.m_Start.x + elem_def.m_StartOffsetX,
+                                        position.m_Start.y + elem_def.m_StartOffsetY};
+      quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, repeat_height};
+      quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX,
+                                         elem_def.m_StartY + elem_def.m_StartOffsetY};
+      quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, repeat_texture_height};
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else if (elem_def.m_RepeatVertical)
+    {
+      // Todo: Implement this
+    }
+    else if (elem_def.m_RepeatHorizontal)
+    {
+      // Todo: Implement this
+    }
+    else
+    {
+      quad.m_Position.m_Start = Vector2{position.m_Start.x + elem_def.m_StartOffsetX,
+                                        position.m_Start.y + elem_def.m_StartOffsetY};
+      quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, repeat_height};
+      quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX,
+                                         elem_def.m_StartY + elem_def.m_StartOffsetY};
+      quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, repeat_texture_height};
+      buffer_builder.AddQuad(quad);
+    }
   }
   else if (elem_def.m_Type == AtlasDefType::k3SliceHorizontal)
   {
-    int height = (int)(position.m_End.y - position.m_Start.y);
-    int texture_height = (int)(position.m_End.y - elem_def.m_StartY);
+    int height = (int) (position.m_End.y - position.m_Start.y);
+    int texture_height = (int) (position.m_End.y - elem_def.m_StartY);
 
-    int repeat_width = (int)(position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
-    int repeat_texture_width = (int)(position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
+    int repeat_width = (int) (position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX - elem_def.m_EndOffsetX);
+    int repeat_texture_width = (int) (position.m_End.x - position.m_Start.x - elem_def.m_StartOffsetX -
+                                      elem_def.m_EndOffsetX);
 
     // Left side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_StartOffsetX, height };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_StartOffsetX, texture_height };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_StartOffsetX, height};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_StartOffsetX, texture_height};
     buffer_builder.AddQuad(quad);
 
     // Center
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x + elem_def.m_StartOffsetX, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ repeat_width, height };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX + elem_def.m_StartOffsetX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ repeat_texture_width, texture_height };
-    buffer_builder.AddQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_Start.x + elem_def.m_StartOffsetX, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, height};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, texture_height};
+    if (elem_def.m_RepeatHorizontal)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
 
     // Right side
-    quad.m_Position.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ elem_def.m_EndOffsetX, height };
-    quad.m_TexCoords.m_Start = Vector2{ position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ elem_def.m_EndOffsetX, texture_height };
+    quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, height};
+    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, texture_height};
     buffer_builder.AddQuad(quad);
   }
   else if (elem_def.m_Type == AtlasDefType::k3SliceVertical)
   {
-    int width = (int)(position.m_End.x - position.m_Start.x);
-    int texture_width = (int)(position.m_End.x - elem_def.m_StartX);
+    int width = (int) (position.m_End.x - position.m_Start.x);
+    int texture_width = (int) (position.m_End.x - elem_def.m_StartX);
 
-    int repeat_height = (int)(position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
-    int repeat_texture_height = (int)(elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
+    int repeat_height = (int) (position.m_End.y - position.m_Start.y - elem_def.m_StartOffsetY - elem_def.m_EndOffsetY);
+    int repeat_texture_height = (int) (elem_def.m_EndY - elem_def.m_StartY - elem_def.m_StartOffsetY -
+                                       elem_def.m_EndOffsetY);
 
     // Bottom side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ width, elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ texture_width, elem_def.m_StartOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{width, elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_StartY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{texture_width, elem_def.m_StartOffsetY};
     buffer_builder.AddQuad(quad);
 
     // Center
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y + elem_def.m_StartOffsetX };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ width, repeat_height };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, elem_def.m_StartY + elem_def.m_StartOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ texture_width, repeat_texture_height };
-    buffer_builder.AddQuad(quad);
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y + elem_def.m_StartOffsetX};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{width, repeat_height};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_StartY + elem_def.m_StartOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{texture_width, repeat_texture_height};
+    if (elem_def.m_RepeatVertical)
+    {
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else
+    {
+      buffer_builder.AddQuad(quad);
+    }
 
     // Top side
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{ width, elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_Start = Vector2{ elem_def.m_StartX, position.m_End.y - elem_def.m_EndOffsetY };
-    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{ texture_width, elem_def.m_EndOffsetY };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{width, elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{texture_width, elem_def.m_EndOffsetY};
     buffer_builder.AddQuad(quad);
   }
-  else if(elem_def.m_Type == AtlasDefType::kImage)
+  else if (elem_def.m_Type == AtlasDefType::kImage)
   {
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
-    quad.m_Position.m_End = Vector2{ position.m_End.x, position.m_End.y };
-    quad.m_TexCoords.m_Start = Vector2{ 0, 0 };
+    quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+    quad.m_Position.m_End = Vector2{position.m_End.x, position.m_End.y};
+    quad.m_TexCoords.m_Start = Vector2{0, 0};
     quad.m_TexCoords.m_End = texture->GetSize();
     buffer_builder.AddQuad(quad);
   }
   else
   {
-    quad.m_Position.m_Start = Vector2{ position.m_Start.x, position.m_Start.y };
-    quad.m_Position.m_End = Vector2{ position.m_End.x, position.m_End.y };
-    quad.m_TexCoords.m_Start = Vector2{ 0, 0 };
-    quad.m_TexCoords.m_End = texture->GetSize();
-    buffer_builder.AddRepeatingQuad(quad);
+    if (elem_def.m_RepeatVertical && elem_def.m_RepeatHorizontal)
+    {
+      quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+      quad.m_Position.m_End = Vector2{position.m_End.x, position.m_End.y};
+      quad.m_TexCoords.m_Start = Vector2{0, 0};
+      quad.m_TexCoords.m_End = texture->GetSize();
+      buffer_builder.AddRepeatingQuad(quad);
+    }
+    else if (elem_def.m_RepeatVertical)
+    {
+      // Todo: Implement this
+    }
+    else if (elem_def.m_RepeatHorizontal)
+    {
+      // Todo: Implement this
+    }
+    else
+    {
+      quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_Start.y};
+      quad.m_Position.m_End = Vector2{position.m_End.x, position.m_End.y};
+      quad.m_TexCoords.m_Start = Vector2{0, 0};
+      quad.m_TexCoords.m_End = texture->GetSize();
+      buffer_builder.AddQuad(quad);
+    }
   }
 
   buffer_builder.FillVertexBufferInvertY(m_VertexBuffer, pos);
+  render_state.BindTexture(*texture);
+  render_state.BindVertexBuffer(m_VertexBuffer);
+}
 
-  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box & position,
+            const Color & color, ShaderProgram & shader)
+{
   render_state.BindShader(shader);
+
+  SetupRender(render_state, name, position, color);
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ render_state.GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0, 0 });
@@ -291,8 +395,6 @@ void AtlasEngineData::Render(RenderState & render_state, czstr name, const Box &
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
-  render_state.BindTexture(*texture);
-  render_state.BindVertexBuffer(m_VertexBuffer);
   render_state.Draw();
 }
 

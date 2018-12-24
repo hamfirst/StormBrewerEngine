@@ -19,3 +19,10 @@ function DefaultControls:setup(o)
   o.width = 112
   o.height = 32
 end
+
+function CreateDefualtControls()
+  local default_controls = PushMenuElement(DefaultControls:new())
+  default_controls.x = half_screen_width - 120
+  default_controls.y = half_screen_height - 40
+  return default_controls
+end

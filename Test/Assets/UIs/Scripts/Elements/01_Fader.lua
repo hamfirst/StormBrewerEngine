@@ -1,10 +1,10 @@
 
 Fader = Elem:construct()
 Fader.alpha = 1.0
-Fader.x = ScreenWidth / -2
-Fader.y = ScreenHeight / -2
-Fader.width = ScreenWidth
-Fader.height = ScreenHeight
+Fader.x = screen_start_x
+Fader.y = screen_start_y
+Fader.width = screen_width
+Fader.height = screen_height
 
 function Fader:Draw()
 
@@ -23,11 +23,25 @@ function Fader:Update()
 end
 
 function Fader:FadeToSolid()
-  ClearLerp(self, "alpha")
   AddLerp(self, "alpha", 1, 0.5)
 end
 
+function Fader:FadeToSolidThen(func)
+  AddLerp(self, "alpha", 1, 0.5, func)
+end
+
 function Fader:FadeToClear()
-  ClearLerp(self, "alpha")
   AddLerp(self, "alpha", 0, 0.5)
+end
+
+function FadeFromButtonPress(fader, button, func)
+  button.Pressed = function()
+    fader:FadeToSolidThen(func)
+  end
+end
+
+function FadeFromInputEnterPress(fader, input, func)
+  input.EnterPressed = function()
+    fader:FadeToSolidThen(func)
+  end
 end

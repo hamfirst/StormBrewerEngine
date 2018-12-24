@@ -5,6 +5,7 @@
 #include "Engine/UI/UIScriptLoader.h"
 #include "Engine/UI/UIClickable.refl.h"
 #include "Engine/UI/UITextInput.refl.h"
+#include "Engine/UI/UIScriptLoader.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
@@ -12,8 +13,12 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/MusicManager.h"
+#include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Window/Window.h"
-#include "UIScriptLoader.h"
+#include "Engine/Atlas/AtlasEngineData.h"
+
+#include "Runtime/Animation/AnimationState.h"
+
 
 
 UIScriptInterface::UIScriptInterface(NotNullPtr<UIManager> ui_manager) :
@@ -220,6 +225,110 @@ std::pair<int, int> UIScriptInterface::MeasureTextInput(int font_id, ScriptClass
 std::pair<int, int> UIScriptInterface::MeasureTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, float scale)
 {
   return MeasureTextInternal(font_id, text, scale);
+}
+
+void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame)
+{
+  if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)
+  {
+    return;
+  }
+
+  auto & sprite = m_UIManager->m_ScriptLoader->m_SpriteAssets[sprite_id & UIScriptLoader::kIndexMask];
+  auto engine_data = sprite->GetEngineData<SpriteEngineData>();
+
+  if(engine_data == nullptr)
+  {
+    return;
+  }
+
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  m_RenderState->BindShader(shader);
+
+  RenderVec4 screen_bounds;
+  if(m_Clip)
+  {
+    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+  }
+  else
+  {
+    screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
+  }
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+
+  engine_data->RenderSprite(sprite, *m_RenderState, anim_index, anim_frame, 0, Vector2f{x, y}, {}, Color(1.0f, 1.0f, 1.0f, 1.0f), shader);
+}
+
+void UIScriptInterface::DrawAtlas(int atlas_id, std::string & elem_name, int x, int y, int width, int height)
+{
+  if((atlas_id & UIScriptLoader::kIdMask) != UIScriptLoader::kAtlasId)
+  {
+    return;
+  }
+
+  auto & atlas = m_UIManager->m_ScriptLoader->m_AtlasAssets[atlas_id & UIScriptLoader::kIndexMask];
+  auto engine_data = atlas->GetEngineData<AtlasEngineData>();
+
+  if(engine_data == nullptr)
+  {
+    return;
+  }
+
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  m_RenderState->BindShader(shader);
+
+  engine_data->SetupRender(*m_RenderState, elem_name.c_str(), Box::FromStartAndWidthHeight(x, y, width, height), Color(1.0f, 1.0f, 1.0f, 1.0f));
+
+  RenderVec4 screen_bounds;
+  if(m_Clip)
+  {
+    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
+    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+  }
+  else
+  {
+    screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
+  }
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_ActiveArea.m_Start });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+
+  m_RenderState->Draw();
+}
+
+std::tuple<int, int, int> UIScriptInterface::FrameAdvance(int sprite_id, std::string & anim_name, int anim_index, int anim_frame, int anim_delay, bool loop)
+{
+  if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)
+  {
+    return {};
+  }
+
+  auto & sprite = m_UIManager->m_ScriptLoader->m_SpriteAssets[sprite_id & UIScriptLoader::kIndexMask];
+
+  AnimationState anim_state;
+  anim_state.m_AnimIndex = anim_index;
+  anim_state.m_AnimFrame = anim_frame;
+  anim_state.m_AnimDelay = anim_delay;
+
+  sprite->FrameAdvance(crc32(anim_name), anim_state, loop);
+  return std::make_tuple(anim_state.m_AnimIndex, anim_state.m_AnimFrame, anim_state.m_AnimDelay);
 }
 
 void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float r, float g, float b, float a, float scale_x, float scale_y)

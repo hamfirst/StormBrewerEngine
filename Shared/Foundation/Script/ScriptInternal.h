@@ -222,6 +222,15 @@ public:
     lua_setglobal(lua_state, name);
   }
 
+  static void CreateGlobalFromFunction(czstr name, int (*Func)(lua_State *), NotNullPtr<ScriptState> script_state)
+  {
+    auto lua_state = GetState(script_state);
+    ScriptStackCheck check(lua_state);
+
+    lua_pushcfunction(lua_state, Func);
+    lua_setglobal(lua_state, name);
+  }
+
   static int CreateGlobalObjectFromStack(int pos, NotNullPtr<ScriptState> script_state)
   {
     auto lua_state = GetState(script_state);

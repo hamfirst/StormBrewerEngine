@@ -138,7 +138,7 @@ template <>
 struct StormReflTypeInfo<AtlasDefElementPosition>
 {
   using MyBase = void;
-  static constexpr int fields_n = 9;
+  static constexpr int fields_n = 11;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -390,6 +390,54 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<8, Self> : public 
   match_const_t<Self, RInt> & Get() { return self.m_EndOffsetY; }
   std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_EndOffsetY; }
   void SetDefault() { self.m_EndOffsetY = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_EndOffsetY; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<9>
+{
+  using member_type = RBool; // RBool
+  static constexpr auto GetName() { return "m_RepeatHorizontal"; }
+  static constexpr auto GetType() { return "RBool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3AC5A533; }
+  static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_RepeatHorizontal; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_RepeatHorizontal; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_RepeatHorizontal; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<9, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<9>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RBool> & Get() { return self.m_RepeatHorizontal; }
+  std::add_const_t<std::remove_reference_t<RBool>> & Get() const { return self.m_RepeatHorizontal; }
+  void SetDefault() { self.m_RepeatHorizontal = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_RepeatHorizontal; }
+};
+
+template <>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<10>
+{
+  using member_type = RBool; // RBool
+  static constexpr auto GetName() { return "m_RepeatVertical"; }
+  static constexpr auto GetType() { return "RBool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x71994AE3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_RepeatVertical; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_RepeatVertical; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const AtlasDefElementPosition *>(obj); return &ptr->m_RepeatVertical; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<AtlasDefElementPosition>::field_data<10, Self> : public StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<10>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RBool> & Get() { return self.m_RepeatVertical; }
+  std::add_const_t<std::remove_reference_t<RBool>> & Get() const { return self.m_RepeatVertical; }
+  void SetDefault() { self.m_RepeatVertical = StormReflTypeInfo<AtlasDefElementPosition>::GetDefault().m_RepeatVertical; }
 };
 
 template <>
