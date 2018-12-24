@@ -14,6 +14,7 @@ GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_co
   m_ServerEventResponder(authority, this, &m_ClientController, &m_Reconciler, &m_ReconcileFrame),
   m_Loaded(false),
   m_Authority(authority),
+  m_ModifiedLowFreq(false),
   m_ConfirmedRemoteFrame(0),
   m_SendTimer(0),
   m_NumLocalClients(static_cast<std::size_t>(num_local_clients))
@@ -63,6 +64,9 @@ void GameClientInstanceContainer::Load(const GameInitSettings & init_settings, u
 
     m_CurrentSim = m_DefaultSim;
     m_SimHistory.Push(m_CurrentSim);
+
+    m_CurrentLowFreq = std::make_shared<GameInstanceLowFrequencyData>();
+    m_LowFreqHistory.Push(m_CurrentLowFreq);
   });
 }
 
@@ -81,7 +85,13 @@ void GameClientInstanceContainer::Update()
   auto old_state = std::make_shared<GameFullState>(*m_CurrentSim.get());
   m_SimHistory.ReplaceTop(std::move(old_state));
 
+  auto old_low_freq = m_CurrentLowFreq;
+  m_CurrentLowFreq = std::make_shared<GameInstanceLowFrequencyData>(*old_low_freq);
+  m_LowFreqHistory.ReplaceTop(m_CurrentLowFreq);
+
   auto frame = m_CurrentSim->m_InstanceData.m_FrameCount;
+
+  m_ModifiedLowFreq = false;
 
   auto & controller = GetGameController();
   auto logic_container = GetLogicContainer();
@@ -153,7 +163,15 @@ void GameClientInstanceContainer::Update()
   m_ExternalsHistory.IterateElementsSince(frame).VisitElementsForCurrentTime(externals_visitor);
 
   controller.Update(logic_container);
+
   m_SimHistory.Push(m_CurrentSim);
+  m_LowFreqHistory.ReplaceTop(old_low_freq);
+  if(m_ModifiedLowFreq)
+  {
+    m_CurrentLowFreq = old_low_freq;
+  }
+
+  m_LowFreqHistory.Push(m_CurrentLowFreq);
 
   if (m_ReconcileFrame > 0)
   {
@@ -170,11 +188,14 @@ void GameClientInstanceContainer::SyncEntities()
   GetEntitySync().Sync(*this);
 }
 
-void GameClientInstanceContainer::InitializeFromRemoteState(const std::shared_ptr<GameFullState> & state)
+void GameClientInstanceContainer::InitializeFromRemoteState(const std::shared_ptr<GameFullState> & state, NullOptPtr<GameInstanceLowFrequencyData> low_freq_data)
 {
   m_CurrentSim = state;
   m_SimHistory.Clear();
   m_SimHistory.Push(m_CurrentSim);
+  m_CurrentLowFreq = std::make_shared<GameInstanceLowFrequencyData>(*low_freq_data);
+  m_LowFreqHistory.Clear();
+  m_LowFreqHistory.Push(m_CurrentLowFreq);
 
   m_LocalInputistory.Clear();
   m_LocalEventHistory.Clear();
@@ -185,7 +206,7 @@ void GameClientInstanceContainer::InitializeFromRemoteState(const std::shared_pt
   m_AuthEventHistory.Clear();
 }
 
-int GameClientInstanceContainer::Rewind(int target_frame, const Optional<std::shared_ptr<GameFullState>> & state)
+int GameClientInstanceContainer::Rewind(int target_frame, const std::shared_ptr<GameFullState> & state, NullOptPtr<GameInstanceLowFrequencyData> low_freq_data)
 {
   int rewind_frames = m_CurrentSim->m_InstanceData.m_FrameCount - target_frame;
   if (rewind_frames < 0)
@@ -198,7 +219,7 @@ int GameClientInstanceContainer::Rewind(int target_frame, const Optional<std::sh
         rewind_frames++;
       }
 
-      m_CurrentSim = state.Value();
+      m_CurrentSim = state;
       m_SimHistory.Push(m_CurrentSim);
     }
     else
@@ -217,28 +238,33 @@ int GameClientInstanceContainer::Rewind(int target_frame, const Optional<std::sh
 
   if (rewind_frames > m_SimHistory.Count())
   {
-    ASSERT(state.IsValid(), "Couldn't rewind to state beyond the beginning of time");
+    ASSERT(state && low_freq_data, "Couldn't rewind to state beyond the beginning of time");
 
-    m_CurrentSim = state.Value();
+    m_CurrentSim = state;
+    m_CurrentLowFreq = std::make_shared<GameInstanceLowFrequencyData>(*low_freq_data);
 
     m_SimHistory.Clear();
-    m_SimHistory.Push(state.Value());
+    m_SimHistory.Push(state);
+
+    m_LowFreqHistory.Clear();
+    m_LowFreqHistory.Push(m_CurrentLowFreq);
   }
   else
   {
     m_SimHistory.Purge(rewind_frames);
+    m_LowFreqHistory.Purge(rewind_frames);
 
     if (state)
     {
-      auto ptr = m_SimHistory.Get(0);
-      m_CurrentSim = state.Value();
-
-      m_SimHistory.SetAt(state.Value(), 0);
+      m_CurrentSim = state;
+      m_SimHistory.SetAt(state, 0);
     }
     else
     {
       m_CurrentSim = *m_SimHistory.Get(0);
     }
+
+    m_CurrentLowFreq = *m_LowFreqHistory.Get(0);
   }
 
   return rewind_frames;
@@ -318,6 +344,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
     GetGameController(),
     m_InitSettings,
     GetFullState().m_InstanceData,
+    GetLowFrequencyData(),
     GetFullState().m_ServerObjectManager,
     m_ServerObjectEventSystem,
     m_ServerEventResponder,
@@ -327,7 +354,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
     m_DeliberateSyncSystemData,
 #endif
     GetStage(),
-    authority ? *authority : m_Authority, send_timer);
+    authority ? *authority : m_Authority, send_timer, m_ModifiedLowFreq);
 }
 
 GameLogicContainer GameClientInstanceContainer::GetLogicContainer(std::size_t history_index)
@@ -336,6 +363,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(std::size_t hi
     GetGameController(),
     m_InitSettings,
     GetHistoryState(history_index).m_InstanceData,
+    GetHistoryLowFrequencyData(history_index),
     GetHistoryState(history_index).m_ServerObjectManager,
     m_ServerObjectEventSystem,
     m_ServerEventResponder,
@@ -345,7 +373,7 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(std::size_t hi
     m_DeliberateSyncSystemData,
 #endif
     GetStage(),
-    m_Authority, s_BogusSendTimer);
+    m_Authority, s_BogusSendTimer, m_ModifiedLowFreq);
 }
 
 GameController & GameClientInstanceContainer::GetGameController()
@@ -408,6 +436,25 @@ GameFullState & GameClientInstanceContainer::GetHistoryState(std::size_t history
   }
 
   return GetFullState();
+}
+
+GameInstanceLowFrequencyData & GameClientInstanceContainer::GetLowFrequencyData()
+{
+  return *m_CurrentLowFreq;
+}
+
+GameInstanceLowFrequencyData & GameClientInstanceContainer::GetHistoryLowFrequencyData(std::size_t history_index)
+{
+  history_index = std::min(history_index, m_LowFreqHistory.Count());
+  auto history = m_LowFreqHistory.Get((int)history_index);
+  if(history)
+  {
+    return *(history->get());
+  }
+
+  static GameInstanceLowFrequencyData default_low_freq;
+  default_low_freq = {};
+  return default_low_freq;
 }
 
 GameInstanceData & GameClientInstanceContainer::GetGlobalInstanceData()

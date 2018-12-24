@@ -36,7 +36,7 @@ void GameModeEndGame::Initialize()
 {
   m_Victory = false;
 
-  auto & game_state = m_InstanceContainer->GetGlobalInstanceData();
+  auto & game_state = m_InstanceContainer->GetLowFrequencyData();
 
   auto num_local_players = m_InstanceContainer->GetNumLocalData();
   for (std::size_t client_index = 0; client_index < num_local_players; ++client_index)

@@ -90,8 +90,8 @@ void GameController::ConstructPlayer(std::size_t player_index, GameLogicContaine
   player.m_UserName = name;
   player.m_Team = team;
 
-  auto & global_data = game.GetInstanceData();
-  global_data.m_Players.EmplaceAt(player_index, std::move(player));
+  auto & data = game.GetLowFrequencyInstanceDataForModify();
+  data.m_Players.EmplaceAt(player_index, std::move(player));
 }
 
 void GameController::DestroyPlayer(std::size_t player_index, GameLogicContainer & game)
@@ -101,7 +101,7 @@ void GameController::DestroyPlayer(std::size_t player_index, GameLogicContainer 
 
 bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceData();
   auto player = global_data.m_Players.TryGet(player_index);
 
   if (player == nullptr)
@@ -114,16 +114,24 @@ bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicCon
     return false;
   }
 
+  auto game_data = game.GetInstanceData();
+  if(game_data.m_AIPlayerInfo.HasAt(player_index))
+  {
+    return false;
+  }
+
   return true;
 }
 
 void GameController::ConvertBotToPlayer(std::size_t player_index, GameLogicContainer & game, const std::string & name)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   auto player = global_data.m_Players.TryGet(player_index);
 
   player->m_UserName = name;
-  player->m_AIPlayerInfo.Clear();
+
+  auto & game_data = game.GetInstanceData();
+  game_data.m_AIPlayerInfo.RemoveAt(player_index);
 }
 
 void GameController::ConstructBot(std::size_t player_index, GameLogicContainer & game, const std::string & name, int team)
@@ -131,25 +139,32 @@ void GameController::ConstructBot(std::size_t player_index, GameLogicContainer &
   GamePlayer player;
   player.m_UserName = name;
   player.m_Team = team;
-  player.m_AIPlayerInfo.Emplace();
 
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   global_data.m_Players.EmplaceAt(player_index, std::move(player));
+
+  auto & game_state = game.GetInstanceData();
+  game_state.m_AIPlayerInfo.EmplaceAt(player_index);
 }
 
 void GameController::DestroyBot(std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   global_data.m_Players.RemoveAt(player_index);
+
+  auto & game_state = game.GetInstanceData();
+  game_state.m_AIPlayerInfo.RemoveAt(player_index);
 }
 
 void GameController::ConvertPlayerToBot(std::size_t player_index, GameLogicContainer & game, const std::string & name)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   auto player = global_data.m_Players.TryGet(player_index);
 
   player->m_UserName = name;
-  player->m_AIPlayerInfo.Emplace();
+
+  auto & game_state = game.GetInstanceData();
+  game_state.m_AIPlayerInfo.EmplaceAt(player_index, AIPlayerInfo{});
 }
 
 #ifdef NET_ALLOW_OBSERVERS
@@ -158,13 +173,13 @@ void GameController::ConstructObserver(std::size_t player_index, GameLogicContai
   GameObserver player;
   player.m_UserName = name;
 
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   global_data.m_Observers.EmplaceAt(player_index, std::move(player));
 }
 
 void GameController::DestroyObserver(std::size_t player_index, GameLogicContainer & game)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   global_data.m_Observers.RemoveAt(player_index);
 }
 #endif
@@ -175,7 +190,7 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
   {
     auto ev = ext.Get<PlayerJoinedEvent>();
 
-    auto team_counts = GetTeamCounts(game.GetInstanceData());
+    auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
     auto team = GetRandomTeam(team_counts, ev->m_RandomSeed);
     ConstructPlayer(ev->m_PlayerIndex, game, ev->m_UserName, team);
   }
@@ -198,7 +213,7 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
 #endif
 }
 
-void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player)
+void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_index, const GamePlayer & player)
 {
   auto & obj_manager = game.GetObjectManager();
 
@@ -207,7 +222,8 @@ void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_in
 
   SetPlayerToSpawn(game, player_index);
 
-  if (player.m_AIPlayerInfo)
+  auto & game_state = game.GetInstanceData();
+  if (game_state.m_AIPlayerInfo.HasAt(player_index))
   {
     PlayerAI::InitAI(game, player_index);
   }
@@ -218,7 +234,7 @@ void GameController::SetPlayerToSpawn(GameLogicContainer & game, std::size_t pla
   auto & stage = game.GetStage();
   auto & spawns = stage.GetPlayerSpawns();
 
-  auto & player = game.GetInstanceData().m_Players[player_index];
+  auto & player = game.GetLowFrequencyInstanceData().m_Players[player_index];
   auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
 
   if (spawns[(int)player.m_Team].size() == 0)
@@ -234,7 +250,7 @@ void GameController::SetPlayerToSpawn(GameLogicContainer & game, std::size_t pla
 
 void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player_index)
 {
-  auto & global_data = game.GetInstanceData();
+  auto & global_data = game.GetLowFrequencyInstanceDataForModify();
   global_data.m_Players.RemoveAt(player_index);
 
   if (global_data.m_Players.HighestIndex() == -1)
@@ -264,16 +280,16 @@ void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player
 
 int GameController::AddAIPlayer(GameLogicContainer & game, uint32_t random_number)
 {
-  auto & game_data = game.GetInstanceData();
+  auto & game_data = game.GetLowFrequencyInstanceData();
   for (int index = 0; index < kMaxPlayers; index++)
   {
     if (game_data.m_Players.HasAt(index) == false)
     {
-      auto team_counts = GetTeamCounts(game.GetInstanceData());
+      auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
       ConstructPlayer(index, game, "AI", GetRandomTeam(team_counts, random_number));
 
-      auto & player = game_data.m_Players[index];
-      player.m_AIPlayerInfo.Emplace();
+      auto & instance_data = game.GetInstanceData();
+      instance_data.m_AIPlayerInfo.EmplaceAt(index);
       return index;
     }
   }
@@ -285,7 +301,7 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
 {
   while (true)
   {
-    auto team_counts = GetTeamCounts(game.GetInstanceData());
+    auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
     if (DoAllTeamsHavePlayers(team_counts))
     {
       break;
@@ -294,7 +310,7 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
     int slot = -1;
     for (int index = 0; index < kMaxPlayers; ++index)
     {
-      if (game.GetInstanceData().m_Players.HasAt(index) == false)
+      if (game.GetLowFrequencyInstanceData().m_Players.HasAt(index) == false)
       {
         slot = index;
         break;
@@ -306,7 +322,7 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
   }
 }
 
-std::vector<int> GameController::GetTeamCounts(GameInstanceData & game_data)
+std::vector<int> GameController::GetTeamCounts(const GameInstanceLowFrequencyData & game_data)
 {
   std::vector<int> teams(kMaxTeams);
   for (auto hero : game_data.m_Players)
@@ -317,7 +333,7 @@ std::vector<int> GameController::GetTeamCounts(GameInstanceData & game_data)
   return teams;
 }
 
-std::vector<int> GameController::GetTeamCounts(GameStateStaging & game_data)
+std::vector<int> GameController::GetTeamCounts(const GameStateStaging & game_data)
 {
   std::vector<int> teams(kMaxTeams);
   for (auto hero : game_data.m_Players)
@@ -331,7 +347,7 @@ std::vector<int> GameController::GetTeamCounts(GameStateStaging & game_data)
   return teams;
 }
 
-std::vector<int> GameController::GetTeamCounts(GameStateLoading & game_data)
+std::vector<int> GameController::GetTeamCounts(const GameStateLoading & game_data)
 {
   std::vector<int> teams(kMaxTeams);
   for (auto hero : game_data.m_Players)
@@ -383,7 +399,7 @@ bool GameController::DoAllTeamsHavePlayers(const std::vector<int> & team_counts)
 Optional<int> GameController::GetOnlyTeamWithPlayers(GameLogicContainer & game)
 {
   Optional<int> team_with_players;
-  for (auto player : game.GetInstanceData().m_Players)
+  for (auto player : game.GetLowFrequencyInstanceData().m_Players)
   {
     if (team_with_players)
     {
@@ -437,9 +453,9 @@ bool GameController::ValidateInput(std::size_t player_index, GameLogicContainer 
 void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & game, const ClientInput & input)
 {
   auto server_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
-  auto player_obj = game.GetInstanceData().m_Players.TryGet(player_index);
+  auto player_obj = game.GetLowFrequencyInstanceData().m_Players.TryGet(player_index);
 
-  if (player_obj && player_obj->m_AIPlayerInfo)
+  if (player_obj && game.GetInstanceData().m_AIPlayerInfo.HasAt(player_index))
   {
     return;
   }
@@ -452,7 +468,7 @@ void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & g
 
 void GameController::Update(GameLogicContainer & game)
 {
-  auto & game_data = game.GetInstanceData();
+  auto & game_data = game.GetLowFrequencyInstanceData();
   if (game_data.m_WiningTeam)
   {
     return;
@@ -510,12 +526,9 @@ void GameController::Update(GameLogicContainer & game)
 
   cvc.ProcessCVC(game);
 
-  for (auto player : game_data.m_Players)
+  for (auto player : game.GetInstanceData().m_AIPlayerInfo)
   {
-    if (player.second.m_AIPlayerInfo)
-    {
-      PlayerAI::UpdateAI(game, player.first);
-    }
+    PlayerAI::UpdateAI(game, player.first);
   }
 
 #ifdef NET_USE_ROUND_TIMER
@@ -533,7 +546,7 @@ void GameController::Update(GameLogicContainer & game)
 #endif
 
 #if NET_MODE == NET_MODE_GGPO
-  game_data.m_FrameCount++;
+  game.GetInstanceData().m_FrameCount++;
 #endif
 }
 
@@ -552,7 +565,7 @@ void GameController::StartGame(GameLogicContainer & game)
   global_data.m_TimeExpiration = kTurnMaxTime;
   global_data.m_ActiveTurn = 0;
 #endif
-  for (auto player : global_data.m_Players)
+  for (auto player : game.GetLowFrequencyInstanceData().m_Players)
   {
     InitPlayer(game, player.first, player.second);
   }
@@ -565,7 +578,7 @@ void GameController::StartGame(GameLogicContainer & game)
 
 void GameController::EndGame(int winning_team, GameLogicContainer & game)
 {
-  game.GetInstanceData().m_WiningTeam.Emplace(winning_team);
+  game.GetLowFrequencyInstanceDataForModify().m_WiningTeam.Emplace(winning_team);
 
   auto & sim_events = game.GetSimEventCallbacks();
   sim_events.HandleWinGame(winning_team);
@@ -573,31 +586,15 @@ void GameController::EndGame(int winning_team, GameLogicContainer & game)
 
 void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos)
 {
-  auto & game_data = game.GetInstanceData();
-
   if (game.IsAuthority())
   {
+    auto & game_data = game.GetLowFrequencyInstanceDataForModify();
     ++game_data.m_Score[team];
-
-    if (game_data.m_Score[team] >= kMaxScore)
-    {
-      for (auto player : game_data.m_Players)
-      {
-        if (player.second.m_Team == team)
-        {
-          auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player.first);
-          if (player_obj)
-          {
-            player_obj->Destroy(game.GetObjectManager());
-          }
-        }
-      }
-    }
 
     auto winning_team = -1;
     for (auto team = 0; team < kMaxTeams; ++team)
     {
-      if (game_data.m_Score[team] < kMaxScore)
+      if (game_data.m_Score[team] > kMaxScore)
       {
         if (winning_team == -1)
         {

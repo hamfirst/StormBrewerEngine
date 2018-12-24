@@ -13,15 +13,15 @@ auto kRandDashAngleMin = GameNetVal(-kRandDashAngleMax);
 
 void PlayerAI::InitAI(GameLogicContainer & game, std::size_t player_index)
 {
-  auto & ai_info = game.GetInstanceData().m_Players[player_index].m_AIPlayerInfo.Value();
+  auto & ai_info = game.GetInstanceData().m_AIPlayerInfo[player_index];
   auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
 
 }
 
 void PlayerAI::UpdateAI(GameLogicContainer & game, std::size_t player_index)
 {
-  auto & player_info = game.GetInstanceData().m_Players[player_index];
-  auto & ai_info = player_info.m_AIPlayerInfo.Value();
+  auto & player_info = game.GetLowFrequencyInstanceData().m_Players[player_index];
+  auto & ai_info = game.GetInstanceData().m_AIPlayerInfo[player_index];
   auto player_obj = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(player_index);
 
   if (player_obj == nullptr)

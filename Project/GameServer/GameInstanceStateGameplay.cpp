@@ -12,7 +12,6 @@
 GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & state_data, const GameStateLoading & loading_data) :
   GameInstanceStateBase(state_data),
   m_Stage(state_data.GetStage()),
-  m_SendTimer(0),
   m_Systems(state_data.GetStage().GetCollisionDatabase()),
   m_FramesToRewind(0),
   m_FramesToUpdate(0),
@@ -21,12 +20,15 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_LastAuthCommit(0),
   m_InitialState(m_Stage.CreateDefaultGameState())
 {
-  GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData,
+  GameInstanceLowFrequencyData low_freq_data;
+  bool modify_low_freq = false;
+
+  GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData, low_freq_data,
           m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
           m_DeliberateSyncSystemData,
 #endif
-          m_Stage, true, m_SendTimer);
+          m_Stage, true, m_SendTimer, modify_low_freq);
 
   m_Stage.InitAllObjects(logic_container);
 
@@ -58,10 +60,10 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
       auto player_id = m_ObserverIdAllocator.Allocate();
 
       m_Controller.ConstructObserver(player_id, logic_container, elem.second.m_UserName);
-      auto & player_data = m_InitialState.m_InstanceData.m_Observers.EmplaceBack();
+      auto & player_data = low_freq_data.m_Observers.EmplaceBack();
       player_data.m_UserName = elem.second.m_UserName;
 
-      player_info.m_ObserverIndex = m_InitialState.m_InstanceData.m_Observers.HighestIndex();
+      player_info.m_ObserverIndex = low_freq_data.m_Observers.HighestIndex();
 #endif
     }
 
@@ -93,7 +95,9 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   m_Controller.StartGame(logic_container);
 
   m_CurrentState = std::make_shared<GameFullState>(m_InitialState);
+  m_CurrentLowFrequencyData = std::make_shared<GameInstanceLowFrequencyData>(low_freq_data);
   m_SimHistory.Push(std::shared_ptr<GameFullState>(m_CurrentState));
+  m_LowFrequencyHistory.Push(std::shared_ptr<GameInstanceLowFrequencyData>(m_CurrentLowFrequencyData));
 
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
   auto deliberate_data_type_size = std::tuple_size<GameDeliberateSyncSystemListType>::value;
@@ -131,17 +135,17 @@ bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const GameJ
 {
 #ifdef NET_ALLOW_LATE_JOIN
 
-  auto & state = GetCurrentInstanceData();
-  if (state.m_Players.Size() >= kMaxPlayers)
+  auto & low_frequency_data = GetCurrentLowFrequencyData();
+  if (low_frequency_data.m_Players.Size() >= kMaxPlayers)
   {
 #ifdef NET_LATE_JOIN_REMOVE_BOT
 
     auto logic_container = GetLogicContainer();
 
     int num_bot_slots = 0;
-    for (auto player_info : m_CurrentState->m_InstanceData.m_Players)
+    for (auto player_info : low_frequency_data.m_Players)
     {
-      if (player_info.second.m_AIPlayerInfo && m_Controller.AllowConversionToBot(player_info.first, logic_container))
+      if (m_Controller.AllowConversionToBot(player_info.first, logic_container))
       {
         num_bot_slots++;
       }
@@ -420,13 +424,10 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
   auto player_id = m_PlayerIdAllocator.Allocate();
 #ifdef NET_LATE_JOIN_REMOVE_BOT
 
-  for (auto test_player_info : m_CurrentState->m_InstanceData.m_Players)
+  for (auto test_player_info : m_CurrentState->m_InstanceData.m_AIPlayerInfo)
   {
-    if (test_player_info.second.m_AIPlayerInfo)
-    {
-      player_id = test_player_info.first;
-      break;
-    }
+    player_id = test_player_info.first;
+    break;
   }
 
 #endif
@@ -630,7 +631,7 @@ void GameInstanceStateGameplay::HandleTextChat(std::size_t client_index, const S
   out_text.m_UserName = client_info.m_UserName;
 
   int team = player_info.m_PlayerIndex == -1 ? -1 :
-                  static_cast<int>(m_CurrentState->m_InstanceData.m_Players[player_info.m_PlayerIndex].m_Team);
+                  static_cast<int>(GetCurrentLowFrequencyData().m_Players[player_info.m_PlayerIndex].m_Team);
 
   if(msg.m_TeamOnly)
   {
@@ -639,7 +640,7 @@ void GameInstanceStateGameplay::HandleTextChat(std::size_t client_index, const S
       auto & test_player_info = m_PlayerInfo[client_index];
 
       int test_team = test_player_info.m_PlayerIndex == -1 ? -1 :
-                      static_cast<int>(m_CurrentState->m_InstanceData.m_Players[test_player_info.m_PlayerIndex].m_Team);
+                      static_cast<int>(GetCurrentLowFrequencyData().m_Players[test_player_info.m_PlayerIndex].m_Team);
 
       if(team == test_team)
       {
@@ -702,14 +703,18 @@ void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_
   while (update_frames > 0)
   {
     auto new_state = std::make_shared<GameFullState>(*sim.get());
+    auto new_low_freq_data = std::make_shared<GameInstanceLowFrequencyData>(*m_CurrentLowFrequencyData.get());
+
+    bool modified_low_freq = false;
 
     int fake_send_timer = 0;
+
     GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), new_state->m_InstanceData,
-            new_state->m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
+            *new_low_freq_data, new_state->m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
             m_DeliberateSyncSystemData,
 #endif
-            m_Stage, true, fake_send_timer);
+            m_Stage, true, fake_send_timer, modified_low_freq);
 
     auto input_visitor = [&](int frame_count, HistoryInput & elem)
     {   
@@ -738,15 +743,27 @@ void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_
 
     m_Controller.Update(logic_container);
 
+    if(modified_low_freq)
+    {
+      m_CurrentLowFrequencyData = new_low_freq_data;
+    }
+
     if (m_ReconcileFrame > 0)
     {
       m_ReconcileFrame--;
+
+      if(modified_low_freq)
+      {
+        m_LowFrequencyHistory.SetAt(m_CurrentLowFrequencyData, m_ReconcileFrame);
+      }
+
       m_SimHistory.SetAt(new_state, m_ReconcileFrame);
     }
     else
     {
       m_Reconciler.AdvanceFrame();
       m_SimHistory.Push(new_state);
+      m_LowFrequencyHistory.Push(m_CurrentLowFrequencyData);
     }
 
     --update_frames;
@@ -1108,15 +1125,23 @@ GameInstanceData & GameInstanceStateGameplay::GetCurrentInstanceData()
   return m_CurrentState->m_InstanceData;
 }
 
+const GameInstanceLowFrequencyData & GameInstanceStateGameplay::GetCurrentLowFrequencyData() const
+{
+  return *m_CurrentLowFrequencyData;
+}
+
 GameLogicContainer GameInstanceStateGameplay::GetLogicContainer(int history_index)
 {
+  m_CurrentLowFrequencyData = std::make_shared<GameInstanceLowFrequencyData>(*m_CurrentLowFrequencyData);
+  m_LowFrequencyHistory.ReplaceTop(m_CurrentLowFrequencyData);
+
   return GameLogicContainer(m_Controller, m_StateData.GetInitSettings(), m_CurrentState->m_InstanceData,
-          m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
+          *m_CurrentLowFrequencyData, m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
           *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
           m_DeliberateSyncSystemData,
 #endif
-          m_Stage, true, m_SendTimer);
+          m_Stage, true, m_SendTimer, m_ModifiedLowFreq);
 }
 
 void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameInstanceStateGameplayPlayer & player)
@@ -1126,7 +1151,7 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
   {
     GameStateLoading loading_state;
 
-    for (auto elem : m_CurrentState->m_InstanceData.m_Players)
+    for (auto elem : GetCurrentLowFrequencyData().m_Players)
     {
       GameStateLoadingPlayer player;
       player.m_Loaded = true;
@@ -1136,7 +1161,7 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
     }
 
 #ifdef NET_ALLOW_OBSERVERS
-    for (auto elem : m_CurrentState->m_InstanceData.m_Observers)
+    for (auto elem : GetCurrentLowFrequencyData().m_Observers)
     {
       GameStateLoadingPlayer player;
       player.m_Loaded = true;
@@ -1185,6 +1210,12 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 #endif
 
   packet.m_State = *m_SimHistory.Get(history_frame);
+
+  if(player.m_ClientFrame == 0)
+  {
+    packet.m_LowFrequencyData = *m_LowFrequencyHistory.Get(history_frame)->get();
+  }
+
   auto input_visitor = [&](int time, HistoryInput & inp)
   {
     if (packet.m_Inputs == false)

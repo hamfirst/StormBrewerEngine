@@ -139,7 +139,7 @@ void GameClientInputManager::HandleMouseMove(PointerState & pointer_state)
     return;
   }
 
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetLowFrequencyData();
   auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
   auto & stage = m_GameContainer.GetInstanceData()->GetStage();
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
@@ -161,7 +161,7 @@ void GameClientInputManager::HandleClick(bool state)
     return;
   }
 
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetLowFrequencyData();
   auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
   auto & camera = m_GameContainer.GetClientSystems()->GetCamera();
 
@@ -174,7 +174,7 @@ void GameClientInputManager::HandleButtonPress(bool state, int button)
 
 void GameClientInputManager::SendInput(std::size_t client_index, ClientInput & input)
 {
-  auto & game_state = m_GameContainer.GetInstanceData()->GetGlobalInstanceData();
+  auto & game_state = m_GameContainer.GetInstanceData()->GetLowFrequencyData();
   auto & local_data = m_GameContainer.GetInstanceData()->GetClientLocalData(client_index);
   if (local_data.m_PlayerIndex == -1)
   {

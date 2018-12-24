@@ -277,7 +277,7 @@ Optional<int> PlayerServerObject::GetAssociatedPlayer(GameLogicContainer & game_
 
 int PlayerServerObject::GetTeam(GameLogicContainer & game_container) const
 {
-  return game_container.GetInstanceData().m_Players[GetSlotIndex()].m_Team;
+  return game_container.GetLowFrequencyInstanceData().m_Players[GetSlotIndex()].m_Team;
 }
 
 const SpritePtr & PlayerServerObject::GetSprite() const
