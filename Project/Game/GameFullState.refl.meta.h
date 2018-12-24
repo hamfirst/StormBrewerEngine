@@ -1167,7 +1167,7 @@ template <>
 struct StormReflTypeInfo<GameGGPOServerGameState>
 {
   using MyBase = void;
-  static constexpr int fields_n = 9;
+  static constexpr int fields_n = 10;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -1299,19 +1299,42 @@ struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<3, Self> : public 
 template <>
 struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<4>
 {
+  using member_type = NetOptional<GameInstanceLowFrequencyData>; // NetOptional<GameInstanceLowFrequencyData>
+  static constexpr auto GetName() { return "m_LowFrequencyData"; }
+  static constexpr auto GetType() { return "NetOptional<GameInstanceLowFrequencyData>"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xAD265B54; }
+  static constexpr unsigned GetTypeNameHash() { return 0x9DFD9421; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_LowFrequencyData; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_LowFrequencyData; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_LowFrequencyData; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<4, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, NetOptional<GameInstanceLowFrequencyData>> & Get() { return self.m_LowFrequencyData; }
+  std::add_const_t<std::remove_reference_t<NetOptional<GameInstanceLowFrequencyData>>> & Get() const { return self.m_LowFrequencyData; }
+};
+
+template <>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<5>
+{
   using member_type = NetOptional<NetArrayList<GameHistoryInput, 1023> >; // NetOptional<NetArrayList<GameHistoryInput, 1023> >
   static constexpr auto GetName() { return "m_Inputs"; }
   static constexpr auto GetType() { return "NetOptional<NetArrayList<GameHistoryInput, 1023> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4E5EF786; }
   static constexpr unsigned GetTypeNameHash() { return 0x082117F0; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_Inputs; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_Inputs; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_Inputs; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<4, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<4>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<5, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1320,21 +1343,21 @@ struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<4, Self> : public 
 };
 
 template <>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<5>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<6>
 {
   using member_type = NetOptional<NetArrayList<GameHistoryEvent, 1023> >; // NetOptional<NetArrayList<GameHistoryEvent, 1023> >
   static constexpr auto GetName() { return "m_Events"; }
   static constexpr auto GetType() { return "NetOptional<NetArrayList<GameHistoryEvent, 1023> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1EB80082; }
   static constexpr unsigned GetTypeNameHash() { return 0xD5BC2A09; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_Events; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_Events; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_Events; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<5, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<5>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<6, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1343,21 +1366,21 @@ struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<5, Self> : public 
 };
 
 template <>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<6>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<7>
 {
   using member_type = NetOptional<NetArrayList<GameHistoryExternal, 1023> >; // NetOptional<NetArrayList<GameHistoryExternal, 1023> >
   static constexpr auto GetName() { return "m_Externals"; }
   static constexpr auto GetType() { return "NetOptional<NetArrayList<GameHistoryExternal, 1023> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x02CC870F; }
   static constexpr unsigned GetTypeNameHash() { return 0xA33B7F85; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_Externals; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_Externals; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_Externals; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<6, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<6>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<7, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1366,21 +1389,21 @@ struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<6, Self> : public 
 };
 
 template <>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<7>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<8>
 {
   using member_type = NetOptional<NetArrayList<GameHistoryClientLocal, 1023> >; // NetOptional<NetArrayList<GameHistoryClientLocal, 1023> >
   static constexpr auto GetName() { return "m_LocalData"; }
   static constexpr auto GetType() { return "NetOptional<NetArrayList<GameHistoryClientLocal, 1023> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x80046698; }
   static constexpr unsigned GetTypeNameHash() { return 0x555026DB; }
-  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_LocalData; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_LocalData; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_LocalData; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<7, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<7>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<8, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1389,21 +1412,21 @@ struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<7, Self> : public 
 };
 
 template <>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<8>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<9>
 {
   using member_type = NetOptional<NetArrayList<GameHistoryAuthEvent, 1023> >; // NetOptional<NetArrayList<GameHistoryAuthEvent, 1023> >
   static constexpr auto GetName() { return "m_ServerAuthEvents"; }
   static constexpr auto GetType() { return "NetOptional<NetArrayList<GameHistoryAuthEvent, 1023> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD68F20FC; }
   static constexpr unsigned GetTypeNameHash() { return 0x0AD54FF9; }
-  static constexpr auto GetFieldIndex() { return 8; }
+  static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &GameGGPOServerGameState::m_ServerAuthEvents; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameGGPOServerGameState *>(obj); return &ptr->m_ServerAuthEvents; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameGGPOServerGameState *>(obj); return &ptr->m_ServerAuthEvents; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<8, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<8>
+struct StormReflTypeInfo<GameGGPOServerGameState>::field_data<9, Self> : public StormReflTypeInfo<GameGGPOServerGameState>::field_data_static<9>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

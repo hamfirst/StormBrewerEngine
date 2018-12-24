@@ -20,7 +20,6 @@ struct GameFullState
 
   ServerObjectManager m_ServerObjectManager;
   GameInstanceData m_InstanceData;
-
 };
 
 struct GameStateStagingPlayer
@@ -117,6 +116,7 @@ struct GameGGPOServerGameState
   int m_EventStartFrame = 0;
 
   std::shared_ptr<GameFullState> m_State;
+  NetOptional<GameInstanceLowFrequencyData> m_LowFrequencyData;
 
   NetOptional<NetArrayList<GameHistoryInput, 1023>> m_Inputs;
   NetOptional<NetArrayList<GameHistoryEvent, 1023>> m_Events;

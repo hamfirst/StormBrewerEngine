@@ -57,11 +57,11 @@ void GameModeTutorial::OnAssetsLoaded()
 #endif
 
   m_InstanceContainer->GetGameController().FillWithBots(game_logic, 0);
-  m_InstanceContainer->GetGlobalInstanceData().m_Players[0].m_AIPlayerInfo.Clear();
+  m_InstanceContainer->GetGlobalInstanceData().m_AIPlayerInfo.RemoveAt(0);
 
   m_InstanceContainer->GetGameController().StartGame(game_logic);
 
-  m_InstanceContainer->GetGlobalInstanceData().m_Score[2] = 4;
+  m_InstanceContainer->GetLowFrequencyData().m_Score[2] = 4;
 
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();

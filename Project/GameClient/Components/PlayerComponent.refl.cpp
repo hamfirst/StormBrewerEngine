@@ -102,9 +102,10 @@ PlayerServerObjectInfo PlayerComponent::GetServerObjectInfo()
   info.m_CurrentPos = Vector2f(info.m_CurrentObject->m_Position.x, info.m_CurrentObject->m_Position.y);
 
   auto instance_data = GetEntity()->GetGameContainer()->GetInstanceData();
+  auto slot_index = info.m_CurrentObject->GetSlotIndex();
 
-  auto player = instance_data->GetGlobalInstanceData().m_Players.TryGet(info.m_CurrentObject->GetSlotIndex());
-  info.m_IsLocal = player->m_AIPlayerInfo.IsValid();
+  auto player = instance_data->GetLowFrequencyData().m_Players.TryGet(slot_index);
+  info.m_IsLocal = instance_data->GetGlobalInstanceData().m_AIPlayerInfo.HasAt(slot_index);
 
   auto num_local = instance_data->GetNumLocalData();
   for (int index = 0; index < num_local; ++index)

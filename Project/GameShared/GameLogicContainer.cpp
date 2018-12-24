@@ -1,3 +1,4 @@
+#include <Project/Game/GameNetworkData.refl.h>
 #include "GameShared/GameSharedCommon.h"
 #include "GameShared/GameLogicContainer.h"
 
@@ -5,6 +6,7 @@ GameLogicContainer::GameLogicContainer(
   GameController & game_controller,
   const GameInitSettings & init_settings,
   GameInstanceData & global_data,
+  GameInstanceLowFrequencyData & low_freq_data,
   ServerObjectManager & object_manager,
   ServerObjectEventSystem & server_object_event_system,
   GameServerEventSender & server_event_sender,
@@ -12,10 +14,12 @@ GameLogicContainer::GameLogicContainer(
   GameLogicSystems & systems,
   const GameStage & stage,
   bool is_authority,
-  int & send_timer) :
+  int & send_timer,
+  bool & modified_low_freq_data) :
   m_GameController(game_controller),
   m_InitSettings(init_settings),
   m_InstanceData(global_data),
+  m_LowFrequencyData(low_freq_data),
   m_ObjectManager(object_manager),
   m_ObjectEventSystem(server_object_event_system),
   m_ServerEventSender(server_event_sender),
@@ -23,7 +27,8 @@ GameLogicContainer::GameLogicContainer(
   m_Systems(systems),
   m_Stage(stage),
   m_IsAuthority(is_authority),
-  m_SendTimer(send_timer)
+  m_SendTimer(send_timer),
+  m_ModifiedLowFreqData(modified_low_freq_data)
 {
 
 }
@@ -41,6 +46,17 @@ const GameInitSettings & GameLogicContainer::GetGameInitSettings()
 GameInstanceData & GameLogicContainer::GetInstanceData()
 {
   return m_InstanceData;
+}
+
+const GameInstanceLowFrequencyData & GameLogicContainer::GetLowFrequencyInstanceData() const
+{
+  return m_LowFrequencyData;
+}
+
+GameInstanceLowFrequencyData & GameLogicContainer::GetLowFrequencyInstanceDataForModify()
+{
+  m_ModifiedLowFreqData = true;
+  return m_LowFrequencyData;
 }
 
 ServerObjectManager & GameLogicContainer::GetObjectManager()

@@ -93,7 +93,7 @@ void GameModeSinglePlayerBots::Update()
 
   auto & container = GetContainer();
   auto & instance_data = *m_InstanceContainer.get();
-  auto & game_data = instance_data.GetGlobalInstanceData();
+  auto & game_data = instance_data.GetLowFrequencyData();
 
   if (game_data.m_WiningTeam)
   {

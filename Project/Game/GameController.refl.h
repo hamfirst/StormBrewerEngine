@@ -37,15 +37,15 @@ public:
 
   void ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game);
 
-  void InitPlayer(GameLogicContainer & game, std::size_t player_index, GamePlayer & player);
+  void InitPlayer(GameLogicContainer & game, std::size_t player_index, const GamePlayer & player);
   void SetPlayerToSpawn(GameLogicContainer & game, std::size_t player_index);
   void CleanupPlayer(GameLogicContainer & game, std::size_t player_index);
   int AddAIPlayer(GameLogicContainer & game, uint32_t random_number);
   void FillWithBots(GameLogicContainer & game, uint32_t random_number);
 
-  static std::vector<int> GetTeamCounts(GameInstanceData & game_data);
-  static std::vector<int> GetTeamCounts(GameStateStaging & game_data);
-  static std::vector<int> GetTeamCounts(GameStateLoading & game_data);
+  static std::vector<int> GetTeamCounts(const GameInstanceLowFrequencyData & game_data);
+  static std::vector<int> GetTeamCounts(const GameStateStaging & game_data);
+  static std::vector<int> GetTeamCounts(const GameStateLoading & game_data);
   static int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number);
   static bool DoAllTeamsHavePlayers(const std::vector<int> & team_counts);
   Optional<int> GetOnlyTeamWithPlayers(GameLogicContainer & game);

@@ -46,8 +46,8 @@ public:
 
   void Update();
   void SyncEntities();
-  void InitializeFromRemoteState(const std::shared_ptr<GameFullState> & state);
-  int Rewind(int target_frame, const Optional<std::shared_ptr<GameFullState>> & state);
+  void InitializeFromRemoteState(const std::shared_ptr<GameFullState> & state, NullOptPtr<GameInstanceLowFrequencyData> low_freq_data);
+  int Rewind(int target_frame, const std::shared_ptr<GameFullState> & state, NullOptPtr<GameInstanceLowFrequencyData> low_freq_data);
   void PurgeLocalData(int target_frame);
   void PurgeRemoteData(int target_frame);
 
@@ -77,6 +77,8 @@ public:
   GameFullState & GetFullState();
   GameFullState & GetDefaultState();
   GameFullState & GetHistoryState(std::size_t history_index);
+  GameInstanceLowFrequencyData & GetLowFrequencyData();
+  GameInstanceLowFrequencyData & GetHistoryLowFrequencyData(std::size_t history_index);
   GameInstanceData & GetGlobalInstanceData();
   GameLogicSystems & GetSystems();
   GameStage & GetStage();
@@ -149,6 +151,7 @@ private:
   ServerObjectEventSystem m_ServerObjectEventSystem;
   bool m_Loaded;
   bool m_Authority;
+  bool m_ModifiedLowFreq;
   int m_ConfirmedRemoteFrame;
   int m_SendTimer;
 
@@ -157,8 +160,10 @@ private:
   std::size_t m_NumLocalClients;
 
   std::shared_ptr<GameFullState> m_CurrentSim;
+  std::shared_ptr<GameInstanceLowFrequencyData> m_CurrentLowFreq;
   std::shared_ptr<GameFullState> m_DefaultSim;
   CircularBuffer<std::shared_ptr<GameFullState>, kMaxHistoryFrames> m_SimHistory;
+  CircularBuffer<std::shared_ptr<GameInstanceLowFrequencyData>, kMaxHistoryFrames> m_LowFreqHistory;
 
   HistoryList<HistoryInput> m_LocalInputistory;
   HistoryList<HistoryEvent> m_LocalEventHistory;

@@ -68,7 +68,7 @@ void CollisionDrawer::Render(GameContainer & game_container, const Box & viewpor
 uint32_t CollisionDrawer::GetCollisionMask(GameContainer & game_container)
 {
   auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
+  auto & game_data = game_container.GetInstanceData()->GetLowFrequencyData();
 
   uint8_t collision_mask = 0;
   for (auto team = 0; team < kMaxTeams; ++team)

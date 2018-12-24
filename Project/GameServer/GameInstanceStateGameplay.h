@@ -82,6 +82,7 @@ protected:
 
   GameFullState & GetCurrentState();
   GameInstanceData & GetCurrentInstanceData();
+  const GameInstanceLowFrequencyData & GetCurrentLowFrequencyData() const;
   GameLogicContainer GetLogicContainer(int history_index = 0);
 
   void SendPacketToPlayer(std::size_t client_id, GameInstanceStateGameplayPlayer & player);
@@ -90,7 +91,8 @@ private:
 
   const GameStage & m_Stage;
 
-  int m_SendTimer;
+  int m_SendTimer = 0;
+  bool m_ModifiedLowFreq = false;
 
   GameController m_Controller;
   GameLogicSystems m_Systems;
@@ -104,6 +106,7 @@ private:
   IdAllocator m_PlayerIdAllocator;
 
   std::shared_ptr<GameFullState> m_CurrentState;
+  std::shared_ptr<GameInstanceLowFrequencyData> m_CurrentLowFrequencyData;
 
 #ifdef NET_ALLOW_OBSERVERS
   IdAllocator m_ObserverIdAllocator;
@@ -142,6 +145,7 @@ private:
   ServerObjectEventSystem m_ServerObjectEventSystem;
 
   CircularBuffer<std::shared_ptr<GameFullState>, kMaxHistoryFrames> m_SimHistory;
+  CircularBuffer<std::shared_ptr<GameInstanceLowFrequencyData>, kMaxHistoryFrames> m_LowFrequencyHistory;
   HistoryList<HistoryInput> m_Inputistory;
   HistoryList<HistoryEvent> m_EventHistory;
   HistoryList<HistoryClientLocal> m_ClientLocalHistory;

@@ -291,7 +291,7 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
     m_StagingState.Clear();
 
     m_InstanceContainer = std::move(m_LoadingInstanceContainer);
-    m_InstanceContainer->InitializeFromRemoteState(std::make_shared<GameFullState>(*game_state.m_State.get()));
+    m_InstanceContainer->InitializeFromRemoteState(game_state.m_State, game_state.m_LowFrequencyData.GetPtr());
     m_FinalizedLoad = false;
 
     m_State = ClientConnectionState::kConnected;
@@ -321,7 +321,9 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
 
   m_LastServerFrame = game_state.m_ServerFrame;
 
-  m_InstanceContainer->Rewind(game_state.m_State->m_InstanceData.m_FrameCount, std::make_shared<GameFullState>(*game_state.m_State.get()));
+  m_InstanceContainer->Rewind(game_state.m_State->m_InstanceData.m_FrameCount,
+          std::make_shared<GameFullState>(*game_state.m_State), game_state.m_LowFrequencyData.GetPtr());
+
   m_InstanceContainer->PurgeLocalData(game_state.m_AckFrame);
   m_InstanceContainer->PurgeRemoteData(game_state.m_EventStartFrame);
 
