@@ -428,7 +428,9 @@ void MapEditorViewer::StartPlayMode()
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { StopPlayMode(); },
     [this](NullOptPtr<Box> box) {},
-    [this] {}
+    [this] {},
+    [this] { grabMouse(); },
+    [this] { releaseMouse(); }
   );
 
   auto cursor_pos = mapFromGlobal(QCursor::pos());

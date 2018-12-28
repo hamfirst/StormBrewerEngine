@@ -48,6 +48,7 @@ public:
   void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
   void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
   void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) override;
+  void HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg) override;
 
 #if NET_MODE == NET_MODE_GGPO
 
@@ -59,16 +60,6 @@ public:
   void SendAuthEvent(std::size_t class_id, const void * event_ptr) override;
   bool ReconcileEvent(std::size_t event_type_name_hash, uint64_t event_id, const GameNetVec2 & pos) override;
   void BlockRewind(std::size_t connection) override;
-
-#else
-
-  void UpdatePlayer(std::size_t client_index, ClientAuthData & update_data) override;
-  void HandleClientEvent(std::size_t client_index, std::size_t class_id, void * event_ptr) override;
-
-  void SendGlobalEvent(std::size_t class_id, const void * event_ptr) override;
-  void SendGlobalEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id) override;
-  void SendEntityEvent(std::size_t class_id, const void * event_ptr, ServerObjectHandle object_handle) override;
-  void SendEntityEvent(std::size_t class_id, const void * event_ptr, std::size_t connection_id, ServerObjectHandle object_handle) override;
 
 #endif
 

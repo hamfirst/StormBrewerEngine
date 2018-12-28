@@ -390,7 +390,7 @@ template <>
 struct StormReflFuncInfo<UIClickable>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 5;
+  static constexpr int funcs_n = 7;
   template <int N> struct func_data_static {};
 };
 
@@ -492,6 +492,38 @@ struct StormReflFuncInfo<UIClickable>::func_data_static<4>::param_info<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetNameHash() { return 0x80736701; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<UIClickable>::func_data_static<5>
+{
+  using func_ptr_type = void (UIClickable::*)();
+  using return_type = void;
+  static constexpr int params_n = 0;
+  static constexpr auto GetName() { return "GrabMouse"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x72A46B79; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 5; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &UIClickable::GrabMouse; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<UIClickable>::func_data_static<6>
+{
+  using func_ptr_type = void (UIClickable::*)();
+  using return_type = void;
+  static constexpr int params_n = 0;
+  static constexpr auto GetName() { return "ReleaseMouse"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x6617821D; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 6; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &UIClickable::ReleaseMouse; }
+  template <int i>
+  struct param_info { };
 };
 
 namespace StormReflFileInfo

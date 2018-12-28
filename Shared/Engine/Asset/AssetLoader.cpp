@@ -528,7 +528,7 @@ void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallb
   File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
   {
-    callback(file_hash, Optional<Buffer>{}, default_time_point);
+    callback(file_hash, nullptr, 0, default_time_point);
     return;
   }
 
@@ -543,7 +543,7 @@ void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallb
   auto last_write = default_time_point;
 #endif
 
-  callback(file_hash, Optional<Buffer>(std::move(buffer)), last_write);
+  callback(file_hash, buffer.Get(), buffer.GetSize(), last_write);
 }
 
 void AssetLoader::ReloadFile(czstr file_path)

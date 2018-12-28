@@ -28,7 +28,8 @@ GameLogicContainer::GameLogicContainer(
   m_Stage(stage),
   m_IsAuthority(is_authority),
   m_SendTimer(send_timer),
-  m_ModifiedLowFreqData(modified_low_freq_data)
+  m_ModifiedLowFreqData(modified_low_freq_data),
+  m_AllowModifyLowFreqData(false)
 {
 
 }
@@ -55,6 +56,8 @@ const GameInstanceLowFrequencyData & GameLogicContainer::GetLowFrequencyInstance
 
 GameInstanceLowFrequencyData & GameLogicContainer::GetLowFrequencyInstanceDataForModify()
 {
+  ASSERT(m_AllowModifyLowFreqData, "Modifying low freq data when not allowed");
+
   m_ModifiedLowFreqData = true;
   return m_LowFrequencyData;
 }
@@ -97,4 +100,9 @@ bool GameLogicContainer::IsAuthority()
 void GameLogicContainer::TriggerImmediateSend()
 {
   m_SendTimer = 0;
+}
+
+void GameLogicContainer::SetAllowModifyLowFrequencyData(bool allow)
+{
+  m_AllowModifyLowFreqData = allow;
 }

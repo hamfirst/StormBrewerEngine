@@ -31,8 +31,12 @@ public:
   void ConvertPlayerToBot(std::size_t player_index, GameLogicContainer & game, const std::string & name);
 
 #ifdef NET_ALLOW_OBSERVERS
-  void ConstructObserver(std::size_t player_index, GameLogicContainer & game, const std::string & name);
-  void DestroyObserver(std::size_t player_index, GameLogicContainer & game);
+  void ConstructObserver(std::size_t observer_index, GameLogicContainer & game, const std::string & name);
+  void DestroyObserver(std::size_t observer_index, GameLogicContainer & game);
+
+  void ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game, int team,
+          uint32_t random_number, const GamePlayerLoadout & loadout);
+  void ConvertPlayerToObserver(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game);
 #endif
 
   void ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game);
@@ -81,6 +85,6 @@ private:
   std::vector<Delegate<void, const void *, std::size_t, GameLogicContainer &>> m_ClientEventCallbacks;
   std::vector<Delegate<void, const void *, GameLogicContainer &>> m_AuthEventCallbacks;
 
-  // There should be no state in this class since it's desinged to only respond to events using the GameLogicContainer
+  // There should be no state in this class since it's designed to only respond to events using the GameLogicContainer
 };
 

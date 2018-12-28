@@ -46,6 +46,7 @@ public:
   void HandlePlayerReady(GameClientConnection * client, const ReadyMessage & ready);
   void HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading);
   void HandleTextChat(GameClientConnection * client, const SendTextChatMessage & text_message);
+  void HandleChangeLoadout(GameClientConnection * client, const ChangeLoadoutMessage & text_message);
 
 #if NET_MODE == NET_MODE_GGPO
 

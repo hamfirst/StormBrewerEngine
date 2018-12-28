@@ -393,7 +393,7 @@ void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCa
   File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
   {
-    callback(file_hash, Optional<Buffer>{}, std::chrono::system_clock::time_point{});
+    callback(file_hash, nullptr, 0, std::chrono::system_clock::time_point{});
     return;
   }
 
@@ -401,7 +401,7 @@ void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCa
   FileClose(file);
 
   std::error_code ec;
-  callback(file_hash, Optional<Buffer>(std::move(buffer)), std::experimental::filesystem::last_write_time(path, ec));
+  callback(file_hash, buffer.Get(), buffer.GetSize(), std::experimental::filesystem::last_write_time(path, ec));
 }
 
 std::string DocumentServer::GetFullPath(const std::string & path)

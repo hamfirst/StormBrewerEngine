@@ -109,12 +109,12 @@ bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicCon
     return true;
   }
 
-  if (global_data.m_Score[(int)player->m_Team] > kMaxScore / 2)
+  auto game_data = game.GetInstanceData();
+  if (game_data.m_Score[(int)player->m_Team] > kMaxScore / 2)
   {
     return false;
   }
 
-  auto game_data = game.GetInstanceData();
   if(game_data.m_AIPlayerInfo.HasAt(player_index))
   {
     return false;
@@ -168,20 +168,63 @@ void GameController::ConvertPlayerToBot(std::size_t player_index, GameLogicConta
 }
 
 #ifdef NET_ALLOW_OBSERVERS
-void GameController::ConstructObserver(std::size_t player_index, GameLogicContainer & game, const std::string & name)
+void GameController::ConstructObserver(std::size_t observer_index, GameLogicContainer & game, const std::string & name)
 {
   GameObserver player;
   player.m_UserName = name;
 
   auto & global_data = game.GetLowFrequencyInstanceDataForModify();
-  global_data.m_Observers.EmplaceAt(player_index, std::move(player));
+  global_data.m_Observers.EmplaceAt(observer_index, std::move(player));
 }
 
-void GameController::DestroyObserver(std::size_t player_index, GameLogicContainer & game)
+void GameController::DestroyObserver(std::size_t observer_index, GameLogicContainer & game)
 {
   auto & global_data = game.GetLowFrequencyInstanceDataForModify();
-  global_data.m_Observers.RemoveAt(player_index);
+  global_data.m_Observers.RemoveAt(observer_index);
 }
+
+
+void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index,
+        GameLogicContainer & game, int team, uint32_t random_number, const GamePlayerLoadout & loadout)
+{
+  auto game_data = game.GetLowFrequencyInstanceDataForModify();
+  auto user_name = game_data.m_Observers[observer_index].m_UserName;
+  game_data.m_Observers.RemoveAt(observer_index);
+
+  GamePlayer player;
+  player.m_UserName = user_name;
+  player.m_Loadout = loadout;
+
+  if(team < 0)
+  {
+    auto team_counts = GetTeamCounts(game_data);
+    player.m_Team = GetRandomTeam(team_counts, random_number);
+  }
+  else
+  {
+    player.m_Team = team;
+  }
+
+  game_data.m_Players.EmplaceAt(player_index, std::move(player));
+}
+
+void GameController::ConvertPlayerToObserver(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game)
+{
+  auto game_data = game.GetLowFrequencyInstanceDataForModify();
+  auto user_name = game_data.m_Players[player_index].m_UserName;
+  auto team = game_data.m_Players[player_index].m_Team;
+  game_data.m_Players.RemoveAt(player_index);
+
+  GameObserver observer;
+  observer.m_UserName = user_name;
+
+  game_data.m_Observers.EmplaceAt(observer_index, std::move(observer));
+
+#ifdef NET_FILL_WITH_BOTS
+  ConstructBot(player_index, game, "AI", team);
+#endif
+}
+
 #endif
 
 void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game)
@@ -199,6 +242,24 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
     auto ev = ext.Get<PlayerLeaveEvent>();
     DestroyPlayer(ev->m_PlayerIndex, game);
   }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangePlayerNameEvent>())
+  {
+    auto ev = ext.Get<ChangePlayerNameEvent>();
+    auto & game_state = game.GetLowFrequencyInstanceDataForModify();
+    game_state.m_Players[ev->m_PlayerIndex].m_UserName = ev->m_Name;
+  }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangePlayerTeam>())
+  {
+    auto ev = ext.Get<ChangePlayerTeam>();
+    auto & game_state = game.GetLowFrequencyInstanceDataForModify();
+    game_state.m_Players[ev->m_PlayerIndex].m_Team = ev->m_Team;
+  }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangeLoadoutEvent>())
+  {
+    auto ev = ext.Get<ChangeLoadoutEvent>();
+    auto & game_state = game.GetLowFrequencyInstanceDataForModify();
+    game_state.m_Players[ev->m_PlayerIndex].m_Loadout = ev->m_Loadout;
+  }
 #ifdef NET_ALLOW_OBSERVERS
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ObserverJoinedEvent>())
   {
@@ -210,7 +271,24 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
     auto ev = ext.Get<ObserverLeaveEvent>();
     DestroyObserver(ev->m_PlayerIndex, game);
   }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangeObserverNameEvent>())
+  {
+    auto ev = ext.Get<ChangeObserverNameEvent>();
+    auto & game_state = game.GetLowFrequencyInstanceDataForModify();
+    game_state.m_Observers[ev->m_ObserverIndex].m_UserName = ev->m_Name;
+  }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangeObserverToPlayer>())
+  {
+    auto ev = ext.Get<ChangeObserverToPlayer>();
+    ConvertObserverToPlayer(ev->m_ObserverIndex, ev->m_PlayerIndex, game, ev->m_Team, ev->m_RandomSeed, ev->m_Loadout);
+  }
+  else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangePlayerToObserver>())
+  {
+    auto ev = ext.Get<ChangePlayerToObserver>();
+    ConvertPlayerToObserver(ev->m_ObserverIndex, ev->m_PlayerIndex, game);
+  }
 #endif
+
 }
 
 void GameController::InitPlayer(GameLogicContainer & game, std::size_t player_index, const GamePlayer & player)
@@ -259,7 +337,8 @@ void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player
     return;
   }
 
-  if (kMaxTeams > 1 && global_data.m_WiningTeam)
+  auto & game_data = game.GetInstanceData();
+  if (kMaxTeams > 1 && game_data.m_WiningTeam)
   {
     auto winning_team = GetOnlyTeamWithPlayers(game);
     if (winning_team)
@@ -468,7 +547,7 @@ void GameController::ApplyInput(std::size_t player_index, GameLogicContainer & g
 
 void GameController::Update(GameLogicContainer & game)
 {
-  auto & game_data = game.GetLowFrequencyInstanceData();
+  auto & game_data = game.GetInstanceData();
   if (game_data.m_WiningTeam)
   {
     return;
@@ -578,7 +657,7 @@ void GameController::StartGame(GameLogicContainer & game)
 
 void GameController::EndGame(int winning_team, GameLogicContainer & game)
 {
-  game.GetLowFrequencyInstanceDataForModify().m_WiningTeam.Emplace(winning_team);
+  game.GetInstanceData().m_WiningTeam.Emplace(winning_team);
 
   auto & sim_events = game.GetSimEventCallbacks();
   sim_events.HandleWinGame(winning_team);
@@ -588,7 +667,7 @@ void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 &
 {
   if (game.IsAuthority())
   {
-    auto & game_data = game.GetLowFrequencyInstanceDataForModify();
+    auto & game_data = game.GetInstanceData();
     ++game_data.m_Score[team];
 
     auto winning_team = -1;

@@ -23,6 +23,12 @@ function InitTestMenu()
   input.height = 15
   input.prompt = "Input"
 
+  local scrollbar = PushMenuElement(ScrollBar:new())
+  scrollbar.x = -80
+  scrollbar.y = -40
+  scrollbar.width = 20
+  scrollbar.height = 200
+
   CreateDefualtControls();
 
   local popup = PushMenuElement(ConfirmPopup:new())

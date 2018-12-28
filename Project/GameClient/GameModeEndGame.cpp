@@ -36,13 +36,14 @@ void GameModeEndGame::Initialize()
 {
   m_Victory = false;
 
-  auto & game_state = m_InstanceContainer->GetLowFrequencyData();
+  auto & game_state = m_InstanceContainer->GetGlobalInstanceData();
+  auto & game_data = m_InstanceContainer->GetLowFrequencyData();
 
   auto num_local_players = m_InstanceContainer->GetNumLocalData();
   for (std::size_t client_index = 0; client_index < num_local_players; ++client_index)
   {
     auto & local_data = m_InstanceContainer->GetClientLocalData(client_index);
-    auto & local_player = game_state.m_Players[(int)local_data.m_PlayerIndex];
+    auto & local_player = game_data.m_Players[(int)local_data.m_PlayerIndex];
 
     if (game_state.m_WiningTeam && game_state.m_WiningTeam.Value() == local_player.m_Team)
     {

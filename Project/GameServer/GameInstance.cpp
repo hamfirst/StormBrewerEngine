@@ -97,6 +97,12 @@ void GameInstance::HandleTextChat(GameClientConnection * client, const SendTextC
   m_State->HandleTextChat(player_index, text_message);
 }
 
+void GameInstance::HandleChangeLoadout(GameClientConnection * client, const ChangeLoadoutMessage & text_message)
+{
+  auto player_index = GetPlayerIndex(client);
+  m_State->HandleChangeLoadout(player_index, text_message);
+}
+
 #if NET_MODE == NET_MODE_GGPO
 
 void GameInstance::UpdatePlayer(GameClientConnection * client, GameGGPOClientUpdate & update_data)

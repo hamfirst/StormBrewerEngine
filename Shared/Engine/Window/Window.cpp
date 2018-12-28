@@ -90,6 +90,26 @@ void Window::Close() const
   g_WindowManager.CloseWindow(m_WindowId);
 }
 
+void Window::GrabMouse()
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.GrabMouse(m_WindowId);
+}
+
+void Window::ReleaseMouse()
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  g_WindowManager.ReleaseMouse(m_WindowId);
+}
+
 void Window::SetMousePos(int x, int y) const
 {
   if (m_WindowId == 0)

@@ -387,6 +387,38 @@ void WindowManager::CloseWindow(uint32_t window_id)
   s_Windows.erase(itr);
 }
 
+void WindowManager::GrabMouse(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    SDL_SetWindowGrab(window.m_SDLWindow, SDL_TRUE);
+  }
+  else
+  {
+    window.m_FakeWindow->m_GrabWindowDelegate();
+  }
+}
+
+void WindowManager::ReleaseMouse(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+
+  if (window.m_SDLWindow)
+  {
+    SDL_SetWindowGrab(window.m_SDLWindow, SDL_FALSE);
+  }
+  else
+  {
+    window.m_FakeWindow->m_ReleaseWindowDelegate();
+  }
+}
+
 Vector2 WindowManager::GetWindowSize(uint32_t window_id)
 {
   auto itr = s_Windows.find(window_id);

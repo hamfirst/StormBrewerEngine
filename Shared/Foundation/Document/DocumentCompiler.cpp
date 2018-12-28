@@ -78,7 +78,7 @@ void DocumentCompiler::ReloadDocument(czstr path)
   m_Loader->LoadDocument(path, file_hash, DocumentLoadCallback(&DocumentCompiler::HandleDocumentLoaded, this));
 }
 
-void DocumentCompiler::HandleDocumentLoaded(uint32_t file_id, Optional<Buffer> && buffer, std::chrono::system_clock::time_point last_modified_time)
+void DocumentCompiler::HandleDocumentLoaded(uint32_t file_id, void * data, std::size_t length, std::chrono::system_clock::time_point last_modified_time)
 {
   auto itr = m_Documents.find(file_id);
   if (itr == m_Documents.end())
@@ -86,9 +86,9 @@ void DocumentCompiler::HandleDocumentLoaded(uint32_t file_id, Optional<Buffer> &
     return;
   }
 
-  if (buffer)
+  if (data)
   {
-    itr->second->ParseFull((char *)buffer->Get());
+    itr->second->ParseFull((char *)data);
   }
   else
   {

@@ -24,6 +24,9 @@ public:
   void Swap() const;
   void Close() const;
 
+  void GrabMouse();
+  void ReleaseMouse();
+
   void SetMousePos(int x, int y) const;
   void SetVsyncEnabled(bool enabled) const;
   void SetFullscreen(bool fullscreen) const;

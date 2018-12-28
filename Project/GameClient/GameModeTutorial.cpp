@@ -61,7 +61,7 @@ void GameModeTutorial::OnAssetsLoaded()
 
   m_InstanceContainer->GetGameController().StartGame(game_logic);
 
-  m_InstanceContainer->GetLowFrequencyData().m_Score[2] = 4;
+  m_InstanceContainer->GetGlobalInstanceData().m_Score[2] = 4;
 
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();

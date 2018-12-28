@@ -6,6 +6,7 @@ option(WEB "Emscripten Webassembly Build" OFF)
 option(BUILD_CLIENT "Build Client" ON)
 CMAKE_DEPENDENT_OPTION(BUILD_TOOLS "Build Client" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
 CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
+CMAKE_DEPENDENT_OPTION(DEVELOPMENT_BUILD "Development Build" ON "BUILD_TOOLS" OFF)
 
 include_directories("${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/Tools")
 
@@ -34,6 +35,10 @@ endif()
 
 if (UNIX AND NOT APPLE)
   add_definitions(-D_LINUX)
+endif()
+
+if (DEVELOPMENT_BUILD)
+  add_definitions(-D_DEV_BUILD)
 endif()
 
 if(WEB)

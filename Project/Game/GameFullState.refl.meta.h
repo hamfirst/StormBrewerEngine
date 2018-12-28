@@ -99,7 +99,7 @@ template <>
 struct StormReflTypeInfo<GameStateStagingPlayer>
 {
   using MyBase = void;
-  static constexpr int fields_n = 4;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -212,19 +212,43 @@ struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<2, Self> : public S
 template <>
 struct StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<3>
 {
+  using member_type = GamePlayerLoadout; // GamePlayerLoadout
+  static constexpr auto GetName() { return "m_Loadout"; }
+  static constexpr auto GetType() { return "GamePlayerLoadout"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xEB97BB97; }
+  static constexpr unsigned GetTypeNameHash() { return 0xFEBDA94B; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &GameStateStagingPlayer::m_Loadout; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStagingPlayer *>(obj); return &ptr->m_Loadout; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStagingPlayer *>(obj); return &ptr->m_Loadout; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<3, Self> : public StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, GamePlayerLoadout> & Get() { return self.m_Loadout; }
+  std::add_const_t<std::remove_reference_t<GamePlayerLoadout>> & Get() const { return self.m_Loadout; }
+  void SetDefault() { self.m_Loadout = StormReflTypeInfo<GameStateStagingPlayer>::GetDefault().m_Loadout; }
+};
+
+template <>
+struct StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<4>
+{
   using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 3>
   static constexpr auto GetName() { return "m_Team"; }
   static constexpr auto GetType() { return "NetRangedNumber<int, -1, 3>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
   static constexpr unsigned GetTypeNameHash() { return 0x338ACEE7; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameStateStagingPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStagingPlayer *>(obj); return &ptr->m_Team; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStagingPlayer *>(obj); return &ptr->m_Team; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<3, Self> : public StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<3>
+struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<4, Self> : public StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -399,7 +423,7 @@ template <>
 struct StormReflTypeInfo<GameStateLoadingPlayer>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -488,19 +512,43 @@ struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data<1, Self> : public S
 template <>
 struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<2>
 {
+  using member_type = GamePlayerLoadout; // GamePlayerLoadout
+  static constexpr auto GetName() { return "m_Loadout"; }
+  static constexpr auto GetType() { return "GamePlayerLoadout"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xEB97BB97; }
+  static constexpr unsigned GetTypeNameHash() { return 0xFEBDA94B; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &GameStateLoadingPlayer::m_Loadout; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateLoadingPlayer *>(obj); return &ptr->m_Loadout; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateLoadingPlayer *>(obj); return &ptr->m_Loadout; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data<2, Self> : public StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, GamePlayerLoadout> & Get() { return self.m_Loadout; }
+  std::add_const_t<std::remove_reference_t<GamePlayerLoadout>> & Get() const { return self.m_Loadout; }
+  void SetDefault() { self.m_Loadout = StormReflTypeInfo<GameStateLoadingPlayer>::GetDefault().m_Loadout; }
+};
+
+template <>
+struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<3>
+{
   using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 3>
   static constexpr auto GetName() { return "m_Team"; }
   static constexpr auto GetType() { return "NetRangedNumber<int, -1, 3>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
   static constexpr unsigned GetTypeNameHash() { return 0x338ACEE7; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameStateLoadingPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateLoadingPlayer *>(obj); return &ptr->m_Team; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateLoadingPlayer *>(obj); return &ptr->m_Team; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data<2, Self> : public StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<2>
+struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data<3, Self> : public StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

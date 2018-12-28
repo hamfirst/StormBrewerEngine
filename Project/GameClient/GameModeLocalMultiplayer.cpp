@@ -57,6 +57,7 @@ void GameModeLocalMultiplayer::OnAssetsLoaded()
   container.SetClientSystems(m_ClientSystems.get());
 
   auto game_logic = m_InstanceContainer->GetLogicContainer();
+  game_logic.SetAllowModifyLowFrequencyData(true);
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();
 
@@ -97,7 +98,7 @@ void GameModeLocalMultiplayer::Update()
 
   auto & container = GetContainer();
   auto & instance_data = *m_InstanceContainer.get();
-  auto & game_data = instance_data.GetLowFrequencyData();
+  auto & game_data = instance_data.GetGlobalInstanceData();
 
   if (game_data.m_WiningTeam)
   {
