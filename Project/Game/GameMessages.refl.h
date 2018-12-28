@@ -89,3 +89,10 @@ struct SendTextChatMessage : public ToServerMessage
   std::string m_Message;
   bool m_TeamOnly;
 };
+
+struct ChangeLoadoutMessage : public ToServerMessage
+{
+  NET_REFL;
+  uint8_t m_PlayerIndex;
+  GamePlayerLoadout m_Loadout;
+};

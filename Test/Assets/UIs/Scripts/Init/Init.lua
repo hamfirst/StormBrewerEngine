@@ -17,4 +17,4 @@ function FinalizeLoad()
     end
 end
 
-font = loader:LoadFont("./Fonts/FFF.ttf", 7);
+font = loader:LoadFont("./Fonts/Hardpixel.OTF", 11);

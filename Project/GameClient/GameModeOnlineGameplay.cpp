@@ -62,7 +62,7 @@ void GameModeOnlineGameplay::Update()
   auto & client = container.GetClient();
 
   auto instance_data = client.GetClientInstanceData();
-  auto & game_data = client.GetClientInstanceData()->GetLowFrequencyData();
+  auto & game_data = client.GetClientInstanceData()->GetGlobalInstanceData();
   auto & local_data = client.GetClientInstanceData()->GetClientLocalData(0);
 
   if (client.GetConnectionState() != ClientConnectionState::kConnected)

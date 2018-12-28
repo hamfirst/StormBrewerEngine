@@ -123,22 +123,21 @@ struct GameInstanceLowFrequencyData
 {
   NET_REFL;
 
-  uint8_t m_Id = 0;
   NetSparseList<GamePlayer, kMaxPlayers> m_Players;
 #ifdef NET_ALLOW_OBSERVERS
   NetSparseList<GameObserver, 128> m_Observers;
 #endif
 
-  NetRangedNumber<int, 0, kMaxScore> m_Score[kMaxTeams];
-  NetOptional<NetRangedNumber<int, -1, kMaxTeams>> m_WiningTeam;
 };
 
 struct GameInstanceData
 {
   NET_REFL;
 
-  uint8_t m_LowFrequencyId;
   NetSparseList<AIPlayerInfo, kMaxPlayers> m_AIPlayerInfo;
+
+  NetRangedNumber<int, 0, kMaxScore> m_Score[kMaxTeams];
+  NetOptional<NetRangedNumber<int, -1, kMaxTeams>> m_WiningTeam;
 
 #ifdef NET_USE_COUNTDOWN
   NetRangedNumber<int, 0, kMaxCountdown> m_Countdown = 0;

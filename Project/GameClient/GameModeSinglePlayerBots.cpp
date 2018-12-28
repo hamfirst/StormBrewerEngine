@@ -52,6 +52,7 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
   container.SetClientSystems(m_ClientSystems.get());
 
   auto game_logic = m_InstanceContainer->GetLogicContainer();
+  game_logic.SetAllowModifyLowFrequencyData(true);
 
   auto & render_state = container.GetRenderState();
   auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
@@ -93,7 +94,7 @@ void GameModeSinglePlayerBots::Update()
 
   auto & container = GetContainer();
   auto & instance_data = *m_InstanceContainer.get();
-  auto & game_data = instance_data.GetLowFrequencyData();
+  auto & game_data = instance_data.GetGlobalInstanceData();
 
   if (game_data.m_WiningTeam)
   {

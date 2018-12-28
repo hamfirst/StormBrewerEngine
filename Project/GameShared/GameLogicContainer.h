@@ -49,6 +49,8 @@ public:
   bool IsAuthority();
   void TriggerImmediateSend();
 
+  void SetAllowModifyLowFrequencyData(bool allow);
+
 private:
   GameController & m_GameController;
   const GameInitSettings & m_InitSettings;
@@ -63,6 +65,7 @@ private:
   bool m_IsAuthority;
   int & m_SendTimer;
   bool & m_ModifiedLowFreqData;
+  bool m_AllowModifyLowFreqData;
 };
 
 

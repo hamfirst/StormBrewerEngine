@@ -105,6 +105,16 @@ void UIClickable::Destroy()
   }
 }
 
+void UIClickable::GrabMouse()
+{
+  m_Manager->GrabMouse(this);
+}
+
+void UIClickable::ReleaseMouse()
+{
+  m_Manager->ReleaseMouse(this);
+}
+
 Optional<Box> UIClickable::CalculateActiveArea()
 {
   if(Width <= 0 || Height <= 0)

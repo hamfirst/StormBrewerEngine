@@ -7,7 +7,6 @@
 #include "Game/GameController.refl.h"
 #include "Game/GameNetworkSettings.h"
 
-
 static const int kTimeToWaitForPlayers = 5 * 60;
 static const int kSendInterval = 2 * 60;
 
@@ -132,6 +131,11 @@ void GameInstanceStateStaging::HandleTextChat(std::size_t client_index, const Se
 
     m_StateData.VisitPlayers(visitor);
   }
+}
+
+void GameInstanceStateStaging::HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg)
+{
+  m_State.m_Players[client_index].m_Loadout = msg.m_Loadout;
 }
 
 void GameInstanceStateStaging::AddPlayer(std::size_t client_index)

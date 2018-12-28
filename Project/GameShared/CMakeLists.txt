@@ -6,16 +6,16 @@ set(CMAKE_CXX_STANDARD 17)
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_GameShared 
-            GameValidation.cpp
-            GameWebrtc.cpp
-            GameStageManager.cpp
-            GameEventReconciler.cpp
             GameLogicContainer.cpp
-            GameSharedCommon.cpp
             GameLevelList.cpp
+            GameStageManager.cpp
+            GameSharedCommon.cpp
+            GameWebrtc.cpp
+            GameEventReconciler.cpp
+            GameValidation.cpp
             Systems/GameServerObjectOverlapSystem.cpp
-            Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
+            Systems/CVCPushSystem.cpp
             BehaviorTree/BehaviorTreeTypeDatabase.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.cpp
@@ -23,24 +23,24 @@ set(GENERIC_SRC_GameShared
             )
 
 set(GENERIC_HEADER_GameShared 
-            GameStageManager.h
-            GameLevelList.h
             GameProtocol.h
-            GameEventReconciler.h
-            GameLevelListAsset.refl.h
-            GameLogicContainer.h
-            GameSharedCommon.h
             GameValidation.h
+            GameSharedCommon.h
+            GameEventReconciler.h
+            GameLogicContainer.h
+            GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
+            GameLevelList.h
+            GameStageManager.h
             Systems/GameLogicSystems.h
-            Systems/CVCPushSystem.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
-            BehaviorTree/BehaviorTree.h
+            Systems/CVCPushSystem.h
             BehaviorTree/BehaviorTreeSerialize.h
             BehaviorTree/BehaviorTreeTypeDatabase.h
-            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
+            BehaviorTree/BehaviorTree.h
             BehaviorTree/States/PlayAnimationBotState.refl.h
+            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 

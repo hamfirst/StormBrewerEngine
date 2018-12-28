@@ -75,10 +75,10 @@ function InitMainMenu()
   fader:FadeToClear()
 
   multiplayer.ToggleOn = function()
-    AddLerp(quickmatch, "width", 100, 0.1, nil, EaseInCubic)
-    AddLerp(createprivate, "width", 100, 0.1, nil, EaseInCubic)
-    AddLerp(joinprivate, "width", 100, 0.1, nil, EaseInCubic)
-    AddLerp(localmulti, "width", 100, 0.1, nil, EaseInCubic)
+    AddLerp(quickmatch, "width", 150, 0.1, nil, EaseInCubic)
+    AddLerp(createprivate, "width", 150, 0.1, nil, EaseInCubic)
+    AddLerp(joinprivate, "width", 150, 0.1, nil, EaseInCubic)
+    AddLerp(localmulti, "width", 150, 0.1, nil, EaseInCubic)
   end
 
   multiplayer.ToggleOff = function()

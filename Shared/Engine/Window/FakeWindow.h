@@ -8,7 +8,8 @@ public:
 
   FakeWindow(const Box & window_geo, const Delegate<void> & make_current_cb, const Delegate<void> & swap_cb, const Delegate<void> & bind_default_rt,
     const Delegate<void, int, int> & set_mouse_cb, const Delegate<void> & close_cb,
-    const Delegate<void, NullOptPtr<Box>> & start_ime, const Delegate<void> stop_ime);
+    const Delegate<void, NullOptPtr<Box>> & start_ime, const Delegate<void> stop_ime,
+    const Delegate<void> & grab_mouse, const Delegate<void> release_mouse);
 
   FakeWindow(const FakeWindow & rhs) = delete;
   FakeWindow(FakeWindow && rhs) = delete;
@@ -40,6 +41,8 @@ private:
   Delegate<void> m_CloseDelegate;
   Delegate<void, NullOptPtr<Box>> m_StartImeDelegate;
   Delegate<void> m_StopImeDelegate;
+  Delegate<void> m_GrabWindowDelegate;
+  Delegate<void> m_ReleaseWindowDelegate;
 
   Window m_Window;
 };

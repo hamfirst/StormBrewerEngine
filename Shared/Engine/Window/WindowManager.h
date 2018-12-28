@@ -48,6 +48,8 @@ private:
   void SetFullscreen(uint32_t window_id, bool enabled);
   bool IsFullScreen(uint32_t window_id);
   void CloseWindow(uint32_t window_id);
+  void GrabMouse(uint32_t window_id);
+  void ReleaseMouse(uint32_t window_id);
 
   Vector2 GetWindowSize(uint32_t window_id);
   Box GetWindowGeometry(uint32_t window_id);

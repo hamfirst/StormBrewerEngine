@@ -32,6 +32,7 @@ struct GameStateStagingPlayer
   bool m_Ready = false;
 #endif
 
+  GamePlayerLoadout m_Loadout;
   NetRangedNumber<int, -1, kMaxTeams - 1> m_Team = 0;
 };
 
@@ -50,6 +51,7 @@ struct GameStateLoadingPlayer
   NET_REFL;
   std::string m_UserName;
   bool m_Loaded = false;
+  GamePlayerLoadout m_Loadout;
   NetRangedNumber<int, -1, kMaxTeams - 1> m_Team = 0;
 };
 

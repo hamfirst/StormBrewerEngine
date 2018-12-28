@@ -40,6 +40,7 @@ public:
   virtual void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) {};
   virtual void HandlePlayerKick(std::size_t client_index, const KickPlayerMessage & msg) {};
   virtual void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) {};
+  virtual void HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg) {};
 
 #if NET_MODE == NET_MODE_GGPO
 

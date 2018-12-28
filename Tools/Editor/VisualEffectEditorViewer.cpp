@@ -117,7 +117,9 @@ void VisualEffectEditorViewer::initializeGL()
     [this](int x, int y) { QCursor::setPos(x, y); },
     [this] { close(); },
     [this](NullOptPtr<Box> box) { m_ImeMode = true; },
-    [this] { m_ImeMode = false; }
+    [this] { m_ImeMode = false; },
+    [this] { grabMouse(); },
+    [this] { releaseMouse(); }
   );
 
   auto cursor_pos = mapFromGlobal(QCursor::pos());

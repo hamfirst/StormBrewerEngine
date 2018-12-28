@@ -155,12 +155,14 @@ void GameClientInstanceContainer::Update()
 
   m_ClientLocalHistory.IterateElementsSince(frame).VisitElementsForCurrentTime(local_data_visitor);
 
+  logic_container.SetAllowModifyLowFrequencyData(true);
   auto externals_visitor = [&](int frame_count, NetPolymorphic<GameNetworkExternalEvent> & elem)
   {
     controller.ProcessExternal(elem, logic_container);
   };
 
   m_ExternalsHistory.IterateElementsSince(frame).VisitElementsForCurrentTime(externals_visitor);
+  logic_container.SetAllowModifyLowFrequencyData(false);
 
   controller.Update(logic_container);
 

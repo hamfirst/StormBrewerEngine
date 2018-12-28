@@ -57,6 +57,9 @@ public:
   int STORM_REFL_FUNC GetNumChildren();
   ScriptClassRef<UIClickable> STORM_REFL_FUNC GetChild(int index);
 
+  void STORM_REFL_FUNC GrabMouse();
+  void STORM_REFL_FUNC ReleaseMouse();
+
 private:
 
   friend class UIManager;

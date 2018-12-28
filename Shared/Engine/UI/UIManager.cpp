@@ -400,9 +400,15 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
   }
 
   NullOptPtr<UIClickable> prev_hover_clickable = nullptr;
+  NullOptPtr<UIClickable> prev_active_clickable = nullptr;
   for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
   {
     auto & elem = *itr;
+    if(elem->m_State == (int)UIClickableState::kHover || elem->m_State == (int)UIClickableState::kPressed)
+    {
+      prev_active_clickable = elem;
+    }
+
     if(elem->m_State == (int)UIClickableState::kHover)
     {
       prev_hover_clickable = elem;
@@ -552,7 +558,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
     else if (input_state.GetMouseButtonState(kMouseLeftButton) == false)
     {
-      if (cur_hover_clickable  && cur_hover_clickable->Enabled)
+      if (cur_hover_clickable && cur_hover_clickable->Enabled)
       {
         if (cur_hover_clickable == cur_pressed_clickable)
         {
@@ -565,12 +571,16 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
         {
           cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
           cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
+
+          cur_pressed_clickable->OnMouseLeave();
         }
       }
       else if(cur_pressed_clickable && cur_pressed_clickable->Enabled)
       {
         cur_pressed_clickable->OnStateChange(cur_pressed_clickable->m_State, (int)UIClickableState::kActive);
         cur_pressed_clickable->m_State = (int)UIClickableState::kActive;
+
+        cur_pressed_clickable->OnMouseLeave();
       }
     }
   }
@@ -612,17 +622,18 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     prev_hover_clickable->OnMouseLeave();
   }
 
-  if(cur_hover_clickable)
+  auto active_clickable = cur_pressed_clickable ? cur_pressed_clickable : cur_hover_clickable;
+  if(active_clickable)
   {
-    auto relative_pos = GetRelativePos(cur_hover_clickable);
-    if(cur_hover_clickable != prev_hover_clickable)
+    auto relative_pos = GetRelativePos(active_clickable);
+    if(active_clickable != prev_active_clickable)
     {
       cur_hover_clickable->OnMouseEnter(relative_pos.x, relative_pos.y);
     }
 
     if(m_PrevCursorPos.x != ui_pos.x || m_PrevCursorPos.y != ui_pos.y)
     {
-      cur_hover_clickable->OnMouseMove(relative_pos.x, relative_pos.y);
+      active_clickable->OnMouseMove(relative_pos.x, relative_pos.y);
     }
   }
 

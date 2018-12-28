@@ -7,6 +7,7 @@
 
 #include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
+#include "Game/GameNetworkData.refl.h"
 
 struct GameNetworkExternalEvent
 {
@@ -42,3 +43,52 @@ struct ObserverLeaveEvent : public GameNetworkExternalEvent
   uint8_t m_PlayerIndex;
 };
 #endif
+
+struct ChangePlayerNameEvent : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_PlayerIndex;
+  std::string m_Name;
+};
+
+#ifdef NET_ALLOW_OBSERVERS
+
+struct ChangeObserverNameEvent : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_ObserverIndex;
+  std::string m_Name;
+};
+
+struct ChangeObserverToPlayer : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_ObserverIndex;
+  uint8_t m_PlayerIndex;
+  GamePlayerLoadout m_Loadout;
+  NetRangedNumber<int, 0, kMaxTeams - 1> m_Team;
+  uint32_t m_RandomSeed;
+};
+
+struct ChangePlayerToObserver : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_ObserverIndex;
+  uint8_t m_PlayerIndex;
+};
+
+#endif
+
+struct ChangePlayerTeam : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_PlayerIndex;
+  NetRangedNumber<int, 0, kMaxTeams - 1> m_Team;
+};
+
+struct ChangeLoadoutEvent : public GameNetworkExternalEvent
+{
+  NET_REFL;
+  uint8_t m_PlayerIndex;
+  GamePlayerLoadout m_Loadout;
+};
