@@ -111,6 +111,8 @@ function ScrollBar:StateChanged(old_state, new_state)
 end
 
 function ScrollBar:SetValue(val)
+  local prev_value = self.value
+
   self.value = val
   if self.value > self.content_size - self.visible_size then
     self.value = self.content_size - self.visible_size
@@ -118,6 +120,25 @@ function ScrollBar:SetValue(val)
   if self.value < 0 then
     self.value = 0
   end
+
+  if prev_value ~= self.value then
+    self:ValueChanged()
+  end
+end
+
+function ScrollBar:ScrollToBottom()
+  self:SetValue(self.content_size - self.visible_size)
+end
+
+function ScrollBar:IsScrolledToBottom()
+  return self.visible_size >= self.content_size or self.value == self.content_size - self.visible_size
+end
+
+function ScrollBar:SetScrollArea(visible_size, content_size)
+  self.visible_size = visible_size
+  self.content_size = content_size
+  self:SetValue(self.value)
+  self:SetEnabled(self.visible_size < self.content_size)
 end
 
 function ScrollBar:MouseMoved(x, y)
@@ -169,4 +190,8 @@ function ScrollBar:Clicked()
   elseif self.highlight > 0 then
     self:SetValue(self.value - 10)
   end
+end
+
+function ScrollBar:ValueChanged()
+
 end

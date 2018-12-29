@@ -60,6 +60,8 @@ public:
   Box GetTextSize(const std::string_view & text, int font_id, float scale);
   Box GetTextSize(std::shared_ptr<TextInputContext> & context, int font_id, float scale, const char * prompt = "");
 
+  float GetLineHeight(int font_id, float scale) const;
+
   template <typename Visitor>
   bool VisitTextSize(Visitor && visitor, const std::string_view & text, int font_id, float scale)
   {

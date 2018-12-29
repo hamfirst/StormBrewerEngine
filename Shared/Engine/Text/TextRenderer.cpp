@@ -454,6 +454,12 @@ int TextRenderer::GetFontSize() const
   return m_FontSize;
 }
 
+float TextRenderer::GetLineHeight() const
+{
+  float line_height = (((float)m_Face->height / (float)m_Face->units_per_EM) * (float)m_FontSize);
+  return line_height;
+}
+
 uint32_t TextRenderer::GetFontAssetHash() const
 {
   return crc32lowercase(m_Font->GetFileName());
