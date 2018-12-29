@@ -11,6 +11,7 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Text/TextManager.h"
+#include "Engine/Text/TextWrap.h"
 #include "Engine/Audio/AudioManager.h"
 #include "Engine/Audio/MusicManager.h"
 #include "Engine/Sprite/SpriteEngineData.h"
@@ -225,6 +226,26 @@ std::pair<int, int> UIScriptInterface::MeasureTextInput(int font_id, ScriptClass
 std::pair<int, int> UIScriptInterface::MeasureTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, float scale)
 {
   return MeasureTextInternal(font_id, text, scale);
+}
+
+float UIScriptInterface::GetLineHeight(int font_id)
+{
+  if((font_id & UIScriptLoader::kIdMask) != UIScriptLoader::kFontId)
+  {
+    return 0;
+  }
+
+  return g_TextManager.GetLineHeight(font_id & UIScriptLoader::kIndexMask, 1.0);
+}
+
+std::pair<std::string, int> UIScriptInterface::WrapText(int font_id, const std::string & text, int width)
+{
+  return WrapTextInternal(font_id, text, width, 1.0f);
+}
+
+std::pair<std::string, int> UIScriptInterface::WrapTextScaled(int font_id, const std::string & text, int width, float scale)
+{
+  return WrapTextInternal(font_id, text, width, scale);
 }
 
 void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame)
@@ -607,4 +628,27 @@ std::pair<int, int> UIScriptInterface::MeasureTextInternal(int font_id, ScriptCl
   auto size = box.m_End;
 
   return std::make_pair(size.x, size.y);
+}
+
+std::pair<std::string, int> UIScriptInterface::WrapTextInternal(int font_id, const std::string & text, int width, float scale)
+{
+  std::string out;
+
+  if((font_id & UIScriptLoader::kIdMask) != UIScriptLoader::kFontId)
+  {
+    return std::make_pair(out, 0);
+  }
+
+  auto visitor = [&](const std::string_view & str)
+  {
+    if(!out.empty())
+    {
+      out += '\n';
+    }
+
+    out += str;
+  };
+
+  auto height = VisitTextWrapPoints(visitor, text, font_id & UIScriptLoader::kIndexMask, scale, width);
+  return std::make_pair(std::move(out), height);
 }

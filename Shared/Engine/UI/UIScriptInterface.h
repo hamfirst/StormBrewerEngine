@@ -57,6 +57,9 @@ public:
   void DrawCenteredTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, int mode, float scale);
   std::pair<int, int> MeasureTextInput(int font_id, ScriptClassRef<UITextInput> & text);
   std::pair<int, int> MeasureTextInputScaled(int font_id, ScriptClassRef<UITextInput> & text, float scale);
+  float GetLineHeight(int font_id);
+  std::pair<std::string, int> WrapText(int font_id, const std::string & text, int width);
+  std::pair<std::string, int> WrapTextScaled(int font_id, const std::string & text, int width, float scale);
 
   void DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame);
   std::tuple<int, int, int> FrameAdvance(int sprite_id, std::string & anim_name, int anim_index, int anim_frame, int anim_delay, bool loop);
@@ -79,6 +82,7 @@ private:
   std::pair<int, int> MeasureTextInternal(int font_id, const std::string & text, float scale);
   void DrawTextInternal(int font_id, ScriptClassRef<UITextInput> & text, int x, int y, float r, float g, float b, float a, float scale, int mode);
   std::pair<int, int> MeasureTextInternal(int font_id, ScriptClassRef<UITextInput> & text, float scale);
+  std::pair<std::string, int> WrapTextInternal(int font_id, const std::string & text, int width, float scale);
 
 private:
 

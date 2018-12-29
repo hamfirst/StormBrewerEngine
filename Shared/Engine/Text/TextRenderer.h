@@ -34,6 +34,7 @@ public:
   bool VisitTextSize(Delegate<bool, const Box &, char32_t, czstr> & callback, const std::string_view & utf8_str, float scale);
 
   int GetFontSize() const;
+  float GetLineHeight() const;
   uint32_t GetFontAssetHash() const;
 
   bool Loaded() { return m_Loaded; }

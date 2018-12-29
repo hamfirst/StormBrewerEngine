@@ -251,6 +251,23 @@ Box TextManager::GetTextSize(std::shared_ptr<TextInputContext> & context, int fo
   }
 }
 
+float TextManager::GetLineHeight(int font_id, float scale) const
+{
+  auto itr = s_Fonts.find(font_id);
+  if (itr == s_Fonts.end())
+  {
+    return{};
+  }
+
+  auto & font = itr->second;
+  if (font->Loaded() == false)
+  {
+    return{};
+  }
+
+  return font->GetLineHeight() * scale;
+}
+
 bool TextManager::BindGlyphTexture(RenderState & render_state, int font_id, int texture_stage)
 {
   auto itr = s_Fonts.find(font_id);

@@ -24,10 +24,35 @@ function InitTestMenu()
   input.prompt = "Input"
 
   local scrollbar = PushMenuElement(ScrollBar:new())
-  scrollbar.x = -80
+  scrollbar.x = 380
   scrollbar.y = -40
   scrollbar.width = 20
   scrollbar.height = 200
+
+  local chatdisplay = PushMenuElement(ChatDisplay:new())
+  chatdisplay.x = 180
+  chatdisplay.y = -40
+  chatdisplay.width = 200
+  chatdisplay.height = 200
+  chatdisplay:AddElement("test", "Test test test test test test test test test")
+  chatdisplay:AddElement("test", "Test test test test test test test test test")
+  chatdisplay:AddElement("test", "Test test test test test test test test test")
+
+  scrollbar.ValueChanged = function()
+    chatdisplay.scroll_offset = scrollbar.value
+  end
+
+  local update_chat = function()
+    local scroll = scrollbar:IsScrolledToBottom()
+
+    scrollbar:SetScrollArea(chatdisplay.height, chatdisplay.total_height)
+
+    if scroll then
+      scrollbar:ScrollToBottom()
+    end
+  end
+
+  update_chat()
 
   CreateDefualtControls();
 
@@ -41,8 +66,10 @@ function InitTestMenu()
   local fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
 
+  button.fade = false
   button.Pressed = function()
-    fader:FadeToSolid()
+    chatdisplay:AddElement("test", "Test test test test test test test test test")
+    update_chat()
   end
 
   button2.Pressed = function()

@@ -4,18 +4,19 @@
 #include "Engine/Text/TextManager.h"
 
 template <typename Visitor>
-void VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int font_id, float scale, int width)
+int VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int font_id, float scale, int width)
 {
   auto len = text.length();
   auto start = text.data();
   auto end = start + len;
   auto prev_text = start;
+  auto line_height = (int)ceilf(g_TextManager.GetLineHeight(font_id, scale));
+  int total_height = 0;
 
   while(start != end)
   {
     auto last_break = start;
-
-    auto callback = [&](const Box &box, char32_t codepoint, czstr ptr)
+    auto callback = [&](const Box & box, char32_t codepoint, czstr ptr)
     {
       if(codepoint == '\r')
       {
@@ -28,6 +29,7 @@ void VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int 
         auto num_chars = new_text - start;
 
         visitor(std::string_view(start, new_text - start));
+        total_height += line_height;
 
         ASSERT(len >= num_chars, "Consuming too much text to wrap");
         len -= num_chars;
@@ -40,7 +42,7 @@ void VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int 
         last_break = ptr;
       }
 
-      if(box.m_End.x >= width )
+      if(box.m_End.x >= width)
       {
         czstr new_text;
         if(last_break == start)
@@ -55,6 +57,7 @@ void VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int 
         auto num_chars = new_text - start;
 
         visitor(std::string_view(start, new_text - start));
+        total_height += line_height;
 
         ASSERT(len >= num_chars, "Consuming too much text to wrap");
         len -= num_chars;
@@ -68,9 +71,12 @@ void VisitTextWrapPoints(Visitor && visitor, const std::string_view & text, int 
 
     if(g_TextManager.VisitTextSize(callback, std::string_view(start, len), font_id, scale))
     {
-      visitor(std::string(start, len));
+      visitor(std::string_view(start, len));
+      total_height += line_height;
       break;
     }
   }
+
+  return total_height;
 }
 

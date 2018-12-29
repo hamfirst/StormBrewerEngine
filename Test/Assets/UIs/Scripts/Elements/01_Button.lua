@@ -12,6 +12,7 @@ Button.scale = 1.0
 Button.toggleable = false
 Button.toggled = false
 Button.back = false
+Button.fade = true
 Button.border_r = 0.4
 Button.border_g = 0.4
 Button.border_b = 0.4
@@ -98,12 +99,14 @@ function Button:Clicked()
   end
 
   if self.toggleable == false then
-    AddLerp(self, "x", self.x - 10, 0.3)
-    AddLerp(self, "y", self.y - 10, 0.3)
-    AddLerp(self, "width", self.width + 20, 0.3)
-    AddLerp(self, "height", self.height + 20, 0.3)
-    AddLerp(self, "alpha", 0, 0.3)
-    AddLerp(self, "scale", 1.3, 0.3)
+    if self.fade then
+      AddLerp(self, "x", self.x - 10, 0.3)
+      AddLerp(self, "y", self.y - 10, 0.3)
+      AddLerp(self, "width", self.width + 20, 0.3)
+      AddLerp(self, "height", self.height + 20, 0.3)
+      AddLerp(self, "alpha", 0, 0.3)
+      AddLerp(self, "scale", 1.3, 0.3)
+    end
   else
     self.toggled = not self.toggled
   end
