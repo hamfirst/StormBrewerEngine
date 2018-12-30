@@ -1,4 +1,6 @@
 
+chat_font = loader:LoadFont("./Fonts/BPdotsBold.otf", 12)
+
 function InitTestMenu()
   print("Testing menu ")
 
@@ -24,16 +26,17 @@ function InitTestMenu()
   input.prompt = "Input"
 
   local scrollbar = PushMenuElement(ScrollBar:new())
-  scrollbar.x = 380
-  scrollbar.y = -40
+  scrollbar.x = 120
+  scrollbar.y = -200
   scrollbar.width = 20
-  scrollbar.height = 200
+  scrollbar.height = 100
 
   local chatdisplay = PushMenuElement(ChatDisplay:new())
-  chatdisplay.x = 180
-  chatdisplay.y = -40
+  chatdisplay.x = -80
+  chatdisplay.y = -200
   chatdisplay.width = 200
-  chatdisplay.height = 200
+  chatdisplay.height = 100
+  chatdisplay.font = chat_font
   chatdisplay:AddElement("test", "Test test test test test test test test test")
   chatdisplay:AddElement("test", "Test test test test test test test test test")
   chatdisplay:AddElement("test", "Test test test test test test test test test")
@@ -53,6 +56,12 @@ function InitTestMenu()
   end
 
   update_chat()
+
+  local player_list = PushMenuElement(PlayerList:new())
+  player_list.x = 200
+  player_list.y = -200
+  player_list.width = 100
+  player_list.height = 350
 
   CreateDefualtControls();
 

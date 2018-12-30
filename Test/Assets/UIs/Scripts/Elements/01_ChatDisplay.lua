@@ -4,12 +4,12 @@ ChatDisplay.total_height = 0
 ChatDisplay.elements = {}
 ChatDisplay.next_element_id = 0
 ChatDisplay.scroll_offset = 0
-
+ChatDisplay.font = font
 
 function ChatDisplay:AddElement(name, text)
   local first_line = name .. ": " .. text
-  local line_height = ui:GetLineHeight(font)
-  local wrapped_first_line, height = ui:WrapText(font, first_line, self.width)
+  local line_height = ui:GetLineHeight(self.font)
+  local wrapped_first_line, height = ui:WrapText(self.font, first_line, self.width)
   
   local first_line_end = string.find(wrapped_first_line, "\n")
   local remainder = nil
@@ -20,7 +20,7 @@ function ChatDisplay:AddElement(name, text)
   if first_line_end ~= nil then
     remainder = string.sub(first_line, first_line_end, -1)
     first_line = string.sub(first_line, 1, first_line_end - 1)
-    remainder, height = ui:WrapText(font, remainder, self.width - 20)
+    remainder, height = ui:WrapText(self.font, remainder, self.width - 20)
     total_height = line_height + height
   end
   
@@ -38,7 +38,7 @@ function ChatDisplay:AddElement(name, text)
 end
 
 function ChatDisplay:Draw()
-  local line_height = ui:GetLineHeight(font)
+  local line_height = ui:GetLineHeight(self.font)
   local y_offset = self.height + self.scroll_offset
 
   if self.height > self.total_height then
@@ -53,10 +53,10 @@ function ChatDisplay:Draw()
     end
 
     if elem_bot < self.height then
-      ui:DrawText(font, v.first_line, 0, elem_top - line_height, 0, 0, 0, 1, kNormal)
+      ui:DrawText(self.font, v.first_line, 0, elem_top - line_height, 0, 0, 0, 1, kNormal)
 
       if v.remainder ~= nil then
-        ui:DrawText(font, v.remainder, 20, elem_top - line_height * 2, 0, 0, 0, 1, kNormal)
+        ui:DrawText(self.font, v.remainder, 20, elem_top - line_height * 2, 0, 0, 0, 1, kNormal)
       end
     end
 
