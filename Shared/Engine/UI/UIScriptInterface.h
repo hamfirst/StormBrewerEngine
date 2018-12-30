@@ -23,6 +23,7 @@ public:
   void EndRendering();
   void SetActiveArea(const Box & active_area, bool clip);
   void ToggleFullscreen();
+  std::tuple<int, int, bool> GetMousePos();
 
   void DrawTexture(int texture_id, int x, int y);
   void DrawTextureTint(int texture_id, int x, int y, float r, float g, float b, float a);
