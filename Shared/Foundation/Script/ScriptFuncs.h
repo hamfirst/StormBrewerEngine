@@ -47,6 +47,24 @@ public:
     return PushValueTuple(state, val, seq);
   }
 
+  template <typename T>
+  static int PushValue(void * state, const std::vector<T> & val)
+  {
+    StartPushVector(state);
+
+    for(std::size_t index = 0, end = val.size(); index < end; ++index)
+    {
+      ContinuePushVector(state, index, &val[index], [](void * state, void * ptr)
+      {
+        auto val = static_cast<T *>(ptr);
+        PushValue(state, *val);
+      });
+    }
+
+    EndPushVector(state);
+    return 1;
+  }
+
   static void PullValue(void * state, int & val);
   static void PullValue(void * state, float & val);
   static void PullValue(void * state, bool & val);
@@ -91,6 +109,11 @@ public:
   static void Discard(void * state, int num_stack_vals);
   static void ReportMessage(void * state, czstr message);
   static void ReportError(void * state, czstr message);
+
+private:
+  static void StartPushVector(void * state);
+  static void ContinuePushVector(void * state, std::size_t index, void * ptr, void (*Func)(void *, void *));
+  static void EndPushVector(void * state);
 };
 
 template <typename ReturnValue, typename ... Args>

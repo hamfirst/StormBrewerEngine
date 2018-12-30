@@ -269,3 +269,22 @@ void ScriptFuncs::ReportError(void * state, czstr message)
   script_state->m_ErrorOutput(message);
 }
 
+void ScriptFuncs::StartPushVector(void * state)
+{
+  auto lua_state = static_cast<lua_State *>(state);
+  lua_newtable(lua_state);
+}
+
+void ScriptFuncs::ContinuePushVector(void * state, std::size_t index, void * ptr, void (*Func)(void *, void *))
+{
+  auto lua_state = static_cast<lua_State *>(state);
+  lua_pushnumber(lua_state, index);
+  Func(state, ptr);
+  lua_settable(lua_state, -3);
+}
+
+void ScriptFuncs::EndPushVector(void * state)
+{
+
+}
+
