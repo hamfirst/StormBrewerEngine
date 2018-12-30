@@ -151,7 +151,7 @@ bool ScriptFuncs::FetchValue(void * state, int pos, std::string & val)
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state);
   auto str = lua_tostring(lua_state, pos);
-  val = str ? str : nullptr;
+  val = str ? str : "";
   return true;
 }
 ;

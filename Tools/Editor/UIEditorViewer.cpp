@@ -84,6 +84,7 @@ void UIEditorViewer::Refresh()
     }
   }
 
+  m_UIManager->SetGlobal("in_editor", true);
   m_UIManager->Update(0.0f, *m_FakeWindow->GetWindow().GetInputState(), m_RenderState);
 }
 
