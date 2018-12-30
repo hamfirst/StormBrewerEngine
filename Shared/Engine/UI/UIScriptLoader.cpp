@@ -60,6 +60,17 @@ void UIScriptLoader::InitLoad(bool immediate_load, Delegate<void> && load_comple
       }
     }
 
+    script_files = GetFilesInDirectory("./UIs/Scripts/Custom", "lua");
+    std::sort(script_files.begin(), script_files.end());
+    for(auto & script_file : script_files)
+    {
+      auto script_binary_file = FileReadFull(GetFullPath(script_file, root_path).c_str());
+      if(script_binary_file)
+      {
+        m_ScriptState->LoadScript(script_binary_file->Get(), script_binary_file->GetSize(), script_file.c_str());
+      }
+    }
+
     script_files = GetFilesInDirectory("./UIs/Scripts", "lua");
     std::sort(script_files.begin(), script_files.end());
     for(auto & script_file : script_files)

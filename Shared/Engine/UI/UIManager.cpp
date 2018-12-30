@@ -87,6 +87,7 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   auto script_interface = m_ScriptInterface.get();
 
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, ToggleFullscreen);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetMousePos);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTexture);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextureTint);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawTextureScale);

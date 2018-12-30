@@ -6,6 +6,7 @@
 #include "Engine/UI/UIClickable.refl.h"
 #include "Engine/UI/UITextInput.refl.h"
 #include "Engine/UI/UIScriptLoader.h"
+#include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
@@ -50,6 +51,16 @@ void UIScriptInterface::ToggleFullscreen()
 {
   auto & window = m_UIManager->m_ContainerWindow;
   window.SetFullscreen(!window.IsFullScreen());
+}
+
+std::tuple<int, int, bool> UIScriptInterface::GetMousePos()
+{
+  auto & window = m_UIManager->m_ContainerWindow;
+  auto input_state = window.GetInputState();
+
+  auto pointer_state = input_state->GetPointerState();
+
+  return std::make_tuple(pointer_state.m_Pos.x, pointer_state.m_Pos.y, pointer_state.m_InFocus);
 }
 
 void UIScriptInterface::DrawTexture(int texture_id, int x, int y)
