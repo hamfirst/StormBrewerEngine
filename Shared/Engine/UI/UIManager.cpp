@@ -41,7 +41,11 @@ UIManager::~UIManager()
   RemoveDeadClickables();
   m_Destroying = true;
 
-  m_ContainerWindow.GetInputState()->UnbindScalarControl(m_WheelBinding.Value());
+  auto input_state = m_ContainerWindow.GetInputState();
+  if(input_state)
+  {
+    input_state->UnbindScalarControl(m_WheelBinding.Value());
+  }
 }
 
 #define BIND_EASING_FUNC(EasingType) \

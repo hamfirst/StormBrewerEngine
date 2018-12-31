@@ -11,12 +11,12 @@ function ConfirmPopup:CreateChildren()
   
   self.okay.Pressed = function () 
     self:FadeOut() 
-    self:OnOkay() 
+    self:OkayPressed() 
   end
 
   self.cancel.Pressed = function () 
     self:FadeOut() 
-    self:OnCancel() 
+    self:CancelPressed() 
   end
 
   local half_width = self.width / 2
@@ -38,10 +38,10 @@ function ConfirmPopup:Draw()
   ui:DrawCenteredText(font, self.text, self.width / 2, self.height - 50, 0, 0, 0, self.alpha, kNormal)
 end
 
-function ConfirmPopup:OnOkay()
+function ConfirmPopup:OkayPressed()
 
 end
 
-function ConfirmPopup:OnCancel()
+function ConfirmPopup:CancelPressed()
 
 end

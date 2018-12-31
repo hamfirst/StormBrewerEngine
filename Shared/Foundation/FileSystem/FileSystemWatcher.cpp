@@ -254,7 +254,7 @@ Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> Fi
   return GetFileOrDirectoryAtPath(path, *itr->second.get());
 }
 
-void FileSystemWatcher::TriggerOperationForFile(const std::string & path, const std::string & filename, 
+void FileSystemWatcher::TriggerOperationForFile(const std::string & filename, const std::string & path,
   FileSystemOperation op, std::chrono::system_clock::time_point last_write)
 {
   std::unique_lock<std::mutex> lock(m_QueueMutex);

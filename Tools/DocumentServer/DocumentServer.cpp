@@ -145,7 +145,7 @@ void DocumentServer::Run()
         char * path = recv_buffer.data();
 
         auto full_path = GetFullPath(path);
-        Hash file_hash = crc32(path);
+        Hash file_hash = crc32(full_path);
 
         auto cache_itr = m_CachedAssets.find(file_hash);
         if (cache_itr == m_CachedAssets.end())
@@ -317,10 +317,9 @@ void DocumentServer::Run()
         break;
       }
 
-      Hash file_hash = crc32(path);
-      auto itr = m_CachedAssets.find(file_hash);
-
       auto full_path = GetFullPath(path);
+      Hash file_hash = crc32(full_path);
+      auto itr = m_CachedAssets.find(file_hash);
 
       if (itr != m_CachedAssets.end())
       {
@@ -412,7 +411,7 @@ std::string DocumentServer::GetFullPath(const std::string & path)
   }
   else
   {
-    return m_RootPath + path;
+    return ::GetFullPath(path, m_RootPath);
   }
 }
 
