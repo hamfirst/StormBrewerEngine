@@ -61,6 +61,7 @@ struct ControlId
 ControlId ENGINE_EXPORT CreateKeyboardBinding(int scan_code);
 ControlId ENGINE_EXPORT CreateMouseButtonBinding(int button);
 ControlId ENGINE_EXPORT CreateMousePointerBinding();
+ControlId ENGINE_EXPORT CreateMouseWheelBinding();
 ControlId ENGINE_EXPORT CreateGamepadConnectionBinding(int gamepad_idx);
 ControlId ENGINE_EXPORT CreateGamepadButtonBinding(int gamepad_idx, GamepadButton button);
 ControlId ENGINE_EXPORT CreateGamepadAxisBinding(int gamepad_idx, GamepadAxis axis);

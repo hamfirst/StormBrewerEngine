@@ -67,18 +67,22 @@ function TextInput:Draw()
     g = 0.70
     b = 0.72
 
-    local text_width, text_height = ui:MeasureText(font, self.prompt)
-    ui:DrawText(font, self.prompt, 10, self.height / 2 - text_height / 2 + 1, self.prompt_r, self.prompt_g, self.prompt_b, 1, kNormal)
+    local text_width, text_height = ui:MeasureText(chat_font, self.prompt)
+    ui:DrawText(chat_font, self.prompt, 10, self.height / 2 - text_height / 2 + 1, self.prompt_r, self.prompt_g, self.prompt_b, 1, kNormal)
   end
 
   if self:IsCurrent() then
-    local text_width, text_height = ui:MeasureTextInput(font, self.context)
-    ui:DrawTextInput(font, self.context, 5, self.height / 2 - text_height / 2 + 1, 0, 0, 0, 1, kNormal)
+    local text_width, text_height = ui:MeasureTextInput(chat_font, self.context)
+    ui:DrawTextInput(chat_font, self.context, 5, self.height / 2 - text_height / 2 + 1, 0, 0, 0, 1, kNormal)
   end
 end
 
 function TextInput:GetText()
   return self.context:GetText()
+end
+
+function TextInput:Clear()
+  self.context:Clear()
 end
 
 function TextInput:MakeCurrent()

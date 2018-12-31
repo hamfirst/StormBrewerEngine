@@ -2,16 +2,17 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/BinaryControlBinding.h"
 
-BinaryControlBinding::BinaryControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback) :
+BinaryControlBinding::BinaryControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback) :
   ControlBinding(priority, mode),
-  m_StateChangeCB(callback)
+  m_StateChangeCB(callback),
+  m_ForceCallback(force_callback)
 {
 
 }
 
 void BinaryControlBinding::UpdateState(BinaryControlBinding::ControlValueType state)
 {
-  if (state != m_CurrentState)
+  if (state != m_CurrentState || m_ForceCallback)
   {
     m_CurrentState = state;
     m_History[m_HistoryIndex] = state;

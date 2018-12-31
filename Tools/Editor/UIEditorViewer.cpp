@@ -76,11 +76,11 @@ void UIEditorViewer::Refresh()
     ScriptValue val;
     if(ScriptValueParse(elem.second.m_Value.c_str(), val))
     {
-      interface.AddDebugStubFunction(elem.second.m_Name.data(), std::move(val));
+      interface.AddDebugStubFunction(elem.second.m_Name.data(), std::move(val), elem.second.m_DebugOutput);
     }
     else
     {
-      interface.AddDebugStubFunction(elem.second.m_Name.data(), {});
+      interface.AddDebugStubFunction(elem.second.m_Name.data(), {}, elem.second.m_DebugOutput);
     }
   }
 
@@ -355,6 +355,16 @@ void UIEditorViewer::moveEvent(QMoveEvent * event)
 
   auto pos = mapToGlobal(QPoint(0, 0));
   m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
+}
+
+void UIEditorViewer::wheelEvent(QWheelEvent * event)
+{
+  if (!m_FakeWindow)
+  {
+    return;
+  }
+
+  m_FakeWindow->HandleMouseWheelMessage(event->delta());
 }
 
 void UIEditorViewer::focusInEvent(QFocusEvent * event)

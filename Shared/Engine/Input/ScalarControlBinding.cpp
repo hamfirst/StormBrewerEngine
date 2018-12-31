@@ -2,16 +2,17 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/ScalarControlBinding.h"
 
-ScalarControlBinding::ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback) :
+ScalarControlBinding::ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback) :
   ControlBinding(priority, mode),
-  m_StateChangeCB(callback)
+  m_StateChangeCB(callback),
+  m_ForceCallback(force_callback)
 {
 
 }
 
 void ScalarControlBinding::UpdateState(ScalarControlBinding::ControlValueType state)
 {
-  if (state != m_CurrentState)
+  if (state != m_CurrentState || m_ForceCallback)
   {
     m_CurrentState = state;
     m_History[m_HistoryIndex] = state;

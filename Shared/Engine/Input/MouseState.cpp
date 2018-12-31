@@ -106,6 +106,17 @@ void MouseState::RemoveButtonBinding(BinaryControlHandle handle)
   m_ButtonControls[handle.m_ControlId.m_Index].RemoveControlBinding(handle.m_Control);
 }
 
+ScalarControlHandle MouseState::AddWheelBinding(int priority, ControlBindingMode mode, const Delegate<void, float> & callback)
+{
+  Handle handle = m_WheelBinding.CreateControlBinding(priority, mode, callback, true);
+  return ScalarControlHandle(m_InputState, handle, CreateMouseWheelBinding());
+}
+
+void MouseState::RemoveWheelBinding(ScalarControlHandle handle)
+{
+  m_WheelBinding.RemoveControlBinding(handle.m_Control);
+}
+
 PointerControlHandle MouseState::AddCursorBinding(int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback)
 {
   Handle handle = m_PointerBinding.CreateControlBinding(priority, mode, callback);
@@ -150,6 +161,11 @@ void MouseState::HandleMouseMoveMessage(int x, int y, const Box & window_geo, bo
     m_PointerState = cur_state;
   }
 
+}
+
+void MouseState::HandleMouseWheelMessage(int dv)
+{
+  m_WheelBinding.SetControlValue((float)dv);
 }
 
 bool MouseState::GetButtonState(int button)

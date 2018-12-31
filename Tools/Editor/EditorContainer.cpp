@@ -72,7 +72,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
     if (!strcmp(doc_server_host, "localhost"))
     {
       printf("Starting new document server\n");
-      auto doc_server_path = QDir::cleanPath(QDir::currentPath() + QDir::separator() + "DocumentServer");
+      auto doc_server_path = QDir::cleanPath(QDir::currentPath() + QDir::separator() + "documentserver");
 
       if(QProcess::startDetached(doc_server_path) == false)
       {

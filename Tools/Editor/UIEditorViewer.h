@@ -55,6 +55,7 @@ protected:
   void mouseReleaseEvent(QMouseEvent * event) override;
 
   void moveEvent(QMoveEvent * event) override;
+  void wheelEvent(QWheelEvent * event) override;
 
   void focusInEvent(QFocusEvent * event) override;
   void focusOutEvent(QFocusEvent * event) override;

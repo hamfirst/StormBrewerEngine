@@ -26,6 +26,11 @@ void FakeWindow::HandleMouseMoveMessage(int x, int y)
   g_WindowManager.HandleMouseMotionMessage(m_Window.m_WindowId, x, y);
 }
 
+void FakeWindow::HandleMouseWheelMessage(int dv)
+{
+  g_WindowManager.HandleMouseWheelMessage(m_Window.m_WindowId, dv);
+}
+
 void FakeWindow::HandleKeyPressMessage(int sdl_key, int scan_code, bool pressed)
 {
   g_WindowManager.HandleKeyPressMessage(m_Window.m_WindowId, sdl_key, scan_code, pressed);

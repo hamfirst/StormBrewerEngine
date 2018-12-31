@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Input/ScalarControlBinding.h"
 
 #include "Foundation/Time/StopWatch.h"
 
@@ -65,6 +66,7 @@ protected:
   void RemoveDeadClickables();
 
   void UpdateScriptGlobals(const Vector2 & screen_size);
+  void HandleMouseScroll(int dv);
 
   void AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list);
   void ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state);
@@ -97,5 +99,8 @@ private:
   StopWatch m_UpdateTimer;
   bool m_Paused = false;
   bool m_Destroying = false;
+
+  Optional<ScalarControlHandle> m_WheelBinding;
+  int m_MouseDelta = 0;
 };
 

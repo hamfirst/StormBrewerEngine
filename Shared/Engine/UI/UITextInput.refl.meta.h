@@ -96,7 +96,7 @@ template <>
 struct StormReflFuncInfo<UITextInput>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 3;
+  static constexpr int funcs_n = 4;
   template <int N> struct func_data_static {};
 };
 
@@ -154,6 +154,22 @@ struct StormReflFuncInfo<UITextInput>::func_data_static<2>
   static constexpr unsigned GetReturnTypeNameHash() { return 0xC508D6F7; }
   static constexpr auto GetFunctionIndex() { return 2; }
   static constexpr func_ptr_type GetFunctionPtr() { return &UITextInput::GetText; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<UITextInput>::func_data_static<3>
+{
+  using func_ptr_type = void (UITextInput::*)();
+  using return_type = void;
+  static constexpr int params_n = 0;
+  static constexpr auto GetName() { return "Clear"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x2470DE02; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 3; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &UITextInput::Clear; }
   template <int i>
   struct param_info { };
 };

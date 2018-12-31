@@ -139,6 +139,10 @@ void EngineUpdate()
         g_WindowManager.HandleMouseMotionMessage(e.motion.windowID, e.motion.x, e.motion.y);
       }
     }
+    else if(e.type == SDL_MOUSEWHEEL)
+    {
+      g_WindowManager.HandleMouseWheelMessage(e.wheel.windowID, e.wheel.y);
+    }
     else if (e.type == SDL_CONTROLLERDEVICEADDED)
     {
       GamepadState::GamepadConnected(e.cdevice.which);

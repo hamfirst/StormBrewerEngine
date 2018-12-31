@@ -32,6 +32,7 @@ public:
   void STORM_REFL_FUNC MakeCurrent(ScriptClassRef<UIClickable> container);
   bool STORM_REFL_FUNC IsCurrent();
   std::string STORM_REFL_FUNC GetText();
+  void STORM_REFL_FUNC Clear();
 
 private:
 

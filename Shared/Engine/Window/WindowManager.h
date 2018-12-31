@@ -27,6 +27,7 @@ private:
   void HandleKeyPressMessage(uint32_t window_id, int key_code, int scan_code, bool pressed);
   void HandleMouseButtonPressMessage(uint32_t window_id, int button, bool pressed);
   void HandleMouseMotionMessage(uint32_t window_id, int x, int y);
+  void HandleMouseWheelMessage(uint32_t window_id, int dv);
   void HandleControllerConnectedMessage(uint32_t window_id, int x, int y);
   void HandleTextInputCommit(uint32_t window_id, czstr character);
   void HandleTextInputComposition(uint32_t window_id, czstr composition);

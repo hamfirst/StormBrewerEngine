@@ -291,7 +291,7 @@ void TextManager::SetTextMode(TextRenderMode mode)
   m_Settings.m_Mode = mode;
 }
 
-void TextManager::SetTextPos(const Vector2 & pos)
+void TextManager::SetTextPos(const Vector2f & pos)
 {
   m_Settings.m_TextPos = pos;
   m_Settings.m_TextBounds.Clear();

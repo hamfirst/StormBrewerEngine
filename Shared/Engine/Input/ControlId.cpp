@@ -17,6 +17,11 @@ ControlId CreateMousePointerBinding()
   return ControlId{ ControlType::kMouse, -1, 0 };
 }
 
+ControlId CreateMouseWheelBinding()
+{
+  return ControlId{ ControlType::kMouse, -2, 0 };
+}
+
 ControlId CreateGamepadConnectionBinding(int gamepad_idx)
 {
   return ControlId{ ControlType::kGamePadConnection, gamepad_idx, 0 };

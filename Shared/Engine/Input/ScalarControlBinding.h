@@ -13,7 +13,7 @@ public:
   using ControlValueType = float;
   using CallbackType = Delegate<void, ControlValueType>;
 
-  ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
+  ScalarControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback);
 
   void UpdateState(ControlValueType state);
   ControlValueType GetCurrentState();
@@ -28,6 +28,7 @@ private:
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
   ControlValueType m_History[kScalarControlHistory] = {};
+  bool m_ForceCallback = false;
 };
 
 class ENGINE_EXPORT ScalarControlHandle : public ControlHandle

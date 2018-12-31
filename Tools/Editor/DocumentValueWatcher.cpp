@@ -4,6 +4,7 @@
 
 DocumentValueWatcher::DocumentValueWatcher(NotNullPtr<DocumentEditorWidgetBase> editor) :
   m_Editor(editor),
+  m_ChangeCallbackId(0),
   m_ParentCallbackId(0),
   m_ChildCallbackId(0)
 {

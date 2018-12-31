@@ -22,6 +22,9 @@ public:
 
   BinaryControlHandle BindBinaryControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void UnbindBinaryControl(const BinaryControlHandle & handle);
+
+  ScalarControlHandle BindScalarControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, float> & callback);
+  void UnbindScalarControl(const ScalarControlHandle & handle);
   
   PointerControlHandle BindPointerControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback);
   void UnbindPointerControl(const PointerControlHandle & handle);
@@ -53,6 +56,7 @@ private:
   void HandleKeyPressMessage(int scan_code, bool pressed, bool text_input_active);
   void HandleMouseButtonPressMessage(int button, bool pressed, bool in_focus);
   void HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus);
+  void HandleMouseWheelMessage(int dv);
 
 private:
 

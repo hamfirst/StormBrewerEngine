@@ -27,17 +27,21 @@ UIManager::UIManager(Window & container_window) :
   m_Paused(false)
 {
   m_UpdateTimer.Start();
+  m_WheelBinding = m_ContainerWindow.GetInputState()->BindScalarControl(CreateMouseWheelBinding(), 10,
+          ControlBindingMode::kPassThrough, [this](float dv){ HandleMouseScroll((int)dv); });
 }
 
 UIManager::~UIManager()
 {
-  m_Destroying = true;
   for(auto & elem : m_RootClickables)
   {
     TrashClickable(elem);
   }
 
   RemoveDeadClickables();
+  m_Destroying = true;
+
+  m_ContainerWindow.GetInputState()->UnbindScalarControl(m_WheelBinding.Value());
 }
 
 #define BIND_EASING_FUNC(EasingType) \
@@ -196,16 +200,33 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
     AddToClickableList(elem.Get(), nullptr, clickables);
   }
 
+  auto invalid_area = Box::FromPoint(Vector2(-10000, -10000));
+
   m_ScriptInterface->BeginRendering(&render_state, &render_util);
   for(auto & elem : clickables)
   {
     if (elem->m_Dead == false)
     {
-      if(elem->m_ActiveArea)
+      Box active_area;
+
+      if(elem->m_ActiveArea.IsValid() == false)
       {
-        m_ScriptInterface->SetActiveArea(elem->m_ActiveArea.Value(), elem->Clip);
-        elem->OnDraw();
+        if(elem->Clip || elem->Enabled == false)
+        {
+          continue;
+        }
+        else
+        {
+          active_area = invalid_area;
+        }
       }
+      else
+      {
+        active_area = elem->m_ActiveArea.Value();
+      }
+
+      m_ScriptInterface->SetDrawArea(elem->m_DrawArea, active_area, elem->Clip);
+      elem->OnDraw();
     }
   }
   m_ScriptInterface->EndRendering();
@@ -316,6 +337,11 @@ void UIManager::RemoveClickableFromRoot(const ScriptClassRef<UIClickable> & clic
 
 void UIManager::TrashClickable(NotNullPtr<UIClickable> clickable)
 {
+  if(m_Destroying)
+  {
+    return;
+  }
+
   if(clickable == nullptr || clickable->m_Dead)
   {
     return;
@@ -355,8 +381,20 @@ void UIManager::UpdateScriptGlobals(const Vector2 & screen_size)
   m_ScriptState->SetGlobal("screen_end_y", screen_box.m_End.y);
 }
 
+void UIManager::HandleMouseScroll(int dv)
+{
+  m_MouseDelta = dv;
+}
+
 void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list)
 {
+  clickable->m_DrawArea = Box::FromStartAndWidthHeight(clickable->X, clickable->Y, clickable->Width, clickable->Height);
+
+  if(parent)
+  {
+    clickable->m_DrawArea = clickable->m_DrawArea.Offset(parent->m_DrawArea.m_Start);
+  }
+
   if(clickable->Width <= 0 || clickable->Height <= 0 || clickable->Enabled == false)
   {
     clickable->m_ActiveArea.Clear();
@@ -640,6 +678,13 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       active_clickable->OnMouseMove(relative_pos.x, relative_pos.y);
     }
   }
+
+  if(cur_hover_clickable && cur_hover_clickable->Enabled && m_MouseDelta != 0)
+  {
+    cur_hover_clickable->OnMouseScroll(m_MouseDelta);
+  }
+
+  m_MouseDelta = 0;
 
   if ((cur_hover_clickable && cur_hover_clickable->Enabled) || (cur_pressed_clickable && cur_pressed_clickable->Enabled))
   {

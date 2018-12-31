@@ -18,3 +18,5 @@ function FinalizeLoad()
 end
 
 font = loader:LoadFont("./Fonts/Hardpixel.OTF", 11);
+chat_font = loader:LoadFont("./Fonts/Montserrat-Bold.ttf", 10)
+

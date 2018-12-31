@@ -19,7 +19,7 @@ public:
   using ControlValueType = PointerState;
   using CallbackType = Delegate<void, ControlValueType>;
 
-  PointerControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
+  PointerControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback);
 
   void UpdateState(ControlValueType state);
   ControlValueType GetCurrentState();
@@ -34,6 +34,7 @@ private:
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
   ControlValueType m_History[kPointerControlHistory] = {};
+  bool m_ForceCallback = false;
 };
 
 class ENGINE_EXPORT PointerControlHandle : public ControlHandle

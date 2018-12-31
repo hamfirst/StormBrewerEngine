@@ -148,7 +148,8 @@ public:
       return 1;
     }
 
-    ScriptFuncs::ReportError(state, "Invalid member variable");
+    auto error_msg = std::string("Invalid member variable ") + field_name;
+    ScriptFuncs::ReportError(state, error_msg.c_str());
     return 0;
   }
 
@@ -186,7 +187,8 @@ public:
       return 0;
     }
 
-    ScriptFuncs::ReportError(state, "Invalid member variable");
+    auto error_msg = std::string("Invalid member variable ") + field_name;
+    ScriptFuncs::ReportError(state, error_msg.c_str());
     return 0;
   }
 };
