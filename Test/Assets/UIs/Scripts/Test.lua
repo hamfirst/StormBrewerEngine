@@ -5,56 +5,65 @@ function InitTestMenu()
   print("Testing menu ")
 
   local button = PushMenuElement(Button:new())
-  button.x = 0
+  button.x = 100
   button.y = 0
   button.width = 100
   button.height = 15
   button.text = "Test Chat"
 
   local button2 = PushMenuElement(Button:new())
-  button2.x = 0
+  button2.x = 100
   button2.y = 20
   button2.width = 100
   button2.height = 15
   button2.text = "Test Fade"
 
   local button3 = PushMenuElement(Button:new())
-  button3.x = 0
+  button3.x = 100
   button3.y = 40
   button3.width = 100
   button3.height = 15
   button3.text = "Test Menu"
 
   local button4 = PushMenuElement(Button:new())
-  button4.x = 0
+  button4.x = 100
   button4.y = 60
   button4.width = 100
   button4.height = 15
   button4.text = "Test Popup"
 
+  local loadout = PushMenuElement(Loadout:new())
+  loadout.x = -400
+  loadout.y = 0
+  loadout.width = 200
+  loadout.height = 200
+
+  local frame = PushMenuElement(Frame:new())
+  frame.x = -82
+  frame.y = -222
+  frame.width = 270
+  frame.height = 124
+
   local input = PushMenuElement(TextInput:new())
   input.x = -80
   input.y = -220
-  input.width = 200
+  input.width = 265
   input.height = 15
   input.prompt = "Input"
 
   local scrollbar = PushMenuElement(ScrollBar:new())
-  scrollbar.x = 120
-  scrollbar.y = -200
-  scrollbar.width = 20
-  scrollbar.height = 100
+  scrollbar.x = 170
+  scrollbar.y = -205
+  scrollbar.width = 16
+  scrollbar.height = 105
 
   local chatdisplay = PushMenuElement(ChatDisplay:new())
-  chatdisplay.x = -80
+  chatdisplay.x = -78
   chatdisplay.y = -200
-  chatdisplay.width = 200
+  chatdisplay.width = 246
   chatdisplay.height = 100
   chatdisplay.font = chat_font
   chatdisplay.scroll_proxy = scrollbar
-  chatdisplay:AddElement("test", "Test test test test test test test test test")
-  chatdisplay:AddElement("test", "Test test test test test test test test test")
-  chatdisplay:AddElement("test", "Test test test test test test test test test")
 
   scrollbar.ValueChanged = function()
     chatdisplay.scroll_offset = scrollbar.value
@@ -83,7 +92,7 @@ function InitTestMenu()
 
   local popup = PushMenuElement(ConfirmPopup:new())
   popup.x = -400
-  popup.y = -100
+  popup.y = -200
   popup.width = 300
   popup.height = 150
   
@@ -108,13 +117,17 @@ function InitTestMenu()
     fader:FadeToSolid()
   end
 
+  popup.OkayPressed = function()
+    fader:FadeToSolid()
+  end
+
   button3.fade = false
   button3.Pressed = function()
     context_menu:Reset()
     context_menu:PushMenuAction("Option 1", function() print("Option 1") end)
     context_menu:PushMenuAction("Option 2", function() print("Option 2") end)
     context_menu:PushMenuAction("Option 3", function() print("Option 3") end)
-    context_menu:Show(-80, 30)
+    context_menu:Show(20, 30)
   end
 
   button4.fade = false

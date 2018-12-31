@@ -56,3 +56,8 @@ void UITextInput::Clear()
 {
   m_TextInput->ClearInput();
 }
+
+int UITextInput::GetCursorPos()
+{
+  return (int)m_TextInput->GetCursorPos();
+}

@@ -38,6 +38,7 @@ function ChatDisplay:AddElement(name, text)
 end
 
 function ChatDisplay:Draw()
+
   local line_height = ui:GetLineHeight(self.font)
   local y_offset = self.height + self.scroll_offset
 

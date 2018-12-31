@@ -49,7 +49,7 @@ private:
   NullOptPtr<FileSystemDirectory> GetDirectoryAtPath(const char * path, FileSystemDirectory & base);
   Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> GetFileOrDirectoryAtPath(const char * path, FileSystemDirectory & base);
 
-  void TriggerOperationForFile(const std::string & path, const std::string & filename, FileSystemOperation op, std::chrono::system_clock::time_point last_write);
+  void TriggerOperationForFile(const std::string & filename, const std::string & path, FileSystemOperation op, std::chrono::system_clock::time_point last_write);
   void TriggerOperationForDirectoryFiles(FileSystemDirectory & base, const std::string & base_path, FileSystemOperation op);
 
   void NotifyThread();

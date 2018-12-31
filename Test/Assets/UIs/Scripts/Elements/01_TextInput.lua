@@ -1,6 +1,7 @@
 
 TextInput = Elem:construct()
 TextInput.prompt = ""
+TextInput.cursor_scroll = 0
 TextInput.border_r = 0.4
 TextInput.border_g = 0.4
 TextInput.border_b = 0.4
@@ -71,9 +72,27 @@ function TextInput:Draw()
     ui:DrawText(chat_font, self.prompt, 10, self.height / 2 - text_height / 2 + 1, self.prompt_r, self.prompt_g, self.prompt_b, 1, kNormal)
   end
 
-  if self:IsCurrent() then
-    local text_width, text_height = ui:MeasureTextInput(chat_font, self.context)
-    ui:DrawTextInput(chat_font, self.context, 5, self.height / 2 - text_height / 2 + 1, 0, 0, 0, 1, kNormal)
+  local chat_font_height = ui:GetLineHeight(chat_font)
+  if text ~= "" then
+
+    local cursor_pos = self:GetCursorPos()
+    local pre_cursor_width = 0
+    
+    if cursor_pos > 0 then
+      pre_cursor_width = ui:MeasureText(chat_font, string.sub(text, 0, cursor_pos - 1))
+    end
+
+    if pre_cursor_width + self.cursor_scroll < 5 then
+      self.cursor_scroll = 5 - pre_cursor_width
+    end
+
+    if pre_cursor_width + self.cursor_scroll > self.width - 20 then
+      self.cursor_scroll = self.width - 20 - pre_cursor_width
+    end
+
+    ui:DrawTextInput(chat_font, self.context, self.cursor_scroll, self.height / 2 - chat_font_height / 2 + 3, 0, 0, 0, 1, kNormal)
+  else
+    ui:DrawTextInput(chat_font, self.context, 5, self.height / 2 - chat_font_height / 2 + 3, 0, 0, 0, 1, kNormal)
   end
 end
 
@@ -83,6 +102,7 @@ end
 
 function TextInput:Clear()
   self.context:Clear()
+  self.cursor_scroll = 5
 end
 
 function TextInput:MakeCurrent()
@@ -93,8 +113,14 @@ function TextInput:IsCurrent()
   return self.context:IsCurrent()
 end
 
-function TextInput:Clicked()
-  self:MakeCurrent()
+function TextInput:GetCursorPos()
+  return self.context:GetCursorPos()
+end
+
+function TextInput:StateChanged(old_state, new_state)
+  if new_state == kPressed then
+    self:MakeCurrent()
+  end
 end
 
 function TextInput:Destroyed()

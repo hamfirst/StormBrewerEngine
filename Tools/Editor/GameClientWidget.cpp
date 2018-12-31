@@ -37,7 +37,8 @@ GameClientWidget::GameClientWidget(EditorContainer * editor, int client_index, b
 
 GameClientWidget::~GameClientWidget()
 {
-
+  m_GameContainer.Clear();
+  m_FakeWindow.Clear();
 }
 
 void GameClientWidget::initializeGL()
