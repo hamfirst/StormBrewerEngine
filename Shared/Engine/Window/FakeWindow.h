@@ -19,6 +19,7 @@ public:
 
   void HandleKeyPressMessage(int sdl_key, int scan_code, bool pressed);
   void HandleMouseMoveMessage(int x, int y);
+  void HandleMouseWheelMessage(int dv);
   void HandleMouseButtonPressMessage(int button, bool pressed);
   void HandleTextInputCommit(czstr character);
   void HandleTextInputComposition(czstr composition);

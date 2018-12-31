@@ -13,7 +13,7 @@ public:
   using ControlValueType = bool;
   using CallbackType = Delegate<void, ControlValueType>;
 
-  BinaryControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback);
+  BinaryControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback);
 
   void UpdateState(ControlValueType state);
   ControlValueType GetCurrentState() const;
@@ -31,6 +31,7 @@ private:
   unsigned int m_HistoryCount = 0;
   unsigned int m_HistoryIndex = 0;
   ControlValueType m_History[kBinaryControlHistory] = {};
+  bool m_ForceCallback = false;
 };
 
 class ENGINE_EXPORT BinaryControlHandle : public ControlHandle

@@ -2,6 +2,7 @@
 
 #include "Engine/Input/ControlBindingList.h"
 #include "Engine/Input/BinaryControlBinding.h"
+#include "Engine/Input/ScalarControlBinding.h"
 #include "Engine/Input/PointerControlBinding.h"
 #include "Engine/Input/ControlHandle.h"
 
@@ -19,11 +20,15 @@ public:
   BinaryControlHandle AddButtonBinding(int button, int priority, ControlBindingMode mode, const Delegate<void, bool> & callback);
   void RemoveButtonBinding(BinaryControlHandle handle);
 
+  ScalarControlHandle AddWheelBinding(int priority, ControlBindingMode mode, const Delegate<void, float> & callback);
+  void RemoveWheelBinding(ScalarControlHandle handle);
+
   PointerControlHandle AddCursorBinding(int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback);
   void RemoveCursorBinding(PointerControlHandle handle);
 
   void HandleButtonPressMessage(int button, bool pressed);
   void HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus);
+  void HandleMouseWheelMessage(int dv);
 
   bool GetButtonState(int button);
   bool GetButtonPressedThisFrame(int button);
@@ -46,5 +51,6 @@ private:
   bool m_PressedLastFrame[kNumMouseButtons] = {};
   PointerState m_PointerState = {};
   ControlBindingList<BinaryControlBinding> m_ButtonControls[kNumMouseButtons];
+  ControlBindingList<ScalarControlBinding> m_WheelBinding;
   ControlBindingList<PointerControlBinding> m_PointerBinding;
 };

@@ -2,31 +2,22 @@
 
 {
     "m_Functions": {
-        "5": {
-            "m_Name": "GetPlayerName",
-            "m_Value": "Player"
-        },
-        "3": {
-            "m_Name": "GetTeamName",
-            "m_Value": "Blue"
-        },
-        "4": {
-            "m_Name": "GetTeamColor",
-            "m_Value": "0.3"
+        "1": {
+            "m_Name": "GetPlayerCount",
+            "m_DebugOutput": false,
+            "m_Value": "10"
         },
         "2": {
             "m_Name": "GetPlayerMaxCount",
+            "m_DebugOutput": false,
             "m_Value": "5"
         },
         "0": {
             "m_Name": "GetTeamCount",
+            "m_DebugOutput": false,
             "m_Value": "2"
-        },
-        "1": {
-            "m_Name": "GetPlayerCount",
-            "m_Value": "4"
         }
     },
-    "m_Variables": { },
-    "m_InitFunction": "InitTestMenu"
+    "m_InitFunction": "InitTestMenu",
+    "m_Variables": { }
 }

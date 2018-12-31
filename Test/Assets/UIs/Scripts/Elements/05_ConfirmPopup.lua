@@ -2,18 +2,23 @@
 ConfirmPopup = Popup:construct()
 ConfirmPopup.text = "Confirm?"
 
-function ConfirmPopup:setup(o)
-  Popup:setup(o)
+function ConfirmPopup:CreateChildren()
 
-  o.okay = Button:new()
-  o.okay:SetParent(o)
-  o.okay.text = "Okay"
-  o.cancel = Button:new()
-  o.cancel:SetParent(o)
-  o.cancel.text = "Cancel"
-end
+  self.okay = self:PushChild(Button:new())
+  self.okay.text = "Okay"
+  self.cancel = self:PushChild(Button:new())
+  self.cancel.text = "Cancel"
+  
+  self.okay.Pressed = function () 
+    self:FadeOut() 
+    self:OnOkay() 
+  end
 
-function ConfirmPopup:Update()
+  self.cancel.Pressed = function () 
+    self:FadeOut() 
+    self:OnCancel() 
+  end
+
   local half_width = self.width / 2
 
   self.okay.x = half_width * 0.2
@@ -30,5 +35,13 @@ end
 function ConfirmPopup:Draw()
   Popup.Draw(self)
 
-  ui:DrawCenteredText(font, self.text, self.width / 2, self.height - 50, 0, 0, 0, 1, kNormal)
+  ui:DrawCenteredText(font, self.text, self.width / 2, self.height - 50, 0, 0, 0, self.alpha, kNormal)
+end
+
+function ConfirmPopup:OnOkay()
+
+end
+
+function ConfirmPopup:OnCancel()
+
 end

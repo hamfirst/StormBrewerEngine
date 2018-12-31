@@ -44,6 +44,10 @@ function Elem:setup(o)
     o:MouseLeft()
   end
 
+  o.clickable.OnMouseScroll = function(dv)
+    o:MouseScrolled(dv)
+  end
+
   o.clickable.OnClick = function()
     o:Clicked()
   end
@@ -55,6 +59,20 @@ function Elem:new(o)
   o = self:construct(o)
   self:setup(o)
   return o
+end
+
+function Elem:destroy()
+  self:Destroyed()
+
+  if self.clickable ~= nil then
+      self.clickable:delete()
+      self.clickable = nil
+  end
+
+  if self.context ~= nil then
+      self.context:delete()
+      self.context = nil
+  end
 end
 
 function Elem:Update(dt)
@@ -79,6 +97,12 @@ end
 
 function Elem:MouseLeft()
 
+end
+
+function Elem:MouseScrolled(dv)
+  if self.scroll_proxy ~= nil then
+    self.scroll_proxy:MouseScrolled(dv)
+  end
 end
 
 function Elem:Clicked()

@@ -21,7 +21,7 @@ static const int kInvalidFontId = -1000000;
 
 struct TextSettings
 {
-  Vector2 m_TextPos;
+  Vector2f m_TextPos;
   Optional<Box> m_TextBounds;
 
   TextRenderMode m_Mode;
@@ -77,7 +77,7 @@ public:
 
   void SetTextMode(TextRenderMode mode = TextRenderMode::kNormal);
 
-  void SetTextPos(const Vector2 & pos);
+  void SetTextPos(const Vector2f & pos);
   void SetTextBounds(const Box & bounds);
   void ClearTextBounds();
 

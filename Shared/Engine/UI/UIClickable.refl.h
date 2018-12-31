@@ -31,15 +31,14 @@ public:
   UIClickable(NotNullPtr<UIManager> manager);
   ~UIClickable();
 
-
   ScriptClassDelegate<void, int, int> OnStateChange;
   ScriptClassDelegate<void, float> OnUpdate;
   ScriptClassDelegate<void> OnDraw;
 
-
   ScriptClassDelegate<void, int, int> OnMouseEnter;
   ScriptClassDelegate<void> OnMouseLeave;
-  ScriptClassDelegate<void, int, int> OnMouseMove;
+  ScriptClassDelegate<void, int, int> OnMouseMove;;
+  ScriptClassDelegate<void, int> OnMouseScroll;
   ScriptClassDelegate<void, int, int> OnClick;
 
   bool Enabled = true;
@@ -66,6 +65,7 @@ private:
   friend class UITextInput;
 
   void Destroy();
+  Box CalculateDrawArea();
   Optional<Box> CalculateActiveArea();
 
 private:
@@ -77,6 +77,7 @@ private:
 
   std::vector<ScriptClassRef<UIClickable>> m_Children;
 
+  Box m_DrawArea;
   Optional<Box> m_ActiveArea;
   bool m_Dead = false;
 };

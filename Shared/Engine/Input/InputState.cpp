@@ -55,6 +55,31 @@ void InputState::UnbindBinaryControl(const BinaryControlHandle & handle)
   }
 }
 
+ScalarControlHandle InputState::BindScalarControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, float> & callback)
+{
+  if (control.m_Type == ControlType::kMouse)
+  {
+    if (control.m_Index == -2)
+    {
+      return m_MouseState.AddWheelBinding(priority, mode, callback);
+    }
+  }
+
+  return{};
+}
+
+void InputState::UnbindScalarControl(const ScalarControlHandle & handle)
+{
+  if (handle.m_ControlId.m_Type == ControlType::kMouse)
+  {
+    if (handle.m_ControlId.m_Index == -2)
+    {
+      m_MouseState.RemoveWheelBinding(handle);
+    }
+    return;
+  }
+}
+
 PointerControlHandle InputState::BindPointerControl(const ControlId & control, int priority, ControlBindingMode mode, const Delegate<void, PointerState> & callback)
 {
   if (control.m_Type == ControlType::kMouse)
@@ -197,4 +222,9 @@ void InputState::HandleMouseButtonPressMessage(int button, bool pressed, bool in
 void InputState::HandleMouseMoveMessage(int x, int y, const Box & window_geo, bool in_focus)
 {
   m_MouseState.HandleMouseMoveMessage(x, y, window_geo, in_focus);
+}
+
+void InputState::HandleMouseWheelMessage(int dv)
+{
+  m_MouseState.HandleMouseWheelMessage(dv);
 }

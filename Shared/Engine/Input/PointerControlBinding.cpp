@@ -2,9 +2,10 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/PointerControlBinding.h"
 
-PointerControlBinding::PointerControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback) :
+PointerControlBinding::PointerControlBinding(int priority, ControlBindingMode mode, const CallbackType & callback, bool force_callback) :
   ControlBinding(priority, mode),
-  m_StateChangeCB(callback)
+  m_StateChangeCB(callback),
+  m_ForceCallback(force_callback)
 {
 
 }
@@ -13,7 +14,7 @@ void PointerControlBinding::UpdateState(PointerControlBinding::ControlValueType 
 {
   if (state.m_Pos.x != m_CurrentState.m_Pos.x ||
       state.m_Pos.y != m_CurrentState.m_Pos.y ||
-      state.m_InFocus != m_CurrentState.m_InFocus)
+      state.m_InFocus != m_CurrentState.m_InFocus || m_ForceCallback)
   {
     m_CurrentState = state;
     m_History[m_HistoryIndex] = state;

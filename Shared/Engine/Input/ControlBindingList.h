@@ -16,9 +16,10 @@ public:
     
   }
 
-  Handle CreateControlBinding(int priority, ControlBindingMode mode, const typename ControlBindingType::CallbackType & callback)
+  Handle CreateControlBinding(int priority, ControlBindingMode mode,
+          const typename ControlBindingType::CallbackType & callback, bool force_callback = false)
   {
-    return m_HandleList.AllocateElem(priority, mode, callback);
+    return m_HandleList.AllocateElem(priority, mode, callback, force_callback);
   }
 
   NotNullPtr<void> GetControlBinding(Handle handle)

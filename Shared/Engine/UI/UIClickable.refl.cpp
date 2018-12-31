@@ -88,12 +88,13 @@ void UIClickable::Destroy()
   }
   else
   {
+    auto self_ref = GetClassRef();
     for(std::size_t index = 0, end = m_Parent->m_Children.size(); index < end; ++index)
     {
       if(m_Parent->m_Dead == false)
       {
         auto &child = m_Parent->m_Children[index];
-        if (child.Get() == this)
+        if (child == self_ref)
         {
           m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
           break;
@@ -113,6 +114,18 @@ void UIClickable::GrabMouse()
 void UIClickable::ReleaseMouse()
 {
   m_Manager->ReleaseMouse(this);
+}
+
+Box UIClickable::CalculateDrawArea()
+{
+  Box b = Box::FromStartAndWidthHeight(X, Y, Width, Height);
+  if(m_Parent.IsValid())
+  {
+    auto parent_box = m_Parent->CalculateDrawArea();
+    b = b.Offset(parent_box.m_Start);
+  }
+
+  return b;
 }
 
 Optional<Box> UIClickable::CalculateActiveArea()

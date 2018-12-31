@@ -4,7 +4,7 @@ ChatDisplay.total_height = 0
 ChatDisplay.elements = {}
 ChatDisplay.next_element_id = 0
 ChatDisplay.scroll_offset = 0
-ChatDisplay.font = font
+ChatDisplay.font = chat_font
 
 function ChatDisplay:AddElement(name, text)
   local first_line = name .. ": " .. text
@@ -45,7 +45,8 @@ function ChatDisplay:Draw()
     y_offset = self.total_height
   end
 
-  for k, v in pairs(self.elements) do
+  for i = 0, self.next_element_id - 1 do
+    local v = self.elements[i]
     local elem_top = y_offset
     local elem_bot = elem_top - v.total_height 
     if elem_top < 0 then

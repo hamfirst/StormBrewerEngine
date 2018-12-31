@@ -223,6 +223,16 @@ void GameClientWidget::moveEvent(QMoveEvent * event)
   m_FakeWindow->SetWindowPos(Vector2(pos.x(), pos.y()));
 }
 
+void GameClientWidget::wheelEvent(QWheelEvent * event)
+{
+  if (!m_FakeWindow)
+  {
+    return;
+  }
+
+  m_FakeWindow->HandleMouseWheelMessage(event->delta());
+}
+
 void GameClientWidget::focusInEvent(QFocusEvent * event)
 {
   if (!m_FakeWindow)

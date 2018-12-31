@@ -115,6 +115,15 @@ void WindowManager::HandleMouseMotionMessage(uint32_t window_id, int x, int y)
   window.m_InputState->HandleMouseMoveMessage(x, y, window.m_WindowGeo, window.m_MouseFocus);
 }
 
+void WindowManager::HandleMouseWheelMessage(uint32_t window_id, int dv)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+
+  window.m_InputState->HandleMouseWheelMessage(dv);
+}
+
 void WindowManager::HandleTextInputCommit(uint32_t window_id, czstr character)
 {
   auto itr = s_Windows.find(window_id);

@@ -51,3 +51,8 @@ std::string UITextInput::GetText()
 {
   return m_TextInput->GetCurrentInput();
 }
+
+void UITextInput::Clear()
+{
+  m_TextInput->ClearInput();
+}

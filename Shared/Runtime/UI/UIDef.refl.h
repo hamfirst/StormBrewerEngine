@@ -6,11 +6,20 @@
 
 #include "Runtime/RuntimeCommon.h"
 
-struct RUNTIME_EXPORT UIDefDebugData
+struct RUNTIME_EXPORT UIDefDebugVariable
 {
-  STORM_DATA_DEFAULT_CONSTRUCTION(UIDefDebugData);
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIDefDebugVariable);
   RString m_Name;
   RString m_Value;
+};
+
+
+struct RUNTIME_EXPORT UIDefDebugFunction
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(UIDefDebugFunction);
+  RString m_Name;
+  RString m_Value;
+  RBool m_DebugOutput = true;
 };
 
 struct RUNTIME_EXPORT UIDef
@@ -20,7 +29,7 @@ struct RUNTIME_EXPORT UIDef
   RString m_InitFunction = "InitMenu";
   RString m_CleanupFunction = "CleanupMenu";
 
-  RMergeList<UIDefDebugData> m_Variables;
-  RMergeList<UIDefDebugData> m_Functions;
+  RMergeList<UIDefDebugVariable> m_Variables;
+  RMergeList<UIDefDebugFunction> m_Functions;
 };
 

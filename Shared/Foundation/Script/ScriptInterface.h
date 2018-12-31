@@ -78,7 +78,7 @@ public:
   }
 
   void AddVariable(czstr name, const ScriptValue & value);
-  void AddDebugStubFunction(czstr name, ScriptValue && return_value);
+  void AddDebugStubFunction(czstr name, ScriptValue && return_value, bool debug_args);
 
 private:
 
@@ -104,6 +104,7 @@ private:
   int m_NextDebugFuncId;
   std::vector<std::string> m_DebugStubFunctionNames;
   std::vector<ScriptValue> m_DebugStubReturnValues;
+  std::vector<bool> m_DebugStubFunctionOutput;
 };
 
 #define BIND_SCRIPT_INTERFACE(ScriptInterface, Ptr, FuncName) (ScriptInterface).AddFunction(#FuncName, Ptr, &std::decay_t<decltype(*Ptr)>::FuncName);

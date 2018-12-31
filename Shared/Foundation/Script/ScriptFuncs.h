@@ -50,18 +50,34 @@ public:
   template <typename T>
   static int PushValue(void * state, const std::vector<T> & val)
   {
-    StartPushVector(state);
+    StartPushTable(state);
 
     for(std::size_t index = 0, end = val.size(); index < end; ++index)
     {
-      ContinuePushVector(state, index, &val[index], [](void * state, void * ptr)
+      ContinuePushTable(state, index, &val[index], [](void * state, void * ptr)
       {
         auto val = static_cast<T *>(ptr);
-        PushValue(state, *val);
+        return PushValue(state, *val);
       });
     }
 
-    EndPushVector(state);
+    return 1;
+  }
+
+  template <typename T>
+  static int PushValue(void * state, const std::unordered_map<std::string, T> & val)
+  {
+    StartPushTable(state);
+
+    for(auto && elem : val)
+    {
+      ContinuePushTable(state, &val.first, &val.second, [](void * state, void * ptr)
+      {
+        auto val = static_cast<T *>(ptr);
+        return PushValue(state, *val);
+      });
+    }
+
     return 1;
   }
 
@@ -111,9 +127,9 @@ public:
   static void ReportError(void * state, czstr message);
 
 private:
-  static void StartPushVector(void * state);
-  static void ContinuePushVector(void * state, std::size_t index, void * ptr, void (*Func)(void *, void *));
-  static void EndPushVector(void * state);
+  static void StartPushTable(void * state);
+  static void ContinuePushTable(void * state, std::size_t index, void * ptr, int (*Func)(void *, void *));
+  static void ContinuePushTable(void * state, const std::string & key, void * ptr, int (*Func)(void *, void *));
 };
 
 template <typename ReturnValue, typename ... Args>

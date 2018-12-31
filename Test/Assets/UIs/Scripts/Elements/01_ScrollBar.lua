@@ -184,6 +184,10 @@ function ScrollBar:MouseLeft()
   self.bar_rel = 0
 end
 
+function ScrollBar:MouseScrolled(dv)
+  self:SetValue(self.value + dv / -4)
+end
+
 function ScrollBar:Clicked()
   if self.highlight < 0 then
     self:SetValue(self.value + 10)
