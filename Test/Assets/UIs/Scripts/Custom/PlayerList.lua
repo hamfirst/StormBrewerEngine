@@ -10,7 +10,6 @@ PlayerList.highlighted_menu_pos = 0
 PlayerList.selected_player_id = 0
 PlayerList.selected_menu_pos = 0
 
-player_list_small_font = loader:LoadFont("./Fonts/basis33.ttf", 12)
 player_list_big_font = loader:LoadFont("./Fonts/FFF.ttf", 9)
 game_leader_icon = loader:LoadTexture("./Images/UI/GameLeader.png")
 player_ready_icon = loader:LoadTexture("./Images/UI/PlayerReady.png")
@@ -124,7 +123,7 @@ function PlayerList:Update()
   self.scrollbar:SetScrollArea(self.height, self.content_height)
   self.scrollbar.x = self.x + self.width + 1
   self.scrollbar.y = self.y
-  self.scrollbar.width = 15
+  self.scrollbar.width = 16
   self.scrollbar.height = self.height
 end
 
@@ -134,7 +133,7 @@ function PlayerList:VisitElements(visitor)
   local y = self.height + self.scroll_offset
   local iniital_y = y
 
-  local small_font_height = ui:GetLineHeight(player_list_small_font)
+  local small_font_height = ui:GetLineHeight(font)
   local big_font_height = ui:GetLineHeight(player_list_big_font)
 
   for team = 0, team_count - 1 do
@@ -160,28 +159,31 @@ function PlayerList:VisitElements(visitor)
   if game.allow_observers then
     local player_count = game:GetPlayerCount(-1)
 
-    y = y - small_font_height
-    visitor(0, -1, 0, y, small_font_height)
-    y = y - 2
-    
-    for player = 0, player_count - 1 do
-
-      local height = (big_font_height + 8)
-      y = y - height
-      visitor(1, -1, player, y, height)
+    if player_count > 0 then
+      y = y - small_font_height
+      visitor(0, -1, 0, y, small_font_height)
       y = y - 2
+      
+      for player = 0, player_count - 1 do
 
+        local height = (big_font_height + 8)
+        y = y - height
+        visitor(1, -1, player, y, height)
+        y = y - 2
+
+      end
+
+      y = y + 2
     end
+  else
+    y = y + 5
   end
-
-  y = y - 5
 
   self.content_height = iniital_y - y
 end
 
 function PlayerList:Draw()
 
-  local small_font_height = ui:GetLineHeight(player_list_small_font)
   local big_font_height = ui:GetLineHeight(player_list_big_font)
 
   local prev_highlighted_player_id = self.highlighted_player_id
@@ -191,6 +193,8 @@ function PlayerList:Draw()
   local found_selected_player = false
 
   local visitor = function(type, team, player, y, height)
+    local r, g, b = game:GetTeamColor(team)
+
     if type == 0 then
 
       local player_count = game:GetPlayerCount(team)
@@ -204,11 +208,13 @@ function PlayerList:Draw()
         team_text = string.format("%s (%d/%d)", team_name, player_count, player_max_count) 
       end
 
-      ui:DrawText(player_list_small_font, team_text, 3, y, 0, 0, 0, 1, kNormal)
+      ui:DrawFilledRectangle(0, y, self.width - 2, height, r, g, b, 1.0)
+      ui:FlushGeometry();
+
+      ui:DrawText(font, team_text, 3, y + 3, 1, 1, 1, 1, kNormal)
 
     elseif type == 1 then
 
-      local r, g, b = game:GetTeamColor(team)
       local player_id = game:GetPlayerId(team, player)
       local player_name = game:GetPlayerName(player_id)
 
@@ -216,7 +222,7 @@ function PlayerList:Draw()
         found_selected_player = true
       end
 
-      if self.selectable and self.mouse_in and self.mouse_y >= y and self.mouse_y <= y + height and self.selected_player_id ~= player_id then
+      if self.selectable and self.mouse_in and self.mouse_y >= y and self.mouse_y <= y + height then
         self.highlighted_player_id = player_id
         self.highlighted_menu_pos = y + height / 2
 
@@ -272,6 +278,7 @@ function PlayerList:StateChanged(old_state, new_state)
   if new_state == kPressed then
     if self.selected_player_id ~= 0 and self.selected_player_id == self.highlighted_player_id then
       self:DeselectPlayer()
+      ui:PlayAudio(back_audio)
     else
       self:SelectPlayer()
     end
@@ -310,10 +317,16 @@ function PlayerList:SelectPlayer()
         else
           print("Context action not found " .. text)
         end
+        
+        self.selected_player_id = 0
+        self.selected_menu_pos = 0
       end)
     end
 
-    self.context_show_id = context_menu:Show(self.x - context_menu.content_width - 5, self.y + self.highlighted_menu_pos - context_menu.content_height / 2)
+    self.context_show_id = context_menu:Show(
+        self.x - context_menu.content_width - 5, 
+        self.y + self.highlighted_menu_pos - context_menu.content_height / 2,
+        function() ui:PlayAudio(back_audio) self:DeselectPlayer() end)
 
   end
 end

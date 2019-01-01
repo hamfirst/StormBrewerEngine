@@ -1,21 +1,21 @@
 []
 
 {
-    "m_InitFunction": "InitJoinPrivateGameMenu",
     "m_Functions": {
+        "1": {
+            "m_Name": "Back"
+        },
+        "2": {
+            "m_Value": "true",
+            "m_Name": "CheckValidGameCode"
+        },
         "0": {
             "m_Name": "Submit"
         },
         "3": {
-            "m_Value": "false",
-            "m_Name": "CheckSubmitValidGameCode"
-        },
-        "2": {
-            "m_Name": "CheckValidGameCode",
-            "m_Value": "true"
-        },
-        "1": {
-            "m_Name": "Back"
+            "m_Name": "CheckSubmitValidGameCode",
+            "m_Value": "false"
         }
-    }
+    },
+    "m_InitFunction": "InitJoinPrivateGameMenu"
 }

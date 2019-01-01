@@ -40,8 +40,14 @@ function ContextMenu:Reset(show_id)
   self.alpha = 1
   self.fading = false
   self.show_id = self.show_id + 10
+  self.x = 0
+  self.y = 0
+  self.width = 0
+  self.height = 0
 
   ClearLerp(self, "alpha")
+
+  context_menu_fader:SetAlpha(0)
 end
 
 function ContextMenu:PushMenuAction(text, func)
@@ -75,7 +81,7 @@ function ContextMenu:PushMenuAction(text, func)
  
 end
 
-function ContextMenu:Show(x, y)
+function ContextMenu:Show(x, y, ondismissed)
 
   self.show_id = self.show_id + 1
 
@@ -84,9 +90,12 @@ function ContextMenu:Show(x, y)
   self.width = 0
   self.height = self.content_height
   self.alpha = 0
+  self.ondismissed = ondismissed
 
   AddLerp(self, "width", self.content_width, 0.1, nil, EaseInCubic)
   AddLerp(self, "alpha", 1, 0.1, nil, EaseInCubic)
+
+  context_menu_fader:FadeToSolid()
 
   return self.show_id
 end
@@ -107,6 +116,19 @@ function ContextMenu:RepositionElements()
 end
 
 function CreateContextMenu()
+  context_menu_fader = PushMenuElement(Fader:new())
+  context_menu_fader:SetAlpha(0)
+  context_menu_fader.target_alpha = 0.05
+  context_menu_fader.fade_time = 0.1
+
   context_menu = PushMenuElement(ContextMenu:new())
+
+  function context_menu_fader:Clicked()
+    context_menu:Reset()
+    
+    if context_menu.ondismissed ~= nil then
+      context_menu.ondismissed()
+    end
+  end
 end
 

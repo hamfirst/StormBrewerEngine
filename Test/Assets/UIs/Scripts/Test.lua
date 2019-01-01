@@ -87,9 +87,10 @@ function InitTestMenu()
   player_list.width = 150
   player_list.height = 350
 
-  CreateDefualtControls();
-  CreateContextMenu();
-
+  CreateDefualtControls()
+  CreateContextMenu()
+  CreatePopupFader()
+  
   local popup = PushMenuElement(ConfirmPopup:new())
   popup.x = -400
   popup.y = -200
