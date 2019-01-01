@@ -46,6 +46,8 @@ function Popup:FadeIn()
   self.alpha = 0
   AddLerp(self, "alpha", 1, 0.2, nil, EaseInCubic)
   self:SetEnabled(true)
+
+  popup_fader:FadeToSolid()
 end
 
 function Popup:FadeOut()
@@ -58,4 +60,13 @@ function Popup:FadeOut()
   end
 
   AddLerp(self, "alpha", 0, 0.6, function() self:SetEnabled(false) end, EaseInCubic)
+
+  popup_fader:FadeToClear()
+end
+
+function CreatePopupFader()
+  popup_fader = PushMenuElement(Fader:new())
+  popup_fader.target_alpha = 0.5
+
+  popup_fader:SetAlpha(0)
 end

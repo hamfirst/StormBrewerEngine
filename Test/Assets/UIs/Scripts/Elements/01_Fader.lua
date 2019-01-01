@@ -1,8 +1,13 @@
 
 Fader = Elem:construct()
 Fader.alpha = 1.0
+Fader.target_alpha = 1.0
+Fader.r = 1
+Fader.g = 1
+Fader.b = 1
 Fader.x = screen_start_x
 Fader.y = screen_start_y
+Fader.fade_speed = 0.5
 Fader.width = screen_width
 Fader.height = screen_height
 
@@ -12,9 +17,7 @@ function Fader:Draw()
     return
   end
 
-  local r, g, b = 1, 1, 1
-
-  ui:DrawFilledRectangle(0, 0, self.width, self.height, r, g, b, self.alpha)
+  ui:DrawFilledRectangle(0, 0, self.width, self.height, self.r, self.g, self.b, self.alpha)
   ui:FlushGeometry()
 end
 
@@ -23,15 +26,20 @@ function Fader:Update()
 end
 
 function Fader:FadeToSolid()
-  AddLerp(self, "alpha", 1, 0.5)
+  AddLerp(self, "alpha", self.target_alpha, self.fade_speed)
 end
 
 function Fader:FadeToSolidThen(func)
-  AddLerp(self, "alpha", 1, 0.5, func)
+  AddLerp(self, "alpha", self.target_alpha, self.fade_speed, func)
 end
 
 function Fader:FadeToClear()
-  AddLerp(self, "alpha", 0, 0.5)
+  AddLerp(self, "alpha", 0, self.fade_speed)
+end
+
+function Fader:SetAlpha(alpha)
+  ClearLerp(self, "alpha")
+  self.alpha = alpha
 end
 
 function FadeFromButtonPress(fader, button, func)

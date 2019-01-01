@@ -30,9 +30,12 @@ Button.bkg_b = 1
 Button.bkg_hover_r = 1
 Button.bkg_hover_g = 1
 Button.bkg_hover_b = 1
-Button.bkg_toggled_r = 1
-Button.bkg_toggled_g = 1
-Button.bkg_toggled_b = 1
+Button.bkg_toggled_r = 0.9
+Button.bkg_toggled_g = 0.9
+Button.bkg_toggled_b = 0.91
+Button.bkg_toggled_hover_r = 0.7
+Button.bkg_toggled_hover_g = 0.7
+Button.bkg_toggled_hover_b = 0.71
 Button.text_r = 0
 Button.text_g = 0
 Button.text_b = 0
@@ -51,12 +54,18 @@ function Button:Draw()
   local alpha = self.alpha * self.parent_alpha
 
   if cur_state == kHover or cur_state == kPressed then
+    
+    if self.toggleable and self.toggled then
+      ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
+              self.bkg_toggled_hover_r, self.bkg_toggled_hover_g, self.bkg_toggled_hover_b, alpha)
+    else
+      ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
+              self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, alpha)
+    end
 
-    ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, alpha)
 
     ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.border_hover_r, self.border_hover_g, self.border_hover_b, alpha)
+    self.border_hover_r, self.border_hover_g, self.border_hover_b, alpha)
 
     r, g, b = self.text_hover_r, self.text_hover_g, self.text_hover_b
 
