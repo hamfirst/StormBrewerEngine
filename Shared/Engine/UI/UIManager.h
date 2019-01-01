@@ -77,8 +77,8 @@ private:
 
   Window & m_ContainerWindow;
 
-  Optional<ScriptClass<UIClickable>> m_ClickableClass;
-  Optional<ScriptClass<UITextInput>> m_TextInputClass;
+  std::unique_ptr<ScriptClass<UIClickable>> m_ClickableClass;
+  std::unique_ptr<ScriptClass<UITextInput>> m_TextInputClass;
 
   Optional<ScriptState> m_ScriptState;
   Optional<ScriptInterface> m_UIInterfaceObject;

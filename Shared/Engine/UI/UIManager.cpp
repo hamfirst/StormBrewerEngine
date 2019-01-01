@@ -56,12 +56,12 @@ m_ScriptState->SetGlobalFunction("EaseInOut" #EasingType, ScriptFunctionBinder<f
 void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
         Delegate<void> && load_complete_callback, Delegate<void, czstr> && error_output)
 {
-  m_ClickableClass.Emplace("Clickable",
+  m_ClickableClass = std::make_unique<ScriptClass<UIClickable>>("Clickable",
                            [this](){ auto clickable = new UIClickable(this); return clickable; },
                            [this](ScriptClassRef<UIClickable> & ref) { AddClickableToRoot(ref); },
                            [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
 
-  m_TextInputClass.Emplace("TextInputContext",
+  m_TextInputClass = std::make_unique<ScriptClass<UITextInput>>("TextInputContext",
                            [this](){ auto clickable = new UITextInput(m_ContainerWindow.CreateTextInputContext()); return clickable; },
                            [this](ScriptClassRef<UITextInput> & ref) { },
                            [this](void * ptr) { delete static_cast<UITextInput *>(ptr); });

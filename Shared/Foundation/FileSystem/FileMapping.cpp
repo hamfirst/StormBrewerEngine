@@ -32,7 +32,7 @@ FileMapping::FileMapping(czstr file_path)
   m_Data = mmap(nullptr, m_Length, PROT_READ, 0, fd, 0);
 #else
 
-  auto file = FileOpen(file_path);
+  auto file = FileOpen(file_path, FileOpenMode::kRead);
 
   if(file.GetFileOpenError())
   {
