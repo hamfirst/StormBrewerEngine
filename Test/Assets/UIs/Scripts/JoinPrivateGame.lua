@@ -1,13 +1,12 @@
 
-
-function InitNameSelectMenu()
+function InitJoinPrivateGameMenu()
 
   local instructions = PushMenuElement(Label:new())
   instructions.x = -130
-  instructions.y = 20
+  instructions.y = 0
   instructions.height = 70
   instructions.width = 260
-  instructions.text = "Must be 3-16 characters\nOnly letters and numbers allowed"
+  instructions.text = "Enter your private room key"
   instructions.centered = true
 
   local error = PushMenuElement(Label:new())
@@ -15,7 +14,7 @@ function InitNameSelectMenu()
   error.y = -100
   error.height = 70
   error.width = 260
-  error.text = "Invalid User Name"
+  error.text = "Invalid Game Key"
   error.centered = true
   error.r = 1
   error.g = 0.2
@@ -27,8 +26,8 @@ function InitNameSelectMenu()
   input.y = 5
   input.width = 260
   input.height = 20
-  input.prompt = "Enter your name"
-  input:SetInputValidator(function (text) return game:CheckValidUserName(text) end)
+  input.prompt = "Private Room Key"
+  input:SetInputValidator(function (text) return game:CheckValidGameCode(text) end)
 
   local submit = PushMenuElement(Button:new())
   submit.x = 60
@@ -38,7 +37,7 @@ function InitNameSelectMenu()
   submit.text = "Submit"
 
   function submit:Clicked()
-    if game:CheckSubmitValidUserName(input:GetText()) then
+    if game:CheckSubmitValidGameCode(input:GetText()) then
       Button.Clicked(self)
     else
       ui:PlayAudio(error_audio)

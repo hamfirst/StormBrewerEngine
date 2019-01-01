@@ -8,6 +8,11 @@
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
+#include "Engine/UI/UIManager.h"
+
+#include "Runtime/UI/UIResource.h"
+
+GLOBAL_ASSET(UIResourcePtr, "./UIs/JoinPrivateGame.ui", g_JoinPrivateGameUI);
 
 GameModeJoinPrivateGame::GameModeJoinPrivateGame(GameContainer & game) :
         GameMode(game)
@@ -32,7 +37,15 @@ void GameModeJoinPrivateGame::OnAssetsLoaded()
   auto & render_util = container.GetRenderUtil();
   render_util.SetClearColor(Color(255, 255, 255, 255));
 
-  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
+  auto ui = container.GetUIManager();
+
+  auto & game_interface = ui->CreateGameInterface();
+  BIND_SCRIPT_INTERFACE(game_interface, this, Submit);
+  BIND_SCRIPT_INTERFACE(game_interface, this, Back);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CheckValidGameCode);
+  BIND_SCRIPT_INTERFACE(game_interface, this, CheckSubmitValidGameCode);
+
+  container.GetUIManager()->PushUIDef(g_JoinPrivateGameUI);
 }
 
 void GameModeJoinPrivateGame::Update()
@@ -58,9 +71,9 @@ void GameModeJoinPrivateGame::Render()
   container.RenderUIManager();
 }
 
-void GameModeJoinPrivateGame::Submit(czstr game_code_str)
+void GameModeJoinPrivateGame::Submit(std::string & game_code_str)
 {
-  if (ValidGameCode(game_code_str) == false)
+  if (ValidGameCode(game_code_str.data()) == false)
   {
     return;
   }
@@ -69,7 +82,7 @@ void GameModeJoinPrivateGame::Submit(czstr game_code_str)
   auto & input_text = game_code_str;
   auto & net_init_settings = container.GetNetworkInitSettings();
 
-  auto text = game_code_str;
+  auto & text = game_code_str;
   uint32_t game_code = 0;
 
   for(int index = 0; index < 4; ++index)
@@ -98,6 +111,16 @@ void GameModeJoinPrivateGame::Submit(czstr game_code_str)
   net_init_settings.m_JoinPrivateGameKey = game_code;
   container.StartNetworkClient();
   container.SwitchMode(GameModeDef<GameModeConnecting>{});
+}
+
+bool GameModeJoinPrivateGame::CheckValidGameCode(std::string & user_name)
+{
+  return ValidGameCode(user_name.c_str(), true);
+}
+
+bool GameModeJoinPrivateGame::CheckSubmitValidGameCode(std::string & user_name)
+{
+  return ValidGameCode(user_name.c_str());
 }
 
 void GameModeJoinPrivateGame::Back()

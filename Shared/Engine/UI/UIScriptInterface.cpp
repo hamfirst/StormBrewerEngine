@@ -260,6 +260,11 @@ std::pair<std::string, int> UIScriptInterface::WrapTextScaled(int font_id, const
   return WrapTextInternal(font_id, text, width, scale);
 }
 
+void UIScriptInterface::ClearCurrentTextInput()
+{
+  m_UIManager->m_ContainerWindow.ClearAllTextInputContext();
+}
+
 void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame)
 {
   if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)

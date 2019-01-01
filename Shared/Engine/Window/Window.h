@@ -37,6 +37,7 @@ public:
 
   NullOptPtr<InputState> GetInputState() const;
   std::shared_ptr<TextInputContext> CreateTextInputContext(bool allow_first_input = false);
+  void ClearAllTextInputContext();
 
   uint32_t GetWindowId() const;
 private:

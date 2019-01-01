@@ -21,7 +21,9 @@ public:
 
 protected:
 
-  void Submit(czstr game_code);
+  void Submit(std::string & game_code);
+  bool CheckValidGameCode(std::string & user_name);
+  bool CheckSubmitValidGameCode(std::string & user_name);
   void Back();
 
 private:

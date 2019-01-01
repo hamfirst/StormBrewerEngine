@@ -57,6 +57,7 @@ private:
 
   void SetTextInputContext(uint32_t window_id, const std::shared_ptr<TextInputContext> & context, NullOptPtr<Box> input_box);
   void ClearTextInputContext(uint32_t window_id, NotNullPtr<TextInputContext> context);
+  void ClearAllTextInputContext(uint32_t window_id);
   bool IsTextInputContextActive(uint32_t window_id, NotNullPtr<TextInputContext> context);
 
   NullOptPtr<InputState> GetInputState(uint32_t window_id);

@@ -128,6 +128,7 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetLineHeight);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, WrapText);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, WrapTextScaled);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, ClearCurrentTextInput);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawSprite);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FrameAdvance);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawAtlas);

@@ -1,7 +1,7 @@
 
 TextInput = Elem:construct()
 TextInput.prompt = ""
-TextInput.cursor_scroll = 0
+TextInput.cursor_scroll = 5
 TextInput.border_r = 0.4
 TextInput.border_g = 0.4
 TextInput.border_b = 0.4
@@ -124,8 +124,8 @@ function TextInput:StateChanged(old_state, new_state)
 end
 
 function TextInput:Destroyed()
-  if self.IsCurrent() then
-    ui:ClearCurrentTextInput()
+  if self:IsCurrent() then
+    self.context:MakeNotCurrent()
   end
 end
 
