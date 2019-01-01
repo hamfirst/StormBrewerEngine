@@ -18,7 +18,7 @@ class Window;
 class RenderState;
 class RenderUtil;
 
-class UIDef;
+struct UIDef;
 class UIScriptLoader;
 class UIScriptInterface;
 
