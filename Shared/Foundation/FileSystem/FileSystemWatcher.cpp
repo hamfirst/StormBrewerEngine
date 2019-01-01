@@ -72,13 +72,15 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
 
 FileSystemWatcher::~FileSystemWatcher()
 {
+  m_ExitThread = true;
+
 #ifdef _MSC_VER
+  CancelIoEx(m_Data->m_DirectoryHandle, nullptr);
   CloseHandle(m_Data->m_DirectoryHandle);
 #elif defined(_LINUX)
   close(m_Data->m_NotifyHandle);
 #endif
 
-  m_ExitThread = true;
   m_NotifyThread.join();
 }
 
@@ -504,7 +506,7 @@ void FileSystemWatcher::NotifyThread()
               TriggerOperationForDirectoryFiles(sub_dir, changed_filename + "/", FileSystemOperation::kAdd);
               dir->m_Directories.emplace(std::make_pair(path.filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
 
-              m_Semaphore.Release(1);
+              m_Notify();
             }
           }
           break;
@@ -525,7 +527,7 @@ void FileSystemWatcher::NotifyThread()
                   itr->second = last_write;
                   TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kModify, last_write);
 
-                  m_Semaphore.Release(1);
+                  m_Notify();
                 }
               }
             }
@@ -559,7 +561,7 @@ void FileSystemWatcher::NotifyThread()
                   }
                 }
 
-                m_Semaphore.Release(1);
+                m_Notify();
               }
             }
           }

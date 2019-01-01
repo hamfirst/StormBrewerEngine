@@ -48,9 +48,9 @@ void UIEditorViewer::Refresh()
 {
   m_Editor->ClearErrors();
 
-  std::time_t t = std::time(nullptr);
+  time_t t = time(nullptr);
   char time_str[100];
-  std::strftime(time_str, sizeof(time_str), "Loading Scripts: %T", std::localtime(&t));
+  strftime(time_str, sizeof(time_str), "Loading Scripts: %T", localtime(&t));
 
   m_Editor->DisplayError(time_str);
 
