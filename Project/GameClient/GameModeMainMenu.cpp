@@ -141,7 +141,7 @@ void GameModeMainMenu::JoinPrivateMatch()
     net_init_settings.m_UserName = g_AccountName;
   }
 
-  container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinOnline);
+  container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinPrivate);
 }
 
 bool GameModeMainMenu::CanQuit()

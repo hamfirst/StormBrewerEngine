@@ -30,7 +30,9 @@ public:
   ScriptClassDelegate<void> OnEnter;
 
   void STORM_REFL_FUNC MakeCurrent(ScriptClassRef<UIClickable> container);
+  void STORM_REFL_FUNC MakeNotCurrent();
   bool STORM_REFL_FUNC IsCurrent();
+
   std::string STORM_REFL_FUNC GetText();
   void STORM_REFL_FUNC Clear();
   int STORM_REFL_FUNC GetCursorPos();

@@ -42,6 +42,11 @@ void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)
   }
 }
 
+void UITextInput::MakeNotCurrent()
+{
+  m_TextInput->Unbind();
+}
+
 bool UITextInput::IsCurrent()
 {
   return m_TextInput->IsTextInputActive();

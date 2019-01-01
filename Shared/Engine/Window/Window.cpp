@@ -195,6 +195,16 @@ std::shared_ptr<TextInputContext> Window::CreateTextInputContext(bool allow_firs
   return std::shared_ptr<TextInputContext>(new TextInputContext(m_WindowId, allow_first_input));
 }
 
+void Window::ClearAllTextInputContext()
+{
+  if (m_WindowId == 0)
+  {
+    return;
+  }
+
+  return g_WindowManager.ClearAllTextInputContext(m_WindowId);
+}
+
 uint32_t Window::GetWindowId() const
 {
   return m_WindowId;

@@ -502,6 +502,32 @@ void WindowManager::ClearTextInputContext(uint32_t window_id, NotNullPtr<TextInp
   }
 }
 
+void WindowManager::ClearAllTextInputContext(uint32_t window_id)
+{
+  auto itr = s_Windows.find(window_id);
+  if (itr == s_Windows.end()) return;
+  WindowState & window = *itr->second;
+  if (window.m_TextInputContext.get())
+  {
+    window.m_TextInputContext = {};
+
+    if (window.m_SDLWindow)
+    {
+      if (window.m_KeyboardFocus)
+      {
+        SDL_StopTextInput();
+      }
+    }
+    else
+    {
+      if (window.m_KeyboardFocus)
+      {
+        window.m_FakeWindow->m_StopImeDelegate();
+      }
+    }
+  }
+}
+
 bool WindowManager::IsTextInputContextActive(uint32_t window_id, NotNullPtr<TextInputContext> context)
 {
   auto itr = s_Windows.find(window_id);
