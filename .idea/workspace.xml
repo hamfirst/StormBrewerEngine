@@ -81,15 +81,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/JoinPrivateGame.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/JoinPrivateGame.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/MainMenu.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/MainMenu.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Custom/PlayerList.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Custom/PlayerList.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Button.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Button.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Fader.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/01_Fader.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_ContextMenu.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_ContextMenu.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_Popup.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_Popup.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Init/Init.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Init/Init.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Test.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Test.ui" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -131,8 +122,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="301" column="47" lean-forward="true" selection-start-line="301" selection-start-column="47" selection-end-line="301" selection-end-column="47" />
+            <state relative-caret-position="528">
+              <caret line="307" column="1" lean-forward="true" selection-start-line="307" selection-start-column="1" selection-end-line="307" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -186,7 +177,7 @@
         <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="350">
-              <caret line="207" column="62" lean-forward="true" selection-start-line="207" selection-start-column="62" selection-end-line="207" selection-end-column="62" />
+              <caret line="207" column="62" selection-start-line="207" selection-start-column="62" selection-end-line="207" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -326,7 +317,7 @@
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1730" />
     <option name="y" value="2" />
     <option name="width" value="1910" />
@@ -1045,23 +1036,23 @@
       <workItem from="1545704323740" duration="32866000" />
       <workItem from="1545955603264" duration="45453000" />
       <workItem from="1546210515039" duration="30032000" />
-      <workItem from="1546335648764" duration="2087000" />
+      <workItem from="1546335648764" duration="5744000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="991588000" />
+    <option name="totallyTimeSpent" value="995245000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="-1" width="1920" height="1055" extended-state="7" />
+    <frame x="1920" y="-1" width="1920" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.22998933" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.22998933" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50265485" side_tool="true" weight="0.17685589" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3265306" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" visible="true" weight="0.27497315" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.27497315" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.23630504" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1483,7 +1474,7 @@
     <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
-          <caret line="207" column="62" lean-forward="true" selection-start-line="207" selection-start-column="62" selection-end-line="207" selection-end-column="62" />
+          <caret line="207" column="62" selection-start-line="207" selection-start-column="62" selection-end-line="207" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -1496,8 +1487,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="301" column="47" lean-forward="true" selection-start-line="301" selection-start-column="47" selection-end-line="301" selection-end-column="47" />
+        <state relative-caret-position="528">
+          <caret line="307" column="1" lean-forward="true" selection-start-line="307" selection-start-column="1" selection-end-line="307" selection-end-column="1" />
         </state>
       </provider>
     </entry>
