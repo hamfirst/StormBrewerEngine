@@ -5,7 +5,7 @@ function InitStagingMenu()
   quit.x = 250
   quit.y = -220
   quit.width = 150
-  quit.height = 15
+  quit.height = 20
   quit.text = "Back To Main Menu"
 
   if game.allow_ready then
@@ -28,7 +28,7 @@ function InitStagingMenu()
       Button.Draw(self)
 
       if self.toggled then
-        ui:DrawTextureTint(player_ready_icon, 24, 11, 0, 0, 0, 0.6)
+        ui:DrawTextureTint(player_ready_icon, 40, 11, 0, 0, 0, 0.6)
       end
     end
   end
@@ -36,10 +36,14 @@ function InitStagingMenu()
   if game.allow_map_change then
     mapchange = PushMenuElement(Button:new())
     mapchange.x = 250
-    mapchange.y = -160
+    mapchange.y = -155
     mapchange.width = 150
-    mapchange.height = 15
+    mapchange.height = 20
     mapchange.text = "Change Map Settings"
+
+    if not game.allow_ready then
+      mapchange.height = 60
+    end
   end
 
   if game.game_name ~= nil and game.game_name ~= "" then
@@ -55,12 +59,24 @@ function InitStagingMenu()
 
   if game.game_code ~= nil and game.game_code ~= "" then
     local game_code = PushMenuElement(Label:new())
-    game_code.text = "Game Code: " ..game.game_code
-    game_code.x = -350
+    game_code.text = "Game Code: " .. game.game_code
+    game_code.x = -380
     game_code.y = 155
     game_code.width = 500
     game_code.height = 50
     game_code.centered = false
+  end
+
+  if game.game_timer ~= nil and game.game_timer ~= "" then
+    local game_timer = PushMenuElement(Label:new())
+    game_timer.x = 220
+    game_timer.y = 145
+    game_timer.width = 200
+    game_timer.height = 50
+
+    function game_timer:Update(dt)
+      game_timer.text = "Game Starts In: " .. game.game_timer
+    end
   end
 
   if game.allow_loadout then
@@ -69,6 +85,11 @@ function InitStagingMenu()
     loadout.y = -90
     loadout.width = 640
     loadout.height = 250
+
+    if not game.allow_chat then
+      loadout.y = -220
+      loadout.height = 380
+    end
   end
 
   if game.allow_chat then
@@ -99,32 +120,18 @@ function InitStagingMenu()
     chatdisplay.font = chat_font
     chatdisplay.scroll_proxy = scrollbar
 
+    if not game.allow_loadout then
+      frame.height = frame.height + 260
+      scrollbar.height = scrollbar.height + 260
+      chatdisplay.height = chatdisplay.height + 260
+    end
+
     scrollbar.ValueChanged = function()
       chatdisplay.scroll_offset = scrollbar.value
     end
 
-    if in_editor then
-      chatdisplay:AddElement("test", "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-      chatdisplay:AddElement("test", "test")
-    end
-
     scrollbar:SetScrollArea(chatdisplay.height, chatdisplay.total_height)
     scrollbar:ScrollToBottom()
-
-    input.EnterPressed = function()
-      local text = input:GetText()
-      input:Clear()
-      game:SendChat(text)
-    end
 
     AddChatMessage = function(name, text)
       chatdisplay:AddElement(name, text)
@@ -136,6 +143,16 @@ function InitStagingMenu()
         scrollbar:ScrollToBottom()
       end
     end
+
+    input.EnterPressed = function()
+      local text = input:GetText()
+      input:Clear()
+      game:SendChat(text)
+
+      if in_editor then
+        AddChatMessage("test", text)
+      end
+    end
   end
 
   if game.allow_playerlist then
@@ -144,6 +161,15 @@ function InitStagingMenu()
     player_list.y = -90
     player_list.width = 150
     player_list.height = 250
+  end
+
+  if game.allow_mapsettings then
+    local map_settings = PushMenuElement(MapInfo:new())
+    map_settings.x = 88
+    map_settings.y = 170
+    map_settings.width = 150
+    map_settings.height = 60
+    map_settings.header_padding = 2
   end
 
   CreateDefualtControls()
@@ -168,9 +194,11 @@ function InitStagingMenu()
     end
 
     function mappopup:OkayPressed()
+      game:CommitMapChanges()
     end
 
     function mappopup:CancelPressed()
+      game:CancelMapChanges()
     end
 
     mapchange.fade = false
@@ -184,6 +212,7 @@ function InitStagingMenu()
   quitpopup.y = -75
   quitpopup.width = 300
   quitpopup.height = 150
+  quitpopup.text = "Quick Back to Main Menu?"
   
   local fader = PushMenuElement(Fader:new())
   fader:FadeToClear()

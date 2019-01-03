@@ -32,6 +32,13 @@ function InitTestMenu()
   button4.height = 15
   button4.text = "Test Popup"
 
+  local checkbox = PushMenuElement(Checkbox:new())
+  checkbox.x = 100
+  checkbox.y = 80
+  checkbox.width = 120
+  checkbox.height = 15
+  checkbox.text = "Test Checkbox"
+
   local loadout = PushMenuElement(Loadout:new())
   loadout.x = -400
   loadout.y = 0

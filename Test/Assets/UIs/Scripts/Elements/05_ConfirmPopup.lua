@@ -8,6 +8,7 @@ function ConfirmPopup:CreateChildren()
   self.okay.text = "Okay"
   self.cancel = self:PushChild(Button:new())
   self.cancel.text = "Cancel"
+  self.cancel.back = true
   
   self.okay.Pressed = function () 
     self:FadeOut() 
