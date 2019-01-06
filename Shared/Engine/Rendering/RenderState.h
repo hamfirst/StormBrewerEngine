@@ -70,6 +70,7 @@ public:
 
   RenderVec2 ScreenPixelsToRenderPixels(const RenderVec2 & screen_pixels);
   RenderVec2 RenderPixelsToScreenPixels(const RenderVec2 & render_pixels);
+  RenderVec4 ComputeScreenBounds(const Optional<Box> & active_area);
 
 #ifdef USE_RENDER_TARGET
   void BindBuiltInRenderTarget(int render_target_index);

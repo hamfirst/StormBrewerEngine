@@ -110,8 +110,14 @@ function Elem:Clicked()
 end
 
 function Elem:SetParent(parent)
-  self.clickable:SetParent(parent.clickable)
-  self.parent = parent
+
+  if parent ~= nil then
+    self.clickable:SetParent(parent.clickable)  
+    self.parent = parent
+  else
+    self.clickable:SetParent(nil)  
+    self.parent = nil
+  end
 end
 
 function Elem:GetParent(self)

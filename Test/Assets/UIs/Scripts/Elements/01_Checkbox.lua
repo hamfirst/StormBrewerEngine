@@ -10,6 +10,7 @@ Checkbox.pressable = true
 Checkbox.toggled = false
 Checkbox.back = false
 Checkbox.fade = true
+Checkbox.check_alpha = 0
 Checkbox.border_r = 0.4
 Checkbox.border_g = 0.4
 Checkbox.border_b = 0.4
@@ -52,8 +53,8 @@ function Checkbox:Draw()
   local alpha = self.alpha * self.parent_alpha
 
   local box_size = self.box_size
-  box_size = math.min(box_size, self.width - 2)
-  box_size = math.min(box_size, self.height - 2)
+  box_size = math.min(box_size, self.width - 1)
+  box_size = math.min(box_size, self.height - 1)
 
   if cur_state == kHover or cur_state == kPressed then
     
@@ -83,10 +84,8 @@ function Checkbox:Draw()
   ui:DrawFilledRectangle(0, 0, box_size, box_size, bkg_r, bkg_g, bkg_b, alpha)
   ui:DrawRectangle(0, 0, box_size, box_size, border_r, border_g, border_b, alpha)
 
-  if self.toggled then
-    ui:DrawLine(2, 6, 6, 2, border_r, border_g, border_b, alpha)
-    ui:DrawLine(6, 2, box_size - 2, box_size - 2, border_r, border_g, border_b, alpha)
-  end
+  ui:DrawLine(2, 6, 6, 2, border_r, border_g, border_b, self.check_alpha)
+  ui:DrawLine(6, 2, box_size - 2, box_size - 2, border_r, border_g, border_b, self.check_alpha)
 
   ui:FlushGeometry()
 
@@ -125,8 +124,12 @@ end
 function Checkbox:Pressed()
   if self.toggled then
     self.ToggleOn()
+
+    AddLerp(self, "check_alpha", 1, 0.05)
   else
     self.ToggleOff()
+
+    AddLerp(self, "check_alpha", 0, 0.2)
   end
 end
 

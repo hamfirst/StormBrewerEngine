@@ -469,6 +469,40 @@ RenderVec2 RenderState::RenderPixelsToScreenPixels(const RenderVec2 & render_pix
   return (clip_space * half_screen) + half_screen;
 }
 
+RenderVec4 RenderState::ComputeScreenBounds(const Optional<Box> & active_area)
+{
+  RenderVec4 screen_bounds;
+
+  if(active_area)
+  {
+    auto & box = active_area.Value();
+    auto screen = Box::FromFrameCenterAndSize({}, GetRenderSize());
+
+    RenderVec2 screen_start = screen.m_Start;
+    RenderVec2 screen_size = GetRenderSize();
+
+    RenderVec2 box_start = box.m_Start;
+    RenderVec2 box_end = box.m_End;
+
+    auto offset_start = (box_start - screen_start) / screen_size;
+    auto offset_end = (box_end - screen_start) / screen_size;
+
+    auto coord_start = offset_start * 2.0f - RenderVec2{1, 1};
+    auto coord_end = offset_end * 2.0f - RenderVec2{1, 1};
+
+    screen_bounds.x = coord_start.x;
+    screen_bounds.y = coord_start.y;
+    screen_bounds.z = coord_end.x;
+    screen_bounds.w = coord_end.y;
+  }
+  else
+  {
+    screen_bounds = { -1, -1, 1, 1 };
+  }
+
+  return screen_bounds;
+}
+
 #ifdef USE_RENDER_TARGET
 
 void RenderState::BindBuiltInRenderTarget(int render_target_index)

@@ -15,7 +15,7 @@ end
 function Popup:Draw()
   ui:DrawFilledRectangle(0 - 10, 0 - 10, self.width, self.height, 0, 0, 0, self.alpha - 0.7)
   ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, 1, 1, 1, self.alpha)
-  ui:DrawRectangle(0, 0, self.width, self.height, 0.8, 0.8, 0.8, self.alpha)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 0.8, 0.8, 0.8, self.alpha)
   ui:FlushGeometry()
 end
 

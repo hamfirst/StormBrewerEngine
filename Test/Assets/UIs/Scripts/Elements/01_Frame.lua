@@ -16,7 +16,7 @@ function Frame:Draw()
     return
   end
 
-  ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, self.r, self.g, self.b, self.alpha)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, self.r, self.g, self.b, self.alpha)
   ui:FlushGeometry()
 end
 

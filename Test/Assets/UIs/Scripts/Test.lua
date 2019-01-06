@@ -39,6 +39,32 @@ function InitTestMenu()
   checkbox.height = 15
   checkbox.text = "Test Checkbox"
 
+  local scrollbutton = PushMenuElement(ScrollButton:new())
+  scrollbutton.x = 100
+  scrollbutton.y = 100
+  scrollbutton.width = 120
+  scrollbutton.height = 15
+  scrollbutton:PushOption("Test1")
+  scrollbutton:PushOption("Test2")
+  scrollbutton:PushOption("Test3")
+  scrollbutton:SetSelectedOption(1)
+
+  local listbox = PushMenuElement(ListBox:new())
+  listbox.x = 100
+  listbox.y = 120
+  listbox.width = 120
+  listbox.height = 100
+  listbox:PushOption("Test1")
+  listbox:PushOption("Test2")
+  listbox:PushOption("Test3")
+  listbox:PushOption("Test4")
+  listbox:PushOption("Test5")
+  listbox:PushOption("Test6")
+  listbox:PushOption("Test7")
+  listbox:PushOption("Test8")
+  listbox:PushOption("Test9")
+  listbox:SetSelectedOption(1)
+
   local loadout = PushMenuElement(Loadout:new())
   loadout.x = -400
   loadout.y = 0
