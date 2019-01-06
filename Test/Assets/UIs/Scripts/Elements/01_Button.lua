@@ -1,10 +1,4 @@
 
-
-hover_audio = loader:LoadAudio("./Sounds/ButtonHover.wav")
-click_audio = loader:LoadAudio("./Sounds/ButtonClick.wav")
-back_audio = loader:LoadAudio("./Sounds/MenuBack.wav")
-error_audio = loader:LoadAudio("./Sounds/Error.wav")
-
 Button = Elem:construct()
 Button.text = ""
 Button.alpha = 1.0
@@ -51,51 +45,44 @@ function Button:Draw()
   local cur_state = self:GetState()
 
   local r, g, b = 0, 0, 0
+  local bkg_r, bkg_g, bkg_b = 0, 0, 0
+  local border_r, border_g, border_b = 0, 0, 0
   local alpha = self.alpha * self.parent_alpha
 
   if cur_state == kHover or cur_state == kPressed then
     
     if self.toggleable and self.toggled then
-      ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
-              self.bkg_toggled_hover_r, self.bkg_toggled_hover_g, self.bkg_toggled_hover_b, alpha)
+      bkg_r, bkg_g, bkg_b = self.bkg_toggled_hover_r, self.bkg_toggled_hover_g, self.bkg_toggled_hover_b
     else
-      ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
-              self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, alpha)
+      bkg_r, bkg_g, bkg_b = self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b
     end
 
-
-    ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
-    self.border_hover_r, self.border_hover_g, self.border_hover_b, alpha)
-
+    border_r, border_g, border_b = self.border_hover_r, self.border_hover_g, self.border_hover_b
     r, g, b = self.text_hover_r, self.text_hover_g, self.text_hover_b
 
   elseif self.toggleable and self.toggled then
 
-    ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.bkg_toggled_r, self.bkg_toggled_g, self.bkg_toggled_b, alpha)
-
-    ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.border_toggled_r, self.border_toggled_g, self.border_toggled_b, alpha)
+    bkg_r, bkg_g, bkg_b = self.bkg_toggled_r, self.bkg_toggled_g, self.bkg_toggled_b
+    border_r, border_g, border_b = self.border_toggled_r, self.border_toggled_g, self.border_toggled_b
 
     r, g, b = self.text_toggled_r, self.text_toggled_g, self.text_toggled_b
   else
 
-    ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.bkg_r, self.bkg_g, self.bkg_b, alpha)
-
-    ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
-            self.border_r, self.border_g, self.border_b, alpha)
+    bkg_r, bkg_g, bkg_b = self.bkg_r, self.bkg_g, self.bkg_b
+    border_r, border_g, border_b = self.border_r, self.border_g, self.border_b
 
     r, g, b = self.text_r, self.text_g, self.text_b
   end
 
+  ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, bkg_r, bkg_g, bkg_b, alpha)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, border_r, border_g, border_b, alpha)
 
   ui:FlushGeometry()
 
   local width, height = ui:MeasureTextScaled(font, self.text, self.scale)
 
   ui:DrawTextScaled(font, self.text, self.width / 2 - width / 2, self.height / 2 + 1 - height / 2, 
-                            r, g, b, alpha, kNormal, self.scale);
+                            r, g, b, alpha, kNormal, self.scale)
 
 end
 

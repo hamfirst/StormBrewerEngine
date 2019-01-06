@@ -160,15 +160,6 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
     return;
   }
 
-  RenderVec4 screen_bounds = { -1, -1, 1, 1 };
-  if (m_Settings.m_TextBounds)
-  {
-    screen_bounds.x = 2.0f * ((float)m_Settings.m_TextBounds->m_Start.x - 0.5f) / (float)render_state.GetRenderWidth();
-    screen_bounds.y = 2.0f * ((float)m_Settings.m_TextBounds->m_Start.y - 0.5f) / (float)render_state.GetRenderHeight();
-    screen_bounds.z = 2.0f * ((float)m_Settings.m_TextBounds->m_End.x - 0.5f) / (float)render_state.GetRenderWidth();
-    screen_bounds.w = 2.0f * ((float)m_Settings.m_TextBounds->m_End.y - 0.5f) / (float)render_state.GetRenderHeight();
-  }
-
   render_state.EnableBlendMode();
 
   m_TextVertexBuffer.SetBufferData(vertex_builder.m_Verts, VertexBufferType::kTriangles);
@@ -189,7 +180,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), render_state.ComputeScreenBounds(m_Settings.m_TextBounds));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), color_matrix);
 
   render_state.Draw();

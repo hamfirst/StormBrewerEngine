@@ -41,20 +41,20 @@ function TextInput:Draw()
 
   if cur_state == kHover or cur_state == kPressed or self:IsCurrent() then
 
-    ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
+    ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, 
             self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, self.alpha)
 
-    ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
+    ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 
             self.border_hover_r, self.border_hover_g, self.border_hover_b, self.alpha)
 
     r, g, b = self.text_hover_r, self.text_hover_g, self.text_hover_b
 
   else
 
-    ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, 
+    ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, 
             self.bkg_r, self.bkg_g, self.bkg_b, self.alpha)
 
-    ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, 
+    ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 
             self.border_r, self.border_g, self.border_b, self.alpha)
 
     r, g, b = self.text_r, self.text_g, self.text_b

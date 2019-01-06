@@ -32,9 +32,9 @@ function ScrollBar:Draw()
   local bkg_r, bkg_g, bkg_b, bkg_a = self.bkg_r, self.bkg_g, self.bkg_b, self.alpha
   local border_r, border_g, border_b, border_a = self.border_r, self.border_g, self.border_b, self.alpha
 
-  local bar_bkg_size = self.height - 24
+  local bar_bkg_size = self.height - 23
   local bar_height = bar_bkg_size * (self.visible_size / self.content_size)
-  local bar_start = (bar_bkg_size - bar_height - 2) * (self.value / (self.content_size - self.visible_size)) - 1
+  local bar_start = (bar_bkg_size - bar_height - 1) * (self.value / (self.content_size - self.visible_size)) - 1
 
   if self.mouse_in and self.highlight == 0 and self.bar_rel ~= 0 then
     bkg_r, bkg_g, bkg_b, border_a = self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, self.alpha
@@ -44,8 +44,8 @@ function ScrollBar:Draw()
     border_r, border_g, border_b, border_a = self.border_r, self.border_g, self.border_b, self.alpha
   end
 
-  ui:DrawFilledRectangle(0, 10, self.width - 2, self.height - 22, bkg_r, bkg_g, bkg_b, bkg_a)
-  ui:DrawRectangle(0, 10, self.width - 2, self.height - 22, border_r, border_g, border_b, border_a)
+  ui:DrawFilledRectangle(0, 10, self.width - 1, self.height - 21, bkg_r, bkg_g, bkg_b, bkg_a)
+  ui:DrawRectangle(0, 10, self.width - 1, self.height - 21, border_r, border_g, border_b, border_a)
 
   if self.mouse_in and self.highlight == 0 and self.bar_rel == 0 then
     bkg_r, bkg_g, bkg_b, border_a = self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, self.alpha
@@ -57,8 +57,8 @@ function ScrollBar:Draw()
 
   self.bar_start = 10 + bar_bkg_size - bar_start - bar_height
   self.bar_end = self.bar_start + bar_height
-  ui:DrawFilledRectangle(2, self.bar_start, self.width - 6, bar_height, bkg_r, bkg_g, bkg_b, bkg_a)
-  ui:DrawRectangle(2, self.bar_start, self.width - 6, bar_height, border_r, border_g, border_g, border_a)          
+  ui:DrawFilledRectangle(2, self.bar_start, self.width - 5, bar_height, bkg_r, bkg_g, bkg_b, bkg_a)
+  ui:DrawRectangle(2, self.bar_start, self.width - 5, bar_height, border_r, border_g, border_g, border_a)          
 
   if self.mouse_in and self.highlight == -1 then
     bkg_r, bkg_g, bkg_b, border_a = self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, self.alpha
@@ -68,8 +68,8 @@ function ScrollBar:Draw()
     border_r, border_g, border_b, border_a = self.border_r, self.border_g, self.border_b, self.alpha
   end
 
-  ui:DrawFilledRectangle(0, 0, self.width - 2, 10, bkg_r, bkg_g, bkg_b, bkg_a)
-  ui:DrawRectangle(0, 0, self.width - 2, 10, border_r, border_g, border_b, border_a)
+  ui:DrawFilledRectangle(0, 0, self.width - 1, 10, bkg_r, bkg_g, bkg_b, bkg_a)
+  ui:DrawRectangle(0, 0, self.width - 1, 10, border_r, border_g, border_b, border_a)
   ui:DrawLine(5, 7, (self.width - 12) / 2 + 5, 3, border_r, border_g, border_b, border_a)
   ui:DrawLine((self.width - 12) / 2 + 5, 3, self.width - 7, 7, border_r, border_g, border_b, border_a)           
 
@@ -81,8 +81,8 @@ function ScrollBar:Draw()
     border_r, border_g, border_b, border_a = self.border_r, self.border_g, self.border_b, self.alpha
   end
 
-  ui:DrawFilledRectangle(0, self.height - 12, self.width - 2, 10, bkg_r, bkg_g, bkg_b, bkg_a)
-  ui:DrawRectangle(0, self.height - 12, self.width - 2, 10, border_r, border_g, border_b, border_a)
+  ui:DrawFilledRectangle(0, self.height - 11, self.width - 1, 10, bkg_r, bkg_g, bkg_b, bkg_a)
+  ui:DrawRectangle(0, self.height - 11, self.width - 1, 10, border_r, border_g, border_b, border_a)
   ui:DrawLine(5, self.height - 9, (self.width - 12) / 2 + 5, self.height - 5, border_r, border_g, border_b, border_a)
   ui:DrawLine((self.width - 12) / 2 + 5, self.height - 5, self.width - 7, self.height - 9, border_r, border_g, border_b, border_a)
 

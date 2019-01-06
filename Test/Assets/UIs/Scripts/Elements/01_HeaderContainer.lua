@@ -15,7 +15,7 @@ function HeaderContainer:Draw()
   local header_height = ui:GetLineHeight(self.font)
   local header_bkg_height = header_height + self.header_padding
 
-  ui:DrawRectangle(0, 0, self.width - 1, self.height - 2, r, g, b, a)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, r, g, b, a)
   ui:DrawFilledRectangle(0, self.height - header_bkg_height, self.width - 1, header_bkg_height, r, g, b, a)
   ui:FlushGeometry()
 

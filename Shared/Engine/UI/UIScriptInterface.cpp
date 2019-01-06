@@ -286,10 +286,7 @@ void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, boo
   RenderVec4 screen_bounds;
   if(m_Clip)
   {
-    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
-    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds = m_RenderState->ComputeScreenBounds(m_ActiveArea);
   }
   else
   {
@@ -330,10 +327,7 @@ void UIScriptInterface::DrawAtlas(int atlas_id, std::string & elem_name, int x, 
   RenderVec4 screen_bounds;
   if(m_Clip)
   {
-    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
-    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds = m_RenderState->ComputeScreenBounds(m_ActiveArea);
   }
   else
   {
@@ -406,10 +400,7 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
   RenderVec4 screen_bounds;
   if(m_Clip)
   {
-    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
-    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds = m_RenderState->ComputeScreenBounds(m_ActiveArea);
   }
   else
   {
@@ -518,10 +509,7 @@ void UIScriptInterface::FlushGeometry()
   RenderVec4 screen_bounds;
   if(m_Clip)
   {
-    screen_bounds.x = 2.0f * ((float) m_ActiveArea.m_Start.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.y = 2.0f * ((float) m_ActiveArea.m_Start.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
-    screen_bounds.z = 2.0f * ((float) m_ActiveArea.m_End.x - 0.5f) / (float) m_RenderState->GetRenderWidth();
-    screen_bounds.w = 2.0f * ((float) m_ActiveArea.m_End.y - 0.5f) / (float) m_RenderState->GetRenderHeight();
+    screen_bounds = m_RenderState->ComputeScreenBounds(m_ActiveArea);
   }
   else
   {
