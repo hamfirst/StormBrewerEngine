@@ -92,7 +92,7 @@ set(GENERIC_SRC_Engine
             Shader/ShaderManager.cpp
             Settings/EngineSettings.refl.cpp
             #CPP_PLACEHOLDER
-            )
+  UI/UITextureBinding.cpp UI/UITextureBinding.h)
 
 set(GENERIC_HEADER_Engine 
             Engine.h

@@ -3,6 +3,7 @@
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UIScriptLoader.h"
 #include "Engine/UI/UIScriptInterface.h"
+#include "Engine/UI/UITextureBinding.h"
 #include "Engine/UI/UIClickable.refl.meta.h"
 #include "Engine/UI/UITextInput.refl.meta.h"
 #include "Engine/Input/InputState.h"
@@ -320,6 +321,17 @@ void UIManager::SetGlobal(czstr name, const ScriptValue & value)
 bool UIManager::HasSelectedElement() const
 {
   return m_HasSelectedElement;
+}
+
+UITextureBinding UIManager::CreateTextureBinding(czstr name, Delegate<NullOptPtr<Texture>> && tex)
+{
+  assert(m_GameInterfaceObject.IsValid());
+  m_GameInterfaceObject->AddVariable(name, m_NextTextureId);
+
+  UITextureBinding bind(this, m_NextTextureId, std::move(tex));
+  m_NextTextureId++;
+
+  return bind;
 }
 
 void UIManager::AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable)
@@ -698,4 +710,14 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
 
   m_PrevCursorPos = ui_pos;
   RemoveDeadClickables();
+}
+
+void UIManager::RelocateTextureBinding(int texture_id, NotNullPtr<UITextureBinding> binding)
+{
+  m_Textures[texture_id] = binding;
+}
+
+void UIManager::ReleaseTextureBinding(int texture_id)
+{
+  m_Textures.erase(texture_id);
 }
