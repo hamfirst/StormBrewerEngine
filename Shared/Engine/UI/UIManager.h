@@ -2,6 +2,8 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Input/ScalarControlBinding.h"
+#include "Engine/Asset/AssetReference.h"
+#include "Engine/Asset/TextureAsset.h"
 
 #include "Foundation/Time/StopWatch.h"
 
@@ -24,6 +26,7 @@ class UIScriptInterface;
 
 class UIClickable;
 class UITextInput;
+class UITextureBinding;
 
 class UIManager
 {
@@ -56,9 +59,12 @@ public:
 
   bool HasSelectedElement() const;
 
+  UITextureBinding CreateTextureBinding(czstr name, Delegate<NullOptPtr<Texture>> && tex);
+
 protected:
 
   friend class UIClickable;
+  friend class UITextureBinding;
 
   void AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable);
   void RemoveClickableFromRoot(const ScriptClassRef<UIClickable> & clickable);
@@ -70,6 +76,9 @@ protected:
 
   void AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr<UIClickable> parent, std::vector<NotNullPtr<UIClickable>> & list);
   void ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state);
+
+  void RelocateTextureBinding(int texture_id, NotNullPtr<UITextureBinding> binding);
+  void ReleaseTextureBinding(int texture_id);
 
 private:
 
@@ -89,6 +98,9 @@ private:
 
   std::vector<ScriptClassRef<UIClickable>> m_RootClickables;
   std::vector<NotNullPtr<UIClickable>> m_DeadClickables;
+
+  std::unordered_map<int, NotNullPtr<UITextureBinding>> m_Textures;
+  int m_NextTextureId;
 
   std::string m_CleanupFunc;
   Vector2 m_PrevCursorPos = Vector2(-10000, -10000);

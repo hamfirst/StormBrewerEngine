@@ -6,6 +6,7 @@
 #include "Engine/UI/UIClickable.refl.h"
 #include "Engine/UI/UITextInput.refl.h"
 #include "Engine/UI/UIScriptLoader.h"
+#include "Engine/UI/UITextureBinding.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/RenderUtil.h"
@@ -86,16 +87,30 @@ void UIScriptInterface::DrawTextureScaleTint(int texture_id, int x, int y, float
 
 std::pair<int, int> UIScriptInterface::GetTextureSize(int texture_id)
 {
-  if((texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kTextureId)
+  if((texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kTextureId &&
+     (texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kBoundTexture)
   {
     return std::make_pair(0, 0);
   }
 
-  auto & texture_ref = m_UIManager->m_ScriptLoader->m_TextureAssets[texture_id & UIScriptLoader::kIndexMask];
-  auto texture = texture_ref.Resolve();
-  if(texture == nullptr || texture->IsLoaded() == false)
+  const Texture * texture = nullptr;
+  if((texture_id & UIScriptLoader::kIdMask) == UIScriptLoader::kTextureId)
   {
-    return std::make_pair(0, 0);
+    auto & texture_ref = m_UIManager->m_ScriptLoader->m_TextureAssets[texture_id & UIScriptLoader::kIndexMask];
+    auto texture_asset = texture_ref.Resolve();
+
+    if(texture_asset != nullptr && texture_asset->IsLoaded())
+    {
+      texture = &texture_asset->GetTexture();
+    }
+  }
+  else
+  {
+    auto itr = m_UIManager->m_Textures.find(texture_id & UIScriptLoader::kIndexMask);
+    if(itr != m_UIManager->m_Textures.end())
+    {
+      texture = itr->second->m_TextureFetch();
+    }
   }
 
   auto size = texture->GetSize();
@@ -370,16 +385,30 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
     return;
   }
 
-  if((texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kTextureId)
+  if((texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kTextureId &&
+     (texture_id & UIScriptLoader::kIdMask) != UIScriptLoader::kBoundTexture)
   {
     return;
   }
 
-  auto & texture_ref = m_UIManager->m_ScriptLoader->m_TextureAssets[texture_id & UIScriptLoader::kIndexMask];
-  auto texture = texture_ref.Resolve();
-  if(texture == nullptr || texture->IsLoaded() == false)
+  const Texture * texture = nullptr;
+  if((texture_id & UIScriptLoader::kIdMask) == UIScriptLoader::kTextureId)
   {
-    return;
+    auto & texture_ref = m_UIManager->m_ScriptLoader->m_TextureAssets[texture_id & UIScriptLoader::kIndexMask];
+    auto texture_asset = texture_ref.Resolve();
+
+    if(texture_asset != nullptr && texture_asset->IsLoaded())
+    {
+      texture = &texture_asset->GetTexture();
+    }
+  }
+  else
+  {
+    auto itr = m_UIManager->m_Textures.find(texture_id & UIScriptLoader::kIndexMask);
+    if(itr != m_UIManager->m_Textures.end())
+    {
+      texture = itr->second->m_TextureFetch();
+    }
   }
 
   QuadVertexBufferBuilder buffer_builder;
