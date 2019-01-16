@@ -37,15 +37,17 @@ public:
 private:
 
   friend class UIScriptInterface;
+  friend class UIManager;
 
-  static const int kIdMask    = 0xFF000000;
-  static const int kIndexMask = 0x00FFFFFF;
-  static const int kTextureId = 0x01000000;
-  static const int kAudioId   = 0x02000000;
-  static const int kMusicId   = 0x03000000;
-  static const int kFontId    = 0x04000000;
-  static const int kAtlasId   = 0x05000000;
-  static const int kSpriteId  = 0x06000000;
+  static const int kIdMask       = 0xFF000000;
+  static const int kIndexMask    = 0x00FFFFFF;
+  static const int kTextureId    = 0x01000000;
+  static const int kBoundTexture = 0x02000000;
+  static const int kAudioId      = 0x03000000;
+  static const int kMusicId      = 0x04000000;
+  static const int kFontId       = 0x05000000;
+  static const int kAtlasId      = 0x06000000;
+  static const int kSpriteId     = 0x07000000;
 
   enum State
   {
