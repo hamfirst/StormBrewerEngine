@@ -16,33 +16,21 @@ ListBox.mouse_in = false
 ListBox.border_r = 0.4
 ListBox.border_g = 0.4
 ListBox.border_b = 0.4
-ListBox.border_hover_r = 0.1
-ListBox.border_hover_g = 0.1
-ListBox.border_hover_b = 0.7
 ListBox.border_selected_r = 0.1
 ListBox.border_selected_g = 0.1
 ListBox.border_selected_b = 0.7
 ListBox.bkg_r = 0.96
 ListBox.bkg_g = 0.96
 ListBox.bkg_b = 1
-ListBox.bkg_hover_r = 1
-ListBox.bkg_hover_g = 1
-ListBox.bkg_hover_b = 1
-ListBox.bkg_selected_r = 0.9
-ListBox.bkg_selected_g = 0.9
-ListBox.bkg_selected_b = 0.91
-ListBox.bkg_selected_hover_r = 0.7
-ListBox.bkg_selected_hover_g = 0.7
-ListBox.bkg_selected_hover_b = 0.71
+ListBox.bkg_selected_r = 0.3
+ListBox.bkg_selected_g = 0.3
+ListBox.bkg_selected_b = 0.6
 ListBox.text_r = 0
 ListBox.text_g = 0
 ListBox.text_b = 0
-ListBox.text_hover_r = 0.2
-ListBox.text_hover_g = 0.2
-ListBox.text_hover_b = 0.4
-ListBox.text_selected_r = 0.4
-ListBox.text_selected_g = 0.4
-ListBox.text_selected_b = 0.4
+ListBox.text_selected_r = 0.9
+ListBox.text_selected_g = 0.9
+ListBox.text_selected_b = 1.0
 
 function ListBox:setup(o)
   Elem:setup(o)
@@ -63,23 +51,9 @@ function ListBox:Draw()
   local border_r, border_g, border_b = 0, 0, 0
   local alpha = self.alpha * self.parent_alpha
 
-  if cur_state == kHover or cur_state == kPressed then
-
-    bkg_r, bkg_g, bkg_b = self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b
-    border_r, border_g, border_b = self.border_hover_r, self.border_hover_g, self.border_hover_b
-    r, g, b = self.text_hover_r, self.text_hover_g, self.text_hover_b
-
-  elseif self.toggleable and self.toggled then
-
-    bkg_r, bkg_g, bkg_b = self.bkg_toggled_r, self.bkg_toggled_g, self.bkg_toggled_b
-    border_r, border_g, border_b = self.border_toggled_r, self.border_toggled_g, self.border_toggled_b
-    r, g, b = self.text_toggled_r, self.text_toggled_g, self.text_toggled_b
-  else
-
-    bkg_r, bkg_g, bkg_b = self.bkg_r, self.bkg_g, self.bkg_b
-    border_r, border_g, border_b = self.border_r, self.border_g, self.border_b
-    r, g, b = self.text_r, self.text_g, self.text_b
-  end
+  bkg_r, bkg_g, bkg_b = self.bkg_r, self.bkg_g, self.bkg_b
+  border_r, border_g, border_b = self.border_r, self.border_g, self.border_b
+  r, g, b = self.text_r, self.text_g, self.text_b
 
   ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, bkg_r, bkg_g, bkg_b, alpha)
 
@@ -94,40 +68,32 @@ function ListBox:Draw()
   for i = 0, self.num_options - 1 do
 
     local option = self.options[i]
-    local width, height = ui:MeasureTextScaled(font, option, self.scale)
-
-    y = y - height
+    local text_scale = 1
+    
+    local line_width, line_height = ui:MeasureTextScaled(font, option, self.scale)
+    y = y - line_height
 
     local text_r, text_g, text_b = r, g, b
 
-    if self.mouse_y >= y - 2 and self.mouse_y < y + height then
+    if self.mouse_y >= y - 2 and self.mouse_y < y + line_height then
       self.hover_index = i
     end
 
     if self.mouse_in and i == self.hover_index then
+      text_scale = 1.2
+    end
 
-      if i == self.selected_index then
-        ui:DrawFilledRectangle(1, y - 2, self.width - 3, height, self.bkg_hover_r, self.bkg_hover_g, self.bkg_hover_b, alpha)
-        ui:DrawRectangle(1, y - 2, self.width - 3, height, self.border_hover_r, self.border_hover_g, self.border_hover_b, alpha)
-      else
-        ui:DrawFilledRectangle(1, y - 2, self.width - 3, height, self.bkg_selected_hover_r, self.bkg_selected_hover_g, self.bkg_selected_hover_b, alpha)
-        ui:DrawRectangle(1, y - 2, self.width - 3, height, self.border_selected_hover_r, self.border_selected_hover_g, self.border_selected_hover_b, alpha)
-      end
-      
-      ui:FlushGeometry()
+    if i == self.selected_index then
 
-      text_r, text_g, text_b = self.text_hover_r, self.text_hover_g, self.text_hover_b
-
-    elseif i == self.selected_index then
-
-      ui:DrawFilledRectangle(1, y - 2, self.width - 3, height, self.bkg_selected_r, self.bkg_selected_g, self.bkg_selected_b, alpha)
-      ui:DrawRectangle(1, y - 2, self.width - 3, height, self.border_selected_r, self.border_selected_g, self.border_selected_b, alpha)
+      ui:DrawFilledRectangle(1, y - 2, self.width - 3, line_height, self.bkg_selected_r, self.bkg_selected_g, self.bkg_selected_b, alpha)
+      ui:DrawRectangle(1, y - 2, self.width - 3, line_height, self.border_selected_r, self.border_selected_g, self.border_selected_b, alpha)
       ui:FlushGeometry()
 
       text_r, text_g, text_b = self.text_selected_r, self.text_selected_g, self.text_selected_b
     end
 
-    ui:DrawTextScaled(font, option, self.width / 2 - width / 2, y, text_r, text_g, text_b, alpha, kNormal, self.scale)
+    local width, height = ui:MeasureTextScaled(font, option, self.scale * text_scale)
+    ui:DrawTextScaled(font, option, self.width / 2 - width / 2, y, text_r, text_g, text_b, alpha, kNormal, self.scale * text_scale)
 
     y = y - 2
   end

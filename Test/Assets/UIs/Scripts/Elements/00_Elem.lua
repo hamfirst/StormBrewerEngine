@@ -55,9 +55,14 @@ function Elem:setup(o)
   return o
 end
 
-function Elem:new(o)
-  o = self:construct(o)
+function Elem:new(parent)
+  local o = self:construct(nil)
   self:setup(o)
+
+  if parent ~= nil then
+    o.clickable:SetParent(parent.clickable)  
+    o.parent = parent
+  end
   return o
 end
 
