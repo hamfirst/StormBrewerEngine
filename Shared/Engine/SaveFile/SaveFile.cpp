@@ -125,13 +125,18 @@ std::string SaveFile::GetSaveFileLocation()
   path += "/sb_save";
   return path;
 #else
-  return "~/.sb";
+  auto home_path = getenv("HOME");
+  return JoinPath(home_path, ".sb");
 #endif
 }
 
 void SaveFile::SaveFileThreadMain()
 {
   auto save_file_location = GetSaveFileLocation();
+
+  auto root_path = GetCanonicalRootPath();
+  auto save_file_full_path = GetFullPath(save_file_location, root_path);
+
   CreateDirectory(save_file_location);
 
   auto save_file = JoinPath(save_file_location, m_SaveFileName);
