@@ -25,7 +25,7 @@ void GameLevelList::PreloadAllLevels()
 
   for (auto & level : level_list->m_Levels)
   {
-    m_PreloadedMaps.emplace_back(MapResource::Load(level.data()));
+    m_PreloadedMaps.emplace_back(MapResource::Load(level.m_Path.data()));
   }
 }
 
@@ -43,7 +43,7 @@ Map GameLevelList::LoadLevel(std::size_t stage_index)
     return{};
   }
 
-  return MapResource::Load(level_list->m_Levels[stage_index].data());
+  return MapResource::Load(level_list->m_Levels[stage_index].m_Path.data());
 }
 
 std::size_t GameLevelList::GetNumLevels()

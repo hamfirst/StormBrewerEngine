@@ -60,8 +60,9 @@ void GameModeTutorial::OnAssetsLoaded()
   m_InstanceContainer->GetGlobalInstanceData().m_AIPlayerInfo.RemoveAt(0);
 
   m_InstanceContainer->GetGameController().StartGame(game_logic);
-
+#ifdef NET_USE_SCORE
   m_InstanceContainer->GetGlobalInstanceData().m_Score[2] = 4;
+#endif
 
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();

@@ -110,10 +110,12 @@ bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicCon
   }
 
   auto game_data = game.GetInstanceData();
+#ifdef NET_USE_SCORE
   if (game_data.m_Score[(int)player->m_Team] > kMaxScore / 2)
   {
     return false;
   }
+#endif
 
   if(game_data.m_AIPlayerInfo.HasAt(player_index))
   {
@@ -663,6 +665,7 @@ void GameController::EndGame(int winning_team, GameLogicContainer & game)
   sim_events.HandleWinGame(winning_team);
 }
 
+#ifdef NET_USE_SCORE
 void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos)
 {
   if (game.IsAuthority())
@@ -693,6 +696,7 @@ void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 &
     }
   }
 }
+#endif
 
 void GameController::HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game)
 {

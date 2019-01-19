@@ -136,7 +136,9 @@ struct GameInstanceData
 
   NetSparseList<AIPlayerInfo, kMaxPlayers> m_AIPlayerInfo;
 
+#ifdef NET_USE_SCORE
   NetRangedNumber<int, 0, kMaxScore> m_Score[kMaxTeams];
+#endif
   NetOptional<NetRangedNumber<int, -1, kMaxTeams>> m_WiningTeam;
 
 #ifdef NET_USE_COUNTDOWN
