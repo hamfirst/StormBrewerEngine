@@ -23,10 +23,6 @@ GameModeConnecting::~GameModeConnecting()
 
 void GameModeConnecting::Initialize()
 {
-  auto & container = GetContainer();
-  auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(255, 255, 255, 255));
-
   GetAssets().LoadAsset<TextureAsset>("./Images/stormbrewers_logo.png", "logo");
 }
 
@@ -35,7 +31,7 @@ void GameModeConnecting::OnAssetsLoaded()
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(255, 255, 255, 255));
+  render_util.SetDefaultClearColor();
 
   auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 

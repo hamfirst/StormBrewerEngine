@@ -149,7 +149,7 @@ set(GENERIC_SRC_Editor
             AtlasTextureLoadList.cpp
             GenericComboBox.cpp
             #CPP_PLACEHOLDER
-            )
+        QtStyle.cpp)
 
 set(GENERIC_HEADER_Editor 
             PropertyEditorStruct.h

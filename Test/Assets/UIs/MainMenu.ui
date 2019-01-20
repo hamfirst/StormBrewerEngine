@@ -2,39 +2,39 @@
 
 {
     "m_Functions": {
-        "5": {
-            "m_Name": "Tutorial"
-        },
-        "3": {
-            "m_Name": "JoinPrivateMatch"
-        },
-        "6": {
-            "m_Value": "true",
-            "m_Name": "CanQuit"
-        },
         "4": {
             "m_Name": "PlayOffline"
+        },
+        "6": {
+            "m_Name": "CanQuit",
+            "m_Value": "true"
         },
         "2": {
             "m_Name": "CreatePrivateMatch"
         },
         "0": {
-            "m_Value": "",
-            "m_Name": "Quit"
-        },
-        "1": {
-            "m_Name": "PlayOnline",
+            "m_Name": "Quit",
             "m_Value": ""
         },
         "7": {
             "m_Name": "PlaySingleplayer"
+        },
+        "1": {
+            "m_Value": "",
+            "m_Name": "PlayOnline"
+        },
+        "3": {
+            "m_Name": "JoinPrivateMatch"
+        },
+        "5": {
+            "m_Name": "Tutorial"
         }
     },
+    "m_InitFunction": "InitMainMenu",
     "m_Variables": {
         "0": {
-            "m_Name": "show_quit",
-            "m_Value": "false"
+            "m_Value": "false",
+            "m_Name": "show_quit"
         }
-    },
-    "m_InitFunction": "InitMainMenu"
+    }
 }

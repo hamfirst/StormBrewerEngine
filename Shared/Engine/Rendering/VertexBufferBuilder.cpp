@@ -83,7 +83,6 @@ void QuadVertexBufferBuilder::AddFrame(const Box & position, const Vector2 & tex
 
   QuadVertexBuilderInfo quad;
   quad.m_Position = position;
-  quad.m_Position.m_End += Vector2(1, 1);
   quad.m_Color = color;
   quad.m_TextureSize = texture_size;
 

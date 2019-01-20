@@ -142,7 +142,7 @@ void GameModeEndGame::Render()
   render_state.SetScreenSize(container.GetWindow().GetSize());
   render_state.SetRenderSize(camera.GetGameResolution());
 
-  render_util.SetClearColor(kDefaultClearColor);
+  render_util.SetDefaultClearColor();
   render_util.Clear();
 
   auto & engine_state = container.GetEngineState();

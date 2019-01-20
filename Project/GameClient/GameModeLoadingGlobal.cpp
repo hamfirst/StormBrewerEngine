@@ -69,7 +69,7 @@ void GameModeLoadingGlobal::Render()
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
 
-  render_util.SetClearColor(Color(255, 255, 255, 255));
+  render_util.SetDefaultClearColor();
   render_util.Clear();
 }
 

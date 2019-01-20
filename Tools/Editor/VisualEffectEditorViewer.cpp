@@ -192,10 +192,8 @@ void VisualEffectEditorViewer::resizeGL(int w, int h)
 
 void VisualEffectEditorViewer::paintGL()
 {
-  Color color(100, 149, 237, 255);
-
-  glClearColor(color.r, color.g, color.b, color.a);
-  glClear(GL_COLOR_BUFFER_BIT);
+  m_RenderUtil.SetDefaultClearColor();
+  m_RenderUtil.Clear();
 
   m_RenderState.MakeCurrent();
 

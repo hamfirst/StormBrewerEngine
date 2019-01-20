@@ -28,6 +28,7 @@ FrameDataDef g_FrameData;
 void StormWebrtcStaticInit();
 void StormWebrtcStaticCleanup();
 
+extern const char * g_QtStyle;
 
 int main(int argc, char *argv[])
 {
@@ -63,6 +64,8 @@ int main(int argc, char *argv[])
   QSurfaceFormat::setDefaultFormat(format);
 
   QApplication a(argc, argv);
+  //a.setStyleSheet(g_QtStyle);
+
   EditorContainer w;
 
   auto ret = a.exec();

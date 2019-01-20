@@ -26,9 +26,9 @@
 #endif
 
 #define NET_USE_RANDOM
-#define NET_USE_ROUND_TIMER
-#define NET_USE_COUNTDOWN
-#define NET_USE_SCORE
+//#define NET_USE_ROUND_TIMER
+//#define NET_USE_COUNTDOWN
+//#define NET_USE_SCORE
 #define NET_ALLOW_LATE_JOIN
 #define NET_LATE_JOIN_REMOVE_BOT
 #define NET_LATE_JOIN_ADD_BOT

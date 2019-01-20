@@ -2,6 +2,11 @@
 
 {
   "m_Levels": [
-    "./Maps/Test.map"
+    {
+      "m_Path": "./Maps/Test.map",
+      "m_Name": "Test Map",
+      "m_Description": "A map that's useful for testing features",
+      "m_MapImage": "./Images/UI/DefaultMapImage.png"
+    }
   ]
 }

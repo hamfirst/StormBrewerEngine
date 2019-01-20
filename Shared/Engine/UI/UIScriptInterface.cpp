@@ -457,7 +457,7 @@ void UIScriptInterface::DrawLine(int sx, int sy, int ex, int ey, float r, float 
     m_GeometryBuffer.Emplace();
   }
 
-  m_GeometryBuffer->Line(Vector2f(sx, sy), Vector2f(ex, ey), 1.0f, Color(r, g, b, a));
+  m_GeometryBuffer->Line(Vector2f(sx, sy), Vector2f(ex, ey), 1.0f, Color(r, g, b, a), 0.5f);
 }
 
 void UIScriptInterface::DrawLineThickness(int sx, int sy, int ex, int ey, float r, float g, float b, float a, float thickness)
@@ -467,7 +467,8 @@ void UIScriptInterface::DrawLineThickness(int sx, int sy, int ex, int ey, float 
     m_GeometryBuffer.Emplace();
   }
 
-  m_GeometryBuffer->Line(Vector2f(sx, sy), Vector2f(ex, ey), thickness, Color(r, g, b, a));
+  auto offset = Vector2f(0.5f, 0.5f);
+  m_GeometryBuffer->Line(Vector2f(sx, sy) + offset, Vector2f(ex, ey) + offset, thickness, Color(r, g, b, a), 0.5f);
 }
 
 void UIScriptInterface::DrawRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a)
@@ -477,7 +478,7 @@ void UIScriptInterface::DrawRectangle(int sx, int sy, int width, int height, flo
     m_GeometryBuffer.Emplace();
   }
 
-  m_GeometryBuffer->Rectangle(Box::FromStartAndWidthHeight(sx, sy, width, height), 1.0f, Color(r, g, b, a));
+  m_GeometryBuffer->Rectangle(Box::FromStartAndWidthHeight(sx, sy, width, height), 1.0f, Color(r, g, b, a), 0.5f);
 }
 
 void UIScriptInterface::DrawFilledRectangle(int sx, int sy, int width, int height, float r, float g, float b, float a)
@@ -487,7 +488,7 @@ void UIScriptInterface::DrawFilledRectangle(int sx, int sy, int width, int heigh
     m_GeometryBuffer.Emplace();
   }
 
-  m_GeometryBuffer->FilledRectangle(Box::FromStartAndWidthHeight(sx, sy, width, height), Color(r, g, b, a));
+  m_GeometryBuffer->FilledRectangle(Box::FromStartAndWidthHeight(sx, sy, width, height), Color(r, g, b, a), 0.5f);
 }
 
 void UIScriptInterface::DrawEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs)
@@ -503,7 +504,7 @@ void UIScriptInterface::DrawEllipse(int sx, int sy, int width, int height, float
   auto end = Vector2f(box.m_End);
   auto center = (start + end) * 0.5f;
 
-  m_GeometryBuffer->Ellipse(center, size.x * 0.5f, size.y * 0.5f, 1.0f, Color(r, g, b, a), segs);
+  m_GeometryBuffer->Ellipse(center, size.x * 0.5f, size.y * 0.5f, 1.0f, Color(r, g, b, a), segs, 0.5f);
 }
 
 void UIScriptInterface::DrawFilledEllipse(int sx, int sy, int width, int height, float r, float g, float b, float a, int segs)
@@ -519,7 +520,7 @@ void UIScriptInterface::DrawFilledEllipse(int sx, int sy, int width, int height,
   auto end = Vector2f(box.m_End);
   auto center = (start + end) * 0.5f;
 
-  m_GeometryBuffer->FilledEllipse(center, size.x * 0.5f, size.y * 0.5f, Color(r, g, b, a), segs);
+  m_GeometryBuffer->FilledEllipse(center, size.x * 0.5f, size.y * 0.5f, Color(r, g, b, a), segs, 0.5f);
 }
 
 void UIScriptInterface::FlushGeometry()

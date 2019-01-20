@@ -40,7 +40,7 @@ GameContainer::GameContainer(Window & window, std::unique_ptr<GameContainerInitS
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
   m_RenderState.EnableBlendMode();
 
-  m_RenderUtil.SetClearColor(Color(100, 149, 237, 255));
+  m_RenderUtil.SetDefaultClearColor();
   m_RenderUtil.LoadShaders();
 
   g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);

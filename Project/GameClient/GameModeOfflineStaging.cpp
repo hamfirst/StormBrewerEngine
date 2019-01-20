@@ -33,12 +33,7 @@ void GameModeOfflineStaging::Initialize()
 
 void GameModeOfflineStaging::OnAssetsLoaded()
 {
-  auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(255, 255, 255, 255));
 
-  auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 }
 
 void GameModeOfflineStaging::Update()
@@ -58,7 +53,7 @@ void GameModeOfflineStaging::Render()
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
 
-  render_util.SetClearColor(Color(255, 255, 255, 255));
+  render_util.SetDefaultClearColor();
   render_util.Clear();
 
   render_state.EnableBlendMode();
