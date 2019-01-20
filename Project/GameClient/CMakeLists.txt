@@ -45,7 +45,7 @@ set(GENERIC_SRC_GameClient
             EffectLayers/CollisionDrawer.refl.cpp
             EffectLayers/CollisionDrawer.refl.reg.cpp
             #CPP_PLACEHOLDER
-            )
+        GameModeMapSettings.cpp GameModeMapSettings.h)
 
 set(GENERIC_HEADER_GameClient 
             GameClientEntitySync.h

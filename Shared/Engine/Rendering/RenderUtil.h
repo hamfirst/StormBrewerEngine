@@ -19,6 +19,7 @@ public:
 
   static void Clear();
   static void Clear(const Color & color);
+  static void SetDefaultClearColor();
   static void SetClearColor(const Color & color);
 
   void DrawQuad(const Box & box, const Color & color, const RenderVec2 & screen_size, RenderState & render_state);

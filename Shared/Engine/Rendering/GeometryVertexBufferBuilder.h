@@ -15,17 +15,17 @@ public:
   GeometryVertexBufferBuilder();
   GeometryVertexBufferBuilder(const Vector2 & texture_pos, const Vector2 & texture_pos_size);
 
-  void Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c);
-  void Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c);
-  void Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs);
-  void Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs);
-  void Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs);
-  void Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c);
-  void Rectangle(const Box & box, float thickness, const Color & c);
-  void FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs);
-  void FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs);
-  void FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c);
-  void FilledRectangle(const Box & box, const Color & c);
+  void Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c, float bias = 0);
+  void Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c, float bias = 0);
+  void Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs, float bias = 0);
+  void Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs, float bias = 0);
+  void Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs, float bias = 0);
+  void Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c, float bias = 0);
+  void Rectangle(const Box & box, float thickness, const Color & c, float bias = 0);
+  void FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs, float bias = 0);
+  void FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs, float bias = 0);
+  void FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c, float bias = 0);
+  void FilledRectangle(const Box & box, const Color & c, float bias = 0);
 
   struct TrailInfo
   {

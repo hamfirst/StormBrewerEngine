@@ -7,6 +7,8 @@
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Asset/AssetBundle.h"
 
+#include "ProjectSettings/ProjectColors.h"
+
 
 #include <gl3w/gl3w.h>
 
@@ -106,6 +108,11 @@ void RenderUtil::Clear(const Color & color)
 {
   SetClearColor(color);
   Clear();
+}
+
+void RenderUtil::SetDefaultClearColor()
+{
+  glClearColor(PROJECT_CLEAR_COLOR);
 }
 
 void RenderUtil::SetClearColor(const Color & color)

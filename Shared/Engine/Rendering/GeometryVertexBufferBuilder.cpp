@@ -25,7 +25,7 @@ GeometryVertexBufferBuilder::GeometryVertexBufferBuilder(const Vector2 & texture
   }
 }
 
-void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c)
+void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float thickness, const Color & c, float bias)
 {
   auto offset = b - a;
   auto len = glm::length(offset);
@@ -38,9 +38,10 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   auto dir = offset / len;
   auto normal = Vector2f(dir.y, -dir.x);
   auto thick = normal * (thickness / 2);
+  auto bias_vector = Vector2f(bias, bias);
 
-  auto start = a + Vector2f(0.5f, 0.5f) - dir * Vector2f(0.5f, 0.5f);
-  auto end = b + Vector2f(0.5f, 0.5f) + dir * Vector2f(0.5f, 0.5f);
+  auto start = a + bias_vector - dir * bias_vector;
+  auto end = b + bias_vector + dir * bias_vector;
 
   AddVert(start + thick, c);
   AddVert(end + thick, c);
@@ -50,7 +51,7 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   AddVert(start - thick, c);
 }
 
-void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c)
+void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, float start_thickness, float end_thickness, const Color & c, float bias)
 {
   auto offset = b - a;
   auto len = glm::length(offset);
@@ -64,9 +65,10 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   auto normal = Vector2f(dir.y, -dir.x);
   auto start_thick = normal * (start_thickness / 2);
   auto end_thick = normal * (end_thickness / 2);
+  auto bias_vector = Vector2f(bias, bias);
 
-  auto start = a + Vector2f(0.5f, 0.5f) - dir * Vector2f(0.5f, 0.5f);
-  auto end = b + Vector2f(0.5f, 0.5f) + dir * Vector2f(0.5f, 0.5f);
+  auto start = a + bias_vector - dir * bias_vector;
+  auto end = b + bias_vector + dir * bias_vector;
 
   AddVert(start + start_thick, c);
   AddVert(end + end_thick, c);
@@ -76,13 +78,16 @@ void GeometryVertexBufferBuilder::Line(const Vector2f & a, const Vector2f & b, f
   AddVert(start - start_thick, c);
 }
 
-void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs)
+void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, float thickness, const Color & c, int num_segs, float bias)
 {
   float offset_far = radius + thickness / 2.0f;
   float offset_near = radius - thickness / 2.0f;
 
-  Vector2f start_far = pos + Vector2f(offset_far, 0);
-  Vector2f start_near = pos + Vector2f(offset_near, 0);
+  auto bias_vector = Vector2f(bias, bias);
+  auto center = pos + bias_vector;
+
+  Vector2f start_far = center + Vector2f(offset_far, 0);
+  Vector2f start_near = center + Vector2f(offset_near, 0);
 
   float angle_inc = k2Pi / num_segs;
   float angle = angle_inc;
@@ -108,15 +113,18 @@ void GeometryVertexBufferBuilder::Circle(const Vector2f & pos, float radius, flo
   }
 }
 
-void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs)
+void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, float radius_y, float thickness, const Color & c, int num_segs, float bias)
 {
   float angle_inc = k2Pi / num_segs;
   float angle = angle_inc;
 
-  auto ab = radius_x * radius_y; 
+  auto ab = radius_x * radius_y;
 
-  Vector2f start_far = pos + Vector2f(radius_x + thickness, 0);
-  Vector2f start_near = pos + Vector2f(radius_x - thickness, 0);
+  auto bias_vector = Vector2f(bias, bias);
+  auto center = pos + bias_vector;
+
+  Vector2f start_far = center + Vector2f(radius_x + thickness, 0);
+  Vector2f start_near = center + Vector2f(radius_x - thickness, 0);
 
   for (int index = 1; index < num_segs + 1; index++)
   {
@@ -147,7 +155,7 @@ void GeometryVertexBufferBuilder::Ellipse(const Vector2f & pos, float radius_x, 
   }
 }
 
-void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs)
+void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float thickness, const Color & c, float middle_angle, float arc_half_angle, int num_segs, float bias)
 {
   float offset_far = radius + thickness / 2.0f;
   float offset_near = radius - thickness / 2.0f;
@@ -155,8 +163,11 @@ void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float 
   auto start_angle = middle_angle - arc_half_angle;
   auto start_dir = SinCosf(start_angle);
 
-  Vector2f start_far = pos + start_dir * offset_far;
-  Vector2f start_near = pos + start_dir * offset_near;
+  auto bias_vector = Vector2f(bias, bias);
+  auto center = pos + bias_vector;
+
+  Vector2f start_far = center + start_dir * offset_far;
+  Vector2f start_near = center + start_dir * offset_near;
 
   float angle_inc = arc_half_angle * 2 / num_segs;
   float angle = start_angle + angle_inc;
@@ -182,53 +193,55 @@ void GeometryVertexBufferBuilder::Arc(const Vector2f & pos, float radius, float 
   }
 }
 
-void GeometryVertexBufferBuilder::Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c)
+void GeometryVertexBufferBuilder::Rectangle(const Vector2f & a, const Vector2f & b, float thickness, const Color & c, float bias)
 {
   float sx = std::min(a.x, b.x);
   float sy = std::min(a.y, b.y);
   float ex = std::max(a.x, b.x);
   float ey = std::max(a.y, b.y);
 
-  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
-  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
-  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
-  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
+  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c, bias);
+  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c, bias);
+  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c, bias);
+  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c, bias);
 }
 
-void GeometryVertexBufferBuilder::Rectangle(const Box & box, float thickness, const Color & c)
+void GeometryVertexBufferBuilder::Rectangle(const Box & box, float thickness, const Color & c, float bias)
 {
   float sx = (float)(box.m_Start.x);
   float sy = (float)(box.m_Start.y);
   float ex = (float)(box.m_End.x);
   float ey = (float)(box.m_End.y);
 
-  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c);
-  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c);
-  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c);
-  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c);
+  Line(Vector2f{ sx, sy }, Vector2f{ ex, sy }, thickness, c, bias);
+  Line(Vector2f{ sx, sy }, Vector2f{ sx, ey }, thickness, c, bias);
+  Line(Vector2f{ ex, sy }, Vector2f{ ex, ey }, thickness, c, bias);
+  Line(Vector2f{ sx, ey }, Vector2f{ ex, ey }, thickness, c, bias);
 }
 
-void GeometryVertexBufferBuilder::FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs)
+void GeometryVertexBufferBuilder::FilledCircle(const Vector2f & pos, float radius, const Color & c, int num_segs, float bias)
 {
   float angle_inc = k2Pi / num_segs;
   float angle = angle_inc;
 
   Vector2f prev_pos = { radius, 0 };
 
+  auto center = pos + Vector2f(bias, bias);
+
   for (int index = 1; index < num_segs + 1; index++)
   {
     auto cur_pos = SinCosf(angle) * radius;
 
-    AddVert(pos, c);
-    AddVert(pos + cur_pos, c);
-    AddVert(pos + prev_pos, c);
+    AddVert(center, c);
+    AddVert(center + cur_pos, c);
+    AddVert(center + prev_pos, c);
 
     prev_pos = cur_pos;
     angle += angle_inc;
   }
 }
 
-void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs)
+void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radius_x, float radius_y, const Color & c, int num_segs, float bias)
 {
   float angle_inc = k2Pi / num_segs;
   float angle = angle_inc;
@@ -236,6 +249,8 @@ void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radi
   auto ab = radius_x * radius_y;
 
   Vector2f prev_pos = { radius_x, 0 };
+
+  auto center = pos + Vector2f(bias, bias);
 
   for (int index = 1; index < num_segs + 1; index++)
   {
@@ -248,28 +263,31 @@ void GeometryVertexBufferBuilder::FilledEllipse(const Vector2f & pos, float radi
 
     auto cur_pos = dir * radius;
 
-    AddVert(pos, c);
-    AddVert(pos + cur_pos, c);
-    AddVert(pos + prev_pos, c);
+    AddVert(center, c);
+    AddVert(center + cur_pos, c);
+    AddVert(center + prev_pos, c);
 
     prev_pos = cur_pos;
     angle += angle_inc;
   }
 }
 
-void GeometryVertexBufferBuilder::FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c)
+void GeometryVertexBufferBuilder::FilledRectangle(const Vector2f & a, const Vector2f & b, const Color & c, float bias)
 {
-  AddVert(Vector2f{ a.x, a.y }, c);
-  AddVert(Vector2f{ a.x, b.y }, c);
-  AddVert(Vector2f{ b.x, b.y }, c);
-  AddVert(Vector2f{ a.x, a.y }, c);
-  AddVert(Vector2f{ b.x, b.y }, c);
-  AddVert(Vector2f{ b.x, a.y }, c);
+  auto bias_vector = Vector2f(bias, bias);
+  AddVert(Vector2f{ a.x, a.y } + bias_vector, c);
+  AddVert(Vector2f{ a.x, b.y } + bias_vector, c);
+  AddVert(Vector2f{ b.x, b.y } + bias_vector, c);
+  AddVert(Vector2f{ a.x, a.y } + bias_vector, c);
+  AddVert(Vector2f{ b.x, b.y } + bias_vector, c);
+  AddVert(Vector2f{ b.x, a.y } + bias_vector, c);
 }
 
-void GeometryVertexBufferBuilder::FilledRectangle(const Box & box, const Color & c)
+void GeometryVertexBufferBuilder::FilledRectangle(const Box & box, const Color & c, float bias)
 {
-  FilledRectangle(box.m_Start, box.m_End + Vector2(1, 1), c);
+  Vector2f start = (Vector2f)box.m_Start;
+  Vector2f end = (Vector2f)box.m_End + Vector2f(1, 1);
+  FilledRectangle(start, end, c, bias);
 }
 
 void GeometryVertexBufferBuilder::Trail(const gsl::span<TrailInfo> & points, float texture_width)

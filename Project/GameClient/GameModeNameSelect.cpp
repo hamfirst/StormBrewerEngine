@@ -41,9 +41,6 @@ void GameModeNameSelect::Initialize()
 void GameModeNameSelect::OnAssetsLoaded()
 {
   auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
-  render_util.SetClearColor(Color(255, 255, 255, 255));
 
   auto ui = container.GetUIManager();
 
@@ -73,7 +70,7 @@ void GameModeNameSelect::Render()
   auto & render_state = container.GetRenderState();
   auto & render_util = container.GetRenderUtil();
 
-  RenderUtil::SetClearColor(Color(255, 255, 255, 255));
+  RenderUtil::SetDefaultClearColor();
   RenderUtil::Clear();
 
   render_state.EnableBlendMode();

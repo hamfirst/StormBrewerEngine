@@ -31,7 +31,8 @@ void GameClientLevelLoader::LoadLevel(const GameInitSettings & init_settings, ui
   m_LoadCallback = std::move(load_complete);
   m_LoadToken = load_token;
   m_PendingLoadLevel = m_GameContainer.GetLevelList().LoadLevel(init_settings.m_StageIndex);
-  m_PendingLoadLink = m_PendingLoadLevel.GetResource()->AddLoadCallback([this](NotNullPtr<MapResource> map_resource) { HandleLevelLoadComplete(); });
+  m_PendingLoadLink = m_PendingLoadLevel.GetResource()->AddLoadCallback(
+      [this](NotNullPtr<MapResource> map_resource) { HandleLevelLoadComplete(); });
 }
 
 void GameClientLevelLoader::FinalizeLevel()

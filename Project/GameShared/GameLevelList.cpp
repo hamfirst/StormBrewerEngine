@@ -40,6 +40,7 @@ Map GameLevelList::LoadLevel(std::size_t stage_index)
 
   if (stage_index >= level_list->m_Levels.size())
   {
+    ASSERT(false, "Invalid level index");
     return{};
   }
 

@@ -40,8 +40,8 @@ function ScrollButton:Draw()
     r, g, b = self.text_r, self.text_g, self.text_b
   end
 
-  ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, bkg_r, bkg_g, bkg_b, alpha)
-  ui:DrawRectangle(0, 0, self.width - 2, self.height - 2, border_r, border_g, border_b, alpha)
+  ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, bkg_r, bkg_g, bkg_b, alpha)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, border_r, border_g, border_b, alpha)
 
   local arrow_r, arrow_g, arrow_b = 0, 0, 0
   if self.direction == -1 then

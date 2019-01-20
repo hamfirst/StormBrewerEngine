@@ -190,7 +190,7 @@ void GameModeLocalMultiplayer::Render()
   render_state.SetRenderSize(camera.GetGameResolution());
   render_state.SetFramePct((float)m_FrameClock.GetFramePercent());
 
-  render_util.SetClearColor(kDefaultClearColor);
+  render_util.SetDefaultClearColor();
   render_util.Clear();
 
   auto & engine_state = container.GetEngineState();

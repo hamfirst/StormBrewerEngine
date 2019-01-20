@@ -21,6 +21,7 @@
 #include "UIEditorViewer.h"
 #include "UIEditor.h"
 
+
 extern DelegateList<void> g_GlobalUpdate;
 
 UIEditorViewer::UIEditorViewer(NotNullPtr<UIEditor> editor, UIDef & ui, QWidget *parent) :
@@ -174,10 +175,8 @@ void UIEditorViewer::resizeGL(int w, int h)
 
 void UIEditorViewer::paintGL()
 {
-  Color color(255, 255, 255, 255);
-
-  glClearColor(color.r, color.g, color.b, color.a);
-  glClear(GL_COLOR_BUFFER_BIT);
+  m_RenderUtil.SetDefaultClearColor();
+  m_RenderUtil.Clear();
 
   m_RenderState.MakeCurrent();
 
