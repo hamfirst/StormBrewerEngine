@@ -121,7 +121,7 @@ bool GameNetworkClient::InPrivateGameStaging() const
 
 void GameNetworkClient::SendJoinGame()
 {
-  if(m_GameContainer.GetNetworkInitSettings().m_JoinPrivateGameKey != 0)
+  if(m_GameContainer.GetNetworkInitSettings().m_Intent == ClientConnectionIntent::kJoinPrivate)
   {
     JoinGameMessage join_msg = {};
     join_msg.m_PrivateRoomId = m_GameContainer.GetNetworkInitSettings().m_JoinPrivateGameKey;
@@ -130,7 +130,7 @@ void GameNetworkClient::SendJoinGame()
 
     m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
   }
-  else if(m_GameContainer.GetNetworkInitSettings().m_CreatePrivateGame)
+  else if(m_GameContainer.GetNetworkInitSettings().m_Intent == ClientConnectionIntent::kCreatePrivate)
   {
     CreatePrivateGameMessage create_msg = {};
     create_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
@@ -141,6 +141,7 @@ void GameNetworkClient::SendJoinGame()
   else
   {
     JoinGameMessage join_msg = {};
+    join_msg.m_PrivateRoomId = 0;
     join_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
     join_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
 

@@ -20,13 +20,13 @@
 
 #include <ctime>
 
-GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings & game_settings) :
+GameModeTutorial::GameModeTutorial(GameContainer & game) :
   GameMode(game),
   m_Paused(false)
 {
   auto & container = GetContainer();
   m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, *this, 0, true);
-  m_InstanceContainer->Load(game_settings);
+  m_InstanceContainer->Load(GameInitSettings{});
 }
 
 GameModeTutorial::~GameModeTutorial()

@@ -47,6 +47,12 @@ class RenderUtil;
 class RenderState;
 class GameState;
 
+enum class ClientConnectionIntent
+{
+  kRandom,
+  kJoinPrivate,
+  kCreatePrivate,
+};
 
 struct GameNetworkClientInitSettings
 {
@@ -59,8 +65,8 @@ struct GameNetworkClientInitSettings
   std::string m_UserName = "";
   std::string m_Fingerprint = "78:0A:DC:3D:8D:75:D6:A8:D3:93:E9:2D:3C:78:6C:7E:E8:DB:A5:7F:7F:FD:3E:4F:09:05:93:7E:6D:60:15:67";
 
+  ClientConnectionIntent m_Intent = ClientConnectionIntent::kRandom;
   GameInitSettings m_InitSettings = {};
-  bool m_CreatePrivateGame = false;
   uint32_t m_JoinPrivateGameKey = 0;
 };
 

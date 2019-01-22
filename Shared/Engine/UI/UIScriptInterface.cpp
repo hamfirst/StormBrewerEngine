@@ -113,6 +113,11 @@ std::pair<int, int> UIScriptInterface::GetTextureSize(int texture_id)
     }
   }
 
+  if(texture == nullptr)
+  {
+    return std::make_pair(0, 0);
+  }
+
   auto size = texture->GetSize();
   return std::make_pair(size.x, size.y);
 }

@@ -24,6 +24,11 @@ public:
     return &m_Data;
   }
 
+  NotNullPtr<const ResourceData> GetData() const
+  {
+    return &m_Data;
+  }
+
   DocumentResourceLoadCallbackLink<ResourceData, GenericResource<ResourceData>> AddLoadCallback(Delegate<void, NotNullPtr<GenericResource<ResourceData>>> && callback)
   {
     if (m_Loaded)
