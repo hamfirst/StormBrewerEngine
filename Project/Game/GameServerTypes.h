@@ -6,8 +6,8 @@
 
 #include "Foundation/Math/Intersection.h"
 
-static const int kMaxPlayers = 2;
-static const int kMaxTeams = 4;
+static const int kMaxPlayers = 16;
+static const int kMaxTeams = 2;
 static const int kServerUpdateRate = 3;
 static const int kMaxScore = 5;
 

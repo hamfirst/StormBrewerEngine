@@ -305,6 +305,14 @@ ScriptInterface & UIManager::CreateGameInterface()
   return m_GameInterfaceObject.Value();
 }
 
+bool UIManager::Call(czstr name, NullOptPtr<ScriptValue> return_val)
+{
+  bool success = m_ScriptState->Call(name, {}, return_val);
+  RemoveDeadClickables();
+
+  return success;
+}
+
 bool UIManager::Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val)
 {
   bool success = m_ScriptState->Call(name, args, return_val);
@@ -323,10 +331,10 @@ bool UIManager::HasSelectedElement() const
   return m_HasSelectedElement;
 }
 
-UITextureBinding UIManager::CreateTextureBinding(czstr name, Delegate<NullOptPtr<Texture>> && tex)
+UITextureBinding UIManager::CreateTextureBinding(czstr name, Delegate<NullOptPtr<const Texture>> && tex)
 {
   assert(m_GameInterfaceObject.IsValid());
-  m_GameInterfaceObject->AddVariable(name, m_NextTextureId);
+  m_GameInterfaceObject->AddVariable(name, m_NextTextureId | UIScriptLoader::kBoundTexture);
 
   UITextureBinding bind(this, m_NextTextureId, std::move(tex));
   m_NextTextureId++;

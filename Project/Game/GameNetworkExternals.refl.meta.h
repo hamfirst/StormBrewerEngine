@@ -730,11 +730,11 @@ struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<2 + StormReflTypeIn
 template <>
 struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxTeams - 1>; // NetRangedNumber<int, 0, 3>
+  using member_type = NetRangedNumber<int, 0, kMaxTeams - 1>; // NetRangedNumber<int, 0, 1>
   static constexpr auto GetName() { return "m_Team"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 3>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
-  static constexpr unsigned GetTypeNameHash() { return 0xAAFE6A4F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x98C808CD; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ChangeObserverToPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeObserverToPlayer *>(obj); return &ptr->m_Team; }
@@ -948,11 +948,11 @@ struct StormReflTypeInfo<ChangePlayerTeam>::field_data<0 + StormReflTypeInfo<Gam
 template <>
 struct StormReflTypeInfo<ChangePlayerTeam>::field_data_static<1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxTeams - 1>; // NetRangedNumber<int, 0, 3>
+  using member_type = NetRangedNumber<int, 0, kMaxTeams - 1>; // NetRangedNumber<int, 0, 1>
   static constexpr auto GetName() { return "m_Team"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 3>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
-  static constexpr unsigned GetTypeNameHash() { return 0xAAFE6A4F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x98C808CD; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ChangePlayerTeam::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangePlayerTeam *>(obj); return &ptr->m_Team; }

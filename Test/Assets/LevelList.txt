@@ -7,6 +7,12 @@
       "m_Name": "Test Map",
       "m_Description": "A map that's useful for testing features",
       "m_MapImage": "./Images/UI/DefaultMapImage.png"
+    },
+    {
+      "m_Path": "./Maps/Test.map",
+      "m_Name": "Test Map 2",
+      "m_Description": "Hey it's the same map wooo",
+      "m_MapImage": "./Images/UI/MapImage.png"
     }
   ]
 }

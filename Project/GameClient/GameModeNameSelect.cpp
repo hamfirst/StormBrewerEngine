@@ -3,6 +3,7 @@
 #include "GameClient/GameModeMainMenu.h"
 #include "GameClient/GameModeConnecting.h"
 #include "GameClient/GameModeJoinPrivateGame.h"
+#include "GameClient/GameModeMapSettings.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameModeNameSelect.h"
 
@@ -118,11 +119,13 @@ void GameModeNameSelect::GoToNextMode()
   {
     container.SwitchMode(GameModeDef<GameModeJoinPrivateGame>{});
   }
+  else if (m_NextMode == GameModeNameSelectNextScreen::kJoinOnline)
+  {
+    net_init_settings.m_Intent = ClientConnectionIntent::kRandom;
+    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+  }
   else
   {
-    net_init_settings.m_CreatePrivateGame = (m_NextMode == GameModeNameSelectNextScreen::kCreatePrivate);
-    container.ClearUIManager();
-    container.StartNetworkClient();
-    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kPrivateGame);
   }
 }

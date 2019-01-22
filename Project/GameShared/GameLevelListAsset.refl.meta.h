@@ -10,7 +10,7 @@ template <>
 struct StormReflTypeInfo<GameLevelInfo>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 10;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -166,6 +166,126 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data<4, Self> : public StormReflT
   match_const_t<Self, int> & Get() { return self.m_MaxPlayers; }
   std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxPlayers; }
   void SetDefault() { self.m_MaxPlayers = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxPlayers; }
+};
+
+template <>
+struct StormReflTypeInfo<GameLevelInfo>::field_data_static<5>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_MaxPlayersDefault"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x0AEB37A7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxPlayersDefault; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxPlayersDefault; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelInfo *>(obj); return &ptr->m_MaxPlayersDefault; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameLevelInfo>::field_data<5, Self> : public StormReflTypeInfo<GameLevelInfo>::field_data_static<5>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_MaxPlayersDefault; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxPlayersDefault; }
+  void SetDefault() { self.m_MaxPlayersDefault = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxPlayersDefault; }
+};
+
+template <>
+struct StormReflTypeInfo<GameLevelInfo>::field_data_static<6>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_MaxTime"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x06171818; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxTime; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxTime; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelInfo *>(obj); return &ptr->m_MaxTime; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameLevelInfo>::field_data<6, Self> : public StormReflTypeInfo<GameLevelInfo>::field_data_static<6>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_MaxTime; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxTime; }
+  void SetDefault() { self.m_MaxTime = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxTime; }
+};
+
+template <>
+struct StormReflTypeInfo<GameLevelInfo>::field_data_static<7>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_MaxTimeDefault"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x60FC7F52; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxTimeDefault; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxTimeDefault; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelInfo *>(obj); return &ptr->m_MaxTimeDefault; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameLevelInfo>::field_data<7, Self> : public StormReflTypeInfo<GameLevelInfo>::field_data_static<7>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_MaxTimeDefault; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxTimeDefault; }
+  void SetDefault() { self.m_MaxTimeDefault = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxTimeDefault; }
+};
+
+template <>
+struct StormReflTypeInfo<GameLevelInfo>::field_data_static<8>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_MaxScore"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x272A9998; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 8; }
+  static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxScore; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxScore; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelInfo *>(obj); return &ptr->m_MaxScore; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameLevelInfo>::field_data<8, Self> : public StormReflTypeInfo<GameLevelInfo>::field_data_static<8>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_MaxScore; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxScore; }
+  void SetDefault() { self.m_MaxScore = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxScore; }
+};
+
+template <>
+struct StormReflTypeInfo<GameLevelInfo>::field_data_static<9>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "m_MaxScoreDefault"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x7C39E6B1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxScoreDefault; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxScoreDefault; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameLevelInfo *>(obj); return &ptr->m_MaxScoreDefault; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameLevelInfo>::field_data<9, Self> : public StormReflTypeInfo<GameLevelInfo>::field_data_static<9>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_MaxScoreDefault; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_MaxScoreDefault; }
+  void SetDefault() { self.m_MaxScoreDefault = StormReflTypeInfo<GameLevelInfo>::GetDefault().m_MaxScoreDefault; }
 };
 
 template <>

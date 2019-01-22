@@ -2,7 +2,9 @@
 
 #include "Foundation/Time/StopWatch.h"
 #include "Foundation/Time/FrameClock.h"
+#include "Foundation/Variant/Variant.h"
 
+#include "Game/GameNetworkData.refl.h"
 #include "GameClient/GameMode.h"
 
 #include "Engine/UI/UIManager.h"
