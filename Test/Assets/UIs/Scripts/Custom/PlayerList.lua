@@ -34,13 +34,26 @@ PushPostLoadFunc(function()
       end
     end
 
+    if game.GetTeamDarkColor == nil then
+      function game:GetTeamDarkColor(team)
+
+        if team == 0 then
+          return 0.4, 0.2, 0.23
+        elseif team == 1 then
+          return 0.23, 0.2, 0.4
+        end
+
+        return 0.3, 0.3, 0.3
+      end
+    end
+
     if game.GetTeamColor == nil then
       function game:GetTeamColor(team)
 
         if team == 0 then
-          return 0.9, 0.3, 0.33
+          return 0.6, 0.3, 0.33
         elseif team == 1 then
-          return 0.33, 0.3, 0.9
+          return 0.33, 0.3, 0.6
         end
 
         return 0.4, 0.4, 0.4
@@ -194,6 +207,7 @@ function PlayerList:Draw()
 
   local visitor = function(type, team, player, y, height)
     local r, g, b = game:GetTeamColor(team)
+    local dr, dg, db = game:GetTeamDarkColor(team)
 
     if type == 0 then
 
@@ -208,10 +222,10 @@ function PlayerList:Draw()
         team_text = string.format("%s (%d/%d)", team_name, player_count, player_max_count) 
       end
 
-      ui:DrawFilledRectangle(0, y, self.width - 2, height, r, g, b, 1.0)
+      ui:DrawFilledRectangle(0, y, self.width - 2, height, dr, dg, db, 1.0)
       ui:FlushGeometry();
 
-      ui:DrawText(font, team_text, 3, y + 3, 1, 1, 1, 1, kNormal)
+      ui:DrawText(font, team_text, 3, y + 3, default_text_darkbkg_r, default_text_darkbkg_g, default_text_darkbkg_b, 1, kNormal)
 
     elseif type == 1 then
 
@@ -226,30 +240,36 @@ function PlayerList:Draw()
         self.highlighted_player_id = player_id
         self.highlighted_menu_pos = y + height / 2
 
-        ui:DrawFilledRectangle(0, y, self.width - 2, height, r, g, b, 1)
+        ui:DrawFilledRectangle(0, y, self.width - 2, height, dr, dg, db, 1)
         ui:FlushGeometry()
 
-        ui:DrawText(player_list_big_font, player_name, 32, y + height / 2 - big_font_height / 2, 1, 1, 1, 1, kNormal)
+        ui:DrawText(player_list_big_font, player_name, 32, y + height / 2 - big_font_height / 2, 
+          default_text_darkbkg_r, default_text_darkbkg_g, default_text_darkbkg_b, 1, kNormal)
 
         if game:GetPlayerState(player_id) == 1 then
           ui:DrawTextureTint(game_leader_icon, 16, y + height / 2 - 8, 1, 1, 1, 1)
         end
 
         if game:GetPlayerReady(player_id) == 1 then
-          ui:DrawTextureTint(player_ready_icon, 1, y + height / 2 - 8, 1, 1, 1, 1)
+          ui:DrawTextureTint(player_ready_icon, 1, y + height / 2 - 8, r, g, b, 1)
         end
       else
 
         if self.selected_player_id == player_id then
-          ui:DrawFilledRectangle(0, y, self.width - 2, height, r, g, b, 0.4)
+          ui:DrawFilledRectangle(0, y, self.width - 2, height, dr, dg, db, 0.4)
         else
-          ui:DrawFilledRectangle(0, y, self.width - 2, height, r, g, b, 0.1)
+          ui:DrawFilledRectangle(0, y, self.width - 2, height, dr, dg, db, 0.1)
         end
 
-        ui:DrawRectangle(0, y, self.width - 2, height, r, g, b, 1)
+        ui:DrawRectangle(0, y, self.width - 2, height, dr, dg, db, 1)
         ui:FlushGeometry()
 
-        ui:DrawText(player_list_big_font, player_name, 32, y + height / 2 - big_font_height / 2, r, g, b, 1, kNormal)
+        if self.selected_player_id == player_id then
+          ui:DrawText(player_list_big_font, player_name, 32, y + height / 2 - big_font_height / 2, 
+            default_text_darkbkg_r, default_text_darkbkg_g, default_text_darkbkg_b, 1, kNormal)
+        else
+          ui:DrawText(player_list_big_font, player_name, 32, y + height / 2 - big_font_height / 2, r, g, b, 1, kNormal)
+        end
 
         if game:GetPlayerState(player_id) == 1 then
           ui:DrawTextureTint(game_leader_icon, 16, y + height / 2 - 8, 1, 1, 1, 1)

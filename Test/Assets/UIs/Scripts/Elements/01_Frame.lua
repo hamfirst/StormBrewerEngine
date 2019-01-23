@@ -1,9 +1,9 @@
 
 Frame = Elem:construct()
 Frame.alpha = 1
-Frame.r = 0
-Frame.g = 0
-Frame.b = 0
+Frame.r = default_frame_r
+Frame.g = default_frame_g
+Frame.b = default_frame_b
 
 function Frame:SetFrame(texture_id)
   self.texture_id = texture_id

@@ -26,6 +26,8 @@
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameCamera.h"
 
+#include "ProjectSettings/ProjectColors.h"
+
 #include "MapEditorViewer.h"
 #include "MapEditor.h"
 #include "MapEditorToolBase.h"
@@ -579,9 +581,7 @@ void MapEditorViewer::paintGL()
     }
   }
 
-  Color color(100, 149, 237, 255);
-
-  glClearColor(color.r, color.g, color.b, color.a);
+  glClearColor(PROJECT_CLEAR_COLOR);
   glClear(GL_COLOR_BUFFER_BIT);
 
   RenderVec2 window_start = TransformFromScreenSpaceToMapSpace(RenderVec2(0, height() - 1));
@@ -953,28 +953,38 @@ void MapEditorViewer::paintGL()
     auto y_start = floorf(window_start.y / m_GridHeight) * m_GridHeight;
     auto y_end = (floorf(window_end.y / m_GridHeight) + 1) * m_GridHeight;
 
-    for (float x = x_start; x <= x_end; x += m_GridWidth)
+    if(m_Magnification > 0.2f)
     {
-      auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_start });
-      auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_end });
+      float alpha = 0.2f;
+      if(m_Magnification < 0.5f)
+      {
+        float t = (m_Magnification - 0.2f) / 0.3f;
+        alpha *= t;
+      }
 
-      int mx = (int)(x / m_GridHeight);
-      int gx = mx % 10;
-      int zx = mx % 50;
+      for (float x = x_start; x <= x_end; x += m_GridWidth)
+      {
+        auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_start });
+        auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_end });
 
-      vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 2.0f) / width(), Color(1.0f, 0.5f, 0.6f, 0.3f));
-    }
+        int mx = (int)(x / m_GridHeight);
+        int gx = mx % 10;
+        int zx = mx % 50;
 
-    for (float y = y_start; y < y_end; y += m_GridHeight)
-    {
-      auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x_start, y });
-      auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x_end, y });
+        vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 3.0f) / width(), Color(PROJECT_GRID_COLOR, alpha));
+      }
 
-      int my = (int)(y / m_GridHeight);
-      int gy = my % 10;
-      int zy = my % 50;
+      for (float y = y_start; y < y_end; y += m_GridHeight)
+      {
+        auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x_start, y });
+        auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x_end, y });
 
-      vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 2.0f) / height(), Color(1.0f, 0.5f, 0.6f, 0.3f));
+        int my = (int)(y / m_GridHeight);
+        int gy = my % 10;
+        int zy = my % 50;
+
+        vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 3.0f) / height(), Color(PROJECT_GRID_COLOR, alpha));
+      }
     }
 
     x_start = floorf(window_start.x / kDefaultResolutionWidth) * kDefaultResolutionWidth - kDefaultResolutionWidth / 2;
@@ -983,28 +993,38 @@ void MapEditorViewer::paintGL()
     y_start = floorf(window_start.y / kDefaultResolutionHeight) * kDefaultResolutionHeight - kDefaultResolutionHeight / 2;
     y_end = (floorf(window_end.y / kDefaultResolutionHeight) + 1) * kDefaultResolutionHeight + kDefaultResolutionHeight / 2;
 
-    for (float x = x_start; x <= x_end; x += kDefaultResolutionWidth)
+    if(m_Magnification > 0.01f)
     {
-      auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_start });
-      auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_end });
+      float alpha = 0.2f;
+      if(m_Magnification < 0.05f)
+      {
+        float t = (m_Magnification - 0.01f) / 0.04f;
+        alpha *= t;
+      }
 
-      int mx = (int)(x / kDefaultResolutionWidth);
-      int gx = mx % 10;
-      int zx = mx % 50;
+      for (float x = x_start; x <= x_end; x += kDefaultResolutionWidth)
+      {
+        auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_start });
+        auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x, y_end });
 
-      vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 2.0f) / width(), Color(0.2f, 0.2f, 1.0f, 0.3f));
-    }
+        int mx = (int)(x / kDefaultResolutionWidth);
+        int gx = mx % 10;
+        int zx = mx % 50;
 
-    for (float y = y_start; y < y_end; y += kDefaultResolutionHeight)
-    {
-      auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x_start, y });
-      auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x_end, y });
+        vertex_builder.Line(start, end, (zx == 0 ? 8.0f : gx == 0 ? 4.0f : 3.0f) / width(), Color(PROJECT_SCREEN_GRID_COLOR, alpha));
+      }
 
-      int my = (int)(y / kDefaultResolutionHeight);
-      int gy = my % 10;
-      int zy = my % 50;
+      for (float y = y_start; y < y_end; y += kDefaultResolutionHeight)
+      {
+        auto start = TransformFromMapSpaceToClipSpace(RenderVec2{ x_start, y });
+        auto end = TransformFromMapSpaceToClipSpace(RenderVec2{ x_end, y });
 
-      vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 2.0f) / height(), Color(0.2f, 0.2f, 1.0f, 0.3f));
+        int my = (int)(y / kDefaultResolutionHeight);
+        int gy = my % 10;
+        int zy = my % 50;
+
+        vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 3.0f) / height(), Color(PROJECT_SCREEN_GRID_COLOR, alpha));
+      }
     }
 
     vertex_builder.FillVertexBuffer(m_GridBuffer);
@@ -1264,12 +1284,13 @@ void MapEditorViewer::mouseReleaseEvent(QMouseEvent * event)
 void MapEditorViewer::wheelEvent(QWheelEvent *event)
 {
   m_MagnificationDelta += event->delta();
-  if (m_MagnificationDelta < -QWheelEvent::DefaultDeltasPerStep)
+  while (m_MagnificationDelta < 0)
   {
     m_Magnification *= 0.8f;
     m_MagnificationDelta += QWheelEvent::DefaultDeltasPerStep;
   }
-  else if(m_MagnificationDelta > QWheelEvent::DefaultDeltasPerStep)
+
+  while(m_MagnificationDelta >= QWheelEvent::DefaultDeltasPerStep)
   {
     m_Magnification *= 1.25f;
     m_MagnificationDelta -= QWheelEvent::DefaultDeltasPerStep;

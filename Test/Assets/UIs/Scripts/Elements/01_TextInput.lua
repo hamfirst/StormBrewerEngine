@@ -2,24 +2,24 @@
 TextInput = Elem:construct()
 TextInput.prompt = ""
 TextInput.cursor_scroll = 5
-TextInput.border_r = 0.4
-TextInput.border_g = 0.4
-TextInput.border_b = 0.4
-TextInput.border_hover_r = 0.1
-TextInput.border_hover_g = 0.1
-TextInput.border_hover_b = 0.7
-TextInput.bkg_r = 0.96
-TextInput.bkg_g = 0.96
-TextInput.bkg_b = 1
-TextInput.bkg_hover_r = 1
-TextInput.bkg_hover_g = 1
-TextInput.bkg_hover_b = 1
-TextInput.text_r = 0
-TextInput.text_g = 0
-TextInput.text_b = 0
-TextInput.prompt_r = 0.71
-TextInput.prompt_g = 0.70
-TextInput.prompt_b = 0.72
+TextInput.border_r = default_widget_border_r
+TextInput.border_g = default_widget_border_g
+TextInput.border_b = default_widget_border_b
+TextInput.border_hover_r = default_widget_border_highlighted_r
+TextInput.border_hover_g = default_widget_border_highlighted_g
+TextInput.border_hover_b = default_widget_border_highlighted_b
+TextInput.bkg_r = default_widget_bkg_r
+TextInput.bkg_g = default_widget_bkg_g
+TextInput.bkg_b = default_widget_bkg_b
+TextInput.bkg_hover_r = default_widget_bkg_highlighted_r
+TextInput.bkg_hover_g = default_widget_bkg_highlighted_b
+TextInput.bkg_hover_b = default_widget_bkg_highlighted_g
+TextInput.text_r = default_text_r
+TextInput.text_g = default_text_g
+TextInput.text_b = default_text_b
+TextInput.prompt_r = default_text_selected_highlighted_r
+TextInput.prompt_g = default_text_selected_highlighted_g
+TextInput.prompt_b = default_text_selected_highlighted_b
 TextInput.alpha = 1.0
 
 function TextInput:setup(o)
@@ -90,9 +90,9 @@ function TextInput:Draw()
       self.cursor_scroll = self.width - 20 - pre_cursor_width
     end
 
-    ui:DrawTextInput(chat_font, self.context, self.cursor_scroll, self.height / 2 - chat_font_height / 2 + 3, 0, 0, 0, 1, kNormal)
+    ui:DrawTextInput(chat_font, self.context, self.cursor_scroll, self.height / 2 - chat_font_height / 2 + 3, self.text_r, self.text_g, self.text_b, 1, kNormal)
   else
-    ui:DrawTextInput(chat_font, self.context, 5, self.height / 2 - chat_font_height / 2 + 3, 0, 0, 0, 1, kNormal)
+    ui:DrawTextInput(chat_font, self.context, 5, self.height / 2 - chat_font_height / 2 + 3, self.text_r, self.text_g, self.text_b, 1, kNormal)
   end
 end
 
