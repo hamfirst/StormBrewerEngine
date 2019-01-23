@@ -56,6 +56,7 @@ void GameModeTutorial::OnAssetsLoaded()
   game_logic.GetInstanceData().m_Random = NetRandom(1);
 #endif
 
+  game_logic.SetAllowModifyLowFrequencyData(true);
   m_InstanceContainer->GetGameController().FillWithBots(game_logic, 0);
   m_InstanceContainer->GetGlobalInstanceData().m_AIPlayerInfo.RemoveAt(0);
 

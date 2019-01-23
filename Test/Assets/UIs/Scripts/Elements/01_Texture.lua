@@ -7,7 +7,7 @@ function Texture:SetTexture(texture_id)
   self.texture_id = texture_id
   self.width, self.height = ui:GetTextureSize(texture_id)
 
-  print("setting texture to "..texture_id)
+  print("setting texture to ".. texture_id)
 end
 
 function Texture:Draw()

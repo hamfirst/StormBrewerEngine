@@ -1,6 +1,9 @@
 
 ConfirmPopup = Popup:construct()
 ConfirmPopup.text = "Confirm?"
+ConfirmPopup.text_r = default_text_r
+ConfirmPopup.text_g = default_text_g
+ConfirmPopup.text_b = default_text_b
 
 function ConfirmPopup:CreateChildren()
 
@@ -36,7 +39,7 @@ end
 function ConfirmPopup:Draw()
   Popup.Draw(self)
 
-  ui:DrawCenteredText(font, self.text, self.width / 2, self.height - 50, 0, 0, 0, self.alpha, kNormal)
+  ui:DrawCenteredText(font, self.text, self.width / 2, self.height - 50, self.text_r, self.text_g, self.text_b, self.alpha, kNormal)
 end
 
 function ConfirmPopup:OkayPressed()

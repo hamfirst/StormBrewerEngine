@@ -26,7 +26,7 @@ void GenericFrame::UpdatePosition()
 {
   if (m_ChildWidget)
   {
-    m_ChildWidget->setGeometry(4, 15, width() - 9, height() - 16);
+    m_ChildWidget->setGeometry(4, 22, width() - 9, height() - 26);
   }
 }
 

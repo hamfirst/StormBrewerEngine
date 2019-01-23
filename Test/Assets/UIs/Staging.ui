@@ -2,76 +2,76 @@
 
 {
     "m_Functions": {
+        "5": {
+            "m_Name": "CommitMapChanges"
+        },
         "1": {
+            "m_Name": "GetPlayerCount",
             "m_DebugOutput": false,
-            "m_Value": "10",
-            "m_Name": "GetPlayerCount"
+            "m_Value": "10"
         },
         "4": {
             "m_Name": "Quit"
         },
         "6": {
-            "m_Value": "",
-            "m_Name": "CancelMapChanges"
+            "m_Name": "CancelMapChanges",
+            "m_Value": ""
         },
         "2": {
+            "m_Name": "GetPlayerMaxCount",
             "m_DebugOutput": false,
-            "m_Value": "5",
-            "m_Name": "GetPlayerMaxCount"
+            "m_Value": "5"
         },
         "0": {
+            "m_Name": "GetTeamCount",
             "m_DebugOutput": false,
-            "m_Value": "2",
-            "m_Name": "GetTeamCount"
+            "m_Value": "2"
         },
         "3": {
             "m_Name": "SendChat"
-        },
-        "5": {
-            "m_Name": "CommitMapChanges"
         }
     },
+    "m_InitFunction": "InitStagingMenu",
     "m_Variables": {
-        "9": {
-            "m_Value": "true",
-            "m_Name": "allow_mapsettings"
+        "8": {
+            "m_Value": "30",
+            "m_Name": "game_timer"
         },
-        "4": {
-            "m_Name": "allow_loadout",
-            "m_Value": "false"
-        },
-        "6": {
-            "m_Name": "game_name",
-            "m_Value": "WWWWWWWWWWWWWWW's Game"
-        },
-        "1": {
-            "m_Name": "allow_chat",
-            "m_Value": "true"
-        },
-        "7": {
-            "m_Name": "allow_map_change",
-            "m_Value": "true"
-        },
-        "0": {
-            "m_Name": "allow_observers",
-            "m_Value": "true"
-        },
-        "2": {
-            "m_Name": "allow_ready",
-            "m_Value": "true"
+        "5": {
+            "m_Value": "XXXX",
+            "m_Name": "game_code"
         },
         "3": {
-            "m_Name": "allow_playerlist",
+            "m_Value": "true",
+            "m_Name": "allow_playerlist"
+        },
+        "2": {
+            "m_Value": "true",
+            "m_Name": "allow_ready"
+        },
+        "9": {
+            "m_Name": "allow_mapsettings",
             "m_Value": "true"
         },
-        "5": {
-            "m_Name": "game_code",
-            "m_Value": "XXXX"
+        "4": {
+            "m_Value": "false",
+            "m_Name": "allow_loadout"
         },
-        "8": {
-            "m_Name": "game_timer",
-            "m_Value": "30"
+        "6": {
+            "m_Value": "WWWWWWWWWWWWWWW's Game",
+            "m_Name": "game_name"
+        },
+        "1": {
+            "m_Value": "true",
+            "m_Name": "allow_chat"
+        },
+        "7": {
+            "m_Value": "true",
+            "m_Name": "allow_map_change"
+        },
+        "0": {
+            "m_Value": "true",
+            "m_Name": "allow_observers"
         }
-    },
-    "m_InitFunction": "InitStagingMenu"
+    }
 }
