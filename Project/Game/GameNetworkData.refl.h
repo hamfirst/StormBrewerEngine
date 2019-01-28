@@ -33,7 +33,7 @@ static const int kMaxCountdown = 180;
 #endif
 
 #ifdef NET_USE_ROUND_TIMER
-static const int kMaxRoundTimer = 60 * 90;
+static const int kMaxRoundTimer = 60 * 60 * 5;
 
 enum STORM_REFL_ENUM class RoundState
 {
@@ -48,6 +48,18 @@ class GameStage;
 struct GameInitSettings
 {
   uint8_t m_StageIndex = 0;
+
+#ifdef NET_USE_PLAYER_LIMIT
+  uint8_t m_PlayerCount = 0;
+#endif
+
+#ifdef NET_USE_SCORE_LIMIT
+  uint16_t m_ScoreLimit = 0;
+#endif
+
+#ifdef NET_USE_SCORE_LIMIT
+  uint16_t m_TimeLimit = 0;
+#endif
   NET_REFL;
 };
 
@@ -122,7 +134,7 @@ struct GameObserver
 struct GameInstanceLowFrequencyData
 {
   NET_REFL;
-
+  GameInitSettings m_Settings;
   NetSparseList<GamePlayer, kMaxPlayers> m_Players;
 #ifdef NET_ALLOW_OBSERVERS
   NetSparseList<GameObserver, 128> m_Observers;

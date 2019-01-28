@@ -1,6 +1,12 @@
 
 Popup = Elem:construct()
 Popup.alpha = 0
+Popup.bkg_r = default_widget_bkg_r
+Popup.bkg_g = default_widget_bkg_g
+Popup.bkg_b = default_widget_bkg_b
+Popup.border_r = default_widget_border_r
+Popup.border_g = default_widget_border_g
+Popup.border_b = default_widget_border_b
 
 
 function Popup:setup(o)
@@ -14,8 +20,8 @@ end
 
 function Popup:Draw()
   ui:DrawFilledRectangle(0 - 10, 0 - 10, self.width, self.height, 0, 0, 0, self.alpha - 0.7)
-  ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, 1, 1, 1, self.alpha)
-  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 0.8, 0.8, 0.8, self.alpha)
+  ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, self.bkg_r, self.bkg_g, self.bkg_b, self.alpha)
+  ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, self.border_r, self.border_g, self.border_b, self.alpha)
   ui:FlushGeometry()
 end
 

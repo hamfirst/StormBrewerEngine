@@ -167,6 +167,7 @@ void GameModeEndGame::Render()
 void GameModeEndGame::PlayAgain()
 {
   auto & container = GetContainer();
+  auto & init_settings = container.GetInstanceData()->GetLowFrequencyData().m_Settings;
 
   switch (m_Mode)
   {
@@ -176,10 +177,10 @@ void GameModeEndGame::PlayAgain()
     //g_MusicManager.CutTo(GetContainer().GetClientGlobalResources().MainMenuMusic, 0.5f);
     break;
   case EndGamePlayAgainMode::kOfflineMultiplayer:
-    container.SwitchMode(GameModeDef<GameModeOfflineStaging>{});
+    container.SwitchMode(GameModeDef<GameModeOfflineStaging>{}, init_settings);
     break;
   case EndGamePlayAgainMode::kOfflineSingleplayer:
-    container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, false);
+    container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, init_settings, false);
     break;
   }
 }

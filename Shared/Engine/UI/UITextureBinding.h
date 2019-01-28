@@ -18,7 +18,7 @@ public:
   UITextureBinding & operator = (const UITextureBinding & rhs) = delete;
   UITextureBinding & operator = (UITextureBinding && rhs);
 
-  void SetTexture(Delegate<NullOptPtr<Texture>> && tex);
+  void SetTexture(Delegate<NullOptPtr<const Texture>> && tex);
 
   void Clear();
 private:
@@ -26,10 +26,10 @@ private:
   friend class UIManager;
   friend class UIScriptInterface;
 
-  UITextureBinding(NotNullPtr<UIManager> ui_manager, int texture_id, Delegate<NullOptPtr<Texture>> && tex);
+  UITextureBinding(NotNullPtr<UIManager> ui_manager, int texture_id, Delegate<NullOptPtr<const Texture>> && tex);
 
   NotNullPtr<UIManager> m_UIManager;
 
   int m_TextureId;
-  Delegate<NullOptPtr<Texture>> m_TextureFetch;
+  Delegate<NullOptPtr<const Texture>> m_TextureFetch;
 };

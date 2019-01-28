@@ -854,7 +854,7 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
 {
   QPainter p(this);
 
-  p.fillRect(0, 0, width(), height(), Qt::white);
+  p.fillRect(0, 0, width(), height(), palette().color(QPalette::Window));
 
   QStyleOptionFrame frame_option;
   frame_option.rect = QRect(0, 0, width() - 1, height() - 1);
@@ -874,7 +874,7 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
       }
       else
       {
-        p.setPen(Qt::black);
+        p.setPen(palette().color(QPalette::Text));
       }
 
       QFont font = p.font();

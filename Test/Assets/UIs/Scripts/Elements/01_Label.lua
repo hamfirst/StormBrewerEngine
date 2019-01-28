@@ -1,9 +1,9 @@
 
 Label = Elem:construct()
 Label.text = ""
-Label.r = 0
-Label.g = 0
-Label.b = 0
+Label.r = default_text_r
+Label.g = default_text_g
+Label.b = default_text_b
 Label.alpha = 1.0
 Label.scale = 1.0
 Label.centered = true

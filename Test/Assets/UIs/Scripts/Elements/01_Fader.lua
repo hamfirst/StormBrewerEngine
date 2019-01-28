@@ -2,9 +2,9 @@
 Fader = Elem:construct()
 Fader.alpha = 1.0
 Fader.target_alpha = 1.0
-Fader.r = 1
-Fader.g = 1
-Fader.b = 1
+Fader.r = default_fade_r
+Fader.g = default_fade_g
+Fader.b = default_fade_b
 Fader.x = screen_start_x
 Fader.y = screen_start_y
 Fader.fade_speed = 0.5

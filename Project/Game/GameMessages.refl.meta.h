@@ -294,11 +294,11 @@ struct StormReflTypeInfo<GotTextChatMessage>::field_data<1 + StormReflTypeInfo<F
 template <>
 struct StormReflTypeInfo<GotTextChatMessage>::field_data_static<2 + StormReflTypeInfo<FromServerMessage>::fields_n>
 {
-  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 3>
+  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 1>
   static constexpr auto GetName() { return "m_Team"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 3>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
-  static constexpr unsigned GetTypeNameHash() { return 0x338ACEE7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01BCAC65; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<FromServerMessage>::fields_n; }
   static constexpr auto GetMemberPtr() { return &GotTextChatMessage::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GotTextChatMessage *>(obj); return &ptr->m_Team; }

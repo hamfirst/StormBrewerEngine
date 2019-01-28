@@ -12,7 +12,7 @@
 class GameModeTutorial : public GameMode, public GameClientEventSender
 {
 public:
-  GameModeTutorial(GameContainer & game, const GameInitSettings & game_settings);
+  GameModeTutorial(GameContainer & game);
   ~GameModeTutorial() override;
 
   void Initialize() override;

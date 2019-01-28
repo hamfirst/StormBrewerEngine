@@ -47,6 +47,11 @@ Map GameLevelList::LoadLevel(std::size_t stage_index)
   return MapResource::Load(level_list->m_Levels[stage_index].m_Path.data());
 }
 
+const LevelListPtr & GameLevelList::GetLevelListAsset() const
+{
+  return m_LevelListResource;
+}
+
 std::size_t GameLevelList::GetNumLevels()
 {
   auto level_list = m_LevelListResource.GetData();

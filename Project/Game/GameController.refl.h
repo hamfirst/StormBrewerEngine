@@ -47,6 +47,16 @@ public:
   int AddAIPlayer(GameLogicContainer & game, uint32_t random_number);
   void FillWithBots(GameLogicContainer & game, uint32_t random_number);
 
+  int GetMaxPlayerCount(GameLogicContainer & game) const;
+
+#ifdef NET_USE_SCORE
+  int GetScoreLimit(GameLogicContainer & game) const;
+#endif
+
+#ifdef NET_USE_ROUND_TIMER
+  int GetTimeLimit(GameLogicContainer & game) const;
+#endif
+
   static std::vector<int> GetTeamCounts(const GameInstanceLowFrequencyData & game_data);
   static std::vector<int> GetTeamCounts(const GameStateStaging & game_data);
   static std::vector<int> GetTeamCounts(const GameStateLoading & game_data);
@@ -65,7 +75,9 @@ public:
   void StartGame(GameLogicContainer & game);
   void EndGame(int winning_team, GameLogicContainer & game);
 
+#ifdef NET_USE_SCORE
   void AddScore(int team, GameLogicContainer & game, GameNetVec2 & pos);
+#endif
 
   void STORM_REFL_FUNC HandlePlaceholderEvent(const PlaceholderClientEvent & ev, std::size_t player_index, GameLogicContainer & game);
   void STORM_REFL_FUNC HandleJumpEvent(const JumpEvent & ev, std::size_t player_index, GameLogicContainer & game);

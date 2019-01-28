@@ -3,9 +3,9 @@ HeaderContainer = Elem:construct()
 HeaderContainer.text = "Header"
 HeaderContainer.font = large_header_font
 HeaderContainer.header_padding = 16
-HeaderContainer.r = 0
-HeaderContainer.g = 0
-HeaderContainer.b = 0
+HeaderContainer.r = default_frame_r
+HeaderContainer.g = default_frame_g
+HeaderContainer.b = default_frame_b
 HeaderContainer.alpha = 1
 HeaderContainer.parent_alpha = 1
 

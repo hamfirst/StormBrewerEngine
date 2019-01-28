@@ -6,6 +6,8 @@ Texture.draw_frame = false
 function Texture:SetTexture(texture_id)
   self.texture_id = texture_id
   self.width, self.height = ui:GetTextureSize(texture_id)
+
+  print("setting texture to ".. texture_id)
 end
 
 function Texture:Draw()
@@ -20,11 +22,11 @@ function Texture:Draw()
     local scale_x = self.width / width
     local scale_y = self.height / height
     ui:DrawTextureScaleTint(self.texture_id, 0, 0, scale_x, scale_y, 1, 1, 1, self.alpha)
+  end
 
-    if self.draw_frame then
-      ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 0, 0, 0, 1)
-      ui:FlushGeometry()
-    end
+  if self.draw_frame then
+    ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, 0, 0, 0, 1)
+    ui:FlushGeometry()
   end
 
 end
