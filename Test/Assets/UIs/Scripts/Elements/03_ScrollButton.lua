@@ -64,7 +64,7 @@ function ScrollButton:Draw()
 
   ui:FlushGeometry()
 
-  if self.num_options > 1 then
+  if self.num_options >= 1 then
 
     local frac = self.option_lerp - math.floor(self.option_lerp)
     local baseline = math.floor(self.option_lerp / self.num_options) * self.num_options
@@ -111,7 +111,7 @@ function ScrollButton:Clicked()
 
   ui:PlayAudio(click_audio)
 
-  if self.num_options > 1 and self.direction ~= 0 then
+  if self.num_options >= 1 and self.direction ~= 0 then
 
     self.option_index = self.option_index + self.direction
     if self.option_index >= self.num_options then
@@ -122,7 +122,7 @@ function ScrollButton:Clicked()
       self.option_index = self.num_options - 1
     end
 
-    self:SelectionChanged(self.option_index)
+    self:SelectedOptionChanged(self.option_index)
 
     AddLerp(self, "option_lerp", self.option_lerp + self.direction, 0.15, nil, EaseInOutCubic)
   end
@@ -154,17 +154,28 @@ function ScrollButton:MouseLeft()
   self.direction = 0
 end
 
-function ScrollButton:SelectionChanged(option_index)
+function ScrollButton:SelectedOptionChanged(option_index)
 
 end
 
 function ScrollButton:SetSelectedOption(option_index)
-  self.option_index = option_index
-  self.option_lerp = option_index
+  if option_index ~= self.option_index then
+    self.option_index = option_index
+    self.option_lerp = option_index
+    self:SelectedOptionChanged(self.option_index)
+  end
 end
 
 function ScrollButton:PushOption(option)
-
   self.options[self.num_options] = option
   self.num_options = self.num_options + 1
+end
+
+function ScrollButton:ClearOptions()
+  self.options = {}
+  self.num_options = 0
+end
+
+function ScrollButton:GetSelectedOption()
+  return self.options[self.option_index]
 end

@@ -20,13 +20,13 @@
 
 #include <ctime>
 
-GameModeTutorial::GameModeTutorial(GameContainer & game, const GameInitSettings & game_settings) :
+GameModeTutorial::GameModeTutorial(GameContainer & game) :
   GameMode(game),
   m_Paused(false)
 {
   auto & container = GetContainer();
   m_InstanceContainer = std::make_unique<GameClientInstanceContainer>(container, *this, 0, true);
-  m_InstanceContainer->Load(game_settings);
+  m_InstanceContainer->Load(GameInitSettings{});
 }
 
 GameModeTutorial::~GameModeTutorial()
@@ -56,6 +56,7 @@ void GameModeTutorial::OnAssetsLoaded()
   game_logic.GetInstanceData().m_Random = NetRandom(1);
 #endif
 
+  game_logic.SetAllowModifyLowFrequencyData(true);
   m_InstanceContainer->GetGameController().FillWithBots(game_logic, 0);
   m_InstanceContainer->GetGlobalInstanceData().m_AIPlayerInfo.RemoveAt(0);
 

@@ -10,7 +10,7 @@ UITextureBinding::UITextureBinding() :
 
 }
 
-UITextureBinding::UITextureBinding(NotNullPtr<UIManager> ui_manager, int texture_id, Delegate<NullOptPtr<Texture>> && tex) :
+UITextureBinding::UITextureBinding(NotNullPtr<UIManager> ui_manager, int texture_id, Delegate<NullOptPtr<const Texture>> && tex) :
   m_UIManager(ui_manager),
   m_TextureId(texture_id),
   m_TextureFetch(std::move(tex))
@@ -58,7 +58,7 @@ UITextureBinding & UITextureBinding::operator = (UITextureBinding && rhs)
   return *this;
 }
 
-void UITextureBinding::SetTexture(Delegate<NullOptPtr<Texture>> && tex)
+void UITextureBinding::SetTexture(Delegate<NullOptPtr<const Texture>> && tex)
 {
   m_TextureFetch = std::move(tex);
 }

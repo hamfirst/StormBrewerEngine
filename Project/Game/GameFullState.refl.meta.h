@@ -236,11 +236,11 @@ struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<3, Self> : public S
 template <>
 struct StormReflTypeInfo<GameStateStagingPlayer>::field_data_static<4>
 {
-  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 3>
+  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 1>
   static constexpr auto GetName() { return "m_Team"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 3>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
-  static constexpr unsigned GetTypeNameHash() { return 0x338ACEE7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01BCAC65; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameStateStagingPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStagingPlayer *>(obj); return &ptr->m_Team; }
@@ -302,11 +302,11 @@ struct StormReflTypeInfo<GameStateStaging>
 template <>
 struct StormReflTypeInfo<GameStateStaging>::field_data_static<0>
 {
-  using member_type = NetSparseList<GameStateStagingPlayer, kMaxPlayers>; // NetSparseList<GameStateStagingPlayer, 2>
+  using member_type = NetSparseList<GameStateStagingPlayer, kMaxPlayers>; // NetSparseList<GameStateStagingPlayer, 16>
   static constexpr auto GetName() { return "m_Players"; }
-  static constexpr auto GetType() { return "NetSparseList<GameStateStagingPlayer, 2>"; }
+  static constexpr auto GetType() { return "NetSparseList<GameStateStagingPlayer, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB3BC3673; }
-  static constexpr unsigned GetTypeNameHash() { return 0x2DB30DD7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC166320D; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameStateStaging::m_Players; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_Players; }
@@ -536,11 +536,11 @@ struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data<2, Self> : public S
 template <>
 struct StormReflTypeInfo<GameStateLoadingPlayer>::field_data_static<3>
 {
-  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 3>
+  using member_type = NetRangedNumber<int, -1, kMaxTeams - 1>; // NetRangedNumber<int, -1, 1>
   static constexpr auto GetName() { return "m_Team"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 3>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, -1, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
-  static constexpr unsigned GetTypeNameHash() { return 0x338ACEE7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01BCAC65; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameStateLoadingPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateLoadingPlayer *>(obj); return &ptr->m_Team; }
@@ -602,11 +602,11 @@ struct StormReflTypeInfo<GameStateLoading>
 template <>
 struct StormReflTypeInfo<GameStateLoading>::field_data_static<0>
 {
-  using member_type = NetSparseList<GameStateLoadingPlayer, kMaxPlayers>; // NetSparseList<GameStateLoadingPlayer, 2>
+  using member_type = NetSparseList<GameStateLoadingPlayer, kMaxPlayers>; // NetSparseList<GameStateLoadingPlayer, 16>
   static constexpr auto GetName() { return "m_Players"; }
-  static constexpr auto GetType() { return "NetSparseList<GameStateLoadingPlayer, 2>"; }
+  static constexpr auto GetType() { return "NetSparseList<GameStateLoadingPlayer, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB3BC3673; }
-  static constexpr unsigned GetTypeNameHash() { return 0x3CFD9787; }
+  static constexpr unsigned GetTypeNameHash() { return 0xAA1C2D63; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameStateLoading::m_Players; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateLoading *>(obj); return &ptr->m_Players; }
@@ -668,11 +668,11 @@ struct StormReflTypeInfo<GameHistoryInput>
 template <>
 struct StormReflTypeInfo<GameHistoryInput>::field_data_static<0>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 2>
+  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 16>
   static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 2>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB3E55B0E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3EF70E2B; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameHistoryInput::m_PlayerIndex; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameHistoryInput *>(obj); return &ptr->m_PlayerIndex; }
@@ -782,11 +782,11 @@ struct StormReflTypeInfo<GameHistoryEvent>
 template <>
 struct StormReflTypeInfo<GameHistoryEvent>::field_data_static<0>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 2>
+  using member_type = NetRangedNumber<int, 0, kMaxPlayers>; // NetRangedNumber<int, 0, 16>
   static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 2>"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB3E55B0E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3EF70E2B; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameHistoryEvent::m_PlayerIndex; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameHistoryEvent *>(obj); return &ptr->m_PlayerIndex; }

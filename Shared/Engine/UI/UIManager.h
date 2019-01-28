@@ -54,12 +54,13 @@ public:
   void ClearUI();
   ScriptInterface & CreateGameInterface();
 
+  bool Call(czstr name, NullOptPtr<ScriptValue> return_val = nullptr);
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);
   void SetGlobal(czstr name, const ScriptValue & value);
 
   bool HasSelectedElement() const;
 
-  UITextureBinding CreateTextureBinding(czstr name, Delegate<NullOptPtr<Texture>> && tex);
+  UITextureBinding CreateTextureBinding(czstr name, Delegate<NullOptPtr<const Texture>> && tex);
 
 protected:
 

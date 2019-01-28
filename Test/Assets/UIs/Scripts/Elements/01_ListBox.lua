@@ -13,24 +13,24 @@ ListBox.scale = 1.0
 ListBox.pressable = true
 ListBox.mouse_y = 0
 ListBox.mouse_in = false
-ListBox.border_r = 0.4
-ListBox.border_g = 0.4
-ListBox.border_b = 0.4
-ListBox.border_selected_r = 0.1
-ListBox.border_selected_g = 0.1
-ListBox.border_selected_b = 0.7
-ListBox.bkg_r = 0.96
-ListBox.bkg_g = 0.96
-ListBox.bkg_b = 1
-ListBox.bkg_selected_r = 0.3
-ListBox.bkg_selected_g = 0.3
-ListBox.bkg_selected_b = 0.6
-ListBox.text_r = 0
-ListBox.text_g = 0
-ListBox.text_b = 0
-ListBox.text_selected_r = 0.9
-ListBox.text_selected_g = 0.9
-ListBox.text_selected_b = 1.0
+ListBox.border_r = default_widget_border_r
+ListBox.border_g = default_widget_border_g
+ListBox.border_b = default_widget_border_b
+ListBox.border_selected_r = default_widget_border_selected_r
+ListBox.border_selected_g = default_widget_border_selected_g
+ListBox.border_selected_b = default_widget_border_selected_b
+ListBox.bkg_r = default_widget_bkg_r
+ListBox.bkg_g = default_widget_bkg_g
+ListBox.bkg_b = default_widget_bkg_b
+ListBox.bkg_selected_r = default_widget_bkg_selected_r
+ListBox.bkg_selected_g = default_widget_bkg_selected_g
+ListBox.bkg_selected_b = default_widget_bkg_selected_b
+ListBox.text_r = default_text_r
+ListBox.text_g = default_text_g
+ListBox.text_b = default_text_b
+ListBox.text_selected_r = default_text_darkbkg_r
+ListBox.text_selected_g = default_text_darkbkg_g
+ListBox.text_selected_b = default_text_darkbkg_b
 
 function ListBox:setup(o)
   Elem:setup(o)
@@ -68,7 +68,7 @@ function ListBox:Draw()
   for i = 0, self.num_options - 1 do
 
     local option = self.options[i]
-    local text_scale = 1
+    local text_scale = 0.9
     
     local line_width, line_height = ui:MeasureTextScaled(font, option, self.scale)
     y = y - line_height
@@ -80,7 +80,7 @@ function ListBox:Draw()
     end
 
     if self.mouse_in and i == self.hover_index then
-      text_scale = 1.2
+      text_scale = 1.1
     end
 
     if i == self.selected_index then
@@ -119,7 +119,10 @@ function ListBox:Update()
 end
 
 function ListBox:SetSelectedOption(option_index)
-  self.selected_index = option_index
+  if self.selected_index ~= option_index then
+    self.selected_index = option_index
+    self.SelectedOptionChanged(self.selected_index)
+  end
 end
 
 function ListBox:PushOption(option)
@@ -129,7 +132,7 @@ end
 
 function ListBox:Clicked()
   if self.hover_index ~= -1 then
-    self.selected_index = self.hover_index
+    self:SetSelectedOption(self.hover_index)
     ui:PlayAudio(click_audio)
   end
 end
@@ -144,4 +147,8 @@ end
 
 function ListBox:MouseLeft()
   self.mouse_in = false
+end
+
+function ListBox:SelectedOptionChanged()
+
 end

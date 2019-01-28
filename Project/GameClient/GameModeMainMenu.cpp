@@ -4,7 +4,7 @@
 #include "GameClient/GameModeNameSelect.h"
 #include "GameClient/GameModeSinglePlayerBots.h"
 #include "GameClient/GameModeTutorial.h"
-#include "GameClient/GameModeOfflineStaging.h"
+#include "GameClient/GameModeMapSettings.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/Engine.h"
@@ -104,19 +104,19 @@ void GameModeMainMenu::PlayOnline()
 void GameModeMainMenu::PlayOffline()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeOfflineStaging>{});
+  container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kPrivateGame);
 }
 
 void GameModeMainMenu::Tutorial()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeTutorial>{}, GameInitSettings{});
+  container.SwitchMode(GameModeDef<GameModeTutorial>{});
 }
 
 void GameModeMainMenu::PlaySingleplayer()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, false);
+  container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kOfflineBots);
 }
 
 void GameModeMainMenu::CreatePrivateMatch()

@@ -107,7 +107,7 @@ void GameModeJoinPrivateGame::Submit(std::string & game_code_str)
     game_code |= val;
   }
 
-  net_init_settings.m_CreatePrivateGame = false;
+  net_init_settings.m_Intent = ClientConnectionIntent::kJoinPrivate;
   net_init_settings.m_JoinPrivateGameKey = game_code;
   container.StartNetworkClient();
   container.SwitchMode(GameModeDef<GameModeConnecting>{});

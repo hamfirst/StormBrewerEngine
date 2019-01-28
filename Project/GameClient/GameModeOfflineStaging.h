@@ -11,7 +11,7 @@
 class GameModeOfflineStaging : public GameMode
 {
 public:
-  GameModeOfflineStaging(GameContainer & game);
+  GameModeOfflineStaging(GameContainer & game, GameInitSettings & settings);
   ~GameModeOfflineStaging() override;
 
   void Initialize() override;

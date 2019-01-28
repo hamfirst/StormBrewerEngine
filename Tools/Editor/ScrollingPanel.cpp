@@ -2,6 +2,7 @@
 #include "ScrollingPanel.h"
 
 #include <QWheelEvent>
+#include <QPainter>
 
 ScrollingPanel::ScrollingPanel(QWidget * parent) :
   QWidget(parent),
@@ -45,7 +46,7 @@ void ScrollingPanel::recalculate()
   bool prev_scroll = m_ShowScrollbar;
 
   int child_height = m_Widget->minimumHeight();
-  if (child_height <= height())
+  if (child_height <= height() - 20)
   {
     if (m_ShowScrollbar)
     {
@@ -86,8 +87,8 @@ void ScrollingPanel::scrollChanged()
   {
     int min_width = m_ScrollBar->sizeHint().width();
     int scroll_val = m_ScrollBar->value();
-    m_Widget->setGeometry(0, -scroll_val, width() - min_width, widget_height);
-    m_ScrollBar->setGeometry(width() - min_width - 2, 0, min_width - 2, height() - 1);
+    m_Widget->setGeometry(0, -scroll_val, width() - min_width - 3, widget_height);
+    m_ScrollBar->setGeometry(width() - min_width, 0, min_width - 2, height() - 1);
   }
   else
   {
@@ -120,3 +121,8 @@ void ScrollingPanel::wheelEvent(QWheelEvent * ev)
   }
 }
 
+void ScrollingPanel::paintEvent(QPaintEvent * ev)
+{
+  QPainter p(this);
+  p.fillRect(0, 0, width(), height(), palette().color(QPalette::Window));
+}

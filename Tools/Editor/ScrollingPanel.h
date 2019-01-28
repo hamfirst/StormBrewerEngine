@@ -31,6 +31,7 @@ public slots:
 protected:
   virtual void resizeEvent(QResizeEvent * ev) override;
   virtual void wheelEvent(QWheelEvent * ev) override;
+  virtual void paintEvent(QPaintEvent * ev) override;
 
 public:
 

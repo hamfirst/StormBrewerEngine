@@ -12,7 +12,7 @@
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/Staging.ui", g_GameClientStagingUI);
 
-GameModeOfflineStaging::GameModeOfflineStaging(GameContainer & game) :
+GameModeOfflineStaging::GameModeOfflineStaging(GameContainer & game, GameInitSettings & settings) :
   GameMode(game)
 {
   for (int index = 0; index < kMaxPlayers; ++index)

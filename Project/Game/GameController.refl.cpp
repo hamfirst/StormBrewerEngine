@@ -111,7 +111,8 @@ bool GameController::AllowConversionToBot(std::size_t player_index, GameLogicCon
 
   auto game_data = game.GetInstanceData();
 #ifdef NET_USE_SCORE
-  if (game_data.m_Score[(int)player->m_Team] > kMaxScore / 2)
+  auto max_score = GetScoreLimit(game);
+  if (game_data.m_Score[(int)player->m_Team] > max_score / 2)
   {
     return false;
   }
@@ -403,6 +404,37 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
   }
 }
 
+int GameController::GetMaxPlayerCount(GameLogicContainer & game) const
+{
+#ifdef NET_USE_PLAYER_LIMIT
+  return game.GetLowFrequencyInstanceData().m_Settings.m_PlayerCount;
+#else
+  return kMaxPlayers;
+#endif
+}
+
+#ifdef NET_USE_SCORE
+int GameController::GetScoreLimit(GameLogicContainer & game) const
+{
+#ifdef NET_USE_SCORE_LIMIT
+  return game.GetLowFrequencyInstanceData().m_Settings.m_ScoreLimit;
+#else
+  return kMaxScore;
+#endif
+}
+#endif
+
+#ifdef NET_USE_ROUND_TIMER
+int GameController::GetTimeLimit(GameLogicContainer & game) const
+{
+#ifdef NET_USE_TIME_LIMIT
+  return game.GetLowFrequencyInstanceData().m_Settings.m_TimeLimit * 60 * 60;
+#else
+  return kMaxRoundTimer;
+#endif
+}
+#endif
+
 std::vector<int> GameController::GetTeamCounts(const GameInstanceLowFrequencyData & game_data)
 {
   std::vector<int> teams(kMaxTeams);
@@ -639,7 +671,7 @@ void GameController::StartGame(GameLogicContainer & game)
   global_data.m_Countdown = kMaxCountdown;
 #endif
 #ifdef NET_USE_ROUND_TIMER
-  global_data.m_RoundTimer = kMaxRoundTimer;
+  global_data.m_RoundTimer = GetTimeLimit(game);
 #endif
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
@@ -673,10 +705,12 @@ void GameController::AddScore(int team, GameLogicContainer & game, GameNetVec2 &
     auto & game_data = game.GetInstanceData();
     ++game_data.m_Score[team];
 
+    auto max_score = GetScoreLimit(game);
+
     auto winning_team = -1;
     for (auto team = 0; team < kMaxTeams; ++team)
     {
-      if (game_data.m_Score[team] > kMaxScore)
+      if (game_data.m_Score[team] > max_score)
       {
         if (winning_team == -1)
         {

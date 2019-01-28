@@ -98,11 +98,11 @@ void GameClientWidget::showEvent(QShowEvent * ev)
 
   if (m_BotGame)
   {
-    init_settings->m_AutoBotGame = true;
+    init_settings->m_AutoBotGame = false;
   }
   else
   {
-    init_settings->m_AutoConnect = true;
+    init_settings->m_AutoConnect = false;
   }
 
   m_FakeWindow->HandleMouseMoveMessage(cursor_pos.x(), cursor_pos.y());
