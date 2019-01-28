@@ -166,7 +166,7 @@ namespace StormSockets
             {
               ws_connection.m_GotWebsocketVerHeader = true;
             }
-            else if (m_HasProtocol == false && ws_connection.m_GotWebsocketProtoHeader == false &&
+            else if (m_HasProtocol && ws_connection.m_GotWebsocketProtoHeader == false &&
               m_HeaderValues.MatchExact(cur_header, header_val_lowercase, StormWebsocketHeaderType::WebsocketProtoHeader))
             {
               ws_connection.m_GotWebsocketProtoHeader = true;

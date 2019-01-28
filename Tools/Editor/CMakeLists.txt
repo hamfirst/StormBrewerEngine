@@ -132,6 +132,7 @@ set(GENERIC_SRC_Editor
             EditorContainer.cpp
             SelectFromListDialog.cpp
             DocumentListValueWatcher.cpp
+            QtStyle.cpp
             FrameEditorLowerEdge.cpp
             DocumentValueWatcher.cpp
             AudioViewer.cpp
@@ -149,7 +150,7 @@ set(GENERIC_SRC_Editor
             AtlasTextureLoadList.cpp
             GenericComboBox.cpp
             #CPP_PLACEHOLDER
-        QtStyle.cpp)
+            )
 
 set(GENERIC_HEADER_Editor 
             PropertyEditorStruct.h

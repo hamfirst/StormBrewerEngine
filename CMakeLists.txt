@@ -267,6 +267,20 @@ if(BUILD_TOOLS)
     link_directories("/usr/local/lib")
   endif()
 
+  add_executable(Fetch Tools/DistTools/Fetch.cpp)
+  target_link_libraries(Fetch DistFetchLib StormSocketCPP mbedtls asio)
+
+  if(NOT MSVC)
+    target_link_libraries(Fetch stdc++fs pthread)
+  endif()
+
+  add_executable(Upload Tools/DistTools/Fetch.cpp)
+  target_link_libraries(Upload DistUploadLib StormSocketCPP mbedtls asio)
+
+  if(NOT MSVC)
+    target_link_libraries(Upload stdc++fs pthread)
+  endif()
+
   add_executable(stormrefl StormTech/StormRefl/main.cpp StormTech/StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
 

@@ -1,8 +1,30 @@
 
 #include "TemplateLib/TemplateLib.h"
 
+#include <set>
+
+
 int main(int argc, char ** argv)
 {
+  auto root_dir = fs::canonical(argv[0]).parent_path();
+  auto template_dir = fs::canonical(root_dir / "Tools/Wizards/Templates/");
+
+  if(argc == 2 && !strcmp(argv[1], "-l"))
+  {
+    std::set<std::string> templates;
+    for(auto & p : fs::directory_iterator(template_dir))
+    {
+      auto stem = p.path().stem().stem().stem().string();
+      templates.emplace(stem);
+    }
+
+    for(auto & elem : templates)
+    {
+      printf("%s\n", elem.c_str());
+    }
+    return 0;
+  }
+
   if(argc < 3)
   {
     fprintf(stderr, "Usage: addcode <TemplateType> <ClassName>\n");
@@ -12,8 +34,6 @@ int main(int argc, char ** argv)
   auto type = std::string(argv[1]);
   auto name = std::string(argv[2]);
   auto target_dir = fs::canonical(fs::current_path());
-  auto root_dir = fs::canonical(argv[0]).parent_path();
-  auto template_dir = fs::canonical(root_dir / "Tools/Wizards/Templates/");
 
   printf("Type: %s\n", type.data());
   printf("Name: %s\n", name.data());
