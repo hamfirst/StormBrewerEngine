@@ -4,6 +4,7 @@
     <generated>
       <config projectName="StormBrewerEngine" targetName="SDL2-static" />
       <config projectName="StormBrewerEngine" targetName="Engine_pch" />
+      <config projectName="StormBrewerEngine" targetName="DistServerLib" />
       <config projectName="StormBrewerEngine" targetName="Editor_autogen" />
       <config projectName="StormBrewerEngine" targetName="stormrefl" />
       <config projectName="StormBrewerEngine" targetName="GameShared_unity" />
@@ -22,8 +23,8 @@
       <config projectName="StormBrewerEngine" targetName="TemplateLib" />
       <config projectName="StormBrewerEngine" targetName="asio" />
       <config projectName="StormBrewerEngine" targetName="libgit2_clar" />
-      <config projectName="StormBrewerEngine" targetName="Engine" />
       <config projectName="StormBrewerEngine" targetName="usrsctp" />
+      <config projectName="StormBrewerEngine" targetName="Engine" />
       <config projectName="StormBrewerEngine" targetName="editor" />
       <config projectName="StormBrewerEngine" targetName="SDL2main" />
       <config projectName="StormBrewerEngine" targetName="lua" />
@@ -66,6 +67,7 @@
       <config projectName="StormBrewerEngine" targetName="mongoc" />
       <config projectName="StormBrewerEngine" targetName="uninstall" />
       <config projectName="StormBrewerEngine" targetName="ClientExe" />
+      <config projectName="StormBrewerEngine" targetName="DistUploadLib" />
       <config projectName="StormBrewerEngine" targetName="StormWebrtcClientAPI" />
       <config projectName="StormBrewerEngine" targetName="documentserver" />
       <config projectName="StormBrewerEngine" targetName="ENet" />
@@ -80,50 +82,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Project/GameClient/GameModeMapSettings.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Project/GameClient/GameModeMapSettings.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/ProjectColors.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Editor/QtStyle.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/Game/GameNetworkSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/GameNetworkSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMake/StormBrewerEngine.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMake/StormBrewerEngine.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameCamera.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameClientLevelLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameClientLevelLoader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeJoinPrivateGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeJoinPrivateGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeLoadingGlobal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeLoadingGlobal.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeLocalMultiplayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeLocalMultiplayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeLogo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeLogo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeNameSelect.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeNameSelect.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeOfflineStaging.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeOfflineStaging.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeOnlineGameplay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeOnlineGameplay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeOnlineStaging.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeOnlineStaging.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeSinglePlayerBots.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeSinglePlayerBots.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/GameModeTutorial.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/GameModeTutorial.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameShared/GameLevelList.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameShared/GameLevelList.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/LevelList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/LevelList.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/Maps/Test.map" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/Maps/Test.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/ServerObjects/TestBot.serverobject" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/ServerObjects/TestBot.serverobject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/Sprites/Player.sprite" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/Sprites/Player.sprite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/MainMenu.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/MainMenu.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/MapSettings.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/MapSettings.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_ScrollButton.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Scripts/Elements/03_ScrollButton.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/Test.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/Test.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/Assets/UIs/TestAtlas.atlas" beforeDir="false" afterPath="$PROJECT_DIR$/Test/Assets/UIs/TestAtlas.atlas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/StormExpr/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormExpr/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/UIEditorViewer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/UIEditorViewer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/VisualEffectEditorViewer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/VisualEffectEditorViewer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -140,90 +109,62 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h">
+        <entry file="file://$PROJECT_DIR$/Tools/DistTools/Server.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="3646">
+              <caret line="259" column="14" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
+        <entry file="file://$PROJECT_DIR$/Tools/DistTools/Settings.refl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-497">
-              <caret line="522" column="101" selection-start-line="522" selection-start-column="101" selection-end-line="522" selection-end-column="101" />
+            <state relative-caret-position="330">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/main.cpp">
+        <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="66" column="4" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="4" />
+            <state relative-caret-position="528">
+              <caret line="91" selection-start-line="91" selection-end-line="91" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp">
+        <entry file="file://$PROJECT_DIR$/Tools/DistTools/Fetch.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="289" column="37" selection-start-line="289" selection-start-column="37" selection-end-line="289" selection-end-column="37" />
+            <state relative-caret-position="2700">
+              <caret line="180" column="33" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp">
+        <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
-              <caret line="102" column="23" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="45" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="288" column="17" selection-start-line="288" selection-start-column="17" selection-end-line="288" selection-end-column="17" />
+            <state relative-caret-position="283">
+              <caret line="5172" selection-start-line="5172" selection-end-line="5172" />
+              <folding>
+                <element signature="e#15513#15625#0" expanded="true" />
+                <element signature="e#16760#16877#0" expanded="true" />
+                <element signature="e#30086#30119#0" expanded="true" />
+                <element signature="e#44450#44517#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
+        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3579">
-              <caret line="84" column="29" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
+            <state relative-caret-position="-2206">
+              <caret line="269" column="45" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3354" />
           </provider>
         </entry>
       </file>
@@ -231,10 +172,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TrashClickable</find>
-      <find>m_WheelBinding</find>
-      <find>CreateControlBinding</find>
-      <find>Watcher</find>
       <find>m_FilesystemWatcher</find>
       <find>added file</find>
       <find>m_CachedAssets</find>
@@ -261,6 +198,10 @@
       <find>glClearColor</find>
       <find>::Rec</find>
       <find>GetTexture</find>
+      <find>WriteByteBlock</find>
+      <find>::WriteByteBlock</find>
+      <find>m_Has</find>
+      <find>settings</find>
     </findStrings>
     <replaceStrings>
       <replace>position.m_End.x</replace>
@@ -307,29 +248,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Shared/Foundation/FileSystem/FileSystemWatcher.h" />
-        <option value="$PROJECT_DIR$/Tools/DocumentServer/DocumentServer.cpp" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeJoinPrivateGame.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/UI/UITextInput.refl.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/UI/UITextInput.refl.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Window/WindowManager.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Window/WindowManager.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Window/Window.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Window/Window.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/UI/UIManager.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/RenderState.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Text/TextManager.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/RenderState.cpp" />
-        <option value="$PROJECT_DIR$/Shared/Foundation/Script/ScriptFuncs.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/SaveFile/SaveFile.cpp" />
-        <option value="$PROJECT_DIR$/Project/Game/GameController.refl.cpp" />
-        <option value="$PROJECT_DIR$/Project/Game/GameNetworkData.refl.h" />
-        <option value="$PROJECT_DIR$/Project/GameShared/GameLevelListAsset.refl.h" />
-        <option value="$PROJECT_DIR$/Project/GameClient/GameModeMapSettings.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.h" />
-        <option value="$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.cpp" />
-        <option value="$PROJECT_DIR$/ProjectSettings/ProjectColors.h" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameCamera.h" />
@@ -358,6 +276,29 @@
         <option value="$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.h" />
         <option value="$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp" />
         <option value="$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp" />
+        <option value="$PROJECT_DIR$/StormTech/StormDistUpload/UploadSettings.refl.h" />
+        <option value="$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp" />
+        <option value="$PROJECT_DIR$/StormTech/StormDistUpload/main.cpp" />
+        <option value="$PROJECT_DIR$/StormTech/StormDistUpload/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" />
+        <option value="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/upload.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/packets.h" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/server.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/CMakeLists.gen" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/CMake/StormBrewerEngine.cmake" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/Settings.refl.h" />
+        <option value="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/Packets.h" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/Server.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistServer/Upload.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Server.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Settings.refl.h" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
       </list>
     </option>
   </component>
@@ -374,7 +315,7 @@
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <autoscrollToSource ProjectPane="true" />
-      <autoscrollFromSource ProjectPane="true" />
+      <autoscrollFromSource Scope="true" ProjectPane="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -388,60 +329,43 @@
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Project" type="462c0819:PsiDirectoryNode" />
+              <item name="CMake" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Project" type="462c0819:PsiDirectoryNode" />
-              <item name="Game" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="ProjectSettings" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Shared" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Shared" type="462c0819:PsiDirectoryNode" />
-              <item name="Engine" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Shared" type="462c0819:PsiDirectoryNode" />
-              <item name="Engine" type="462c0819:PsiDirectoryNode" />
-              <item name="Rendering" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Shared" type="462c0819:PsiDirectoryNode" />
-              <item name="Engine" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="Editor" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
+              <item name="include" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Changed Files'; set:Changed Files; ALL; class com.intellij.packageDependencies.ChangeListScope">
+          <expand>
+            <path>
+              <item name="StormBrewerEngine" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -474,6 +398,16 @@
       </method>
     </configuration>
     <configuration name="ClientExe" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ClientExe" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="ClientExe">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DistServerLib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="DistServerLib" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DistUploadLib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="DistUploadLib" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -882,6 +816,8 @@
       <item itemvalue="Application.StormWebrtc" />
       <item itemvalue="Application.StormWebrtcClientAPI" />
       <item itemvalue="Application.StormWebrtcServerAPI" />
+      <item itemvalue="Application.DistServerLib" />
+      <item itemvalue="Application.DistUploadLib" />
       <item itemvalue="Application.DocumentServer" />
       <item itemvalue="Application.Editor" />
       <item itemvalue="Application.Editor_autogen" />
@@ -977,23 +913,27 @@
       <workItem from="1547630259813" duration="1440000" />
       <workItem from="1547635438580" duration="215000" />
       <workItem from="1547877838625" duration="306000" />
-      <workItem from="1547878237588" duration="33869000" />
+      <workItem from="1547878237588" duration="39879000" />
+      <workItem from="1548473124049" duration="8310000" />
+      <workItem from="1548498512364" duration="13806000" />
+      <workItem from="1548592015640" duration="9555000" />
+      <workItem from="1548642856185" duration="7640000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1038756000" />
+    <option name="totallyTimeSpent" value="1084077000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="19" y="25" width="1882" height="1036" extended-state="6" />
+    <frame x="19" y="25" width="934" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.15502183" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.29411766" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50265485" side_tool="true" weight="0.17685589" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32637364" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49945414" visible="true" weight="0.2747253" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.2747253" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.23626374" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1002,8 +942,8 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3265306" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32857144" />
-      <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.349087" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" weight="0.30439562" />
+      <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.32417583" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.32747254" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1105,326 +1045,11 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameMode.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeNameSelect.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeMapSettings.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
-          <folding>
-            <element signature="e#15#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProjectSettings/ProjectPerspective.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/RenderUtil.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameContainer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="42" column="38" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="33" column="37" selection-start-line="33" selection-start-column="37" selection-end-line="33" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameCamera.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="144" column="37" selection-start-line="144" selection-start-column="37" selection-end-line="144" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeJoinPrivateGame.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeLoadingGlobal.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="71" column="37" selection-start-line="71" selection-start-column="37" selection-end-line="71" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeLocalMultiplayer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="192" column="37" selection-start-line="192" selection-start-column="37" selection-end-line="192" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeLogo.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeMainMenu.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="43" column="49" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeMapSettings.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeNameSelect.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="42" column="36" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeOfflineStaging.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="55" column="37" selection-start-line="55" selection-start-column="37" selection-end-line="55" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeOnlineGameplay.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="158" column="39" selection-start-line="158" selection-start-column="39" selection-end-line="158" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeOnlineStaging.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="33" column="37" selection-start-line="33" selection-start-column="37" selection-end-line="33" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProjectSettings/ProjectColors.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="27" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeTutorial.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="171" selection-start-line="171" selection-end-line="171" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/UIEditorViewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="179" selection-start-line="179" selection-end-line="179" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/TextureViewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="104" selection-start-line="104" selection-end-line="104" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/VisualEffectEditorViewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="196" selection-start-line="196" selection-end-line="196" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/FontViewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="110" selection-start-line="110" selection-end-line="110" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/MapEditorViewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="582" selection-start-line="582" selection-end-line="582" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameClientLevelLoader.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameClientInstanceContainer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/8.2.1/bits/unique_ptr.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="830" selection-start-line="830" selection-end-line="830" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameModeSinglePlayerBots.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Runtime/Map/MapResource.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameClient/GameClientLevelLoader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="56" selection-start-line="32" selection-start-column="56" selection-end-line="32" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameShared/GameLevelList.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="53" selection-start-line="12" selection-start-column="53" selection-end-line="12" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameShared/GameLevelListAsset.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/GameShared/GameLevelList.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/Game/GameNetworkSettings.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="2" />
-          <folding>
-            <element signature="e#282#395#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="70" column="10" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/QtStyle.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="370" column="32" selection-start-line="370" selection-start-column="32" selection-end-line="370" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/DrawUtil.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="3" lean-forward="true" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="66" column="4" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Project/Game/GameNetworkData.refl.meta.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Shared/Engine/UI/UIScriptInterface.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-497">
-          <caret line="522" column="101" selection-start-line="522" selection-start-column="101" selection-end-line="522" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/GeometryVertexBufferBuilder.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
+        <state relative-caret-position="4335">
           <caret line="289" column="37" selection-start-line="289" selection-start-column="37" selection-end-line="289" selection-end-column="37" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3354" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorBase.cpp">
@@ -1443,22 +1068,267 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
+        <state relative-caret-position="435">
           <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/Editor/GeometryEditorBase.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="4320">
           <caret line="288" column="17" selection-start-line="288" selection-start-column="17" selection-end-line="288" selection-end-column="17" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/FrameEditorSingleBox.cpp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Shared/Engine/Rendering/VertexBufferBuilder.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3579">
+        <state relative-caret-position="15">
           <caret line="84" column="29" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketBackend.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="102" column="52" selection-start-line="102" selection-start-column="29" selection-end-line="102" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/UploadSettings.refl.h" />
+    <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/UploadSettings.refl.meta.h" />
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendWebsocketBase.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="188" column="40" selection-start-line="188" selection-start-column="40" selection-end-line="188" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/main.cpp" />
+    <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/CMakeLists.gen" />
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-900" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/CMakeLists.txt" />
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketClientFrontendWebsocket.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="87" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8.2.1/bits/fs_dir.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="354" column="4" selection-start-line="354" selection-start-column="4" selection-end-line="354" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/upload.cpp" />
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/packets.h" />
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/server.cpp" />
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/MapEditorToolServerObjectLayerSelect.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Editor/VisualEffectEditorViewer.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/CMakeLists.gen" />
+    <entry file="file://$PROJECT_DIR$/Project/Game/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMake/StormBrewerEngine.cmake">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1860">
+          <caret line="124" column="58" selection-start-line="124" selection-start-column="58" selection-end-line="124" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormMessageWriter.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3195">
+          <caret line="213" column="25" selection-start-line="213" selection-start-column="25" selection-end-line="213" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketRequest.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerTypes.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="69" column="9" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Packets.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Server.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3405">
+          <caret line="227" column="13" lean-forward="true" selection-start-line="227" selection-start-column="13" selection-end-line="227" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.meta.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file:///usr/include/string.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1845">
+          <caret line="123" column="13" selection-start-line="123" selection-start-column="13" selection-end-line="123" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8.2.1/bits/fs_ops.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="85" column="45" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8.2.1/system_error">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2175">
+          <caret line="145" column="9" selection-start-line="145" selection-start-column="9" selection-end-line="145" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketFrontendWebsocketBase.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="29" selection-start-line="16" selection-start-column="2" selection-end-line="16" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Upload.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="116" column="11" lean-forward="true" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="168" column="34" selection-start-line="168" selection-start-column="34" selection-end-line="168" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Packets.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="2" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/time.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="122" column="18" selection-start-line="122" selection-start-column="18" selection-end-line="122" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Fetch.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2700">
+          <caret line="180" column="33" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Server.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3646">
+          <caret line="259" column="14" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Settings.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="5172" selection-start-line="5172" selection-end-line="5172" />
+          <folding>
+            <element signature="e#15513#15625#0" expanded="true" />
+            <element signature="e#16760#16877#0" expanded="true" />
+            <element signature="e#30086#30119#0" expanded="true" />
+            <element signature="e#44450#44517#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2206">
+          <caret line="269" column="45" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
         </state>
       </provider>
     </entry>

@@ -9,6 +9,7 @@ set(GENERIC_SRC_GameClient
             GameModeStagingBase.cpp
             GameModeLoadingGlobal.cpp
             GameModeConnecting.cpp
+            GameModeMapSettings.cpp
             GameModeMainMenu.cpp
             GameContainer.cpp
             GameShaders.cpp
@@ -45,7 +46,7 @@ set(GENERIC_SRC_GameClient
             EffectLayers/CollisionDrawer.refl.cpp
             EffectLayers/CollisionDrawer.refl.reg.cpp
             #CPP_PLACEHOLDER
-        GameModeMapSettings.cpp GameModeMapSettings.h)
+            )
 
 set(GENERIC_HEADER_GameClient 
             GameClientEntitySync.h
@@ -69,6 +70,7 @@ set(GENERIC_HEADER_GameClient
             GameClientUIManager.h
             GameMode.h
             GameModeOfflineStaging.h
+            GameModeMapSettings.h
             GameClientSystems.h
             GameModeOnlineStaging.h
             GameClientInstanceContainer.h
