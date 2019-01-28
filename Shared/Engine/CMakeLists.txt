@@ -45,6 +45,7 @@ set(GENERIC_SRC_Engine
             Component/Component.cpp
             UI/UIManager.cpp
             UI/UITextInput.refl.cpp
+            UI/UITextureBinding.cpp
             UI/UIClickable.refl.cpp
             UI/UIScriptInterface.cpp
             UI/UIScriptLoader.cpp
@@ -92,7 +93,7 @@ set(GENERIC_SRC_Engine
             Shader/ShaderManager.cpp
             Settings/EngineSettings.refl.cpp
             #CPP_PLACEHOLDER
-  UI/UITextureBinding.cpp UI/UITextureBinding.h)
+            )
 
 set(GENERIC_HEADER_Engine 
             Engine.h
@@ -144,6 +145,7 @@ set(GENERIC_HEADER_Engine
             UI/UIClickable.refl.meta.h
             UI/UIClickable.refl.h
             UI/UIScriptInterface.h
+            UI/UITextureBinding.h
             UI/UITextInput.refl.h
             UI/UITextInput.refl.meta.h
             UI/UIScriptLoader.h
