@@ -11,6 +11,10 @@ add_subdirectory(Project/Game)
 add_subdirectory(Project/GameShared)
 
 set(CLIENT_LINK)
+set(OUTPUTS)
+
+option(EXPORT_TEST ON)
+option(EXPORT_DIST OFF)
 
 if(MSVC)
   add_definitions(-D_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING)
@@ -176,6 +180,8 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
       target_link_libraries(ClientExe dl pthread)
     endif()
   endif()
+  
+  set(OUTPUTS ${OUTPUTS} ClientExe)
 endif()
 
 if(BUILD_SERVER OR BUILD_TOOLS)
@@ -231,6 +237,8 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_START_STATIC 1)
     #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_END_STATIC 1)
   endif()
+  
+  set(OUTPUTS ${OUTPUTS} ServerExe)
 endif()
 
 if(BUILD_TOOLS)
@@ -412,58 +420,22 @@ if(BUILD_TOOLS)
     target_link_libraries(editor stdc++fs)
     target_link_libraries(editor dl pthread)
   endif()
-
+  
+  
   if(MSVC)
     add_custom_command(TARGET addcode POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}
-      COMMENT "Copying to Target Directory"
+      COMMENT "Copying to Base Directory"
     )
 
-    add_custom_command(TARGET documentserver POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET editor POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET ClientExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET ServerExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test
-      COMMENT "Copying to Test Directory"
-    )
   else()
     add_custom_command(TARGET addcode POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}/addcode
-      COMMENT "Copying to Target Directory"
-    )
-
-    add_custom_command(TARGET documentserver POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:documentserver> ${CMAKE_CURRENT_SOURCE_DIR}/Test/documentserver
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET editor POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:editor> ${CMAKE_CURRENT_SOURCE_DIR}/Test/editor
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET ClientExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ClientExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ClientExe
-      COMMENT "Copying to Test Directory"
-    )
-
-    add_custom_command(TARGET ServerExe POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ServerExe> ${CMAKE_CURRENT_SOURCE_DIR}/Test/ServerExe
-      COMMENT "Copying to Test Directory"
+      COMMENT "Copying to Base Directory"
     )
   endif()
+  
+  set(OUTPUTS ${OUTPUTS} documentserver editor)
 endif()
 
 add_dependencies(Game Runtime)
@@ -498,4 +470,42 @@ if(CMAKE_BUILD_TYPE EQUAL "RELWITHDEBUGINFO")
     set_target_properties(GameShared PROPERTIES COMPILE_FLAGS "-O0")
   endif()
 endif()
+
+
+if(EXPORT_TEST)
+  foreach(OUTPUT ${OUTPUTS})
+  
+    if(MSVC)
+      add_custom_command(TARGET ${OUTPUT} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Test
+        COMMENT "Copying to Test Directory"
+      )
+    else()
+      add_custom_command(TARGET ${OUTPUT} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Test/${OUTPUT}
+        COMMENT "Copying to Test Directory"
+      )
+    endif()
+
+  endforeach()
+endif()
+
+if(EXPORT_DIST)
+  foreach(OUTPUT ${OUTPUTS})
+  
+    if(MSVC)
+      add_custom_command(TARGET ${OUTPUT} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute
+        COMMENT "Copying to Dist Directory"
+      )
+    else()
+      add_custom_command(TARGET ${OUTPUT} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute/${OUTPUT}
+        COMMENT "Copying to Dist Directory"
+      )
+    endif()
+
+  endforeach()
+endif()
+
 

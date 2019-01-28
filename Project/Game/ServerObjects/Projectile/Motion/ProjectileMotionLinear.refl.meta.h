@@ -58,11 +58,11 @@ struct StormReflTypeInfo<ProjectileMotionLinearConfig>
 template <>
 struct StormReflTypeInfo<ProjectileMotionLinearConfig>::field_data_static<0 + StormReflTypeInfo<ProjectileMotionBaseConfig>::fields_n>
 {
-  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long, 32, 16> >
+  using member_type = RDeterministicFloat<GameNetVal>; // RDeterministicFloat<NetFixedPoint<long long, 32, 16> >
   static constexpr auto GetName() { return "m_Speed"; }
-  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long, 32, 16> >"; }
+  static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x82106E96; }
-  static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x363C5348; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ProjectileMotionBaseConfig>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileMotionLinearConfig::m_Speed; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileMotionLinearConfig *>(obj); return &ptr->m_Speed; }
@@ -135,11 +135,11 @@ struct StormReflTypeInfo<ProjectileMotionLinear>
 template <>
 struct StormReflTypeInfo<ProjectileMotionLinear>::field_data_static<0 + StormReflTypeInfo<ProjectileMotionBase>::fields_n>
 {
-  using member_type = GameNetVal; // NetFixedPoint<long, 32, 16>
+  using member_type = GameNetVal; // NetFixedPoint<long long, 32, 16>
   static constexpr auto GetName() { return "m_RangeRemaining"; }
-  static constexpr auto GetType() { return "NetFixedPoint<long, 32, 16>"; }
+  static constexpr auto GetType() { return "NetFixedPoint<long long, 32, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x51F0BDD2; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0D893FA0; }
+  static constexpr unsigned GetTypeNameHash() { return 0xDF428045; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ProjectileMotionBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileMotionLinear::m_RangeRemaining; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileMotionLinear *>(obj); return &ptr->m_RangeRemaining; }
