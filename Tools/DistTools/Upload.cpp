@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
     printf("PROJECT_DIR environment variable not set\n");
   }
 
-  if(argc < 1)
+  if(argc < 2)
   {
     printf("StormDistUpload <target directory>\n");
     return 0;
@@ -62,7 +62,7 @@ int main(int argc, char ** argv)
   printf("Compressing files...\n");
 
   miniz_cpp::zip_file file;
-  for(auto p : std::filesystem::recursive_directory_iterator(argv[0]))
+  for(auto p : std::filesystem::recursive_directory_iterator(argv[1]))
   {
     auto str = p.path().string();
     printf("  %s\n", str.c_str());
@@ -72,7 +72,15 @@ int main(int argc, char ** argv)
   std::vector<uint8_t> data;
   file.save(data);
 
-  printf("Done!\n\n");
+  printf("Testing zip integrity\n");
+  miniz_cpp::zip_file test_file(data);
+  test_file.printdir();
+
+
+  printf("Done zipping data of size %zd!\n\n", data.size());
+  auto test_out_file = fopen("DistUpload.zip", "wb");
+  fwrite(data.data(), data.size(), 1, test_out_file);
+  fclose(test_out_file);
 
   StormSockets::StormSemaphore semaphore;
 

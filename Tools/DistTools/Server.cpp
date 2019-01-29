@@ -20,6 +20,7 @@ static const int kMaxBuilds = 10;
 
 int main(int argc, char ** argv)
 {
+  printf("Loading settings...\n");
   auto settings_file = fopen("ProjectCredentials.txt", "rb");
   if(settings_file == nullptr)
   {
@@ -61,7 +62,7 @@ int main(int argc, char ** argv)
   websocket_settings.Protocol = server_settings.m_DistServerIdent.size() ? server_settings.m_DistServerIdent.c_str() : nullptr;
   auto frontend = std::make_unique<StormSockets::StormSocketServerFrontendWebsocket>(websocket_settings, backend.get());
 
-  printf("Loading data\n");
+  printf("Loading data...\n");
   struct BuildData
   {
     std::string m_Name;
@@ -97,6 +98,8 @@ int main(int argc, char ** argv)
       build_db.emplace(std::make_pair(next_build_id, std::move(build_data)));
 
       next_build_id++;
+
+      printf("  Adding build %s\n", p.path().string().c_str());
     }
   }
 
@@ -115,37 +118,41 @@ int main(int argc, char ** argv)
         printf("Client %d Connected...\n", event.ConnectionId.GetIndex());
         break;
       case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
-        printf("Client %d Established\n");
+        printf("Client %d Established\n", event.ConnectionId.GetIndex());
         break;
       case StormSockets::StormSocketEventType::Data:
-        printf("Got client request ...\n");
+        printf("Got client request from %d...\n", event.ConnectionId.GetIndex());
 
         {
           auto & reader = event.GetWebsocketReader();
-          if (reader.GetDataLength() < 4)
+          auto data_len = reader.GetDataLength();
+          if (data_len < 4)
           {
-            printf("Invalid server request\n");
+            printf("Invalid server request (no type)\n");
             frontend->FreeIncomingPacket(reader);
             frontend->ForceDisconnect(event.ConnectionId);
             continue;
           }
 
-          auto type = (MessageType) reader.ReadInt32();
+          auto type = (MessageType)reader.ReadInt32();
+          data_len -= 4;
+
           if(type == MessageType::kUpload)
           {
             UploadRequest req = {};
-            if(reader.GetDataLength() < sizeof(UploadRequest))
+            if(data_len < sizeof(UploadRequest))
             {
-              printf("Invalid server request\n");
+              printf("Invalid server request (no upload req)\n");
               frontend->FreeIncomingPacket(reader);
               frontend->ForceDisconnect(event.ConnectionId);
               continue;
             }
 
             reader.ReadByteBlock(&req, sizeof(UploadRequest));
-            if(reader.GetDataLength() != req.m_FileSize)
+            data_len -= sizeof(UploadRequest);
+            if(data_len != req.m_FileSize)
             {
-              printf("Invalid server request\n");
+              printf("Invalid server request (incorrect file size)\n");
               frontend->FreeIncomingPacket(reader);
               frontend->ForceDisconnect(event.ConnectionId);
               continue;
@@ -197,9 +204,13 @@ int main(int argc, char ** argv)
             frontend->FinalizeOutgoingPacket(response);
             frontend->SendPacketToConnection(response, event.ConnectionId);
             frontend->FreeOutgoingPacket(response);
+
+            printf("Added new build %s of size %d\n", path.string().c_str(), req.m_FileSize);
           }
           else if(type == MessageType::kDownloadList)
           {
+            printf("Sending build list\n");
+
             auto response = frontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
             response.WriteInt32(build_db.size());
 
@@ -210,6 +221,8 @@ int main(int argc, char ** argv)
               strncpy(info.m_Name, elem.second.m_Name.c_str(), sizeof(DownloadList::m_Name));
               info.m_Name[sizeof(DownloadList::m_Name) - 1] = 0;
 
+              printf("  build %d: %s\n", elem.first, info.m_Name);
+
               response.WriteByteBlock(&info, 0, sizeof(DownloadList));
             }
 
@@ -219,7 +232,7 @@ int main(int argc, char ** argv)
           }
           else if(type == MessageType::kDownload)
           {
-            if (reader.GetDataLength() < 4)
+            if (data_len < 4)
             {
               printf("Invalid server request\n");
               frontend->FreeIncomingPacket(reader);
@@ -228,6 +241,8 @@ int main(int argc, char ** argv)
             }
 
             auto id = reader.ReadInt32();
+            data_len -= 4;
+
             if(id == 0)
             {
               auto newest_id = 0;
@@ -239,8 +254,9 @@ int main(int argc, char ** argv)
               id = newest_id;
             }
 
-            auto itr = build_db.find(id);
+            printf("Sending build %d\n", id);
 
+            auto itr = build_db.find(id);
             if(itr == build_db.end())
             {
               auto response = frontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
@@ -259,8 +275,9 @@ int main(int argc, char ** argv)
 
         break;
       case StormSockets::StormSocketEventType::Disconnected:
-        printf("Disconnected before upload complete\n");
-        return 0;
+        printf("Client disconnected\n");
+        frontend->FinalizeConnection(event.ConnectionId);
+        break;
       }
     }
   }

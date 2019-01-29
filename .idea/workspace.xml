@@ -19,7 +19,9 @@
       <config projectName="StormBrewerEngine" targetName="Game_unity" />
       <config projectName="StormBrewerEngine" targetName="StormNetBindingsEnet" />
       <config projectName="StormBrewerEngine" targetName="StormData" />
+      <config projectName="StormBrewerEngine" targetName="DistFetchLib" />
       <config projectName="StormBrewerEngine" targetName="GameServerExe" />
+      <config projectName="StormBrewerEngine" targetName="Upload" />
       <config projectName="StormBrewerEngine" targetName="TemplateLib" />
       <config projectName="StormBrewerEngine" targetName="asio" />
       <config projectName="StormBrewerEngine" targetName="libgit2_clar" />
@@ -72,6 +74,7 @@
       <config projectName="StormBrewerEngine" targetName="documentserver" />
       <config projectName="StormBrewerEngine" targetName="ENet" />
       <config projectName="StormBrewerEngine" targetName="addcode" />
+      <config projectName="StormBrewerEngine" targetName="Fetch" />
       <config projectName="StormBrewerEngine" targetName="generatecmake" />
     </generated>
   </component>
@@ -82,17 +85,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMake/StormBrewerEngine.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMake/StormBrewerEngine.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Project/GameClient/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Shared/Engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StormTech/StormExpr/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormExpr/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Editor/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/TemplateLib/TemplateLib.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Wizards/addcode/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/TestDistServerBuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/TestDistServerBuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/DistTools/Server.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/DistTools/Server.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -111,8 +110,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/DistTools/Server.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3646">
-              <caret line="259" column="14" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="14" />
+            <state relative-caret-position="258">
+              <caret line="150" column="28" selection-start-line="150" selection-start-column="28" selection-end-line="150" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="270" column="21" selection-start-line="270" selection-start-column="21" selection-end-line="270" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -121,7 +129,7 @@
         <entry file="file://$PROJECT_DIR$/Tools/DistTools/Settings.refl.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
-              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
@@ -129,8 +137,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="91" selection-start-line="91" selection-end-line="91" />
+            <state relative-caret-position="508">
+              <caret line="130" column="24" selection-start-line="130" selection-start-column="18" selection-end-line="130" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -138,8 +146,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/DistTools/Fetch.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2700">
-              <caret line="180" column="33" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="33" />
+            <state relative-caret-position="394">
+              <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="28" selection-start-line="28" selection-end-line="28" />
             </state>
           </provider>
         </entry>
@@ -147,8 +164,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="5172" selection-start-line="5172" selection-end-line="5172" />
+            <state relative-caret-position="344">
+              <caret line="3143" selection-start-line="3143" selection-end-line="3143" />
               <folding>
                 <element signature="e#15513#15625#0" expanded="true" />
                 <element signature="e#16760#16877#0" expanded="true" />
@@ -159,11 +176,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2206">
-              <caret line="269" column="45" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
+            <state relative-caret-position="-181">
+              <caret line="439" selection-start-line="439" selection-end-line="439" />
             </state>
           </provider>
         </entry>
@@ -248,7 +265,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Project/GameClient/GameContainer.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameModeConnecting.cpp" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameCamera.h" />
         <option value="$PROJECT_DIR$/Project/GameClient/GameModeEndGame.cpp" />
@@ -293,12 +309,13 @@
         <option value="$PROJECT_DIR$/Tools/DistServer/Packets.h" />
         <option value="$PROJECT_DIR$/Tools/DistServer/Server.cpp" />
         <option value="$PROJECT_DIR$/Tools/DistServer/Upload.cpp" />
-        <option value="$PROJECT_DIR$/Tools/DistTools/Server.cpp" />
-        <option value="$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" />
-        <option value="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" />
         <option value="$PROJECT_DIR$/Tools/DistTools/Settings.refl.h" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Server.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" />
+        <option value="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" />
+        <option value="$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp" />
       </list>
     </option>
   </component>
@@ -319,6 +336,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Changed Files'; set:Changed Files; ALL; class com.intellij.packageDependencies.ChangeListScope">
+          <expand>
+            <path>
+              <item name="StormBrewerEngine" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -329,38 +357,39 @@
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="CMake" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
               <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="miniz-cpp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="StormTech" type="462c0819:PsiDirectoryNode" />
+              <item name="StormSockets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StormBrewerEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+              <item name="DistTools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Scope 'Changed Files'; set:Changed Files; ALL; class com.intellij.packageDependencies.ChangeListScope">
-          <expand>
-            <path>
-              <item name="StormBrewerEngine" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
           </expand>
           <select />
@@ -398,6 +427,11 @@
       </method>
     </configuration>
     <configuration name="ClientExe" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$/Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="ClientExe" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="ClientExe">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DistFetchLib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="DistFetchLib" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -453,6 +487,11 @@
       </method>
     </configuration>
     <configuration name="External" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="External" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Fetch" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Fetch" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="Fetch">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -617,6 +656,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Upload" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="Upload" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="Upload">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="addcode" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="Class AtlasTest" PASS_PARENT_ENVS_2="true" PROJECT_NAME="StormBrewerEngine" TARGET_NAME="addcode" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="StormBrewerEngine" RUN_TARGET_NAME="addcode">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -758,9 +802,11 @@
       <item itemvalue="Application.ClientExe" />
       <item itemvalue="Application.documentserver" />
       <item itemvalue="Application.editor" />
+      <item itemvalue="Application.Fetch" />
       <item itemvalue="Application.generatecmake" />
       <item itemvalue="Application.ServerExe" />
       <item itemvalue="Application.stormrefl" />
+      <item itemvalue="Application.Upload" />
       <item itemvalue="Application.External" />
       <item itemvalue="Application.asio" />
       <item itemvalue="Application.binpack" />
@@ -816,6 +862,7 @@
       <item itemvalue="Application.StormWebrtc" />
       <item itemvalue="Application.StormWebrtcClientAPI" />
       <item itemvalue="Application.StormWebrtcServerAPI" />
+      <item itemvalue="Application.DistFetchLib" />
       <item itemvalue="Application.DistServerLib" />
       <item itemvalue="Application.DistUploadLib" />
       <item itemvalue="Application.DocumentServer" />
@@ -918,17 +965,18 @@
       <workItem from="1548498512364" duration="13806000" />
       <workItem from="1548592015640" duration="9555000" />
       <workItem from="1548642856185" duration="7769000" />
+      <workItem from="1548659248142" duration="16938000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1084206000" />
+    <option name="totallyTimeSpent" value="1101144000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="19" y="25" width="934" height="1036" extended-state="6" />
+    <frame x="19" y="25" width="742" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.29411766" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.14194237" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50265485" side_tool="true" weight="0.17685589" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -943,7 +991,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054586" side_tool="true" weight="0.3542354" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32857144" />
       <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.49945414" weight="0.32417583" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.32747254" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.49945414" visible="true" weight="0.30408162" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1106,13 +1154,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="188" column="40" selection-start-line="188" selection-start-column="40" selection-end-line="188" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/main.cpp" />
     <entry file="file://$PROJECT_DIR$/StormTech/StormDistUpload/CMakeLists.gen" />
     <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/CMakeLists.txt">
@@ -1176,13 +1217,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.h" />
     <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketRequest.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1197,23 +1232,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Packets.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Server.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3405">
-          <caret line="227" column="13" lean-forward="true" selection-start-line="227" selection-start-column="13" selection-end-line="227" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.meta.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Packets.h" />
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Server.cpp" />
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Settings.refl.meta.h" />
     <entry file="file:///usr/include/string.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1845">
@@ -1221,13 +1242,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/CMakeLists.txt" />
     <entry file="file:///usr/include/c++/8.2.1/bits/fs_ops.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1275">
@@ -1249,13 +1264,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Upload.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="116" column="11" lean-forward="true" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistServer/Upload.cpp" />
     <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormSocketServerFrontendWebsocket.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1277,34 +1286,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="91" selection-start-line="91" selection-end-line="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Fetch.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2700">
-          <caret line="180" column="33" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Server.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3646">
-          <caret line="259" column="14" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Settings.refl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tools/DistTools/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -1312,10 +1293,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Settings.refl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-181">
+          <caret line="439" selection-start-line="439" selection-end-line="439" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Fetch.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="5172" selection-start-line="5172" selection-end-line="5172" />
+        <state relative-caret-position="344">
+          <caret line="3143" selection-start-line="3143" selection-end-line="3143" />
           <folding>
             <element signature="e#15513#15625#0" expanded="true" />
             <element signature="e#16760#16877#0" expanded="true" />
@@ -1325,10 +1327,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2206">
-          <caret line="269" column="45" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
+        <state relative-caret-position="508">
+          <caret line="130" column="24" selection-start-line="130" selection-start-column="18" selection-end-line="130" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Server.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="150" column="28" selection-start-line="150" selection-start-column="28" selection-end-line="150" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StormTech/StormSockets/StormWebsocketMessageReader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="270" column="21" selection-start-line="270" selection-start-column="21" selection-end-line="270" selection-end-column="21" />
         </state>
       </provider>
     </entry>
