@@ -5,8 +5,9 @@ rm -rf DistServer
 Scripts/PackageDistServer.sh
 
 cd DistServer
-cmake .
+cmake . -DCMAKE_BUILD_TYPE=Debug
 make
 
-cd $PROJECT_DIR
+cd $PROJECT_DIR/DistServer
+./DistServer
 

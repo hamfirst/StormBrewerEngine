@@ -267,18 +267,18 @@ if(BUILD_TOOLS)
     link_directories("/usr/local/lib")
   endif()
 
-  add_executable(Fetch Tools/DistTools/Fetch.cpp)
-  target_link_libraries(Fetch DistFetchLib StormSocketCPP mbedtls asio)
+  add_executable(DistFetch Dummy.cpp)
+  target_link_libraries(DistFetch DistFetchLib StormSocketCPP mbedtls asio)
 
   if(NOT MSVC)
-    target_link_libraries(Fetch stdc++fs pthread)
+    target_link_libraries(DistFetch stdc++fs pthread)
   endif()
 
-  add_executable(Upload Tools/DistTools/Fetch.cpp)
-  target_link_libraries(Upload DistUploadLib StormSocketCPP mbedtls asio)
+  add_executable(DistUpload Dummy.cpp)
+  target_link_libraries(DistUpload DistUploadLib StormSocketCPP mbedtls asio)
 
   if(NOT MSVC)
-    target_link_libraries(Upload stdc++fs pthread)
+    target_link_libraries(DistUpload stdc++fs pthread)
   endif()
 
   add_executable(stormrefl StormTech/StormRefl/main.cpp StormTech/StormRefl/StormReflOutput.cpp)
@@ -437,16 +437,39 @@ if(BUILD_TOOLS)
   
   
   if(MSVC)
+
     add_custom_command(TARGET addcode POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}
       COMMENT "Copying to Base Directory"
     )
 
+    add_custom_command(TARGET DistFetch POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DistFetch> ${CMAKE_CURRENT_SOURCE_DIR}/Test
+      COMMENT "Copying to Test Directory"
+    )
+
+    add_custom_command(TARGET DistUpload POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DistUpload> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute
+      COMMENT "Copying to Distribute Directory"
+    )
+
   else()
+
     add_custom_command(TARGET addcode POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:addcode> ${CMAKE_CURRENT_SOURCE_DIR}/addcode
       COMMENT "Copying to Base Directory"
     )
+
+    add_custom_command(TARGET DistFetch POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DistFetch> ${CMAKE_CURRENT_SOURCE_DIR}/Test/DistFetch
+      COMMENT "Copying to Test Directory"
+    )
+
+    add_custom_command(TARGET DistUpload POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DistUpload> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute/DistUpload
+      COMMENT "Copying to Distribute Directory"
+    )
+
   endif()
   
   set(OUTPUTS ${OUTPUTS} documentserver editor)
