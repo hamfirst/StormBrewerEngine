@@ -5,3 +5,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 else
   bash --init-file <(echo ". \"$HOME/.bashrc\"; . ./Scripts/SetBuildVars.sh")
 fi
+
+

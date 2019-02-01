@@ -61,6 +61,8 @@ int main(int argc, char ** argv)
 
   printf("Compressing files...\n");
 
+
+
   miniz_cpp::zip_file file;
   for(auto p : std::filesystem::recursive_directory_iterator(argv[1]))
   {

@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <filesystem>
+#include <map>
 
 #include "StormSockets/StormSocketBackend.h"
 #include "StormSockets/StormSocketServerFrontendWebsocket.h"
@@ -70,7 +71,7 @@ int main(int argc, char ** argv)
     StormSockets::StormWebsocketMessageWriter m_Packet;
   };
 
-  std::unordered_map<int, BuildData> build_db;
+  std::map<int, BuildData> build_db;
   int next_build_id = 1;
 
   for(auto & p : std::filesystem::directory_iterator("builds"))
@@ -97,9 +98,8 @@ int main(int argc, char ** argv)
       build_data.m_Packet = packet;
       build_db.emplace(std::make_pair(next_build_id, std::move(build_data)));
 
+      printf("  %d. Adding build %s\n", next_build_id, p.path().string().c_str());
       next_build_id++;
-
-      printf("  Adding build %s\n", p.path().string().c_str());
     }
   }
 
