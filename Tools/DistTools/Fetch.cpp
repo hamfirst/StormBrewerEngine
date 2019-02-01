@@ -163,10 +163,10 @@ int main(int argc, char ** argv)
               time_t t = atoi(list_elem.m_Name);
               auto time_info = localtime(&t);
 
-              const char * desc = strtok(list_elem.m_Name, "_");
+              const char * desc = strstr(list_elem.m_Name, "_");
               if(desc == nullptr)
               {
-                desc = "unknown";
+                desc = "Unknown";
               }
               else
               {
@@ -174,7 +174,7 @@ int main(int argc, char ** argv)
               }
 
               char timestr[256];
-              strftime(timestr, 8, "%a, %d %b %Y %T %z %H:%M:%S", time_info);
+              strftime(timestr, sizeof(timestr), "%m/%d/%y %H:%M:%S", time_info);
 
               printf("%d. %s %s\n\n", list_elem.m_Id, timestr, desc);
             }
