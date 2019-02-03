@@ -275,7 +275,7 @@ void ScriptFuncs::StartPushTable(void * state)
   lua_newtable(lua_state);
 }
 
-void ScriptFuncs::ContinuePushTable(void * state, std::size_t index, void * ptr, int (*Func)(void *, void *))
+void ScriptFuncs::ContinuePushTable(void * state, std::size_t index, const void * ptr, int (*Func)(void *, const void *))
 {
   auto lua_state = static_cast<lua_State *>(state);
   lua_pushnumber(lua_state, index);
@@ -285,7 +285,7 @@ void ScriptFuncs::ContinuePushTable(void * state, std::size_t index, void * ptr,
   lua_settable(lua_state, -3);
 }
 
-void ScriptFuncs::ContinuePushTable(void * state, const std::string & key, void * ptr, int (*Func)(void *, void *))
+void ScriptFuncs::ContinuePushTable(void * state, const std::string & key, const void * ptr, int (*Func)(void *, const void *))
 {
   auto lua_state = static_cast<lua_State *>(state);
   lua_pushstring(lua_state, key.c_str());

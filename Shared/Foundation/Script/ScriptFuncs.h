@@ -54,9 +54,9 @@ public:
 
     for(std::size_t index = 0, end = val.size(); index < end; ++index)
     {
-      ContinuePushTable(state, index, &val[index], [](void * state, void * ptr)
+      ContinuePushTable(state, index, &val[index], [](void * state, const void * ptr)
       {
-        auto val = static_cast<T *>(ptr);
+        auto val = static_cast<const T *>(ptr);
         return PushValue(state, *val);
       });
     }
@@ -71,9 +71,9 @@ public:
 
     for(auto && elem : val)
     {
-      ContinuePushTable(state, &val.first, &val.second, [](void * state, void * ptr)
+      ContinuePushTable(state, elem.first, &elem.second, [](void * state, const void * ptr) -> int
       {
-        auto val = static_cast<T *>(ptr);
+        auto val = static_cast<const T *>(ptr);
         return PushValue(state, *val);
       });
     }
@@ -128,8 +128,8 @@ public:
 
 private:
   static void StartPushTable(void * state);
-  static void ContinuePushTable(void * state, std::size_t index, void * ptr, int (*Func)(void *, void *));
-  static void ContinuePushTable(void * state, const std::string & key, void * ptr, int (*Func)(void *, void *));
+  static void ContinuePushTable(void * state, std::size_t index, const void * ptr, int (*Func)(void *, const void *));
+  static void ContinuePushTable(void * state, const std::string & key, const void * ptr, int (*Func)(void *, const void *));
 };
 
 template <typename ReturnValue, typename ... Args>

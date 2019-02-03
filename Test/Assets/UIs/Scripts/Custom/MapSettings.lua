@@ -1,6 +1,8 @@
 
 MapSettings = HeaderContainer:construct()
 MapSettings.text = "Map Settings"
+MapSettings.alpha = 1
+MapSettings.parent_alpha = 1
 
 print("wat")
 MapSettings.allow_send = false
@@ -148,6 +150,26 @@ function MapSettings:UpdateSettings()
   self.map_description.text = game.map_description
 end
 
+function MapSettings:InitMapOptions()
+  if game.GetCurrentOptions ~= nil then
+    local map_index, player_limit, score_limit, time_limit = game:GetCurrentOptions()
+    
+    self.map_list:SetSelectedOption(map_index)
+
+    if game.player_count_enabled then
+      self.player_count:SetSelectedValue(player_limit)
+    end
+
+    if game.score_limit_enabled then
+      self.score_limit:SetSelectedValue(score_limit)
+    end
+
+    if game.time_limit_enabled then
+      self.time_limit:SetSelectedValue(time_limit)
+    end
+  end
+end
+
 function MapSettings:SendOptions()
   if self.allow_send then
     local player_count = 0
@@ -170,38 +192,48 @@ function MapSettings:SendOptions()
   end
 end
 
+
+
 function MapSettings:Update(dt)
+
+  local alpha = self.alpha * self.parent_alpha
   
   self.map_list.x = 10
   self.map_list.y = 10
   self.map_list.width = 140
   self.map_list.height = 200
+  self.map_list.parent_alpha = alpha
 
   self.map_image.x = 10
   self.map_image.y = 215
   self.map_image.width = 140
   self.map_image.height = 100
+  self.map_image.parent_alpha = alpha
 
   self.map_description_label.x = 180
   self.map_description_label.y = 290
   self.map_description_label.width = 200
   self.map_description_label.height = 16
+  self.map_description_label.parent_alpha = alpha
 
   self.map_description.x = 180
   self.map_description.y = 200
   self.map_description.width = 300
   self.map_description.height = 90
+  self.map_description.parent_alpha = alpha
 
   if game.player_count_enabled then
     self.player_count_label.x = 180
     self.player_count_label.y = 180
     self.player_count_label.width = 100
     self.player_count_label.height = 10
+    self.player_count_label.parent_alpha = alpha
 
     self.player_count.x = 180
     self.player_count.y = 160
     self.player_count.width = 100
     self.player_count.height = 16
+    self.player_count.parent_alpha = alpha
   end
 
   if game.score_limit_enabled then
@@ -209,11 +241,13 @@ function MapSettings:Update(dt)
     self.score_limit_label.y = 130
     self.score_limit_label.width = 100
     self.score_limit_label.height = 10
+    self.score_limit_label.parent_alpha = alpha
 
     self.score_limit.x = 180
     self.score_limit.y = 110
     self.score_limit.width = 100
     self.score_limit.height = 16
+    self.score_limit.parent_alpha = alpha
   end
 
   if game.time_limit_enabled then
@@ -221,11 +255,13 @@ function MapSettings:Update(dt)
     self.time_limit_label.y = 80
     self.time_limit_label.width = 100
     self.time_limit_label.height = 10
+    self.time_limit_label.parent_alpha = alpha
 
     self.time_limit.x = 180
     self.time_limit.y = 60
     self.time_limit.width = 100
     self.time_limit.height = 16
+    self.time_limit.parent_alpha = alpha
   end
 
 end

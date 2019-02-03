@@ -21,8 +21,10 @@ function InitStagingMenu()
 
       if self.toggled then
         self.text = "Ready"
+        game:Ready(true)
       else
         self.text = "Ready Up"
+        game:Ready(false)
       end
 
       Button.Draw(self)
@@ -36,7 +38,7 @@ function InitStagingMenu()
   if game.allow_map_change then
     mapchange = PushMenuElement(Button:new())
     mapchange.x = 250
-    mapchange.y = -155
+    mapchange.y = -160
     mapchange.width = 150
     mapchange.height = 20
     mapchange.text = "Change Map Settings"
@@ -67,7 +69,7 @@ function InitStagingMenu()
     game_code.centered = false
   end
 
-  if game.game_timer ~= nil and game.game_timer ~= "" then
+  if game.allow_gametimer ~= nil then
     local game_timer = PushMenuElement(Label:new())
     game_timer.x = 220
     game_timer.y = 145
@@ -75,7 +77,7 @@ function InitStagingMenu()
     game_timer.height = 50
 
     function game_timer:Update(dt)
-      game_timer.text = "Game Starts In: " .. game.game_timer
+      game_timer.text = "Game Starts In: " .. game:GetGameTimer()
     end
   end
 
@@ -179,9 +181,9 @@ function InitStagingMenu()
   if game.allow_map_change then
     local mappopup = PushMenuElement(Popup:new())
     mappopup.x = -250
-    mappopup.y = -175
+    mappopup.y = -200
     mappopup.width = 500
-    mappopup.height = 350
+    mappopup.height = 420
 
     function mappopup:CreateChildren()
       ConfirmPopup.CreateChildren(self)
@@ -204,6 +206,7 @@ function InitStagingMenu()
     mapchange.fade = false
     mapchange.Pressed = function()
       mappopup:FadeIn()
+      mappopup.mapsettings:InitMapOptions()
     end
   end
 

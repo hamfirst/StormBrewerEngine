@@ -63,7 +63,7 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
                            [this](void * ptr) { TrashClickable(static_cast<UIClickable *>(ptr)); });
 
   m_TextInputClass = std::make_unique<ScriptClass<UITextInput>>("TextInputContext",
-                           [this](){ auto clickable = new UITextInput(m_ContainerWindow.CreateTextInputContext()); return clickable; },
+                           [this](){ auto clickable = new UITextInput(this, m_ContainerWindow.CreateTextInputContext()); return clickable; },
                            [this](ScriptClassRef<UITextInput> & ref) { },
                            [this](void * ptr) { delete static_cast<UITextInput *>(ptr); });
 
@@ -458,6 +458,12 @@ void UIManager::AddToClickableList(NotNullPtr<UIClickable> clickable, NullOptPtr
 
 void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, RenderState & render_state)
 {
+  if(m_CurrentInputContext && m_CurrentInputContext->IsCurrent() == false)
+  {
+    m_CurrentInputContext = nullptr;
+    m_CurrentInputClickable = nullptr;
+  }
+
   static std::vector<UIClickable *> clickables;
   clickables.clear();
 
@@ -603,6 +609,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
     }
   }
 
+  auto new_pressed_clickable = cur_pressed_clickable;
   if (cur_pressed_clickable)
   {
     for(auto itr = clickables.rbegin(), end = clickables.rend(); itr != end; ++itr)
@@ -680,6 +687,11 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       {
         cur_hover_clickable->OnStateChange(cur_hover_clickable->m_State, (int)UIClickableState::kPressed);
         cur_hover_clickable->m_State = (int)UIClickableState::kPressed;
+        new_pressed_clickable = cur_hover_clickable;
+      }
+      else
+      {
+        new_pressed_clickable = nullptr;
       }
     }
   }
@@ -707,6 +719,15 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
   if(cur_hover_clickable && cur_hover_clickable->Enabled && m_MouseDelta != 0)
   {
     cur_hover_clickable->OnMouseScroll(m_MouseDelta);
+  }
+
+  if(new_pressed_clickable && m_CurrentInputClickable && new_pressed_clickable != m_CurrentInputClickable)
+  {
+    m_CurrentInputContext->MakeNotCurrent();
+  }
+  else if(new_pressed_clickable == nullptr && m_CurrentInputClickable && input_state.GetMousePressedThisFrame(kMouseLeftButton))
+  {
+    m_CurrentInputContext->MakeNotCurrent();
   }
 
   m_MouseDelta = 0;
