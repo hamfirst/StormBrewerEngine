@@ -5516,6 +5516,21 @@ char alt_directory_separator = '/';
       }
     }
 
+    void writestr(const std::string &arcname, const std::string &bytes, const std::string &comment)
+    {
+      if(archive_->m_zip_mode != MZ_ZIP_MODE_WRITING)
+      {
+        start_write();
+      }
+
+      auto crc = detail::crc32buf(bytes.c_str(), bytes.size());
+
+      if(!mz_zip_writer_add_mem_ex(archive_.get(), arcname.c_str(), bytes.data(), bytes.size(), comment.c_str(), static_cast<mz_uint16>(comment.size()), MZ_BEST_COMPRESSION, 0, crc))
+      {
+        throw std::runtime_error("write error");
+      }
+    }
+
     void writestr(const zip_info &info, const std::string &bytes)
     {
       if(info.filename.empty() || info.date_time.year < 1980)

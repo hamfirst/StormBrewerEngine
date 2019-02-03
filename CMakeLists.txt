@@ -268,14 +268,14 @@ if(BUILD_TOOLS)
   endif()
 
   add_executable(DistFetch Dummy.cpp)
-  target_link_libraries(DistFetch DistFetchLib StormSocketCPP mbedtls asio archive_static)
+  target_link_libraries(DistFetch DistFetchLib StormSocketCPP mbedtls asio)
 
   if(NOT MSVC)
     target_link_libraries(DistFetch stdc++fs pthread)
   endif()
 
   add_executable(DistUpload Dummy.cpp)
-  target_link_libraries(DistUpload DistUploadLib StormSocketCPP mbedtls asio archive_static)
+  target_link_libraries(DistUpload DistUploadLib StormSocketCPP mbedtls asio)
 
   if(NOT MSVC)
     target_link_libraries(DistUpload stdc++fs pthread)
