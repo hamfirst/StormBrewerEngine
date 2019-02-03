@@ -40,6 +40,7 @@ public:
   PlayerServerObjectInfo GetServerObjectInfo();
 
   static Color GetTeamColor(int team);
+  static Color GetTeamDarkColor(int team);
 
 private:
 

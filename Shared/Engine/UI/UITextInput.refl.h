@@ -10,6 +10,7 @@
 
 #include "Engine/Input/TextInputContext.h"
 
+class UIManager;
 class UIClickable;
 
 class UITextInput : public ScriptClassInstanceBase<UITextInput>
@@ -23,7 +24,7 @@ public:
 
 public:
 
-  UITextInput(std::shared_ptr<TextInputContext> && context);
+  UITextInput(NotNullPtr<UIManager> manager, std::shared_ptr<TextInputContext> && context);
   ~UITextInput();
 
   ScriptClassDelegate<bool, std::string> IsInvalidInput;
@@ -41,6 +42,7 @@ private:
 
   friend class UIScriptInterface;
 
+  NotNullPtr<UIManager> m_Manager;
   std::shared_ptr<TextInputContext> m_TextInput;
 
 };

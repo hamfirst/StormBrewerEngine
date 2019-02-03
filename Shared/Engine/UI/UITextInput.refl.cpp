@@ -1,10 +1,12 @@
 
 #include "Engine/EngineCommon.h"
+#include "Engine/UI/UIManager.h"
 #include "Engine/UI/UITextInput.refl.h"
 #include "Engine/UI/UIClickable.refl.h"
 
 
-UITextInput::UITextInput(std::shared_ptr<TextInputContext> && context) :
+UITextInput::UITextInput(NotNullPtr<UIManager> manager, std::shared_ptr<TextInputContext> && context) :
+  m_Manager(manager),
   m_TextInput(std::move(context))
 {
   m_TextInput->SetValidator([this](const char * text){
@@ -31,6 +33,12 @@ UITextInput::~UITextInput()
 {
   m_TextInput->SetValidator({});
   m_TextInput->SetEnterDelegate({});
+
+  if(m_Manager->m_CurrentInputContext == this)
+  {
+    m_Manager->m_CurrentInputClickable = nullptr;
+    m_Manager->m_CurrentInputContext = nullptr;
+  }
 }
 
 void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)
@@ -39,12 +47,21 @@ void UITextInput::MakeCurrent(ScriptClassRef<UIClickable> container)
   if(box)
   {
     m_TextInput->MakeCurrent(&box.Value());
+
+    m_Manager->m_CurrentInputContext = this;
+    m_Manager->m_CurrentInputClickable = container;
   }
 }
 
 void UITextInput::MakeNotCurrent()
 {
   m_TextInput->Unbind();
+
+  if(m_Manager->m_CurrentInputContext == this)
+  {
+    m_Manager->m_CurrentInputClickable = nullptr;
+    m_Manager->m_CurrentInputContext = nullptr;
+  }
 }
 
 bool UITextInput::IsCurrent()

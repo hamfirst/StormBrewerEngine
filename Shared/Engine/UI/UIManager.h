@@ -65,6 +65,7 @@ public:
 protected:
 
   friend class UIClickable;
+  friend class UITextInput;
   friend class UITextureBinding;
 
   void AddClickableToRoot(const ScriptClassRef<UIClickable> & clickable);
@@ -99,6 +100,9 @@ private:
 
   std::vector<ScriptClassRef<UIClickable>> m_RootClickables;
   std::vector<NotNullPtr<UIClickable>> m_DeadClickables;
+
+  NullOptPtr<UIClickable> m_CurrentInputClickable = nullptr;
+  NullOptPtr<UITextInput> m_CurrentInputContext = nullptr;
 
   std::unordered_map<int, NotNullPtr<UITextureBinding>> m_Textures;
   int m_NextTextureId;

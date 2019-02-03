@@ -132,6 +132,22 @@ Color PlayerComponent::GetTeamColor(int team)
   case 2:
     return Color(54, 191, 42);
   case 3:
-    return Color(83, 93, 102);
+    return Color(62, 63, 62);
+  }
+}
+
+Color PlayerComponent::GetTeamDarkColor(int team)
+{
+  switch (team)
+  {
+    case 0:
+    default:
+      return Color(140, 37, 25);
+    case 1:
+      return Color(63, 70, 160);
+    case 2:
+      return Color(54, 161, 42);
+    case 3:
+      return Color(41, 42, 41);
   }
 }

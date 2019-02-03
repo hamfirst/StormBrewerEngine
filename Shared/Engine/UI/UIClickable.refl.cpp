@@ -104,6 +104,12 @@ void UIClickable::Destroy()
 
     m_Parent.Clear();
   }
+
+  if(m_Manager->m_CurrentInputClickable == this)
+  {
+    m_Manager->m_CurrentInputClickable = nullptr;
+    m_Manager->m_CurrentInputContext = nullptr;
+  }
 }
 
 void UIClickable::GrabMouse()
