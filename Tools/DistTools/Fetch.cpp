@@ -20,10 +20,34 @@
 
 int main(int argc, char ** argv)
 {
-  auto project_dir = getenv("PROJECT_DIR");
-  if(project_dir == nullptr)
+  std::string project_dir;
+  auto project_dir_env = getenv("PROJECT_DIR");
+  if(project_dir_env)
   {
-    printf("PROJECT_DIR environment variable not set\n");
+    project_dir = project_dir_env;
+  }
+  else
+  {
+    auto fp = fopen("project_dir.txt", "rb");
+    if(fp == nullptr)
+    {
+      printf("project_dir.txt not found and PROJECT_DIR environment variable not set\n");
+      return ENODATA;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    auto project_dir_file_size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    project_dir.resize(project_dir_file_size + 1);
+    fread(project_dir.data(), project_dir_file_size, 1, fp);
+    project_dir[project_dir_file_size] = 0;
+    fclose(fp);
+
+    while(isspace(project_dir.back()) || project_dir.back() == 0)
+    {
+      project_dir.pop_back();
+    }
   }
 
   auto project_settings_dir_path = std::filesystem::path(project_dir) / "ProjectSettings";
@@ -193,7 +217,32 @@ int main(int argc, char ** argv)
 
               miniz_cpp::zip_file file(buffer);
               file.printdir();
-              file.extractall(".");
+
+              for(auto & info : file.infolist())
+              {
+                std::filesystem::path dest_path(info.filename);
+                dest_path = "." / dest_path;
+                auto parent_path = dest_path.parent_path();
+
+                std::vector<std::filesystem::path> paths;
+                while(parent_path != ".")
+                {
+                  paths.emplace_back(parent_path);
+                  parent_path = parent_path.parent_path();
+                }
+
+                for(int index = (int)paths.size() - 1; index >= 0; --index)
+                {
+                  std::filesystem::create_directory(paths[index]);
+                }
+
+                file.extract(info, ".");
+
+                int perms;
+                sscanf(info.comment.c_str(), "%04o", &perms);
+
+                std::filesystem::permissions(info.filename, (std::filesystem::perms)perms);
+              }
             }
             else
             {

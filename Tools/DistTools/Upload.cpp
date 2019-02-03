@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cctype>
 
 #include <iostream>
 #include <filesystem>
@@ -20,10 +21,36 @@
 
 int main(int argc, char ** argv)
 {
-  auto project_dir = getenv("PROJECT_DIR");
-  if(project_dir == nullptr)
+  std::string project_dir;
+  auto project_dir_env = getenv("PROJECT_DIR");
+  if(project_dir_env)
   {
-    printf("PROJECT_DIR environment variable not set\n");
+    project_dir = project_dir_env;
+  }
+  else
+  {
+    auto fp = fopen("project_dir.txt", "rb");
+    if(fp == nullptr)
+    {
+      printf("project_dir.txt not found and PROJECT_DIR environment variable not set\n");
+      return ENODATA;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    auto project_dir_file_size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    project_dir.resize(project_dir_file_size + 1);
+    fread(project_dir.data(), project_dir_file_size, 1, fp);
+    project_dir[project_dir_file_size] = 0;
+    fclose(fp);
+
+    while(isspace(project_dir.back()) || project_dir.back() == 0)
+    {
+      project_dir.pop_back();
+    }
+
+    project_dir = std::filesystem::canonical(std::filesystem::absolute(project_dir)).string();
   }
 
   if(argc < 2)
@@ -34,6 +61,8 @@ int main(int argc, char ** argv)
 
   auto project_settings_dir_path = std::filesystem::path(project_dir) / "ProjectSettings";
   auto project_settings_file = project_settings_dir_path / "ProjectCredentials.txt";
+
+  printf("Loading project credentials from %s\n", project_settings_file.string().c_str());
 
   auto settings_file = fopen(project_settings_file.string().c_str(), "rb");
   if(settings_file == nullptr)
@@ -61,22 +90,42 @@ int main(int argc, char ** argv)
 
   printf("Compressing files...\n");
 
-
-
   miniz_cpp::zip_file file;
   for(auto p : std::filesystem::recursive_directory_iterator(argv[1]))
   {
-    auto str = p.path().string();
-    printf("  %s\n", str.c_str());
-    file.write(str);
+    if(std::filesystem::is_directory(p))
+    {
+      continue;
+    }
+    auto actual_path = p.path().string();
+    auto rel_path = std::filesystem::relative(p, argv[1]).string();
+
+    auto data_file = fopen(actual_path.c_str(), "rb");
+    if(data_file == nullptr)
+    {
+      printf("Could not open project credentials file\n");
+      return 0;
+    }
+
+    fseek(data_file, 0, SEEK_END);
+    auto data_file_size = ftell(data_file);
+    fseek(data_file, 0, SEEK_SET);
+
+    std::string data_buffer;
+    data_buffer.resize(data_file_size);
+    fread(data_buffer.data(), 1, data_file_size, data_file);
+    fclose(data_file);
+
+    auto status = std::filesystem::status(p.path());
+    char perm_str[8];
+    snprintf(perm_str, sizeof(perm_str), "%04o", (int)status.permissions());
+
+    printf("  %s %s\n", perm_str, rel_path.c_str());
+    file.writestr(rel_path, data_buffer, perm_str);
   }
 
   std::vector<uint8_t> data;
   file.save(data);
-
-  printf("Testing zip integrity\n");
-  miniz_cpp::zip_file test_file(data);
-  test_file.printdir();
 
 
   printf("Done zipping data of size %zd!\n\n", data.size());
