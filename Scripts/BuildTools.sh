@@ -9,7 +9,9 @@ mkdir build-dist
 cd build-dist
 mkdir tools
 
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DSDL_SHARED=OFF -DSDL_STATIC=ON -DCLANG_HEADER_PATH=. -build $PROJECT_DIR
+source $PROJECT_DIR/ProjectEnv.txt
+
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DSDL_SHARED=OFF -DSDL_STATIC=ON -DCMAKE_PREFIX_HEADER=$QT_DIR -DCLANG_HEADER_PATH=$CLANG_HEADER_PATH $PROJECT_DIR
 make -j4
 if [[ $? -eq 0 ]]; then
   exit 1

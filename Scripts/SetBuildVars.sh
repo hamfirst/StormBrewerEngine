@@ -5,3 +5,7 @@ export PROJECT_NAME=`cat ProjectSettings/ProjectName.txt`
 export PATH=$PATH:$PROJECT_DIR/Scripts
 BUILD='Build'
 
+while read line; do
+  export $line
+done < $PROJECT_DIR/ProjectSettings/ProjectEnv.txt
+
