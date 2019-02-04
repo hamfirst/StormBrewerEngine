@@ -1,1 +1,0 @@
-cmake -G "Visual Studio 14 2017 Win64" %PROJECT_DIR%
