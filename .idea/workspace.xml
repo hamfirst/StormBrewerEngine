@@ -85,14 +85,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b502ebc1-1658-4cca-814b-1bcc5484c4bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Distribute/project_dir.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/project_dir.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Distribute/whatsthis.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/DistTools/Fetch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/DistTools/Upload.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/Game/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Project/Game/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BootstrapGit.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/BootstrapGit.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildDebug.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildNormal.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildNormal.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildServer.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildServerDebug.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildTools.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/BuildTools.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildTools.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/BuildTools.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildWeb.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/BuildWeb.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildWebDebug.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/BuildWebDebug.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Commit.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Commit.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/DeployServer.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Make.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/MakeZip.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Pull.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Pull.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Upload.bat" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -111,7 +125,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
+            <state relative-caret-position="1800">
               <caret line="120" column="46" selection-start-line="120" selection-start-column="46" selection-end-line="120" selection-end-column="46" />
             </state>
           </provider>
@@ -120,7 +134,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file:///usr/include/c++/8.2.1/bits/fs_dir.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
+            <state relative-caret-position="1020">
               <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
             </state>
           </provider>
@@ -129,7 +143,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file:///usr/include/c++/8.2.1/bits/fs_fwd.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
+            <state relative-caret-position="1980">
               <caret line="132" column="13" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
             </state>
           </provider>
@@ -165,7 +179,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-732">
+            <state relative-caret-position="80535">
               <caret line="5369" column="40" selection-start-line="5369" selection-start-column="40" selection-end-line="5369" selection-end-column="40" />
               <folding>
                 <element signature="e#15513#15625#0" expanded="true" />
@@ -180,7 +194,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
+            <state relative-caret-position="4050">
               <caret line="270" column="74" selection-start-line="270" selection-start-column="74" selection-end-line="270" selection-end-column="74" />
             </state>
           </provider>
@@ -395,41 +409,6 @@
               <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
-              <item name="c++" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
-              <item name="c++" type="462c0819:PsiDirectoryNode" />
-              <item name="8.2.1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StormBrewerEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Header Search Paths" type="70bed36:NamedLibraryElementNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
-              <item name="c++" type="462c0819:PsiDirectoryNode" />
-              <item name="8.2.1" type="462c0819:PsiDirectoryNode" />
-              <item name="bits" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -444,7 +423,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/Tools/Wizards/sbwiz/node_modules/typescript/lib" />
   </component>
   <component name="RunDashboard">
@@ -1008,17 +987,17 @@
       <workItem from="1548830318463" duration="7307000" />
       <workItem from="1548941460128" duration="4447000" />
       <workItem from="1549165990447" duration="14118000" />
+      <workItem from="1549252256004" duration="1519000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1127016000" />
+    <option name="totallyTimeSpent" value="1128535000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="19" y="25" width="1882" height="1036" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.17085153" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49734512" visible="true" weight="0.17248908" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50265485" side_tool="true" weight="0.17685589" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -1287,17 +1266,24 @@
     <entry file="file://$PROJECT_DIR$/External/libarchive/archive.h" />
     <entry file="file://$PROJECT_DIR$/External/libarchive/archive_platform_acl.h" />
     <entry file="file://$PROJECT_DIR$/External/libarchive/archive_platform.h" />
-    <entry file="file://$PROJECT_DIR$/CMake/StormBrewerEngine.cmake">
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1830">
-          <caret line="122" column="60" selection-start-line="122" selection-start-column="60" selection-end-line="122" selection-end-column="60" />
+        <state relative-caret-position="1800">
+          <caret line="120" column="46" selection-start-line="120" selection-start-column="46" selection-end-line="120" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Packets.h">
+    <entry file="file:///usr/include/c++/8.2.1/bits/fs_dir.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        <state relative-caret-position="1020">
+          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8.2.1/bits/fs_fwd.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1980">
+          <caret line="132" column="13" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1308,37 +1294,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Packets.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="270" column="74" selection-start-line="270" selection-start-column="74" selection-end-line="270" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/8.2.1/bits/fs_fwd.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="132" column="13" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/8.2.1/bits/fs_dir.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/DistTools/Upload.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="120" column="46" selection-start-line="120" selection-start-column="46" selection-end-line="120" selection-end-column="46" />
+        <state relative-caret-position="150">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/External/miniz-cpp/zip_file.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-732">
+        <state relative-caret-position="80535">
           <caret line="5369" column="40" selection-start-line="5369" selection-start-column="40" selection-end-line="5369" selection-end-column="40" />
           <folding>
             <element signature="e#15513#15625#0" expanded="true" />
@@ -1346,6 +1311,20 @@
             <element signature="e#30086#30119#0" expanded="true" />
             <element signature="e#44450#44517#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4050">
+          <caret line="270" column="74" selection-start-line="270" selection-start-column="74" selection-end-line="270" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMake/StormBrewerEngine.cmake">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1830">
+          <caret line="122" column="60" selection-start-line="122" selection-start-column="60" selection-end-line="122" selection-end-column="60" />
         </state>
       </provider>
     </entry>

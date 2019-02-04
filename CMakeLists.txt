@@ -180,7 +180,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
       target_link_libraries(ClientExe dl pthread)
     endif()
   endif()
-  
+
   set(OUTPUTS ${OUTPUTS} ClientExe)
 endif()
 
@@ -237,7 +237,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_START_STATIC 1)
     #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_END_STATIC 1)
   endif()
-  
+
   set(OUTPUTS ${OUTPUTS} ServerExe)
 endif()
 
@@ -434,8 +434,8 @@ if(BUILD_TOOLS)
     target_link_libraries(editor stdc++fs)
     target_link_libraries(editor dl pthread)
   endif()
-  
-  
+
+
   if(MSVC)
 
     add_custom_command(TARGET addcode POST_BUILD
@@ -471,7 +471,7 @@ if(BUILD_TOOLS)
     )
 
   endif()
-  
+
   set(OUTPUTS ${OUTPUTS} documentserver editor)
 endif()
 
@@ -511,7 +511,7 @@ endif()
 
 if(EXPORT_TEST)
   foreach(OUTPUT ${OUTPUTS})
-  
+
     if(MSVC)
       add_custom_command(TARGET ${OUTPUT} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Test
@@ -529,15 +529,15 @@ endif()
 
 if(EXPORT_DIST)
   foreach(OUTPUT ${OUTPUTS})
-  
+
     if(MSVC)
       add_custom_command(TARGET ${OUTPUT} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute/Build
         COMMENT "Copying to Dist Directory"
       )
     else()
       add_custom_command(TARGET ${OUTPUT} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute/${OUTPUT}
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Distribute/Build/${OUTPUT}
         COMMENT "Copying to Dist Directory"
       )
     endif()

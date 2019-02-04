@@ -6,4 +6,3 @@ else
   bash --init-file <(echo ". \"$HOME/.bashrc\"; . ./Scripts/SetBuildVars.sh")
 fi
 
-

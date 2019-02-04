@@ -21,7 +21,7 @@ CALL git -C %~dp0 add *.qrc
 CALL git -C %~dp0 add *.config
 
 CALL git -C %~dp0 add *.txt
-CALL git -C %~dp0 add *.nogen
+CALL git -C %~dp0 add *.gen
 CALL git -C %~dp0 add *.bat
 CALL git -C %~dp0 add *.sh
 

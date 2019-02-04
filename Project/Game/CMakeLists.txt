@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
-set(GENERIC_SRC_Game 
+set(GENERIC_SRC_Game
             GameServerTypes.cpp
             GameServerEventSender.cpp
             GameController.refl.cpp
@@ -43,7 +43,7 @@ set(GENERIC_SRC_Game
             #CPP_PLACEHOLDER
             )
 
-set(GENERIC_HEADER_Game 
+set(GENERIC_HEADER_Game
             GameNetworkSettings.h
             GameController.refl.meta.h
             GameFullState.refl.h
@@ -114,7 +114,7 @@ set(GENERIC_HEADER_Game
             #HEADER_PLACEHOLDER
             )
 
-set(GENERIC_REFL_Game 
+set(GENERIC_REFL_Game
             GameFullState.refl.h
             GameCollision.refl.h
             GameNetworkEvents.refl.h
