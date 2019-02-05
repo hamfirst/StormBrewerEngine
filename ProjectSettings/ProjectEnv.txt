@@ -1,6 +1,6 @@
-QT_DIR=E:\Qt\5.11.1\msvc2017_64
-CMAKE_DIR=C:\Program Files\CMake\
-MINGW_DIR=E:\Mingw
-CLANG_HEADER_PATH=.
-EM_SDK_PATH=C:\Dev\emsdk
-VC_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community
+QT_DIR=
+CMAKE_DIR=
+MINGW_DIR=
+CLANG_HEADER_PATH=
+EM_SDK_PATH=
+VC_PATH=
