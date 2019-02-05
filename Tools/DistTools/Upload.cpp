@@ -62,8 +62,6 @@ int main(int argc, char ** argv)
   auto project_settings_dir_path = std::filesystem::path(project_dir) / "ProjectSettings";
   auto project_settings_file = project_settings_dir_path / "ProjectCredentials.txt";
 
-  printf("Loading project credentials from %s\n", project_settings_file.string().c_str());
-
   auto settings_file = fopen(project_settings_file.string().c_str(), "rb");
   if(settings_file == nullptr)
   {
@@ -129,9 +127,6 @@ int main(int argc, char ** argv)
 
 
   printf("Done zipping data of size %zd!\n\n", data.size());
-  auto test_out_file = fopen("DistUpload.zip", "wb");
-  fwrite(data.data(), data.size(), 1, test_out_file);
-  fclose(test_out_file);
 
   StormSockets::StormSemaphore semaphore;
 
@@ -195,7 +190,7 @@ int main(int argc, char ** argv)
 
           if(reader.GetDataLength() < 4 || reader.ReadInt32() != (int)MessageType::kUploadSuccess)
           {
-            printf("Upload failed\n");
+            printf("Upload failed!\n");
           }
           else
           {
@@ -209,7 +204,7 @@ int main(int argc, char ** argv)
 
         break;
       case StormSockets::StormSocketEventType::Disconnected:
-        printf("Disconnected before upload complete\n");
+        printf("Disconnected before upload complete\nUpload failed!\n");
         return 0;
       }
     }
