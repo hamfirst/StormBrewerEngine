@@ -11,6 +11,7 @@
 #include "GameClient/Components/PlayerComponent.refl.h"
 
 #include "Game/GameNetworkData.refl.h"
+#include "GameShared/GameLevelListAsset.refl.meta.h"
 
 #include "Engine/Engine.h"
 #include "Engine/Asset/TextureAsset.h"
@@ -189,6 +190,7 @@ std::unordered_map<std::string, std::string> GameModeStagingBase::GetPlayerActio
 {
   std::unordered_map<std::string, std::string> actions;
   actions.emplace(std::make_pair("Default Action", "DefaultAction"));
+  return actions;
 }
 
 std::tuple<int, int, int, int> GameModeStagingBase::GetCurrentOptions()

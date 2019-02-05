@@ -98,6 +98,8 @@ int main(int argc, char ** argv)
     auto actual_path = p.path().string();
     auto rel_path = std::filesystem::relative(p, argv[1]).string();
 
+    for (auto & c : rel_path) { if (c == '\\') c = '/'; }
+
     auto data_file = fopen(actual_path.c_str(), "rb");
     if(data_file == nullptr)
     {
