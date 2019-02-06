@@ -12,4 +12,5 @@ set(GENERIC_HEADER_lodepng
             )
 
 add_library(lodepng STATIC ${GENERIC_SRC_lodepng} ${GENERIC_HEADER_lodepng})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_lodepng} ${GENERIC_HEADER_lodepng})
 

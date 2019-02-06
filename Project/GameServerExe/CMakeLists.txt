@@ -11,4 +11,5 @@ set(GENERIC_HEADER_GameServerExe
             )
 
 add_library(GameServerExe STATIC ${GENERIC_SRC_GameServerExe} ${GENERIC_HEADER_GameServerExe})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_GameServerExe} ${GENERIC_HEADER_GameServerExe})
 

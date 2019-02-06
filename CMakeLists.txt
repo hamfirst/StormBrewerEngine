@@ -10,6 +10,9 @@ include_directories("${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/StormTech ${PRO
 add_subdirectory(Project/Game)
 add_subdirectory(Project/GameShared)
 
+set_target_properties(Game PROPERTIES FOLDER Project)
+set_target_properties(GameShared PROPERTIES FOLDER Project)
+
 set(CLIENT_LINK)
 set(OUTPUTS)
 
@@ -23,7 +26,10 @@ endif()
 if(BUILD_CLIENT OR BUILD_TOOLS)
   add_subdirectory(Project/GameClient)
   add_subdirectory(Project/GameClientExe)
-
+  
+  set_target_properties(GameClient PROPERTIES FOLDER Project)
+  set_target_properties(GameClientExe PROPERTIES FOLDER Project)
+  
   if(ANDROID)
     add_library(ClientExe SHARED Dummy.cpp)
   elseif(IOS)
@@ -181,12 +187,16 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     endif()
   endif()
 
+  set_target_properties(ClientExe PROPERTIES FOLDER Executable)
   set(OUTPUTS ${OUTPUTS} ClientExe)
 endif()
 
 if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(Project/GameServer)
   add_subdirectory(Project/GameServerExe)
+  
+  set_target_properties(GameServer PROPERTIES FOLDER Project)
+  set_target_properties(GameServerExe PROPERTIES FOLDER Project)
 
   add_executable(ServerExe Dummy.cpp)
 
@@ -238,11 +248,13 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_END_STATIC 1)
   endif()
 
+  set_target_properties(ServerExe PROPERTIES FOLDER Executable)
   set(OUTPUTS ${OUTPUTS} ServerExe)
 endif()
 
 if(BUILD_TOOLS)
   add_executable(generatecmake Tools/GenerateCMake/Main.cpp)
+  set_target_properties(generatecmake PROPERTIES FOLDER Tools)
 
   if(NOT MSVC)
 	  target_link_libraries(generatecmake stdc++fs)
@@ -254,6 +266,8 @@ if(BUILD_TOOLS)
 
   add_executable(addcode Dummy.cpp)
   target_link_libraries(addcode addcodelib TemplateLib git2)
+  set_target_properties(addcodelib PROPERTIES FOLDER Tools)
+  set_target_properties(addcode PROPERTIES FOLDER Executable)
 
   if(NOT MSVC)
 	  target_link_libraries(addcode stdc++fs)
@@ -269,6 +283,7 @@ if(BUILD_TOOLS)
 
   add_executable(DistFetch Dummy.cpp)
   target_link_libraries(DistFetch DistFetchLib StormSocketCPP mbedtls asio)
+  set_target_properties(DistFetch PROPERTIES FOLDER Executable)
 
   if(NOT MSVC)
     target_link_libraries(DistFetch stdc++fs pthread)
@@ -276,6 +291,7 @@ if(BUILD_TOOLS)
 
   add_executable(DistUpload Dummy.cpp)
   target_link_libraries(DistUpload DistUploadLib StormSocketCPP mbedtls asio)
+  set_target_properties(DistUpload PROPERTIES FOLDER Executable)
 
   if(NOT MSVC)
     target_link_libraries(DistUpload stdc++fs pthread)
@@ -283,6 +299,7 @@ if(BUILD_TOOLS)
 
   add_executable(stormrefl StormTech/StormRefl/main.cpp StormTech/StormRefl/StormReflOutput.cpp)
   target_include_directories(stormrefl PUBLIC . External)
+  set_target_properties(stormrefl PROPERTIES FOLDER Tools)
 
   target_link_libraries(stormrefl
     clangFrontend
@@ -340,6 +357,7 @@ if(BUILD_TOOLS)
   endif()
 
   add_executable(documentserver Dummy.cpp)
+  set_target_properties(documentserver PROPERTIES FOLDER Executable)
 
   target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls binpack)
 
@@ -352,6 +370,7 @@ if(BUILD_TOOLS)
   find_package(Qt5OpenGL CONFIG REQUIRED)
 
   add_executable(editor Dummy.cpp)
+  set_target_properties(editor PROPERTIES FOLDER Executable)
 
   add_dependencies(Foundation stormrefl)
   add_dependencies(Engine stormrefl)
@@ -440,7 +459,7 @@ if(BUILD_TOOLS)
     DEPENDS addcode
     COMMENT "Copying to Base Directory"
   )
-
+  
   add_custom_target(TargetDistFetch ALL
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DistFetch> ${CMAKE_CURRENT_SOURCE_DIR}/Test/
     DEPENDS DistFetch
@@ -452,6 +471,10 @@ if(BUILD_TOOLS)
     DEPENDS DistUpload
     COMMENT "Copying to Distribute Directory"
   )
+  
+  set_target_properties(TargetAddCode PROPERTIES FOLDER Executable)
+  set_target_properties(TargetDistFetch PROPERTIES FOLDER Executable)
+  set_target_properties(TargetDistUpload PROPERTIES FOLDER Executable)
 
   set(OUTPUTS ${OUTPUTS} documentserver editor)
 endif()
@@ -494,11 +517,13 @@ endif()
 if(EXPORT_TEST)
   foreach(OUTPUT ${OUTPUTS})
 
-    add_custom_target(Dist${OUTPUT} ALL
+    add_custom_target(Test${OUTPUT} ALL
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Test/
       DEPENDS ${OUTPUT}
       COMMENT "Copying to Test Directory"
     )
+    
+    set_target_properties(Test${OUTPUT} PROPERTIES FOLDER Executable)
 
   endforeach()
 endif()
@@ -511,6 +536,8 @@ if(EXPORT_DIST)
       DEPENDS ${OUTPUT}
       COMMENT "Copying to Dist Directory"
     )
+    
+    set_target_properties(Dist${OUTPUT} PROPERTIES FOLDER Executable)
 
   endforeach()
 endif()

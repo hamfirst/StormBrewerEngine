@@ -11,4 +11,5 @@ set(GENERIC_HEADER_EngineStubs
             )
 
 add_library(EngineStubs STATIC ${GENERIC_SRC_EngineStubs} ${GENERIC_HEADER_EngineStubs})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_EngineStubs} ${GENERIC_HEADER_EngineStubs})
 

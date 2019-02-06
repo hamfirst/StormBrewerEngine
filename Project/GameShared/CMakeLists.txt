@@ -6,41 +6,41 @@ set(CMAKE_CXX_STANDARD 17)
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_GameShared 
-            GameLogicContainer.cpp
-            GameLevelList.cpp
-            GameStageManager.cpp
-            GameSharedCommon.cpp
-            GameWebrtc.cpp
             GameEventReconciler.cpp
+            GameLevelList.cpp
+            GameLogicContainer.cpp
+            GameSharedCommon.cpp
+            GameStageManager.cpp
             GameValidation.cpp
-            Systems/GameServerObjectOverlapSystem.cpp
-            Systems/GameLogicSystems.cpp
-            Systems/CVCPushSystem.cpp
+            GameWebrtc.cpp
             BehaviorTree/BehaviorTreeTypeDatabase.cpp
-            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.cpp
+            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
+            Systems/CVCPushSystem.cpp
+            Systems/GameLogicSystems.cpp
+            Systems/GameServerObjectOverlapSystem.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameShared 
-            GameProtocol.h
-            GameValidation.h
-            GameSharedCommon.h
             GameEventReconciler.h
-            GameLogicContainer.h
+            GameLevelList.h
             GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
-            GameLevelList.h
+            GameLogicContainer.h
+            GameProtocol.h
+            GameSharedCommon.h
             GameStageManager.h
+            GameValidation.h
+            BehaviorTree/BehaviorTree.h
+            BehaviorTree/BehaviorTreeSerialize.h
+            BehaviorTree/BehaviorTreeTypeDatabase.h
+            BehaviorTree/States/PlayAnimationBotState.refl.h
+            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
+            Systems/CVCPushSystem.h
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
-            Systems/CVCPushSystem.h
-            BehaviorTree/BehaviorTreeSerialize.h
-            BehaviorTree/BehaviorTreeTypeDatabase.h
-            BehaviorTree/BehaviorTree.h
-            BehaviorTree/States/PlayAnimationBotState.refl.h
-            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
@@ -59,6 +59,7 @@ foreach(REFL_FILE ${GENERIC_REFL_GameShared})
 endforeach()
 
 add_library(GameShared STATIC ${GENERIC_SRC_GameShared} ${GENERIC_HEADER_GameShared})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_GameShared} ${GENERIC_HEADER_GameShared})
 
 set_target_properties(GameShared PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT GameSharedCommon.h)
 cotire(GameShared)

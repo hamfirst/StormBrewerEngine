@@ -6,221 +6,221 @@ set(CMAKE_CXX_STANDARD 17)
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_Engine 
-            EngineCommon.cpp
             Engine.cpp
-            EngineState.cpp
+            EngineCommon.cpp
             EngineCommonPCH.cpp
+            EngineState.cpp
+            Asset/Asset.cpp
+            Asset/AssetBundle.cpp
+            Asset/AssetLoad.cpp
+            Asset/AssetLoader.cpp
+            Asset/AssetReferenceBase.cpp
+            Asset/AudioAsset.cpp
+            Asset/BinaryAsset.cpp
+            Asset/BinaryAssetLoader.cpp
+            Asset/ClientAssetLoader.cpp
+            Asset/DocumentAsset.cpp
+            Asset/DocumentAssetLoader.cpp
+            Asset/FontAsset.cpp
+            Asset/MusicAsset.cpp
+            Asset/TextureAsset.cpp
+            Atlas/AtlasEngineData.cpp
+            Audio/AudioManager.cpp
+            Audio/MusicManager.cpp
+            Audio/MusicSpec.cpp
+            Camera/Camera.cpp
+            Component/Component.cpp
+            Component/ComponentHandle.cpp
+            Component/ComponentSystem.cpp
+            Component/ComponentUpdateBucketList.cpp
+            DrawList/DrawList.cpp
             Entity/Entity.cpp
             Entity/EntityHandle.cpp
             Entity/EntitySystem.cpp
-            Text/TextBackupFont.cpp
-            Text/TextManager.cpp
-            Text/TextBufferBuilder.cpp
-            Text/TextRenderer.cpp
+            Input/BinaryControlBinding.cpp
+            Input/ControlBindingHandleList.cpp
+            Input/ControlBindingSet.cpp
+            Input/ControlHandle.cpp
+            Input/ControlId.cpp
+            Input/GamepadState.cpp
+            Input/InputState.cpp
+            Input/KeyboardState.cpp
+            Input/MouseState.cpp
+            Input/PointerControlBinding.cpp
+            Input/ScalarControlBinding.cpp
+            Input/TextInputContext.cpp
+            Input/VectorControlBinding.cpp
             Map/MapEffectLayerInstance.cpp
-            Map/MapParalaxLayerInstance.cpp
             Map/MapEffectLayerRenderer.cpp
-            Map/MapSystem.cpp
             Map/MapInstance.cpp
             Map/MapManualTileLayerInstance.cpp
-            Camera/Camera.cpp
-            Input/PointerControlBinding.cpp
-            Input/VectorControlBinding.cpp
-            Input/MouseState.cpp
-            Input/BinaryControlBinding.cpp
-            Input/ControlId.cpp
-            Input/ControlHandle.cpp
-            Input/InputState.cpp
-            Input/GamepadState.cpp
-            Input/ControlBindingSet.cpp
-            Input/ControlBindingHandleList.cpp
-            Input/KeyboardState.cpp
-            Input/TextInputContext.cpp
-            Input/ScalarControlBinding.cpp
-            Sprite/SpriteEngineData.cpp
-            DrawList/DrawList.cpp
-            Component/ComponentSystem.cpp
-            Component/ComponentHandle.cpp
-            Component/ComponentUpdateBucketList.cpp
-            Component/Component.cpp
-            UI/UIManager.cpp
-            UI/UITextInput.refl.cpp
-            UI/UITextureBinding.cpp
-            UI/UIClickable.refl.cpp
-            UI/UIScriptInterface.cpp
-            UI/UIScriptLoader.cpp
+            Map/MapParalaxLayerInstance.cpp
+            Map/MapSystem.cpp
+            Profiler/Profiler.cpp
+            Rendering/GeometryVertexBufferBuilder.cpp
+            Rendering/RenderException.cpp
+            Rendering/RenderState.cpp
             Rendering/RenderTarget.cpp
-            Rendering/VertexBufferBuilder.cpp
+            Rendering/RenderUtil.cpp
             Rendering/Shader.cpp
             Rendering/ShaderProgram.cpp
-            Rendering/VertexBuffer.cpp
-            Rendering/RenderUtil.cpp
-            Rendering/VertexArray.cpp
-            Rendering/VertexList.cpp
-            Rendering/VertexAttrib.cpp
-            Rendering/RenderState.cpp
-            Rendering/GeometryVertexBufferBuilder.cpp
             Rendering/Texture.cpp
-            Rendering/RenderException.cpp
-            VisualEffect/VisualEffectHandle.cpp
-            VisualEffect/VisualEffectFuncs.cpp
-            VisualEffect/VisualEffectManager.cpp
-            VisualEffect/VisualEffectInstance.cpp
-            VisualEffect/VisualEffect.cpp
-            Asset/AssetReferenceBase.cpp
-            Asset/ClientAssetLoader.cpp
-            Asset/DocumentAssetLoader.cpp
-            Asset/FontAsset.cpp
-            Asset/AssetLoader.cpp
-            Asset/AudioAsset.cpp
-            Asset/BinaryAssetLoader.cpp
-            Asset/BinaryAsset.cpp
-            Asset/AssetBundle.cpp
-            Asset/AssetLoad.cpp
-            Asset/MusicAsset.cpp
-            Asset/DocumentAsset.cpp
-            Asset/Asset.cpp
-            Asset/TextureAsset.cpp
-            Profiler/Profiler.cpp
+            Rendering/VertexArray.cpp
+            Rendering/VertexAttrib.cpp
+            Rendering/VertexBuffer.cpp
+            Rendering/VertexBufferBuilder.cpp
+            Rendering/VertexList.cpp
             SaveFile/SaveFile.cpp
-            Atlas/AtlasEngineData.cpp
-            Window/WindowManager.cpp
+            Settings/EngineSettings.refl.cpp
+            Shader/ShaderManager.cpp
+            Sprite/SpriteEngineData.cpp
+            Text/TextBackupFont.cpp
+            Text/TextBufferBuilder.cpp
+            Text/TextManager.cpp
+            Text/TextRenderer.cpp
+            UI/UIClickable.refl.cpp
+            UI/UIManager.cpp
+            UI/UIScriptInterface.cpp
+            UI/UIScriptLoader.cpp
+            UI/UITextInput.refl.cpp
+            UI/UITextureBinding.cpp
+            VisualEffect/VisualEffect.cpp
+            VisualEffect/VisualEffectFuncs.cpp
+            VisualEffect/VisualEffectHandle.cpp
+            VisualEffect/VisualEffectInstance.cpp
+            VisualEffect/VisualEffectManager.cpp
             Window/FakeWindow.cpp
             Window/Window.cpp
-            Audio/AudioManager.cpp
-            Audio/MusicSpec.cpp
-            Audio/MusicManager.cpp
-            Shader/ShaderManager.cpp
-            Settings/EngineSettings.refl.cpp
+            Window/WindowManager.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_Engine 
             Engine.h
+            EngineCommon.h
             EngineState.h
             EngineStateFuncs.h
-            EngineCommon.h
-            Entity/EntitySystem.h
-            Entity/Entity.h
-            Entity/EntityHandle.h
-            Text/TextManager.h
-            Text/TextBufferBuilder.h
-            Text/TextRenderMode.refl.meta.h
-            Text/TextBackupFont.h
-            Text/TextRenderMode.refl.h
-            Text/TextWrap.h
-            Text/TextRenderer.h
-            Map/MapSystem.h
-            Map/MapManualTileLayerInstance.h
-            Map/MapInstance.h
-            Map/MapParalaxLayerInstance.h
-            Map/MapEffectLayerRenderer.h
-            Map/MapEffectLayerInstance.h
-            Camera/Camera.h
-            Input/BinaryControlBinding.h
-            Input/ControlBindingSet.h
-            Input/MouseState.h
-            Input/VectorControlBinding.h
-            Input/ControlHandle.h
-            Input/ControlId.h
-            Input/InputState.h
-            Input/ControlBinding.h
-            Input/PointerControlBinding.h
-            Input/ControlBindingList.h
-            Input/KeyboardState.h
-            Input/TextInputContext.h
-            Input/ScalarControlBinding.h
-            Input/GamepadState.h
-            Input/ControlBindingHandleList.h
-            Sprite/SpriteEngineData.h
-            DrawList/DrawList.h
-            Component/ComponentIterator.h
-            Component/ComponentUpdateBucketList.h
-            Component/ComponentRegistrationMacros.h
-            Component/ComponentSystem.h
-            Component/ComponentList.h
-            Component/Component.h
-            Component/ComponentUpdateRegistrationTemplates.h
-            Component/ComponentHandle.h
-            UI/UIClickable.refl.meta.h
-            UI/UIClickable.refl.h
-            UI/UIScriptInterface.h
-            UI/UITextureBinding.h
-            UI/UITextInput.refl.h
-            UI/UITextInput.refl.meta.h
-            UI/UIScriptLoader.h
-            UI/UIManager.h
-            Rendering/Shader.h
-            Rendering/VertexBufferBuilder.h
-            Rendering/VertexDefinition.h
-            Rendering/RenderException.h
-            Rendering/RenderTarget.h
-            Rendering/RenderState.h
-            Rendering/ShaderProgram.h
-            Rendering/ShaderLiteral.h
-            Rendering/Texture.h
-            Rendering/VertexAttrib.h
-            Rendering/RenderSettings.h
-            Rendering/VertexBuffer.h
-            Rendering/VertexArray.h
-            Rendering/RenderErrorMacros.h
-            Rendering/RenderUtil.h
-            Rendering/Rendering.h
-            Rendering/VertexList.h
-            Rendering/GeometryVertexBufferBuilder.h
-            VisualEffect/VisualEffectTypes.refl.meta.h
-            VisualEffect/VisualEffectInstance.h
-            VisualEffect/VisualEffectFuncs.h
-            VisualEffect/VisualEffectTypes.refl.h
-            VisualEffect/VisualEffectManager.h
-            VisualEffect/VisualEffectHandle.h
-            VisualEffect/VisualEffect.h
-            Asset/AssetLoad.h
-            Asset/AudioAsset.h
-            Asset/AssetReferenceBase.h
-            Asset/AssetSync.h
-            Asset/AssetBundle.h
-            Asset/TextureAsset.h
-            Asset/AssetManager.h
-            Asset/AssetReloadCallback.h
-            Asset/AssetLoader.h
-            Asset/MusicAsset.h
-            Asset/DocumentAssetLoader.h
             Asset/Asset.h
-            Asset/FontAsset.h
+            Asset/AssetBundle.h
+            Asset/AssetLoad.h
+            Asset/AssetLoader.h
+            Asset/AssetManager.h
+            Asset/AssetReference.h
+            Asset/AssetReferenceBase.h
+            Asset/AssetReloadCallback.h
+            Asset/AssetSync.h
+            Asset/AssetTypeMacros.h
+            Asset/AudioAsset.h
+            Asset/BinaryAsset.h
+            Asset/BinaryAssetLoader.h
             Asset/ClientAssetLoader.h
             Asset/DocumentAsset.h
-            Asset/BinaryAssetLoader.h
-            Asset/BinaryAsset.h
-            Asset/AssetReference.h
-            Asset/AssetTypeMacros.h
-            Profiler/Profiler.h
-            SaveFile/SaveFileMetaFuncs.h
-            SaveFile/SaveFile.h
+            Asset/DocumentAssetLoader.h
+            Asset/FontAsset.h
+            Asset/MusicAsset.h
+            Asset/TextureAsset.h
             Atlas/AtlasEngineData.h
+            Audio/AudioFormat.h
+            Audio/AudioHandle.h
+            Audio/AudioManager.h
+            Audio/AudioSpec.h
+            Audio/MusicManager.h
+            Audio/MusicSpec.h
+            Audio/VolumeCategory.h
+            Camera/Camera.h
+            Component/Component.h
+            Component/ComponentHandle.h
+            Component/ComponentIterator.h
+            Component/ComponentList.h
+            Component/ComponentRegistrationMacros.h
+            Component/ComponentSystem.h
+            Component/ComponentUpdateBucketList.h
+            Component/ComponentUpdateRegistrationTemplates.h
+            DrawList/DrawList.h
+            Entity/Entity.h
+            Entity/EntityHandle.h
+            Entity/EntitySystem.h
+            Input/BinaryControlBinding.h
+            Input/ControlBinding.h
+            Input/ControlBindingHandleList.h
+            Input/ControlBindingList.h
+            Input/ControlBindingSet.h
+            Input/ControlHandle.h
+            Input/ControlId.h
+            Input/GamepadState.h
+            Input/InputState.h
+            Input/KeyboardState.h
+            Input/MouseState.h
+            Input/PointerControlBinding.h
+            Input/ScalarControlBinding.h
+            Input/TextInputContext.h
+            Input/VectorControlBinding.h
+            Map/MapEffectLayerInstance.h
+            Map/MapEffectLayerRenderer.h
+            Map/MapInstance.h
+            Map/MapManualTileLayerInstance.h
+            Map/MapParalaxLayerInstance.h
+            Map/MapSystem.h
+            Profiler/Profiler.h
+            Rendering/GeometryVertexBufferBuilder.h
+            Rendering/RenderErrorMacros.h
+            Rendering/RenderException.h
+            Rendering/Rendering.h
+            Rendering/RenderSettings.h
+            Rendering/RenderState.h
+            Rendering/RenderTarget.h
+            Rendering/RenderUtil.h
+            Rendering/Shader.h
+            Rendering/ShaderLiteral.h
+            Rendering/ShaderProgram.h
+            Rendering/Texture.h
+            Rendering/VertexArray.h
+            Rendering/VertexAttrib.h
+            Rendering/VertexBuffer.h
+            Rendering/VertexBufferBuilder.h
+            Rendering/VertexDefinition.h
+            Rendering/VertexList.h
+            SaveFile/SaveFile.h
+            SaveFile/SaveFileMetaFuncs.h
+            Settings/EngineSettings.refl.h
+            Settings/EngineSettings.refl.meta.h
+            Shader/DefaultShader.h
+            Shader/ShaderManager.h
+            Sprite/SpriteEngineData.h
+            Text/TextBackupFont.h
+            Text/TextBufferBuilder.h
+            Text/TextManager.h
+            Text/TextRenderer.h
+            Text/TextRenderMode.refl.h
+            Text/TextRenderMode.refl.meta.h
+            Text/TextWrap.h
+            UI/UIClickable.refl.h
+            UI/UIClickable.refl.meta.h
+            UI/UIManager.h
+            UI/UIScriptInterface.h
+            UI/UIScriptLoader.h
+            UI/UITextInput.refl.h
+            UI/UITextInput.refl.meta.h
+            UI/UITextureBinding.h
+            VisualEffect/VisualEffect.h
+            VisualEffect/VisualEffectFuncs.h
+            VisualEffect/VisualEffectHandle.h
+            VisualEffect/VisualEffectInstance.h
+            VisualEffect/VisualEffectManager.h
+            VisualEffect/VisualEffectTypes.refl.h
+            VisualEffect/VisualEffectTypes.refl.meta.h
             Window/FakeWindow.h
             Window/Window.h
             Window/WindowManager.h
-            Audio/MusicManager.h
-            Audio/AudioFormat.h
-            Audio/AudioManager.h
-            Audio/AudioHandle.h
-            Audio/VolumeCategory.h
-            Audio/MusicSpec.h
-            Audio/AudioSpec.h
-            Shader/ShaderManager.h
-            Shader/DefaultShader.h
-            Settings/EngineSettings.refl.h
-            Settings/EngineSettings.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_Engine 
+            Settings/EngineSettings.refl.h
             Text/TextRenderMode.refl.h
             UI/UIClickable.refl.h
             UI/UITextInput.refl.h
             VisualEffect/VisualEffectTypes.refl.h
-            Settings/EngineSettings.refl.h
             #REFL_PLACEHOLDER
             )
 
@@ -292,5 +292,8 @@ endforeach()
 
 add_library(Engine STATIC ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine}
             ${GENERIC_HEADER_Engine} ${PLATFORM_HEADER_Engine})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_Engine} ${PLATFORM_SRC_Engine}
+            ${GENERIC_HEADER_Engine} ${PLATFORM_HEADER_Engine})
+
 set_target_properties(Engine PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT EngineCommon.h)
 cotire(Engine)

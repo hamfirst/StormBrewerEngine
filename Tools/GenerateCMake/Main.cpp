@@ -428,13 +428,14 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   {
     cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
     cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})\n";
+    cmake_file << "source_group(TREE \"${CMAKE_CURRENT_SOURCE_DIR}\" FILES ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
+    cmake_file << "            ${GENERIC_HEADER_" + project_name + "} ${PLATFORM_HEADER_" + project_name + "})\n\n";
   }
   else
   {
-    cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ";
-    cmake_file << "${GENERIC_HEADER_" + project_name + "})\n\n";
+    cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} " "${GENERIC_HEADER_" + project_name + "})\n";
+    cmake_file << "source_group(TREE \"${CMAKE_CURRENT_SOURCE_DIR}\" FILES ${GENERIC_SRC_" + project_name + "} " "${GENERIC_HEADER_" + project_name + "})\n\n";
   }
-
 
   if (files.m_NatvisFiles.size() > 0)
   {

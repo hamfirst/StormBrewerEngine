@@ -70,3 +70,6 @@ endif()
 
 add_library(GameClientExe STATIC ${GENERIC_SRC_GameClientExe} ${PLATFORM_SRC_GameClientExe}
             ${GENERIC_HEADER_GameClientExe} ${PLATFORM_HEADER_GameClientExe})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_GameClientExe} ${PLATFORM_SRC_GameClientExe}
+            ${GENERIC_HEADER_GameClientExe} ${PLATFORM_HEADER_GameClientExe})
+

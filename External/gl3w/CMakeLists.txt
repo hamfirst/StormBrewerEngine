@@ -72,3 +72,6 @@ endif()
 
 add_library(gl3w STATIC ${GENERIC_SRC_gl3w} ${PLATFORM_SRC_gl3w}
             ${GENERIC_HEADER_gl3w} ${PLATFORM_HEADER_gl3w})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_gl3w} ${PLATFORM_SRC_gl3w}
+            ${GENERIC_HEADER_gl3w} ${PLATFORM_HEADER_gl3w})
+

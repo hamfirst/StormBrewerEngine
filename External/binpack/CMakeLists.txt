@@ -5,21 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_binpack 
             GuillotineBinPack.cpp
-            SkylineBinPack.cpp
-            ShelfNextFitBinPack.cpp
-            ShelfBinPack.cpp
             MaxRectsBinPack.cpp
             Rect.cpp
+            ShelfBinPack.cpp
+            ShelfNextFitBinPack.cpp
+            SkylineBinPack.cpp
             )
 
 set(GENERIC_HEADER_binpack 
             GuillotineBinPack.h
-            ShelfNextFitBinPack.h
-            Rect.h
             MaxRectsBinPack.h
-            SkylineBinPack.h
+            Rect.h
             ShelfBinPack.h
+            ShelfNextFitBinPack.h
+            SkylineBinPack.h
             )
 
 add_library(binpack STATIC ${GENERIC_SRC_binpack} ${GENERIC_HEADER_binpack})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_binpack} ${GENERIC_HEADER_binpack})
 
