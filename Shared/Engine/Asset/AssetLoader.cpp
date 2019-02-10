@@ -78,10 +78,14 @@ void AssetLoader::ShutDown()
 
 #ifndef _WEB
   m_Running = false;
-  m_LoadSemaphore.Release(g_EngineSettings.m_AssetLoadThreads);
+  for (int index = 0; index < g_EngineSettings.m_AssetLoadThreads; index++)
+  {
+    m_LoadSemaphore.Release();
+  }
 
   for (int index = 0; index < g_EngineSettings.m_AssetLoadThreads; index++)
   {
+    m_LoadSemaphore.Release();
     m_LoaderThreads[index].join();
   }
 

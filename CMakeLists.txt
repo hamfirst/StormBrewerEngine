@@ -282,7 +282,7 @@ if(BUILD_TOOLS)
   endif()
 
   add_executable(DistFetch Dummy.cpp)
-  target_link_libraries(DistFetch DistFetchLib StormSocketCPP mbedtls asio)
+  target_link_libraries(DistFetch DistFetchLib DistFetcher StormSocketCPP mbedtls asio)
   set_target_properties(DistFetch PROPERTIES FOLDER Executable)
 
   if(NOT MSVC)
@@ -407,6 +407,7 @@ if(BUILD_TOOLS)
   target_link_libraries(editor StormNet)
   target_link_libraries(editor StormExpr)
   target_link_libraries(editor StormData)
+  target_link_libraries(editor DistFetcher)
   target_link_libraries(editor StormSocketCPP)
 
   target_link_libraries(editor External)

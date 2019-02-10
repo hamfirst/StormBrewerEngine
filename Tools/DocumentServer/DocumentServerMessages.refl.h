@@ -18,6 +18,7 @@ enum STORM_REFL_ENUM class DocumentServerMessageType
   kSave,
   kUndo,
   kRedo,
+  kShutdown,
 };
 
 enum STORM_REFL_ENUM class DocumentClientMessageType

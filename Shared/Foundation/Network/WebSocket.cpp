@@ -290,10 +290,10 @@ WebSocket::WebSocket()
 {
 }
 
-WebSocket::WebSocket(const char * host, int port, const char * uri, const char * origin)
+WebSocket::WebSocket(const char * host, int port, const char * uri, const char * origin, char * protocol)
   : m_Socket((int)INVALID_SOCKET)
 {
-  StartConnect(host, port, uri, origin);
+  StartConnect(host, port, uri, origin, protocol);
 }
 
 WebSocket::~WebSocket()
@@ -320,7 +320,7 @@ WebSocket & WebSocket::operator = (WebSocket && rhs) noexcept
   return *this;
 }
 
-void WebSocket::StartConnect(const char * host, int port, const char * uri, const char * origin, int timeout)
+void WebSocket::StartConnect(const char * host, int port, const char * uri, const char * origin, char * protocol, int timeout)
 {
   Close();
 
@@ -559,6 +559,7 @@ Optional<WebsocketPacket> WebSocket::RecvPacket()
 
   WebSocketPacketType type = (WebSocketPacketType)opcode;
 
+
   uint64_t len = header[1] & 0x7F;
   if (len == 126)
   {
@@ -644,6 +645,26 @@ Optional<WebsocketPacket> WebSocket::PollPacket()
   }
 
   return{};
+}
+
+void WebSocket::WaitForData(int ms)
+{
+  if (m_Socket == INVALID_SOCKET)
+  {
+    return;
+  }
+
+  fd_set recv_set, err_set;
+
+  FD_ZERO(&recv_set);
+  FD_SET(m_Socket, &recv_set);
+
+  FD_ZERO(&err_set);
+  FD_SET(m_Socket, &err_set);
+
+  timeval t = {};
+  t.tv_usec = ms * 1000;
+  select(FD_SETSIZE, &recv_set, NULL, &err_set, &t);
 }
 
 void WebSocket::SendPacket(const Buffer & buffer, WebSocketPacketType type)

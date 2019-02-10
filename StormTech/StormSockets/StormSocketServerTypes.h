@@ -65,6 +65,7 @@ namespace StormSockets
     int MaxSendQueueElements = 32;
     int MaxPendingSendBlocks = 1024 * 16;
     int HandshakeTimeout = 0;
+    bool LoadSystemCertificates = true;
   };
 
   struct StormSocketServerSSLSettings

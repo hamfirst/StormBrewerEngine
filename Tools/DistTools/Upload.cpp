@@ -167,13 +167,18 @@ int main(int argc, char ** argv)
 
           packet.WriteInt32((int)MessageType::kUpload);
 
+#ifdef _MSC_VER
           const char * user_name = getenv("USERNAME");
+#else
+          const char * user_name = getenv("USER");
+#endif
           if(user_name == nullptr)
           {
             user_name = "Unknown";
           }
 
           UploadRequest request;
+          request.m_Platform = (int)CUR_PLATFORM;
           request.m_FileSize = data.size();
           strncpy(request.m_Name, user_name, sizeof(UploadRequest::m_Name));
           request.m_Name[sizeof(UploadRequest::m_Name) - 1] = 0;

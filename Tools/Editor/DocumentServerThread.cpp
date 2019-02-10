@@ -49,7 +49,7 @@ void DocumentServerThread::DocumentServerThreadMain()
   {
     if (connected == false)
     {
-      m_WebSocket.StartConnect(m_Host.data(), 27800, "/", m_Host.data(), 2000);
+      m_WebSocket.StartConnect(m_Host.data(), 27800, "/", m_Host.data(), nullptr, 2000);
       if (m_WebSocket.IsConnected())
       {
         m_ConnectionGen++;

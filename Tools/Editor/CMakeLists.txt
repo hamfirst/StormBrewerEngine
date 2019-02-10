@@ -150,7 +150,7 @@ set(GENERIC_SRC_Editor
             VisualEffectEditorViewer.cpp
             VisualEffectEquationEditor.cpp
             #CPP_PLACEHOLDER
-            )
+        DistributionList.cpp DistributionList.h DistributionContainer.cpp DistributionContainer.h)
 
 set(GENERIC_HEADER_Editor 
             AtlasEditor.h

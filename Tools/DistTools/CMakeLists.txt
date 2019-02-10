@@ -25,4 +25,5 @@ endforeach()
 add_library(DistUploadLib STATIC Upload.cpp ${GENERIC_HEADER_DistServer})
 add_library(DistServerLib STATIC Server.cpp ${GENERIC_HEADER_DistServer})
 add_library(DistFetchLib STATIC Fetch.cpp ${GENERIC_HEADER_DistServer})
+add_library(DistFetcher STATIC DistFetcher.cpp DistFetcher.h ${GENERIC_HEADER_DistServer})
 

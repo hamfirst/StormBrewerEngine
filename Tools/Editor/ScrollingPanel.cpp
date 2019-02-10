@@ -81,7 +81,7 @@ void ScrollingPanel::scrollChanged()
     return;
   }
 
-  int widget_height = m_Widget->minimumHeight();
+  int widget_height = std::max(m_Widget->minimumHeight(), height() - 3);
 
   if (m_ShowScrollbar)
   {

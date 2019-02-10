@@ -161,8 +161,25 @@ int main(int argc, char ** argv)
             auto buffer = std::make_unique<uint8_t[]>(req.m_FileSize);
             reader.ReadByteBlock(buffer.get(), req.m_FileSize);
 
+            char plat_chr;
+            switch(req.m_Platform)
+            {
+            default:
+              plat_chr = 'U';
+              break;
+            case (int)DistPlatform::kWindows:
+              plat_chr = 'W';
+              break;
+            case (int)DistPlatform::kLinux:
+              plat_chr = 'L';
+              break;
+            case (int)DistPlatform::kMac:
+              plat_chr = 'M';
+              break;
+            }
+
             char file_name[256];
-            snprintf(file_name, sizeof(file_name), "%zd_%s", time(nullptr), &req.m_Name[0]);
+            snprintf(file_name, sizeof(file_name), "%c%zd_%s", plat_chr, time(nullptr), &req.m_Name[0]);
 
             auto path = std::filesystem::path("builds") / file_name;
             auto write_file = fopen(path.string().c_str(), "wb");
@@ -230,7 +247,7 @@ int main(int argc, char ** argv)
             frontend->SendPacketToConnection(response, event.ConnectionId);
             frontend->FreeOutgoingPacket(response);
           }
-          else if(type == MessageType::kDownload)
+          else if(type == MessageType::kDownload || type == MessageType::kDownloadLatest)
           {
             if (data_len < 4)
             {
@@ -243,12 +260,32 @@ int main(int argc, char ** argv)
             auto id = reader.ReadInt32();
             data_len -= 4;
 
-            if(id == 0)
+            if(type == MessageType::kDownloadLatest)
             {
+              char plat_chr;
+              switch(id)
+              {
+              default:
+                plat_chr = '\0';
+                break;
+              case (int)DistPlatform::kWindows:
+                plat_chr = 'W';
+                break;
+              case (int)DistPlatform::kLinux:
+                plat_chr = 'L';
+                break;
+              case (int)DistPlatform::kMac:
+                plat_chr = 'M';
+                break;
+              }
+
               auto newest_id = 0;
               for(auto & elem : build_db)
               {
-                newest_id = std::max(newest_id, elem.first);
+                if(elem.second.m_Name.length() > 0 && elem.second.m_Name[0] == plat_chr)
+                {
+                  newest_id = std::max(newest_id, elem.first);
+                }
               }
 
               id = newest_id;

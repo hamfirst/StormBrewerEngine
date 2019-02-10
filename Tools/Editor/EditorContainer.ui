@@ -19,8 +19,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>475</width>
-     <height>21</height>
+     <width>1280</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -53,9 +53,24 @@
     <addaction name="action_TestBuildWithoutOneClient"/>
     <addaction name="action_TestBuildWithBots"/>
    </widget>
+   <widget class="QMenu" name="menuDist">
+    <property name="title">
+     <string>Update</string>
+    </property>
+    <addaction name="actionDownload_Latest"/>
+    <addaction name="actionBuild_List"/>
+   </widget>
+   <widget class="QMenu" name="menuDocServer">
+    <property name="title">
+     <string>DocServer</string>
+    </property>
+    <addaction name="actionShutdown"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuRun"/>
+   <addaction name="menuDist"/>
+   <addaction name="menuDocServer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open">
@@ -113,10 +128,23 @@
     <string>Test Build With Bots</string>
    </property>
   </action>
+  <action name="actionBuild_List">
+   <property name="text">
+    <string>Build List</string>
+   </property>
+  </action>
+  <action name="actionDownload_Latest">
+   <property name="text">
+    <string>Download Latest</string>
+   </property>
+  </action>
+  <action name="actionShutdown">
+   <property name="text">
+    <string>Shutdown</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="EditorContainer.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

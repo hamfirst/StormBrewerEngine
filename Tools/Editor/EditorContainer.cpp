@@ -47,6 +47,7 @@
 #include "AudioViewer.h"
 #include "DocumentEditorWidgetBase.h"
 #include "DocumentEditorConfig.h"
+#include "DistributionContainer.h"
 #include "GameServerWidget.h"
 #include "GameClientWidget.h"
 #include "GameHostWidget.h"
@@ -134,6 +135,11 @@ EditorContainer::EditorContainer(QWidget *parent) :
   connect(ui.action_TestBuildWithBots, &QAction::triggered, this, &EditorContainer::testBuildBots);
   ui.action_TestBuildWithBots->setShortcut(QKeySequence(Qt::Key_F6));
 
+  connect(ui.actionBuild_List, &QAction::triggered, this, &EditorContainer::openDistList);
+  connect(ui.actionDownload_Latest, &QAction::triggered, this, &EditorContainer::downloadLatest);
+  connect(ui.actionShutdown, &QAction::triggered, this, &EditorContainer::shutdownDocServer);
+
+
   m_RecentFileSeparator = ui.menuFile->addSeparator();
   for (int index = 0; index < kNumRecentFiles; index++)
   {
@@ -149,6 +155,7 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   m_EngineInitialized = false;
   m_Closing = false;
+  m_WantsClose = false;
 
   QTimer * timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &EditorContainer::engineUpdate);
@@ -368,6 +375,12 @@ void EditorContainer::UpdateRecentFiles()
   }
 }
 
+void EditorContainer::DownloadBuild(int build_id)
+{
+  m_DownloadBuild = build_id;
+  m_WantsClose = true;
+}
+
 void EditorContainer::closeEvent(QCloseEvent * ev)
 {
   m_Closing = true;
@@ -378,6 +391,26 @@ void EditorContainer::closeEvent(QCloseEvent * ev)
   if (m_EngineInitialized)
   {
     EngineCleanup();
+  }
+
+  if(m_DownloadBuild)
+  {
+#ifdef _MSC_VER
+    auto fetch_path = QDir::cleanPath(QDir::currentPath() + QDir::separator() + "DownloadBuild.bat");
+#else
+    auto fetch_path = QDir::cleanPath(QDir::currentPath() + QDir::separator() + "DownloadBuild.sh");
+#endif
+    QStringList args;
+
+    if(m_DownloadBuild.Value() >= 0)
+    {
+      args.push_back(QString::number(m_DownloadBuild.Value()));
+    }
+
+    if(QProcess::startDetached(fetch_path, args))
+    {
+      m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kShutdown"));
+    }
   }
 }
 
@@ -464,6 +497,11 @@ void EditorContainer::engineUpdate()
   }
 
   m_DeadWidgets.clear();
+
+  if(m_WantsClose)
+  {
+    QApplication::closeAllWindows();
+  }
 }
 
 void EditorContainer::newFile()
@@ -667,6 +705,31 @@ void EditorContainer::redo()
   }
 }
 
+void EditorContainer::openDistList()
+{
+  if(m_DistList.get() == nullptr)
+  {
+    m_DistList = std::make_unique<DistributionContainer>(this);
+  }
+
+  m_DistList->show();
+}
+
+void EditorContainer::downloadLatest()
+{
+  auto reply = QMessageBox::question(this, "Downloading Build...", "Are you sure you want to download the latest build??",
+                                     QMessageBox::Yes|QMessageBox::No);
+  if (reply == QMessageBox::Yes)
+  {
+    DownloadBuild(0);
+  }
+}
+
+void EditorContainer::shutdownDocServer()
+{
+  m_DocumentServerThread.SendData(m_DocServerConnectionGen, std::string("kShutdown"));
+}
+
 void EditorContainer::testBuildOnline()
 {
   m_HostWidgets.emplace_back(std::make_unique<GameHostWidget>(this, 2));
@@ -689,6 +752,12 @@ void EditorContainer::NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget)
 {
   if (m_Closing)
   {
+    return;
+  }
+
+  if(m_DistList.get() == host_widget)
+  {
+    m_DistList.reset();
     return;
   }
 

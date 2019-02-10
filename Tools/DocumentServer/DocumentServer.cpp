@@ -670,6 +670,18 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
     return false;
   }
 
+  if(type == DocumentServerMessageType::kShutdown)
+  {
+    for(auto & doc : m_OpenDocuments)
+    {
+      doc.second.m_Document->Save(m_RootPath);
+    }
+
+    m_Quit = true;
+    m_Semaphore.Release(1);
+    return true;
+  }
+
   uint32_t document_id = std::strtoul(msg, &msg, 10);
   if (document_id == 0)
   {

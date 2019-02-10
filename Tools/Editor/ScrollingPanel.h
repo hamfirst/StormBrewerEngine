@@ -16,10 +16,10 @@ public:
 
   void SetChildWidget(std::unique_ptr<QWidget> && widget);
 
-  template <typename T>
-  T * CreateWidget()
+  template <typename T, typename ... Args>
+  T * CreateWidget(Args && ... args)
   {
-    SetChildWidget(std::make_unique<T>(this));
+    SetChildWidget(std::make_unique<T>(std::forward<Args>(args)..., this));
     return static_cast<T *>(m_Widget.get());
   }
 

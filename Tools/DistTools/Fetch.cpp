@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <filesystem>
+#include <thread>
+#include <chrono>
 
 #include <miniz-cpp/zip_file.hpp>
 
@@ -14,262 +16,151 @@
 
 #include "StormRefl/StormReflJsonStd.h"
 
+#include "DistFetcher.h"
+
 #include "Packets.h"
 #include "Settings.refl.meta.h"
 
 
 int main(int argc, char ** argv)
 {
-  std::string project_dir;
-  auto project_dir_env = getenv("PROJECT_DIR");
-  if(project_dir_env)
-  {
-    project_dir = project_dir_env;
-  }
-  else
-  {
-    auto fp = fopen("project_dir.txt", "rb");
-    if(fp == nullptr)
-    {
-      printf("project_dir.txt not found and PROJECT_DIR environment variable not set\n");
-      return ENODATA;
-    }
-
-    fseek(fp, 0, SEEK_END);
-    auto project_dir_file_size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    project_dir.resize(project_dir_file_size + 1);
-    fread(project_dir.data(), project_dir_file_size, 1, fp);
-    project_dir[project_dir_file_size] = 0;
-    fclose(fp);
-
-    while(isspace(project_dir.back()) || project_dir.back() == 0)
-    {
-      project_dir.pop_back();
-    }
-  }
-
-  auto project_settings_dir_path = std::filesystem::path(project_dir) / "ProjectSettings";
-  auto project_settings_file = project_settings_dir_path / "ProjectCredentials.txt";
-
-  auto settings_file = fopen(project_settings_file.string().c_str(), "rb");
-  if(settings_file == nullptr)
-  {
-    printf("Could not open project credentials file\n");
-    return 0;
-  }
-
-  fseek(settings_file, 0, SEEK_END);
-  auto settings_file_size = ftell(settings_file);
-  fseek(settings_file, 0, SEEK_SET);
-
-  auto settings_buffer = std::make_unique<char[]>(settings_file_size + 1);
-  fread(settings_buffer.get(), 1, settings_file_size, settings_file);
-  fclose(settings_file);
-
-  settings_buffer[settings_file_size] = 0;
-
-  UploadSettings upload_settings;
-  if(StormReflParseJson(upload_settings, settings_buffer.get()) == false)
-  {
-    printf("Could not parse credentials file\n");
-    return 0;
-  }
-
   bool download_list = true;
   int build_id = 0;
 
   if(argc >= 2)
   {
-    if(!strcmp(argv[1], "--latest"))
+    build_id = atoi(argv[1]);
+    download_list = false;
+  }
+
+  std::unique_ptr<DistFetcher> dist_fetcher;
+  if(download_list)
+  {
+    dist_fetcher = std::make_unique<DistFetcher>();
+  }
+  else
+  {
+    dist_fetcher = std::make_unique<DistFetcher>(build_id);
+  }
+
+  if(dist_fetcher->GetResult().has_value() == false)
+  {
+    printf("Connecting to server...\n");
+  }
+
+  dist_fetcher->Sync();
+  auto result = dist_fetcher->GetResult().value();
+
+  if(result == DistFetcherResult::kDone)
+  {
+    if(download_list)
     {
-      download_list = false;
-      build_id = 0;
+      auto list = dist_fetcher->GetBuildInfo().value();
+      if(list.size() == 0)
+      {
+        printf("No builds\n");
+      }
+      else
+      {
+        const char * plat = "UNK";
+        for(auto & elem : list)
+        {
+          switch(elem.m_Platform)
+          {
+          case DistPlatform::kWindows:
+            plat = "WIN";
+            break;
+          case DistPlatform::kLinux:
+            plat = "LNX";
+            break;
+          case DistPlatform::kMac:
+            plat = "MAC";
+            break;
+          }
+
+          printf("  %d. %s %s %s\n", elem.m_BuildId, plat, elem.m_Date.c_str(), elem.m_Name.c_str());
+        }
+      }
+
+      return 0;
     }
     else
     {
-      build_id = atoi(argv[1]);
-      if(build_id > 0)
+      auto build_data = dist_fetcher->GetDownloadData().value();
+      if(build_data.second == 0)
       {
-        download_list = false;
+        printf("Build not found\n");
+        return -1;
       }
+
+      printf("Got compressed build of size %zd\n", build_data.second);
+      printf("Decompressing build...\n");
+      auto buffer = std::vector<uint8_t>();
+
+      buffer.resize(build_data.second);
+      memcpy(buffer.data(), build_data.first, build_data.second);
+
+      miniz_cpp::zip_file file(buffer);
+      file.printdir();
+
+      for(auto & info : file.infolist())
+      {
+        std::filesystem::path dest_path(info.filename);
+        dest_path = "." / dest_path;
+        auto parent_path = dest_path.parent_path();
+
+        std::vector<std::filesystem::path> paths;
+        while(parent_path != ".")
+        {
+          paths.emplace_back(parent_path);
+          parent_path = parent_path.parent_path();
+        }
+
+        for(int index = (int)paths.size() - 1; index >= 0; --index)
+        {
+          std::filesystem::create_directory(paths[index]);
+        }
+
+        file.extract(info, ".");
+
+        int perms;
+        sscanf(info.comment.c_str(), "%04o", &perms);
+
+        std::filesystem::permissions(info.filename, (std::filesystem::perms)perms);
+      }
+
+      return 0;
     }
   }
-
-  StormSockets::StormSemaphore semaphore;
-
-  StormSockets::StormSocketInitSettings settings;
-  settings.MaxConnections = 4;
-  settings.NumIOThreads = 1;
-  settings.NumSendThreads = 1;
-  auto backend = std::make_unique<StormSockets::StormSocketBackend>(settings);
-
-  StormSockets::StormSocketClientFrontendWebsocketSettings client_settings;
-  client_settings.EventSemaphore = &semaphore;
-  auto frontend = std::make_unique<StormSockets::StormSocketClientFrontendWebsocket>(client_settings, backend.get());
-
-  StormSockets::StormSocketClientFrontendWebsocketRequestData request_data;
-  request_data.m_Protocol = upload_settings.m_DistServerIdent.size() ? upload_settings.m_DistServerIdent.c_str() : nullptr;
-  auto connection_id = frontend->RequestConnect(upload_settings.m_DistServerAddress.c_str(), upload_settings.m_DistServerPort, request_data);
-
-  bool connected = false;
-
-  while(true)
+  else
   {
-    semaphore.WaitOne();
-
-    StormSockets::StormSocketEventInfo event;
-    while(frontend->GetEvent(event))
+    switch (result)
     {
-      switch(event.Type)
-      {
-      case StormSockets::StormSocketEventType::ClientConnected:
-        printf("Connected...\n");
-        connected = true;
-        break;
-      case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
-        {
-          auto packet = frontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
-
-          if(download_list)
-          {
-            printf("Downloading list...\n");
-            packet.WriteInt32((int)MessageType::kDownloadList);
-            frontend->FinalizeOutgoingPacket(packet);
-            frontend->SendPacketToConnection(packet, connection_id);
-            frontend->FreeOutgoingPacket(packet);
-          }
-          else
-          {
-            printf("Downloading build...\n");
-            packet.WriteInt32((int)MessageType::kDownload);
-            packet.WriteInt32(build_id);
-            frontend->FinalizeOutgoingPacket(packet);
-            frontend->SendPacketToConnection(packet, connection_id);
-            frontend->FreeOutgoingPacket(packet);
-          }
-        }
-        break;
-      case StormSockets::StormSocketEventType::Data:
-
-        {
-          auto & reader = event.GetWebsocketReader();
-          if (download_list)
-          {
-            int data_length = reader.GetDataLength();
-            if(data_length < 4)
-            {
-              printf("Download list failed");
-              return 0;
-            }
-
-            int num_builds = reader.ReadInt32();
-            data_length -= 4;
-
-            if(num_builds == 0)
-            {
-              printf("No builds\n");
-            }
-
-            for(int index = 0; index < num_builds; ++index)
-            {
-              if(data_length < sizeof(DownloadList))
-              {
-                printf("Download list failed\n");
-                return 0;
-              }
-
-              DownloadList list_elem;
-              reader.ReadByteBlock(&list_elem, sizeof(DownloadList));
-              data_length -= sizeof(DownloadList);
-
-              time_t t = atoi(list_elem.m_Name);
-              auto time_info = localtime(&t);
-
-              const char * desc = strstr(list_elem.m_Name, "_");
-              if(desc == nullptr)
-              {
-                desc = "Unknown";
-              }
-              else
-              {
-                desc++;
-              }
-
-              char timestr[256];
-              strftime(timestr, sizeof(timestr), "%m/%d/%y %H:%M:%S", time_info);
-
-              printf("%d. %s %s\n\n", list_elem.m_Id, timestr, desc);
-            }
-          }
-          else
-          {
-            if(reader.GetDataLength() > 0)
-            {
-              printf("Got compressed build of size %d\n", reader.GetDataLength());
-              printf("Decompressing build...\n");
-              auto buffer_len = reader.GetDataLength();
-              auto buffer = std::vector<uint8_t>();
-
-              buffer.resize(buffer_len);
-              reader.ReadByteBlock(buffer.data(), reader.GetDataLength());
-
-              miniz_cpp::zip_file file(buffer);
-              file.printdir();
-
-              for(auto & info : file.infolist())
-              {
-                std::filesystem::path dest_path(info.filename);
-                dest_path = "." / dest_path;
-                auto parent_path = dest_path.parent_path();
-
-                std::vector<std::filesystem::path> paths;
-                while(parent_path != ".")
-                {
-                  paths.emplace_back(parent_path);
-                  parent_path = parent_path.parent_path();
-                }
-
-                for(int index = (int)paths.size() - 1; index >= 0; --index)
-                {
-                  std::filesystem::create_directory(paths[index]);
-                }
-
-                file.extract(info, ".");
-
-                int perms;
-                sscanf(info.comment.c_str(), "%04o", &perms);
-
-                std::filesystem::permissions(info.filename, (std::filesystem::perms)perms);
-              }
-            }
-            else
-            {
-              printf("Invalid build id\n");
-            }
-          }
-
-          frontend->FreeIncomingPacket(reader);
-        }
-
-        frontend->ForceDisconnect(event.ConnectionId);
-        return 0;
-      case StormSockets::StormSocketEventType::Disconnected:
-        if(connected)
-        {
-          printf("Disconnected before upload complete\n");
-        }
-        else
-        {
-          printf("Connection failed\n");
-        }
-        return 0;
-      }
+    case DistFetcherResult::kProjectDirNotFound:
+      printf("project_dir.txt not found and PROJECT_DIR environment variable not set\n");
+      break;
+    case DistFetcherResult::kProjectSettingsNotFound:
+      printf("Could not open project credentials file\n");
+      break;
+    case DistFetcherResult::kProjectSettingsInvalid:
+      printf("Could not parse credentials file\n");
+      break;
+    case DistFetcherResult::kConnectionFailed:
+      printf("Connection failed\n");
+      break;
+    case DistFetcherResult::kDisconnected:
+      printf("Disconnected before upload complete\n");
+      break;
+    case DistFetcherResult::kDownloadListFailed:
+      printf("Download list failed\n");
+      break;
+    case DistFetcherResult::kInvalidBuildId:
+      printf("Invalid build id\n");
+      break;
     }
-  }
 
-  return 0;
+    return -1;
+  }
 }
 
 

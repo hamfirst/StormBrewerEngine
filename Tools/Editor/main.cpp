@@ -73,4 +73,5 @@ int main(int argc, char *argv[])
 #ifdef NET_USE_WEBRTC
   StormWebrtcStaticCleanup();
 #endif
+  return 0;
 }

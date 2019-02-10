@@ -134,77 +134,80 @@ namespace StormSockets
       m_SendThreads[index] = std::thread(&StormSocketBackend::SendThreadMain, this, index);
     }
 
-    std::vector<Certificate> certs;
+    if(settings.LoadSystemCertificates)
+    {
+      std::vector <Certificate> certs;
 
 #ifdef _WINDOWS
 
-    auto cert_store = CertOpenSystemStore(NULL, TEXT("ROOT"));
-    PCCERT_CONTEXT cert_context = nullptr;
+      auto cert_store = CertOpenSystemStore(NULL, TEXT("ROOT"));
+      PCCERT_CONTEXT cert_context = nullptr;
 
-    while ((cert_context = CertEnumCertificatesInStore(cert_store, cert_context)) != nullptr)
-    {
-      if ((cert_context->dwCertEncodingType & X509_ASN_ENCODING) != 0)
+      while ((cert_context = CertEnumCertificatesInStore(cert_store, cert_context)) != nullptr)
       {
-        Certificate cert;
-        cert.m_Data = std::make_unique<uint8_t[]>(cert_context->cbCertEncoded + 1);
-        cert.m_Length = cert_context->cbCertEncoded + 1;
+        if ((cert_context->dwCertEncodingType & X509_ASN_ENCODING) != 0)
+        {
+          Certificate cert;
+          cert.m_Data = std::make_unique<uint8_t[]>(cert_context->cbCertEncoded + 1);
+          cert.m_Length = cert_context->cbCertEncoded + 1;
 
-        memcpy(cert.m_Data.get(), cert_context->pbCertEncoded, cert_context->cbCertEncoded);
-        cert.m_Data[cert_context->cbCertEncoded] = 0;
+          memcpy(cert.m_Data.get(), cert_context->pbCertEncoded, cert_context->cbCertEncoded);
+          cert.m_Data[cert_context->cbCertEncoded] = 0;
 
-        certs.emplace_back(std::move(cert));
+          certs.emplace_back(std::move(cert));
+        }
       }
-    }
 
-    CertCloseStore(cert_store, 0);
+      CertCloseStore(cert_store, 0);
 #endif
 
 #ifdef _LINUX
-    auto dir = opendir("/etc/ssl/certs");
-    if (dir != nullptr)
-    {
-      while (true)
+      auto dir = opendir("/etc/ssl/certs");
+      if (dir != nullptr)
       {
-        auto ent = readdir(dir);
-        if (ent == nullptr)
+        while (true)
         {
-          closedir(dir);
-          break;
-        }
-
-        if (ent->d_type == DT_LNK || ent->d_type == DT_REG || ent->d_type == DT_UNKNOWN)
-        {
-          if (strstr(ent->d_name, ".crt"))
+          auto ent = readdir(dir);
+          if (ent == nullptr)
           {
-            std::string crt_filename = std::string("/etc/ssl/certs/") + ent->d_name;
+            closedir(dir);
+            break;
+          }
 
-            auto fp = fopen(crt_filename.c_str(), "rb");
-            if (fp == nullptr)
+          if (ent->d_type == DT_LNK || ent->d_type == DT_REG || ent->d_type == DT_UNKNOWN)
+          {
+            if (strstr(ent->d_name, ".crt"))
             {
-              continue;
+              std::string crt_filename = std::string("/etc/ssl/certs/") + ent->d_name;
+
+              auto fp = fopen(crt_filename.c_str(), "rb");
+              if (fp == nullptr)
+              {
+                continue;
+              }
+
+              fseek(fp, 0, SEEK_END);
+              auto len = ftell(fp);
+              fseek(fp, 0, SEEK_SET);
+
+              Certificate cert;
+              cert.m_Data = std::make_unique <uint8_t[]>(len + 1);
+              cert.m_Length = len + 1;
+
+              fread(cert.m_Data.get(), 1, len, fp);
+              cert.m_Data[ len ] = 0;
+
+              certs.emplace_back(std::move(cert));
+
+              fclose(fp);
             }
-
-            fseek(fp, 0, SEEK_END);
-            auto len = ftell(fp);
-            fseek(fp, 0, SEEK_SET);
-
-            Certificate cert;
-            cert.m_Data = std::make_unique<uint8_t[]>(len + 1);
-            cert.m_Length = len + 1;
-
-            fread(cert.m_Data.get(), 1, len, fp);
-            cert.m_Data[len] = 0;
-
-            certs.emplace_back(std::move(cert));
-
-            fclose(fp);
           }
         }
       }
-    }
 #endif
 
-    m_Certificates = std::move(certs);
+      m_Certificates = std::move(certs);
+    }
   }
 
   StormSocketBackend::~StormSocketBackend()

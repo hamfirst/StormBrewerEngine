@@ -19,6 +19,7 @@ class QOpenGLContext;
 class QOffscreenSurface;
 
 class GameHostWidget;
+class DistributionContainer;
 
 using DocumentEditorCreationDelegate = Delegate<DocumentEditorBase *, EditorContainer &, PropertyFieldDatabase &, const std::string &, DocumentOutputDelegate &&, QWidget *>;
 
@@ -37,6 +38,8 @@ public:
   void AddRecentFile(const QString & filename);
   void RemoveRecentFile(const QString & filename);
   void UpdateRecentFiles();
+
+  void DownloadBuild(int build_id);
 
 protected:
 
@@ -65,6 +68,10 @@ public slots:
   void undo();
   void redo();
 
+  void openDistList();
+  void downloadLatest();
+  void shutdownDocServer();
+
   void testBuildOnline();
   void testBuildOnlineWithoutOneClient();
   void testBuildBots();
@@ -73,6 +80,7 @@ protected:
 
   friend class GameHostWidget;
   friend class GameClientWidget;
+  friend class DistributionContainer;
 
   void NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget);
 
@@ -116,12 +124,16 @@ private:
 
   bool m_Closing;
   bool m_EngineInitialized;
+  bool m_WantsClose;
   int m_DocServerConnectionGen;
   int m_NextDocumentId;
+
+  Optional<int> m_DownloadBuild;
 
   std::string m_RootPath;
   PropertyFieldDatabase m_PropertyDatabase;
 
+  std::unique_ptr<DistributionContainer> m_DistList;
   std::vector<std::unique_ptr<QWidget>> m_HostWidgets;
   std::vector<std::unique_ptr<QWidget>> m_DeadWidgets;
 };

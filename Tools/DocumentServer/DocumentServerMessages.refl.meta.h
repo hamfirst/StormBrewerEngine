@@ -8,7 +8,7 @@
 template <>
 struct StormReflEnumInfo<DocumentServerMessageType>
 {
-  static constexpr int elems_n = 9;
+  static constexpr int elems_n = 10;
   static constexpr auto GetName() { return "DocumentServerMessageType"; }
   static constexpr auto GetNameHash() { return 0x2984BE49; }
   template <int N> struct elems { };
@@ -84,6 +84,14 @@ struct StormReflEnumInfo<DocumentServerMessageType>::elems<8>
   static constexpr auto GetName() { return "kRedo"; }
   static constexpr auto GetNameHash() { return 0xDB44ADC9; }
   static constexpr auto GetValue() { return DocumentServerMessageType::kRedo; }
+};
+
+template <>
+struct StormReflEnumInfo<DocumentServerMessageType>::elems<9>
+{
+  static constexpr auto GetName() { return "kShutdown"; }
+  static constexpr auto GetNameHash() { return 0x31C9682A; }
+  static constexpr auto GetValue() { return DocumentServerMessageType::kShutdown; }
 };
 
 template <>
