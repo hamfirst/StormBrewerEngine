@@ -8,7 +8,6 @@ class GameContainer;
 class GameClientEventSender;
 
 class RenderState;
-class RenderUtil;
 
 class GameCamera;
 class Camera;

@@ -5,7 +5,6 @@
 
 #include "Engine/Window/Window.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/UI/UIManager.h"
 #include "Engine/EngineState.h"
 
@@ -60,7 +59,6 @@ public:
   void SetClientSystems(NullOptPtr<GameClientSystems> client_systems);
 
   RenderState & GetRenderState();
-  RenderUtil & GetRenderUtil();
   
   void StartNetworkClient();
   void StopNetworkClient();
@@ -115,7 +113,6 @@ private:
   GameClientSave m_Save;
 
   RenderState m_RenderState;
-  RenderUtil m_RenderUtil;
 
   bool m_Updating = false;
 };

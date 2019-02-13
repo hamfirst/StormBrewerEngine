@@ -13,11 +13,11 @@ static const char * kDrawUtilFragmentShader = SHADER_LITERAL(
 
   uniform sampler2D u_Texture;
   uniform vec4 u_Color;
-  uniform vec2 u_ActualScreenSize;
+  uniform vec4 u_ScreenSize;
 
   void main()
   {
-    vec2 frag_coord = floor(v_Position.xy * u_ActualScreenSize * 0.25);
+    vec2 frag_coord = floor(v_Position.xy * u_ScreenSize.zw * 0.25);
     float x = fract((frag_coord.x + frag_coord.y) * 0.5);
 
     float a_inv = (1.0 - v_Color.a);

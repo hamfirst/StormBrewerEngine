@@ -40,8 +40,7 @@ GameContainer::GameContainer(Window & window, std::unique_ptr<GameContainerInitS
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
   m_RenderState.EnableBlendMode();
 
-  m_RenderUtil.SetDefaultClearColor();
-  m_RenderUtil.LoadShaders();
+  m_RenderState.SetDefaultClearColor();
 
   g_GlobalAssetList.BeginAssetLoad(&g_EngineClientAssetLoader);
   m_EngineState.GetUIManager()->LoadScripts(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
@@ -115,11 +114,6 @@ void GameContainer::SetClientSystems(NullOptPtr<GameClientSystems> client_system
 RenderState & GameContainer::GetRenderState()
 {
   return m_RenderState;
-}
-
-RenderUtil & GameContainer::GetRenderUtil()
-{
-  return m_RenderUtil;
 }
 
 void GameContainer::StartNetworkClient()
@@ -197,7 +191,7 @@ void GameContainer::Render()
   }
   else
   {
-    m_RenderUtil.Clear();
+    m_RenderState.Clear();
     g_TextManager.SetTextPos(Vector2(20, 20));
     g_TextManager.RenderText("No mode set", -1, 1, m_RenderState);
   }
@@ -235,8 +229,7 @@ void GameContainer::UpdateUIManager()
 void GameContainer::RenderUIManager()
 {
   auto & render_state = GetRenderState();
-  auto & render_util = GetRenderUtil();
-  GetEngineState().GetUIManager()->Render(render_state, render_util);
+  GetEngineState().GetUIManager()->Render(render_state);
 }
 
 void GameContainer::ClearUIManager()

@@ -8,10 +8,14 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/ShaderLiteral.h"
+#include "Engine/Rendering/VertexBufferBuilder.h"
+#include "Engine/Rendering/Rendering.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Window/Window.h"
-#include "Rendering.h"
+#include "Engine/Shader/ShaderManager.h"
+
+#include "ProjectSettings/ProjectColors.h"
 
 #include <gl3w/gl3w.h>
 
@@ -96,6 +100,12 @@ void BootstrapContext()
   glDisable(GL_CULL_FACE); CHECK_GL_RENDER_ERROR;
 }
 
+RenderState::RenderState() : 
+  m_ScratchVertexBuffer(true)
+{
+
+}
+
 RenderState::~RenderState()
 {
   Release();
@@ -134,6 +144,10 @@ void RenderState::InitRenderState(int screen_width, int screen_height)
 #ifdef REQUIRE_VERTEX_ARRAY_IN_CONTEXT
   glGenVertexArrays(1, &m_VertexArrayName); CHECK_GL_RENDER_ERROR;
 #endif
+
+  uint32_t default_pixel = 0xFFFFFFFF;
+  PixelBuffer default_pixel_buffer((uint8_t *)&default_pixel, 1, 1);
+  m_DefaultTexture.SetTextureData(default_pixel_buffer, TextureType::kRGBA);
 }
 
 void RenderState::MakeCurrent()
@@ -251,6 +265,28 @@ void RenderState::Release()
 //     m_VertexArrayName = 0;
 //   }
 #endif
+}
+
+void RenderState::Clear()
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void RenderState::Clear(const Color & color)
+{
+  SetClearColor(color);
+  Clear();
+}
+
+void RenderState::SetDefaultClearColor()
+{
+  glClearColor(PROJECT_CLEAR_COLOR);
+}
+
+void RenderState::SetClearColor(const Color & color)
+{
+  auto c = (RenderVec4)color;
+  glClearColor(c.r, c.g, c.b, c.a);
 }
 
 void RenderState::BindShader(const ShaderProgram & shader)
@@ -432,22 +468,27 @@ void RenderState::SetScreenSize(Vector2 screen_size)
   }
 }
 
-int RenderState::GetRenderWidth()
+float RenderState::GetRenderWidth()
 {
   return m_RenderWidth;
 }
 
-int RenderState::GetRenderHeight()
+float RenderState::GetRenderHeight()
 {
   return m_RenderHeight;
 }
 
-Vector2 RenderState::GetRenderSize()
+RenderVec2 RenderState::GetRenderSize()
 {
-  return Vector2(m_RenderWidth, m_RenderHeight);
+  return RenderVec2(m_RenderWidth, m_RenderHeight);
 }
 
-void RenderState::SetRenderSize(Vector2 render_size)
+RenderVec4 RenderState::GetFullRenderDimensions()
+{
+  return RenderVec4(m_RenderWidth, m_RenderHeight, m_ScreenWidth, m_ScreenHeight);
+}
+
+void RenderState::SetRenderSize(RenderVec2 render_size)
 {
   m_RenderWidth = render_size.x;
   m_RenderHeight = render_size.y;
@@ -501,6 +542,49 @@ RenderVec4 RenderState::ComputeScreenBounds(const Optional<Box> & active_area)
   }
 
   return screen_bounds;
+}
+
+const Texture & RenderState::GetDefaultTexture() const
+{
+  return m_DefaultTexture;
+}
+
+VertexBuffer & RenderState::GetScratchBuffer()
+{
+  return m_ScratchVertexBuffer;
+}
+
+void RenderState::DrawDebugQuad(const Box & b, const Color & c, bool screen_space)
+{
+  DrawDebugTexturedQuad(b, c, GetDefaultTexture(), screen_space);
+}
+
+void RenderState::DrawDebugTexturedQuad(const Box & b, const Color & c, const Texture & texture, bool screen_space)
+{
+  QuadVertexBufferBuilder builder;
+  QuadVertexBuilderInfo quad;
+  quad.m_Position = b;
+  quad.m_TexCoords = Box::FromStartAndWidthHeight(Vector2(0, 0), Vector2(1, 1));
+  quad.m_TextureSize = Vector2(1, 1);
+  quad.m_Color = c;
+  builder.AddQuad(quad);
+
+  builder.FillVertexBuffer(m_ScratchVertexBuffer);
+
+  auto & shader = screen_space ? g_ShaderManager.GetDefaultScreenSpaceShader() : g_ShaderManager.GetDefaultWorldSpaceShader();
+  BindShader(shader);
+  BindTexture(GetDefaultTexture());
+  BindVertexBuffer(m_ScratchVertexBuffer);
+
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), GetFullRenderDimensions());
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0, 0 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ 0.0f, 0.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+
+  Draw();
 }
 
 #ifdef USE_RENDER_TARGET

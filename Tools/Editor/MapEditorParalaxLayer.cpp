@@ -10,7 +10,6 @@
 #include "Runtime/Sprite/SpriteResource.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Asset/TextureAsset.h"
@@ -230,7 +229,7 @@ Optional<std::size_t> MapEditorParalaxLayer::GetSingleSelectionIndex()
   return m_SelectedParalaxObjects[0];
 }
 
-void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   auto layer = m_Map.m_ParalaxLayers.TryGet(m_LayerIndex);
   if (layer == nullptr)
@@ -299,7 +298,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
     render_state.BindShader(shader);
 
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ render_state.GetRenderSize() });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_state.GetFullRenderDimensions());
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{});
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -326,7 +325,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state);
   }
 
   for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
@@ -344,7 +343,7 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state);
   }
 
   for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
@@ -362,21 +361,21 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     }
 
     auto data = m_GetObject(elem.first);
-    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state, render_util);
+    data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state);
   }
 }
 
-void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_PreviewPosition.IsValid() == false)
   {
     return;
   }
 
-  DrawObject(m_Editor->GetParalaxObject(), m_Editor->GetParalaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center, render_state, render_util);
+  DrawObject(m_Editor->GetParalaxObject(), m_Editor->GetParalaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center, render_state);
 }
 
-void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_SelectedParalaxObjects.size() == 0)
   {
@@ -419,13 +418,13 @@ void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Bo
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
 
-  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindTexture(render_state.GetDefaultTexture());
   render_state.BindVertexBuffer(vertex_buffer);
   render_state.Draw();
 }
 
 Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
-  const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+  const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   auto texture_link = object.Get<TextureAsset::LoadCallbackLink>();
   if (texture_link)

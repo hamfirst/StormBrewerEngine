@@ -12,7 +12,6 @@
 #include "Engine/VisualEffect/VisualEffectHandle.h"
 
 class RenderState;
-class RenderUtil;
 
 struct MapParalaxLayerTexture
 {
@@ -42,7 +41,7 @@ public:
   ~MapParalaxLayerInstance();
 
   void Update();
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state);
 
   int GetLayerOrder() const;
 

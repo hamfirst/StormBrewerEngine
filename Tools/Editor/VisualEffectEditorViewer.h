@@ -12,7 +12,6 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Window/FakeWindow.h"
 #include "Engine/VisualEffect/VisualEffectManager.h"
 
@@ -90,7 +89,6 @@ private:
   DelegateLink<void> m_UpdateDelegate;
 
   RenderState m_RenderState;
-  RenderUtil m_RenderUtil;
 
   Optional<VisualEffectEditorNodeSelection> m_Selection;
 

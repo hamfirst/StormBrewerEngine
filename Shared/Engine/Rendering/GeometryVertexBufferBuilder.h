@@ -5,7 +5,6 @@
 #include "Engine/Rendering/VertexBuffer.h"
 
 class RenderState;
-class RenderUtil;
 class ShaderProgram;
 
 class ENGINE_EXPORT GeometryVertexBufferBuilder
@@ -39,7 +38,7 @@ public:
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
 
-  void DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<ShaderProgram> shader = nullptr);
+  void DrawDefault(RenderState & render_state, NullOptPtr<ShaderProgram> shader = nullptr);
 
   bool HasGeo() const;
 

@@ -4,15 +4,15 @@
     "m_Elements": {
         "0": {
             "m_Data": {
+                "m_EndY": 64,
                 "m_StartOffsetX": 29,
                 "m_StartX": 0,
-                "m_EndX": 64,
-                "m_Type": "k9Slice",
                 "m_StartOffsetY": 25,
+                "m_EndX": 64,
+                "m_StartY": 0,
+                "m_Type": "k9Slice",
                 "m_EndOffsetY": 36,
-                "m_EndY": 64,
-                "m_EndOffsetX": 32,
-                "m_StartY": 0
+                "m_EndOffsetX": 32
             },
             "m_Name": "Bubble",
             "m_TextureHash": 1024070447

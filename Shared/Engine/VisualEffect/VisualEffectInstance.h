@@ -53,7 +53,7 @@ private:
 
   void Init(const Vector2f & pos);
   void Update(float update_time, StormExprStack & stack, bool on_screen);
-  void Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   template <typename Type>
   friend class SkipField;

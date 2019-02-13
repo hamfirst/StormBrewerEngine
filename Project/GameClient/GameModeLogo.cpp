@@ -47,10 +47,9 @@ void GameModeLogo::Render()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
   
   render_state.EnableBlendMode();
 
@@ -59,8 +58,8 @@ void GameModeLogo::Render()
   {
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
-   
-    render_util.DrawTexturedQuad(texture->GetSize() / -2, Color(255, 255, 255, 255), texture->GetTexture(), window_size, render_state);
+
+    render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize(window_size / 2.0f, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
   }
 }
 

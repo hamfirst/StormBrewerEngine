@@ -20,7 +20,6 @@
 #include "Engine/Asset/AssetBundle.h"
 #include "Engine/Text/TextManager.h"
 #include "Engine/Rendering/Rendering.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Window/WindowManager.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Camera/Camera.h"

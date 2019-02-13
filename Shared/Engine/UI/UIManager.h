@@ -18,7 +18,6 @@
 class InputState;
 class Window;
 class RenderState;
-class RenderUtil;
 
 struct UIDef;
 class UIScriptLoader;
@@ -39,7 +38,7 @@ public:
   bool FinishedLoading() const;
 
   void Update(float delta_time, InputState & input_state, RenderState & render_state);
-  void Render(RenderState & render_state, RenderUtil & render_util);
+  void Render(RenderState & render_state);
 
   void Pause();
   void Unpause();

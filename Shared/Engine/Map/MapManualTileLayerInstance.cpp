@@ -389,7 +389,7 @@ void MapManualTileLayerInstance::Update()
   }
 }
 
-void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapManualTileLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   PROFILE_SCOPE("Draw Map");
 
@@ -436,7 +436,7 @@ void MapManualTileLayerInstance::DrawDynamic(const Box & viewport_bounds, DrawLi
   {
     for (auto & elem : grid_elems)
     {
-      draw_list.PushDraw(m_LayerOrder, elem.m_LowerEdge, [this, grid_id, elem=&elem](GameContainer &, const Box &, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil &)
+      draw_list.PushDraw(m_LayerOrder, elem.m_LowerEdge, [this, grid_id, elem=&elem](GameContainer &, const Box &, const RenderVec2 & screen_center, RenderState & render_state)
       {
         auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
         auto grid_box = m_DynamicDrawInfo.GetGridBoxForGridId(grid_id);

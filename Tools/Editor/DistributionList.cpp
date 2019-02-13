@@ -171,6 +171,12 @@ void DistributionList::resizeEvent(QResizeEvent * ev)
   RepositionElements();
 }
 
+void DistributionList::closeEvent(QCloseEvent * ev)
+{
+  m_Fetcher.reset();
+  m_Items.clear();
+}
+
 void DistributionList::RepositionElements()
 {
   int y = 0;

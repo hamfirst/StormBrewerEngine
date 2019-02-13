@@ -11,7 +11,6 @@ class UIClickable;
 class UITextInput;
 
 class RenderState;
-class RenderUtil;
 
 class UIScriptInterface
 {
@@ -19,7 +18,7 @@ public:
 
   UIScriptInterface(NotNullPtr<UIManager> ui_manager);
 
-  void BeginRendering(NotNullPtr<RenderState> render_state, NullOptPtr<RenderUtil> render_util);
+  void BeginRendering(NotNullPtr<RenderState> render_state);
   void EndRendering();
   void SetDrawArea(const Box & draw_area, const Box & active_area, bool clip);
   void ToggleFullscreen();
@@ -90,7 +89,6 @@ private:
 
   NotNullPtr<UIManager> m_UIManager;
   NullOptPtr<RenderState> m_RenderState = nullptr;
-  NullOptPtr<RenderUtil> m_RenderUtil = nullptr;
   Box m_DrawArea;
   Box m_ActiveArea;
   bool m_Clip;

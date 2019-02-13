@@ -205,7 +205,6 @@ void GeometryEditorBase::Paste()
 void GeometryEditorBase::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
-  m_RenderUtil.LoadShaders();
 
   m_Shader = DrawUtil::CreateShader();
 }
@@ -269,9 +268,8 @@ void GeometryEditorBase::paintGL()
   center *= -1.0f;
 
   m_RenderState.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState.GetRenderSize() });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 200));
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(resolution, width(), height()));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), center);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -358,7 +356,7 @@ void GeometryEditorBase::paintGL()
       line_builder.AddLine(line);
     }
 
-    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+    m_RenderState.BindTexture(m_RenderState.GetDefaultTexture());
 
     line_builder.FillVertexBuffer(m_VertexBuffer);
     m_RenderState.BindVertexBuffer(m_VertexBuffer);
@@ -367,8 +365,7 @@ void GeometryEditorBase::paintGL()
 
   m_RenderState.BindShader(m_Shader);
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), resolution);
-  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(resolution, width(), height()));
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{m_Center} * -1.0f);
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{1.0f, 0.0f, 0.0f, 1.0f});
 
@@ -377,7 +374,7 @@ void GeometryEditorBase::paintGL()
 
   DrawData();
 
-  m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+  m_RenderState.BindTexture(m_RenderState.GetDefaultTexture());
 
   m_GeometryBuidler->FillVertexBuffer(m_VertexBuffer);
   m_RenderState.BindVertexBuffer(m_VertexBuffer);

@@ -3,7 +3,6 @@
 #include "Engine/Map/MapParalaxLayerInstance.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
@@ -94,9 +93,9 @@ void MapParalaxLayerInstance::Update()
   }
 }
 
-void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util)
+void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {
-  auto & buffer = render_util.GetScratchBuffer();
+  auto & buffer = render_state.GetScratchBuffer();
 
   auto texture = m_Texture.Resolve();
   if (texture != nullptr && texture->IsLoaded() != false && texture->GetWidth() != 0 && texture->GetHeight() != 0)

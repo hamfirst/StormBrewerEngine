@@ -869,7 +869,7 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
 
       if(m_Selection && layer.m_Type == m_Selection->m_Type && layer.m_Index == m_Selection->m_Index && layer.m_SubIndex == m_Selection->m_SubIndex)
       {
-        p.fillRect(0, y_pos, width() - 1, layer_height, Qt::darkBlue);
+        p.fillRect(1, y_pos, width() - 3, layer_height, Qt::darkBlue);
         p.setPen(Qt::white);
       }
       else

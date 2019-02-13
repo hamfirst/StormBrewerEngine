@@ -175,7 +175,7 @@ void TextManager::RenderBuffer(TextBufferBuilder & vertex_builder, RenderState &
                             1.0f, 0.0f, 0.0f, 0.0f,
                             1.0f, 0.0f, 0.0f, 0.0f);
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ render_state.GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_state.GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0, 0 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);

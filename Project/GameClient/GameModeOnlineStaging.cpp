@@ -29,9 +29,10 @@ void GameModeOnlineStaging::Initialize()
 void GameModeOnlineStaging::OnAssetsLoaded()
 {
   auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
-  render_util.SetDefaultClearColor();
+  auto & render_state = container.GetRenderState();  
+
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   auto half_res = Vector2(render_state.GetRenderWidth(), render_state.GetRenderHeight()) / 2;
 }

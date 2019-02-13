@@ -53,6 +53,7 @@ public slots:
 protected:
 
   void resizeEvent(QResizeEvent * ev) override;
+  void closeEvent(QCloseEvent * ev) override;
 
   void RepositionElements();
 

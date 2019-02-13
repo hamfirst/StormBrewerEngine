@@ -10,7 +10,6 @@
 #include "DocumentSubValueListMirror.h"
 
 class MapEditor;
-class RenderUtil;
 
 class MapEditorAnchor
 {

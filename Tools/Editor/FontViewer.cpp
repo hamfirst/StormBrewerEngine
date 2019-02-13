@@ -23,14 +23,14 @@ static const char * kFontViewerVertexShader = SHADER_LITERAL(
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
 
-  uniform vec2 u_ScreenSize;
+  uniform vec4 u_ScreenSize;
   uniform vec2 u_StartPos;
   uniform vec2 u_EndPos;
 
   void main()
   {
     vec2 position = mix(u_StartPos, u_EndPos, a_Position);
-    position /= u_ScreenSize;
+    position /= u_ScreenSize.xy;
     position -= vec2(0.5, 0.5);
     position *= 2.0;
 
@@ -77,7 +77,6 @@ FontViewer::~FontViewer()
 void FontViewer::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
-  m_RenderUtil.LoadShaders();
 
   //g_TextManager.LoadFont(m_FilePath.data(), m_FontId, 25);
 
@@ -126,7 +125,7 @@ void FontViewer::paintGL()
   RenderVec2 tex_center = RenderVec2{ g_EngineSettings.m_FontCacheSize, g_EngineSettings.m_FontCacheSize } * 0.5f;
   RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
 
-  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (RenderVec2)(m_RenderState.GetScreenSize()));
+  m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetFullRenderDimensions());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), window_center - (tex_center - m_Center) * m_Magnification.Get());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
   m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -158,7 +157,7 @@ void FontViewer::paintGL()
   Vector2 text_start = Vector2(30, -30) - Vector2(screen_size.x, -screen_size.y) / 2;
   Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-  m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), screen_size, m_RenderState);
+  m_RenderState.DrawDebugQuad(text_bkg, Color(30, 30, 30, 200), true);
 
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();

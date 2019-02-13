@@ -124,13 +124,7 @@ void VisualEffectEditorNodeList::paintEvent(QPaintEvent * ev)
 {
   QPainter p(this);
 
-  p.fillRect(0, 0, width(), height(), Qt::white);
-
-  QStyleOptionFrame frame_option;
-  frame_option.rect = QRect(0, 0, width() - 1, height() - 1);
-
-  style()->drawPrimitive(QStyle::PE_Frame, &frame_option, &p, this);
-
+  p.fillRect(0, 0, width(), height(), palette().color(QPalette::Window));
   int layer_height = fontMetrics().height();
 
   VisitElements([&](const VisualEffectEditorNodeSelection & layer, const std::string & name, int x_pos, int y_pos)
@@ -139,17 +133,22 @@ void VisualEffectEditorNodeList::paintEvent(QPaintEvent * ev)
 
     if (m_Selection && layer.m_Emitter == m_Selection->m_Emitter)
     {
-      p.fillRect(0, y_pos, width() - 1, layer_height, Qt::darkBlue);
+      p.fillRect(1, y_pos + 1, width() - 3, layer_height - 2, Qt::darkBlue);
       p.setPen(Qt::white);
     }
     else
     {
-      p.setPen(Qt::black);
+      p.setPen(palette().color(QPalette::Text));
     }
 
     p.drawText(x_pos, y_pos, width(), height(), 0, name.data());
     return true;
   });
+
+  QStyleOptionFrame frame_option;
+  frame_option.rect = QRect(0, 0, width() - 1, height() - 1);
+
+  style()->drawPrimitive(QStyle::PE_Frame, &frame_option, &p, this);
 }
 
 void VisualEffectEditorNodeList::resizeEvent(QResizeEvent * ev)

@@ -41,7 +41,6 @@ void GameModeMainMenu::OnAssetsLoaded()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
 
   auto ui = container.GetUIManager();
 
@@ -74,10 +73,9 @@ void GameModeMainMenu::Render()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   render_state.EnableBlendMode();
   container.RenderUIManager();

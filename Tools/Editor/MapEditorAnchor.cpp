@@ -8,7 +8,6 @@
 #include "Runtime/Map/MapDef.refl.meta.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Sprite/SpriteEngineData.h"

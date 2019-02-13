@@ -8,7 +8,6 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 
 #include "QTUtil/QtLerpVar.h"
 
@@ -57,8 +56,6 @@ private:
   std::string m_FilePath;
 
   RenderState m_RenderState;
-  RenderUtil m_RenderUtil;
-  ShaderProgram m_TextureShader;
   VertexBuffer m_VertexBuffer;
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;

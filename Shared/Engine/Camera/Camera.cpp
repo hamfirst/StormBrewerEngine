@@ -2,7 +2,6 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Camera/Camera.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/ShaderProgram.h"
 #include "Engine/Rendering/RenderSettings.h"
 #include "Engine/Shader/ShaderManager.h"
@@ -37,7 +36,7 @@ void Camera::SetPosition(const RenderVec2 & position)
 void Camera::BootstrapShader(ShaderProgram & shader, RenderState & render_state)
 {
   render_state.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(m_GameResolution, m_ScreenResolution));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -m_Position);
@@ -83,7 +82,7 @@ RenderVec2 Camera::TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos)
   return transformed_pos;
 }
 
-void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state, RenderUtil & render_util)
+void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state)
 {
   Box viewport;
 
@@ -95,7 +94,7 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   auto visitor = [&](ShaderProgram & shader)
   {
     render_state.BindShader(shader);
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_GameResolution);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(m_GameResolution, m_ScreenResolution));
   };
 
   g_ShaderManager.VisitShaders(visitor);
@@ -104,22 +103,5 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   engine_state->GetMapSystem()->DrawAllMaps(viewport, draw_list);
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
   engine_state->GetVisualEffectManager()->DrawAllEffects(viewport, draw_list);
-  draw_list.Draw(game_container, viewport, m_Position, render_state, render_util);
-}
-
-void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color)
-{
-  auto b = box;
-  b.m_Start -= (Vector2)m_Position + (render_state.GetScreenSize() / 2);
-  b.m_End -= (Vector2)m_Position + (render_state.GetScreenSize() / 2);
-
-  render_util.DrawQuad(b, color, render_state.GetScreenSize(), render_state);
-}
-
-void Camera::DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Vector2 & offset, const Color & color)
-{
-  auto b = box;
-  b.m_Start += offset;
-  b.m_End += offset;
-  DebugDraw(render_state, render_util, b, color);
+  draw_list.Draw(game_container, viewport, m_Position, render_state);
 }

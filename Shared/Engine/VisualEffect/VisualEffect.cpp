@@ -6,7 +6,6 @@
 #include "Engine/VisualEffect/VisualEffectTypes.refl.meta.h"
 
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Text/TextManager.h"
@@ -433,7 +432,7 @@ void VisualEffect::SpawnParticles(VisualEffectInstance & inst, int emitter_index
   }
 }
 
-void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   PROFILE_SCOPE("Draw Visual Effect");
   VertexInfo vert[6];
@@ -470,11 +469,11 @@ void VisualEffect::RenderInstance(VisualEffectInstance & inst, const Box & viewp
     }
     else
     {
-      render_state.BindTexture(render_util.GetDefaultTexture());
+      render_state.BindTexture(render_state.GetDefaultTexture());
       texture_size = Vector2f{ 1, 1 };
     }
 
-    auto & scratch_buffer = render_util.GetScratchBuffer();
+    auto & scratch_buffer = render_state.GetScratchBuffer();
     m_ScratchVertexList.clear();
 
     if (props.m_Trail)

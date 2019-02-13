@@ -6,7 +6,7 @@
 void RenderProfilerData(RenderState & render_state)
 {
   std::string profiler_data = GetProfilerText();
-  g_TextManager.SetTextPos(Vector2(5, render_state.GetRenderHeight() - 10));
+  g_TextManager.SetTextPos(Vector2f(5, render_state.GetRenderHeight() - 10));
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);

@@ -2,7 +2,6 @@
 
 
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Asset/AssetBundle.h"
 
 class GameContainer;

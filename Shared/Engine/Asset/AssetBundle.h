@@ -5,7 +5,6 @@
 #include "Foundation/Any/Any.h"
 
 class RenderState;
-class RenderUtil;
 
 class AnimationState;
 class TextureAsset;
@@ -40,7 +39,7 @@ public:
     m_LoadData.emplace_back(Any(std::move(load_data)));
   }
 
-  void DrawTexture(czstr name, Vector2 pos, RenderState & render_state, RenderUtil & render_util);
+  void DrawTexture(czstr name, Vector2 pos, RenderState & render_state);
   void PlaySoundEffect(czstr name, VolumeCategory cat = VolumeCategory::kSoundEffects, float volume = 1.0f, float pan = 0.0f);
   NullOptPtr<TextureAsset> GetTexture(czstr name);
   NullOptPtr<SpriteResource> GetSprite(czstr name);

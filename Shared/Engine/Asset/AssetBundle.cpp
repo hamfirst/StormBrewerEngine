@@ -1,10 +1,12 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Asset/AssetBundle.h"
+#include "Engine/Asset/TextureAsset.h"
+#include "Engine/Rendering/RenderState.h"
 #include "Runtime/Sprite/SpriteResource.h"
 
 NullOptPtr<TextureAsset> GetAssetBundleTexture(Any & load_data);
-void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_state, RenderUtil & render_util);
+void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_state);
 void PlayAssetBundleSound(Any & load_data, VolumeCategory cat, float volume, float pan);
 
 AssetBundle::AssetBundle()
@@ -17,14 +19,14 @@ AssetBundle::~AssetBundle()
 
 }
 
-void AssetBundle::DrawTexture(czstr name, Vector2 pos, RenderState & render_state, RenderUtil & render_util)
+void AssetBundle::DrawTexture(czstr name, Vector2 pos, RenderState & render_state)
 {
   auto name_hash = crc32(name);
   for (std::size_t index = 0, end = m_AssetNames.size(); index < end; ++index)
   {
     if (m_AssetNames[index] == name_hash)
     {
-      DrawAssetBundleTexture(m_LoadData[index], pos, render_state, render_util);
+      DrawAssetBundleTexture(m_LoadData[index], pos, render_state);
       return;
     }
   }
@@ -99,4 +101,39 @@ bool AssetBundle::LoadingComplete() const
 bool AssetBundle::IsLoaded() const
 {
   return LoadingComplete();
+}
+
+
+void DrawAssetBundleTexture(Any & load_data, Vector2 pos, RenderState & render_state)
+{
+  auto load_link = load_data.Get<TextureAsset::LoadCallbackLink>();
+  if (load_link == nullptr)
+  {
+    return;
+  }
+
+  auto texture = load_link->Get();
+  if (texture == nullptr || texture->IsLoaded() == false)
+  {
+    return;
+  }
+
+  render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize(pos, texture->GetSize()), Color(255, 255, 255, 255), texture->GetTexture());
+}
+
+NullOptPtr<TextureAsset> GetAssetBundleTexture(Any & load_data)
+{
+  auto load_link = load_data.Get<TextureAsset::LoadCallbackLink>();
+  if (load_link == nullptr)
+  {
+    return nullptr;
+  }
+  
+  auto texture = load_link->Get();
+  if (texture == nullptr || texture->IsLoaded() == false)
+  {
+    return nullptr;
+  }
+
+  return texture;
 }

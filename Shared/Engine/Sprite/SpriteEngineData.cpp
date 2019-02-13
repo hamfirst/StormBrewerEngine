@@ -218,7 +218,7 @@ Optional<Box> SpriteEngineData::Render(RenderState & render_state, int animation
 
 
 Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
+  const RenderVec2 & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   auto resource = sprite.GetResource();
   if (resource == nullptr)
@@ -230,7 +230,7 @@ Optional<Box> SpriteEngineData::RenderSprite(SpritePtr & sprite, RenderState & r
 }
 
 Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
+  const RenderVec2 & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   SpriteEngineData * sprite_data = resource->m_EngineData.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
@@ -251,7 +251,7 @@ Optional<Box> SpriteEngineData::RenderSprite(NotNullPtr<SpriteResource> resource
 }
 
 Optional<Box> SpriteEngineData::RenderTile(TileSheetPtr & tile_sheet, RenderState & render_state, int animation_index, int animation_frame, uint32_t skin_name_hash,
-  const Vector2f & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
+  const RenderVec2 & position, const RenderVec4 & matrix, const Color & color, ShaderProgram & shader)
 {
   auto resource = tile_sheet.GetResource();
   if (resource == nullptr)
@@ -334,7 +334,7 @@ void UpdateSpriteEngineData(Any & engine_data)
   sprite_data->Load();
 }
 
-void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position)
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const RenderVec2 & position)
 {
   SpriteEngineData * sprite_data = engine_data.Get<SpriteEngineData>();
   if (sprite_data == nullptr)
@@ -345,7 +345,7 @@ void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderSta
   auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
   render_state.BindShader(shader);
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ position } );
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), position );
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), entity_render_state.m_Matrix);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), entity_render_state.m_Color);
 

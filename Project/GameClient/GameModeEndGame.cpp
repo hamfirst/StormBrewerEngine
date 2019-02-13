@@ -134,7 +134,6 @@ void GameModeEndGame::Render()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();
   auto & camera = container.GetClientSystems()->GetCamera();
@@ -142,8 +141,8 @@ void GameModeEndGame::Render()
   render_state.SetScreenSize(container.GetWindow().GetSize());
   render_state.SetRenderSize(camera.GetGameResolution());
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   auto & engine_state = container.GetEngineState();
   auto entity_system = engine_state.GetEntitySystem();
@@ -156,7 +155,7 @@ void GameModeEndGame::Render()
 
   auto viewport_bounds = Box::FromFrameCenterAndSize(camera.GetPosition(), camera.GetGameResolution());
 
-  camera.Draw(container, &engine_state, render_state, render_util);
+  camera.Draw(container, &engine_state, render_state);
 
   input_manager.Render();
   ui_manager.Render();

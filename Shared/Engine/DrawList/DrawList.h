@@ -5,10 +5,9 @@
 #include "Engine/EngineCommon.h"
 
 class RenderState;
-class RenderUtil;
 class GameContainer;
 
-using DrawListRenderCall = Delegate<void, GameContainer &, const Box &, const RenderVec2 &, RenderState &, RenderUtil &>;
+using DrawListRenderCall = Delegate<void, GameContainer &, const Box &, const RenderVec2 &, RenderState &>;
 
 class DrawList
 {
@@ -25,7 +24,7 @@ public:
   void Clear();
 
   void PushDraw(int layer_order, int draw_key, DrawListRenderCall && cb);
-  void Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
 private:
 

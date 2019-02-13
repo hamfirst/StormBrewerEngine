@@ -21,7 +21,6 @@ class Entity;
 class ServerObject;
 class GameContainer;
 class RenderState;
-class RenderUtil;
 
 using EntityEventSystem = EventSystem<Entity, EntityHandle>;
 extern template class EventSystem<Entity, EntityHandle>;
@@ -29,7 +28,7 @@ extern template class EventSystem<Entity, EntityHandle>;
 using EntityEventDispatch = EventDispatch<Entity, ComponentHandle>;
 extern template class EventDispatch<Entity, ComponentHandle>;
 
-using EntityCustomDraw = Delegate<void, const Box &, const RenderVec2 &, RenderState &, RenderUtil &>;
+using EntityCustomDraw = Delegate<void, const Box &, const RenderVec2 &, RenderState &>;
 
 class ENGINE_EXPORT Entity
 {

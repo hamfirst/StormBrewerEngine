@@ -15,7 +15,6 @@ class VisualEffectInstance;
 struct VisualEffectInstanceEmitter;
 
 class RenderState;
-class RenderUtil;
 
 class VisualEffect
 {
@@ -24,7 +23,7 @@ public:
 
   void InitInstance(VisualEffectInstance & inst, const Vector2f & position);
   void UpdateInstance(VisualEffectInstance & inst, float update_time, StormExprStack & stack, bool on_screen);
-  void RenderInstance(VisualEffectInstance & inst, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void RenderInstance(VisualEffectInstance & inst, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   Vector2 GetUpdateBounds();
 

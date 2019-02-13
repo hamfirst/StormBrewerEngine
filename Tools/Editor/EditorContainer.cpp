@@ -167,7 +167,9 @@ EditorContainer::EditorContainer(QWidget *parent) :
   m_TabWidget = new QTabWidget();
   m_TabWidget->setTabsClosable(true);
   m_TabWidget->setDocumentMode(true);
+  m_TabWidget->tabBar()->setDrawBase(false);
   setCentralWidget(m_TabWidget);
+  m_TabWidget->setFocus();
   connect(m_TabWidget, &QTabWidget::tabCloseRequested, this, &EditorContainer::closeTab);
 
   m_ConnectingDialog.show();
@@ -757,7 +759,7 @@ void EditorContainer::NotifyClientWindowClosed(NotNullPtr<QWidget> host_widget)
 
   if(m_DistList.get() == host_widget)
   {
-    m_DistList.reset();
+    m_DeadWidgets.emplace_back(std::move(m_DistList));
     return;
   }
 

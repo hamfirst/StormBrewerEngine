@@ -158,7 +158,7 @@ void UpdateSpriteEngineData(Any & engine_data)
 
 }
 
-void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position)
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const RenderVec2 & position)
 {
 
 }

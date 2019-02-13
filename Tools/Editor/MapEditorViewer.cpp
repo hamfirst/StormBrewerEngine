@@ -289,8 +289,6 @@ RenderVec2 MapEditorViewer::TransformFromMapSpaceToClipSpace(RenderVec2 map_spac
   auto offset = map_space;
 
   auto screen_center = m_Center;
-  screen_center.x = floorf(screen_center.x);
-  screen_center.y = floorf(screen_center.y);
 
   offset -= screen_center;
   offset *= m_Magnification.Get();
@@ -304,8 +302,6 @@ RenderVec2 MapEditorViewer::TransformFromMapSpaceToClipSpace(RenderVec2 map_spac
 RenderVec2 MapEditorViewer::TransformFromClipSpaceToMapSpace(RenderVec2 clip_space)
 {
   auto screen_center = m_Center;
-  screen_center.x = floorf(screen_center.x);
-  screen_center.y = floorf(screen_center.y);
 
   auto offset = clip_space;
   offset *= 0.5f;
@@ -516,7 +512,6 @@ void MapEditorViewer::SyncMouse()
 void MapEditorViewer::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
-  m_RenderUtil.LoadShaders();
 
   m_GridShader = MakeQuickShaderProgram(kMapViewerWidgetGridVertexShader, kMapViewerWidgetGridFragmentShader);
   m_DrawUtilShader = DrawUtil::CreateShader();
@@ -525,7 +520,7 @@ void MapEditorViewer::initializeGL()
 void MapEditorViewer::resizeGL(int w, int h)
 {
   m_RenderState.SetScreenSize(Vector2(w, h));
-  m_RenderState.SetRenderSize(Vector2(w, h));
+  m_RenderState.SetRenderSize(Vector2f(w, h) * m_Magnification.Get());
 
   if (m_PlayMode)
   {
@@ -584,8 +579,8 @@ void MapEditorViewer::paintGL()
   glClearColor(PROJECT_CLEAR_COLOR);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  RenderVec2 window_start = TransformFromScreenSpaceToMapSpace(RenderVec2(0, height() - 1));
-  RenderVec2 window_end = TransformFromScreenSpaceToMapSpace(RenderVec2(width() - 1, 0));
+  RenderVec2 window_start = TransformFromScreenSpaceToMapSpace(RenderVec2(0, height()));
+  RenderVec2 window_end = TransformFromScreenSpaceToMapSpace(RenderVec2(width(), 0));
 
   Box viewport_bounds = { window_start, window_end };
   viewport_bounds.m_Start -= Vector2(1, 1);
@@ -595,7 +590,7 @@ void MapEditorViewer::paintGL()
   m_RenderState.EnableBlendMode();
   auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
   m_RenderState.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), window_end - window_start);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(window_end - window_start, width(), height()));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
   auto & paralax_manager = m_Editor->GetParalaxManager();
@@ -609,8 +604,6 @@ void MapEditorViewer::paintGL()
   std::map<int, std::vector<Delegate<void>>> draw_callbacks;
 
   auto screen_center = m_Center;
-  screen_center.x = floorf(screen_center.x);
-  screen_center.y = floorf(screen_center.y);
 
   for (auto elem : m_Map.m_ParalaxLayers)
   {
@@ -632,7 +625,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState, m_RenderUtil); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState); });
   }
 
   for (auto elem : m_Map.m_ManualTileLayers)
@@ -655,7 +648,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState, m_RenderUtil); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState); });
   }
 
   for (auto elem : m_Map.m_EntityLayers)
@@ -678,7 +671,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState, m_RenderUtil); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState); });
   }
 
   for (auto elem : m_Map.m_ServerObjectLayers)
@@ -701,7 +694,7 @@ void MapEditorViewer::paintGL()
       list_itr = result.first;
     }
 
-    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState, m_RenderUtil); });
+    list_itr->second.emplace_back([&, l = layer] { l->Draw(viewport_bounds, screen_center, m_RenderState); });
   }
 
   for (auto & list : draw_callbacks)
@@ -725,8 +718,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState, m_RenderUtil);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState, m_RenderUtil);
+    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
   }
 
   for (auto elem : m_Map.m_ManualTileLayers)
@@ -744,8 +737,8 @@ void MapEditorViewer::paintGL()
 
     if (layer != nullptr)
     {
-      layer->DrawPreviewTiles(m_DrawBuffer, screen_center, m_RenderState, m_RenderUtil);
-      layer->DrawSelectedTiles(m_DrawBuffer, screen_center, m_RenderState, m_RenderUtil);
+      layer->DrawPreviewTiles(m_DrawBuffer, screen_center, m_RenderState);
+      layer->DrawSelectedTiles(m_DrawBuffer, screen_center, m_RenderState);
     }
   }
 
@@ -762,8 +755,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewEntity(screen_center, m_RenderState, m_RenderUtil);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState, m_RenderUtil);
+    layer->DrawPreviewEntity(screen_center, m_RenderState);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
   }
 
   for (auto elem : m_Map.m_ServerObjectLayers)
@@ -779,8 +772,8 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewServerObject(screen_center, m_RenderState, m_RenderUtil);
-    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState, m_RenderUtil);
+    layer->DrawPreviewServerObject(screen_center, m_RenderState);
+    layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
   }
 
   GeometryVertexBufferBuilder builder;
@@ -914,14 +907,13 @@ void MapEditorViewer::paintGL()
     m_RenderState.BindShader(m_DrawUtilShader);
 
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
-    m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), window_end - window_start);
-    m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ActualScreenSize"), RenderVec2(width(), height()));
+    m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(window_end - window_start, width(), height()));
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ screen_center } *-1.0f);
     m_DrawUtilShader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
     builder.FillVertexBuffer(m_DrawBuffer);
 
-    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+    m_RenderState.BindTexture(m_RenderState.GetDefaultTexture());
     m_RenderState.BindVertexBuffer(m_DrawBuffer);
     m_RenderState.Draw();
   }
@@ -938,7 +930,7 @@ void MapEditorViewer::paintGL()
 
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
 
-    m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+    m_RenderState.BindTexture(m_RenderState.GetDefaultTexture());
     m_RenderState.BindVertexBuffer(m_DrawBuffer);
     m_RenderState.Draw();
   }

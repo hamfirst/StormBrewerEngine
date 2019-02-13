@@ -93,7 +93,6 @@ void UIEditorViewer::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
-  m_RenderUtil.LoadShaders();
 
   auto window_geo = geometry();
   auto window_pos = mapToGlobal(QPoint(window_geo.x(), window_geo.y()));
@@ -175,10 +174,9 @@ void UIEditorViewer::resizeGL(int w, int h)
 
 void UIEditorViewer::paintGL()
 {
-  m_RenderUtil.SetDefaultClearColor();
-  m_RenderUtil.Clear();
-
   m_RenderState.MakeCurrent();
+  m_RenderState.SetDefaultClearColor();
+  m_RenderState.Clear();
 
   m_RenderState.SetScreenSize(Vector2f(width(), height()));
   m_RenderState.SetRenderSize(Vector2f(width(), height()));
@@ -187,13 +185,13 @@ void UIEditorViewer::paintGL()
   builder.Rectangle(Box::FromFrameCenterAndSize({}, Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight)),
           1.0f, Color(0.0f, 0.0f, 0.0f, 1.0f));
 
-  auto & vertex_buffer = m_RenderUtil.GetScratchBuffer();
+  auto & vertex_buffer = m_RenderState.GetScratchBuffer();
   builder.FillVertexBuffer(vertex_buffer);
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   m_RenderState.BindShader(shader);
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState.GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ 0.0, 0.0 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -201,11 +199,11 @@ void UIEditorViewer::paintGL()
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
-  m_RenderState.BindTexture(m_RenderUtil.GetDefaultTexture());
+  m_RenderState.BindTexture(m_RenderState.GetDefaultTexture());
   m_RenderState.BindVertexBuffer(vertex_buffer);
   m_RenderState.Draw();
 
-  m_UIManager->Render(m_RenderState, m_RenderUtil);
+  m_UIManager->Render(m_RenderState);
 }
 
 void UIEditorViewer::showEvent(QShowEvent * ev)

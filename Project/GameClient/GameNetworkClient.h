@@ -43,7 +43,6 @@ enum class ClientConnectionState
   kDisconnected,
 };
 
-class RenderUtil;
 class RenderState;
 class GameState;
 

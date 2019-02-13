@@ -172,8 +172,8 @@ public:
     Box b;
     b.m_Start.x = (int)x * 1024;
     b.m_Start.y = (int)y * 1024;
-    b.m_End.x = b.m_Start.x + 1023;
-    b.m_End.y = b.m_Start.y + 1023;
+    b.m_End.x = b.m_Start.x + 1024;
+    b.m_End.y = b.m_Start.y + 1024;
     return b;
   }
 

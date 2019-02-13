@@ -5,7 +5,6 @@
 class GameContainer;
 class EngineState;
 class RenderState;
-class RenderUtil;
 class ShaderProgram;
 
 class Camera
@@ -27,9 +26,7 @@ public:
   RenderVec2 TransformFromScreenSpaceToWorldSpace(const RenderVec2 & pos);
   RenderVec2 TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos);
 
-  void Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state, RenderUtil & render_util);
-  void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Color & color);
-  void DebugDraw(RenderState & render_state, RenderUtil & render_util, const Box & box, const Vector2 & offset, const Color & color);
+  void Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state);
 
 private:
   RenderVec2 m_ScreenResolution;

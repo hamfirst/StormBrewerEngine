@@ -6,7 +6,6 @@
 
 #include "Engine/Window/FakeWindow.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 
 #include "GameShared/GameLevelList.h"
 #include "GameShared/GameStageManager.h"

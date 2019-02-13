@@ -2,7 +2,6 @@
 #include "Engine/EngineCommon.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Rendering/GeometryVertexBufferBuilder.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/RenderState.h"
 
 #include "Foundation/Math/Intersection.h"
@@ -373,7 +372,7 @@ void GeometryVertexBufferBuilder::FillVertexBuffer(VertexBuffer & vertex_buffer)
   vertex_buffer.SetBufferData(m_List, VertexBufferType::kTriangles);
 }
 
-void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, RenderUtil & render_util, NullOptPtr<ShaderProgram> shader)
+void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, NullOptPtr<ShaderProgram> shader)
 {
   if (shader == nullptr)
   {
@@ -382,11 +381,11 @@ void GeometryVertexBufferBuilder::DrawDefault(RenderState & render_state, Render
 
   render_state.BindShader(*shader);
 
-  auto & vertex_buffer = render_util.GetScratchBuffer();
+  auto & vertex_buffer = render_state.GetScratchBuffer();
   FillVertexBuffer(vertex_buffer);
 
   render_state.BindVertexBuffer(vertex_buffer);
-  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindTexture(render_state.GetDefaultTexture());
   render_state.Draw();
 }
 

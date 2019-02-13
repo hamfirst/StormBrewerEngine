@@ -24,7 +24,7 @@ public:
   void CreateVertexBuffers();
 
   void Update();
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
 #ifdef USE_Z_ORDERING
   void DrawDynamic(const Box & viewport_bounds, DrawList & draw_list);

@@ -54,7 +54,11 @@ DocumentServer::DocumentServer() :
 
 DocumentServer::~DocumentServer()
 {
-
+  m_DocServerFrontend.release();
+  m_AssetServerFrontend.release();
+  m_ReloadServerFrontend.release();
+  m_CompilerServerFrontend.release();
+  m_Backend.release();
 }
 
 void DocumentServer::Run()

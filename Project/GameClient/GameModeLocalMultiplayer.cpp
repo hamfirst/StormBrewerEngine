@@ -181,7 +181,6 @@ void GameModeLocalMultiplayer::Render()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();
   auto & camera = container.GetClientSystems()->GetCamera();
@@ -190,8 +189,8 @@ void GameModeLocalMultiplayer::Render()
   render_state.SetRenderSize(camera.GetGameResolution());
   render_state.SetFramePct((float)m_FrameClock.GetFramePercent());
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   auto & engine_state = container.GetEngineState();
   auto entity_system = engine_state.GetEntitySystem();
@@ -204,7 +203,7 @@ void GameModeLocalMultiplayer::Render()
 
   auto viewport_bounds = Box::FromFrameCenterAndSize(camera.GetPosition(), camera.GetGameResolution());
 
-  camera.Draw(container, &engine_state, render_state, render_util);
+  camera.Draw(container, &engine_state, render_state);
 
   input_manager.Render();
   ui_manager.Render();

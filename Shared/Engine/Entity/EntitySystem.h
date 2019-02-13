@@ -28,13 +28,13 @@ public:
   void FinalizeEvents();
 
   void DrawAllEntities(const Box & viewport_bounds, DrawList & draw_list);
-  void DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
   static void DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, 
-                                RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader);
+                                RenderState & render_state, ShaderProgram & shader);
 
   static void DefaultDrawEntity(SpritePtr & sprite, const Vector2f & pos, const EntityRenderState & entity_render_state, 
                                 const Box & viewport_bounds, const RenderVec2 & screen_center, 
-                                RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader);
+                                RenderState & render_state, ShaderProgram & shader);
 
 
 private:

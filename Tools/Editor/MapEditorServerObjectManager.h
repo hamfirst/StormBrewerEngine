@@ -15,7 +15,6 @@
 #include "DocumentSubValueListMirror.h"
 
 class MapEditor;
-class RenderUtil;
 
 struct MapEditorServerObjectManagerElement
 {
@@ -48,9 +47,9 @@ public:
   void SetSingleSelection(std::size_t ServerObject_index);
   Optional<std::size_t> GetSingleSelectionIndex();
 
-  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
-  void DrawPreviewServerObject(const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
-  void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
+  void DrawPreviewServerObject(const RenderVec2 & screen_center, RenderState & render_state);
+  void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   void ToggleHidden();
   void SetHidden(bool hidden);

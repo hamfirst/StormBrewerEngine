@@ -159,7 +159,6 @@ void GameModeTutorial::Render()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();
   auto & camera = container.GetClientSystems()->GetCamera();
@@ -168,8 +167,8 @@ void GameModeTutorial::Render()
   render_state.SetRenderSize(camera.GetGameResolution());
   render_state.SetFramePct((float)m_FrameClock.GetFramePercent());
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   auto & engine_state = container.GetEngineState();
   auto entity_system = engine_state.GetEntitySystem();
@@ -184,7 +183,7 @@ void GameModeTutorial::Render()
 
   {
     PROFILE_SCOPE("Camera Draw");
-    camera.Draw(container, &engine_state, render_state, render_util);
+    camera.Draw(container, &engine_state, render_state);
   }
 
   {

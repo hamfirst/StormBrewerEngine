@@ -11,7 +11,6 @@ class GameClientEventSender;
 class GameCamera;
 
 class RenderState;
-class RenderUtil;
 
 class GameClientUIManager
 {

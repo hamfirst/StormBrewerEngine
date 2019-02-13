@@ -2,7 +2,6 @@
 #include "Foundation/FileSystem/Path.h"
 
 #include "Engine/Shader/ShaderManager.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 
 #include "Runtime/Map/MapDef.refl.meta.h"
@@ -276,7 +275,7 @@ Optional<std::size_t> MapEditorServerObjectManager::GetSingleSelectionIndex()
   return m_SelectedServerObjects[0];
 }
 
-void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   for (auto elem : m_Map.m_ServerObjectLayers[m_LayerIndex].m_Objects)
   {
@@ -315,7 +314,7 @@ void MapEditorServerObjectManager::Draw(const Box & viewport_bounds, const Rende
   }
 }
 
-void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & screen_center, RenderState & render_state)
 {
   auto entity = m_PreviewEntity.GetResource();
   if (entity == nullptr || entity->IsLoaded() == false || m_PreviewServerObjectPosition == false)
@@ -331,7 +330,7 @@ void MapEditorServerObjectManager::DrawPreviewServerObject(const RenderVec2 & sc
   SpriteEngineData::RenderSprite(sprite, render_state, 0, 0, kSpriteDefaultSkin, draw_pos, RenderVec4{ 1, 0, 0, 1 }, Color(255, 255, 255, 160));
 }
 
-void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_SelectedServerObjects.size() == 0)
   {
@@ -375,7 +374,7 @@ void MapEditorServerObjectManager::DrawSelection(VertexBuffer & vertex_buffer, c
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
 
-  render_state.BindTexture(render_util.GetDefaultTexture());
+  render_state.BindTexture(render_state.GetDefaultTexture());
   render_state.BindVertexBuffer(vertex_buffer);
   render_state.Draw();
 }

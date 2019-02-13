@@ -9,7 +9,6 @@
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Rendering/VertexArray.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Window/FakeWindow.h"
 
 #include "Runtime/Map/MapDef.refl.h"
@@ -149,7 +148,6 @@ private:
   VertexBuffer m_DrawBuffer;
 
   RenderState m_RenderState;
-  RenderUtil m_RenderUtil;
 
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;

@@ -11,7 +11,6 @@
 #include "Runtime/Map/MapTileJson.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 #include "Engine/Shader/ShaderManager.h"
 
@@ -1095,7 +1094,7 @@ void MapEditorTileManager::PasteSelection(const Vector2 & screen_center)
   SetPreviewAnimations(clipboard_info.second);
 }
 
-void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_InitialSyncComplete == false)
   {
@@ -1291,12 +1290,13 @@ void MapEditorTileManager::Draw(const Box & viewport_bounds, const RenderVec2 & 
     auto anim = m_AnimInfo->TryGet(id);
     if (anim && vfind(m_SelectedAnimations, id) == false)
     {
-      SpriteEngineData::RenderTile(m_TileSheet, render_state, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, kSpriteDefaultSkin, anim->m_Position - screen_center);
+      auto pos = RenderVec2{ anim->m_Position } - screen_center;
+      SpriteEngineData::RenderTile(m_TileSheet, render_state, anim->m_State.m_AnimIndex, anim->m_State.m_AnimFrame, kSpriteDefaultSkin, pos);
     }
   }
 }
 
-void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state)
 {
   for (auto & texture_data : m_Textures)
   {
@@ -1353,7 +1353,7 @@ void MapEditorTileManager::DrawPreviewTiles(VertexBuffer & vertex_buffer, const 
   }
 }
 
-void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_Map.m_ManualTileLayers.HasAt(m_LayerIndex) == false || m_InitialSyncComplete == false)
   {
@@ -1446,7 +1446,7 @@ void MapEditorTileManager::DrawSelectedTiles(VertexBuffer & vertex_buffer, const
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 0, 1, 1 });
 
-    render_state.BindTexture(render_util.GetDefaultTexture());
+    render_state.BindTexture(render_state.GetDefaultTexture());
     render_state.BindVertexBuffer(vertex_buffer);
     render_state.Draw();
   }

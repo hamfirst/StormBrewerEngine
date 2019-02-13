@@ -9,7 +9,6 @@
 #include "DocumentValueWatcher.h"
 
 class MapEditor;
-class RenderUtil;
 
 class MapEditorVolume
 {

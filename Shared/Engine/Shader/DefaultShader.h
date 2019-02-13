@@ -12,19 +12,22 @@ static const char * kDefaultVertexShader = SHADER_LITERAL(
   varying vec2 v_TexCoord;
   varying vec4 v_Color;
 
-  uniform vec2 u_ScreenSize;
+  uniform vec4 u_ScreenSize;
   uniform vec2 u_Offset;
   uniform vec4 u_Matrix;
 
   void main()
   {
-    vec2 screen_start = floor(u_ScreenSize / 2.0) * -1.0;
-    vec2 screen_end = screen_start + u_ScreenSize;
+    vec2 screen_start = u_ScreenSize.xy / 2.0 * -1.0;
+    vec2 screen_end = screen_start + u_ScreenSize.xy;
 
     vec2 position = vec2(dot(u_Matrix.xy, a_Position), dot(u_Matrix.zw, a_Position));
     position += u_Offset;
     position -= screen_start;
-    position /= u_ScreenSize;
+    position /= u_ScreenSize.xy;
+    position *= u_ScreenSize.zw;
+    position = floor(position + vec2(0.5, 0.5));
+    position /= u_ScreenSize.zw;
     position *= 2.0;
     position -= vec2(1.0, 1.0);
 

@@ -9,7 +9,6 @@
 #include "Engine/UI/UITextureBinding.h"
 #include "Engine/Input/InputState.h"
 #include "Engine/Rendering/RenderState.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
 #include "Engine/Shader/ShaderManager.h"
 #include "Engine/Text/TextManager.h"
@@ -30,16 +29,14 @@ UIScriptInterface::UIScriptInterface(NotNullPtr<UIManager> ui_manager) :
 
 }
 
-void UIScriptInterface::BeginRendering(NotNullPtr<RenderState> render_state, NullOptPtr<RenderUtil> render_util)
+void UIScriptInterface::BeginRendering(NotNullPtr<RenderState> render_state)
 {
   m_RenderState = render_state;
-  m_RenderUtil = render_util;
 }
 
 void UIScriptInterface::EndRendering()
 {
   m_RenderState = nullptr;
-  m_RenderUtil = nullptr;
 }
 
 void UIScriptInterface::SetDrawArea(const Box & draw_area, const Box & active_area, bool clip)
@@ -313,7 +310,7 @@ void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, boo
     screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -354,7 +351,7 @@ void UIScriptInterface::DrawAtlas(int atlas_id, std::string & elem_name, int x, 
     screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -425,7 +422,7 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
   quad.m_TextureSize = texture->GetSize();
   buffer_builder.AddQuad(quad);
 
-  auto & vertex_buffer = m_RenderUtil->GetScratchBuffer();
+  auto & vertex_buffer = m_RenderState->GetScratchBuffer();
   buffer_builder.FillVertexBuffer(vertex_buffer);
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
@@ -441,7 +438,7 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
     screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ scale_x, 0, 0, scale_y });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -535,7 +532,7 @@ void UIScriptInterface::FlushGeometry()
     return;
   }
 
-  auto & vertex_buffer = m_RenderUtil->GetScratchBuffer();
+  auto & vertex_buffer = m_RenderState->GetScratchBuffer();
   m_GeometryBuffer->FillVertexBuffer(vertex_buffer);
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
@@ -551,7 +548,7 @@ void UIScriptInterface::FlushGeometry()
     screen_bounds = RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f };
   }
 
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec2{ m_RenderState->GetRenderSize() });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
@@ -559,7 +556,7 @@ void UIScriptInterface::FlushGeometry()
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
-  m_RenderState->BindTexture(m_RenderUtil->GetDefaultTexture());
+  m_RenderState->BindTexture(m_RenderState->GetDefaultTexture());
   m_RenderState->BindVertexBuffer(vertex_buffer);
   m_RenderState->Draw();
 

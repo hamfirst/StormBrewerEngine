@@ -61,7 +61,6 @@ set(GENERIC_SRC_Engine
             Rendering/RenderException.cpp
             Rendering/RenderState.cpp
             Rendering/RenderTarget.cpp
-            Rendering/RenderUtil.cpp
             Rendering/Shader.cpp
             Rendering/ShaderProgram.cpp
             Rendering/Texture.cpp
@@ -169,7 +168,6 @@ set(GENERIC_HEADER_Engine
             Rendering/RenderSettings.h
             Rendering/RenderState.h
             Rendering/RenderTarget.h
-            Rendering/RenderUtil.h
             Rendering/Shader.h
             Rendering/ShaderLiteral.h
             Rendering/ShaderProgram.h

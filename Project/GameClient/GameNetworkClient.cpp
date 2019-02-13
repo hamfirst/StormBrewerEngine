@@ -3,7 +3,6 @@
 #include "Foundation/Time/FrameClock.h"
 
 #include "Engine/Text/TextManager.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Audio/AudioManager.h"
 
 #include "GameShared/GameLogicContainer.h"

@@ -12,7 +12,6 @@
 #include "DocumentSubValueListMirror.h"
 
 class MapEditor;
-class RenderUtil;
 
 using MapEditorParalaxObjectType = Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink, VisualEffectLoadLink>;
 
@@ -46,12 +45,12 @@ public:
   void SetSingleSelection(std::size_t paralax_object_index);
   Optional<std::size_t> GetSingleSelectionIndex();
 
-  void Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
-  void DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
-  void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+  void Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
+  void DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
+  void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   Optional<Box> DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
-    const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util);
+    const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   void ToggleHidden();
   void SetHidden(bool hidden);

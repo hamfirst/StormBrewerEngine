@@ -7,7 +7,6 @@
 #include "Engine/Component/Component.h"
 
 class RenderState;
-class RenderUtil;
 class PlayerServerObject;
 
 struct PlayerServerObjectInfo

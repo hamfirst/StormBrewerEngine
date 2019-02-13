@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/EngineCommon.h"
+#include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/RenderSettings.h"
 #include "Engine/Rendering/VertexAttrib.h"
 #include "Engine/Rendering/RenderTarget.h"
@@ -26,7 +27,7 @@ class Window;
 class ENGINE_EXPORT RenderState
 {
 public:
-  RenderState() = default;
+  RenderState();
   ~RenderState();
 
   void InitRenderState(int screen_width, int screen_height);
@@ -36,6 +37,11 @@ public:
   void BeginFrame(const Window & window);
   void FinalizeFrame(const Window & window);
   void Release();
+
+  void Clear();
+  void Clear(const Color & color);
+  void SetDefaultClearColor();
+  void SetClearColor(const Color & color);
 
   void BindShader(const ShaderProgram & shader);
   void BindVertexBuffer(VertexBuffer & buffer);
@@ -62,15 +68,23 @@ public:
   Vector2 GetScreenSize();
   void SetScreenSize(Vector2 screen_size);
 
-  int GetRenderWidth();
-  int GetRenderHeight();
+  float GetRenderWidth();
+  float GetRenderHeight();
 
-  Vector2 GetRenderSize();
-  void SetRenderSize(Vector2 render_size);
+  RenderVec2 GetRenderSize();
+  void SetRenderSize(RenderVec2 render_size);
+
+  RenderVec4 GetFullRenderDimensions();
 
   RenderVec2 ScreenPixelsToRenderPixels(const RenderVec2 & screen_pixels);
   RenderVec2 RenderPixelsToScreenPixels(const RenderVec2 & render_pixels);
   RenderVec4 ComputeScreenBounds(const Optional<Box> & active_area);
+
+  const Texture & GetDefaultTexture() const;
+  VertexBuffer & GetScratchBuffer();
+
+  void DrawDebugQuad(const Box & b, const Color & c, bool screen_space = false);
+  void DrawDebugTexturedQuad(const Box & b, const Color & c, const Texture & texture, bool screen_space = false);
 
 #ifdef USE_RENDER_TARGET
   void BindBuiltInRenderTarget(int render_target_index);
@@ -88,12 +102,15 @@ private:
   int m_ScreenWidth = 1;
   int m_ScreenHeight = 1;
 
-  int m_RenderWidth = 1;
-  int m_RenderHeight = 1;
+  float m_RenderWidth = 1;
+  float m_RenderHeight = 1;
 
   bool m_BlendEnabled = false;
   bool m_ScissorEnabled = false;
   RenderingBlendMode m_BlendMode = RenderingBlendMode::kNone;
+
+  VertexBuffer m_ScratchVertexBuffer;
+  Texture m_DefaultTexture;
 
   float m_FramePct = 0;
 

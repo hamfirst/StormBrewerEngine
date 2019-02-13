@@ -36,7 +36,6 @@ void GameModeStagingBase::OnAssetsLoaded()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
 
   auto ui = container.GetUIManager();
 
@@ -124,10 +123,9 @@ void GameModeStagingBase::Render()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
 
-  RenderUtil::SetDefaultClearColor();
-  RenderUtil::Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   render_state.EnableBlendMode();
 

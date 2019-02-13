@@ -38,7 +38,7 @@ void CollisionDrawer::Update(GameContainer & game_container)
 }
 
 void CollisionDrawer::Render(GameContainer & game_container, const Box & viewport_bounds, 
-  const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util)
+  const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {
   auto & stage = game_container.GetInstanceData()->GetStage();
   auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
@@ -62,7 +62,7 @@ void CollisionDrawer::Render(GameContainer & game_container, const Box & viewpor
     }
   }
 
-  builder.DrawDefault(render_state, render_util, &shader);
+  builder.DrawDefault(render_state, &shader);
 }
 
 uint32_t CollisionDrawer::GetCollisionMask(GameContainer & game_container)

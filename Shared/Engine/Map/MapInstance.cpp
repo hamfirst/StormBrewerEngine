@@ -86,17 +86,17 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 {
   for (auto & layer : m_ParalaxLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
-      layer.Draw(viewport_bounds, screen_center, m_Offset, render_state, render_util);
+      layer.Draw(viewport_bounds, screen_center, m_Offset, render_state);
     });
   }
 
   for (auto & layer : m_ManualTileLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
-      layer.Draw(viewport_bounds, screen_center, render_state, render_util);
+      layer.Draw(viewport_bounds, screen_center, render_state);
     });
 
 #ifdef USE_Z_ORDERING
@@ -106,9 +106,9 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 
   for (auto & layer : m_EffectLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
-      layer.Draw(game_container, viewport_bounds, screen_center, m_Offset, render_state, render_util);
+      layer.Draw(game_container, viewport_bounds, screen_center, m_Offset, render_state);
     });
   }
 }

@@ -101,7 +101,6 @@ void VisualEffectEditorViewer::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
   m_RenderState.SetRenderSize(Vector2(kDefaultResolutionWidth, kDefaultResolutionHeight));
-  m_RenderUtil.LoadShaders();
 
   m_GridShader = MakeQuickShaderProgram(kVisualEffectViewerWidgetGridVertexShader, kVisualEffectViewerWidgetGridFragmentShader);
 
@@ -192,14 +191,14 @@ void VisualEffectEditorViewer::resizeGL(int w, int h)
 
 void VisualEffectEditorViewer::paintGL()
 {
-  m_RenderUtil.SetDefaultClearColor();
-  m_RenderUtil.Clear();
 
   m_RenderState.MakeCurrent();
+  m_RenderState.SetDefaultClearColor();
+  m_RenderState.Clear();
 
   m_FPSClock.Update();
 
-  auto size = RenderVec2{ kDefaultResolutionWidth, kDefaultResolutionHeight } *m_Magnification.Get();
+  auto size = RenderVec2{ width(), height() } * m_Magnification.Get();
   m_RenderState.SetRenderSize(size);
 
   auto viewport = Box::FromFrameCenterAndSize(Vector2(0, 0), m_RenderState.GetRenderSize());
@@ -271,9 +270,9 @@ void VisualEffectEditorViewer::paintGL()
       vertex_builder.Line(start, end, (zy == 0 ? 8.0f : gy == 0 ? 4.0f : 2.0f) / height(), Color(0.2f, 0.2f, 1.0f, 0.3f));
     }
 
-    vertex_builder.FillVertexBuffer(m_RenderUtil.GetScratchBuffer());
+    vertex_builder.FillVertexBuffer(m_RenderState.GetScratchBuffer());
     m_RenderState.BindShader(m_GridShader);
-    m_RenderState.BindVertexBuffer(m_RenderUtil.GetScratchBuffer());
+    m_RenderState.BindVertexBuffer(m_RenderState.GetScratchBuffer());
     m_RenderState.Draw();
   }
 
@@ -284,14 +283,14 @@ void VisualEffectEditorViewer::paintGL()
 
     auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
     m_RenderState.BindShader(shader);
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), size);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetFullRenderDimensions());
 
     GameContainer * container = nullptr;
-    draw_list.Draw(*container, viewport, {}, m_RenderState, m_RenderUtil);
+    draw_list.Draw(*container, viewport, {}, m_RenderState);
   }
 
   std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2(40, 10) - m_RenderState.GetRenderSize() / 2);
+  g_TextManager.SetTextPos(Vector2f(40, 10) - m_RenderState.GetRenderSize() / 2.0f);
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);

@@ -179,7 +179,7 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
   ProcessActiveAreas(delta_time, input_state, render_state);
 }
 
-void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
+void UIManager::Render(RenderState & render_state)
 {
   UpdateScriptGlobals(render_state.GetRenderSize());
 
@@ -187,7 +187,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
   auto render_size = (RenderVec2)render_state.GetRenderSize();
 
   render_state.BindShader(shader);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_size);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_state.GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
@@ -208,7 +208,7 @@ void UIManager::Render(RenderState & render_state, RenderUtil & render_util)
 
   auto invalid_area = Box::FromPoint(Vector2(-10000, -10000));
 
-  m_ScriptInterface->BeginRendering(&render_state, &render_util);
+  m_ScriptInterface->BeginRendering(&render_state);
   for(auto & elem : clickables)
   {
     if (elem->m_Dead == false)

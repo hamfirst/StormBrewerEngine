@@ -196,27 +196,27 @@ void EntitySystem::DrawAllEntities(const Box & viewport_bounds, DrawList & draw_
     int draw_order = 0;
 #endif
 
-    draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+    draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {      
       PROFILE_SCOPE("Draw Entity");
-      DrawEntity(e, viewport_bounds, screen_center, render_state, render_util);
+      DrawEntity(e, viewport_bounds, screen_center, render_state);
     });
   });
 }
 
-void EntitySystem::DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void EntitySystem::DrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (entity->m_CustomDraw)
   {
-    entity->m_CustomDraw(viewport_bounds, screen_center, render_state, render_util);
+    entity->m_CustomDraw(viewport_bounds, screen_center, render_state);
   }
   else
   {
-    DefaultDrawEntity(entity, viewport_bounds, screen_center, render_state, render_util, g_ShaderManager.GetDefaultWorldSpaceShader());
+    DefaultDrawEntity(entity, viewport_bounds, screen_center, render_state, g_ShaderManager.GetDefaultWorldSpaceShader());
   }
 }
 
-void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader)
+void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, ShaderProgram & shader)
 {
   auto position = entity->GetPosition();
   if (entity->m_PrevPosition)
@@ -224,11 +224,11 @@ void EntitySystem::DefaultDrawEntity(NullOptPtr<Entity> entity, const Box & view
     position = glm::mix(position, entity->m_PrevPosition.Value(), render_state.GetFramePct());
   }
 
-  DefaultDrawEntity(entity->GetSprite(), position, entity->GetRenderState(), viewport_bounds, screen_center, render_state, render_util, shader);
+  DefaultDrawEntity(entity->GetSprite(), position, entity->GetRenderState(), viewport_bounds, screen_center, render_state, shader);
 }
 
 void EntitySystem::DefaultDrawEntity(SpritePtr & sprite, const Vector2f & pos, const EntityRenderState & entity_render_state, 
-                                     const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util, ShaderProgram & shader)
+                                     const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, ShaderProgram & shader)
 {
   SpriteEngineData::RenderSprite(sprite, render_state, entity_render_state.m_AnimIndex, entity_render_state.m_AnimFrame,
     entity_render_state.m_SkinNameHash, pos - screen_center, entity_render_state.m_Matrix, entity_render_state.m_Color, shader);

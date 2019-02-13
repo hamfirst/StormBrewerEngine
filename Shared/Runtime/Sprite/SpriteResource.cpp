@@ -13,7 +13,7 @@
 
 Any CreateSpriteEngineData(SpriteBaseDef & sprite);
 void UpdateSpriteEngineData(Any & engine_data);
-void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const Vector2 & position);
+void RenderSprite(Any & engine_data, RenderState & render_state, EntityRenderState & entity_render_state, const RenderVec2 & position);
 
 SpriteResource::SpriteResource(Any && load_data, uint32_t path_hash, czstr path) :
   DocumentResourceBase(std::move(load_data), path_hash, path)

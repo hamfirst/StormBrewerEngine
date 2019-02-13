@@ -8,48 +8,9 @@
 
 #include "Engine/EngineCommon.h"
 #include "Engine/Rendering/ShaderLiteral.h"
+#include "Engine/Shader/ShaderManager.h"
 #include "Engine/Text/TextManager.h"
 
-
-
-static const char * kTextureViewerVertexShader = SHADER_LITERAL(
-  attribute vec2 a_Position;
-  attribute vec2 a_TexCoord;
-  attribute vec4 a_Color;
-
-  varying vec2 v_TexCoord;
-  varying vec4 v_Color;
-
-  uniform vec2 u_ScreenSize;
-  uniform vec2 u_StartPos;
-  uniform vec2 u_EndPos;
-
-  void main()
-  {
-    vec2 position = mix(u_StartPos, u_EndPos, a_Position);
-    position /= u_ScreenSize;
-    position -= vec2(0.5, 0.5);
-    position *= 2.0;
-
-    gl_Position = vec4(position, 0, 1);
-    v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
-    v_Color = a_Color;
-  }
-);
-
-static const char * kTextureViewerFragmentShader = SHADER_LITERAL(
-
-  varying vec2 v_TexCoord;
-  varying vec4 v_Color;
-
-  uniform sampler2D u_Texture;
-
-  void main()
-  {
-    vec4 color = texture2D(u_Texture, v_TexCoord);
-    gl_FragColor = color;
-  }
-);
 
 TextureViewer::TextureViewer(const char * file_path, QWidget *parent) :
   QOpenGLWidget(parent),
@@ -72,9 +33,6 @@ TextureViewer::~TextureViewer()
 void TextureViewer::initializeGL()
 {
   m_RenderState.InitRenderState(width(), height());
-  m_RenderUtil.LoadShaders();
-
-  m_Shader = MakeQuickShaderProgram(kTextureViewerVertexShader, kTextureViewerFragmentShader);
 
   QuadVertexBufferBuilder builder;
   QuadVertexBuilderInfo quad;
@@ -108,17 +66,21 @@ void TextureViewer::paintGL()
   TextureAsset * asset = m_TextureAsset.Get();
   if (asset->IsLoaded())
   {
-    m_RenderState.BindShader(m_Shader);
+    auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+    m_RenderState.BindShader(shader);
     m_RenderState.BindTexture(*asset);
     m_RenderState.BindVertexBuffer(m_VertexBuffer);
 
     RenderVec2 tex_center = RenderVec2{ asset->GetWidth(), asset->GetHeight() } * 0.5f;
     RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
 
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), (RenderVec2)m_RenderState.GetScreenSize());
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_StartPos"), window_center - (tex_center - m_Center) * m_Magnification.Get());
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_EndPos"), window_center + (tex_center + m_Center) * m_Magnification.Get());
-    m_Shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetFullRenderDimensions());
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), window_center * -1.0f);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
     m_RenderState.Draw();
 
@@ -139,7 +101,7 @@ void TextureViewer::paintGL()
     Vector2 text_start = Vector2(30, -30) - Vector2(screen_size.x, -screen_size.y) / 2;
     Box text_bkg = { size.m_Start + text_start, size.m_End + text_start };
 
-    m_RenderUtil.DrawQuad(text_bkg, Color(30, 30, 30, 200), screen_size, m_RenderState);
+    m_RenderState.DrawDebugQuad(text_bkg, Color(30, 30, 30, 200), true);
 
     g_TextManager.SetTextPos(text_start);
     g_TextManager.RenderText(info.data(), -1, 1, m_RenderState);

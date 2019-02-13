@@ -6,7 +6,6 @@
 #include "Runtime/Map/MapTileJson.h"
 
 #include "Engine/Rendering/VertexBufferBuilder.h"
-#include "Engine/Rendering/RenderUtil.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Shader/ShaderManager.h"
 

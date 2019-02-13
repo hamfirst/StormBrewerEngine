@@ -96,9 +96,9 @@ void VisualEffectInstance::Update(float update_time, StormExprStack & stack, boo
   m_VisualEffect->UpdateInstance(*this, update_time, stack, on_screen);
 }
 
-void VisualEffectInstance::Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state, RenderUtil & render_util)
+void VisualEffectInstance::Render(const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
-  m_VisualEffect->RenderInstance(*this, viewport_bounds, screen_center, render_state, render_util);
+  m_VisualEffect->RenderInstance(*this, viewport_bounds, screen_center, render_state);
 }
 
 void VisualEffectInstance::SetHandle(Handle & handle)

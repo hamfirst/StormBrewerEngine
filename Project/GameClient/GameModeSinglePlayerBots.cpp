@@ -184,7 +184,6 @@ void GameModeSinglePlayerBots::Render()
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
-  auto & render_util = container.GetRenderUtil();
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();
   auto & camera = container.GetClientSystems()->GetCamera();
@@ -195,8 +194,8 @@ void GameModeSinglePlayerBots::Render()
   render_state.SetRenderSize(camera.GetGameResolution());
   render_state.SetFramePct((float)m_FrameClock.GetFramePercent());
 
-  render_util.SetDefaultClearColor();
-  render_util.Clear();
+  render_state.SetDefaultClearColor();
+  render_state.Clear();
 
   auto & engine_state = container.GetEngineState();
   auto entity_system = engine_state.GetEntitySystem();
@@ -215,7 +214,7 @@ void GameModeSinglePlayerBots::Render()
 
   {
     PROFILE_SCOPE("Camera Draw");
-    camera.Draw(container, &engine_state, render_state, render_util);
+    camera.Draw(container, &engine_state, render_state);
   }
 
   {
@@ -238,7 +237,7 @@ void GameModeSinglePlayerBots::Render()
 
   m_FPSClock.Update();
   std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2(40, 40) - render_state.GetRenderSize() / 2);
+  g_TextManager.SetTextPos(Vector2f(40, 40) - render_state.GetRenderSize() / 2.0f);
   g_TextManager.SetPrimaryColor();
   g_TextManager.SetShadowColor();
   g_TextManager.SetTextMode(TextRenderMode::kOutlined);
