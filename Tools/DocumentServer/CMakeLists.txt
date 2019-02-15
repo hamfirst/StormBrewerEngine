@@ -8,7 +8,7 @@ set(GENERIC_SRC_DocumentServer
             FileNameDatabase.cpp
             Main.cpp
             #CPP_PLACEHOLDER
-            )
+        DocumentServerVCSGit.cpp DocumentServerVCSGit.h)
 
 set(GENERIC_HEADER_DocumentServer 
             DocumentServer.h
@@ -16,7 +16,7 @@ set(GENERIC_HEADER_DocumentServer
             DocumentServerMessages.refl.meta.h
             FileNameDatabase.h
             #HEADER_PLACEHOLDER
-            )
+        DocumentServerVCS.h)
 
 set(GENERIC_REFL_DocumentServer 
             DocumentServerMessages.refl.h

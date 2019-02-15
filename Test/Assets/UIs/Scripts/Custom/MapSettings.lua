@@ -4,7 +4,6 @@ MapSettings.text = "Map Settings"
 MapSettings.alpha = 1
 MapSettings.parent_alpha = 1
 
-print("wat")
 MapSettings.allow_send = false
 
 default_map_image = loader:LoadTexture("./Images/UI/DefaultMapImage.png")
