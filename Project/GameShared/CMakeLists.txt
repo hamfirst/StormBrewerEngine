@@ -6,41 +6,41 @@ set(CMAKE_CXX_STANDARD 17)
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_GameShared 
-            GameEventReconciler.cpp
-            GameLevelList.cpp
             GameLogicContainer.cpp
-            GameSharedCommon.cpp
+            GameLevelList.cpp
             GameStageManager.cpp
-            GameValidation.cpp
+            GameSharedCommon.cpp
             GameWebrtc.cpp
-            BehaviorTree/BehaviorTreeTypeDatabase.cpp
-            BehaviorTree/States/PlayAnimationBotState.refl.cpp
-            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
-            Systems/CVCPushSystem.cpp
-            Systems/GameLogicSystems.cpp
+            GameEventReconciler.cpp
+            GameValidation.cpp
             Systems/GameServerObjectOverlapSystem.cpp
+            Systems/GameLogicSystems.cpp
+            Systems/CVCPushSystem.cpp
+            BehaviorTree/BehaviorTreeTypeDatabase.cpp
+            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
+            BehaviorTree/States/PlayAnimationBotState.refl.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameShared 
+            GameProtocol.h
+            GameValidation.h
+            GameSharedCommon.h
             GameEventReconciler.h
-            GameLevelList.h
+            GameLogicContainer.h
             GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
-            GameLogicContainer.h
-            GameProtocol.h
-            GameSharedCommon.h
+            GameLevelList.h
             GameStageManager.h
-            GameValidation.h
-            BehaviorTree/BehaviorTree.h
-            BehaviorTree/BehaviorTreeSerialize.h
-            BehaviorTree/BehaviorTreeTypeDatabase.h
-            BehaviorTree/States/PlayAnimationBotState.refl.h
-            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
-            Systems/CVCPushSystem.h
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
+            Systems/CVCPushSystem.h
+            BehaviorTree/BehaviorTreeSerialize.h
+            BehaviorTree/BehaviorTreeTypeDatabase.h
+            BehaviorTree/BehaviorTree.h
+            BehaviorTree/States/PlayAnimationBotState.refl.h
+            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 

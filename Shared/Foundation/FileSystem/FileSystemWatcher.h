@@ -45,6 +45,9 @@ public:
 
 private:
 
+  bool IsInvisibleFile(const std::string & filename);
+  bool IsInvisiblePath(const std::string & path);
+
   void IterateDirectory(const std::string & local_path, const std::string & full_path, FileSystemDirectory & dir);
   NullOptPtr<FileSystemDirectory> GetDirectoryAtPath(const char * path, FileSystemDirectory & base);
   Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> GetFileOrDirectoryAtPath(const char * path, FileSystemDirectory & base);

@@ -7,8 +7,8 @@
 #include <cwctype>
 
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 #endif
 
 bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
@@ -20,23 +20,21 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
   auto parent_path = fs_path.remove_filename();
 
   fs::path canonical_path;
-  try
+  std::error_code ec;
+  canonical_path = fs::canonical(fs::path(root_path) / fs::path(parent_path), ec);
+
+  if(ec)
   {
-    canonical_path = fs::canonical(parent_path, root_path);
-  }
-  catch(...)
-  {
-    try
-    {
-      canonical_path = fs::canonical(parent_path);
-    }
-    catch(...)
+    canonical_path = fs::canonical(parent_path, ec);
+
+    if(ec)
     {
       canonical_path = parent_path;
     }
   }
 
-  path = (canonical_path / filename).string();
+  auto rel_path = fs::relative(canonical_path / filename, root_path);
+  path = rel_path.string();
 #endif
 
   for (auto & c : path)
@@ -47,20 +45,7 @@ bool ConvertToCanonicalPath(std::string & path, const std::string & root_path)
     }
   }
 
-  if (path.length() < root_path.length())
-  {
-    return false;
-  }
-
-  for (std::size_t index = 0, end = root_path.length(); index < end; ++index)
-  {
-    if (path[index] != root_path[index])
-    {
-      return false;
-    }
-  }
-
-  path = "./" + path.substr(root_path.length());
+  path = "./" + path;
   return true;
 }
 
@@ -103,27 +88,29 @@ std::string GetCanonicalRootPath()
 std::string GetFullPath(const std::string & path, const std::string & root_path)
 {
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-  if (std::experimental::filesystem::path(path).is_absolute())
+  if (fs::path(path).is_absolute())
   {
-    try
-    {
-      return fs::canonical(path).string();
-    }
-    catch(...)
+    std::error_code ec;
+    auto canonical_path = fs::canonical(path, ec);
+
+    if(ec)
     {
       return path;
     }
+
+    return canonical_path.string();
   }
   else
   {
-    try
+    std::error_code ec;
+    auto canonical_path = fs::canonical(fs::path(root_path) / fs::path(path), ec);
+
+    if(ec)
     {
-      return fs::canonical(path, root_path).string();
+      return path;
     }
-    catch(...)
-    {
-      return root_path + '/' + path;
-    }
+
+    return canonical_path.string();
   }
 #else
   return path;
@@ -133,7 +120,7 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
 std::string JoinPath(const std::string & path_part1, const std::string & path_part2)
 {
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-  return (std::experimental::filesystem::path(path_part1) / path_part2).string();
+  return (fs::path(path_part1) / path_part2).string();
 #else
 
   if (path_part1.size() > 0 && path_part1.back() != '/')
@@ -151,7 +138,7 @@ bool CreateDirectory(const std::string & path)
 {
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
   std::error_code ec;
-  std::experimental::filesystem::create_directories(path.data(), ec);
+  fs::create_directories(path.data(), ec);
 
   return !ec;
 #else

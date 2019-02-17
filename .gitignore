@@ -226,6 +226,7 @@ Test/translations/*
 FinalStatic/*
 
 .idea/misc.xml
+.idea/workspace.xml
 .idea/
 
 *.tlog

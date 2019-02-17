@@ -3,8 +3,8 @@
 #include "Foundation/FileSystem/FileSystemWatcher.h"
 #include "Foundation/FileSystem/Path.h"
 
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #ifdef _MSC_VER
 
@@ -99,6 +99,25 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::
   return ret_val;
 }
 
+bool FileSystemWatcher::IsInvisibleFile(const std::string & filename)
+{
+  return filename.size() > 1 && filename[0] == '.' && filename[1] != '.';
+}
+
+bool FileSystemWatcher::IsInvisiblePath(const std::string & path)
+{
+  auto fs_path = fs::path(path);
+  for(auto & sec : fs_path)
+  {
+    if(IsInvisibleFile(sec.string()))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & root_dir, FileSystemDirectory & dir)
 {
   auto full_path = JoinPath(root_dir, local_path);
@@ -121,22 +140,30 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
   for (fs::directory_iterator dir_itr = fs::directory_iterator(full_path), end = fs::directory_iterator(); dir_itr != end; ++dir_itr)
   {
     auto info = dir_itr->status();
+    auto itr_path = dir_itr->path();
+    auto itr_filename = itr_path.filename().string();
+
+    if(IsInvisibleFile(itr_filename))
+    {
+      continue;
+    }
+
     if (fs::is_regular_file(info))
     {
       std::error_code ec;
-      dir.m_Files.emplace(std::make_pair(dir_itr->path().filename().string(), fs::last_write_time(dir_itr->path(), ec)));
+      dir.m_Files.emplace(std::make_pair(itr_filename, fs::last_write_time(itr_path, ec)));
     }
     else if (fs::is_directory(info))
     {      
-      auto sub_dir_local_path = local_path + dir_itr->path().filename().string() + "/";
-      auto sub_dir_full_path = full_path + dir_itr->path().filename().string() + "/";
+      auto sub_dir_local_path = local_path + itr_filename + "/";
+      auto sub_dir_full_path = full_path + itr_filename + "/";
 
       auto sub_dir = std::make_unique<FileSystemDirectory>();
       sub_dir->m_Parent = &dir;
 
       IterateDirectory(sub_dir_local_path, root_dir, *sub_dir);
 
-      dir.m_Directories.emplace(std::make_pair(dir_itr->path().filename().string(), std::move(sub_dir)));
+      dir.m_Directories.emplace(std::make_pair(itr_filename, std::move(sub_dir)));
     }
   }
 }
@@ -329,106 +356,109 @@ void FileSystemWatcher::NotifyThread()
         auto local_file_path = dir_path + file_name;
         auto full_path = GetFullPath(local_file_path, m_RootPath);
 
-        if(notify_info->mask & IN_CREATE)
+        if (IsInvisiblePath(local_file_path) == false)
         {
-          if (is_file)
+          if (notify_info->mask & IN_CREATE)
           {
-            auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
-            if (dir)
+            if (is_file)
             {
-              std::error_code ec;
-              auto last_write = fs::last_write_time(full_path.c_str(), ec);
-
-              dir->m_Files.emplace(std::make_pair(file_name, last_write));
-              TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kAdd, last_write);
-            }
-          }
-          else
-          {
-            auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
-            if (dir)
-            {
-              auto sub_dir = std::make_unique<FileSystemDirectory>();
-              sub_dir->m_Parent = dir;
-
-              auto sub_dir_path = local_file_path + "/";
-              IterateDirectory(sub_dir_path.c_str(), m_RootPath.data(), *sub_dir);
-
-              TriggerOperationForDirectoryFiles(*sub_dir, sub_dir_path, FileSystemOperation::kAdd);
-              dir->m_Directories.emplace(std::make_pair(file_name, std::move(sub_dir)));
-
-              m_Notify();
-            }
-          }
-
-        }
-        else if(notify_info->mask & IN_MODIFY)
-        {
-          auto dir = GetDirectoryAtPath(dir_path.data(), m_RootDirectory);
-          if (is_file && dir)
-          {
-            auto itr = dir->m_Files.find(file_name);
-            if (itr != dir->m_Files.end())
-            {
-              std::error_code ec;
-              auto last_write = fs::last_write_time(full_path.data(), ec);
-              auto cached_last_write = itr->second;
-
-              if (last_write > cached_last_write)
+              auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
+              if (dir)
               {
-                itr->second = last_write;
-                TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kModify, last_write);
-                
-                m_Notify();
-              }
-            }
-          }
-        }
-        else if(notify_info->mask & IN_DELETE)
-        {
-          auto file_info = GetFileOrDirectoryAtPath(local_file_path.data(), m_RootDirectory);
-          if (file_info)
-          {
-            auto dir = file_info->first;
-            auto file_itr = file_info->second;
+                std::error_code ec;
+                auto last_write = fs::last_write_time(full_path.c_str(), ec);
 
-            if (file_itr != dir->m_Files.end())
-            {
-              dir->m_Files.erase(file_itr);
-              TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kDelete, {});
+                dir->m_Files.emplace(std::make_pair(file_name, last_write));
+                TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kAdd, last_write);
+              }
             }
             else
             {
-              TriggerOperationForDirectoryFiles(*dir, local_file_path, FileSystemOperation::kDelete);
-
-              std::vector<FileSystemDirectory *> dead_dirs;
-              dead_dirs.push_back(dir);
-
-              while(dead_dirs.size() > 0)
+              auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
+              if (dir)
               {
-                auto dead_dir = dead_dirs.back();
-                dead_dirs.pop_back();
+                auto sub_dir = std::make_unique <FileSystemDirectory>();
+                sub_dir->m_Parent = dir;
 
-                inotify_rm_watch(m_Data->m_NotifyHandle, dead_dir->m_NotifyWatch);
-                m_Data->m_DirectoryLookup.erase(dead_dir->m_NotifyWatch);
+                auto sub_dir_path = local_file_path + "/";
+                IterateDirectory(sub_dir_path.c_str(), m_RootPath.data(), *sub_dir);
 
-                for(auto & dead_sub_dir : dead_dir->m_Directories)
+                TriggerOperationForDirectoryFiles(*sub_dir, sub_dir_path, FileSystemOperation::kAdd);
+                dir->m_Directories.emplace(std::make_pair(file_name, std::move(sub_dir)));
+
+                m_Notify();
+              }
+            }
+
+          }
+          else if (notify_info->mask & IN_MODIFY)
+          {
+            auto dir = GetDirectoryAtPath(dir_path.data(), m_RootDirectory);
+            if (is_file && dir)
+            {
+              auto itr = dir->m_Files.find(file_name);
+              if (itr != dir->m_Files.end())
+              {
+                std::error_code ec;
+                auto last_write = fs::last_write_time(full_path.data(), ec);
+                auto cached_last_write = itr->second;
+
+                if (last_write > cached_last_write)
                 {
-                  dead_dirs.push_back(dead_sub_dir.second.get());
+                  itr->second = last_write;
+                  TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kModify, last_write);
+
+                  m_Notify();
                 }
               }
+            }
+          }
+          else if (notify_info->mask & IN_DELETE)
+          {
+            auto file_info = GetFileOrDirectoryAtPath(local_file_path.data(), m_RootDirectory);
+            if (file_info)
+            {
+              auto dir = file_info->first;
+              auto file_itr = file_info->second;
 
-              if (dir->m_Parent)
+              if (file_itr != dir->m_Files.end())
               {
-                auto parent = dir->m_Parent;
-                auto dir_itr = parent->m_Directories.find(file_name);
-                if (dir_itr != parent->m_Directories.end())
-                {
-                  parent->m_Directories.erase(dir_itr);
-                }
+                dir->m_Files.erase(file_itr);
+                TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kDelete, {});
               }
+              else
+              {
+                TriggerOperationForDirectoryFiles(*dir, local_file_path, FileSystemOperation::kDelete);
 
-              m_Notify();
+                std::vector <FileSystemDirectory *> dead_dirs;
+                dead_dirs.push_back(dir);
+
+                while (dead_dirs.size() > 0)
+                {
+                  auto dead_dir = dead_dirs.back();
+                  dead_dirs.pop_back();
+
+                  inotify_rm_watch(m_Data->m_NotifyHandle, dead_dir->m_NotifyWatch);
+                  m_Data->m_DirectoryLookup.erase(dead_dir->m_NotifyWatch);
+
+                  for (auto & dead_sub_dir : dead_dir->m_Directories)
+                  {
+                    dead_dirs.push_back(dead_sub_dir.second.get());
+                  }
+                }
+
+                if (dir->m_Parent)
+                {
+                  auto parent = dir->m_Parent;
+                  auto dir_itr = parent->m_Directories.find(file_name);
+                  if (dir_itr != parent->m_Directories.end())
+                  {
+                    parent->m_Directories.erase(dir_itr);
+                  }
+                }
+
+                m_Notify();
+              }
             }
           }
         }

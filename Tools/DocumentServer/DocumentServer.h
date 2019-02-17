@@ -3,12 +3,15 @@
 #include <memory>
 #include <map>
 #include <chrono>
+#include <unordered_set>
 
 #include "FileNameDatabase.h"
 #include "DocumentServerMessages.refl.h"
+#include "DocumentServerVCS.refl.h"
 
-#include <StormSockets/StormSocketConnectionId.h>
-#include <StormSockets/StormSemaphore.h>
+#include "StormSockets/StormSocketConnectionId.h"
+#include "StormSockets/StormSemaphore.h"
+#include "StormSockets/StormMessageQueue.h"
 
 #include "Foundation/Buffer/Buffer.h"
 #include "Foundation/Document/Document.h"
@@ -63,6 +66,8 @@ public:
   void Run();
 
 private:
+  void Log(const char * fmt, ...);
+
   virtual void LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback) override;
   std::string GetFullPath(const std::string & path);
 
@@ -80,10 +85,11 @@ private:
 
   void SendMessageToClient(DocumentClientMessageType type, StormSockets::StormSocketConnectionId client_id, uint32_t document_id, const std::string & packet);
 
-
+  void VCSThread();
 private:
 
   std::string m_RootPath;
+  std::deque<std::string> m_Log;
 
   std::unique_ptr<StormSockets::StormSocketBackend> m_Backend;
   std::unique_ptr<StormSockets::StormSocketServerFrontendWebsocket> m_DocServerFrontend;
@@ -102,8 +108,12 @@ private:
   std::unordered_map<Hash, Buffer> m_CachedAssets;
   std::unordered_map<uint32_t, DocumentServerDocumentInfo *> m_PendingChangedDocuments;
 
+  std::unordered_set<uint32_t> m_OpenedAssets;
+  std::unordered_set<uint32_t> m_AddedAssets;
+  std::unordered_set<uint32_t> m_CheckedOutAssets;
+
   FileNameDatabase m_FileNameDatabase;
-  bool m_Quit = false;
+  volatile bool m_Quit = false;
 
   DocumentCompiler m_DocumentCompiler;
 
@@ -112,4 +122,13 @@ private:
 
   int m_NextDocumentId = 0;
   StormSockets::StormSemaphore m_Semaphore;
+
+  std::thread m_VCSThread;
+  std::unique_ptr<DocumentServerVCS> m_VCS;
+  StormSockets::StormMessageQueue<std::string> m_AddRequests;
+  StormSockets::StormMessageQueue<DocumentServerVCSOperation> m_AddResponses;
+  StormSockets::StormMessageQueue<std::string> m_CheckoutRequests;
+  StormSockets::StormMessageQueue<DocumentServerVCSOperation> m_CheckoutResponses;
+  StormSockets::StormMessageQueue<DocumentServerVCSQuery> m_StatusQueries;
+  StormSockets::StormMessageQueue<DocumentServerVCSQuery> m_StatusQueryResponses;
 };

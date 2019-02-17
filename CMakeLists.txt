@@ -18,6 +18,12 @@ set(OUTPUTS)
 
 option(EXPORT_TEST ON)
 option(EXPORT_DIST OFF)
+option(ENABLE_PERFORCE OFF)
+
+
+if(${ENABLE_PERFORCE})
+  message("-- Enabling perforce")
+endif()
 
 if(MSVC)
   add_definitions(-D_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING)
@@ -359,11 +365,32 @@ if(BUILD_TOOLS)
   add_executable(documentserver Dummy.cpp)
   set_target_properties(documentserver PROPERTIES FOLDER Executable)
 
-  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData asio mbedtls binpack)
+  target_link_libraries(documentserver DocumentServer Foundation StormSocketCPP StormData git2 asio mbedtls binpack)
 
   if(NOT MSVC)
     target_link_libraries(documentserver -Wl,--whole-archive pthread -Wl,--no-whole-archive)
     target_link_libraries(documentserver GL GLU stdc++fs z rt m c dl)
+  endif()
+
+  if(${ENABLE_PERFORCE})
+    target_compile_definitions(DocumentServer PRIVATE -DENABLE_PERFORCE)
+
+    if(MSVC)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/windows/libclient.lib)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/windows/librpc.lib)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/windows/libsupp.lib)
+    elseif(APPLE)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/mac/libclient.a)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/mac/librpc.a)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/mac/libsupp.a)
+    else()
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/linux/libclient.a)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/linux/librpc.a)
+      target_link_libraries(documentserver ${CMAKE_CURRENT_SOURCE_DIR}/External/p4/lib/linux/libsupp.a)
+
+      find_package(OpenSSL 1.0.2 REQUIRED)
+      target_link_libraries(documentserver ${OPENSSL_LIBRARIES})
+    endif()
   endif()
 
   find_package(Qt5Widgets CONFIG REQUIRED)

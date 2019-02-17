@@ -3,7 +3,8 @@
 #include "DocumentServerMessages.refl.meta.h"
 
 #include <sb/vector.h>
-#include <experimental/filesystem>
+#include <filesystem>
+#include <cstdarg>
 
 #include "StormRefl/StormReflJsonStd.h"
 
@@ -16,10 +17,19 @@
 #include "Foundation/FileSystem/Path.h"
 #include "Foundation/Document/Document.h"
 
-namespace fs = std::experimental::filesystem;
+#include "DocumentServerVCSGit.refl.meta.h"
+#include "DocumentServerVCSPerforce.refl.meta.h"
+
+namespace fs = std::filesystem;
 
 DocumentServer::DocumentServer() :
-  m_DocumentCompiler(this)
+  m_DocumentCompiler(this),
+  m_AddRequests(65536),
+  m_AddResponses(65536),
+  m_CheckoutRequests(1024),
+  m_CheckoutResponses(1024),
+  m_StatusQueries(8092),
+  m_StatusQueryResponses(8092)
 {
   m_RootPath = GetCanonicalRootPath();
   m_FilesystemWatcher = std::make_unique<FileSystemWatcher>(m_RootPath, [this] { m_Semaphore.Release(1); });
@@ -50,6 +60,40 @@ DocumentServer::DocumentServer() :
   m_AssetServerFrontend = std::make_unique<StormSockets::StormSocketServerFrontendWebsocket>(asset_server_settings, m_Backend.get());
   m_ReloadServerFrontend = std::make_unique<StormSockets::StormSocketServerFrontendWebsocket>(reload_server_settings, m_Backend.get());
   m_CompilerServerFrontend = std::make_unique<StormSockets::StormSocketServerFrontendWebsocket>(compiler_server_settings, m_Backend.get());
+
+  auto vcs_settings = FileReadFullAsString("vcs_settings.txt");
+  DocumentServerVCSInitData init_data;
+
+  StormReflParseJson(init_data, vcs_settings.c_str());
+
+  switch(init_data.Type)
+  {
+  default:
+  case DocumentServerVCSType::Git:
+    m_VCS = std::make_unique<DocumentServerVCSGit>();
+    break;
+#ifdef ENABLE_PERFORCE
+  case DocumentServerVCSType::Perforce:
+    m_VCS = std::make_unique<DocumentServerVCSPerforce>();
+    break;
+#endif
+  }
+
+  auto project_dir = FileReadFullAsString("project_dir.txt");
+  if(project_dir.empty())
+  {
+    project_dir = ".";
+  }
+
+  while(isspace(project_dir.back()) || project_dir.back() == 0)
+  {
+    project_dir.pop_back();
+  }
+
+  auto project_dir_path = fs::canonical(project_dir);
+  m_VCS->Init(vcs_settings, project_dir_path.string(), m_RootPath, [this](const std::string & msg) { Log("VCS Error: %s", msg.c_str()); });
+
+  m_VCSThread = std::thread([this]() { VCSThread(); });
 }
 
 DocumentServer::~DocumentServer()
@@ -73,14 +117,14 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientConnected)
       {
-        printf("Got document server connection\n");
+        Log("Got document server connection");
 
         uint32_t connection_id = event_info.ConnectionId;
         m_DocServerClients.emplace(std::make_pair(connection_id, DocumentServerClientInfo{}));
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::ClientHandShakeCompleted)
       {
-        printf("Got document handshake complete\n");
+        Log("Got document handshake complete");
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Data)
       {
@@ -98,7 +142,7 @@ void DocumentServer::Run()
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        printf("Lost document server connection\n");
+        Log("Lost document server connection");
 
         uint32_t connection_id = event_info.ConnectionId;
         auto client_itr = m_DocServerClients.find(connection_id);
@@ -138,7 +182,7 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientConnected)
       {
-        printf("Got asset server connection\n");
+        Log("Got asset server connection");
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Data)
       {
@@ -167,13 +211,19 @@ void DocumentServer::Run()
             m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
             m_AssetServerFrontend->FreeOutgoingPacket(response);
 
-            printf("Error File %s\n", path);
+            Log("Error File %s", path);
             continue;
           }
           else
           {
             auto result = m_CachedAssets.emplace(std::make_pair(file_hash, file.ReadFileFull()));
             cache_itr = result.first;
+
+            if(m_AddedAssets.find(file_hash) == m_AddedAssets.end())
+            {
+              m_AddRequests.Enqueue(path);
+              m_AddedAssets.emplace(file_hash);
+            }
           }
         }
 
@@ -183,11 +233,11 @@ void DocumentServer::Run()
         m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
         m_AssetServerFrontend->FreeOutgoingPacket(response);
 
-        printf("Served File %s\n", path);
+        Log("Served File %s", path);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        printf("Lost asset server connection\n");
+        Log("Lost asset server connection");
         m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
       }
     }
@@ -196,14 +246,14 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientHandShakeCompleted)
       {
-        printf("Got reload server connection\n");
+        Log("Got reload server connection");
         m_ReloadConnections.push_back(event_info.ConnectionId);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
         vremove_quick(m_ReloadConnections, event_info.ConnectionId);
         m_ReloadServerFrontend->FinalizeConnection(event_info.ConnectionId);
-        printf("Lost reload server connection\n");
+        Log("Lost reload server connection");
       }
     }
 
@@ -211,7 +261,7 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientConnected)
       {
-        printf("Got compiler server connection\n");
+        Log("Got compiler server connection");
 
         m_CompileServerClients.emplace(std::make_pair(event_info.ConnectionId, CompilerServerClientInfo{ event_info.ConnectionId }));
       }
@@ -224,7 +274,7 @@ void DocumentServer::Run()
         char * path = recv_buffer.data();
         auto path_hash = crc32lowercase(path);
 
-        printf("Got compiler server request: %s\n", path);
+        Log("Got compiler server request: %s", path);
 
         Document * document = nullptr;
 
@@ -257,7 +307,7 @@ void DocumentServer::Run()
           m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
           m_CompilerServerFrontend->FreeOutgoingPacket(response);
 
-          printf("Error File %s\n", path);
+          Log("Error File %s", path);
           continue;
         }
 
@@ -269,7 +319,7 @@ void DocumentServer::Run()
         m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
         m_CompilerServerFrontend->FreeOutgoingPacket(response);
 
-        printf("Served File %s\n", path);
+        Log("Served File %s", path);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
@@ -284,7 +334,7 @@ void DocumentServer::Run()
           m_CompileServerClients.erase(client_info);
         }
 
-        printf("Lost compiler server connection\n");
+        Log("Lost compiler server connection");
         m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
       }
     }
@@ -305,16 +355,16 @@ void DocumentServer::Run()
       switch (type)
       {
       case FileSystemOperation::kAdd:
-        printf("Added File %s\n", file.data());        
+        Log("Added File %s", file.data());
         m_FileNameDatabase.Insert(file.data(), path.data());
         break;
       case FileSystemOperation::kDelete:
-        printf("Removed File %s\n", file.data());
+        Log("Removed File %s", file.data());
         m_FileNameDatabase.Remove(file.data(), path.data());
         HandleDocumentRemoved(path.data());
         break;
       case FileSystemOperation::kModify:
-        printf("Modified File %s\n", file.data());
+        Log("Modified File %s", file.data());
         HandleDocumentModified(path.data(), last_modified);
         break;
       default:
@@ -343,7 +393,7 @@ void DocumentServer::Run()
             {
               if (file.GetFileOpenError() != 13)
               {
-                printf("Error File %s\n", path.data());
+                Log("Error File %s", path.data());
                 retry = false;
                 break;
               }
@@ -351,7 +401,7 @@ void DocumentServer::Run()
               attempts++;
               if (attempts > 10)
               {
-                printf("Error File %s\n", path.data());
+                Log("Error File %s", path.data());
                 retry = false;
                 break;
               }
@@ -381,12 +431,65 @@ void DocumentServer::Run()
       for (auto connection_id : m_ReloadConnections)
       {
         m_ReloadServerFrontend->SendPacketToConnection(response, connection_id);
-        printf("Served file change: %s\n", reload_packet.data());
+        Log("Served file change: %s", reload_packet.data());
       }
 
       m_ReloadServerFrontend->FreeOutgoingPacket(response);
     }
+
+    DocumentServerVCSQuery query;
+    while(m_StatusQueryResponses.TryDequeue(query))
+    {
+      // Do something with these?
+    }
+
+    DocumentServerVCSOperation resp;
+    while(m_AddResponses.TryDequeue(resp))
+    {
+      if(resp.m_Success)
+      {
+        Log("VCS Added file %s", resp.m_FilePath.c_str());
+      }
+    }
+
+    while(m_CheckoutResponses.TryDequeue(resp))
+    {
+      auto itr = m_OpenDocuments.find(crc32(resp.m_FilePath));
+      if(itr != m_OpenDocuments.end())
+      {
+        if (resp.m_Success)
+        {
+          itr->second.m_Document->Save(m_RootPath);
+        }
+        else
+        {
+          for(auto & con : itr->second.m_Connections)
+          {
+            SendMessageToClient(DocumentClientMessageType::kCheckoutError, con.m_ConnectionId, con.m_DocumentId, resp.m_FilePath);
+          }
+        }
+      }
+    }
   }
+}
+
+
+void DocumentServer::Log(const char * fmt, ...)
+{
+  char buf[8092];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  buf[sizeof(buf) - 1] = 0;
+  printf("%s\n", buf);
+
+  m_Log.emplace_back(buf);
+  if(m_Log.size() > 1000)
+  {
+    m_Log.pop_front();
+  }
+
+  va_end(args);
 }
 
 void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
@@ -404,7 +507,7 @@ void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCa
   FileClose(file);
 
   std::error_code ec;
-  callback(file_hash, buffer.Get(), buffer.GetSize(), std::experimental::filesystem::last_write_time(path, ec));
+  callback(file_hash, buffer.Get(), buffer.GetSize(), fs::last_write_time(path, ec));
 }
 
 std::string DocumentServer::GetFullPath(const std::string & path)
@@ -646,7 +749,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
 {
   const char * start_msg = msg;
 
-  printf("%s\n", msg);
+  Log("%s", msg);
 
   Hash hash = crc32begin();
   while (length > 0)
@@ -720,6 +823,8 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       }
 
       OpenDocumentForClient(file_name, document_id, client_id);
+      m_AddRequests.Enqueue(file_name);
+      m_AddedAssets.emplace(crc32(file_name));
     }
     break;
   case DocumentServerMessageType::kOpen:
@@ -739,6 +844,11 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       }
 
       OpenDocumentForClient(file_name, document_id, client_id);
+      if(m_AddedAssets.find(crc32(file_name)) == m_AddedAssets.end())
+      {
+        m_AddRequests.Enqueue(file_name);
+        m_AddedAssets.emplace(crc32(file_name));
+      }
     }
     break;
   case DocumentServerMessageType::kChange:
@@ -820,7 +930,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       for (auto connection_id : m_ReloadConnections)
       {
         m_ReloadServerFrontend->SendPacketToConnection(response, connection_id);
-        printf("Document file change: %s\n", reload_packet.data());
+        Log("Document file change: %s\n", reload_packet.data());
       }
 
       m_ReloadServerFrontend->FreeOutgoingPacket(response);
@@ -884,8 +994,18 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       auto document = GetDocumentForClient(document_id, client_id);
       if (document)
       {
-        document->m_Document->Save(m_RootPath);
-        document->m_LastModifiedTime = std::chrono::system_clock::now();
+        if(document->m_Document->Save(m_RootPath))
+        {
+          document->m_LastModifiedTime = std::chrono::system_clock::now();
+        }
+        else
+        {
+          if(m_CheckedOutAssets.find(document->m_Document->GetFileId()) != m_CheckedOutAssets.end())
+          {
+            m_CheckoutRequests.Enqueue(document->m_Document->GetPath());
+            m_CheckedOutAssets.emplace(document->m_Document->GetFileId());
+          }
+        }
       }
     }
     break;
@@ -935,3 +1055,55 @@ void DocumentServer::SendMessageToClient(DocumentClientMessageType type, StormSo
   m_DocServerFrontend->FreeOutgoingPacket(writer);
 }
 
+void DocumentServer::VCSThread()
+{
+  std::vector<DocumentServerVCSQuery> status_queries;
+  std::vector<DocumentServerVCSOperation> add_requests;
+
+  while(m_Quit == false)
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+    status_queries.clear();
+
+    DocumentServerVCSQuery query;
+    while(m_StatusQueries.TryDequeue(query))
+    {
+      status_queries.emplace_back(std::move(query));
+    }
+
+    if(status_queries.size() > 0)
+    {
+      m_VCS->GetStatus(status_queries);
+      for(auto & elem : status_queries)
+      {
+        m_StatusQueryResponses.Enqueue(std::move(elem));
+      }
+    }
+
+    std::string req;
+    add_requests.clear();
+
+    while(m_AddRequests.TryDequeue(req))
+    {
+      add_requests.emplace_back(DocumentServerVCSOperation{ std::move(req) });
+    }
+
+    if(add_requests.size())
+    {
+      m_VCS->Add(add_requests);
+      for(auto & elem : add_requests)
+      {
+        m_AddResponses.Enqueue(std::move(elem));
+      }
+    }
+
+    while(m_CheckoutRequests.TryDequeue(req))
+    {
+      DocumentServerVCSOperation resp;
+      resp.m_FilePath = req;
+      resp.m_Success = m_VCS->Checkout(req);
+      m_CheckoutResponses.Enqueue(std::move(resp));
+    }
+  }
+}

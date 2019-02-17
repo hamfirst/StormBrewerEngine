@@ -45,7 +45,7 @@ public:
 
   void ParseFull(const char * file_data);
   void FileError();
-  void Save(const std::string & root_path);
+  bool Save(const std::string & root_path);
 
   void SetChangeHandler(DocumentChangeHandler && change_handler);
   void SetStateChangeHandler(DocumentStateChangeHandler && change_handler);

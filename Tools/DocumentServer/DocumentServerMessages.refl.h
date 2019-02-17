@@ -26,6 +26,7 @@ enum STORM_REFL_ENUM class DocumentClientMessageType
   kUnknown,
   kNewFileError,
   kOpenFileError,
+  kCheckoutError,
   kDocumentState,
   kDocumentClosed,
   kChange,

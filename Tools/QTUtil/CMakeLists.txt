@@ -11,25 +11,25 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_QTUtil 
-            AnimationTrack.cpp
-            DraggableList.cpp
-            ExpandableList.cpp
             FocusWatcher.cpp
-            LerpVar.cpp
-            QtLerpVar.cpp
             QTUtil.cpp
+            DraggableList.cpp
+            QtLerpVar.cpp
+            LerpVar.cpp
+            AnimationTrack.cpp
+            ExpandableList.cpp
             )
 
 set(GENERIC_HEADER_QTUtil 
             AnimationTrack.h
-            DraggableList.h
-            ExpandableList.h
             FocusWatcher.h
+            DraggableList.h
+            VectorRearrange.h
+            ExpandableList.h
+            qtutil_global.h
             LerpVar.h
             QtLerpVar.h
             QTUtil.h
-            qtutil_global.h
-            VectorRearrange.h
             )
 
 add_library(QTUtil STATIC ${GENERIC_SRC_QTUtil} ${GENERIC_HEADER_QTUtil})

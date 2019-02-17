@@ -2,6 +2,8 @@
 
 #include "Foundation/Common.h"
 
+#include "DocumentServerVCS.refl.h"
+
 #include <unordered_map>
 
 struct FileNameInfo

@@ -124,13 +124,13 @@ void Document::FileError()
   SetFileError();
 }
 
-void Document::Save(const std::string & root_path)
+bool Document::Save(const std::string & root_path)
 {
   auto full_path = GetFullPath(m_Path, root_path);
   File file = FileOpen(full_path.data(), FileOpenMode::kWrite);
   if (file.GetFileOpenError() > 0)
   {
-    return;
+    return false;
   }
 
   std::vector<DocumentLink> links;
@@ -155,6 +155,8 @@ void Document::Save(const std::string & root_path)
   {
     SetCompletedLoad();
   }
+
+  return true;
 }
 
 void Document::SetChangeHandler(DocumentChangeHandler && change_handler)

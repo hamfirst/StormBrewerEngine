@@ -97,7 +97,7 @@ struct StormReflEnumInfo<DocumentServerMessageType>::elems<9>
 template <>
 struct StormReflEnumInfo<DocumentClientMessageType>
 {
-  static constexpr int elems_n = 8;
+  static constexpr int elems_n = 9;
   static constexpr auto GetName() { return "DocumentClientMessageType"; }
   static constexpr auto GetNameHash() { return 0x6B1F13AF; }
   template <int N> struct elems { };
@@ -130,13 +130,21 @@ struct StormReflEnumInfo<DocumentClientMessageType>::elems<2>
 template <>
 struct StormReflEnumInfo<DocumentClientMessageType>::elems<3>
 {
+  static constexpr auto GetName() { return "kCheckoutError"; }
+  static constexpr auto GetNameHash() { return 0x8434D6C4; }
+  static constexpr auto GetValue() { return DocumentClientMessageType::kCheckoutError; }
+};
+
+template <>
+struct StormReflEnumInfo<DocumentClientMessageType>::elems<4>
+{
   static constexpr auto GetName() { return "kDocumentState"; }
   static constexpr auto GetNameHash() { return 0x3697C103; }
   static constexpr auto GetValue() { return DocumentClientMessageType::kDocumentState; }
 };
 
 template <>
-struct StormReflEnumInfo<DocumentClientMessageType>::elems<4>
+struct StormReflEnumInfo<DocumentClientMessageType>::elems<5>
 {
   static constexpr auto GetName() { return "kDocumentClosed"; }
   static constexpr auto GetNameHash() { return 0xB73433D9; }
@@ -144,7 +152,7 @@ struct StormReflEnumInfo<DocumentClientMessageType>::elems<4>
 };
 
 template <>
-struct StormReflEnumInfo<DocumentClientMessageType>::elems<5>
+struct StormReflEnumInfo<DocumentClientMessageType>::elems<6>
 {
   static constexpr auto GetName() { return "kChange"; }
   static constexpr auto GetNameHash() { return 0xE2E49DD4; }
@@ -152,7 +160,7 @@ struct StormReflEnumInfo<DocumentClientMessageType>::elems<5>
 };
 
 template <>
-struct StormReflEnumInfo<DocumentClientMessageType>::elems<6>
+struct StormReflEnumInfo<DocumentClientMessageType>::elems<7>
 {
   static constexpr auto GetName() { return "kChangeOk"; }
   static constexpr auto GetNameHash() { return 0x87B2F4E3; }
@@ -160,7 +168,7 @@ struct StormReflEnumInfo<DocumentClientMessageType>::elems<6>
 };
 
 template <>
-struct StormReflEnumInfo<DocumentClientMessageType>::elems<7>
+struct StormReflEnumInfo<DocumentClientMessageType>::elems<8>
 {
   static constexpr auto GetName() { return "kChangeLinks"; }
   static constexpr auto GetNameHash() { return 0xE1BF87EE; }

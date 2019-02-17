@@ -34,7 +34,8 @@ struct StormReflJson<MapTile, void>
     sb += "[0,0]";
   }
 
-  static bool Parse(MapTile & t, const char * str, const char *& result, bool additive)
+  template <typename CharPtr>
+  static bool Parse(MapTile & t, CharPtr str, CharPtr & result, bool additive)
   {
     if (*str != '[')
     {
@@ -110,7 +111,8 @@ struct StormReflJson<MapAnimatedTile, void>
     sb += "[0,0]";
   }
 
-  static bool Parse(MapAnimatedTile & t, const char * str, const char *& result, bool additive)
+  template <typename CharPtr>
+  static bool Parse(MapAnimatedTile & t, CharPtr str, CharPtr & result, bool additive)
   {
     if (*str != '[')
     {

@@ -6,211 +6,211 @@ set(CMAKE_CXX_STANDARD 17)
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_Runtime 
-            Runtime.cpp
             RuntimeCommon.cpp
-            Anchor/AnchorDef.refl.cpp
-            Anchor/AnchorTypeDatabase.cpp
-            Asset/Asset.cpp
-            Atlas/AtlasDef.refl.cpp
-            Atlas/AtlasResource.cpp
-            BinaryResource/BinaryResourceBase.cpp
-            BinaryResource/BinaryResourceManager.cpp
-            BinaryResource/BinaryResourceReferenceBase.cpp
-            BinaryResource/GenericBinaryResource.cpp
-            Collision/CollisionDatabase.cpp
-            Collision/DynamicCollisionDatabase.cpp
-            Collision/StaticCollisionDatabase.cpp
-            Component/ComponentInitData.refl.cpp
-            Component/ComponentInitDataTypeDatabase.cpp
-            Config/ConfigManager.cpp
-            DocumentResource/DocumentResourceBase.cpp
-            DocumentResource/DocumentResourceManager.cpp
-            DocumentResource/DocumentResourceReferenceBase.cpp
-            Entity/EntityDef.refl.cpp
+            Runtime.cpp
             Entity/EntityResource.cpp
-            FrameData/FrameData.refl.cpp
-            FrameData/FrameDataExtract.cpp
+            Entity/EntityDef.refl.cpp
             Map/MapCollision.cpp
-            Map/MapDef.refl.cpp
-            Map/MapEffectLayerDef.refl.cpp
-            Map/MapEffectLayerTypeDatabase.cpp
-            Map/MapHandles.refl.cpp
-            Map/MapPropertiesDef.refl.cpp
             Map/MapPropertiesTypeDatabase.cpp
+            Map/MapDef.refl.cpp
+            Map/MapEffectLayerTypeDatabase.cpp
+            Map/MapEffectLayerDef.refl.cpp
+            Map/MapPropertiesDef.refl.cpp
             Map/MapResource.cpp
-            Mover/Mover.cpp
-            Path/PathDef.refl.cpp
-            Path/PathTypeDatabase.cpp
-            Script/ScriptResource.cpp
-            ServerObject/ServerObject.cpp
-            ServerObject/ServerObjectDef.refl.cpp
-            ServerObject/ServerObjectEventDispatch.cpp
-            ServerObject/ServerObjectEventSystem.cpp
-            ServerObject/ServerObjectHandle.cpp
-            ServerObject/ServerObjectInitData.refl.cpp
-            ServerObject/ServerObjectInitDataTypeDatabase.cpp
-            ServerObject/ServerObjectManager.cpp
-            ServerObject/ServerObjectResource.cpp
-            ServerObject/ServerObjectSerialize.cpp
-            ServerObject/ServerObjectSystem.cpp
-            ServerObject/ServerObjectUpdate.cpp
-            Sprite/SpriteDef.refl.cpp
+            Map/MapHandles.refl.cpp
+            Volume/VolumeTypeDatabase.cpp
+            Volume/VolumeDef.refl.cpp
             Sprite/SpriteResource.cpp
-            SpriteBase/SpriteAnimationEventDef.refl.cpp
-            SpriteBase/SpriteAnimationEventTypeDatabase.cpp
-            SpriteBase/SpriteBaseDef.refl.cpp
-            TileSheet/TileSheetDef.refl.cpp
-            TileSheet/TileSheetResource.cpp
+            Sprite/SpriteDef.refl.cpp
+            Script/ScriptResource.cpp
+            FrameData/FrameDataExtract.cpp
+            FrameData/FrameData.refl.cpp
+            Component/ComponentInitDataTypeDatabase.cpp
+            Component/ComponentInitData.refl.cpp
+            Collision/StaticCollisionDatabase.cpp
+            Collision/DynamicCollisionDatabase.cpp
+            Collision/CollisionDatabase.cpp
             UI/UIDef.refl.cpp
             UI/UIResource.cpp
+            Config/ConfigManager.cpp
+            Mover/Mover.cpp
+            Path/PathTypeDatabase.cpp
+            Path/PathDef.refl.cpp
+            TileSheet/TileSheetDef.refl.cpp
+            TileSheet/TileSheetResource.cpp
             VisualEffect/VisualEffectDef.refl.cpp
             VisualEffect/VisualEffectResource.cpp
-            Volume/VolumeDef.refl.cpp
-            Volume/VolumeTypeDatabase.cpp
+            Asset/Asset.cpp
+            BinaryResource/BinaryResourceManager.cpp
+            BinaryResource/GenericBinaryResource.cpp
+            BinaryResource/BinaryResourceReferenceBase.cpp
+            BinaryResource/BinaryResourceBase.cpp
+            Atlas/AtlasResource.cpp
+            Atlas/AtlasDef.refl.cpp
+            ServerObject/ServerObjectInitData.refl.cpp
+            ServerObject/ServerObjectHandle.cpp
+            ServerObject/ServerObjectDef.refl.cpp
+            ServerObject/ServerObjectUpdate.cpp
+            ServerObject/ServerObjectInitDataTypeDatabase.cpp
+            ServerObject/ServerObjectManager.cpp
+            ServerObject/ServerObjectSerialize.cpp
+            ServerObject/ServerObjectSystem.cpp
+            ServerObject/ServerObject.cpp
+            ServerObject/ServerObjectEventSystem.cpp
+            ServerObject/ServerObjectResource.cpp
+            ServerObject/ServerObjectEventDispatch.cpp
+            DocumentResource/DocumentResourceReferenceBase.cpp
+            DocumentResource/DocumentResourceBase.cpp
+            DocumentResource/DocumentResourceManager.cpp
+            SpriteBase/SpriteAnimationEventTypeDatabase.cpp
+            SpriteBase/SpriteBaseDef.refl.cpp
+            SpriteBase/SpriteAnimationEventDef.refl.cpp
+            Anchor/AnchorDef.refl.cpp
+            Anchor/AnchorTypeDatabase.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_Runtime 
             Runtime.h
             RuntimeCommon.h
-            Anchor/AnchorDef.refl.h
-            Anchor/AnchorDef.refl.meta.h
-            Anchor/AnchorTypeDatabase.h
-            Anchor/AnchorTypeRegister.h
-            Animation/AnimationState.h
-            Asset/Asset.h
-            Atlas/AtlasDef.refl.h
-            Atlas/AtlasDef.refl.meta.h
-            Atlas/AtlasResource.h
-            BinaryResource/BinaryResourceBase.h
-            BinaryResource/BinaryResourceLoader.h
-            BinaryResource/BinaryResourceManager.h
-            BinaryResource/BinaryResourcePtr.h
-            BinaryResource/BinaryResourceReference.h
-            BinaryResource/BinaryResourceReferenceBase.h
-            BinaryResource/GenericBinaryResource.h
-            Collision/CollisionDatabase.h
-            Collision/CollisionDatabaseResult.h
-            Collision/DynamicCollisionDatabase.h
-            Collision/IntersectionDatabase.h
-            Collision/StaticCollisionDatabase.h
-            Component/ComponentInitData.refl.h
-            Component/ComponentInitData.refl.meta.h
-            Component/ComponentInitDataTypeDatabase.h
-            Component/ComponentInitDataTypeDatabaseRegister.h
-            Config/ConfigList.h
-            Config/ConfigManager.h
-            Config/ConfigRegistrationMacros.h
-            Config/ConfigResource.h
-            DocumentResource/DocumentResourceBase.h
-            DocumentResource/DocumentResourceLoader.h
-            DocumentResource/DocumentResourceManager.h
-            DocumentResource/DocumentResourcePtr.h
-            DocumentResource/DocumentResourceReference.h
-            DocumentResource/DocumentResourceReferenceBase.h
-            Entity/EntityDef.refl.h
             Entity/EntityDef.refl.meta.h
             Entity/EntityResource.h
-            Event/Event.h
-            Event/EventDispatcher.h
-            Event/EventHandler.h
-            Event/EventSystem.h
-            FrameData/FrameData.refl.h
-            FrameData/FrameData.refl.meta.h
-            FrameData/FrameDataExtract.h
+            Entity/EntityDef.refl.h
             GenericResource/GenericResource.h
-            Map/MapCollision.h
-            Map/MapDef.refl.h
-            Map/MapDef.refl.meta.h
-            Map/MapEffectLayerDef.refl.h
-            Map/MapEffectLayerDef.refl.meta.h
-            Map/MapEffectLayerTypeDatabase.h
+            Map/MapPropertiesTypeRegister.h
             Map/MapEffectLayerTypeRegister.h
+            Map/MapEffectLayerTypeDatabase.h
+            Map/MapEffectLayerDef.refl.meta.h
             Map/MapHandles.refl.h
+            Map/MapResource.h
             Map/MapHandles.refl.meta.h
+            Map/MapDef.refl.h
+            Map/MapCollision.h
             Map/MapMetaExtractor.h
+            Map/MapTileJson.h
+            Map/MapDef.refl.meta.h
             Map/MapPropertiesDef.refl.h
             Map/MapPropertiesDef.refl.meta.h
-            Map/MapPropertiesTypeDatabase.h
-            Map/MapPropertiesTypeRegister.h
-            Map/MapResource.h
+            Map/MapEffectLayerDef.refl.h
             Map/MapTile.h
-            Map/MapTileJson.h
-            Mover/Mover.h
-            Path/PathDef.refl.h
-            Path/PathDef.refl.meta.h
-            Path/PathTypeDatabase.h
-            Path/PathTypeRegister.h
-            Script/ScriptResource.h
-            ServerObject/ServerObject.h
-            ServerObject/ServerObjectComponent.h
-            ServerObject/ServerObjectComponentFuncs.h
-            ServerObject/ServerObjectComponentSerialize.h
-            ServerObject/ServerObjectDef.refl.h
-            ServerObject/ServerObjectDef.refl.meta.h
-            ServerObject/ServerObjectEventDispatch.h
-            ServerObject/ServerObjectEventRegister.h
-            ServerObject/ServerObjectEventSystem.h
-            ServerObject/ServerObjectHandle.h
-            ServerObject/ServerObjectInitData.refl.h
-            ServerObject/ServerObjectInitData.refl.meta.h
-            ServerObject/ServerObjectInitDataTypeDatabase.h
-            ServerObject/ServerObjectManager.h
-            ServerObject/ServerObjectMetaFuncs.h
-            ServerObject/ServerObjectOverlapRegistrationMacros.h
-            ServerObject/ServerObjectRegistrationMacros.h
-            ServerObject/ServerObjectResource.h
-            ServerObject/ServerObjectSerialize.h
-            ServerObject/ServerObjectSystem.h
-            ServerObject/ServerObjectTypeInfo.h
-            ServerObject/ServerObjectUpdate.h
-            ServerObject/ServerTypesJson.h
-            ServerObject/ServerTypesNet.h
+            Map/MapPropertiesTypeDatabase.h
+            Volume/VolumeTypeDatabase.h
+            Volume/VolumeTypeRegister.h
+            Volume/VolumeDef.refl.h
+            Volume/VolumeDef.refl.meta.h
             Sprite/SpriteDef.refl.h
             Sprite/SpriteDef.refl.meta.h
             Sprite/SpriteResource.h
-            SpriteBase/SpriteAnimationEventDef.refl.h
-            SpriteBase/SpriteAnimationEventDef.refl.meta.h
-            SpriteBase/SpriteAnimationEventRegister.h
-            SpriteBase/SpriteAnimationEventTypeDatabase.h
-            SpriteBase/SpriteBaseDef.refl.h
-            SpriteBase/SpriteBaseDef.refl.meta.h
-            TileSheet/TileSheetDef.refl.h
+            Script/ScriptResource.h
+            FrameData/FrameData.refl.h
+            FrameData/FrameData.refl.meta.h
+            FrameData/FrameDataExtract.h
+            Component/ComponentInitDataTypeDatabaseRegister.h
+            Component/ComponentInitData.refl.h
+            Component/ComponentInitDataTypeDatabase.h
+            Component/ComponentInitData.refl.meta.h
+            Collision/CollisionDatabase.h
+            Collision/StaticCollisionDatabase.h
+            Collision/DynamicCollisionDatabase.h
+            Collision/IntersectionDatabase.h
+            Collision/CollisionDatabaseResult.h
+            UI/UIResource.h
+            UI/UIDef.refl.meta.h
+            UI/UIDef.refl.h
+            Animation/AnimationState.h
+            Config/ConfigManager.h
+            Config/ConfigResource.h
+            Config/ConfigRegistrationMacros.h
+            Config/ConfigList.h
+            Mover/Mover.h
+            Path/PathTypeDatabase.h
+            Path/PathDef.refl.meta.h
+            Path/PathTypeRegister.h
+            Path/PathDef.refl.h
+            Event/EventDispatcher.h
+            Event/EventHandler.h
+            Event/EventSystem.h
+            Event/Event.h
             TileSheet/TileSheetDef.refl.meta.h
             TileSheet/TileSheetResource.h
-            UI/UIDef.refl.h
-            UI/UIDef.refl.meta.h
-            UI/UIResource.h
-            VisualEffect/VisualEffectDef.refl.h
-            VisualEffect/VisualEffectDef.refl.meta.h
+            TileSheet/TileSheetDef.refl.h
             VisualEffect/VisualEffectResource.h
-            Volume/VolumeDef.refl.h
-            Volume/VolumeDef.refl.meta.h
-            Volume/VolumeTypeDatabase.h
-            Volume/VolumeTypeRegister.h
+            VisualEffect/VisualEffectDef.refl.meta.h
+            VisualEffect/VisualEffectDef.refl.h
+            Asset/Asset.h
+            BinaryResource/BinaryResourceLoader.h
+            BinaryResource/BinaryResourceManager.h
+            BinaryResource/GenericBinaryResource.h
+            BinaryResource/BinaryResourceBase.h
+            BinaryResource/BinaryResourceReference.h
+            BinaryResource/BinaryResourceReferenceBase.h
+            BinaryResource/BinaryResourcePtr.h
+            Atlas/AtlasDef.refl.h
+            Atlas/AtlasResource.h
+            Atlas/AtlasDef.refl.meta.h
+            ServerObject/ServerObjectManager.h
+            ServerObject/ServerObjectSerialize.h
+            ServerObject/ServerObjectDef.refl.h
+            ServerObject/ServerObjectEventRegister.h
+            ServerObject/ServerObjectInitDataTypeDatabase.h
+            ServerObject/ServerObjectComponentSerialize.h
+            ServerObject/ServerObjectSystem.h
+            ServerObject/ServerObjectDef.refl.meta.h
+            ServerObject/ServerObjectInitData.refl.h
+            ServerObject/ServerTypesNet.h
+            ServerObject/ServerObjectUpdate.h
+            ServerObject/ServerObjectHandle.h
+            ServerObject/ServerObjectInitData.refl.meta.h
+            ServerObject/ServerObjectOverlapRegistrationMacros.h
+            ServerObject/ServerObjectEventDispatch.h
+            ServerObject/ServerObjectTypeInfo.h
+            ServerObject/ServerObjectComponentFuncs.h
+            ServerObject/ServerTypesJson.h
+            ServerObject/ServerObjectComponent.h
+            ServerObject/ServerObjectRegistrationMacros.h
+            ServerObject/ServerObjectResource.h
+            ServerObject/ServerObjectEventSystem.h
+            ServerObject/ServerObject.h
+            ServerObject/ServerObjectMetaFuncs.h
+            DocumentResource/DocumentResourceReference.h
+            DocumentResource/DocumentResourceLoader.h
+            DocumentResource/DocumentResourcePtr.h
+            DocumentResource/DocumentResourceBase.h
+            DocumentResource/DocumentResourceReferenceBase.h
+            DocumentResource/DocumentResourceManager.h
+            SpriteBase/SpriteAnimationEventRegister.h
+            SpriteBase/SpriteAnimationEventTypeDatabase.h
+            SpriteBase/SpriteAnimationEventDef.refl.meta.h
+            SpriteBase/SpriteBaseDef.refl.meta.h
+            SpriteBase/SpriteAnimationEventDef.refl.h
+            SpriteBase/SpriteBaseDef.refl.h
+            Anchor/AnchorTypeDatabase.h
+            Anchor/AnchorDef.refl.meta.h
+            Anchor/AnchorTypeRegister.h
+            Anchor/AnchorDef.refl.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_Runtime 
-            Anchor/AnchorDef.refl.h
-            Atlas/AtlasDef.refl.h
-            Component/ComponentInitData.refl.h
             Entity/EntityDef.refl.h
-            FrameData/FrameData.refl.h
-            Map/MapDef.refl.h
-            Map/MapEffectLayerDef.refl.h
             Map/MapHandles.refl.h
+            Map/MapDef.refl.h
             Map/MapPropertiesDef.refl.h
+            Map/MapEffectLayerDef.refl.h
+            Volume/VolumeDef.refl.h
+            Sprite/SpriteDef.refl.h
+            FrameData/FrameData.refl.h
+            Component/ComponentInitData.refl.h
+            UI/UIDef.refl.h
             Path/PathDef.refl.h
+            TileSheet/TileSheetDef.refl.h
+            VisualEffect/VisualEffectDef.refl.h
+            Atlas/AtlasDef.refl.h
             ServerObject/ServerObjectDef.refl.h
             ServerObject/ServerObjectInitData.refl.h
-            Sprite/SpriteDef.refl.h
             SpriteBase/SpriteAnimationEventDef.refl.h
             SpriteBase/SpriteBaseDef.refl.h
-            TileSheet/TileSheetDef.refl.h
-            UI/UIDef.refl.h
-            VisualEffect/VisualEffectDef.refl.h
-            Volume/VolumeDef.refl.h
+            Anchor/AnchorDef.refl.h
             #REFL_PLACEHOLDER
             )
 

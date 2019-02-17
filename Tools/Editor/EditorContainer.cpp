@@ -835,6 +835,9 @@ void EditorContainer::HandleDocumentServerEvent(DocumentServerEvent & ev)
       RemoveRecentFile(itr->second.m_Path.data());
       CloseEditor(itr->second.m_Editor, false);
       return;
+    case DocumentClientMessageType::kCheckoutError:
+      QMessageBox::warning(this, "Error checking out file", QString("Got error checking out file: ") + data);
+      return;
     case DocumentClientMessageType::kDocumentState:
       {
         int document_state;

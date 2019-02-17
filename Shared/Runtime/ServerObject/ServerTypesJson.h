@@ -26,7 +26,8 @@ struct StormReflJson<NetFixedPoint<StorageType, NumBits, FractionalBits>, void>
     sb += "0";
   }
 
-  static bool Parse(NetFixedPoint<StorageType, NumBits, FractionalBits> & t, const char * str, const char *& result, bool additive)
+  template <typename CharPtr>
+  static bool Parse(NetFixedPoint<StorageType, NumBits, FractionalBits> & t, CharPtr str, CharPtr & result, bool additive)
   {
     StorageType val;
     if (StormReflJson<StorageType>::Parse(val, str, result, additive) == false)
@@ -69,7 +70,8 @@ struct StormReflJson<IntersectionVecType<VecCompType>, void>
     sb += "[0, 0]";
   }
 
-  static bool Parse(IntersectionVecType<VecCompType> & t, const char * str, const char *& result, bool additive)
+  template <typename CharPtr>
+  static bool Parse(IntersectionVecType<VecCompType> & t, CharPtr str, CharPtr & result, bool additive)
   {
     StormReflJsonAdvanceWhiteSpace(str);
     if (*str != '[')
