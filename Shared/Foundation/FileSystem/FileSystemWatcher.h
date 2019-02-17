@@ -7,6 +7,7 @@
 #include <queue>
 #include <unordered_map>
 #include <chrono>
+#include <filesystem>
 
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Optional/Optional.h"
@@ -23,7 +24,7 @@ struct FileSystemWatcherData;
 
 struct FileSystemDirectory
 {
-  std::unordered_map<std::string, std::chrono::system_clock::time_point> m_Files;
+  std::unordered_map<std::string, std::filesystem::file_time_type> m_Files;
   std::unordered_map<std::string, std::unique_ptr<FileSystemDirectory>> m_Directories;
 
   FileSystemDirectory * m_Parent = nullptr;
@@ -32,7 +33,7 @@ struct FileSystemDirectory
   int m_NotifyWatch;
 #endif
 
-  using FileIterator = std::unordered_map<std::string, std::chrono::system_clock::time_point>::iterator;
+  using FileIterator = std::unordered_map<std::string, std::filesystem::file_time_type>::iterator;
 };
 
 class FileSystemWatcher
@@ -41,7 +42,7 @@ public:
   FileSystemWatcher(const std::string & root_path, Delegate<void> && notify);
   ~FileSystemWatcher();
 
-  Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> GetFileChange();
+  Optional<std::tuple<FileSystemOperation, std::string, std::string, std::filesystem::file_time_type>> GetFileChange();
 
 private:
 
@@ -52,7 +53,7 @@ private:
   NullOptPtr<FileSystemDirectory> GetDirectoryAtPath(const char * path, FileSystemDirectory & base);
   Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> GetFileOrDirectoryAtPath(const char * path, FileSystemDirectory & base);
 
-  void TriggerOperationForFile(const std::string & filename, const std::string & path, FileSystemOperation op, std::chrono::system_clock::time_point last_write);
+  void TriggerOperationForFile(const std::string & filename, const std::string & path, FileSystemOperation op, std::filesystem::file_time_type last_write);
   void TriggerOperationForDirectoryFiles(FileSystemDirectory & base, const std::string & base_path, FileSystemOperation op);
 
   void NotifyThread();
@@ -69,7 +70,7 @@ private:
   std::mutex m_QueueMutex;
   std::thread m_NotifyThread;
 
-  std::queue<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> m_FilesChanged;
+  std::queue<std::tuple<FileSystemOperation, std::string, std::string, std::filesystem::file_time_type>> m_FilesChanged;
 
   bool m_ExitThread;
 };

@@ -10,7 +10,7 @@
 #include "Engine/Settings/EngineSettings.refl.h"
 
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-#include <experimental/filesystem>
+#include <filesystem>
 #endif
 
 AssetLoader g_AssetLoader;
@@ -525,7 +525,7 @@ Optional<Buffer> AssetLoader::LoadFullDocumentInternal(czstr file_path, int & fi
 
 void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
 {
-  auto default_time_point = std::chrono::system_clock::time_point();
+  auto default_time_point = std::filesystem::file_time_type{};
 
   auto full_path = GetFullPath(path, m_RootPath);
 
@@ -542,7 +542,7 @@ void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallb
   std::error_code ec;
 
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-  auto last_write = std::experimental::filesystem::last_write_time(path, ec);
+  auto last_write = std::filesystem::last_write_time(path, ec);
 #else
   auto last_write = default_time_point;
 #endif

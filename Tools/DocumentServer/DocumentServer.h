@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include <chrono>
+#include <filesystem>
 #include <unordered_set>
 
 #include "FileNameDatabase.h"
@@ -34,7 +35,7 @@ struct DocumentServerDocumentInfo
 {
   Document * m_Document;
   int m_DataGen;
-  std::chrono::system_clock::time_point m_LastModifiedTime;
+  std::filesystem::file_time_type m_LastModifiedTime;
   std::vector<DocumentServerDocumentClient> m_Connections;
   std::vector<ReflectionChangeNotification> m_PendingChanges;
 };
@@ -75,7 +76,7 @@ private:
   void HandleDocumentStateChange(uint32_t file_hash, Document * document, DocumentState state, DocumentState prev_state);
   void HandleDocumentLinksModified(uint32_t file_hash, Document * document);
 
-  void HandleDocumentModified(czstr path, std::chrono::system_clock::time_point last_modified);
+  void HandleDocumentModified(czstr path, std::filesystem::file_time_type last_modified);
   void HandleDocumentRemoved(czstr path);
   void OpenDocumentForClient(czstr path, uint32_t document_id, StormSockets::StormSocketConnectionId client_id);
   void SendPendingChanges();

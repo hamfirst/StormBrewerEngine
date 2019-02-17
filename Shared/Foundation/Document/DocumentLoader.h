@@ -1,8 +1,8 @@
 #pragma once
 
-#include <chrono>
+#include <filesystem>
 
-using DocumentLoadCallback = Delegate<void, uint32_t, void *, std::size_t, std::chrono::system_clock::time_point>;
+using DocumentLoadCallback = Delegate<void, uint32_t, void *, std::size_t, std::filesystem::file_time_type>;
 
 class DocumentLoader
 {

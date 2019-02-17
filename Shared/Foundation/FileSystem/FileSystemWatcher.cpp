@@ -84,7 +84,7 @@ FileSystemWatcher::~FileSystemWatcher()
   m_NotifyThread.join();
 }
 
-Optional<std::tuple<FileSystemOperation, std::string, std::string, std::chrono::system_clock::time_point>> FileSystemWatcher::GetFileChange()
+Optional<std::tuple<FileSystemOperation, std::string, std::string, std::filesystem::file_time_type>> FileSystemWatcher::GetFileChange()
 {
   std::lock_guard<std::mutex> lock(m_QueueMutex);
 
@@ -284,7 +284,7 @@ Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> Fi
 }
 
 void FileSystemWatcher::TriggerOperationForFile(const std::string & filename, const std::string & path,
-  FileSystemOperation op, std::chrono::system_clock::time_point last_write)
+  FileSystemOperation op, std::filesystem::file_time_type last_write)
 {
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   m_FilesChanged.emplace(std::make_tuple(op, path, filename, last_write));
@@ -504,67 +504,69 @@ void FileSystemWatcher::NotifyThread()
         bool is_deleted = fs::exists(status) == false;
         bool is_file = fs::is_regular_file(status);
 
-        switch (notification->Action)
+        if (IsInvisiblePath(changed_filename) == false)
         {
-        case FILE_ACTION_ADDED:
-        case FILE_ACTION_RENAMED_NEW_NAME:
-          if (is_deleted)
+          switch (notification->Action)
           {
-            break;
-          }
-
-          if (is_file)
-          {
-            auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
-            if (dir)
+          case FILE_ACTION_ADDED:
+          case FILE_ACTION_RENAMED_NEW_NAME:
+            if (is_deleted)
             {
-              std::error_code ec;
-              auto last_write = fs::last_write_time(full_path, ec);
-
-              dir->m_Files.emplace(std::make_pair(path.filename().string(), last_write));
-              TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kAdd, last_write);
+              break;
             }
-          }
-          else
-          {
-            auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
-            if (dir)
-            {
-              FileSystemDirectory sub_dir;
-              IterateDirectory(changed_filename.c_str(), m_RootPath.data(), sub_dir);
 
-              TriggerOperationForDirectoryFiles(sub_dir, changed_filename + "/", FileSystemOperation::kAdd);
-              dir->m_Directories.emplace(std::make_pair(path.filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
-
-              m_Notify();
-            }
-          }
-          break;
-        case FILE_ACTION_MODIFIED:
-          if (is_deleted == false && is_file)
-          {
-            auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
-            if (dir)
+            if (is_file)
             {
-              auto itr = dir->m_Files.find(path.filename().string());
-              if (itr != dir->m_Files.end())
+              auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
+              if (dir)
               {
                 std::error_code ec;
                 auto last_write = fs::last_write_time(full_path, ec);
 
-                if (last_write > itr->second)
-                {
-                  itr->second = last_write;
-                  TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kModify, last_write);
+                dir->m_Files.emplace(std::make_pair(path.filename().string(), last_write));
+                TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kAdd, last_write);
+              }
+            }
+            else
+            {
+              auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
+              if (dir)
+              {
+                FileSystemDirectory sub_dir;
+                IterateDirectory(changed_filename.c_str(), m_RootPath.data(), sub_dir);
 
-                  m_Notify();
+                TriggerOperationForDirectoryFiles(sub_dir, changed_filename + "/", FileSystemOperation::kAdd);
+                dir->m_Directories.emplace(std::make_pair(path.filename().string(), std::make_unique<FileSystemDirectory>(std::move(sub_dir))));
+
+                m_Notify();
+              }
+            }
+            break;
+          case FILE_ACTION_MODIFIED:
+            if (is_deleted == false && is_file)
+            {
+              auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
+              if (dir)
+              {
+                auto itr = dir->m_Files.find(path.filename().string());
+                if (itr != dir->m_Files.end())
+                {
+                  std::error_code ec;
+                  auto last_write = fs::last_write_time(full_path, ec);
+
+                  if (last_write > itr->second)
+                  {
+                    itr->second = last_write;
+                    TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kModify, last_write);
+
+                    m_Notify();
+                  }
                 }
               }
             }
-          }
-          break;
-        case FILE_ACTION_REMOVED:
-        case FILE_ACTION_RENAMED_OLD_NAME:
+            break;
+          case FILE_ACTION_REMOVED:
+          case FILE_ACTION_RENAMED_OLD_NAME:
           {
             auto file_info = GetFileOrDirectoryAtPath(path.string().c_str(), m_RootDirectory);
             if (file_info)
@@ -596,6 +598,7 @@ void FileSystemWatcher::NotifyThread()
             }
           }
           break;
+          }
         }
 
         //last_change = changed_filename;

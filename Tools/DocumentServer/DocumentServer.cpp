@@ -499,7 +499,7 @@ void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCa
   File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
   {
-    callback(file_hash, nullptr, 0, std::chrono::system_clock::time_point{});
+    callback(file_hash, nullptr, 0, std::filesystem::file_time_type{});
     return;
   }
 
@@ -694,7 +694,7 @@ NullOptPtr<DocumentServerDocumentInfo> DocumentServer::GetDocumentForClient(uint
   return nullptr;
 }
 
-void DocumentServer::HandleDocumentModified(czstr path, std::chrono::system_clock::time_point last_modified)
+void DocumentServer::HandleDocumentModified(czstr path, std::filesystem::file_time_type last_modified)
 {
   auto file_id = crc32lowercase(path);
 
@@ -996,7 +996,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       {
         if(document->m_Document->Save(m_RootPath))
         {
-          document->m_LastModifiedTime = std::chrono::system_clock::now();
+          document->m_LastModifiedTime = std::filesystem::file_time_type::clock::now();
         }
         else
         {
