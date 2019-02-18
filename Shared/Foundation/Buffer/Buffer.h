@@ -18,7 +18,7 @@ public:
   Buffer & operator = (Buffer && rhs) noexcept;
 
   NullOptPtr<uint8_t> Get();
-  const NullOptPtr<uint8_t> Get() const;
+  NullOptPtr<const uint8_t> Get() const;
 
   std::size_t GetSize() const;
 

@@ -1,45 +1,48 @@
 #!/bin/bash
 
 cd $PROJECT_DIR
-mkdir IncludeOSServer
-mkdir IncludeOSServer/CMake
-mkdir IncludeOSServer/External
-mkdir IncludeOSServer/StormTech
-mkdir IncludeOSServer/Shared
-mkdir IncludeOSServer/Project
-mkdir IncludeOSServer/ProjectSettings
-mkdir IncludeOSServer/Assets
+mkdir -p IncludeOSServer
+mkdir -p IncludeOSServer/CMake
+mkdir -p IncludeOSServer/External
+mkdir -p IncludeOSServer/StormTech
+mkdir -p IncludeOSServer/Shared
+mkdir -p IncludeOSServer/Project
+mkdir -p IncludeOSServer/ProjectSettings
+mkdir -p IncludeOSServer/Assets
 
-cp -r CMake/IncludeOS/* IncludeOSServer/
+cp -p CMake/IncludeOS/* IncludeOSServer/
+cp -p CMake/cotire.cmake IncludeOSServer/CMake
 
-cp -r External/binpack IncludeOSServer/External
-cp -r External/colony IncludeOSServer/External
-cp -r External/glm IncludeOSServer/External
-cp -r External/gsl IncludeOSServer/External
-cp -r External/hash IncludeOSServer/External
-cp -r External/lua IncludeOSServer/External
-cp -r External/mbedtls IncludeOSServer/External
-cp -r External/sb IncludeOSServer/External
+cp -rp External/binpack IncludeOSServer/External
+cp -rp External/colony IncludeOSServer/External
+cp -rp External/glm IncludeOSServer/External
+cp -rp External/gsl IncludeOSServer/External
+cp -rp External/hash IncludeOSServer/External
+cp -rp External/lua IncludeOSServer/External
+cp -rp External/mbedtls IncludeOSServer/External
+cp -rp External/sb IncludeOSServer/External
 
-cp -r StormTech/StormBehavior IncludeOSServer/StormTech
-cp -r StormTech/StormData IncludeOSServer/StormTech
-cp -r StormTech/StormExpr IncludeOSServer/StormTech
-cp -r StormTech/StormNet IncludeOSServer/StormTech
-cp -r StormTech/StormNetCustomBindings IncludeOSServer/StormTech
-cp -r StormTech/StormRefl IncludeOSServer/StormRefl
-cp -r StormTech/StormSockets IncludeOSServer/StormTech
+cp -rp StormTech/StormBehavior IncludeOSServer/StormTech
+cp -rp StormTech/StormData IncludeOSServer/StormTech
+cp -rp StormTech/StormExpr IncludeOSServer/StormTech
+cp -rp StormTech/StormNet IncludeOSServer/StormTech
+cp -rp StormTech/StormNetCustomBindings IncludeOSServer/StormTech
+cp -rp StormTech/StormRefl IncludeOSServer/StormRefl
+cp -rp StormTech/StormSockets IncludeOSServer/StormTech
 
-cp -r Shared/Foundation IncludeOSServer/Shared
-cp -r Shared/Runtime IncludeOSServer/Shared
-cp -r Shared/EngineStubs IncludeOSServer/Shared
+cp -rp Shared/Foundation IncludeOSServer/Shared
+cp -rp Shared/Runtime IncludeOSServer/Shared
+cp -rp Shared/EngineStubs IncludeOSServer/Shared
 
-cp -r Project/Game IncludeOSServer/Project
-cp -r Project/GameShared IncludeOSServer/Project
-cp -r Project/GameServer IncludeOSServer/Project
-cp -r Project/GameServerExe IncludeOSServer/Project
+cp -rp Project/Game IncludeOSServer/Project
+cp -rp Project/GameShared IncludeOSServer/Project
+cp -rp Project/GameServer IncludeOSServer/Project
+cp -rp Project/GameServerExe IncludeOSServer/Project
 
-cp -r ProjectSettings IncludeOSServer/ProjectSettings
+cp -p ProjectSettings/* IncludeOSServer/ProjectSettings
 
-cp -r Test/Assets IncludeOSServer/Assets
-cp -t Test/localhost.* IncludeOSServer/Assets
-echo '/' > IncludeOSServer/asset_dir.txt
+cp -rp Test/Assets IncludeOSServer/Assets
+cp -p Test/localhost.* IncludeOSServer/Assets
+echo '/' > IncludeOSServer/Assets/asset_dir.txt
+
+cp -p Dummy.cpp IncludeOSServer/Dummy.cpp

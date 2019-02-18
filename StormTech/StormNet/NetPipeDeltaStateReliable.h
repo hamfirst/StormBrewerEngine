@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <optional/optional.hpp>
+#include <optional>
 
 #include "NetSerializeDelta.h"
 #include "NetDeserializeDelta.h"

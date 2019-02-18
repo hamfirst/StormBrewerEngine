@@ -12,12 +12,13 @@
 #ifdef _MSC_VER
 #include <intrin.h>  
 #pragma intrinsic(_mul128)
-#endif
-
-#endif
 
 #pragma warning(push)
 #pragma warning(disable : 4293)
+#endif
+
+#endif
+
 
 inline int64_t FixedPointMultiplyWide(int64_t a, int64_t b, int FractionalBits)
 {

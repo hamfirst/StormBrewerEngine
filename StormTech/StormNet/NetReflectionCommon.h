@@ -9,7 +9,7 @@
 
 #include <cstdint>
 
-#include <optional/optional.hpp>
+#include <optional>
 
 #include <gsl/gsl>
 

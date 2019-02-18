@@ -21,6 +21,11 @@ struct ServerObjectStaticInitData
   uint32_t m_GUID;
 };
 
+struct ServerObjectGuidList
+{
+  std::unique_ptr<uint32_t[]> m_GUIDs;
+};
+
 class ServerObjectManager
 {
 public:
@@ -169,7 +174,7 @@ private:
   int m_MaxDynamicObjects;
   bool m_Initialized;
 
-  std::shared_ptr<uint32_t[]> m_GUIDs;
+  std::shared_ptr<ServerObjectGuidList> m_GuidList;
   int m_NumGUIDS;
 };
 

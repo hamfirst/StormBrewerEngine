@@ -94,7 +94,7 @@ if(MSVC)
   target_sources(StormNet INTERFACE $<INSTALL_INTERFACE:StormNet.natvis> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/StormNet.natvis>)
 endif()
 
-if(NOT WEB)
+if(NOT WEB AND NOT INCLUDEOS)
 
   add_library(StormNetBindingsEnet STATIC
     ./NetClientBackendEnet.cpp

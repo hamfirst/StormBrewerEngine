@@ -15,7 +15,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
   m_Initialized = false;
 
   m_NumGUIDS = static_objects.size() + max_dynamic_objects;
-  m_GUIDs = std::shared_ptr<uint32_t[]>(new uint32_t[m_NumGUIDS]);
+  m_GuidList = std::make_shared<ServerObjectGuidList>(ServerObjectGuidList{ std::make_unique<uint32_t[]>(m_NumGUIDS) });
 
   int slot_index = 0;
   for (auto & obj : static_objects)
@@ -30,7 +30,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_EventDispatch = ptr->GetEventDispatch();
     m_StaticObjects.emplace_back(ptr);
 
-    m_GUIDs[slot_index] = obj.m_GUID;
+    m_GuidList->m_GUIDs[slot_index] = obj.m_GUID;
 
     ++slot_index;
   }
@@ -55,7 +55,7 @@ ServerObjectManager::ServerObjectManager(const std::vector<ServerObjectStaticIni
     ptr->m_EventDispatch = ptr->GetEventDispatch();
 
     m_DynamicObjects.EmplaceAt(dynamic_slot_index, DynamicObjectInfo{ptr, obj.m_TypeIndex, true});
-    m_GUIDs[dynamic_slot_index] = obj.m_GUID;
+    m_GuidList->m_GUIDs[dynamic_slot_index] = obj.m_GUID;
   }
 }
 
@@ -91,7 +91,7 @@ ServerObjectManager::ServerObjectManager(const ServerObjectManager & rhs)
   m_ReservedSlots = rhs.m_ReservedSlots;
   m_MaxDynamicObjects = rhs.m_MaxDynamicObjects;
 
-  m_GUIDs = rhs.m_GUIDs;
+  m_GuidList = rhs.m_GuidList;
   m_NumGUIDS = rhs.m_NumGUIDS;
 }
 
@@ -187,7 +187,7 @@ NullOptPtr<ServerObject> ServerObjectManager::ResolveMapHandle(const MapServerOb
   int slot_index = -1;
   for(int index = 0; index < m_NumGUIDS; ++index)
   {
-    if(m_GUIDs[index] == guid)
+    if(m_GuidList->m_GUIDs[index] == guid)
     {
       slot_index = index;
       break;

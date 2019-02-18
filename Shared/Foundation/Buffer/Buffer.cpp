@@ -44,7 +44,7 @@ NullOptPtr<uint8_t> Buffer::Get()
   return m_Data.get();
 }
 
-const NullOptPtr<uint8_t> Buffer::Get() const
+NullOptPtr<const uint8_t> Buffer::Get() const
 {
   return m_Data.get();
 }

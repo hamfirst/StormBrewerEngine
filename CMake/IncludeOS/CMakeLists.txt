@@ -5,6 +5,11 @@ endif()
 include($ENV{INCLUDEOS_PREFIX}/includeos/pre.service.cmake)
 project (service)
 
+option(INCLUDEOS ON)
+
+option(GENERATE_REFL OFF)
+option(GENERATE_PCH OFF)
+
 # Human-readable name of your service
 set(SERVICE_NAME "StormBrewerEngine Server")
 
@@ -71,9 +76,24 @@ set(DEPENDENCIES
   External/mbedtls/mbedtls
   )
 
+add_definitions(-D_INCLUDEOS)
+add_definitions(-D_LINUX)
 
 # include service build script
 include($ENV{INCLUDEOS_PREFIX}/includeos/post.service.cmake)
 
+
 # Create in-memory filesystem from folder
-#diskbuilder(my_folder)
+diskbuilder(${CMAKE_SOURCE_DIR}/Assets)
+
+message("-- IncludeOS root is " ${INSTALL_LOC})
+message("-- Arch is " ${ARCH})
+
+foreach(LIB ${LIBRARIES})
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/${ARCH}/include/libcxx)
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/${ARCH}/include/musl)
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/${ARCH}/include/libunwind)
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/${ARCH}/include)
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/api)
+  target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/include)
+endforeach()

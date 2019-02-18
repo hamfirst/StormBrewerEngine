@@ -91,23 +91,23 @@ public:
     m_Values.erase(itr);
   }
 
-  std::experimental::optional<T &> Get(const K & k)
+  std::optional<T &> Get(const K & k)
   {
     auto itr = m_Values.find(k);
     if (itr == m_Values.end())
     {
-      return std::experimental::optional<T &>();
+      return std::optional<T &>();
     }
 
     return itr->second;
   }
 
-  const std::experimental::optional<T &> Get(const K & k) const
+  const std::optional<T &> Get(const K & k) const
   {
     auto itr = m_Values.find(k);
     if (itr == m_Values.end())
     {
-      return std::experimental::optional<T &>();
+      return std::optional<T &>();
     }
 
     return itr->second;

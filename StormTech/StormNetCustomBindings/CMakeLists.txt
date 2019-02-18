@@ -13,7 +13,11 @@ elseif (UNIX)
   add_definitions(-D_LINUX)
 endif()
 
-if(WEB)
+if(INCLUDEOS)
+  set(GENERIC_SRC_StormNetCustomBindings
+              ./NetClientBackendWebsocket.cpp
+              )
+elseif(WEB)
   set(GENERIC_SRC_StormNetCustomBindings
               ./NetClientBackendWebrtc.cpp
               ./NetClientBackendWebsocket.cpp

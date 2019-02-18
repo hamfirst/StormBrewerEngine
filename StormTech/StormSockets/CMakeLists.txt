@@ -89,22 +89,4 @@ if(MSVC)
   add_definitions(/DSECURITY_WIN32 /D_WIN32_WINNT=0x0601)
 endif()
 
-if(INCLUDEOS)
-  add_definitions(-D_INCLUDEOS)
-  if (NOT DEFINED ENV{INCLUDEOS_PREFIX})
-    set(ENV{INCLUDEOS_PREFIX} /usr/local)
-  endif()
-
-  message("IncludeOS root is " ${INSTALL_LOC})
-  message("Arch is " ${ARCH})
-
-  include_directories(${INSTALL_LOC}/${ARCH}/include/libcxx)
-  include_directories(${INSTALL_LOC}/${ARCH}/include/musl)
-  include_directories(${INSTALL_LOC}/${ARCH}/include/libunwind)
-  include_directories(${INSTALL_LOC}/${ARCH}/include)
-  include_directories(${INSTALL_LOC}/api)
-  include_directories(${INSTALL_LOC}/include)
-
-endif()
-
 add_library(StormSocketCPP STATIC ${SRC_StormSocketCPP} ${HEADER_StormSocketCPP})

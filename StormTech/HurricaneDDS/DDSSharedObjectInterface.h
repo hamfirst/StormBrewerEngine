@@ -68,7 +68,7 @@ public:
 
   void DestroySelf() override { NotImplemented(); }
 
-  DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) override { NotImplemented(); return{}; };
+  DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) override { NotImplemented(); return std::nullopt; };
 
   time_t GetNetworkTime() override { NotImplemented(); return{}; };
 

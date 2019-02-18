@@ -6,8 +6,7 @@
 #include <memory>
 #include <queue>
 #include <tuple>
-
-#include <optional/optional.hpp>
+#include <optional>
 
 #include "DDSNodeId.h"
 #include "DDSConnectionId.h"
@@ -43,7 +42,7 @@ struct DDSResponderCallData;
 class DDSSharedLocalCopyPtrBase;
 
 template <typename T>
-using Optional = std::experimental::optional<T>;
+using Optional = std::optional<T>;
 
 class DDSNodeState
 {

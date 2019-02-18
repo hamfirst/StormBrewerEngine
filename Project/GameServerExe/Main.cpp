@@ -29,6 +29,14 @@
 #include <sys/types.h>
 #endif
 
+#ifdef _INCLUDEOS
+#include <service>
+
+void ReturnError(int err) {}
+#else
+int ReturnError(int err) { return err; }
+#endif
+
 double send_time;
 
 bool g_QuitServer = false;
@@ -37,9 +45,13 @@ extern int g_LagSim;
 void StormWebrtcStaticInit();
 void StormWebrtcStaticCleanup();
 
+#ifndef _INCLUDEOS
 int main(int argc, char ** argv)
+#else
+void Service::start(const std::string & args)
+#endif
 {
-#ifdef _LINUX
+#if defined(_LINUX) && !defined(_INCLUDEOS)
   if (argc == 2 && argv[1] == std::string("-D"))
   {
     printf("Entering Daemon Mode");
@@ -73,7 +85,7 @@ int main(int argc, char ** argv)
   if (level_list.IsPreloadComplete() == false)
   {
     printf("  Failed to load assets...\n");
-    return 0;
+    return ReturnError(0);
   }
 
   ClientAssetLoader stub_loader;
@@ -88,6 +100,7 @@ int main(int argc, char ** argv)
   GameServer game_server(256, 47816, stage_manager);
   printf("  Server started!\n");
 
+#ifndef _INCLUDEOS
   FrameClock frame_clock(1.0 / 60.0);
   frame_clock.Start();
 
@@ -110,6 +123,11 @@ int main(int argc, char ** argv)
 
 #ifdef NET_USE_WEBRTC
   StormWebrtcStaticCleanup();
+#endif
+
+#else
+
+
 #endif
 }
 

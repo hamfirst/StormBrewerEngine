@@ -135,7 +135,7 @@ else()
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/asio")
   
   add_subdirectory("${PROJECT_SOURCE_DIR}/Shared/EngineStubs")
-  add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/HurricanDDS")  
+  add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/HurricaneDDS")
   add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormSockets")  
   add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormWebrtc")
   add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormWebrtcServerAPI")
