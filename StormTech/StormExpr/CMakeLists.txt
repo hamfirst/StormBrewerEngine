@@ -4,49 +4,49 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_StormExpr 
-            StormExprLiteralBlockBuilder.cpp
-            StormExprStatementBlock.cpp
-            StormExprValueInitBlock.cpp
-            StormExprValueBlockList.cpp
-            StormExprValueBlock.cpp
-            StormExprHash.cpp
             StormExprEval.cpp
-            StormExprBinding.cpp
-            StormExprOperator.cpp
-            StormExprStack.cpp
-            StormExprOps.cpp
-            StormExprEvalBuilder.cpp
             StormExprValueInitBlockList.cpp
-            StormExprValueProvider.cpp
-            StormExprLiteralBlock.cpp
+            StormExprBinding.cpp
+            StormExprHash.cpp
+            StormExprEvalBuilder.cpp
+            StormExprOps.cpp
             StormExprStatementBlockElement.cpp
-            StormExprValue.cpp
-            StormExprDynamicBlock.cpp
+            StormExprLiteralBlockBuilder.cpp
+            StormExprValueBlock.cpp
             StormExprFunctionList.cpp
+            StormExprDynamicBlock.cpp
+            StormExprValueProvider.cpp
+            StormExprStatementBlock.cpp
+            StormExprOperator.cpp
+            StormExprValueInitBlock.cpp
+            StormExprValue.cpp
+            StormExprValueBlockList.cpp
+            StormExprLiteralBlock.cpp
+            StormExprStack.cpp
             )
 
 set(GENERIC_HEADER_StormExpr 
-            StormExprLiteralBlockBuilder.h
-            StormExprFunctionReg.h
-            StormExprEval.h
-            StormExprStack.h
-            StormExprValueInitBlockList.h
-            StormExprStatementBlockElement.h
-            StormExprValueBlock.h
-            StormExprStatementBlock.h
-            StormExprBinding.h
-            StormExprLiteralBlock.h
-            StormExprValueInitBlock.h
-            StormExprOps.h
-            StormExprValueBlockList.h
-            StormExprFunctionList.h
-            StormExprOperator.h
             StormExprEvalBuilder.h
-            StormExprDynamicBlock.h
+            StormExprFunctionList.h
+            StormExprValueBlock.h
+            StormExprValueBlockList.h
             StormExprValueProvider.h
+            StormExprLiteralBlockBuilder.h
+            StormExprValueInitBlock.h
+            StormExprEval.h
+            StormExprDynamicBlock.h
+            StormExprLiteralBlock.h
+            StormExprStack.h
+            StormExprStatementBlock.h
+            StormExprFunctionReg.h
+            StormExprOperator.h
             StormExprValue.h
-            StormExprReflBlock.h
             StormExprHash.h
+            StormExprValueInitBlockList.h
+            StormExprReflBlock.h
+            StormExprOps.h
+            StormExprStatementBlockElement.h
+            StormExprBinding.h
             )
 
 add_library(StormExpr STATIC ${GENERIC_SRC_StormExpr} ${GENERIC_HEADER_StormExpr})

@@ -7,149 +7,149 @@ include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_Foundation 
             Common.cpp
-            Document/DocumentCompiler.cpp
+            TypeDatabase/TypeDatabase.cpp
             Document/Document.cpp
+            Document/DocumentCompiler.cpp
+            Thread/Semaphore.cpp
             Lerp/LerpVar.cpp
             Lerp/LerpFuncs.cpp
-            TypeDatabase/TypeDatabase.cpp
+            FileSystem/FileSystemWatcher.cpp
+            FileSystem/FileMapping.cpp
+            FileSystem/Directory.cpp
+            FileSystem/Path.cpp
+            FileSystem/File.cpp
+            Allocator/Allocator2D.cpp
+            Allocator/IdAllocator.cpp
+            Blit/Blit.cpp
+            Blit/PixelBuffer.cpp
+            Any/Any.cpp
+            Sequencer/Sequencer.cpp
+            Blackboard/Blackboard.cpp
+            PropertyMeta/PropertyFieldDatabase.cpp
             Time/FPSClock.cpp
-            Time/StopWatch.cpp
             Time/FrameClock.cpp
             Time/Time.cpp
-            Json/JsonArray.cpp
-            Json/JsonDictionary.cpp
-            Json/Json.cpp
+            Time/StopWatch.cpp
+            Assert/Assert.cpp
             BasicTypes/BasicTypes.refl.cpp
-            Bitset/Bitset.cpp
-            Script/ScriptFuncPtr.cpp
+            Script/ScriptClass.cpp
             Script/ScriptFuncs.cpp
             Script/ScriptState.cpp
             Script/ScriptClassRef.cpp
             Script/ScriptClassInstance.cpp
-            Script/ScriptObject.cpp
-            Script/ScriptInterface.cpp
             Script/ScriptValue.cpp
-            Script/ScriptClass.cpp
-            FileSystem/Directory.cpp
-            FileSystem/FileSystemWatcher.cpp
-            FileSystem/File.cpp
-            FileSystem/Path.cpp
-            FileSystem/FileMapping.cpp
-            Random/RandomGenerator.cpp
+            Script/ScriptInterface.cpp
+            Script/ScriptObject.cpp
+            Script/ScriptFuncPtr.cpp
+            SpatialDatabase/SpatialDatabase.cpp
+            Buffer/Buffer.cpp
+            Buffer/BufferUtil.cpp
+            Bitset/Bitset.cpp
             Random/Random.cpp
-            Any/Any.cpp
-            Sequencer/Sequencer.cpp
-            Thread/Semaphore.cpp
-            Assert/Assert.cpp
+            Random/RandomGenerator.cpp
             Network/Network.cpp
             Network/WebSocket.cpp
+            Json/JsonDictionary.cpp
+            Json/Json.cpp
+            Json/JsonArray.cpp
             Profiling/Profiling.cpp
-            Blit/Blit.cpp
-            Blit/PixelBuffer.cpp
-            PropertyMeta/PropertyFieldDatabase.cpp
-            Blackboard/Blackboard.cpp
-            SpatialDatabase/SpatialDatabase.cpp
             Math/Util.cpp
-            Allocator/IdAllocator.cpp
-            Allocator/Allocator2D.cpp
-            Buffer/BufferUtil.cpp
-            Buffer/Buffer.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_Foundation 
             Common.h
-            Document/DocumentCompiler.h
-            Document/DocumentTypes.refl.h
-            Document/DocumentTypes.refl.meta.h
-            Document/DocumentLoader.h
-            Document/Document.h
-            Lerp/LerpFuncs.h
-            Lerp/LerpVar.h
             TypeDatabase/TypeDatabase.h
-            Time/Time.h
-            Time/FPSClock.h
-            Time/StopWatch.h
-            Time/FrameClock.h
-            SparseList/SparseList.h
-            Variant/Variant.h
-            Json/Json.h
-            Json/JsonArray.h
-            Json/JsonDictionary.h
-            Json/JsonType.h
-            BasicTypes/BasicTypeHash.h
-            BasicTypes/BasicTypeFuncs.h
-            BasicTypes/BasicTypes.refl.meta.h
-            BasicTypes/BasicTypes.refl.h
-            Bitset/Bitset.h
-            Script/ScriptClass.h
-            Script/ScriptFuncPtr.h
-            Script/ScriptFuncs.h
-            Script/ScriptRegister.h
-            Script/ScriptInternal.h
-            Script/ScriptClassDelegate.h
-            Script/ScriptState.h
-            Script/ScriptObject.h
-            Script/ScriptInterface.h
-            Script/ScriptValue.h
-            Script/ScriptClassRef.h
-            Script/ScriptClassInstance.h
-            Waveform/Waveform.h
-            Handle/Handle.h
-            Handle/HandleList.h
-            SkipField/SkipFieldIterator.h
             SkipField/SkipField.h
-            CallList/CallList.h
-            FileSystem/File.h
-            FileSystem/FileSystemWatcher.h
-            FileSystem/Path.h
-            FileSystem/Directory.h
-            FileSystem/FileMapping.h
-            Random/Random.h
-            Random/RandomGenerator.h
-            Optional/Optional.h
-            Optional/NullOpt.h
-            Any/Any.h
-            Sequencer/Sequencer.h
-            Thread/MessageQueue.h
+            SkipField/SkipFieldIterator.h
+            Document/DocumentCompiler.h
+            Document/Document.h
+            Document/DocumentTypes.refl.meta.h
+            Document/DocumentTypes.refl.h
+            Document/DocumentLoader.h
             Thread/Semaphore.h
-            Frame/Frame.h
-            Assert/Assert.h
-            Network/Network.h
-            Network/WebSocket.h
-            Profiling/Profiling.h
-            HistoryList/HistoryList.h
+            Thread/MessageQueue.h
+            Delegate/Delegate.h
+            Delegate/DelegateList.h
+            Delegate/DelegateLink.h
+            CallList/CallList.h
+            Lerp/LerpVar.h
+            Lerp/LerpFuncs.h
+            FileSystem/File.h
+            FileSystem/Directory.h
+            FileSystem/FileSystemWatcher.h
+            FileSystem/FileMapping.h
+            FileSystem/Path.h
             Castable/Castable.h
+            Allocator/Allocator2D.h
+            Allocator/PoolAllocator.h
+            Allocator/IdAllocator.h
             Blit/PixelBuffer.h
             Blit/Blit.h
+            Any/Any.h
+            Sequencer/Sequencer.h
+            Blackboard/Blackboard.h
             PropertyMeta/PropertyFieldMetaData.h
             PropertyMeta/PropertyFieldDatabase.h
             PropertyMeta/PropertyFieldMetaFuncs.h
-            Delegate/DelegateList.h
-            Delegate/DelegateLink.h
-            Delegate/Delegate.h
-            Blackboard/Blackboard.h
-            SpatialDatabase/SpatialDatabase.h
             Preprocessor/Preprocessor.h
-            Math/Intersection.h
-            Math/Math.h
-            Math/Util.h
-            Math/LineDrawing.h
-            Allocator/Allocator2D.h
-            Allocator/IdAllocator.h
-            Allocator/PoolAllocator.h
-            Buffer/Buffer.h
-            Buffer/BufferUtil.h
+            SparseList/SparseList.h
             Pathfinding/Pathfinding.h
             Pathfinding/GraphPathfinding.h
-            Pathfinding/GridPathfinding.h
             Pathfinding/PathfindingPathCache.h
             Pathfinding/PathfindingPath.h
             Pathfinding/PlatformerPathfinding.h
-            Update/UpdateBucketList.h
-            Update/UpdateRegistrationTemplates.h
+            Pathfinding/GridPathfinding.h
+            Time/Time.h
+            Time/StopWatch.h
+            Time/FrameClock.h
+            Time/FPSClock.h
+            Frame/Frame.h
+            Assert/Assert.h
+            BasicTypes/BasicTypeHash.h
+            BasicTypes/BasicTypes.refl.h
+            BasicTypes/BasicTypes.refl.meta.h
+            BasicTypes/BasicTypeFuncs.h
+            Optional/Optional.h
+            Optional/NullOpt.h
+            Script/ScriptFuncPtr.h
+            Script/ScriptValue.h
+            Script/ScriptClassDelegate.h
+            Script/ScriptClassRef.h
+            Script/ScriptState.h
+            Script/ScriptClassInstance.h
+            Script/ScriptFuncs.h
+            Script/ScriptRegister.h
+            Script/ScriptInternal.h
+            Script/ScriptClass.h
+            Script/ScriptInterface.h
+            Script/ScriptObject.h
+            Variant/Variant.h
+            SpatialDatabase/SpatialDatabase.h
             CircularBuffer/CircularBuffer.h
             CircularBuffer/CircularQueue.h
+            Handle/Handle.h
+            Handle/HandleList.h
+            Buffer/Buffer.h
+            Buffer/BufferUtil.h
+            Bitset/Bitset.h
+            Waveform/Waveform.h
+            Random/Random.h
+            Random/RandomGenerator.h
+            HistoryList/HistoryList.h
+            Network/Network.h
+            Network/WebSocket.h
+            Json/JsonArray.h
+            Json/JsonType.h
+            Json/Json.h
+            Json/JsonDictionary.h
+            Update/UpdateBucketList.h
+            Update/UpdateRegistrationTemplates.h
+            Profiling/Profiling.h
+            Math/Util.h
+            Math/Math.h
+            Math/LineDrawing.h
+            Math/Intersection.h
             #HEADER_PLACEHOLDER
             )
 

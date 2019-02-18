@@ -59,11 +59,11 @@ elseif(UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pragma-once-outside-header")
 endif()
 
-add_subdirectory("${PROJECT_SOURCE_DIR}/External")
+add_subdirectory("${PROJECT_SOURCE_DIR}/External/glm")
 add_subdirectory("${PROJECT_SOURCE_DIR}/External/binpack")
 add_subdirectory("${PROJECT_SOURCE_DIR}/External/lua")
 
-set_target_properties(External PROPERTIES FOLDER External)
+set_target_properties(glm PROPERTIES FOLDER External)
 set_target_properties(binpack PROPERTIES FOLDER External)
 set_target_properties(lua PROPERTIES FOLDER External)
 
@@ -125,7 +125,6 @@ endif()
 if(WEB)
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/Web/freetype2")
   add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormWebrtcClientAPI")
-  
 else()
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/enet")
   add_subdirectory("${PROJECT_SOURCE_DIR}/External/usrsctplib")
