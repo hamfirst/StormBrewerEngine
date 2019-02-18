@@ -82,7 +82,7 @@ namespace StormSockets
     std::atomic_int m_PacketsSent;
     std::atomic_int m_PacketsRecved;
 
-    std::mutex m_TimeoutLock;
+    StormMutex m_TimeoutLock;
     std::atomic_bool m_HandshakeComplete;
 
     volatile bool m_Allocated = false;

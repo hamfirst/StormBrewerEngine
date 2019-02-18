@@ -313,7 +313,7 @@ namespace StormSockets
     while (m_DataLength > 0)
     {
       char c = PeekByte();
-      if (c == ' ')
+      if (c == ' ' && !include_spaces)
       {
         continue;
       }

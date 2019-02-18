@@ -1,6 +1,6 @@
-QT_DIR=
+QT_DIR=~/Qt/5.11.1/gcc_64/
 CMAKE_DIR=
 MINGW_DIR=
-CLANG_HEADER_PATH=
+CLANG_HEADER_PATH=/usr/local/lib/clang/8.0.0/include
 EM_SDK_PATH=
 VC_PATH=

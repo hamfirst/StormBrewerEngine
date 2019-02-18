@@ -76,7 +76,7 @@ namespace StormSockets
     }
     else
     {
-      std::lock_guard<std::mutex> guard(m_OwnedConnectionMutex);
+      StormLockGuard<StormMutex> guard(m_OwnedConnectionMutex);
       m_OwnedConnections.emplace(connection_id);
     }
   }
@@ -89,7 +89,7 @@ namespace StormSockets
     }
     else
     {
-      std::lock_guard<std::mutex> guard(m_OwnedConnectionMutex);
+      StormLockGuard<StormMutex> guard(m_OwnedConnectionMutex);
       m_OwnedConnections.erase(connection_id);
     }
   }
@@ -115,7 +115,10 @@ namespace StormSockets
       }
 
       m_OwnedConnectionLock.unlock();
+
+#ifndef _INCLUDEOS
       std::this_thread::yield();
+#endif
     }
   }
 
@@ -171,7 +174,7 @@ namespace StormSockets
 
       mbedtls_ssl_conf_rng(&ssl_data.m_SSLConfig, mbedtls_ctr_drbg_random, &ssl_data.m_CtrDrbg);
 
-      auto debug_func = [](void *ctx, int level, const char *file, int line, const char *str)
+      auto debug_func = [](void *ctx, [[maybe_unused]] int level, const char *file, int line, const char *str)
       {
         fprintf((FILE *)ctx, "%s:%04d: %s", file, line, str);
         fflush((FILE *)ctx);
@@ -222,7 +225,7 @@ namespace StormSockets
 
     mbedtls_ssl_conf_rng(&ssl_data.m_SSLConfig, mbedtls_ctr_drbg_random, &ssl_data.m_CtrDrbg);
 
-    auto debug_func = [](void *ctx, int level, const char *file, int line, const char *str)
+    auto debug_func = [](void *ctx, [[maybe_unused]] int level, const char *file, int line, const char *str)
     {
       fprintf((FILE *)ctx, "%s:%04d: %s", file, line, str);
       fflush((FILE *)ctx);
@@ -253,7 +256,8 @@ namespace StormSockets
 #endif
   }
 
-  void StormSocketFrontendBase::QueueConnectEvent(StormSocketConnectionId connection_id, StormSocketFrontendConnectionId frontend_id, uint32_t remote_ip, uint16_t remote_port)
+  void StormSocketFrontendBase::QueueConnectEvent(StormSocketConnectionId connection_id, 
+    [[maybe_unused]] StormSocketFrontendConnectionId frontend_id, uint32_t remote_ip, uint16_t remote_port)
   {
     // Queue up the information about the new connection
     StormSocketEventInfo connect_message;
@@ -263,7 +267,9 @@ namespace StormSockets
     connect_message.RemotePort = remote_port;
     while (m_EventQueue.Enqueue(connect_message) == false)
     {
+#ifndef _INCLUDEOS
       std::this_thread::yield();
+#endif
     }
 
     if (m_EventSemaphore)
@@ -272,7 +278,7 @@ namespace StormSockets
     }
   }
 
-  void StormSocketFrontendBase::QueueHandshakeCompleteEvent(StormSocketConnectionId connection_id, StormSocketFrontendConnectionId frontend_id)
+  void StormSocketFrontendBase::QueueHandshakeCompleteEvent(StormSocketConnectionId connection_id, [[maybe_unused]] StormSocketFrontendConnectionId frontend_id)
   {
     auto & connection = GetConnection(connection_id);
 
@@ -284,7 +290,9 @@ namespace StormSockets
     connect_message.RemotePort = connection.m_RemotePort;
     while (m_EventQueue.Enqueue(connect_message) == false)
     {
+#ifndef _INCLUDEOS
       std::this_thread::yield();
+#endif
     }
 
     if (m_EventSemaphore)
@@ -293,7 +301,7 @@ namespace StormSockets
     }
   }
 
-  void StormSocketFrontendBase::QueueDisconnectEvent(StormSocketConnectionId connection_id, StormSocketFrontendConnectionId frontend_id)
+  void StormSocketFrontendBase::QueueDisconnectEvent(StormSocketConnectionId connection_id, [[maybe_unused]] StormSocketFrontendConnectionId frontend_id)
   {
     auto & connection = m_Backend->GetConnection(connection_id);
     // Tell the main thread that we've disconnected
@@ -305,7 +313,9 @@ namespace StormSockets
 
     while (m_EventQueue.Enqueue(disconnect_message) == false)
     {
+#ifndef _INCLUDEOS
       std::this_thread::yield();
+#endif
     }
 
     if (m_EventSemaphore)

@@ -49,11 +49,11 @@ struct StormReflTypeInfo<UITextInput>
 template <>
 struct StormReflTypeInfo<UITextInput>::field_data_static<0>
 {
-  using member_type = ScriptClassDelegate<bool, std::string>; // ScriptClassDelegate<bool, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+  using member_type = ScriptClassDelegate<bool, std::string>; // ScriptClassDelegate<bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
   static constexpr auto GetName() { return "IsInvalidInput"; }
-  static constexpr auto GetType() { return "ScriptClassDelegate<bool, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >"; }
+  static constexpr auto GetType() { return "ScriptClassDelegate<bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF3892A1B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xA35DE964; }
+  static constexpr unsigned GetTypeNameHash() { return 0x9B8BB67A; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UITextInput::IsInvalidInput; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UITextInput *>(obj); return &ptr->IsInvalidInput; }

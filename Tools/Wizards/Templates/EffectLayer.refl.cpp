@@ -25,7 +25,7 @@ void {class_name}::Update(GameContainer & game_container)
 }}
 
 void {class_name}::Render(GameContainer & game_container, const Box & viewport_bounds, 
-                              const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state, RenderUtil & render_util)
+                              const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {{
 
 }}
