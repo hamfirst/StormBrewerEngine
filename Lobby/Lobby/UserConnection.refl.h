@@ -1,0 +1,77 @@
+#pragma once
+
+#include <optional/optional.hpp>
+
+#include <HurricaneDDS/DDSDataObject.h>
+#include <HurricaneDDS/DDSConnectionId.h>
+
+enum STORM_REFL_ENUM class UserConnectionState
+{
+  kLoadingUser,
+  kRequestingUserName,
+  kCreatingNewUser,
+  kLoaded,
+};
+
+struct UserConnection
+{
+  DDS_TEMPORARY_OBJECT(false, DDSDataObjectPriority::kHigh);
+
+  UserConnection(DDSNodeInterface node_interface);
+
+  void STORM_REFL_FUNC LoadUser(uint64_t steam_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code);
+  void STORM_REFL_FUNC GotMessage(std::string cmd, std::string data);
+
+  void STORM_REFL_FUNC UserDoesntExist();
+
+  void STORM_REFL_FUNC SendData(std::string data);
+  void STORM_REFL_FUNC SendNotification(std::string msg);
+  void STORM_REFL_FUNC SendServerText(std::string msg);
+  void STORM_REFL_FUNC SendRuntimeError(std::string msg);
+  void STORM_REFL_FUNC SendConnectionError(std::string msg);
+  void STORM_REFL_FUNC SendLaunchGame(std::string ip_addr, int port, uint64_t token);
+
+  void STORM_REFL_FUNC HandleUserInsert(int ec);
+  void STORM_REFL_FUNC HandleLocalDataUpdate(std::string data);
+  void STORM_REFL_FUNC HandleServerListUpdate(std::string data);
+  void STORM_REFL_FUNC HandleWelcomeInfoUpdate(std::string data);
+  void STORM_REFL_FUNC HandleBanListUpdate(std::string data);
+  void STORM_REFL_FUNC HandleGamePreviewUpdate(int request_id, std::string data);
+  void STORM_REFL_FUNC HandleGamePreviewDestroyed(int request_id);
+
+
+public:
+
+
+  void ConnectToEndpoint(DDSConnectionId connection_id);
+  void FinalizeUserLoaded();
+  void PreDestroy();
+  void PreMoveObject();
+
+public:
+
+  uint64_t m_PlatformId;
+  uint64_t m_UserId;
+
+  DDSKey m_GamePreviewServerId;
+  DDSKey m_GamePreviewSubscription;
+  int m_GamePreviewRequestId;
+
+  UserConnectionState m_State;
+
+  std::vector<std::string> m_PendingMessages;
+  bool m_Error;
+
+  std::string m_RemoteIP;
+  std::string m_RemoteHost;
+
+  std::string m_CountryCode;
+  std::string m_CurrencyCode;
+
+private:
+  DDSNodeInterface m_Interface;
+  std::experimental::optional<DDSConnectionId> m_ConnectionId;
+
+  bool m_Relocating;
+};
+
