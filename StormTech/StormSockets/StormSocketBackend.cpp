@@ -100,6 +100,11 @@ namespace StormSockets
     m_OutputQueueArray = std::make_unique<StormMessageMegaContainer<StormMessageWriter>[]>(settings.MaxConnections * settings.MaxPendingOutgoingPacketsPerConnection);
     m_OutputQueueIncdices = std::make_unique<StormGenIndex[]>(settings.MaxConnections * settings.MaxPendingOutgoingPacketsPerConnection);
 
+    for (int index = 0; index < settings.MaxConnections; index++)
+    {
+      m_OutputQueue[index].Init(m_OutputQueueIncdices.get(), m_OutputQueueArray.get(),
+        index * settings.MaxPendingOutgoingPacketsPerConnection, settings.MaxPendingOutgoingPacketsPerConnection);
+    }
 
 #ifndef _INCLUDEOS
     m_NumSendThreads = settings.NumSendThreads;

@@ -26,8 +26,9 @@ set(LOCAL_INCLUDES "." "./External" "./StormTech" "./Shared" "./Project")
 
 # DRIVERS / PLUGINS:
 set(DRIVERS
-  # virtionet   # Virtio networking driver
-  # virtioblk   # Virtio block device driver
+  virtionet     # Virtio networking
+  vmxnet3
+  boot_logger   # Display boot information
   #boot_logger   # Enable lots of logging from boot stage
 
   # Use "boot --drivers ." to see other drivers
