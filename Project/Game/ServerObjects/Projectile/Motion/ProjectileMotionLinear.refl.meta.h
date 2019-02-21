@@ -19,6 +19,7 @@ struct StormReflTypeInfo<ProjectileMotionLinearConfig>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "ProjectileMotionLinearConfig"; }
   static constexpr auto GetNameHash() { return 0xB3D23059; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileMotionLinearConfig & GetDefault() { static ProjectileMotionLinearConfig def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -63,6 +64,7 @@ struct StormReflTypeInfo<ProjectileMotionLinearConfig>::field_data_static<0 + St
   static constexpr auto GetType() { return "RDeterministicFloat<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x82106E96; }
   static constexpr unsigned GetTypeNameHash() { return 0x9C9647A3; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ProjectileMotionBaseConfig>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileMotionLinearConfig::m_Speed; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileMotionLinearConfig *>(obj); return &ptr->m_Speed; }
@@ -92,6 +94,7 @@ struct StormReflTypeInfo<ProjectileMotionLinear>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "ProjectileMotionLinear"; }
   static constexpr auto GetNameHash() { return 0xE04A82B8; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileMotionLinear & GetDefault() { static ProjectileMotionLinear def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -140,6 +143,7 @@ struct StormReflTypeInfo<ProjectileMotionLinear>::field_data_static<0 + StormRef
   static constexpr auto GetType() { return "NetFixedPoint<long, 32, 16>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x51F0BDD2; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D893FA0; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ProjectileMotionBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileMotionLinear::m_RangeRemaining; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileMotionLinear *>(obj); return &ptr->m_RangeRemaining; }

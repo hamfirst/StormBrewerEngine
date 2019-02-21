@@ -19,6 +19,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ProjectileServerObjectSpawnData"; }
   static constexpr auto GetNameHash() { return 0x16E394D5; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileServerObjectSpawnData & GetDefault() { static ProjectileServerObjectSpawnData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -59,6 +60,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<0>
   static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB00030DB; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_Position; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_Position; }
@@ -83,6 +85,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<1>
   static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE26AF0A8; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_Direction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_Direction; }
@@ -107,6 +110,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1156ED7E; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_TeamIndex; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_TeamIndex; }
@@ -131,6 +135,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<3>
   static constexpr auto GetType() { return "ServerObjectHandle"; }
   static constexpr unsigned GetFieldNameHash() { return 0x09D2FBB0; }
   static constexpr unsigned GetTypeNameHash() { return 0xCB9DB57C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_OwnerHandle; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_OwnerHandle; }
@@ -155,6 +160,7 @@ struct StormReflTypeInfo<ProjectileServerObjectSpawnData>::field_data_static<4>
   static constexpr auto GetType() { return "const ConfigPtr<ProjectileConfig> *"; }
   static constexpr unsigned GetFieldNameHash() { return 0x99B578B4; }
   static constexpr unsigned GetTypeNameHash() { return 0x38CD7873; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObjectSpawnData::m_Config; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObjectSpawnData *>(obj); return &ptr->m_Config; }
@@ -184,6 +190,7 @@ struct StormReflTypeInfo<ProjectileServerObjectInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "ProjectileServerObjectInitData"; }
   static constexpr auto GetNameHash() { return 0x5A391BFB; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileServerObjectInitData & GetDefault() { static ProjectileServerObjectInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -237,6 +244,7 @@ struct StormReflTypeInfo<ProjectileServerObject>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "ProjectileServerObject"; }
   static constexpr auto GetNameHash() { return 0x0D66E014; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileServerObject & GetDefault() { static ProjectileServerObject def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -285,6 +293,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<0 + StormRef
   static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE26AF0A8; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Direction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Direction; }
@@ -309,6 +318,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<1 + StormRef
   static constexpr auto GetType() { return "NetRangedNumber<int, -1, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
   static constexpr unsigned GetTypeNameHash() { return 0x01BCAC65; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Team; }
@@ -333,6 +343,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<2 + StormRef
   static constexpr auto GetType() { return "ServerObjectHandle"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4256761C; }
   static constexpr unsigned GetTypeNameHash() { return 0xCB9DB57C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Owner; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Owner; }
@@ -357,6 +368,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<3 + StormRef
   static constexpr auto GetType() { return "NetReflectionStaticListPtr<ConfigPtr<ProjectileConfig>, &g_ProjectileConfigs, &g_ProjectileConfigsCount, true>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x99B578B4; }
   static constexpr unsigned GetTypeNameHash() { return 0xA35C1C16; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Config; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Config; }
@@ -381,6 +393,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<4 + StormRef
   static constexpr auto GetType() { return "ServerObjectComponent<ProjectileMotionBase, ProjectileMotionBaseConfig>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB8C1F620; }
   static constexpr unsigned GetTypeNameHash() { return 0xAFE7A191; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Motion; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Motion; }
@@ -405,6 +418,7 @@ struct StormReflTypeInfo<ProjectileServerObject>::field_data_static<5 + StormRef
   static constexpr auto GetType() { return "ServerObjectComponent<ProjectileResponseBase, ProjectileResponseBaseConfig>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC857DFD5; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C22E067; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ProjectileServerObject::m_Response; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileServerObject *>(obj); return &ptr->m_Response; }

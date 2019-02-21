@@ -15,6 +15,7 @@ struct StormReflTypeInfo<MapEffectLayerInitData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "MapEffectLayerInitData"; }
   static constexpr auto GetNameHash() { return 0x14A370F8; }
+  static constexpr bool HasDefault() { return true; }
   static MapEffectLayerInitData & GetDefault() { static MapEffectLayerInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

@@ -17,6 +17,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "PlayerStateBasicAttackSettings"; }
   static constexpr auto GetNameHash() { return 0x92F8B625; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateBasicAttackSettings & GetDefault() { static PlayerStateBasicAttackSettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -57,6 +58,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<0>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5D5D69F2; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_ApplyMovement; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackSettings *>(obj); return &ptr->m_ApplyMovement; }
@@ -81,6 +83,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<1>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB4D46B6E; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_RetainMovement; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackSettings *>(obj); return &ptr->m_RetainMovement; }
@@ -105,6 +108,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<2>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x664F734B; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_ApplyGravity; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackSettings *>(obj); return &ptr->m_ApplyGravity; }
@@ -129,6 +133,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackSettings>::field_data_static<3>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6F4B264F; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackSettings::m_InterruptIfNoGround; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackSettings *>(obj); return &ptr->m_InterruptIfNoGround; }
@@ -155,6 +160,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackDamageSettings>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "PlayerStateBasicAttackDamageSettings"; }
   static constexpr auto GetNameHash() { return 0xAB94091A; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateBasicAttackDamageSettings & GetDefault() { static PlayerStateBasicAttackDamageSettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -195,6 +201,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackDamageSettings>::field_data_stati
   static constexpr auto GetType() { return "NetRangedNumber<int, 1, 64>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3237A596; }
   static constexpr unsigned GetTypeNameHash() { return 0xC2D2A989; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackDamageSettings::m_DamageAmount; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackDamageSettings *>(obj); return &ptr->m_DamageAmount; }
@@ -219,6 +226,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttackDamageSettings>::field_data_stati
   static constexpr auto GetType() { return "NetEnum<DamageType>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD583A2B9; }
   static constexpr unsigned GetTypeNameHash() { return 0x73E55A5E; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttackDamageSettings::m_DamageType; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttackDamageSettings *>(obj); return &ptr->m_DamageType; }
@@ -248,6 +256,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttack>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerStateBasicAttack"; }
   static constexpr auto GetNameHash() { return 0x8B41490B; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateBasicAttack & GetDefault() { static PlayerStateBasicAttack def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -296,6 +305,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttack>::field_data_static<0 + StormRef
   static constexpr auto GetType() { return "unsigned int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x44C6FEA4; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<PlayerStateBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttack::m_AnimationHash; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttack *>(obj); return &ptr->m_AnimationHash; }
@@ -320,6 +330,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttack>::field_data_static<1 + StormRef
   static constexpr auto GetType() { return "PlayerStateBasicAttackSettings"; }
   static constexpr unsigned GetFieldNameHash() { return 0x136974EB; }
   static constexpr unsigned GetTypeNameHash() { return 0x92F8B625; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<PlayerStateBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttack::m_Settings; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttack *>(obj); return &ptr->m_Settings; }
@@ -344,6 +355,7 @@ struct StormReflTypeInfo<PlayerStateBasicAttack>::field_data_static<2 + StormRef
   static constexpr auto GetType() { return "NetOptional<PlayerStateBasicAttackDamageSettings>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF6A83A13; }
   static constexpr unsigned GetTypeNameHash() { return 0x189AF9C7; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<PlayerStateBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerStateBasicAttack::m_DamageSettings; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateBasicAttack *>(obj); return &ptr->m_DamageSettings; }

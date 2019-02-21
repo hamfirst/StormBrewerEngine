@@ -19,6 +19,7 @@ struct StormReflTypeInfo<PlayerStateIdle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerStateIdle"; }
   static constexpr auto GetNameHash() { return 0x94ECF9E5; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateIdle & GetDefault() { static PlayerStateIdle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

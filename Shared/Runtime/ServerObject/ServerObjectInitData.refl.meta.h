@@ -15,6 +15,7 @@ struct StormReflTypeInfo<ServerObjectInitData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ServerObjectInitData"; }
   static constexpr auto GetNameHash() { return 0x2D36BDE7; }
+  static constexpr bool HasDefault() { return true; }
   static ServerObjectInitData & GetDefault() { static ServerObjectInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

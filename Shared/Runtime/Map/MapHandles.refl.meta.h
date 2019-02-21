@@ -15,6 +15,7 @@ struct StormReflTypeInfo<MapHandleBase>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "MapHandleBase"; }
   static constexpr auto GetNameHash() { return 0xABCB7450; }
+  static constexpr bool HasDefault() { return true; }
   static MapHandleBase & GetDefault() { static MapHandleBase def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<MapHandleBase>::field_data_static<0>
   static constexpr auto GetType() { return "RNumber<unsigned int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x83551827; }
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapHandleBase::m_GUID; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<MapHandleBase *>(obj); return &ptr->m_GUID; }
@@ -98,6 +100,7 @@ struct StormReflTypeInfo<MapEntityHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapEntityHandle"; }
   static constexpr auto GetNameHash() { return 0x9904F950; }
+  static constexpr bool HasDefault() { return true; }
   static MapEntityHandle & GetDefault() { static MapEntityHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -147,6 +150,7 @@ struct StormReflTypeInfo<MapEffectLayerHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapEffectLayerHandle"; }
   static constexpr auto GetNameHash() { return 0xBCE8D836; }
+  static constexpr bool HasDefault() { return true; }
   static MapEffectLayerHandle & GetDefault() { static MapEffectLayerHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -196,6 +200,7 @@ struct StormReflTypeInfo<MapServerObjectHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapServerObjectHandle"; }
   static constexpr auto GetNameHash() { return 0x831F1675; }
+  static constexpr bool HasDefault() { return true; }
   static MapServerObjectHandle & GetDefault() { static MapServerObjectHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -245,6 +250,7 @@ struct StormReflTypeInfo<MapAnchorHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapAnchorHandle"; }
   static constexpr auto GetNameHash() { return 0x6BDD357A; }
+  static constexpr bool HasDefault() { return true; }
   static MapAnchorHandle & GetDefault() { static MapAnchorHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -294,6 +300,7 @@ struct StormReflTypeInfo<MapPathHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapPathHandle"; }
   static constexpr auto GetNameHash() { return 0xFDA1CFC8; }
+  static constexpr bool HasDefault() { return true; }
   static MapPathHandle & GetDefault() { static MapPathHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -343,6 +350,7 @@ struct StormReflTypeInfo<MapVolumeHandle>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "MapVolumeHandle"; }
   static constexpr auto GetNameHash() { return 0x9E0BB55F; }
+  static constexpr bool HasDefault() { return true; }
   static MapVolumeHandle & GetDefault() { static MapVolumeHandle def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

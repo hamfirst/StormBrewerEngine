@@ -21,6 +21,7 @@ struct StormReflTypeInfo<BotServerObjectInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "BotServerObjectInitData"; }
   static constexpr auto GetNameHash() { return 0x1C601FCD; }
+  static constexpr bool HasDefault() { return true; }
   static BotServerObjectInitData & GetDefault() { static BotServerObjectInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -74,6 +75,7 @@ struct StormReflTypeInfo<BotServerObject>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "BotServerObject"; }
   static constexpr auto GetNameHash() { return 0xF3F6D91E; }
+  static constexpr bool HasDefault() { return true; }
   static BotServerObject & GetDefault() { static BotServerObject def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -122,6 +124,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<0 + StormReflTypeIn
   static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x48F40287; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_Velocity; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_Velocity; }
@@ -146,6 +149,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<1 + StormReflTypeIn
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x50DDA915; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_OnGround; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_OnGround; }
@@ -170,6 +174,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<2 + StormReflTypeIn
   static constexpr auto GetType() { return "NetRangedNumber<int, -1, 30>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9984B871; }
   static constexpr unsigned GetTypeNameHash() { return 0xB3BD22BD; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimIndex; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimIndex; }
@@ -194,6 +199,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<3 + StormReflTypeIn
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 31>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAC0FE3BD; }
   static constexpr unsigned GetTypeNameHash() { return 0x72324C82; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimFrame; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimFrame; }
@@ -218,6 +224,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<4 + StormReflTypeIn
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 63>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAB6D5FEB; }
   static constexpr unsigned GetTypeNameHash() { return 0x46CFECEB; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_AnimDelay; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_AnimDelay; }
@@ -242,6 +249,7 @@ struct StormReflTypeInfo<BotServerObject>::field_data_static<5 + StormReflTypeIn
   static constexpr auto GetType() { return "NetEnum<CharacterFacing>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC03F5E41; }
   static constexpr unsigned GetTypeNameHash() { return 0x94981591; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5 + StormReflTypeInfo<GameServerObjectBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &BotServerObject::m_Facing; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotServerObject *>(obj); return &ptr->m_Facing; }

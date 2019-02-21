@@ -19,6 +19,7 @@ struct StormReflTypeInfo<PlayerStateJump>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerStateJump"; }
   static constexpr auto GetNameHash() { return 0xEF7B4AE6; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateJump & GetDefault() { static PlayerStateJump def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -67,6 +68,7 @@ struct StormReflTypeInfo<PlayerStateJump>::field_data_static<0 + StormReflTypeIn
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 5>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC9976FF3; }
   static constexpr unsigned GetTypeNameHash() { return 0xFCA4CDC9; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<PlayerStateBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerStateJump::m_JumpGraceFrames; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerStateJump *>(obj); return &ptr->m_JumpGraceFrames; }

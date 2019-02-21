@@ -15,6 +15,7 @@ struct StormReflTypeInfo<ProjectileMotionBaseConfig>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ProjectileMotionBaseConfig"; }
   static constexpr auto GetNameHash() { return 0xD15E6198; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileMotionBaseConfig & GetDefault() { static ProjectileMotionBaseConfig def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -60,6 +61,7 @@ struct StormReflTypeInfo<ProjectileMotionBase>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "ProjectileMotionBase"; }
   static constexpr auto GetNameHash() { return 0xA001F5DF; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileMotionBase & GetDefault() { static ProjectileMotionBase def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

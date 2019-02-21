@@ -16,6 +16,7 @@ struct StormReflTypeInfo<ServerObjectDef>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ServerObjectDef"; }
   static constexpr auto GetNameHash() { return 0x97B44C7B; }
+  static constexpr bool HasDefault() { return true; }
   static ServerObjectDef & GetDefault() { static ServerObjectDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -56,6 +57,7 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data_static<0>
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB784F6D1; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_IsStatic; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_IsStatic; }
@@ -80,6 +82,7 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data_static<1>
   static constexpr auto GetType() { return "RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData, void>, TypeDatabaseTypeInfo<ServerObjectInitData, void>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
   static constexpr unsigned GetTypeNameHash() { return 0x98B2E037; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_InitData; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerObjectDef *>(obj); return &ptr->m_InitData; }

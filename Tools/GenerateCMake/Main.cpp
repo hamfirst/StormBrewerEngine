@@ -323,7 +323,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file << "                    ${PROJECT_SOURCE_DIR}/Tools\n";
   cmake_file << "                    ${PROJECT_SOURCE_DIR}/Shared\n";
   cmake_file << "                    ${PROJECT_SOURCE_DIR}/Project\n";
-  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Lobby)\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Lobby)\n\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
 
   if (options.m_PCH && files.m_PCHFile.size() > 0)

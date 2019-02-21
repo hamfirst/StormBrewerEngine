@@ -64,6 +64,7 @@ struct StormReflTypeInfo<AtlasDefTexture>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "AtlasDefTexture"; }
   static constexpr auto GetNameHash() { return 0x50F8C981; }
+  static constexpr bool HasDefault() { return true; }
   static AtlasDefTexture & GetDefault() { static AtlasDefTexture def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -104,6 +105,7 @@ struct StormReflTypeInfo<AtlasDefTexture>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0xCA273D4B; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &AtlasDefTexture::m_Filename; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefTexture *>(obj); return &ptr->m_Filename; }
@@ -144,6 +146,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "AtlasDefElementPosition"; }
   static constexpr auto GetNameHash() { return 0xA116D4B1; }
+  static constexpr bool HasDefault() { return true; }
   static AtlasDefElementPosition & GetDefault() { static AtlasDefElementPosition def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -184,6 +187,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<0>
   static constexpr auto GetType() { return "REnum<AtlasDefType>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
   static constexpr unsigned GetTypeNameHash() { return 0x10B463C8; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_Type; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_Type; }
@@ -208,6 +212,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<1>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x87158667; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartX; }
@@ -232,6 +237,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<2>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF012B6F1; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartY; }
@@ -256,6 +262,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<3>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3549DC7D; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndX; }
@@ -280,6 +287,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<4>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x424EECEB; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndY; }
@@ -304,6 +312,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<5>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6AFBDEBC; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartOffsetX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetX; }
@@ -328,6 +337,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<6>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1DFCEE2A; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_StartOffsetY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_StartOffsetY; }
@@ -352,6 +362,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<7>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFD14B24F; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndOffsetX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetX; }
@@ -376,6 +387,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<8>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8A1382D9; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_EndOffsetY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_EndOffsetY; }
@@ -400,6 +412,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<9>
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3AC5A533; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_RepeatHorizontal; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_RepeatHorizontal; }
@@ -424,6 +437,7 @@ struct StormReflTypeInfo<AtlasDefElementPosition>::field_data_static<10>
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x71994AE3; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElementPosition::m_RepeatVertical; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElementPosition *>(obj); return &ptr->m_RepeatVertical; }
@@ -450,6 +464,7 @@ struct StormReflTypeInfo<AtlasDefElement>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "AtlasDefElement"; }
   static constexpr auto GetNameHash() { return 0x93DE9ACA; }
+  static constexpr bool HasDefault() { return true; }
   static AtlasDefElement & GetDefault() { static AtlasDefElement def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -490,6 +505,7 @@ struct StormReflTypeInfo<AtlasDefElement>::field_data_static<0>
   static constexpr auto GetType() { return "RNumber<unsigned int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6D2A1F0B; }
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_TextureHash; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_TextureHash; }
@@ -528,6 +544,7 @@ struct StormReflTypeInfo<AtlasDefElement>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_Name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_Name; }
@@ -552,6 +569,7 @@ struct StormReflTypeInfo<AtlasDefElement>::field_data_static<2>
   static constexpr auto GetType() { return "AtlasDefElementPosition"; }
   static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
   static constexpr unsigned GetTypeNameHash() { return 0xA116D4B1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &AtlasDefElement::m_Data; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDefElement *>(obj); return &ptr->m_Data; }
@@ -578,6 +596,7 @@ struct StormReflTypeInfo<AtlasDef>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "AtlasDef"; }
   static constexpr auto GetNameHash() { return 0xF114091F; }
+  static constexpr bool HasDefault() { return true; }
   static AtlasDef & GetDefault() { static AtlasDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -618,6 +637,7 @@ struct StormReflTypeInfo<AtlasDef>::field_data_static<0>
   static constexpr auto GetType() { return "RMergeList<AtlasDefTexture>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x53AB6D38; }
   static constexpr unsigned GetTypeNameHash() { return 0xF0B96596; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &AtlasDef::m_Textures; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDef *>(obj); return &ptr->m_Textures; }
@@ -642,6 +662,7 @@ struct StormReflTypeInfo<AtlasDef>::field_data_static<1>
   static constexpr auto GetType() { return "RMergeList<AtlasDefElement>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB266D373; }
   static constexpr unsigned GetTypeNameHash() { return 0x1174DBDD; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &AtlasDef::m_Elements; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<AtlasDef *>(obj); return &ptr->m_Elements; }

@@ -15,6 +15,7 @@ struct StormReflTypeInfo<MapPropertiesDef>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "MapPropertiesDef"; }
   static constexpr auto GetNameHash() { return 0x02766CB4; }
+  static constexpr bool HasDefault() { return true; }
   static MapPropertiesDef & GetDefault() { static MapPropertiesDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

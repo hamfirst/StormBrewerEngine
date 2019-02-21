@@ -15,6 +15,7 @@ struct StormReflTypeInfo<ComponentInitData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x6DB2F865; }
+  static constexpr bool HasDefault() { return true; }
   static ComponentInitData & GetDefault() { static ComponentInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

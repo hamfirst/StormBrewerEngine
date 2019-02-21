@@ -5,13 +5,13 @@ project(StormBrewerEngine)
 include(CMake/StormBrewerEngine.cmake)
 include(CMake/cotire.cmake)
 
-include_directories("${PROJECT_SOURCE_DIR}
-                     ${PROJECT_SOURCE_DIR}/StormTech
-                     ${PROJECT_SOURCE_DIR}/External
-                     ${PROJECT_SOURCE_DIR}/Tools
-                     ${PROJECT_SOURCE_DIR}/Shared
-                     ${PROJECT_SOURCE_DIR}/Project
-                     ${PROJECT_SOURCE_DIR}/Lobby")
+include_directories(${PROJECT_SOURCE_DIR}
+                    ${PROJECT_SOURCE_DIR}/StormTech
+                    ${PROJECT_SOURCE_DIR}/External
+                    ${PROJECT_SOURCE_DIR}/Tools
+                    ${PROJECT_SOURCE_DIR}/Shared
+                    ${PROJECT_SOURCE_DIR}/Project
+                    ${PROJECT_SOURCE_DIR}/Lobby)
 
 add_subdirectory(Project/Game)
 add_subdirectory(Project/GameShared)
@@ -65,7 +65,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 
   elseif(WEB)
     add_definitions(-D_WEB)
-    include_directories(${PROJECT_SOURCE_DIR} External External/Web)
+    include_directories(External/Web)
 
     file(GLOB_RECURSE ClientSrc
       ${PROJECT_SOURCE_DIR}/Project/GameClientExe/*.cpp
@@ -332,7 +332,6 @@ if(BUILD_TOOLS)
   endif()
 
   add_executable(stormrefl StormTech/StormRefl/main.cpp StormTech/StormRefl/StormReflOutput.cpp)
-  target_include_directories(stormrefl PUBLIC . External)
   set_target_properties(stormrefl PROPERTIES FOLDER Tools)
 
   target_link_libraries(stormrefl
