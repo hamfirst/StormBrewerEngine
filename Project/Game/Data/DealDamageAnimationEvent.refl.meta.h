@@ -21,6 +21,7 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "DealDamageAnimationEvent"; }
   static constexpr auto GetNameHash() { return 0xCA028F12; }
+  static constexpr bool HasDefault() { return true; }
   static DealDamageAnimationEvent & GetDefault() { static DealDamageAnimationEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -65,6 +66,7 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<0 + StormR
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC39E278A; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Amount; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Amount; }
@@ -89,6 +91,7 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<1 + StormR
   static constexpr auto GetType() { return "REnum<CharacterFacing>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE26AF0A8; }
   static constexpr unsigned GetTypeNameHash() { return 0xBDF26CA6; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_Direction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_Direction; }
@@ -113,6 +116,7 @@ struct StormReflTypeInfo<DealDamageAnimationEvent>::field_data_static<2 + StormR
   static constexpr auto GetType() { return "REnum<DamageType>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD583A2B9; }
   static constexpr unsigned GetTypeNameHash() { return 0x33D1B477; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<SpriteAnimationEventDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DealDamageAnimationEvent::m_DamageType; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DealDamageAnimationEvent *>(obj); return &ptr->m_DamageType; }

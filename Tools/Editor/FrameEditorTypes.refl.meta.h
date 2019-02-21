@@ -16,6 +16,7 @@ struct StormReflTypeInfo<FrameCopyData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "FrameCopyData"; }
   static constexpr auto GetNameHash() { return 0x7053E070; }
+  static constexpr bool HasDefault() { return true; }
   static FrameCopyData & GetDefault() { static FrameCopyData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -56,6 +57,7 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<0>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0131A59F; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Valid; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Valid; }
@@ -80,6 +82,7 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<1>
   static constexpr auto GetType() { return "FrameDataDefType"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
   static constexpr unsigned GetTypeNameHash() { return 0xCD6F2DAB; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Type; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Type; }
@@ -104,6 +107,7 @@ struct StormReflTypeInfo<FrameCopyData>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &FrameCopyData::m_Data; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<FrameCopyData *>(obj); return &ptr->m_Data; }

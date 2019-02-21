@@ -19,6 +19,7 @@ struct StormReflTypeInfo<KillVolume>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "KillVolume"; }
   static constexpr auto GetNameHash() { return 0xB1B659F0; }
+  static constexpr bool HasDefault() { return true; }
   static KillVolume & GetDefault() { static KillVolume def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

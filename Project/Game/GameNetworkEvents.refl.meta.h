@@ -15,6 +15,7 @@ struct StormReflTypeInfo<GlobalNetworkEvent>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GlobalNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xBD3E127B; }
+  static constexpr bool HasDefault() { return true; }
   static GlobalNetworkEvent & GetDefault() { static GlobalNetworkEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -60,6 +61,7 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "CreateEntityGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0x642FDCD2; }
+  static constexpr bool HasDefault() { return true; }
   static CreateEntityGlobalEvent & GetDefault() { static CreateEntityGlobalEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -104,6 +106,7 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<0 + StormRe
   static constexpr auto GetType() { return "unsigned int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_AssetHash; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_AssetHash; }
@@ -128,6 +131,7 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<1 + StormRe
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionX; }
@@ -152,6 +156,7 @@ struct StormReflTypeInfo<CreateEntityGlobalEvent>::field_data_static<2 + StormRe
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &CreateEntityGlobalEvent::m_PositionY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<CreateEntityGlobalEvent *>(obj); return &ptr->m_PositionY; }
@@ -181,6 +186,7 @@ struct StormReflTypeInfo<CameraShakeEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "CameraShakeEvent"; }
   static constexpr auto GetNameHash() { return 0x2504BD60; }
+  static constexpr bool HasDefault() { return true; }
   static CameraShakeEvent & GetDefault() { static CameraShakeEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -230,6 +236,7 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlaySoundGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0x5199D34C; }
+  static constexpr bool HasDefault() { return true; }
   static PlaySoundGlobalEvent & GetDefault() { static PlaySoundGlobalEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -274,6 +281,7 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<0 + StormReflT
   static constexpr auto GetType() { return "unsigned int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_AssetHash; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_AssetHash; }
@@ -298,6 +306,7 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<1 + StormReflT
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionX; }
@@ -322,6 +331,7 @@ struct StormReflTypeInfo<PlaySoundGlobalEvent>::field_data_static<2 + StormReflT
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlaySoundGlobalEvent::m_PositionY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaySoundGlobalEvent *>(obj); return &ptr->m_PositionY; }
@@ -351,6 +361,7 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayVfxGlobalEvent"; }
   static constexpr auto GetNameHash() { return 0xEA5024F2; }
+  static constexpr bool HasDefault() { return true; }
   static PlayVfxGlobalEvent & GetDefault() { static PlayVfxGlobalEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -395,6 +406,7 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<0 + StormReflTyp
   static constexpr auto GetType() { return "unsigned int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8ACB36EB; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_AssetHash; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_AssetHash; }
@@ -419,6 +431,7 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<1 + StormReflTyp
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA6033D27; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionX; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionX; }
@@ -443,6 +456,7 @@ struct StormReflTypeInfo<PlayVfxGlobalEvent>::field_data_static<2 + StormReflTyp
   static constexpr auto GetType() { return "short"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD1040DB1; }
   static constexpr unsigned GetTypeNameHash() { return 0x8F2890A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GlobalNetworkEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayVfxGlobalEvent::m_PositionY; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayVfxGlobalEvent *>(obj); return &ptr->m_PositionY; }
@@ -472,6 +486,7 @@ struct StormReflTypeInfo<TieEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "TieEvent"; }
   static constexpr auto GetNameHash() { return 0xCE146734; }
+  static constexpr bool HasDefault() { return true; }
   static TieEvent & GetDefault() { static TieEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -518,6 +533,7 @@ struct StormReflTypeInfo<ServerAuthNetworkEvent>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ServerAuthNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xE24857C1; }
+  static constexpr bool HasDefault() { return true; }
   static ServerAuthNetworkEvent & GetDefault() { static ServerAuthNetworkEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -563,6 +579,7 @@ struct StormReflTypeInfo<PlaceholderServerAuthEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlaceholderServerAuthEvent"; }
   static constexpr auto GetNameHash() { return 0x29691225; }
+  static constexpr bool HasDefault() { return true; }
   static PlaceholderServerAuthEvent & GetDefault() { static PlaceholderServerAuthEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -609,6 +626,7 @@ struct StormReflTypeInfo<TargetNetworkEvent>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "TargetNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0x40E708F3; }
+  static constexpr bool HasDefault() { return true; }
   static TargetNetworkEvent & GetDefault() { static TargetNetworkEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -649,6 +667,7 @@ struct StormReflTypeInfo<TargetNetworkEvent>::field_data_static<0>
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 255>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0B507834; }
   static constexpr unsigned GetTypeNameHash() { return 0x4CE63414; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &TargetNetworkEvent::m_Target; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<TargetNetworkEvent *>(obj); return &ptr->m_Target; }
@@ -678,6 +697,7 @@ struct StormReflTypeInfo<PlaceholderTargetEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlaceholderTargetEvent"; }
   static constexpr auto GetNameHash() { return 0xF23AD6F7; }
+  static constexpr bool HasDefault() { return true; }
   static PlaceholderTargetEvent & GetDefault() { static PlaceholderTargetEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -724,6 +744,7 @@ struct StormReflTypeInfo<ClientNetworkEvent>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ClientNetworkEvent"; }
   static constexpr auto GetNameHash() { return 0xC69662C2; }
+  static constexpr bool HasDefault() { return true; }
   static ClientNetworkEvent & GetDefault() { static ClientNetworkEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -769,6 +790,7 @@ struct StormReflTypeInfo<PlaceholderClientEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlaceholderClientEvent"; }
   static constexpr auto GetNameHash() { return 0xEEBE0324; }
+  static constexpr bool HasDefault() { return true; }
   static PlaceholderClientEvent & GetDefault() { static PlaceholderClientEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -818,6 +840,7 @@ struct StormReflTypeInfo<JumpEvent>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "JumpEvent"; }
   static constexpr auto GetNameHash() { return 0x940BF099; }
+  static constexpr bool HasDefault() { return true; }
   static JumpEvent & GetDefault() { static JumpEvent def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

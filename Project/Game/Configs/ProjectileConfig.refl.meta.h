@@ -17,6 +17,7 @@ struct StormReflTypeInfo<ProjectileConfig>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ProjectileConfig"; }
   static constexpr auto GetNameHash() { return 0x2E56CBC8; }
+  static constexpr bool HasDefault() { return true; }
   static ProjectileConfig & GetDefault() { static ProjectileConfig def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -57,6 +58,7 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x95F009BE; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_EntityFile; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileConfig *>(obj); return &ptr->m_EntityFile; }
@@ -95,6 +97,7 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data_static<1>
   static constexpr auto GetType() { return "RNumber<unsigned int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE000440A; }
   static constexpr unsigned GetTypeNameHash() { return 0x7B4FB98C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_MaxDistance; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileConfig *>(obj); return &ptr->m_MaxDistance; }
@@ -119,6 +122,7 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data_static<2>
   static constexpr auto GetType() { return "RPolymorphicBase<ProjectileMotionBaseConfig, TypeDatabase<ProjectileMotionBaseConfig, ProjectileMotionBase>, TypeDatabaseTypeInfo<ProjectileMotionBaseConfig, ProjectileMotionBase>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1642AC4A; }
   static constexpr unsigned GetTypeNameHash() { return 0xBCC3A8A9; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_MotionConfig; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileConfig *>(obj); return &ptr->m_MotionConfig; }
@@ -143,6 +147,7 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data_static<3>
   static constexpr auto GetType() { return "RPolymorphicBase<ProjectileResponseBaseConfig, TypeDatabase<ProjectileResponseBaseConfig, ProjectileResponseBase>, TypeDatabaseTypeInfo<ProjectileResponseBaseConfig, ProjectileResponseBase>, false>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5316BFBD; }
   static constexpr unsigned GetTypeNameHash() { return 0x31C096A1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_ResponseConfig; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileConfig *>(obj); return &ptr->m_ResponseConfig; }
@@ -167,6 +172,7 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data_static<4>
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x167E9130; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_Unsynced; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ProjectileConfig *>(obj); return &ptr->m_Unsynced; }

@@ -15,6 +15,7 @@ struct StormReflTypeInfo<Vector2>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Vector2"; }
   static constexpr auto GetNameHash() { return 0x29CA61A5; }
+  static constexpr bool HasDefault() { return true; }
   static Vector2 & GetDefault() { static Vector2 def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<Vector2>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8CDC1683; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Vector2::x; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Vector2 *>(obj); return &ptr->x; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<Vector2>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFBDB2615; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Vector2::y; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Vector2 *>(obj); return &ptr->y; }
@@ -105,6 +108,7 @@ struct StormReflTypeInfo<Line>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Line"; }
   static constexpr auto GetNameHash() { return 0x71261BC8; }
+  static constexpr bool HasDefault() { return true; }
   static Line & GetDefault() { static Line def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -145,6 +149,7 @@ struct StormReflTypeInfo<Line>::field_data_static<0>
   static constexpr auto GetType() { return "Vector2"; }
   static constexpr unsigned GetFieldNameHash() { return 0x124FC5EF; }
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Line::m_Start; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Line *>(obj); return &ptr->m_Start; }
@@ -169,6 +174,7 @@ struct StormReflTypeInfo<Line>::field_data_static<1>
   static constexpr auto GetType() { return "Vector2"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF31EF756; }
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Line::m_End; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Line *>(obj); return &ptr->m_End; }
@@ -195,6 +201,7 @@ struct StormReflTypeInfo<Box>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Box"; }
   static constexpr auto GetNameHash() { return 0x30E40EDA; }
+  static constexpr bool HasDefault() { return true; }
   static Box & GetDefault() { static Box def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -235,6 +242,7 @@ struct StormReflTypeInfo<Box>::field_data_static<0>
   static constexpr auto GetType() { return "Vector2"; }
   static constexpr unsigned GetFieldNameHash() { return 0x124FC5EF; }
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Box::m_Start; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Box *>(obj); return &ptr->m_Start; }
@@ -259,6 +267,7 @@ struct StormReflTypeInfo<Box>::field_data_static<1>
   static constexpr auto GetType() { return "Vector2"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF31EF756; }
   static constexpr unsigned GetTypeNameHash() { return 0x29CA61A5; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Box::m_End; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Box *>(obj); return &ptr->m_End; }
@@ -285,6 +294,7 @@ struct StormReflTypeInfo<Color>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Color"; }
   static constexpr auto GetNameHash() { return 0xA79767ED; }
+  static constexpr bool HasDefault() { return true; }
   static Color & GetDefault() { static Color def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -325,6 +335,7 @@ struct StormReflTypeInfo<Color>::field_data_static<0>
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6C09FF9D; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Color::r; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Color *>(obj); return &ptr->r; }
@@ -349,6 +360,7 @@ struct StormReflTypeInfo<Color>::field_data_static<1>
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x01D41B76; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Color::g; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Color *>(obj); return &ptr->g; }
@@ -373,6 +385,7 @@ struct StormReflTypeInfo<Color>::field_data_static<2>
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0x71BEEFF9; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &Color::b; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Color *>(obj); return &ptr->b; }
@@ -397,6 +410,7 @@ struct StormReflTypeInfo<Color>::field_data_static<3>
   static constexpr auto GetType() { return "float"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE8B7BE43; }
   static constexpr unsigned GetTypeNameHash() { return 0xC9A55E95; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &Color::a; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Color *>(obj); return &ptr->a; }

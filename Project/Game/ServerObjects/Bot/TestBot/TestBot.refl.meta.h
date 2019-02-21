@@ -21,6 +21,7 @@ struct StormReflTypeInfo<TestBotInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "TestBotInitData"; }
   static constexpr auto GetNameHash() { return 0x1ACAD19B; }
+  static constexpr bool HasDefault() { return true; }
   static TestBotInitData & GetDefault() { static TestBotInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -78,6 +79,7 @@ struct StormReflTypeInfo<TestBot>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "TestBot"; }
   static constexpr auto GetNameHash() { return 0x8EF3BA04; }
+  static constexpr bool HasDefault() { return true; }
   static TestBot & GetDefault() { static TestBot def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -130,6 +132,7 @@ struct StormReflTypeInfo<TestBot>::field_data_static<0 + StormReflTypeInfo<BotSe
   static constexpr auto GetType() { return "StormBehaviorTree<BotServerObject, GameLogicContainer>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x89A3CBC3; }
   static constexpr unsigned GetTypeNameHash() { return 0xD4BF05A2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<BotServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &TestBot::m_Tree; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<TestBot *>(obj); return &ptr->m_Tree; }

@@ -20,6 +20,7 @@ struct StormReflTypeInfo<PlayerSpawn>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerSpawn"; }
   static constexpr auto GetNameHash() { return 0x286C4F1C; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerSpawn & GetDefault() { static PlayerSpawn def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -64,6 +65,7 @@ struct StormReflTypeInfo<PlayerSpawn>::field_data_static<0 + StormReflTypeInfo<A
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<AnchorDataBase>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayerSpawn::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerSpawn *>(obj); return &ptr->m_Team; }

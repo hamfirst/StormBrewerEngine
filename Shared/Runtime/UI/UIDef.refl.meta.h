@@ -15,6 +15,7 @@ struct StormReflTypeInfo<UIDefDebugVariable>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UIDefDebugVariable"; }
   static constexpr auto GetNameHash() { return 0x69D0B1AE; }
+  static constexpr bool HasDefault() { return true; }
   static UIDefDebugVariable & GetDefault() { static UIDefDebugVariable def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<UIDefDebugVariable>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDefDebugVariable::m_Name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDefDebugVariable *>(obj); return &ptr->m_Name; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<UIDefDebugVariable>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9041C854; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIDefDebugVariable::m_Value; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDefDebugVariable *>(obj); return &ptr->m_Value; }
@@ -105,6 +108,7 @@ struct StormReflTypeInfo<UIDefDebugFunction>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UIDefDebugFunction"; }
   static constexpr auto GetNameHash() { return 0x6F33201E; }
+  static constexpr bool HasDefault() { return true; }
   static UIDefDebugFunction & GetDefault() { static UIDefDebugFunction def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -145,6 +149,7 @@ struct StormReflTypeInfo<UIDefDebugFunction>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDefDebugFunction::m_Name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDefDebugFunction *>(obj); return &ptr->m_Name; }
@@ -169,6 +174,7 @@ struct StormReflTypeInfo<UIDefDebugFunction>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9041C854; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIDefDebugFunction::m_Value; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDefDebugFunction *>(obj); return &ptr->m_Value; }
@@ -193,6 +199,7 @@ struct StormReflTypeInfo<UIDefDebugFunction>::field_data_static<2>
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFB9F6830; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UIDefDebugFunction::m_DebugOutput; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDefDebugFunction *>(obj); return &ptr->m_DebugOutput; }
@@ -219,6 +226,7 @@ struct StormReflTypeInfo<UIDef>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UIDef"; }
   static constexpr auto GetNameHash() { return 0x1B05DE82; }
+  static constexpr bool HasDefault() { return true; }
   static UIDef & GetDefault() { static UIDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -259,6 +267,7 @@ struct StormReflTypeInfo<UIDef>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0xBD4942CF; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_InitFunction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDef *>(obj); return &ptr->m_InitFunction; }
@@ -283,6 +292,7 @@ struct StormReflTypeInfo<UIDef>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x871977E0; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_CleanupFunction; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDef *>(obj); return &ptr->m_CleanupFunction; }
@@ -307,6 +317,7 @@ struct StormReflTypeInfo<UIDef>::field_data_static<2>
   static constexpr auto GetType() { return "RMergeList<UIDefDebugVariable>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x54EB5C0A; }
   static constexpr unsigned GetTypeNameHash() { return 0xC3A9334C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_Variables; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDef *>(obj); return &ptr->m_Variables; }
@@ -331,6 +342,7 @@ struct StormReflTypeInfo<UIDef>::field_data_static<3>
   static constexpr auto GetType() { return "RMergeList<UIDefDebugFunction>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9F8C0C17; }
   static constexpr unsigned GetTypeNameHash() { return 0x08CE6351; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UIDef::m_Functions; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIDef *>(obj); return &ptr->m_Functions; }

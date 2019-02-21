@@ -19,6 +19,7 @@ struct StormReflTypeInfo<GameController>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameController"; }
   static constexpr auto GetNameHash() { return 0x51F17D8D; }
+  static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {

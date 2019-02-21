@@ -21,6 +21,7 @@ struct StormReflTypeInfo<GameServerObjectBaseInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "GameServerObjectBaseInitData"; }
   static constexpr auto GetNameHash() { return 0xE8EFD458; }
+  static constexpr bool HasDefault() { return true; }
   static GameServerObjectBaseInitData & GetDefault() { static GameServerObjectBaseInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -70,6 +71,7 @@ struct StormReflTypeInfo<GameServerObjectBase>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "GameServerObjectBase"; }
   static constexpr auto GetNameHash() { return 0x25DA07B6; }
+  static constexpr bool HasDefault() { return true; }
   static GameServerObjectBase & GetDefault() { static GameServerObjectBase def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -114,6 +116,7 @@ struct StormReflTypeInfo<GameServerObjectBase>::field_data_static<0 + StormReflT
   static constexpr auto GetType() { return "IntersectionVecType<NetFixedPoint<long, 32, 16> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB00030DB; }
   static constexpr unsigned GetTypeNameHash() { return 0x0D719CFC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &GameServerObjectBase::m_Position; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerObjectBase *>(obj); return &ptr->m_Position; }

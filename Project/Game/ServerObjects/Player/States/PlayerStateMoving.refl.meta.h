@@ -19,6 +19,7 @@ struct StormReflTypeInfo<PlayerStateMoving>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerStateMoving"; }
   static constexpr auto GetNameHash() { return 0x54E64448; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerStateMoving & GetDefault() { static PlayerStateMoving def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

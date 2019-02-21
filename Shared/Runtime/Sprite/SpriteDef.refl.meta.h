@@ -19,6 +19,7 @@ struct StormReflTypeInfo<SpriteDef>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "SpriteDef"; }
   static constexpr auto GetNameHash() { return 0x9EE858B0; }
+  static constexpr bool HasDefault() { return true; }
   static SpriteDef & GetDefault() { static SpriteDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

@@ -580,11 +580,7 @@ namespace StormDataChangePacketHelpers
     {
       if (*path == 0 || *path == ' ')
       {
-        if constexpr(std::is_class_v<T> == false)
-        {
-          field_data->SetDefault();
-        }
-        else if constexpr (FieldData::HasDefault())
+        if constexpr (FieldData::HasDefault())
         {
           field_data->SetDefault();
         }

@@ -15,6 +15,7 @@ struct StormReflTypeInfo<DocumentLink>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "DocumentLink"; }
   static constexpr auto GetNameHash() { return 0x106E0629; }
+  static constexpr bool HasDefault() { return true; }
   static DocumentLink & GetDefault() { static DocumentLink def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7A9E87A4; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_SourceAsset; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_SourceAsset; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF028D554; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_RemotePath; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_RemotePath; }
@@ -103,6 +106,7 @@ struct StormReflTypeInfo<DocumentLink>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x26A31EF4; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DocumentLink::m_LocalPath; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentLink *>(obj); return &ptr->m_LocalPath; }

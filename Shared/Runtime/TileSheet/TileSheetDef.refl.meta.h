@@ -19,6 +19,7 @@ struct StormReflTypeInfo<TileSheetDef>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "TileSheetDef"; }
   static constexpr auto GetNameHash() { return 0xF790F69F; }
+  static constexpr bool HasDefault() { return true; }
   static TileSheetDef & GetDefault() { static TileSheetDef def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

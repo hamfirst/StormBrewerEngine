@@ -9,8 +9,6 @@ CMAKE_DEPENDENT_OPTION(BUILD_TOOLS "Build Client" ON "NOT WEB AND NOT ANDROID AN
 CMAKE_DEPENDENT_OPTION(BUILD_SERVER "Build Server" ON "NOT WEB AND NOT ANDROID AND NOT IOS" OFF)
 CMAKE_DEPENDENT_OPTION(DEVELOPMENT_BUILD "Development Build" ON "BUILD_TOOLS" OFF)
 
-include_directories("${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/Tools")
-
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_DEBUG_POSTFIX "")
 
@@ -51,7 +49,7 @@ if(WEB)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --post-js ${PROJECT_SOURCE_DIR}/Web/Audio.js")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=\"['_main','_HandleStormWebrtcConnect','_HandleStormWebrtcMessage','_HandleStormWebrtcDisconnect','_HandleWebsocketConnect','_HandleWebsocketMessage','_HandleWebsocketClose','_HandleMusicLoaded','_HandleMusicLoadFailed','_HandleMusicFinished','_SetAccountName']\"")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s TOTAL_MEMORY=134217728 -s LINKABLE=1")
-  
+
 elseif(MSVC)
   add_definitions(-DUNICODE -D_UNICODE)
 
