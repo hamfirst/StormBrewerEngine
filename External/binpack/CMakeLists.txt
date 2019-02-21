@@ -1,24 +1,30 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/Tools ${PROJECT_SOURCE_DIR}/Shared ${PROJECT_SOURCE_DIR}/Project)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
+                    ${PROJECT_SOURCE_DIR}/External
+                    ${PROJECT_SOURCE_DIR}/StormTech
+                    ${PROJECT_SOURCE_DIR}/Tools
+                    ${PROJECT_SOURCE_DIR}/Shared
+                    ${PROJECT_SOURCE_DIR}/Project
+                    ${PROJECT_SOURCE_DIR}/Lobby)
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_binpack 
-            SkylineBinPack.cpp
-            MaxRectsBinPack.cpp
-            ShelfBinPack.cpp
             GuillotineBinPack.cpp
-            Rect.cpp
+            SkylineBinPack.cpp
             ShelfNextFitBinPack.cpp
+            ShelfBinPack.cpp
+            MaxRectsBinPack.cpp
+            Rect.cpp
             )
 
 set(GENERIC_HEADER_binpack 
-            ShelfBinPack.h
             GuillotineBinPack.h
-            Rect.h
             ShelfNextFitBinPack.h
-            SkylineBinPack.h
+            Rect.h
             MaxRectsBinPack.h
+            SkylineBinPack.h
+            ShelfBinPack.h
             )
 
 add_library(binpack STATIC ${GENERIC_SRC_binpack} ${GENERIC_HEADER_binpack})

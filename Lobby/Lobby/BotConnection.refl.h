@@ -1,6 +1,6 @@
 #pragma once
 
-#include <optional/optional.hpp>
+#include <optional>
 
 #include <HurricaneDDS/DDSDataObject.h>
 #include <HurricaneDDS/DDSConnectionId.h>
@@ -50,7 +50,7 @@ public:
 
 private:
   DDSNodeInterface m_Interface;
-  std::experimental::optional<DDSConnectionId> m_ConnectionId;
+  std::optional<DDSConnectionId> m_ConnectionId;
 
   bool m_Relocating;
 };

@@ -15,6 +15,7 @@ struct StormReflTypeInfo<UploadSettings>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UploadSettings"; }
   static constexpr auto GetNameHash() { return 0x602841D8; }
+  static constexpr bool HasDefault() { return true; }
   static UploadSettings & GetDefault() { static UploadSettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<UploadSettings>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x34DE83BA; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UploadSettings::m_DistServerAddress; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UploadSettings *>(obj); return &ptr->m_DistServerAddress; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<UploadSettings>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF62BF3F9; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UploadSettings::m_DistServerPort; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UploadSettings *>(obj); return &ptr->m_DistServerPort; }
@@ -103,6 +106,7 @@ struct StormReflTypeInfo<UploadSettings>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5248063F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UploadSettings::m_DistServerIdent; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UploadSettings *>(obj); return &ptr->m_DistServerIdent; }
@@ -129,6 +133,7 @@ struct StormReflTypeInfo<ServerSettings>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "ServerSettings"; }
   static constexpr auto GetNameHash() { return 0xD761408A; }
+  static constexpr bool HasDefault() { return true; }
   static ServerSettings & GetDefault() { static ServerSettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -169,6 +174,7 @@ struct StormReflTypeInfo<ServerSettings>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF62BF3F9; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &ServerSettings::m_DistServerPort; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerSettings *>(obj); return &ptr->m_DistServerPort; }
@@ -193,6 +199,7 @@ struct StormReflTypeInfo<ServerSettings>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5248063F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ServerSettings::m_DistServerIdent; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ServerSettings *>(obj); return &ptr->m_DistServerIdent; }

@@ -58,8 +58,8 @@ void BotEndpoint::HandleData(const char * data)
         auto node_info = m_EndpointInterface.GetNodeInfo(msg.relocation_key);
         if (node_info)
         {
-          std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-          BotMessageRelocate relocate{ "relocate", ip_addr, node_info->m_EndpointPorts[1], msg.relocation_key };
+          std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
+          BotMessageRelocate relocate{ "relocate", ip_addr, node_info->get().m_EndpointPorts[1], msg.relocation_key };
 
           SendPacket(relocate);
         }

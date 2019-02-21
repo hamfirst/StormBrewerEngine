@@ -75,6 +75,35 @@ struct StormReflTypeInfo<Channel>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Channel"; }
   static constexpr auto GetNameHash() { return 0x6D44B7DB; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<Channel *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const Channel *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<Channel *>(ptr);
+    if(typeid(Channel).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const Channel *>(ptr);
+    if(typeid(Channel).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -87,6 +116,8 @@ struct StormReflTypeInfo<Channel>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0xB97C8CFF; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Channel::m_State; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_State; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_State; }
 };
 
 template <typename Self>
@@ -108,6 +139,8 @@ struct StormReflTypeInfo<Channel>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0xFDE9DF80; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Channel::m_ChannelInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_ChannelInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_ChannelInfo; }
 };
 
 template <typename Self>
@@ -122,13 +155,15 @@ struct StormReflTypeInfo<Channel>::field_data<1, Self> : public StormReflTypeInf
 template <>
 struct StormReflTypeInfo<Channel>::field_data_static<2>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_ChannelSubscription"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2341156C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &Channel::m_ChannelSubscription; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_ChannelSubscription; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_ChannelSubscription; }
 };
 
 template <typename Self>
@@ -150,6 +185,8 @@ struct StormReflTypeInfo<Channel>::field_data_static<3>
   static constexpr unsigned GetTypeNameHash() { return 0x357FEF68; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &Channel::m_BuiltInChannelInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_BuiltInChannelInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_BuiltInChannelInfo; }
 };
 
 template <typename Self>
@@ -171,6 +208,8 @@ struct StormReflTypeInfo<Channel>::field_data_static<4>
   static constexpr unsigned GetTypeNameHash() { return 0x743E9D4A; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &Channel::m_SquadInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_SquadInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_SquadInfo; }
 };
 
 template <typename Self>
@@ -185,13 +224,15 @@ struct StormReflTypeInfo<Channel>::field_data<4, Self> : public StormReflTypeInf
 template <>
 struct StormReflTypeInfo<Channel>::field_data_static<5>
 {
-  using member_type = std::map<DDSKey, DDSKey>; // std::map<unsigned long long, unsigned long long, std::less<unsigned long long>, std::allocator<std::pair<const unsigned long long, unsigned long long> > >
+  using member_type = std::map<DDSKey, DDSKey>; // std::map<unsigned long, unsigned long, std::less<unsigned long>, std::allocator<std::pair<const unsigned long, unsigned long> > >
   static constexpr auto GetName() { return "m_MemberSubscriptionIds"; }
-  static constexpr auto GetType() { return "std::map<unsigned long long, unsigned long long, std::less<unsigned long long>, std::allocator<std::pair<const unsigned long long, unsigned long long> > >"; }
+  static constexpr auto GetType() { return "std::map<unsigned long, unsigned long, std::less<unsigned long>, std::allocator<std::pair<const unsigned long, unsigned long> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8369B12E; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD5EA0660; }
+  static constexpr unsigned GetTypeNameHash() { return 0x9D5C622D; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &Channel::m_MemberSubscriptionIds; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_MemberSubscriptionIds; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Channel *>(obj); return &ptr->m_MemberSubscriptionIds; }
 };
 
 template <typename Self>
@@ -206,6 +247,7 @@ struct StormReflTypeInfo<Channel>::field_data<5, Self> : public StormReflTypeInf
 template <>
 struct StormReflFuncInfo<Channel>
 {
+  using MyBase = void;
   static constexpr int funcs_n = 15;
   template <int N> struct func_data_static {};
 };
