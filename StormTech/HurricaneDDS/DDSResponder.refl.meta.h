@@ -15,6 +15,7 @@ struct StormReflTypeInfo<DDSResponderData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "DDSResponderData"; }
   static constexpr auto GetNameHash() { return 0x8B5B1335; }
+  static constexpr bool HasDefault() { return true; }
   static DDSResponderData & GetDefault() { static DDSResponderData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<DDSResponderData>::field_data_static<0>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x79726F4E; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &DDSResponderData::m_Key; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSResponderData *>(obj); return &ptr->m_Key; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<DDSResponderData>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2C75B4A5; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &DDSResponderData::m_ObjectType; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSResponderData *>(obj); return &ptr->m_ObjectType; }
@@ -103,6 +106,7 @@ struct StormReflTypeInfo<DDSResponderData>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x08249C71; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &DDSResponderData::m_ReturnMethodId; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSResponderData *>(obj); return &ptr->m_ReturnMethodId; }
@@ -127,6 +131,7 @@ struct StormReflTypeInfo<DDSResponderData>::field_data_static<3>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3D403BAD; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &DDSResponderData::m_ErrorMethodId; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSResponderData *>(obj); return &ptr->m_ErrorMethodId; }
@@ -151,6 +156,7 @@ struct StormReflTypeInfo<DDSResponderData>::field_data_static<4>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD8D32394; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &DDSResponderData::m_ReturnArg; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DDSResponderData *>(obj); return &ptr->m_ReturnArg; }

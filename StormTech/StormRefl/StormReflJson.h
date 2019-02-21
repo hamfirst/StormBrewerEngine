@@ -764,7 +764,10 @@ struct StormReflJson<T, typename std::enable_if<StormReflCheckReflectable<T>::va
 
             if (set_field == false)
             {
-              f.SetDefault();
+              if constexpr(StormReflHasDefault<T>::value)
+              {
+                f.SetDefault();
+              }
             }
           };
 

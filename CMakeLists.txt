@@ -5,7 +5,13 @@ project(StormBrewerEngine)
 include(CMake/StormBrewerEngine.cmake)
 include(CMake/cotire.cmake)
 
-include_directories("${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/Tools ${PROJECT_SOURCE_DIR}/Shared ${PROJECT_SOURCE_DIR}/Project")
+include_directories("${PROJECT_SOURCE_DIR}
+                     ${PROJECT_SOURCE_DIR}/StormTech
+                     ${PROJECT_SOURCE_DIR}/External
+                     ${PROJECT_SOURCE_DIR}/Tools
+                     ${PROJECT_SOURCE_DIR}/Shared
+                     ${PROJECT_SOURCE_DIR}/Project
+                     ${PROJECT_SOURCE_DIR}/Lobby")
 
 add_subdirectory(Project/Game)
 add_subdirectory(Project/GameShared)
@@ -21,7 +27,6 @@ option(EXPORT_DIST OFF)
 option(ENABLE_PERFORCE OFF)
 option(GENERATE_REFL ON)
 option(GENERATE_PCH ON)
-
 
 if(${ENABLE_PERFORCE})
   message("-- Enabling perforce")
@@ -258,6 +263,27 @@ if(BUILD_SERVER OR BUILD_TOOLS)
 
   set_target_properties(ServerExe PROPERTIES FOLDER Executable)
   set(OUTPUTS ${OUTPUTS} ServerExe)
+
+  add_subdirectory(Lobby/Lobby)
+  set_target_properties(Lobby PROPERTIES FOLDER Lobby)
+
+  add_executable(LobbyExe Dummy.cpp)
+
+  target_link_libraries(LobbyExe StormSocketCPP)
+  target_link_libraries(LobbyExe asio)
+  target_link_libraries(LobbyExe mbedtls)
+  target_link_libraries(LobbyExe mongoc)
+  target_link_libraries(LobbyExe libbson)
+  target_link_libraries(LobbyExe yajl)
+
+  if(UNIX)
+    target_link_libraries(LobbyExe stdc++fs)
+    target_link_libraries(LobbyExe -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+    target_link_libraries(LobbyExe rt m c dl)
+  endif()
+
+  set_target_properties(LobbyExe PROPERTIES FOLDER Executable)
+  set(OUTPUTS ${OUTPUTS} LobbyExe)
 endif()
 
 if(BUILD_TOOLS)
@@ -508,9 +534,12 @@ if(BUILD_TOOLS)
   set(OUTPUTS ${OUTPUTS} documentserver editor)
 endif()
 
+add_dependencies(StormData stormrefl)
+
 add_dependencies(Game Runtime)
 add_dependencies(GameShared Game)
 add_dependencies(Runtime Foundation)
+
 
 if(BUILD_CLIENT OR BUILD_TOOLS)
   add_dependencies(Engine Runtime)
@@ -519,6 +548,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 endif()
 
 if(BUILD_SERVER OR BUILD_TOOLS)
+  add_dependencies(HurricaneDDS StormData)
   add_dependencies(GameServer Game)
   add_dependencies(GameServerExe Game)
 endif()

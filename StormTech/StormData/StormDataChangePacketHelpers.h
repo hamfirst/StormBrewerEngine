@@ -4,6 +4,8 @@
 
 #include <hash/Hash.h>
 
+#include <cassert>
+
 #include "StormDataJson.h"
 #include "StormDataPath.h"
 #include "StormDataJsonUtil.h"
@@ -578,7 +580,14 @@ namespace StormDataChangePacketHelpers
     {
       if (*path == 0 || *path == ' ')
       {
-        field_data->SetDefault();
+        if constexpr(std::is_class_v<T> == false)
+        {
+          field_data->SetDefault();
+        }
+        else if constexpr (FieldData::HasDefault())
+        {
+          field_data->SetDefault();
+        }
         return true;
       }
 
@@ -600,7 +609,19 @@ namespace StormDataChangePacketHelpers
     {
       if (*path == 0 || *path == ' ')
       {
-        t = {};
+        if constexpr(std::is_trivially_constructible_v<T>)
+        {
+          t = {};
+        }
+        else if constexpr(StormReflHasDefault<T>::value)
+        {
+          t = StormReflTypeInfo<T>::GetDefault();
+        }
+        else
+        {
+          assert(false);
+        }
+
         return true;
       }
 

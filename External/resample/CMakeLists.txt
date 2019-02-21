@@ -1,22 +1,28 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/Tools ${PROJECT_SOURCE_DIR}/Shared ${PROJECT_SOURCE_DIR}/Project)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
+                    ${PROJECT_SOURCE_DIR}/External
+                    ${PROJECT_SOURCE_DIR}/StormTech
+                    ${PROJECT_SOURCE_DIR}/Tools
+                    ${PROJECT_SOURCE_DIR}/Shared
+                    ${PROJECT_SOURCE_DIR}/Project
+                    ${PROJECT_SOURCE_DIR}/Lobby)
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_resample 
-            stage_impl.c
-            smarc.c
             remez_lp.c
+            smarc.c
             filtering.c
             polyfilt.c
             multi_stage.c
+            stage_impl.c
             )
 
 set(GENERIC_HEADER_resample 
-            polyfilt.h
             multi_stage.h
-            smarc.h
             remez_lp.h
+            smarc.h
+            polyfilt.h
             filtering.h
             stage_impl.h
             )

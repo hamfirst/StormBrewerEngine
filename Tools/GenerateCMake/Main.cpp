@@ -317,7 +317,13 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   cmake_file.open(cmake_file_path.c_str());
 
   cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
-  cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/StormTech ${PROJECT_SOURCE_DIR}/Tools ${PROJECT_SOURCE_DIR}/Shared ${PROJECT_SOURCE_DIR}/Project)\n";
+  cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/External\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/StormTech\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Tools\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Shared\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Project\n";
+  cmake_file << "                    ${PROJECT_SOURCE_DIR}/Lobby)\n";
   cmake_file << "set(CMAKE_CXX_STANDARD 17)\n\n";
 
   if (options.m_PCH && files.m_PCHFile.size() > 0)

@@ -173,8 +173,8 @@ void UserEndpoint::HandleData(const char * data)
           auto node_info = m_EndpointInterface.GetNodeInfo(connection_key);
           if (node_info)
           {
-            std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-            UserMessageRelocate relocate{ "relocate", ip_addr, node_info->m_EndpointPorts[0], connection_key };
+            std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
+            UserMessageRelocate relocate{ "relocate", ip_addr, node_info->get().m_EndpointPorts[0], connection_key };
             m_EndpointInterface.Send(relocate);
           }
           else

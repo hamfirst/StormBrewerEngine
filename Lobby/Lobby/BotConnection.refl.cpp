@@ -60,8 +60,8 @@ void BotConnection::PreMoveObject()
   auto node_info = m_Interface.GetNodeInfo(m_Interface.GetLocalKey());
   if (node_info)
   {
-    std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-    BotMessageRelocate relocate{ "relocate", ip_addr, node_info->m_EndpointPorts[0], m_Interface.GetLocalKey() };
+    std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
+    BotMessageRelocate relocate{ "relocate", ip_addr, node_info->get().m_EndpointPorts[0], m_Interface.GetLocalKey() };
     SendData(StormReflEncodeJson(relocate));
     m_Relocating = true;
   }

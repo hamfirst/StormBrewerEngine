@@ -116,3 +116,4 @@ struct SquadInfo
   RSparseList<SquadApplication> m_Applicants;
   RSparseList<SquadApplication> m_Requests;
 };
+
