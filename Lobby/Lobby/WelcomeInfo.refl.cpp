@@ -6,7 +6,6 @@
 #include <StormData/StormDataJson.h>
 
 #include "WelcomeInfo.refl.meta.h"
-#include "ProjectSettings.h"
 
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);

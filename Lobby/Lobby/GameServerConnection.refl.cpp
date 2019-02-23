@@ -963,8 +963,8 @@ void GameServerConnection::PreMoveObject()
   auto node_info = m_Interface.GetNodeInfo(m_Interface.GetLocalKey());
   if (node_info)
   {
-    std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-    GameServerRelocate relocate{ ip_addr, node_info->m_EndpointPorts[1], m_Interface.GetLocalKey() };
+    std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
+    GameServerRelocate relocate{ ip_addr, node_info->get().m_EndpointPorts[1], m_Interface.GetLocalKey() };
     SendPacket(relocate);
     m_Relocating = true;
   }

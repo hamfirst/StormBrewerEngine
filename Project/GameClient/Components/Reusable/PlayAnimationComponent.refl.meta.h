@@ -44,6 +44,7 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayAnimationComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x35DD3172; }
+  static constexpr bool HasDefault() { return true; }
   static PlayAnimationComponentInitData & GetDefault() { static PlayAnimationComponentInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -88,6 +89,7 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<0 + 
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5172A5C7; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_Animation; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_Animation; }
@@ -112,6 +114,7 @@ struct StormReflTypeInfo<PlayAnimationComponentInitData>::field_data_static<1 + 
   static constexpr auto GetType() { return "REnum<PlayAnimationComponentLoopMode>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7F78E876; }
   static constexpr unsigned GetTypeNameHash() { return 0xC0607559; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &PlayAnimationComponentInitData::m_LoopMode; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayAnimationComponentInitData *>(obj); return &ptr->m_LoopMode; }

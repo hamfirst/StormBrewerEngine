@@ -4,6 +4,9 @@
 #include "BotConnection.refl.meta.h"
 #include "BotMessages.refl.meta.h"
 
+
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
+
 BotEndpoint::BotEndpoint(const DDSEndpointInterface & endpoint_interface) :
   m_State(EndpointState::kIdentify),
   m_EndpointInterface(endpoint_interface),
@@ -114,3 +117,5 @@ void BotEndpoint::SendPacket(const T & t)
 
   m_EndpointInterface.SendData(packet_data);
 }
+
+#endif

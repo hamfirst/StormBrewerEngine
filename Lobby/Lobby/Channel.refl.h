@@ -7,6 +7,8 @@
 #include "Squad.refl.h"
 #include "BuiltInChannel.refl.h"
 
+#ifdef ENABLE_CHANNELS
+
 enum STORM_REFL_ENUM class ChannelState
 {
   kCheckingForBuiltIn,
@@ -72,3 +74,5 @@ public:
 private:
   DDSNodeInterface m_Interface;
 };
+
+#ifdef ENABLE_CHANNELS

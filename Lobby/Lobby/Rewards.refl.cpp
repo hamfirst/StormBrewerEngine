@@ -6,7 +6,8 @@
 #include <StormData/StormDataJson.h>
 
 #include "Rewards.refl.meta.h"
-#include "ProjectSettings.h"
+
+#ifdef ENABLE_REWARDS
 
 bool g_LoadRewards = false;
 
@@ -79,3 +80,5 @@ void Rewards::FetchRewards(DDSResponder & responder)
 {
   DDSResponderCall(responder, StormReflEncodeJson(m_Info));
 }
+
+#endif

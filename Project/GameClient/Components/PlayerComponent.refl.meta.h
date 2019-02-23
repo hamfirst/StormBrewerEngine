@@ -19,6 +19,7 @@ struct StormReflTypeInfo<PlayerComponentInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "PlayerComponentInitData"; }
   static constexpr auto GetNameHash() { return 0x274103D2; }
+  static constexpr bool HasDefault() { return true; }
   static PlayerComponentInitData & GetDefault() { static PlayerComponentInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

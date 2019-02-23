@@ -96,8 +96,8 @@ void GameServerEndpoint::HandleData(const char * data)
           auto node_info = m_EndpointInterface.GetNodeInfo(msg.m_RelocationKey);
           if (node_info)
           {
-            std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-            GameServerRelocate relocate{ ip_addr, node_info->m_EndpointPorts[1], msg.m_RelocationKey };
+            std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
+            GameServerRelocate relocate{ ip_addr, node_info->get().m_EndpointPorts[1], msg.m_RelocationKey };
 
             SendPacket(relocate);
           }

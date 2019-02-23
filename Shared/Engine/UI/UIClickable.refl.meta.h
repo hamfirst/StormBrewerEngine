@@ -56,6 +56,7 @@ struct StormReflTypeInfo<UIClickable>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UIClickable"; }
   static constexpr auto GetNameHash() { return 0x226F6A1C; }
+  static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
@@ -95,6 +96,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<0>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, int, int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06A110B7; }
   static constexpr unsigned GetTypeNameHash() { return 0xA7CB28B9; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnStateChange; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnStateChange; }
@@ -118,6 +120,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<1>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, float>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x605DA97D; }
   static constexpr unsigned GetTypeNameHash() { return 0x9F54DD16; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnUpdate; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnUpdate; }
@@ -141,6 +144,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<2>
   static constexpr auto GetType() { return "ScriptClassDelegate<void>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x984A1D1B; }
   static constexpr unsigned GetTypeNameHash() { return 0x3E032AB0; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnDraw; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnDraw; }
@@ -164,6 +168,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<3>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, int, int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0C844269; }
   static constexpr unsigned GetTypeNameHash() { return 0xA7CB28B9; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnMouseEnter; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnMouseEnter; }
@@ -187,6 +192,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<4>
   static constexpr auto GetType() { return "ScriptClassDelegate<void>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2E4402D7; }
   static constexpr unsigned GetTypeNameHash() { return 0x3E032AB0; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnMouseLeave; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnMouseLeave; }
@@ -210,6 +216,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<5>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, int, int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xCB7301C5; }
   static constexpr unsigned GetTypeNameHash() { return 0xA7CB28B9; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnMouseMove; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnMouseMove; }
@@ -233,6 +240,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<6>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x73C65FA2; }
   static constexpr unsigned GetTypeNameHash() { return 0x5B636619; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnMouseScroll; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnMouseScroll; }
@@ -256,6 +264,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<7>
   static constexpr auto GetType() { return "ScriptClassDelegate<void, int, int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA0C4AEFD; }
   static constexpr unsigned GetTypeNameHash() { return 0xA7CB28B9; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &UIClickable::OnClick; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->OnClick; }
@@ -279,6 +288,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<8>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9F448218; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Enabled; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Enabled; }
@@ -302,6 +312,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<9>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0D12BB59; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Clip; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Clip; }
@@ -325,6 +336,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<10>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB7B2364B; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &UIClickable::X; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->X; }
@@ -348,6 +360,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<11>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC0B506DD; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Y; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Y; }
@@ -371,6 +384,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<12>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4DDB6A2B; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 12; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Width; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Width; }
@@ -394,6 +408,7 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<13>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF2E1E039; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 13; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Height; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Height; }

@@ -15,7 +15,37 @@ struct StormReflTypeInfo<WelcomeInfoTab>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "WelcomeInfoTab"; }
   static constexpr auto GetNameHash() { return 0x53B1D070; }
+  static constexpr bool HasDefault() { return true; }
   static WelcomeInfoTab & GetDefault() { static WelcomeInfoTab def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<WelcomeInfoTab *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const WelcomeInfoTab *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<WelcomeInfoTab *>(ptr);
+    if(typeid(WelcomeInfoTab).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const WelcomeInfoTab *>(ptr);
+    if(typeid(WelcomeInfoTab).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -26,8 +56,11 @@ struct StormReflTypeInfo<WelcomeInfoTab>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &WelcomeInfoTab::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<WelcomeInfoTab *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const WelcomeInfoTab *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -48,8 +81,11 @@ struct StormReflTypeInfo<WelcomeInfoTab>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF514A448; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &WelcomeInfoTab::m_Info; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<WelcomeInfoTab *>(obj); return &ptr->m_Info; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const WelcomeInfoTab *>(obj); return &ptr->m_Info; }
 };
 
 template <typename Self>
@@ -72,6 +108,36 @@ struct StormReflTypeInfo<WelcomeInfo>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "WelcomeInfo"; }
   static constexpr auto GetNameHash() { return 0x3B46FA57; }
+  static constexpr bool HasDefault() { return false; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<WelcomeInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const WelcomeInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<WelcomeInfo *>(ptr);
+    if(typeid(WelcomeInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const WelcomeInfo *>(ptr);
+    if(typeid(WelcomeInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -82,8 +148,11 @@ struct StormReflTypeInfo<WelcomeInfo>::field_data_static<0>
   static constexpr auto GetType() { return "RMergeList<WelcomeInfoTab>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2C56F57C; }
   static constexpr unsigned GetTypeNameHash() { return 0xAA5159C3; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &WelcomeInfo::m_Tabs; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<WelcomeInfo *>(obj); return &ptr->m_Tabs; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const WelcomeInfo *>(obj); return &ptr->m_Tabs; }
 };
 
 template <typename Self>
@@ -98,6 +167,7 @@ struct StormReflTypeInfo<WelcomeInfo>::field_data<0, Self> : public StormReflTyp
 template <>
 struct StormReflFuncInfo<WelcomeInfo>
 {
+  using MyBase = void;
   static constexpr int funcs_n = 3;
   template <int N> struct func_data_static {};
 };

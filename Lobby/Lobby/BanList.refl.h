@@ -2,6 +2,10 @@
 
 #include <HurricaneDDS/DDSDataObject.h>
 
+#include "LobbyConfig.h"
+
+#ifdef ENABLE_BAN_LIST
+
 enum STORM_REFL_ENUM class BanType
 {
   kRemoteIp,
@@ -48,3 +52,5 @@ public:
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
 };
+
+#endif

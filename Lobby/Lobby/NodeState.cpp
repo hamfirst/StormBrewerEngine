@@ -6,7 +6,7 @@
 #include "GameServerEndpoint.h"
 #include "BotEndpoint.h"
 #include "SteamOpenIdValidatorPage.h"
-#include "ProjectSettings.h"
+#include "LobbyConfig.h"
 
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSDatabaseConnectionPool.h>

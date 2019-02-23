@@ -7,6 +7,9 @@
 #include <HurricaneDDS/DDSThrottle.refl.h>
 
 #include "SharedTypes.refl.h"
+#include "LobbyConfig.h"
+
+#ifdef ENABLE_SQUADS
 
 static const int kSquadNonMember = 0;
 static const int kSquadHonoraryMember = 1;
@@ -123,3 +126,5 @@ private:
   STORM_REFL_IGNORE DDSNodeInterface m_Interface;
   STORM_REFL_IGNORE SquadDatabaseObject & m_Data;
 };
+
+#endif

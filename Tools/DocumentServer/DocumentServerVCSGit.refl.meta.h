@@ -19,6 +19,7 @@ struct StormReflTypeInfo<DocumentServerVCSGitInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "DocumentServerVCSGitInitData"; }
   static constexpr auto GetNameHash() { return 0x587148DA; }
+  static constexpr bool HasDefault() { return true; }
   static DocumentServerVCSGitInitData & GetDefault() { static DocumentServerVCSGitInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -63,6 +64,7 @@ struct StormReflTypeInfo<DocumentServerVCSGitInitData>::field_data_static<0 + St
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x700D1773; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSGitInitData::RootPath; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSGitInitData *>(obj); return &ptr->RootPath; }

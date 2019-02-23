@@ -20,7 +20,7 @@
 #include "Rewards.refl.meta.h"
 
 #include "CommandParse.h"
-#include "Steam.h"
+#include "LobbyConfig.h"
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserPersistent);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserLocalData);

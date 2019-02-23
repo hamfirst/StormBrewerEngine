@@ -5,7 +5,8 @@
 #include <StormData/StormDataJson.h>
 
 #include "BanList.refl.meta.h"
-#include "ProjectSettings.h"
+
+#ifdef ENABLE_BAN_LIST
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(BanListElement);
 
@@ -203,3 +204,5 @@ void BanList::CleanupExpiredBans()
     SaveBanList();
   }
 }
+
+#endif

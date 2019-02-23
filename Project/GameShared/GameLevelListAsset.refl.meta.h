@@ -16,6 +16,7 @@ struct StormReflTypeInfo<GameLevelInfo>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameLevelInfo"; }
   static constexpr auto GetNameHash() { return 0xB1E21B10; }
+  static constexpr bool HasDefault() { return true; }
   static GameLevelInfo & GetDefault() { static GameLevelInfo def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -56,6 +57,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x35C91E10; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_Path; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_Path; }
@@ -80,6 +82,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_Name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_Name; }
@@ -104,6 +107,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x88BB47C2; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_Description; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_Description; }
@@ -128,6 +132,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<3>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3CDD28FB; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MapImage; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MapImage; }
@@ -152,6 +157,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<4>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0D18B4FD; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxPlayers; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxPlayers; }
@@ -176,6 +182,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<5>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0AEB37A7; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxPlayersDefault; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxPlayersDefault; }
@@ -200,6 +207,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<6>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06171818; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxTime; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxTime; }
@@ -224,6 +232,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<7>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60FC7F52; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxTimeDefault; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxTimeDefault; }
@@ -248,6 +257,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<8>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x272A9998; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxScore; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxScore; }
@@ -272,6 +282,7 @@ struct StormReflTypeInfo<GameLevelInfo>::field_data_static<9>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7C39E6B1; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &GameLevelInfo::m_MaxScoreDefault; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelInfo *>(obj); return &ptr->m_MaxScoreDefault; }
@@ -298,6 +309,7 @@ struct StormReflTypeInfo<GameLevelListAsset>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameLevelListAsset"; }
   static constexpr auto GetNameHash() { return 0x6F8BA414; }
+  static constexpr bool HasDefault() { return true; }
   static GameLevelListAsset & GetDefault() { static GameLevelListAsset def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -338,6 +350,7 @@ struct StormReflTypeInfo<GameLevelListAsset>::field_data_static<0>
   static constexpr auto GetType() { return "std::vector<GameLevelInfo, std::allocator<GameLevelInfo> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD21533D1; }
   static constexpr unsigned GetTypeNameHash() { return 0x25C8650B; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameLevelListAsset::m_Levels; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameLevelListAsset *>(obj); return &ptr->m_Levels; }

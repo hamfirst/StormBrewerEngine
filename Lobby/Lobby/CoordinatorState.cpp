@@ -1,7 +1,6 @@
 
 #include "CoordinatorState.h"
 #include "DataTypes.h"
-#include "ProjectSettings.h"
 
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSDatabaseBootstrap.h>

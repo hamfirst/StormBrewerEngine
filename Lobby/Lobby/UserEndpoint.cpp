@@ -6,7 +6,7 @@
 #include <StormSockets/StormSha1.h>
 
 #include "UserEndpoint.h"
-#include "Steam.h"
+#include "LobbyConfig.h"
 
 #include "UserConnection.refl.meta.h"
 #include "UserConnectionMessages.refl.meta.h"

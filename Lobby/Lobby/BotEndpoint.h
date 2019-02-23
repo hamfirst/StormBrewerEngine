@@ -3,6 +3,9 @@
 #include <HurricaneDDS/DDSEndpointInterface.h>
 
 #include "UserConnectionMessages.refl.h"
+#include "LobbyConfig.h"
+
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 
 class BotEndpoint
 {
@@ -41,3 +44,5 @@ private:
   DDSDeferredCallback m_Callback;
 
 };
+
+#endif

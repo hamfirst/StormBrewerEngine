@@ -10,6 +10,8 @@
 #include "Bot.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
 
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
+
 BotConnection::BotConnection(DDSNodeInterface node_interface) :
   m_Interface(node_interface), m_State(BotConnectionState::kWaitingForConnection), m_Error(false), m_Relocating(false)
 {
@@ -207,3 +209,5 @@ void BotConnection::SendPacket(const T & t)
 
   SendData(packet_data);
 }
+
+#endif

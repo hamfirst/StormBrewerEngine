@@ -48,6 +48,36 @@ struct StormReflTypeInfo<BotConnection>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotConnection"; }
   static constexpr auto GetNameHash() { return 0x43B8A8AA; }
+  static constexpr bool HasDefault() { return false; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<BotConnection *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotConnection *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<BotConnection *>(ptr);
+    if(typeid(BotConnection).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const BotConnection *>(ptr);
+    if(typeid(BotConnection).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -58,8 +88,11 @@ struct StormReflTypeInfo<BotConnection>::field_data_static<0>
   static constexpr auto GetType() { return "BotConnectionState"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2EA5429B; }
   static constexpr unsigned GetTypeNameHash() { return 0xC003F84C; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotConnection::m_State; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotConnection *>(obj); return &ptr->m_State; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotConnection *>(obj); return &ptr->m_State; }
 };
 
 template <typename Self>
@@ -79,8 +112,11 @@ struct StormReflTypeInfo<BotConnection>::field_data_static<1>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0EB2C11; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotConnection::m_Error; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotConnection *>(obj); return &ptr->m_Error; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotConnection *>(obj); return &ptr->m_Error; }
 };
 
 template <typename Self>
@@ -100,8 +136,11 @@ struct StormReflTypeInfo<BotConnection>::field_data_static<2>
   static constexpr auto GetType() { return "std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2C42FDAA; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotConnection::m_PendingMessages; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotConnection *>(obj); return &ptr->m_PendingMessages; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotConnection *>(obj); return &ptr->m_PendingMessages; }
 };
 
 template <typename Self>
@@ -116,13 +155,16 @@ struct StormReflTypeInfo<BotConnection>::field_data<2, Self> : public StormReflT
 template <>
 struct StormReflTypeInfo<BotConnection>::field_data_static<3>
 {
-  using member_type = DDSKey; // unsigned long long
+  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_BotId"; }
-  static constexpr auto GetType() { return "unsigned long long"; }
+  static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF33F3584; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1EF85FE5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotConnection::m_BotId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BotConnection *>(obj); return &ptr->m_BotId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BotConnection *>(obj); return &ptr->m_BotId; }
 };
 
 template <typename Self>
@@ -137,6 +179,7 @@ struct StormReflTypeInfo<BotConnection>::field_data<3, Self> : public StormReflT
 template <>
 struct StormReflFuncInfo<BotConnection>
 {
+  using MyBase = void;
   static constexpr int funcs_n = 5;
   template <int N> struct func_data_static {};
 };

@@ -15,7 +15,37 @@ struct StormReflTypeInfo<GameInstanceData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameInstanceData"; }
   static constexpr auto GetNameHash() { return 0xC7A440E6; }
+  static constexpr bool HasDefault() { return true; }
   static GameInstanceData & GetDefault() { static GameInstanceData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameInstanceData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameInstanceData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameInstanceData *>(ptr);
+    if(typeid(GameInstanceData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameInstanceData *>(ptr);
+    if(typeid(GameInstanceData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -26,8 +56,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x60BEEB19; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_Name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInstanceData *>(obj); return &ptr->m_Name; }
 };
 
 template <typename Self>
@@ -48,8 +81,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x604F6E5C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Map; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_Map; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInstanceData *>(obj); return &ptr->m_Map; }
 };
 
 template <typename Self>
@@ -70,8 +106,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x92EF9F49; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_TimeLimit; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_TimeLimit; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInstanceData *>(obj); return &ptr->m_TimeLimit; }
 };
 
 template <typename Self>
@@ -92,8 +131,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<3>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x43D3DFC4; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_ScoreLimit; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_ScoreLimit; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInstanceData *>(obj); return &ptr->m_ScoreLimit; }
 };
 
 template <typename Self>
@@ -114,8 +156,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<4>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA437E0A8; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_PlayerLimit; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_PlayerLimit; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInstanceData *>(obj); return &ptr->m_PlayerLimit; }
 };
 
 template <typename Self>
@@ -138,7 +183,37 @@ struct StormReflTypeInfo<GameStatsData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameStatsData"; }
   static constexpr auto GetNameHash() { return 0x9CB3161C; }
+  static constexpr bool HasDefault() { return true; }
   static GameStatsData & GetDefault() { static GameStatsData def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameStatsData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameStatsData *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameStatsData *>(ptr);
+    if(typeid(GameStatsData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameStatsData *>(ptr);
+    if(typeid(GameStatsData).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -149,8 +224,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFB1633C6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_GamesPlayed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_GamesPlayed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_GamesPlayed; }
 };
 
 template <typename Self>
@@ -171,8 +249,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD94F0D7D; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_GamesWon; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_GamesWon; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_GamesWon; }
 };
 
 template <typename Self>
@@ -193,8 +274,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x34993876; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_UBGoals; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_UBGoals; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_UBGoals; }
 };
 
 template <typename Self>
@@ -215,8 +299,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<3>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA8DB1FF6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_UBAssists; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_UBAssists; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_UBAssists; }
 };
 
 template <typename Self>
@@ -237,8 +324,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<4>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF530AF0C; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_DBGoals; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_DBGoals; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_DBGoals; }
 };
 
 template <typename Self>
@@ -259,8 +349,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<5>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x136049C4; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_DBAssists; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_DBAssists; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_DBAssists; }
 };
 
 template <typename Self>
@@ -281,8 +374,11 @@ struct StormReflTypeInfo<GameStatsData>::field_data_static<6>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2E922E2F; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &GameStatsData::m_TimePlayed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStatsData *>(obj); return &ptr->m_TimePlayed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStatsData *>(obj); return &ptr->m_TimePlayed; }
 };
 
 template <typename Self>
@@ -305,7 +401,37 @@ struct StormReflTypeInfo<UserXPGain>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UserXPGain"; }
   static constexpr auto GetNameHash() { return 0x1F48ADC4; }
+  static constexpr bool HasDefault() { return true; }
   static UserXPGain & GetDefault() { static UserXPGain def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UserXPGain *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserXPGain *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UserXPGain *>(ptr);
+    if(typeid(UserXPGain).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserXPGain *>(ptr);
+    if(typeid(UserXPGain).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -316,8 +442,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4A128E4F; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_Goals; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_Goals; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_Goals; }
 };
 
 template <typename Self>
@@ -338,8 +467,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8609B567; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_GoalsCount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_GoalsCount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_GoalsCount; }
 };
 
 template <typename Self>
@@ -360,8 +492,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x845DFA7E; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_Assists; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_Assists; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_Assists; }
 };
 
 template <typename Self>
@@ -382,8 +517,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<3>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD0AA23A7; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_AssistsCount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_AssistsCount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_AssistsCount; }
 };
 
 template <typename Self>
@@ -404,8 +542,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<4>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD94F0D7D; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_GamesWon; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_GamesWon; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_GamesWon; }
 };
 
 template <typename Self>
@@ -426,8 +567,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<5>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9C0C236E; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_GamesWonCount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_GamesWonCount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_GamesWonCount; }
 };
 
 template <typename Self>
@@ -448,8 +592,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<6>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFB1633C6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_GamesPlayed; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_GamesPlayed; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_GamesPlayed; }
 };
 
 template <typename Self>
@@ -470,8 +617,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<7>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2F30C6E6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_GamesPlayedCount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_GamesPlayedCount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_GamesPlayedCount; }
 };
 
 template <typename Self>
@@ -492,8 +642,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<8>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x62CE8E45; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_Gifted; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_Gifted; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_Gifted; }
 };
 
 template <typename Self>
@@ -514,8 +667,11 @@ struct StormReflTypeInfo<UserXPGain>::field_data_static<9>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x96E11FE7; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &UserXPGain::m_XP; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserXPGain *>(obj); return &ptr->m_XP; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserXPGain *>(obj); return &ptr->m_XP; }
 };
 
 template <typename Self>
@@ -538,7 +694,37 @@ struct StormReflTypeInfo<UserRewards>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UserRewards"; }
   static constexpr auto GetNameHash() { return 0x3C6254C2; }
+  static constexpr bool HasDefault() { return true; }
   static UserRewards & GetDefault() { static UserRewards def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UserRewards *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserRewards *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UserRewards *>(ptr);
+    if(typeid(UserRewards).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserRewards *>(ptr);
+    if(typeid(UserRewards).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -549,8 +735,11 @@ struct StormReflTypeInfo<UserRewards>::field_data_static<0>
   static constexpr auto GetType() { return "std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x875CC01E; }
   static constexpr unsigned GetTypeNameHash() { return 0xE3DEFE4C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Icons; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserRewards *>(obj); return &ptr->m_Icons; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserRewards *>(obj); return &ptr->m_Icons; }
 };
 
 template <typename Self>
@@ -571,8 +760,11 @@ struct StormReflTypeInfo<UserRewards>::field_data_static<1>
   static constexpr auto GetType() { return "std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8C7A166B; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Titles; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserRewards *>(obj); return &ptr->m_Titles; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserRewards *>(obj); return &ptr->m_Titles; }
 };
 
 template <typename Self>
@@ -593,8 +785,11 @@ struct StormReflTypeInfo<UserRewards>::field_data_static<2>
   static constexpr auto GetType() { return "std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int>, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6E23B591; }
   static constexpr unsigned GetTypeNameHash() { return 0xC0C7027A; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Celebrations; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserRewards *>(obj); return &ptr->m_Celebrations; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserRewards *>(obj); return &ptr->m_Celebrations; }
 };
 
 template <typename Self>
@@ -615,8 +810,11 @@ struct StormReflTypeInfo<UserRewards>::field_data_static<3>
   static constexpr auto GetType() { return "std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x707647AC; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_AutoJoins; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserRewards *>(obj); return &ptr->m_AutoJoins; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserRewards *>(obj); return &ptr->m_AutoJoins; }
 };
 
 template <typename Self>

@@ -52,9 +52,7 @@ set(GENERIC_HEADER_Lobby
             GameServerEndpoint.h
             CommandParse.h
             DataTypes.h
-            Steam.h
-            ProjectSettings.h
-            GameServerConnection.refl.meta.h
+  GameServerConnection.refl.meta.h
             Squad.refl.h
             Rewards.refl.h
             BotMessages.refl.meta.h

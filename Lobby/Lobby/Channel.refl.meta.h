@@ -75,6 +75,7 @@ struct StormReflTypeInfo<Channel>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Channel"; }
   static constexpr auto GetNameHash() { return 0x6D44B7DB; }
+  static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
@@ -114,6 +115,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<0>
   static constexpr auto GetType() { return "REnum<ChannelState>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2EA5429B; }
   static constexpr unsigned GetTypeNameHash() { return 0xB97C8CFF; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Channel::m_State; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_State; }
@@ -137,6 +139,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<1>
   static constexpr auto GetType() { return "ChannelInfo"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9E2A57B3; }
   static constexpr unsigned GetTypeNameHash() { return 0xFDE9DF80; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &Channel::m_ChannelInfo; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_ChannelInfo; }
@@ -160,6 +163,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<2>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2341156C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &Channel::m_ChannelSubscription; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_ChannelSubscription; }
@@ -183,6 +187,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<3>
   static constexpr auto GetType() { return "BuiltInChannelInfo"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD9310CF4; }
   static constexpr unsigned GetTypeNameHash() { return 0x357FEF68; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &Channel::m_BuiltInChannelInfo; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_BuiltInChannelInfo; }
@@ -206,6 +211,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<4>
   static constexpr auto GetType() { return "SquadDatabaseInfo"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC848E820; }
   static constexpr unsigned GetTypeNameHash() { return 0x743E9D4A; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &Channel::m_SquadInfo; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_SquadInfo; }
@@ -229,6 +235,7 @@ struct StormReflTypeInfo<Channel>::field_data_static<5>
   static constexpr auto GetType() { return "std::map<unsigned long, unsigned long, std::less<unsigned long>, std::allocator<std::pair<const unsigned long, unsigned long> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8369B12E; }
   static constexpr unsigned GetTypeNameHash() { return 0x9D5C622D; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &Channel::m_MemberSubscriptionIds; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Channel *>(obj); return &ptr->m_MemberSubscriptionIds; }

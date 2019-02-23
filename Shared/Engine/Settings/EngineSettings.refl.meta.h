@@ -15,6 +15,7 @@ struct StormReflTypeInfo<EngineSettings>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "EngineSettings"; }
   static constexpr auto GetNameHash() { return 0x372CF65D; }
+  static constexpr bool HasDefault() { return true; }
   static EngineSettings & GetDefault() { static EngineSettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D4B1025; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_AssetLoadQueueSize; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_AssetLoadQueueSize; }
@@ -79,6 +81,7 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<1>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x141FA100; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_AssetLoadThreads; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_AssetLoadThreads; }
@@ -103,6 +106,7 @@ struct StormReflTypeInfo<EngineSettings>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2011866D; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &EngineSettings::m_FontCacheSize; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<EngineSettings *>(obj); return &ptr->m_FontCacheSize; }

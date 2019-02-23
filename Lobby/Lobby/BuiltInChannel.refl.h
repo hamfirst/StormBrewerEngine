@@ -3,6 +3,9 @@
 #include <HurricaneDDS/DDSDataObject.h>
 
 #include "SharedTypes.refl.h"
+#include "LobbyConfig.h"
+
+#ifdef ENABLE_CHANNELS
 
 struct BuiltInChannelInfo
 {
@@ -36,3 +39,5 @@ private:
   STORM_REFL_IGNORE DDSNodeInterface m_Interface;
   STORM_REFL_IGNORE BuiltInChannelDatabaseObject & m_Data;
 };
+
+#endif

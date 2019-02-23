@@ -15,6 +15,7 @@ struct StormReflTypeInfo<UITextInput>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "UITextInput"; }
   static constexpr auto GetNameHash() { return 0x278B6910; }
+  static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
@@ -54,6 +55,7 @@ struct StormReflTypeInfo<UITextInput>::field_data_static<0>
   static constexpr auto GetType() { return "ScriptClassDelegate<bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF3892A1B; }
   static constexpr unsigned GetTypeNameHash() { return 0x9B8BB67A; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UITextInput::IsInvalidInput; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UITextInput *>(obj); return &ptr->IsInvalidInput; }
@@ -77,6 +79,7 @@ struct StormReflTypeInfo<UITextInput>::field_data_static<1>
   static constexpr auto GetType() { return "ScriptClassDelegate<void>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA342ACB3; }
   static constexpr unsigned GetTypeNameHash() { return 0x3E032AB0; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UITextInput::OnEnter; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UITextInput *>(obj); return &ptr->OnEnter; }

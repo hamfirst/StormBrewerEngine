@@ -15,6 +15,7 @@ struct StormReflTypeInfo<GameClientSaveData>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "GameClientSaveData"; }
   static constexpr auto GetNameHash() { return 0x80854010; }
+  static constexpr bool HasDefault() { return true; }
   static GameClientSaveData & GetDefault() { static GameClientSaveData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -55,6 +56,7 @@ struct StormReflTypeInfo<GameClientSaveData>::field_data_static<0>
   static constexpr auto GetType() { return "bool"; }
   static constexpr unsigned GetFieldNameHash() { return 0x49A5AD55; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameClientSaveData::m_WatchedTutorial; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameClientSaveData *>(obj); return &ptr->m_WatchedTutorial; }

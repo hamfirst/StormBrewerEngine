@@ -16,7 +16,37 @@ struct StormReflTypeInfo<RewardsRank>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "RewardsRank"; }
   static constexpr auto GetNameHash() { return 0xABF79A92; }
+  static constexpr bool HasDefault() { return true; }
   static RewardsRank & GetDefault() { static RewardsRank def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<RewardsRank *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const RewardsRank *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<RewardsRank *>(ptr);
+    if(typeid(RewardsRank).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const RewardsRank *>(ptr);
+    if(typeid(RewardsRank).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -27,8 +57,11 @@ struct StormReflTypeInfo<RewardsRank>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x96E11FE7; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &RewardsRank::m_XP; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsRank *>(obj); return &ptr->m_XP; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsRank *>(obj); return &ptr->m_XP; }
 };
 
 template <typename Self>
@@ -49,8 +82,11 @@ struct StormReflTypeInfo<RewardsRank>::field_data_static<1>
   static constexpr auto GetType() { return "UserRewards"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7CD06BE2; }
   static constexpr unsigned GetTypeNameHash() { return 0x3C6254C2; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &RewardsRank::m_Rewards; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsRank *>(obj); return &ptr->m_Rewards; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsRank *>(obj); return &ptr->m_Rewards; }
 };
 
 template <typename Self>
@@ -73,7 +109,37 @@ struct StormReflTypeInfo<RewardsDatabaseObj>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "RewardsDatabaseObj"; }
   static constexpr auto GetNameHash() { return 0x3BB4122B; }
+  static constexpr bool HasDefault() { return true; }
   static RewardsDatabaseObj & GetDefault() { static RewardsDatabaseObj def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<RewardsDatabaseObj *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const RewardsDatabaseObj *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<RewardsDatabaseObj *>(ptr);
+    if(typeid(RewardsDatabaseObj).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const RewardsDatabaseObj *>(ptr);
+    if(typeid(RewardsDatabaseObj).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -84,8 +150,11 @@ struct StormReflTypeInfo<RewardsDatabaseObj>::field_data_static<0>
   static constexpr auto GetType() { return "std::vector<RewardsRank, std::allocator<RewardsRank> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x46D03074; }
   static constexpr unsigned GetTypeNameHash() { return 0xC502B46C; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &RewardsDatabaseObj::m_Ranks; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsDatabaseObj *>(obj); return &ptr->m_Ranks; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsDatabaseObj *>(obj); return &ptr->m_Ranks; }
 };
 
 template <typename Self>
@@ -108,6 +177,36 @@ struct StormReflTypeInfo<Rewards>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Rewards"; }
   static constexpr auto GetNameHash() { return 0x269F27AB; }
+  static constexpr bool HasDefault() { return false; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<Rewards *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const Rewards *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<Rewards *>(ptr);
+    if(typeid(Rewards).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const Rewards *>(ptr);
+    if(typeid(Rewards).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
@@ -118,8 +217,11 @@ struct StormReflTypeInfo<Rewards>::field_data_static<0>
   static constexpr auto GetType() { return "RewardsDatabaseObj"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF514A448; }
   static constexpr unsigned GetTypeNameHash() { return 0x3BB4122B; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Rewards::m_Info; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<Rewards *>(obj); return &ptr->m_Info; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Rewards *>(obj); return &ptr->m_Info; }
 };
 
 template <typename Self>
@@ -134,6 +236,7 @@ struct StormReflTypeInfo<Rewards>::field_data<0, Self> : public StormReflTypeInf
 template <>
 struct StormReflFuncInfo<Rewards>
 {
+  using MyBase = void;
   static constexpr int funcs_n = 1;
   template <int N> struct func_data_static {};
 };

@@ -10,6 +10,9 @@
 #include "GameData.refl.h"
 #include "GameServerMessages.refl.h"
 
+
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
+
 struct BotMessageBase
 {
   STORM_REFL;
@@ -97,3 +100,5 @@ struct BotMessageCreateGame
   GameInstanceData game_settings;
   std::vector<std::tuple<DDSKey, DDSKey, int>> players;
 };
+
+#endif

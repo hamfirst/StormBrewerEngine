@@ -8,6 +8,8 @@
 
 #include "BuiltInChannel.refl.meta.h"
 
+#ifdef ENABLE_CHANNELS
+
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(BuiltInChannelInfo);
 
 BuiltInChannel::BuiltInChannel(DDSNodeInterface node_interface, BuiltInChannelDatabaseObject & db_object) :
@@ -25,3 +27,5 @@ void BuiltInChannel::UpdateMotd(std::string motd)
 {
   m_Data.m_ChannelInfo.m_Motd = motd;
 }
+
+#endif

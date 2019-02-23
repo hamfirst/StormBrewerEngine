@@ -16,6 +16,7 @@
 #include "ServerList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 
 Bot::Bot(DDSNodeInterface node_interface, BotDatabaseObject & db_object) :
   m_Interface(node_interface), m_Data(db_object),
