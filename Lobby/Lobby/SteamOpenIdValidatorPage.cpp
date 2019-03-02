@@ -11,6 +11,8 @@
 
 #include "SteamOpenIdValidatorPage.h"
 
+#ifdef ENABLE_AUTH_STEAM
+
 
 SteamOpenIdValidatorPage::SteamOpenIdValidatorPage(const DDSWebsiteInterface & website_interface) :
   m_WebsiteInterface(website_interface)
@@ -119,3 +121,4 @@ void SteamOpenIdValidatorPage::HandleValidationResponse(bool success, const std:
   m_WebsiteInterface.ForceDisconnect();
 }
 
+#endif

@@ -68,9 +68,9 @@ void UserEndpoint::HandleData(const char * data)
         return;
       }
 
-      if (msg.ver != 1038)
+      if (msg.ver != LOBBY_VERSION)
       {
-        ConnectionError("Your version is out of date.<br />Restart UniBall to update.");
+        ConnectionError("Your version is out of date.<br />Restart the client to update.");
         return;
       }
 
@@ -97,9 +97,10 @@ void UserEndpoint::HandleData(const char * data)
         return;
       }
 
-      if (response.c == "lext")
+#ifdef ENABLE_AUTH_STEAM
+      if (response.c == "lextsteam")
       {
-        DDSLog::LogVerbose("Logging in with external token");
+        DDSLog::LogVerbose("Logging in with external steam token");
 
         if (m_EndpointInterface.NodeIsReady() == false)
         {
@@ -121,7 +122,7 @@ void UserEndpoint::HandleData(const char * data)
           return;
         }
       }
-      else if (response.c == "lt")
+      else if (response.c == "ltsteam")
       {
         DDSLog::LogVerbose("Logging in with steam token");
 
@@ -138,6 +139,7 @@ void UserEndpoint::HandleData(const char * data)
 
         m_State = kSteamTokenValidation;
       }
+#endif
       else if (response.c == "lr")
       {
         DDSLog::LogVerbose("Logging in with relocate token");
@@ -223,21 +225,6 @@ void UserEndpoint::ConnectionError(const char * err_msg)
   m_Error = true;
 }
 
-void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_id)
-{
-  if (steam_id.length() == 0)
-  {
-    ConnectionError("Couldn't validate steam token");
-    return;
-  }
-
-
-  if (m_State == kExternalTokenValidation)
-  {
-    FinalizeSteamValidation(std::stoull(steam_id));
-  }
-}
-
 void UserEndpoint::HandleReverseLookup(const DDSResolverRequest & resolver_data)
 {
   if (m_Error)
@@ -282,6 +269,21 @@ void UserEndpoint::HandleTorBlacklistLookup(const DDSResolverRequest & resolver_
   m_State = kIdentify;
   UserMessageBase ident_request = { "identify" };
   m_EndpointInterface.Send(ident_request);
+}
+
+#ifdef ENABLE_AUTH_STEAM
+void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_id)
+{
+  if (steam_id.length() == 0)
+  {
+    ConnectionError("Couldn't validate steam token");
+    return;
+  }
+
+  if (m_State == kExternalTokenValidation)
+  {
+    FinalizeSteamValidation(std::stoull(steam_id));
+  }
 }
 
 void UserEndpoint::HandleSteamAuthenticationRequest(bool success, const char * data, const char * headers)
@@ -338,7 +340,7 @@ void UserEndpoint::HandleSteamOwnershipRequest(bool success, const char * data, 
 
   if (validation.appownership.apps[0].ownsapp == false)
   {
-    ConnectionError("You do not own UniBall on Steam!");
+    ConnectionError("You do not own the game on Steam!");
     return;
   }
 
@@ -371,20 +373,28 @@ void UserEndpoint::HandleSteamUserInfoRequest(bool success, const char * data, c
 
   if (g_ExplicitUser != 0)
   {
-    m_PlatformId = g_ExplicitUser;
+    SetSteamUserId(g_ExplicitUser);
   }
   else if(g_RandomUserName)
   {
-    m_PlatformId = DDSGetRandomNumber();
+    SetSteamUserId(DDSGetRandomNumber());
   }
 
+  SetSteamUserId(m_PlatformId);
   FinalizeConnect();
+}
+
+void UserEndpoint::SetSteamUserId(uint64_t steam_id)
+{
+  std::string steam_id_str = "steam" + std::to_string(steam_id);
+  m_UserId = crc64(steam_id_str);
+  m_PlatformId = steam_id;
 }
 
 void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
 {
   m_State = kSteamOwnershipValidation;
-  m_PlatformId = steam_id;
+  SetSteamUserId(steam_id);
 
   std::string ownership_url = std::string(g_SteamOwnershipUrl) + std::to_string(steam_id);
 
@@ -392,6 +402,7 @@ void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
   m_EndpointInterface.CreateHttpRequest(m_Callback, DDSHttpRequest(ownership_url),
     [this](bool success, std::string data, std::string headers) { HandleSteamOwnershipRequest(success, data.data(), headers.data()); });
 }
+#endif
 
 void UserEndpoint::FinalizeConnect()
 {
@@ -405,6 +416,6 @@ void UserEndpoint::FinalizeConnect()
   }
 
   m_EndpointInterface.ConnectToLocalObject(&UserConnection::ConnectToEndpoint, m_ConnectionKey);
-  m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_PlatformId, m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode);
+  m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_PlatformId, m_UserId, m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode);
   m_State = kConnectedToObj;
 }

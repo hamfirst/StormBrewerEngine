@@ -72,10 +72,8 @@ public:
   void STORM_REFL_FUNC GotMessage(GameServerMessageType cmd, std::string data);
 
   void STORM_REFL_FUNC RequestMapList(DDSKey endpoint_id);
-  void STORM_REFL_FUNC CreateGame(DDSKey creator_id, DDSKey creator_endpoint_id, std::string creator_name, int creator_admin, int celebration, bool new_player, std::string squad,
-    std::string password, GameInstanceData game_creation_data);
-  void STORM_REFL_FUNC JoinUserToGame(int game_id, DDSKey user_key, DDSKey user_endpoint_id, std::string user_name, int admin_level, int celebration, bool new_player,
-    std::string squad, std::string password, bool observer, bool force);
+  void STORM_REFL_FUNC CreateGame(GamePlayerData creator_data, std::string password, GameInstanceData game_creation_data);
+  void STORM_REFL_FUNC JoinUserToGame(int game_id, GamePlayerData user_data, std::string password, bool observer, bool force);
   void STORM_REFL_FUNC DestroyGame(int game_id);
   void STORM_REFL_FUNC UserSwitchTeams(int game_id, DDSKey user_key);
   void STORM_REFL_FUNC UserSetTeam(int game_id, DDSKey user_key, int team, bool force);
@@ -83,7 +81,9 @@ public:
   void STORM_REFL_FUNC RandomizeTeams(int game_id);
   void STORM_REFL_FUNC KillGame(int game_id);
 
+#ifdef ENABLE_BOTS
   void STORM_REFL_FUNC CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInstanceData game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info);
+#endif
 
   void STORM_REFL_FUNC SendChatToGame(int game_id, DDSKey user_id, std::string chat);
   void STORM_REFL_FUNC SendMessageToGame(int game_id, std::string chat);

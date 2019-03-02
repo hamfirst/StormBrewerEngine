@@ -9,7 +9,7 @@
 
 #include "GameData.refl.h"
 #include "GameServerMessages.refl.h"
-
+#include "LobbyConfig.h"
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 

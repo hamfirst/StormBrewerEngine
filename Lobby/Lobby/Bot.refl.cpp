@@ -131,3 +131,4 @@ void Bot::BeginLoad()
 {
   m_Interface.FinalizeObjectLoad();
 }
+#endif

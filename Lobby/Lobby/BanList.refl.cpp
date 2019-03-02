@@ -41,7 +41,7 @@ BanList::BanList(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
   DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
+  settings.DatabaseName = DATABASE_NAME;
 
   DDSDatabaseConnection connection(settings);
   auto result = connection.QueryDatabaseByKey(0, "bans");
@@ -172,7 +172,7 @@ bool BanList::CheckBanList(const char * remote_ip, const char * remote_host, uin
 void BanList::SaveBanList()
 {
   DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
+  settings.DatabaseName = DATABASE_NAME;
 
   DDSDatabaseConnection connection(settings);
   connection.QueryDatabaseUpsert(0, "bans", StormReflEncodeJson(m_List));

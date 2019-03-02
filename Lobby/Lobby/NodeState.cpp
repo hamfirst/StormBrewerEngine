@@ -15,11 +15,7 @@
 #include <HurricaneDDS/DDSWebsiteFactoryList.h>
 #include <HurricaneDDS/DDSWebsiteFilesystemBuilder.h>
 
-std::unique_ptr<DDSNodeState> CreateNodeState(const char * html_path, 
-  const char * coordinator_host_addr, int coordinator_port,
-  const char * database_host_addr, int database_port,
-  int node_network_port, int user_port, int game_server_port, int bot_endpoint_port,
-  int http_port, int http_ticket_port)
+std::unique_ptr<DDSNodeState> CreateNodeState(const NodeSettings & settings)
 {
   StormSockets::StormSocketInitSettings backend_settings;
   backend_settings.NumIOThreads = 1;
@@ -27,9 +23,9 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const char * html_path,
   backend_settings.MaxConnections = 20000;
 
   DDSDatabaseSettings database_settings;
-  database_settings.DatabaseHostName = database_host_addr;
-  database_settings.DatabasePort = database_port;
-  database_settings.DatabaseName = kDatabaseName;
+  database_settings.DatabaseHostName = settings.m_DatabaseHost;
+  database_settings.DatabasePort = settings.m_DatabasePort;
+  database_settings.DatabaseName = DATABASE_NAME;
   database_settings.NumThreads = 1;
 
   StormSockets::StormSocketClientFrontendHttpSettings http_client_settings;
@@ -38,44 +34,50 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const char * html_path,
   StormSockets::StormSocketClientFrontendWebsocketSettings node_client_settings;
   DDSCoordinatorClientSettings coordinator_client_settings;
 
-  if (coordinator_host_addr)
+  if (settings.m_CoordinatorHostAddress)
   {
-    coordinator_client_settings.CoordinatorIpAddr = coordinator_host_addr;
+    coordinator_client_settings.CoordinatorIpAddr = settings.m_CoordinatorHostAddress;
   }
 
-  if (coordinator_port)
+  if (settings.m_CoordinatorPort)
   {
-    coordinator_client_settings.CoordinatorPort = coordinator_port;
+    coordinator_client_settings.CoordinatorPort = settings.m_CoordinatorPort;
   }
 
-  node_server_settings.ListenSettings.Port = node_network_port;
+  node_server_settings.ListenSettings.Port = settings.m_NodeNetworkPort;
 
   StormSockets::StormSocketServerFrontendWebsocketSettings user_endpoint_settings;
-  user_endpoint_settings.ListenSettings.Port = user_port;
+  user_endpoint_settings.ListenSettings.Port = settings.m_UserPort;
   user_endpoint_settings.MaxConnections = 20000;
   StormSockets::StormSocketServerFrontendWebsocketSettings server_endpoint_settings;
-  server_endpoint_settings.ListenSettings.Port = game_server_port;
+  server_endpoint_settings.ListenSettings.Port = settings.m_GameServerPort;
+#ifdef ENABLE_BOTS
   StormSockets::StormSocketServerFrontendWebsocketSettings bot_endpoint_settings;
-  bot_endpoint_settings.ListenSettings.Port = bot_endpoint_port;
+  bot_endpoint_settings.ListenSettings.Port = settings.m_BotEndpointPort;
+#endif
 
   StormSockets::StormSocketServerFrontendHttpSettings steam_validation_page_settings;
-  steam_validation_page_settings.ListenSettings.Port = http_ticket_port;
+  steam_validation_page_settings.ListenSettings.Port = settings.m_HTTPTicketPort;
 
-  if (html_path)
+  if (settings.m_HTMLPath)
   {
     DDSWebsiteFilesystemBuilder fs_builder;
-    fs_builder.AddDirectory(html_path, "/");
+    fs_builder.AddDirectory(settings.m_HTMLPath, "/");
 
     StormSockets::StormSocketServerFrontendHttpSettings static_content_settings;
-    static_content_settings.ListenSettings.Port = http_port;
+    static_content_settings.ListenSettings.Port = settings.m_HTTPPort;
 
     return std::make_unique<DDSNodeState>(
       DataObjectList{}, SharedObjectList{}, backend_settings, node_server_settings, node_client_settings,
       http_client_settings, coordinator_client_settings, database_settings,
+#ifdef ENABLE_BOTS
+      DDSCreateEndpointType<BotEndpoint>(bot_endpoint_settings),
+#endif
+#ifdef ENABLE_AUTH_STEAM
+      DDSCreateWebsiteType<SteamOpenIdValidatorPage>(steam_validation_page_settings),
+#endif
       DDSCreateEndpointType<UserEndpoint>(user_endpoint_settings),
       DDSCreateEndpointType<GameServerEndpoint>(server_endpoint_settings),
-      DDSCreateEndpointType<BotEndpoint>(bot_endpoint_settings),
-      DDSCreateWebsiteType<SteamOpenIdValidatorPage>(steam_validation_page_settings),
       DDSCreateWebsiteStaticContentType(static_content_settings, fs_builder));
   }
   else
@@ -83,10 +85,14 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const char * html_path,
     return std::make_unique<DDSNodeState>(
       DataObjectList{}, SharedObjectList{}, backend_settings, node_server_settings, node_client_settings,
       http_client_settings, coordinator_client_settings, database_settings,
-      DDSCreateEndpointType<UserEndpoint>(user_endpoint_settings),
-      DDSCreateEndpointType<GameServerEndpoint>(server_endpoint_settings),
+#ifdef ENABLE_BOTS
       DDSCreateEndpointType<BotEndpoint>(bot_endpoint_settings),
-      DDSCreateWebsiteType<SteamOpenIdValidatorPage>(steam_validation_page_settings));
+#endif
+#ifdef ENABLE_AUTH_STEAM
+      DDSCreateWebsiteType<SteamOpenIdValidatorPage>(steam_validation_page_settings),
+#endif
+      DDSCreateEndpointType<UserEndpoint>(user_endpoint_settings),
+      DDSCreateEndpointType<GameServerEndpoint>(server_endpoint_settings));
   }
 }
 

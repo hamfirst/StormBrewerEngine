@@ -61,7 +61,9 @@ int main(int argc, char ** argv)
     html_dir = argv[1];
   }
 
-  auto node = CreateNodeState(html_dir);
+  NodeSettings node_settings;
+  node_settings.m_HTMLPath = html_dir;
+  auto node = CreateNodeState(node_settings);
 
   auto load_balancer = CreateLoadBalancer();
 

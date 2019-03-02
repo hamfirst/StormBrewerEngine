@@ -387,9 +387,9 @@ struct StormReflFuncInfo<UserConnection>
 template <>
 struct StormReflFuncInfo<UserConnection>::func_data_static<0>
 {
-  using func_ptr_type = void (UserConnection::*)(uint64_t, std::string, std::string, std::string, std::string);
+  using func_ptr_type = void (UserConnection::*)(uint64_t, uint64_t, std::string, std::string, std::string, std::string);
   using return_type = void;
-  static constexpr int params_n = 5;
+  static constexpr int params_n = 6;
   static constexpr auto GetName() { return "LoadUser"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xC5119FDE; }
@@ -404,14 +404,24 @@ template <>
 struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<0>
 {
   using param_type = uint64_t;
-  static constexpr auto GetName() { return "steam_id"; }
+  static constexpr auto GetName() { return "platform_id"; }
   static constexpr auto GetType() { return "uint64_t"; }
-  static constexpr unsigned GetNameHash() { return 0xF3FD4ECA; }
+  static constexpr unsigned GetNameHash() { return 0xFFE6496F; }
   static constexpr unsigned GetTypeNameHash() { return 0x3D797F01; }
 };
 
 template <>
 struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<1>
+{
+  using param_type = uint64_t;
+  static constexpr auto GetName() { return "user_id"; }
+  static constexpr auto GetType() { return "uint64_t"; }
+  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3D797F01; }
+};
+
+template <>
+struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<2>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "remote_ip"; }
@@ -421,7 +431,7 @@ struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<2>
+struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<3>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "remote_host"; }
@@ -431,7 +441,7 @@ struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<3>
+struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<4>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "country_code"; }
@@ -441,7 +451,7 @@ struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<3>
 };
 
 template <>
-struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<4>
+struct StormReflFuncInfo<UserConnection>::func_data_static<0>::param_info<5>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "currency_code"; }

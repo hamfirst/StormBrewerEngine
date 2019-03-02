@@ -1,5 +1,7 @@
 #pragma once
 
+#define LOBBY_VERSION 1000
+
 #define ENABLE_BAN_LIST
 #define ENABLE_BOTS
 #define ENABLE_CHANNELS
@@ -11,8 +13,7 @@
 #define ENABLE_AUTH_NONE
 #define ENABLE_AUTH_STEAM
 
-
-static const char * kDatabaseName = "sbe";
+#define DATABASE_NAME "sbe"
 
 #define STEAM_WEB_API_KEY ""
 #define STEAM_APP_ID ""

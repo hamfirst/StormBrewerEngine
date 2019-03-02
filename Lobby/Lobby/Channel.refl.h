@@ -75,4 +75,4 @@ private:
   DDSNodeInterface m_Interface;
 };
 
-#ifdef ENABLE_CHANNELS
+#endif

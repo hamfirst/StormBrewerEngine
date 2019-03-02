@@ -7,15 +7,15 @@
 
 #include "Rewards.refl.meta.h"
 
-#ifdef ENABLE_REWARDS
-
 bool g_LoadRewards = false;
+
+#ifdef ENABLE_REWARDS
 
 Rewards::Rewards(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
   DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
+  settings.DatabaseName = DATABASE_NAME;
 
   if (g_LoadRewards)
   {

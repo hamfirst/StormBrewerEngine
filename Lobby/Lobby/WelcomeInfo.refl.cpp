@@ -7,6 +7,7 @@
 
 #include "WelcomeInfo.refl.meta.h"
 
+#ifdef ENABLE_WELCOME_INFO
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);
 
@@ -14,7 +15,7 @@ WelcomeInfo::WelcomeInfo(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
   DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
+  settings.DatabaseName = DATABASE_NAME;
 
   DDSDatabaseConnection connection(settings);
   auto result = connection.QueryDatabaseByKey(0, "welcome_info");
@@ -84,8 +85,10 @@ void WelcomeInfo::FetchWelcomeInfo(DDSResponder & responder)
 void WelcomeInfo::Save()
 {
   DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
+  settings.DatabaseName = DATABASE_NAME;
 
   DDSDatabaseConnection connection(settings);
   connection.QueryDatabaseUpsert(0, "welcome_info", StormReflEncodeJson(m_Tabs));
 }
+
+#endif

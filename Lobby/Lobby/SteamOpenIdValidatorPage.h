@@ -2,6 +2,10 @@
 
 #include <HurricaneDDS/DDSWebsiteInterface.h>
 
+#include "LobbyConfig.h"
+
+#ifdef ENABLE_AUTH_STEAM
+
 class SteamOpenIdValidatorPage
 {
 public:
@@ -19,3 +23,5 @@ private:
   uint64_t m_PlatformId;
   DDSDeferredCallback m_ValidationRequest;
 };
+
+#endif

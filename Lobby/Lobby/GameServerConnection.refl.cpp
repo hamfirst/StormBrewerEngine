@@ -76,7 +76,9 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
       
       m_State = GameServerConnectionState::kConnected;
 
+#ifdef ENABLE_SERVER_LIST
       m_Interface.CallShared(&ServerList::AddServer, m_Interface.GetLocalKey(), m_ServerName, m_ServerLocation, m_ServerHost, m_PingPort);
+#endif
     }
     else
     {
@@ -254,6 +256,7 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
         return;
       }
 
+#ifdef ENABLE_BOTS
       for (auto game : m_GameList)
       {
         if (game.second.m_GameRandomKey == msg.m_GameId)
@@ -267,6 +270,7 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
           break;
         }
       }
+#endif
     }
     else
     {
@@ -298,9 +302,7 @@ void GameServerConnection::RequestMapList(DDSKey endpoint_id)
   m_Interface.Call(&UserConnection::SendData, endpoint_id, StormReflEncodeJson(map_list));
 }
 
-void GameServerConnection::CreateGame(DDSKey creator_id, 
-  DDSKey creator_endpoint_id, std::string creator_name, int creator_admin, int celebration, bool new_player, std::string squad,
-  std::string password, GameInstanceData game_creation_data)
+void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string password, GameInstanceData game_creation_data)
 {
   GameServerMapData * map = nullptr;
   for (auto & map_data : m_Maps)
@@ -328,17 +330,20 @@ void GameServerConnection::CreateGame(DDSKey creator_id,
   StormReflCopy<GameInstanceData>(new_lobby.m_InstanceData, game_creation_data);
   auto & player = new_lobby.m_Players.EmplaceBack();
 
-  player.m_Name = creator_name;
-  player.m_Squad = squad;
-  player.m_UserId = creator_id;
+  player.m_Name = creator_data.m_Name;
+  player.m_UserId = creator_data.m_UserId;
   player.m_UserRandomId = DDSGetRandomNumber64();
   player.m_Team = 0;
-  player.m_EndpointId = creator_endpoint_id;
-  player.m_AdminLevel = creator_admin;
-  player.m_Celebration = celebration;
-  player.m_NewPlayer = new_player;
+  player.m_EndpointId = creator_data.m_EndpointId;
+  player.m_AdminLevel = creator_data.m_Admin;
+  player.m_Celebration = creator_data.m_Celebration;
+  player.m_NewPlayer = creator_data.m_NewPlayer;
 
-  new_lobby.m_Creator = creator_name;
+#ifdef ENABLE_SQUADS
+  player.m_Squad = creator_data.m_Squad;
+#endif
+
+  new_lobby.m_Creator = creator_data.m_Name;
   new_lobby.m_Server = m_ServerName;
 
   m_GameList.EmplaceBack(new_lobby);
@@ -348,17 +353,20 @@ void GameServerConnection::CreateGame(DDSKey creator_id,
   private_data.m_Password = password;
   m_GamePrivateData.EmplaceAt(game_id, private_data);
 
-  m_Interface.Call(&User::HandleGameJoinResponse, creator_id, m_Interface.GetLocalKey(), creator_endpoint_id, game_id, new_lobby.m_GameRandomKey, "", true);
+  m_Interface.Call(&User::HandleGameJoinResponse, creator_data.m_UserId,
+      m_Interface.GetLocalKey(), creator_data.m_EndpointId, game_id, new_lobby.m_GameRandomKey, "", true);
+
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::AddGame, m_Interface.GetLocalKey(), game_id, game_creation_data.m_Name, 
     game_creation_data.m_Map, 1, game_creation_data.m_PlayerLimit, password.length() > 0);
+#endif
 }
 
-void GameServerConnection::JoinUserToGame(int game_id, DDSKey user_key, DDSKey user_endpoint_id, 
-  std::string user_name, int admin_level, int celebration, bool new_player, std::string squad, std::string password, bool observer, bool force)
+void GameServerConnection::JoinUserToGame(int game_id, GamePlayerData user_data, std::string password, bool observer, bool force)
 {
   if (m_GameList.HasAt(game_id) == false)
   {
-    m_Interface.Call(&User::HandleGameJoinResponse, user_key, m_Interface.GetLocalKey(), user_endpoint_id, game_id, 0, "", false);
+    m_Interface.Call(&User::HandleGameJoinResponse, user_data.m_UserId, m_Interface.GetLocalKey(), user_data.m_EndpointId, game_id, 0, "", false);
     return;
   }
 
@@ -367,27 +375,30 @@ void GameServerConnection::JoinUserToGame(int game_id, DDSKey user_key, DDSKey u
 
   if (password != game_private_data.m_Password && force == false)
   {
-    m_Interface.Call(&UserConnection::SendRuntimeError, user_endpoint_id, "Invalid password");
+    m_Interface.Call(&UserConnection::SendRuntimeError, user_data.m_EndpointId, "Invalid password");
     return;
   }
 
   for (auto player_info : game.m_Players)
   {
-    if (player_info.second.m_UserId == user_key)
+    if (player_info.second.m_UserId == user_data.m_UserId)
     {
       return;
     }
   }
   
   GameLobbyPlayer player;
-  player.m_UserId = user_key;
+  player.m_UserId = user_data.m_UserId;
   player.m_UserRandomId = DDSGetRandomNumber64();
-  player.m_EndpointId = user_endpoint_id;
-  player.m_Name = user_name;
-  player.m_Squad = squad;
-  player.m_AdminLevel = admin_level;
-  player.m_Celebration = celebration;
-  player.m_NewPlayer = new_player;
+  player.m_EndpointId = user_data.m_EndpointId;
+  player.m_Name = user_data.m_Name;
+  player.m_AdminLevel = user_data.m_Admin;
+  player.m_Celebration = user_data.m_Celebration;
+  player.m_NewPlayer = user_data.m_NewPlayer;
+
+#ifdef ENABLE_SQUADS
+  player.m_Squad = user_data.m_Squad;
+#endif
 
   int selected_team = 4;
 
@@ -429,7 +440,7 @@ void GameServerConnection::JoinUserToGame(int game_id, DDSKey user_key, DDSKey u
     player.m_Team = 4;
     for (auto & reservation : game_private_data.m_Reservations)
     {
-      if (reservation.first == user_key)
+      if (reservation.first == user_data.m_UserId)
       {
         player.m_Team = reservation.second;
       }
@@ -445,16 +456,18 @@ void GameServerConnection::JoinUserToGame(int game_id, DDSKey user_key, DDSKey u
     observer_count++;
   }
 
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
+#endif
 
-  SendMessageToGame(game_id, user_name + " has joined the game");
+  SendMessageToGame(game_id, user_data.m_Name + " has joined the game");
 
   game.m_Players.EmplaceBack(player);
-  m_Interface.Call(&User::HandleGameJoinResponse, user_key, m_Interface.GetLocalKey(), user_endpoint_id, game_id, game.m_GameRandomKey, "", true);
+  m_Interface.Call(&User::HandleGameJoinResponse, user_data.m_UserId, m_Interface.GetLocalKey(), user_data.m_EndpointId, game_id, game.m_GameRandomKey, "", true);
 
   if (game.m_Started)
   {
-    SendLaunchGame(game_id, user_key, user_endpoint_id);
+    SendLaunchGame(game_id, user_data.m_UserId, user_data.m_EndpointId);
   }
 }
 
@@ -587,7 +600,9 @@ void GameServerConnection::UserSetTeam(int game_id, DDSKey user_key, int team, b
     SendPacket(msg);
   }
 
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
+#endif
 }
 
 void GameServerConnection::UserLeaveGame(int game_id, DDSKey user_key)
@@ -697,6 +712,7 @@ void GameServerConnection::KillGame(int game_id)
   DestroyGame(game_id);
 }
 
+#ifdef ENABLE_BOTS
 void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInstanceData game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info)
 {
   GameServerMapData * map = nullptr;
@@ -742,10 +758,12 @@ void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, Game
 
   m_GamePrivateData.EmplaceAt(game_id, private_data);
 
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::AddGame, m_Interface.GetLocalKey(), game_id, game_creation_data.m_Name,
     game_creation_data.m_Map, 1, game_creation_data.m_PlayerLimit, false);
 
   m_Interface.CallShared(&ServerList::StartGame, m_Interface.GetLocalKey(), game_id);
+#endif
 
   for (auto & player : player_info)
   {
@@ -758,6 +776,7 @@ void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, Game
 
   m_Interface.CreateTimer(std::chrono::seconds(10), m_Interface.GetLocalKey(), &GameServerConnection::ExpireGame, game_id);
 }
+#endif
 
 void GameServerConnection::SendChatToGame(int game_id, DDSKey user_id, std::string chat)
 {
@@ -876,8 +895,9 @@ void GameServerConnection::StartGame(int game_id, DDSKey game_random_id, std::st
   {
     SendLaunchGame(game_id, player.second.m_UserId, player.second.m_EndpointId);
   }
-
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::StartGame, m_Interface.GetLocalKey(), game_id);
+#endif
 }
 
 void GameServerConnection::SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id)
@@ -952,7 +972,9 @@ void GameServerConnection::PreDestroy()
 {
   if (m_State == GameServerConnectionState::kConnected)
   {
+#ifdef ENABLE_SERVER_LIST
     m_Interface.CallShared(&ServerList::RemoveServer, m_Interface.GetLocalKey());
+#endif
   }
 }
 
@@ -1063,8 +1085,9 @@ void GameServerConnection::UpdateGamePlayerCount(int game_id)
       observer_count++;
     }
   }
-
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
+#endif
 }
 
 void GameServerConnection::PickNewCreator(int game_id)
@@ -1088,7 +1111,10 @@ void GameServerConnection::DestroyGame(int game_id)
 {
   m_GameList.RemoveAt(game_id);
   m_GamePrivateData.RemoveAt(game_id);
+
+#ifdef ENABLE_SERVER_LIST
   m_Interface.CallShared(&ServerList::RemoveGame, m_Interface.GetLocalKey(), game_id);
+#endif
 }
 
 template <typename T>

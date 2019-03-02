@@ -5,6 +5,8 @@
 #include <HurricaneDDS/DDSDataObject.h>
 #include <HurricaneDDS/DDSConnectionId.h>
 
+#include "LobbyConfig.h"
+
 enum STORM_REFL_ENUM class UserConnectionState
 {
   kLoadingUser,
@@ -19,7 +21,7 @@ struct UserConnection
 
   UserConnection(DDSNodeInterface node_interface);
 
-  void STORM_REFL_FUNC LoadUser(uint64_t steam_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code);
+  void STORM_REFL_FUNC LoadUser(uint64_t platform_id, uint64_t user_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code);
   void STORM_REFL_FUNC GotMessage(std::string cmd, std::string data);
 
   void STORM_REFL_FUNC UserDoesntExist();
@@ -33,11 +35,23 @@ struct UserConnection
 
   void STORM_REFL_FUNC HandleUserInsert(int ec);
   void STORM_REFL_FUNC HandleLocalDataUpdate(std::string data);
+
+#ifdef ENABLE_SERVER_LIST
   void STORM_REFL_FUNC HandleServerListUpdate(std::string data);
+#endif
+
+#ifdef ENABLE_WELCOME_INFO
   void STORM_REFL_FUNC HandleWelcomeInfoUpdate(std::string data);
+#endif
+
+#ifdef ENABLE_BAN_LIST
   void STORM_REFL_FUNC HandleBanListUpdate(std::string data);
+#endif
+
+#ifdef ENABLE_SERVER_LIST
   void STORM_REFL_FUNC HandleGamePreviewUpdate(int request_id, std::string data);
   void STORM_REFL_FUNC HandleGamePreviewDestroyed(int request_id);
+#endif
 
 
 public:
@@ -53,9 +67,11 @@ public:
   uint64_t m_PlatformId;
   uint64_t m_UserId;
 
-  DDSKey m_GamePreviewServerId;
-  DDSKey m_GamePreviewSubscription;
-  int m_GamePreviewRequestId;
+#ifdef ENABLE_SERVER_LIST
+  DDSKey m_GamePreviewServerId = 0;
+  DDSKey m_GamePreviewSubscription = 0;
+  int m_GamePreviewRequestId = 0;
+#endif
 
   UserConnectionState m_State;
 

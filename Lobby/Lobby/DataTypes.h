@@ -18,15 +18,35 @@
 #include "WelcomeInfo.refl.meta.h"
 #include "Rewards.refl.meta.h"
 
+#include "LobbyConfig.h"
 
 using DataObjectList = DDSDataObjectTypeList<
-  UserConnection, void,
-  GameServerConnection, void,
+#ifdef ENABLE_BOTS
   BotConnection, void,
+  Bot, BotDatabaseObject,
+#endif
+#ifdef ENABLE_CHANNELS
   Channel, void,
-  User, UserDatabaseObject,
   BuiltInChannel, BuiltInChannelDatabaseObject,
+#endif
+#ifdef ENABLE_SQUADS
   Squad, SquadDatabaseObject,
-  Bot, BotDatabaseObject>;
+#endif
+  UserConnection, void,
+  User, UserDatabaseObject,
+  GameServerConnection, void>;
 
-using SharedObjectList = DDSSharedObjectTypeList<BanList, ServerList, WelcomeInfo, Rewards>;
+using SharedObjectList = DDSSharedObjectTypeList<
+#ifdef ENABLE_BAN_LIST
+    BanList,
+#endif
+#ifdef ENABLE_SERVER_LIST
+    ServerList,
+#endif
+#ifdef ENABLE_WELCOME_INFO
+    WelcomeInfo,
+#endif
+#ifdef ENABLE_REWARDS
+    Rewards
+#endif
+    >;

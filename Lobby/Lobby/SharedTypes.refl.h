@@ -5,6 +5,8 @@
 
 #include <HurricaneDDS/DDSDataObject.h>
 
+#include "LobbyConfig.h"
+
 enum STORM_REFL_ENUM class ChannelJoinResult
 {
   kSuccess,
@@ -25,13 +27,19 @@ struct UserInfo
   STORM_DATA_DEFAULT_CONSTRUCTION(UserInfo);
 
   RString m_Name;
+  DDSKey m_PlatformId;
+#ifdef ENABLE_SQUADS
   RString m_Squad;
   RString m_SquadTag;
-  DDSKey m_PlatformId;
+#endif
+
   RString m_Icon;
-  RInt m_AdminLevel;
+
+#ifdef ENABLE_CHANNELS
   RInt m_VisibleFlags;
-  RBool m_Veteran;
+#endif
+
+  RInt m_AdminLevel;
   UserGameInfo m_Game;
 };
 
