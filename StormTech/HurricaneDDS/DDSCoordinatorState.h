@@ -11,6 +11,7 @@
 #include "DDSTimerSystem.h"
 #include "DDSHttpClient.h"
 #include "DDSResolver.h"
+#include "DDSDatabaseConnection.h"
 #include "DDSDatabaseConnectionPool.h"
 #include "DDSLoadBalancerNetworkService.h"
 
@@ -53,7 +54,12 @@ public:
 
   DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key);
 
+  std::string QueryDatabaseSingleton(const char * collection_name);
+  void UpsertDatabaseSingleton(const char * collection_name, const char * document);
+
   time_t GetNetworkTime();
+
+  void * GetLocalObject(int target_object_type, DDSKey target_key);
 private:
 
   friend class DDSCoordinatorServerProtocol;
@@ -131,6 +137,7 @@ private:
   std::vector<std::unique_ptr<DDSSharedObjectBase>> m_SharedObjects;
 
   std::unique_ptr<DDSDatabaseConnectionPool> m_Database;
+  std::unique_ptr<DDSDatabaseConnection> m_ImmediateDatabase;
 
   uint64_t m_ClientSecret;
   uint64_t m_ServerSecret;

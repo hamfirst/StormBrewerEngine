@@ -14,9 +14,6 @@ bool g_LoadRewards = false;
 Rewards::Rewards(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = DATABASE_NAME;
-
   if (g_LoadRewards)
   {
     FILE * fp = fopen("rewards.txt", "rt");
@@ -37,16 +34,7 @@ Rewards::Rewards(DDSObjectInterface & obj_interface) :
   }
   else
   {
-    DDSDatabaseConnection connection(settings);
-    auto result = connection.QueryDatabaseByKey(0, "rewards");
-
-    if (result.first == 0)
-    {
-      RewardsDatabaseObj db_info;
-      StormReflParseJson(db_info, result.second.data());
-
-      m_Info = db_info;
-    }
+    StormReflParseJson(m_Info, m_Interface.QueryDatabaseSingleton("rewards"));
   }
 }
 

@@ -310,6 +310,9 @@ public:
 
   virtual DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) = 0;
 
+  virtual std::string QueryDatabaseSingleton(const char * collection_name) = 0;
+  virtual void UpsertDatabaseSingleton(const char * collection_name, const char * document) = 0;
+
   virtual time_t GetNetworkTime() = 0;
 
 private:
@@ -321,6 +324,7 @@ private:
   virtual int GetSharedObjectType(uint32_t object_type_name_hash) = 0;
 
   virtual const void * GetSharedObjectPointer(uint32_t object_type_name_hash) = 0;
+  virtual void * GetLocalObjectPointer(int target_object_type, DDSKey target_key) = 0;
 
   virtual void SendMessageToObject(int target_object_type, DDSKey target_key, int target_method_id, std::string && message) = 0;
   virtual void SendMessageToObjectWithResponderReturnArg(int target_object_type, DDSKey target_key, int target_method_id,

@@ -975,7 +975,7 @@ static IntType StormReflApplyExponent(IntType val, int8_t exp, bool negative, Ch
     val *= 10;
 
     IntType add_val;
-    if (fractional_str != nullptr && *fractional_str >= '0' && *fractional_str <= '9')
+    if (fractional_str && *fractional_str >= '0' && *fractional_str <= '9')
     {
       add_val = *fractional_str - '0';
       fractional_str++;
@@ -1499,6 +1499,11 @@ struct StormReflStringViewProxy
       ++start;
     }
     return tmp;
+  }
+
+  operator bool() const
+  {
+    return start != nullptr;
   }
 };
 

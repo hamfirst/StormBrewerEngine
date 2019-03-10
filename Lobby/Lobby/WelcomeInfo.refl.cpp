@@ -14,16 +14,7 @@ STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);
 WelcomeInfo::WelcomeInfo(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = DATABASE_NAME;
-
-  DDSDatabaseConnection connection(settings);
-  auto result = connection.QueryDatabaseByKey(0, "welcome_info");
-
-  if (result.first == 0)
-  {
-    StormReflParseJson(m_Tabs, result.second.data());
-  }
+  StormReflParseJson(m_Tabs, m_Interface.QueryDatabaseSingleton("welcome_info").c_str());
 
   if (m_Tabs.HighestIndex() == -1)
   {
@@ -84,11 +75,7 @@ void WelcomeInfo::FetchWelcomeInfo(DDSResponder & responder)
 
 void WelcomeInfo::Save()
 {
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = DATABASE_NAME;
-
-  DDSDatabaseConnection connection(settings);
-  connection.QueryDatabaseUpsert(0, "welcome_info", StormReflEncodeJson(m_Tabs));
+  m_Interface.UpsertDatabaseSingleton("welcome_info", StormReflEncodeJson(m_Tabs).data());
 }
 
 #endif

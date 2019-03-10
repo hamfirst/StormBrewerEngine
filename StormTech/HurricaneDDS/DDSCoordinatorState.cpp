@@ -149,9 +149,31 @@ DDSRoutingTableNodeInfo DDSCoordinatorState::GetNodeInfo(DDSKey key)
   return GetNodeDataForKey(key, m_RoutingTable, m_RoutingKeyRanges);
 }
 
+std::string DDSCoordinatorState::QueryDatabaseSingleton(const char * collection_name)
+{
+  auto result = m_ImmediateDatabase->QueryDatabaseByKey(0, collection_name);
+  return result.first == 0 ? result.second : "";
+}
+
+void DDSCoordinatorState::UpsertDatabaseSingleton(const char * collection_name, const char * document)
+{
+  m_ImmediateDatabase->QueryDatabaseUpsert(0, collection_name, document);
+}
+
 time_t DDSCoordinatorState::GetNetworkTime()
 {
   return time(nullptr);
+}
+
+void * DDSCoordinatorState::GetLocalObject(int target_object_type, DDSKey target_key)
+{
+  if (target_object_type >= m_NumDataObjects)
+  {
+    int shared_object_id = target_object_type - m_NumDataObjects;
+    return &m_SharedObjects[shared_object_id];
+  }
+
+  return nullptr;
 }
 
 void DDSCoordinatorState::GotMessageFromServer(DDSNodeId server_id, DDSCoordinatorProtocolMessageType type, const char * data)
@@ -279,7 +301,6 @@ bool DDSCoordinatorState::SendTargetedMessage(DDSDataObjectAddress addr, DDSCoor
   else
   {
     DDSNodeId node_id;
-
     if (m_RoutingTable.m_Table.size() == 0)
     {
       return false;

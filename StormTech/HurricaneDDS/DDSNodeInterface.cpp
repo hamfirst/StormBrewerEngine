@@ -67,6 +67,12 @@ const void * DDSNodeInterface::GetSharedObjectPointer(uint32_t object_type_name_
   return m_NodeState.GetSharedObjectPointer(type_id);
 }
 
+void * DDSNodeInterface::GetLocalObjectPointer(int target_object_type, DDSKey target_key)
+{
+  return m_NodeState.GetLocalObject(target_object_type, target_key);
+}
+
+
 void DDSNodeInterface::SendMessageToObject(int target_object_type, DDSKey target_key, int target_method_id, std::string && message)
 {
   DDSTargetedMessage packet;
@@ -311,6 +317,19 @@ void DDSNodeInterface::DestroySelf()
 DDSRoutingTableNodeInfo DDSNodeInterface::GetNodeInfo(DDSKey key)
 {
   return m_NodeState.GetNodeInfo(key);
+}
+
+std::string DDSNodeInterface::QueryDatabaseSingleton(const char * collection_name)
+{
+  //This shouldn't be used from a node, only from the coordinator
+  assert(false);
+  return "";
+}
+
+void DDSNodeInterface::UpsertDatabaseSingleton(const char * collection_name, const char * document)
+{
+  //This shouldn't be used from a node, only from the coordinator
+  assert(false);
 }
 
 time_t DDSNodeInterface::GetNetworkTime()
