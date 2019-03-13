@@ -87,6 +87,10 @@ public:
 
   void STORM_REFL_FUNC HangUpAllServers();
 
+private:
+
+  void RequestNewToken();
+
 public:
 
   RMap<DDSKey, ServerListServer> m_ServerList;

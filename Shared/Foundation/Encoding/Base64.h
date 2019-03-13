@@ -2,6 +2,7 @@
 
 #include "Foundation/Buffer/Buffer.h"
 
+#include <string>
 #include <string_view>
 
 std::string Base64Encode(const void * data, std::size_t length);

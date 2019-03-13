@@ -26,6 +26,11 @@ ServerManager::ServerManager(DDSObjectInterface & iface) :
 
     StormReflParseJson(m_CredentialsInfo, std::string_view(buffer.get(), len));
   }
+}
 
+
+
+void ServerManager::RequestNewToken()
+{
 
 }
