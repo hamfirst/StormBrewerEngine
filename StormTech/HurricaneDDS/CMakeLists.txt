@@ -56,6 +56,7 @@ set(GENERIC_SRC_HurricaneDDS
             DDSTokenBroker.cpp
             DDSSharedLocalCopyPtr.cpp
             DDSHttpRequest.cpp
+            DDSEncoding.cpp
             )
 
 set(GENERIC_HEADER_HurricaneDDS 
@@ -150,6 +151,7 @@ set(GENERIC_HEADER_HurricaneDDS
             DDSLog.h
             DDSIncomingKeyspaceTransfer.h
             DDSCoordinatorClientProtocol.h
+            DDSEncoding.h
             )
 
 set(GENERIC_REFL_HurricaneDDS 

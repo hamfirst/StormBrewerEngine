@@ -62,7 +62,7 @@ set(GENERIC_SRC_Foundation
             Buffer/BufferUtil.cpp
             Buffer/Buffer.cpp
             #CPP_PLACEHOLDER
-  Encoding/Base64.cpp Encoding/Base64.h Encoding/Url.cpp Encoding/Url.h)
+            )
 
 set(GENERIC_HEADER_Foundation 
             Common.h

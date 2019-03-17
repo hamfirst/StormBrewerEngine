@@ -40,6 +40,10 @@ bool MatchStr(const char *first, const char * second)
 BanList::BanList(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
+}
+
+void BanList::Initialize()
+{
   StormReflParseJson(m_List, m_Interface.QueryDatabaseSingleton("bans"));
 }
 

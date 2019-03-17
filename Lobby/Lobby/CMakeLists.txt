@@ -86,6 +86,7 @@ set(GENERIC_HEADER_Lobby
             ServerManager.refl.h
             ServerList.refl.h
             BotEndpoint.h
+            GooglePlatform.refl.h
             #HEADER_PLACEHOLDER
             )
 
@@ -109,6 +110,7 @@ set(GENERIC_REFL_Lobby
             BuiltInChannel.refl.h
             ServerManager.refl.h
             ServerList.refl.h
+            GooglePlatform.refl.h
             #REFL_PLACEHOLDER
             )
 

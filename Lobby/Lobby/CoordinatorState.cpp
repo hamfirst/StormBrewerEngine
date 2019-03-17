@@ -92,6 +92,7 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
   auto coordinator = 
     std::make_unique<DDSCoordinatorState>(DataObjectList{}, SharedObjectList{}, backend_settings, coordinator_settings, http_client_settings, database_settings);
 
+  coordinator->InitializeSharedObjects();
   coordinator->InitializeLoadBalancerServer(lb_settings, 0);
   return std::move(coordinator);
 }

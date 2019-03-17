@@ -33,8 +33,8 @@ public:
   {
     m_NumDataObjects = std::decay_t<DataTypeList>::NumTypes;
     data_list(m_DataObjectNameHashes, m_DatabaseObjectNameHashes);
-    shared_object(*this, m_SharedObjects, m_NumDataObjects);
     shared_object(m_SharedObjectNameHashes);
+    shared_object(*this, m_SharedObjects, m_NumDataObjects);
   }
 
   ~DDSCoordinatorState();
@@ -44,6 +44,7 @@ public:
   int GetSharedObjectTypeIdForNameHash(uint32_t name_hash) const;
   int GetTargetObjectIdForNameHash(uint32_t name_hash) const;
 
+  void InitializeSharedObjects();
   void InitializeLoadBalancerServer(
     const StormSockets::StormSocketServerFrontendWebsocketSettings & node_server_settings, int endpoint_id);
 

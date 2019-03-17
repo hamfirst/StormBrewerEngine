@@ -7,6 +7,7 @@
 #include <HurricaneDDS/DDSDatabaseSetup.h>
 #include <HurricaneDDS/DDSShutdown.h>
 #include <HurricaneDDS/DDSCPUUsage.h>
+#include <HurricaneDDS/DDSEncoding.h>
 
 #pragma comment(lib, "Bcrypt.lib")
 

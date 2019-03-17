@@ -14,6 +14,11 @@ STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);
 WelcomeInfo::WelcomeInfo(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
+
+}
+
+void WelcomeInfo::Initialize()
+{
   StormReflParseJson(m_Tabs, m_Interface.QueryDatabaseSingleton("welcome_info").c_str());
 
   if (m_Tabs.HighestIndex() == -1)

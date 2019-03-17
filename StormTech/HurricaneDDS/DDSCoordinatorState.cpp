@@ -25,7 +25,8 @@ DDSCoordinatorState::DDSCoordinatorState(const StormSockets::StormSocketInitSett
   m_ClientSecret(DDSGetRandomNumber64()),
   m_ServerSecret(DDSGetRandomNumber64()),
   m_HttpClient(http_client_settings, m_Backend),
-  m_Database(std::make_unique<DDSDatabaseConnectionPool>(database_settings))
+  m_Database(std::make_unique<DDSDatabaseConnectionPool>(database_settings)),
+  m_ImmediateDatabase(std::make_unique<DDSDatabaseConnection>(database_settings))
 {
 
 }
@@ -104,6 +105,14 @@ int DDSCoordinatorState::GetTargetObjectIdForNameHash(uint32_t name_hash) const
   return -1;
 }
 
+void DDSCoordinatorState::InitializeSharedObjects()
+{
+  for(auto & elem : m_SharedObjects)
+  {
+    elem->Initialize();
+  }
+}
+
 void DDSCoordinatorState::InitializeLoadBalancerServer(
   const StormSockets::StormSocketServerFrontendWebsocketSettings & lb_server_settings, int endpoint_id)
 {
@@ -115,6 +124,7 @@ void DDSCoordinatorState::CreateTimer(std::chrono::system_clock::duration durati
   std::unique_ptr<DDSDeferredCallback> callback = std::make_unique<DDSDeferredCallback>();
   DDSDeferredCallback * callback_ptr = callback.get();
 
+  responder_data.m_MethodArgs = "[]";
   std::string responder_str = StormReflEncodeJson(responder_data);
   DDSDataObjectAddress address{ responder_data.m_ObjectType, responder_data.m_Key };
 

@@ -30,6 +30,8 @@ public:
 
   BanList(DDSObjectInterface & obj_interface);
 
+  void Initialize();
+
   void STORM_REFL_FUNC Ban(BanType type, std::string data, int duration, std::string message);
   void STORM_REFL_FUNC Unban(int ban_index);
   void STORM_REFL_FUNC UnbanMatch(std::string match_str);

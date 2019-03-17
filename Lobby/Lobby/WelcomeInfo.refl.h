@@ -20,6 +20,8 @@ public:
 
   WelcomeInfo(DDSObjectInterface & obj_interface);
 
+  void Initialize();
+
   void STORM_REFL_FUNC UpdateInfo(DDSResponder & responder, std::string tab_name, std::string info);
   void STORM_REFL_FUNC RemoveTab(DDSResponder & responder, std::string tab_name);
   void STORM_REFL_FUNC FetchWelcomeInfo(DDSResponder & responder);

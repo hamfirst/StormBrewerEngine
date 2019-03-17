@@ -74,8 +74,8 @@ public:
 
   DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) override { NotImplemented(); return std::nullopt; };
 
-  virtual std::string QueryDatabaseSingleton(const char * collection_name) { NotImplemented(); return ""; }
-  virtual void UpsertDatabaseSingleton(const char * collection_name, const char * document) { NotImplemented(); };
+  std::string QueryDatabaseSingleton(const char * collection_name) override { NotImplemented(); return ""; }
+  void UpsertDatabaseSingleton(const char * collection_name, const char * document) override { NotImplemented(); };
 
   time_t GetNetworkTime() override { NotImplemented(); return{}; };
 

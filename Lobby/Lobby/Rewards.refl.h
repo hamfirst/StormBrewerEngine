@@ -29,6 +29,8 @@ public:
 
   Rewards(DDSObjectInterface & obj_interface);
 
+  void Initialize();
+
   void STORM_REFL_FUNC FetchRewards(DDSResponder & responder);
 
 public:

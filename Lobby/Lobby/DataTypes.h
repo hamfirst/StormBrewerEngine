@@ -17,6 +17,7 @@
 #include "ServerList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 #include "Rewards.refl.meta.h"
+#include "ServerManager.refl.meta.h"
 
 #include "LobbyConfig.h"
 
@@ -47,6 +48,7 @@ using SharedObjectList = DDSSharedObjectTypeList<
     WelcomeInfo,
 #endif
 #ifdef ENABLE_REWARDS
-    Rewards
+    Rewards,
 #endif
+    ServerManager
     >;

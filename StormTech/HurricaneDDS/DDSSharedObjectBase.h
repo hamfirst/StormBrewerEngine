@@ -15,6 +15,8 @@ public:
 
   virtual const void * GetSharedObjectPointer() = 0;
 
+  virtual void Initialize() = 0;
+  virtual std::string Serialize() = 0;
   virtual void ProcessMessage(DDSCoordinatorProtocolMessageType message_type, const char * message) = 0;
 
   virtual void AssignRequestedSubscription(const DDSExportedRequestedSubscription & requested_sub) = 0;
@@ -31,6 +33,7 @@ public:
 
   virtual const void * GetSharedObjectPointer() = 0;
 
+  virtual void Deserialize(const std::string & data) = 0;
   virtual void ProcessDelta(const DDSCoordinatorSharedObjectDelta & delta) = 0;
 
   virtual void CreateSubscription(DDSExportedSubscription && sub_data) = 0;

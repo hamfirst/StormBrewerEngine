@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
 
 namespace fs = std::filesystem;
 
@@ -282,6 +283,11 @@ void WritePlatformFileList(std::ofstream & cmake_file, const std::string & optio
 void FinalizeProject(const fs::path & p, const fs::path & project_file, const std::string & relative_root,
         ProjectFiles & files, const GenerateOptions & options)
 {
+  std::sort(files.m_CPPFiles.begin(), files.m_CPPFiles.end());
+  std::sort(files.m_HeaderFiles.begin(), files.m_HeaderFiles.end());
+  std::sort(files.m_ReflFiles.begin(), files.m_ReflFiles.end());
+  std::sort(files.m_NatvisFiles.begin(), files.m_NatvisFiles.end());
+
   auto project_name = project_file.parent_path().filename().string();
 
   std::cout << "Project root: " << p << "\n";

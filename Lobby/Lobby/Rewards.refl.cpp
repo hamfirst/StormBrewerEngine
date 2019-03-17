@@ -14,6 +14,11 @@ bool g_LoadRewards = false;
 Rewards::Rewards(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
+
+}
+
+void Rewards::Initialize()
+{
   if (g_LoadRewards)
   {
     FILE * fp = fopen("rewards.txt", "rt");
