@@ -18,22 +18,8 @@
 #include "WelcomeInfo.refl.meta.h"
 #include "Rewards.refl.meta.h"
 #include "ServerManager.refl.meta.h"
-
-<<<<<<< HEAD
-
-using DataObjectList = DDSDataObjectTypeList<
-  UserConnection, void,
-  GameServerConnection, void,
-  BotConnection, void,
-  Channel, void,
-  User, UserDatabaseObject,
-  BuiltInChannel, BuiltInChannelDatabaseObject,
-  Squad, SquadDatabaseObject,
-  Bot, BotDatabaseObject>;
-
-using SharedObjectList = DDSSharedObjectTypeList<BanList, ServerList, WelcomeInfo, Rewards>;
-=======
 #include "LobbyConfig.h"
+
 
 using DataObjectList = DDSDataObjectTypeList<
 #ifdef ENABLE_BOTS
@@ -66,4 +52,3 @@ using SharedObjectList = DDSSharedObjectTypeList<
 #endif
     ServerManager
     >;
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

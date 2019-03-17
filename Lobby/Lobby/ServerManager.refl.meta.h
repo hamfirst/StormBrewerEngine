@@ -52,7 +52,7 @@ template <>
 struct StormReflFuncInfo<ServerManager>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 3;
+  static constexpr int funcs_n = 2;
   template <int N> struct func_data_static {};
 };
 
@@ -116,22 +116,6 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<2>
   static constexpr auto GetType() { return "std::string"; }
   static constexpr unsigned GetNameHash() { return 0xF7034F85; }
   static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>
-{
-  using func_ptr_type = void (ServerManager::*)();
-  using return_type = void;
-  static constexpr int params_n = 0;
-  static constexpr auto GetName() { return "CreateServerInstance"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xB5CDC8CC; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 2; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::CreateServerInstance; }
-  template <int i>
-  struct param_info { };
 };
 
 namespace StormReflFileInfo

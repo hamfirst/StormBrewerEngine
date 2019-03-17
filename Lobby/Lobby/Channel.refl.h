@@ -6,12 +6,10 @@
 #include "SharedTypes.refl.h"
 #include "Squad.refl.h"
 #include "BuiltInChannel.refl.h"
+#include "LobbyConfig.h"
 
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_CHANNELS
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 enum STORM_REFL_ENUM class ChannelState
 {
   kCheckingForBuiltIn,
@@ -77,8 +75,5 @@ public:
 private:
   DDSNodeInterface m_Interface;
 };
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

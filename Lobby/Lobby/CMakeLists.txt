@@ -7,133 +7,113 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_Lobby 
-            BuiltInChannel.refl.cpp
-<<<<<<< HEAD
-=======
-            ServerManager.refl.cpp
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            NodeState.cpp
-            SteamOpenIdValidatorPage.cpp
             BanList.refl.cpp
-            LoadBalancer.cpp
-            SharedTypes.refl.cpp
             Bot.refl.cpp
-            Channel.refl.cpp
-            GameData.refl.cpp
-            CommandParse.cpp
-            BotEndpoint.cpp
-            ServerList.refl.cpp
-            UserEndpoint.cpp
             BotConnection.refl.cpp
-            GameServerEndpoint.cpp
-            WelcomeInfo.refl.cpp
-            Squad.refl.cpp
-            Rewards.refl.cpp
-            GameServerConnection.refl.cpp
-            UserConnection.refl.cpp
-            User.refl.cpp
+            BotEndpoint.cpp
+            BuiltInChannel.refl.cpp
+            Channel.refl.cpp
+            CommandParse.cpp
             CoordinatorState.cpp
+            GameData.refl.cpp
+            GameServerConnection.refl.cpp
+            GameServerEndpoint.cpp
+            LoadBalancer.cpp
+            NodeState.cpp
+            Rewards.refl.cpp
+            ServerList.refl.cpp
+            ServerManager.refl.cpp
+            SharedTypes.refl.cpp
+            Squad.refl.cpp
+            SteamOpenIdValidatorPage.cpp
+            User.refl.cpp
+            UserConnection.refl.cpp
+            UserEndpoint.cpp
+            WelcomeInfo.refl.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_Lobby 
-<<<<<<< HEAD
-=======
-            ServerManager.refl.meta.h
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            SharedTypes.refl.h
-            BotConnection.refl.h
-            GameData.refl.meta.h
-            User.refl.h
-            CoordinatorState.h
-            NodeState.h
-            Rewards.refl.meta.h
-            BuiltInChannel.refl.meta.h
-            WelcomeInfo.refl.meta.h
-            UserEndpoint.h
-            Bot.refl.h
-            GameServerMessages.refl.meta.h
             BanList.refl.h
-            GameServerEndpoint.h
-            CommandParse.h
-            DataTypes.h
-<<<<<<< HEAD
-            Steam.h
-            ProjectSettings.h
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            GameServerConnection.refl.meta.h
-            Squad.refl.h
-            Rewards.refl.h
-            BotMessages.refl.meta.h
-            SteamServerMessages.refl.h
-            BotConnection.refl.meta.h
-            GameData.refl.h
             BanList.refl.meta.h
-            UserConnection.refl.meta.h
-            UserConnection.refl.h
-            User.refl.meta.h
+            Bot.refl.h
             Bot.refl.meta.h
-            SharedTypes.refl.meta.h
-            Channel.refl.meta.h
-            UserConnectionMessages.refl.meta.h
-            ServerList.refl.meta.h
-            SteamServerMessages.refl.meta.h
-            Squad.refl.meta.h
-            UserConnectionMessages.refl.h
-            WelcomeInfo.refl.h
-<<<<<<< HEAD
-=======
-            LobbyConfig.h
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            GameServerMessages.refl.h
-            BotMessages.refl.h
-            SteamOpenIdValidatorPage.h
-            GameServerConnection.refl.h
-            LoadBalancer.h
-            Channel.refl.h
-            BuiltInChannel.refl.h
-<<<<<<< HEAD
-=======
-            ServerManager.refl.h
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            ServerList.refl.h
+            BotConnection.refl.h
+            BotConnection.refl.meta.h
             BotEndpoint.h
+            BotMessages.refl.h
+            BotMessages.refl.meta.h
+            BuiltInChannel.refl.h
+            BuiltInChannel.refl.meta.h
+            Channel.refl.h
+            Channel.refl.meta.h
+            CommandParse.h
+            CoordinatorState.h
+            DataTypes.h
+            GameData.refl.h
+            GameData.refl.meta.h
+            GameServerConnection.refl.h
+            GameServerConnection.refl.meta.h
+            GameServerEndpoint.h
+            GameServerMessages.refl.h
+            GameServerMessages.refl.meta.h
             GooglePlatform.refl.h
+            GooglePlatform.refl.meta.h
+            LoadBalancer.h
+            LobbyConfig.h
+            NodeState.h
+            ProjectSettings.h
+            Rewards.refl.h
+            Rewards.refl.meta.h
+            ServerList.refl.h
+            ServerList.refl.meta.h
+            ServerManager.refl.h
+            ServerManager.refl.meta.h
+            SharedTypes.refl.h
+            SharedTypes.refl.meta.h
+            Squad.refl.h
+            Squad.refl.meta.h
+            Steam.h
+            SteamOpenIdValidatorPage.h
+            SteamServerMessages.refl.h
+            SteamServerMessages.refl.meta.h
+            User.refl.h
+            User.refl.meta.h
+            UserConnection.refl.h
+            UserConnection.refl.meta.h
+            UserConnectionMessages.refl.h
+            UserConnectionMessages.refl.meta.h
+            UserEndpoint.h
+            WelcomeInfo.refl.h
+            WelcomeInfo.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_Lobby 
-            SharedTypes.refl.h
-            BotConnection.refl.h
-            User.refl.h
-            Bot.refl.h
             BanList.refl.h
-            Squad.refl.h
-            Rewards.refl.h
-            SteamServerMessages.refl.h
+            Bot.refl.h
+            BotConnection.refl.h
+            BotMessages.refl.h
+            BuiltInChannel.refl.h
+            Channel.refl.h
             GameData.refl.h
+            GameServerConnection.refl.h
+            GameServerMessages.refl.h
+            GooglePlatform.refl.h
+            Rewards.refl.h
+            ServerList.refl.h
+            ServerManager.refl.h
+            SharedTypes.refl.h
+            Squad.refl.h
+            SteamServerMessages.refl.h
+            User.refl.h
             UserConnection.refl.h
             UserConnectionMessages.refl.h
             WelcomeInfo.refl.h
-            GameServerMessages.refl.h
-            BotMessages.refl.h
-            GameServerConnection.refl.h
-            Channel.refl.h
-            BuiltInChannel.refl.h
-<<<<<<< HEAD
-=======
-            ServerManager.refl.h
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
-            ServerList.refl.h
-            GooglePlatform.refl.h
             #REFL_PLACEHOLDER
             )
 

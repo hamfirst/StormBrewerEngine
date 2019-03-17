@@ -14,12 +14,8 @@
 
 #include <HurricaneDDS/DDSResponderCall.h>
 
-<<<<<<< HEAD
-=======
-
 #ifdef ENABLE_CHANNELS
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 static const time_t epoch = 1388534400; // Jan 1, 2014
 
 Channel::Channel(DDSNodeInterface node_interface)
@@ -369,12 +365,16 @@ void Channel::HandleMemberUpdate(DDSKey user_key, std::string data)
 
     ChannelMember member;
     member.m_Name = user_info.m_Name;
+
+#ifdef ENABLE_SQUADS
     member.m_SquadTag = user_info.m_SquadTag;
+    member.m_VisibleFlags = user_info.m_VisibleFlags;
+#endif
+
     member.m_UserKey = user_key;
     member.m_PlatformId = user_info.m_PlatformId;
     member.m_Icon = user_info.m_Icon;
     member.m_AdminLevel = user_info.m_AdminLevel;
-    member.m_VisibleFlags = user_info.m_VisibleFlags;
     member.m_MembershipFlags = 0;
 
     if (m_State == ChannelState::kSquad)
@@ -475,8 +475,5 @@ DDSKey Channel::GetChannelKeyFromName(const char * name)
 {
   return crc64lowercase(name);
 }
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

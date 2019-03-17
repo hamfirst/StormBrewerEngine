@@ -7,40 +7,37 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_DocumentServer 
             DocumentServer.cpp
-            Main.cpp
             DocumentServerVCSGit.refl.cpp
-            FileNameDatabase.cpp
             DocumentServerVCSPerforce.refl.cpp
+            FileNameDatabase.cpp
+            Main.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_DocumentServer 
-            DocumentServerMessages.refl.h
-            DocumentServerVCS.refl.meta.h
-            DocumentServerMessages.refl.meta.h
             DocumentServer.h
-            DocumentServerVCSPerforce.refl.meta.h
-            DocumentServerVCSPerforce.refl.h
+            DocumentServerMessages.refl.h
+            DocumentServerMessages.refl.meta.h
             DocumentServerVCS.refl.h
-            FileNameDatabase.h
-            DocumentServerVCSGit.refl.meta.h
+            DocumentServerVCS.refl.meta.h
             DocumentServerVCSGit.refl.h
+            DocumentServerVCSGit.refl.meta.h
+            DocumentServerVCSPerforce.refl.h
+            DocumentServerVCSPerforce.refl.meta.h
+            FileNameDatabase.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_DocumentServer 
             DocumentServerMessages.refl.h
-            DocumentServerVCSPerforce.refl.h
             DocumentServerVCS.refl.h
             DocumentServerVCSGit.refl.h
+            DocumentServerVCSPerforce.refl.h
             #REFL_PLACEHOLDER
             )
 

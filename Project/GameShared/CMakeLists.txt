@@ -7,56 +7,53 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
 
 set(GENERIC_SRC_GameShared 
-            GameLogicContainer.cpp
-            GameLevelList.cpp
-            GameStageManager.cpp
-            GameSharedCommon.cpp
-            GameWebrtc.cpp
-            GameEventReconciler.cpp
-            GameValidation.cpp
-            Systems/GameServerObjectOverlapSystem.cpp
-            Systems/GameLogicSystems.cpp
-            Systems/CVCPushSystem.cpp
             BehaviorTree/BehaviorTreeTypeDatabase.cpp
-            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             BehaviorTree/States/PlayAnimationBotState.refl.cpp
+            BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
+            GameEventReconciler.cpp
+            GameLevelList.cpp
+            GameLogicContainer.cpp
+            GameSharedCommon.cpp
+            GameStageManager.cpp
+            GameValidation.cpp
+            GameWebrtc.cpp
+            Systems/CVCPushSystem.cpp
+            Systems/GameLogicSystems.cpp
+            Systems/GameServerObjectOverlapSystem.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameShared 
-            GameProtocol.h
-            GameValidation.h
-            GameSharedCommon.h
+            BehaviorTree/BehaviorTree.h
+            BehaviorTree/BehaviorTreeSerialize.h
+            BehaviorTree/BehaviorTreeTypeDatabase.h
+            BehaviorTree/States/PlayAnimationBotState.refl.h
+            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             GameEventReconciler.h
-            GameLogicContainer.h
+            GameLevelList.h
             GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
-            GameLevelList.h
+            GameLogicContainer.h
+            GameProtocol.h
+            GameSharedCommon.h
             GameStageManager.h
+            GameValidation.h
+            Systems/CVCPushSystem.h
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
-            Systems/CVCPushSystem.h
-            BehaviorTree/BehaviorTreeSerialize.h
-            BehaviorTree/BehaviorTreeTypeDatabase.h
-            BehaviorTree/BehaviorTree.h
-            BehaviorTree/States/PlayAnimationBotState.refl.h
-            BehaviorTree/States/PlayAnimationBotState.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_GameShared 
-            GameLevelListAsset.refl.h
             BehaviorTree/States/PlayAnimationBotState.refl.h
+            GameLevelListAsset.refl.h
             #REFL_PLACEHOLDER
             )
 

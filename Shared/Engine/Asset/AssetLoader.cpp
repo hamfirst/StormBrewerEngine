@@ -539,10 +539,8 @@ void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallb
   auto buffer = file.ReadFileFull();
   FileClose(file);
 
-  std::error_code ec;
-
 #if !defined(_WEB) && !defined(_ANDROID) && !defined(_IOS)
-  auto last_write = std::filesystem::last_write_time(path, ec);
+  auto last_write = GetLastWriteTime(path);
 #else
   auto last_write = default_time_point;
 #endif

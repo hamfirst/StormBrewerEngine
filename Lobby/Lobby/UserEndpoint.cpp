@@ -6,11 +6,7 @@
 #include <StormSockets/StormSha1.h>
 
 #include "UserEndpoint.h"
-<<<<<<< HEAD
-#include "Steam.h"
-=======
 #include "LobbyConfig.h"
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 #include "UserConnection.refl.meta.h"
 #include "UserConnectionMessages.refl.meta.h"
@@ -72,15 +68,9 @@ void UserEndpoint::HandleData(const char * data)
         return;
       }
 
-<<<<<<< HEAD
-      if (msg.ver != 1038)
-      {
-        ConnectionError("Your version is out of date.<br />Restart UniBall to update.");
-=======
       if (msg.ver != LOBBY_VERSION)
       {
         ConnectionError("Your version is out of date.<br />Restart the client to update.");
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
         return;
       }
 
@@ -107,16 +97,10 @@ void UserEndpoint::HandleData(const char * data)
         return;
       }
 
-<<<<<<< HEAD
-      if (response.c == "lext")
-      {
-        DDSLog::LogVerbose("Logging in with external token");
-=======
 #ifdef ENABLE_AUTH_STEAM
       if (response.c == "lextsteam")
       {
         DDSLog::LogVerbose("Logging in with external steam token");
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
         if (m_EndpointInterface.NodeIsReady() == false)
         {
@@ -138,11 +122,7 @@ void UserEndpoint::HandleData(const char * data)
           return;
         }
       }
-<<<<<<< HEAD
-      else if (response.c == "lt")
-=======
       else if (response.c == "ltsteam")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
       {
         DDSLog::LogVerbose("Logging in with steam token");
 
@@ -159,10 +139,7 @@ void UserEndpoint::HandleData(const char * data)
 
         m_State = kSteamTokenValidation;
       }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
       else if (response.c == "lr")
       {
         DDSLog::LogVerbose("Logging in with relocate token");
@@ -248,24 +225,6 @@ void UserEndpoint::ConnectionError(const char * err_msg)
   m_Error = true;
 }
 
-<<<<<<< HEAD
-void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_id)
-{
-  if (steam_id.length() == 0)
-  {
-    ConnectionError("Couldn't validate steam token");
-    return;
-  }
-
-
-  if (m_State == kExternalTokenValidation)
-  {
-    FinalizeSteamValidation(std::stoull(steam_id));
-  }
-}
-
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserEndpoint::HandleReverseLookup(const DDSResolverRequest & resolver_data)
 {
   if (m_Error)
@@ -312,8 +271,6 @@ void UserEndpoint::HandleTorBlacklistLookup(const DDSResolverRequest & resolver_
   m_EndpointInterface.Send(ident_request);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_AUTH_STEAM
 void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_id)
 {
@@ -329,7 +286,6 @@ void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_i
   }
 }
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserEndpoint::HandleSteamAuthenticationRequest(bool success, const char * data, const char * headers)
 {
   if (success == false)
@@ -384,11 +340,7 @@ void UserEndpoint::HandleSteamOwnershipRequest(bool success, const char * data, 
 
   if (validation.appownership.apps[0].ownsapp == false)
   {
-<<<<<<< HEAD
-    ConnectionError("You do not own UniBall on Steam!");
-=======
     ConnectionError("You do not own the game on Steam!");
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     return;
   }
 
@@ -421,22 +373,6 @@ void UserEndpoint::HandleSteamUserInfoRequest(bool success, const char * data, c
 
   if (g_ExplicitUser != 0)
   {
-<<<<<<< HEAD
-    m_PlatformId = g_ExplicitUser;
-  }
-  else if(g_RandomUserName)
-  {
-    m_PlatformId = DDSGetRandomNumber();
-  }
-
-  FinalizeConnect();
-}
-
-void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
-{
-  m_State = kSteamOwnershipValidation;
-  m_PlatformId = steam_id;
-=======
     SetSteamUserId(g_ExplicitUser);
   }
   else if(g_RandomUserName)
@@ -459,7 +395,6 @@ void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
 {
   m_State = kSteamOwnershipValidation;
   SetSteamUserId(steam_id);
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   std::string ownership_url = std::string(g_SteamOwnershipUrl) + std::to_string(steam_id);
 
@@ -467,10 +402,7 @@ void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
   m_EndpointInterface.CreateHttpRequest(m_Callback, DDSHttpRequest(ownership_url),
     [this](bool success, std::string data, std::string headers) { HandleSteamOwnershipRequest(success, data.data(), headers.data()); });
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void UserEndpoint::FinalizeConnect()
 {
@@ -484,10 +416,7 @@ void UserEndpoint::FinalizeConnect()
   }
 
   m_EndpointInterface.ConnectToLocalObject(&UserConnection::ConnectToEndpoint, m_ConnectionKey);
-<<<<<<< HEAD
-  m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_PlatformId, m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode);
-=======
   m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_PlatformId, m_UserId, m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode);
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
+
   m_State = kConnectedToObj;
 }

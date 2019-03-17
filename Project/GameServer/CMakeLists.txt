@@ -7,38 +7,35 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_GameServer 
-            GameInstanceStateGameplay.cpp
-            GameInstanceStateData.cpp
+            GameClientConnection.cpp
             GameInstance.cpp
             GameInstanceManager.cpp
-            GameServer.cpp
-            GameInstanceStatePrivateGameStaging.cpp
-            GameClientConnection.cpp
-            GameInstanceStateStaging.cpp
-            GameServerGlobalResources.cpp
+            GameInstanceStateData.cpp
+            GameInstanceStateGameplay.cpp
             GameInstanceStateLoading.cpp
+            GameInstanceStatePrivateGameStaging.cpp
+            GameInstanceStateStaging.cpp
+            GameServer.cpp
+            GameServerGlobalResources.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_GameServer 
-            GameInstanceStateData.h
-            GameInstanceStateBase.h
-            GameInstance.h
-            GameInstanceStateLoading.h
-            GameInstanceStateGameplay.h
-            GameServerGlobalResources.h
-            GameInstanceStatePrivateGameStaging.h
             GameClientConnection.h
+            GameInstance.h
+            GameInstanceManager.h
+            GameInstanceStateBase.h
+            GameInstanceStateData.h
+            GameInstanceStateGameplay.h
+            GameInstanceStateLoading.h
+            GameInstanceStatePrivateGameStaging.h
             GameInstanceStateStaging.h
             GameServer.h
-            GameInstanceManager.h
+            GameServerGlobalResources.h
             #HEADER_PLACEHOLDER
             )
 

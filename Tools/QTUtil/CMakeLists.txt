@@ -7,10 +7,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_AUTOMOC ON)
@@ -21,25 +18,25 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(GENERIC_SRC_QTUtil 
-            FocusWatcher.cpp
-            QTUtil.cpp
-            DraggableList.cpp
-            QtLerpVar.cpp
-            LerpVar.cpp
             AnimationTrack.cpp
+            DraggableList.cpp
             ExpandableList.cpp
+            FocusWatcher.cpp
+            LerpVar.cpp
+            QTUtil.cpp
+            QtLerpVar.cpp
             )
 
 set(GENERIC_HEADER_QTUtil 
             AnimationTrack.h
-            FocusWatcher.h
             DraggableList.h
-            VectorRearrange.h
             ExpandableList.h
-            qtutil_global.h
+            FocusWatcher.h
             LerpVar.h
-            QtLerpVar.h
             QTUtil.h
+            QtLerpVar.h
+            VectorRearrange.h
+            qtutil_global.h
             )
 
 add_library(QTUtil STATIC ${GENERIC_SRC_QTUtil} ${GENERIC_HEADER_QTUtil})

@@ -6,18 +6,6 @@
 #include <StormData/StormDataJson.h>
 
 #include "Rewards.refl.meta.h"
-<<<<<<< HEAD
-#include "ProjectSettings.h"
-
-bool g_LoadRewards = false;
-
-Rewards::Rewards(DDSObjectInterface & obj_interface) :
-  m_Interface(obj_interface)
-{
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
-
-=======
 
 bool g_LoadRewards = false;
 
@@ -26,15 +14,11 @@ bool g_LoadRewards = false;
 Rewards::Rewards(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
-<<<<<<< HEAD
 
 }
 
 void Rewards::Initialize()
 {
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
->>>>>>> 418923509acb3c8b88c5a3e617427b8d654937b6
   if (g_LoadRewards)
   {
     FILE * fp = fopen("rewards.txt", "rt");
@@ -55,20 +39,7 @@ void Rewards::Initialize()
   }
   else
   {
-<<<<<<< HEAD
-    DDSDatabaseConnection connection(settings);
-    auto result = connection.QueryDatabaseByKey(0, "rewards");
-
-    if (result.first == 0)
-    {
-      RewardsDatabaseObj db_info;
-      StormReflParseJson(db_info, result.second.data());
-
-      m_Info = db_info;
-    }
-=======
     StormReflParseJson(m_Info, m_Interface.QueryDatabaseSingleton("rewards"));
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   }
 }
 
@@ -102,8 +73,5 @@ void Rewards::FetchRewards(DDSResponder & responder)
 {
   DDSResponderCall(responder, StormReflEncodeJson(m_Info));
 }
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

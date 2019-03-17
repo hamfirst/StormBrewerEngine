@@ -1,10 +1,6 @@
 
 #include "CoordinatorState.h"
 #include "DataTypes.h"
-<<<<<<< HEAD
-#include "ProjectSettings.h"
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSDatabaseBootstrap.h>
@@ -18,11 +14,7 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
   DDSDatabaseSettings database_settings;
   database_settings.DatabaseHostName = database_host_addr;
   database_settings.DatabasePort = database_port;
-<<<<<<< HEAD
-  database_settings.DatabaseName = kDatabaseName;
-=======
   database_settings.DatabaseName = DATABASE_NAME;
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   database_settings.NumThreads = 1;
 
   StormSockets::StormSocketClientFrontendHttpSettings http_client_settings;
@@ -39,18 +31,11 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
     DDSDatabaseBoostrapFull(DataObjectList{}, database_settings);
     DDSDatabaseConnection connection(database_settings);
 
-<<<<<<< HEAD
-    BuiltInChannelDatabaseObject channel_data;
-    channel_data.m_ChannelNameLower = "general";
-    channel_data.m_ChannelInfo.m_ChannelName = "General";
-    channel_data.m_ChannelInfo.m_Motd = "Welcome To Uniball!\nhttp://www.uniballhq.com";
-=======
 #ifdef ENABLE_CHANNELS
     BuiltInChannelDatabaseObject channel_data;
     channel_data.m_ChannelNameLower = "general";
     channel_data.m_ChannelInfo.m_ChannelName = "General";
     channel_data.m_ChannelInfo.m_Motd = "Welcome!";
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
     connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("General"), "BuiltInChannel", StormReflEncodeJson(channel_data));
 
@@ -66,96 +51,17 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
     channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
     connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Support"), "BuiltInChannel", StormReflEncodeJson(channel_data));
 
-<<<<<<< HEAD
-    channel_data.m_ChannelNameLower = "vet";
-    channel_data.m_ChannelInfo.m_ChannelName = "Vet";
-    channel_data.m_ChannelInfo.m_Motd = "&b&lBR&pchat &rVETERANS!! &p- No steam noobs\n&rOLD SCHOOL - OLD WAYS\n\nAny old uniballer is welcome.&n&nContact &oshink&p, &oq8&p, &ofero&p for invites / app until autojoins and channel invites are implemented.";
-    channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
-    connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Vet"), "BuiltInChannel", StormReflEncodeJson(channel_data));
-
-    channel_data.m_ChannelNameLower = "newbies";
-    channel_data.m_ChannelInfo.m_ChannelName = "Newbies";
-    channel_data.m_ChannelInfo.m_Motd = "&b&lWelcome New Players!!\n\n&rThis is the place to meet other new players and learn!";
-    channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
-    connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Newbies"), "BuiltInChannel", StormReflEncodeJson(channel_data));
-
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     channel_data.m_ChannelNameLower = "europe";
     channel_data.m_ChannelInfo.m_ChannelName = "Europe";
     channel_data.m_ChannelInfo.m_Motd = ":gr::fi::ge::is::gb::no::dk::ch::mt::pl::lv::at::lu::nl::hr::rs::sk::si::ru::cz::fr::ro::md::be::de::am::az::lt::bg::hu::ie::it::pt::by::tr::al::me::mk::es::ua::ba::se::kz::ee::il::cy:";
     channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
     connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Europe"), "BuiltInChannel", StormReflEncodeJson(channel_data));
-<<<<<<< HEAD
 
-    channel_data.m_ChannelNameLower = "hock";
-    channel_data.m_ChannelInfo.m_ChannelName = "Hock";
-    channel_data.m_ChannelInfo.m_Motd = "The Hock Channel";
-    channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
-    connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Hock"), "BuiltInChannel", StormReflEncodeJson(channel_data));
-
-    channel_data.m_ChannelNameLower = "ladder";
-    channel_data.m_ChannelInfo.m_ChannelName = "Ladder";
-    channel_data.m_ChannelInfo.m_Motd = "The Ladder Channel";
-    channel_data.m_ChannelInfo.m_RequiredAdminLevel = 0;
-    connection.QueryDatabaseInsert(Channel::GetChannelKeyFromName("Ladder"), "BuiltInChannel", StormReflEncodeJson(channel_data));
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     UserDatabaseObject default_admin;
     default_admin.m_AdminLevel = 9;
     default_admin.m_Title = 0;
-<<<<<<< HEAD
-    default_admin.m_TitleList.EmplaceBack("UB Developer");
-    default_admin.m_UserName = "NickW";
-    default_admin.m_UserNameLower = "nickw";
-    default_admin.m_PlatformId = 76561197970016586ULL;
-    default_admin.m_IconNames.EmplaceBack("Custom Icon");
-    default_admin.m_IconURLs.EmplaceBack("img/icons/1.png");
-    connection.QueryDatabaseInsert(User::GetUserIdForPlatformId(76561197970016586), "User", StormReflEncodeJson(default_admin));
-
-    default_admin.m_TitleList[0] = "UB Founder";
-    default_admin.m_UserName = "StormBrewers";
-    default_admin.m_UserNameLower = "stormbrewers";
-    default_admin.m_PlatformId = 76561198232963580ULL;
-    connection.QueryDatabaseInsert(User::GetUserIdForPlatformId(76561198232963580), "User", StormReflEncodeJson(default_admin));
-
-    FILE * fp = fopen("veterans.txt", "rt");
-    if (fp != nullptr)
-    {
-      fseek(fp, 0, SEEK_END);
-      auto size = ftell(fp);
-      fseek(fp, 0, SEEK_SET);
-
-      auto buffer = std::make_unique<char[]>(size + 1);
-      fread(buffer.get(), 1, size, fp);
-      fclose(fp);
-
-      buffer[size] = 0;
-
-      std::vector<std::string> veterans;
-      StormReflParseJson(veterans, buffer.get());
-
-      for (auto str : veterans)
-      {
-        DDSKey user_id;
-        StormReflParseJson(user_id, str.data());
-
-        UserRewards gifts;
-        gifts.m_Icons.emplace_back(std::make_pair("Veteran Player", "img/icons/1.png"));
-        gifts.m_Icons.emplace_back(std::make_pair("BR Chat", "img/icons/br.png"));
-
-        gifts.m_Titles.emplace_back("Veteran Player");
-        gifts.m_Titles.emplace_back("Beta Tester");
-        gifts.m_Titles.emplace_back("Cool Person");
-
-        gifts.m_AutoJoins.emplace_back("Vet");
-
-        connection.QueryDatabaseInsert(User::GetUserIdForPlatformId(user_id), "Gifts", StormReflEncodeJson(gifts));
-      }
-    }
-=======
     default_admin.m_TitleList.EmplaceBack("Developer");
     default_admin.m_UserName = "NickW";
     default_admin.m_UserNameLower = "nickw";
@@ -176,7 +82,6 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
     default_admin.m_PlatformId = 76561198232963580ULL;
 #endif
     connection.QueryDatabaseInsert(User::GetUserIdForPlatformId(76561198232963580), "User", StormReflEncodeJson(default_admin));
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   }
 
 

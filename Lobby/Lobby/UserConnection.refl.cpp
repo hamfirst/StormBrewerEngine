@@ -16,11 +16,7 @@
 #include "GameServerConnection.refl.h"
 
 UserConnection::UserConnection(DDSNodeInterface node_interface) :
-<<<<<<< HEAD
-  m_Interface(node_interface), m_State(UserConnectionState::kLoadingUser), m_Error(false), m_Relocating(false), m_GamePreviewSubscription(0)
-=======
   m_Interface(node_interface), m_State(UserConnectionState::kLoadingUser), m_Error(false), m_Relocating(false)
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 {
 
 }
@@ -50,17 +46,11 @@ void UserConnection::FinalizeUserLoaded()
 
   m_Interface.Call(&User::AddEndpoint, m_UserId, m_Interface.GetLocalKey(), m_RemoteIP, m_RemoteHost);
   m_Interface.Call(&User::SetLocation, m_UserId, m_CountryCode, m_CurrencyCode);
-<<<<<<< HEAD
-  
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<ServerList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<WelcomeInfo>{}, 0, ".m_Tabs", &UserConnection::HandleWelcomeInfoUpdate, true);
-=======
 
 #ifdef ENABLE_SERVER_LIST
   m_Interface.CreateSubscription(DDSSubscriptionTarget<ServerList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
   m_Interface.CreateSubscription(DDSSubscriptionTarget<WelcomeInfo>{}, 0, ".m_Tabs", &UserConnection::HandleWelcomeInfoUpdate, true);
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void UserConnection::PreDestroy()
@@ -78,13 +68,8 @@ void UserConnection::PreMoveObject()
   auto node_info = m_Interface.GetNodeInfo(m_Interface.GetLocalKey());
   if (node_info)
   {
-<<<<<<< HEAD
-    std::string ip_addr = GetNodeAddrAsString(node_info->m_Addr);
-    UserMessageRelocate relocate{ "relocate", ip_addr, node_info->m_EndpointPorts[0], m_Interface.GetLocalKey() };
-=======
     std::string ip_addr = GetNodeAddrAsString(node_info->get().m_Addr);
     UserMessageRelocate relocate{ "relocate", ip_addr, node_info->get().m_EndpointPorts[0], m_Interface.GetLocalKey() };
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     SendData(StormReflEncodeJson(relocate));
     m_Relocating = true;
   }
@@ -97,47 +82,25 @@ void UserConnection::PreMoveObject()
 }
 
 
-<<<<<<< HEAD
-void UserConnection::LoadUser(uint64_t steam_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code)
-{
-  auto ban_list = m_Interface.GetSharedObject<BanList>();
-  if (ban_list->CheckBanList(remote_ip.c_str(), remote_host.c_str(), steam_id))
-=======
 void UserConnection::LoadUser(uint64_t platform_id, uint64_t user_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code)
 {
 #ifdef ENABLE_BAN_LIST
   auto ban_list = m_Interface.GetSharedObject<BanList>();
   if (ban_list->CheckBanList(remote_ip.c_str(), remote_host.c_str(), platform_id))
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   {
     SendConnectionError("You are banned");
     return;
   }
 
   m_Interface.CreateSubscription(DDSSubscriptionTarget<BanList>(), 0, "", &UserConnection::HandleBanListUpdate, false);
-<<<<<<< HEAD
-
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   m_RemoteIP = remote_ip;
   m_RemoteHost = remote_host;
   m_CountryCode = country_code;
   m_CurrencyCode = currency_code;
-
-<<<<<<< HEAD
-  m_PlatformId = steam_id;
-
-  DDSLog::LogVerbose("Loaing User From Steam Id");
-
-  std::string steam_id_str = "steam" + std::to_string(steam_id);
-
-  m_UserId = crc64(steam_id_str);
-=======
   m_PlatformId = platform_id;
   m_UserId = user_id;
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   m_Interface.CreateSubscription(DDSSubscriptionTarget<User>{}, m_UserId, ".m_LocalInfo", &UserConnection::HandleLocalDataUpdate, true, &UserConnection::UserDoesntExist, true);
 }
 
@@ -166,18 +129,13 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       initial_data.m_UserNameLower = msg.uname;
       initial_data.m_PlatformId = m_PlatformId;
       initial_data.m_Created = (int)m_Interface.GetNetworkTime();
-<<<<<<< HEAD
-      initial_data.m_TitleList.EmplaceBack("Newbie");
-      initial_data.m_IconNames.EmplaceBack("Newbie");
-      initial_data.m_IconURLs.EmplaceBack("img/icons/2.png");
-=======
+
 #if defined(ENABLE_REWARDS) && defined(ENABLE_CHANNELS)
       initial_data.m_TitleList.EmplaceBack("Newbie");
       initial_data.m_IconNames.EmplaceBack("Newbie");
       initial_data.m_IconURLs.EmplaceBack("img/icons/2.png");
 #endif
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
       std::transform(initial_data.m_UserNameLower.begin(), initial_data.m_UserNameLower.end(), initial_data.m_UserNameLower.begin(), tolower);
 
       m_Interface.InsertIntoDatabase(initial_data, m_UserId, &UserConnection::HandleUserInsert, this);
@@ -189,10 +147,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     break;
 
   case UserConnectionState::kLoaded:
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_CHANNELS
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "chat")
     {
       UserChatMessageIncoming chat_msg;
@@ -215,14 +170,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SendChatToChannel, m_UserId, m_Interface.GetLocalKey(), chat_msg.channel_id, chat_msg.msg);
     }
-<<<<<<< HEAD
-    else if (cmd == "set_title")
-=======
     else
 #endif
 #if defined(ENABLE_REWARDS) && defined(ENABLE_CHANNELS)
     if (cmd == "set_title")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserSetProfileVal req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -244,14 +195,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SetIcon, m_UserId, req.val);
     }
-<<<<<<< HEAD
-    else if (cmd == "set_celeb")
-=======
     else
 #endif
 #ifdef ENABLE_REWARDS
     if (cmd == "set_celeb")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserSetProfileVal req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -262,14 +209,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SetCelebration, m_UserId, req.val);
     }
-<<<<<<< HEAD
-    else if (cmd == "set_primary_squad")
-=======
     else
 #endif
 #ifdef ENABLE_SQUADS
     if (cmd == "set_primary_squad")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserSetProfileSquad req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -280,14 +223,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SetPrimarySquad, m_UserId, m_Interface.GetLocalKey(), req.val);
     }
-<<<<<<< HEAD
-    else if (cmd == "edit_lobby_info")
-=======
     else
 #endif
 #ifdef ENABLE_WELCOME_INFO
     if (cmd == "edit_lobby_info")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserEditInfo req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -298,14 +237,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::UpdateWelcomeInfo, m_UserId, m_Interface.GetLocalKey(), req.data);
     }
-<<<<<<< HEAD
-    else if (cmd == "edit_channel_info")
-=======
     else
 #endif
 #if defined(ENABLE_CHANNELS) && defined(ENABLE_SQUADS)
     if (cmd == "edit_channel_info")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserEditChannelInfo req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -316,13 +251,9 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::UpdateChannelText, m_UserId, m_Interface.GetLocalKey(), req.channel_id, req.data);
     }
-<<<<<<< HEAD
-    else if (cmd == "req_maps")
-=======
     else
 #endif
     if (cmd == "req_maps")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserMapListRequest req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -404,9 +335,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.CallWithResponder(&User::FetchStats, req.user, &UserConnection::SendData, this);
     }
-<<<<<<< HEAD
-    else if (cmd == "create_squad")
-=======
     else
 #ifdef ENABLE_SERVER_LIST
     if (cmd == "preview_game")
@@ -441,7 +369,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 #endif
 #ifdef ENABLE_SQUADS
     if (cmd == "create_squad")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserCreateSquad req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -565,10 +492,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       }
       m_Interface.Call(&User::EditSquadPermissions, m_UserId, m_Interface.GetLocalKey(), req.squad, req.member, req.rank);
     }
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_CHANNELS
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     else if (cmd == "squad_motd")
     {
       UserSquadMotd req;
@@ -579,13 +503,9 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       }
       m_Interface.Call(&User::EditSquadMotd, m_UserId, m_Interface.GetLocalKey(), req.squad, req.motd);
     }
-<<<<<<< HEAD
-    else if (cmd == "squad_lock")
-=======
     else
 #endif
     if (cmd == "squad_lock")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserSquadLock req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -595,42 +515,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       }
       m_Interface.Call(&User::LockSquadChannel, m_UserId, m_Interface.GetLocalKey(), req.squad, req.lock);
     }
-<<<<<<< HEAD
-    else if (cmd == "preview_game")
-    {
-      UserPreviewGame req;
-      if (StormReflParseJson(req, data.c_str()) == false)
-      {
-        SendConnectionError("Parse error");
-        return;
-      }
-
-      if (m_GamePreviewSubscription != 0)
-      {
-        m_Interface.DestroySubscription<GameServerConnection>(m_GamePreviewServerId, m_GamePreviewSubscription);
-      }
-      
-      std::string game_path = ".m_GameList[" + std::to_string(req.game_id) + "]";
-      m_GamePreviewSubscription = m_Interface.CreateSubscription(DDSSubscriptionTarget<GameServerConnection>{}, req.server_id, game_path.c_str(),
-         &UserConnection::HandleGamePreviewUpdate, true, req.request_id, &UserConnection::HandleGamePreviewDestroyed);
-      m_GamePreviewServerId = req.server_id;
-      m_GamePreviewRequestId = req.request_id;
-    }
-    else if (cmd == "cancel_preview")
-    {
-      if (m_GamePreviewSubscription != 0)
-      {
-        m_Interface.DestroySubscription<GameServerConnection>(m_GamePreviewServerId, m_GamePreviewSubscription);
-        m_GamePreviewSubscription = 0;
-      }
-    }
-    else if (cmd == "add_auto_join")
-=======
     else
 #endif
 #ifdef ENABLE_CHANNELS
     if (cmd == "add_auto_join")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       static_assert(std::is_convertible<std::tuple<std::decay_t<std::string &>>, std::tuple<std::decay_t<const std::string &>>>::value, "asdf");
 
@@ -654,9 +542,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.CallWithResponder(&User::RemoveAutoJoinChannel, m_UserId, &UserConnection::SendNotification, this, req.channel);
     }
-<<<<<<< HEAD
-    else if (cmd == "change_persistent")
-=======
     else
 #endif
 #ifdef ENABLE_REWARDS
@@ -671,7 +556,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     else
 #endif
     if (cmd == "change_persistent")
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     {
       UserPersistentModify req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -682,18 +566,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::ModifyPersistent, m_UserId, req.change);
     }
-<<<<<<< HEAD
-    else if (cmd == "next_xp")
-    {
-      m_Interface.Call(&User::SendXPGain, m_UserId, m_Interface.GetLocalKey());
-    }
-    else if (cmd == "skip_xp")
-    {
-      m_Interface.Call(&User::SkipXPGain, m_UserId);
-    }
-=======
-
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     break;
   }
@@ -784,33 +656,22 @@ void UserConnection::HandleLocalDataUpdate(std::string data)
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "local", data }));
 }
 
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_SERVER_LIST
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserConnection::HandleServerListUpdate(std::string data)
 {
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "server", data }));
 }
-<<<<<<< HEAD
-
-=======
 #endif
 
 #ifdef ENABLE_WELCOME_INFO
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserConnection::HandleWelcomeInfoUpdate(std::string data)
 {
 
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "winfo", std::move(data) }));
 }
-<<<<<<< HEAD
-
-=======
 #endif
 
 #ifdef ENABLE_BAN_LIST
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserConnection::HandleBanListUpdate(std::string data)
 {
   auto ban_list = m_Interface.GetSharedObject<BanList>();
@@ -819,13 +680,9 @@ void UserConnection::HandleBanListUpdate(std::string data)
     SendConnectionError("You are banned");
   }
 }
-<<<<<<< HEAD
-
-=======
 #endif
 
 #ifdef ENABLE_SERVER_LIST
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void UserConnection::HandleGamePreviewUpdate(int request_id, std::string data)
 {
   UserGamePreviewUpdate update;
@@ -844,8 +701,5 @@ void UserConnection::HandleGamePreviewDestroyed(int request_id)
 
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(update));
 }
-<<<<<<< HEAD
 
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

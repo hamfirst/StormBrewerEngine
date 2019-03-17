@@ -5,9 +5,6 @@
 
 #include <StormRefl/StormRefl.h>
 #include <StormData/StormData.h>
-
-<<<<<<< HEAD
-=======
 #include "HurricaneDDS/DDSKey.h"
 
 #include "LobbyConfig.h"
@@ -28,7 +25,6 @@ struct GamePlayerData
 #endif
 };
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 struct GameInstanceData
 {
   STORM_REFL;
@@ -45,31 +41,15 @@ struct GameStatsData
   STORM_REFL;
   int m_GamesPlayed = 0;
   int m_GamesWon = 0;
-<<<<<<< HEAD
-  int m_UBGoals = 0;
-  int m_UBAssists = 0;
-  int m_DBGoals = 0;
-  int m_DBAssists = 0;
-  int m_TimePlayed = 0;
-};
-
-=======
   int m_TimePlayed = 0;
 };
 
 #ifdef ENABLE_REWARDS
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
+
 struct UserXPGain
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UserXPGain);
 
-<<<<<<< HEAD
-  int m_Goals;
-  int m_GoalsCount;
-  int m_Assists;
-  int m_AssistsCount;
-=======
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   int m_GamesWon;
   int m_GamesWonCount;
   int m_GamesPlayed;
@@ -87,8 +67,5 @@ struct UserRewards
   std::vector<std::pair<std::string, int>> m_Celebrations;
   std::vector<std::string> m_AutoJoins;
 };
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

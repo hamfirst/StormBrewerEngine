@@ -5,13 +5,10 @@
 #include <HurricaneDDS/DDSDataObject.h>
 #include <HurricaneDDS/DDSConnectionId.h>
 
-<<<<<<< HEAD
-=======
 #include "LobbyConfig.h"
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 enum STORM_REFL_ENUM class BotConnectionState
 {
   kWaitingForConnection,
@@ -62,7 +59,4 @@ private:
   bool m_Relocating;
 };
 
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

@@ -8,10 +8,7 @@
 #include <HurricaneDDS/DDSKey.h>
 
 #include "GameData.refl.h"
-<<<<<<< HEAD
-=======
 #include "LobbyConfig.h"
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 
 struct GeolocationResponse
@@ -300,16 +297,11 @@ struct UserStatsData
 
   int last_game_played;
   GameStatsData stats;
-<<<<<<< HEAD
-  int rank;
-  int xp;
-=======
 
 #ifdef ENABLE_REWARDS
   int rank;
   int xp;
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 struct UserEditInfo
@@ -380,11 +372,7 @@ struct UserGotXP
   int level;
   bool last;
 
-<<<<<<< HEAD
-  UserXPGain xp_info;
-=======
 #ifdef ENABLE_REWARDS
   UserXPGain xp_info;
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };

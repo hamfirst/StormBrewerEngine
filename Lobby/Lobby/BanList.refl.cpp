@@ -5,12 +5,9 @@
 #include <StormData/StormDataJson.h>
 
 #include "BanList.refl.meta.h"
-<<<<<<< HEAD
-#include "ProjectSettings.h"
-=======
+
 
 #ifdef ENABLE_BAN_LIST
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(BanListElement);
 
@@ -44,27 +41,12 @@ bool MatchStr(const char *first, const char * second)
 BanList::BanList(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
-<<<<<<< HEAD
+
 }
 
 void BanList::Initialize()
 {
-=======
-<<<<<<< HEAD
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
-
-  DDSDatabaseConnection connection(settings);
-  auto result = connection.QueryDatabaseByKey(0, "bans");
-
-  if (result.first == 0)
-  {
-    StormReflParseJson(m_List, result.second.data());
-  }
-=======
->>>>>>> 418923509acb3c8b88c5a3e617427b8d654937b6
   StormReflParseJson(m_List, m_Interface.QueryDatabaseSingleton("bans"));
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void BanList::Ban(BanType type, std::string data, int duration, std::string message)
@@ -186,16 +168,8 @@ bool BanList::CheckBanList(const char * remote_ip, const char * remote_host, uin
 
 void BanList::SaveBanList()
 {
-<<<<<<< HEAD
-  DDSDatabaseSettings settings;
-  settings.DatabaseName = kDatabaseName;
-
-  DDSDatabaseConnection connection(settings);
-  connection.QueryDatabaseUpsert(0, "bans", StormReflEncodeJson(m_List));
-=======
   auto ban_list_json = StormReflEncodeJson(m_List);
   m_Interface.UpsertDatabaseSingleton("bans", ban_list_json.c_str());
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void BanList::CleanupExpiredBans()
@@ -224,8 +198,5 @@ void BanList::CleanupExpiredBans()
     SaveBanList();
   }
 }
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

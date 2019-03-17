@@ -172,9 +172,7 @@ foreach(REFL_FILE ${GENERIC_REFL_HurricaneDDS})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
-<<<<<<< HEAD
-add_library(HurricaneDDS STATIC ${GENERIC_SRC_HurricanDDS} ${GENERIC_HEADER_HurricanDDS})
-=======
+
 add_library(HurricaneDDS STATIC ${GENERIC_SRC_HurricaneDDS} ${GENERIC_HEADER_HurricaneDDS})
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
+
 

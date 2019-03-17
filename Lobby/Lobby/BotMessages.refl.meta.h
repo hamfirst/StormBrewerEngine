@@ -17,10 +17,7 @@ struct StormReflTypeInfo<BotMessageBase>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageBase"; }
   static constexpr auto GetNameHash() { return 0x96600309; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageBase & GetDefault() { static BotMessageBase def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -61,10 +58,7 @@ struct StormReflTypeInfo<BotMessageBase>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageBase::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageBase *>(obj); return &ptr->c; }
@@ -91,10 +85,7 @@ struct StormReflTypeInfo<BotErrorMessage>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotErrorMessage"; }
   static constexpr auto GetNameHash() { return 0x605B94B4; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotErrorMessage & GetDefault() { static BotErrorMessage def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -135,10 +126,7 @@ struct StormReflTypeInfo<BotErrorMessage>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotErrorMessage::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotErrorMessage *>(obj); return &ptr->c; }
@@ -163,10 +151,7 @@ struct StormReflTypeInfo<BotErrorMessage>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x125FDBBD; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotErrorMessage::err; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotErrorMessage *>(obj); return &ptr->err; }
@@ -193,10 +178,7 @@ struct StormReflTypeInfo<BotIdentify>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotIdentify"; }
   static constexpr auto GetNameHash() { return 0xE635F8CE; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotIdentify & GetDefault() { static BotIdentify def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -237,10 +219,7 @@ struct StormReflTypeInfo<BotIdentify>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotIdentify::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotIdentify *>(obj); return &ptr->c; }
@@ -265,10 +244,7 @@ struct StormReflTypeInfo<BotIdentify>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x24A232CF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotIdentify::user_name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotIdentify *>(obj); return &ptr->user_name; }
@@ -293,10 +269,7 @@ struct StormReflTypeInfo<BotIdentify>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x35C246D5; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotIdentify::password; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotIdentify *>(obj); return &ptr->password; }
@@ -321,10 +294,7 @@ struct StormReflTypeInfo<BotIdentify>::field_data_static<3>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x59F18131; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotIdentify::relocation_key; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotIdentify *>(obj); return &ptr->relocation_key; }
@@ -351,10 +321,7 @@ struct StormReflTypeInfo<BotMessageUpdate>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageUpdate"; }
   static constexpr auto GetNameHash() { return 0xF60D0CA2; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageUpdate & GetDefault() { static BotMessageUpdate def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -395,10 +362,7 @@ struct StormReflTypeInfo<BotMessageUpdate>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageUpdate::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageUpdate *>(obj); return &ptr->c; }
@@ -423,10 +387,7 @@ struct StormReflTypeInfo<BotMessageUpdate>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xADF3F363; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageUpdate::data; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageUpdate *>(obj); return &ptr->data; }
@@ -453,10 +414,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageChannelChat"; }
   static constexpr auto GetNameHash() { return 0x56271208; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageChannelChat & GetDefault() { static BotMessageChannelChat def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -497,10 +455,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelChat::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelChat *>(obj); return &ptr->c; }
@@ -525,10 +480,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x24A232CF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelChat::user_name; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelChat *>(obj); return &ptr->user_name; }
@@ -553,10 +505,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>::field_data_static<2>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x688A5FAF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelChat::msg; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelChat *>(obj); return &ptr->msg; }
@@ -581,10 +530,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>::field_data_static<3>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA76ED395; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelChat::user_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelChat *>(obj); return &ptr->user_id; }
@@ -609,10 +555,7 @@ struct StormReflTypeInfo<BotMessageChannelChat>::field_data_static<4>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x21AF7E36; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelChat::endpoint_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelChat *>(obj); return &ptr->endpoint_id; }
@@ -639,10 +582,7 @@ struct StormReflTypeInfo<BotMessageRelocate>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageRelocate"; }
   static constexpr auto GetNameHash() { return 0x04521E11; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageRelocate & GetDefault() { static BotMessageRelocate def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -683,10 +623,7 @@ struct StormReflTypeInfo<BotMessageRelocate>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageRelocate::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageRelocate *>(obj); return &ptr->c; }
@@ -711,10 +648,7 @@ struct StormReflTypeInfo<BotMessageRelocate>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3BCAA720; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageRelocate::new_host; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageRelocate *>(obj); return &ptr->new_host; }
@@ -739,10 +673,7 @@ struct StormReflTypeInfo<BotMessageRelocate>::field_data_static<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB77CE911; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotMessageRelocate::new_port; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageRelocate *>(obj); return &ptr->new_port; }
@@ -767,10 +698,7 @@ struct StormReflTypeInfo<BotMessageRelocate>::field_data_static<3>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x3D14BB9E; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotMessageRelocate::relocation_token; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageRelocate *>(obj); return &ptr->relocation_token; }
@@ -797,10 +725,7 @@ struct StormReflTypeInfo<BotMessageSendChatToChannel>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageSendChatToChannel"; }
   static constexpr auto GetNameHash() { return 0x9407A3C1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageSendChatToChannel & GetDefault() { static BotMessageSendChatToChannel def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -841,10 +766,7 @@ struct StormReflTypeInfo<BotMessageSendChatToChannel>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageSendChatToChannel::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageSendChatToChannel *>(obj); return &ptr->c; }
@@ -869,10 +791,7 @@ struct StormReflTypeInfo<BotMessageSendChatToChannel>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x688A5FAF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageSendChatToChannel::msg; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageSendChatToChannel *>(obj); return &ptr->msg; }
@@ -899,10 +818,7 @@ struct StormReflTypeInfo<BotMessageChannelMotd>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageChannelMotd"; }
   static constexpr auto GetNameHash() { return 0x99B585CE; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageChannelMotd & GetDefault() { static BotMessageChannelMotd def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -943,10 +859,7 @@ struct StormReflTypeInfo<BotMessageChannelMotd>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelMotd::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelMotd *>(obj); return &ptr->c; }
@@ -971,10 +884,7 @@ struct StormReflTypeInfo<BotMessageChannelMotd>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAA0F656C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageChannelMotd::motd; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageChannelMotd *>(obj); return &ptr->motd; }
@@ -1001,10 +911,7 @@ struct StormReflTypeInfo<BotMessageSendChatToUser>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageSendChatToUser"; }
   static constexpr auto GetNameHash() { return 0x0414DF8E; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageSendChatToUser & GetDefault() { static BotMessageSendChatToUser def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -1045,10 +952,7 @@ struct StormReflTypeInfo<BotMessageSendChatToUser>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageSendChatToUser::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageSendChatToUser *>(obj); return &ptr->c; }
@@ -1073,10 +977,7 @@ struct StormReflTypeInfo<BotMessageSendChatToUser>::field_data_static<1>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x688A5FAF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageSendChatToUser::msg; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageSendChatToUser *>(obj); return &ptr->msg; }
@@ -1101,10 +1002,7 @@ struct StormReflTypeInfo<BotMessageSendChatToUser>::field_data_static<2>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xA76ED395; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotMessageSendChatToUser::user_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageSendChatToUser *>(obj); return &ptr->user_id; }
@@ -1131,10 +1029,7 @@ struct StormReflTypeInfo<BotMessageGameResult>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageGameResult"; }
   static constexpr auto GetNameHash() { return 0x39C93421; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageGameResult & GetDefault() { static BotMessageGameResult def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -1175,10 +1070,7 @@ struct StormReflTypeInfo<BotMessageGameResult>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageGameResult::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageGameResult *>(obj); return &ptr->c; }
@@ -1203,10 +1095,7 @@ struct StormReflTypeInfo<BotMessageGameResult>::field_data_static<1>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE48FD905; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageGameResult::game_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageGameResult *>(obj); return &ptr->game_id; }
@@ -1231,10 +1120,7 @@ struct StormReflTypeInfo<BotMessageGameResult>::field_data_static<2>
   static constexpr auto GetType() { return "GameServerGameResult"; }
   static constexpr unsigned GetFieldNameHash() { return 0x209C5D7B; }
   static constexpr unsigned GetTypeNameHash() { return 0x63B1A2A0; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotMessageGameResult::game_info; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageGameResult *>(obj); return &ptr->game_info; }
@@ -1261,10 +1147,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BotMessageCreateGame"; }
   static constexpr auto GetNameHash() { return 0x44FD468B; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BotMessageCreateGame & GetDefault() { static BotMessageCreateGame def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -1305,10 +1188,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<0>
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::c; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageCreateGame *>(obj); return &ptr->c; }
@@ -1333,10 +1213,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<1>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1844E6B7; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::server_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageCreateGame *>(obj); return &ptr->server_id; }
@@ -1361,10 +1238,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<2>
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE48FD905; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::game_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageCreateGame *>(obj); return &ptr->game_id; }
@@ -1389,10 +1263,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<3>
   static constexpr auto GetType() { return "GameInstanceData"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4E015FE3; }
   static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::game_settings; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageCreateGame *>(obj); return &ptr->game_settings; }
@@ -1417,10 +1288,7 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<4>
   static constexpr auto GetType() { return "std::vector<std::tuple<unsigned long, unsigned long, int>, std::allocator<std::tuple<unsigned long, unsigned long, int> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x264E43A6; }
   static constexpr unsigned GetTypeNameHash() { return 0x9EB395EF; }
-<<<<<<< HEAD
-=======
   static constexpr bool HasDefault() { return true; }
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::players; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BotMessageCreateGame *>(obj); return &ptr->players; }

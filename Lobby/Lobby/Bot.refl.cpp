@@ -16,10 +16,8 @@
 #include "ServerList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 
-<<<<<<< HEAD
-=======
+
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 Bot::Bot(DDSNodeInterface node_interface, BotDatabaseObject & db_object) :
   m_Interface(node_interface), m_Data(db_object),
@@ -134,7 +132,6 @@ void Bot::BeginLoad()
 {
   m_Interface.FinalizeObjectLoad();
 }
-<<<<<<< HEAD
-=======
+
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
+

@@ -10,11 +10,8 @@
 #include "User.refl.meta.h"
 #include "Channel.refl.meta.h"
 
-<<<<<<< HEAD
-=======
 #ifdef ENABLE_SQUADS
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(SquadDatabaseMemberInfo);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(SquadDatabaseApplicantInfo);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(SquadDatabaseInfo);
@@ -570,8 +567,5 @@ void Squad::GetInfo(DDSResponder & responder)
   StormReflEncodePrettyJson(m_Data.m_DatabaseInfo, info);
   DDSResponderCall(responder, info);
 }
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

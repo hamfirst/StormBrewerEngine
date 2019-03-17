@@ -5,13 +5,10 @@
 
 #include <HurricaneDDS/DDSDataObject.h>
 
-<<<<<<< HEAD
-=======
 #include "LobbyConfig.h"
 
 #ifdef ENABLE_SERVER_LIST
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 struct ServerListGame
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(ServerListGame);
@@ -62,8 +59,5 @@ public:
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
 };
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

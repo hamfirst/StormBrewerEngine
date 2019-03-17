@@ -7,10 +7,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_glm 
@@ -18,15 +15,15 @@ set(GENERIC_SRC_glm
             )
 
 set(GENERIC_HEADER_glm 
-            simd/vector_relational.h
-            simd/trigonometric.h
-            simd/geometric.h
+            simd/common.h
             simd/exponential.h
-            simd/packing.h
+            simd/geometric.h
             simd/integer.h
             simd/matrix.h
-            simd/common.h
+            simd/packing.h
             simd/platform.h
+            simd/trigonometric.h
+            simd/vector_relational.h
             )
 
 add_library(glm STATIC ${GENERIC_SRC_glm} ${GENERIC_HEADER_glm})

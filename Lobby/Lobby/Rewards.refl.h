@@ -3,12 +3,9 @@
 #include <HurricaneDDS/DDSDataObject.h>
 
 #include "GameData.refl.h"
-<<<<<<< HEAD
-=======
 #include "LobbyConfig.h"
 
 #ifdef ENABLE_REWARDS
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 struct RewardsRank
 {
@@ -45,8 +42,5 @@ public:
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
 };
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

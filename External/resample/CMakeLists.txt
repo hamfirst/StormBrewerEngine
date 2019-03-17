@@ -7,27 +7,24 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
-<<<<<<< HEAD
-=======
 
->>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_resample 
+            filtering.c
+            multi_stage.c
+            polyfilt.c
             remez_lp.c
             smarc.c
-            filtering.c
-            polyfilt.c
-            multi_stage.c
             stage_impl.c
             )
 
 set(GENERIC_HEADER_resample 
+            filtering.h
             multi_stage.h
+            polyfilt.h
             remez_lp.h
             smarc.h
-            polyfilt.h
-            filtering.h
             stage_impl.h
             )
 
