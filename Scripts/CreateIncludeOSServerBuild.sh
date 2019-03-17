@@ -1,6 +1,9 @@
 #!/bin/bash
 
 cd $PROJECT_DIR
+
+rm -rf IncludeOSServer
+
 mkdir -p IncludeOSServer
 mkdir -p IncludeOSServer/CMake
 mkdir -p IncludeOSServer/External
@@ -27,6 +30,7 @@ cp -rp StormTech/StormData IncludeOSServer/StormTech
 cp -rp StormTech/StormExpr IncludeOSServer/StormTech
 cp -rp StormTech/StormNet IncludeOSServer/StormTech
 cp -rp StormTech/StormNetCustomBindings IncludeOSServer/StormTech
+cp -rp StormTech/StormSockets IncludeOSServer/StormTech
 cp -rp StormTech/StormRefl IncludeOSServer/StormRefl
 cp -rp StormTech/StormSockets IncludeOSServer/StormTech
 
@@ -45,4 +49,5 @@ cp -rp Test/Assets IncludeOSServer/Assets
 cp -p Test/localhost.* IncludeOSServer/Assets
 echo '/' > IncludeOSServer/Assets/asset_dir.txt
 
-cp -p Dummy.cpp IncludeOSServer/Dummy.cpp
+cd IncludeOSServer
+boot --create-bridge .

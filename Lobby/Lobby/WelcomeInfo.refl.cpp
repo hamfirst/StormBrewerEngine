@@ -6,20 +6,41 @@
 #include <StormData/StormDataJson.h>
 
 #include "WelcomeInfo.refl.meta.h"
+<<<<<<< HEAD
+#include "ProjectSettings.h"
+
+=======
 
 #ifdef ENABLE_WELCOME_INFO
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);
 
 WelcomeInfo::WelcomeInfo(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {
+<<<<<<< HEAD
 
 }
 
 void WelcomeInfo::Initialize()
 {
+=======
+<<<<<<< HEAD
+  DDSDatabaseSettings settings;
+  settings.DatabaseName = kDatabaseName;
+
+  DDSDatabaseConnection connection(settings);
+  auto result = connection.QueryDatabaseByKey(0, "welcome_info");
+
+  if (result.first == 0)
+  {
+    StormReflParseJson(m_Tabs, result.second.data());
+  }
+=======
+>>>>>>> 418923509acb3c8b88c5a3e617427b8d654937b6
   StormReflParseJson(m_Tabs, m_Interface.QueryDatabaseSingleton("welcome_info").c_str());
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   if (m_Tabs.HighestIndex() == -1)
   {
@@ -80,7 +101,16 @@ void WelcomeInfo::FetchWelcomeInfo(DDSResponder & responder)
 
 void WelcomeInfo::Save()
 {
+<<<<<<< HEAD
+  DDSDatabaseSettings settings;
+  settings.DatabaseName = kDatabaseName;
+
+  DDSDatabaseConnection connection(settings);
+  connection.QueryDatabaseUpsert(0, "welcome_info", StormReflEncodeJson(m_Tabs));
+}
+=======
   m_Interface.UpsertDatabaseSingleton("welcome_info", StormReflEncodeJson(m_Tabs).data());
 }
 
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

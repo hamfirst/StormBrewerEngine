@@ -14,7 +14,9 @@
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
 #include "Runtime/BinaryResource/BinaryResourceLoader.h"
 
+#ifndef _INCLUDEOS
 #include <filesystem>
+#endif
 
 class RenderState;
 
@@ -33,15 +35,14 @@ public:
     File file = FileOpen(path_str.data(), FileOpenMode::kRead);
     if (file.GetFileOpenError() != 0)
     {
-      callback(file_hash, nullptr, 0, std::filesystem::file_time_type{});
+      callback(file_hash, nullptr, 0, time_t{});
       return;
     }
 
     auto buffer = file.ReadFileFull();
     FileClose(file);
 
-    std::error_code ec;
-    callback(file_hash, buffer.Get(), buffer.GetSize(), std::filesystem::last_write_time(path, ec));
+    callback(file_hash, buffer.Get(), buffer.GetSize(), GetLastWriteTime(path));
   }
   
 private:

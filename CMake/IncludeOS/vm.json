@@ -1,8 +1,8 @@
 {
-  "net" : [
+  "net": [
     {
-      "device": "e1000"
+      "device": "vmxnet3"
     }
   ],
-  "mem" : 64
+  "mem": 595
 }

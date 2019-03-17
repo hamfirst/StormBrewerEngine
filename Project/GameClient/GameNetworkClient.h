@@ -11,12 +11,15 @@
 #include "Game/GameNetworkSettings.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
 #include <StormNetCustomBindings/NetClientBackendWebrtc.h>
 using GameNetClientBackend = NetClientBackendWebrtc;
-#else
+#elif NET_BACKEND == NET_BACKEND_ENET
 #include <StormNet/NetClientBackendEnet.h>
 using GameNetClientBackend = NetClientBackendEnet;
+#elif NET_BACKEND == NET_BACKEND_WEBSOCKET
+#include <StormNetCustomBindings/NetClientBackendWebsocket.h>
+using GameNetClientBackend = NetClientBackendWebsocket;
 #endif
 
 

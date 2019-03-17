@@ -525,7 +525,7 @@ Optional<Buffer> AssetLoader::LoadFullDocumentInternal(czstr file_path, int & fi
 
 void AssetLoader::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCallback callback)
 {
-  auto default_time_point = std::filesystem::file_time_type{};
+  auto default_time_point = time_t{};
 
   auto full_path = GetFullPath(path, m_RootPath);
 

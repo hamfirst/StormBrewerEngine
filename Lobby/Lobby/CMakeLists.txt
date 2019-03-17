@@ -7,12 +7,18 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
+<<<<<<< HEAD
+=======
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_Lobby 
             BuiltInChannel.refl.cpp
+<<<<<<< HEAD
+=======
             ServerManager.refl.cpp
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             NodeState.cpp
             SteamOpenIdValidatorPage.cpp
             BanList.refl.cpp
@@ -38,7 +44,10 @@ set(GENERIC_SRC_Lobby
             )
 
 set(GENERIC_HEADER_Lobby 
+<<<<<<< HEAD
+=======
             ServerManager.refl.meta.h
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             SharedTypes.refl.h
             BotConnection.refl.h
             GameData.refl.meta.h
@@ -55,6 +64,11 @@ set(GENERIC_HEADER_Lobby
             GameServerEndpoint.h
             CommandParse.h
             DataTypes.h
+<<<<<<< HEAD
+            Steam.h
+            ProjectSettings.h
+=======
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             GameServerConnection.refl.meta.h
             Squad.refl.h
             Rewards.refl.h
@@ -75,7 +89,10 @@ set(GENERIC_HEADER_Lobby
             Squad.refl.meta.h
             UserConnectionMessages.refl.h
             WelcomeInfo.refl.h
+<<<<<<< HEAD
+=======
             LobbyConfig.h
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             GameServerMessages.refl.h
             BotMessages.refl.h
             SteamOpenIdValidatorPage.h
@@ -83,7 +100,10 @@ set(GENERIC_HEADER_Lobby
             LoadBalancer.h
             Channel.refl.h
             BuiltInChannel.refl.h
+<<<<<<< HEAD
+=======
             ServerManager.refl.h
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             ServerList.refl.h
             BotEndpoint.h
             GooglePlatform.refl.h
@@ -108,7 +128,10 @@ set(GENERIC_REFL_Lobby
             GameServerConnection.refl.h
             Channel.refl.h
             BuiltInChannel.refl.h
+<<<<<<< HEAD
+=======
             ServerManager.refl.h
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
             ServerList.refl.h
             GooglePlatform.refl.h
             #REFL_PLACEHOLDER

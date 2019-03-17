@@ -9,9 +9,12 @@
 
 #include "GameData.refl.h"
 #include "GameServerMessages.refl.h"
+<<<<<<< HEAD
+=======
 #include "LobbyConfig.h"
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 struct BotMessageBase
 {
@@ -100,5 +103,8 @@ struct BotMessageCreateGame
   GameInstanceData game_settings;
   std::vector<std::tuple<DDSKey, DDSKey, int>> players;
 };
+<<<<<<< HEAD
+=======
 
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

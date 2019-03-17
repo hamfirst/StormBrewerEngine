@@ -6,8 +6,12 @@
 
 #ifdef _MSC_VER
 #define PEDANTIC_BULLSHIT
+#include "Windows.h"
 #endif
 
+#ifdef _LINUX
+#include "sys/stat.h"
+#endif
 
 
 File::File()
@@ -280,4 +284,16 @@ Optional<Buffer> FileReadFull(czstr path)
   Buffer buffer(file.GetFileLength());
   file.Read(gsl::make_span(buffer.Get(), file.GetFileLength()));
   return buffer;
+}
+
+std::time_t GetLastWriteTime(czstr path)
+{
+#ifdef _MSC_VER
+#error implement this
+#else
+  struct stat attrib;
+  stat(path, &attrib);
+
+  return attrib.st_mtime;
+#endif
 }

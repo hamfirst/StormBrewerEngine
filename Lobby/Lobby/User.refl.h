@@ -9,17 +9,26 @@
 #include "SharedTypes.refl.h"
 #include "GameData.refl.h"
 
+<<<<<<< HEAD
+=======
 #include "LobbyConfig.h"
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 struct UserPersistent
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UserPersistent);
+<<<<<<< HEAD
+  RBool m_EnterExitMessages;
+  RBool m_TwelveHourClock;
+  RInt m_PlayerListSort;
+=======
 
 #ifdef ENABLE_CHANNELS
   RBool m_EnterExitMessages;
   RBool m_TwelveHourClock;
   RInt m_PlayerListSort;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 struct UserLocalData
@@ -32,8 +41,11 @@ struct UserLocalData
 
   RInt m_AdminLevel;
 
+<<<<<<< HEAD
+=======
   UserPersistent m_Persistent;
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   RInt m_Title;
   RMergeList<RString> m_TitleList;
 
@@ -45,19 +57,30 @@ struct UserLocalData
   RInt m_Celebration;
   RMergeList<RString> m_CelebrationNames;
 
+<<<<<<< HEAD
+  UserPersistent m_Persistent;
+  RMergeList<RString> m_AutoJoinChannels;
+
+  RMergeList<DDSSharedLocalCopyPtr<ChannelInfo>> m_Channels;
+
+=======
 #ifdef ENABLE_CHANNELS
   RMergeList<RString> m_AutoJoinChannels;
   RMergeList<DDSSharedLocalCopyPtr<ChannelInfo>> m_Channels;
 #endif
 
 #ifdef ENABLE_SQUADS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   RKey m_PrimarySquad;
   RKey m_OwnerSquad;
 
   RMap<DDSKey, SquadInfo> m_Squads;
   RMergeList<UserApplication> m_Applications;
   RMergeList<UserApplication> m_Requests;
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 struct UserDatabaseObject
@@ -69,10 +92,15 @@ struct UserDatabaseObject
   STORM_REFL_ATTR(UniqueIndex) RString m_UserNameLower;
 
   RInt m_AdminLevel = 0;
+<<<<<<< HEAD
+  RInt m_VisibilityFlags = 0;
+  RBool m_Veteran;
+=======
 
 #ifdef ENABLE_CHANNELS
   RInt m_VisibilityFlags = 0;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   RInt m_Created;
 
@@ -90,6 +118,15 @@ struct UserDatabaseObject
   RInt m_LastGamePlayed;
   GameStatsData m_Stats;
 
+<<<<<<< HEAD
+  RInt m_Level;
+  RInt m_XP;
+  RSparseList<UserXPGain> m_XPLog;
+
+  UserPersistent m_Persistent;
+  RMergeList<RString> m_AutoJoinChannels;
+
+=======
 #ifdef ENABLE_REWARDS
   RInt m_Level;
   RInt m_XP;
@@ -103,13 +140,17 @@ struct UserDatabaseObject
 #endif
 
 #ifdef ENABLE_SQUADS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   RKey m_PrimarySquad = 0;
   RKey m_OwnerSquad = 0;
   RMergeList<RKey> m_Squads;
 
   RMergeList<RKey> m_Applications;
   RMergeList<RKey> m_Requests;
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   RMergeList<RString> m_HistoryHosts;
 };
@@ -139,6 +180,11 @@ struct User
   void STORM_REFL_FUNC SendToEndpoint(DDSKey endpoint_id, std::string data);
   void STORM_REFL_FUNC RemoveEndpoint(DDSKey key);
   void STORM_REFL_FUNC SetLocation(std::string country_code, std::string currency_code);
+<<<<<<< HEAD
+  void STORM_REFL_FUNC GiveGifts();
+  void STORM_REFL_FUNC HandleGiftData(int ec, std::string data);
+
+=======
 
 #ifdef ENABLE_REWARDS
   void STORM_REFL_FUNC GiveGifts();
@@ -146,6 +192,7 @@ struct User
 #endif
 
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   // Channel Functions
   bool IsInChannel(DDSKey channel_key) const;
   void STORM_REFL_FUNC JoinChannel(DDSKey requesting_endpoint, std::string channel_name);
@@ -154,7 +201,10 @@ struct User
   void STORM_REFL_FUNC SendChatToChannel(DDSKey src_endpoint_id, DDSKey channel_key, std::string message);
   void STORM_REFL_FUNC HandleChannelJoinResponse(std::pair<DDSKey, DDSKey> join_info, ChannelJoinResult result);
   void STORM_REFL_FUNC HandleChannelUpdate(DDSKey channel_key, std::string data, int version);
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   // Game Functions
   void STORM_REFL_FUNC CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData creation_data, std::string password);
@@ -170,7 +220,10 @@ struct User
   void STORM_REFL_FUNC HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data);
 
   // Squad Functions
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_SQUADS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   void STORM_REFL_FUNC CreateSquad(DDSKey creator_endpoint, std::string squad_name, std::string squad_tag);
   void STORM_REFL_FUNC DestroySquad(DDSKey destroyer_endpoint);
   void STORM_REFL_FUNC HandleSquadCreateNameLookupFail(std::tuple<DDSKey, std::string, std::string> squad_data, std::string channel_name);
@@ -213,7 +266,10 @@ struct User
   void STORM_REFL_FUNC HandleSquadApplicationLoadFailure(std::pair<int, DDSKey> squad_info);
   void STORM_REFL_FUNC HandleSquadRequestLoad(std::pair<int, DDSKey> squad_info, std::string name, std::string tag);
   void STORM_REFL_FUNC HandleSquadRequestLoadFailure(std::pair<int, DDSKey> squad_info);
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   // Profile Functions
   void STORM_REFL_FUNC AddTitle(DDSResponder & responder, std::string title, bool quiet);
@@ -231,6 +287,12 @@ struct User
   void STORM_REFL_FUNC UpdateStats(GameStatsData stats, GameInstanceData instance_data);
   void STORM_REFL_FUNC FetchStats(DDSResponder & responder);
 
+<<<<<<< HEAD
+  void STORM_REFL_FUNC AddAutoJoinChannel(DDSResponder & responder, const std::string & channel_name);
+  void STORM_REFL_FUNC RemoveAutoJoinChannel(DDSResponder & responder, const std::string & channel_name);
+
+  void STORM_REFL_FUNC ModifyPersistent(const std::string & change_packet);
+=======
 #ifdef ENABLE_CHANNELS
   void STORM_REFL_FUNC AddAutoJoinChannel(DDSResponder & responder, const std::string & channel_name);
   void STORM_REFL_FUNC RemoveAutoJoinChannel(DDSResponder & responder, const std::string & channel_name);
@@ -239,16 +301,26 @@ struct User
   void STORM_REFL_FUNC ModifyPersistent(const std::string & change_packet);
 
 #ifdef ENABLE_REWARDS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   void STORM_REFL_FUNC GiveXP(DDSResponder & responder, int amount);
   void STORM_REFL_FUNC SendXPGain(DDSKey endpoint_id);
   void STORM_REFL_FUNC ApplyXPGain(bool quiet);
   void STORM_REFL_FUNC SkipXPGain();
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   // Admin Functions
   void STORM_REFL_FUNC ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::string msg);
   void STORM_REFL_FUNC Rename(DDSResponder & responder, DDSKey src_endpoint_id, const std::string & new_name);
   void STORM_REFL_FUNC MakeAdmin(DDSResponder & responder, int admin_level);
+<<<<<<< HEAD
+  void STORM_REFL_FUNC BanSelf(DDSResponder & responder, int duration, std::string message);
+  void STORM_REFL_FUNC BanSelfAndConnections(DDSResponder & responder, int duration, std::string message);
+  void STORM_REFL_FUNC Kick(DDSResponder & responder);
+  void STORM_REFL_FUNC KickFromChannel(DDSResponder & responder, DDSKey src_user_id, DDSKey src_user_endpoint, DDSKey channel_id, int src_admin_level);
+=======
 
 #ifdef ENABLE_BAN_LIST
   void STORM_REFL_FUNC BanSelf(DDSResponder & responder, int duration, std::string message);
@@ -258,10 +330,21 @@ struct User
   void STORM_REFL_FUNC HandleRename(DDSKey return_ep, bool success);
 
 #ifdef ENABLE_WELCOME_INFO
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   void STORM_REFL_FUNC FetchWelcomeInfoForEdit(DDSKey endpoint_id);
   void STORM_REFL_FUNC HandleWelcomeInfoEdit(DDSKey endpoint_id, std::string info);
   void STORM_REFL_FUNC UpdateWelcomeInfo(DDSKey endpoint_id, std::string info);
   void STORM_REFL_FUNC FetchChannelTextForEdit(DDSKey endpoint_id, DDSKey channel_id);
+<<<<<<< HEAD
+  void STORM_REFL_FUNC HandleChannelTextEdit(std::pair<DDSKey, DDSKey> edit_info, std::string channel_text);
+  void STORM_REFL_FUNC UpdateChannelText(DDSKey endpoint_id, DDSKey channel_id, std::string channel_text);
+  void STORM_REFL_FUNC HandleCommandResponderMessage(DDSKey endpoint_id, std::string msg);
+  void STORM_REFL_FUNC HandleCommandUserLookupFail(DDSKey endpoint_id);
+  void STORM_REFL_FUNC HandleCommandSquadLookupFail(DDSKey endpoint_id);
+  void STORM_REFL_FUNC HandleBotCreate(DDSKey endpoint_id, int ec);
+  void STORM_REFL_FUNC HandleBuiltInChannelCreate(std::pair<DDSKey, std::string> return_info, int ec);
+  void STORM_REFL_FUNC HandleRename(DDSKey return_ep, bool success);
+=======
 #endif
 
 #ifdef ENABLE_CHANNELS
@@ -278,6 +361,7 @@ struct User
 #ifdef ENABLE_BOTS
   void STORM_REFL_FUNC HandleBotCreate(DDSKey endpoint_id, int ec);
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   // Inspection functions
   void STORM_REFL_FUNC GetInfo(DDSResponder & responder);

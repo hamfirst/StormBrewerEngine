@@ -20,7 +20,11 @@
 #include "Rewards.refl.meta.h"
 
 #include "CommandParse.h"
+<<<<<<< HEAD
+#include "Steam.h"
+=======
 #include "LobbyConfig.h"
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserPersistent);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserLocalData);
@@ -38,6 +42,13 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_GameThrottle(8, 2)
 { 
   m_UserInfo.m_Name = m_Data.m_UserName;
+<<<<<<< HEAD
+  m_UserInfo.m_Icon = m_Data.m_Icon == -1 ? GetDefaultIcon() : m_Data.m_IconURLs[m_Data.m_Icon].ToString();
+  m_UserInfo.m_PlatformId = m_Data.m_PlatformId;
+  m_UserInfo.m_AdminLevel = m_Data.m_AdminLevel;
+  m_UserInfo.m_Veteran = m_Data.m_Veteran;
+  m_UserInfo.m_VisibleFlags = m_Data.m_VisibilityFlags;
+=======
 
   m_UserInfo.m_PlatformId = m_Data.m_PlatformId;
   m_UserInfo.m_AdminLevel = m_Data.m_AdminLevel;
@@ -48,6 +59,7 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_UserInfo.m_VisibleFlags = m_Data.m_VisibilityFlags;
   m_LocalInfo.m_AutoJoinChannels = m_Data.m_AutoJoinChannels;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   m_LocalInfo.m_Name = m_Data.m_UserName;
   m_LocalInfo.m_AdminLevel = m_Data.m_AdminLevel;
@@ -61,11 +73,18 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_LocalInfo.m_UserKey = m_Interface.GetLocalKey();
   m_LocalInfo.m_PlatformId = m_Data.m_PlatformId;
   m_LocalInfo.m_Persistent = m_Data.m_Persistent;
+<<<<<<< HEAD
+  m_LocalInfo.m_AutoJoinChannels = m_Data.m_AutoJoinChannels;
+
+  m_LocalInfo.m_OwnerSquad = m_Data.m_OwnerSquad;
+  m_LocalInfo.m_PrimarySquad = m_Data.m_PrimarySquad;
+=======
 
 #ifdef ENABLE_SQUADS
   m_LocalInfo.m_OwnerSquad = m_Data.m_OwnerSquad;
   m_LocalInfo.m_PrimarySquad = m_Data.m_PrimarySquad;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::AddEndpoint(DDSKey key, std::string remote_ip, std::string remote_host)
@@ -89,7 +108,10 @@ void User::AddEndpoint(DDSKey key, std::string remote_ip, std::string remote_hos
 
   if (m_Endpoints.size() == 1)
   {
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     JoinChannel(0, "General");
 
     if (m_LocalInfo.m_AdminLevel > 0)
@@ -108,6 +130,12 @@ void User::AddEndpoint(DDSKey key, std::string remote_ip, std::string remote_hos
     {
       JoinChannel(0, channel.second);
     }
+<<<<<<< HEAD
+
+    GiveGifts();
+    SendXPGain(key);
+    ApplyXPGain(true);
+=======
 #endif
 
 #ifdef ENABLE_REWARDS
@@ -118,6 +146,7 @@ void User::AddEndpoint(DDSKey key, std::string remote_ip, std::string remote_hos
     SendXPGain(key);
     ApplyXPGain(true);
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   }
 }
 
@@ -158,10 +187,14 @@ void User::RemoveEndpoint(DDSKey key)
     if (m_Endpoints.size() == 0)
     {
       LeaveGame();
+<<<<<<< HEAD
+      LeaveAllChannels();
+=======
 
 #ifdef ENABLE_CHANNELS
       LeaveAllChannels();
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     }
     else if (key == m_GameEndpoint)
     {
@@ -199,7 +232,10 @@ void User::SetLocation(std::string country_code, std::string currency_code)
   m_CurrencyCode = currency_code;
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_REWARDS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::GiveGifts()
 {
   m_Interface.QueryDatabaseByKey("Gifts", m_Interface.GetLocalKey(), &User::HandleGiftData, this);
@@ -208,6 +244,17 @@ void User::GiveGifts()
 void User::HandleGiftData(int ec, std::string data)
 {
   auto responder = CreateEmptyResponder(m_Interface);
+<<<<<<< HEAD
+  if (ec != 0)
+  {
+    if (m_UserInfo.m_Veteran == false)
+    {
+      AddAutoJoinChannel(responder, "Newbies");
+    }
+    return;
+  }
+=======
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   UserRewards gifts;
   StormReflParseJson(gifts, data.c_str());
@@ -276,6 +323,117 @@ void User::HandleGiftData(int ec, std::string data)
   {
     AddAutoJoinChannel(responder, "Europe");
   }
+<<<<<<< HEAD
+ 
+  m_Interface.DeleteFromDatabase("Gifts", m_Interface.GetLocalKey());
+}
+
+void User::BeginLoad()
+{
+  MergeListRemoveDuplicates(m_Data.m_Squads);
+  MergeListRemoveDuplicates(m_Data.m_Applications);
+  MergeListRemoveDuplicates(m_Data.m_Requests);
+
+  for (auto squad : m_Data.m_Squads)
+  {
+    LoadSquadInternal(squad.second);
+  }
+
+  for (auto squad : m_Data.m_Applications)
+  {
+    LoadApplicationInternal(squad.first, squad.second);
+  }
+
+  for (auto squad : m_Data.m_Requests)
+  {
+    LoadSquadRequestInternal(squad.first, squad.second);
+  }
+
+  CheckCompleteLoad();
+}
+
+void User::CheckCompleteLoad()
+{
+  if (m_PendingSquadLoads.size() != 0)
+  {
+    return;
+  }
+
+  if (m_PendingApplicationLoads.size() != 0)
+  {
+    return;
+  }
+
+  if (m_PendingRequestLoads.size() != 0)
+  {
+    return;
+  }
+
+  m_Interface.FinalizeObjectLoad();
+}
+
+bool User::ValidateUserName(const std::string & name, int min_characters, int max_characters, bool allow_space)
+{
+  if ((int)name.size() < min_characters || (int)name.size() > max_characters)
+  {
+    return false;
+  }
+
+  for (auto c : name)
+  {
+    bool is_alpha = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    bool is_num = (c >= '0' && c <= '9');
+    bool is_special = (c == '-' || c == '.' || c == '_');
+    bool is_space = (c == ' ' && allow_space);
+
+    if (!is_alpha && !is_num && !is_special && !is_space)
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+DDSKey User::GetUserIdForPlatformId(uint64_t steam_id)
+{
+  std::string steam_id_str = "steam" + std::to_string(steam_id);
+  return crc64(steam_id_str);
+}
+
+std::string User::GetDefaultIcon()
+{
+  return "img/icons/default.png";
+}
+
+void User::HandleUserNameLookupForCall(std::tuple<int, std::string, DDSResponderData> call_data, int ec, std::string data)
+{
+  auto method_id = std::get<0>(call_data);
+  auto call_args = std::get<1>(call_data);
+  auto responder_data = std::get<2>(call_data);
+
+  DDSResponder responder{ m_Interface, responder_data };
+
+  const char * id = StormDataFindJsonStartByPath(".m_PlatformId", data.c_str());
+
+  if (id == nullptr)
+  {
+    DDSResponderCallError(responder);
+  }
+  else
+  {
+    uint64_t id_parsed;
+    if (StormReflParseJson(id_parsed, id) == false)
+    {
+      DDSResponderCallError(responder);
+    }
+
+    auto user_key = User::GetUserIdForPlatformId(id_parsed);
+    m_Interface.CallWithForwardedResponderRaw(StormReflTypeInfo<User>::GetNameHash(), method_id, user_key, responder_data, std::move(call_args));
+  }
+}
+
+=======
 
  
   m_Interface.DeleteFromDatabase("Gifts", m_Interface.GetLocalKey());
@@ -283,6 +441,7 @@ void User::HandleGiftData(int ec, std::string data)
 #endif
 
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 bool User::IsInChannel(DDSKey key) const
 {
   for (auto elem : m_LocalInfo.m_Channels)
@@ -478,7 +637,10 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
   DDSApplySharedLocalCopyChangePacket(channel_itr->second, data, version);
 }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData creation_data, std::string password)
 {
@@ -524,6 +686,16 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData cre
     return;
   }
 
+<<<<<<< HEAD
+  std::string local_name = m_UserInfo.m_Name;
+  std::string squad = m_UserInfo.m_SquadTag;
+
+  int celebration_id = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
+  bool new_player = m_Data.m_Stats.m_TimePlayed == 0;
+  
+  m_Interface.Call(&GameServerConnection::CreateGame, server_id, 
+    m_Interface.GetLocalKey(), endpoint_id, local_name, (int)m_LocalInfo.m_AdminLevel, celebration_id, new_player, squad, password, creation_data);
+=======
   GamePlayerData creator_data;
   creator_data.m_UserId = m_Interface.GetLocalKey();
   creator_data.m_EndpointId = endpoint_id;
@@ -537,10 +709,15 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData cre
 #endif
   
   m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::string password, bool observer)
 {
+<<<<<<< HEAD
+  std::string local_name = m_UserInfo.m_Name;
+  std::string squad = m_UserInfo.m_SquadTag;
+=======
   GamePlayerData creator_data;
   creator_data.m_UserId = m_Interface.GetLocalKey();
   creator_data.m_EndpointId = endpoint_id;
@@ -552,11 +729,17 @@ void User::JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::stri
 #ifdef ENABLE_SQUADS
   std::string squad = m_UserInfo.m_SquadTag;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   int celebration_id = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
   bool new_player = m_Data.m_Stats.m_TimePlayed == 0;
 
+<<<<<<< HEAD
+  m_Interface.Call(&GameServerConnection::JoinUserToGame, server_id, game_id, m_Interface.GetLocalKey(), 
+    endpoint_id, local_name, (int)m_LocalInfo.m_AdminLevel, celebration_id, new_player, squad, password, observer, m_UserInfo.m_AdminLevel > 0);
+=======
   m_Interface.Call(&GameServerConnection::JoinUserToGame, server_id, game_id, creator_data, password, observer, m_UserInfo.m_AdminLevel > 0);
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info)
@@ -660,10 +843,15 @@ void User::LeaveGame()
   m_GameId = -1;
   m_UserInfo.m_Game = UserGameInfo{};
 
+<<<<<<< HEAD
+  SendXPGain(m_GameEndpoint);
+  ApplyXPGain(true);
+=======
 #ifdef ENABLE_REWARDS
   SendXPGain(m_GameEndpoint);
   ApplyXPGain(true);
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::NotifyLeftGame(DDSKey game_random_id)
@@ -678,12 +866,19 @@ void User::NotifyLeftGame(DDSKey game_random_id)
 
   m_InGame = false;
   m_GameId = -1;
+<<<<<<< HEAD
+  m_UserInfo.m_Game = UserGameInfo{};  
+
+  SendXPGain(m_GameEndpoint);
+  ApplyXPGain(true);
+=======
   m_UserInfo.m_Game = UserGameInfo{};
 
 #ifdef ENABLE_REWARDS
   SendXPGain(m_GameEndpoint);
   ApplyXPGain(true);
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data)
@@ -708,7 +903,10 @@ void User::HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data)
   }
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_SQUADS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::CreateSquad(DDSKey creator_endpoint, std::string squad_name, std::string squad_tag)
 {
   if (m_SquadCreationThrottle.HasCredits(m_Interface.GetNetworkTime(), 1) == false)
@@ -1289,7 +1487,10 @@ void User::HandleSquadRequestLoadFailure(std::pair<int, DDSKey> squad_info)
     CheckCompleteLoad();
   }
 }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::AddTitle(DDSResponder & responder, std::string title, bool quiet)
 {
@@ -1522,6 +1723,52 @@ void User::UpdateStats(GameStatsData stats, GameInstanceData instance_data)
   StormReflAggregate(m_Data.m_Stats, stats);
   m_Data.m_LastGamePlayed = (int)time(nullptr);
 
+<<<<<<< HEAD
+  if (instance_data.m_Map == "Miniball" || instance_data.m_Map == "Hockey" || instance_data.m_Map == "Hockey" || instance_data.m_Map == "FreshCourt")
+  {
+    UserXPGain xp_log;
+
+    xp_log.m_GoalsCount = stats.m_UBGoals + stats.m_DBGoals;
+    xp_log.m_Goals = xp_log.m_GoalsCount * 50;
+    xp_log.m_AssistsCount = stats.m_UBAssists + stats.m_DBAssists;
+    xp_log.m_Assists = xp_log.m_AssistsCount * 20;
+    xp_log.m_GamesPlayedCount = stats.m_GamesPlayed;
+    xp_log.m_GamesWonCount = stats.m_GamesWon;
+    xp_log.m_Gifted = 0;
+
+    if (instance_data.m_TimeLimit > instance_data.m_ScoreLimit)
+    {
+      xp_log.m_GamesPlayed = stats.m_GamesPlayed * 20 * instance_data.m_TimeLimit;
+      xp_log.m_GamesWon = stats.m_GamesWon * 100 * instance_data.m_TimeLimit;
+    }
+    else
+    {
+      xp_log.m_GamesPlayed = stats.m_GamesPlayed * 20 * instance_data.m_ScoreLimit;
+      xp_log.m_GamesWon = stats.m_GamesWon * 100 * instance_data.m_ScoreLimit;
+    }
+
+    xp_log.m_XP = xp_log.m_Goals + xp_log.m_Assists + xp_log.m_GamesPlayed + xp_log.m_GamesWon;
+    if (m_Data.m_XPLog.HighestIndex() == -1)
+    {
+      m_Data.m_XPLog.EmplaceBack(xp_log);
+    }
+    else
+    {
+      auto & elem = m_Data.m_XPLog.begin()->second;
+      StormReflAggregate(elem, xp_log);
+    }
+
+    if (m_InGame == false)
+    {
+      for (auto ep : m_Endpoints)
+      {
+        SendXPGain(ep.first);
+      }
+
+      ApplyXPGain(true);
+    }
+  }
+=======
 #ifdef ENABLE_REWARDS
   UserXPGain xp_log;
 
@@ -1561,6 +1808,7 @@ void User::UpdateStats(GameStatsData stats, GameInstanceData instance_data)
     ApplyXPGain(true);
   }
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 }
 
 void User::FetchStats(DDSResponder & responder)
@@ -1570,16 +1818,24 @@ void User::FetchStats(DDSResponder & responder)
   stats.name = m_UserInfo.m_Name.ToString();
   stats.last_game_played = m_Data.m_LastGamePlayed;
   stats.stats = m_Data.m_Stats;
+<<<<<<< HEAD
+  stats.rank = m_Data.m_Level;
+  stats.xp = m_Data.m_XP;
+=======
 
 #ifdef ENABLE_REWARDS
   stats.rank = m_Data.m_Level;
   stats.xp = m_Data.m_XP;
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   DDSResponderCall(responder, StormReflEncodeJson(stats));
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::AddAutoJoinChannel(DDSResponder & responder, const std::string & channel_name)
 {
   if (User::ValidateUserName(channel_name, 1, 16) == false)
@@ -1624,7 +1880,10 @@ void User::RemoveAutoJoinChannel(DDSResponder & responder, const std::string & c
     }
   }
 }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::ModifyPersistent(const std::string & change_packet)
 {
@@ -1632,7 +1891,10 @@ void User::ModifyPersistent(const std::string & change_packet)
   StormDataApplyChangePacket(m_LocalInfo.m_Persistent, change_packet.c_str());
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_REWARDS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::GiveXP(DDSResponder & responder, int amount)
 {
   UserXPGain xp_log = {};
@@ -1742,7 +2004,10 @@ void User::SkipXPGain()
     ApplyXPGain(false);
   }
 }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::string msg)
 {
@@ -1787,7 +2052,10 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       return;
     }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_SQUADS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/squadinfo")
     {
       std::string squad_name;
@@ -1832,9 +2100,13 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       }
       return;
     }
+<<<<<<< HEAD
+
+=======
 #endif
 
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/channelinfo")
     {
       std::string channel_name;
@@ -1854,15 +2126,22 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       FetchChannelTextForEdit(endpoint_id, channel_id);
       return;
     }
+<<<<<<< HEAD
+
+=======
 #endif
 
 #ifdef ENABLE_WELCOME_INFO
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/lobbyinfo")
     {
       FetchWelcomeInfoForEdit(endpoint_id);
       return;
     }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     if (cmd == "/setadmin")
     {
@@ -1883,7 +2162,11 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+
+=======
 #ifdef ENABLE_REWARDS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/givexp")
     {
       if (m_Data.m_AdminLevel == 9)
@@ -1903,9 +2186,12 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+=======
 #endif
 
 #ifdef ENABLE_BOTS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     if (cmd == "/createbot")
     {
@@ -1935,9 +2221,13 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+
+=======
 #endif
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_WELCOME_INFO)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/setbotwelcomeinfo")
     {
       if (m_Data.m_AdminLevel == 9)
@@ -1961,9 +2251,12 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+=======
 #endif
 
 #ifdef ENABLE_WELCOME_INFO
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     if (cmd == "/removewelcomeinfo")
     {
@@ -1983,9 +2276,12 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+=======
 #endif
 
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     if (cmd == "/createbuiltin")
     {
@@ -2014,7 +2310,10 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     if (cmd == "/rename")
     {
@@ -2127,7 +2426,10 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       return;
     }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_BAN_LIST
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/banlist")
     {
       m_Interface.CallWithResponderReturnArgErrorBack(&BanList::GetInfo, 0,
@@ -2228,9 +2530,13 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       User::HandleCommandResponderMessage(endpoint_id, "Ban submitted");
       return;
     }
+<<<<<<< HEAD
+
+=======
 #endif
 
 #ifdef ENABLE_SERVER_LIST
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     if (cmd == "/resetservers")
     {
       if (m_LocalInfo.m_AdminLevel == 9)
@@ -2239,10 +2545,15 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
         return;
       }
     }
+<<<<<<< HEAD
+  }
+
+=======
 #endif
   }
 
 #ifdef ENABLE_CHANNELS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   if (cmd == "/remove")
   {
     std::string user_name;
@@ -2285,7 +2596,10 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
     LeaveChannel(channel_id);
     return;
   }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   HandleCommandResponderMessage(endpoint_id, "Command not found: " + cmd);
 }
@@ -2346,11 +2660,17 @@ void User::MakeAdmin(DDSResponder & responder, int admin_level)
     SendNotification(std::string("You are now an admin at level ") + std::to_string(admin_level));
     DDSResponderCall(responder, std::string("Successfully set user to admin level ") + std::to_string(admin_level));
 
+<<<<<<< HEAD
+    JoinChannel(0, "Admin");
+    JoinChannel(0, "Support");
+    JoinChannel(0, "Newbies");
+=======
 #ifdef ENABLE_CHANNELS
     JoinChannel(0, "Admin");
     JoinChannel(0, "Support");
     JoinChannel(0, "Newbies");
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
     auto empty_responder = CreateEmptyResponder(m_Interface);
     AddIcon(empty_responder, "img/icons/admin.png", "Admin", true, false);
@@ -2363,7 +2683,10 @@ void User::MakeAdmin(DDSResponder & responder, int admin_level)
 
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_BAN_LIST
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::BanSelf(DDSResponder & responder, int duration, std::string message)
 {
   m_Interface.Call(&BanList::Ban, 0, BanType::kPlatformId, std::to_string(m_LocalInfo.m_PlatformId), duration, message);
@@ -2383,7 +2706,10 @@ void User::BanSelfAndConnections(DDSResponder & responder, int duration, std::st
 
   DDSResponderCall(responder, std::string("Banned user ") + m_UserInfo.m_Name.ToString() + " and all related connections");
 }
+<<<<<<< HEAD
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::Kick(DDSResponder & responder)
 {
@@ -2395,6 +2721,13 @@ void User::Kick(DDSResponder & responder)
   DDSResponderCall(responder, std::string("Kicked user ") + m_UserInfo.m_Name.ToString());
 }
 
+<<<<<<< HEAD
+void User::KickFromChannel(DDSResponder & responder, DDSKey src_user_id, DDSKey src_user_endpoint, DDSKey channel_id, int src_admin_level)
+{
+  m_Interface.Call(&Channel::KickUser, channel_id, src_user_endpoint, m_Interface.GetLocalKey(), src_user_id, src_admin_level);
+}
+
+=======
 void User::HandleRename(DDSKey return_ep, bool success)
 {
   if (success)
@@ -2412,6 +2745,7 @@ void User::HandleRename(DDSKey return_ep, bool success)
 
 #ifdef ENABLE_WELCOME_INFO
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::FetchWelcomeInfoForEdit(DDSKey endpoint_id)
 {
   m_Interface.CallSharedWithResponderReturnArg(&WelcomeInfo::FetchWelcomeInfo, &User::HandleWelcomeInfoEdit, this, endpoint_id);
@@ -2435,6 +2769,8 @@ void User::UpdateWelcomeInfo(DDSKey endpoint_id, std::string info)
 
   m_Interface.CallWithResponderReturnArg(&WelcomeInfo::UpdateInfo, 0, &User::HandleCommandResponderMessage, this, endpoint_id, "Welcome", info);
 }
+<<<<<<< HEAD
+=======
 #endif
 
 #ifdef ENABLE_CHANNELS
@@ -2442,6 +2778,7 @@ void User::KickFromChannel(DDSResponder & responder, DDSKey src_user_id, DDSKey 
 {
   m_Interface.Call(&Channel::KickUser, channel_id, src_user_endpoint, m_Interface.GetLocalKey(), src_user_id, src_admin_level);
 }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::FetchChannelTextForEdit(DDSKey endpoint_id, DDSKey channel_id)
 {
@@ -2468,6 +2805,8 @@ void User::UpdateChannelText(DDSKey endpoint_id, DDSKey channel_id, std::string 
   m_Interface.CallWithResponderReturnArg(&Channel::UpdateChannelMotd, channel_id, &User::HandleCommandResponderMessage, this, endpoint_id, channel_text);
 }
 
+<<<<<<< HEAD
+=======
 void User::HandleBuiltInChannelCreate(std::pair<DDSKey, std::string> return_info, int ec)
 {
   if (ec == 0)
@@ -2484,6 +2823,7 @@ void User::HandleBuiltInChannelCreate(std::pair<DDSKey, std::string> return_info
 
 #endif
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::HandleCommandResponderMessage(DDSKey endpoint_id, std::string msg)
 {
   if (m_UserInfo.m_AdminLevel == 0)
@@ -2520,7 +2860,10 @@ void User::HandleCommandSquadLookupFail(DDSKey endpoint_id)
   }
 }
 
+<<<<<<< HEAD
+=======
 #ifdef ENABLE_BOTS
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 void User::HandleBotCreate(DDSKey endpoint_id, int ec)
 {
   if (ec == 0)
@@ -2532,7 +2875,38 @@ void User::HandleBotCreate(DDSKey endpoint_id, int ec)
     m_Interface.Call(&UserConnection::SendServerText, endpoint_id, "Invalid bot name");
   }
 }
+<<<<<<< HEAD
+
+void User::HandleBuiltInChannelCreate(std::pair<DDSKey, std::string> return_info, int ec)
+{
+  if (ec == 0)
+  {
+    m_Interface.Call(&UserConnection::SendServerText, return_info.first, "Successfully created built in channel");
+    JoinChannel(0, return_info.second);
+  }
+  else
+  {
+    m_Interface.Call(&UserConnection::SendServerText, return_info.first, "Failed to create built in channel");
+  }
+}
+
+void User::HandleRename(DDSKey return_ep, bool success)
+{
+  if (success)
+  {
+    m_UserInfo.m_Name = m_Data.m_UserName;
+    m_LocalInfo.m_Name = m_Data.m_UserName;
+
+    m_Interface.Call(&UserConnection::SendServerText, return_ep, "Successfully changed name");
+  }
+  else
+  {
+    m_Interface.Call(&UserConnection::SendServerText, return_ep, "Failed to change name");
+  }
+}
+=======
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 void User::GetInfo(DDSResponder & responder)
 {
@@ -2559,6 +2933,8 @@ void User::GetInfo(DDSResponder & responder)
 
   DDSResponderCall(responder, data);
 }
+<<<<<<< HEAD
+=======
 
 void User::BeginLoad()
 {
@@ -2670,3 +3046,4 @@ void User::HandleUserNameLookupForCall(std::tuple<int, std::string, DDSResponder
     m_Interface.CallWithForwardedResponderRaw(StormReflTypeInfo<User>::GetNameHash(), method_id, user_key, responder_data, std::move(call_args));
   }
 }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

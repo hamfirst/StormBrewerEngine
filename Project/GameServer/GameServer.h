@@ -7,12 +7,15 @@
 
 #include "Game/GameNetworkSettings.h"
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
 #include <StormNetCustomBindings/NetServerBackendWebrtc.h>
 using GameNetServerBackend = NetServerBackendWebrtc;
-#else
+#elif NET_BACKEND == NET_BACKEND_ENET
 #include <StormNet/NetServerBackendEnet.h>
 using GameNetServerBackend = NetServerBackendEnet;
+#elif NET_BACKEND == NET_BACKEND_WEBSOCKET
+#include <StormNetCustomBindings/NetServerBackendWebsocket.h>
+using GameNetServerBackend = NetServerBackendWebsocket;
 #endif
 
 

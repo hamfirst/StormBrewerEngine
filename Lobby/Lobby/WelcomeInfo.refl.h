@@ -2,10 +2,13 @@
 
 #include <HurricaneDDS/DDSDataObject.h>
 
+<<<<<<< HEAD
+=======
 #include "LobbyConfig.h"
 
 #ifdef ENABLE_WELCOME_INFO
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 struct WelcomeInfoTab
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(WelcomeInfoTab);
@@ -39,5 +42,8 @@ private:
 
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
 };
+<<<<<<< HEAD
+=======
 
 #endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

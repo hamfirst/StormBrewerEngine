@@ -39,7 +39,10 @@ public:
 
   Optional<WebsocketPacket> RecvPacket();
   Optional<WebsocketPacket> PollPacket();
+
+#ifndef _INCLUDEOS
   void WaitForData(int ms);
+#endif
 
   void SendPacket(const Buffer & buffer, WebSocketPacketType type);
   void SendPacket(const std::string & data, WebSocketPacketType type);

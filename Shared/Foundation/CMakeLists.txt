@@ -7,7 +7,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
                     ${PROJECT_SOURCE_DIR}/Shared
                     ${PROJECT_SOURCE_DIR}/Project
                     ${PROJECT_SOURCE_DIR}/Lobby)
+<<<<<<< HEAD
+=======
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 set(CMAKE_CXX_STANDARD 17)
 
 include("${PROJECT_SOURCE_DIR}/CMake/cotire.cmake")
@@ -62,7 +65,15 @@ set(GENERIC_SRC_Foundation
             Buffer/BufferUtil.cpp
             Buffer/Buffer.cpp
             #CPP_PLACEHOLDER
+<<<<<<< HEAD
             )
+=======
+<<<<<<< HEAD
+  Network/WebSocketIncludeOS.cpp Network/WebSocketWeb.cpp)
+=======
+  Encoding/Base64.cpp Encoding/Base64.h Encoding/Url.cpp Encoding/Url.h)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
+>>>>>>> 418923509acb3c8b88c5a3e617427b8d654937b6
 
 set(GENERIC_HEADER_Foundation 
             Common.h

@@ -1,7 +1,7 @@
 #include "GameShared/GameSharedCommon.h"
 #include "Game/GameNetworkSettings.h"
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
 #ifdef _MSC_VER
 #ifdef _DEBUG
 

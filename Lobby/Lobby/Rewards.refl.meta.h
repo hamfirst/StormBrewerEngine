@@ -16,6 +16,9 @@ struct StormReflTypeInfo<RewardsRank>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "RewardsRank"; }
   static constexpr auto GetNameHash() { return 0xABF79A92; }
+<<<<<<< HEAD
+  static RewardsRank & GetDefault() { static RewardsRank def; return def; }
+=======
   static constexpr bool HasDefault() { return true; }
   static RewardsRank & GetDefault() { static RewardsRank def; return def; }
 
@@ -47,6 +50,7 @@ struct StormReflTypeInfo<RewardsRank>
     return nullptr;
   }
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <>
@@ -57,11 +61,16 @@ struct StormReflTypeInfo<RewardsRank>::field_data_static<0>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x96E11FE7; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+<<<<<<< HEAD
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &RewardsRank::m_XP; }
+=======
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &RewardsRank::m_XP; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsRank *>(obj); return &ptr->m_XP; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsRank *>(obj); return &ptr->m_XP; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -82,11 +91,16 @@ struct StormReflTypeInfo<RewardsRank>::field_data_static<1>
   static constexpr auto GetType() { return "UserRewards"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7CD06BE2; }
   static constexpr unsigned GetTypeNameHash() { return 0x3C6254C2; }
+<<<<<<< HEAD
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &RewardsRank::m_Rewards; }
+=======
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &RewardsRank::m_Rewards; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsRank *>(obj); return &ptr->m_Rewards; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsRank *>(obj); return &ptr->m_Rewards; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -109,6 +123,9 @@ struct StormReflTypeInfo<RewardsDatabaseObj>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "RewardsDatabaseObj"; }
   static constexpr auto GetNameHash() { return 0x3BB4122B; }
+<<<<<<< HEAD
+  static RewardsDatabaseObj & GetDefault() { static RewardsDatabaseObj def; return def; }
+=======
   static constexpr bool HasDefault() { return true; }
   static RewardsDatabaseObj & GetDefault() { static RewardsDatabaseObj def; return def; }
 
@@ -140,6 +157,7 @@ struct StormReflTypeInfo<RewardsDatabaseObj>
     return nullptr;
   }
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <>
@@ -150,11 +168,16 @@ struct StormReflTypeInfo<RewardsDatabaseObj>::field_data_static<0>
   static constexpr auto GetType() { return "std::vector<RewardsRank, std::allocator<RewardsRank> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x46D03074; }
   static constexpr unsigned GetTypeNameHash() { return 0xC502B46C; }
+<<<<<<< HEAD
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &RewardsDatabaseObj::m_Ranks; }
+=======
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &RewardsDatabaseObj::m_Ranks; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<RewardsDatabaseObj *>(obj); return &ptr->m_Ranks; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const RewardsDatabaseObj *>(obj); return &ptr->m_Ranks; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -177,6 +200,8 @@ struct StormReflTypeInfo<Rewards>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "Rewards"; }
   static constexpr auto GetNameHash() { return 0x269F27AB; }
+<<<<<<< HEAD
+=======
   static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -207,6 +232,7 @@ struct StormReflTypeInfo<Rewards>
     return nullptr;
   }
 
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <>
@@ -217,11 +243,16 @@ struct StormReflTypeInfo<Rewards>::field_data_static<0>
   static constexpr auto GetType() { return "RewardsDatabaseObj"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF514A448; }
   static constexpr unsigned GetTypeNameHash() { return 0x3BB4122B; }
+<<<<<<< HEAD
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &Rewards::m_Info; }
+=======
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &Rewards::m_Info; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<Rewards *>(obj); return &ptr->m_Info; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Rewards *>(obj); return &ptr->m_Info; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -236,7 +267,10 @@ struct StormReflTypeInfo<Rewards>::field_data<0, Self> : public StormReflTypeInf
 template <>
 struct StormReflFuncInfo<Rewards>
 {
+<<<<<<< HEAD
+=======
   using MyBase = void;
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr int funcs_n = 1;
   template <int N> struct func_data_static {};
 };

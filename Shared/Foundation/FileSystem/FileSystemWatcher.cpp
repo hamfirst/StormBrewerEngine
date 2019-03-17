@@ -2,9 +2,12 @@
 #include "Foundation/Common.h"
 #include "Foundation/FileSystem/FileSystemWatcher.h"
 #include "Foundation/FileSystem/Path.h"
+#include "Foundation/FileSystem/File.h"
 
+#ifndef _INCLUDEOS
 #include <filesystem>
 namespace fs = std::filesystem;
+#endif
 
 #ifdef _MSC_VER
 
@@ -46,6 +49,8 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
   m_Notify(notify),
   m_ExitThread(false)
 {
+#ifndef _INCLUDEOS
+
 #ifdef _MSC_VER
 
   printf("Starting file system watcher in directory %s\n", root_path.c_str());
@@ -68,10 +73,13 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
 #endif
 
   m_NotifyThread = std::thread(&FileSystemWatcher::NotifyThread, this);
+
+#endif
 }
 
 FileSystemWatcher::~FileSystemWatcher()
 {
+#ifndef _INCLUDEOS
   m_ExitThread = true;
 
 #ifdef _MSC_VER
@@ -82,10 +90,12 @@ FileSystemWatcher::~FileSystemWatcher()
 #endif
 
   m_NotifyThread.join();
+#endif
 }
 
-Optional<std::tuple<FileSystemOperation, std::string, std::string, std::filesystem::file_time_type>> FileSystemWatcher::GetFileChange()
+Optional<std::tuple<FileSystemOperation, std::string, std::string, std::time_t>> FileSystemWatcher::GetFileChange()
 {
+#ifndef _INCLUDEOS
   std::lock_guard<std::mutex> lock(m_QueueMutex);
 
   if (m_FilesChanged.size() == 0)
@@ -97,6 +107,10 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::filesyst
   m_FilesChanged.pop();
 
   return ret_val;
+#else
+
+  return {};
+#endif
 }
 
 bool FileSystemWatcher::IsInvisibleFile(const std::string & filename)
@@ -106,6 +120,7 @@ bool FileSystemWatcher::IsInvisibleFile(const std::string & filename)
 
 bool FileSystemWatcher::IsInvisiblePath(const std::string & path)
 {
+#ifndef _INCLUDEOS
   auto fs_path = fs::path(path);
   for(auto & sec : fs_path)
   {
@@ -114,12 +129,14 @@ bool FileSystemWatcher::IsInvisiblePath(const std::string & path)
       return true;
     }
   }
+#endif
 
   return false;
 }
 
 void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & root_dir, FileSystemDirectory & dir)
 {
+#ifndef _INCLUDEOS
   auto full_path = JoinPath(root_dir, local_path);
 
 #ifdef _LINUX
@@ -150,8 +167,7 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
 
     if (fs::is_regular_file(info))
     {
-      std::error_code ec;
-      dir.m_Files.emplace(std::make_pair(itr_filename, fs::last_write_time(itr_path, ec)));
+      dir.m_Files.emplace(std::make_pair(itr_filename, GetLastWriteTime(itr_path.c_str())));
     }
     else if (fs::is_directory(info))
     {      
@@ -166,6 +182,7 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
       dir.m_Directories.emplace(std::make_pair(itr_filename, std::move(sub_dir)));
     }
   }
+#endif
 }
 
 NullOptPtr<FileSystemDirectory> FileSystemWatcher::GetDirectoryAtPath(const char * path, FileSystemDirectory & base)
@@ -284,18 +301,21 @@ Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> Fi
 }
 
 void FileSystemWatcher::TriggerOperationForFile(const std::string & filename, const std::string & path,
-  FileSystemOperation op, std::filesystem::file_time_type last_write)
+  FileSystemOperation op, std::time_t last_write)
 {
+#ifndef _INCLUDEOS
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   m_FilesChanged.emplace(std::make_tuple(op, path, filename, last_write));
 
   lock.unlock();
 
   m_Notify();
+#endif
 }
 
 void FileSystemWatcher::TriggerOperationForDirectoryFiles(FileSystemDirectory & base, const std::string & base_path, FileSystemOperation op)
 {
+#ifndef _INCLUDEOS
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   for (auto elem : base.m_Files)
   {
@@ -308,10 +328,12 @@ void FileSystemWatcher::TriggerOperationForDirectoryFiles(FileSystemDirectory & 
   {
     TriggerOperationForDirectoryFiles(*elem.second.get(), base_path + elem.first + "/", op);
   }
+#endif
 }
 
 void FileSystemWatcher::NotifyThread()
 {
+#ifndef _INCLUDEOS
   std::string last_change;
   uint32_t last_change_time = 0;
 
@@ -365,8 +387,7 @@ void FileSystemWatcher::NotifyThread()
               auto dir = GetDirectoryAtPath(dir_path.c_str(), m_RootDirectory);
               if (dir)
               {
-                std::error_code ec;
-                auto last_write = fs::last_write_time(full_path.c_str(), ec);
+                auto last_write = GetLastWriteTime(full_path.c_str());
 
                 dir->m_Files.emplace(std::make_pair(file_name, last_write));
                 TriggerOperationForFile(file_name, local_file_path, FileSystemOperation::kAdd, last_write);
@@ -399,8 +420,7 @@ void FileSystemWatcher::NotifyThread()
               auto itr = dir->m_Files.find(file_name);
               if (itr != dir->m_Files.end())
               {
-                std::error_code ec;
-                auto last_write = fs::last_write_time(full_path.data(), ec);
+                auto last_write = GetLastWriteTime(full_path.data());
                 auto cached_last_write = itr->second;
 
                 if (last_write > cached_last_write)
@@ -520,8 +540,7 @@ void FileSystemWatcher::NotifyThread()
               auto dir = GetDirectoryAtPath(path.parent_path().string().c_str(), m_RootDirectory);
               if (dir)
               {
-                std::error_code ec;
-                auto last_write = fs::last_write_time(full_path, ec);
+                auto last_write = GetLastWriteTime(full_path.c_str());
 
                 dir->m_Files.emplace(std::make_pair(path.filename().string(), last_write));
                 TriggerOperationForFile(changed_filename, path.filename().string(), FileSystemOperation::kAdd, last_write);
@@ -551,8 +570,7 @@ void FileSystemWatcher::NotifyThread()
                 auto itr = dir->m_Files.find(path.filename().string());
                 if (itr != dir->m_Files.end())
                 {
-                  std::error_code ec;
-                  auto last_write = fs::last_write_time(full_path, ec);
+                  auto last_write = GetLastWriteTime(full_path.c_str());
 
                   if (last_write > itr->second)
                   {
@@ -611,4 +629,5 @@ void FileSystemWatcher::NotifyThread()
     }
 #endif
   }
+#endif
 }

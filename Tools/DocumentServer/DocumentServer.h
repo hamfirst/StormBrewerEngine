@@ -35,7 +35,7 @@ struct DocumentServerDocumentInfo
 {
   Document * m_Document;
   int m_DataGen;
-  std::filesystem::file_time_type m_LastModifiedTime;
+  time_t m_LastModifiedTime;
   std::vector<DocumentServerDocumentClient> m_Connections;
   std::vector<ReflectionChangeNotification> m_PendingChanges;
 };
@@ -76,7 +76,7 @@ private:
   void HandleDocumentStateChange(uint32_t file_hash, Document * document, DocumentState state, DocumentState prev_state);
   void HandleDocumentLinksModified(uint32_t file_hash, Document * document);
 
-  void HandleDocumentModified(czstr path, std::filesystem::file_time_type last_modified);
+  void HandleDocumentModified(czstr path, time_t last_modified);
   void HandleDocumentRemoved(czstr path);
   void OpenDocumentForClient(czstr path, uint32_t document_id, StormSockets::StormSocketConnectionId client_id);
   void SendPendingChanges();

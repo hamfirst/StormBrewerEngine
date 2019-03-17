@@ -3,9 +3,9 @@ if (NOT DEFINED ENV{INCLUDEOS_PREFIX})
   set(ENV{INCLUDEOS_PREFIX} /usr/local)
 endif()
 include($ENV{INCLUDEOS_PREFIX}/includeos/pre.service.cmake)
-project (service)
+project (StormBrewersIncludeOS)
 
-option(INCLUDEOS ON)
+set(INCLUDEOS ON)
 
 option(GENERATE_REFL OFF)
 option(GENERATE_PCH OFF)
@@ -18,7 +18,7 @@ set(BINARY       "seed")
 
 # Source files to be linked with OS library parts to form bootable image
 set(SOURCES
-  Dummy.cpp # ...add more here
+  Project/GameServerExe/Main.cpp
   )
 
 # To add your own include paths:
@@ -53,6 +53,7 @@ set(LIBRARIES
   StormNetCustomBindings
   StormNet
   StormData
+  StormSocketCPP
   binpack
   lua
   glm
@@ -71,6 +72,7 @@ set(DEPENDENCIES
   StormTech/StormNetCustomBindings/StormNetCustomBindings
   StormTech/StormNet/StormNet
   StormTech/StormData/StormData
+  StormTech/StormSockets/StormSocketCPP
   External/binpack/binpack
   External/lua/lua
   External/glm/glm
@@ -82,6 +84,7 @@ add_definitions(-D_LINUX)
 
 # include service build script
 include($ENV{INCLUDEOS_PREFIX}/includeos/post.service.cmake)
+#include($ENV{INCLUDEOS_PREFIX}/includeos/linux.service.cmake)
 
 
 # Create in-memory filesystem from folder
@@ -98,3 +101,4 @@ foreach(LIB ${LIBRARIES})
   target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/api)
   target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/include)
 endforeach()
+

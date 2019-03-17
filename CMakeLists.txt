@@ -267,12 +267,18 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(Lobby/Lobby)
   set_target_properties(Lobby PROPERTIES FOLDER Lobby)
 
+<<<<<<< HEAD
+  add_executable(LobbyExe Dummy.cpp)
+
+  target_link_libraries(LobbyExe StormSocketCPP)
+=======
   add_executable(LobbyExe Lobby/LobbyMain/MainCombined.cpp)
 
   target_link_libraries(LobbyExe Lobby)
   target_link_libraries(LobbyExe HurricaneDDS)
   target_link_libraries(LobbyExe StormSocketCPP)
   target_link_libraries(LobbyExe StormData)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   target_link_libraries(LobbyExe asio)
   target_link_libraries(LobbyExe mbedtls)
   target_link_libraries(LobbyExe mongoc)
@@ -280,7 +286,10 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   target_link_libraries(LobbyExe yajl)
 
   if(UNIX)
+<<<<<<< HEAD
+=======
     target_link_libraries(LobbyExe ssl crypto)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
     target_link_libraries(LobbyExe stdc++fs)
     target_link_libraries(LobbyExe -Wl,--whole-archive pthread -Wl,--no-whole-archive)
     target_link_libraries(LobbyExe rt m c dl)

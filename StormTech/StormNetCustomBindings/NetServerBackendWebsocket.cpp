@@ -12,7 +12,6 @@
 #include "StormSockets/StormSocketServerFrontendWebsocket.h"
 
 #include <stdexcept>
-#include <enet/enet.h>
 
 
 NetServerBackendWebsocket::NetServerBackendWebsocket(NetServerInterface * iface, const NetServerBackendWebsocketSettings & settings) :
@@ -20,8 +19,12 @@ NetServerBackendWebsocket::NetServerBackendWebsocket(NetServerInterface * iface,
   m_Transmitters(settings.m_MaxConnections)
 {
   StormSockets::StormSocketInitSettings backend_settings;
+
+#ifndef _INCLUDEOS
   backend_settings.NumIOThreads = 1;
   backend_settings.NumSendThreads = 1;
+#endif
+
   backend_settings.MaxConnections = settings.m_MaxConnections;
 
   m_Backend = std::make_unique<StormSockets::StormSocketBackend>(backend_settings);
