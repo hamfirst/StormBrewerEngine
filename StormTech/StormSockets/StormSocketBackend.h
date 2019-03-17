@@ -3,7 +3,6 @@
 #ifndef _INCLUDEOS
 #include <asio/asio.hpp>
 #else
-#include <os>
 #include <net/inet>
 #endif
 

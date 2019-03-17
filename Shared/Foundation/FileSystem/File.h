@@ -3,6 +3,7 @@
 #include <Foundation/Buffer/Buffer.h>
 
 #include <cstdio>
+#include <ctime>
 
 #if defined(_ANDROID) || defined(_IOS)
 #include "SDL2/SDL_rwops.h"
@@ -66,5 +67,7 @@ bool FileDelete(czstr path);
 
 std::string FileReadFullAsString(czstr path);
 Optional<Buffer> FileReadFull(czstr path);
+
+std::time_t GetLastWriteTime(czstr path);
 
 

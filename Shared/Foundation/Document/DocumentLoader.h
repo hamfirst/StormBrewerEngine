@@ -1,8 +1,10 @@
 #pragma once
 
+#ifndef _INCLUDEOS
 #include <filesystem>
+#endif
 
-using DocumentLoadCallback = Delegate<void, uint32_t, void *, std::size_t, std::filesystem::file_time_type>;
+using DocumentLoadCallback = Delegate<void, uint32_t, void *, std::size_t, time_t>;
 
 class DocumentLoader
 {

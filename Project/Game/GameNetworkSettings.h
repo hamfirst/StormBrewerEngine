@@ -19,11 +19,11 @@
 //#define NET_MODE_GGPO_SLIDING_WINDOW
 #endif
 
-#ifdef _WEB
-#define NET_USE_WEBRTC
-#else
-//#define NET_USE_WEBRTC
-#endif
+#define NET_BACKEND_WEBSOCKET 0
+#define NET_BACKEND_WEBRTC    1
+#define NET_BACKEND_ENET      2
+
+#define NET_BACKEND   NET_WEBSOCKET
 
 #define NET_USE_RANDOM
 #define NET_USE_PLAYER_LIMIT

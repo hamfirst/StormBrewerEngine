@@ -43,7 +43,7 @@ void NetworkShutdown()
 
 bool ProbePort(const char * host, int port, int timeout)
 {
-#ifdef _WEB
+#if defined(_WEB) || defined(_INCLUDEOS)
   return false;
 #else
   auto host_info = gethostbyname(host);

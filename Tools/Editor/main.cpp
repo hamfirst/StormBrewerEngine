@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   StormReflParseJson(g_FrameData, settings.data());
 
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticInit();
 #endif
   NetworkInit();
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
   auto ret = a.exec();
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticCleanup();
 #endif
   return 0;

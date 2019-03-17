@@ -14,10 +14,12 @@
 GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manager) :
   ServerBase(max_clients, &m_Backend),
   m_StageManager(stage_manager),
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   m_Backend(this, NetServerBackendWebrtcSettings{ (uint16_t)port, (uint16_t)max_clients, "localhost.key", "localhost.crt", NetGetProtocolPipeModes(ServerProtocolDef{}), NetGetProtocolPipeModes(ClientProtocolDef{}) }),
-#else
+#elif NET_BACKEND == NET_BACKEND_ENET
   m_Backend(this, NetServerSettingsEnet(port, 0, max_clients)),
+#elif NET_BACKEND == NET_BACKEND_WEBSOCKET
+  m_Backend(this, NetServerBackendWebsocketSettings{ (uint16_t)port, (uint16_t)max_clients }),
 #endif
   m_GameInstanceManager(*this, stage_manager)
 {

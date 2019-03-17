@@ -25,11 +25,13 @@
 GameNetworkClient::GameNetworkClient(GameContainer & game) :
   ClientBase(&m_Backend),
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort, 
                   game.GetNetworkInitSettings().m_Fingerprint.data(), NetGetProtocolPipeModes(ClientProtocolDef{}), NetGetProtocolPipeModes(ServerProtocolDef{})),
-#else
+#elif NET_BACKEND == NET_BACKEND_ENET
   m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort),
+#elif NET_BACKEND == NET_BACKEND_WEBSOCKET
+  m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort, "/", "stormbrewers.com"),
 #endif
 
   m_GameContainer(game),

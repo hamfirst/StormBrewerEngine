@@ -1,5 +1,4 @@
 
-#include <thread>
 
 #include <StormRefl/StormReflJsonStd.h>
 
@@ -31,9 +30,16 @@
 
 #ifdef _INCLUDEOS
 #include <service>
+#include <chrono>
+#include <timers>
+#include <debug>
 
-void ReturnError(int err) {}
+int ReturnError(int err) { return 0; }
+void UpdateServers(GameServer & game_server, FrameClock & frame_clock);
+
 #else
+#include <thread>
+
 int ReturnError(int err) { return err; }
 #endif
 
@@ -45,11 +51,7 @@ extern int g_LagSim;
 void StormWebrtcStaticInit();
 void StormWebrtcStaticCleanup();
 
-#ifndef _INCLUDEOS
-int main(int argc, char ** argv)
-#else
-void Service::start(const std::string & args)
-#endif
+int main(int argc, const char ** argv)
 {
 #if defined(_LINUX) && !defined(_INCLUDEOS)
   if (argc == 2 && argv[1] == std::string("-D"))
@@ -66,6 +68,10 @@ void Service::start(const std::string & args)
 
 #ifdef _DEBUG
   g_LagSim = 0;
+
+#ifdef _INCLUDEOS
+  GDB_ENTRY;
+#endif
 #endif
 
   printf("Game Server\n");
@@ -73,13 +79,13 @@ void Service::start(const std::string & args)
   InitServerTypes();
   RuntimeInit();
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticInit();
 #endif
 
   printf("  Loading assets...\n");
 
-  GameLevelList level_list;
+  static GameLevelList level_list;
   level_list.PreloadAllLevels();
 
   if (level_list.IsPreloadComplete() == false)
@@ -88,21 +94,22 @@ void Service::start(const std::string & args)
     return ReturnError(0);
   }
 
-  ClientAssetLoader stub_loader;
+  static ClientAssetLoader stub_loader;
   g_GlobalAssetList.BeginAssetLoad(&stub_loader);
 
   printf("  Assets loaded...\n");
-  GameStageManager stage_manager(level_list);
+  static GameStageManager stage_manager(level_list);
 
   printf("  Starting server...\n");
   NetworkInit();
 
-  GameServer game_server(256, 47816, stage_manager);
+  static GameServer game_server(256, 47816, stage_manager);
   printf("  Server started!\n");
 
-#ifndef _INCLUDEOS
-  FrameClock frame_clock(1.0 / 60.0);
+  static FrameClock frame_clock(1.0 / 60.0);
   frame_clock.Start();
+
+#ifndef _INCLUDEOS
 
   while (g_QuitServer == false)
   {
@@ -121,13 +128,44 @@ void Service::start(const std::string & args)
 
   NetworkShutdown();
 
-#ifdef NET_USE_WEBRTC
+#if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticCleanup();
 #endif
 
 #else
 
-
+  UpdateServers(game_server, frame_clock);
+  printf("Server update loop started\n");
 #endif
+
+  return 0;
 }
 
+
+#ifdef _INCLUDEOS
+
+void UpdateServers(GameServer & game_server, FrameClock & frame_clock)
+{
+  if(g_QuitServer)
+  {
+    return;
+  }
+
+  game_server.Update();
+
+  if (frame_clock.ShouldSkipFrameUpdate() == false)
+  {
+    frame_clock.BeginFrame();
+    game_server.GetGameInstanceManager().Update();
+  }
+
+  Timers::oneshot(
+		std::chrono::milliseconds(1),
+		[&](auto)
+		{
+		  UpdateServers(game_server, frame_clock);
+		}
+  );
+}
+
+#endif

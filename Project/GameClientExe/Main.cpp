@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
   InitServerTypes();
   EngineInit(false, true);
 
-#if defined(NET_USE_WEBRTC) && !defined(_WEB)
+#if NET_BACKEND == NET_BACKEND_WEBRTC && !defined(_WEB)
   StormWebrtcStaticInit();
 #endif
 
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
   SDL_Quit();
 
-#if defined(NET_USE_WEBRTC) && !defined(_WEB)
+#if NET_BACKEND == NET_BACKEND_WEBRTC && !defined(_WEB)
   StormWebrtcStaticCleanup();
 #endif
 

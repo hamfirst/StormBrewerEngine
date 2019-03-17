@@ -61,7 +61,7 @@ set(GENERIC_SRC_Foundation
             Buffer/BufferUtil.cpp
             Buffer/Buffer.cpp
             #CPP_PLACEHOLDER
-            )
+  Network/WebSocketIncludeOS.cpp Network/WebSocketWeb.cpp)
 
 set(GENERIC_HEADER_Foundation 
             Common.h

@@ -499,15 +499,14 @@ void DocumentServer::LoadDocument(czstr path, uint32_t file_hash, DocumentLoadCa
   File file = FileOpen(full_path.data(), FileOpenMode::kRead);
   if (file.GetFileOpenError() != 0)
   {
-    callback(file_hash, nullptr, 0, std::filesystem::file_time_type{});
+    callback(file_hash, nullptr, 0, time_t{});
     return;
   }
 
   auto buffer = file.ReadFileFull();
   FileClose(file);
 
-  std::error_code ec;
-  callback(file_hash, buffer.Get(), buffer.GetSize(), fs::last_write_time(path, ec));
+  callback(file_hash, buffer.Get(), buffer.GetSize(), GetLastWriteTime(path));
 }
 
 std::string DocumentServer::GetFullPath(const std::string & path)
@@ -588,8 +587,7 @@ void DocumentServer::OpenDocumentForClient(czstr path, uint32_t document_id, Sto
   auto document = m_DocumentCompiler.GetDocument(path);
   if (itr == m_OpenDocuments.end())
   {
-    std::error_code ec;
-    auto last_write = fs::last_write_time(path, ec);
+    auto last_write = GetLastWriteTime(path);
 
     auto result = m_OpenDocuments.emplace(std::make_pair(file_hash, DocumentServerDocumentInfo{ document, 1, last_write }));
     itr = result.first;
@@ -694,7 +692,7 @@ NullOptPtr<DocumentServerDocumentInfo> DocumentServer::GetDocumentForClient(uint
   return nullptr;
 }
 
-void DocumentServer::HandleDocumentModified(czstr path, std::filesystem::file_time_type last_modified)
+void DocumentServer::HandleDocumentModified(czstr path, time_t last_modified)
 {
   auto file_id = crc32lowercase(path);
 
@@ -996,7 +994,7 @@ bool DocumentServer::ProcessMessage(StormSockets::StormSocketConnectionId client
       {
         if(document->m_Document->Save(m_RootPath))
         {
-          document->m_LastModifiedTime = std::filesystem::file_time_type::clock::now();
+          document->m_LastModifiedTime = time(nullptr);
         }
         else
         {
