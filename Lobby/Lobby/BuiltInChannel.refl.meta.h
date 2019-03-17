@@ -16,6 +16,10 @@ struct StormReflTypeInfo<BuiltInChannelInfo>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BuiltInChannelInfo"; }
   static constexpr auto GetNameHash() { return 0x357FEF68; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BuiltInChannelInfo & GetDefault() { static BuiltInChannelInfo def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -56,6 +60,10 @@ struct StormReflTypeInfo<BuiltInChannelInfo>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0B8018E2; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BuiltInChannelInfo::m_ChannelName; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BuiltInChannelInfo *>(obj); return &ptr->m_ChannelName; }
@@ -80,6 +88,10 @@ struct StormReflTypeInfo<BuiltInChannelInfo>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9492F073; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BuiltInChannelInfo::m_Motd; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BuiltInChannelInfo *>(obj); return &ptr->m_Motd; }
@@ -104,6 +116,10 @@ struct StormReflTypeInfo<BuiltInChannelInfo>::field_data_static<2>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFB2EAB49; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BuiltInChannelInfo::m_RequiredAdminLevel; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BuiltInChannelInfo *>(obj); return &ptr->m_RequiredAdminLevel; }
@@ -130,6 +146,10 @@ struct StormReflTypeInfo<BuiltInChannelDatabaseObject>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BuiltInChannelDatabaseObject"; }
   static constexpr auto GetNameHash() { return 0x12592DE8; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static BuiltInChannelDatabaseObject & GetDefault() { static BuiltInChannelDatabaseObject def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -170,6 +190,10 @@ struct StormReflTypeInfo<BuiltInChannelDatabaseObject>::field_data_static<0>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0A237DA3; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BuiltInChannelDatabaseObject::m_ChannelNameLower; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BuiltInChannelDatabaseObject *>(obj); return &ptr->m_ChannelNameLower; }
@@ -208,6 +232,10 @@ struct StormReflTypeInfo<BuiltInChannelDatabaseObject>::field_data_static<1>
   static constexpr auto GetType() { return "BuiltInChannelInfo"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9E2A57B3; }
   static constexpr unsigned GetTypeNameHash() { return 0x357FEF68; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return true; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BuiltInChannelDatabaseObject::m_ChannelInfo; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<BuiltInChannelDatabaseObject *>(obj); return &ptr->m_ChannelInfo; }
@@ -234,6 +262,10 @@ struct StormReflTypeInfo<BuiltInChannel>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BuiltInChannel"; }
   static constexpr auto GetNameHash() { return 0x81589DF8; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return false; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {

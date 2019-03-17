@@ -20,6 +20,9 @@ public:
 
   DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) override;
 
+  std::string QueryDatabaseSingleton(const char * collection_name) override;
+  void UpsertDatabaseSingleton(const char * collection_name, const char * document) override;
+
   time_t GetNetworkTime() override;
 private:
 
@@ -28,6 +31,7 @@ private:
   int GetSharedObjectType(uint32_t object_type_name_hash) override;
 
   const void * GetSharedObjectPointer(uint32_t object_type_name_hash) override;
+  void * GetLocalObjectPointer(int target_object_type, DDSKey target_key) override;
 
   void SendMessageToObject(int target_object_type, DDSKey target_key, int target_method_id, std::string && message) override;
   void SendMessageToObjectWithResponderReturnArg(int target_object_type, DDSKey target_key, int target_method_id,
@@ -70,6 +74,9 @@ public:
 
   DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key) override { NotImplemented(); return std::nullopt; };
 
+  virtual std::string QueryDatabaseSingleton(const char * collection_name) { NotImplemented(); return ""; }
+  virtual void UpsertDatabaseSingleton(const char * collection_name, const char * document) { NotImplemented(); };
+
   time_t GetNetworkTime() override { NotImplemented(); return{}; };
 
 private:
@@ -81,6 +88,7 @@ private:
   int GetSharedObjectType(uint32_t object_type_name_hash) override { NotImplemented(); return 0; };
 
   const void * GetSharedObjectPointer(uint32_t object_type_name_hash) override { NotImplemented(); return nullptr; };
+  void * GetLocalObjectPointer(int target_object_type, DDSKey target_key) override { NotImplemented(); return nullptr; };
 
   void SendMessageToObject(int target_object_type, DDSKey target_key, int target_method_id, std::string && message) override { NotImplemented(); };
   void SendMessageToObjectWithResponderReturnArg(int target_object_type, DDSKey target_key, int target_method_id,

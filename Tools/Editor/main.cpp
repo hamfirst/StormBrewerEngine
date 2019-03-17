@@ -9,6 +9,7 @@
 #include "Foundation/Network/Network.h"
 #include "Foundation/FileSystem/File.h"
 #include "Foundation/Buffer/BufferUtil.h"
+#include "Foundation/Encoding/Url.h"
 
 #include "Game/GameNetworkSettings.h"
 
@@ -32,6 +33,9 @@ extern const char * g_QtStyle;
 
 int main(int argc, char *argv[])
 {
+  auto text = UrlEncode("urn:ietf:params:oauth:grant-type:jwt-bearer");
+  auto undo = UrlDecodeAsString(text);
+
   QCoreApplication::setOrganizationName("StormBrewers");
   QCoreApplication::setOrganizationDomain("StormBrewers.com");
   QCoreApplication::setApplicationName("StormBrewerEngine");

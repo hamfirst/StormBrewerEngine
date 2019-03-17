@@ -8,6 +8,12 @@
 #include "SharedTypes.refl.h"
 #include "GameData.refl.h"
 #include "GameServerMessages.refl.h"
+<<<<<<< HEAD
+=======
+#include "LobbyConfig.h"
+
+#if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 
 struct BotDatabaseObject
 {
@@ -67,3 +73,8 @@ private:
   STORM_REFL_IGNORE DDSNodeInterface m_Interface;
   STORM_REFL_IGNORE BotDatabaseObject & m_Data;
 };
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

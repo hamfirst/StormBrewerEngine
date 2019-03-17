@@ -19,6 +19,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "DocumentServerVCSPerforceInitData"; }
   static constexpr auto GetNameHash() { return 0x2D4271A4; }
+  static constexpr bool HasDefault() { return true; }
   static DocumentServerVCSPerforceInitData & GetDefault() { static DocumentServerVCSPerforceInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -63,6 +64,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>::field_data_static<0
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x700D1773; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSPerforceInitData::RootPath; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSPerforceInitData *>(obj); return &ptr->RootPath; }
@@ -87,6 +89,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>::field_data_static<1
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2DA17977; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSPerforceInitData::User; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSPerforceInitData *>(obj); return &ptr->User; }
@@ -111,6 +114,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>::field_data_static<2
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xCCB42483; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSPerforceInitData::Password; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSPerforceInitData *>(obj); return &ptr->Password; }
@@ -135,6 +139,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>::field_data_static<3
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE3A3F2F2; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSPerforceInitData::Port; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSPerforceInitData *>(obj); return &ptr->Port; }
@@ -159,6 +164,7 @@ struct StormReflTypeInfo<DocumentServerVCSPerforceInitData>::field_data_static<4
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xC0E80163; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<DocumentServerVCSInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &DocumentServerVCSPerforceInitData::Client; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<DocumentServerVCSPerforceInitData *>(obj); return &ptr->Client; }

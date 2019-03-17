@@ -19,6 +19,7 @@ struct StormReflTypeInfo<CollisionDrawerInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "CollisionDrawerInitData"; }
   static constexpr auto GetNameHash() { return 0x46FFA8DB; }
+  static constexpr bool HasDefault() { return true; }
   static CollisionDrawerInitData & GetDefault() { static CollisionDrawerInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)

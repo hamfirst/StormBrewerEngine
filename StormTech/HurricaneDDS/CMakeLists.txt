@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1.0)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/StormTech)
 set(CMAKE_CXX_STANDARD 17)
 
-set(GENERIC_SRC_HurricanDDS 
+set(GENERIC_SRC_HurricaneDDS 
             DDSRandom.cpp
             DDSNodeNetworkService.cpp
             DDSOutgoingKeyspaceTransfer.cpp
@@ -58,7 +58,7 @@ set(GENERIC_SRC_HurricanDDS
             DDSHttpRequest.cpp
             )
 
-set(GENERIC_HEADER_HurricanDDS 
+set(GENERIC_HEADER_HurricaneDDS 
             DDSCoordinatorProtocolMessages.refl.h
             DDSDataObjectStoreBase.h
             DDSCoordinatorProtocolMessages.refl.meta.h
@@ -152,7 +152,7 @@ set(GENERIC_HEADER_HurricanDDS
             DDSCoordinatorClientProtocol.h
             )
 
-set(GENERIC_REFL_HurricanDDS 
+set(GENERIC_REFL_HurricaneDDS 
             DDSCoordinatorProtocolMessages.refl.h
             DDSServerToServerMessages.refl.h
             DDSThrottle.refl.h
@@ -162,7 +162,7 @@ set(GENERIC_REFL_HurricanDDS
             DDSRoutingTable.refl.h
             )
 
-foreach(REFL_FILE ${GENERIC_REFL_HurricanDDS})
+foreach(REFL_FILE ${GENERIC_REFL_HurricaneDDS})
   string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
   add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
                      COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/StormTech -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
@@ -170,5 +170,9 @@ foreach(REFL_FILE ${GENERIC_REFL_HurricanDDS})
                      IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
 endforeach()
 
+<<<<<<< HEAD
 add_library(HurricaneDDS STATIC ${GENERIC_SRC_HurricanDDS} ${GENERIC_HEADER_HurricanDDS})
+=======
+add_library(HurricaneDDS STATIC ${GENERIC_SRC_HurricaneDDS} ${GENERIC_HEADER_HurricaneDDS})
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 

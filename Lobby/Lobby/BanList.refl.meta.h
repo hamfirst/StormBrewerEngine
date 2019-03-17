@@ -48,7 +48,41 @@ struct StormReflTypeInfo<BanListElement>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BanListElement"; }
   static constexpr auto GetNameHash() { return 0x606F8A65; }
+<<<<<<< HEAD
   static BanListElement & GetDefault() { static BanListElement def; return def; }
+=======
+  static constexpr bool HasDefault() { return true; }
+  static BanListElement & GetDefault() { static BanListElement def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<BanListElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const BanListElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<BanListElement *>(ptr);
+    if(typeid(BanListElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const BanListElement *>(ptr);
+    if(typeid(BanListElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <>
@@ -59,8 +93,16 @@ struct StormReflTypeInfo<BanListElement>::field_data_static<0>
   static constexpr auto GetType() { return "REnum<BanType>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
   static constexpr unsigned GetTypeNameHash() { return 0x374F2901; }
+<<<<<<< HEAD
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BanListElement::m_Type; }
+=======
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &BanListElement::m_Type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BanListElement *>(obj); return &ptr->m_Type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BanListElement *>(obj); return &ptr->m_Type; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -81,8 +123,16 @@ struct StormReflTypeInfo<BanListElement>::field_data_static<1>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x936E667C; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+<<<<<<< HEAD
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &BanListElement::m_Data; }
+=======
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &BanListElement::m_Data; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BanListElement *>(obj); return &ptr->m_Data; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BanListElement *>(obj); return &ptr->m_Data; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -103,8 +153,16 @@ struct StormReflTypeInfo<BanListElement>::field_data_static<2>
   static constexpr auto GetType() { return "RNumber<int>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xAE74B980; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
+<<<<<<< HEAD
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &BanListElement::m_Expiration; }
+=======
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &BanListElement::m_Expiration; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BanListElement *>(obj); return &ptr->m_Expiration; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BanListElement *>(obj); return &ptr->m_Expiration; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -125,8 +183,16 @@ struct StormReflTypeInfo<BanListElement>::field_data_static<3>
   static constexpr auto GetType() { return "RString"; }
   static constexpr unsigned GetFieldNameHash() { return 0x234F45AA; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+<<<<<<< HEAD
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BanListElement::m_Message; }
+=======
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &BanListElement::m_Message; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BanListElement *>(obj); return &ptr->m_Message; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BanListElement *>(obj); return &ptr->m_Message; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -149,6 +215,39 @@ struct StormReflTypeInfo<BanList>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "BanList"; }
   static constexpr auto GetNameHash() { return 0x6EEC26C7; }
+<<<<<<< HEAD
+=======
+  static constexpr bool HasDefault() { return false; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<BanList *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const BanList *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<BanList *>(ptr);
+    if(typeid(BanList).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const BanList *>(ptr);
+    if(typeid(BanList).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <>
@@ -159,8 +258,16 @@ struct StormReflTypeInfo<BanList>::field_data_static<0>
   static constexpr auto GetType() { return "RMergeList<BanListElement>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x7A556D07; }
   static constexpr unsigned GetTypeNameHash() { return 0xC7BF6372; }
+<<<<<<< HEAD
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &BanList::m_List; }
+=======
+  static constexpr bool HasDefault() { return false; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &BanList::m_List; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<BanList *>(obj); return &ptr->m_List; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const BanList *>(obj); return &ptr->m_List; }
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 };
 
 template <typename Self>
@@ -175,6 +282,10 @@ struct StormReflTypeInfo<BanList>::field_data<0, Self> : public StormReflTypeInf
 template <>
 struct StormReflFuncInfo<BanList>
 {
+<<<<<<< HEAD
+=======
+  using MyBase = void;
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
   static constexpr int funcs_n = 4;
   template <int N> struct func_data_static {};
 };

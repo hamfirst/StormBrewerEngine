@@ -14,6 +14,12 @@
 
 #include <HurricaneDDS/DDSResponderCall.h>
 
+<<<<<<< HEAD
+=======
+
+#ifdef ENABLE_CHANNELS
+
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 static const time_t epoch = 1388534400; // Jan 1, 2014
 
 Channel::Channel(DDSNodeInterface node_interface)
@@ -469,3 +475,8 @@ DDSKey Channel::GetChannelKeyFromName(const char * name)
 {
   return crc64lowercase(name);
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

@@ -598,6 +598,24 @@ time_t DDSNodeState::GetNetworkTime()
   return m_CoordinatorConnection.GetNetworkTime();
 }
 
+void * DDSNodeState::GetLocalObject(int target_object_type, DDSKey target_key)
+{
+  if (target_object_type >= (int)m_DataObjectList.size())
+  {
+    return nullptr;
+  }
+
+  if (m_IsDefunct == false && KeyInKeyRange(target_key, *m_LocalKeyRange))
+  {
+    if (m_IncomingKeyspace.IsComplete())
+    {
+      m_DataObjectList[target_object_type]->GetDataObjectForKey(target_key);
+    }
+  }
+
+  return nullptr;
+}
+
 void DDSNodeState::SendSubscriptionCreate(DDSCreateSubscription && req)
 {
   if (req.m_ObjectType >= (int)m_DataObjectList.size())

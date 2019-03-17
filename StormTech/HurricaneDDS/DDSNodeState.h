@@ -151,6 +151,7 @@ public:
   DDSRoutingTableNodeInfo GetNodeInfo(DDSKey key);
 
   time_t GetNetworkTime();
+  void * GetLocalObject(int target_object_type, DDSKey target_key);
 private:
 
   friend class DDSCoordinatorClientProtocol;

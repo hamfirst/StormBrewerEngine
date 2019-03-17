@@ -2,6 +2,11 @@
 #include "ServerList.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
 
+<<<<<<< HEAD
+=======
+#ifdef ENABLE_SERVER_LIST
+
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(ServerListGame);
 STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(ServerListServer);
 
@@ -69,3 +74,8 @@ void ServerList::HangUpAllServers()
     m_Interface.Call(&GameServerConnection::SendHangUp, server_info.first);
   }
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

@@ -19,6 +19,7 @@ struct StormReflTypeInfo<SyncServerObjectComponentInitData>
   template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
   static constexpr auto GetName() { return "SyncServerObjectComponentInitData"; }
   static constexpr auto GetNameHash() { return 0xFBE918AF; }
+  static constexpr bool HasDefault() { return true; }
   static SyncServerObjectComponentInitData & GetDefault() { static SyncServerObjectComponentInitData def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
@@ -63,6 +64,7 @@ struct StormReflTypeInfo<SyncServerObjectComponentInitData>::field_data_static<0
   static constexpr auto GetType() { return "RBool"; }
   static constexpr unsigned GetFieldNameHash() { return 0xD4010554; }
   static constexpr unsigned GetTypeNameHash() { return 0x50062D06; }
+  static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ComponentInitData>::fields_n; }
   static constexpr auto GetMemberPtr() { return &SyncServerObjectComponentInitData::m_SyncSprite; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<SyncServerObjectComponentInitData *>(obj); return &ptr->m_SyncSprite; }

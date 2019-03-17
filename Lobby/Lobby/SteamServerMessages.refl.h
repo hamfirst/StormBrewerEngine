@@ -5,6 +5,13 @@
 
 #include <StormRefl/StormRefl.h>
 
+<<<<<<< HEAD
+=======
+#include "LobbyConfig.h"
+
+#ifdef ENABLE_AUTH_STEAM
+
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c
 struct SteamValidationResponseParams
 {
   STORM_REFL;
@@ -72,3 +79,7 @@ struct SteamTxnUserInfo
   SteamTxnUserInfoResponse response;
 };
 
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> a49d5fa0cf25199154acded458b9a5829dad762c

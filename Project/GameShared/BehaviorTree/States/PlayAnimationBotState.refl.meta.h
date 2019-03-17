@@ -17,6 +17,7 @@ struct StormReflTypeInfo<PlayAnimationBotState>
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "PlayAnimationBotState"; }
   static constexpr auto GetNameHash() { return 0x0A06114B; }
+  static constexpr bool HasDefault() { return false; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
