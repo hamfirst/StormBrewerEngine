@@ -63,7 +63,7 @@ set(GENERIC_SRC_Foundation
             Time/Time.cpp
             TypeDatabase/TypeDatabase.cpp
             #CPP_PLACEHOLDER
-            )
+  Network/HttpRequest.cpp Network/HttpRequest.h)
 
 set(GENERIC_HEADER_Foundation 
             Allocator/Allocator2D.h

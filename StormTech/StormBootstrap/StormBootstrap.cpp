@@ -140,11 +140,23 @@ void StormBootstrap::Run()
         if (job_itr != m_Jobs.end())
         {
           auto response = event.GetHttpResponseReader();
-          auto body = response.GetBodyReader();
-          std::string str((std::size_t) body.GetRemainingLength(), ' ');
-          body.ReadByteBlock(str.data(), body.GetRemainingLength());
+          auto status_line = response.GetStatusLineReader();
 
-          job_itr->second(str);
+          int status_code = 0;
+          status_line.ReadNumber(status_code);
+
+          if(status_code == 200)
+          {
+            auto body = response.GetBodyReader();
+            std::string str((std::size_t) body.GetRemainingLength(), ' ');
+            body.ReadByteBlock(str.data(), body.GetRemainingLength());
+            job_itr->second(str);
+          }
+          else
+          {
+            job_itr->second("");
+          }
+
           m_Jobs.erase(job_itr);
         }
         break;

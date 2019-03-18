@@ -50,7 +50,7 @@ void WebSocket::StartConnect(const char * host, int port, const char * uri, cons
   req.m_UseSSL = false;
 
   ws.m_ConnectionId = g_NetworkFrontendWebsocket->RequestConnect(host, port, req);
-  ws.m_State = NetworkWebsocketDataState::kConnecting;
+  ws.m_State = NetworkConnectionState::kConnecting;
 }
 
 bool WebSocket::IsConnected()
@@ -61,7 +61,7 @@ bool WebSocket::IsConnected()
   }
 
   auto & ws = g_WebsocketData[m_WebsocketId];
-  return ws.m_State == NetworkWebsocketDataState::kConnected;
+  return ws.m_State == NetworkConnectionState::kConnected;
 }
 
 bool WebSocket::IsConnecting()
@@ -72,7 +72,7 @@ bool WebSocket::IsConnecting()
   }
 
   auto & ws = g_WebsocketData[m_WebsocketId];
-  return ws.m_State == NetworkWebsocketDataState::kConnecting;
+  return ws.m_State == NetworkConnectionState::kConnecting;
 }
 
 void WebSocket::Close()

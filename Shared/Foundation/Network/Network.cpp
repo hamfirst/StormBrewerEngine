@@ -41,6 +41,9 @@ std::unique_ptr<StormSockets::StormSocketClientFrontendHttp> g_NetworkFrontendHt
 IdAllocator g_WebsocketIdAllocator(kBackendMaxConnections, false);
 NetworkWebsocketData g_WebsocketData[kBackendMaxConnections];
 
+IdAllocator g_HttpIdAllocator(kBackendMaxConnections, false);
+NetworkHttpData g_HttpData[kBackendMaxConnections];
+
 #endif
 
 void NetworkInit()
@@ -99,7 +102,7 @@ void NetworkUpdate()
     case StormSockets::StormSocketEventType::ClientConnected:
       break;
     case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
-      ws_data->m_State = NetworkWebsocketDataState::kConnected;
+      ws_data->m_State = NetworkConnectionState::kConnected;
       break;
     case StormSockets::StormSocketEventType::Data:
     {
@@ -135,15 +138,61 @@ void NetworkUpdate()
 
   while(g_NetworkFrontendHttp->GetEvent(event))
   {
+    NetworkHttpData * req_data = nullptr;
+    int request_id = 0;
+    for(int index = 0; index < kBackendMaxConnections; ++index)
+    {
+      if(g_HttpData[index].m_ConnectionId == event.ConnectionId)
+      {
+        req_data = &g_HttpData[index];
+        request_id = index;
+        break;
+      }
+    }
+
+    ASSERT(req_data != nullptr, "Could not find proper websocket data");
+
     switch(event.Type)
     {
     case StormSockets::StormSocketEventType::ClientConnected:
       break;
     case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
+      req_data->m_State = NetworkConnectionState::kConnected;
       break;
     case StormSockets::StormSocketEventType::Data:
+    {
+      auto response = event.GetHttpResponseReader();
+      auto status_line = response.GetStatusLineReader();
+
+      int status_code = 0;
+      status_line.ReadNumber(status_code);
+
+      auto body = response.GetBodyReader();
+      std::string body_str((std::size_t) body.GetRemainingLength(), ' ');
+      body.ReadByteBlock(body_str.data(), body.GetRemainingLength());
+
+      auto headers = response.GetHeaderReader();
+      std::string headers_str((std::size_t) headers.GetRemainingLength(), ' ');
+      headers.ReadByteBlock(headers_str.data(), headers.GetRemainingLength());
+
+      req_data->m_ResponseCode = status_code;
+      req_data->m_Response = std::move(body_str);
+      req_data->m_ResponseHeaders = std::move(headers_str);
+
+      if(req_data->m_Callback)
+      {
+        req_data->m_Callback(*req_data->m_Request);
+      }
       break;
+    }
     case StormSockets::StormSocketEventType::Disconnected:
+      req_data->m_Disconnected = true;
+      if(req_data->m_Freed)
+      {
+        g_HttpIdAllocator.Release((std::size_t)request_id);
+        *req_data = {};
+      }
+
       g_NetworkFrontendHttp->FinalizeConnection(event.ConnectionId);
       break;
     }
