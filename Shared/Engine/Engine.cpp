@@ -100,6 +100,8 @@ bool EngineRenderInit()
 
 void EngineUpdate()
 {
+  NetworkUpdate();
+
   g_AssetLoader.ProcessResponses();
 
   g_MusicManager.Update();

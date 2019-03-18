@@ -8,6 +8,27 @@
       "netmask": "255.255.255.0",
       "gateway": "10.0.0.1"
     }
+  ],
+
+  "vfs": [
+    {
+      "disk" : "memdisk",
+      "root" : "/Certs",
+      "mount" : "/etc/ssl/certs",
+      "description" : ""
+    },
+    {
+      "disk" : "memdisk",
+      "root" : "/Config",
+      "mount" : "/Config",
+      "description" : ""
+    },
+    {
+      "disk" : "memdisk",
+      "root" : "/Assets",
+      "mount" : "/Assets",
+      "description" : ""
+    }
   ]
 }
 

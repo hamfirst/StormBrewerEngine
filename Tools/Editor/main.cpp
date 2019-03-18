@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationDomain("StormBrewers.com");
   QCoreApplication::setApplicationName("StormBrewerEngine");
 
-  File settings_file = FileOpen("editor.settings", FileOpenMode::kRead);
+  File settings_file = FileOpen("editor_settings.txt", FileOpenMode::kRead);
   auto buffer = settings_file.ReadFileFull();
   auto settings = BufferToString(buffer);
 

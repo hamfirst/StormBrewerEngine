@@ -3,6 +3,10 @@
 #include <StormNet/NetClient.h>
 #include <StormNet/NetTransmitterReplayStream.h>
 
+#include "Engine/Window/Window.h"
+
+#include "Foundation/HistoryList/HistoryList.h"
+
 #include "GameShared/GameProtocol.h"
 #include "GameShared/GameEventReconciler.h"
 
@@ -30,9 +34,8 @@ using GameNetClientBackend = NetClientBackendWebsocket;
 #include "GameClient/GameClientInstanceResources.h"
 #include "GameClient/GameClientInstanceContainer.h"
 
-#include "Engine/Window/Window.h"
+#include "ProjectSettings/ProjectPorts.h"
 
-#include "Foundation/HistoryList/HistoryList.h"
 
 using ClientBase = NetClient<ServerProtocolDef, ClientProtocolDef>;
 
@@ -58,12 +61,9 @@ enum class ClientConnectionIntent
 
 struct GameNetworkClientInitSettings
 {
-  //const char * m_RemoteHost = "52.161.102.44";
-  //const char * m_RemoteHost = "192.168.2.2";
   const char * m_RemoteHost = "127.0.0.1";
+  int m_RemotePort = GAME_PORT;
 
-
-  int m_RemotePort = 47816;
   std::string m_UserName = "";
   std::string m_Fingerprint = "78:0A:DC:3D:8D:75:D6:A8:D3:93:E9:2D:3C:78:6C:7E:E8:DB:A5:7F:7F:FD:3E:4F:09:05:93:7E:6D:60:15:67";
 

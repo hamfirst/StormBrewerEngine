@@ -16,7 +16,7 @@ cp -r External/mbedtls DistServer/External/mbedtls
 cp -r External/optional DistServer/External/optional
 cp -r External/sb DistServer/External/sb
 
-cp ProjectSettings/ProjectCredentials.txt DistServer/ProjectCredentials.txt
+cp ProjectSettings/ProjectDistSettings.txt DistServer/ProjectDistSettings.txt
 
-mv DistServer/DistTools/BuildServerCMake.txt DistServer/CMakeLists.txt
+mv CMake/DistServer/CMakeLists.txt DistServer/CMakeLists.txt
 

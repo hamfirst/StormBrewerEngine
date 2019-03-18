@@ -117,8 +117,8 @@ void ServerManager::Initialize()
     return str;
   };
 
-  StormReflParseJson(m_Settings, ReadFileAsString("gcp_settings.txt"));
-  StormReflParseJson(m_CredentialsInfo, ReadFileAsString("gcp_credentials.txt"));
+  StormReflParseJson(m_Settings, ReadFileAsString("Config/gcp_settings.txt"));
+  StormReflParseJson(m_CredentialsInfo, ReadFileAsString("Config/gcp_credentials.txt"));
 
   auto project_dir = ReadFileAsString("project_dir.txt");
   auto project_name_path = project_dir + "/ProjectSettings/" + "ProjectName.txt";

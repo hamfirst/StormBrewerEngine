@@ -188,7 +188,9 @@ namespace StormSockets
 #endif
 
 #ifdef _LINUX
+
       auto dir = opendir("/etc/ssl/certs");
+
       if (dir != nullptr)
       {
         while (true)

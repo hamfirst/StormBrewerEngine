@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
   }
 
   auto project_settings_dir_path = std::filesystem::path(project_dir) / "ProjectSettings";
-  auto project_settings_file = project_settings_dir_path / "ProjectCredentials.txt";
+  auto project_settings_file = project_settings_dir_path / "ProjectDistSettings.txt";
 
   auto settings_file = fopen(project_settings_file.string().c_str(), "rb");
   if(settings_file == nullptr)

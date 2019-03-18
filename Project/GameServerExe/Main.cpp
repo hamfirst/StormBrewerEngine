@@ -19,6 +19,8 @@
 
 #include "GameServer/GameServer.h"
 
+#include "ProjectSettings/ProjectPorts.h"
+
 #ifdef _MSC_VER
 #pragma comment(lib, "Winmm.lib")
 #endif
@@ -74,6 +76,10 @@ int main(int argc, const char ** argv)
 #endif
 #endif
 
+  // Get external ip http://api.ipify.org?format=json
+  // Get meta data http://metadata.google.internal/computeMetadata/v1/instance/attributes/ -H "Metadata-Flavor: Google"
+
+
   printf("Game Server\n");
 
   InitServerTypes();
@@ -103,7 +109,7 @@ int main(int argc, const char ** argv)
   printf("  Starting server...\n");
   NetworkInit();
 
-  static GameServer game_server(256, 47816, stage_manager);
+  static GameServer game_server(256, GAME_PORT, stage_manager);
   printf("  Server started!\n");
 
   static FrameClock frame_clock(1.0 / 60.0);

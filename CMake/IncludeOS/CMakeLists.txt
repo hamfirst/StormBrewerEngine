@@ -88,7 +88,7 @@ include($ENV{INCLUDEOS_PREFIX}/includeos/post.service.cmake)
 
 
 # Create in-memory filesystem from folder
-diskbuilder(${CMAKE_SOURCE_DIR}/Assets)
+diskbuilder(${CMAKE_SOURCE_DIR}/Data disk.img)
 
 message("-- IncludeOS root is " ${INSTALL_LOC})
 message("-- Arch is " ${ARCH})

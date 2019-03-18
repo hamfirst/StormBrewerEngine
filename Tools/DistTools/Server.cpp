@@ -22,7 +22,7 @@ static const int kMaxBuilds = 10;
 int main(int argc, char ** argv)
 {
   printf("Loading settings...\n");
-  auto settings_file = fopen("ProjectCredentials.txt", "rb");
+  auto settings_file = fopen("ProjectDistSettings.txt", "rb");
   if(settings_file == nullptr)
   {
     printf("Could not open project credentials file\n");

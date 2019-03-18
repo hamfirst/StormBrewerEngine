@@ -8,6 +8,8 @@
 #include "SteamOpenIdValidatorPage.h"
 #include "LobbyConfig.h"
 
+#include "ProjectSettings/ProjectPorts.h"
+
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSDatabaseConnectionPool.h>
 #include <HurricaneDDS/DDSDatabaseSetup.h>

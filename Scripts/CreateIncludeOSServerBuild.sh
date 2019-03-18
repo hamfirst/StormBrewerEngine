@@ -11,7 +11,10 @@ mkdir -p IncludeOSServer/StormTech
 mkdir -p IncludeOSServer/Shared
 mkdir -p IncludeOSServer/Project
 mkdir -p IncludeOSServer/ProjectSettings
-mkdir -p IncludeOSServer/Assets
+mkdir -p IncludeOSServer/Data
+mkdir -p IncludeOSServer/Data/Assets
+mkdir -p IncludeOSServer/Data/Config
+mkdir -p IncludeOSServer/Data/Certs
 
 cp -p CMake/IncludeOS/* IncludeOSServer/
 cp -p CMake/cotire.cmake IncludeOSServer/CMake
@@ -45,9 +48,9 @@ cp -rp Project/GameServerExe IncludeOSServer/Project
 
 cp -p ProjectSettings/* IncludeOSServer/ProjectSettings
 
-cp -rp Test/Assets IncludeOSServer/Assets
-cp -p Test/localhost.* IncludeOSServer/Assets
-echo '/' > IncludeOSServer/Assets/asset_dir.txt
+cp -rp Test/Assets IncludeOSServer/Data/Assets
+cp -rp Test/Config IncludeOSServer/Data/Config
+cp -rp /etc/ssl/certs IncludeOSServer/Data/Certs
 
 cd IncludeOSServer
 boot --create-bridge .

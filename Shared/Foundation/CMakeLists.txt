@@ -40,8 +40,7 @@ set(GENERIC_SRC_Foundation
             Math/Util.cpp
             Network/Network.cpp
             Network/WebSocket.cpp
-            Network/WebSocketIncludeOS.cpp
-            Network/WebSocketWeb.cpp
+  Network/WebSocketWeb.cpp
             Profiling/Profiling.cpp
             PropertyMeta/PropertyFieldDatabase.cpp
             Random/Random.cpp
@@ -64,7 +63,7 @@ set(GENERIC_SRC_Foundation
             Time/Time.cpp
             TypeDatabase/TypeDatabase.cpp
             #CPP_PLACEHOLDER
-            )
+  )
 
 set(GENERIC_HEADER_Foundation 
             Allocator/Allocator2D.h
@@ -160,7 +159,7 @@ set(GENERIC_HEADER_Foundation
             Variant/Variant.h
             Waveform/Waveform.h
             #HEADER_PLACEHOLDER
-            )
+  Network/NetworkInternal.h)
 
 set(GENERIC_REFL_Foundation 
             BasicTypes/BasicTypes.refl.h
