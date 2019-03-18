@@ -29,6 +29,7 @@ struct GenerateOptions
   bool m_Refl = false;
   bool m_Placeholder = false;
   bool m_PCH = false;
+  bool m_BigObj = false;
 };
 
 
@@ -138,6 +139,11 @@ void ProcessOption(const std::string & option, GenerateOptions & out)
   if (option == "pch")
   {
     out.m_PCH = true;
+  }
+
+  if (option == "bigobj")
+  {
+    out.m_BigObj = true;
   }
 }
 
@@ -297,6 +303,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   std::cout << "Include Platform Files: " << (options.m_IncludePlatformFiles ? "Yes" : "No") << "\n";
   std::cout << "Include CMake Placeholder: " << (options.m_Placeholder ? "Yes" : "No") << "\n";
   std::cout << "Include Refl Options: " << (options.m_Refl ? "Yes" : "No") << "\n";
+  std::cout << "Big Object Flag: " << (options.m_BigObj ? "Yes" : "No") << "\n";
   std::cout << "Create PCH: " << (options.m_PCH ? "Yes" : "No") << "\n";
 
   if (options.m_PCH)
@@ -345,7 +352,14 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     cmake_file << "cmake_policy(SET CMP0071 OLD)\n";
     cmake_file << "find_package(Qt5 REQUIRED COMPONENTS Core Widgets)\n";
     cmake_file << "include_directories(${Qt5Widgets_INCLUDE_DIRS})\n";
-    cmake_file << "set(CMAKE_POSITION_INDEPENDENT_CODE ON)\n";
+    cmake_file << "set(CMAKE_POSITION_INDEPENDENT_CODE ON)\n\n";
+  }
+
+  if (options.m_BigObj)
+  {
+    cmake_file << "if (MSVC)\n";
+    cmake_file << "  set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} /bigobj\")\n";
+    cmake_file << "endif()\n\n";
   }
 
   cmake_file << "set(GENERIC_SRC_" + project_name + " \n";

@@ -10,6 +10,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
 
 set(CMAKE_CXX_STANDARD 17)
 
+if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+endif()
+
 set(GENERIC_SRC_Lobby 
             BanList.refl.cpp
             Bot.refl.cpp

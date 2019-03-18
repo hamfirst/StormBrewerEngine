@@ -167,7 +167,7 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
 
     if (fs::is_regular_file(info))
     {
-      dir.m_Files.emplace(std::make_pair(itr_filename, GetLastWriteTime(itr_path.c_str())));
+      dir.m_Files.emplace(std::make_pair(itr_filename, GetLastWriteTime(itr_path.string().c_str())));
     }
     else if (fs::is_directory(info))
     {      

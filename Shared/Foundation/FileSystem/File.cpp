@@ -289,10 +289,35 @@ Optional<Buffer> FileReadFull(czstr path)
 std::time_t GetLastWriteTime(czstr path)
 {
 #ifdef _MSC_VER
-#error implement this
+
+  HANDLE file;
+  FILETIME modified_time;
+  file = CreateFileA(path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+  if (file == INVALID_HANDLE_VALUE)
+  {
+    return {};
+  }
+
+  if (!GetFileTime(file, nullptr, nullptr, &modified_time))
+  {
+    CloseHandle(file);
+    return {};
+  }
+
+  CloseHandle(file);
+
+  ULARGE_INTEGER ull;
+  ull.LowPart = modified_time.dwLowDateTime;
+  ull.HighPart = modified_time.dwHighDateTime;
+  return ull.QuadPart / 10000000ULL - 11644473600ULL;
+
 #else
   struct stat attrib;
-  stat(path, &attrib);
+  if (stat(path, &attrib) != 0)
+  {
+    return {};
+  }
 
   return attrib.st_mtime;
 #endif

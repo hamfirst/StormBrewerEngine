@@ -77,14 +77,14 @@ DirectoryIterator & DirectoryIterator::operator ++ ()
 
   if(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
   {
-    auto new_dir = dir_info.second + '\\' + ffd->cFileName;
+    auto new_dir = dir_info.second + '\\' + ffd.cFileName;
     m_DirectoryHandle.push_back(std::make_pair(nullptr, new_dir));
     operator++();
     return *this;
   }
   else if(ffd.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
   {
-    m_CurFile = dir_info.second + '\\' + ffd->cFileName;
+    m_CurFile = dir_info.second + '\\' + ffd.cFileName;
   }
 
 #else

@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <random>
 
 #include "HurricaneDDS/DDSRandom.h"
 #include "HurricaneDDS/DDSChallenge.h"
@@ -672,7 +673,7 @@ void GameServerConnection::RandomizeTeams(int game_id)
     }
   }
 
-  std::random_shuffle(player_indices.begin(), player_indices.end());
+  std::shuffle(player_indices.begin(), player_indices.end(), std::default_random_engine{});
   for (std::size_t index = 0, size = player_indices.size(); index < size; index++)
   {
     auto team = (index % game.m_MaxTeams);
