@@ -53,6 +53,7 @@ set(LIBRARIES
   StormNetCustomBindings
   StormNet
   StormData
+  StormBootstrap
   StormSocketCPP
   binpack
   lua
@@ -72,6 +73,7 @@ set(DEPENDENCIES
   StormTech/StormNetCustomBindings/StormNetCustomBindings
   StormTech/StormNet/StormNet
   StormTech/StormData/StormData
+  StormTech/StormBootstrap/StormBootstrap
   StormTech/StormSockets/StormSocketCPP
   External/binpack/binpack
   External/lua/lua

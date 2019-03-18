@@ -35,6 +35,7 @@ cp -rp StormTech/StormNet IncludeOSServer/StormTech
 cp -rp StormTech/StormNetCustomBindings IncludeOSServer/StormTech
 cp -rp StormTech/StormSockets IncludeOSServer/StormTech
 cp -rp StormTech/StormRefl IncludeOSServer/StormRefl
+cp -rp StormTech/StormBootstrap IncludeOSServer/StormTech
 cp -rp StormTech/StormSockets IncludeOSServer/StormTech
 
 cp -rp Shared/Foundation IncludeOSServer/Shared

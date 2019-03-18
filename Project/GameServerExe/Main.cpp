@@ -2,6 +2,8 @@
 
 #include <StormRefl/StormReflJsonStd.h>
 
+#include "StormBootstrap/StormBootstrap.h"
+
 #include "Foundation/Common.h"
 #include "Foundation/Network/Network.h"
 #include "Foundation/FileSystem/File.h"
@@ -48,6 +50,8 @@ int ReturnError(int err) { return err; }
 double send_time;
 
 bool g_QuitServer = false;
+std::string g_ExternalIp;
+
 extern int g_LagSim;
 
 void StormWebrtcStaticInit();
@@ -55,8 +59,34 @@ void StormWebrtcStaticCleanup();
 
 int main(int argc, const char ** argv)
 {
+  StormBootstrap bootstrap(argc, argv);
+
+  bootstrap.Set("external_ip", "127.0.0.1");
+
+  bootstrap.RequestUrl("http://api.ipify.org", "", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      bootstrap.Set("external_ip", result);
+    }
+  });
+
+  auto meta_url = "http://metadata.google.internal/computeMetadata/v1/instance/attributes/";
+  bootstrap.RequestUrl(meta_url, "Metadata-Flavor: Google\r\n", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      bootstrap.Set("meta", result);
+    }
+  });
+
+  bootstrap.Run();
+  bootstrap.PrintDebug();
+
+  g_ExternalIp = bootstrap.Get("external_ip");
+
 #if defined(_LINUX) && !defined(_INCLUDEOS)
-  if (argc == 2 && argv[1] == std::string("-D"))
+  if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
   {
     printf("Entering Daemon Mode");
     daemon(1, 0);
@@ -75,10 +105,6 @@ int main(int argc, const char ** argv)
   GDB_ENTRY;
 #endif
 #endif
-
-  // Get external ip http://api.ipify.org?format=json
-  // Get meta data http://metadata.google.internal/computeMetadata/v1/instance/attributes/ -H "Metadata-Flavor: Google"
-
 
   printf("Game Server\n");
 

@@ -33,6 +33,7 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/External/libbson")
 add_subdirectory("${PROJECT_SOURCE_DIR}/External/mongoc")
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/HurricaneDDS")
+add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormBootstrap")
 add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormSockets")
 add_subdirectory("${PROJECT_SOURCE_DIR}/StormTech/StormData")
 
@@ -44,6 +45,7 @@ add_executable(LobbyExe Lobby/LobbyMain/MainCombined.cpp)
 
 target_link_libraries(LobbyExe Lobby)
 target_link_libraries(LobbyExe HurricaneDDS)
+target_link_libraries(LobbyExe StormBootstrap)
 target_link_libraries(LobbyExe StormSocketCPP)
 target_link_libraries(LobbyExe StormData)
 target_link_libraries(LobbyExe asio)

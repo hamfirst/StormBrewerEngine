@@ -7,7 +7,7 @@
 
 #include "Rewards.refl.meta.h"
 
-bool g_LoadRewards = false;
+extern bool g_LoadRewards;
 
 #ifdef ENABLE_REWARDS
 

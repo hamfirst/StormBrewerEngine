@@ -144,6 +144,7 @@ void NetworkUpdate()
     case StormSockets::StormSocketEventType::Data:
       break;
     case StormSockets::StormSocketEventType::Disconnected:
+      g_NetworkFrontendHttp->FinalizeConnection(event.ConnectionId);
       break;
     }
   }

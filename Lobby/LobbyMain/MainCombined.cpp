@@ -9,6 +9,8 @@
 #include <HurricaneDDS/DDSCPUUsage.h>
 #include <HurricaneDDS/DDSEncoding.h>
 
+#include "StormBootstrap/StormBootstrap.h"
+
 #pragma comment(lib, "Bcrypt.lib")
 
 
@@ -18,12 +20,29 @@
 
 #include <chrono>
 
-extern bool g_LoadRewards;
+bool g_LoadRewards = false;
+std::string g_ExternalIp;
 
-int main(int argc, char ** argv)
+
+int main(int argc, const char ** argv)
 {
+  StormBootstrap bootstrap(argc, argv);
+  bootstrap.Set("external_ip", "127.0.0.1");
+
+  bootstrap.RequestUrl("http://api.ipify.org", "", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      bootstrap.Set("external_ip", result);
+    }
+  });
+
+  bootstrap.Run();
+
+  g_ExternalIp = bootstrap.Get("external_ip");
+
 #ifdef _LINUX
-  if (argc >= 2 && argv[1] == std::string("-D"))
+  if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
   {
     printf("Entering Daemon Mode");
     daemon(1, 0);
@@ -35,7 +54,7 @@ int main(int argc, char ** argv)
   //DDSSetupShutdownSignalHandler();
 
   bool reset = false;
-  if (argc == 2 && argv[1] == std::string("reset"))
+  if (bootstrap.HasValue("reset"))
   {
     reset = true;
   }
@@ -57,9 +76,9 @@ int main(int argc, char ** argv)
   //DDSShutdownRegisterCoordinator(coordinator.get());
 
   const char * html_dir = nullptr;
-  if (argc >= 2 && argv[1][0] != '-')
+  if (bootstrap.GetNumArgs() > 0)
   {
-    html_dir = argv[1];
+    html_dir = bootstrap.GetArg(0).data();
   }
 
   NodeSettings node_settings;

@@ -26,6 +26,7 @@ cp -rp External/yajl LobbyServer/External
 
 cp -rp StormTech/StormData LobbyServer/StormTech
 cp -rp StormTech/StormSockets LobbyServer/StormTech
+cp -rp StormTech/StormBootstrap LobbyServer/StormTech
 cp -rp StormTech/StormRefl LobbyServer/StormTech
 cp -rp StormTech/HurricaneDDS LobbyServer/StormTech
 
