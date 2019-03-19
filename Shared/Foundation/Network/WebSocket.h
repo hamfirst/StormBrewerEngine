@@ -44,6 +44,8 @@ public:
 
 private:
 
+  void Cleanup();
+
 #ifdef _WEB
 
   int m_Socket;
@@ -57,8 +59,6 @@ public:
   void GotMessage(NotNullPtr<uint8_t> message, int length, bool binary);
 
 #else
-
-  void Cleanup();
 
   int m_WebsocketId = -1;
 

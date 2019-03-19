@@ -20,7 +20,7 @@ HttpRequest::HttpRequest(const std::string_view & url, const std::string_view & 
   Request(url, headers, body);
 }
 
-HttpRequest::HttpRequest(HttpRequest && rhs)
+HttpRequest::HttpRequest(HttpRequest && rhs) noexcept
 {
   m_RequestId = rhs.m_RequestId;
   rhs.m_RequestId = -1;
@@ -37,7 +37,7 @@ HttpRequest::~HttpRequest()
   Cleanup();
 }
 
-HttpRequest & HttpRequest::operator = (HttpRequest && rhs)
+HttpRequest & HttpRequest::operator = (HttpRequest && rhs) noexcept
 {
   Cleanup();
 

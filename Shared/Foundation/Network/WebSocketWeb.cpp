@@ -73,6 +73,7 @@ WebSocket::WebSocket(WebSocket && rhs) noexcept
   m_Socket = rhs.m_Socket;
   m_Connected = rhs.m_Connected;
   m_Connecting = rhs.m_Connecting;
+  m_PendingPackets = std::move(m_PendingPackets);
 
   rhs.m_Socket = (int)INVALID_SOCKET;
   rhs.m_Connected = false;
