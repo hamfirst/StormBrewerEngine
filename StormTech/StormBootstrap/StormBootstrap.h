@@ -10,6 +10,7 @@
 class StormBootstrap
 {
 public:
+  StormBootstrap();
   StormBootstrap(int argc, const char ** argv);
   StormBootstrap(const StormBootstrap & rhs) = delete;
   StormBootstrap(StormBootstrap && rhs) = delete;

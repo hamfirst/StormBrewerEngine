@@ -7,7 +7,11 @@
 
 #include <StormData/StormDataJson.h>
 
+#include <StormBootstrap/StormBootstrap.h>
+
 #include <mbedtls/sha256.h>
+
+#include "ProjectSettings/ProjectZones.h"
 
 #include "ServerManager.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
@@ -91,41 +95,34 @@ ServerManager::~ServerManager()
 
 void ServerManager::Initialize()
 {
-  auto ReadFileAsString = [](czstr path)
+  StormBootstrap bootstrap;
+  bootstrap.LoadConfigFile("Config/gcp_settings.txt", [&](const std::string & data)
   {
-    FILE * fp = fopen(path, "rb");
-    if(fp == nullptr)
-    {
-      printf("Could not open %s\n", path);
-      assert(false);
-    }
+    StormReflParseJson(m_Settings, data);
+  });
 
-    fseek(fp, 0, SEEK_END);
-    auto len = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
 
-    auto buffer = std::make_unique<char[]>(len);
-    fread(buffer.get(), len, 1, fp);
-    fclose(fp);
+  bootstrap.LoadConfigFile("Config/gcp_credentials.txt", [&](const std::string & data)
+  {
+    StormReflParseJson(m_CredentialsInfo, data);
+  });
 
-    auto str = std::string(buffer.get(), buffer.get() + len);
-    while(str.size() > 0 && isspace(str.back()))
-    {
-      str.pop_back();
-    }
-
-    return str;
-  };
-
-  StormReflParseJson(m_Settings, ReadFileAsString("Config/gcp_settings.txt"));
-  StormReflParseJson(m_CredentialsInfo, ReadFileAsString("Config/gcp_credentials.txt"));
-
-  auto project_dir = ReadFileAsString("project_dir.txt");
+  std::string project_dir = "/";
+  bootstrap.LoadConfigFile("project_dir.txt", [&](const std::string & data)
+  {
+    project_dir = data;
+  });
 
   auto ReadTemplateAsString = [&](czstr file)
   {
-    std::string path = project_dir + "/Lobby/GCPTemplates/" + file + ".template";
-    return ReadFileAsString(path.c_str());
+    std::string result;
+    bootstrap.LoadConfigFile(project_dir + "/Lobby/GCPTemplates/" + file + ".template", [&](const std::string & data)
+    {
+      assert(!data.empty());
+      result = data;
+    });
+
+    return result;
   };
 
   m_CreateInstanceTemplate = ReadTemplateAsString("CreateInstance");
@@ -139,10 +136,68 @@ void ServerManager::Initialize()
     DDSLog::LogError("pk_parse_key -0x%x\n", -ret);
   }
 
-  RequestNewToken();
+  auto payload = GetTokenAssertion();
+  bootstrap.PostUrl(m_CredentialsInfo.token_uri, "Content-Type: application/x-www-form-urlencoded\r\n", payload, [&](const std::string & resp)
+  {
+    HandleTokenResponse(true, resp, "");
+  });
+
+  bootstrap.Run();
+
+  assert(!m_AuthorizationHeader.empty());
+
+  for(int index = 0; index < g_NumProjectZones; ++index)
+  {
+    auto zone = g_ProjectZones[index];
+    auto url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone[index] + "/instances";
+
+    bootstrap.RequestUrl(url.c_str(), m_AuthorizationHeader, [&](const std::string & resp)
+    {
+      // Do something with this?
+
+      // Request a second page if necessary
+    });
+  }
 }
 
 void ServerManager::RequestNewToken()
+{
+  auto payload = GetTokenAssertion();
+
+  DDSHttpRequest request(m_CredentialsInfo.token_uri, payload, "Content-Type: application/x-www-form-urlencoded\r\n");
+  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleTokenResponse);
+}
+
+void ServerManager::HandleTokenResponse(bool success, std::string body, std::string headers)
+{
+  GoogleTokenResponse response;
+  StormReflParseJson(response, body.data());
+
+  if(response.access_token.empty())
+  {
+    DDSLog::LogInfo("Got invalid token");
+    m_AuthorizationHeader.clear();
+
+    m_Interface.CreateTimer(std::chrono::seconds(10), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
+  }
+  else
+  {
+    DDSLog::LogInfo("Got token response");
+    m_AuthorizationHeader =
+        std::string("Authorization: ") + response.token_type + " " + response.access_token + "\r\n" +
+        "Content-Type: application/json\r\n";
+
+    m_Interface.CreateTimer(std::chrono::seconds(response.expires_in - 100), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
+  }
+}
+
+void ServerManager::CreateServerInstance(const std::string & zone)
+{
+  std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances";
+
+}
+
+std::string ServerManager::GetTokenAssertion()
 {
   auto now = time(nullptr);
 
@@ -181,35 +236,5 @@ void ServerManager::RequestNewToken()
   encoded_str += "." + UrlSafeBase64Encode(signature, signature_length);
   auto payload = "grant_type=" + UrlEncode("urn:ietf:params:oauth:grant-type:jwt-bearer") + "&assertion=" + encoded_str;
 
-  DDSHttpRequest request(m_CredentialsInfo.token_uri, payload, "Content-Type: application/x-www-form-urlencoded\r\n");
-  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleTokenResponse);
-}
-
-void ServerManager::HandleTokenResponse(bool success, std::string body, std::string headers)
-{
-  GoogleTokenResponse response;
-  StormReflParseJson(response, body.data());
-
-  if(response.access_token.empty())
-  {
-    DDSLog::LogInfo("Got invalid token");
-    m_AuthorizationHeader.clear();
-
-    m_Interface.CreateTimer(std::chrono::seconds(10), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
-  }
-  else
-  {
-    DDSLog::LogInfo("Got token response");
-    m_AuthorizationHeader =
-        std::string("Authorization: ") + response.token_type + " " + response.access_token + "\r\n" +
-        "Content-Type: application/json\r\n";
-
-    m_Interface.CreateTimer(std::chrono::seconds(response.expires_in - 100), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
-  }
-}
-
-void ServerManager::CreateServerInstance(const std::string & zone)
-{
-  std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances";
-
+  return payload;
 }

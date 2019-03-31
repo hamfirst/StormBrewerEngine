@@ -4,12 +4,21 @@
 #include <StormData/StormDataTypes.h>
 
 #include <HurricaneDDS/DDSDataObject.h>
+#include <HurricaneDDS/DDSKey.h>
 
 #include "LobbyConfig.h"
 #include "GooglePlatform.refl.h"
 
 #include <mbedtls/pk.h>
 
+struct ServerManagerServer
+{
+  int m_RemoteIP = 0;
+  DDSKey m_ServerKey = 0;
+  std::string m_InstanceId;
+
+  time_t m_InstanceStartTime = 0;
+};
 
 struct ServerManager
 {
@@ -36,10 +45,12 @@ public:
   void STORM_REFL_FUNC RequestNewToken();
   void STORM_REFL_FUNC HandleTokenResponse(bool success, std::string body, std::string headers);
 
+
   void CreateServerInstance(const std::string & zone);
 
 private:
 
+  std::string GetTokenAssertion();
 
 public:
 

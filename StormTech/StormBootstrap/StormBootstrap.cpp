@@ -9,6 +9,11 @@
 
 void StormBootstrapBlock();
 
+StormBootstrap::StormBootstrap()
+{
+
+}
+
 StormBootstrap::StormBootstrap(int argc, const char ** argv)
 {
   if(argc >= 1)
@@ -63,7 +68,6 @@ StormBootstrap::StormBootstrap(int argc, const char ** argv)
   }
 }
 
-
 StormBootstrap::~StormBootstrap()
 {
   Cleanup();
@@ -86,6 +90,11 @@ void StormBootstrap::LoadConfigFile(const std::string_view & path, std::function
   std::string str(len, ' ');
   fread(str.data(), 1, len, fp);
   fclose(fp);
+
+  while(str.size() > 0 && isspace(str.back()))
+  {
+    str.pop_back();
+  }
 
   callback(str);
 }
