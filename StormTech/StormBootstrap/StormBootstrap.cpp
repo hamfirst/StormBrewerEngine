@@ -91,6 +91,11 @@ void StormBootstrap::LoadConfigFile(const std::string_view & path, std::function
   fread(str.data(), 1, len, fp);
   fclose(fp);
 
+  while(str.size() > 0 && isspace(str.back()))
+  {
+    str.pop_back();
+  }
+
   callback(str);
 }
 
