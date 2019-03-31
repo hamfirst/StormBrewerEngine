@@ -89,7 +89,7 @@ extern "C" {
 #define MBEDTLS_PLATFORM_STD_NV_SEED_WRITE  mbedtls_platform_std_nv_seed_write
 #endif
 #if !defined(MBEDTLS_PLATFORM_STD_NV_SEED_FILE)
-#define MBEDTLS_PLATFORM_STD_NV_SEED_FILE   "seedfile"
+#define MBEDTLS_PLATFORM_STD_NV_SEED_FILE   "/Config/seedfile"
 #endif
 #endif /* MBEDTLS_FS_IO */
 #else /* MBEDTLS_PLATFORM_NO_STD_FUNCTIONS */

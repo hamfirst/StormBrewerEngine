@@ -338,10 +338,10 @@ int mbedtls_ctr_drbg_reseed( mbedtls_ctr_drbg_context *ctx,
     /*
      * Gather entropy_len bytes of entropy to seed state
      */
-    if( 0 != ctx->f_entropy( ctx->p_entropy, seed,
-                             ctx->entropy_len ) )
+    if( (ret = ctx->f_entropy( ctx->p_entropy, seed,
+                             ctx->entropy_len )) != 0 )
     {
-        return( MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED );
+        return( ret );
     }
 
     seedlen += ctx->entropy_len;

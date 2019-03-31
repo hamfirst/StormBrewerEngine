@@ -51,7 +51,7 @@ namespace StormSockets
 
   struct StormSocketConnectionBase
   {
-    std::atomic_flag m_Used = ATOMIC_FLAG_INIT;
+    std::atomic_bool m_Used = false;
     unsigned int m_RemoteIP = 0;
     unsigned short m_RemotePort = 0;
     StormSocketFrontend * m_Frontend = nullptr;

@@ -206,11 +206,11 @@ if (UNIX AND NOT APPLE)
   add_definitions(-D_LINUX)
   include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
   include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_mbedtls 
-            )
+  set(PLATFORM_SRC_mbedtls
+    timing_alt.c)
 
-set(PLATFORM_HEADER_mbedtls 
-            )
+set(PLATFORM_HEADER_mbedtls
+  timing_alt.h)
 endif()
 
 foreach(REFL_FILE ${GENERIC_REFL_mbedtls})

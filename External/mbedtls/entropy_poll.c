@@ -25,6 +25,9 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include <errno.h>
+
+
 #if defined(MBEDTLS_ENTROPY_C)
 
 #include "mbedtls/entropy.h"
@@ -90,6 +93,9 @@ int mbedtls_platform_entropy_poll( void *data, unsigned char *output, size_t len
 #if defined(__linux__) && defined(__GLIBC__)
 #include <unistd.h>
 #include <sys/syscall.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #if defined(SYS_getrandom)
 #define HAVE_GETRANDOM
 
@@ -146,15 +152,19 @@ static int has_getrandom = -1;
 #endif /* __linux__ */
 
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int mbedtls_platform_entropy_poll( void *data,
                            unsigned char *output, size_t len, size_t *olen )
 {
     FILE *file;
-    size_t read_len;
+    ssize_t read_len;
     ((void) data);
 
-#if defined(HAVE_GETRANDOM)
+#if defined(HAVE_GETRANDOM) && !defined(MBEDTLS_INCLUDEOS)
     if( has_getrandom == -1 )
         has_getrandom = ( check_version_3_17_plus() == 0 );
 
@@ -172,18 +182,18 @@ int mbedtls_platform_entropy_poll( void *data,
 
     *olen = 0;
 
-    file = fopen( "/dev/urandom", "rb" );
-    if( file == NULL )
+    int fd = open( "/dev/urandom", O_RDONLY );
+    if( fd == -1 )
         return( MBEDTLS_ERR_ENTROPY_SOURCE_FAILED );
 
-    read_len = fread( output, 1, len, file );
+    read_len = read( fd, output, len );
     if( read_len != len )
     {
-        fclose( file );
+        close( fd );
         return( MBEDTLS_ERR_ENTROPY_SOURCE_FAILED );
     }
 
-    fclose( file );
+    close( fd );
     *olen = len;
 
     return( 0 );

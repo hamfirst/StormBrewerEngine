@@ -17,6 +17,7 @@ public:
   ~DirectoryIterator() = default;
 
   bool operator == (const DirectoryIterator & iterator) const;
+  bool operator != (const DirectoryIterator & iterator) const;
   DirectoryIterator & operator ++ ();
 
   const std::string & operator *() const;
@@ -31,11 +32,12 @@ class DirectoryIteratorRequest
 public:
   DirectoryIteratorRequest(const char * dir);
 
-  DirectoryIterator begin();
-  DirectoryIterator end();
+  DirectoryIterator & begin();
+  DirectoryIterator & end();
 
 private:
-  const char * m_Dir;
+  DirectoryIterator m_Begin;
+  DirectoryIterator m_End;
 };
 
 

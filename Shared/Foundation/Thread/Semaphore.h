@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef _INCLUDEOS
+
 #include <mutex>
 #include <condition_variable>
 
@@ -17,3 +19,5 @@ private:
   std::condition_variable m_ConditionVariable;
   volatile int m_Count = 0;
 };
+
+#endif

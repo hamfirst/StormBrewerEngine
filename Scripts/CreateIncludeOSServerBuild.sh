@@ -2,7 +2,18 @@
 
 cd $PROJECT_DIR
 
-rm -rf IncludeOSServer
+#rm -rf IncludeOSServer
+
+rm -rf IncludeOSServer/CMake
+rm -rf IncludeOSServer/External
+rm -rf IncludeOSServer/StormTech
+rm -rf IncludeOSServer/Shared
+rm -rf IncludeOSServer/Project
+rm -rf IncludeOSServer/ProjectSettings
+rm -rf IncludeOSServer/Data
+rm -rf IncludeOSServer/Data/Assets
+rm -rf IncludeOSServer/Data/Config
+rm -rf IncludeOSServer/Data/Certs
 
 mkdir -p IncludeOSServer
 mkdir -p IncludeOSServer/CMake
@@ -49,9 +60,9 @@ cp -rp Project/GameServerExe IncludeOSServer/Project
 
 cp -p ProjectSettings/* IncludeOSServer/ProjectSettings
 
-cp -rp Test/Assets IncludeOSServer/Data/Assets
-cp -rp Test/Config IncludeOSServer/Data/Config
-cp -rp /etc/ssl/certs IncludeOSServer/Data/Certs
+cp -rp Test/Assets/* IncludeOSServer/Data/Assets
+cp -rp Test/Config/* IncludeOSServer/Data/Config
+cp -rpL /etc/ssl/certs/* IncludeOSServer/Data/Certs
 
 cd IncludeOSServer
-boot --create-bridge .
+boot -b .

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 if (NOT DEFINED ENV{INCLUDEOS_PREFIX})
-  set(ENV{INCLUDEOS_PREFIX} /usr/local)
+  #set(ENV{INCLUDEOS_PREFIX} /usr/local)
+  set(ENV{INCLUDEOS_PREFIX} /home/nick/Dev/IncludeOS_Install)
 endif()
 include($ENV{INCLUDEOS_PREFIX}/includeos/pre.service.cmake)
 project (StormBrewersIncludeOS)
@@ -9,6 +10,10 @@ set(INCLUDEOS ON)
 
 option(GENERATE_REFL OFF)
 option(GENERATE_PCH OFF)
+
+set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-g")
+set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-g")
+set (CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-g")
 
 # Human-readable name of your service
 set(SERVICE_NAME "StormBrewerEngine Server")
@@ -35,6 +40,7 @@ set(DRIVERS
   )
 
 set(PLUGINS
+  vfs
   # syslogd    # Syslog over UDP
 
   # Use "boot --plugins ." to see other plugins
@@ -43,7 +49,6 @@ set(PLUGINS
 
 # STATIC LIBRARIES:
 set(LIBRARIES
-  GameServerExe
   GameServer
   Game
   GameShared
@@ -63,7 +68,6 @@ set(LIBRARIES
 
 # DEPENDENCIES:
 set(DEPENDENCIES
-  Project/GameServerExe/GameServerExe
   Project/GameServer/GameServer
   Project/Game/Game
   Project/GameShared/GameShared
@@ -92,8 +96,8 @@ include($ENV{INCLUDEOS_PREFIX}/includeos/post.service.cmake)
 # Create in-memory filesystem from folder
 diskbuilder(${CMAKE_SOURCE_DIR}/Data disk.img)
 
-message("-- IncludeOS root is " ${INSTALL_LOC})
-message("-- Arch is " ${ARCH})
+message("> -- IncludeOS root is " ${INSTALL_LOC})
+message("> -- Arch is " ${ARCH})
 
 foreach(LIB ${LIBRARIES})
   target_include_directories(${LIB} SYSTEM PRIVATE ${INSTALL_LOC}/${ARCH}/include/libcxx)

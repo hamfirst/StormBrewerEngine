@@ -23,6 +23,7 @@ DirectoryIterator::DirectoryIterator(const char * dir)
   operator++();
 #else
 
+  printf("Opening dir: %s\n", dir);
   auto dirent = opendir(dir);
   if(dirent == nullptr)
   {
@@ -38,6 +39,11 @@ DirectoryIterator::DirectoryIterator(const char * dir)
 bool DirectoryIterator::operator == (const DirectoryIterator & iterator) const
 {
   return m_DirectoryHandle.size() == 0 && m_CurFile.size() == 0 && iterator.m_DirectoryHandle.size() == 0 && iterator.m_CurFile.size() == 0;
+}
+
+bool DirectoryIterator::operator != (const DirectoryIterator & iterator) const
+{
+  return !(operator == (iterator));
 }
 
 DirectoryIterator & DirectoryIterator::operator ++ ()
@@ -126,19 +132,19 @@ const std::string & DirectoryIterator::operator *() const
 }
 
 DirectoryIteratorRequest::DirectoryIteratorRequest(const char * dir) :
-  m_Dir(dir)
+  m_Begin(dir)
 {
 
 }
 
-DirectoryIterator DirectoryIteratorRequest::begin()
+DirectoryIterator & DirectoryIteratorRequest::begin()
 {
-  return DirectoryIterator(m_Dir);
+  return m_Begin;
 }
 
-DirectoryIterator DirectoryIteratorRequest::end()
+DirectoryIterator & DirectoryIteratorRequest::end()
 {
-  return DirectoryIterator();
+  return m_End;
 }
 
 std::vector<std::string> GetFilesInDirectory(czstr path)

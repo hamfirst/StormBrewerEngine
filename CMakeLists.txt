@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(StormBrewerEngine)
+file(READ ProjectSettings/ProjectName.txt PROJECT_NAME)
+file(WRITE ProjectSettings/ProjectName.h "#pragma once\n\nstatic const char * kProjectName = \"" ${PROJECT_NAME} "\";\n\n")
+
+project(${PROJECT_NAME})
+
+message("-- Project Name: " ${PROJECT_NAME})
 
 include(CMake/StormBrewerEngine.cmake)
 include(CMake/cotire.cmake)
@@ -27,6 +32,8 @@ option(EXPORT_DIST OFF)
 option(ENABLE_PERFORCE OFF)
 option(GENERATE_REFL ON)
 option(GENERATE_PCH ON)
+
+
 
 if(${ENABLE_PERFORCE})
   message("-- Enabling perforce")

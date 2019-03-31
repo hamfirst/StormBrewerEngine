@@ -7,6 +7,7 @@
 #include "Foundation/Common.h"
 #include "Foundation/Network/Network.h"
 #include "Foundation/FileSystem/File.h"
+#include "Foundation/FileSystem/Directory.h"
 #include "Foundation/Buffer/BufferUtil.h"
 #include "Foundation/Time/FrameClock.h"
 
@@ -21,6 +22,8 @@
 
 #include "GameServer/GameServer.h"
 
+#include "ProjectSettings/ProjectName.h"
+#include "ProjectSettings/ProjectVersion.h"
 #include "ProjectSettings/ProjectPorts.h"
 
 #ifdef _MSC_VER
@@ -37,8 +40,12 @@
 #include <chrono>
 #include <timers>
 #include <debug>
+#include <memdisk>
 
-int ReturnError(int err) { return 0; }
+#include <net/inet>
+#include <kernel/os.hpp>
+
+int ReturnError(int err) { return err; }
 void UpdateServers(GameServer & game_server, FrameClock & frame_clock);
 
 #else
@@ -59,12 +66,29 @@ void StormWebrtcStaticCleanup();
 
 int main(int argc, const char ** argv)
 {
-  StormBootstrap bootstrap(argc, argv);
+#ifdef _INCLUDEOS
+  printf("Waiting for network configuration\n");
 
+  auto & inet = net::Super_stack::get(0);
+  bool configured = false;
+
+  inet.on_config([&](auto & stack) { configured = true; });
+
+  while(configured == false)
+  {
+    OS::block();
+  }
+
+#endif
+
+  printf("Starting server!\n");
+
+  StormBootstrap bootstrap(argc, argv);
   bootstrap.Set("external_ip", "127.0.0.1");
 
   bootstrap.RequestUrl("http://api.ipify.org", "", [&](const std::string & result)
   {
+    printf("Got ip response %s\n", result.c_str());
     if(!result.empty())
     {
       bootstrap.Set("external_ip", result);

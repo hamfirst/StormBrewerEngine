@@ -126,6 +126,7 @@ namespace StormSockets
 
     std::vector<std::size_t> GetMallocReport();
     void MemoryAudit();
+    void PrintConnections();
     std::vector<Certificate> & GetCertificates();
 
     StormSocketBackendAcceptorId InitAcceptor(StormSocketFrontend * frontend, const StormSocketListenData & init_data);

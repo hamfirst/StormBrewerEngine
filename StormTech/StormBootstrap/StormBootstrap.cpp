@@ -7,11 +7,7 @@
 #include <cstdio>
 #include <cassert>
 
-#ifdef _INCLUDEOS
-#include <kernel/os.hpp>
-#else
-#include <thread>
-#endif
+void StormBootstrapBlock();
 
 StormBootstrap::StormBootstrap(int argc, const char ** argv)
 {
@@ -45,7 +41,7 @@ StormBootstrap::StormBootstrap(int argc, const char ** argv)
         }
         else
         {
-          std::string name(argv[index] + 2, equals - 1);
+          std::string name(argv[index] + 2, (const char *)equals);
           m_Values.emplace(std::make_pair(name, Value{ Priority::kCommandLine, equals + 1 }));
         }
       }
@@ -121,6 +117,7 @@ void StormBootstrap::PostUrl(const std::string_view & url, const std::string_vie
 
 void StormBootstrap::Run()
 {
+  printf("Running bootstrap\n");
   m_CurrentPriority = Priority::kWebConfig;
 
   while(m_Jobs.size() > 0)
@@ -140,14 +137,11 @@ void StormBootstrap::Run()
         if (job_itr != m_Jobs.end())
         {
           auto response = event.GetHttpResponseReader();
-          auto status_line = response.GetStatusLineReader();
-
-          int status_code = 0;
-          status_line.ReadNumber(status_code);
+          auto body = response.GetBodyReader();
+          auto status_code = response.GetResponseCode();
 
           if(status_code == 200)
           {
-            auto body = response.GetBodyReader();
             std::string str((std::size_t) body.GetRemainingLength(), ' ');
             body.ReadByteBlock(str.data(), body.GetRemainingLength());
             job_itr->second(str);
@@ -171,13 +165,10 @@ void StormBootstrap::Run()
       }
     }
 
-#ifdef _INCLUDEOS
-    OS::block();
-#else
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-#endif
+    StormBootstrapBlock();
   }
 
+  printf("Bootstrap jobs complete\n");
   Cleanup();
 }
 
@@ -310,8 +301,12 @@ void StormBootstrap::InitNetwork()
   {
     StormSockets::StormSocketInitSettings backend_settings;
     backend_settings.MaxConnections = kMaxConnections;
+
+#ifndef _INCLUDEOS
     backend_settings.NumIOThreads = 1;
     backend_settings.NumSendThreads = 1;
+#endif
+
     backend_settings.HeapSize = 0;
     backend_settings.LoadSystemCertificates = true;
     m_Backend = new StormSockets::StormSocketBackend(backend_settings);
@@ -327,16 +322,20 @@ void StormBootstrap::InitNetwork()
 
 void StormBootstrap::Cleanup()
 {
+  printf("Cleaning up network\n");
+
   auto backend = (StormSockets::StormSocketBackend *)m_Backend;
   auto frontend = (StormSockets::StormSocketClientFrontendHttp *)m_Frontend;
 
   if(frontend)
   {
     delete frontend;
+    m_Frontend = nullptr;
   }
 
   if(backend)
   {
     delete backend;
+    m_Backend = nullptr;
   }
 }

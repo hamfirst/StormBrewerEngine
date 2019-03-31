@@ -11,6 +11,7 @@ if(INCLUDEOS)
               ./NetClientBackendWebsocket.cpp
               ./NetServerBackendWebsocket.cpp
               ./NetTransmitterServerWebsocket.cpp
+              ./NetTransmitterClientWebsocket.cpp
               )
 elseif(WEB)
   set(GENERIC_SRC_StormNetCustomBindings

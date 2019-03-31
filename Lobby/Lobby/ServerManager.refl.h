@@ -51,7 +51,6 @@ private:
   STORM_REFL_IGNORE mbedtls_pk_context m_PKContext;
   STORM_REFL_IGNORE std::string m_AuthorizationHeader;
   STORM_REFL_IGNORE GooglePlatformSettings m_Settings;
-  STORM_REFL_IGNORE std::string m_ProjectName;
 
   STORM_REFL_IGNORE std::string m_CreateInstanceTemplate;
 };

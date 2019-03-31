@@ -3,8 +3,13 @@
 
 #include <fstream>
 #include <stdexcept>
+#include <sstream>
 
-#define MBED_CHECK_ERROR if(error < 0) throw std::runtime_error("Certificate load error " + std::to_string(error));
+#ifdef _INCLUDEOS
+#include <kernel/os.hpp>
+#endif
+
+#define MBED_CHECK_ERROR if(error < 0) { std::stringstream ss; ss << std::hex << -error; throw std::runtime_error("Certificate load error 0x" + ss.str()); };
 
 namespace StormSockets
 {
@@ -96,6 +101,8 @@ namespace StormSockets
 
   void StormSocketFrontendBase::CleanupAllConnections()
   {
+    m_Backend->PrintConnections();
+
     m_OwnedConnectionLock.lock();
     auto connections = m_OwnedConnections;
     for (auto connection_id : connections)
@@ -118,6 +125,8 @@ namespace StormSockets
 
 #ifndef _INCLUDEOS
       std::this_thread::yield();
+#else
+      OS::block();
 #endif
     }
   }

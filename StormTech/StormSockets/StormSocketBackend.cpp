@@ -3,6 +3,7 @@
 #include "StormSocketLog.h"
 
 #include <fstream>
+#include <chrono>
 
 #ifndef DISABLE_MBED
 #include "mbedtls/error.h"
@@ -56,7 +57,34 @@ static struct StormMbedTlsInit
   }
 
 } s_StormMbedTlsInit;
+
+#else
+
+static struct StormMbedTlsInit
+{
+  StormMbedTlsInit()
+  {
+    m_StartTime = std::chrono::system_clock::now();
+  }
+
+  void Reference()
+  {
+
+  }
+
+  std::chrono::system_clock::time_point m_StartTime;
+} s_StormMbedTlsInit;
+
+extern "C" int64_t IncludeOSGetTimeMs()
+{
+  auto now = std::chrono::system_clock::now();
+  auto since = std::chrono::duration_cast<std::chrono::milliseconds>(now - s_StormMbedTlsInit.m_StartTime);
+
+  return since.count();
+}
+
 #endif
+
 
 namespace StormSockets
 {
@@ -83,9 +111,7 @@ namespace StormSockets
 #endif
     m_ThreadStopRequested(false)
   {
-#ifndef _INCLUDEOS
     s_StormMbedTlsInit.Reference();
-#endif
 
     m_NextAcceptorId = 0;
     m_MaxConnections = settings.MaxConnections;
@@ -273,7 +299,7 @@ namespace StormSockets
     for (int index = 0; index < m_MaxConnections; index++)
     {
       auto & connection = GetConnection(index);
-      if (connection.m_Used.test_and_set())
+      if (connection.m_Used.exchange(true))
       {
         auto connection_id = StormSocketConnectionId(index, connection.m_SlotGen);
         FreeConnectionResources(connection_id);
@@ -310,6 +336,66 @@ namespace StormSockets
     }
 
     printf("Allocated connections: %d\n", num_connections);
+  }
+
+  void StormSocketBackend::PrintConnections()
+  {
+    for(int index = 0; index < m_MaxConnections; ++index)
+    {
+      auto & connection = m_Connections[index];
+      if(connection.m_Used.load())
+      {
+        printf("Connection id: %d\n", index);
+        printf("Disconnect flags: ");
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kMainThread)
+        {
+          printf("main ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kRecvThread)
+        {
+          printf("recv ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kSendThread)
+        {
+          printf("send ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kLocalClose)
+        {
+          printf("local ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kRemoteClose)
+        {
+          printf("remote ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kThreadClose)
+        {
+          printf("thread ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kConnectFinished)
+        {
+          printf("connect ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kSocket)
+        {
+          printf("socket ");
+        }
+
+        if(connection.m_DisconnectFlags & StormSocketDisconnectFlags::kSignalClose)
+        {
+          printf("signal ");
+        }
+
+        printf("\n\n");
+      }
+    }
   }
 
   std::vector<Certificate> & StormSocketBackend::GetCertificates()
@@ -526,7 +612,7 @@ namespace StormSockets
     }
     else
     {
-      inet.resolve(ip_addr, [this, connection_id, port](net::ip4::Addr ip, const net::Error &)
+      inet.resolve(ip_addr, [this, connection_id, port](net::ip4::Addr ip, const net::Error & error)
       {
         if (ip != 0)
         {
@@ -1009,7 +1095,7 @@ namespace StormSockets
     for (int index = 0; index < m_MaxConnections; index++)
     {
       auto & connection = GetConnection(index);
-      if (connection.m_Used.test_and_set() == false)
+      if (connection.m_Used.exchange(true) == false)
       {
         // Set up the connection
         connection.m_DecryptBuffer = StormSocketBuffer(&m_Allocator, m_FixedBlockSize);
@@ -1103,7 +1189,7 @@ namespace StormSockets
   {
     auto & connection = GetConnection(id);
     connection.m_Allocated = false;
-    connection.m_Used.clear();
+    connection.m_Used.store(false);
   }
 
 #ifndef _INCLUDEOS
@@ -1296,9 +1382,10 @@ namespace StormSockets
     m_ClientSockets[id]->async_connect(ep, connect_callback);
 #else
 
+    auto net_addr = net::ip4::Addr{ addr };
+
     auto & inet = net::Super_stack::get(0);
-    auto outgoing = inet.tcp().connect(net::Socket{ net::ip4::Addr{ addr }, port });
-    m_ClientSockets[id] = std::move(outgoing);
+    m_ClientSockets[id] = inet.tcp().connect(net::Socket{net_addr, port });
 
     auto & client = m_ClientSockets[id];
     (*client)->on_connect([this, id]([[maybe_unused]] auto Connection_ptr)
@@ -1314,7 +1401,6 @@ namespace StormSockets
       }
       else
       {
-        Connection_ptr->close();
         ProcessNewData(id, true, 0);
       }
     });
@@ -1337,6 +1423,10 @@ namespace StormSockets
 
   void StormSocketBackend::ConnectFailed(StormSocketConnectionId connection_id)
   {
+#ifdef _INCLUDEOS
+    auto & client = m_ClientSockets[connection_id];
+    client = std::nullopt;
+#endif
     SetSocketDisconnected(connection_id);
     SetDisconnectFlag(connection_id, StormSocketDisconnectFlags::kConnectFinished);
     SetDisconnectFlag(connection_id, StormSocketDisconnectFlags::kRecvThread);
@@ -1515,6 +1605,7 @@ namespace StormSockets
       }
 
       SignalCloseThread(connection_id);
+      SetDisconnectFlag(connection_id, StormSocketDisconnectFlags::kSendThread);
     }
     else if (type == StormSocketIOOperationType::Close)
     {
@@ -1705,7 +1796,7 @@ namespace StormSockets
 
     auto recv_callback = [=](const asio::error_code & error, size_t bytes_received) { ProcessNewData(connection_id, !!error, bytes_received); };
     m_ClientSockets[connection_id]->async_read_some(buffer_set, recv_callback);
-  #endif
+#endif
   }
 
 #ifndef _INCLUDEOS
@@ -1930,7 +2021,7 @@ namespace StormSockets
       return;
     }
 
-    if ((connection.m_DisconnectFlags & (int)StormSocketDisconnectFlags::kSignalClose) != 0)
+    if ((connection.m_DisconnectFlags & (int) StormSocketDisconnectFlags::kSignalClose) != 0)
     {
       return;
     }
@@ -1953,7 +2044,7 @@ namespace StormSockets
         break;
       }
 
-      StormPendingSendBlock * send_block = (StormPendingSendBlock *)m_PendingSendBlocks.ResolveHandle(block_handle);
+      StormPendingSendBlock * send_block = (StormPendingSendBlock *) m_PendingSendBlocks.ResolveHandle(block_handle);
       buffer_set[buffer_size] = asio::buffer(send_block->m_DataStart, send_block->m_DataLen);
 
       total_size += send_block->m_DataLen;
@@ -1981,30 +2072,34 @@ namespace StormSockets
 #else
 
     int total_size = 0;
-    while(block_handle != InvalidBlockHandle)
+    auto & client = m_ClientSockets[connection_id];
+    if(client)
     {
-      StormPendingSendBlock * send_block = (StormPendingSendBlock *)m_PendingSendBlocks.ResolveHandle(block_handle);
-      auto start = (uint8_t *)send_block->m_DataStart;
-      auto end = start + send_block->m_DataLen;
+      while(block_handle != InvalidBlockHandle)
+      {
+        StormPendingSendBlock * send_block = (StormPendingSendBlock *)m_PendingSendBlocks.ResolveHandle(block_handle);
+        auto start = (uint8_t *)send_block->m_DataStart;
+        auto end = start + send_block->m_DataLen;
 
-      auto out_buf = net::tcp::construct_buffer(start, end);
+        auto out_buf = net::tcp::construct_buffer(start, end);
 
-      auto & client = m_ClientSockets[connection_id];
-      (*client)->write(out_buf);
+        if(client)
+        {
+          (*client)->write(out_buf);
+        }
 
-      total_size += send_block->m_DataLen;
+        total_size += send_block->m_DataLen;
 
-      block_handle = m_PendingSendBlocks.GetNextBlock(block_handle);
+        block_handle = m_PendingSendBlocks.GetNextBlock(block_handle);
+      }
+
+      if(total_size > 0)
+      {
+        SignalOutgoingSocket(connection_id, StormSocketIOOperationType::FreePacket, total_size);
+      }
     }
-
-    if(total_size > 0)
-    {
-      SignalOutgoingSocket(connection_id, StormSocketIOOperationType::FreePacket, total_size);
-    }
-
 #endif
   }
-
 
   StormFixedBlockHandle StormSocketBackend::ReleasePendingSendBlock(StormFixedBlockHandle send_block_handle, StormPendingSendBlock * send_block)
   {
@@ -2041,6 +2136,7 @@ namespace StormSockets
   StormMessageWriter StormSocketBackend::EncryptWriter(StormSocketConnectionId connection_id, StormMessageWriter & writer)
   {
     auto prof = ProfileScope(ProfilerCategory::kSSLEncrypt);
+
 #ifndef DISABLE_MBED
     auto & connection = GetConnection(connection_id);
     StormFixedBlockHandle cur_block = writer.m_PacketInfo->m_StartBlock;
@@ -2127,7 +2223,10 @@ namespace StormSockets
     m_ClientSockets[id]->shutdown(asio::socket_base::shutdown_receive, ec);
 #else
     auto & client = m_ClientSockets[id];
-    (*client)->close();
+    if(client)
+    {
+      (*client)->close();
+    }
 #endif
   }
 
@@ -2158,7 +2257,10 @@ namespace StormSockets
     m_ClientSockets[id]->close(ec);
 #else
     auto & client = m_ClientSockets[id];
-    (*client)->close();
+    if(client)
+    {
+      (*client)->close();
+    }
 #endif
     m_ClientSockets[id] = std::nullopt;
   }
