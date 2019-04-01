@@ -65,4 +65,5 @@ cp -rp Test/Config/* IncludeOSServer/Data/Config
 cp -rpL /etc/ssl/certs/* IncludeOSServer/Data/Certs
 
 cd IncludeOSServer
-boot -b .
+boot -b -g .
+

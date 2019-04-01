@@ -302,7 +302,7 @@ template <>
 struct StormReflTypeInfo<GooglePlatformSettings>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -370,15 +370,15 @@ template <>
 struct StormReflTypeInfo<GooglePlatformSettings>::field_data_static<1>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "instance_type"; }
+  static constexpr auto GetName() { return "service_email"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xA4D407E2; }
+  static constexpr unsigned GetFieldNameHash() { return 0x4EE09193; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &GooglePlatformSettings::instance_type; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GooglePlatformSettings *>(obj); return &ptr->instance_type; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GooglePlatformSettings *>(obj); return &ptr->instance_type; }
+  static constexpr auto GetMemberPtr() { return &GooglePlatformSettings::service_email; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GooglePlatformSettings *>(obj); return &ptr->service_email; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GooglePlatformSettings *>(obj); return &ptr->service_email; }
 };
 
 template <typename Self>
@@ -386,9 +386,84 @@ struct StormReflTypeInfo<GooglePlatformSettings>::field_data<1, Self> : public S
 {
   Self & self;
   field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.service_email; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.service_email; }
+  void SetDefault() { self.service_email = StormReflTypeInfo<GooglePlatformSettings>::GetDefault().service_email; }
+};
+
+template <>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data_static<2>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "instance_type"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA4D407E2; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &GooglePlatformSettings::instance_type; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GooglePlatformSettings *>(obj); return &ptr->instance_type; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GooglePlatformSettings *>(obj); return &ptr->instance_type; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data<2, Self> : public StormReflTypeInfo<GooglePlatformSettings>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.instance_type; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.instance_type; }
   void SetDefault() { self.instance_type = StormReflTypeInfo<GooglePlatformSettings>::GetDefault().instance_type; }
+};
+
+template <>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data_static<3>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "instance_tags"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x47B6C4ED; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &GooglePlatformSettings::instance_tags; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GooglePlatformSettings *>(obj); return &ptr->instance_tags; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GooglePlatformSettings *>(obj); return &ptr->instance_tags; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data<3, Self> : public StormReflTypeInfo<GooglePlatformSettings>::field_data_static<3>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.instance_tags; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.instance_tags; }
+  void SetDefault() { self.instance_tags = StormReflTypeInfo<GooglePlatformSettings>::GetDefault().instance_tags; }
+};
+
+template <>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data_static<4>
+{
+  using member_type = int; // int
+  static constexpr auto GetName() { return "max_games_per_instance"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xDD61E6DB; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &GooglePlatformSettings::max_games_per_instance; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GooglePlatformSettings *>(obj); return &ptr->max_games_per_instance; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GooglePlatformSettings *>(obj); return &ptr->max_games_per_instance; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GooglePlatformSettings>::field_data<4, Self> : public StormReflTypeInfo<GooglePlatformSettings>::field_data_static<4>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.max_games_per_instance; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.max_games_per_instance; }
+  void SetDefault() { self.max_games_per_instance = StormReflTypeInfo<GooglePlatformSettings>::GetDefault().max_games_per_instance; }
 };
 
 template <>
@@ -795,11 +870,340 @@ struct StormReflTypeInfo<GoogleTokenResponse>::field_data<2, Self> : public Stor
   void SetDefault() { self.expires_in = StormReflTypeInfo<GoogleTokenResponse>::GetDefault().expires_in; }
 };
 
+template <>
+struct StormReflTypeInfo<GoogleInstanceElement>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 3;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GoogleInstanceElement"; }
+  static constexpr auto GetNameHash() { return 0x6F37E532; }
+  static constexpr bool HasDefault() { return true; }
+  static GoogleInstanceElement & GetDefault() { static GoogleInstanceElement def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceElement *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceElement *>(ptr);
+    if(typeid(GoogleInstanceElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceElement *>(ptr);
+    if(typeid(GoogleInstanceElement).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data_static<0>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "id"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xBF396750; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceElement::id; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceElement *>(obj); return &ptr->id; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceElement *>(obj); return &ptr->id; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data<0, Self> : public StormReflTypeInfo<GoogleInstanceElement>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.id; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.id; }
+  void SetDefault() { self.id = StormReflTypeInfo<GoogleInstanceElement>::GetDefault().id; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data_static<1>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "name"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x5E237E06; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceElement::name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceElement *>(obj); return &ptr->name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceElement *>(obj); return &ptr->name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data<1, Self> : public StormReflTypeInfo<GoogleInstanceElement>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.name; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.name; }
+  void SetDefault() { self.name = StormReflTypeInfo<GoogleInstanceElement>::GetDefault().name; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data_static<2>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "zone"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA0EBC007; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceElement::zone; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceElement *>(obj); return &ptr->zone; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceElement *>(obj); return &ptr->zone; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceElement>::field_data<2, Self> : public StormReflTypeInfo<GoogleInstanceElement>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.zone; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.zone; }
+  void SetDefault() { self.zone = StormReflTypeInfo<GoogleInstanceElement>::GetDefault().zone; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceList>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GoogleInstanceList"; }
+  static constexpr auto GetNameHash() { return 0x902200EC; }
+  static constexpr bool HasDefault() { return true; }
+  static GoogleInstanceList & GetDefault() { static GoogleInstanceList def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceList *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceList *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceList *>(ptr);
+    if(typeid(GoogleInstanceList).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceList *>(ptr);
+    if(typeid(GoogleInstanceList).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceList>::field_data_static<0>
+{
+  using member_type = std::vector<GoogleInstanceElement>; // std::vector<GoogleInstanceElement, std::allocator<GoogleInstanceElement> >
+  static constexpr auto GetName() { return "items"; }
+  static constexpr auto GetType() { return "std::vector<GoogleInstanceElement, std::allocator<GoogleInstanceElement> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xE11EE94D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2EB1398E; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceList::items; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceList *>(obj); return &ptr->items; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceList *>(obj); return &ptr->items; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceList>::field_data<0, Self> : public StormReflTypeInfo<GoogleInstanceList>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::vector<GoogleInstanceElement>> & Get() { return self.items; }
+  std::add_const_t<std::remove_reference_t<std::vector<GoogleInstanceElement>>> & Get() const { return self.items; }
+  void SetDefault() { self.items = StormReflTypeInfo<GoogleInstanceList>::GetDefault().items; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceList>::field_data_static<1>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "nextPageToken"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xD03C69D3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceList::nextPageToken; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceList *>(obj); return &ptr->nextPageToken; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceList *>(obj); return &ptr->nextPageToken; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceList>::field_data<1, Self> : public StormReflTypeInfo<GoogleInstanceList>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.nextPageToken; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.nextPageToken; }
+  void SetDefault() { self.nextPageToken = StormReflTypeInfo<GoogleInstanceList>::GetDefault().nextPageToken; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 3;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GoogleInstanceCreateResponse"; }
+  static constexpr auto GetNameHash() { return 0xE8684C49; }
+  static constexpr bool HasDefault() { return true; }
+  static GoogleInstanceCreateResponse & GetDefault() { static GoogleInstanceCreateResponse def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceCreateResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceCreateResponse *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GoogleInstanceCreateResponse *>(ptr);
+    if(typeid(GoogleInstanceCreateResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GoogleInstanceCreateResponse *>(ptr);
+    if(typeid(GoogleInstanceCreateResponse).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<0>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "id"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xBF396750; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceCreateResponse::id; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceCreateResponse *>(obj); return &ptr->id; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceCreateResponse *>(obj); return &ptr->id; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data<0, Self> : public StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.id; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.id; }
+  void SetDefault() { self.id = StormReflTypeInfo<GoogleInstanceCreateResponse>::GetDefault().id; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<1>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "name"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x5E237E06; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceCreateResponse::name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceCreateResponse *>(obj); return &ptr->name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceCreateResponse *>(obj); return &ptr->name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data<1, Self> : public StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.name; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.name; }
+  void SetDefault() { self.name = StormReflTypeInfo<GoogleInstanceCreateResponse>::GetDefault().name; }
+};
+
+template <>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<2>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "zone"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA0EBC007; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &GoogleInstanceCreateResponse::zone; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GoogleInstanceCreateResponse *>(obj); return &ptr->zone; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GoogleInstanceCreateResponse *>(obj); return &ptr->zone; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data<2, Self> : public StormReflTypeInfo<GoogleInstanceCreateResponse>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.zone; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.zone; }
+  void SetDefault() { self.zone = StormReflTypeInfo<GoogleInstanceCreateResponse>::GetDefault().zone; }
+};
+
 namespace StormReflFileInfo
 {
   struct GooglePlatform
   {
-    static const int types_n = 5;
+    static const int types_n = 8;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -831,6 +1235,24 @@ namespace StormReflFileInfo
   struct GooglePlatform::type_info<4>
   {
     using type = ::GoogleTokenResponse;
+  };
+
+  template <>
+  struct GooglePlatform::type_info<5>
+  {
+    using type = ::GoogleInstanceElement;
+  };
+
+  template <>
+  struct GooglePlatform::type_info<6>
+  {
+    using type = ::GoogleInstanceList;
+  };
+
+  template <>
+  struct GooglePlatform::type_info<7>
+  {
+    using type = ::GoogleInstanceCreateResponse;
   };
 
 }

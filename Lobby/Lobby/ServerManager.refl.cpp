@@ -1,9 +1,12 @@
 
+#include <regex>
+#include <algorithm>
 
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSResponderCall.h>
 #include <HurricaneDDS/DDSEncoding.h>
 #include <HurricaneDDS/DDSLog.h>
+#include <HurricaneDDS/DDSRandom.h>
 
 #include <StormData/StormDataJson.h>
 
@@ -11,7 +14,9 @@
 
 #include <mbedtls/sha256.h>
 
+#include "ProjectSettings/ProjectName.h"
 #include "ProjectSettings/ProjectZones.h"
+#include "ProjectSettings/ProjectVersion.h"
 
 #include "ServerManager.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
@@ -34,10 +39,9 @@ std::string ApplyTemplate(const std::string & templ, const std::unordered_map<st
         if(prev_bracket)
         {
           auto itr = repl.find(template_name);
-          if(itr != repl.end())
-          {
-            str += itr->second;
-          }
+          assert(itr != repl.end());
+
+          str += itr->second;
 
           in_template = false;
           prev_bracket = false;
@@ -85,7 +89,10 @@ std::string ApplyTemplate(const std::string & templ, const std::unordered_map<st
 ServerManager::ServerManager(DDSObjectInterface & iface) :
   m_Interface(iface)
 {
-
+  for(int zone = 0; zone < g_NumProjectZones; ++zone)
+  {
+    m_RequestedServersInZone.emplace_back(0);
+  }
 }
 
 ServerManager::~ServerManager()
@@ -95,6 +102,9 @@ ServerManager::~ServerManager()
 
 void ServerManager::Initialize()
 {
+  m_ProjectNameLowercase = kProjectName;
+  std::transform(m_ProjectNameLowercase.begin(), m_ProjectNameLowercase.end(), m_ProjectNameLowercase.begin(), tolower);
+
   StormBootstrap bootstrap;
   bootstrap.LoadConfigFile("Config/gcp_settings.txt", [&](const std::string & data)
   {
@@ -149,14 +159,75 @@ void ServerManager::Initialize()
   for(int index = 0; index < g_NumProjectZones; ++index)
   {
     auto zone = g_ProjectZones[index];
-    auto url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone[index] + "/instances";
+    RequestServerList(zone, "", bootstrap);
+  }
 
-    bootstrap.RequestUrl(url.c_str(), m_AuthorizationHeader, [&](const std::string & resp)
+  bootstrap.Run();
+}
+
+void ServerManager::RequestServerList(const std::string & zone, const std::string & page_token, StormBootstrap & bootstrap)
+{
+  auto url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances";
+
+  if(!page_token.empty())
+  {
+    url += "?pageToken=" + page_token;
+  }
+
+  bootstrap.RequestUrl(url.c_str(), m_AuthorizationHeader, [this, bootstrap_ptr = &bootstrap, zone](const std::string & resp_data)
+  {
+    HandleServerListResponse(resp_data, zone, *bootstrap_ptr);
+  });
+}
+
+void ServerManager::HandleServerListResponse(const std::string & response_data, const std::string & zone, StormBootstrap & bootstrap)
+{
+  GoogleInstanceList response;
+  StormReflParseJson(response, response_data);
+
+  for(auto & elem : response.items)
+  {
+    std::regex name_regex(m_ProjectNameLowercase + "-v" + std::to_string(kProjectVersion) + "-[0-9]*");
+    if (std::regex_match(elem.name, name_regex))
     {
-      // Do something with this?
+      PendingServer pending;
+      pending.m_ResourceId = elem.id;
+      pending.m_InstanceName = elem.name;
+      pending.m_StartTime = time(nullptr);
 
-      // Request a second page if necessary
-    });
+      auto zone_pos = elem.zone.rfind('/');
+      if(zone_pos != std::string::npos)
+      {
+        pending.m_Zone = elem.zone.data() + zone_pos + 1;
+      }
+
+      for(int index = 0; index < g_NumProjectZones; ++index)
+      {
+        if(pending.m_Zone == g_ProjectZones[index])
+        {
+          pending.m_ZoneIndex = index;
+          break;
+        }
+      }
+
+      if(pending.m_ZoneIndex == -1)
+      {
+        if(!pending.m_Zone.empty())
+        {
+          // Server is not in the zone list?
+          StopServerInstance(pending.m_Zone, pending.m_ResourceId);
+        }
+      }
+      else
+      {
+        m_PendingServers.emplace_back(std::move(pending));
+      }
+    }
+  }
+
+  if(!response.nextPageToken.empty())
+  {
+    RequestServerList(zone, response.nextPageToken, bootstrap);
   }
 }
 
@@ -191,10 +262,97 @@ void ServerManager::HandleTokenResponse(bool success, std::string body, std::str
   }
 }
 
-void ServerManager::CreateServerInstance(const std::string & zone)
+void ServerManager::CreateServerInstance(int zone_index)
 {
-  std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances";
+  std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + g_ProjectZones[zone_index] + "/instances";
 
+  std::string instance_name = m_ProjectNameLowercase + "-v" + std::to_string(kProjectVersion) + "-" + std::to_string(DDSGetRandomNumber());
+
+  std::unordered_map<std::string, std::string> params;
+  params["project_id"] = m_Settings.project_id;
+  params["project_id_lc"] = m_ProjectNameLowercase;
+  params["project_version"] = std::to_string(kProjectVersion);
+  params["machine_type"] = m_Settings.instance_type;
+  params["tags"] = m_Settings.instance_tags;
+  params["instance_name"] = instance_name;
+  params["service_email"] = m_Settings.service_email;
+  params["zone"] = g_ProjectZones[zone_index];
+
+  auto request_body = ApplyTemplate(m_CreateInstanceTemplate, params);
+
+  DDSHttpRequest request(url, request_body, m_AuthorizationHeader);
+  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleCreateServerResponse, zone_index);
+
+  m_RequestedServersInZone[zone_index]++;
+}
+
+void ServerManager::HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers)
+{
+  GoogleInstanceCreateResponse response;
+  StormReflParseJson(response, body);
+
+  m_RequestedServersInZone[zone_index]--;
+  assert(m_RequestedServersInZone[zone_index] >= 0);
+
+  if(response.id.empty())
+  {
+    DDSLog::LogInfo("Failed to create server: %s", body.c_str());
+    return;
+  }
+
+  PendingServer pending;
+  pending.m_ResourceId = response.id;
+  pending.m_InstanceName = response.name;
+  pending.m_StartTime = time(nullptr);
+  pending.m_ZoneIndex = zone_index;
+  pending.m_Zone = g_ProjectZones[zone_index];
+
+  m_PendingServers.emplace_back(std::move(pending));
+}
+
+void ServerManager::StopServerInstance(const std::string & zone, const std::string & resource_id)
+{
+  std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances/" + resource_id;
+
+  DDSHttpRequest request(url, "", m_AuthorizationHeader.c_str());
+  request.SetMethod("DELETE");
+  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleStopServerResponse);
+
+  for(auto itr = m_PendingServers.begin(), end = m_PendingServers.end(); itr != end; ++itr)
+  {
+    if(itr->m_Zone == zone && itr->m_ResourceId == resource_id)
+    {
+      m_PendingServers.erase(itr);
+      break;
+    }
+  }
+}
+
+void ServerManager::HandleStopServerResponse(bool success, std::string body, std::string headers)
+{
+
+}
+
+void ServerManager::CheckForServerRequests()
+{
+
+}
+
+void ServerManager::CheckForTimedOutServers()
+{
+  auto timeout_time = time(nullptr) - 60;
+  auto itr = std::remove_if(m_PendingServers.begin(), m_PendingServers.end(), [&](const PendingServer & server)
+  {
+    if(server.m_StartTime < timeout_time)
+    {
+      StopServerInstance(server.m_Zone, server.m_ResourceId);
+      return true;
+    }
+
+    return false;
+  });
+
+  m_PendingServers.erase(itr, m_PendingServers.end());
 }
 
 std::string ServerManager::GetTokenAssertion()

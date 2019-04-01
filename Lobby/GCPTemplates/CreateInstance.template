@@ -23,7 +23,7 @@
       "deviceName": "instance-1", 
       "initializeParams": 
       { 
-        "sourceImage": "projects/debian-cloud/global/images/debian-9-stretch-v20190312", 
+        "sourceImage": "projects/{{project_id}}/global/images/{{project_id_lc}}-v{{project_version}}",
         "diskType": "projects/{{project_id}}/zones/{{zone}}/diskTypes/pd-standard",
         "diskSizeGb": "10" 
       } 

@@ -120,7 +120,7 @@ void StormBootstrap::PostUrl(const std::string_view & url, const std::string_vie
   StormSockets::StormURI uri;
   StormSockets::ParseURI(url.data(), uri);
 
-  auto connection_id = frontend->RequestConnect(uri, "GET", body.data(), body.length(), headers.data(), headers.length());
+  auto connection_id = frontend->RequestConnect(uri, "POST", body.data(), body.length(), headers.data(), headers.length());
   m_Jobs.emplace(std::make_pair(connection_id.m_Index.Raw, std::move(callback)));
 }
 
@@ -157,6 +157,9 @@ void StormBootstrap::Run()
           }
           else
           {
+            std::string str((std::size_t) body.GetRemainingLength(), ' ');
+            body.ReadByteBlock(str.data(), body.GetRemainingLength());
+
             job_itr->second("");
           }
 

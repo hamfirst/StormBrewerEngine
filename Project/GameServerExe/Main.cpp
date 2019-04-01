@@ -104,6 +104,37 @@ int main(int argc, const char ** argv)
     }
   });
 
+  auto id_url = "http://metadata.google.internal/computeMetadata/v1/instance/id";
+  bootstrap.RequestUrl(id_url, "Metadata-Flavor: Google\r\n", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      bootstrap.Set("id", result);
+    }
+  });
+
+  auto zone_url = "http://metadata.google.internal/computeMetadata/v1/instance/zone";
+  bootstrap.RequestUrl(zone_url, "Metadata-Flavor: Google\r\n", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      auto zone_pos = result.rfind('/');
+      if(zone_pos != std::string::npos)
+      {
+        bootstrap.Set("zone", result.data() + zone_pos + 1);
+      }
+    }
+  });
+
+  auto name_url = "http://metadata.google.internal/computeMetadata/v1/instance/name";
+  bootstrap.RequestUrl(name_url, "Metadata-Flavor: Google\r\n", [&](const std::string & result)
+  {
+    if(!result.empty())
+    {
+      bootstrap.Set("name", result);
+    }
+  });
+
   bootstrap.Run();
   bootstrap.PrintDebug();
 

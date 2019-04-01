@@ -11,13 +11,36 @@
 
 #include <mbedtls/pk.h>
 
-struct ServerManagerServer
-{
-  int m_RemoteIP = 0;
-  DDSKey m_ServerKey = 0;
-  std::string m_InstanceId;
+class StormBootstrap;
 
-  time_t m_InstanceStartTime = 0;
+struct PendingServer
+{
+  std::string m_Zone;
+  int m_ZoneIndex = -1;
+  std::string m_InstanceName;
+  std::string m_ResourceId;
+  std::time_t m_StartTime;
+};
+
+struct ActiveServerGame
+{
+  DDSKey m_GameId;
+
+};
+
+struct ActiveServer
+{
+  int m_ZoneIndex = -1;
+
+  uint32_t m_RemoteIp;
+  uint16_t m_RemotePort;
+  std::vector<ActiveServerGame> m_ActiveGames;
+};
+
+struct GameRequest
+{
+  int m_Zone;
+  DDSKey m_GameId;
 };
 
 struct ServerManager
@@ -29,6 +52,8 @@ public:
   ~ServerManager();
 
   void Initialize();
+  void RequestServerList(const std::string & zone, const std::string & page_token, StormBootstrap & bootstrap);
+  void HandleServerListResponse(const std::string & response_data, const std::string & zone, StormBootstrap & bootstrap);
 
 //  void STORM_REFL_FUNC AddServer(DDSKey server_key, std::string server_name, std::string location, std::string server_host, int ping_port);
 //  void STORM_REFL_FUNC RemoveServer(DDSKey server_key);
@@ -45,8 +70,14 @@ public:
   void STORM_REFL_FUNC RequestNewToken();
   void STORM_REFL_FUNC HandleTokenResponse(bool success, std::string body, std::string headers);
 
+  void STORM_REFL_FUNC CreateServerInstance(int zone_index);
+  void STORM_REFL_FUNC HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers);
 
-  void CreateServerInstance(const std::string & zone);
+  void StopServerInstance(const std::string & zone, const std::string & resource_id);
+  void STORM_REFL_FUNC HandleStopServerResponse(bool success, std::string body, std::string headers);
+
+  void STORM_REFL_FUNC CheckForServerRequests();
+  void STORM_REFL_FUNC CheckForTimedOutServers();
 
 private:
 
@@ -62,6 +93,13 @@ private:
   STORM_REFL_IGNORE mbedtls_pk_context m_PKContext;
   STORM_REFL_IGNORE std::string m_AuthorizationHeader;
   STORM_REFL_IGNORE GooglePlatformSettings m_Settings;
+  STORM_REFL_IGNORE std::string m_ProjectNameLowercase;
 
   STORM_REFL_IGNORE std::string m_CreateInstanceTemplate;
+
+  STORM_REFL_IGNORE std::vector<GameRequest> m_GameRequests;
+
+  STORM_REFL_IGNORE std::vector<int> m_RequestedServersInZone;
+  STORM_REFL_IGNORE std::vector<PendingServer> m_PendingServers;
+
 };

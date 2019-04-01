@@ -236,10 +236,11 @@ public:
       StormReflGetMemberFunctionIndex(return_func), std::string());
   }
 
-  template <typename TargetObject, typename ReturnArg>
+  template <typename TargetObject, typename ReturnArg, typename ReturnArgFunc>
   void CreateHttpRequest(const DDSHttpRequest & request, DDSKey key, 
-    void (TargetObject::*return_func)(ReturnArg return_arg, bool success, std::string data, std::string headers), ReturnArg && return_arg)
+    void (TargetObject::*return_func)(ReturnArgFunc return_arg, bool success, std::string data, std::string headers), ReturnArg && return_arg)
   {
+    static_assert(std::is_convertible_v<ReturnArg, ReturnArgFunc>, "Return arg must convert to the type of the function parameter");
     CreateHttpRequestInternal(request, key, GetObjectType(StormReflTypeInfo<TargetObject>::GetNameHash()),
       StormReflGetMemberFunctionIndex(return_func), StormReflEncodeJson(return_arg));
   }

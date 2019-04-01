@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include <StormRefl/StormRefl.h>
 #include <StormData/StormDataTypes.h>
 
@@ -25,9 +28,12 @@ struct GooglePlatformSettings
   STORM_REFL;
 
   std::string project_id;
+  std::string service_email;
   std::string instance_type;
-};
+  std::string instance_tags;
 
+  int max_games_per_instance = 4;
+};
 
 struct GoogleAssertionHeader
 {
@@ -58,3 +64,27 @@ struct GoogleTokenResponse
   int expires_in;
 };
 
+struct GoogleInstanceElement
+{
+  STORM_REFL;
+
+  std::string id;
+  std::string name;
+  std::string zone;
+};
+
+struct GoogleInstanceList
+{
+  STORM_REFL;
+  std::vector<GoogleInstanceElement> items;
+  std::string nextPageToken;
+};
+
+struct GoogleInstanceCreateResponse
+{
+  STORM_REFL;
+
+  std::string id;
+  std::string name;
+  std::string zone;
+};
