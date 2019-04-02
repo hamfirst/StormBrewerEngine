@@ -37,7 +37,7 @@ double GetTimeScale()
   return s_TimeScale;
 }
 
-int64_t GetRawTimeMilliseconds()
+long long GetRawTimeMilliseconds()
 {
   auto now = std::chrono::system_clock::now();
   auto since = std::chrono::duration_cast<std::chrono::milliseconds>(now - s_StartTime);

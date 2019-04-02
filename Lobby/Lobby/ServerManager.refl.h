@@ -19,7 +19,7 @@ struct PendingServer
   int m_ZoneIndex = -1;
   std::string m_InstanceName;
   std::string m_ResourceId;
-  std::time_t m_StartTime;
+  time_t m_StartTime;
 };
 
 struct ActiveServerGame
