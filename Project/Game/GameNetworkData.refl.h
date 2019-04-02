@@ -47,6 +47,7 @@ class GameStage;
 
 struct GameInitSettings
 {
+  NET_REFL;
   uint8_t m_StageIndex = 0;
 
 #ifdef NET_USE_PLAYER_LIMIT
@@ -60,7 +61,6 @@ struct GameInitSettings
 #ifdef NET_USE_SCORE_LIMIT
   uint16_t m_TimeLimit = 0;
 #endif
-  NET_REFL;
 };
 
 // Data sent from the server to the client

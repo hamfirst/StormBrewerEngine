@@ -81,19 +81,19 @@ struct RUNTIME_EXPORT MapServerObjectLayer
   RMergeList<MapServerObject> STORM_REFL_ATTR(noui) m_Objects;
 };
 
-enum STORM_REFL_ENUM class MapParalaxLayerObjectType
+enum STORM_REFL_ENUM class MapParallaxLayerObjectType
 {
   kTexture,
   kSprite,
   kVfx,
 };
 
-struct RUNTIME_EXPORT MapParalaxLayerObject
+struct RUNTIME_EXPORT MapParallaxLayerObject
 {
-  STORM_DATA_DEFAULT_CONSTRUCTION(MapParalaxLayerObject);
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapParallaxLayerObject);
   RString m_Name;
-  REnum<MapParalaxLayerObjectType> m_Type;
-  RString STORM_REFL_ATTR_VAL(file, paralax) m_File;
+  REnum<MapParallaxLayerObjectType> m_Type;
+  RString STORM_REFL_ATTR_VAL(file, parallax) m_File;
   RString m_Animation;
   RFloat m_PresimTime;
 
@@ -101,9 +101,9 @@ struct RUNTIME_EXPORT MapParalaxLayerObject
   RInt m_YPosition;
 };
 
-struct RUNTIME_EXPORT MapParalaxLayer
+struct RUNTIME_EXPORT MapParallaxLayer
 {
-  STORM_DATA_DEFAULT_CONSTRUCTION(MapParalaxLayer);
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapParallaxLayer);
 
   RString m_Name;
   RInt m_LayerOrder;
@@ -115,13 +115,13 @@ struct RUNTIME_EXPORT MapParalaxLayer
   RFloat m_OffsetX;
   RFloat m_OffsetY;
 
-  RFloat m_ParalaxX;
-  RFloat m_ParalaxY;
+  RFloat m_ParallaxX;
+  RFloat m_ParallaxY;
 
   RFloat m_VelocityX;
   RFloat m_VelocityY;
 
-  RMergeList<MapParalaxLayerObject> STORM_REFL_ATTR(noui) m_Objects;
+  RMergeList<MapParallaxLayerObject> STORM_REFL_ATTR(noui) m_Objects;
 };
 
 struct RUNTIME_EXPORT MapEffectLayer
@@ -291,11 +291,11 @@ struct RUNTIME_EXPORT MapDef
   STORM_DATA_DEFAULT_CONSTRUCTION(MapDef);
 
   MapPropertiesInfo m_PropertiesInfo;
-  MapPathfindingInfo m_PathfingindInfo;
+  MapPathfindingInfo m_PathfindingInfo;
   RMergeList<MapManualTileLayer> m_ManualTileLayers;
   RMergeList<MapServerObjectLayer> m_ServerObjectLayers;
   RMergeList<MapEntityLayer> m_EntityLayers;
-  RMergeList<MapParalaxLayer> m_ParalaxLayers;
+  RMergeList<MapParallaxLayer> m_ParallaxLayers;
   RMergeList<MapEffectLayer> m_EffectLayers;
   RMergeList<MapAnchor> m_Anchors;
   RMergeList<MapPath> m_Paths;

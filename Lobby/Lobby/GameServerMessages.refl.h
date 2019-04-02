@@ -5,7 +5,9 @@
 
 #include <StormRefl/StormRefl.h>
 
-#include "GameData.refl.h"
+#include "Game/GameNetworkData.refl.h"
+#include "Lobby/GameData.refl.h"
+
 
 static const uint64_t kGameServerChallengePad = 0xfd3473e1a57de6ff;
 static const int kGameServerVersion = 5;
@@ -89,11 +91,9 @@ struct GameServerAuthenticateResponse
   uint64_t m_Challenge = 0;
 
   std::string m_Name;
-  std::string m_Location;
-  std::string m_Host;
-  int m_GamePort = 0;
-  int m_PingPort = 0;
-  std::vector<GameServerMapData> m_Maps;
+  std::string m_Zone;
+  std::string m_ResourceId;
+  std::string m_ExternalIp;
 };
 
 struct GameServerAuthenticateUser

@@ -32,7 +32,7 @@ void MapEditorPathManager::Resync()
 {
   SparseList<std::unique_ptr<MapEditorPath>> old_layers = std::move(m_PathManagers);
 
-  for (auto elem : m_Map.m_ParalaxLayers)
+  for (auto elem : m_Map.m_ParallaxLayers)
   {
     m_PathManagers.EmplaceAt(elem.first, std::make_unique<MapEditorPath>(m_Editor, m_Map, (int)elem.first));
   }

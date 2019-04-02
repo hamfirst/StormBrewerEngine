@@ -13,13 +13,13 @@
 
 class RenderState;
 
-struct MapParalaxLayerTexture
+struct MapParallaxLayerTexture
 {
   AssetReference<TextureAsset> m_Texture;
   Vector2 m_Pos;
 };
 
-struct MapParalaxLayerSprite
+struct MapParallaxLayerSprite
 {
   SpritePtr m_Sprite;
   Vector2 m_Pos;
@@ -27,18 +27,18 @@ struct MapParalaxLayerSprite
   uint32_t m_AnimationHash;
 };
 
-struct MapParalaxLayerVfx
+struct MapParallaxLayerVfx
 {
   VisualEffectResourcePtr m_Vfx;
   VisualEffectHandle m_Handle;
 };
 
-class MapParalaxLayerInstance
+class MapParallaxLayerInstance
 {
 public:
 
-  MapParalaxLayerInstance(MapDef & map, std::size_t layer_index, NotNullPtr<VisualEffectManager> vfx_manager);
-  ~MapParalaxLayerInstance();
+  MapParallaxLayerInstance(MapDef & map, std::size_t layer_index, NotNullPtr<VisualEffectManager> vfx_manager);
+  ~MapParallaxLayerInstance();
 
   void Update();
   void Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state);
@@ -49,9 +49,9 @@ private:
 
   AssetReference<TextureAsset> m_Texture;
 
-  std::vector<MapParalaxLayerTexture> m_Textures;
-  std::vector<MapParalaxLayerSprite> m_Sprites;
-  std::vector<MapParalaxLayerVfx> m_VisualEffects;
+  std::vector<MapParallaxLayerTexture> m_Textures;
+  std::vector<MapParallaxLayerSprite> m_Sprites;
+  std::vector<MapParallaxLayerVfx> m_VisualEffects;
 
   int m_LayerOrder;
 
@@ -61,8 +61,8 @@ private:
   float m_OffsetX;
   float m_OffsetY;
 
-  float m_ParalaxX;
-  float m_ParalaxY;
+  float m_ParallaxX;
+  float m_ParallaxY;
 
   float m_VelocityX;
   float m_VelocityY;

@@ -41,9 +41,6 @@ struct DDSResponderCallData;
 
 class DDSSharedLocalCopyPtrBase;
 
-template <typename T>
-using Optional = std::optional<T>;
-
 class DDSNodeState
 {
 public:
@@ -284,9 +281,9 @@ private:
   DDSTokenValidator m_TokenValidator;
   std::set<std::unique_ptr<DDSDeferredCallback>> m_DeferredCallbackList;
 
-  Optional<DDSNodeId> m_LocalNodeId;
-  Optional<DDSRoutingTable> m_RoutingTable;
-  Optional<DDSKeyRange> m_LocalKeyRange;
+  std::optional<DDSNodeId> m_LocalNodeId;
+  std::optional<DDSRoutingTable> m_RoutingTable;
+  std::optional<DDSKeyRange> m_LocalKeyRange;
   std::vector<std::pair<DDSNodeId, DDSKeyRange>> m_RoutingKeyRanges;
   int m_LastRoutingTableAck = 0;
   int m_LastRoutingTableAllClear = 0;

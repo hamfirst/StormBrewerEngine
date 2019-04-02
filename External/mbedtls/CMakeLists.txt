@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
+                    ${PROJECT_SOURCE_DIR}/External
+                    ${PROJECT_SOURCE_DIR}/StormTech
+                    ${PROJECT_SOURCE_DIR}/Tools
+                    ${PROJECT_SOURCE_DIR}/Shared
+                    ${PROJECT_SOURCE_DIR}/Project
+                    ${PROJECT_SOURCE_DIR}/Lobby)
+
 set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_mbedtls 
@@ -44,12 +51,12 @@ set(GENERIC_SRC_mbedtls
             padlock.c
             pem.c
             pk.c
+            pk_wrap.c
             pkcs11.c
             pkcs12.c
             pkcs5.c
             pkparse.c
             pkwrite.c
-            pk_wrap.c
             platform.c
             ripemd160.c
             rsa.c
@@ -66,18 +73,19 @@ set(GENERIC_SRC_mbedtls
             ssl_tls.c
             threading.c
             timing.c
+            timing_alt.c
             version.c
             version_features.c
             x509.c
-            x509write_crt.c
-            x509write_csr.c
             x509_create.c
             x509_crl.c
             x509_crt.c
             x509_csr.c
+            x509write_crt.c
+            x509write_csr.c
             xtea.c
-            #CPP_PLACEHOLDER
             )
+
 set(GENERIC_HEADER_mbedtls 
             aes.h
             aesni.h
@@ -124,10 +132,10 @@ set(GENERIC_HEADER_mbedtls
             padlock.h
             pem.h
             pk.h
+            pk_internal.h
             pkcs11.h
             pkcs12.h
             pkcs5.h
-            pk_internal.h
             platform.h
             platform_time.h
             ripemd160.h
@@ -144,82 +152,15 @@ set(GENERIC_HEADER_mbedtls
             ssl_ticket.h
             threading.h
             timing.h
+            timing_alt.h
             version.h
             x509.h
             x509_crl.h
             x509_crt.h
             x509_csr.h
             xtea.h
-            #HEADER_PLACEHOLDER
-            )
-set(GENERIC_REFL_mbedtls 
-            #REFL_PLACEHOLDER
             )
 
-if (MSVC)
-  add_definitions(-D_WINDOWS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Windows)
-  set(PLATFORM_SRC_mbedtls 
-            )
+add_library(mbedtls STATIC ${GENERIC_SRC_mbedtls} ${GENERIC_HEADER_mbedtls})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${GENERIC_SRC_mbedtls} ${GENERIC_HEADER_mbedtls})
 
-set(PLATFORM_HEADER_mbedtls 
-            )
-endif()
-if (WEB)
-  add_definitions(-D_WEB)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Web)
-  set(PLATFORM_SRC_mbedtls 
-            )
-
-set(PLATFORM_HEADER_mbedtls 
-            )
-endif()
-if (IOS)
-  add_definitions(-D_IOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/IOS)
-  set(PLATFORM_SRC_mbedtls 
-            )
-
-set(PLATFORM_HEADER_mbedtls 
-            )
-endif()
-if (APPLE AND NOT IOS)
-  add_definitions(-D_MACOS)
-  include_directories(${PROJECT_SOURCE_DIR}/External/MacOS)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_mbedtls 
-            )
-
-set(PLATFORM_HEADER_mbedtls 
-            )
-endif()
-if (ANDROID)
-  add_definitions(-D_ANDROID)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Android)
-  set(PLATFORM_SRC_mbedtls 
-            )
-
-set(PLATFORM_HEADER_mbedtls 
-            )
-endif()
-if (UNIX AND NOT APPLE)
-  add_definitions(-D_LINUX)
-  include_directories(${PROJECT_SOURCE_DIR}/External/Linux)
-  include_directories(/usr/include/freetype2)
-  set(PLATFORM_SRC_mbedtls
-    timing_alt.c)
-
-set(PLATFORM_HEADER_mbedtls
-  timing_alt.h)
-endif()
-
-foreach(REFL_FILE ${GENERIC_REFL_mbedtls})
-  string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
-  add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
-                     COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
-                     IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
-endforeach()
-
-add_library(mbedtls STATIC ${GENERIC_SRC_mbedtls} ${PLATFORM_SRC_mbedtls}
-            ${GENERIC_HEADER_mbedtls} ${PLATFORM_HEADER_mbedtls})

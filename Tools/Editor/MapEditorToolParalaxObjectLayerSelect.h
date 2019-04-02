@@ -2,10 +2,10 @@
 
 #include "MapEditorToolBase.h"
 
-class MapEditorToolParalaxObjectLayerSelect : public MapEditorToolBase
+class MapEditorToolParallaxObjectLayerSelect : public MapEditorToolBase
 {
 public:
-  MapEditorToolParalaxObjectLayerSelect(MapEditor & map_editor, int layer_index);
+  MapEditorToolParallaxObjectLayerSelect(MapEditor & map_editor, int layer_index);
 
   virtual void Init();
   virtual void Cleanup();

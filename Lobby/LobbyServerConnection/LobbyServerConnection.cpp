@@ -5,20 +5,27 @@
 #include "Foundation/Common.h"
 #include "Foundation/Buffer/BufferUtil.h"
 
-#include "UniballSimulation/Sim.refl.meta.h"
+#include "ProjectSettings/ProjectName.h"
+#include "ProjectSettings/ProjectVersion.h"
+#include "ProjectSettings/ProjectPorts.h"
 
-#include "LobbyServerConnection.h"
-#include "MapList.h"
+#include "Game/GameSimulationStats.refl.meta.h"
 
-#include "ServerSettings.refl.h"
-#include "GameServerMessages.refl.meta.h"
+#include "Lobby/GameServerMessages.refl.meta.h"
+
+#include "LobbyServerConnection/LobbyServerConnection.h"
 
 #include <ctime>
 
+extern std::string g_ExternalIp;
+extern std::string g_ServerName;
+extern std::string g_ServerZone;
+extern std::string g_ServerResourceId;
 
-LobbyServerConnection::LobbyServerConnection(MapList & map_list) :
+
+LobbyServerConnection::LobbyServerConnection(const char * lobby_host) :
   m_State(LobbyServerConnectionState::kDisconnected),
-  m_MapList(map_list),
+  m_LobbyHost(lobby_host),
   m_LastPingTime(time(nullptr)),
   m_NextValidationId(1),
   m_WantsRedownload(false)
@@ -26,28 +33,15 @@ LobbyServerConnection::LobbyServerConnection(MapList & map_list) :
   
 }
 
-bool LobbyServerConnection::Connect()
+void LobbyServerConnection::Connect()
 {
   if (m_State != LobbyServerConnectionState::kDisconnected)
   {
-    return false;
+    return;
   }
   
   m_State = LobbyServerConnectionState::kConnecting;
-  if (m_WebSocket.Connect(g_ServerSettings.LobbyServerHost.data(), g_ServerSettings.LobbyServerPort, "/", "uniball"))
-  {
-    m_State = LobbyServerConnectionState::kAuthenticating;
-
-    GameServerIdentifyNew msg = {};
-    msg.m_Version = kGameServerVersion;
-    SendMessage(msg);
-    return true;
-  }
-  else
-  {
-    m_State = LobbyServerConnectionState::kDisconnected;
-    return false;
-  }
+  m_WebSocket.StartConnect(m_LobbyHost.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
 }
 
 void LobbyServerConnection::Update()
@@ -55,6 +49,47 @@ void LobbyServerConnection::Update()
   if (m_State == LobbyServerConnectionState::kDisconnected)
   {
     return;
+  }
+
+  if(m_State == LobbyServerConnectionState::kConnecting)
+  {
+    if(m_WebSocket.IsConnected())
+    {
+      m_State = LobbyServerConnectionState::kAuthenticating;
+
+      GameServerIdentifyNew msg = {};
+      msg.m_Version = kProjectVersion;
+      SendMessage(msg);
+    }
+    else if(m_WebSocket.IsConnecting() == false)
+    {
+      m_State = LobbyServerConnectionState::kDisconnected;
+      return;
+    }
+    else
+    {
+      return;
+    }
+  }
+
+  if(m_State == LobbyServerConnectionState::kRelocateConnecting)
+  {
+    if(m_WebSocket.IsConnected())
+    {
+      m_State = LobbyServerConnectionState::kRelocating;
+
+      GameServerIdentifyRelocate msg = { m_RelocationToken };
+      SendMessage(msg);
+    }
+    else if(m_WebSocket.IsConnecting() == false)
+    {
+      m_State = LobbyServerConnectionState::kDisconnected;
+      return;
+    }
+    else
+    {
+      return;
+    }
   }
 
   auto cur_time = time(nullptr);
@@ -75,11 +110,6 @@ void LobbyServerConnection::Update()
         m_State = LobbyServerConnectionState::kDisconnected;
       }
       return;
-    }
-
-    if (packet->m_Type == WebSocketPacketType::kPong)
-    {
-      continue;
     }
 
     auto str = BufferToString(packet->m_Buffer);
@@ -129,12 +159,10 @@ void LobbyServerConnection::Update()
         uint64_t challenge_response = crc64(std::to_string(req.m_Challenge)) ^ kGameServerChallengePad;
         GameServerAuthenticateResponse resp;
         resp.m_Challenge = challenge_response;
-        resp.m_Name = g_ServerSettings.ServerName;
-        resp.m_Location = g_ServerSettings.ServerLocation;
-        resp.m_Maps = m_MapList.GetMapList();
-        resp.m_Host = g_ServerSettings.OverrideHost;
-        resp.m_GamePort = g_ServerSettings.GamePort;
-        resp.m_PingPort = g_ServerSettings.PingPort;
+        resp.m_Name = g_ServerName;
+        resp.m_Zone = g_ServerZone;
+        resp.m_ResourceId = g_ServerResourceId;
+        resp.m_ExternalIp = g_ExternalIp;
 
         SendMessage(resp);
 
@@ -453,18 +481,7 @@ void LobbyServerConnection::SendMessage(const T & t)
 void LobbyServerConnection::Relocate(GameServerRelocate & msg)
 {
   m_RelocationToken = msg.m_RelocationKey;
-
-  if (m_WebSocket.Connect(msg.m_HostAddr.c_str(), msg.m_Port, "/", "uniball"))
-  {
-    GameServerIdentifyRelocate msg = { m_RelocationToken };
-    SendMessage(msg);
-
-    m_State = LobbyServerConnectionState::kRelocating;
-  }
-  else
-  {
-    m_State = LobbyServerConnectionState::kDisconnected;
-  }
+  m_WebSocket.StartConnect(msg.m_HostAddr.c_str(), msg.m_Port, "/", kProjectName);
 }
 
 void LobbyServerConnection::ParseError()

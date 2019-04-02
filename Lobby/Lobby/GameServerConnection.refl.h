@@ -72,7 +72,7 @@ public:
   void STORM_REFL_FUNC GotMessage(GameServerMessageType cmd, std::string data);
 
   void STORM_REFL_FUNC RequestMapList(DDSKey endpoint_id);
-  void STORM_REFL_FUNC CreateGame(GamePlayerData creator_data, std::string password, GameInstanceData game_creation_data);
+  void STORM_REFL_FUNC CreateGame(GamePlayerData creator_data, std::string password, GameInitSettings game_creation_data);
   void STORM_REFL_FUNC JoinUserToGame(int game_id, GamePlayerData user_data, std::string password, bool observer, bool force);
   void STORM_REFL_FUNC DestroyGame(int game_id);
   void STORM_REFL_FUNC UserSwitchTeams(int game_id, DDSKey user_key);
@@ -82,7 +82,7 @@ public:
   void STORM_REFL_FUNC KillGame(int game_id);
 
 #ifdef ENABLE_BOTS
-  void STORM_REFL_FUNC CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInstanceData game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info);
+  void STORM_REFL_FUNC CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInitSettings game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info);
 #endif
 
   void STORM_REFL_FUNC SendChatToGame(int game_id, DDSKey user_id, std::string chat);

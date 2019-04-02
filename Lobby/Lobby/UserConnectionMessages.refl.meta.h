@@ -3,7 +3,8 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "UserConnectionMessages.refl.h"
-#include "GameData.refl.meta.h"
+#include "Lobby/GameData.refl.meta.h"
+#include "Game/GameNetworkData.refl.meta.h"
 
 
 template <>

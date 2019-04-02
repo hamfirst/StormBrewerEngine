@@ -40,7 +40,7 @@ struct MapEditorLayerListServerObjectData : public MapEditorLayerListElement
   Optional<DocumentSubValueListMirror> m_SubValueList;
 };
 
-struct MapEditorLayerListParalaxObjectData : public MapEditorLayerListElement
+struct MapEditorLayerListParallaxObjectData : public MapEditorLayerListElement
 {
   Optional<DocumentSubValueListMirror> m_SubValueList;
 };
@@ -55,7 +55,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
   m_ManualTileLayerMirror(m_Editor),
   m_EntityLayerMirror(m_Editor),
   m_ServerObjectLayerMirror(m_Editor),
-  m_ParalaxLayerMirror(m_Editor),
+  m_ParallaxLayerMirror(m_Editor),
   m_EffectLayerMirror(m_Editor),
   m_VolumeLayerMirror(m_Editor),
   m_PathLayerMirror(m_Editor),
@@ -162,30 +162,30 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
     this
   );
 
-  CreateMirrorList<RMergeList, MapParalaxLayer, RString, MapEditorLayerListParalaxObjectData, MapEditorLayerList>(
-    m_ParalaxLayerMirror,
-    m_Map.m_ParalaxLayers,
+  CreateMirrorList<RMergeList, MapParallaxLayer, RString, MapEditorLayerListParallaxObjectData, MapEditorLayerList>(
+    m_ParallaxLayerMirror,
+    m_Map.m_ParallaxLayers,
     ".m_Name",
-    [](MapParalaxLayer & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
-    [](RString & filename, MapEditorLayerListParalaxObjectData & data, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
+    [](MapParallaxLayer & elem, NotNullPtr<MapEditorLayerList>) -> RString & { return elem.m_Name; },
+    [](RString & filename, MapEditorLayerListParallaxObjectData & data, std::size_t index, NotNullPtr<MapEditorLayerList> ptr)
       {
         data.m_LayerList = ptr;
-        data.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kParalaxLayer, index };
+        data.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kParallaxLayer, index };
 
         data.m_SubValueList.Emplace(ptr->m_Editor);
-        CreateMirrorList<RMergeList, MapParalaxLayerObject, RString, MapEditorLayerListElement, MapEditorLayerListParalaxObjectData>(
+        CreateMirrorList<RMergeList, MapParallaxLayerObject, RString, MapEditorLayerListElement, MapEditorLayerListParallaxObjectData>(
           data.m_SubValueList.Value(),
-          ptr->m_Map.m_ParalaxLayers[index].m_Objects,
-          [=]() -> void * { auto list = ptr->m_Map.m_ParalaxLayers.TryGet(index); return list ? &list->m_Objects : nullptr; },
+          ptr->m_Map.m_ParallaxLayers[index].m_Objects,
+          [=]() -> void * { auto list = ptr->m_Map.m_ParallaxLayers.TryGet(index); return list ? &list->m_Objects : nullptr; },
           ".m_Name",
-          [](MapParalaxLayerObject & elem, NotNullPtr<MapEditorLayerListParalaxObjectData>) -> RString & { return elem.m_Name; },
-          [](RString & name, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerListParalaxObjectData> ptr)
+          [](MapParallaxLayerObject & elem, NotNullPtr<MapEditorLayerListParallaxObjectData>) -> RString & { return elem.m_Name; },
+          [](RString & name, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerListParallaxObjectData> ptr)
               { 
                 label.m_LayerList = ptr->m_LayerList;
-                label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kParalaxLayer, ptr->m_LayerInfo.m_Index, index };
+                label.m_LayerInfo = MapEditorLayerSelection{ MapEditorLayerItemType::kParallaxLayer, ptr->m_LayerInfo.m_Index, index };
                 ptr->m_LayerList->UpdateScroll();
               },
-          [](RString & name, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerListParalaxObjectData> ptr) { ptr->m_LayerList->repaint(); },
+          [](RString & name, MapEditorLayerListElement & label, std::size_t index, NotNullPtr<MapEditorLayerListParallaxObjectData> ptr) { ptr->m_LayerList->repaint(); },
           &data
         );
 
@@ -196,7 +196,7 @@ MapEditorLayerList::MapEditorLayerList(NotNullPtr<MapEditor> editor, MapDef & ma
           ptr->m_Editor->ChangeLayerSelection(data.m_LayerInfo, false);
         }
       },
-    [](RString & filename, MapEditorLayerListParalaxObjectData & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
+    [](RString & filename, MapEditorLayerListParallaxObjectData & label, std::size_t index, NotNullPtr<MapEditorLayerList> ptr) { ptr->repaint(); },
     this
     );
 
@@ -325,9 +325,9 @@ bool MapEditorLayerList::IsLayerHidden(const MapEditorLayerSelection & layer)
       auto layer_ptr = m_Editor->GetServerObjectManager().GetLayerManager(layer.m_Index);
       return layer_ptr ? layer_ptr->IsHidden() : false;
     }
-  case MapEditorLayerItemType::kParalaxLayer:
+  case MapEditorLayerItemType::kParallaxLayer:
     {
-      auto layer_ptr = m_Editor->GetParalaxManager().GetLayerManager(layer.m_Index);
+      auto layer_ptr = m_Editor->GetParallaxManager().GetLayerManager(layer.m_Index);
       return layer_ptr ? layer_ptr->IsHidden() : false;
     }
   case MapEditorLayerItemType::kEffectLayer:
@@ -363,9 +363,9 @@ void MapEditorLayerList::SetHideLayer(const MapEditorLayerSelection & layer, boo
       if (layer_ptr) layer_ptr->SetHidden(hidden);
       break;
     }
-  case MapEditorLayerItemType::kParalaxLayer:
+  case MapEditorLayerItemType::kParallaxLayer:
     {
-      auto layer_ptr = m_Editor->GetParalaxManager().GetLayerManager(layer.m_Index);
+      auto layer_ptr = m_Editor->GetParallaxManager().GetLayerManager(layer.m_Index);
       if (layer_ptr) layer_ptr->SetHidden(hidden);
       break;
     }
@@ -413,16 +413,16 @@ void MapEditorLayerList::DeleteLayer(const MapEditorLayerSelection & layer)
       }
       break;
     }
-  case MapEditorLayerItemType::kParalaxLayer:
+  case MapEditorLayerItemType::kParallaxLayer:
     {
-      m_Map.m_ParalaxLayers.RemoveAt(layer.m_Index);
+      m_Map.m_ParallaxLayers.RemoveAt(layer.m_Index);
       break;
     }
-  case MapEditorLayerItemType::kParalaxObject:
+  case MapEditorLayerItemType::kParallaxObject:
     {
-      if(m_Map.m_ParalaxLayers.HasAt(layer.m_Index))
+      if(m_Map.m_ParallaxLayers.HasAt(layer.m_Index))
       {
-        m_Map.m_ParalaxLayers[layer.m_Index].m_Objects.RemoveAt(layer.m_SubIndex);
+        m_Map.m_ParallaxLayers[layer.m_Index].m_Objects.RemoveAt(layer.m_SubIndex);
       }
       break;
     }
@@ -585,7 +585,7 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
   }
 
   elem = {};
-  elem.m_Type = MapEditorLayerItemType::kParalaxLayerParent;
+  elem.m_Type = MapEditorLayerItemType::kParallaxLayerParent;
   if (visitor(elem, y_pos) == false)
   {
     return y_pos;
@@ -593,12 +593,12 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
 
   y_pos += layer_height;
 
-  if (m_ParalaxParentExpanded)
+  if (m_ParallaxParentExpanded)
   {
-    for (auto layer : m_Map.m_ParalaxLayers)
+    for (auto layer : m_Map.m_ParallaxLayers)
     {
       MapEditorLayerSelection elem = {};
-      elem.m_Type = MapEditorLayerItemType::kParalaxLayer;
+      elem.m_Type = MapEditorLayerItemType::kParallaxLayer;
       elem.m_Index = layer.first;
 
       if (visitor(elem, y_pos) == false)
@@ -608,7 +608,7 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
 
       y_pos += layer_height;
 
-      elem.m_Type = MapEditorLayerItemType::kCreateParalaxObject;
+      elem.m_Type = MapEditorLayerItemType::kCreateParallaxObject;
       if (visitor(elem, y_pos) == false)
       {
         return y_pos;
@@ -616,15 +616,15 @@ int MapEditorLayerList::VisitElements(Delegate<bool, const MapEditorLayerSelecti
 
       y_pos += layer_height;
 
-      auto layer_ptr = m_Editor->GetParalaxManager().GetLayerManager(layer.first);
+      auto layer_ptr = m_Editor->GetParallaxManager().GetLayerManager(layer.first);
       if (layer_ptr && layer_ptr->IsCollapsed() == false)
       {
-        for (auto paralax_object : layer.second.m_Objects)
+        for (auto parallax_object : layer.second.m_Objects)
         {
           MapEditorLayerSelection elem = {};
-          elem.m_Type = MapEditorLayerItemType::kParalaxObject;
+          elem.m_Type = MapEditorLayerItemType::kParallaxObject;
           elem.m_Index = layer.first;
-          elem.m_SubIndex = paralax_object.first;
+          elem.m_SubIndex = parallax_object.first;
 
           if (visitor(elem, y_pos) == false)
           {
@@ -960,27 +960,27 @@ void MapEditorLayerList::paintEvent(QPaintEvent * ev)
           p.drawText(layer_height * 2 + 17, y_pos, width(), height(), 0, m_Map.m_ServerObjectLayers[layer.m_Index].m_Objects[layer.m_SubIndex].m_Name.data());
           break;
         }
-      case MapEditorLayerItemType::kParalaxLayerParent:
+      case MapEditorLayerItemType::kParallaxLayerParent:
         {
           QStyleOption option;
           option.rect = QRect(2, y_pos, layer_height, layer_height);
-          style()->drawPrimitive(m_ParalaxParentExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
-          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Paralax Layers");
+          style()->drawPrimitive(m_ParallaxParentExpanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &option, &p, this);
+          p.drawText(layer_height + 2, y_pos, width(), height(), 0, "Parallax Layers");
           break;
         }
-      case MapEditorLayerItemType::kParalaxLayer:
+      case MapEditorLayerItemType::kParallaxLayer:
         {
-          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_ParalaxLayers[layer.m_Index].m_Name.data());
+          p.drawText(layer_height + 10, y_pos, width(), height(), 0, m_Map.m_ParallaxLayers[layer.m_Index].m_Name.data());
           break;
         }
-      case MapEditorLayerItemType::kCreateParalaxObject:
+      case MapEditorLayerItemType::kCreateParallaxObject:
         {
-          p.drawText(layer_height * 2 + 17, y_pos, width(), height(), 0, "Create Paralax Object");
+          p.drawText(layer_height * 2 + 17, y_pos, width(), height(), 0, "Create Parallax Object");
           break;
         }
-      case MapEditorLayerItemType::kParalaxObject:
+      case MapEditorLayerItemType::kParallaxObject:
         {
-          p.drawText(layer_height * 2 + 17, y_pos, width(), height(), 0, m_Map.m_ParalaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex].m_Name.data());
+          p.drawText(layer_height * 2 + 17, y_pos, width(), height(), 0, m_Map.m_ParallaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex].m_Name.data());
           break;
         }
       case MapEditorLayerItemType::kEffectLayerParent:
@@ -1151,10 +1151,10 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
       }
       break;
 
-    case MapEditorLayerItemType::kParalaxLayerParent:
+    case MapEditorLayerItemType::kParallaxLayerParent:
       if (ev->x() < 15)
       {
-        m_ParalaxParentExpanded = !m_ParalaxParentExpanded;
+        m_ParallaxParentExpanded = !m_ParallaxParentExpanded;
       }
       break;
 
@@ -1229,10 +1229,10 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
-    case MapEditorLayerItemType::kParalaxLayerParent:
+    case MapEditorLayerItemType::kParallaxLayerParent:
       {
         QMenu menu(this);
-        connect(menu.addAction("Add"), &QAction::triggered, this, &MapEditorLayerList::addParalaxLayer);
+        connect(menu.addAction("Add"), &QAction::triggered, this, &MapEditorLayerList::addParallaxLayer);
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
@@ -1257,10 +1257,10 @@ void MapEditorLayerList::mousePressEvent(QMouseEvent * ev)
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
-    case MapEditorLayerItemType::kParalaxLayer:
+    case MapEditorLayerItemType::kParallaxLayer:
       {
         QMenu menu(this);
-        connect(menu.addAction("Remove"), &QAction::triggered, this, &MapEditorLayerList::removeParalaxLayer);
+        connect(menu.addAction("Remove"), &QAction::triggered, this, &MapEditorLayerList::removeParallaxLayer);
         menu.exec(mapToGlobal(ev->pos()));
         break;
       }
@@ -1378,27 +1378,27 @@ void MapEditorLayerList::removeServerObjectLayer()
   m_Map.m_ServerObjectLayers.RemoveAt(m_Selection->m_Index);
 }
 
-void MapEditorLayerList::addParalaxLayer()
+void MapEditorLayerList::addParallaxLayer()
 {
-  MapParalaxLayer paralax_layer;
-  paralax_layer.m_Name = "Paralax Layer";
+  MapParallaxLayer parallax_layer;
+  parallax_layer.m_Name = "Parallax Layer";
 
-  m_Map.m_ParalaxLayers.EmplaceBack(std::move(paralax_layer));
+  m_Map.m_ParallaxLayers.EmplaceBack(std::move(parallax_layer));
 }
 
-void MapEditorLayerList::removeParalaxLayer()
+void MapEditorLayerList::removeParallaxLayer()
 {
   if (m_Selection == false)
   {
     return;
   }
 
-  if (m_Selection->m_Type != MapEditorLayerItemType::kParalaxLayer)
+  if (m_Selection->m_Type != MapEditorLayerItemType::kParallaxLayer)
   {
     return;
   }
 
-  m_Map.m_ParalaxLayers.RemoveAt(m_Selection->m_Index);
+  m_Map.m_ParallaxLayers.RemoveAt(m_Selection->m_Index);
 }
 
 void MapEditorLayerList::addEffectLayer()

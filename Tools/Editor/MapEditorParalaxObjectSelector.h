@@ -9,22 +9,22 @@
 
 #include "Engine/Asset/TextureAsset.h"
 
-#include "MapEditorParalaxLayer.h"
+#include "MapEditorParallaxLayer.h"
 #include "DocumentValueWatcher.h"
 
 class MapEditor;
 
-class MapEditorParalaxObjectSelector : public QWidget
+class MapEditorParallaxObjectSelector : public QWidget
 {
   Q_OBJECT;
 public:
-  MapEditorParalaxObjectSelector(NotNullPtr<MapEditor> editor, MapDef & map, QWidget * parent = nullptr);
-  ~MapEditorParalaxObjectSelector();
+  MapEditorParallaxObjectSelector(NotNullPtr<MapEditor> editor, MapDef & map, QWidget * parent = nullptr);
+  ~MapEditorParallaxObjectSelector();
 
   void Clear();
 
   void SetLayer(int layer_index);
-  void SetSelectedParalaxObject(czstr paralax_object_file);
+  void SetSelectedParallaxObject(czstr parallax_object_file);
 
 protected:
 
@@ -33,7 +33,7 @@ protected:
 
 public slots:
 
-  void pickParalaxObject();
+  void pickParallaxObject();
 
 private:
   NotNullPtr<MapEditor> m_Editor;
@@ -41,10 +41,10 @@ private:
 
   int m_LayerIndex;
 
-  std::unique_ptr<QPushButton> m_PickParalaxObject;
+  std::unique_ptr<QPushButton> m_PickParallaxObject;
 
-  std::string m_ParalaxObjectFile;
-  MapEditorParalaxObjectType m_ParalaxObject;
+  std::string m_ParallaxObjectFile;
+  MapEditorParallaxObjectType m_ParallaxObject;
 };
 
 

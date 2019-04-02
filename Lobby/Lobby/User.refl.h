@@ -5,10 +5,11 @@
 
 #include <StormRefl/StormReflJsonStd.h>
 
+#include "Game/GameNetworkData.refl.h"
 
-#include "SharedTypes.refl.h"
-#include "GameData.refl.h"
-#include "LobbyConfig.h"
+#include "Lobby/SharedTypes.refl.h"
+#include "Lobby/GameData.refl.h"
+#include "Lobby/LobbyConfig.h"
 
 struct UserPersistent
 {

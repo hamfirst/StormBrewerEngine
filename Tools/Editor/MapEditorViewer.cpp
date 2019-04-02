@@ -226,9 +226,9 @@ void MapEditorViewer::ZoomToServerObject(std::size_t layer_index, std::size_t ob
   }
 }
 
-void MapEditorViewer::ZoomToParalaxObject(std::size_t layer_index, std::size_t object_index)
+void MapEditorViewer::ZoomToParallaxObject(std::size_t layer_index, std::size_t object_index)
 {
-  auto layer = m_Map.m_ParalaxLayers.TryGet(layer_index);
+  auto layer = m_Map.m_ParallaxLayers.TryGet(layer_index);
   if (layer)
   {
     auto obj = layer->m_Objects.TryGet(object_index);
@@ -593,7 +593,7 @@ void MapEditorViewer::paintGL()
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), RenderVec4(window_end - window_start, width(), height()));
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
 
-  auto & paralax_manager = m_Editor->GetParalaxManager();
+  auto & parallax_manager = m_Editor->GetParallaxManager();
   auto & tile_manager = m_Editor->GetManualTileManager();
   auto & entity_manager = m_Editor->GetEntityManager();
   auto & server_object_manager = m_Editor->GetServerObjectManager();
@@ -605,9 +605,9 @@ void MapEditorViewer::paintGL()
 
   auto screen_center = m_Center;
 
-  for (auto elem : m_Map.m_ParalaxLayers)
+  for (auto elem : m_Map.m_ParallaxLayers)
   {
-    auto layer = paralax_manager.GetLayerManager(elem.first);
+    auto layer = parallax_manager.GetLayerManager(elem.first);
     if (layer == nullptr)
     {
       continue;
@@ -705,9 +705,9 @@ void MapEditorViewer::paintGL()
     }
   }
 
-  for (auto elem : m_Map.m_ParalaxLayers)
+  for (auto elem : m_Map.m_ParallaxLayers)
   {
-    auto layer = paralax_manager.GetLayerManager(elem.first);
+    auto layer = parallax_manager.GetLayerManager(elem.first);
     if (layer == nullptr)
     {
       continue;
@@ -718,7 +718,7 @@ void MapEditorViewer::paintGL()
       continue;
     }
 
-    layer->DrawPreviewParalaxObject(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
+    layer->DrawPreviewParallaxObject(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
     layer->DrawSelection(m_DrawBuffer, viewport_bounds, screen_center, m_RenderState);
   }
 
@@ -812,7 +812,7 @@ void MapEditorViewer::paintGL()
 
   if (m_SelectedLayer && m_SelectedLayer->m_Type == MapEditorLayerItemType::kPathfinding)
   {
-    auto & info = m_Map.m_PathfingindInfo.m_CalculatedInfo.Value();
+    auto & info = m_Map.m_PathfindingInfo.m_CalculatedInfo.Value();
     
 #ifndef MAP_PLATFORMER_PATHFINDING
     
@@ -1340,8 +1340,8 @@ void MapEditorViewer::dragEnterEvent(QDragEnterEvent * event)
 
 void MapEditorViewer::dropEvent(QDropEvent * event)
 {
-  if (m_SelectedLayer->m_Type == MapEditorLayerItemType::kParalaxLayer ||
-      m_SelectedLayer->m_Type == MapEditorLayerItemType::kParalaxObject)
+  if (m_SelectedLayer->m_Type == MapEditorLayerItemType::kParallaxLayer ||
+      m_SelectedLayer->m_Type == MapEditorLayerItemType::kParallaxObject)
   {
     auto mime_data = event->mimeData();
     bool show_error = false;
@@ -1364,7 +1364,7 @@ void MapEditorViewer::dropEvent(QDropEvent * event)
             continue;
           }
 
-          m_Editor->CreateNewParalaxObject(canonical_filename.data(), m_SelectedLayer->m_Index, GetSnappedCursorPos());
+          m_Editor->CreateNewParallaxObject(canonical_filename.data(), m_SelectedLayer->m_Index, GetSnappedCursorPos());
         }
 
         m_Editor->CommitChanges();

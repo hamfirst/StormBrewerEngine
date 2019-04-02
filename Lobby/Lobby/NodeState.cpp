@@ -21,8 +21,8 @@
 std::unique_ptr<DDSNodeState> CreateNodeState(const NodeSettings & settings)
 {
   StormSockets::StormSocketInitSettings backend_settings;
-  backend_settings.NumIOThreads = 1;
-  backend_settings.NumSendThreads = 1;
+  backend_settings.NumIOThreads = 2;
+  backend_settings.NumSendThreads = 2;
   backend_settings.MaxConnections = 20000;
 
   DDSDatabaseSettings database_settings;

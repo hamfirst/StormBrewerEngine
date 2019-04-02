@@ -7,49 +7,49 @@
 
 #include "Engine/Sprite/SpriteEngineData.h"
 
-#include "MapEditorParalaxObjectSelector.h"
-#include "MapEditorParalaxLayer.h"
+#include "MapEditorParallaxObjectSelector.h"
+#include "MapEditorParallaxLayer.h"
 #include "MapEditor.h"
 
-MapEditorParalaxObjectSelector::MapEditorParalaxObjectSelector(NotNullPtr<MapEditor> editor, MapDef & map, QWidget * parent) :
+MapEditorParallaxObjectSelector::MapEditorParallaxObjectSelector(NotNullPtr<MapEditor> editor, MapDef & map, QWidget * parent) :
   QWidget(parent),
   m_Editor(editor),
   m_Map(map),
   m_LayerIndex(-1),
-  m_PickParalaxObject(std::make_unique<QPushButton>("Pick Paralax Object File...", this))
+  m_PickParallaxObject(std::make_unique<QPushButton>("Pick Parallax Object File...", this))
 {
-  connect(m_PickParalaxObject.get(), &QPushButton::pressed, this, &MapEditorParalaxObjectSelector::pickParalaxObject);
+  connect(m_PickParallaxObject.get(), &QPushButton::pressed, this, &MapEditorParallaxObjectSelector::pickParallaxObject);
 }
 
-MapEditorParalaxObjectSelector::~MapEditorParalaxObjectSelector()
+MapEditorParallaxObjectSelector::~MapEditorParallaxObjectSelector()
 {
 
 }
 
-void MapEditorParalaxObjectSelector::Clear()
+void MapEditorParallaxObjectSelector::Clear()
 {
-  m_ParalaxObjectFile.clear();
-  m_ParalaxObject = {};
+  m_ParallaxObjectFile.clear();
+  m_ParallaxObject = {};
 }
 
-void MapEditorParalaxObjectSelector::SetLayer(int layer_index)
+void MapEditorParallaxObjectSelector::SetLayer(int layer_index)
 {
   m_LayerIndex = layer_index;
 }
 
-void MapEditorParalaxObjectSelector::SetSelectedParalaxObject(czstr file)
+void MapEditorParallaxObjectSelector::SetSelectedParallaxObject(czstr file)
 {
-  m_ParalaxObjectFile = file;
-  m_ParalaxObject = MapEditorParalaxLayer::CreateObjectFromPath(file, [this] { update(); });
+  m_ParallaxObjectFile = file;
+  m_ParallaxObject = MapEditorParallaxLayer::CreateObjectFromPath(file, [this] { update(); });
 }
 
-void MapEditorParalaxObjectSelector::paintEvent(QPaintEvent * ev)
+void MapEditorParallaxObjectSelector::paintEvent(QPaintEvent * ev)
 {
   QPainter p(this);
 
-  p.drawText(300, 13, m_ParalaxObjectFile.data());
+  p.drawText(300, 13, m_ParallaxObjectFile.data());
 
-  auto texture_link = m_ParalaxObject.Get<TextureAsset::LoadCallbackLink>();
+  auto texture_link = m_ParallaxObject.Get<TextureAsset::LoadCallbackLink>();
   if (texture_link)
   {
     auto texture = texture_link->Get();
@@ -79,7 +79,7 @@ void MapEditorParalaxObjectSelector::paintEvent(QPaintEvent * ev)
     return;
   }
 
-  auto sprite_link = m_ParalaxObject.Get<SpriteLoadLink>();
+  auto sprite_link = m_ParallaxObject.Get<SpriteLoadLink>();
   if (sprite_link && sprite_link->IsLoaded())
   {
     auto sprite = sprite_link->GetResource();
@@ -114,25 +114,25 @@ void MapEditorParalaxObjectSelector::paintEvent(QPaintEvent * ev)
   }
 }
 
-void MapEditorParalaxObjectSelector::resizeEvent(QResizeEvent * ev)
+void MapEditorParallaxObjectSelector::resizeEvent(QResizeEvent * ev)
 {
-  m_PickParalaxObject->setGeometry(0, 0, 300, height());
+  m_PickParallaxObject->setGeometry(0, 0, 300, height());
 }
 
-void MapEditorParalaxObjectSelector::pickParalaxObject()
+void MapEditorParallaxObjectSelector::pickParallaxObject()
 {
-  auto file_name = m_Editor->GetFileNameForAssetType("paralax");
+  auto file_name = m_Editor->GetFileNameForAssetType("parallax");
   if (file_name)
   {
-    auto type = MapEditorParalaxLayer::GetParalaxTypeForPath(file_name->data());
+    auto type = MapEditorParallaxLayer::GetParallaxTypeForPath(file_name->data());
     if (type)
     {
-      MapParalaxLayerObject object = {};
+      MapParallaxLayerObject object = {};
       object.m_File = file_name.Value();
       object.m_Type = type.Value();
       object.m_Name = GetFileStemForCanonicalPath(file_name.Value());
 
-      m_Editor->SetSelectedParalaxObject(m_LayerIndex, object);
+      m_Editor->SetSelectedParallaxObject(m_LayerIndex, object);
     }
   }
 }

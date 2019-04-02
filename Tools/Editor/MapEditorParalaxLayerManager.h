@@ -2,16 +2,16 @@
 
 #include "Foundation/SparseList/SparseList.h"
 
-#include "MapEditorParalaxLayer.h"
+#include "MapEditorParallaxLayer.h"
 #include "DocumentListValueWatcher.h"
 
-class MapEditorParalaxLayerManager
+class MapEditorParallaxLayerManager
 {
 public:
-  MapEditorParalaxLayerManager(NotNullPtr<MapEditor> editor, MapDef & map);
-  ~MapEditorParalaxLayerManager();
+  MapEditorParallaxLayerManager(NotNullPtr<MapEditor> editor, MapDef & map);
+  ~MapEditorParallaxLayerManager();
 
-  NullOptPtr<MapEditorParalaxLayer> GetLayerManager(int layer_index);
+  NullOptPtr<MapEditorParallaxLayer> GetLayerManager(int layer_index);
 
 protected:
   void Resync();
@@ -22,7 +22,7 @@ private:
 
   MapDef & m_Map;
 
-  SparseList<std::unique_ptr<MapEditorParalaxLayer>> m_ParalaxManagers;
+  SparseList<std::unique_ptr<MapEditorParallaxLayer>> m_ParallaxManagers;
   DocumentListValueWatcher m_Watcher;
 };
 

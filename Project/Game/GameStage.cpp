@@ -20,14 +20,14 @@ GameStage::GameStage(const Map & map) :
   auto map_data = map.GetData();
   m_CollisionDatabase.PushMapCollision(0, ExtractMapCollision(*map_data, {}, { COMPILE_TIME_CRC32_STR("Collision"), COMPILE_TIME_CRC32_STR("OneWay") }));
 
-  if (map_data->m_PathfingindInfo.m_Valid)
+  if (map_data->m_PathfindingInfo.m_Valid)
   {
-    auto & calc_info = map_data->m_PathfingindInfo.m_CalculatedInfo;
+    auto & calc_info = map_data->m_PathfindingInfo.m_CalculatedInfo;
 
 #ifndef MAP_PLATFORMER_PATHFINDING
-    if (map_data->m_PathfingindInfo.m_GridWidth > 0 && map_data->m_PathfingindInfo.m_GridHeight > 0)
+    if (map_data->m_PathfindingInfo.m_GridWidth > 0 && map_data->m_PathfindingInfo.m_GridHeight > 0)
     {
-      m_PathfindingElementSize = Vector2(map_data->m_PathfingindInfo.m_GridWidth, map_data->m_PathfingindInfo.m_GridHeight);
+      m_PathfindingElementSize = Vector2(map_data->m_PathfindingInfo.m_GridWidth, map_data->m_PathfindingInfo.m_GridHeight);
       m_PathfindingGridSize = Vector2(calc_info->m_SizeX, calc_info->m_SizeY);
 
       m_PathfindingBounds.m_Start = Vector2(calc_info->m_StartX, calc_info->m_StartY);

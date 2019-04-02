@@ -32,7 +32,7 @@ void MapEditorVolumeManager::Resync()
 {
   SparseList<std::unique_ptr<MapEditorVolume>> old_layers = std::move(m_VolumeManagers);
 
-  for (auto elem : m_Map.m_ParalaxLayers)
+  for (auto elem : m_Map.m_ParallaxLayers)
   {
     m_VolumeManagers.EmplaceAt(elem.first, std::make_unique<MapEditorVolume>(m_Editor, m_Map, (int)elem.first));
   }

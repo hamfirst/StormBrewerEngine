@@ -2,9 +2,9 @@
 
 {
     "m_Paths": { },
-    "m_ParalaxLayers": {
+    "m_ParallaxLayers": {
         "0": {
-            "m_ParalaxY": 0.000000,
+            "m_ParallaxY": 0.000000,
             "m_OffsetX": 0.000000,
             "m_OffsetY": 0.000000,
             "m_RepeatY": true,
@@ -46,9 +46,9 @@
             },
             "m_Image": "",
             "m_VelocityY": 0.000000,
-            "m_ParalaxX": 0.000000,
+            "m_ParallaxX": 0.000000,
             "m_VelocityX": 0.000000,
-            "m_Name": "Paralax Layer"
+            "m_Name": "Parallax Layer"
         }
     },
     "m_EntityLayers": { },
@@ -158,7 +158,7 @@
             }
         }
     },
-    "m_PathfingindInfo": {
+    "m_PathfindingInfo": {
         "m_CalculatedInfo": {
             "m_Connections": [],
             "m_Id": 1982792571,

@@ -47,7 +47,7 @@ void RuntimeRegisterTypes(PropertyFieldDatabase & property_db)
   GetProperyMetaData<ServerObjectDef>(property_db);
   GetProperyMetaData<MapEntity>(property_db);
   GetProperyMetaData<MapServerObject>(property_db);
-  GetProperyMetaData<MapParalaxLayerObject>(property_db);
+  GetProperyMetaData<MapParallaxLayerObject>(property_db);
   GetProperyMetaData<MapDef>(property_db);
   GetProperyMetaData<UIDef>(property_db);
   GetProperyMetaData<AtlasDef>(property_db);

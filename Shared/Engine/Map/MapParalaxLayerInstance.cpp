@@ -1,6 +1,6 @@
 
 #include "Engine/EngineCommon.h"
-#include "Engine/Map/MapParalaxLayerInstance.h"
+#include "Engine/Map/MapParallaxLayerInstance.h"
 #include "Engine/Rendering/VertexList.h"
 #include "Engine/Rendering/RenderState.h"
 #include "Engine/Rendering/VertexBufferBuilder.h"
@@ -9,10 +9,10 @@
 #include "Engine/VisualEffect/VisualEffectManager.h"
 
 
-MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer_index, NotNullPtr<VisualEffectManager> vfx_manager)
+MapParallaxLayerInstance::MapParallaxLayerInstance(MapDef & map, std::size_t layer_index, NotNullPtr<VisualEffectManager> vfx_manager)
 {
 
-  auto & layer_data = map.m_ParalaxLayers[(int)layer_index];
+  auto & layer_data = map.m_ParallaxLayers[(int)layer_index];
   m_LayerOrder = layer_data.m_LayerOrder;
 
   if (layer_data.m_Image.size() > 0)
@@ -24,33 +24,33 @@ MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer
   m_RepeatY = layer_data.m_RepeatY;
   m_OffsetX = layer_data.m_OffsetX;
   m_OffsetY = layer_data.m_OffsetY;
-  m_ParalaxX = layer_data.m_ParalaxX;
-  m_ParalaxY = layer_data.m_ParalaxY;
+  m_ParallaxX = layer_data.m_ParallaxX;
+  m_ParallaxY = layer_data.m_ParallaxY;
   m_VelocityX = layer_data.m_VelocityX;
   m_VelocityY = layer_data.m_VelocityY;
 
   for (auto elem : layer_data.m_Objects)
   {
     auto pos = Vector2(elem.second.m_XPosition, elem.second.m_YPosition);
-    if (elem.second.m_Type == MapParalaxLayerObjectType::kTexture)
+    if (elem.second.m_Type == MapParallaxLayerObjectType::kTexture)
     {
-      MapParalaxLayerTexture tex;
+      MapParallaxLayerTexture tex;
       tex.m_Texture = TextureAsset::Load(elem.second.m_File.data());
       tex.m_Pos = pos;
       m_Textures.emplace_back(std::move(tex));
     }
-    else if (elem.second.m_Type == MapParalaxLayerObjectType::kSprite)
+    else if (elem.second.m_Type == MapParallaxLayerObjectType::kSprite)
     {
-      MapParalaxLayerSprite spr;
+      MapParallaxLayerSprite spr;
       spr.m_Sprite = SpriteResource::Load(elem.second.m_File.data());
       spr.m_Pos = pos;
       spr.m_AnimationHash = crc32(elem.second.m_Animation);
       spr.m_State = {};
       m_Sprites.emplace_back(std::move(spr));
     }
-    else if (elem.second.m_Type == MapParalaxLayerObjectType::kVfx)
+    else if (elem.second.m_Type == MapParallaxLayerObjectType::kVfx)
     {
-      MapParalaxLayerVfx vfx;
+      MapParallaxLayerVfx vfx;
       vfx.m_Vfx = VisualEffectResource::Load(elem.second.m_File.data());
       vfx.m_Handle = vfx_manager->CreateVisualEffect(vfx.m_Vfx, m_LayerOrder, pos)->GetHandle();
 
@@ -68,7 +68,7 @@ MapParalaxLayerInstance::MapParalaxLayerInstance(MapDef & map, std::size_t layer
   }
 }
 
-MapParalaxLayerInstance::~MapParalaxLayerInstance()
+MapParallaxLayerInstance::~MapParallaxLayerInstance()
 {
   for (auto & elem : m_VisualEffects)
   {
@@ -81,7 +81,7 @@ MapParalaxLayerInstance::~MapParalaxLayerInstance()
 }
 
 
-void MapParalaxLayerInstance::Update()
+void MapParallaxLayerInstance::Update()
 {
   for (auto & sprite_info : m_Sprites)
   {
@@ -93,7 +93,7 @@ void MapParalaxLayerInstance::Update()
   }
 }
 
-void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
+void MapParallaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {
   auto & buffer = render_state.GetScratchBuffer();
 
@@ -108,8 +108,8 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
 
     auto time = (float)GetTimeSeconds();
 
-    float offset_x = (m_ParalaxX == 0.0f ? 0.0f : ((screen_center.x - offset.x) / -m_ParalaxX)) + time * m_VelocityX + m_OffsetX;
-    float offset_y = (m_ParalaxY == 0.0f ? 0.0f : ((screen_center.y - offset.y) / -m_ParalaxY)) + time * m_VelocityY + m_OffsetY;
+    float offset_x = (m_ParallaxX == 0.0f ? 0.0f : ((screen_center.x - offset.x) / -m_ParallaxX)) + time * m_VelocityX + m_OffsetX;
+    float offset_y = (m_ParallaxY == 0.0f ? 0.0f : ((screen_center.y - offset.y) / -m_ParallaxY)) + time * m_VelocityY + m_OffsetY;
 
     offset_x *= (float)texture->GetWidth() / (float)width;
     offset_y *= (float)texture->GetHeight() / (float)height;
@@ -216,7 +216,7 @@ void MapParalaxLayerInstance::Draw(const Box & viewport_bounds, const RenderVec2
   }
 }
 
-int MapParalaxLayerInstance::GetLayerOrder() const
+int MapParallaxLayerInstance::GetLayerOrder() const
 {
   return m_LayerOrder;
 }

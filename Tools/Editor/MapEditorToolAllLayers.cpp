@@ -25,7 +25,7 @@ void MapEditorToolAllLayers::Cleanup()
 
   m_MapEditor.GetEntityManager().VisitLayers(layer_visitor);
   m_MapEditor.GetServerObjectManager().VisitLayers(layer_visitor);
-  m_MapEditor.GetParalaxManager().VisitLayers(layer_visitor);
+  m_MapEditor.GetParallaxManager().VisitLayers(layer_visitor);
 
   m_MapEditor.GetViewer().ClearSelectionBox();
 }

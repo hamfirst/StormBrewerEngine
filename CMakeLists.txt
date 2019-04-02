@@ -214,9 +214,11 @@ endif()
 if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(Project/GameServer)
   add_subdirectory(Project/GameServerExe)
+  add_subdirectory(Lobby/LobbyServerConnection)
   
   set_target_properties(GameServer PROPERTIES FOLDER Project)
   set_target_properties(GameServerExe PROPERTIES FOLDER Project)
+  set_target_properties(LobbyServerConnection PROPERTIES FOLDER Lobby)
 
   add_executable(ServerExe Dummy.cpp)
 
@@ -237,6 +239,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     target_link_libraries(ServerExe -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
   endif()
 
+  target_link_libraries(ServerExe LobbyServerConnection)
   target_link_libraries(ServerExe EngineStubs)
   target_link_libraries(ServerExe Foundation)
   target_link_libraries(ServerExe binpack)
@@ -563,6 +566,8 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   add_dependencies(HurricaneDDS StormData)
   add_dependencies(GameServer Game)
   add_dependencies(GameServerExe Game)
+  add_dependencies(LobbyServerConnection Game)
+  add_dependencies(LobbyServerConnection Lobby)
 endif()
 
 if(BUILD_TOOLS)

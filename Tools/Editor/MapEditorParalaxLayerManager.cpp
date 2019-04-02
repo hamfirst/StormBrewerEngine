@@ -1,55 +1,55 @@
 
-#include "MapEditorParalaxLayerManager.h"
+#include "MapEditorParallaxLayerManager.h"
 #include "MapEditor.h"
 
-MapEditorParalaxLayerManager::MapEditorParalaxLayerManager(NotNullPtr<MapEditor> editor, MapDef & map) :
+MapEditorParallaxLayerManager::MapEditorParallaxLayerManager(NotNullPtr<MapEditor> editor, MapDef & map) :
   m_Editor(editor),
   m_Map(map),
   m_Watcher(m_Editor)
 {
-  m_Watcher.SetPath(".m_ParalaxLayers", false, false, [] { return true; });
+  m_Watcher.SetPath(".m_ParallaxLayers", false, false, [] { return true; });
   m_Watcher.SetChangeCallback([=](const ReflectionChangeNotification & change) { HandleListChange(change); });
 
   Resync();
 }
 
-MapEditorParalaxLayerManager::~MapEditorParalaxLayerManager()
+MapEditorParallaxLayerManager::~MapEditorParallaxLayerManager()
 {
 
 }
 
-NullOptPtr<MapEditorParalaxLayer> MapEditorParalaxLayerManager::GetLayerManager(int layer_index)
+NullOptPtr<MapEditorParallaxLayer> MapEditorParallaxLayerManager::GetLayerManager(int layer_index)
 {
-  if (m_ParalaxManagers.HasAt((std::size_t)layer_index) == false)
+  if (m_ParallaxManagers.HasAt((std::size_t)layer_index) == false)
   {
     return nullptr;
   }
 
-  return m_ParalaxManagers[layer_index].get();
+  return m_ParallaxManagers[layer_index].get();
 }
 
-void MapEditorParalaxLayerManager::Resync()
+void MapEditorParallaxLayerManager::Resync()
 {
-  SparseList<std::unique_ptr<MapEditorParalaxLayer>> old_layers = std::move(m_ParalaxManagers);
+  SparseList<std::unique_ptr<MapEditorParallaxLayer>> old_layers = std::move(m_ParallaxManagers);
 
-  for (auto elem : m_Map.m_ParalaxLayers)
+  for (auto elem : m_Map.m_ParallaxLayers)
   {
-    m_ParalaxManagers.EmplaceAt(elem.first, std::make_unique<MapEditorParalaxLayer>(m_Editor, m_Map, (int)elem.first));
+    m_ParallaxManagers.EmplaceAt(elem.first, std::make_unique<MapEditorParallaxLayer>(m_Editor, m_Map, (int)elem.first));
   }
 }
 
-void MapEditorParalaxLayerManager::HandleListChange(const ReflectionChangeNotification & change)
+void MapEditorParallaxLayerManager::HandleListChange(const ReflectionChangeNotification & change)
 {
   if (change.m_Type == ReflectionNotifyChangeType::kInsert)
   {
-    if (m_Map.m_ParalaxLayers.HasAt(change.m_SubIndex))
+    if (m_Map.m_ParallaxLayers.HasAt(change.m_SubIndex))
     {
-      m_ParalaxManagers.EmplaceAt(change.m_SubIndex, std::make_unique<MapEditorParalaxLayer>(m_Editor, m_Map, (int)change.m_SubIndex));
+      m_ParallaxManagers.EmplaceAt(change.m_SubIndex, std::make_unique<MapEditorParallaxLayer>(m_Editor, m_Map, (int)change.m_SubIndex));
     }
   }
   else if (change.m_Type == ReflectionNotifyChangeType::kRemove)
   {
-    m_ParalaxManagers.RemoveAt(change.m_SubIndex);
+    m_ParallaxManagers.RemoveAt(change.m_SubIndex);
   }
   else
   {

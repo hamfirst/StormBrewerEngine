@@ -54,8 +54,8 @@ public slots:
   void removeEntityLayer();
   void addServerObjectLayer();
   void removeServerObjectLayer();
-  void addParalaxLayer();
-  void removeParalaxLayer();
+  void addParallaxLayer();
+  void removeParallaxLayer();
   void addEffectLayer();
   void removeEffectLayer();
 
@@ -73,7 +73,7 @@ private:
   bool m_ManualTileParentExpanded = true;
   bool m_EntityParentExpanded = true;
   bool m_ServerObjectParentExpanded = true;
-  bool m_ParalaxParentExpanded = true;
+  bool m_ParallaxParentExpanded = true;
   bool m_EffectParentExpanded = true;
   bool m_VolumeExpanded = true;
   bool m_PathExpanded = true;
@@ -82,7 +82,7 @@ private:
   DocumentSubValueListMirror m_ManualTileLayerMirror;
   DocumentSubValueListMirror m_EntityLayerMirror;
   DocumentSubValueListMirror m_ServerObjectLayerMirror;
-  DocumentSubValueListMirror m_ParalaxLayerMirror;
+  DocumentSubValueListMirror m_ParallaxLayerMirror;
   DocumentSubValueListMirror m_EffectLayerMirror;
   DocumentSubValueListMirror m_VolumeLayerMirror;
   DocumentSubValueListMirror m_PathLayerMirror;

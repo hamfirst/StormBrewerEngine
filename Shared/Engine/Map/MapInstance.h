@@ -7,7 +7,7 @@
 
 #include "Engine/Map/MapManualTileLayerInstance.h"
 #include "Engine/Map/MapEffectLayerInstance.h"
-#include "Engine/Map/MapParalaxLayerInstance.h"
+#include "Engine/Map/MapParallaxLayerInstance.h"
 #include "Engine/DrawList/DrawList.h"
 #include "Engine/Entity/EntityHandle.h"
 #include "Engine/Rendering/RenderSettings.h"
@@ -29,7 +29,7 @@ private:
   friend class MapRenderer;
 
   std::vector<MapManualTileLayerInstance> m_ManualTileLayers;
-  std::vector<MapParalaxLayerInstance> m_ParalaxLayers;
+  std::vector<MapParallaxLayerInstance> m_ParallaxLayers;
   std::vector<MapEffectLayerInstance> m_EffectLayers;
   std::vector<EntityHandle> m_MapEntities;
 

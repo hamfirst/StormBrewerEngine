@@ -1,7 +1,9 @@
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessListener;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -9,6 +11,7 @@ import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.NonEmptyInputValidator;
 import com.intellij.openapi.ui.popup.*;
+import com.intellij.openapi.util.Key;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiDirectory;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
 
@@ -56,7 +60,36 @@ class IdentifierNameValidator implements  InputValidator {
     }
 }
 
+class TemplateListProcessListener implements ProcessListener {
 
+    private String string = "";
+    private String options[];
+
+    @Override
+    public void startNotified(@NotNull ProcessEvent event) {
+
+    }
+
+    @Override
+    public void processTerminated(@NotNull ProcessEvent event) {
+        options = string.split("[\\r\\n]+");
+    }
+
+    @Override
+    public void processWillTerminate(@NotNull ProcessEvent event, boolean willBeDestroyed) {
+
+    }
+
+    @Override
+    public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
+        string += event.getText();
+    }
+
+    String[] getOptions()
+    {
+        return options;
+    }
+}
 
 class NamePopup implements Runnable
 {
@@ -90,17 +123,10 @@ class NamePopup implements Runnable
         command.add(rootdir + "/addcode");
         command.add(_selectedType);
         command.add(className);
-        command.add(_directory);
-        command.add(rootdir);
-
-        if(_selectedType != "Class")
-        {
-            command.add("m");
-        }
 
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(command);
         generalCommandLine.setCharset(Charset.forName("UTF-8"));
-        generalCommandLine.setWorkDirectory(rootdir);
+        generalCommandLine.setWorkDirectory(_directory);
 
         ProcessHandler processHandler = null;
         try {
@@ -127,23 +153,34 @@ class TemplateList implements ListPopupStep<String>
     @NotNull
     @Override
     public List getValues() {
-        String[] templates = new String[]
-                {
-                        "Class",
-                        "Refl",
-                        "ReflCpp",
-                        "Component",
-                        "ServerObject",
-                        "PlayerState",
-                        "BotState",
-                        "Config",
-                        "EffectLayer",
-                        "Anchor",
-                        "Path",
-                        "Volume"
-                };
 
-        return Arrays.asList(templates);
+        String rootdir = _project.getBaseDir().getCanonicalPath();
+        ArrayList<String> command = new ArrayList<>();
+        command.add(rootdir + "/addcode");
+        command.add("-l");
+
+        GeneralCommandLine generalCommandLine = new GeneralCommandLine(command);
+        generalCommandLine.setCharset(Charset.forName("UTF-8"));
+        generalCommandLine.setWorkDirectory(rootdir);
+
+        try {
+
+            TemplateListProcessListener listener = new TemplateListProcessListener();
+
+            ProcessHandler processHandler = new OSProcessHandler(generalCommandLine);
+            processHandler.addProcessListener(listener);
+            processHandler.startNotify();
+            processHandler.waitFor();
+
+            List list = Arrays.asList(listener.getOptions());
+            list = list.subList(1, list.size());
+
+            return list;
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     @Override

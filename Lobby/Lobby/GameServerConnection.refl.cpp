@@ -303,26 +303,21 @@ void GameServerConnection::RequestMapList(DDSKey endpoint_id)
   m_Interface.Call(&UserConnection::SendData, endpoint_id, StormReflEncodeJson(map_list));
 }
 
-void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string password, GameInstanceData game_creation_data)
+void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string password, GameInitSettings game_creation_data)
 {
-  GameServerMapData * map = nullptr;
-  for (auto & map_data : m_Maps)
-  {
-    if (map_data.m_Map == game_creation_data.m_Map)
-    {
-      map = &map_data;
-    }
-  }
+#ifdef NET_USE_PLAYER_LIMIT
+  game_creation_data.m_PlayerCount = std::max(game_creation_data.m_PlayerCount, (uint8_t)0);
+  game_creation_data.m_PlayerCount = std::min(game_creation_data.m_PlayerCount, map->m_MaxPlayers);
+  game_creation_data.m_PlayerCount = std::max(game_creation_data.m_PlayerCount, map->m_MaxTeams);
+#endif
 
-  if (map == nullptr)
-  {
-    return;
-  }
+#ifdef NET_USE_SCORE_LIMIT
+  game_creation_data.m_ScoreLimit = std::max(game_creation_data.m_ScoreLimit, (uint16_t)0);
+#endif
 
-  game_creation_data.m_PlayerLimit = std::min(game_creation_data.m_PlayerLimit, map->m_MaxPlayers);
-  game_creation_data.m_PlayerLimit = std::max(game_creation_data.m_PlayerLimit, map->m_MaxTeams);
-  game_creation_data.m_ScoreLimit = std::max(game_creation_data.m_ScoreLimit, 0);
-  game_creation_data.m_TimeLimit = std::max(game_creation_data.m_TimeLimit, 0);
+#ifdef NET_USE_TIME_LIMIT
+  game_creation_data.m_TimeLimit = std::max(game_creation_data.m_TimeLimit, (uint16_t)0);
+#endif
 
   GameLobby new_lobby;
   new_lobby.m_MaxTeams = map->m_MaxTeams;
@@ -714,7 +709,7 @@ void GameServerConnection::KillGame(int game_id)
 }
 
 #ifdef ENABLE_BOTS
-void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInstanceData game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info)
+void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, GameInitSettings game_creation_data, std::vector<std::tuple<DDSKey, DDSKey, int>> player_info)
 {
   GameServerMapData * map = nullptr;
   for (auto & map_data : m_Maps)

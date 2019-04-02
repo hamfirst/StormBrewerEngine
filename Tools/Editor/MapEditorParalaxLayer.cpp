@@ -15,11 +15,11 @@
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Sprite/SpriteEngineData.h"
 
-#include "MapEditorParalaxLayer.h"
+#include "MapEditorParallaxLayer.h"
 #include "MapEditor.h"
 
 
-MapEditorParalaxLayer::MapEditorParalaxLayer(NotNullPtr<MapEditor> editor, MapDef & map, int layer_index) :
+MapEditorParallaxLayer::MapEditorParallaxLayer(NotNullPtr<MapEditor> editor, MapDef & map, int layer_index) :
   m_Editor(editor),
   m_Map(map),
   m_LayerIndex(layer_index),
@@ -28,74 +28,74 @@ MapEditorParalaxLayer::MapEditorParalaxLayer(NotNullPtr<MapEditor> editor, MapDe
 {
   HandleTextureChanged();
 
-  m_GetObject = CreateMirrorList<RMergeList, MapParalaxLayerObject, MapParalaxLayerObject, MapEditorParalaxObjectManagerElement, MapEditorParalaxLayer>(
+  m_GetObject = CreateMirrorList<RMergeList, MapParallaxLayerObject, MapParallaxLayerObject, MapEditorParallaxObjectManagerElement, MapEditorParallaxLayer>(
     m_ObjectMirror,
-    m_Map.m_ParalaxLayers[layer_index].m_Objects,
-    [this]() -> void * { auto layer = m_Map.m_ParalaxLayers.TryGet(m_LayerIndex); return layer ? &layer->m_Objects : nullptr; },
+    m_Map.m_ParallaxLayers[layer_index].m_Objects,
+    [this]() -> void * { auto layer = m_Map.m_ParallaxLayers.TryGet(m_LayerIndex); return layer ? &layer->m_Objects : nullptr; },
     "",
-    [](MapParalaxLayerObject & elem, NotNullPtr<MapEditorParalaxLayer>) -> MapParalaxLayerObject & { return elem; },
-    [](MapParalaxLayerObject & init_data, MapEditorParalaxObjectManagerElement & elem, std::size_t index, NotNullPtr<MapEditorParalaxLayer> ptr) {},
-    [](MapParalaxLayerObject & init_data, MapEditorParalaxObjectManagerElement & elem, std::size_t index, NotNullPtr<MapEditorParalaxLayer> ptr)
+    [](MapParallaxLayerObject & elem, NotNullPtr<MapEditorParallaxLayer>) -> MapParallaxLayerObject & { return elem; },
+    [](MapParallaxLayerObject & init_data, MapEditorParallaxObjectManagerElement & elem, std::size_t index, NotNullPtr<MapEditorParallaxLayer> ptr) {},
+    [](MapParallaxLayerObject & init_data, MapEditorParallaxObjectManagerElement & elem, std::size_t index, NotNullPtr<MapEditorParallaxLayer> ptr)
     {
-      elem.m_Object = MapEditorParalaxLayer::CreateObjectFromPath(init_data.m_File.data(), [] {});
+      elem.m_Object = MapEditorParallaxLayer::CreateObjectFromPath(init_data.m_File.data(), [] {});
     }, this);
 }
 
-void MapEditorParalaxLayer::AddParalaxObject(const MapParalaxLayerObject & paralax_object_data)
+void MapEditorParallaxLayer::AddParallaxObject(const MapParallaxLayerObject & parallax_object_data)
 {
   m_Editor->BeginTransaction();
-  m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.EmplaceBack(paralax_object_data);
+  m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.EmplaceBack(parallax_object_data);
   m_Editor->CommitChanges();
 }
 
-void MapEditorParalaxLayer::RemoveParalaxObject(std::size_t index)
+void MapEditorParallaxLayer::RemoveParallaxObject(std::size_t index)
 {
   ClearSelection();
 
   m_Editor->BeginTransaction();
-  m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.RemoveAt(index);
+  m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.RemoveAt(index);
   m_Editor->CommitChanges();
 }
 
-void MapEditorParalaxLayer::SetPreviewParalaxObjectPosition(const Vector2 & pos)
+void MapEditorParallaxLayer::SetPreviewParallaxObjectPosition(const Vector2 & pos)
 {
   m_PreviewPosition = pos;
 }
 
-void MapEditorParalaxLayer::ClearPreviewParalaxObject()
+void MapEditorParallaxLayer::ClearPreviewParallaxObject()
 {
   m_PreviewPosition.Clear();
 }
 
-void MapEditorParalaxLayer::CommitPreviewParalaxObject()
+void MapEditorParallaxLayer::CommitPreviewParallaxObject()
 {
   if (m_PreviewPosition.IsValid() == false)
   {
     return;
   }
 
-  m_Editor->CreateNewParalaxObject(m_LayerIndex, m_PreviewPosition.Value());
+  m_Editor->CreateNewParallaxObject(m_LayerIndex, m_PreviewPosition.Value());
 }
 
-void MapEditorParalaxLayer::SelectParalaxObjects(const Box & box)
+void MapEditorParallaxLayer::SelectParallaxObjects(const Box & box)
 {
   ClearSelection();
-  m_SelectedParalaxObjectOffset = {};
+  m_SelectedParallaxObjectOffset = {};
 
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetObject(elem.first);
 
     if (data->m_Frame && BoxIntersect(box, data->m_Frame.Value()))
     {
-      m_SelectedParalaxObjects.push_back(elem.first);
+      m_SelectedParallaxObjects.push_back(elem.first);
     }
   }
 }
 
-Optional<MapParalaxLayerObject> MapEditorParalaxLayer::FindParalaxObject(const Vector2 & pos)
+Optional<MapParallaxLayerObject> MapEditorParallaxLayer::FindParallaxObject(const Vector2 & pos)
 {
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
     auto data = m_GetObject(elem.first);
 
@@ -108,89 +108,89 @@ Optional<MapParalaxLayerObject> MapEditorParalaxLayer::FindParalaxObject(const V
   return{};
 }
 
-void MapEditorParalaxLayer::DropSelection()
+void MapEditorParallaxLayer::DropSelection()
 {
-  if (m_SelectedParalaxObjects.size() == 0)
+  if (m_SelectedParallaxObjects.size() == 0)
   {
     return;
   }
 
-  if (m_SelectedParalaxObjectOffset.x != 0 || m_SelectedParalaxObjectOffset.y != 0)
+  if (m_SelectedParallaxObjectOffset.x != 0 || m_SelectedParallaxObjectOffset.y != 0)
   {
     m_Editor->BeginTransaction();
-    for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+    for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
     {
-      if (vfind(m_SelectedParalaxObjects, elem.first))
+      if (vfind(m_SelectedParallaxObjects, elem.first))
       {
-        elem.second.m_XPosition += m_SelectedParalaxObjectOffset.x;
-        elem.second.m_YPosition += m_SelectedParalaxObjectOffset.y;
+        elem.second.m_XPosition += m_SelectedParallaxObjectOffset.x;
+        elem.second.m_YPosition += m_SelectedParallaxObjectOffset.y;
       }
     }
 
     m_Editor->CommitChanges();
   }
 
-  m_SelectedParalaxObjectOffset = {};
+  m_SelectedParallaxObjectOffset = {};
 }
 
-void MapEditorParalaxLayer::ClearSelection()
+void MapEditorParallaxLayer::ClearSelection()
 {
   DropSelection();
 
-  m_SelectedParalaxObjects.clear();
+  m_SelectedParallaxObjects.clear();
 }
 
-void MapEditorParalaxLayer::DeselectParalaxObjects()
+void MapEditorParallaxLayer::DeselectParallaxObjects()
 {
-  m_SelectedParalaxObjects.clear();
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  m_SelectedParallaxObjects.clear();
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
-    if (vfind(m_SelectedParalaxObjects, elem.first))
+    if (vfind(m_SelectedParallaxObjects, elem.first))
     {
-      elem.second.m_XPosition += m_SelectedParalaxObjectOffset.x;
-      elem.second.m_YPosition += m_SelectedParalaxObjectOffset.y;
+      elem.second.m_XPosition += m_SelectedParallaxObjectOffset.x;
+      elem.second.m_YPosition += m_SelectedParallaxObjectOffset.y;
     }
   }
 
-  m_SelectedParalaxObjects.clear();
-  m_SelectedParalaxObjectOffset = {};
+  m_SelectedParallaxObjects.clear();
+  m_SelectedParallaxObjectOffset = {};
 }
 
-void MapEditorParalaxLayer::DeleteSelectedParalaxObjects()
+void MapEditorParallaxLayer::DeleteSelectedParallaxObjects()
 {
-  if (m_SelectedParalaxObjects.size() == 0)
+  if (m_SelectedParallaxObjects.size() == 0)
   {
     return;
   }
 
   m_Editor->BeginTransaction();
 
-  for (auto index : m_SelectedParalaxObjects)
+  for (auto index : m_SelectedParallaxObjects)
   {
-    m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.RemoveAt(index);
+    m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.RemoveAt(index);
   }
 
-  m_SelectedParalaxObjects.clear();
-  m_SelectedParalaxObjectOffset = {};
+  m_SelectedParallaxObjects.clear();
+  m_SelectedParallaxObjectOffset = {};
 
   m_Editor->CommitChanges();
 }
 
-void MapEditorParalaxLayer::MoveSelection(const Vector2 & offset)
+void MapEditorParallaxLayer::MoveSelection(const Vector2 & offset)
 {
-  m_SelectedParalaxObjectOffset = offset;
+  m_SelectedParallaxObjectOffset = offset;
 }
 
-bool MapEditorParalaxLayer::IsOnSelectedParalaxObject(const Vector2 & pos)
+bool MapEditorParallaxLayer::IsOnSelectedParallaxObject(const Vector2 & pos)
 {
-  for (auto selection : m_SelectedParalaxObjects)
+  for (auto selection : m_SelectedParallaxObjects)
   {
-    if (m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.HasAt(selection) == false)
+    if (m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.HasAt(selection) == false)
     {
       continue;
     }
 
-    auto & ParalaxObject = m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects[selection];
+    auto & ParallaxObject = m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects[selection];
     auto data = m_GetObject(selection);
 
     if (data == nullptr || data->m_Frame == false)
@@ -208,30 +208,30 @@ bool MapEditorParalaxLayer::IsOnSelectedParalaxObject(const Vector2 & pos)
   return false;
 }
 
-void MapEditorParalaxLayer::SetSingleSelection(std::size_t ParalaxObject_index)
+void MapEditorParallaxLayer::SetSingleSelection(std::size_t ParallaxObject_index)
 {
   ClearSelection();
-  m_SelectedParalaxObjects.push_back(ParalaxObject_index);
+  m_SelectedParallaxObjects.push_back(ParallaxObject_index);
 }
 
-Optional<std::size_t> MapEditorParalaxLayer::GetSingleSelectionIndex()
+Optional<std::size_t> MapEditorParallaxLayer::GetSingleSelectionIndex()
 {
-  if (m_SelectedParalaxObjects.size() != 1)
+  if (m_SelectedParallaxObjects.size() != 1)
   {
     return{};
   }
 
-  if (m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.HasAt(m_SelectedParalaxObjects[0]) == false)
+  if (m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.HasAt(m_SelectedParallaxObjects[0]) == false)
   {
     return{};
   }
 
-  return m_SelectedParalaxObjects[0];
+  return m_SelectedParallaxObjects[0];
 }
 
-void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+void MapEditorParallaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
-  auto layer = m_Map.m_ParalaxLayers.TryGet(m_LayerIndex);
+  auto layer = m_Map.m_ParallaxLayers.TryGet(m_LayerIndex);
   if (layer == nullptr)
   {
     return;
@@ -248,8 +248,8 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
 
     auto time = (float)GetTimeSeconds();
 
-    float offset_x = (layer->m_ParalaxX == 0.0f ? 0.0f : (screen_center.x / -layer->m_ParalaxX.AsFloat())) + time * layer->m_VelocityX.AsFloat() + layer->m_OffsetX.AsFloat();
-    float offset_y = (layer->m_ParalaxY == 0.0f ? 0.0f : (screen_center.y / -layer->m_ParalaxY.AsFloat())) + time * layer->m_VelocityY.AsFloat() + layer->m_OffsetY.AsFloat();
+    float offset_x = (layer->m_ParallaxX == 0.0f ? 0.0f : (screen_center.x / -layer->m_ParallaxX.AsFloat())) + time * layer->m_VelocityX.AsFloat() + layer->m_OffsetX.AsFloat();
+    float offset_y = (layer->m_ParallaxY == 0.0f ? 0.0f : (screen_center.y / -layer->m_ParallaxY.AsFloat())) + time * layer->m_VelocityY.AsFloat() + layer->m_OffsetY.AsFloat();
 
     offset_x *= (float)texture->GetWidth() / (float)width;
     offset_y *= (float)texture->GetHeight() / (float)height;
@@ -311,53 +311,53 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
     render_state.Draw();
   }
 
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
-    if (elem.second.m_Type != MapParalaxLayerObjectType::kTexture)
+    if (elem.second.m_Type != MapParallaxLayerObjectType::kTexture)
     {
       continue;
     }
 
     Vector2 pos = Vector2(elem.second.m_XPosition, elem.second.m_YPosition);
-    if (vfind(m_SelectedParalaxObjects, elem.first))
+    if (vfind(m_SelectedParallaxObjects, elem.first))
     {
-      pos += m_SelectedParalaxObjectOffset;
+      pos += m_SelectedParallaxObjectOffset;
     }
 
     auto data = m_GetObject(elem.first);
     data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state);
   }
 
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
-    if (elem.second.m_Type != MapParalaxLayerObjectType::kSprite)
+    if (elem.second.m_Type != MapParallaxLayerObjectType::kSprite)
     {
       continue;
     }
 
     Vector2 pos = Vector2(elem.second.m_XPosition, elem.second.m_YPosition);
 
-    if (vfind(m_SelectedParalaxObjects, elem.first))
+    if (vfind(m_SelectedParallaxObjects, elem.first))
     {
-      pos += m_SelectedParalaxObjectOffset;
+      pos += m_SelectedParallaxObjectOffset;
     }
 
     auto data = m_GetObject(elem.first);
     data->m_Frame = DrawObject(data->m_Object, elem.second, pos, buffer, viewport_bounds, screen_center, render_state);
   }
 
-  for (auto elem : m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects)
+  for (auto elem : m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects)
   {
-    if (elem.second.m_Type != MapParalaxLayerObjectType::kVfx)
+    if (elem.second.m_Type != MapParallaxLayerObjectType::kVfx)
     {
       continue;
     }
 
     Vector2 pos = Vector2(elem.second.m_XPosition, elem.second.m_YPosition);
 
-    if (vfind(m_SelectedParalaxObjects, elem.first))
+    if (vfind(m_SelectedParallaxObjects, elem.first))
     {
-      pos += m_SelectedParalaxObjectOffset;
+      pos += m_SelectedParallaxObjectOffset;
     }
 
     auto data = m_GetObject(elem.first);
@@ -365,19 +365,19 @@ void MapEditorParalaxLayer::Draw(VertexBuffer & buffer, const Box & viewport_bou
   }
 }
 
-void MapEditorParalaxLayer::DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+void MapEditorParallaxLayer::DrawPreviewParallaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   if (m_PreviewPosition.IsValid() == false)
   {
     return;
   }
 
-  DrawObject(m_Editor->GetParalaxObject(), m_Editor->GetParalaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center, render_state);
+  DrawObject(m_Editor->GetParallaxObject(), m_Editor->GetParallaxObjectInitData(), m_PreviewPosition.Value(), buffer, viewport_bounds, screen_center, render_state);
 }
 
-void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+void MapEditorParallaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
-  if (m_SelectedParalaxObjects.size() == 0)
+  if (m_SelectedParallaxObjects.size() == 0)
   {
     return;
   }
@@ -385,9 +385,9 @@ void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Bo
   LineVertexBufferBuilder line_builder;
   QuadVertexBuilderInfo quad;
 
-  for (auto selection : m_SelectedParalaxObjects)
+  for (auto selection : m_SelectedParallaxObjects)
   {
-    if (m_Map.m_ParalaxLayers[m_LayerIndex].m_Objects.HasAt(selection) == false)
+    if (m_Map.m_ParallaxLayers[m_LayerIndex].m_Objects.HasAt(selection) == false)
     {
       continue;
     }
@@ -423,7 +423,7 @@ void MapEditorParalaxLayer::DrawSelection(VertexBuffer & vertex_buffer, const Bo
   render_state.Draw();
 }
 
-Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
+Optional<Box> MapEditorParallaxLayer::DrawObject(MapEditorParallaxObjectType & object, MapParallaxLayerObject & object_data,
   const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   auto texture_link = object.Get<TextureAsset::LoadCallbackLink>();
@@ -521,32 +521,32 @@ Optional<Box> MapEditorParalaxLayer::DrawObject(MapEditorParalaxObjectType & obj
   return {};
 }
 
-void MapEditorParalaxLayer::ToggleHidden()
+void MapEditorParallaxLayer::ToggleHidden()
 {
   m_Hidden = !m_Hidden;
 }
 
-void MapEditorParalaxLayer::SetHidden(bool hidden)
+void MapEditorParallaxLayer::SetHidden(bool hidden)
 {
   m_Hidden = hidden;
 }
 
-bool MapEditorParalaxLayer::IsHidden()
+bool MapEditorParallaxLayer::IsHidden()
 {
   return m_Hidden;
 }
 
-void MapEditorParalaxLayer::ToggleColapsed()
+void MapEditorParallaxLayer::ToggleColapsed()
 {
   m_Collapsed = !m_Collapsed;
 }
 
-bool MapEditorParalaxLayer::IsCollapsed()
+bool MapEditorParallaxLayer::IsCollapsed()
 {
   return m_Collapsed;
 }
 
-Optional<MapParalaxLayerObjectType> MapEditorParalaxLayer::GetParalaxTypeForPath(czstr file_path)
+Optional<MapParallaxLayerObjectType> MapEditorParallaxLayer::GetParallaxTypeForPath(czstr file_path)
 {
   std::string path = file_path;
   ConvertToCanonicalPath(path, GetCanonicalRootPath());
@@ -554,15 +554,15 @@ Optional<MapParalaxLayerObjectType> MapEditorParalaxLayer::GetParalaxTypeForPath
 
   if (ext == "png")
   {
-    return MapParalaxLayerObjectType::kTexture;
+    return MapParallaxLayerObjectType::kTexture;
   }
   else if (ext == "sprite")
   {
-    return MapParalaxLayerObjectType::kSprite;
+    return MapParallaxLayerObjectType::kSprite;
   }
   else if (ext == "vfx")
   {
-    return MapParalaxLayerObjectType::kVfx;
+    return MapParallaxLayerObjectType::kVfx;
   }
   else
   {
@@ -570,9 +570,9 @@ Optional<MapParalaxLayerObjectType> MapEditorParalaxLayer::GetParalaxTypeForPath
   }
 }
 
-void MapEditorParalaxLayer::HandleTextureChanged()
+void MapEditorParallaxLayer::HandleTextureChanged()
 {
-  auto layer = m_Map.m_ParalaxLayers.TryGet(m_LayerIndex);
+  auto layer = m_Map.m_ParallaxLayers.TryGet(m_LayerIndex);
   if(layer == nullptr)
   {
     return;

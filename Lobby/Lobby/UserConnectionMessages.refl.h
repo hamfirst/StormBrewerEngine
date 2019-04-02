@@ -7,8 +7,10 @@
 
 #include <HurricaneDDS/DDSKey.h>
 
-#include "GameData.refl.h"
-#include "LobbyConfig.h"
+#include "Lobby/GameData.refl.h"
+#include "Lobby/LobbyConfig.h"
+
+#include "Game/GameNetworkData.refl.h"
 
 
 struct GeolocationResponse

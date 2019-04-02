@@ -3,7 +3,8 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "GameServerMessages.refl.h"
-#include "GameData.refl.meta.h"
+#include "Game/GameNetworkData.refl.meta.h"
+#include "Lobby/GameData.refl.meta.h"
 
 
 template <>
@@ -695,7 +696,7 @@ template <>
 struct StormReflTypeInfo<GameServerAuthenticateResponse>
 {
   using MyBase = void;
-  static constexpr int fields_n = 7;
+  static constexpr int fields_n = 5;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -788,15 +789,15 @@ template <>
 struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<2>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_Location"; }
+  static constexpr auto GetName() { return "m_Zone"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xA8B25DE5; }
+  static constexpr unsigned GetFieldNameHash() { return 0x9E765518; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_Location; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_Location; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_Location; }
+  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_Zone; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_Zone; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_Zone; }
 };
 
 template <typename Self>
@@ -804,24 +805,24 @@ struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data<2, Self> : 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_Location; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_Location; }
-  void SetDefault() { self.m_Location = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_Location; }
+  match_const_t<Self, std::string> & Get() { return self.m_Zone; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_Zone; }
+  void SetDefault() { self.m_Zone = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_Zone; }
 };
 
 template <>
 struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<3>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_Host"; }
+  static constexpr auto GetName() { return "m_ResourceId"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xF1BA86E2; }
+  static constexpr unsigned GetFieldNameHash() { return 0x064C957C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_Host; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_Host; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_Host; }
+  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_ResourceId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_ResourceId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_ResourceId; }
 };
 
 template <typename Self>
@@ -829,24 +830,24 @@ struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data<3, Self> : 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_Host; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_Host; }
-  void SetDefault() { self.m_Host = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_Host; }
+  match_const_t<Self, std::string> & Get() { return self.m_ResourceId; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ResourceId; }
+  void SetDefault() { self.m_ResourceId = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_ResourceId; }
 };
 
 template <>
 struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<4>
 {
-  using member_type = int; // int
-  static constexpr auto GetName() { return "m_GamePort"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x43BE2CE3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "m_ExternalIp"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x371391DE; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 4; }
-  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_GamePort; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_GamePort; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_GamePort; }
+  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_ExternalIp; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_ExternalIp; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_ExternalIp; }
 };
 
 template <typename Self>
@@ -854,59 +855,9 @@ struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data<4, Self> : 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int> & Get() { return self.m_GamePort; }
-  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_GamePort; }
-  void SetDefault() { self.m_GamePort = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_GamePort; }
-};
-
-template <>
-struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<5>
-{
-  using member_type = int; // int
-  static constexpr auto GetName() { return "m_PingPort"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xFA7B7B78; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 5; }
-  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_PingPort; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_PingPort; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_PingPort; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data<5, Self> : public StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<5>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, int> & Get() { return self.m_PingPort; }
-  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_PingPort; }
-  void SetDefault() { self.m_PingPort = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_PingPort; }
-};
-
-template <>
-struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<6>
-{
-  using member_type = std::vector<GameServerMapData>; // std::vector<GameServerMapData, std::allocator<GameServerMapData> >
-  static constexpr auto GetName() { return "m_Maps"; }
-  static constexpr auto GetType() { return "std::vector<GameServerMapData, std::allocator<GameServerMapData> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x79B39DBA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x2BAFCD8B; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 6; }
-  static constexpr auto GetMemberPtr() { return &GameServerAuthenticateResponse::m_Maps; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerAuthenticateResponse *>(obj); return &ptr->m_Maps; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerAuthenticateResponse *>(obj); return &ptr->m_Maps; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameServerAuthenticateResponse>::field_data<6, Self> : public StormReflTypeInfo<GameServerAuthenticateResponse>::field_data_static<6>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<GameServerMapData>> & Get() { return self.m_Maps; }
-  std::add_const_t<std::remove_reference_t<std::vector<GameServerMapData>>> & Get() const { return self.m_Maps; }
-  void SetDefault() { self.m_Maps = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_Maps; }
+  match_const_t<Self, std::string> & Get() { return self.m_ExternalIp; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ExternalIp; }
+  void SetDefault() { self.m_ExternalIp = StormReflTypeInfo<GameServerAuthenticateResponse>::GetDefault().m_ExternalIp; }
 };
 
 template <>

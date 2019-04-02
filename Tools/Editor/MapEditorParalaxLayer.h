@@ -13,43 +13,43 @@
 
 class MapEditor;
 
-using MapEditorParalaxObjectType = Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink, VisualEffectLoadLink>;
+using MapEditorParallaxObjectType = Variant<TextureAsset::LoadCallbackLink, SpriteLoadLink, VisualEffectLoadLink>;
 
-struct MapEditorParalaxObjectManagerElement
+struct MapEditorParallaxObjectManagerElement
 {
-  MapEditorParalaxObjectType m_Object;
+  MapEditorParallaxObjectType m_Object;
   Optional<Box> m_Frame;
 };
 
-class MapEditorParalaxLayer
+class MapEditorParallaxLayer
 {
 public:
-  MapEditorParalaxLayer(NotNullPtr<MapEditor> editor, MapDef & map, int layer_index);
+  MapEditorParallaxLayer(NotNullPtr<MapEditor> editor, MapDef & map, int layer_index);
 
-  void AddParalaxObject(const MapParalaxLayerObject & paralax_object_data);
-  void RemoveParalaxObject(std::size_t index);
+  void AddParallaxObject(const MapParallaxLayerObject & parallax_object_data);
+  void RemoveParallaxObject(std::size_t index);
 
-  void SetPreviewParalaxObjectPosition(const Vector2 & pos);
-  void ClearPreviewParalaxObject();
-  void CommitPreviewParalaxObject();
+  void SetPreviewParallaxObjectPosition(const Vector2 & pos);
+  void ClearPreviewParallaxObject();
+  void CommitPreviewParallaxObject();
 
-  void SelectParalaxObjects(const Box & box);
-  Optional<MapParalaxLayerObject> FindParalaxObject(const Vector2 & pos);
+  void SelectParallaxObjects(const Box & box);
+  Optional<MapParallaxLayerObject> FindParallaxObject(const Vector2 & pos);
   void DropSelection();
   void ClearSelection();
-  void DeselectParalaxObjects();
-  void DeleteSelectedParalaxObjects();
+  void DeselectParallaxObjects();
+  void DeleteSelectedParallaxObjects();
   void MoveSelection(const Vector2 & offset);
-  bool IsOnSelectedParalaxObject(const Vector2 & pos);
+  bool IsOnSelectedParallaxObject(const Vector2 & pos);
 
-  void SetSingleSelection(std::size_t paralax_object_index);
+  void SetSingleSelection(std::size_t parallax_object_index);
   Optional<std::size_t> GetSingleSelectionIndex();
 
   void Draw(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
-  void DrawPreviewParalaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
+  void DrawPreviewParallaxObject(VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
   void DrawSelection(VertexBuffer & vertex_buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
-  Optional<Box> DrawObject(MapEditorParalaxObjectType & object, MapParalaxLayerObject & object_data, 
+  Optional<Box> DrawObject(MapEditorParallaxObjectType & object, MapParallaxLayerObject & object_data,
     const Vector2 & pos, VertexBuffer & buffer, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
   void ToggleHidden();
@@ -59,22 +59,22 @@ public:
   void ToggleColapsed();
   bool IsCollapsed();
 
-  static Optional<MapParalaxLayerObjectType> GetParalaxTypeForPath(czstr file_path);
+  static Optional<MapParallaxLayerObjectType> GetParallaxTypeForPath(czstr file_path);
 
   template <typename Updater>
-  static MapEditorParalaxObjectType CreateObjectFromPath(czstr file_path, Updater && updater)
+  static MapEditorParallaxObjectType CreateObjectFromPath(czstr file_path, Updater && updater)
   {
-    auto type = GetParalaxTypeForPath(file_path);
+    auto type = GetParallaxTypeForPath(file_path);
 
     if (type)
     {
       switch (type.Value())
       {
-      case MapParalaxLayerObjectType::kSprite:
+      case MapParallaxLayerObjectType::kSprite:
         return SpriteResource::LoadWithCallback(file_path, [updater](NullOptPtr<SpriteResource>) { updater(); });
-      case MapParalaxLayerObjectType::kTexture:
+      case MapParallaxLayerObjectType::kTexture:
         return TextureAsset::LoadWithCallback(file_path, [updater](NullOptPtr<TextureAsset>) { updater(); });
-      case MapParalaxLayerObjectType::kVfx:
+      case MapParallaxLayerObjectType::kVfx:
         return VisualEffectResource::LoadWithCallback(file_path, [updater](NullOptPtr<VisualEffectResource>) { updater(); });
       }
     }
@@ -94,11 +94,11 @@ private:
 
   Optional<Vector2> m_PreviewPosition;
 
-  std::vector<std::size_t> m_SelectedParalaxObjects;
-  Vector2 m_SelectedParalaxObjectOffset;
+  std::vector<std::size_t> m_SelectedParallaxObjects;
+  Vector2 m_SelectedParallaxObjectOffset;
 
   DocumentSubValueListMirror m_ObjectMirror;
-  Delegate<NullOptPtr<MapEditorParalaxObjectManagerElement>, std::size_t> m_GetObject;
+  Delegate<NullOptPtr<MapEditorParallaxObjectManagerElement>, std::size_t> m_GetObject;
 
   bool m_Hidden = false;
   bool m_Collapsed = false;

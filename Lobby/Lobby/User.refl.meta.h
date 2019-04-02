@@ -4,8 +4,9 @@
 
 #include "User.refl.h"
 #include "HurricaneDDS/DDSThrottle.refl.meta.h"
-#include "SharedTypes.refl.meta.h"
-#include "GameData.refl.meta.h"
+#include "Game/GameNetworkData.refl.meta.h"
+#include "Lobby/SharedTypes.refl.meta.h"
+#include "Lobby/GameData.refl.meta.h"
 
 
 template <>

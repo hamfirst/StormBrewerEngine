@@ -17,23 +17,14 @@ struct GamePlayerData
   std::string m_Name;
 
   int m_Admin;
+  int m_Icon;
+  int m_Title;
   int m_Celebration;
   bool m_NewPlayer;
 
 #ifdef ENABLE_SQUADS
   std::string m_Squad;
 #endif
-};
-
-struct GameInstanceData
-{
-  STORM_REFL;
-  std::string m_Name;
-  std::string m_Map;
-
-  int m_TimeLimit = 0;
-  int m_ScoreLimit = 0;
-  int m_PlayerLimit = 0;
 };
 
 struct GameStatsData

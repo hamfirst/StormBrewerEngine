@@ -1,41 +1,41 @@
 
-#include "MapEditorToolParalaxObjectLayerDraw.h"
-#include "MapEditorToolParalaxObjectLayerSelect.h"
+#include "MapEditorToolParallaxObjectLayerDraw.h"
+#include "MapEditorToolParallaxObjectLayerSelect.h"
 #include "MapEditor.h"
 
-MapEditorToolParalaxObjectLayerDraw::MapEditorToolParalaxObjectLayerDraw(MapEditor & map_editor, int layer_index) :
+MapEditorToolParallaxObjectLayerDraw::MapEditorToolParallaxObjectLayerDraw(MapEditor & map_editor, int layer_index) :
   MapEditorToolBase(map_editor),
   m_LayerIndex(layer_index)
 {
 
 }
 
-void MapEditorToolParalaxObjectLayerDraw::Init()
+void MapEditorToolParallaxObjectLayerDraw::Init()
 {
-  auto layer = m_MapEditor.GetParalaxManager().GetLayerManager(m_LayerIndex);
+  auto layer = m_MapEditor.GetParallaxManager().GetLayerManager(m_LayerIndex);
   if (layer)
   {
-    layer->SetPreviewParalaxObjectPosition({});
+    layer->SetPreviewParallaxObjectPosition({});
   }
 }
 
-void MapEditorToolParalaxObjectLayerDraw::Cleanup()
+void MapEditorToolParallaxObjectLayerDraw::Cleanup()
 {
-  auto layer = m_MapEditor.GetParalaxManager().GetLayerManager(m_LayerIndex);
+  auto layer = m_MapEditor.GetParallaxManager().GetLayerManager(m_LayerIndex);
   if (layer)
   {
-    layer->ClearPreviewParalaxObject();
+    layer->ClearPreviewParallaxObject();
   }
 }
 
-void MapEditorToolParalaxObjectLayerDraw::RightClick()
+void MapEditorToolParallaxObjectLayerDraw::RightClick()
 {
-  m_MapEditor.GetViewer().SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerSelect>{}, m_LayerIndex);
+  m_MapEditor.GetViewer().SetTool(MapEditorTool<MapEditorToolParallaxObjectLayerSelect>{}, m_LayerIndex);
 }
 
-void MapEditorToolParalaxObjectLayerDraw::DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl)
+void MapEditorToolParallaxObjectLayerDraw::DrawPreview(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
-  auto layer = m_MapEditor.GetParalaxManager().GetLayerManager(m_LayerIndex);
+  auto layer = m_MapEditor.GetParallaxManager().GetLayerManager(m_LayerIndex);
   if (layer == nullptr)
   {
     return;
@@ -43,17 +43,17 @@ void MapEditorToolParalaxObjectLayerDraw::DrawPreview(const Vector2 & pos, bool 
 
   auto snapped_pos = pos;
   m_MapEditor.GetViewer().SnapToGrid(snapped_pos);
-  layer->SetPreviewParalaxObjectPosition(snapped_pos);
+  layer->SetPreviewParallaxObjectPosition(snapped_pos);
 }
 
-bool MapEditorToolParalaxObjectLayerDraw::DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl)
+bool MapEditorToolParallaxObjectLayerDraw::DrawStart(const Vector2 & pos, bool alt, bool shift, bool ctrl)
 {
-  auto layer = m_MapEditor.GetParalaxManager().GetLayerManager(m_LayerIndex);
+  auto layer = m_MapEditor.GetParallaxManager().GetLayerManager(m_LayerIndex);
   if (layer == nullptr)
   {
     return false;
   }
 
-  layer->CommitPreviewParalaxObject();
+  layer->CommitPreviewParallaxObject();
   return true;
 }

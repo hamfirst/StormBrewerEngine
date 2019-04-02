@@ -3,10 +3,10 @@
 #include "Foundation/Network/WebSocket.h"
 #include "Foundation/Delegate/Delegate.h"
 
-#include "GameServerMessages.refl.h"
+#include "Game/GameNetworkData.refl.h"
+#include "Game/GameSimulationStats.refl.h"
 
-class MapList;
-struct SimStats;
+#include "Lobby/GameServerMessages.refl.h"
 
 using LobbyValidationCallback = Delegate<void, const Optional<GameServerAuthenticateUserSuccess> &>;
 
@@ -22,6 +22,7 @@ enum class LobbyServerConnectionState
   kConnecting,
   kAuthenticating,
   kConnected,
+  kRelocateConnecting,
   kRelocating,
 };
 
@@ -30,9 +31,9 @@ static const int kInvalidValidationRequestId = 0;
 class LobbyServerConnection
 {
 public:
-  LobbyServerConnection(MapList & map_list);
+  LobbyServerConnection(const char * lobby_host);
 
-  bool Connect();
+  void Connect();
   void Update();
 
   bool IsConnected();
@@ -52,8 +53,8 @@ public:
   void UpdateScore(uint64_t game_id, const std::string & score);
 
   void NotifyPlayerLeft(uint64_t user_id, uint64_t game_id);
-  void SendStats(uint64_t account_id, SimStats & stats, const GameInstanceData & settings);
-  void SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, SimStats>> & players, const std::vector<int> & team_scores);
+  void SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInstanceData & settings);
+  void SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, GameSimulationStats>> & players, const std::vector<int> & team_scores);
 
 protected:
 
@@ -67,13 +68,13 @@ protected:
 private:
   LobbyServerConnectionState m_State;
   WebSocket m_WebSocket;
+  std::string m_LobbyHost;
 
   bool m_WantsRedownload;
 
   std::vector<std::string> m_PendingMessages;
   uint64_t m_RelocationToken;
 
-  MapList & m_MapList;
   time_t m_LastPingTime;
 
   int m_NextValidationId;

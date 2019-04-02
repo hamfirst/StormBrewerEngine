@@ -24,9 +24,9 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
     m_EffectLayers.emplace_back(map_def, elem.first);
   }
 
-  for (auto elem : map_def.m_ParalaxLayers)
+  for (auto elem : map_def.m_ParallaxLayers)
   {
-    m_ParalaxLayers.emplace_back(map_def, elem.first, engine_state->GetVisualEffectManager());
+    m_ParallaxLayers.emplace_back(map_def, elem.first, engine_state->GetVisualEffectManager());
   }
 
   std::vector<Entity *> entities;
@@ -71,7 +71,7 @@ void MapInstance::Update(GameContainer & game_container)
     layer.Update();
   }
 
-  for (auto & layer : m_ParalaxLayers)
+  for (auto & layer : m_ParallaxLayers)
   {
     layer.Update();
   }
@@ -84,7 +84,7 @@ void MapInstance::Update(GameContainer & game_container)
 
 void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 {
-  for (auto & layer : m_ParalaxLayers)
+  for (auto & layer : m_ParallaxLayers)
   {
     draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {

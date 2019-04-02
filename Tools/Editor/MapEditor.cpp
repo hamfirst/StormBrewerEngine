@@ -24,8 +24,8 @@
 #include "MapEditorToolEntityLayerSelect.h"
 #include "MapEditorToolServerObjectLayerDraw.h"
 #include "MapEditorToolServerObjectLayerSelect.h"
-#include "MapEditorToolParalaxObjectLayerDraw.h"
-#include "MapEditorToolParalaxObjectLayerSelect.h"
+#include "MapEditorToolParallaxObjectLayerDraw.h"
+#include "MapEditorToolParallaxObjectLayerSelect.h"
 #include "MapEditorToolVolumeCreate.h"
 #include "MapEditorToolVolumeEditor.h"
 #include "MapEditorToolVolumeMultiEditor.h"
@@ -47,7 +47,7 @@ MapEditor::MapEditor(EditorContainer & editor_container, PropertyFieldDatabase &
   m_ManualTileLayers(".m_ManualTileLayers", this, m_Map, m_Map.m_ManualTileLayers),
   m_EntityLayers(".m_EntityLayers", this, m_Map, m_Map.m_EntityLayers),
   m_ServerObjectLayers(".m_ServerObjectLayers", this, m_Map, m_Map.m_ServerObjectLayers),
-  m_ParalaxLayers(".m_ParalaxLayers", this, m_Map, m_Map.m_ParalaxLayers),
+  m_ParallaxLayers(".m_ParallaxLayers", this, m_Map, m_Map.m_ParallaxLayers),
   m_EffectLayers(".m_EffectLayers", this, m_Map, m_Map.m_EffectLayers),
   m_Volumes(".m_Volumes", this, m_Map, m_Map.m_Volumes),
   m_Paths(".m_Paths", this, m_Map, m_Map.m_Paths),
@@ -80,10 +80,10 @@ MapEditor::MapEditor(EditorContainer & editor_container, PropertyFieldDatabase &
   m_Layout->addWidget(m_Properties.get(), 0, 2);
   m_Layout->addWidget(m_Selector.get(), 1, 1, 1, 2);
 
-  SetNotifyCallback(m_ParalaxInitData, [](void * this_ptr, const ReflectionChangeNotification & change)
+  SetNotifyCallback(m_ParallaxInitData, [](void * this_ptr, const ReflectionChangeNotification & change)
   {
     MapEditor * editor = static_cast<MapEditor *>(this_ptr);
-    editor->m_ParalaxInitObject = MapEditorParalaxLayer::CreateObjectFromPath(editor->m_ParalaxInitData.m_File.data(), [] {});
+    editor->m_ParallaxInitObject = MapEditorParallaxLayer::CreateObjectFromPath(editor->m_ParallaxInitData.m_File.data(), [] {});
   }, this);
 
   m_PropertyEditor = m_Properties->CreateWidget<PropertyEditor>();
@@ -119,8 +119,8 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     break;
   case MapEditorLayerItemType::kPathfinding:
     ClearLayerSelection();
-    m_PropertyEditor->LoadStruct(this, m_Map.m_PathfingindInfo,
-      [this, index = layer.m_Index]() -> void * { return &m_Map.m_PathfingindInfo; }, true);
+    m_PropertyEditor->LoadStruct(this, m_Map.m_PathfindingInfo,
+      [this, index = layer.m_Index]() -> void * { return &m_Map.m_PathfindingInfo; }, true);
     break;
   case MapEditorLayerItemType::kManualTileLayerParent:
   case MapEditorLayerItemType::kEntityLayerParent:
@@ -140,8 +140,8 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetEntitySelector()->hide();
     m_Selector->GetServerObjectSelector()->Clear();
     m_Selector->GetServerObjectSelector()->hide();
-    m_Selector->GetParalaxObjectSelector()->Clear();
-    m_Selector->GetParalaxObjectSelector()->hide();
+    m_Selector->GetParallaxObjectSelector()->Clear();
+    m_Selector->GetParallaxObjectSelector()->hide();
 
     m_Selector->GetTileSelector()->LoadManualTileLayer(layer.m_Index);
     break;
@@ -153,8 +153,8 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetEntitySelector()->SetLayer((int)layer.m_Index);
     m_Selector->GetServerObjectSelector()->Clear();
     m_Selector->GetServerObjectSelector()->hide();
-    m_Selector->GetParalaxObjectSelector()->Clear();
-    m_Selector->GetParalaxObjectSelector()->hide();
+    m_Selector->GetParallaxObjectSelector()->Clear();
+    m_Selector->GetParallaxObjectSelector()->hide();
     m_PropertyEditor->LoadStruct(this, m_Map.m_EntityLayers[layer.m_Index], 
       [this, index = layer.m_Index]() -> void * { return m_Map.m_EntityLayers.TryGet(static_cast<int>(index)); }, true);
     break;
@@ -166,8 +166,8 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     m_Selector->GetEntitySelector()->hide();
     m_Selector->GetServerObjectSelector()->show();
     m_Selector->GetServerObjectSelector()->SetLayer((int)layer.m_Index);
-    m_Selector->GetParalaxObjectSelector()->Clear();
-    m_Selector->GetParalaxObjectSelector()->hide();
+    m_Selector->GetParallaxObjectSelector()->Clear();
+    m_Selector->GetParallaxObjectSelector()->hide();
     m_PropertyEditor->LoadStruct(this, m_Map.m_ServerObjectLayers[layer.m_Index],
       [this, index = layer.m_Index]() -> void * { return m_Map.m_ServerObjectLayers.TryGet(static_cast<int>(index)); }, true);
     break;
@@ -208,46 +208,46 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
     }
     break;
 
-  case MapEditorLayerItemType::kParalaxLayer:
+  case MapEditorLayerItemType::kParallaxLayer:
 
     ClearSelectors();
-    m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index],
-      [this, index = layer.m_Index]() -> void * { return m_Map.m_ParalaxLayers.TryGet(static_cast<int>(index)); }, true);
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ParallaxLayers[layer.m_Index],
+      [this, index = layer.m_Index]() -> void * { return m_Map.m_ParallaxLayers.TryGet(static_cast<int>(index)); }, true);
     break;
 
-  case MapEditorLayerItemType::kCreateParalaxObject:
+  case MapEditorLayerItemType::kCreateParallaxObject:
     m_Selector->GetTileSelector()->hide();
     m_Selector->GetTileSelector()->Clear();
     m_Selector->GetEntitySelector()->Clear();
     m_Selector->GetEntitySelector()->hide();
     m_Selector->GetServerObjectSelector()->Clear();
     m_Selector->GetServerObjectSelector()->hide();
-    m_Selector->GetParalaxObjectSelector()->show();
-    m_Selector->GetParalaxObjectSelector()->SetLayer((int)layer.m_Index);
+    m_Selector->GetParallaxObjectSelector()->show();
+    m_Selector->GetParallaxObjectSelector()->SetLayer((int)layer.m_Index);
 
     {
-      auto property_data = GetProperyMetaData<MapParalaxLayerObject>(GetPropertyFieldDatabase());
-      m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParalaxInitData; }, "");
+      auto property_data = GetProperyMetaData<MapParallaxLayerObject>(GetPropertyFieldDatabase());
+      m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParallaxInitData; }, "");
     }
 
     break;
 
-  case MapEditorLayerItemType::kParalaxObject:
+  case MapEditorLayerItemType::kParallaxObject:
 
     ClearSelectors();
     
-    m_PropertyEditor->LoadStruct(this, m_Map.m_ParalaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex], 
+    m_PropertyEditor->LoadStruct(this, m_Map.m_ParallaxLayers[layer.m_Index].m_Objects[layer.m_SubIndex],
       [this, index = layer.m_Index, subindex = layer.m_SubIndex]() -> void * 
       { 
-        auto layer = m_Map.m_ParalaxLayers.TryGet(static_cast<int>(index));
-        auto paralax_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr; 
-        return paralax_object;
+        auto layer = m_Map.m_ParallaxLayers.TryGet(static_cast<int>(index));
+        auto parallax_object = layer ? layer->m_Objects.TryGet(subindex) : nullptr;
+        return parallax_object;
       }, true
     );
 
     if (change_viewer_position)
     {
-      m_Viewer->ZoomToParalaxObject(layer.m_Index, layer.m_SubIndex);
+      m_Viewer->ZoomToParallaxObject(layer.m_Index, layer.m_SubIndex);
     }
     break;
 
@@ -366,13 +366,13 @@ void MapEditor::ChangeLayerSelection(const MapEditorLayerSelection & layer, bool
   case MapEditorLayerItemType::kServerObjectLayer:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolServerObjectLayerSelect>{}, (int)layer.m_Index);
     break;
-  case MapEditorLayerItemType::kParalaxLayer:
-  case MapEditorLayerItemType::kCreateParalaxObject:
-    m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerSelect>{}, (int)layer.m_Index);
+  case MapEditorLayerItemType::kParallaxLayer:
+  case MapEditorLayerItemType::kCreateParallaxObject:
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolParallaxObjectLayerSelect>{}, (int)layer.m_Index);
     break;
-  case MapEditorLayerItemType::kParalaxObject:
-    m_ParalaxLayers.GetLayerManager(layer.m_Index)->SetSingleSelection(layer.m_SubIndex);
-    m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerSelect>{}, (int)layer.m_Index);
+  case MapEditorLayerItemType::kParallaxObject:
+    m_ParallaxLayers.GetLayerManager(layer.m_Index)->SetSingleSelection(layer.m_SubIndex);
+    m_Viewer->SetTool(MapEditorTool<MapEditorToolParallaxObjectLayerSelect>{}, (int)layer.m_Index);
     break;
   case MapEditorLayerItemType::kCreateVolume:
     m_Viewer->SetTool(MapEditorTool<MapEditorToolVolumeCreate>{});
@@ -426,7 +426,7 @@ void MapEditor::ClearLayerSelection()
 void MapEditor::CalculatePathfindingInfo()
 {
   std::vector<uint32_t> collision_hashes;
-  for (auto elem : m_Map.m_PathfingindInfo.m_CollisionMask)
+  for (auto elem : m_Map.m_PathfindingInfo.m_CollisionMask)
   {
     collision_hashes.push_back(crc32(elem.second.ToString()));
   }
@@ -467,8 +467,8 @@ void MapEditor::CalculatePathfindingInfo()
 
 #ifndef MAP_PLATFORMER_PATHFINDING
 
-  info.m_GridWidth = m_Map.m_PathfingindInfo.m_GridWidth;
-  info.m_GridHeight = m_Map.m_PathfingindInfo.m_GridHeight;
+  info.m_GridWidth = m_Map.m_PathfindingInfo.m_GridWidth;
+  info.m_GridHeight = m_Map.m_PathfindingInfo.m_GridHeight;
 
   auto size = bounds.Value().Size();
 
@@ -498,8 +498,8 @@ void MapEditor::CalculatePathfindingInfo()
     }
   }
 
-  int clearance_x = m_Map.m_PathfingindInfo.m_MaximumClearanceX / m_Map.m_PathfingindInfo.m_GridWidth;
-  int clearance_y = m_Map.m_PathfingindInfo.m_MaximumClearanceY / m_Map.m_PathfingindInfo.m_GridHeight;
+  int clearance_x = m_Map.m_PathfindingInfo.m_MaximumClearanceX / m_Map.m_PathfindingInfo.m_GridWidth;
+  int clearance_y = m_Map.m_PathfindingInfo.m_MaximumClearanceY / m_Map.m_PathfindingInfo.m_GridHeight;
   if (clearance_x != 0 && clearance_y != 0)
   {
     auto test_grid = [&](int x, int y)
@@ -619,8 +619,8 @@ void MapEditor::CalculatePathfindingInfo()
         break;
       }
 
-      auto clearance = coll_database.CheckClearance(pos, m_Map.m_PathfingindInfo.m_MaximumClearance, 0xFFFFFFFF);
-      if (clearance < m_Map.m_PathfingindInfo.m_MinimumClearance)
+      auto clearance = coll_database.CheckClearance(pos, m_Map.m_PathfindingInfo.m_MaximumClearance, 0xFFFFFFFF);
+      if (clearance < m_Map.m_PathfindingInfo.m_MinimumClearance)
       {
         break;
       }
@@ -722,8 +722,8 @@ void MapEditor::CalculatePathfindingInfo()
 #endif
 
   BeginTransaction();
-  m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
-  m_Map.m_PathfingindInfo.m_Valid = true;
+  m_Map.m_PathfindingInfo.m_CalculatedInfo = info;
+  m_Map.m_PathfindingInfo.m_Valid = true;
   CommitChanges();
 }
 
@@ -731,8 +731,8 @@ void MapEditor::ClearPathfindingInfo()
 {
   BeginTransaction();
   MapPathfindingCalculatedInfo info = {};
-  m_Map.m_PathfingindInfo.m_CalculatedInfo = info;
-  m_Map.m_PathfingindInfo.m_Valid = false;
+  m_Map.m_PathfindingInfo.m_CalculatedInfo = info;
+  m_Map.m_PathfindingInfo.m_Valid = false;
   CommitChanges();
 }
 
@@ -751,9 +751,9 @@ MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> & MapE
   return m_ServerObjectLayers;
 }
 
-MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & MapEditor::GetParalaxManager()
+MapEditorLayerManager<MapParallaxLayer, MapEditorParallaxLayer> & MapEditor::GetParallaxManager()
 {
-  return m_ParalaxLayers;
+  return m_ParallaxLayers;
 }
 
 MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & MapEditor::GetEffectManager()
@@ -820,15 +820,15 @@ void MapEditor::SetSelectedServerObject(int layer_index, czstr server_object_fil
   m_Selector->GetServerObjectSelector()->SetSelectedServerObject(server_object_file);
 }
 
-void MapEditor::SetSelectedParalaxObject(int layer_index, const MapParalaxLayerObject & paralax_object_data)
+void MapEditor::SetSelectedParallaxObject(int layer_index, const MapParallaxLayerObject & parallax_object_data)
 {
-  m_ParalaxInitData = paralax_object_data;
+  m_ParallaxInitData = parallax_object_data;
 
-  auto property_data = GetProperyMetaData<MapParalaxLayerObject>(GetPropertyFieldDatabase());
-  m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParalaxInitData; }, "");
+  auto property_data = GetProperyMetaData<MapParallaxLayerObject>(GetPropertyFieldDatabase());
+  m_PropertyEditor->LoadObject(this, property_data, false, [this]() -> void * { return &m_ParallaxInitData; }, "");
 
-  m_Viewer->SetTool(MapEditorTool<MapEditorToolParalaxObjectLayerDraw>{}, layer_index);
-  m_Selector->GetParalaxObjectSelector()->SetSelectedParalaxObject(paralax_object_data.m_File.data());
+  m_Viewer->SetTool(MapEditorTool<MapEditorToolParallaxObjectLayerDraw>{}, layer_index);
+  m_Selector->GetParallaxObjectSelector()->SetSelectedParallaxObject(parallax_object_data.m_File.data());
 }
 
 void MapEditor::ClearPropertyPanel()
@@ -948,38 +948,38 @@ void MapEditor::DuplicateAnchorData(int layer_index)
   ChangeLayerSelection(layer_selection);
 }
 
-MapParalaxLayerObject & MapEditor::GetParalaxObjectInitData() 
+MapParallaxLayerObject & MapEditor::GetParallaxObjectInitData()
 {
-  return m_ParalaxInitData;
+  return m_ParallaxInitData;
 }
 
-MapEditorParalaxObjectType & MapEditor::GetParalaxObject()
+MapEditorParallaxObjectType & MapEditor::GetParallaxObject()
 {
-  return m_ParalaxInitObject;
+  return m_ParallaxInitObject;
 }
 
-void MapEditor::CreateNewParalaxObject(int layer_index, const Vector2 & point)
+void MapEditor::CreateNewParallaxObject(int layer_index, const Vector2 & point)
 {
-  m_ParalaxInitData.m_XPosition = point.x;
-  m_ParalaxInitData.m_YPosition = point.y;
-  m_ParalaxLayers.GetLayerManager(layer_index)->AddParalaxObject(m_ParalaxInitData);
+  m_ParallaxInitData.m_XPosition = point.x;
+  m_ParallaxInitData.m_YPosition = point.y;
+  m_ParallaxLayers.GetLayerManager(layer_index)->AddParallaxObject(m_ParallaxInitData);
 }
 
-void MapEditor::CreateNewParalaxObject(czstr file_name, int layer_index, const Vector2 & point)
+void MapEditor::CreateNewParallaxObject(czstr file_name, int layer_index, const Vector2 & point)
 {
-  auto type = MapEditorParalaxLayer::GetParalaxTypeForPath(file_name);
+  auto type = MapEditorParallaxLayer::GetParallaxTypeForPath(file_name);
   if (type.IsValid() == false)
   {
     return;
   }
 
-  m_ParalaxInitData = {};
-  m_ParalaxInitData.m_File = file_name;
-  m_ParalaxInitData.m_Name = GetFileStemForCanonicalPath(file_name);
-  m_ParalaxInitData.m_XPosition = point.x;
-  m_ParalaxInitData.m_YPosition = point.y;
-  m_ParalaxInitData.m_Type = type.Value();
-  m_ParalaxLayers.GetLayerManager(layer_index)->AddParalaxObject(m_ParalaxInitData);
+  m_ParallaxInitData = {};
+  m_ParallaxInitData.m_File = file_name;
+  m_ParallaxInitData.m_Name = GetFileStemForCanonicalPath(file_name);
+  m_ParallaxInitData.m_XPosition = point.x;
+  m_ParallaxInitData.m_YPosition = point.y;
+  m_ParallaxInitData.m_Type = type.Value();
+  m_ParallaxLayers.GetLayerManager(layer_index)->AddParallaxObject(m_ParallaxInitData);
 }
 
 MapEditorTextures & MapEditor::GetTextures()

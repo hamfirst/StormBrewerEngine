@@ -18,7 +18,7 @@
 #include "MapEditorEntityManager.h"
 #include "MapEditorServerObjectManager.h"
 #include "MapEditorTileManager.h"
-#include "MapEditorParalaxLayer.h"
+#include "MapEditorParallaxLayer.h"
 #include "MapEditorEffectLayer.h"
 #include "MapEditorVolume.h"
 #include "MapEditorPath.h"
@@ -49,7 +49,7 @@ public:
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> & GetManualTileManager();
   MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> & GetEntityManager();
   MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> & GetServerObjectManager();
-  MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> & GetParalaxManager();
+  MapEditorLayerManager<MapParallaxLayer, MapEditorParallaxLayer> & GetParallaxManager();
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> & GetEffectManager();
   MapEditorLayerManager<MapVolume, MapEditorVolume> & GetVolumeManager();
   MapEditorLayerManager<MapPath, MapEditorPath> & GetPathManager();
@@ -64,7 +64,7 @@ public:
   void SelectManualAnimation(int layer_index, uint64_t frame_id);
   void SetSelectedEntity(int layer_index, czstr entity_file);
   void SetSelectedServerObject(int layer_index, czstr server_object_file);
-  void SetSelectedParalaxObject(int layer_index, const MapParalaxLayerObject & paralax_object_data);
+  void SetSelectedParallaxObject(int layer_index, const MapParallaxLayerObject & parallax_object_data);
 
   void ClearPropertyPanel();
   void ClearSelectors();
@@ -79,10 +79,10 @@ public:
   void CreateNewAnchor(const Vector2 & point);
   void DuplicateAnchorData(int layer_index);
 
-  MapParalaxLayerObject & GetParalaxObjectInitData();
-  MapEditorParalaxObjectType & GetParalaxObject();
-  void CreateNewParalaxObject(int layer_index, const Vector2 & point);
-  void CreateNewParalaxObject(czstr file_name, int layer_index, const Vector2 & point);
+  MapParallaxLayerObject & GetParallaxObjectInitData();
+  MapEditorParallaxObjectType & GetParallaxObject();
+  void CreateNewParallaxObject(int layer_index, const Vector2 & point);
+  void CreateNewParallaxObject(czstr file_name, int layer_index, const Vector2 & point);
 
   MapEditorTextures & GetTextures();
   NullOptPtr<MapDef> GetMap() override;
@@ -95,7 +95,7 @@ private:
   MapEditorLayerManager<MapManualTileLayer, MapEditorTileManager> m_ManualTileLayers;
   MapEditorLayerManager<MapEntityLayer, MapEditorEntityManager> m_EntityLayers;
   MapEditorLayerManager<MapServerObjectLayer, MapEditorServerObjectManager> m_ServerObjectLayers;
-  MapEditorLayerManager<MapParalaxLayer, MapEditorParalaxLayer> m_ParalaxLayers;
+  MapEditorLayerManager<MapParallaxLayer, MapEditorParallaxLayer> m_ParallaxLayers;
   MapEditorLayerManager<MapEffectLayer, MapEditorEffectLayer> m_EffectLayers;
   MapEditorLayerManager<MapVolume, MapEditorVolume> m_Volumes;
   MapEditorLayerManager<MapPath, MapEditorPath> m_Paths;
@@ -114,8 +114,8 @@ private:
   RPolymorphic<PathDataBase> m_PathInitData;
   MapEditorAnchorInitData m_AnchorInitData;
 
-  MapParalaxLayerObject m_ParalaxInitData;
-  MapEditorParalaxObjectType m_ParalaxInitObject;
+  MapParallaxLayerObject m_ParallaxInitData;
+  MapEditorParallaxObjectType m_ParallaxInitObject;
 
   PropertyEditor * m_PropertyEditor;
   bool m_IgnoreSelectionChanges;

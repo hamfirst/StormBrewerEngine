@@ -17,6 +17,7 @@ cmake_policy(SET CMP0071 OLD)
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 set(GENERIC_SRC_QTUtil 
             AnimationTrack.cpp
             DraggableList.cpp

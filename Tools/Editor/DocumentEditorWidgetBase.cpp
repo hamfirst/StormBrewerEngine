@@ -399,10 +399,10 @@ Optional<std::string> DocumentEditorWidgetBase::GetFileNameForAssetType(czstr as
     auto path = GetRootPath() + "VisualEffects";
     file_name = QFileDialog::getOpenFileName(this, tr("Open VFX"), path.data(), tr("VFX Files (*.vfx)")).toStdString();
   }
-  else if (!strcmp(asset_type, "paralax"))
+  else if (!strcmp(asset_type, "parallax"))
   {
     auto path = GetRootPath();
-    file_name = QFileDialog::getOpenFileName(this, tr("Open Paralax Layer Object"), path.data(), tr("Paralax Layer Files (*.png *.sprite *.vfx)")).toStdString();
+    file_name = QFileDialog::getOpenFileName(this, tr("Open Parallax Layer Object"), path.data(), tr("Parallax Layer Files (*.png *.sprite *.vfx)")).toStdString();
   }
   else
   {

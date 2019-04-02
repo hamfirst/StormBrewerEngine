@@ -17,6 +17,7 @@ cmake_policy(SET CMP0071 OLD)
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 set(GENERIC_SRC_Editor 
             AnimationFrameEditor.ui
             AtlasEditor.cpp
@@ -73,9 +74,9 @@ set(GENERIC_SRC_Editor
             MapEditorEntityManager.cpp
             MapEditorEntitySelector.cpp
             MapEditorLayerList.cpp
-            MapEditorParalaxLayer.cpp
-            MapEditorParalaxLayerManager.cpp
-            MapEditorParalaxObjectSelector.cpp
+            MapEditorParallaxLayer.cpp
+            MapEditorParallaxLayerManager.cpp
+            MapEditorParallaxObjectSelector.cpp
             MapEditorPath.cpp
             MapEditorPathManager.cpp
             MapEditorSelector.cpp
@@ -94,8 +95,8 @@ set(GENERIC_SRC_Editor
             MapEditorToolManualTileLayerDraw.cpp
             MapEditorToolManualTileLayerPreview.cpp
             MapEditorToolManualTileLayerSelect.cpp
-            MapEditorToolParalaxObjectLayerDraw.cpp
-            MapEditorToolParalaxObjectLayerSelect.cpp
+            MapEditorToolParallaxObjectLayerDraw.cpp
+            MapEditorToolParallaxObjectLayerSelect.cpp
             MapEditorToolPathCreate.cpp
             MapEditorToolPathEditor.cpp
             MapEditorToolPathMultiEditor.cpp
@@ -217,9 +218,9 @@ set(GENERIC_HEADER_Editor
             MapEditorLayer.h
             MapEditorLayerList.h
             MapEditorLayerManager.h
-            MapEditorParalaxLayer.h
-            MapEditorParalaxLayerManager.h
-            MapEditorParalaxObjectSelector.h
+            MapEditorParallaxLayer.h
+            MapEditorParallaxLayerManager.h
+            MapEditorParallaxObjectSelector.h
             MapEditorPath.h
             MapEditorPathManager.h
             MapEditorSelector.h
@@ -238,8 +239,8 @@ set(GENERIC_HEADER_Editor
             MapEditorToolManualTileLayerDraw.h
             MapEditorToolManualTileLayerPreview.h
             MapEditorToolManualTileLayerSelect.h
-            MapEditorToolParalaxObjectLayerDraw.h
-            MapEditorToolParalaxObjectLayerSelect.h
+            MapEditorToolParallaxObjectLayerDraw.h
+            MapEditorToolParallaxObjectLayerSelect.h
             MapEditorToolPathCreate.h
             MapEditorToolPathEditor.h
             MapEditorToolPathMultiEditor.h
@@ -371,7 +372,7 @@ if(GENERATE_REFL)
   foreach(REFL_FILE ${GENERIC_REFL_Editor})
     string(REPLACE ".refl.h" ".refl.meta.h" META_FILE ${REFL_FILE})
     add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}
-                       COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/StormTech -I${PROJECT_SOURCE_DIR}/Tools -I${PROJECT_SOURCE_DIR}/Shared -I${PROJECT_SOURCE_DIR}/Project -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+                       COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/StormTech -I${PROJECT_SOURCE_DIR}/Tools -I${PROJECT_SOURCE_DIR}/Shared -I${PROJECT_SOURCE_DIR}/Project -I${PROJECT_SOURCE_DIR}/Lobby -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
                        MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}
                        IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})
   endforeach()

@@ -58,6 +58,9 @@ double send_time;
 
 bool g_QuitServer = false;
 std::string g_ExternalIp;
+std::string g_ServerName;
+std::string g_ServerZone;
+std::string g_ServerResourceId;
 
 extern int g_LagSim;
 
@@ -139,6 +142,9 @@ int main(int argc, const char ** argv)
   bootstrap.PrintDebug();
 
   g_ExternalIp = bootstrap.Get("external_ip");
+  g_ServerName = bootstrap.Get("name");
+  g_ServerZone = bootstrap.Get("zone");
+  g_ServerResourceId = bootstrap.Get("id");
 
 #if defined(_LINUX) && !defined(_INCLUDEOS)
   if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
