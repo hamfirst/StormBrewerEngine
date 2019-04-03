@@ -5,7 +5,7 @@
 #include "SharedTypes.refl.h"
 #include "GameServerMessages.refl.h"
 
-struct GameLobbySettings : public GameInstanceData
+struct GameLobbySettings : public GameInitSettings
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameLobbySettings);
 };
@@ -71,7 +71,6 @@ public:
   void STORM_REFL_FUNC SetRemoteHost(std::string host);
   void STORM_REFL_FUNC GotMessage(GameServerMessageType cmd, std::string data);
 
-  void STORM_REFL_FUNC RequestMapList(DDSKey endpoint_id);
   void STORM_REFL_FUNC CreateGame(GamePlayerData creator_data, std::string password, GameInitSettings game_creation_data);
   void STORM_REFL_FUNC JoinUserToGame(int game_id, GamePlayerData user_data, std::string password, bool observer, bool force);
   void STORM_REFL_FUNC DestroyGame(int game_id);
@@ -124,12 +123,9 @@ public:
   bool m_Error;
 
   std::string m_ServerName;
-  std::string m_ServerLocation;
-  std::string m_ServerHost;
-  int m_GamePort;
-  int m_PingPort;
-
-  std::vector<GameServerMapData> m_Maps;
+  std::string m_ServerZone;
+  std::string m_ServerResourceId;
+  std::string m_ServerExternalIp;
 
 private:
 

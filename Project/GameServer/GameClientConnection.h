@@ -3,7 +3,7 @@
 
 #include "GameShared/GameProtocol.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 

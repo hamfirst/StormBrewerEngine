@@ -481,7 +481,7 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
-void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData creation_data, std::string password)
+void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings creation_data, std::string password)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
@@ -1519,7 +1519,7 @@ void User::RemoveCelebration(DDSResponder & responder, std::string celebration)
   DDSResponderCall(responder, "Celebration not found");
 }
 
-void User::UpdateStats(GameStatsData stats, GameInstanceData instance_data)
+void User::UpdateStats(GameStatsData stats, GameInitSettings instance_data)
 {
   StormReflAggregate(m_Data.m_Stats, stats);
   m_Data.m_LastGamePlayed = (int)time(nullptr);
@@ -2231,7 +2231,7 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
     }
 #endif
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
     if (cmd == "/resetservers")
     {
       if (m_LocalInfo.m_AdminLevel == 9)

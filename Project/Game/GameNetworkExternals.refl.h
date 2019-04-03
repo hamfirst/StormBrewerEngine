@@ -5,7 +5,8 @@
 
 #include <StormNet/NetReflection.h>
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
+
 #include "Game/GameServerTypes.h"
 #include "Game/GameNetworkData.refl.h"
 

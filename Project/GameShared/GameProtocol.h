@@ -14,7 +14,7 @@
 #include "Game/GameNetworkData.refl.meta.h"
 #include "Game/GameNetworkEvents.refl.meta.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 using ServerProtocolDef = NetProtocolDefinition<
   NetPipeMessage<ToServerMessage, NetPipeMode::kReliable>,

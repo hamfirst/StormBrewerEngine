@@ -37,7 +37,7 @@ struct UserConnection
   void STORM_REFL_FUNC HandleLocalDataUpdate(std::string data);
 
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   void STORM_REFL_FUNC HandleServerListUpdate(std::string data);
 #endif
 
@@ -49,7 +49,7 @@ struct UserConnection
   void STORM_REFL_FUNC HandleBanListUpdate(std::string data);
 #endif
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   void STORM_REFL_FUNC HandleGamePreviewUpdate(int request_id, std::string data);
   void STORM_REFL_FUNC HandleGamePreviewDestroyed(int request_id);
 #endif
@@ -67,7 +67,7 @@ public:
   uint64_t m_PlatformId;
   uint64_t m_UserId;
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   DDSKey m_GamePreviewServerId = 0;
   DDSKey m_GamePreviewSubscription = 0;
   int m_GamePreviewRequestId = 0;

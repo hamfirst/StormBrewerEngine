@@ -1,5 +1,5 @@
 #include "GameShared/GameSharedCommon.h"
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 #if NET_BACKEND == NET_BACKEND_WEBRTC
 #ifdef _MSC_VER

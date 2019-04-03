@@ -2598,7 +2598,7 @@ struct StormReflFuncInfo<User>::func_data_static<13>::param_info<2>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<14>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, GameInstanceData, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, GameInitSettings, std::string);
   using return_type = void;
   static constexpr int params_n = 4;
   static constexpr auto GetName() { return "CreateGame"; }
@@ -2634,11 +2634,11 @@ struct StormReflFuncInfo<User>::func_data_static<14>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<14>::param_info<2>
 {
-  using param_type = GameInstanceData;
+  using param_type = GameInitSettings;
   static constexpr auto GetName() { return "creation_data"; }
-  static constexpr auto GetType() { return "GameInstanceData"; }
+  static constexpr auto GetType() { return "GameInitSettings"; }
   static constexpr unsigned GetNameHash() { return 0x7085B547; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
 };
 
 template <>
@@ -4800,7 +4800,7 @@ struct StormReflFuncInfo<User>::func_data_static<70>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<71>
 {
-  using func_ptr_type = void (User::*)(GameStatsData, GameInstanceData);
+  using func_ptr_type = void (User::*)(GameStatsData, GameInitSettings);
   using return_type = void;
   static constexpr int params_n = 2;
   static constexpr auto GetName() { return "UpdateStats"; }
@@ -4826,11 +4826,11 @@ struct StormReflFuncInfo<User>::func_data_static<71>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<71>::param_info<1>
 {
-  using param_type = GameInstanceData;
+  using param_type = GameInitSettings;
   static constexpr auto GetName() { return "instance_data"; }
-  static constexpr auto GetType() { return "GameInstanceData"; }
+  static constexpr auto GetType() { return "GameInitSettings"; }
   static constexpr unsigned GetNameHash() { return 0x85F9A3A8; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
 };
 
 template <>

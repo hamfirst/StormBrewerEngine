@@ -41,7 +41,7 @@ using SharedObjectList = DDSSharedObjectTypeList<
 #ifdef ENABLE_BAN_LIST
     BanList,
 #endif
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
     ServerList,
 #endif
 #ifdef ENABLE_WELCOME_INFO

@@ -23,10 +23,12 @@ set(GENERIC_SRC_Lobby
             Channel.refl.cpp
             CommandParse.cpp
             CoordinatorState.cpp
+            Game.refl.cpp
             GameData.refl.cpp
             GameServerConnection.refl.cpp
             GameServerEndpoint.cpp
             LoadBalancer.cpp
+            LobbyLevelList.refl.cpp
             NodeState.cpp
             Rewards.refl.cpp
             ServerList.refl.cpp
@@ -58,6 +60,8 @@ set(GENERIC_HEADER_Lobby
             CommandParse.h
             CoordinatorState.h
             DataTypes.h
+            Game.refl.h
+            Game.refl.meta.h
             GameData.refl.h
             GameData.refl.meta.h
             GameServerConnection.refl.h
@@ -69,6 +73,8 @@ set(GENERIC_HEADER_Lobby
             GooglePlatform.refl.meta.h
             LoadBalancer.h
             LobbyConfig.h
+            LobbyLevelList.refl.h
+            LobbyLevelList.refl.meta.h
             NodeState.h
             ProjectSettings.h
             Rewards.refl.h
@@ -104,10 +110,12 @@ set(GENERIC_REFL_Lobby
             BotMessages.refl.h
             BuiltInChannel.refl.h
             Channel.refl.h
+            Game.refl.h
             GameData.refl.h
             GameServerConnection.refl.h
             GameServerMessages.refl.h
             GooglePlatform.refl.h
+            LobbyLevelList.refl.h
             Rewards.refl.h
             ServerList.refl.h
             ServerManager.refl.h

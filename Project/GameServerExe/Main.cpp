@@ -18,13 +18,13 @@
 
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
-#include "Game/GameNetworkSettings.h"
 
 #include "GameServer/GameServer.h"
 
 #include "ProjectSettings/ProjectName.h"
 #include "ProjectSettings/ProjectVersion.h"
 #include "ProjectSettings/ProjectPorts.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 #ifdef _MSC_VER
 #pragma comment(lib, "Winmm.lib")

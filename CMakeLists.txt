@@ -314,7 +314,7 @@ if(BUILD_TOOLS)
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generatecmake> ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
-  add_executable(addcode Dummy.cpp)
+  add_executable(addcode Dummy.cpp ProjectSettings/ProjectNetworkSettings.h)
   target_link_libraries(addcode addcodelib TemplateLib git2)
   set_target_properties(addcodelib PROPERTIES FOLDER Tools)
   set_target_properties(addcode PROPERTIES FOLDER Executable)

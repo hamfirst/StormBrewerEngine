@@ -6,7 +6,7 @@
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/GameEventReconciler.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "Game/GameMessages.refl.h"
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameSimulationEventCallbacks.h"

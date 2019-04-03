@@ -5,7 +5,7 @@
 #include "GameShared/GameProtocol.h"
 #include "GameShared/GameStageManager.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 #if NET_BACKEND == NET_BACKEND_WEBRTC
 #include <StormNetCustomBindings/NetServerBackendWebrtc.h>

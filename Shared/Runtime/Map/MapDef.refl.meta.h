@@ -18,7 +18,7 @@ struct StormReflEnumInfo<MapParallaxLayerObjectType>
 {
   static constexpr int elems_n = 3;
   static constexpr auto GetName() { return "MapParallaxLayerObjectType"; }
-  static constexpr auto GetNameHash() { return 0x459896D6; }
+  static constexpr auto GetNameHash() { return 0xBA0C8732; }
   template <int N> struct elems { };
 };
 
@@ -961,7 +961,7 @@ struct StormReflTypeInfo<MapParallaxLayerObject>
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "MapParallaxLayerObject"; }
-  static constexpr auto GetNameHash() { return 0xF8B4CF99; }
+  static constexpr auto GetNameHash() { return 0xC166EFC7; }
   static constexpr bool HasDefault() { return true; }
   static MapParallaxLayerObject & GetDefault() { static MapParallaxLayerObject def; return def; }
 
@@ -1027,7 +1027,7 @@ struct StormReflTypeInfo<MapParallaxLayerObject>::field_data_static<1>
   static constexpr auto GetName() { return "m_Type"; }
   static constexpr auto GetType() { return "REnum<MapParallaxLayerObjectType>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB243C236; }
-  static constexpr unsigned GetTypeNameHash() { return 0xEA67D680; }
+  static constexpr unsigned GetTypeNameHash() { return 0x2A4CBCA8; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &MapParallaxLayerObject::m_Type; }
@@ -1081,7 +1081,7 @@ template <>
 struct StormReflTypeInfo<MapParallaxLayerObject>::annotations<2>::annoation<0>
 {
   static constexpr const char * GetAnnotation() { return "file: parallax"; }
-  static constexpr uint32_t GetAnnotationHash() { return 0x774D48F8; }
+  static constexpr uint32_t GetAnnotationHash() { return 0xAC151BAE; }
 };
 
 template <>
@@ -1193,7 +1193,7 @@ struct StormReflTypeInfo<MapParallaxLayer>
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
   static constexpr auto GetName() { return "MapParallaxLayer"; }
-  static constexpr auto GetNameHash() { return 0xF0494FF1; }
+  static constexpr auto GetNameHash() { return 0xECA8B768; }
   static constexpr bool HasDefault() { return true; }
   static MapParallaxLayer & GetDefault() { static MapParallaxLayer def; return def; }
 
@@ -1422,7 +1422,7 @@ struct StormReflTypeInfo<MapParallaxLayer>::field_data_static<7>
   using member_type = RFloat; // RNumber<float>
   static constexpr auto GetName() { return "m_ParallaxX"; }
   static constexpr auto GetType() { return "RNumber<float>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x4A94EC25; }
+  static constexpr unsigned GetFieldNameHash() { return 0x88E51260; }
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 7; }
@@ -1447,7 +1447,7 @@ struct StormReflTypeInfo<MapParallaxLayer>::field_data_static<8>
   using member_type = RFloat; // RNumber<float>
   static constexpr auto GetName() { return "m_ParallaxY"; }
   static constexpr auto GetType() { return "RNumber<float>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x3D93DCB3; }
+  static constexpr unsigned GetFieldNameHash() { return 0xFFE222F6; }
   static constexpr unsigned GetTypeNameHash() { return 0x17411E4A; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 8; }
@@ -1523,7 +1523,7 @@ struct StormReflTypeInfo<MapParallaxLayer>::field_data_static<11>
   static constexpr auto GetName() { return "m_Objects"; }
   static constexpr auto GetType() { return "RMergeList<MapParallaxLayerObject>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x27E8B926; }
-  static constexpr unsigned GetTypeNameHash() { return 0xAA26087C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x36FD280C; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &MapParallaxLayer::m_Objects; }
@@ -3289,7 +3289,7 @@ struct StormReflTypeInfo<MapDef>::field_data_static<1>
   using member_type = MapPathfindingInfo; // MapPathfindingInfo
   static constexpr auto GetName() { return "m_PathfindingInfo"; }
   static constexpr auto GetType() { return "MapPathfindingInfo"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xF4DE5BC7; }
+  static constexpr unsigned GetFieldNameHash() { return 0x3DF126F4; }
   static constexpr unsigned GetTypeNameHash() { return 0xD6EED399; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
@@ -3389,8 +3389,8 @@ struct StormReflTypeInfo<MapDef>::field_data_static<5>
   using member_type = RMergeList<MapParallaxLayer>; // RMergeList<MapParallaxLayer>
   static constexpr auto GetName() { return "m_ParallaxLayers"; }
   static constexpr auto GetType() { return "RMergeList<MapParallaxLayer>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x131DDD15; }
-  static constexpr unsigned GetTypeNameHash() { return 0xA01CA52C; }
+  static constexpr unsigned GetFieldNameHash() { return 0x4948DC13; }
+  static constexpr unsigned GetTypeNameHash() { return 0x5B445906; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &MapDef::m_ParallaxLayers; }

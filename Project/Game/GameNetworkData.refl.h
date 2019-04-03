@@ -9,9 +9,9 @@
 #include "StormNet/NetReflection.h"
 #include "StormNet/NetMessageSender.h"
 
-#include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
 
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "ProjectSettings/ProjectPerspective.h"
 
 #if PROJECT_PERSPECTIVE == PERSPECTIVE_SIDESCROLLER

@@ -6,7 +6,7 @@
 #include "GameServer/GameClientConnection.h"
 
 #include "Game/GameController.refl.h"
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "Game/GameStage.h"
 
 GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & state_data, const GameStateLoading & loading_data) :

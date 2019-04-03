@@ -63,23 +63,11 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
       }
 
       m_ServerName = resp.m_Name;
-      m_ServerLocation = resp.m_Location;
-      m_ServerHost = resp.m_Host;
-
-      if (m_ServerHost.length() == 0)
-      {
-        m_ServerHost = m_RemoteHost;
-      }
-
-      m_GamePort = resp.m_GamePort;
-      m_PingPort = resp.m_PingPort;
-      m_Maps = std::move(resp.m_Maps);
+      m_ServerZone = resp.m_Zone;
+      m_ServerResourceId = resp.m_ResourceId;
+      m_ServerExternalIp = resp.m_ExternalIp;
       
       m_State = GameServerConnectionState::kConnected;
-
-#ifdef ENABLE_SERVER_LIST
-      m_Interface.CallShared(&ServerList::AddServer, m_Interface.GetLocalKey(), m_ServerName, m_ServerLocation, m_ServerHost, m_PingPort);
-#endif
     }
     else
     {
@@ -95,24 +83,6 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
         ForceDisconnect();
         return;
       }
-
-      //GameServerAuthenticateUserSuccess resp;
-      //resp.m_ResponseId = msg.m_ResponseId;
-      //resp.m_Name = "Player";
-      //resp.m_Team = 0;
-      //resp.m_AdminLevel = 0;
-      //resp.m_UserId = 0;
-      //resp.m_AccountId = 0;
-      //resp.m_GameId = 0;
-      //resp.m_GameData.m_Map = "miniball";
-      //resp.m_GameData.m_Name = "Game";
-      //resp.m_GameData.m_PlayerLimit = 6;
-      //resp.m_GameData.m_ScoreLimit = 10;
-      //resp.m_GameData.m_TimeLimit = 0;
-      //resp.m_Creator = "Player";
-      //resp.m_RequiredPlayers = 0;
-
-      //SendPacket(resp);
 
       GameLobby * game;
       GameLobbyPrivateData * game_private;
@@ -280,35 +250,11 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
   }
 }
 
-void GameServerConnection::RequestMapList(DDSKey endpoint_id)
-{
-  UserMapList map_list;
-  map_list.c = "map_list";
-  map_list.server_id = m_Interface.GetLocalKey();
-
-  for (auto & map_info : m_Maps)
-  {
-    UserMapListMap map;
-    map.map_name = map_info.m_Map;
-    map.creator = map_info.m_Creator;
-    map.game_type = map_info.m_GameMode;
-    map.max_teams = map_info.m_MaxTeams;
-    map.player_limit = map_info.m_MaxPlayers;
-    map.time_limit = map_info.m_TimeLimit;
-    map.score_limit = map_info.m_ScoreLimit;
-
-    map_list.maps.emplace_back(map);
-  }
-
-  m_Interface.Call(&UserConnection::SendData, endpoint_id, StormReflEncodeJson(map_list));
-}
-
 void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string password, GameInitSettings game_creation_data)
 {
 #ifdef NET_USE_PLAYER_LIMIT
   game_creation_data.m_PlayerCount = std::max(game_creation_data.m_PlayerCount, (uint8_t)0);
-  game_creation_data.m_PlayerCount = std::min(game_creation_data.m_PlayerCount, map->m_MaxPlayers);
-  game_creation_data.m_PlayerCount = std::max(game_creation_data.m_PlayerCount, map->m_MaxTeams);
+  game_creation_data.m_PlayerCount = std::min(game_creation_data.m_PlayerCount, (uint8_t)kMaxPlayers);
 #endif
 
 #ifdef NET_USE_SCORE_LIMIT
@@ -320,7 +266,7 @@ void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string p
 #endif
 
   GameLobby new_lobby;
-  new_lobby.m_MaxTeams = map->m_MaxTeams;
+  new_lobby.m_MaxTeams = kMaxTeams;
   new_lobby.m_GameRandomKey = DDSGetRandomNumber64();
   new_lobby.m_Competive = false;
   StormReflCopy<GameInstanceData>(new_lobby.m_InstanceData, game_creation_data);
@@ -352,7 +298,7 @@ void GameServerConnection::CreateGame(GamePlayerData creator_data, std::string p
   m_Interface.Call(&User::HandleGameJoinResponse, creator_data.m_UserId,
       m_Interface.GetLocalKey(), creator_data.m_EndpointId, game_id, new_lobby.m_GameRandomKey, "", true);
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::AddGame, m_Interface.GetLocalKey(), game_id, game_creation_data.m_Name, 
     game_creation_data.m_Map, 1, game_creation_data.m_PlayerLimit, password.length() > 0);
 #endif
@@ -452,7 +398,7 @@ void GameServerConnection::JoinUserToGame(int game_id, GamePlayerData user_data,
     observer_count++;
   }
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
 #endif
 
@@ -596,7 +542,7 @@ void GameServerConnection::UserSetTeam(int game_id, DDSKey user_key, int team, b
     SendPacket(msg);
   }
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
 #endif
 }
@@ -754,7 +700,7 @@ void GameServerConnection::CreateBotGame(DDSKey bot_id, DDSKey bot_game_id, Game
 
   m_GamePrivateData.EmplaceAt(game_id, private_data);
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::AddGame, m_Interface.GetLocalKey(), game_id, game_creation_data.m_Name,
     game_creation_data.m_Map, 1, game_creation_data.m_PlayerLimit, false);
 
@@ -892,7 +838,7 @@ void GameServerConnection::StartGame(int game_id, DDSKey game_random_id, std::st
     SendLaunchGame(game_id, player.second.m_UserId, player.second.m_EndpointId);
   }
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::StartGame, m_Interface.GetLocalKey(), game_id);
 #endif
 }
@@ -969,7 +915,7 @@ void GameServerConnection::PreDestroy()
 {
   if (m_State == GameServerConnectionState::kConnected)
   {
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
     m_Interface.CallShared(&ServerList::RemoveServer, m_Interface.GetLocalKey());
 #endif
   }
@@ -1083,7 +1029,7 @@ void GameServerConnection::UpdateGamePlayerCount(int game_id)
     }
   }
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::UpdateGame, m_Interface.GetLocalKey(), game_id, in_game_count, observer_count);
 #endif
 }
@@ -1109,7 +1055,7 @@ void GameServerConnection::DestroyGame(int game_id)
 {
   m_GameList.RemoveAt(game_id);
   m_GamePrivateData.RemoveAt(game_id);
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CallShared(&ServerList::RemoveGame, m_Interface.GetLocalKey(), game_id);
 #endif
 }

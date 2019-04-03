@@ -2,7 +2,7 @@
 
 #include "Foundation/Common.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 class GameSimulationEventCallbacks
 {

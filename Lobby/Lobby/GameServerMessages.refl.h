@@ -124,7 +124,7 @@ struct GameServerAuthenticateUserSuccess
   int m_Celebration = 0;
   bool m_NewPlayer = false;
 
-  GameInstanceData m_GameData;
+  GameInitSettings m_GameData;
 };
 
 struct GameServerAuthenticateUserFailure
@@ -220,7 +220,7 @@ struct GameServerStats
 
   uint64_t m_AccountId;
   GameStatsData m_Stats;
-  GameInstanceData m_Settings;
+  GameInitSettings m_Settings;
 };
 
 struct GameServerChangeCreator

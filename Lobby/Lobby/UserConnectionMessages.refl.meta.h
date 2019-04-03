@@ -2756,11 +2756,11 @@ struct StormReflTypeInfo<UserGameCreate>::field_data<1, Self> : public StormRefl
 template <>
 struct StormReflTypeInfo<UserGameCreate>::field_data_static<2>
 {
-  using member_type = GameInstanceData; // GameInstanceData
+  using member_type = GameInitSettings; // GameInitSettings
   static constexpr auto GetName() { return "create_data"; }
-  static constexpr auto GetType() { return "GameInstanceData"; }
+  static constexpr auto GetType() { return "GameInitSettings"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2C526E0A; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserGameCreate::create_data; }
@@ -2773,8 +2773,8 @@ struct StormReflTypeInfo<UserGameCreate>::field_data<2, Self> : public StormRefl
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameInstanceData> & Get() { return self.create_data; }
-  std::add_const_t<std::remove_reference_t<GameInstanceData>> & Get() const { return self.create_data; }
+  match_const_t<Self, GameInitSettings> & Get() { return self.create_data; }
+  std::add_const_t<std::remove_reference_t<GameInitSettings>> & Get() const { return self.create_data; }
   void SetDefault() { self.create_data = StormReflTypeInfo<UserGameCreate>::GetDefault().create_data; }
 };
 

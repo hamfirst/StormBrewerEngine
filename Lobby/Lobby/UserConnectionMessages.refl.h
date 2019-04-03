@@ -197,7 +197,7 @@ struct UserGameCreate
   STORM_REFL;
   std::string c;
   DDSKey server_id;
-  GameInstanceData create_data;
+  GameInitSettings create_data;
   std::string password;
 };
 

@@ -397,7 +397,7 @@ void LobbyServerConnection::RequestTeamSwitch(uint64_t user_id, uint64_t game_id
 #endif
 }
 
-void LobbyServerConnection::RequestRanomizeTeams(uint64_t game_id)
+void LobbyServerConnection::RequestRandomizeTeams(uint64_t game_id)
 {
   GameServerRandomizeTeams req;
   req.m_GameId = game_id;
@@ -422,7 +422,7 @@ void LobbyServerConnection::NotifyPlayerLeft(uint64_t user_id, uint64_t game_id)
   SendMessage(msg);
 }
 
-void LobbyServerConnection::SendStats(uint64_t account_id, SimStats & stats, const GameInstanceData & settings)
+void LobbyServerConnection::SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInitSettings & settings)
 {
   GameServerStats msg = {};
   msg.m_AccountId = account_id;
@@ -433,7 +433,7 @@ void LobbyServerConnection::SendStats(uint64_t account_id, SimStats & stats, con
   SendMessage(msg);
 }
 
-void LobbyServerConnection::SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, SimStats>> & players, const std::vector<int> & team_scores)
+void LobbyServerConnection::SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, GameSimulationStats>> & players, const std::vector<int> & team_scores)
 {
   GameServerGameResult msg = {};
   msg.m_GameCompleted = complete;

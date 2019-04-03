@@ -10,7 +10,7 @@
 #include "Foundation/FileSystem/File.h"
 #include "Foundation/Buffer/BufferUtil.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 #include "Runtime/FrameData/FrameData.refl.meta.h"
 

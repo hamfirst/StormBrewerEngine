@@ -157,7 +157,7 @@ struct User
 #endif
 
   // Game Functions
-  void STORM_REFL_FUNC CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInstanceData creation_data, std::string password);
+  void STORM_REFL_FUNC CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings creation_data, std::string password);
   void STORM_REFL_FUNC JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::string password, bool observer);
   void STORM_REFL_FUNC SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info);
   void STORM_REFL_FUNC DestroyGame(DDSKey server_id, DDSKey endpoint_id, int game_id);
@@ -228,7 +228,7 @@ struct User
   void STORM_REFL_FUNC SetCelebration(int celebration_index);
   void STORM_REFL_FUNC RemoveCelebration(DDSResponder & responder, std::string celebration);
 
-  void STORM_REFL_FUNC UpdateStats(GameStatsData stats, GameInstanceData instance_data);
+  void STORM_REFL_FUNC UpdateStats(GameStatsData stats, GameInitSettings instance_data);
   void STORM_REFL_FUNC FetchStats(DDSResponder & responder);
 
 #ifdef ENABLE_CHANNELS

@@ -5,7 +5,7 @@
 #include "GameServer/GameClientConnection.h"
 
 #include "Game/GameController.refl.h"
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 static const int kTimeToWaitForPlayers = 5 * 60;
 static const int kSendInterval = 2 * 60;

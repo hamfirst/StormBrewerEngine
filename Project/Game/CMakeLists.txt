@@ -79,7 +79,6 @@ set(GENERIC_HEADER_Game
             GameNetworkEvents.refl.meta.h
             GameNetworkExternals.refl.h
             GameNetworkExternals.refl.meta.h
-            GameNetworkSettings.h
             GameServerEventSender.h
             GameServerTypes.h
             GameSimulationEventCallbacks.h

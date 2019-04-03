@@ -49,11 +49,11 @@ public:
   void CancelValidation(int request_id);
 
   void RequestTeamSwitch(uint64_t user_id, uint64_t game_id, int team);
-  void RequestRanomizeTeams(uint64_t game_id);
+  void RequestRandomizeTeams(uint64_t game_id);
   void UpdateScore(uint64_t game_id, const std::string & score);
 
   void NotifyPlayerLeft(uint64_t user_id, uint64_t game_id);
-  void SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInstanceData & settings);
+  void SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInitSettings & settings);
   void SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, GameSimulationStats>> & players, const std::vector<int> & team_scores);
 
 protected:

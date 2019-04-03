@@ -3,8 +3,9 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "BotMessages.refl.h"
-#include "GameData.refl.meta.h"
-#include "GameServerMessages.refl.meta.h"
+#include "Lobby/GameData.refl.meta.h"
+#include "Lobby/GameServerMessages.refl.meta.h"
+#include "Game/GameNetworkData.refl.meta.h"
 
 
 template <>
@@ -1258,11 +1259,11 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data<2, Self> : public Sto
 template <>
 struct StormReflTypeInfo<BotMessageCreateGame>::field_data_static<3>
 {
-  using member_type = GameInstanceData; // GameInstanceData
+  using member_type = GameInitSettings; // GameInitSettings
   static constexpr auto GetName() { return "game_settings"; }
-  static constexpr auto GetType() { return "GameInstanceData"; }
+  static constexpr auto GetType() { return "GameInitSettings"; }
   static constexpr unsigned GetFieldNameHash() { return 0x4E015FE3; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC7A440E6; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &BotMessageCreateGame::game_settings; }
@@ -1275,8 +1276,8 @@ struct StormReflTypeInfo<BotMessageCreateGame>::field_data<3, Self> : public Sto
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameInstanceData> & Get() { return self.game_settings; }
-  std::add_const_t<std::remove_reference_t<GameInstanceData>> & Get() const { return self.game_settings; }
+  match_const_t<Self, GameInitSettings> & Get() { return self.game_settings; }
+  std::add_const_t<std::remove_reference_t<GameInitSettings>> & Get() const { return self.game_settings; }
   void SetDefault() { self.game_settings = StormReflTypeInfo<BotMessageCreateGame>::GetDefault().game_settings; }
 };
 

@@ -2,7 +2,8 @@
 
 #include "Foundation/Common.h"
 
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
+
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameNetworkEvents.refl.h"
 #include "Game/GameNetworkExternals.refl.h"

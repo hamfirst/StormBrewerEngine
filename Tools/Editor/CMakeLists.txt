@@ -196,7 +196,6 @@ set(GENERIC_HEADER_Editor
             FrameEditorSingleBox.h
             FrameEditorSingleLine.h
             FrameEditorTypes.refl.h
-            FrameEditorTypes.refl.meta.h
             FrameEditorUtil.h
             GameClientWidget.h
             GameHostWidget.h
@@ -250,7 +249,6 @@ set(GENERIC_HEADER_Editor
             MapEditorToolVolumeEditor.h
             MapEditorToolVolumeMultiEditor.h
             MapEditorTypes.refl.h
-            MapEditorTypes.refl.meta.h
             MapEditorViewer.h
             MapEditorVolume.h
             MapEditorVolumeManager.h

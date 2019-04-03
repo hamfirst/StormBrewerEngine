@@ -12,7 +12,7 @@
 
 #include "Game/GameController.refl.h"
 #include "Game/GameFullState.refl.h"
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #if NET_BACKEND == NET_BACKEND_WEBRTC

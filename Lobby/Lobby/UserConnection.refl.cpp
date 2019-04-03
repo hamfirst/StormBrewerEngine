@@ -47,7 +47,7 @@ void UserConnection::FinalizeUserLoaded()
   m_Interface.Call(&User::AddEndpoint, m_UserId, m_Interface.GetLocalKey(), m_RemoteIP, m_RemoteHost);
   m_Interface.Call(&User::SetLocation, m_UserId, m_CountryCode, m_CurrencyCode);
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
   m_Interface.CreateSubscription(DDSSubscriptionTarget<ServerList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
   m_Interface.CreateSubscription(DDSSubscriptionTarget<WelcomeInfo>{}, 0, ".m_Tabs", &UserConnection::HandleWelcomeInfoUpdate, true);
 #endif
@@ -253,18 +253,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     }
     else
 #endif
-    if (cmd == "req_maps")
-    {
-      UserMapListRequest req;
-      if (StormReflParseJson(req, data.c_str()) == false)
-      {
-        SendConnectionError("Parse error");
-        return;
-      }
-
-      m_Interface.Call(&GameServerConnection::RequestMapList, req.server_id, m_Interface.GetLocalKey());
-    }
-    else if (cmd == "create_game")
+    if (cmd == "create_game")
     {
       UserGameCreate req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -336,7 +325,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       m_Interface.CallWithResponder(&User::FetchStats, req.user, &UserConnection::SendData, this);
     }
     else
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
     if (cmd == "preview_game")
     {
       UserPreviewGame req;
@@ -656,7 +645,7 @@ void UserConnection::HandleLocalDataUpdate(std::string data)
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "local", data }));
 }
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
 void UserConnection::HandleServerListUpdate(std::string data)
 {
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "server", data }));
@@ -682,7 +671,7 @@ void UserConnection::HandleBanListUpdate(std::string data)
 }
 #endif
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
 void UserConnection::HandleGamePreviewUpdate(int request_id, std::string data)
 {
   UserGamePreviewUpdate update;

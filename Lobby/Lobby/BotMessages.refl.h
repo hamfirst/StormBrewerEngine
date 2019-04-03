@@ -7,9 +7,11 @@
 
 #include <HurricaneDDS/DDSKey.h>
 
-#include "GameData.refl.h"
-#include "GameServerMessages.refl.h"
-#include "LobbyConfig.h"
+#include "Lobby/GameData.refl.h"
+#include "Lobby/GameServerMessages.refl.h"
+#include "Lobby/LobbyConfig.h"
+
+#include "Game/GameNetworkData.refl.h"
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 
@@ -97,7 +99,7 @@ struct BotMessageCreateGame
   std::string c;
   DDSKey server_id;
   DDSKey game_id;
-  GameInstanceData game_settings;
+  GameInitSettings game_settings;
   std::vector<std::tuple<DDSKey, DDSKey, int>> players;
 };
 

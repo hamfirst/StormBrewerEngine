@@ -7,7 +7,7 @@
 #include "Game/GameStage.h"
 #include "Game/GameController.refl.h"
 #include "Game/GameFullState.refl.h"
-#include "Game/GameNetworkSettings.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 #include "GameShared/GameLogicContainer.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 

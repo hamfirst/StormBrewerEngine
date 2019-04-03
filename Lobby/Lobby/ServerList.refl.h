@@ -7,7 +7,7 @@
 
 #include "LobbyConfig.h"
 
-#ifdef ENABLE_SERVER_LIST
+#ifdef ENABLE_GAME_LIST
 
 struct ServerListGame
 {
@@ -22,18 +22,6 @@ struct ServerListGame
   bool m_PasswordProtected;
 };
 
-struct ServerListServer
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(ServerListServer);
-
-  std::string m_Name;
-  std::string m_Location;
-  std::string m_Host;
-  int m_PingPort;
-  
-  RMergeList<ServerListGame> m_Games;
-};
-
 
 struct ServerList
 {
@@ -42,19 +30,14 @@ public:
 
   ServerList(DDSObjectInterface & iface);
 
-  void STORM_REFL_FUNC AddServer(DDSKey server_key, std::string server_name, std::string location, std::string server_host, int ping_port);
-  void STORM_REFL_FUNC RemoveServer(DDSKey server_key);
-
-  void STORM_REFL_FUNC AddGame(DDSKey server_key, int game_id, std::string name, std::string map, int cur_players, int max_players, bool password);
-  void STORM_REFL_FUNC UpdateGame(DDSKey server_key, int game_id, int cur_players, int cur_observer);
-  void STORM_REFL_FUNC StartGame(DDSKey server_key, int game_id);
-  void STORM_REFL_FUNC RemoveGame(DDSKey server_key, int game_id);
-
-  void STORM_REFL_FUNC HangUpAllServers();
+  void STORM_REFL_FUNC AddGame(DDSKey game_key, std::string name, std::string map, int cur_players, int max_players, bool password);
+  void STORM_REFL_FUNC UpdateGame(DDSKey game_key, int cur_players, int cur_observer);
+  void STORM_REFL_FUNC StartGame(DDSKey game_key);
+  void STORM_REFL_FUNC RemoveGame(DDSKey game_key);
 
 public:
 
-  RMap<DDSKey, ServerListServer> m_ServerList;
+  RMap<DDSKey, ServerListGame> m_GameList;
 
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;

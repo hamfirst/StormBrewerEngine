@@ -5,8 +5,9 @@
 
 #include <StormNet/NetReflection.h>
 
-#include "Game/GameNetworkSettings.h"
 #include "Game/GameServerTypes.h"
+
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
 struct GlobalNetworkEvent
 {
