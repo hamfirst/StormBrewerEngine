@@ -10,7 +10,7 @@ WebSocket::WebSocket()
 {
 }
 
-WebSocket::WebSocket(const char * host, int port, const char * uri, const char * origin, char * protocol)
+WebSocket::WebSocket(const char * host, int port, const char * uri, const char * origin, const char * protocol)
 {
   StartConnect(host, port, uri, origin, protocol);
 }
@@ -35,7 +35,7 @@ WebSocket & WebSocket::operator = (WebSocket && rhs) noexcept
   return *this;
 }
 
-void WebSocket::StartConnect(const char * host, int port, const char * uri, const char * origin, char * protocol, int timeout)
+void WebSocket::StartConnect(const char * host, int port, const char * uri, const char * origin, const char * protocol, int timeout)
 {
   Cleanup();
   m_WebsocketId = (int)g_WebsocketIdAllocator.Allocate();

@@ -15,7 +15,7 @@
 #include "BanList.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
-#include "ServerList.refl.meta.h"
+#include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
 #include "Rewards.refl.meta.h"
 
@@ -481,7 +481,7 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
-void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings creation_data, std::string password)
+void User::CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string name, std::string password)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
@@ -489,7 +489,7 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings cre
     return;
   }
 
-  if (creation_data.m_Name.length() >= 30)
+  if (name.length() >= 30)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You game name is too long. It must be less than 30 characters");
     return;
@@ -501,18 +501,23 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings cre
     return;
   }
 
-  if (creation_data.m_PlayerLimit < 2)
+#ifdef NET_USE_PLAYER_LIMIT
+  if (creation_data.m_PlayerCount < 2)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid player limit");
     return;
   }
+#endif
 
+#ifdef NET_USE_SCORE_LIMIT
   if (creation_data.m_ScoreLimit < 0 || creation_data.m_ScoreLimit > 99)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid score limit");
     return;
   }
+#endif
 
+#ifdef NET_USE_TIME_LIMIT
   if (creation_data.m_TimeLimit < 0 || creation_data.m_TimeLimit > 120)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid time limit");
@@ -524,10 +529,13 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings cre
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You must have a score limit or a time limit");
     return;
   }
+#endif
 
   GamePlayerData creator_data;
   creator_data.m_UserId = m_Interface.GetLocalKey();
   creator_data.m_EndpointId = endpoint_id;
+  creator_data.m_Icon = m_Data.m_Icon;
+  creator_data.m_Title = m_Data.m_Title;
   creator_data.m_Celebration = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
   creator_data.m_NewPlayer = m_Data.m_Stats.m_TimePlayed == 0;
   creator_data.m_Admin = m_LocalInfo.m_AdminLevel;
@@ -537,10 +545,10 @@ void User::CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings cre
   creator_data.m_Squad = m_UserInfo.m_SquadTag;
 #endif
   
-  m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
+//  m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
 }
 
-void User::JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::string password, bool observer)
+void User::JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer)
 {
   GamePlayerData creator_data;
   creator_data.m_UserId = m_Interface.GetLocalKey();
@@ -557,7 +565,7 @@ void User::JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::stri
   int celebration_id = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
   bool new_player = m_Data.m_Stats.m_TimePlayed == 0;
 
-  m_Interface.Call(&GameServerConnection::JoinUserToGame, server_id, game_id, creator_data, password, observer, m_UserInfo.m_AdminLevel > 0);
+//  m_Interface.Call(&GameServerConnection::JoinUserToGame, server_id, game_id, creator_data, password, observer, m_UserInfo.m_AdminLevel > 0);
 }
 
 void User::SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info)
@@ -595,7 +603,7 @@ void User::DestroyGame(DDSKey server_id, DDSKey endpoint_id, int game_id)
     return;
   }
 
-  m_Interface.Call(&GameServerConnection::KillGame, server_id, game_id);
+  //m_Interface.Call(&GameServerConnection::KillGame, server_id, game_id);
 }
 
 void User::HandleGameJoinResponse(DDSKey server_id, DDSKey endpoint_id, int game_id, DDSKey game_random_id, std::string game_info, bool success)
@@ -617,7 +625,7 @@ void User::SendGameChat(DDSKey endpoint_id, std::string msg)
     return;
   }
 
-  m_Interface.Call(&GameServerConnection::SendChatToGame, m_GameServerId, m_GameId, m_Interface.GetLocalKey(), msg);
+  //m_Interface.Call(&GameServerConnection::SendChatToGame, m_GameServerId, m_GameId, m_Interface.GetLocalKey(), msg);
 }
 
 void User::SwitchTeams(DDSKey endpoint_id)
@@ -632,7 +640,7 @@ void User::SwitchTeams(DDSKey endpoint_id)
     return;
   }
 
-  m_Interface.Call(&GameServerConnection::UserSwitchTeams, m_GameServerId, m_GameId, m_Interface.GetLocalKey());
+  //m_Interface.Call(&GameServerConnection::UserSwitchTeams, m_GameServerId, m_GameId, m_Interface.GetLocalKey());
 }
 
 void User::StartGame()
@@ -642,7 +650,7 @@ void User::StartGame()
     return;
   }
 
-  m_Interface.Call(&GameServerConnection::StartGame, m_GameServerId, m_GameId, m_GameRandomId, m_LocalInfo.m_Name.ToString());
+  //m_Interface.Call(&GameServerConnection::StartGame, m_GameServerId, m_GameId, m_GameRandomId, m_LocalInfo.m_Name.ToString());
 }
 
 void User::LeaveGame()
@@ -2228,17 +2236,6 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
       m_Interface.Call(&BanList::Ban, 0, BanType::kRemoteHost, arg, duration_secs, message);
       User::HandleCommandResponderMessage(endpoint_id, "Ban submitted");
       return;
-    }
-#endif
-
-#ifdef ENABLE_GAME_LIST
-    if (cmd == "/resetservers")
-    {
-      if (m_LocalInfo.m_AdminLevel == 9)
-      {
-        m_Interface.CallShared(&ServerList::HangUpAllServers);
-        return;
-      }
     }
 #endif
   }

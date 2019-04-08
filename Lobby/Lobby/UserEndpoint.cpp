@@ -24,19 +24,23 @@ UserEndpoint::UserEndpoint(const DDSEndpointInterface & endpoint_interface) :
 {
   DDSLog::LogInfo("Got connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
 
+  UserVersionRequest version_request;
+  version_request.c = "version";
+
+#ifdef ENABLE_PROOF_OF_WORK
   uint64_t prefix = DDSGetRandomNumber64();
   m_ProofVal = DDSGetRandomNumberRange(0, 100000);
-#ifdef _DEBUG
-  m_ProofVal = 0;
-#endif
 
   char proof_str[128];
   snprintf(proof_str, sizeof(proof_str), "%llu%d", (unsigned long long)prefix, m_ProofVal);
-  
+
   std::string sha;
   StormSockets::StormSha1::CalcHash(proof_str, sha);
 
-  UserVersionRequest version_request = { "version", sha, std::to_string(prefix) };
+  version_request.sha = sha;
+  version_request.prefix = std::to_string(prefix);
+#endif
+
   m_EndpointInterface.Send(version_request);
 }
 
@@ -74,11 +78,13 @@ void UserEndpoint::HandleData(const char * data)
         return;
       }
 
+#ifdef ENABLE_PROOF_OF_WORK
       if (msg.sha != m_ProofVal)
       {
-        //ConnectionError("Invalid version response");
-        //return;
+        ConnectionError("Invalid version response");
+        return;
       }
+#endif
 
       DDSLog::LogVerbose("Looking up reverse host name");
       m_State = kLookup;
@@ -219,7 +225,7 @@ void UserEndpoint::HandleDisconnect()
 
 void UserEndpoint::ConnectionError(const char * err_msg)
 {
-  UserMessageConnectionErrror err{ "error", err_msg };
+  UserMessageConnectionError err{ "error", err_msg };
   m_EndpointInterface.Send(err);
 
   m_Error = true;
@@ -267,7 +273,8 @@ void UserEndpoint::HandleTorBlacklistLookup(const DDSResolverRequest & resolver_
 
   DDSLog::LogVerbose("Sending identify");
   m_State = kIdentify;
-  UserMessageBase ident_request = { "identify" };
+  UserMessageIdentifyRequest ident_request = { "identify" };
+  ident_request.token = m_EndpointInterface.CreateToken()
   m_EndpointInterface.Send(ident_request);
 }
 

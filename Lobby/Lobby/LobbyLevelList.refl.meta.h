@@ -3,13 +3,14 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "LobbyLevelList.refl.h"
+#include "Game/GameNetworkData.refl.meta.h"
 
 
 template <>
 struct StormReflTypeInfo<LobbyMapProperties>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -52,19 +53,44 @@ template <>
 struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<0>
 {
   using member_type = int; // int
+  static constexpr auto GetName() { return "m_TeamCount"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x14FCCE1D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &LobbyMapProperties::m_TeamCount; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<LobbyMapProperties *>(obj); return &ptr->m_TeamCount; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LobbyMapProperties *>(obj); return &ptr->m_TeamCount; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data<0, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int> & Get() { return self.m_TeamCount; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_TeamCount; }
+  void SetDefault() { self.m_TeamCount = StormReflTypeInfo<LobbyMapProperties>::GetDefault().m_TeamCount; }
+};
+
+template <>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<1>
+{
+  using member_type = int; // int
   static constexpr auto GetName() { return "m_PlayerCount"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5E784CAA; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &LobbyMapProperties::m_PlayerCount; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<LobbyMapProperties *>(obj); return &ptr->m_PlayerCount; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LobbyMapProperties *>(obj); return &ptr->m_PlayerCount; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<LobbyMapProperties>::field_data<0, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<0>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data<1, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -74,7 +100,7 @@ struct StormReflTypeInfo<LobbyMapProperties>::field_data<0, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<1>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<2>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_ScoreLimit"; }
@@ -82,14 +108,14 @@ struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<1>
   static constexpr unsigned GetFieldNameHash() { return 0x43D3DFC4; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &LobbyMapProperties::m_ScoreLimit; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<LobbyMapProperties *>(obj); return &ptr->m_ScoreLimit; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LobbyMapProperties *>(obj); return &ptr->m_ScoreLimit; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<LobbyMapProperties>::field_data<1, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<1>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data<2, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -99,7 +125,7 @@ struct StormReflTypeInfo<LobbyMapProperties>::field_data<1, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<2>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<3>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_TimeLimit"; }
@@ -107,14 +133,14 @@ struct StormReflTypeInfo<LobbyMapProperties>::field_data_static<2>
   static constexpr unsigned GetFieldNameHash() { return 0x92EF9F49; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &LobbyMapProperties::m_TimeLimit; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<LobbyMapProperties *>(obj); return &ptr->m_TimeLimit; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const LobbyMapProperties *>(obj); return &ptr->m_TimeLimit; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<LobbyMapProperties>::field_data<2, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<2>
+struct StormReflTypeInfo<LobbyMapProperties>::field_data<3, Self> : public StormReflTypeInfo<LobbyMapProperties>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

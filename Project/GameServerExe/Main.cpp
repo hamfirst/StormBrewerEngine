@@ -21,6 +21,9 @@
 
 #include "GameServer/GameServer.h"
 
+#include "Lobby/GameServerMessages.refl.meta.h"
+#include "LobbyServerConnection/LobbyServerConnection.h"
+
 #include "ProjectSettings/ProjectName.h"
 #include "ProjectSettings/ProjectVersion.h"
 #include "ProjectSettings/ProjectPorts.h"
@@ -57,10 +60,6 @@ int ReturnError(int err) { return err; }
 double send_time;
 
 bool g_QuitServer = false;
-std::string g_ExternalIp;
-std::string g_ServerName;
-std::string g_ServerZone;
-std::string g_ServerResourceId;
 
 extern int g_LagSim;
 
@@ -141,10 +140,12 @@ int main(int argc, const char ** argv)
   bootstrap.Run();
   bootstrap.PrintDebug();
 
-  g_ExternalIp = bootstrap.Get("external_ip");
-  g_ServerName = bootstrap.Get("name");
-  g_ServerZone = bootstrap.Get("zone");
-  g_ServerResourceId = bootstrap.Get("id");
+  GameServerMeta lobby_server_settings;
+  StormReflParseJson(lobby_server_settings, bootstrap.Get("meta"));
+  lobby_server_settings.m_ServerName = bootstrap.Get("name");
+  lobby_server_settings.m_ServerZone = bootstrap.Get("zone");
+  lobby_server_settings.m_ServerResourceId = bootstrap.Get("id");
+  lobby_server_settings.m_ExternalIp = bootstrap.Get("external_ip");
 
 #if defined(_LINUX) && !defined(_INCLUDEOS)
   if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
@@ -196,7 +197,9 @@ int main(int argc, const char ** argv)
   printf("  Starting server...\n");
   NetworkInit();
 
-  static GameServer game_server(256, GAME_PORT, stage_manager);
+  static LobbyServerConnection lobby_server_connection(lobby_server_settings);
+
+  static GameServer game_server(256, GAME_PORT, stage_manager, &lobby_server_connection);
   printf("  Server started!\n");
 
   static FrameClock frame_clock(1.0 / 60.0);

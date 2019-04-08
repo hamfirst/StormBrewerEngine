@@ -11,4 +11,14 @@ static const char * g_ProjectZones[] = {
     "asia-south1-c"
 };
 
-static const int g_NumProjectZones = sizeof(g_ProjectZones) / sizeof(g_ProjectZones[0]);
+static const char * g_ProjectZoneUrls[] = {
+  "http://35.236.45.25/ping",
+  "http://35.189.6.113/ping",
+  "http://35.220.162.209/ping",
+  "http://35.203.57.164/ping",
+  "http://35.189.67.146/ping",
+  "http://35.198.78.172/ping",
+  "http://35.200.186.152/ping"
+};
+
+static const int kNumProjectZones = sizeof(g_ProjectZones) / sizeof(g_ProjectZones[0]);

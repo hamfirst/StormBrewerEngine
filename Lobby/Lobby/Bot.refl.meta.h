@@ -195,7 +195,7 @@ template <>
 struct StormReflTypeInfo<Bot>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -327,30 +327,6 @@ struct StormReflTypeInfo<Bot>::field_data<3, Self> : public StormReflTypeInfo<Bo
   field_data(Self & self) : self(self) {}
   match_const_t<Self, DDSKey> & Get() { return self.m_ChannelSubscriptionId; }
   std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.m_ChannelSubscriptionId; }
-};
-
-template <>
-struct StormReflTypeInfo<Bot>::field_data_static<4>
-{
-  using member_type = DDSKey; // unsigned long
-  static constexpr auto GetName() { return "m_ServerListSubscriptionId"; }
-  static constexpr auto GetType() { return "unsigned long"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEBF8AFBA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-  static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 4; }
-  static constexpr auto GetMemberPtr() { return &Bot::m_ServerListSubscriptionId; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<Bot *>(obj); return &ptr->m_ServerListSubscriptionId; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const Bot *>(obj); return &ptr->m_ServerListSubscriptionId; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<Bot>::field_data<4, Self> : public StormReflTypeInfo<Bot>::field_data_static<4>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, DDSKey> & Get() { return self.m_ServerListSubscriptionId; }
-  std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.m_ServerListSubscriptionId; }
 };
 
 template <>

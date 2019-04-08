@@ -6,9 +6,10 @@
 #include "Game/GameMessages.refl.meta.h"
 #include "Game/GameFullState.refl.meta.h"
 
-GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager) :
+GameInstanceManager::GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager, NullOptPtr<LobbyServerConnection> lobby_connection) :
   m_Server(game_server),
-  m_StageManager(stage_manager)
+  m_StageManager(stage_manager),
+  m_LobbyConnection(lobby_connection)
 {
 
 }

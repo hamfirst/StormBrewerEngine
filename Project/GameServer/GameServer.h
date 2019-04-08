@@ -23,12 +23,14 @@ using GameNetServerBackend = NetServerBackendWebsocket;
 #include "GameServer/GameInstance.h"
 #include "GameServer/GameInstanceManager.h"
 
+class LobbyServerConnection;
+
 using ServerBase = NetServer<GameClientConnection, ServerProtocolDef, ClientProtocolDef>;
 
 class GameServer : public ServerBase
 {
 public:
-  GameServer(int max_clients, int port, GameStageManager & stage_manager);
+  GameServer(int max_clients, int port, GameStageManager & stage_manager, NullOptPtr<LobbyServerConnection> lobby_connection);
   ~GameServer();
 
   void Update() override;
@@ -42,6 +44,7 @@ protected:
 
 private:
   GameStageManager & m_StageManager;
+  NullOptPtr<LobbyServerConnection> m_LobbyConnection;
 
   GameNetServerBackend m_Backend;
   GameInstanceManager m_GameInstanceManager;

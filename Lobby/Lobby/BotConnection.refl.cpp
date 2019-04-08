@@ -149,17 +149,6 @@ void BotConnection::GotMessage(std::string cmd, std::string data)
 
     m_Interface.Call(&Bot::SendChatToEndpoint, m_BotId, msg.user_id, msg.msg);
   }
-  else if (cmd == "game")
-  {
-    BotMessageCreateGame msg;
-    if (StormReflParseJson(msg, data.c_str()) == false)
-    {
-      ParseError();
-      return;
-    }
-
-    m_Interface.Call(&GameServerConnection::CreateBotGame, msg.server_id, m_BotId, msg.game_id, msg.game_settings, msg.players);
-  }
 }
 
 void STORM_REFL_FUNC BotConnection::HandleBotLoad(bool success)

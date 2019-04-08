@@ -15,20 +15,13 @@
 
 #include "LobbyServerConnection/LobbyServerConnection.h"
 
-#include <ctime>
-
-extern std::string g_ExternalIp;
-extern std::string g_ServerName;
-extern std::string g_ServerZone;
-extern std::string g_ServerResourceId;
 
 
-LobbyServerConnection::LobbyServerConnection(const char * lobby_host) :
+LobbyServerConnection::LobbyServerConnection(const GameServerMeta & server_info) :
   m_State(LobbyServerConnectionState::kDisconnected),
-  m_LobbyHost(lobby_host),
   m_LastPingTime(time(nullptr)),
   m_NextValidationId(1),
-  m_WantsRedownload(false)
+  m_ServerSettings(server_info)
 {
   
 }
@@ -41,13 +34,14 @@ void LobbyServerConnection::Connect()
   }
   
   m_State = LobbyServerConnectionState::kConnecting;
-  m_WebSocket.StartConnect(m_LobbyHost.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
+  m_WebSocket.StartConnect(m_ServerSettings.m_LobbyServerIp.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
 }
 
 void LobbyServerConnection::Update()
 {
   if (m_State == LobbyServerConnectionState::kDisconnected)
   {
+    Connect();
     return;
   }
 
@@ -96,7 +90,9 @@ void LobbyServerConnection::Update()
   if (cur_time - m_LastPingTime > 10)
   {
     m_LastPingTime = cur_time;
-    m_WebSocket.SendPacket(Buffer{}, WebSocketPacketType::kPing);
+
+    GameServerPing ping;
+    SendMessage(ping);
   }
 
   while (true)
@@ -143,12 +139,6 @@ void LobbyServerConnection::Update()
     {
     case LobbyServerConnectionState::kAuthenticating:
       {
-        if(type == GameServerMessageType::kRedownload)
-        {
-          m_WantsRedownload = true;
-          return;
-        }
-
         GameServerAuthenticateRequest req;
         if (type != GameServerMessageType::kAuthRequest || StormReflParseJson(req, data_start) == false)
         {
@@ -159,10 +149,10 @@ void LobbyServerConnection::Update()
         uint64_t challenge_response = crc64(std::to_string(req.m_Challenge)) ^ kGameServerChallengePad;
         GameServerAuthenticateResponse resp;
         resp.m_Challenge = challenge_response;
-        resp.m_Name = g_ServerName;
-        resp.m_Zone = g_ServerZone;
-        resp.m_ResourceId = g_ServerResourceId;
-        resp.m_ExternalIp = g_ExternalIp;
+        resp.m_Name = m_ServerSettings.m_ServerName;
+        resp.m_Zone = m_ServerSettings.m_ServerZone;
+        resp.m_ResourceId = m_ServerSettings.m_ServerResourceId;
+        resp.m_ExternalIp = m_ServerSettings.m_ExternalIp;
 
         SendMessage(resp);
 
@@ -171,12 +161,7 @@ void LobbyServerConnection::Update()
       break;
     case LobbyServerConnectionState::kConnected:
       {
-        if (type == GameServerMessageType::kRedownload)
-        {
-          m_WantsRedownload = true;
-          return;
-        }
-        else if (type == GameServerMessageType::kAuthUserSuccess)
+        if (type == GameServerMessageType::kAuthUserSuccess)
         {
           GameServerAuthenticateUserSuccess msg;
           if (StormReflParseJson(msg, data_start) == false)
@@ -332,11 +317,6 @@ void LobbyServerConnection::Update()
 bool LobbyServerConnection::IsConnected()
 {
   return m_WebSocket.IsConnected();
-}
-
-bool LobbyServerConnection::WantsRedownload()
-{
-  return m_WantsRedownload;
 }
 
 void LobbyServerConnection::SetTeamSwitchCallback(LobbyTeamSwitchCallback callback)

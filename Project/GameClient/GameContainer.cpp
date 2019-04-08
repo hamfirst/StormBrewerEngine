@@ -47,6 +47,9 @@ GameContainer::GameContainer(Window & window, std::unique_ptr<GameContainerInitS
 
   m_FrameClock.Start();
 
+  m_LatencyChecker = std::make_unique<GameClientLatencyChecker>();
+  m_LatencyChecker->Start();
+
   SetInitialMode();
 }
 

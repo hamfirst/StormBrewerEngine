@@ -25,13 +25,13 @@ set(GENERIC_SRC_Lobby
             CoordinatorState.cpp
             Game.refl.cpp
             GameData.refl.cpp
+            GameList.refl.cpp
             GameServerConnection.refl.cpp
             GameServerEndpoint.cpp
             LoadBalancer.cpp
             LobbyLevelList.refl.cpp
             NodeState.cpp
             Rewards.refl.cpp
-            ServerList.refl.cpp
             ServerManager.refl.cpp
             SharedTypes.refl.cpp
             Squad.refl.cpp
@@ -64,6 +64,8 @@ set(GENERIC_HEADER_Lobby
             Game.refl.meta.h
             GameData.refl.h
             GameData.refl.meta.h
+            GameList.refl.h
+            GameList.refl.meta.h
             GameServerConnection.refl.h
             GameServerConnection.refl.meta.h
             GameServerEndpoint.h
@@ -79,15 +81,12 @@ set(GENERIC_HEADER_Lobby
             ProjectSettings.h
             Rewards.refl.h
             Rewards.refl.meta.h
-            ServerList.refl.h
-            ServerList.refl.meta.h
             ServerManager.refl.h
             ServerManager.refl.meta.h
             SharedTypes.refl.h
             SharedTypes.refl.meta.h
             Squad.refl.h
             Squad.refl.meta.h
-            Steam.h
             SteamOpenIdValidatorPage.h
             SteamServerMessages.refl.h
             SteamServerMessages.refl.meta.h
@@ -112,12 +111,12 @@ set(GENERIC_REFL_Lobby
             Channel.refl.h
             Game.refl.h
             GameData.refl.h
+            GameList.refl.h
             GameServerConnection.refl.h
             GameServerMessages.refl.h
             GooglePlatform.refl.h
             LobbyLevelList.refl.h
             Rewards.refl.h
-            ServerList.refl.h
             ServerManager.refl.h
             SharedTypes.refl.h
             Squad.refl.h

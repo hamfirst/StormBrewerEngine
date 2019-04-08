@@ -29,7 +29,7 @@ enum STORM_REFL_ENUM class GameServerMessageType
   kIdentifyNew,
   kIdentifyRelocate,
   kRelocated,
-  kRedownload,
+  kPing,
   kAuthRequest,
   kAuthResponse,
   kAuthUser,
@@ -69,10 +69,10 @@ struct GameServerRelocated
   static const GameServerMessageType Type = GameServerMessageType::kRelocated;
 };
 
-struct GameServerRedownload
+struct GameServerPing
 {
   STORM_REFL;
-  static const GameServerMessageType Type = GameServerMessageType::kRedownload;
+  static const GameServerMessageType Type = GameServerMessageType::kPing;
 };
 
 struct GameServerAuthenticateRequest
@@ -251,4 +251,13 @@ struct GameServerGameResult
   std::vector<GameServerResultPlayer> m_ConnectedUsers;
 };
 
-
+struct GameServerMeta
+{
+  STORM_REFL;
+  std::string m_LobbyServerIp = "127.0.0.1";
+  std::string m_ServerKey;
+  std::string m_ServerName;
+  std::string m_ServerZone;
+  std::string m_ServerResourceId;
+  std::string m_ExternalIp;
+};

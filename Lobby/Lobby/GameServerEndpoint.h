@@ -37,4 +37,6 @@ private:
 
   DDSKey m_ServerKey;
   DDSDeferredCallback m_Callback;
+
+  int m_Version;
 };

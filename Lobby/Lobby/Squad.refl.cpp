@@ -417,7 +417,7 @@ void Squad::BeginLoad()
     m_PendingMemberLoads++;
     m_Interface.CreateDataSubscription(DDSSubscriptionTarget<User>{}, user.second.m_UserKey, ".m_UserName", &Squad::HandleMemberLoad, false, (int)user.first);
 
-    printf("Loading member %llu for squad %s\n", (DDSKey)user.second.m_UserKey, m_SquadInfo.m_Name.c_str());
+    printf("Loading member %zd for squad %s\n", (DDSKey)user.second.m_UserKey, m_SquadInfo.m_Name.c_str());
   }
 
   for (auto user : m_Data.m_DatabaseInfo.m_Applications)
@@ -451,7 +451,7 @@ void Squad::HandleMemberLoad(int member_index, std::string name)
   squad_member.m_Joined = m_Data.m_DatabaseInfo.m_Users[member_index].m_Joined;
   StormReflParseJson(squad_member.m_Name, name.c_str());
 
-  printf("Got member infor %llu for squad %s\n", (DDSKey)m_Data.m_DatabaseInfo.m_Users[member_index].m_UserKey, m_SquadInfo.m_Name.c_str());
+  printf("Got member infor %zd for squad %s\n", (DDSKey)m_Data.m_DatabaseInfo.m_Users[member_index].m_UserKey, m_SquadInfo.m_Name.c_str());
 
   m_SquadInfo.m_Users.EmplaceAt(member_index, squad_member);
 

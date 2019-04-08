@@ -52,7 +52,10 @@ private:
   EndpointState m_State;
   DDSEndpointInterface m_EndpointInterface;
 
+#ifdef ENABLE_PROOF_OF_WORK
   int m_ProofVal = 0;
+#endif
+
   bool m_Error = false;
 
   uint64_t m_PlatformId = 0;

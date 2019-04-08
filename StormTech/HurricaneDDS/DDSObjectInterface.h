@@ -267,6 +267,7 @@ public:
       StormReflEncodeJson(return_arg), StormReflGetMemberFunctionIndex(err_func), force_load, false);
   }
 
+  // Creates a subscript on the database object
   template <typename TargetDataObject, typename ReturnObject>
   DDSKey CreateDataSubscription(const DDSSubscriptionTarget<TargetDataObject> & sub, DDSKey target_key, const char * path,
     void (ReturnObject::*return_func)(std::string data), bool delta_only,

@@ -24,6 +24,7 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const NodeSettings & settings)
   backend_settings.NumIOThreads = 2;
   backend_settings.NumSendThreads = 2;
   backend_settings.MaxConnections = 20000;
+  backend_settings.HeapSize = 1024 * 1024 * 50;
 
   DDSDatabaseSettings database_settings;
   database_settings.DatabaseHostName = settings.m_DatabaseHost;
@@ -53,8 +54,11 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const NodeSettings & settings)
   StormSockets::StormSocketServerFrontendWebsocketSettings user_endpoint_settings;
   user_endpoint_settings.ListenSettings.Port = settings.m_UserPort;
   user_endpoint_settings.MaxConnections = 20000;
+
   StormSockets::StormSocketServerFrontendWebsocketSettings server_endpoint_settings;
   server_endpoint_settings.ListenSettings.Port = settings.m_GameServerPort;
+  server_endpoint_settings.Protocol = kProjectName;
+
 #ifdef ENABLE_BOTS
   StormSockets::StormSocketServerFrontendWebsocketSettings bot_endpoint_settings;
   bot_endpoint_settings.ListenSettings.Port = settings.m_BotEndpointPort;

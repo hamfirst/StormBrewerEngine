@@ -11,6 +11,8 @@
 
 #include "GameServer/GameServer.h"
 
+#include "LobbyServerConnection/LobbyServerConnection.h"
+
 
 class GameServerWidget : public QWidget
 {

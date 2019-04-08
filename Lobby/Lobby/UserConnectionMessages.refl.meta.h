@@ -587,50 +587,50 @@ struct StormReflTypeInfo<UserVersionRequest>::field_data<2, Self> : public Storm
 };
 
 template <>
-struct StormReflTypeInfo<UserMessageConnectionErrror>
+struct StormReflTypeInfo<UserMessageConnectionError>
 {
   using MyBase = void;
   static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "UserMessageConnectionErrror"; }
-  static constexpr auto GetNameHash() { return 0x58670ED8; }
+  static constexpr auto GetName() { return "UserMessageConnectionError"; }
+  static constexpr auto GetNameHash() { return 0x9C42B9AC; }
   static constexpr bool HasDefault() { return true; }
-  static UserMessageConnectionErrror & GetDefault() { static UserMessageConnectionErrror def; return def; }
+  static UserMessageConnectionError & GetDefault() { static UserMessageConnectionError def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
-    auto c = static_cast<UserMessageConnectionErrror *>(ptr);
+    auto c = static_cast<UserMessageConnectionError *>(ptr);
     if(GetNameHash() == type_name_hash) return c;
     return nullptr;
   }
 
   static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
   {
-    auto c = static_cast<const UserMessageConnectionErrror *>(ptr);
+    auto c = static_cast<const UserMessageConnectionError *>(ptr);
     if(GetNameHash() == type_name_hash) return c;
     return nullptr;
   }
 
   static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
   {
-    auto c = static_cast<UserMessageConnectionErrror *>(ptr);
-    if(typeid(UserMessageConnectionErrror).hash_code() == type_id_hash) return c;
+    auto c = static_cast<UserMessageConnectionError *>(ptr);
+    if(typeid(UserMessageConnectionError).hash_code() == type_id_hash) return c;
     return nullptr;
   }
 
   static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
   {
-    auto c = static_cast<const UserMessageConnectionErrror *>(ptr);
-    if(typeid(UserMessageConnectionErrror).hash_code() == type_id_hash) return c;
+    auto c = static_cast<const UserMessageConnectionError *>(ptr);
+    if(typeid(UserMessageConnectionError).hash_code() == type_id_hash) return c;
     return nullptr;
   }
 
 };
 
 template <>
-struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<0>
+struct StormReflTypeInfo<UserMessageConnectionError>::field_data_static<0>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "c"; }
@@ -639,23 +639,23 @@ struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &UserMessageConnectionErrror::c; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageConnectionErrror *>(obj); return &ptr->c; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageConnectionErrror *>(obj); return &ptr->c; }
+  static constexpr auto GetMemberPtr() { return &UserMessageConnectionError::c; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageConnectionError *>(obj); return &ptr->c; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageConnectionError *>(obj); return &ptr->c; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data<0, Self> : public StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<0>
+struct StormReflTypeInfo<UserMessageConnectionError>::field_data<0, Self> : public StormReflTypeInfo<UserMessageConnectionError>::field_data_static<0>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.c; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.c; }
-  void SetDefault() { self.c = StormReflTypeInfo<UserMessageConnectionErrror>::GetDefault().c; }
+  void SetDefault() { self.c = StormReflTypeInfo<UserMessageConnectionError>::GetDefault().c; }
 };
 
 template <>
-struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<1>
+struct StormReflTypeInfo<UserMessageConnectionError>::field_data_static<1>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "msg"; }
@@ -664,19 +664,19 @@ struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<1>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &UserMessageConnectionErrror::msg; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageConnectionErrror *>(obj); return &ptr->msg; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageConnectionErrror *>(obj); return &ptr->msg; }
+  static constexpr auto GetMemberPtr() { return &UserMessageConnectionError::msg; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageConnectionError *>(obj); return &ptr->msg; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageConnectionError *>(obj); return &ptr->msg; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageConnectionErrror>::field_data<1, Self> : public StormReflTypeInfo<UserMessageConnectionErrror>::field_data_static<1>
+struct StormReflTypeInfo<UserMessageConnectionError>::field_data<1, Self> : public StormReflTypeInfo<UserMessageConnectionError>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.msg; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.msg; }
-  void SetDefault() { self.msg = StormReflTypeInfo<UserMessageConnectionErrror>::GetDefault().msg; }
+  void SetDefault() { self.msg = StormReflTypeInfo<UserMessageConnectionError>::GetDefault().msg; }
 };
 
 template <>
@@ -776,7 +776,7 @@ template <>
 struct StormReflTypeInfo<UserMessageVersionResponse>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -818,20 +818,45 @@ struct StormReflTypeInfo<UserMessageVersionResponse>
 template <>
 struct StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<0>
 {
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "c"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &UserMessageVersionResponse::c; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageVersionResponse *>(obj); return &ptr->c; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageVersionResponse *>(obj); return &ptr->c; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<0, Self> : public StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.c; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.c; }
+  void SetDefault() { self.c = StormReflTypeInfo<UserMessageVersionResponse>::GetDefault().c; }
+};
+
+template <>
+struct StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<1>
+{
   using member_type = int; // int
   static constexpr auto GetName() { return "ver"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x09BC4202; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserMessageVersionResponse::ver; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageVersionResponse *>(obj); return &ptr->ver; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageVersionResponse *>(obj); return &ptr->ver; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<0, Self> : public StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<0>
+struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<1, Self> : public StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -841,7 +866,7 @@ struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<0, Self> : publ
 };
 
 template <>
-struct StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<1>
+struct StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<2>
 {
   using member_type = uint32_t; // unsigned int
   static constexpr auto GetName() { return "sha"; }
@@ -849,14 +874,14 @@ struct StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<1>
   static constexpr unsigned GetFieldNameHash() { return 0x3E67BF7A; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserMessageVersionResponse::sha; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageVersionResponse *>(obj); return &ptr->sha; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageVersionResponse *>(obj); return &ptr->sha; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<1, Self> : public StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<1>
+struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<2, Self> : public StormReflTypeInfo<UserMessageVersionResponse>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -5360,7 +5385,7 @@ namespace StormReflFileInfo
   template <>
   struct UserConnectionMessages::type_info<3>
   {
-    using type = ::UserMessageConnectionErrror;
+    using type = ::UserMessageConnectionError;
   };
 
   template <>

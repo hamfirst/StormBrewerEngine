@@ -28,6 +28,7 @@ set(GENERIC_SRC_GameClient
             GameClientInputManager.cpp
             GameClientInstanceContainer.cpp
             GameClientInstanceResources.cpp
+            GameClientLatencyChecker.cpp
             GameClientLevelLoader.cpp
             GameClientSave.cpp
             GameClientSystems.cpp
@@ -57,21 +58,29 @@ set(GENERIC_SRC_GameClient
 
 set(GENERIC_HEADER_GameClient 
             Components/PlayerComponent.refl.h
+            Components/PlayerComponent.refl.meta.h
             Components/Reusable/AttachVfxComponent.refl.h
+            Components/Reusable/AttachVfxComponent.refl.meta.h
             Components/Reusable/PlayAnimationComponent.refl.h
+            Components/Reusable/PlayAnimationComponent.refl.meta.h
             Components/Reusable/SyncServerObjectComponent.refl.h
+            Components/Reusable/SyncServerObjectComponent.refl.meta.h
             EffectLayers/CollisionDrawer.refl.h
+            EffectLayers/CollisionDrawer.refl.meta.h
             GameCamera.h
             GameClientCommon.h
             GameClientController.refl.h
+            GameClientController.refl.meta.h
             GameClientEntitySync.h
             GameClientEventSender.h
             GameClientInputManager.h
             GameClientInstanceContainer.h
             GameClientInstanceResources.h
+            GameClientLatencyChecker.h
             GameClientLevelLoader.h
             GameClientSave.h
             GameClientSaveFileData.refl.h
+            GameClientSaveFileData.refl.meta.h
             GameClientSystems.h
             GameClientUIManager.h
             GameContainer.h

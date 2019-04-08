@@ -91,7 +91,7 @@ void GameInstanceStateStaging::Update()
 
 void GameInstanceStateStaging::HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg)
 {
-#if NET_USE_READY
+#ifdef NET_USE_READY
   m_State.m_Players[client_index].m_Ready = msg.m_Ready;
 #endif
 }

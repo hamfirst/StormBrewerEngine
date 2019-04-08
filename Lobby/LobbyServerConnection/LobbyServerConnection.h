@@ -8,6 +8,8 @@
 
 #include "Lobby/GameServerMessages.refl.h"
 
+#include <ctime>
+
 using LobbyValidationCallback = Delegate<void, const Optional<GameServerAuthenticateUserSuccess> &>;
 
 using LobbyTeamSwitchCallback = Delegate<void, uint64_t, uint64_t, int>;
@@ -31,13 +33,12 @@ static const int kInvalidValidationRequestId = 0;
 class LobbyServerConnection
 {
 public:
-  LobbyServerConnection(const char * lobby_host);
+  LobbyServerConnection(const GameServerMeta & server_info);
 
   void Connect();
   void Update();
 
   bool IsConnected();
-  bool WantsRedownload();
 
   void SetTeamSwitchCallback(LobbyTeamSwitchCallback callback);
   void SetDisconnectCallback(LobbyDisconnectCallback callback);
@@ -68,9 +69,7 @@ protected:
 private:
   LobbyServerConnectionState m_State;
   WebSocket m_WebSocket;
-  std::string m_LobbyHost;
-
-  bool m_WantsRedownload;
+  GameServerMeta m_ServerSettings;
 
   std::vector<std::string> m_PendingMessages;
   uint64_t m_RelocationToken;

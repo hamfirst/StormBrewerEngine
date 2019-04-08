@@ -7,6 +7,8 @@
 
 #include "ProjectSettings/ProjectNetworkSettings.h"
 
+LobbyLevelList g_LobbyLevelList;
+
 LobbyLevelList::LobbyLevelList()
 {
   auto ReadFileAsString = [](const std::string_view & file_name) -> std::string
@@ -59,6 +61,8 @@ LobbyLevelList::LobbyLevelList()
     LobbyMapInfo map_info;
     StormReflParseJson(map_info, result);
 
+    list_elem.m_TeamCount = map_info.m_PropertiesInfo.m_MapProperties.m_TeamCount;
+
 #ifdef NET_USE_PLAYER_LIMIT
     list_elem.m_PlayerCount = map_info.m_PropertiesInfo.m_MapProperties.m_PlayerCount;
 #endif
@@ -73,4 +77,14 @@ LobbyLevelList::LobbyLevelList()
 
     m_Levels.emplace_back(std::move(list_elem));
   }
+}
+
+int LobbyLevelList::GetNumLevels() const
+{
+  return (int)m_Levels.size();
+}
+
+const LobbyLevelListElement & LobbyLevelList::GetLevelInfo(int level_index) const
+{
+  return m_Levels[level_index];
 }

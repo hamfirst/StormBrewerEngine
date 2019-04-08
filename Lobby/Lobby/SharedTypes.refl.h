@@ -5,7 +5,11 @@
 
 #include <HurricaneDDS/DDSDataObject.h>
 
+#include "ProjectSettings/ProjectNetworkSettings.h"
+
 #include "LobbyConfig.h"
+
+#include "Game/GameNetworkData.refl.h"
 
 enum STORM_REFL_ENUM class ChannelJoinResult
 {
@@ -130,3 +134,41 @@ struct SquadInfo
   RSparseList<SquadApplication> m_Requests;
 };
 
+struct GameLobbySettings
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(GameLobbySettings);
+
+  RString m_Name;
+  RString m_Password;
+  RString m_JoinCode;
+  ROpaque<GameInitSettings> m_InitSettings;
+};
+
+struct GameMember
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(GameMember);
+
+  RString m_Name;
+  RInt m_Team;
+
+#ifdef ENABLE_SQUADS
+  RString m_SquadTag;
+#endif
+
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
+  RBool m_Ready;
+#endif
+
+  DDSKey m_UserKey;
+  DDSKey m_PlatformId;
+  RString m_Icon;
+  RString m_Title;
+};
+
+struct GameInfo
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(GameInfo);
+
+  GameLobbySettings m_Settings;
+  RSparseList<GameMember> m_Users;
+};

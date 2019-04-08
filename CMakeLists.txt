@@ -49,6 +49,9 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   
   set_target_properties(GameClient PROPERTIES FOLDER Project)
   set_target_properties(GameClientExe PROPERTIES FOLDER Project)
+
+  add_subdirectory(Lobby/LobbyClientConnection)
+  set_target_properties(LobbyClientConnection PROPERTIES FOLDER Lobby)
   
   if(ANDROID)
     add_library(ClientExe SHARED Dummy.cpp)
@@ -118,6 +121,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   endif()
 
   target_link_libraries(ClientExe Foundation)
+  target_link_libraries(ClientExe LobbyClientConnection)
   target_link_libraries(ClientExe StormNetCustomBindings)
   target_link_libraries(ClientExe StormWebrtcClientAPI)
   target_link_libraries(ClientExe StormWebrtcServerAPI)
@@ -214,10 +218,11 @@ endif()
 if(BUILD_SERVER OR BUILD_TOOLS)
   add_subdirectory(Project/GameServer)
   add_subdirectory(Project/GameServerExe)
-  add_subdirectory(Lobby/LobbyServerConnection)
   
   set_target_properties(GameServer PROPERTIES FOLDER Project)
   set_target_properties(GameServerExe PROPERTIES FOLDER Project)
+
+  add_subdirectory(Lobby/LobbyServerConnection)
   set_target_properties(LobbyServerConnection PROPERTIES FOLDER Lobby)
 
   add_executable(ServerExe Dummy.cpp)
@@ -470,6 +475,7 @@ if(BUILD_TOOLS)
     target_link_libraries(editor -Wl,--whole-archive Engine -Wl,--no-whole-archive)
   endif()
 
+  target_link_libraries(editor LobbyServerConnection)
   target_link_libraries(editor Foundation)
   target_link_libraries(editor StormNetCustomBindings)
   target_link_libraries(editor StormNetBindingsEnet)
@@ -560,6 +566,8 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
   add_dependencies(Engine Runtime)
   add_dependencies(GameClient Game GameShared)
   add_dependencies(GameClientExe GameShared)
+  add_dependencies(LobbyClientConnection Game)
+  add_dependencies(LobbyClientConnection Lobby)
 endif()
 
 if(BUILD_SERVER OR BUILD_TOOLS)

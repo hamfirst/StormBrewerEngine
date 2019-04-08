@@ -19,7 +19,7 @@ class WebSocket
 {
 public:
   WebSocket();
-  WebSocket(const char * host, int port, const char * uri, const char * origin, char * protocol = nullptr);
+  WebSocket(const char * host, int port, const char * uri, const char * origin, const char * protocol = nullptr);
   WebSocket(const WebSocket & rhs) = delete;
   WebSocket(WebSocket && rhs)  noexcept;
   ~WebSocket();
@@ -27,7 +27,7 @@ public:
   WebSocket & operator = (const WebSocket & rhs) = delete;
   WebSocket & operator = (WebSocket && rhs) noexcept;
 
-  void StartConnect(const char * host, int port, const char * uri, const char * origin, char * protocol = nullptr, int timeout = 0);
+  void StartConnect(const char * host, int port, const char * uri, const char * origin, const char * protocol = nullptr, int timeout = 0);
 
   bool IsConnected();
   bool IsConnecting();

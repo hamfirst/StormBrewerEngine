@@ -8,12 +8,15 @@
 
 #include "GameShared/GameProtocol.h"
 
+#include "LobbyServerConnection/LobbyServerConnection.h"
+
 #include "StormNet/NetProtocolFuncs.h"
 
 
-GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manager) :
+GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manager, NullOptPtr<LobbyServerConnection> lobby_connection) :
   ServerBase(max_clients, &m_Backend),
   m_StageManager(stage_manager),
+  m_LobbyConnection(lobby_connection),
 #if NET_BACKEND == NET_BACKEND_WEBRTC
   m_Backend(this, NetServerBackendWebrtcSettings{ (uint16_t)port, (uint16_t)max_clients, "Config/localhost.key", "Config/localhost.crt", NetGetProtocolPipeModes(ServerProtocolDef{}), NetGetProtocolPipeModes(ClientProtocolDef{}) }),
 #elif NET_BACKEND == NET_BACKEND_ENET
@@ -21,7 +24,7 @@ GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manag
 #elif NET_BACKEND == NET_BACKEND_WEBSOCKET
   m_Backend(this, NetServerBackendWebsocketSettings{ (uint16_t)port, (uint16_t)max_clients }),
 #endif
-  m_GameInstanceManager(*this, stage_manager)
+  m_GameInstanceManager(*this, stage_manager, lobby_connection)
 {
 
 }
@@ -34,6 +37,11 @@ GameServer::~GameServer()
 void GameServer::Update()
 {
   ServerBase::Update();
+
+  if(m_LobbyConnection)
+  {
+    m_LobbyConnection->Update();
+  }
 }
 
 GameInstanceManager & GameServer::GetGameInstanceManager()

@@ -6,7 +6,8 @@
 
 GameServerEndpoint::GameServerEndpoint(const DDSEndpointInterface & endpoint_interface) :
   m_State(EndpointState::kIdentify),
-  m_EndpointInterface(endpoint_interface)
+  m_EndpointInterface(endpoint_interface),
+  m_Version(0)
 {
 
 }
@@ -60,13 +61,7 @@ void GameServerEndpoint::HandleData(const char * data)
           return;
         }
 
-        if (msg.m_Version != kGameServerVersion)
-        {
-          SendPacket(GameServerRedownload{});
-          m_EndpointInterface.ForceDisconnect();
-          return;
-        }
-
+        m_Version = msg.m_Version;
         m_State = kCreatingObject;
         ConnectToObject();
       }

@@ -15,6 +15,7 @@
 #include "GameClient/GameMode.h"
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientSave.h"
+#include "GameClient/GameClientLatencyChecker.h"
 
 class GameMode;
 class GameNetworkClient;
@@ -102,6 +103,7 @@ private:
   std::unique_ptr<GameMode> m_Mode;
   std::unique_ptr<GameMode> m_NextMode;
   std::unique_ptr<GameNetworkClient> m_Client;
+  std::unique_ptr<GameClientLatencyChecker> m_LatencyChecker;
   std::unique_ptr<GameContainerInitSettings> m_InitSettings;
 
   GameNetworkClientInitSettings m_NetInitSettings;

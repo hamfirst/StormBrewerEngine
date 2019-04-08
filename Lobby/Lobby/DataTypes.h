@@ -14,7 +14,7 @@
 #include "Bot.refl.meta.h"
 
 #include "BanList.refl.meta.h"
-#include "ServerList.refl.meta.h"
+#include "GameList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 #include "Rewards.refl.meta.h"
 #include "ServerManager.refl.meta.h"
@@ -42,7 +42,7 @@ using SharedObjectList = DDSSharedObjectTypeList<
     BanList,
 #endif
 #ifdef ENABLE_GAME_LIST
-    ServerList,
+    GameList,
 #endif
 #ifdef ENABLE_WELCOME_INFO
     WelcomeInfo,

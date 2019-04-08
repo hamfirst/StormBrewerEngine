@@ -63,7 +63,6 @@ public:
   DDSKey m_EndpointKey;
 
   DDSKey m_ChannelSubscriptionId;
-  DDSKey m_ServerListSubscriptionId;
 
 public:
 

@@ -3,6 +3,7 @@
 #include "DataTypes.h"
 
 #include "ProjectSettings/ProjectPorts.h"
+#include "ProjectSettings/ProjectName.h"
 
 #include <HurricaneDDS/DDSDatabaseConnection.h>
 #include <HurricaneDDS/DDSDatabaseBootstrap.h>
@@ -10,8 +11,8 @@
 std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const char * database_host_addr, int database_port)
 {
   StormSockets::StormSocketInitSettings backend_settings;
-  backend_settings.NumIOThreads = 1;
-  backend_settings.NumSendThreads = 1;
+  backend_settings.NumIOThreads = 2;
+  backend_settings.NumSendThreads = 2;
 
   DDSDatabaseSettings database_settings;
   database_settings.DatabaseHostName = database_host_addr;
@@ -91,6 +92,7 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
   coordinator_settings.ListenSettings.Port = COORDINATOR_PORT;
   StormSockets::StormSocketServerFrontendWebsocketSettings lb_settings;
   lb_settings.ListenSettings.Port = LOBBY_LB_PORT;
+  lb_settings.Protocol = kProjectName;
 
   auto coordinator = 
     std::make_unique<DDSCoordinatorState>(DataObjectList{}, SharedObjectList{}, backend_settings, coordinator_settings, http_client_settings, database_settings);

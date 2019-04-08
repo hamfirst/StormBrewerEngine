@@ -13,7 +13,7 @@
 #include "Channel.refl.meta.h"
 #include "User.refl.meta.h"
 #include "UserConnection.refl.meta.h"
-#include "ServerList.refl.meta.h"
+#include "GameList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 
 
@@ -39,7 +39,7 @@ void Bot::AddEndpoint(DDSResponder & responder, DDSKey key, std::string user_nam
 
   m_Interface.Call(&Channel::AddBot, m_ChannelKey, m_Interface.GetLocalKey(), m_Data.m_UserName);
   m_ChannelSubscriptionId = m_Interface.CreateSubscription(DDSSubscriptionTarget<Channel>{}, m_ChannelKey, ".m_ChannelInfo", &Bot::HandleChannelUpdate, true);
-  m_ServerListSubscriptionId = m_Interface.CreateSubscription(DDSSubscriptionTarget<ServerList>{}, m_ChannelKey, "", &Bot::HandleServerListUpdate, true);
+
   DDSResponderCall(responder, true);
 }
 
@@ -51,7 +51,6 @@ void Bot::RemoveEndpoint(DDSKey key)
 
     m_Interface.Call(&Channel::RemoveBot, m_ChannelKey, m_Interface.GetLocalKey());
     m_Interface.DestroySubscription<Channel>(m_ChannelKey, m_ChannelSubscriptionId);
-    m_Interface.DestroySubscription<ServerList>(m_ChannelKey, m_ServerListSubscriptionId);
   }
 }
 

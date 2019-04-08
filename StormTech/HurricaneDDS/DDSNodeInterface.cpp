@@ -199,7 +199,7 @@ void DDSNodeInterface::CreateTimerInternal(std::chrono::system_clock::duration d
   call_data.m_MethodArgs = "[]";
   call_data.m_ResponderArgs = return_arg;
 
-  m_NodeState.CreateTimer(duration, std::move(call_data));
+  return m_NodeState.CreateTimer(duration, std::move(call_data));
 }
 
 void DDSNodeInterface::CreateHttpRequestInternal(const DDSHttpRequest & request, DDSKey key, int data_object_type, int target_method_id, std::string && return_arg)

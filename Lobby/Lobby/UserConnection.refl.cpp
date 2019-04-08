@@ -10,7 +10,7 @@
 #include "GameServerConnection.refl.meta.h"
 
 #include "UserConnectionMessages.refl.meta.h"
-#include "ServerList.refl.meta.h"
+#include "GameList.refl.meta.h"
 #include "BanList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 #include "GameServerConnection.refl.h"
@@ -48,7 +48,10 @@ void UserConnection::FinalizeUserLoaded()
   m_Interface.Call(&User::SetLocation, m_UserId, m_CountryCode, m_CurrencyCode);
 
 #ifdef ENABLE_GAME_LIST
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<ServerList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
+  m_Interface.CreateSubscription(DDSSubscriptionTarget<GameList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
+#endif
+
+#ifdef ENABLE_WELCOME_INFO
   m_Interface.CreateSubscription(DDSSubscriptionTarget<WelcomeInfo>{}, 0, ".m_Tabs", &UserConnection::HandleWelcomeInfoUpdate, true);
 #endif
 }
@@ -262,7 +265,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      m_Interface.Call(&User::CreateGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.create_data, req.password);
+      //m_Interface.Call(&User::CreateGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.create_data, req.password);
     }
     else if (cmd == "join_game")
     {
@@ -273,7 +276,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      m_Interface.Call(&User::JoinGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.game_id, req.password, req.observer);
+      //m_Interface.Call(&User::JoinGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.game_id, req.password, req.observer);
     }
     else if (cmd == "destroy_game")
     {
@@ -601,7 +604,7 @@ void UserConnection::SendRuntimeError(std::string msg)
 
 void UserConnection::SendConnectionError(std::string msg)
 {
-  UserMessageConnectionErrror err{ "error", msg };
+  UserMessageConnectionError err{ "error", msg };
   SendData(StormReflEncodeJson(err));
 
   if (m_ConnectionId)

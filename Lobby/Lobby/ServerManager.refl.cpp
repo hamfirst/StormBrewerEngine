@@ -89,7 +89,7 @@ std::string ApplyTemplate(const std::string & templ, const std::unordered_map<st
 ServerManager::ServerManager(DDSObjectInterface & iface) :
   m_Interface(iface)
 {
-  for(int zone = 0; zone < g_NumProjectZones; ++zone)
+  for(int zone = 0; zone < kNumProjectZones; ++zone)
   {
     m_RequestedServersInZone.emplace_back(0);
   }
@@ -156,7 +156,7 @@ void ServerManager::Initialize()
 
   assert(!m_AuthorizationHeader.empty());
 
-  for(int index = 0; index < g_NumProjectZones; ++index)
+  for(int index = 0; index < kNumProjectZones; ++index)
   {
     auto zone = g_ProjectZones[index];
     RequestServerList(zone, "", bootstrap);
@@ -201,7 +201,7 @@ void ServerManager::HandleServerListResponse(const std::string & response_data, 
         pending.m_Zone = elem.zone.data() + zone_pos + 1;
       }
 
-      for(int index = 0; index < g_NumProjectZones; ++index)
+      for(int index = 0; index < kNumProjectZones; ++index)
       {
         if(pending.m_Zone == g_ProjectZones[index])
         {

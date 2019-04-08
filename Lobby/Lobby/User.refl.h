@@ -157,8 +157,11 @@ struct User
 #endif
 
   // Game Functions
-  void STORM_REFL_FUNC CreateGame(DDSKey server_id, DDSKey endpoint_id, GameInitSettings creation_data, std::string password);
-  void STORM_REFL_FUNC JoinGame(DDSKey server_id, DDSKey endpoint_id, int game_id, std::string password, bool observer);
+#ifdef ENABLE_GAME_LIST
+  void STORM_REFL_FUNC CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string name, std::string password);
+#endif
+
+  void STORM_REFL_FUNC JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer);
   void STORM_REFL_FUNC SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info);
   void STORM_REFL_FUNC DestroyGame(DDSKey server_id, DDSKey endpoint_id, int game_id);
   void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey server_id, DDSKey endpoint_id, int game_id, DDSKey game_random_id, std::string game_info, bool success);

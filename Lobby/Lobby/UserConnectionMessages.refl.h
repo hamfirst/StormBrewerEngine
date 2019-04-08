@@ -44,11 +44,13 @@ struct UserVersionRequest
   STORM_REFL;
 
   std::string c;
+#ifdef ENABLE_PROOF_OF_WORK
   std::string sha;
   std::string prefix;
+#endif
 };
 
-struct UserMessageConnectionErrror
+struct UserMessageConnectionError
 {
   STORM_REFL;
   std::string c;
@@ -66,8 +68,18 @@ struct UserMessageVersionResponse
 {
   STORM_REFL;
 
+  std::string c;
   int ver = 0;
+#ifdef ENABLE_PROOF_OF_WORK
   uint32_t sha = 0;
+#endif
+};
+
+struct UserMessageIdentifyRequest
+{
+  STORM_REFL;
+  std::string c;
+  std::string token;
 };
 
 struct UserMessageIdentifyResponse

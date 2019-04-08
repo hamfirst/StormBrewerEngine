@@ -64,7 +64,7 @@ void GameServerWidget::tick()
     {
       if (m_LevelList.IsPreloadComplete())
       {
-        m_GameServer.Emplace(256, 47816, m_StageManager.Value());
+        m_GameServer.Emplace(256, 47816, m_StageManager.Value(), nullptr);
 
         m_TextEdit->append(QString("Server started!\n"));
       }

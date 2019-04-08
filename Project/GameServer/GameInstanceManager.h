@@ -7,11 +7,12 @@
 
 class GameServer;
 class GameStageManager;
+class LobbyServerConnection;
 
 class GameInstanceManager
 {
 public:
-  GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager);
+  GameInstanceManager(GameServer & game_server, GameStageManager & stage_manager, NullOptPtr<LobbyServerConnection> lobby_connection);
 
   void Update();
 
@@ -25,6 +26,7 @@ public:
 private:
   GameServer & m_Server;
   GameStageManager & m_StageManager;
+  NullOptPtr<LobbyServerConnection> m_LobbyConnection;
 
   std::map<uint64_t, std::unique_ptr<GameInstance>> m_Games;
   std::unordered_map<uint32_t, uint64_t> m_PrivateRoomLookup;
