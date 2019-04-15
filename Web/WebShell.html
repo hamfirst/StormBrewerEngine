@@ -78,7 +78,12 @@
         var dataFolder="{{{PROJECT_NAME}}}";
         var version = "{{{PROJECT_VERSION}}}";
         var host = "";
-        var username = null;
+        var token = null;
+
+        var kongregate_string = "kongregate";
+        var kongregate_str_len = Module.lengthBytesUTF8(kongregate_string) + 1;
+        var kongregate_str_ptr = Module._malloc(kongregate_str_len);
+        Module.stringToUTF8(username, kongregate_str_ptr, kongregate_str_len);
 
         console.log(window.location.hostname);
         if(window.location.hostname == "stormbrewers.com") {
@@ -117,14 +122,14 @@
           canvas.focus();
           canvas.onclick = function() {
             canvas.focus();
-          }
+          };
 
-          if(username != null) {
-            var l = Module.lengthBytesUTF8(username) + 1;
-            var ptr = Module._malloc(l);          
-            Module.stringToUTF8(username, ptr, l);
-            
-            Module.ccall('SetAccountName', 'null', ['number'], [ptr]);
+          if(token != null) {
+            var l = Module.lengthBytesUTF8(token) + 1;
+            var ptr = Module._malloc(l);
+            Module.stringToUTF8(token, ptr, l);
+
+            Module.ccall('SetLoginToken', 'null', ['number', 'number'], [kongregate_str_ptr, ptr]);
           }
         }
 
@@ -139,15 +144,15 @@
             window.kongregate = kongregateAPI.getAPI();
 
             if(window.kongregate.services.isGuest() == false) {
-              username = window.kongregate.services.getUsername();
+              token = window.kongregate.services.getGameAuthToken();
             } else {
               window.kongregate.services.addEventListener("login", function(event) {
-                username = window.kongregate.services.getUsername();
+                token = window.kongregate.services.getGameAuthToken();
                 var l = Module.lengthBytesUTF8(username) + 1;
-                var ptr = Module._malloc(l);          
+                var ptr = Module._malloc(l);
                 Module.stringToUTF8(username, ptr, l);
-                
-                Module.ccall('SetAccountName', 'null', ['number'], [ptr]);
+
+                Module.ccall('SetAccountName', 'null', ['number', 'number'], [kongregate_str_ptr, ptr]);
               });
             }
             PageLoadComplete();

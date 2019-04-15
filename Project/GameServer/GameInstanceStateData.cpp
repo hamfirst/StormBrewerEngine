@@ -35,11 +35,6 @@ const GameStage & GameInstanceStateData::GetStage() const
   return *m_StageManager.GetStage(m_InitSettings);
 }
 
-uint32_t GameInstanceStateData::GetPrivateRoomId() const
-{
-  return m_Instance->m_PrivateRoomId;
-}
-
 void GameInstanceStateData::SetNewState(std::unique_ptr<GameInstanceStateBase> && state)
 {
   m_Instance->SetNewState(std::move(state));

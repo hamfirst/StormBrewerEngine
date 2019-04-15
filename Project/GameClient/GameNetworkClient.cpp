@@ -22,19 +22,19 @@
 
 #undef SendMessage
 
-GameNetworkClient::GameNetworkClient(GameContainer & game) :
+GameNetworkClient::GameNetworkClient(GameContainer & game, const GameNetworkClientInitSettings & settings) :
   ClientBase(&m_Backend),
 
 #if NET_BACKEND == NET_BACKEND_WEBRTC
-  m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort, 
-                  game.GetNetworkInitSettings().m_Fingerprint.data(), NetGetProtocolPipeModes(ClientProtocolDef{}), NetGetProtocolPipeModes(ServerProtocolDef{})),
+  m_Backend(this, settings.m_RemoteHost, settings.m_RemotePort,
+                  settings.m_Fingerprint.data(), NetGetProtocolPipeModes(ClientProtocolDef{}), NetGetProtocolPipeModes(ServerProtocolDef{})),
 #elif NET_BACKEND == NET_BACKEND_ENET
-  m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort),
+  m_Backend(this, settings.m_RemoteHost, settings.m_RemotePort),
 #elif NET_BACKEND == NET_BACKEND_WEBSOCKET
-  m_Backend(this, game.GetNetworkInitSettings().m_RemoteHost, game.GetNetworkInitSettings().m_RemotePort, "/", "stormbrewers.com"),
+  m_Backend(this, settings.m_RemoteHost, settings.m_RemotePort, "/", "stormbrewers.com"),
 #endif
-
   m_GameContainer(game),
+  m_Settings(settings),
   m_SendTimer(0),
   m_LastPingSent(0),
   m_Ping(0)
@@ -68,11 +68,6 @@ void GameNetworkClient::Update()
       m_SendTimer = cur_time + 0.05;
       SendClientUpdate();
     }
-  }
-
-  if (m_State == ClientConnectionState::kStaging)
-  {
-    m_StagingState->m_WaitTimer--;
   }
 
   if (m_LoadingInstanceContainer && m_LoadingInstanceContainer->IsLoaded() && m_FinalizedLoad == false)
@@ -110,52 +105,9 @@ ClientConnectionState GameNetworkClient::GetConnectionState() const
   return m_State;
 }
 
-bool GameNetworkClient::InPrivateGameStaging() const
+const GameNetworkClientInitSettings & GameNetworkClient::GetSettings() const
 {
-  if(m_StagingState)
-  {
-    return m_StagingState->m_PrivateRoomId != 0;
-  }
-
-  return false;
-}
-
-void GameNetworkClient::SendJoinGame()
-{
-  if(m_GameContainer.GetNetworkInitSettings().m_Intent == ClientConnectionIntent::kJoinPrivate)
-  {
-    JoinGameMessage join_msg = {};
-    join_msg.m_PrivateRoomId = m_GameContainer.GetNetworkInitSettings().m_JoinPrivateGameKey;
-    join_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
-    join_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
-
-    m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
-  }
-  else if(m_GameContainer.GetNetworkInitSettings().m_Intent == ClientConnectionIntent::kCreatePrivate)
-  {
-    CreatePrivateGameMessage create_msg = {};
-    create_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
-    create_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
-
-    m_Protocol->GetSenderChannel<0>().SendMessage(create_msg);
-  }
-  else
-  {
-    JoinGameMessage join_msg = {};
-    join_msg.m_PrivateRoomId = 0;
-    join_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
-    join_msg.m_JoinInfo.m_Settings = m_GameContainer.GetNetworkInitSettings().m_InitSettings;
-
-    m_Protocol->GetSenderChannel<0>().SendMessage(join_msg);
-  }
-}
-
-void GameNetworkClient::SendCreatePrivateGame()
-{
-  CreatePrivateGameMessage create_msg = {};
-  create_msg.m_JoinInfo.m_UserName = m_GameContainer.GetNetworkInitSettings().m_UserName;
-
-  m_Protocol->GetSenderChannel<0>().SendMessage(create_msg);
+  return m_Settings;
 }
 
 void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
@@ -182,11 +134,6 @@ void GameNetworkClient::UpdateInput(ClientInput && input, bool send_immediate)
 NullOptPtr<GameClientInstanceContainer> GameNetworkClient::GetClientInstanceData()
 {
   return m_InstanceContainer.get();
-}
-
-NullOptPtr<const GameStateStaging> GameNetworkClient::GetStagingState() const
-{
-  return m_StagingState.GetPtr();
 }
 
 NullOptPtr<const GameStateLoading> GameNetworkClient::GetLoadingState() const
@@ -240,17 +187,9 @@ void GameNetworkClient::HandleTextMessage(const GotTextChatMessage & text)
   m_TextData.emplace_back(std::move(text_data));
 }
 
-void GameNetworkClient::HandleStagingUpdate(const GameStateStaging & state)
-{
-  m_State = ClientConnectionState::kStaging;
-  m_StagingState = state;
-  m_LoadingState.Clear();
-}
-
 void GameNetworkClient::HandleLoadingUpdate(const GameStateLoading & state)
 {
   m_State = ClientConnectionState::kLoading;
-  m_StagingState.Clear();
   m_LoadingState = state;
 }
 
@@ -290,7 +229,6 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
     }
 
     m_LoadingState.Clear();
-    m_StagingState.Clear();
 
     m_InstanceContainer = std::move(m_LoadingInstanceContainer);
     m_InstanceContainer->InitializeFromRemoteState(game_state.m_State, game_state.m_LowFrequencyData.GetPtr());
@@ -427,6 +365,16 @@ void GameNetworkClient::HandleEntityEvent(std::size_t event_class_id, void * eve
 
 #endif
 
+void GameNetworkClient::SendJoinServer()
+{
+  JoinServerMessage msg;
+  msg.m_UserId = m_Settings.m_UserId;
+  msg.m_GameId = m_Settings.m_GameId;
+  msg.m_JoinToken = m_Settings.m_JoinKey;
+
+  m_Protocol->GetSenderChannel<0>().SendMessage(msg);
+}
+
 void GameNetworkClient::SendPing()
 {
   if (m_Protocol)
@@ -499,7 +447,6 @@ void GameNetworkClient::InitConnection(ProtocolType & protocol)
 
 #if NET_MODE == NET_MODE_GGPO
 
-  m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleStagingUpdate, this);
   m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleLoadingUpdate, this);
   m_Protocol->GetReceiverChannel<1>().RegisterCallback(&GameNetworkClient::HandleSimUpdate, this);
 
@@ -515,7 +462,7 @@ void GameNetworkClient::InitConnection(ProtocolType & protocol)
 #endif
 
   SendPing();
-  SendJoinGame();
+  SendJoinServer();
 }
 
 void GameNetworkClient::ConnectionFailed()

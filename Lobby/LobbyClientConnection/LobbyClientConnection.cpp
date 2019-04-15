@@ -21,6 +21,7 @@
 
 LobbyClientConnection::LobbyClientConnection(LobbyLoginMode login_mode, std::string token, std::string load_balancer_host) :
         m_State(LobbyClientConnectionState::kDisconnected),
+        m_ClientState(LobbyClientState::kDisconnected),
         m_LastPingTime(time(nullptr)),
         m_LoginMode(login_mode),
         m_LoginToken(std::move(token)),
@@ -38,6 +39,7 @@ void LobbyClientConnection::Connect()
   }
 
   m_State = LobbyClientConnectionState::kLoadBalancerConnecting;
+  m_ClientState = LobbyClientState::kConnecting;
   m_WebSocket.StartConnect(m_LoadBalancerHost.c_str(), LOBBY_LB_PORT, "/", "localhost", kProjectName);
   m_RelocationToken = 0;
 }
@@ -153,7 +155,7 @@ void LobbyClientConnection::Update()
             uint32_t digest[5];
             hash.getDigest(digest);
             char tmp[48];
-            snprintf(tmp, 45, "%08x%08x%08x%08x%08x", digest[0], digest[1], digest[2], digest[3], digest[4]);
+            snprintf(tmp, 45, "%08X%08X%08X%08X%08X", digest[0], digest[1], digest[2], digest[3], digest[4]);
 
             if(msg.sha == tmp)
             {
@@ -182,7 +184,17 @@ void LobbyClientConnection::Update()
           }
           else
           {
-
+            switch(m_LoginMode)
+            {
+#ifdef ENABLE_AUTH_GUEST
+            case LobbyLoginMode::kGuest:
+              resp.c = "lguest";
+              break;
+#endif
+            default:
+              assert(false);
+              break;
+            }
           }
         }
         break;
@@ -192,9 +204,10 @@ void LobbyClientConnection::Update()
   }
 }
 
-bool LobbyClientConnection::IsConnected()
+
+LobbyClientState LobbyClientConnection::GetState()
 {
-  return m_WebSocket.IsConnected();
+  return m_ClientState;
 }
 
 template <typename T>

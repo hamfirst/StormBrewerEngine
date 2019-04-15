@@ -65,9 +65,12 @@ struct UserDatabaseObject
   DDS_DATABASE_OBJECT(User);
 
   RString m_UserName;
-  DDSKey m_PlatformId;
-  STORM_REFL_ATTR(UniqueIndex) RString m_UserNameLower;
+  RString m_UserNameLower;
 
+  RString m_Platform;
+  DDSKey m_PlatformId = 0;
+
+  RBool m_IsGuest = false;
   RInt m_AdminLevel = 0;
 
 #ifdef ENABLE_CHANNELS
@@ -127,6 +130,18 @@ struct UserNameLookup
   std::string m_UserNameLower;
 };
 
+struct UserPlatformIdLookup
+{
+  STORM_REFL;
+  STORM_REFL_NODEFAULT;
+
+  using DatabaseType = UserDatabaseObject;
+
+  UserPlatformIdLookup(DDSKey platform_id);
+
+  DDSKey m_PlatformId;
+};
+
 struct User
 {
   DDS_DATA_OBJECT(DDSDataObjectPriority::kMedium);
@@ -139,6 +154,7 @@ struct User
   void STORM_REFL_FUNC SendToEndpoint(DDSKey endpoint_id, std::string data);
   void STORM_REFL_FUNC RemoveEndpoint(DDSKey key);
   void STORM_REFL_FUNC SetLocation(std::string country_code, std::string currency_code);
+  void STORM_REFL_FUNC UpdateName(std::string name);
 
 #ifdef ENABLE_REWARDS
   void STORM_REFL_FUNC GiveGifts();
@@ -187,8 +203,8 @@ struct User
   void STORM_REFL_FUNC RescindSquadApplication(DDSKey endpoint_id, DDSKey squad_id);
   void STORM_REFL_FUNC DeclineSquadApplication(DDSKey endpoint_id, DDSKey squad_id, DDSKey user_id);
 
-  void STORM_REFL_FUNC RequestUserToJoinSquad(DDSKey endpoint_id, DDSKey squad_id, std::string user_name);
-  void STORM_REFL_FUNC HandleSquadRequestNameLookup(std::tuple<DDSKey, DDSKey> squad_data, int ec, std::string data);
+  void STORM_REFL_FUNC RequestUserToJoinSquad(DDSKey endpoint_id, DDSKey squad_id, DDSKey platform_id);
+  void STORM_REFL_FUNC HandleSquadRequestUserLookup(std::tuple<DDSKey, DDSKey> squad_data, int ec, std::string data);
   void STORM_REFL_FUNC AcceptSquadRequest(DDSKey endpoint_id, DDSKey squad_id);
   void STORM_REFL_FUNC RescindSquadRequest(DDSKey endpoint_id, DDSKey squad_id, DDSKey user_id);
   void STORM_REFL_FUNC DeclineSquadRequest(DDSKey endpoint_id, DDSKey squad_id);
@@ -257,6 +273,7 @@ struct User
   void STORM_REFL_FUNC BanSelf(DDSResponder & responder, int duration, std::string message);
   void STORM_REFL_FUNC BanSelfAndConnections(DDSResponder & responder, int duration, std::string message);
 #endif
+
   void STORM_REFL_FUNC Kick(DDSResponder & responder);
   void STORM_REFL_FUNC HandleRename(DDSKey return_ep, bool success);
 
@@ -292,7 +309,7 @@ public:
 
   static bool ValidateUserName(const std::string & name, int min_characters = 3, int max_characters = 32, bool allow_space = false);
 
-  static DDSKey GetUserIdForPlatformId(uint64_t steam_id);
+  static DDSKey GetUserIdForPlatformId(const std::string & platform, uint64_t platform_id);
   static std::string GetDefaultIcon();
 
 public:
@@ -337,8 +354,8 @@ public:
 
   bool m_InGame = false;
   bool m_SentInitialGameData = false;
+  DDSKey m_GameId = 0;
   DDSKey m_GameServerId = 0;
-  int m_GameId = -1;
   DDSKey m_GameRandomId = 0;
 
   DDSKey m_GameEndpoint = 0;

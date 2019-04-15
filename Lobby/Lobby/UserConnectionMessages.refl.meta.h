@@ -891,10 +891,78 @@ struct StormReflTypeInfo<UserMessageVersionResponse>::field_data<2, Self> : publ
 };
 
 template <>
+struct StormReflTypeInfo<UserMessageIdentifyRequest>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "UserMessageIdentifyRequest"; }
+  static constexpr auto GetNameHash() { return 0xA913CFD9; }
+  static constexpr bool HasDefault() { return true; }
+  static UserMessageIdentifyRequest & GetDefault() { static UserMessageIdentifyRequest def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UserMessageIdentifyRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserMessageIdentifyRequest *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UserMessageIdentifyRequest *>(ptr);
+    if(typeid(UserMessageIdentifyRequest).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserMessageIdentifyRequest *>(ptr);
+    if(typeid(UserMessageIdentifyRequest).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<UserMessageIdentifyRequest>::field_data_static<0>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "c"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &UserMessageIdentifyRequest::c; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageIdentifyRequest *>(obj); return &ptr->c; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageIdentifyRequest *>(obj); return &ptr->c; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserMessageIdentifyRequest>::field_data<0, Self> : public StormReflTypeInfo<UserMessageIdentifyRequest>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.c; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.c; }
+  void SetDefault() { self.c = StormReflTypeInfo<UserMessageIdentifyRequest>::GetDefault().c; }
+};
+
+template <>
 struct StormReflTypeInfo<UserMessageIdentifyResponse>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -962,19 +1030,44 @@ template <>
 struct StormReflTypeInfo<UserMessageIdentifyResponse>::field_data_static<1>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "user_name"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x24A232CF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &UserMessageIdentifyResponse::user_name; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageIdentifyResponse *>(obj); return &ptr->user_name; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageIdentifyResponse *>(obj); return &ptr->user_name; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserMessageIdentifyResponse>::field_data<1, Self> : public StormReflTypeInfo<UserMessageIdentifyResponse>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.user_name; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.user_name; }
+  void SetDefault() { self.user_name = StormReflTypeInfo<UserMessageIdentifyResponse>::GetDefault().user_name; }
+};
+
+template <>
+struct StormReflTypeInfo<UserMessageIdentifyResponse>::field_data_static<2>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "token"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5F37A13B; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserMessageIdentifyResponse::token; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageIdentifyResponse *>(obj); return &ptr->token; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageIdentifyResponse *>(obj); return &ptr->token; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageIdentifyResponse>::field_data<1, Self> : public StormReflTypeInfo<UserMessageIdentifyResponse>::field_data_static<1>
+struct StormReflTypeInfo<UserMessageIdentifyResponse>::field_data<2, Self> : public StormReflTypeInfo<UserMessageIdentifyResponse>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -3775,16 +3868,16 @@ struct StormReflTypeInfo<UserSquadMemberLookupAction>::field_data<1, Self> : pub
 template <>
 struct StormReflTypeInfo<UserSquadMemberLookupAction>::field_data_static<2>
 {
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "user"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x8D93D649; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  using member_type = DDSKey; // unsigned long
+  static constexpr auto GetName() { return "user_platform_id"; }
+  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x56FD80FA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &UserSquadMemberLookupAction::user; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserSquadMemberLookupAction *>(obj); return &ptr->user; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserSquadMemberLookupAction *>(obj); return &ptr->user; }
+  static constexpr auto GetMemberPtr() { return &UserSquadMemberLookupAction::user_platform_id; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserSquadMemberLookupAction *>(obj); return &ptr->user_platform_id; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserSquadMemberLookupAction *>(obj); return &ptr->user_platform_id; }
 };
 
 template <typename Self>
@@ -3792,9 +3885,9 @@ struct StormReflTypeInfo<UserSquadMemberLookupAction>::field_data<2, Self> : pub
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.user; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.user; }
-  void SetDefault() { self.user = StormReflTypeInfo<UserSquadMemberLookupAction>::GetDefault().user; }
+  match_const_t<Self, DDSKey> & Get() { return self.user_platform_id; }
+  std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.user_platform_id; }
+  void SetDefault() { self.user_platform_id = StormReflTypeInfo<UserSquadMemberLookupAction>::GetDefault().user_platform_id; }
 };
 
 template <>
@@ -5360,7 +5453,7 @@ namespace StormReflFileInfo
 {
   struct UserConnectionMessages
   {
-    static const int types_n = 43;
+    static const int types_n = 44;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -5403,221 +5496,227 @@ namespace StormReflFileInfo
   template <>
   struct UserConnectionMessages::type_info<6>
   {
-    using type = ::UserMessageIdentifyResponse;
+    using type = ::UserMessageIdentifyRequest;
   };
 
   template <>
   struct UserConnectionMessages::type_info<7>
   {
-    using type = ::UserMessageCreateName;
+    using type = ::UserMessageIdentifyResponse;
   };
 
   template <>
   struct UserConnectionMessages::type_info<8>
   {
-    using type = ::UserLocalInfoUpdate;
+    using type = ::UserMessageCreateName;
   };
 
   template <>
   struct UserConnectionMessages::type_info<9>
   {
-    using type = ::UserGamePreviewUpdate;
+    using type = ::UserLocalInfoUpdate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<10>
   {
-    using type = ::UserGamePreviewCancel;
+    using type = ::UserGamePreviewUpdate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<11>
   {
-    using type = ::UserGameInfoUpdate;
+    using type = ::UserGamePreviewCancel;
   };
 
   template <>
   struct UserConnectionMessages::type_info<12>
   {
-    using type = ::UserChannelInfoUpdate;
+    using type = ::UserGameInfoUpdate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<13>
   {
-    using type = ::UserMessageRelocate;
+    using type = ::UserChannelInfoUpdate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<14>
   {
-    using type = ::UserChatMessageIncoming;
+    using type = ::UserMessageRelocate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<15>
   {
-    using type = ::UserChatMessageOutgoing;
+    using type = ::UserChatMessageIncoming;
   };
 
   template <>
   struct UserConnectionMessages::type_info<16>
   {
-    using type = ::UserChatMessageGame;
+    using type = ::UserChatMessageOutgoing;
   };
 
   template <>
   struct UserConnectionMessages::type_info<17>
   {
-    using type = ::UserServerMessageGame;
+    using type = ::UserChatMessageGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<18>
   {
-    using type = ::UserMapListRequest;
+    using type = ::UserServerMessageGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<19>
   {
-    using type = ::UserMapListMap;
+    using type = ::UserMapListRequest;
   };
 
   template <>
   struct UserConnectionMessages::type_info<20>
   {
-    using type = ::UserMapList;
+    using type = ::UserMapListMap;
   };
 
   template <>
   struct UserConnectionMessages::type_info<21>
   {
-    using type = ::UserGameCreate;
+    using type = ::UserMapList;
   };
 
   template <>
   struct UserConnectionMessages::type_info<22>
   {
-    using type = ::UserJoinGame;
+    using type = ::UserGameCreate;
   };
 
   template <>
   struct UserConnectionMessages::type_info<23>
   {
-    using type = ::UserDestroyGame;
+    using type = ::UserJoinGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<24>
   {
-    using type = ::UserStartGame;
+    using type = ::UserDestroyGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<25>
   {
-    using type = ::UserCreateSquad;
+    using type = ::UserStartGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<26>
   {
-    using type = ::UserSquadAction;
+    using type = ::UserCreateSquad;
   };
 
   template <>
   struct UserConnectionMessages::type_info<27>
   {
-    using type = ::UserSquadMemberAction;
+    using type = ::UserSquadAction;
   };
 
   template <>
   struct UserConnectionMessages::type_info<28>
   {
-    using type = ::UserSquadLookupAction;
+    using type = ::UserSquadMemberAction;
   };
 
   template <>
   struct UserConnectionMessages::type_info<29>
   {
-    using type = ::UserSquadMemberLookupAction;
+    using type = ::UserSquadLookupAction;
   };
 
   template <>
   struct UserConnectionMessages::type_info<30>
   {
-    using type = ::UserSquadMemberPermissions;
+    using type = ::UserSquadMemberLookupAction;
   };
 
   template <>
   struct UserConnectionMessages::type_info<31>
   {
-    using type = ::UserSquadMotd;
+    using type = ::UserSquadMemberPermissions;
   };
 
   template <>
   struct UserConnectionMessages::type_info<32>
   {
-    using type = ::UserSquadLock;
+    using type = ::UserSquadMotd;
   };
 
   template <>
   struct UserConnectionMessages::type_info<33>
   {
-    using type = ::UserStatsData;
+    using type = ::UserSquadLock;
   };
 
   template <>
   struct UserConnectionMessages::type_info<34>
   {
-    using type = ::UserEditInfo;
+    using type = ::UserStatsData;
   };
 
   template <>
   struct UserConnectionMessages::type_info<35>
   {
-    using type = ::UserEditChannelInfo;
+    using type = ::UserEditInfo;
   };
 
   template <>
   struct UserConnectionMessages::type_info<36>
   {
-    using type = ::UserFetchStats;
+    using type = ::UserEditChannelInfo;
   };
 
   template <>
   struct UserConnectionMessages::type_info<37>
   {
-    using type = ::UserSetProfileVal;
+    using type = ::UserFetchStats;
   };
 
   template <>
   struct UserConnectionMessages::type_info<38>
   {
-    using type = ::UserSetProfileSquad;
+    using type = ::UserSetProfileVal;
   };
 
   template <>
   struct UserConnectionMessages::type_info<39>
   {
-    using type = ::UserPreviewGame;
+    using type = ::UserSetProfileSquad;
   };
 
   template <>
   struct UserConnectionMessages::type_info<40>
   {
-    using type = ::UserAutoJoinModify;
+    using type = ::UserPreviewGame;
   };
 
   template <>
   struct UserConnectionMessages::type_info<41>
   {
-    using type = ::UserPersistentModify;
+    using type = ::UserAutoJoinModify;
   };
 
   template <>
   struct UserConnectionMessages::type_info<42>
+  {
+    using type = ::UserPersistentModify;
+  };
+
+  template <>
+  struct UserConnectionMessages::type_info<43>
   {
     using type = ::UserGotXP;
   };

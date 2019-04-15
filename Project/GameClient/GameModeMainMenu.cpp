@@ -18,9 +18,6 @@
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/MainMenu.ui", g_MainMenuUI);
 
-
-czstr g_AccountName = nullptr;
-
 GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
   GameMode(game)
 {
@@ -90,12 +87,6 @@ void GameModeMainMenu::InputEvent()
 void GameModeMainMenu::PlayOnline()
 {
   auto & container = GetContainer();
-  if (g_AccountName != nullptr)
-  {
-    auto & net_init_settings = container.GetNetworkInitSettings();
-    net_init_settings.m_UserName = g_AccountName;
-  }
-
   container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinOnline);
 }
 
@@ -120,24 +111,12 @@ void GameModeMainMenu::PlaySingleplayer()
 void GameModeMainMenu::CreatePrivateMatch()
 {
   auto & container = GetContainer();
-  if (g_AccountName != nullptr)
-  {
-    auto & net_init_settings = container.GetNetworkInitSettings();
-    net_init_settings.m_UserName = g_AccountName;
-  }
-
   container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kCreatePrivate);
 }
 
 void GameModeMainMenu::JoinPrivateMatch()
 {
   auto & container = GetContainer();
-  if (g_AccountName != nullptr)
-  {
-    auto & net_init_settings = container.GetNetworkInitSettings();
-    net_init_settings.m_UserName = g_AccountName;
-  }
-
   container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinPrivate);
 }
 

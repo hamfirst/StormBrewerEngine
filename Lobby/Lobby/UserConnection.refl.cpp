@@ -85,11 +85,12 @@ void UserConnection::PreMoveObject()
 }
 
 
-void UserConnection::LoadUser(uint64_t platform_id, uint64_t user_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code)
+void UserConnection::LoadUser(std::string platform, uint64_t platform_id, uint64_t user_id,
+    std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code, bool guest, std::string chosen_user_name)
 {
 #ifdef ENABLE_BAN_LIST
   auto ban_list = m_Interface.GetSharedObject<BanList>();
-  if (ban_list->CheckBanList(remote_ip.c_str(), remote_host.c_str(), platform_id))
+  if (ban_list->CheckBanList(remote_ip.c_str(), remote_host.c_str(), platform, platform_id))
   {
     SendConnectionError("You are banned");
     return;
@@ -101,11 +102,42 @@ void UserConnection::LoadUser(uint64_t platform_id, uint64_t user_id, std::strin
   m_RemoteHost = remote_host;
   m_CountryCode = country_code;
   m_CurrencyCode = currency_code;
+  m_Platform = platform;
   m_PlatformId = platform_id;
   m_UserId = user_id;
+  m_UserName = chosen_user_name;
 
   m_Interface.CreateSubscription(DDSSubscriptionTarget<User>{}, m_UserId, ".m_LocalInfo", &UserConnection::HandleLocalDataUpdate, true, &UserConnection::UserDoesntExist, true);
 }
+
+void UserConnection::CreateUserObject(const std::string & name)
+{
+  if (User::ValidateUserName(name, 2, 20) == false)
+  {
+    UserMessageBase msg{ "repick_new_user" };
+    SendData(StormReflEncodeJson(msg));
+    return;
+  }
+
+  UserDatabaseObject initial_data;
+  initial_data.m_UserName = name;
+  initial_data.m_UserNameLower = name;
+  initial_data.m_Platform = m_Platform;
+  initial_data.m_PlatformId = m_PlatformId;
+  initial_data.m_Created = (int)m_Interface.GetNetworkTime();
+
+#if defined(ENABLE_REWARDS)
+  initial_data.m_TitleList.EmplaceBack("Newbie");
+  initial_data.m_IconNames.EmplaceBack("Newbie");
+  initial_data.m_IconURLs.EmplaceBack("img/icons/2.png");
+#endif
+
+  std::transform(initial_data.m_UserNameLower.begin(), initial_data.m_UserNameLower.end(), initial_data.m_UserNameLower.begin(), tolower);
+
+  m_Interface.InsertIntoDatabase(initial_data, m_UserId, &UserConnection::HandleUserInsert, this);
+  m_State = UserConnectionState::kCreatingNewUser;
+}
+
 
 void UserConnection::GotMessage(std::string cmd, std::string data)
 {
@@ -120,29 +152,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      if (User::ValidateUserName(msg.uname, 2, 20) == false)
-      {
-        UserMessageBase msg{ "repick_new_user" };
-        SendData(StormReflEncodeJson(msg));
-        return;
-      }
-
-      UserDatabaseObject initial_data;
-      initial_data.m_UserName = msg.uname;
-      initial_data.m_UserNameLower = msg.uname;
-      initial_data.m_PlatformId = m_PlatformId;
-      initial_data.m_Created = (int)m_Interface.GetNetworkTime();
-
-#if defined(ENABLE_REWARDS) && defined(ENABLE_CHANNELS)
-      initial_data.m_TitleList.EmplaceBack("Newbie");
-      initial_data.m_IconNames.EmplaceBack("Newbie");
-      initial_data.m_IconURLs.EmplaceBack("img/icons/2.png");
-#endif
-
-      std::transform(initial_data.m_UserNameLower.begin(), initial_data.m_UserNameLower.end(), initial_data.m_UserNameLower.begin(), tolower);
-
-      m_Interface.InsertIntoDatabase(initial_data, m_UserId, &UserConnection::HandleUserInsert, this);
-      m_State = UserConnectionState::kCreatingNewUser;
+      CreateUserObject(msg.uname);
     }
     break;
   case UserConnectionState::kLoadingUser:
@@ -422,7 +432,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         SendConnectionError("Parse error");
         return;
       }
-      m_Interface.Call(&User::RequestUserToJoinSquad, m_UserId, m_Interface.GetLocalKey(), req.squad, req.user);
+      m_Interface.Call(&User::RequestUserToJoinSquad, m_UserId, m_Interface.GetLocalKey(), req.squad, req.user_platform_id);
     }
     else if (cmd == "squad_invite_accept")
     {
@@ -565,11 +575,18 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
 void UserConnection::UserDoesntExist()
 {
-  DDSLog::LogVerbose("Requesing New User Name");
-  m_State = UserConnectionState::kRequestingUserName;
+  if(m_UserName.empty())
+  {
+    DDSLog::LogVerbose("Requesting New User Name");
+    m_State = UserConnectionState::kRequestingUserName;
 
-  UserMessageBase msg{ "new_user" };
-  SendData(StormReflEncodeJson(msg));
+    UserMessageBase msg{ "new_user" };
+    SendData(StormReflEncodeJson(msg));
+  }
+  else
+  {
+    CreateUserObject(m_UserName);
+  }
 }
 
 void UserConnection::SendData(std::string data)
@@ -667,7 +684,7 @@ void UserConnection::HandleWelcomeInfoUpdate(std::string data)
 void UserConnection::HandleBanListUpdate(std::string data)
 {
   auto ban_list = m_Interface.GetSharedObject<BanList>();
-  if (ban_list->CheckBanList(m_RemoteIP.c_str(), m_RemoteHost.c_str(), m_PlatformId))
+  if (ban_list->CheckBanList(m_RemoteIP.c_str(), m_RemoteHost.c_str(), m_Platform, m_PlatformId))
   {
     SendConnectionError("You are banned");
   }

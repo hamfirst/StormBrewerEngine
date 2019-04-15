@@ -11,6 +11,13 @@ class GameClientConnection;
 class GameInstanceStateBase;
 class GameStageManager;
 
+struct GameJoinInfo
+{
+  std::string m_UserName;
+  uint64_t m_UserId;
+  int m_Team;
+};
+
 struct GameInstanceStatePlayer
 {
   NullOptPtr<GameClientConnection> m_Client;

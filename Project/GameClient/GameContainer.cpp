@@ -119,9 +119,9 @@ RenderState & GameContainer::GetRenderState()
   return m_RenderState;
 }
 
-void GameContainer::StartNetworkClient()
+void GameContainer::StartNetworkClient(const GameNetworkClientInitSettings & settings)
 {
-  m_Client = std::make_unique<GameNetworkClient>(*this);
+  m_Client = std::make_unique<GameNetworkClient>(*this, settings);
 }
 
 void GameContainer::StopNetworkClient()
@@ -138,11 +138,6 @@ GameNetworkClient & GameContainer::GetClient()
 {
   ASSERT(m_Client, "Attempting to get client when network client has not been started");
   return *m_Client.get();
-}
-
-GameNetworkClientInitSettings & GameContainer::GetNetworkInitSettings()
-{
-  return m_NetInitSettings;
 }
 
 bool GameContainer::AllGlobalResourcesLoaded()

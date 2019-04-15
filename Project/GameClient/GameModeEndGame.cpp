@@ -171,9 +171,7 @@ void GameModeEndGame::PlayAgain()
   switch (m_Mode)
   {
   case EndGamePlayAgainMode::kOnlineGameplay:
-    container.StartNetworkClient();
-    container.SwitchMode(GameModeDef<GameModeConnecting>{});
-    //g_MusicManager.CutTo(GetContainer().GetClientGlobalResources().MainMenuMusic, 0.5f);
+
     break;
   case EndGamePlayAgainMode::kOfflineMultiplayer:
     container.SwitchMode(GameModeDef<GameModeOfflineStaging>{}, init_settings);

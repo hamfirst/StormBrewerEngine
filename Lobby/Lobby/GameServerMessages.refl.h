@@ -96,12 +96,21 @@ struct GameServerAuthenticateResponse
   std::string m_ExternalIp;
 };
 
+struct GameServerCreateGame
+{
+  GameInitSettings m_Settings;
+  uint64_t m_GameId = 0;
+  uint64_t m_CreatorId = 0;
+};
+
 struct GameServerAuthenticateUser
 {
   STORM_REFL;
   static const GameServerMessageType Type = GameServerMessageType::kAuthUser;
 
-  uint64_t m_UserToken = 0;
+  uint64_t m_GameId = 0;
+  uint64_t m_UserId = 0;
+  uint64_t m_JoinToken = 0;
   uint32_t m_ResponseId = 0;
 };
 
@@ -111,20 +120,21 @@ struct GameServerAuthenticateUserSuccess
   static const GameServerMessageType Type = GameServerMessageType::kAuthUserSuccess;
 
   uint32_t m_ResponseId = 0;
-  uint64_t m_UserId = 0;
-  uint64_t m_AccountId = 0;
-  uint64_t m_GameId = 0;
 
   std::string m_Name;
+
+#ifdef ENABLE_SQUADS
   std::string m_Squad;
-  std::string m_Creator;
-  int m_RequiredPlayers = 0;
+#endif
+
   int m_Team = 0;
   int m_AdminLevel = 0;
+  int m_Icon = 0;
+  int m_Title = 0;
   int m_Celebration = 0;
   bool m_NewPlayer = false;
 
-  GameInitSettings m_GameData;
+  GamePlayerLoadout m_Loadout;
 };
 
 struct GameServerAuthenticateUserFailure

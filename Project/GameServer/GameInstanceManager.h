@@ -9,6 +9,8 @@ class GameServer;
 class GameStageManager;
 class LobbyServerConnection;
 
+struct GameServerAuthenticateUserSuccess;
+
 class GameInstanceManager
 {
 public:
@@ -16,11 +18,11 @@ public:
 
   void Update();
 
-  bool CreatePrivateGame(GameClientConnection * client, const CreatePrivateGameMessage & message);
-  bool JoinPlayer(GameClientConnection * client, const JoinGameMessage & message);
-  void RemovePlayer(GameClientConnection * client);
+  void CreateGame(uint64_t game_id, const GameInitSettings & settings);
+  void DestroyGame(uint64_t game_id);
 
-  bool CanJoinGame(GameInstance * instance, const GameInitSettings & settings) const;
+  bool JoinPlayer(NotNullPtr<GameClientConnection> client, const GameServerAuthenticateUserSuccess & auth);
+  void RemovePlayer(NotNullPtr<GameClientConnection> client);
 
   uint32_t GetNewPrivateRoomId();
 private:

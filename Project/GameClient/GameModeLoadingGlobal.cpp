@@ -45,10 +45,8 @@ void GameModeLoadingGlobal::Update()
     {
       if (init_settings->m_AutoConnect)
       {
-        auto & net_settings = container.GetNetworkInitSettings();
-        net_settings.m_UserName = init_settings->m_UserName;
-
-        container.StartNetworkClient();
+        GameNetworkClientInitSettings net_settings;
+        container.StartNetworkClient(net_settings);
         container.SwitchMode(GameModeDef<GameModeConnecting>{});
       }
       else if (init_settings->m_AutoBotGame)

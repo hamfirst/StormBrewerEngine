@@ -32,11 +32,6 @@ GameModeNameSelect::~GameModeNameSelect()
 void GameModeNameSelect::Initialize()
 {
   auto & container = GetContainer();
-  auto & net_init_settings = container.GetNetworkInitSettings();
-  if(net_init_settings.m_UserName.empty() == false)
-  {
-    GoToNextMode();
-  }
 }
 
 void GameModeNameSelect::OnAssetsLoaded()
@@ -86,8 +81,6 @@ bool GameModeNameSelect::Submit(std::string & user_name)
   }
 
   auto & container = GetContainer();
-  auto & net_init_settings = container.GetNetworkInitSettings();
-  net_init_settings.m_UserName = user_name;
 
   GoToNextMode();
   return true;
@@ -112,7 +105,6 @@ void GameModeNameSelect::Back()
 void GameModeNameSelect::GoToNextMode()
 {
   auto & container = GetContainer();
-  auto & net_init_settings = container.GetNetworkInitSettings();
 
   if (m_NextMode == GameModeNameSelectNextScreen::kJoinPrivate)
   {
@@ -120,7 +112,6 @@ void GameModeNameSelect::GoToNextMode()
   }
   else if (m_NextMode == GameModeNameSelectNextScreen::kJoinOnline)
   {
-    net_init_settings.m_Intent = ClientConnectionIntent::kRandom;
     container.SwitchMode(GameModeDef<GameModeConnecting>{});
   }
   else

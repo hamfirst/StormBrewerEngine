@@ -3,10 +3,13 @@
 #include "Foundation/Common.h"
 #include "Foundation/Allocator/IdAllocator.h"
 
+#include "ProjectSettings/ProjectNetworkSettings.h"
+
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/GameEventReconciler.h"
 
-#include "ProjectSettings/ProjectNetworkSettings.h"
+#include "GameServer/GameInstanceStateData.h"
+
 #include "Game/GameMessages.refl.h"
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameSimulationEventCallbacks.h"
@@ -36,9 +39,7 @@ public:
 
   virtual void Update() {};
 
-  virtual void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) {};
   virtual void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) {};
-  virtual void HandlePlayerKick(std::size_t client_index, const KickPlayerMessage & msg) {};
   virtual void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) {};
   virtual void HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg) {};
 

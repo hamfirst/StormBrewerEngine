@@ -20,7 +20,7 @@ private:
   void HandleTorBlacklistLookup(const DDSResolverRequest & resolver_data);
 
 #ifdef ENABLE_AUTH_STEAM
-  void HandleTokenValidation(bool success, const std::string & steam_id);
+  void HandleSteamTokenValidation(bool success, const std::string & steam_id);
   void HandleSteamAuthenticationRequest(bool success, const char * data, const char * headers);
   void HandleSteamOwnershipRequest(bool success, const char * data, const char * headers);
   void HandleSteamUserInfoRequest(bool success, const char * data, const char * headers);
@@ -58,8 +58,10 @@ private:
 
   bool m_Error = false;
 
+  std::string m_Platform;
   uint64_t m_PlatformId = 0;
   uint64_t m_UserId = 0;
+  bool m_IsGuest = false;
   DDSKey m_ConnectionKey = 0;
 
   DDSDeferredCallback m_Callback;
@@ -67,4 +69,5 @@ private:
   std::string m_RemoteHostName;
   std::string m_CountryCode;
   std::string m_CurrencyCode;
+  std::string m_ChosenUserName;
 };

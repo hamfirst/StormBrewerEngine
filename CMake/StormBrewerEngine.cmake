@@ -47,7 +47,7 @@ if(WEB)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --post-js ${PROJECT_SOURCE_DIR}/Web/WebRTC.js")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --post-js ${PROJECT_SOURCE_DIR}/Web/Websocket.js")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --post-js ${PROJECT_SOURCE_DIR}/Web/Audio.js")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=\"['_main','_HandleStormWebrtcConnect','_HandleStormWebrtcMessage','_HandleStormWebrtcDisconnect','_HandleHttpRequestConnect','_HandleHttpRequestMessage','_HandleHttpRequestClose','_HandleWebsocketConnect','_HandleWebsocketMessage','_HandleWebsocketClose','_HandleMusicLoaded','_HandleMusicLoadFailed','_HandleMusicFinished','_SetAccountName']\"")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=\"['_main','_HandleStormWebrtcConnect','_HandleStormWebrtcMessage','_HandleStormWebrtcDisconnect','_HandleHttpRequestConnect','_HandleHttpRequestMessage','_HandleHttpRequestClose','_HandleWebsocketConnect','_HandleWebsocketMessage','_HandleWebsocketClose','_HandleMusicLoaded','_HandleMusicLoadFailed','_HandleMusicFinished','_SetLoginToken']\"")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s TOTAL_MEMORY=134217728 -s LINKABLE=1")
 
 elseif(MSVC)

@@ -7,20 +7,19 @@
 class GameInstanceStateLoading : public GameInstanceStateBase
 {
 public:
-  GameInstanceStateLoading(GameInstanceStateData & state_data, const GameStateStaging & staging_data);
+  GameInstanceStateLoading(GameInstanceStateData & state_data);
 
   bool JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game) override;
   void RemovePlayer(std::size_t client_index) override;
 
   void Update() override;
 
-  void HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg) override;
   void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
 
 protected:
 
+  bool CheckFinishedLoading() const;
   void AddPlayer(std::size_t client_index, int team);
-  bool CheckGameReady();
 
 private:
 

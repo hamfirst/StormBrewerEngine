@@ -113,7 +113,6 @@ void GameModeMapSettings::Back()
 void GameModeMapSettings::Submit()
 {
   auto & container = GetContainer();
-  auto & net_init_settings = container.GetNetworkInitSettings();
 
   switch(m_NextScreen)
   {
@@ -124,10 +123,6 @@ void GameModeMapSettings::Submit()
       container.SwitchMode(GameModeDef<GameModeOfflineStaging>{}, m_Settings);
       break;
     case GameModeMapSettingsNextScreen::kPrivateGame:
-      net_init_settings.m_Intent = ClientConnectionIntent::kCreatePrivate;
-      net_init_settings.m_InitSettings = m_Settings;
-      container.StartNetworkClient();
-      container.SwitchMode(GameModeDef<GameModeConnecting>{});
       break;
   }
 }

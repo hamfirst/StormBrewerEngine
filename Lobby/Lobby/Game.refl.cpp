@@ -16,7 +16,6 @@ Game::Game(DDSNodeInterface node_interface)
 void Game::Init(GameLobbySettings settings)
 {
   m_GameInfo.m_Settings = settings;
-  m_Interface.CreateTimer(std::chrono::seconds(5), m_Interface.GetLocalKey(), &Game::CheckIfNobodyJoined);
 
   auto level = g_LobbyLevelList.GetLevelInfo(m_GameInfo.m_Settings.m_InitSettings->m_StageIndex);
   int max_players = kMaxPlayers;
@@ -33,14 +32,6 @@ void Game::Cleanup()
 {
   m_Interface.CallShared(&GameList::RemoveGame, m_Interface.GetLocalKey());
   m_Interface.DestroySelf();
-}
-
-void Game::CheckIfNobodyJoined()
-{
-  if(m_GameInfo.m_Users.Empty())
-  {
-    Cleanup();
-  }
 }
 
 void Game::AddUser(DDSResponder & responder, DDSKey user_key)
@@ -98,12 +89,30 @@ void Game::ChangeReady(DDSKey user_key, bool ready)
 
   itr->second.m_Ready = true;
 }
+
+
+bool Game::AllPlayersReady() const
+{
+  for(auto itr : m_GameInfo.m_Users)
+  {
+    if(itr.second.m_Ready == false)
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 #endif
 
 
 void Game::StartGame()
 {
-
+  if(m_GameInfo.m_Started)
+  {
+    return;
+  }
 }
 
 void Game::RandomizeTeams()
@@ -113,6 +122,22 @@ void Game::RandomizeTeams()
 
 void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message, std::string title)
 {
+  std::string player_name;
+  bool is_leader = (user_key == m_GameInfo.m_GameLeader);
+  for(auto itr : m_GameInfo.m_Users)
+  {
+    if(itr.second.m_UserKey == user_key)
+    {
+      player_name = itr.second.m_Name;
+      break;
+    }
+  }
+
+  if(player_name.empty())
+  {
+    return;
+  }
+
 
 }
 
@@ -142,17 +167,7 @@ void Game::UpdateGameList()
   m_Interface.CallShared(&GameList::UpdateGame, m_Interface.GetLocalKey(), player_count, max_players, level.m_Name, false);
 }
 
-void Game::SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id)
-{
-
-}
-
 void Game::ExpireToken(DDSKey token)
-{
-
-}
-
-void Game::ExpireGame(int game_id)
 {
 
 }

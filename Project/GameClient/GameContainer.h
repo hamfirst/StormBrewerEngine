@@ -17,6 +17,8 @@
 #include "GameClient/GameClientSave.h"
 #include "GameClient/GameClientLatencyChecker.h"
 
+#include "LobbyClientConnection/LobbyClientConnection.h"
+
 class GameMode;
 class GameNetworkClient;
 class GameClientInstanceContainer;
@@ -61,11 +63,10 @@ public:
 
   RenderState & GetRenderState();
   
-  void StartNetworkClient();
+  void StartNetworkClient(const GameNetworkClientInitSettings & settings);
   void StopNetworkClient();
   bool HasClient() const;
   GameNetworkClient & GetClient();
-  GameNetworkClientInitSettings & GetNetworkInitSettings();
 
   bool AllGlobalResourcesLoaded();
 
@@ -105,8 +106,6 @@ private:
   std::unique_ptr<GameNetworkClient> m_Client;
   std::unique_ptr<GameClientLatencyChecker> m_LatencyChecker;
   std::unique_ptr<GameContainerInitSettings> m_InitSettings;
-
-  GameNetworkClientInitSettings m_NetInitSettings;
 
   NullOptPtr<GameClientInstanceContainer> m_ClientInstanceData;
   NullOptPtr<GameClientSystems> m_ClientSystems;

@@ -215,6 +215,7 @@ private:
   void QueryObjectData(int object_type_id, DDSKey key, const char * collection);
   void QueryObjectData(const char * collection, DDSKey key, DDSResponderCallData && responder_call);
   void QueryObjectData(const char * collection, const char * query, DDSResponderCallData && responder_call);
+  void QueryObjectDataMultiple(const char * collection, const char * query, DDSResponderCallData && responder_call);
 
   void InsertObjectData(int object_type_id, DDSKey key, const char * collection, const char * data, DDSResponderCallData && responder_call);
   void UpdateObjectData(int object_type_id, DDSKey key, const char * collection, const char * data, DDSResponderCallData * responder_call);

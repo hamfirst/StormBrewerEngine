@@ -6,18 +6,19 @@
 #include <StormSockets/StormSha1.h>
 
 #include "UserEndpoint.h"
+#include "User.refl.h"
+
 #include "LobbyConfig.h"
 
 #include "UserConnection.refl.meta.h"
 #include "UserConnectionMessages.refl.meta.h"
 #include "SteamServerMessages.refl.meta.h"
 
+#ifdef ENABLE_AUTH_STEAM
 char g_SteamValidationUrl[] = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" STEAM_WEB_API_KEY "&format=json&appid=" STEAM_APP_ID "&ticket=";
 char g_SteamOwnershipUrl[] = "https://api.steampowered.com/ISteamUser/GetPublisherAppOwnership/v2/?key=" STEAM_WEB_API_KEY "&format=json&appid=" STEAM_APP_ID "&steamid=";
 char g_SteamInfoUrl[] = "https://api.steampowered.com/ISteamMicroTxn/GetUserInfo/V0001/?key=" STEAM_WEB_API_KEY "&steamid=";
-
-bool g_RandomUserName = false;
-DDSKey g_ExplicitUser = 0;
+#endif
 
 UserEndpoint::UserEndpoint(const DDSEndpointInterface & endpoint_interface) :
   m_EndpointInterface(endpoint_interface), m_State(kVersionRequest), m_Error(false), m_PlatformId(0), m_ConnectionKey(0)
@@ -102,9 +103,23 @@ void UserEndpoint::HandleData(const char * data)
         ConnectionError("Parse error");
         return;
       }
+#ifdef ENABLE_AUTH_GUEST
+      else if (response.c == "lguest")
+      {
+        DDSLog::LogVerbose("Logging in with guest account");
+        m_IsGuest = true;
+        m_ChosenUserName = response.user_name;
+        m_Platform = "guest";
+        m_PlatformId = DDSGetRandomNumber64();
+        m_CountryCode = "us";
+        m_CurrencyCode = "usd";
+
+        FinalizeConnect();
+      }
+#endif
 
 #ifdef ENABLE_AUTH_STEAM
-      if (response.c == "lextsteam")
+      else if (response.c == "lextsteam")
       {
         DDSLog::LogVerbose("Logging in with external steam token");
 
@@ -120,7 +135,7 @@ void UserEndpoint::HandleData(const char * data)
 
           m_State = kExternalTokenValidation;
           m_EndpointInterface.CreateTokenValidationRequest(m_Callback, token, 0,
-            [this](bool valid, const std::string & steam_id) { HandleTokenValidation(valid, steam_id); });
+            [this](bool valid, const std::string & steam_id) { HandleSteamTokenValidation(valid, steam_id); });
         }
         catch (...)
         {
@@ -191,11 +206,6 @@ void UserEndpoint::HandleData(const char * data)
             m_State = kDisconnecting;
           }
         }
-      }
-      else if (response.c == "ld")
-      {
-        m_PlatformId = std::stoull(response.token);
-        FinalizeConnect();
       }
       else
       {
@@ -274,12 +284,11 @@ void UserEndpoint::HandleTorBlacklistLookup(const DDSResolverRequest & resolver_
   DDSLog::LogVerbose("Sending identify");
   m_State = kIdentify;
   UserMessageIdentifyRequest ident_request = { "identify" };
-  ident_request.token = m_EndpointInterface.CreateToken()
   m_EndpointInterface.Send(ident_request);
 }
 
 #ifdef ENABLE_AUTH_STEAM
-void UserEndpoint::HandleTokenValidation(bool valid, const std::string & steam_id)
+void UserEndpoint::HandleSteamTokenValidation(bool valid, const std::string & steam_id)
 {
   if (steam_id.length() == 0)
   {
@@ -378,24 +387,15 @@ void UserEndpoint::HandleSteamUserInfoRequest(bool success, const char * data, c
   m_CountryCode = user_info.response.params.country;
   m_CurrencyCode = user_info.response.params.currency;
 
-  if (g_ExplicitUser != 0)
-  {
-    SetSteamUserId(g_ExplicitUser);
-  }
-  else if(g_RandomUserName)
-  {
-    SetSteamUserId(DDSGetRandomNumber());
-  }
-
   SetSteamUserId(m_PlatformId);
   FinalizeConnect();
 }
 
 void UserEndpoint::SetSteamUserId(uint64_t steam_id)
 {
-  std::string steam_id_str = "steam" + std::to_string(steam_id);
-  m_UserId = crc64(steam_id_str);
+  m_Platform = "steam";
   m_PlatformId = steam_id;
+  m_UserId = User::GetUserIdForPlatformId(m_Platform, m_PlatformId);
 }
 
 void UserEndpoint::FinalizeSteamValidation(uint64_t steam_id)
@@ -423,7 +423,8 @@ void UserEndpoint::FinalizeConnect()
   }
 
   m_EndpointInterface.ConnectToLocalObject(&UserConnection::ConnectToEndpoint, m_ConnectionKey);
-  m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_PlatformId, m_UserId, m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode);
+  m_EndpointInterface.Call(&UserConnection::LoadUser, m_ConnectionKey, m_Platform, m_PlatformId, m_UserId,
+      m_EndpointInterface.GetRemoteIpAsString(), m_RemoteHostName, m_CountryCode, m_CurrencyCode, m_IsGuest, m_ChosenUserName);
 
   m_State = kConnectedToObj;
 }

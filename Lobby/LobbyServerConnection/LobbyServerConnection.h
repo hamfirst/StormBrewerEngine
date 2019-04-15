@@ -4,6 +4,7 @@
 #include "Foundation/Delegate/Delegate.h"
 
 #include "Game/GameNetworkData.refl.h"
+#include "Game/GameMessages.refl.h"
 #include "Game/GameSimulationStats.refl.h"
 
 #include "Lobby/GameServerMessages.refl.h"
@@ -46,7 +47,7 @@ public:
   void SetKillGameCallback(LobbyKillGameCallback callback);
   void SetChangeCreatorCallback(LobbyChangeCreatorCallback callback);
 
-  int RequestValidation(uint64_t user_token, LobbyValidationCallback && callback);
+  int RequestValidation(const JoinServerMessage & join_info, LobbyValidationCallback && callback);
   void CancelValidation(int request_id);
 
   void RequestTeamSwitch(uint64_t user_id, uint64_t game_id, int team);

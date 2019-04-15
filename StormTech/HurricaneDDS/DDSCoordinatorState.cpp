@@ -437,6 +437,23 @@ void DDSCoordinatorState::QueryObjectData(const char * collection, const char * 
   m_Database->QueryDatabaseCustom(query, collection, std::move(callback));
 }
 
+void DDSCoordinatorState::QueryObjectDataMultiple(const char * collection, const char * query, DDSCoordinatorResponderCallData && responder_call)
+{
+  DDSDataObjectAddress address{ responder_call.m_ObjectType, responder_call.m_Key };
+
+  auto callback = [&](const char * data, int ec) {
+
+    std::string sb;
+    StormReflJsonEncodeString(data, sb);
+
+    responder_call.m_MethodArgs = "[" + sb + "," + StormReflEncodeJson(ec) + "]";
+    std::string responder_str = StormReflEncodeJson(responder_call);
+    SendTargetedMessage(address, DDSCoordinatorProtocolMessageType::kResponderCall, std::move(responder_str));
+  };
+
+  m_Database->QueryDatabaseCustomMultiple(query, collection, std::move(callback));
+}
+
 void DDSCoordinatorState::InsertObjectData(int object_type_id, DDSKey key, const char * collection, const char * data, DDSCoordinatorResponderCallData && responder_call)
 {
   m_Database->QueryDatabaseInsert(key, collection, data, [this, responder_call](const char * data, int ec) mutable { HandleInsertResult(ec, responder_call); });

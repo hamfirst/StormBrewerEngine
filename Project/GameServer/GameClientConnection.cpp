@@ -13,12 +13,10 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
   m_ConnectionId(connection_id),
   m_Protocol(protocol),
   m_GameInstance(nullptr),
-  m_GameId(0)
+  m_GameId(0),
+  m_GotJoin(false)
 {
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandlePing, this);
-  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleCreatePrivateGame, this);
-  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleJoinGame, this);
-  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleReady, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleFinishLoading, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleTextChat, this);
 
@@ -27,13 +25,6 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
 #else
   m_Protocol.GetReceiverChannel<1>().RegisterGenericCallback(&GameClientConnection::HandleClientEvent, this);
   m_Protocol.GetReceiverChannel<2>().RegisterCallback(&GameClientConnection::HandleClientDataUpdate, this);
-#endif
-}
-
-void GameClientConnection::SyncStagingState(const GameStateStaging & state)
-{
-#if NET_MODE == NET_MODE_GGPO
-  m_Protocol.GetSenderChannel<1>().SendMessage(state);
 #endif
 }
 
@@ -118,57 +109,15 @@ void GameClientConnection::HandlePing(const PingMessage & request)
   m_Protocol.GetSenderChannel<0>().SendMessage(PongMessage{});
 }
 
-void GameClientConnection::HandleCreatePrivateGame(const CreatePrivateGameMessage & request)
+void GameClientConnection::HandleJoinServer(const JoinServerMessage & request)
 {
-  if (m_GameInstance != nullptr)
+  if(m_GameInstance || m_GotJoin)
   {
     m_Server.DisconnectClient(m_ConnectionId);
     return;
   }
 
-  if (ValidUserName(request.m_JoinInfo.m_UserName.data()) == false)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-
-  if (m_Server.GetGameInstanceManager().CreatePrivateGame(this, request) == false)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-}
-
-void GameClientConnection::HandleJoinGame(const JoinGameMessage & request)
-{
-  if (m_GameInstance != nullptr)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-
-  if (ValidUserName(request.m_JoinInfo.m_UserName.data()) == false)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-
-  if (m_Server.GetGameInstanceManager().JoinPlayer(this, request) == false)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-}
-
-void GameClientConnection::HandleReady(const ReadyMessage & request)
-{
-  if (m_GameInstance == nullptr)
-  {
-    m_Server.DisconnectClient(m_ConnectionId);
-    return;
-  }
-
-  m_GameInstance->HandlePlayerReady(this, request);
+  m_GotJoin = true;
 }
 
 void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & request)
@@ -192,7 +141,6 @@ void GameClientConnection::HandleTextChat(const SendTextChatMessage &request)
 
   m_GameInstance->HandleTextChat(this, request);
 }
-
 
 #if NET_MODE == NET_MODE_GGPO
 

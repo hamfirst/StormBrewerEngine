@@ -267,174 +267,6 @@ struct StormReflTypeInfo<GameStateStagingPlayer>::field_data<4, Self> : public S
 };
 
 template <>
-struct StormReflTypeInfo<GameStateStaging>
-{
-  using MyBase = void;
-  static constexpr int fields_n = 5;
-  template <int N> struct field_data_static {};
-  template <int N, typename Self> struct field_data {};
-  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "GameStateStaging"; }
-  static constexpr auto GetNameHash() { return 0x0DFED8EC; }
-  static constexpr bool HasDefault() { return true; }
-  static GameStateStaging & GetDefault() { static GameStateStaging def; return def; }
-
-  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
-  {
-    auto c = static_cast<GameStateStaging *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    return nullptr;
-  }
-
-  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
-  {
-    auto c = static_cast<const GameStateStaging *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    return nullptr;
-  }
-
-  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
-  {
-    auto c = static_cast<GameStateStaging *>(ptr);
-    if(typeid(GameStateStaging).hash_code() == type_id_hash) return c;
-    return nullptr;
-  }
-
-  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
-  {
-    auto c = static_cast<const GameStateStaging *>(ptr);
-    if(typeid(GameStateStaging).hash_code() == type_id_hash) return c;
-    return nullptr;
-  }
-
-};
-
-template <>
-struct StormReflTypeInfo<GameStateStaging>::field_data_static<0>
-{
-  using member_type = NetSparseList<GameStateStagingPlayer, kMaxPlayers>; // NetSparseList<GameStateStagingPlayer, 16>
-  static constexpr auto GetName() { return "m_Players"; }
-  static constexpr auto GetType() { return "NetSparseList<GameStateStagingPlayer, 16>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xB3BC3673; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC166320D; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &GameStateStaging::m_Players; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_Players; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_Players; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameStateStaging>::field_data<0, Self> : public StormReflTypeInfo<GameStateStaging>::field_data_static<0>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetSparseList<GameStateStagingPlayer, kMaxPlayers>> & Get() { return self.m_Players; }
-  std::add_const_t<std::remove_reference_t<NetSparseList<GameStateStagingPlayer, kMaxPlayers>>> & Get() const { return self.m_Players; }
-  void SetDefault() { self.m_Players = StormReflTypeInfo<GameStateStaging>::GetDefault().m_Players; }
-};
-
-template <>
-struct StormReflTypeInfo<GameStateStaging>::field_data_static<1>
-{
-  using member_type = GameInitSettings; // GameInitSettings
-  static constexpr auto GetName() { return "m_Settings"; }
-  static constexpr auto GetType() { return "GameInitSettings"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x136974EB; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &GameStateStaging::m_Settings; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_Settings; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_Settings; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameStateStaging>::field_data<1, Self> : public StormReflTypeInfo<GameStateStaging>::field_data_static<1>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, GameInitSettings> & Get() { return self.m_Settings; }
-  std::add_const_t<std::remove_reference_t<GameInitSettings>> & Get() const { return self.m_Settings; }
-  void SetDefault() { self.m_Settings = StormReflTypeInfo<GameStateStaging>::GetDefault().m_Settings; }
-};
-
-template <>
-struct StormReflTypeInfo<GameStateStaging>::field_data_static<2>
-{
-  using member_type = NetRangedNumber<int, 0, 255>; // NetRangedNumber<int, 0, 255>
-  static constexpr auto GetName() { return "m_Countdown"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 255>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEB4BA24D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4CE63414; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &GameStateStaging::m_Countdown; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_Countdown; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_Countdown; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameStateStaging>::field_data<2, Self> : public StormReflTypeInfo<GameStateStaging>::field_data_static<2>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetRangedNumber<int, 0, 255>> & Get() { return self.m_Countdown; }
-  std::add_const_t<std::remove_reference_t<NetRangedNumber<int, 0, 255>>> & Get() const { return self.m_Countdown; }
-  void SetDefault() { self.m_Countdown = StormReflTypeInfo<GameStateStaging>::GetDefault().m_Countdown; }
-};
-
-template <>
-struct StormReflTypeInfo<GameStateStaging>::field_data_static<3>
-{
-  using member_type = uint32_t; // unsigned int
-  static constexpr auto GetName() { return "m_PrivateRoomId"; }
-  static constexpr auto GetType() { return "unsigned int"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xA1CFF09F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &GameStateStaging::m_PrivateRoomId; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_PrivateRoomId; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_PrivateRoomId; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameStateStaging>::field_data<3, Self> : public StormReflTypeInfo<GameStateStaging>::field_data_static<3>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint32_t> & Get() { return self.m_PrivateRoomId; }
-  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_PrivateRoomId; }
-  void SetDefault() { self.m_PrivateRoomId = StormReflTypeInfo<GameStateStaging>::GetDefault().m_PrivateRoomId; }
-};
-
-template <>
-struct StormReflTypeInfo<GameStateStaging>::field_data_static<4>
-{
-  using member_type = int; // int
-  static constexpr auto GetName() { return "m_WaitTimer"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x51047B6E; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4; }
-  static constexpr auto GetMemberPtr() { return &GameStateStaging::m_WaitTimer; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameStateStaging *>(obj); return &ptr->m_WaitTimer; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameStateStaging *>(obj); return &ptr->m_WaitTimer; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameStateStaging>::field_data<4, Self> : public StormReflTypeInfo<GameStateStaging>::field_data_static<4>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, int> & Get() { return self.m_WaitTimer; }
-  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_WaitTimer; }
-  void SetDefault() { self.m_WaitTimer = StormReflTypeInfo<GameStateStaging>::GetDefault().m_WaitTimer; }
-};
-
-template <>
 struct StormReflTypeInfo<GameStateLoadingPlayer>
 {
   using MyBase = void;
@@ -1682,7 +1514,7 @@ namespace StormReflFileInfo
 {
   struct GameFullState
   {
-    static const int types_n = 13;
+    static const int types_n = 12;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -1701,65 +1533,59 @@ namespace StormReflFileInfo
   template <>
   struct GameFullState::type_info<2>
   {
-    using type = ::GameStateStaging;
+    using type = ::GameStateLoadingPlayer;
   };
 
   template <>
   struct GameFullState::type_info<3>
   {
-    using type = ::GameStateLoadingPlayer;
+    using type = ::GameStateLoading;
   };
 
   template <>
   struct GameFullState::type_info<4>
   {
-    using type = ::GameStateLoading;
+    using type = ::GameHistoryInput;
   };
 
   template <>
   struct GameFullState::type_info<5>
   {
-    using type = ::GameHistoryInput;
+    using type = ::GameHistoryEvent;
   };
 
   template <>
   struct GameFullState::type_info<6>
   {
-    using type = ::GameHistoryEvent;
+    using type = ::GameHistoryClientEvent;
   };
 
   template <>
   struct GameFullState::type_info<7>
   {
-    using type = ::GameHistoryClientEvent;
+    using type = ::GameHistoryExternal;
   };
 
   template <>
   struct GameFullState::type_info<8>
   {
-    using type = ::GameHistoryExternal;
+    using type = ::GameHistoryAuthEvent;
   };
 
   template <>
   struct GameFullState::type_info<9>
   {
-    using type = ::GameHistoryAuthEvent;
+    using type = ::GameHistoryClientLocal;
   };
 
   template <>
   struct GameFullState::type_info<10>
   {
-    using type = ::GameHistoryClientLocal;
-  };
-
-  template <>
-  struct GameFullState::type_info<11>
-  {
     using type = ::GameGGPOServerGameState;
   };
 
   template <>
-  struct GameFullState::type_info<12>
+  struct GameFullState::type_info<11>
   {
     using type = ::GameGGPOClientUpdate;
   };

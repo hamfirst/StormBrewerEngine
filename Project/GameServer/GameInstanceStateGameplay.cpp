@@ -1,7 +1,6 @@
 
 
 #include "GameServer/GameInstanceStateGameplay.h"
-#include "GameServer/GameInstanceStateStaging.h"
 #include "GameServer/GameInstanceStateData.h"
 #include "GameServer/GameClientConnection.h"
 
@@ -85,12 +84,8 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   {
     auto player_id = m_PlayerIdAllocator.Allocate();
 
-#ifdef NET_USE_RANDOM_TEAM
-    auto team_counts = m_Controller.GetTeamCounts(m_InitialState.m_InstanceData);
+    auto team_counts = m_Controller.GetTeamCounts(low_freq_data);
     auto team = GameController::GetRandomTeam(team_counts, GetRandomNumber());
-#else
-    auto team = player_id % kMaxTeams;
-#endif
     m_Controller.ConstructBot(player_id, logic_container, "AI", team);
   }
 #endif
@@ -136,8 +131,6 @@ GameInstanceStateGameplay::~GameInstanceStateGameplay()
 
 bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
 {
-#ifdef NET_ALLOW_LATE_JOIN
-
   auto & low_frequency_data = GetCurrentLowFrequencyData();
   if (low_frequency_data.m_Players.Size() >= kMaxPlayers)
   {
@@ -189,9 +182,6 @@ bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const GameJ
   client_data.m_Client->SendLoadLevel(msg);
 
   return true;
-#else
-  return false;
-#endif
 }
 
 void GameInstanceStateGameplay::RemovePlayer(std::size_t client_index)
@@ -242,16 +232,8 @@ void GameInstanceStateGameplay::Update()
   }
 }
 
-void GameInstanceStateGameplay::HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg)
-{
-
-}
-
 void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg)
 {
-#ifdef NET_ALLOW_LATE_JOIN
-
-#endif
   auto & client_info = m_StateData.GetClient(client_index);
   auto & player_info = m_PlayerInfo[client_index];
 

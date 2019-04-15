@@ -29,7 +29,7 @@ using ClientProtocolDef = NetProtocolDefinition<
   NetPipeMessage<FromServerMessage, NetPipeMode::kReliable>,
 
 #if NET_MODE == NET_MODE_GGPO
-  NetPipeVariant<NetPipeMode::kUnreliableSequenced, GameGGPOServerGameState, GameStateStaging, GameStateLoading>>;
+  NetPipeVariant<NetPipeMode::kUnreliableSequenced, GameGGPOServerGameState, GameStateLoading>>;
 #else
   NetPipeMessage<GlobalNetworkEvent, NetPipeMode::kReliable>,
   NetPipeMessage<TargetNetworkEvent, NetPipeMode::kReliable>,

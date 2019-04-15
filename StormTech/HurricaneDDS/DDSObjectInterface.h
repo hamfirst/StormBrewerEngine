@@ -188,9 +188,10 @@ public:
       StormReflGetMemberFunctionIndex(return_func), std::string());
   }
 
-  template <typename QueryObject, typename ReturnObject, typename ReturnArg>
-  void QueryDatabase(const QueryObject & query, void (ReturnObject::*return_func)(ReturnArg return_arg, int ec, std::string data), ReturnObject * p_this, ReturnArg && return_arg)
+  template <typename QueryObject, typename ReturnObject, typename ReturnArg, typename ReturnArgType>
+  void QueryDatabase(const QueryObject & query, void (ReturnObject::*return_func)(ReturnArg return_arg, int ec, std::string data), ReturnObject * p_this, ReturnArgType && return_arg)
   {
+    static_assert(std::is_convertible_v<ReturnArgType, ReturnArg>, "Return data doesn't match function param");
     using DatabaseObject = typename QueryObject::DatabaseType;
     QueryDatabaseInternal(DatabaseObject::Collection(), StormReflEncodeJson(query), GetObjectType(StormReflTypeInfo<ReturnObject>::GetNameHash()), GetLocalKey(),
       StormReflGetMemberFunctionIndex(return_func), StormReflEncodeJson(return_arg));
@@ -203,9 +204,10 @@ public:
       StormReflGetMemberFunctionIndex(return_func), std::string());
   }
 
-  template <typename ReturnObject, typename ReturnArg>
-  void QueryDatabaseByKey(const char * collection, DDSKey key, void (ReturnObject::*return_func)(ReturnArg return_arg, int ec, std::string data), ReturnObject * p_this, ReturnArg && return_arg)
+  template <typename ReturnObject, typename ReturnArg, typename ReturnArgType>
+  void QueryDatabaseByKey(const char * collection, DDSKey key, void (ReturnObject::*return_func)(ReturnArg return_arg, int ec, std::string data), ReturnObject * p_this, ReturnArgType && return_arg)
   {
+    static_assert(std::is_convertible_v<ReturnArgType, ReturnArg>, "Return data doesn't match function param");
     QueryDatabaseByKeyInternal(collection, key, GetObjectType(StormReflTypeInfo<ReturnObject>::GetNameHash()), GetLocalKey(),
       StormReflGetMemberFunctionIndex(return_func), StormReflEncodeJson(return_arg));
   }
@@ -341,6 +343,8 @@ private:
     int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) = 0;
 
   virtual void QueryDatabaseInternal(const char * collection, std::string && query,
+    int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) = 0;
+  virtual void QueryDatabaseMultipleInternal(const char * collection, std::string && query,
     int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) = 0;
   virtual void QueryDatabaseByKeyInternal(const char * collection, DDSKey key,
     int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) = 0;

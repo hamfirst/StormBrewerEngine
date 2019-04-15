@@ -124,11 +124,11 @@ void BanList::GetInfo(DDSResponder & responder)
   DDSResponderCall(responder, data);
 }
 
-bool BanList::CheckBanList(const char * remote_ip, const char * remote_host, uint64_t platform_id) const
+bool BanList::CheckBanList(const char * remote_ip, const char * remote_host, std::string platform, uint64_t platform_id) const
 {
   auto cur_time = time(NULL);
 
-  std::string platform_id_str = std::to_string(platform_id);
+  std::string platform_id_str = platform + std::to_string(platform_id);
 
   for (auto elem : m_List)
   {

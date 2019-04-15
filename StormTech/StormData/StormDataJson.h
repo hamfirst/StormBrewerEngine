@@ -7,6 +7,7 @@
 #include "StormDataString.h"
 #include "StormDataEnum.h"
 #include "StormDataOpaque.h"
+#include "StormDataOptional.h"
 #include "StormDataList.h"
 #include "StormDataMap.h"
 #include "StormDataPolymorphic.h"
@@ -496,6 +497,85 @@ struct StormDataJson<ROpaque<T>, void>
   static bool ParseRaw(ROpaque<T> & t, CharPtr str, CharPtr& result, bool additive)
   {
     T val;
+    if (StormReflJson<T>::Parse(val, str, result, additive))
+    {
+      t.SetRaw(std::move(val));
+      return true;
+    }
+
+    return false;
+  }
+};
+
+template <typename T>
+struct StormReflJson<ROptional<T>, void>
+{
+  template <class StringBuilder>
+  static void Encode(const ROptional<T> & t, StringBuilder & sb)
+  {
+    if(t)
+    {
+      StormReflJson<T>::Encode(t.Value(), sb);
+    }
+    else
+    {
+      sb += "null";
+    }
+  }
+
+  template <class StringBuilder>
+  static void EncodePretty(const ROptional<T> & t, StringBuilder & sb, int indent)
+  {
+    if(t)
+    {
+      StormReflJson<T>::EncodePretty(t.Value(), sb, indent);
+    }
+    else
+    {
+      sb += "null";
+    }
+  }
+
+  template <class StringBuilder>
+  static void SerializeDefault(StringBuilder & sb)
+  {
+    StormReflJson<T>::SerializeDefault(sb);
+  }
+
+  template <typename CharPtr>
+  static bool Parse(ROptional<T> & t, CharPtr str, CharPtr& result, bool additive)
+  {
+    T val;
+
+    if(StormReflJsonParseOverNull(str, result))
+    {
+      t = std::move(val);
+      return true;
+    }
+
+    if (StormReflJson<T>::Parse(val, str, result, additive))
+    {
+      t = std::move(val);
+      return true;
+    }
+
+    return false;
+  }
+};
+
+template <typename T>
+struct StormDataJson<ROptional<T>, void>
+{
+  template <typename CharPtr>
+  static bool ParseRaw(ROptional<T> & t, CharPtr str, CharPtr& result, bool additive)
+  {
+    T val;
+    if(StormReflJsonParseOverNull(str, result))
+    {
+      t.SetRaw(std::move(val));
+      return true;
+    }
+
     if (StormReflJson<T>::Parse(val, str, result, additive))
     {
       t.SetRaw(std::move(val));

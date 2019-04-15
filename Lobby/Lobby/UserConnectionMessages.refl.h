@@ -79,13 +79,13 @@ struct UserMessageIdentifyRequest
 {
   STORM_REFL;
   std::string c;
-  std::string token;
 };
 
 struct UserMessageIdentifyResponse
 {
   STORM_REFL;
   std::string c;
+  std::string user_name;
   std::string token;
 };
 
@@ -275,7 +275,7 @@ struct UserSquadMemberLookupAction
   STORM_REFL;
   std::string c;
   DDSKey squad;
-  std::string user;
+  DDSKey user_platform_id;
 };
 
 struct UserSquadMemberPermissions

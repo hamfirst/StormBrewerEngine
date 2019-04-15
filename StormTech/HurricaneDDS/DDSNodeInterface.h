@@ -137,6 +137,8 @@ private:
 
   void QueryDatabaseInternal(const char * collection, std::string && query,
     int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) override;
+  void QueryDatabaseMultipleInternal(const char * collection, std::string && query,
+    int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) override;
   void QueryDatabaseByKeyInternal(const char * collection, DDSKey key,
     int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg) override;
 

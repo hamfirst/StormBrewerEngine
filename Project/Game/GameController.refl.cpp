@@ -446,20 +446,6 @@ std::vector<int> GameController::GetTeamCounts(const GameInstanceLowFrequencyDat
   return teams;
 }
 
-std::vector<int> GameController::GetTeamCounts(const GameStateStaging & game_data)
-{
-  std::vector<int> teams(kMaxTeams);
-  for (auto hero : game_data.m_Players)
-  {
-    if (hero.second.m_Team >= 0)
-    {
-      teams[(int)hero.second.m_Team]++;
-    }
-  }
-
-  return teams;
-}
-
 std::vector<int> GameController::GetTeamCounts(const GameStateLoading & game_data)
 {
   std::vector<int> teams(kMaxTeams);

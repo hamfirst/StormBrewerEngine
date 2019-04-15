@@ -34,90 +34,9 @@ void GameInstanceManager::Update()
   }
 }
 
-bool GameInstanceManager::CreatePrivateGame(GameClientConnection * client, const CreatePrivateGameMessage & message)
+bool GameInstanceManager::JoinPlayer(NotNullPtr<GameClientConnection> client, const GameServerAuthenticateUserSuccess & auth)
 {
-  auto stage = m_StageManager.GetStage(message.m_JoinInfo.m_Settings);
-  if (stage == nullptr)
-  {
-    return false;
-  }
 
-  auto game_id = GetRandomNumber64();
-  auto private_room_id = GetNewPrivateRoomId();
-
-  auto game_ptr = std::make_unique<GameInstance>(m_Server, game_id, private_room_id,
-          message.m_JoinInfo.m_Settings, m_StageManager);
-  auto result = m_Games.emplace(std::make_pair(game_id, std::move(game_ptr)));
-
-  auto game = result.first->second.get();
-
-  client->m_GameId = game_id;
-  client->m_GameInstance = game;
-
-  game->JoinPlayer(client, message.m_JoinInfo, true);
-  return true;
-}
-
-bool GameInstanceManager::JoinPlayer(GameClientConnection * client, const JoinGameMessage & message)
-{
-  if (message.m_PrivateRoomId == 0)
-  {
-    for (auto & game : m_Games)
-    {
-      if (CanJoinGame(game.second.get(), message.m_JoinInfo.m_Settings))
-      {
-        if (game.second->JoinPlayer(client, message.m_JoinInfo, false))
-        {
-          client->m_GameId = game.first;
-          client->m_GameInstance = game.second.get();
-          return true;
-        }
-      }
-    }
-
-    auto stage = m_StageManager.GetStage(message.m_JoinInfo.m_Settings);
-    if (stage == nullptr)
-    {
-      return false;
-    }
-
-    auto game_id = GetRandomNumber64();
-
-    auto game_ptr = std::make_unique<GameInstance>(m_Server, game_id, 0, message.m_JoinInfo.m_Settings, m_StageManager);
-    auto result = m_Games.emplace(std::make_pair(game_id, std::move(game_ptr)));
-
-    auto game = result.first->second.get();
-
-    client->m_GameId = game_id;
-    client->m_GameInstance = game;
-
-    game->JoinPlayer(client, message.m_JoinInfo, false);
-    return true;
-  }
-  else
-  {
-    auto lookup_itr = m_PrivateRoomLookup.find(message.m_PrivateRoomId);
-    if(lookup_itr == m_PrivateRoomLookup.end())
-    {
-      return false;
-    }
-
-    auto game_id = lookup_itr->second;
-
-    auto itr = m_Games.find(game_id);
-    if (itr == m_Games.end())
-    {
-      return false;
-    }
-
-    if (CanJoinGame(itr->second.get(), message.m_JoinInfo.m_Settings) == false)
-    {
-      return false;
-    }
-
-    itr->second->JoinPlayer(client, message.m_JoinInfo, false);
-    return true;
-  }
 }
 
 void GameInstanceManager::RemovePlayer(GameClientConnection * client)
@@ -126,11 +45,6 @@ void GameInstanceManager::RemovePlayer(GameClientConnection * client)
   {
     client->GetGameInstance()->RemovePlayer(client);
   }
-}
-
-bool GameInstanceManager::CanJoinGame(GameInstance * instance, const GameInitSettings & settings) const
-{
-  return instance->GetNumPlayers() < kMaxPlayers;
 }
 
 uint32_t GameInstanceManager::GetNewPrivateRoomId()

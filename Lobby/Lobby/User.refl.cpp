@@ -28,6 +28,8 @@ STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserLocalData);
 UserNameLookup::UserNameLookup(const char * user_name) : m_UserNameLower(user_name) { std::transform(m_UserNameLower.begin(), m_UserNameLower.end(), m_UserNameLower.begin(), tolower); }
 UserNameLookup::UserNameLookup(std::string & user_name) : UserNameLookup(user_name.c_str()) {}
 
+UserPlatformIdLookup::UserPlatformIdLookup(DDSKey platform_id) : m_PlatformId(platform_id) {}
+
 User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) : 
   m_Interface(node_interface), m_Data(db_object),
   m_LinesThrottle(5, 1),
@@ -168,6 +170,11 @@ void User::RemoveEndpoint(DDSKey key)
     {
       LeaveGame();
     }
+
+    if(m_Endpoints.size() == 0 && m_Data.m_IsGuest)
+    {
+      m_Interface.DestroySelf();
+    }
   }
 }
 
@@ -198,6 +205,20 @@ void User::SetLocation(std::string country_code, std::string currency_code)
 
   m_CountryCode = country_code;
   m_CurrencyCode = currency_code;
+}
+
+void User::UpdateName(std::string name)
+{
+  if(m_UserInfo.m_Name.compare(name) == 0)
+  {
+    std::string user_name_lower = name;
+    std::transform(user_name_lower.begin(), user_name_lower.end(), user_name_lower.begin(), tolower);
+
+    m_Data.m_UserName = name;
+    m_Data.m_UserNameLower = user_name_lower;
+    m_LocalInfo.m_Name = name;
+    m_UserInfo.m_Name = name;
+  }
 }
 
 #ifdef ENABLE_REWARDS
@@ -663,8 +684,6 @@ void User::LeaveGame()
   m_Interface.Call(&GameServerConnection::UserLeaveGame, m_GameServerId, m_GameId, m_Interface.GetLocalKey());
   m_Interface.DestroySubscription<GameServerConnection>(m_GameServerId, m_GameSubscriptionId);
 
-  m_Interface.Call(&UserConnection::SendData, m_GameEndpoint, StormReflEncodeJson(UserMessageBase{ "reset_game" }));
-
   m_InGame = false;
   m_GameId = -1;
   m_UserInfo.m_Game = UserGameInfo{};
@@ -683,7 +702,6 @@ void User::NotifyLeftGame(DDSKey game_random_id)
   }
 
   m_Interface.DestroySubscription<GameServerConnection>(m_GameServerId, m_GameSubscriptionId);
-  m_Interface.Call(&UserConnection::SendData, m_GameEndpoint, StormReflEncodeJson(UserMessageBase{ "reset_game" }));
 
   m_InGame = false;
   m_GameId = -1;
@@ -721,6 +739,12 @@ void User::HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data)
 #ifdef ENABLE_SQUADS
 void User::CreateSquad(DDSKey creator_endpoint, std::string squad_name, std::string squad_tag)
 {
+  if(m_Data.m_IsGuest)
+  {
+    m_Interface.Call(&UserConnection::SendRuntimeError, creator_endpoint, "Guest users cannot create squads");
+    return;
+  }
+
   if (m_SquadCreationThrottle.HasCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, creator_endpoint, "You must wait 30 seconds before you can create another squad");
@@ -844,6 +868,12 @@ void User::HandleSquadLookupFail(DDSKey endpoint_id)
 
 void User::ApplyToSquad(DDSKey endpoint_id, std::string squad_name)
 {
+  if(m_Data.m_IsGuest)
+  {
+    m_Interface.Call(&UserConnection::SendNotification, endpoint_id, "Guest users cannot apply to squads");
+    return;
+  }
+
   auto squad_id = Channel::GetChannelKeyFromName(squad_name.c_str());
   m_Interface.CallWithResponderReturnArgErrorBack(&Squad::ApplyToSquad, squad_id, &User::HandleSquadOperationResponse, &User::HandleSquadLookupFail, this, endpoint_id,
     m_Interface.GetLocalKey(), m_UserInfo.m_Name.ToString());
@@ -867,12 +897,12 @@ void User::DeclineSquadApplication(DDSKey endpoint_id, DDSKey squad_id, DDSKey u
     &User::HandleSquadOperationResponse, &User::HandleSquadLookupFail, this, endpoint_id, m_Interface.GetLocalKey(), user_id);
 }
 
-void User::RequestUserToJoinSquad(DDSKey endpoint_id, DDSKey squad_id, std::string user_name)
+void User::RequestUserToJoinSquad(DDSKey endpoint_id, DDSKey squad_id, DDSKey platform_id)
 {
-  m_Interface.QueryDatabase(UserNameLookup{ user_name }, &User::HandleSquadRequestNameLookup, this, std::make_tuple(endpoint_id, squad_id));
+  m_Interface.QueryDatabase(UserPlatformIdLookup{ platform_id }, &User::HandleSquadRequestUserLookup, this, std::make_tuple(endpoint_id, squad_id));
 }
 
-void User::HandleSquadRequestNameLookup(std::tuple<DDSKey, DDSKey> squad_data, int ec, std::string data)
+void User::HandleSquadRequestUserLookup(std::tuple<DDSKey, DDSKey> squad_data, int ec, std::string data)
 {
   auto endpoint_id = std::get<0>(squad_data);
   auto squad_id = std::get<1>(squad_data);
@@ -886,9 +916,16 @@ void User::HandleSquadRequestNameLookup(std::tuple<DDSKey, DDSKey> squad_data, i
     UserDatabaseObject user_data;
     StormReflParseJson(user_data, data.data());
 
-    auto user_id = GetUserIdForPlatformId(user_data.m_PlatformId);
-    m_Interface.CallWithResponderReturnArg(&Squad::RequestUserToJoinSquad, squad_id, &User::HandleSquadOperationResponse, this, endpoint_id,
-      m_Interface.GetLocalKey(), user_id, user_data.m_UserName.ToString());
+    if(user_data.m_IsGuest)
+    {
+      m_Interface.Call(&UserConnection::SendNotification, endpoint_id, "You can't invite guest users to squads");
+    }
+    else
+    {
+      auto user_id = GetUserIdForPlatformId(user_data.m_Platform, user_data.m_PlatformId);
+      m_Interface.CallWithResponderReturnArg(&Squad::RequestUserToJoinSquad, squad_id, &User::HandleSquadOperationResponse, this, endpoint_id,
+        m_Interface.GetLocalKey(), user_id, user_data.m_UserName.ToString());
+    }
   }
 }
 
@@ -2631,9 +2668,9 @@ bool User::ValidateUserName(const std::string & name, int min_characters, int ma
   return true;
 }
 
-DDSKey User::GetUserIdForPlatformId(uint64_t steam_id)
+DDSKey User::GetUserIdForPlatformId(const std::string & platform, uint64_t platform_id)
 {
-  std::string steam_id_str = "steam" + std::to_string(steam_id);
+  std::string steam_id_str = platform + std::to_string(platform_id);
   return crc64(steam_id_str);
 }
 
@@ -2651,6 +2688,7 @@ void User::HandleUserNameLookupForCall(std::tuple<int, std::string, DDSResponder
   DDSResponder responder{ m_Interface, responder_data };
 
   const char * id = StormDataFindJsonStartByPath(".m_PlatformId", data.c_str());
+  const char * platform = StormDataFindJsonStartByPath(".m_Platform", data.c_str());
 
   if (id == nullptr)
   {
@@ -2658,13 +2696,21 @@ void User::HandleUserNameLookupForCall(std::tuple<int, std::string, DDSResponder
   }
   else
   {
+    std::string platform_parsed;
+    if (StormReflParseJson(platform_parsed, id) == false)
+    {
+      DDSResponderCallError(responder);
+      return;
+    }
+
     uint64_t id_parsed;
     if (StormReflParseJson(id_parsed, id) == false)
     {
       DDSResponderCallError(responder);
+      return;
     }
 
-    auto user_key = User::GetUserIdForPlatformId(id_parsed);
+    auto user_key = User::GetUserIdForPlatformId(platform_parsed, id_parsed);
     m_Interface.CallWithForwardedResponderRaw(StormReflTypeInfo<User>::GetNameHash(), method_id, user_key, responder_data, std::move(call_args));
   }
 }

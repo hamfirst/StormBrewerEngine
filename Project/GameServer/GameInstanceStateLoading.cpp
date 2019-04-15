@@ -11,15 +11,12 @@
 static const int kTimeToWaitForLoad = 10 * 60;
 static const int kSendInterval = 2 * 60;
 
-GameInstanceStateLoading::GameInstanceStateLoading(GameInstanceStateData & state_data, const GameStateStaging & staging_data) :
+GameInstanceStateLoading::GameInstanceStateLoading(GameInstanceStateData & state_data) :
   GameInstanceStateBase(state_data),
   m_TimeToWaitForLoad(kTimeToWaitForLoad),
   m_SendTimer(0)
 {
-  for (auto elem : staging_data.m_Players)
-  {
-    AddPlayer(elem.first, elem.second.m_Team);
-  }
+
 }
 
 bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const GameJoinInfo & join_game)
@@ -29,20 +26,8 @@ bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const GameJo
     return false;
   }
 
-#ifdef NET_ALLOW_LATE_JOIN
-
-#ifdef NET_USE_RANDOM_TEAM
-  auto team_counts = GameController::GetTeamCounts(m_State);
-  auto team = GameController::GetRandomTeam(team_counts, GetRandomNumber());
-#else
-  auto team = (int)(client_index % kMaxTeams);
-#endif
-
-  AddPlayer(client_index, team);
+  AddPlayer(client_index, join_game.m_Team);
   return true;
-#else
-  return false;
-#endif
 }
 
 void GameInstanceStateLoading::RemovePlayer(std::size_t client_index)
@@ -81,16 +66,11 @@ void GameInstanceStateLoading::Update()
     }
   }
 
-  bool ready = CheckGameReady();
+  bool ready = CheckFinishedLoading();
   if (ready)
   {
     m_StateData.SwitchState(GameInstanceStateDef<GameInstanceStateGameplay>{}, m_State);
   }
-}
-
-void GameInstanceStateLoading::HandlePlayerReady(std::size_t client_index, const ReadyMessage & msg)
-{
-
 }
 
 void GameInstanceStateLoading::HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg)
@@ -103,6 +83,11 @@ void GameInstanceStateLoading::HandlePlayerLoaded(std::size_t client_index, cons
 
   auto & player_data = m_State.m_Players[client_index];
   player_data.m_Loaded = true;
+}
+
+bool GameInstanceStateLoading::CheckFinishedLoading() const
+{
+  return false;
 }
 
 void GameInstanceStateLoading::AddPlayer(std::size_t client_index, int team)
@@ -121,17 +106,4 @@ void GameInstanceStateLoading::AddPlayer(std::size_t client_index, int team)
   client_data.m_Client->SendLoadLevel(msg);
 
   m_TimeToWaitForLoad = kTimeToWaitForLoad;
-}
-
-bool GameInstanceStateLoading::CheckGameReady()
-{
-  for (auto player : m_State.m_Players)
-  {
-    if (player.second.m_Loaded == false)
-    {
-      return false;
-    }
-  }
-
-  return true;
 }

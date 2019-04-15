@@ -46,36 +46,12 @@ struct PingMessage : public ToServerMessage
   NET_REFL;
 };
 
-struct GameJoinInfo
+struct JoinServerMessage : public ToServerMessage
 {
   NET_REFL;
-  std::string m_UserName;
-  GameInitSettings m_Settings;
-};
-
-struct CreatePrivateGameMessage : public ToServerMessage
-{
-  NET_REFL;
-  GameJoinInfo m_JoinInfo;
-};
-
-struct JoinGameMessage : public ToServerMessage
-{
-  NET_REFL;
-  uint32_t m_PrivateRoomId;
-  GameJoinInfo m_JoinInfo;
-};
-
-struct ReadyMessage : public ToServerMessage
-{
-  NET_REFL;
-  bool m_Ready;
-};
-
-struct KickPlayerMessage : public ToServerMessage
-{
-  NET_REFL;
-  uint8_t m_PlayerIndex;
+  uint64_t m_UserId;
+  uint64_t m_GameId;
+  uint64_t m_JoinToken;
 };
 
 struct FinishLoadingMessage : public ToServerMessage

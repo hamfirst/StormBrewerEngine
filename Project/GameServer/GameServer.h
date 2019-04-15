@@ -35,6 +35,9 @@ public:
 
   void Update() override;
 
+  int ValidateUser(NotNullPtr<GameClientConnection> connection, const JoinServerMessage & request);
+  void CancelUserValidation(int validation_id);
+
   GameInstanceManager & GetGameInstanceManager();
 
 protected:

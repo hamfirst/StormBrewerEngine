@@ -2,9 +2,8 @@
 
 #include "GameServer/GameInstance.h"
 #include "GameServer/GameClientConnection.h"
+#include "GameServer/GameInstanceStateLoading.h"
 #include "GameServer/GameInstanceStateBase.h"
-#include "GameServer/GameInstanceStateStaging.h"
-#include "GameServer/GameInstanceStatePrivateGameStaging.h"
 #include "GameServer.h"
 
 #include "Game/GameMessages.refl.meta.h"
@@ -16,14 +15,13 @@
 #include <ctime>
 
 
-GameInstance::GameInstance(GameServer & server, uint64_t game_id, uint32_t private_room_id, const GameInitSettings & settings,
+GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings,
                            GameStageManager & stage_manager) :
   m_Server(server),
   m_GameId(game_id),
-  m_PrivateRoomId(private_room_id),
   m_StateData(this, settings, stage_manager)
 {
-  Reset();
+  m_State = std::make_unique<GameInstanceStateLoading>(m_StateData);
 }
 
 GameInstance::~GameInstance()
@@ -38,18 +36,6 @@ void GameInstance::Update()
   if (m_NewState)
   {
     m_State = std::move(m_NewState);
-  }
-}
-
-void GameInstance::Reset()
-{
-  if(m_PrivateRoomId == 0)
-  {
-    m_State = std::make_unique<GameInstanceStateStaging>(m_StateData);
-  }
-  else
-  {
-    m_State = std::make_unique<GameInstanceStatePrivateGameStaging>(m_StateData);
   }
 }
 
@@ -77,12 +63,6 @@ void GameInstance::RemovePlayer(GameClientConnection * client)
   m_StateData.m_IdAllocator.Release(player_index);
 
   m_State->RemovePlayer(player_index);
-}
-
-void GameInstance::HandlePlayerReady(GameClientConnection * client, const ReadyMessage & ready)
-{
-  auto player_index = GetPlayerIndex(client);
-  m_State->HandlePlayerReady(player_index, ready);
 }
 
 void GameInstance::HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading)

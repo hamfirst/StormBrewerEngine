@@ -20,6 +20,18 @@ enum class LobbyClientConnectionState
   kConnected,
 };
 
+enum class LobbyClientState
+{
+  kDisconnected,
+  kConnecting,
+  kNewUser,
+  kNewUserRepick,
+  kCreatingAccount,
+  kConnected,
+  kInGame,
+  kStartedGame,
+};
+
 enum class LobbyLoginMode
 {
 #ifdef ENABLE_AUTH_GUEST
@@ -39,7 +51,7 @@ public:
   void Connect();
   void Update();
 
-  bool IsConnected();
+  LobbyClientState GetState();
 
 protected:
   template <typename T>
@@ -51,6 +63,8 @@ protected:
 
 private:
   LobbyClientConnectionState m_State;
+  LobbyClientState m_ClientState;
+
   WebSocket m_WebSocket;
 
   LobbyLoginMode m_LoginMode;

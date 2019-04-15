@@ -9,8 +9,8 @@
 
 enum STORM_REFL_ENUM class UserConnectionState
 {
-  kLoadingUser,
   kRequestingUserName,
+  kLoadingUser,
   kCreatingNewUser,
   kLoaded,
 };
@@ -21,7 +21,8 @@ struct UserConnection
 
   UserConnection(DDSNodeInterface node_interface);
 
-  void STORM_REFL_FUNC LoadUser(uint64_t platform_id, uint64_t user_id, std::string remote_ip, std::string remote_host, std::string country_code, std::string currency_code);
+  void STORM_REFL_FUNC LoadUser(std::string platform, uint64_t platform_id, uint64_t user_id, std::string remote_ip,
+      std::string remote_host, std::string country_code, std::string currency_code, bool guest, std::string chosen_user_name);
   void STORM_REFL_FUNC GotMessage(std::string cmd, std::string data);
 
   void STORM_REFL_FUNC UserDoesntExist();
@@ -56,7 +57,7 @@ struct UserConnection
 
 public:
 
-
+  void CreateUserObject(const std::string & name);
   void ConnectToEndpoint(DDSConnectionId connection_id);
   void FinalizeUserLoaded();
   void PreDestroy();
@@ -64,6 +65,7 @@ public:
 
 public:
 
+  std::string m_Platform;
   uint64_t m_PlatformId;
   uint64_t m_UserId;
 
@@ -78,6 +80,7 @@ public:
   std::vector<std::string> m_PendingMessages;
   bool m_Error;
 
+  std::string m_UserName;
   std::string m_RemoteIP;
   std::string m_RemoteHost;
 

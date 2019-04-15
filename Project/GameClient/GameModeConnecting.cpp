@@ -42,12 +42,6 @@ void GameModeConnecting::Update()
   auto & container = GetContainer();
   container.GetWindow().Update();
 
-  if(container.GetClient().InPrivateGameStaging())
-  {
-    container.SwitchMode(GameModeDef<GameModeOnlineStaging>{});
-    return;
-  }
-
   if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
     m_FrameClock.BeginFrame();
@@ -68,8 +62,9 @@ void GameModeConnecting::Update()
     {
       m_LastConnect = cur_time;
 
+      auto settings = container.GetClient().GetSettings();
       container.StopNetworkClient();
-      container.StartNetworkClient();
+      container.StartNetworkClient(settings);
     }
   }
 }
@@ -103,20 +98,12 @@ void GameModeConnecting::Render()
     case ClientConnectionState::kLoading:
       status_msg = "Loading...";
       break;
-    case ClientConnectionState::kStaging:
     case ClientConnectionState::kConnected:
       status_msg = "Waiting for other players...";
       break;
     }
 
     std::string full_status_msg;
-    if (container.GetClient().GetConnectionState() == ClientConnectionState::kStaging)
-    {
-      auto num_players = container.GetClient().GetStagingState()->m_Players.Size();
-      full_status_msg = std::string(status_msg) + " (" + std::to_string(num_players) + "/" + std::to_string(kMaxPlayers) + ")";
-      status_msg = full_status_msg.data();
-    }
-
     auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
 
     Vector2 text_pos = {};
@@ -129,7 +116,6 @@ void GameModeConnecting::Render()
     g_TextManager.RenderText(status_msg, -1, 1, render_state);
 
     if (m_ConnectFailed &&
-      container.GetClient().GetConnectionState() != ClientConnectionState::kStaging &&
       container.GetClient().GetConnectionState() != ClientConnectionState::kLoading)
     {
       status_msg = "The servers may be offline";
@@ -143,30 +129,6 @@ void GameModeConnecting::Render()
       g_TextManager.SetTextMode();
       g_TextManager.SetTextPos(text_pos);
       g_TextManager.RenderText(status_msg, -1, 1, render_state);
-    }
-
-    if (container.GetClient().GetConnectionState() == ClientConnectionState::kStaging)
-    {
-      auto staging_state = container.GetClient().GetStagingState();
-
-      if (staging_state->m_WaitTimer != 0)
-      {
-        char text[512];
-
-        auto timer = staging_state->m_WaitTimer / 60;
-        snprintf(text, sizeof(text), "Starting in %d:%02d", timer / 60, timer % 60);
-
-        auto text_size = g_TextManager.GetTextSize(text, -1, 1);
-
-        Vector2 text_pos = {};
-        text_pos.y -= 120;
-        text_pos.x -= text_size.Size().x / 2;
-
-        g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));
-        g_TextManager.SetTextMode();
-        g_TextManager.SetTextPos(text_pos);
-        g_TextManager.RenderText(text, -1, 1, render_state);
-      }
     }
   }
 

@@ -159,6 +159,19 @@ void DDSNodeInterface::QueryDatabaseInternal(const char * collection, std::strin
   m_NodeState.QueryObjectData(collection, query.c_str(), std::move(call_data));
 }
 
+void DDSNodeInterface::QueryDatabaseMultipleInternal(const char * collection, std::string && query,
+  int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg)
+{
+  DDSResponderCallData call_data;
+  call_data.m_Key = responder_key;
+  call_data.m_ObjectType = responder_object_type;
+  call_data.m_MethodId = responder_method_id;
+  call_data.m_MethodArgs = "[]";
+  call_data.m_ResponderArgs = return_arg;
+
+  m_NodeState.QueryObjectDataMultiple(collection, query.c_str(), std::move(call_data));
+}
+
 void DDSNodeInterface::QueryDatabaseByKeyInternal(const char * collection, DDSKey key,
   int responder_object_type, DDSKey responder_key, int responder_method_id, std::string && return_arg)
 {

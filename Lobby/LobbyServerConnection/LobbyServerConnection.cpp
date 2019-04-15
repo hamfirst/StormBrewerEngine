@@ -344,13 +344,15 @@ void LobbyServerConnection::SetChangeCreatorCallback(LobbyChangeCreatorCallback 
   m_ChangeCreatorCallback = callback;
 }
 
-int LobbyServerConnection::RequestValidation(uint64_t user_token, LobbyValidationCallback && callback)
+int LobbyServerConnection::RequestValidation(const JoinServerMessage & join_info, LobbyValidationCallback && callback)
 {
   m_Validations.emplace(std::make_pair(m_NextValidationId, std::move(callback)));
 
   GameServerAuthenticateUser req;
   req.m_ResponseId = m_NextValidationId;
-  req.m_UserToken = user_token;
+  req.m_GameId = join_info.m_GameId;
+  req.m_UserId = join_info.m_UserId;
+  req.m_JoinToken = join_info.m_JoinToken;
 
   SendMessage(req);
 
@@ -408,7 +410,6 @@ void LobbyServerConnection::SendStats(uint64_t account_id, GameSimulationStats &
   msg.m_AccountId = account_id;
   
   StormReflAggregate(msg.m_Stats, stats);
-  msg.m_Settings = settings;
 
   SendMessage(msg);
 }

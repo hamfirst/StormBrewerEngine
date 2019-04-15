@@ -41,7 +41,7 @@ set(GENERIC_HEADER_StormData
             StormDataDelta.h
             StormDataString.h
             #HEADER_PLACEHOLDER
-            )
+  StormDataOptional.h)
 set(GENERIC_REFL_StormData
             StormDataChangeType.refl.h
             #REFL_PLACEHOLDER

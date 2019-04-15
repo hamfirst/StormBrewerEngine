@@ -37,16 +37,6 @@ struct GameStateStagingPlayer
   NetRangedNumber<int, -1, kMaxTeams - 1> m_Team = 0;
 };
 
-struct GameStateStaging
-{
-  NET_REFL;
-  NetSparseList<GameStateStagingPlayer, kMaxPlayers> m_Players;
-  GameInitSettings m_Settings;
-  NetRangedNumber<int, 0, 255> m_Countdown;
-  uint32_t m_PrivateRoomId = 0;
-  int m_WaitTimer = 0;
-};
-
 struct GameStateLoadingPlayer
 {
   NET_REFL;

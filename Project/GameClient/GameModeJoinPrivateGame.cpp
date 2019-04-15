@@ -78,7 +78,6 @@ void GameModeJoinPrivateGame::Submit(std::string & game_code_str)
 
   auto & container = GetContainer();
   auto & input_text = game_code_str;
-  auto & net_init_settings = container.GetNetworkInitSettings();
 
   auto & text = game_code_str;
   uint32_t game_code = 0;
@@ -104,11 +103,6 @@ void GameModeJoinPrivateGame::Submit(std::string & game_code_str)
     game_code <<= 8;
     game_code |= val;
   }
-
-  net_init_settings.m_Intent = ClientConnectionIntent::kJoinPrivate;
-  net_init_settings.m_JoinPrivateGameKey = game_code;
-  container.StartNetworkClient();
-  container.SwitchMode(GameModeDef<GameModeConnecting>{});
 }
 
 bool GameModeJoinPrivateGame::CheckValidGameCode(std::string & user_name)

@@ -21,12 +21,12 @@ struct Game
 
   void STORM_REFL_FUNC Init(GameLobbySettings settings);
   void STORM_REFL_FUNC Cleanup();
-  void STORM_REFL_FUNC CheckIfNobodyJoined();
   void STORM_REFL_FUNC AddUser(DDSResponder & responder, DDSKey user_key);
   void STORM_REFL_FUNC RemoveUser(DDSKey user_key);
 
 #if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   void STORM_REFL_FUNC ChangeReady(DDSKey user_key, bool ready);
+  bool AllPlayersReady() const;
 #endif
 
   void STORM_REFL_FUNC StartGame();
@@ -36,9 +36,7 @@ struct Game
   void STORM_REFL_FUNC UpdateSettings(GameInitSettings settings);
   void STORM_REFL_FUNC UpdateGameList();
 
-  void STORM_REFL_FUNC SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id);
   void STORM_REFL_FUNC ExpireToken(DDSKey token);
-  void STORM_REFL_FUNC ExpireGame(int game_id);
 
   void STORM_REFL_FUNC HandleMemberUpdate(DDSKey user_key, std::string data);
 

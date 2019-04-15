@@ -15,7 +15,6 @@ class GameClientConnection
 public:
   GameClientConnection(GameServer & server, uint32_t connection_id, ServerProtocol & protocol);
 
-  void SyncStagingState(const GameStateStaging & state);
   void SyncLoadingState(const GameStateLoading & state);
 
 #if NET_MODE == NET_MODE_GGPO
@@ -43,9 +42,7 @@ public:
 private:
 
   void HandlePing(const PingMessage & request);
-  void HandleCreatePrivateGame(const CreatePrivateGameMessage & request);
-  void HandleJoinGame(const JoinGameMessage & request);
-  void HandleReady(const ReadyMessage & request);
+  void HandleJoinServer(const JoinServerMessage & request);
   void HandleFinishLoading(const FinishLoadingMessage & request);
   void HandleTextChat(const SendTextChatMessage & request);
 
@@ -71,6 +68,7 @@ private:
 
   GameInstance * m_GameInstance;
   uint64_t m_GameId;
+  bool m_GotJoin;
 };
 
 

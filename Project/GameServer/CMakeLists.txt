@@ -17,8 +17,6 @@ set(GENERIC_SRC_GameServer
             GameInstanceStateData.cpp
             GameInstanceStateGameplay.cpp
             GameInstanceStateLoading.cpp
-            GameInstanceStatePrivateGameStaging.cpp
-            GameInstanceStateStaging.cpp
             GameServer.cpp
             GameServerGlobalResources.cpp
             #CPP_PLACEHOLDER
@@ -32,8 +30,6 @@ set(GENERIC_HEADER_GameServer
             GameInstanceStateData.h
             GameInstanceStateGameplay.h
             GameInstanceStateLoading.h
-            GameInstanceStatePrivateGameStaging.h
-            GameInstanceStateStaging.h
             GameServer.h
             GameServerGlobalResources.h
             #HEADER_PLACEHOLDER

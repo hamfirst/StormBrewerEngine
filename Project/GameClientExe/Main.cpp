@@ -47,23 +47,26 @@
 #ifdef _MSC_VER
 #include <io.h>
 #include <fcntl.h>
-#endif
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")
 #pragma comment(lib, "Version.lib")
 #pragma comment(lib, "Opengl32.lib")
+#endif
 
 std::unique_ptr<GameContainer> s_GameContainer;
 
+std::string g_LoginPlatform;
+std::string g_LoginToken;
+
 extern int g_LagSim;
-extern czstr g_AccountName;
 
 extern "C"
 {
-  void SetAccountName(czstr account_name)
+  void SetLoginToken(czstr platform, czstr token)
   {
-    g_AccountName = account_name;
+    g_LoginPlatform = platform;
+    g_LoginToken = token;
   }
 }
 

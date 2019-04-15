@@ -1,5 +1,6 @@
 
 #include "Foundation/Common.h"
+#include "Foundation/Random/Random.h"
 
 #include "GameServer/GameServer.h"
 
@@ -41,6 +42,32 @@ void GameServer::Update()
   if(m_LobbyConnection)
   {
     m_LobbyConnection->Update();
+  }
+}
+
+int GameServer::ValidateUser(NotNullPtr<GameClientConnection> connection, const JoinServerMessage & request)
+{
+  if(m_LobbyConnection)
+  {
+    return m_LobbyConnection->RequestValidation(request, [this, connection](const Optional<GameServerAuthenticateUserSuccess> & resp)
+    {
+      if(resp.IsValid() == false || m_GameInstanceManager.JoinPlayer(connection, resp.Value()))
+      {
+        connection->ForceDisconnect();
+      }
+    });
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+void GameServer::CancelUserValidation(int validation_id)
+{
+  if(m_LobbyConnection)
+  {
+    m_LobbyConnection->CancelValidation(validation_id);
   }
 }
 

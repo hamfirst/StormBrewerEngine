@@ -39,7 +39,7 @@ public:
 
 public:
 
-  bool CheckBanList(const char * remote_ip, const char * remote_host, uint64_t platform_id) const;
+  bool CheckBanList(const char * remote_ip, const char * remote_host, std::string platform, uint64_t platform_id) const;
 
 
 private:

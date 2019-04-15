@@ -33,17 +33,15 @@ class GameInstance
 public:
 
   GameInstance(GameServer & server, uint64_t game_id,
-          uint32_t private_room_id, const GameInitSettings & settings, GameStageManager & stage_manager);
+          const GameInitSettings & settings, GameStageManager & stage_manager);
 
   ~GameInstance();
 
   void Update();
-  void Reset();
 
   bool JoinPlayer(GameClientConnection * client, const GameJoinInfo & join_game, bool game_leader);
   void RemovePlayer(GameClientConnection * client);
 
-  void HandlePlayerReady(GameClientConnection * client, const ReadyMessage & ready);
   void HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading);
   void HandleTextChat(GameClientConnection * client, const SendTextChatMessage & text_message);
   void HandleChangeLoadout(GameClientConnection * client, const ChangeLoadoutMessage & text_message);
@@ -72,7 +70,6 @@ private:
 
   GameServer & m_Server;
   uint64_t m_GameId;
-  uint32_t m_PrivateRoomId;
 
   GameInstanceStateData m_StateData;
   std::unique_ptr<GameInstanceStateBase> m_State;
