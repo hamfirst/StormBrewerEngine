@@ -1080,7 +1080,7 @@ template <>
 struct StormReflTypeInfo<UserMessageCreateName>
 {
   using MyBase = void;
-  static constexpr int fields_n = 1;
+  static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -1123,19 +1123,44 @@ template <>
 struct StormReflTypeInfo<UserMessageCreateName>::field_data_static<0>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "c"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x06B9DF6F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &UserMessageCreateName::c; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageCreateName *>(obj); return &ptr->c; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageCreateName *>(obj); return &ptr->c; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserMessageCreateName>::field_data<0, Self> : public StormReflTypeInfo<UserMessageCreateName>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.c; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.c; }
+  void SetDefault() { self.c = StormReflTypeInfo<UserMessageCreateName>::GetDefault().c; }
+};
+
+template <>
+struct StormReflTypeInfo<UserMessageCreateName>::field_data_static<1>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "uname"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x887739B8; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserMessageCreateName::uname; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserMessageCreateName *>(obj); return &ptr->uname; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserMessageCreateName *>(obj); return &ptr->uname; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserMessageCreateName>::field_data<0, Self> : public StormReflTypeInfo<UserMessageCreateName>::field_data_static<0>
+struct StormReflTypeInfo<UserMessageCreateName>::field_data<1, Self> : public StormReflTypeInfo<UserMessageCreateName>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

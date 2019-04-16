@@ -16,6 +16,7 @@
 #include "Game/GameSimulationStats.refl.meta.h"
 
 #include "Lobby/UserConnectionMessages.refl.meta.h"
+#include "Lobby/SharedTypes.refl.meta.h"
 
 #include "LobbyClientConnection/LobbyClientConnection.h"
 
@@ -165,7 +166,7 @@ void LobbyClientConnection::Update()
 #endif
 
           SendMessage(resp, "version");
-          m_State = LobbyClientConnectionState::kConnected;
+          m_State = LobbyClientConnectionState::kIdentifying;
         }
         break;
       case LobbyClientConnectionState::kIdentifying:
@@ -196,6 +197,28 @@ void LobbyClientConnection::Update()
               break;
             }
           }
+
+          m_State = LobbyClientConnectionState::kIdentifyingResponse;
+        }
+        break;
+      case LobbyClientConnectionState::kIdentifyingResponse:
+        {
+          if(base_msg.c == "logged_in")
+          {
+            if(m_LatencySamples.size() == 0)
+            {
+              m_State = LobbyClientConnectionState::kWaitingForLatencySamples;
+            }
+            else
+            {
+              m_State = LobbyClientConnectionState::kConnected;
+              m_ClientState = LobbyClientState::kConnected;
+            }
+          }
+          else if(base_msg.c == "")
+          {
+
+          }
         }
         break;
       case LobbyClientConnectionState::kConnected:
@@ -205,9 +228,35 @@ void LobbyClientConnection::Update()
 }
 
 
-LobbyClientState LobbyClientConnection::GetState()
+LobbyClientState LobbyClientConnection::GetState() const
 {
   return m_ClientState;
+}
+
+void LobbyClientConnection::SetLatencySamples(const std::vector<int> & samples)
+{
+  m_LatencySamples = samples;
+
+  if(m_State == LobbyClientConnectionState::kWaitingForLatencySamples)
+  {
+    m_State = LobbyClientConnectionState::kConnected;
+    m_ClientState = LobbyClientState::kConnected;
+  }
+}
+
+void LobbyClientConnection::SendNewUserName(const std::string_view & name)
+{
+  UserMessageCreateName msg;
+  msg.uname = name;
+
+  SendMessage(msg, "user_name");
+}
+
+void LobbyClientConnection::SendGameChat(const std::string_view & msg)
+{
+  UserChatMessageIncoming chat;
+  chat.msg = msg;
+  SendMessage(chat, "game_chat");
 }
 
 template <typename T>

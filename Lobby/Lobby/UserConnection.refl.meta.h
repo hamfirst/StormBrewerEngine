@@ -824,12 +824,12 @@ struct StormReflFuncInfo<UserConnection>::func_data_static<11>
   using func_ptr_type = void (UserConnection::*)(std::string);
   using return_type = void;
   static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleServerListUpdate"; }
+  static constexpr auto GetName() { return "HandleGameListUpdate"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x18C4F9FE; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x0AD3D273; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 11; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &UserConnection::HandleServerListUpdate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &UserConnection::HandleGameListUpdate; }
   template <int i>
   struct param_info { };
 };

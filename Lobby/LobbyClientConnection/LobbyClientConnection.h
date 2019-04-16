@@ -6,6 +6,7 @@
 #include "Game/GameNetworkData.refl.h"
 
 #include "Lobby/LobbyConfig.h"
+#include "Lobby/User.refl.h"
 #include "Lobby/UserConnectionMessages.refl.h"
 
 #include <ctime>
@@ -17,6 +18,8 @@ enum class LobbyClientConnectionState
   kConnecting,
   kAuthenticating,
   kIdentifying,
+  kIdentifyingResponse,
+  kWaitingForLatencySamples,
   kConnected,
 };
 
@@ -51,7 +54,22 @@ public:
   void Connect();
   void Update();
 
-  LobbyClientState GetState();
+  LobbyClientState GetState() const;
+
+  void SetLatencySamples(const std::vector<int> & samples);
+
+  void SendNewUserName(const std::string_view & name);
+  void SendJoinMatchmadeGame(int playlist, bool ranked);
+  void SendCreatePrivateGame(const GameInitSettings & settings);
+  void SendJoinPrivateGame(uint32_t join_code);
+
+  void SendGameReady(bool ready);
+  void SendGameStart();
+  void SendGameChangeLoadout(const GamePlayerLoadout & loadout);
+  void SendGameChangeSettings(const GameInitSettings & settings);
+  void SendGameTeamSwitch(DDSKey user_id, int team);
+  void SendGameKickUser(DDSKey user_id);
+  void SendGameChat(const std::string_view & msg);
 
 protected:
   template <typename T>
@@ -66,11 +84,14 @@ private:
   LobbyClientState m_ClientState;
 
   WebSocket m_WebSocket;
+  UserLocalData m_UserLocalData;
 
   LobbyLoginMode m_LoginMode;
   std::string m_LoginToken;
 
   std::string m_LoadBalancerHost;
+
+  std::vector<int> m_LatencySamples;
 
   std::vector<std::string> m_PendingMessages;
   uint64_t m_RelocationToken;

@@ -92,6 +92,7 @@ struct UserMessageIdentifyResponse
 struct UserMessageCreateName
 {
   STORM_REFL;
+  std::string c;
   std::string uname;
 };
 

@@ -39,7 +39,7 @@ struct UserConnection
 
 
 #ifdef ENABLE_GAME_LIST
-  void STORM_REFL_FUNC HandleServerListUpdate(std::string data);
+  void STORM_REFL_FUNC HandleGameListUpdate(std::string data);
 #endif
 
 #ifdef ENABLE_WELCOME_INFO

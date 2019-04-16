@@ -42,13 +42,16 @@ void UserConnection::ConnectToEndpoint(DDSConnectionId connection_id)
 void UserConnection::FinalizeUserLoaded()
 {
   DDSLog::LogVerbose("Loading User");
+
+  SendData(StormReflEncodeJson(UserMessageBase{"logged_in"}));
+
   m_State = UserConnectionState::kLoaded;
 
   m_Interface.Call(&User::AddEndpoint, m_UserId, m_Interface.GetLocalKey(), m_RemoteIP, m_RemoteHost);
   m_Interface.Call(&User::SetLocation, m_UserId, m_CountryCode, m_CurrencyCode);
 
 #ifdef ENABLE_GAME_LIST
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<GameList>{}, 0, "", &UserConnection::HandleServerListUpdate, true);
+  m_Interface.CreateSubscription(DDSSubscriptionTarget<GameList>{}, 0, "", &UserConnection::HandleGameListUpdate, true);
 #endif
 
 #ifdef ENABLE_WELCOME_INFO
@@ -666,7 +669,7 @@ void UserConnection::HandleLocalDataUpdate(std::string data)
 }
 
 #ifdef ENABLE_GAME_LIST
-void UserConnection::HandleServerListUpdate(std::string data)
+void UserConnection::HandleGameListUpdate(std::string data)
 {
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "server", data }));
 }
