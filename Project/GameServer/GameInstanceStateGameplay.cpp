@@ -4,8 +4,11 @@
 #include "GameServer/GameInstanceStateData.h"
 #include "GameServer/GameClientConnection.h"
 
-#include "Game/GameController.refl.h"
 #include "ProjectSettings/ProjectNetworkSettings.h"
+
+#include "LobbyShared/LobbyGameFuncs.h"
+
+#include "Game/GameController.refl.h"
 #include "Game/GameStage.h"
 
 GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & state_data, const GameStateLoading & loading_data) :
@@ -85,7 +88,7 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
     auto player_id = m_PlayerIdAllocator.Allocate();
 
     auto team_counts = m_Controller.GetTeamCounts(low_freq_data);
-    auto team = GameController::GetRandomTeam(team_counts, GetRandomNumber());
+    auto team = GetRandomTeam(team_counts, GetRandomNumber());
     m_Controller.ConstructBot(player_id, logic_container, "AI", team);
   }
 #endif
@@ -226,7 +229,7 @@ void GameInstanceStateGameplay::Update()
       SendPacketToPlayer(player_info.first, player_info.second);
     }
 
-    m_SendTimer = kServerUpdateRate;
+    m_SendTimer = NET_SYNC_SERVER_RATE;
     m_FramesToUpdate = 0;
     m_FramesToRewind = 0;
   }

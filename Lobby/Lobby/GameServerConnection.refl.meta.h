@@ -529,15 +529,15 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<5>::param_info<
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>
 {
-  using func_ptr_type = void (GameServerConnection::*)(DDSKey);
+  using func_ptr_type = void (GameServerConnection::*)(RKey, RKey, uint32_t, bool);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "ExpireToken"; }
+  static constexpr int params_n = 4;
+  static constexpr auto GetName() { return "NotifyTokenRedeemed"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x6D1B9FA1; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x94458591; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 6; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::ExpireToken; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyTokenRedeemed; }
   template <int i>
   struct param_info { };
 };
@@ -545,11 +545,41 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<0>
 {
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "token"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x5F37A13B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+  using param_type = RKey;
+  static constexpr auto GetName() { return "user_key"; }
+  static constexpr auto GetType() { return "RKey"; }
+  static constexpr unsigned GetNameHash() { return 0x6186CA22; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0DDC2C6E; }
+};
+
+template <>
+struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<1>
+{
+  using param_type = RKey;
+  static constexpr auto GetName() { return "game_key"; }
+  static constexpr auto GetType() { return "RKey"; }
+  static constexpr unsigned GetNameHash() { return 0x91CAB86C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0DDC2C6E; }
+};
+
+template <>
+struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<2>
+{
+  using param_type = uint32_t;
+  static constexpr auto GetName() { return "response_id"; }
+  static constexpr auto GetType() { return "uint32_t"; }
+  static constexpr unsigned GetNameHash() { return 0xFBF32840; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0E2AF381; }
+};
+
+template <>
+struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<3>
+{
+  using param_type = bool;
+  static constexpr auto GetName() { return "success"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetNameHash() { return 0x6F00DFB2; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
 };
 
 namespace StormReflFileInfo

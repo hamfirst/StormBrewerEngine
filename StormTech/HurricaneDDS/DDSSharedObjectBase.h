@@ -16,6 +16,7 @@ public:
   virtual const void * GetSharedObjectPointer() = 0;
 
   virtual void Initialize() = 0;
+  virtual void Update() = 0;
   virtual std::string Serialize() = 0;
   virtual void ProcessMessage(DDSCoordinatorProtocolMessageType message_type, const char * message) = 0;
 

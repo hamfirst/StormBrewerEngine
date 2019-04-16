@@ -43,7 +43,7 @@ void Rewards::Initialize()
   }
 }
 
-void Rewards::Update(int input_xp, int & xp, int & level, std::vector<UserRewards> & outp_rewards) const
+void Rewards::UpdateRewards(int input_xp, int & xp, int & level, std::vector<UserRewards> & outp_rewards) const
 {
   while (true)
   {

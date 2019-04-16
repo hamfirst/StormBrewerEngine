@@ -60,8 +60,6 @@ public:
 
   static std::vector<int> GetTeamCounts(const GameInstanceLowFrequencyData & game_data);
   static std::vector<int> GetTeamCounts(const GameStateLoading & game_data);
-  static int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number);
-  static bool DoAllTeamsHavePlayers(const std::vector<int> & team_counts);
   Optional<int> GetOnlyTeamWithPlayers(GameLogicContainer & game);
   Optional<int> GetDefaultWinningTeam();
 

@@ -27,7 +27,8 @@ public:
   void STORM_REFL_FUNC UserLeaveGame(int game_id, DDSKey user_key);
 
   void STORM_REFL_FUNC SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id);
-  void STORM_REFL_FUNC ExpireToken(DDSKey token);
+
+  void STORM_REFL_FUNC NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success);
 
 public:
 

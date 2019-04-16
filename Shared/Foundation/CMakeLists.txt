@@ -46,8 +46,7 @@ set(GENERIC_SRC_Foundation
             Profiling/Profiling.cpp
             PropertyMeta/PropertyFieldDatabase.cpp
             Random/Random.cpp
-            Random/RandomGenerator.cpp
-            Script/ScriptClass.cpp
+  Script/ScriptClass.cpp
             Script/ScriptClassInstance.cpp
             Script/ScriptClassRef.cpp
             Script/ScriptFuncPtr.cpp
@@ -133,8 +132,7 @@ set(GENERIC_HEADER_Foundation
             PropertyMeta/PropertyFieldMetaData.h
             PropertyMeta/PropertyFieldMetaFuncs.h
             Random/Random.h
-            Random/RandomGenerator.h
-            Script/ScriptClass.h
+  Script/ScriptClass.h
             Script/ScriptClassDelegate.h
             Script/ScriptClassInstance.h
             Script/ScriptClassRef.h

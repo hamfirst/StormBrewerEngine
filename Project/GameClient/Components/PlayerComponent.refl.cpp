@@ -49,7 +49,7 @@ void PlayerComponent::ServerUpdate()
   auto info = GetServerObjectInfo();
   
   m_DeadReckonOffset = m_DeadReckonPos + m_DeadReckonOffset - info.m_CurrentPos;
-  m_DeadReckonDec = m_DeadReckonOffset / (float)kServerUpdateRate / 2.0f;
+  m_DeadReckonDec = m_DeadReckonOffset / (float)NET_SYNC_SERVER_RATE / 2.0f;
   m_DeadReckonPos = info.m_CurrentPos;
 }
 

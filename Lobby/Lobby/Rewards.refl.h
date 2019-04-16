@@ -35,7 +35,7 @@ public:
 
 public:
 
-  void Update(int input_xp, int & xp, int & level, std::vector<UserRewards> & outp_rewards) const;
+  void UpdateRewards(int input_xp, int & xp, int & level, std::vector<UserRewards> & outp_rewards) const;
 
   RewardsDatabaseObj m_Info;
 

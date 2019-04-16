@@ -3508,11 +3508,79 @@ struct StormReflTypeInfo<MapDef>::field_data<9, Self> : public StormReflTypeInfo
   void SetDefault() { self.m_Volumes = StormReflTypeInfo<MapDef>::GetDefault().m_Volumes; }
 };
 
+template <>
+struct StormReflTypeInfo<MapDefPropertiesOnly>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "MapDefPropertiesOnly"; }
+  static constexpr auto GetNameHash() { return 0xF5E466C6; }
+  static constexpr bool HasDefault() { return true; }
+  static MapDefPropertiesOnly & GetDefault() { static MapDefPropertiesOnly def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<MapDefPropertiesOnly *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapDefPropertiesOnly *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<MapDefPropertiesOnly *>(ptr);
+    if(typeid(MapDefPropertiesOnly).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const MapDefPropertiesOnly *>(ptr);
+    if(typeid(MapDefPropertiesOnly).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<MapDefPropertiesOnly>::field_data_static<0>
+{
+  using member_type = MapPropertiesInfo; // MapPropertiesInfo
+  static constexpr auto GetName() { return "m_PropertiesInfo"; }
+  static constexpr auto GetType() { return "MapPropertiesInfo"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2CFDF744; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3D3EA581; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &MapDefPropertiesOnly::m_PropertiesInfo; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<MapDefPropertiesOnly *>(obj); return &ptr->m_PropertiesInfo; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const MapDefPropertiesOnly *>(obj); return &ptr->m_PropertiesInfo; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<MapDefPropertiesOnly>::field_data<0, Self> : public StormReflTypeInfo<MapDefPropertiesOnly>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, MapPropertiesInfo> & Get() { return self.m_PropertiesInfo; }
+  std::add_const_t<std::remove_reference_t<MapPropertiesInfo>> & Get() const { return self.m_PropertiesInfo; }
+  void SetDefault() { self.m_PropertiesInfo = StormReflTypeInfo<MapDefPropertiesOnly>::GetDefault().m_PropertiesInfo; }
+};
+
 namespace StormReflFileInfo
 {
   struct MapDef
   {
-    static const int types_n = 18;
+    static const int types_n = 19;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -3622,6 +3690,12 @@ namespace StormReflFileInfo
   struct MapDef::type_info<17>
   {
     using type = ::MapDef;
+  };
+
+  template <>
+  struct MapDef::type_info<18>
+  {
+    using type = ::MapDefPropertiesOnly;
   };
 
 }

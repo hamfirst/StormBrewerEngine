@@ -9,6 +9,7 @@
 #include "GameServerConnection.refl.meta.h"
 #include "User.refl.meta.h"
 #include "UserConnection.refl.meta.h"
+#include "Game.refl.meta.h"
 #include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
 
@@ -79,6 +80,7 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
         return;
       }
 
+      m_Interface.Call(&Game::RedeemToken, msg.m_GameId, msg.m_UserId, msg.m_JoinToken, msg.m_ResponseId, m_Interface.GetLocalKey());
     }
     else if (cmd == GameServerMessageType::kRequestTeamSwitch)
     {
@@ -133,7 +135,7 @@ void GameServerConnection::SendLaunchGame(int game_id, DDSKey user_id, DDSKey en
 
 }
 
-void GameServerConnection::ExpireToken(DDSKey token)
+void GameServerConnection::NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success)
 {
 
 }

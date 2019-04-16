@@ -134,24 +134,6 @@ struct SquadInfo
   RSparseList<SquadApplication> m_Requests;
 };
 
-enum STORM_REFL_ENUM class GameType
-{
-  kCompetitive,
-  kCasual,
-  kPrivate
-};
-
-struct GameLobbySettings
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(GameLobbySettings);
-
-  REnum<GameType> m_Type;
-  RString m_Name;
-  RString m_Password;
-  RString m_JoinCode;
-  ROpaque<GameInitSettings> m_InitSettings;
-};
-
 struct GameMember
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameMember);
@@ -173,12 +155,32 @@ struct GameMember
   RString m_Title;
 };
 
+
+enum STORM_REFL_ENUM class GameState
+{
+  kWaiting,
+  kCountdown,
+  kStarted,
+};
+
+enum STORM_REFL_ENUM class GameType
+{
+  kCasual,
+  kCompetitive,
+  kPrivate,
+};
+
 struct GameInfo
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameInfo);
 
-  RBool m_Started;
+  REnum<GameState> m_State;
+  REnum<GameType> m_Type;
+
+  RInt m_Countdown;
   RKey m_GameLeader;
-  GameLobbySettings m_Settings;
+  RUInt m_JoinCode;
+  RString m_Password;
+  ROpaque<GameInitSettings> m_Settings;
   RSparseList<GameMember> m_Users;
 };

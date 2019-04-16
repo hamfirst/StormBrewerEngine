@@ -9,9 +9,10 @@
 
 struct GameToken
 {
-  DDSKey m_Token;
+  STORM_REFL;
   DDSKey m_UserKey;
 };
+
 
 struct Game
 {
@@ -19,8 +20,13 @@ struct Game
 
   Game(DDSNodeInterface node_interface);
 
-  void STORM_REFL_FUNC Init(GameLobbySettings settings);
+  void STORM_REFL_FUNC Init(GameInitSettings settings);
   void STORM_REFL_FUNC Cleanup();
+
+  void STORM_REFL_FUNC Update();
+
+  void STORM_REFL_FUNC SetJoinCode(uint32_t join_code);
+
   void STORM_REFL_FUNC AddUser(DDSResponder & responder, DDSKey user_key);
   void STORM_REFL_FUNC RemoveUser(DDSKey user_key);
 
@@ -30,19 +36,26 @@ struct Game
 #endif
 
   void STORM_REFL_FUNC StartGame();
+  void STORM_REFL_FUNC RequestStartGame(DDSKey user_key);
 
   void STORM_REFL_FUNC RandomizeTeams();
   void STORM_REFL_FUNC SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message, std::string title);
-  void STORM_REFL_FUNC UpdateSettings(GameInitSettings settings);
+  void STORM_REFL_FUNC UpdateSettings(DDSKey user_key, GameInitSettings settings);
   void STORM_REFL_FUNC UpdateGameList();
 
+  void STORM_REFL_FUNC RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSKey server_key);
   void STORM_REFL_FUNC ExpireToken(DDSKey token);
 
   void STORM_REFL_FUNC HandleMemberUpdate(DDSKey user_key, std::string data);
 
+private:
+
+  std::vector<int> GetTeamCounts();
+
 public:
   DDSKey m_AssignedServer = 0;
   GameInfo m_GameInfo;
+  RInt m_GameCreateTime;
 
   std::map<DDSKey, DDSKey> m_MemberSubscriptionIds;
   std::map<DDSKey, GameToken> m_Tokens;

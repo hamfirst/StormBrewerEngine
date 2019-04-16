@@ -146,4 +146,5 @@ private:
   uint64_t m_ServerSecret;
 
   time_t m_LastLoadBalancerSync;
+  time_t m_LastUpdate;
 };

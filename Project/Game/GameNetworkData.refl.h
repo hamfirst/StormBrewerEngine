@@ -28,6 +28,10 @@ static const int kTurnMaxTime = 60 * 50;
 static const int kTurnUpdateTime = 60 * 2;
 #endif
 
+#ifdef NET_USE_SCORE
+static const int kMaxScore = 5;
+#endif
+
 #ifdef NET_USE_COUNTDOWN
 static const int kMaxCountdown = 180;
 #endif

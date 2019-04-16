@@ -49,6 +49,8 @@ public:
   GameStage(const Map & map);
   ~GameStage();
 
+  const MapPropertiesDef & GetMapProperties() const;
+
   const StaticCollisionDatabase & GetCollisionDatabase() const;
   std::vector<Vector2> FindPath(const Vector2 & start, const Vector2 & end, int max_iterations) const;
 

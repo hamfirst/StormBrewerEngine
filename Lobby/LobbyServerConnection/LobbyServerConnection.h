@@ -13,9 +13,11 @@
 
 using LobbyValidationCallback = Delegate<void, const Optional<GameServerAuthenticateUserSuccess> &>;
 
+using LobbyCreateGameCallback = Delegate<void, const GameServerCreateGame &>;
+using LobbyKillGameCallback = Delegate<void, uint64_t>;
+
 using LobbyTeamSwitchCallback = Delegate<void, uint64_t, uint64_t, int>;
 using LobbyDisconnectCallback = Delegate<void, uint64_t, uint64_t>;
-using LobbyKillGameCallback = Delegate<void, uint64_t>;
 using LobbyResetGameCallback = Delegate<void, uint64_t>;
 using LobbyChangeCreatorCallback = Delegate<void, uint64_t, const std::string &>;
 
@@ -41,10 +43,11 @@ public:
 
   bool IsConnected();
 
+  void SetCreateGameCallback(LobbyCreateGameCallback callback);
+  void SetKillGameCallback(LobbyKillGameCallback callback);
   void SetTeamSwitchCallback(LobbyTeamSwitchCallback callback);
   void SetDisconnectCallback(LobbyDisconnectCallback callback);
   void SetResetGameCallback(LobbyResetGameCallback callback);
-  void SetKillGameCallback(LobbyKillGameCallback callback);
   void SetChangeCreatorCallback(LobbyChangeCreatorCallback callback);
 
   int RequestValidation(const JoinServerMessage & join_info, LobbyValidationCallback && callback);
@@ -80,9 +83,11 @@ private:
   int m_NextValidationId;
   std::unordered_map<int, LobbyValidationCallback> m_Validations;
 
+  LobbyCreateGameCallback m_CreateGameCallback;
+  LobbyKillGameCallback m_KillGameCallback;
+
   LobbyTeamSwitchCallback m_TeamSwitchCallback;
   LobbyDisconnectCallback m_DisconnectCallback;
-  LobbyKillGameCallback m_KillGameCallback;
   LobbyResetGameCallback m_ResetGameCallback;
   LobbyChangeCreatorCallback m_ChangeCreatorCallback;
 };

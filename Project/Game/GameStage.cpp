@@ -128,6 +128,11 @@ GameStage::~GameStage()
 
 }
 
+const MapPropertiesDef & GameStage::GetMapProperties() const
+{
+  return *m_Map->m_PropertiesInfo.m_MapProperties.GetValue();
+}
+
 const StaticCollisionDatabase & GameStage::GetCollisionDatabase() const
 {
   return m_CollisionDatabase;

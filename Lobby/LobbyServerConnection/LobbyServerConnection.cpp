@@ -319,6 +319,16 @@ bool LobbyServerConnection::IsConnected()
   return m_WebSocket.IsConnected();
 }
 
+void LobbyServerConnection::SetCreateGameCallback(LobbyCreateGameCallback callback)
+{
+  m_CreateGameCallback = callback;
+}
+
+void LobbyServerConnection::SetKillGameCallback(LobbyKillGameCallback callback)
+{
+  m_KillGameCallback = callback;
+}
+
 void LobbyServerConnection::SetTeamSwitchCallback(LobbyTeamSwitchCallback callback)
 {
   m_TeamSwitchCallback = callback;
@@ -332,11 +342,6 @@ void LobbyServerConnection::SetDisconnectCallback(LobbyDisconnectCallback callba
 void LobbyServerConnection::SetResetGameCallback(LobbyResetGameCallback callback)
 {
   m_ResetGameCallback = callback;
-}
-
-void LobbyServerConnection::SetKillGameCallback(LobbyKillGameCallback callback)
-{
-  m_KillGameCallback = callback;
 }
 
 void LobbyServerConnection::SetChangeCreatorCallback(LobbyChangeCreatorCallback callback)

@@ -21,6 +21,7 @@ DDSCoordinatorState::DDSCoordinatorState(const StormSockets::StormSocketInitSett
   m_Backend(backend_settings),
   m_NetworkService(m_Backend, *this, node_server_settings),
   m_LastLoadBalancerSync(time(nullptr)),
+  m_LastUpdate(time(nullptr)),
   m_NextNodeId(0),
   m_ClientSecret(DDSGetRandomNumber64()),
   m_ServerSecret(DDSGetRandomNumber64()),
@@ -361,6 +362,15 @@ void DDSCoordinatorState::ProcessEvents()
     }
 
     m_LastLoadBalancerSync = cur_time;
+  }
+
+  if(cur_time != m_LastUpdate)
+  {
+    for(auto & elem : m_SharedObjects)
+    {
+      elem->Update();
+    }
+    cur_time = m_LastUpdate;
   }
 }
 

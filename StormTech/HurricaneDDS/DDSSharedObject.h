@@ -92,6 +92,16 @@ public:
     EndObjectModification();
   }
 
+  void Update() override
+  {
+    if constexpr(DDS_HAS_FUNC(DataType, Update))
+    {
+      BeginObjectModification();
+      DDS_CALL_FUNC(Update, *m_DataObject.get());
+      EndObjectModification();
+    }
+  }
+
   std::string Serialize() override
   {
     return StormReflEncodeJson(*m_DataObject.get());

@@ -1753,7 +1753,7 @@ void User::ApplyXPGain(bool quiet)
 
   auto responder = CreateEmptyResponder(m_Interface);
 
-  rewards->Update(gain.m_XP, xp, level, reward_list);
+  rewards->UpdateRewards(gain.m_XP, xp, level, reward_list);
   for (auto & reward : reward_list)
   {
     for (auto & icon : reward.m_Icons)

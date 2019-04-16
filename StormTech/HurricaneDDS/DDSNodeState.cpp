@@ -44,6 +44,7 @@ DDSNodeState::DDSNodeState(
 #endif
   m_LocalPort = node_server_settings.ListenSettings.Port;
   m_LastCPUUsageSync = time(nullptr);
+  m_LastUpdate = time(nullptr);
   
   m_CoordinatorConnection.RequestConnect();
   DDSShutdownRegisterNode(this);
@@ -102,6 +103,7 @@ void DDSNodeState::ProcessEvents()
   EndQueueingMessages();
 
   UpdateCPUUsage();
+  UpdateObjects();
   ProcessPendingExportedObjects();
 }
 
@@ -1109,6 +1111,23 @@ void DDSNodeState::UpdateCPUUsage()
     {
       m_CoordinatorConnection.SendCPUUsage();
       m_LastCPUUsageSync = cur_time;
+    }
+  }
+}
+
+void DDSNodeState::UpdateObjects()
+{
+  if(m_IsReady && m_LocalKeyRange)
+  {
+    auto cur_time = time(nullptr);
+    if(cur_time != m_LastUpdate)
+    {
+      for (auto & elem : m_DataObjectList)
+      {
+        elem->Update(m_LocalKeyRange.value());
+      }
+
+      m_LastUpdate = cur_time;
     }
   }
 }

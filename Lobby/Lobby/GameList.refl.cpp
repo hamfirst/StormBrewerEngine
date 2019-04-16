@@ -1,8 +1,11 @@
 
 #include "GameList.refl.meta.h"
+#include "Game.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
 
 #include "StormRefl/StormReflJsonStd.h"
+
+#include "HurricaneDDS/DDSRandom.h"
 
 #ifdef ENABLE_GAME_LIST
 
@@ -14,19 +17,18 @@ GameList::GameList(DDSObjectInterface & iface) :
 
 }
 
-void GameList::AddGame(DDSKey game_key, std::string name, int cur_players, int max_players,
-                       std::string map, std::string join_code, bool password, bool started)
+void GameList::AddGame(DDSKey game_key, int cur_players, int max_players,
+                       std::string map, uint32_t join_code, bool password, bool started)
 {
   GameListGame game_data;
   game_data.m_MaxPlayers = max_players;
   game_data.m_CurPlayers = cur_players;
   game_data.m_PasswordProtected = password;
   game_data.m_Started = started;
-  game_data.m_Name = name;
   game_data.m_Map = map;
   game_data.m_JoinCode = join_code;
   m_GameList.InsertAt(game_key, std::move(game_data));
-  m_JoinCodeLookup.insert(std::make_pair(crc64(join_code), game_key));
+  m_JoinCodeLookup.insert(std::make_pair(join_code, game_key));
 }
 
 void GameList::UpdateGame(DDSKey game_key, int cur_players, int max_players, std::string map, bool started)
@@ -43,12 +45,51 @@ void GameList::UpdateGame(DDSKey game_key, int cur_players, int max_players, std
   }
 }
 
+void GameList::AssignJoinCode(DDSKey game_key)
+{
+  auto cur_data = m_GameList.TryGet(game_key);
+  if(cur_data)
+  {
+    while(true)
+    {
+      uint32_t room_id = 0;
+      for (int index = 0; index < 4; ++index)
+      {
+        room_id <<= 8;
+
+        auto rand = DDSGetRandomNumber() % 36;
+        if (rand < 26)
+        {
+          room_id |= (rand + 'A');
+        }
+        else
+        {
+          room_id |= (rand - 26 + '0');
+        }
+      }
+
+      if(m_JoinCodeLookup.find(room_id) == m_JoinCodeLookup.end())
+      {
+        m_JoinCodeLookup.emplace(std::make_pair(room_id, game_key));
+        cur_data->m_JoinCode = room_id;
+
+        m_Interface.Call(&Game::SetJoinCode, game_key, room_id);
+        return;
+      }
+    }
+  }
+}
+
 void GameList::RemoveGame(DDSKey game_key)
 {
   auto cur_data = m_GameList.TryGet(game_key);
   if(cur_data)
   {
-    m_JoinCodeLookup.erase(crc64(cur_data->m_JoinCode));
+    if(cur_data->m_JoinCode != 0U)
+    {
+      m_JoinCodeLookup.erase(cur_data->m_JoinCode);
+    }
+
     m_GameList.RemoveAt(game_key);
   }
 }

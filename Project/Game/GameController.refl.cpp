@@ -2,6 +2,7 @@
 #include "Foundation/Pathfinding/Pathfinding.h"
 
 #include "GameShared/Systems/GameLogicSystems.h"
+#include "LobbyShared/LobbyGameFuncs.h"
 
 #include "Game/GameController.refl.meta.h"
 #include "GameShared/GameLogicContainer.h"
@@ -384,7 +385,7 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
   while (true)
   {
     auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
-    if (DoAllTeamsHavePlayers(team_counts))
+    if (DoAllTeamsHavePlayers(team_counts, game.GetStage().GetMapProperties(), game.GetGameInitSettings()))
     {
       break;
     }
@@ -458,41 +459,6 @@ std::vector<int> GameController::GetTeamCounts(const GameStateLoading & game_dat
   }
 
   return teams;
-}
-
-int GameController::GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number)
-{
-  std::vector<int> best_teams;
-  int best_team_count = 100000;
-
-  for (std::size_t index = 0, end = team_counts.size(); index < end; ++index)
-  {
-    if (team_counts[index] < best_team_count)
-    {
-      best_teams.clear();
-      best_teams.push_back((int)index);
-      best_team_count = team_counts[index];
-    }
-    else if (team_counts[index] == best_team_count)
-    {
-      best_teams.push_back((int)index);
-    }
-  }
-
-  return best_teams[random_number % best_teams.size()];
-}
-
-bool GameController::DoAllTeamsHavePlayers(const std::vector<int> & team_counts)
-{
-  for (int team = 0; team < kMaxTeams; ++team)
-  {
-    if (team_counts[team] == 0)
-    {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 Optional<int> GameController::GetOnlyTeamWithPlayers(GameLogicContainer & game)

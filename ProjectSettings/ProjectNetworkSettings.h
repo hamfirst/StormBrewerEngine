@@ -43,3 +43,7 @@
 
 #define NET_SYNC_OLD_STATE
 #define NET_SYNC_HISTORY_FRAMES 2
+#define NET_SYNC_SERVER_RATE 3
+
+static const int kMaxPlayers = 16;
+static const int kMaxTeams = 2;

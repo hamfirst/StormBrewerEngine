@@ -1,6 +1,8 @@
 
 #include "Lobby/LobbyLevelList.refl.meta.h"
 
+#include "Runtime/Map/MapDef.refl.meta.h"
+
 #include "GameShared/GameLevelListAsset.refl.meta.h"
 
 #include "StormRefl/StormReflJsonStd.h"
@@ -47,9 +49,6 @@ LobbyLevelList::LobbyLevelList()
 
   for(auto & level : level_list.m_Levels)
   {
-    LobbyLevelListElement list_elem;
-    list_elem.m_Name = level.m_Name;
-
     auto level_data_path = asset_dir + '/' + level.m_Path;
     auto level_data = ReadFileAsString(level_data_path);
 
@@ -58,24 +57,11 @@ LobbyLevelList::LobbyLevelList()
     const char * result = nullptr;
     StormReflParseJson(header, level_data.c_str(), result);
 
-    LobbyMapInfo map_info;
+    MapDefPropertiesOnly map_info;
     StormReflParseJson(map_info, result);
 
-    list_elem.m_TeamCount = map_info.m_PropertiesInfo.m_MapProperties.m_TeamCount;
-
-#ifdef NET_USE_PLAYER_LIMIT
-    list_elem.m_PlayerCount = map_info.m_PropertiesInfo.m_MapProperties.m_PlayerCount;
-#endif
-
-#ifdef NET_USE_TIME_LIMIT
-    list_elem.m_TimeLimit = map_info.m_PropertiesInfo.m_MapProperties.m_TimeLimit;
-#endif
-
-#ifdef NET_USE_SCORE_LIMIT
-    list_elem.m_ScoreLimit = map_info.m_PropertiesInfo.m_MapProperties.m_ScoreLimit;
-#endif
-
-    m_Levels.emplace_back(std::move(list_elem));
+    m_Levels.emplace_back(*map_info.m_PropertiesInfo.m_MapProperties.GetValue());
+    m_LevelNames.emplace_back(level.m_Name);
   }
 }
 
@@ -84,7 +70,12 @@ int LobbyLevelList::GetNumLevels() const
   return (int)m_Levels.size();
 }
 
-const LobbyLevelListElement & LobbyLevelList::GetLevelInfo(int level_index) const
+const std::string & LobbyLevelList::GetLevelName(int level_index) const
+{
+  return m_LevelNames[level_index];
+}
+
+const MapPropertiesDef & LobbyLevelList::GetLevelInfo(int level_index) const
 {
   return m_Levels[level_index];
 }

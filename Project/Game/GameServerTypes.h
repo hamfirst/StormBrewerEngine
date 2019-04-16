@@ -4,12 +4,9 @@
 #include "StormNet/NetReflectionFixedPointLUT.h"
 #include "StormNet/NetReflectionNumber.h"
 
-#include "Foundation/Math/Intersection.h"
+#include "ProjectSettings/ProjectNetworkSettings.h"
 
-static const int kMaxPlayers = 16;
-static const int kMaxTeams = 2;
-static const int kServerUpdateRate = 3;
-static const int kMaxScore = 5;
+#include "Foundation/Math/Intersection.h"
 
 extern template struct NetFixedPointVals<int64_t, 32, 16>;
 extern template class NetFixedPointLUT<int64_t, 32, 16>;

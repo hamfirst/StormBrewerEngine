@@ -226,6 +226,7 @@ private:
   void EndQueueingMessages();
 
   void UpdateCPUUsage();
+  void UpdateObjects();
   void ProcessPendingExportedObjects();
 
   void HandleAllClear();
@@ -308,5 +309,6 @@ private:
   uint64_t m_ServerSecret = 0;
 
   time_t m_LastCPUUsageSync;
+  time_t m_LastUpdate;
 };
 

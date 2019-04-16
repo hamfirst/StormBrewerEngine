@@ -302,4 +302,9 @@ struct RUNTIME_EXPORT MapDef
   RMergeList<MapVolume> m_Volumes;
 };
 
+struct RUNTIME_EXPORT MapDefPropertiesOnly
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(MapDefPropertiesOnly);
 
+  MapPropertiesInfo m_PropertiesInfo;
+};
