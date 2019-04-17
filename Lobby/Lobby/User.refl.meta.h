@@ -2702,15 +2702,15 @@ struct StormReflFuncInfo<User>::func_data_static<14>::param_info<2>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<15>
 {
-  using func_ptr_type = void (User::*)(DDSKey, GameInitSettings, std::string, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, GameInitSettings, std::string);
   using return_type = void;
-  static constexpr int params_n = 4;
-  static constexpr auto GetName() { return "CreateGame"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "CreatePrivateGame"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x9EA4204C; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x6B2257F6; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 15; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::CreateGame; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::CreatePrivateGame; }
   template <int i>
   struct param_info { };
 };
@@ -2737,16 +2737,6 @@ struct StormReflFuncInfo<User>::func_data_static<15>::param_info<1>
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<15>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<15>::param_info<3>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "password"; }

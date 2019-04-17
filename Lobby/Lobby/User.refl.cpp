@@ -538,7 +538,7 @@ void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data,
 #endif
 
 #ifdef NET_USE_SCORE_LIMIT
-  if (creation_data.m_ScoreLimit < 0 || creation_data.m_ScoreLimit > 99)
+  if (creation_data.m_ScoreLimit < 0 || (creation_data.m_ScoreLimit > level_info.m_ScoreLimit && level_info.m_ScoreLimit != 0))
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid score limit");
     return;
@@ -546,7 +546,7 @@ void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data,
 #endif
 
 #ifdef NET_USE_TIME_LIMIT
-  if (creation_data.m_TimeLimit < 0 || creation_data.m_TimeLimit > 120)
+  if (creation_data.m_TimeLimit < 0 || (creation_data.m_TimeLimit > level_info.m_TimeLimit && level_info.m_TimeLimit != 0))
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid time limit");
     return;
