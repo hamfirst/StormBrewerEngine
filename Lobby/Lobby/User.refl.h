@@ -173,9 +173,7 @@ struct User
 #endif
 
   // Game Functions
-#ifdef ENABLE_GAME_LIST
-  void STORM_REFL_FUNC CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string name, std::string password);
-#endif
+  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password);
 
   void STORM_REFL_FUNC JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer);
   void STORM_REFL_FUNC SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info);

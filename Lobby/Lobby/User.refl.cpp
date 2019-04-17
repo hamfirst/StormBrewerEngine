@@ -8,6 +8,8 @@
 #include <hash/Hash64.h>
 #include <sb/vector.h>
 
+#include "LobbyShared/LobbyGameFuncs.h"
+
 #include "User.refl.meta.h"
 #include "UserConnection.refl.meta.h"
 #include "UserConnectionMessages.refl.meta.h"
@@ -18,6 +20,7 @@
 #include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
 #include "Rewards.refl.meta.h"
+#include "LobbyLevelList.refl.h"
 
 #include "CommandParse.h"
 #include "LobbyConfig.h"
@@ -502,7 +505,7 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
-void User::CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string name, std::string password)
+void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
@@ -510,20 +513,23 @@ void User::CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::s
     return;
   }
 
-  if (name.length() >= 30)
+  if (creation_data.m_StageIndex >= g_LobbyLevelList.GetNumLevels())
   {
-    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You game name is too long. It must be less than 30 characters");
+    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Error creating game");
     return;
   }
 
-  if (password.length() >= 30)
+  if (password.length() >= 20)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You password is too long. It must be less than 30 characters");
     return;
   }
 
+  auto & level_info = g_LobbyLevelList.GetLevelInfo(creation_data.m_StageIndex);
+
 #ifdef NET_USE_PLAYER_LIMIT
-  if (creation_data.m_PlayerCount < 2)
+  auto max_players = GetMaxPlayers(level_info, creation_data);
+  if (creation_data.m_PlayerCount < 2 || creation_data.m_PlayerCount > max_players)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid player limit");
     return;
@@ -542,12 +548,6 @@ void User::CreateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::s
   if (creation_data.m_TimeLimit < 0 || creation_data.m_TimeLimit > 120)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "Invalid time limit");
-    return;
-  }
-
-  if (creation_data.m_TimeLimit == 0 && creation_data.m_ScoreLimit == 0)
-  {
-    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You must have a score limit or a time limit");
     return;
   }
 #endif
