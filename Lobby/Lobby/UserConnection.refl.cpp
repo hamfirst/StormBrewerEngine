@@ -300,7 +300,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      m_Interface.Call(&User::DestroyGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.game_id);
+      m_Interface.Call(&User::DestroyGame, m_UserId, m_Interface.GetLocalKey(), req.game_id);
     }
     else if (cmd == "game_chat")
     {

@@ -9,24 +9,6 @@
 
 #include "LobbyConfig.h"
 
-struct GamePlayerData
-{
-  STORM_REFL;
-  DDSKey m_UserId;
-  DDSKey m_EndpointId;
-  std::string m_Name;
-
-  int m_Admin;
-  int m_Icon;
-  int m_Title;
-  int m_Celebration;
-  bool m_NewPlayer;
-
-#ifdef ENABLE_SQUADS
-  std::string m_Squad;
-#endif
-};
-
 struct GameStatsData
 {
   STORM_REFL;

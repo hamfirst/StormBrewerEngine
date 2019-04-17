@@ -8,8 +8,8 @@
 #include "Foundation/Json/JsonDictionary.h"
 
 
-#include <StormRefl/StormReflMetaFuncs.h>
-#include <StormData/StormDataChangeNotifier.h>
+#include "StormRefl/StormReflMetaFuncs.h"
+#include "StormData/StormDataChangeNotifier.h"
 
 enum class JsonParseResult
 {

@@ -37,6 +37,11 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
 
   m_Stage.InitAllObjects(logic_container);
 
+
+  auto & stage = logic_container.GetStage();
+  auto & map_props = stage.GetMapProperties();
+  auto & game_settings = logic_container.GetGameInitSettings();
+
   for (auto elem : loading_data.m_Players)
   {
     auto & player_info = m_PlayerInfo.EmplaceAt(elem.first);
@@ -87,8 +92,9 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   {
     auto player_id = m_PlayerIdAllocator.Allocate();
 
+
     auto team_counts = m_Controller.GetTeamCounts(low_freq_data);
-    auto team = GetRandomTeam(team_counts, GetRandomNumber());
+    auto team = GetRandomTeam(team_counts, GetRandomNumber(), map_props, game_settings);
     m_Controller.ConstructBot(player_id, logic_container, "AI", team);
   }
 #endif

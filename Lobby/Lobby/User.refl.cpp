@@ -17,6 +17,7 @@
 #include "BanList.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
+#include "Game.refl.meta.h"
 #include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
 #include "Rewards.refl.meta.h"
@@ -462,8 +463,8 @@ void User::HandleChannelJoinResponse(std::pair<DDSKey, DDSKey> join_info, Channe
     return;
   }
 
-  //DDSKey sub_key = 
-  //  m_Interface.CreateSubscription(DDSSubscriptionTarget<Channel>{}, channel_key, ".m_ChannelInfo", &User::HandleChannelUpdate, true, channel_key);
+//  DDSKey sub_key =
+//    m_Interface.CreateSubscription(DDSSubscriptionTarget<Channel>{}, channel_key, ".m_ChannelInfo", &User::HandleChannelUpdate, true, channel_key);
 
   auto sub_key = m_Interface.CreateSharedLocalCopy(
     DDSSubscriptionTarget<Channel>{}, DDSSubscriptionTarget<ChannelInfo>{}, channel_key, ".m_ChannelInfo", &User::HandleChannelUpdate, channel_key);
@@ -551,34 +552,12 @@ void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data,
     return;
   }
 #endif
-
-  GamePlayerData creator_data;
-  creator_data.m_UserId = m_Interface.GetLocalKey();
-  creator_data.m_EndpointId = endpoint_id;
-  creator_data.m_Icon = m_Data.m_Icon;
-  creator_data.m_Title = m_Data.m_Title;
-  creator_data.m_Celebration = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
-  creator_data.m_NewPlayer = m_Data.m_Stats.m_TimePlayed == 0;
-  creator_data.m_Admin = m_LocalInfo.m_AdminLevel;
-  creator_data.m_Name = m_UserInfo.m_Name;
-
-#ifdef ENABLE_SQUADS
-  creator_data.m_Squad = m_UserInfo.m_SquadTag;
-#endif
   
-//  m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
+  //m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
 }
 
 void User::JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer)
 {
-  GamePlayerData creator_data;
-  creator_data.m_UserId = m_Interface.GetLocalKey();
-  creator_data.m_EndpointId = endpoint_id;
-  creator_data.m_Celebration = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
-  creator_data.m_NewPlayer = m_Data.m_Stats.m_TimePlayed == 0;
-  creator_data.m_Admin = m_LocalInfo.m_AdminLevel;
-  creator_data.m_Name = m_UserInfo.m_Name;
-
 #ifdef ENABLE_SQUADS
   std::string squad = m_UserInfo.m_SquadTag;
 #endif
@@ -586,48 +565,46 @@ void User::JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bo
   int celebration_id = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
   bool new_player = m_Data.m_Stats.m_TimePlayed == 0;
 
-//  m_Interface.Call(&GameServerConnection::JoinUserToGame, server_id, game_id, creator_data, password, observer, m_UserInfo.m_AdminLevel > 0);
+  m_Interface.CallWithResponder(&Game::AddUser, game_id, &User::HandleGameJoinResponse, this,
+          m_Interface.GetLocalKey(), endpoint_id, m_UserInfo.m_Name, password, observer);
 }
 
-void User::SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info)
+void User::SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id)
 {
   LeaveGame();
 
   if (m_Endpoints.find(endpoint_id) == m_Endpoints.end())
   {
-    m_Interface.Call(&GameServerConnection::UserLeaveGame, server_id, game_id, m_Interface.GetLocalKey());
+    m_Interface.Call(&Game::RemoveUser, game_id, m_Interface.GetLocalKey());
     return;
   }
 
   m_InGame = true;
   m_SentInitialGameData = false;
 
-  m_GameServerId = server_id;
-  m_GameEndpoint = endpoint_id;
   m_GameId = game_id;
+  m_GameEndpoint = endpoint_id;
   m_GameRandomId = game_random_id;
 
   UserGameInfo user_game_info;
   user_game_info.m_GameId = game_id;
-  user_game_info.m_GameServerId = server_id;
   m_UserInfo.m_Game = user_game_info;
 
-  std::string data_path = std::string(".m_GameList[") + std::to_string(game_id) + "]";
   m_GameSubscriptionId = m_Interface.CreateSubscription(
-    DDSSubscriptionTarget<GameServerConnection>{}, server_id, data_path.c_str(), &User::HandleGameUpdate, true, std::make_tuple(game_id, game_random_id));
+    DDSSubscriptionTarget<Game>{}, game_id, ".m_GameInfo", &User::HandleGameUpdate, true, std::make_tuple(game_id, game_random_id));
 }
 
-void User::DestroyGame(DDSKey server_id, DDSKey endpoint_id, int game_id)
+void User::DestroyGame(DDSKey endpoint_id, DDSKey game_id)
 {
   if (m_LocalInfo.m_AdminLevel == 0)
   {
     return;
   }
 
-  //m_Interface.Call(&GameServerConnection::KillGame, server_id, game_id);
+  m_Interface.Call(&Game::Destroy, game_id);
 }
 
-void User::HandleGameJoinResponse(DDSKey server_id, DDSKey endpoint_id, int game_id, DDSKey game_random_id, std::string game_info, bool success)
+void User::HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success)
 {
   if (success == false)
   {
@@ -635,7 +612,7 @@ void User::HandleGameJoinResponse(DDSKey server_id, DDSKey endpoint_id, int game
   }
   else
   {
-    SetInGame(server_id, game_id, game_random_id, endpoint_id, game_info);
+    SetInGame(game_id, game_random_id, endpoint_id);
   }
 }
 
@@ -646,7 +623,7 @@ void User::SendGameChat(DDSKey endpoint_id, std::string msg)
     return;
   }
 
-  //m_Interface.Call(&GameServerConnection::SendChatToGame, m_GameServerId, m_GameId, m_Interface.GetLocalKey(), msg);
+  m_Interface.Call(&Game::SendChat, m_GameId, m_Interface.GetLocalKey(), m_GameEndpoint, msg);
 }
 
 void User::SwitchTeams(DDSKey endpoint_id)
@@ -681,11 +658,13 @@ void User::LeaveGame()
     return;
   }
 
-  m_Interface.Call(&GameServerConnection::UserLeaveGame, m_GameServerId, m_GameId, m_Interface.GetLocalKey());
-  m_Interface.DestroySubscription<GameServerConnection>(m_GameServerId, m_GameSubscriptionId);
+  m_Interface.Call(&Game::RemoveUser, m_GameId, m_Interface.GetLocalKey());
+  m_Interface.DestroySubscription<Game>(m_GameId, m_GameSubscriptionId);
+
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(UserMessageBase{"leave_game"}));
 
   m_InGame = false;
-  m_GameId = -1;
+  m_GameId = 0;
   m_UserInfo.m_Game = UserGameInfo{};
 
 #ifdef ENABLE_REWARDS
@@ -694,17 +673,17 @@ void User::LeaveGame()
 #endif
 }
 
-void User::NotifyLeftGame(DDSKey game_random_id)
+void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
 {
-  if (m_InGame == false || m_GameRandomId != game_random_id)
+  if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
     return;
   }
 
-  m_Interface.DestroySubscription<GameServerConnection>(m_GameServerId, m_GameSubscriptionId);
+  m_Interface.DestroySubscription<GameServerConnection>(m_GameId, m_GameSubscriptionId);
 
   m_InGame = false;
-  m_GameId = -1;
+  m_GameId = 0;
 
   m_UserInfo.m_Game = UserGameInfo{};
 
@@ -714,7 +693,22 @@ void User::NotifyLeftGame(DDSKey game_random_id)
 #endif
 }
 
-void User::HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data)
+void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg)
+{
+  if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
+  {
+    return;
+  }
+
+  UserChatMessageGame chat;
+  chat.c = "game_chat";
+  chat.user = name;
+  chat.title = title;
+  chat.msg = msg;
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(chat));
+}
+
+void User::HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data)
 {
   if (m_InGame == false)
   {

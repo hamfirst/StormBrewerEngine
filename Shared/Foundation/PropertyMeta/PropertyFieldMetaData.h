@@ -1,9 +1,9 @@
 #pragma once
 
-#include <StormData/StormDataTypes.h>
-
 #include <vector>
 #include <unordered_map>
+
+#include "StormData/StormDataTypes.h"
 
 struct PropertyField;
 

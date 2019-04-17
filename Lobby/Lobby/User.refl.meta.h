@@ -1549,7 +1549,7 @@ template <>
 struct StormReflTypeInfo<User>
 {
   using MyBase = void;
-  static constexpr int fields_n = 27;
+  static constexpr int fields_n = 26;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -2095,43 +2095,19 @@ template <>
 struct StormReflTypeInfo<User>::field_data_static<21>
 {
   using member_type = DDSKey; // unsigned long
-  static constexpr auto GetName() { return "m_GameServerId"; }
-  static constexpr auto GetType() { return "unsigned long"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x219CFC9D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-  static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 21; }
-  static constexpr auto GetMemberPtr() { return &User::m_GameServerId; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_GameServerId; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_GameServerId; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<User>::field_data<21, Self> : public StormReflTypeInfo<User>::field_data_static<21>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, DDSKey> & Get() { return self.m_GameServerId; }
-  std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.m_GameServerId; }
-};
-
-template <>
-struct StormReflTypeInfo<User>::field_data_static<22>
-{
-  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_GameRandomId"; }
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0F8ADA3B; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 22; }
+  static constexpr auto GetFieldIndex() { return 21; }
   static constexpr auto GetMemberPtr() { return &User::m_GameRandomId; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_GameRandomId; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_GameRandomId; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<User>::field_data<22, Self> : public StormReflTypeInfo<User>::field_data_static<22>
+struct StormReflTypeInfo<User>::field_data<21, Self> : public StormReflTypeInfo<User>::field_data_static<21>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -2140,7 +2116,7 @@ struct StormReflTypeInfo<User>::field_data<22, Self> : public StormReflTypeInfo<
 };
 
 template <>
-struct StormReflTypeInfo<User>::field_data_static<23>
+struct StormReflTypeInfo<User>::field_data_static<22>
 {
   using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_GameEndpoint"; }
@@ -2148,14 +2124,14 @@ struct StormReflTypeInfo<User>::field_data_static<23>
   static constexpr unsigned GetFieldNameHash() { return 0x7B3C8A19; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 23; }
+  static constexpr auto GetFieldIndex() { return 22; }
   static constexpr auto GetMemberPtr() { return &User::m_GameEndpoint; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_GameEndpoint; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_GameEndpoint; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<User>::field_data<23, Self> : public StormReflTypeInfo<User>::field_data_static<23>
+struct StormReflTypeInfo<User>::field_data<22, Self> : public StormReflTypeInfo<User>::field_data_static<22>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -2164,7 +2140,7 @@ struct StormReflTypeInfo<User>::field_data<23, Self> : public StormReflTypeInfo<
 };
 
 template <>
-struct StormReflTypeInfo<User>::field_data_static<24>
+struct StormReflTypeInfo<User>::field_data_static<23>
 {
   using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_GameSubscriptionId"; }
@@ -2172,14 +2148,14 @@ struct StormReflTypeInfo<User>::field_data_static<24>
   static constexpr unsigned GetFieldNameHash() { return 0xB3AF2C98; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 24; }
+  static constexpr auto GetFieldIndex() { return 23; }
   static constexpr auto GetMemberPtr() { return &User::m_GameSubscriptionId; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_GameSubscriptionId; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_GameSubscriptionId; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<User>::field_data<24, Self> : public StormReflTypeInfo<User>::field_data_static<24>
+struct StormReflTypeInfo<User>::field_data<23, Self> : public StormReflTypeInfo<User>::field_data_static<23>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -2188,7 +2164,7 @@ struct StormReflTypeInfo<User>::field_data<24, Self> : public StormReflTypeInfo<
 };
 
 template <>
-struct StormReflTypeInfo<User>::field_data_static<25>
+struct StormReflTypeInfo<User>::field_data_static<24>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_CountryCode"; }
@@ -2196,14 +2172,14 @@ struct StormReflTypeInfo<User>::field_data_static<25>
   static constexpr unsigned GetFieldNameHash() { return 0x443BB729; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 25; }
+  static constexpr auto GetFieldIndex() { return 24; }
   static constexpr auto GetMemberPtr() { return &User::m_CountryCode; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_CountryCode; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_CountryCode; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<User>::field_data<25, Self> : public StormReflTypeInfo<User>::field_data_static<25>
+struct StormReflTypeInfo<User>::field_data<24, Self> : public StormReflTypeInfo<User>::field_data_static<24>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -2212,7 +2188,7 @@ struct StormReflTypeInfo<User>::field_data<25, Self> : public StormReflTypeInfo<
 };
 
 template <>
-struct StormReflTypeInfo<User>::field_data_static<26>
+struct StormReflTypeInfo<User>::field_data_static<25>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_CurrencyCode"; }
@@ -2220,14 +2196,14 @@ struct StormReflTypeInfo<User>::field_data_static<26>
   static constexpr unsigned GetFieldNameHash() { return 0xEF446721; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 26; }
+  static constexpr auto GetFieldIndex() { return 25; }
   static constexpr auto GetMemberPtr() { return &User::m_CurrencyCode; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<User *>(obj); return &ptr->m_CurrencyCode; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const User *>(obj); return &ptr->m_CurrencyCode; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<User>::field_data<26, Self> : public StormReflTypeInfo<User>::field_data_static<26>
+struct StormReflTypeInfo<User>::field_data<25, Self> : public StormReflTypeInfo<User>::field_data_static<25>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -2239,7 +2215,7 @@ template <>
 struct StormReflFuncInfo<User>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 102;
+  static constexpr int funcs_n = 103;
   template <int N> struct func_data_static {};
 };
 
@@ -2838,9 +2814,9 @@ struct StormReflFuncInfo<User>::func_data_static<16>::param_info<3>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<17>
 {
-  using func_ptr_type = void (User::*)(DDSKey, int, DDSKey, DDSKey, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 5;
+  static constexpr int params_n = 3;
   static constexpr auto GetName() { return "SetInGame"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x81F2E0DC; }
@@ -2855,24 +2831,14 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<17>::param_info<0>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "server_id"; }
+  static constexpr auto GetName() { return "game_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x1844E6B7; }
+  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<17>::param_info<1>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "game_id"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<17>::param_info<2>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_random_id"; }
@@ -2882,7 +2848,7 @@ struct StormReflFuncInfo<User>::func_data_static<17>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<17>::param_info<3>
+struct StormReflFuncInfo<User>::func_data_static<17>::param_info<2>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -2892,21 +2858,11 @@ struct StormReflFuncInfo<User>::func_data_static<17>::param_info<3>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<17>::param_info<4>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "game_info"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x209C5D7B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<18>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, int);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 3;
+  static constexpr int params_n = 2;
   static constexpr auto GetName() { return "DestroyGame"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x0F26CB52; }
@@ -2921,16 +2877,6 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<18>::param_info<0>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "server_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x1844E6B7; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<18>::param_info<1>
-{
-  using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
   static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
@@ -2938,21 +2884,21 @@ struct StormReflFuncInfo<User>::func_data_static<18>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<18>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<18>::param_info<1>
 {
-  using param_type = int;
+  using param_type = DDSKey;
   static constexpr auto GetName() { return "game_id"; }
-  static constexpr auto GetType() { return "int"; }
+  static constexpr auto GetType() { return "DDSKey"; }
   static constexpr unsigned GetNameHash() { return 0xE48FD905; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<19>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, int, DDSKey, std::string, bool);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey, bool);
   using return_type = void;
-  static constexpr int params_n = 6;
+  static constexpr int params_n = 4;
   static constexpr auto GetName() { return "HandleGameJoinResponse"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xED0B8170; }
@@ -2967,9 +2913,9 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<19>::param_info<0>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "server_id"; }
+  static constexpr auto GetName() { return "game_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x1844E6B7; }
+  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
@@ -2986,16 +2932,6 @@ struct StormReflFuncInfo<User>::func_data_static<19>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<19>::param_info<2>
 {
-  using param_type = int;
-  static constexpr auto GetName() { return "game_id"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<19>::param_info<3>
-{
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_random_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
@@ -3004,17 +2940,7 @@ struct StormReflFuncInfo<User>::func_data_static<19>::param_info<3>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<19>::param_info<4>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "game_info"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x209C5D7B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<19>::param_info<5>
+struct StormReflFuncInfo<User>::func_data_static<19>::param_info<3>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "success"; }
@@ -3120,9 +3046,9 @@ struct StormReflFuncInfo<User>::func_data_static<23>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<24>
 {
-  using func_ptr_type = void (User::*)(DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 1;
+  static constexpr int params_n = 2;
   static constexpr auto GetName() { return "NotifyLeftGame"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x29289854; }
@@ -3137,6 +3063,16 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<24>::param_info<0>
 {
   using param_type = DDSKey;
+  static constexpr auto GetName() { return "game_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<24>::param_info<1>
+{
+  using param_type = DDSKey;
   static constexpr auto GetName() { return "game_random_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
   static constexpr unsigned GetNameHash() { return 0xF579374E; }
@@ -3146,15 +3082,15 @@ struct StormReflFuncInfo<User>::func_data_static<24>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<25>
 {
-  using func_ptr_type = void (User::*)(std::tuple<int, DDSKey>, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string, std::string, std::string);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleGameUpdate"; }
+  static constexpr int params_n = 5;
+  static constexpr auto GetName() { return "HandleGameChat"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x44910382; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x83B503F6; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 25; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleGameUpdate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleGameChat; }
   template <int i>
   struct param_info { };
 };
@@ -3162,15 +3098,81 @@ struct StormReflFuncInfo<User>::func_data_static<25>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<25>::param_info<0>
 {
-  using param_type = std::tuple<int, DDSKey>;
-  static constexpr auto GetName() { return "game_info"; }
-  static constexpr auto GetType() { return "std::tuple<int, DDSKey>"; }
-  static constexpr unsigned GetNameHash() { return 0x209C5D7B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x8D9A7443; }
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "game_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<25>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "game_random_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xF579374E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<25>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<25>::param_info<3>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "title"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x2B36786B; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<25>::param_info<4>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "msg"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<26>
+{
+  using func_ptr_type = void (User::*)(std::tuple<DDSKey, DDSKey>, std::string);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleGameUpdate"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x44910382; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 26; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleGameUpdate; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<26>::param_info<0>
+{
+  using param_type = std::tuple<DDSKey, DDSKey>;
+  static constexpr auto GetName() { return "game_info"; }
+  static constexpr auto GetType() { return "std::tuple<DDSKey, DDSKey>"; }
+  static constexpr unsigned GetNameHash() { return 0x209C5D7B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4C951411; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<26>::param_info<1>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "data"; }
@@ -3180,7 +3182,7 @@ struct StormReflFuncInfo<User>::func_data_static<25>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<26>
+struct StormReflFuncInfo<User>::func_data_static<27>
 {
   using func_ptr_type = void (User::*)(DDSKey, std::string, std::string);
   using return_type = void;
@@ -3189,14 +3191,14 @@ struct StormReflFuncInfo<User>::func_data_static<26>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x5409B246; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 26; }
+  static constexpr auto GetFunctionIndex() { return 27; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::CreateSquad; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<26>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<27>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "creator_endpoint"; }
@@ -3206,7 +3208,7 @@ struct StormReflFuncInfo<User>::func_data_static<26>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<26>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<27>::param_info<1>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "squad_name"; }
@@ -3216,7 +3218,7 @@ struct StormReflFuncInfo<User>::func_data_static<26>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<26>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<27>::param_info<2>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "squad_tag"; }
@@ -3226,7 +3228,7 @@ struct StormReflFuncInfo<User>::func_data_static<26>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<27>
+struct StormReflFuncInfo<User>::func_data_static<28>
 {
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
@@ -3235,14 +3237,14 @@ struct StormReflFuncInfo<User>::func_data_static<27>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xAE970DCE; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 27; }
+  static constexpr auto GetFunctionIndex() { return 28; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::DestroySquad; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<27>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<28>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "destroyer_endpoint"; }
@@ -3252,7 +3254,7 @@ struct StormReflFuncInfo<User>::func_data_static<27>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<28>
+struct StormReflFuncInfo<User>::func_data_static<29>
 {
   using func_ptr_type = void (User::*)(std::tuple<DDSKey, std::string, std::string>, std::string);
   using return_type = void;
@@ -3261,44 +3263,8 @@ struct StormReflFuncInfo<User>::func_data_static<28>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x93AFE367; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 28; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadCreateNameLookupFail; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<28>::param_info<0>
-{
-  using param_type = std::tuple<DDSKey, std::string, std::string>;
-  static constexpr auto GetName() { return "squad_data"; }
-  static constexpr auto GetType() { return "std::tuple<DDSKey, std::string, std::string>"; }
-  static constexpr unsigned GetNameHash() { return 0x75CC60F7; }
-  static constexpr unsigned GetTypeNameHash() { return 0x3684BDFD; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<28>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "channel_name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xC277DD78; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<29>
-{
-  using func_ptr_type = void (User::*)(std::tuple<DDSKey, std::string, std::string>);
-  using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleSquadCreateNameLookupSuccess"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xBD93E219; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 29; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadCreateNameLookupSuccess; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadCreateNameLookupFail; }
   template <int i>
   struct param_info { };
 };
@@ -3314,7 +3280,43 @@ struct StormReflFuncInfo<User>::func_data_static<29>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<29>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "channel_name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xC277DD78; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<30>
+{
+  using func_ptr_type = void (User::*)(std::tuple<DDSKey, std::string, std::string>);
+  using return_type = void;
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleSquadCreateNameLookupSuccess"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xBD93E219; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 30; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadCreateNameLookupSuccess; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<30>::param_info<0>
+{
+  using param_type = std::tuple<DDSKey, std::string, std::string>;
+  static constexpr auto GetName() { return "squad_data"; }
+  static constexpr auto GetType() { return "std::tuple<DDSKey, std::string, std::string>"; }
+  static constexpr unsigned GetNameHash() { return 0x75CC60F7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x3684BDFD; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<31>
 {
   using func_ptr_type = void (User::*)(std::tuple<std::string, std::string, DDSKey, DDSKey>, int);
   using return_type = void;
@@ -3323,14 +3325,14 @@ struct StormReflFuncInfo<User>::func_data_static<30>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xE3F7BD7C; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 30; }
+  static constexpr auto GetFunctionIndex() { return 31; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadCreate; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<30>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<31>::param_info<0>
 {
   using param_type = std::tuple<std::string, std::string, DDSKey, DDSKey>;
   static constexpr auto GetName() { return "squad_info"; }
@@ -3340,7 +3342,7 @@ struct StormReflFuncInfo<User>::func_data_static<30>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<30>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<31>::param_info<1>
 {
   using param_type = int;
   static constexpr auto GetName() { return "ec"; }
@@ -3350,7 +3352,7 @@ struct StormReflFuncInfo<User>::func_data_static<30>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<31>
+struct StormReflFuncInfo<User>::func_data_static<32>
 {
   using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
@@ -3359,44 +3361,8 @@ struct StormReflFuncInfo<User>::func_data_static<31>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x107A06ED; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 31; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadOperationResponse; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<31>::param_info<0>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "endpoint_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<31>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "response"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x3E7B0BFB; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<32>
-{
-  using func_ptr_type = void (User::*)(DDSKey);
-  using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleSquadLookupFail"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x52EC44D2; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 32; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadLookupFail; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadOperationResponse; }
   template <int i>
   struct param_info { };
 };
@@ -3412,17 +3378,27 @@ struct StormReflFuncInfo<User>::func_data_static<32>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<32>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "response"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x3E7B0BFB; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<33>
 {
-  using func_ptr_type = void (User::*)(DDSKey, std::string);
+  using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "ApplyToSquad"; }
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleSquadLookupFail"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x373B4545; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x52EC44D2; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 33; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::ApplyToSquad; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadLookupFail; }
   template <int i>
   struct param_info { };
 };
@@ -3438,27 +3414,17 @@ struct StormReflFuncInfo<User>::func_data_static<33>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<33>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "squad_name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x861CED92; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<34>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "AcceptSquadApplication"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "ApplyToSquad"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xE78CDC24; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x373B4545; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 34; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AcceptSquadApplication; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::ApplyToSquad; }
   template <int i>
   struct param_info { };
 };
@@ -3476,35 +3442,25 @@ struct StormReflFuncInfo<User>::func_data_static<34>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<34>::param_info<1>
 {
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "squad_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xDF1B2C7C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<34>::param_info<2>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+  using param_type = std::string;
+  static constexpr auto GetName() { return "squad_name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x861CED92; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<35>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "RescindSquadApplication"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "AcceptSquadApplication"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x8BE7D1B1; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xE78CDC24; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 35; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RescindSquadApplication; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AcceptSquadApplication; }
   template <int i>
   struct param_info { };
 };
@@ -3530,17 +3486,27 @@ struct StormReflFuncInfo<User>::func_data_static<35>::param_info<1>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<35>::param_info<2>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<36>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "DeclineSquadApplication"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "RescindSquadApplication"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xD7828C09; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x8BE7D1B1; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 36; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::DeclineSquadApplication; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RescindSquadApplication; }
   template <int i>
   struct param_info { };
 };
@@ -3566,27 +3532,17 @@ struct StormReflFuncInfo<User>::func_data_static<36>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<36>::param_info<2>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<37>
 {
   using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "RequestUserToJoinSquad"; }
+  static constexpr auto GetName() { return "DeclineSquadApplication"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x66C141F0; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xD7828C09; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 37; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RequestUserToJoinSquad; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::DeclineSquadApplication; }
   template <int i>
   struct param_info { };
 };
@@ -3615,76 +3571,30 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<37>::param_info<2>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "platform_id"; }
+  static constexpr auto GetName() { return "user_id"; }
   static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xFFE6496F; }
+  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<38>
 {
-  using func_ptr_type = void (User::*)(std::tuple<DDSKey, DDSKey>, int, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleSquadRequestUserLookup"; }
+  static constexpr auto GetName() { return "RequestUserToJoinSquad"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xD684FE6D; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x66C141F0; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 38; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestUserLookup; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RequestUserToJoinSquad; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<38>::param_info<0>
-{
-  using param_type = std::tuple<DDSKey, DDSKey>;
-  static constexpr auto GetName() { return "squad_data"; }
-  static constexpr auto GetType() { return "std::tuple<DDSKey, DDSKey>"; }
-  static constexpr unsigned GetNameHash() { return 0x75CC60F7; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4C951411; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<38>::param_info<1>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "ec"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x8DE8BDFF; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<38>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "data"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<39>
-{
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "AcceptSquadRequest"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xF17F7BC4; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 39; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AcceptSquadRequest; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<39>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -3694,7 +3604,7 @@ struct StormReflFuncInfo<User>::func_data_static<39>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<39>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<38>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "squad_id"; }
@@ -3704,17 +3614,73 @@ struct StormReflFuncInfo<User>::func_data_static<39>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<40>
+struct StormReflFuncInfo<User>::func_data_static<38>::param_info<2>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "platform_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xFFE6496F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<39>
+{
+  using func_ptr_type = void (User::*)(std::tuple<DDSKey, DDSKey>, int, std::string);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "RescindSquadRequest"; }
+  static constexpr auto GetName() { return "HandleSquadRequestUserLookup"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x7BF63CAC; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xD684FE6D; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 39; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestUserLookup; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<39>::param_info<0>
+{
+  using param_type = std::tuple<DDSKey, DDSKey>;
+  static constexpr auto GetName() { return "squad_data"; }
+  static constexpr auto GetType() { return "std::tuple<DDSKey, DDSKey>"; }
+  static constexpr unsigned GetNameHash() { return 0x75CC60F7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4C951411; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<39>::param_info<1>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "ec"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x8DE8BDFF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<39>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "data"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<40>
+{
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "AcceptSquadRequest"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF17F7BC4; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 40; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RescindSquadRequest; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AcceptSquadRequest; }
   template <int i>
   struct param_info { };
 };
@@ -3740,27 +3706,17 @@ struct StormReflFuncInfo<User>::func_data_static<40>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<40>::param_info<2>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<41>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "DeclineSquadRequest"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "RescindSquadRequest"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xB1452B77; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x7BF63CAC; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 41; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::DeclineSquadRequest; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RescindSquadRequest; }
   template <int i>
   struct param_info { };
 };
@@ -3786,17 +3742,27 @@ struct StormReflFuncInfo<User>::func_data_static<41>::param_info<1>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<41>::param_info<2>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<42>
 {
   using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "LeaveSquad"; }
+  static constexpr auto GetName() { return "DeclineSquadRequest"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x720BB790; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xB1452B77; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 42; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::LeaveSquad; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::DeclineSquadRequest; }
   template <int i>
   struct param_info { };
 };
@@ -3824,15 +3790,15 @@ struct StormReflFuncInfo<User>::func_data_static<42>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<43>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "RemoveSquadMember"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "LeaveSquad"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x3D943C34; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x720BB790; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 43; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveSquadMember; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::LeaveSquad; }
   template <int i>
   struct param_info { };
 };
@@ -3858,27 +3824,17 @@ struct StormReflFuncInfo<User>::func_data_static<43>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<43>::param_info<2>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<44>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey, int);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 4;
-  static constexpr auto GetName() { return "EditSquadPermissions"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "RemoveSquadMember"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x930A4359; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x3D943C34; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 44; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::EditSquadPermissions; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveSquadMember; }
   template <int i>
   struct param_info { };
 };
@@ -3914,27 +3870,17 @@ struct StormReflFuncInfo<User>::func_data_static<44>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<44>::param_info<3>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "permissions"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x2DEDCC6F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<45>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, DDSKey, int);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "EditSquadMotd"; }
+  static constexpr int params_n = 4;
+  static constexpr auto GetName() { return "EditSquadPermissions"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x41AFB51F; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x930A4359; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 45; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::EditSquadMotd; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::EditSquadPermissions; }
   template <int i>
   struct param_info { };
 };
@@ -3962,25 +3908,35 @@ struct StormReflFuncInfo<User>::func_data_static<45>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<45>::param_info<2>
 {
-  using param_type = std::string;
-  static constexpr auto GetName() { return "motd"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xAA0F656C; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<45>::param_info<3>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "permissions"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x2DEDCC6F; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<46>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, bool);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "LockSquadChannel"; }
+  static constexpr auto GetName() { return "EditSquadMotd"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xE16F3F06; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x41AFB51F; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 46; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::LockSquadChannel; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::EditSquadMotd; }
   template <int i>
   struct param_info { };
 };
@@ -4008,25 +3964,25 @@ struct StormReflFuncInfo<User>::func_data_static<46>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<46>::param_info<2>
 {
-  using param_type = bool;
-  static constexpr auto GetName() { return "locked"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0xEAD2C891; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  using param_type = std::string;
+  static constexpr auto GetName() { return "motd"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xAA0F656C; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<47>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, bool);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "SetPrimarySquad"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "LockSquadChannel"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA347985D; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xE16F3F06; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 47; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::SetPrimarySquad; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::LockSquadChannel; }
   template <int i>
   struct param_info { };
 };
@@ -4052,23 +4008,43 @@ struct StormReflFuncInfo<User>::func_data_static<47>::param_info<1>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<47>::param_info<2>
+{
+  using param_type = bool;
+  static constexpr auto GetName() { return "locked"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetNameHash() { return 0xEAD2C891; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<48>
 {
-  using func_ptr_type = void (User::*)(DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "AddSquadInternal"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "SetPrimarySquad"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x1D497BC3; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xA347985D; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 48; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddSquadInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::SetPrimarySquad; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<48>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "endpoint_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<48>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "squad_id"; }
@@ -4083,12 +4059,12 @@ struct StormReflFuncInfo<User>::func_data_static<49>
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
   static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "LoadSquadInternal"; }
+  static constexpr auto GetName() { return "AddSquadInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xF479FFD3; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x1D497BC3; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 49; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadSquadInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddSquadInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4109,12 +4085,12 @@ struct StormReflFuncInfo<User>::func_data_static<50>
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
   static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "RemoveSquadInternal"; }
+  static constexpr auto GetName() { return "LoadSquadInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x253837FF; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF479FFD3; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 50; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveSquadInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadSquadInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4132,15 +4108,15 @@ struct StormReflFuncInfo<User>::func_data_static<50>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<51>
 {
-  using func_ptr_type = void (User::*)(DDSKey, std::string, std::string);
+  using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "AddApplicationInternal"; }
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "RemoveSquadInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xF489A551; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x253837FF; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 51; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddApplicationInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveSquadInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4156,37 +4132,17 @@ struct StormReflFuncInfo<User>::func_data_static<51>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<51>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "squad_name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x861CED92; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<51>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "squad_tag"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x3131F92B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<52>
 {
   using func_ptr_type = void (User::*)(DDSKey, std::string, std::string);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "AddSquadRequestInternal"; }
+  static constexpr auto GetName() { return "AddApplicationInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x915C8745; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF489A551; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 52; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddSquadRequestInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddApplicationInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4224,31 +4180,21 @@ struct StormReflFuncInfo<User>::func_data_static<52>::param_info<2>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<53>
 {
-  using func_ptr_type = void (User::*)(int, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, std::string, std::string);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "LoadApplicationInternal"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "AddSquadRequestInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xE521A216; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x915C8745; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 53; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadApplicationInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddSquadRequestInternal; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<53>::param_info<0>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "index"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x80736701; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<53>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "squad_id"; }
@@ -4258,17 +4204,37 @@ struct StormReflFuncInfo<User>::func_data_static<53>::param_info<1>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<53>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "squad_name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x861CED92; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<53>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "squad_tag"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x3131F92B; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<54>
 {
   using func_ptr_type = void (User::*)(int, DDSKey);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "LoadSquadRequestInternal"; }
+  static constexpr auto GetName() { return "LoadApplicationInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x79F5FB71; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xE521A216; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 54; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadSquadRequestInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadApplicationInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4296,21 +4262,31 @@ struct StormReflFuncInfo<User>::func_data_static<54>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<55>
 {
-  using func_ptr_type = void (User::*)(DDSKey);
+  using func_ptr_type = void (User::*)(int, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "CancelApplicationInternal"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "LoadSquadRequestInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x2C127CE7; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x79F5FB71; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 55; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::CancelApplicationInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::LoadSquadRequestInternal; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<55>::param_info<0>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "index"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x80736701; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<55>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "squad_id"; }
@@ -4325,12 +4301,12 @@ struct StormReflFuncInfo<User>::func_data_static<56>
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
   static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "CancelSquadRequestInternal"; }
+  static constexpr auto GetName() { return "CancelApplicationInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xB3860A25; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x2C127CE7; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 56; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::CancelSquadRequestInternal; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::CancelApplicationInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4348,15 +4324,15 @@ struct StormReflFuncInfo<User>::func_data_static<56>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<57>
 {
-  using func_ptr_type = void (User::*)(DDSKey, std::string);
+  using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleSquadUpdate"; }
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "CancelSquadRequestInternal"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xF40468FF; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xB3860A25; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 57; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadUpdate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::CancelSquadRequestInternal; }
   template <int i>
   struct param_info { };
 };
@@ -4372,27 +4348,17 @@ struct StormReflFuncInfo<User>::func_data_static<57>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<57>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "data"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<58>
 {
-  using func_ptr_type = void (User::*)(DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleSquadDeleted"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleSquadUpdate"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x988B79ED; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF40468FF; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 58; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadDeleted; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadUpdate; }
   template <int i>
   struct param_info { };
 };
@@ -4408,7 +4374,43 @@ struct StormReflFuncInfo<User>::func_data_static<58>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<58>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "data"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<59>
+{
+  using func_ptr_type = void (User::*)(DDSKey);
+  using return_type = void;
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleSquadDeleted"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x988B79ED; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 59; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadDeleted; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<59>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "squad_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xDF1B2C7C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<60>
 {
   using func_ptr_type = void (User::*)(std::pair<int, DDSKey>, std::string, std::string);
   using return_type = void;
@@ -4417,54 +4419,8 @@ struct StormReflFuncInfo<User>::func_data_static<59>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x9C8BF1D5; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 59; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadApplicationLoad; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<59>::param_info<0>
-{
-  using param_type = std::pair<int, DDSKey>;
-  static constexpr auto GetName() { return "squad_info"; }
-  static constexpr auto GetType() { return "std::pair<int, DDSKey>"; }
-  static constexpr unsigned GetNameHash() { return 0x13B6A2C3; }
-  static constexpr unsigned GetTypeNameHash() { return 0xEAE92E8B; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<59>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<59>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "tag"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x0389B783; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<60>
-{
-  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>);
-  using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleSquadApplicationLoadFailure"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xF8B3039C; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 60; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadApplicationLoadFailure; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadApplicationLoad; }
   template <int i>
   struct param_info { };
 };
@@ -4480,17 +4436,37 @@ struct StormReflFuncInfo<User>::func_data_static<60>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<60>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<60>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "tag"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x0389B783; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<61>
 {
-  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>, std::string, std::string);
+  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleSquadRequestLoad"; }
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleSquadApplicationLoadFailure"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xCF13A014; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF8B3039C; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 61; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestLoad; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadApplicationLoadFailure; }
   template <int i>
   struct param_info { };
 };
@@ -4506,37 +4482,17 @@ struct StormReflFuncInfo<User>::func_data_static<61>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<61>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<61>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "tag"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x0389B783; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<62>
 {
-  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>);
+  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>, std::string, std::string);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleSquadRequestLoadFailure"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "HandleSquadRequestLoad"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x6DC5806C; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xCF13A014; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 62; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestLoadFailure; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestLoad; }
   template <int i>
   struct param_info { };
 };
@@ -4552,7 +4508,53 @@ struct StormReflFuncInfo<User>::func_data_static<62>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<62>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x5E237E06; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<62>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "tag"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x0389B783; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<63>
+{
+  using func_ptr_type = void (User::*)(std::pair<int, DDSKey>);
+  using return_type = void;
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleSquadRequestLoadFailure"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x6DC5806C; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 63; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleSquadRequestLoadFailure; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<63>::param_info<0>
+{
+  using param_type = std::pair<int, DDSKey>;
+  static constexpr auto GetName() { return "squad_info"; }
+  static constexpr auto GetType() { return "std::pair<int, DDSKey>"; }
+  static constexpr unsigned GetNameHash() { return 0x13B6A2C3; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEAE92E8B; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<64>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, std::string, bool);
   using return_type = void;
@@ -4561,14 +4563,14 @@ struct StormReflFuncInfo<User>::func_data_static<63>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x405C98D2; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 63; }
+  static constexpr auto GetFunctionIndex() { return 64; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::AddTitle; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<63>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<64>::param_info<0>
 {
   using param_type = DDSResponder &;
   static constexpr auto GetName() { return "responder"; }
@@ -4578,7 +4580,7 @@ struct StormReflFuncInfo<User>::func_data_static<63>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<63>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<64>::param_info<1>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "title"; }
@@ -4588,7 +4590,7 @@ struct StormReflFuncInfo<User>::func_data_static<63>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<63>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<64>::param_info<2>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "quiet"; }
@@ -4598,7 +4600,7 @@ struct StormReflFuncInfo<User>::func_data_static<63>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<64>
+struct StormReflFuncInfo<User>::func_data_static<65>
 {
   using func_ptr_type = void (User::*)(int);
   using return_type = void;
@@ -4607,14 +4609,14 @@ struct StormReflFuncInfo<User>::func_data_static<64>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xDB63A7AB; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 64; }
+  static constexpr auto GetFunctionIndex() { return 65; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::SetTitle; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<64>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<65>::param_info<0>
 {
   using param_type = int;
   static constexpr auto GetName() { return "title_index"; }
@@ -4624,7 +4626,7 @@ struct StormReflFuncInfo<User>::func_data_static<64>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<65>
+struct StormReflFuncInfo<User>::func_data_static<66>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, std::string);
   using return_type = void;
@@ -4633,44 +4635,8 @@ struct StormReflFuncInfo<User>::func_data_static<65>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x23281553; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 65; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveTitle; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<65>::param_info<0>
-{
-  using param_type = DDSResponder &;
-  static constexpr auto GetName() { return "responder"; }
-  static constexpr auto GetType() { return "DDSResponder &"; }
-  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<65>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "title"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x2B36786B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<66>
-{
-  using func_ptr_type = void (User::*)(DDSResponder &, std::string, std::string, bool, bool);
-  using return_type = void;
-  static constexpr int params_n = 5;
-  static constexpr auto GetName() { return "AddIcon"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x6425648B; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 66; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddIcon; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveTitle; }
   template <int i>
   struct param_info { };
 };
@@ -4689,86 +4655,30 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<66>::param_info<1>
 {
   using param_type = std::string;
-  static constexpr auto GetName() { return "icon_url"; }
+  static constexpr auto GetName() { return "title"; }
   static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x5721C56A; }
+  static constexpr unsigned GetNameHash() { return 0x2B36786B; }
   static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<66>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "icon_name"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xC2892F2F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<66>::param_info<3>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "set"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0xE61425DC; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<66>::param_info<4>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "quiet"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0x5695B4A4; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<67>
 {
-  using func_ptr_type = void (User::*)(int);
+  using func_ptr_type = void (User::*)(DDSResponder &, std::string, std::string, bool, bool);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "SetIcon"; }
+  static constexpr int params_n = 5;
+  static constexpr auto GetName() { return "AddIcon"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x3FD8AD4B; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x6425648B; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 67; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::SetIcon; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddIcon; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<67>::param_info<0>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "icon_index"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0xC25D553C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<68>
-{
-  using func_ptr_type = void (User::*)(DDSResponder &, std::string);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "RemoveIcon"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x16C43C96; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 68; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveIcon; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<68>::param_info<0>
 {
   using param_type = DDSResponder &;
   static constexpr auto GetName() { return "responder"; }
@@ -4778,27 +4688,83 @@ struct StormReflFuncInfo<User>::func_data_static<68>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<68>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<67>::param_info<1>
 {
   using param_type = std::string;
-  static constexpr auto GetName() { return "icon"; }
+  static constexpr auto GetName() { return "icon_url"; }
   static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x659429DB; }
+  static constexpr unsigned GetNameHash() { return 0x5721C56A; }
   static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<67>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "icon_name"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xC2892F2F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<67>::param_info<3>
+{
+  using param_type = bool;
+  static constexpr auto GetName() { return "set"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetNameHash() { return 0xE61425DC; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<67>::param_info<4>
+{
+  using param_type = bool;
+  static constexpr auto GetName() { return "quiet"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetNameHash() { return 0x5695B4A4; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<68>
+{
+  using func_ptr_type = void (User::*)(int);
+  using return_type = void;
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "SetIcon"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x3FD8AD4B; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 68; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::SetIcon; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<68>::param_info<0>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "icon_index"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0xC25D553C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<69>
 {
-  using func_ptr_type = void (User::*)(DDSResponder &, int, std::string, bool, bool);
+  using func_ptr_type = void (User::*)(DDSResponder &, std::string);
   using return_type = void;
-  static constexpr int params_n = 5;
-  static constexpr auto GetName() { return "AddCelebration"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "RemoveIcon"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA78EB7E2; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x16C43C96; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 69; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddCelebration; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveIcon; }
   template <int i>
   struct param_info { };
 };
@@ -4816,6 +4782,42 @@ struct StormReflFuncInfo<User>::func_data_static<69>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<69>::param_info<1>
 {
+  using param_type = std::string;
+  static constexpr auto GetName() { return "icon"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x659429DB; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<70>
+{
+  using func_ptr_type = void (User::*)(DDSResponder &, int, std::string, bool, bool);
+  using return_type = void;
+  static constexpr int params_n = 5;
+  static constexpr auto GetName() { return "AddCelebration"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xA78EB7E2; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 70; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddCelebration; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<70>::param_info<0>
+{
+  using param_type = DDSResponder &;
+  static constexpr auto GetName() { return "responder"; }
+  static constexpr auto GetType() { return "DDSResponder &"; }
+  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<70>::param_info<1>
+{
   using param_type = int;
   static constexpr auto GetName() { return "celebration_id"; }
   static constexpr auto GetType() { return "int"; }
@@ -4824,7 +4826,7 @@ struct StormReflFuncInfo<User>::func_data_static<69>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<69>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<70>::param_info<2>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "celebration_name"; }
@@ -4834,7 +4836,7 @@ struct StormReflFuncInfo<User>::func_data_static<69>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<69>::param_info<3>
+struct StormReflFuncInfo<User>::func_data_static<70>::param_info<3>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "set"; }
@@ -4844,7 +4846,7 @@ struct StormReflFuncInfo<User>::func_data_static<69>::param_info<3>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<69>::param_info<4>
+struct StormReflFuncInfo<User>::func_data_static<70>::param_info<4>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "quiet"; }
@@ -4854,7 +4856,7 @@ struct StormReflFuncInfo<User>::func_data_static<69>::param_info<4>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<70>
+struct StormReflFuncInfo<User>::func_data_static<71>
 {
   using func_ptr_type = void (User::*)(int);
   using return_type = void;
@@ -4863,14 +4865,14 @@ struct StormReflFuncInfo<User>::func_data_static<70>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xF1DC7B5A; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 70; }
+  static constexpr auto GetFunctionIndex() { return 71; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::SetCelebration; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<70>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<71>::param_info<0>
 {
   using param_type = int;
   static constexpr auto GetName() { return "celebration_index"; }
@@ -4880,7 +4882,7 @@ struct StormReflFuncInfo<User>::func_data_static<70>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<71>
+struct StormReflFuncInfo<User>::func_data_static<72>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, std::string);
   using return_type = void;
@@ -4889,14 +4891,14 @@ struct StormReflFuncInfo<User>::func_data_static<71>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x95D8460E; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 71; }
+  static constexpr auto GetFunctionIndex() { return 72; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveCelebration; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<71>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<72>::param_info<0>
 {
   using param_type = DDSResponder &;
   static constexpr auto GetName() { return "responder"; }
@@ -4906,7 +4908,7 @@ struct StormReflFuncInfo<User>::func_data_static<71>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<71>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<72>::param_info<1>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "celebration"; }
@@ -4916,7 +4918,7 @@ struct StormReflFuncInfo<User>::func_data_static<71>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<72>
+struct StormReflFuncInfo<User>::func_data_static<73>
 {
   using func_ptr_type = void (User::*)(GameStatsData, GameInitSettings);
   using return_type = void;
@@ -4925,14 +4927,14 @@ struct StormReflFuncInfo<User>::func_data_static<72>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x9953E0FD; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 72; }
+  static constexpr auto GetFunctionIndex() { return 73; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::UpdateStats; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<72>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<73>::param_info<0>
 {
   using param_type = GameStatsData;
   static constexpr auto GetName() { return "stats"; }
@@ -4942,7 +4944,7 @@ struct StormReflFuncInfo<User>::func_data_static<72>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<72>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<73>::param_info<1>
 {
   using param_type = GameInitSettings;
   static constexpr auto GetName() { return "instance_data"; }
@@ -4952,7 +4954,7 @@ struct StormReflFuncInfo<User>::func_data_static<72>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<73>
+struct StormReflFuncInfo<User>::func_data_static<74>
 {
   using func_ptr_type = void (User::*)(DDSResponder &);
   using return_type = void;
@@ -4961,34 +4963,8 @@ struct StormReflFuncInfo<User>::func_data_static<73>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x409D20EC; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 73; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchStats; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<73>::param_info<0>
-{
-  using param_type = DDSResponder &;
-  static constexpr auto GetName() { return "responder"; }
-  static constexpr auto GetType() { return "DDSResponder &"; }
-  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<74>
-{
-  using func_ptr_type = void (User::*)(DDSResponder &, const std::string &);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "AddAutoJoinChannel"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x339CD39E; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 74; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddAutoJoinChannel; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchStats; }
   template <int i>
   struct param_info { };
 };
@@ -5004,27 +4980,17 @@ struct StormReflFuncInfo<User>::func_data_static<74>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<74>::param_info<1>
-{
-  using param_type = const std::string &;
-  static constexpr auto GetName() { return "channel_name"; }
-  static constexpr auto GetType() { return "const std::string &"; }
-  static constexpr unsigned GetNameHash() { return 0xC277DD78; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBB24E617; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<75>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, const std::string &);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "RemoveAutoJoinChannel"; }
+  static constexpr auto GetName() { return "AddAutoJoinChannel"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x3F059FAB; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x339CD39E; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 75; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveAutoJoinChannel; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::AddAutoJoinChannel; }
   template <int i>
   struct param_info { };
 };
@@ -5052,6 +5018,42 @@ struct StormReflFuncInfo<User>::func_data_static<75>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<76>
 {
+  using func_ptr_type = void (User::*)(DDSResponder &, const std::string &);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "RemoveAutoJoinChannel"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x3F059FAB; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 76; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::RemoveAutoJoinChannel; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<76>::param_info<0>
+{
+  using param_type = DDSResponder &;
+  static constexpr auto GetName() { return "responder"; }
+  static constexpr auto GetType() { return "DDSResponder &"; }
+  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<76>::param_info<1>
+{
+  using param_type = const std::string &;
+  static constexpr auto GetName() { return "channel_name"; }
+  static constexpr auto GetType() { return "const std::string &"; }
+  static constexpr unsigned GetNameHash() { return 0xC277DD78; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBB24E617; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<77>
+{
   using func_ptr_type = void (User::*)(const std::string &);
   using return_type = void;
   static constexpr int params_n = 1;
@@ -5059,14 +5061,14 @@ struct StormReflFuncInfo<User>::func_data_static<76>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x88E51BEB; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 76; }
+  static constexpr auto GetFunctionIndex() { return 77; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::ModifyPersistent; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<76>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<77>::param_info<0>
 {
   using param_type = const std::string &;
   static constexpr auto GetName() { return "change_packet"; }
@@ -5076,7 +5078,7 @@ struct StormReflFuncInfo<User>::func_data_static<76>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<77>
+struct StormReflFuncInfo<User>::func_data_static<78>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, int);
   using return_type = void;
@@ -5085,14 +5087,14 @@ struct StormReflFuncInfo<User>::func_data_static<77>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x2EFCFE68; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 77; }
+  static constexpr auto GetFunctionIndex() { return 78; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::GiveXP; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<77>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<78>::param_info<0>
 {
   using param_type = DDSResponder &;
   static constexpr auto GetName() { return "responder"; }
@@ -5102,7 +5104,7 @@ struct StormReflFuncInfo<User>::func_data_static<77>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<77>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<78>::param_info<1>
 {
   using param_type = int;
   static constexpr auto GetName() { return "amount"; }
@@ -5112,7 +5114,7 @@ struct StormReflFuncInfo<User>::func_data_static<77>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<78>
+struct StormReflFuncInfo<User>::func_data_static<79>
 {
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
@@ -5121,14 +5123,14 @@ struct StormReflFuncInfo<User>::func_data_static<78>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x94E853DA; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 78; }
+  static constexpr auto GetFunctionIndex() { return 79; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::SendXPGain; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<78>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<79>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -5138,7 +5140,7 @@ struct StormReflFuncInfo<User>::func_data_static<78>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<79>
+struct StormReflFuncInfo<User>::func_data_static<80>
 {
   using func_ptr_type = void (User::*)(bool);
   using return_type = void;
@@ -5147,14 +5149,14 @@ struct StormReflFuncInfo<User>::func_data_static<79>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x0D3209F1; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 79; }
+  static constexpr auto GetFunctionIndex() { return 80; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::ApplyXPGain; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<79>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<80>::param_info<0>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "quiet"; }
@@ -5164,7 +5166,7 @@ struct StormReflFuncInfo<User>::func_data_static<79>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<80>
+struct StormReflFuncInfo<User>::func_data_static<81>
 {
   using func_ptr_type = void (User::*)();
   using return_type = void;
@@ -5173,14 +5175,14 @@ struct StormReflFuncInfo<User>::func_data_static<80>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xC57E398C; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 80; }
+  static constexpr auto GetFunctionIndex() { return 81; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::SkipXPGain; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<81>
+struct StormReflFuncInfo<User>::func_data_static<82>
 {
   using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string);
   using return_type = void;
@@ -5189,14 +5191,14 @@ struct StormReflFuncInfo<User>::func_data_static<81>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x34AC6AF1; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 81; }
+  static constexpr auto GetFunctionIndex() { return 82; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::ProcessSlashCommand; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<81>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<82>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -5206,7 +5208,7 @@ struct StormReflFuncInfo<User>::func_data_static<81>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<81>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<82>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "channel_id"; }
@@ -5216,7 +5218,7 @@ struct StormReflFuncInfo<User>::func_data_static<81>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<81>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<82>::param_info<2>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "msg"; }
@@ -5226,7 +5228,7 @@ struct StormReflFuncInfo<User>::func_data_static<81>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<82>
+struct StormReflFuncInfo<User>::func_data_static<83>
 {
   using func_ptr_type = void (User::*)(DDSResponder &, DDSKey, const std::string &);
   using return_type = void;
@@ -5235,54 +5237,8 @@ struct StormReflFuncInfo<User>::func_data_static<82>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xDE315178; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 82; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::Rename; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<82>::param_info<0>
-{
-  using param_type = DDSResponder &;
-  static constexpr auto GetName() { return "responder"; }
-  static constexpr auto GetType() { return "DDSResponder &"; }
-  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<82>::param_info<1>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "src_endpoint_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x7C0D78ED; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<82>::param_info<2>
-{
-  using param_type = const std::string &;
-  static constexpr auto GetName() { return "new_name"; }
-  static constexpr auto GetType() { return "const std::string &"; }
-  static constexpr unsigned GetNameHash() { return 0xAACECADB; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBB24E617; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<83>
-{
-  using func_ptr_type = void (User::*)(DDSResponder &, int);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "MakeAdmin"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x8BF00342; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 83; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::MakeAdmin; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::Rename; }
   template <int i>
   struct param_info { };
 };
@@ -5300,25 +5256,35 @@ struct StormReflFuncInfo<User>::func_data_static<83>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<83>::param_info<1>
 {
-  using param_type = int;
-  static constexpr auto GetName() { return "admin_level"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x3AC037E9; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "src_endpoint_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x7C0D78ED; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<83>::param_info<2>
+{
+  using param_type = const std::string &;
+  static constexpr auto GetName() { return "new_name"; }
+  static constexpr auto GetType() { return "const std::string &"; }
+  static constexpr unsigned GetNameHash() { return 0xAACECADB; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBB24E617; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<84>
 {
-  using func_ptr_type = void (User::*)(DDSResponder &, int, std::string);
+  using func_ptr_type = void (User::*)(DDSResponder &, int);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "BanSelf"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "MakeAdmin"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x516FE7BC; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x8BF00342; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 84; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::BanSelf; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::MakeAdmin; }
   template <int i>
   struct param_info { };
 };
@@ -5337,20 +5303,10 @@ template <>
 struct StormReflFuncInfo<User>::func_data_static<84>::param_info<1>
 {
   using param_type = int;
-  static constexpr auto GetName() { return "duration"; }
+  static constexpr auto GetName() { return "admin_level"; }
   static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x865F80C0; }
+  static constexpr unsigned GetNameHash() { return 0x3AC037E9; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<84>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "message"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xB6BD307F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
@@ -5359,12 +5315,12 @@ struct StormReflFuncInfo<User>::func_data_static<85>
   using func_ptr_type = void (User::*)(DDSResponder &, int, std::string);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "BanSelfAndConnections"; }
+  static constexpr auto GetName() { return "BanSelf"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xB2ED1E00; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x516FE7BC; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 85; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::BanSelfAndConnections; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::BanSelf; }
   template <int i>
   struct param_info { };
 };
@@ -5402,15 +5358,15 @@ struct StormReflFuncInfo<User>::func_data_static<85>::param_info<2>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<86>
 {
-  using func_ptr_type = void (User::*)(DDSResponder &);
+  using func_ptr_type = void (User::*)(DDSResponder &, int, std::string);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "Kick"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "BanSelfAndConnections"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xBEE7703B; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xB2ED1E00; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 86; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::Kick; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::BanSelfAndConnections; }
   template <int i>
   struct param_info { };
 };
@@ -5426,7 +5382,53 @@ struct StormReflFuncInfo<User>::func_data_static<86>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<86>::param_info<1>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "duration"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x865F80C0; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<86>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "message"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xB6BD307F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<87>
+{
+  using func_ptr_type = void (User::*)(DDSResponder &);
+  using return_type = void;
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "Kick"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xBEE7703B; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 87; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::Kick; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<87>::param_info<0>
+{
+  using param_type = DDSResponder &;
+  static constexpr auto GetName() { return "responder"; }
+  static constexpr auto GetType() { return "DDSResponder &"; }
+  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<88>
 {
   using func_ptr_type = void (User::*)(DDSKey, bool);
   using return_type = void;
@@ -5435,14 +5437,14 @@ struct StormReflFuncInfo<User>::func_data_static<87>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x23788C9F; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 87; }
+  static constexpr auto GetFunctionIndex() { return 88; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleRename; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<87>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<88>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "return_ep"; }
@@ -5452,7 +5454,7 @@ struct StormReflFuncInfo<User>::func_data_static<87>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<87>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<88>::param_info<1>
 {
   using param_type = bool;
   static constexpr auto GetName() { return "success"; }
@@ -5462,7 +5464,7 @@ struct StormReflFuncInfo<User>::func_data_static<87>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<88>
+struct StormReflFuncInfo<User>::func_data_static<89>
 {
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
@@ -5471,34 +5473,8 @@ struct StormReflFuncInfo<User>::func_data_static<88>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x4EF182BD; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 88; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchWelcomeInfoForEdit; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<88>::param_info<0>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "endpoint_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<89>
-{
-  using func_ptr_type = void (User::*)(DDSKey, std::string);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleWelcomeInfoEdit"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x6376041C; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 89; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleWelcomeInfoEdit; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchWelcomeInfoForEdit; }
   template <int i>
   struct param_info { };
 };
@@ -5514,27 +5490,17 @@ struct StormReflFuncInfo<User>::func_data_static<89>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<89>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "info"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xCB893157; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
 struct StormReflFuncInfo<User>::func_data_static<90>
 {
   using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "UpdateWelcomeInfo"; }
+  static constexpr auto GetName() { return "HandleWelcomeInfoEdit"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xEBDD5ACF; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x6376041C; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 90; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::UpdateWelcomeInfo; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleWelcomeInfoEdit; }
   template <int i>
   struct param_info { };
 };
@@ -5562,15 +5528,15 @@ struct StormReflFuncInfo<User>::func_data_static<90>::param_info<1>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<91>
 {
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "FetchChannelTextForEdit"; }
+  static constexpr auto GetName() { return "UpdateWelcomeInfo"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x0EF454CB; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xEBDD5ACF; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 91; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchChannelTextForEdit; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::UpdateWelcomeInfo; }
   template <int i>
   struct param_info { };
 };
@@ -5588,133 +5554,31 @@ struct StormReflFuncInfo<User>::func_data_static<91>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<91>::param_info<1>
 {
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "channel_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x72F5A1AA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+  using param_type = std::string;
+  static constexpr auto GetName() { return "info"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xCB893157; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<92>
 {
-  using func_ptr_type = void (User::*)(DDSResponder &, DDSKey, DDSKey, DDSKey, int);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 5;
-  static constexpr auto GetName() { return "KickFromChannel"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "FetchChannelTextForEdit"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xFFF3C528; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x0EF454CB; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 92; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::KickFromChannel; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::FetchChannelTextForEdit; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<92>::param_info<0>
-{
-  using param_type = DDSResponder &;
-  static constexpr auto GetName() { return "responder"; }
-  static constexpr auto GetType() { return "DDSResponder &"; }
-  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<92>::param_info<1>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "src_user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x2D11805B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<92>::param_info<2>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "src_user_endpoint"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xAF600F38; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<92>::param_info<3>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "channel_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x72F5A1AA; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<92>::param_info<4>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "src_admin_level"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x67623132; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<93>
-{
-  using func_ptr_type = void (User::*)(std::pair<DDSKey, DDSKey>, std::string);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleChannelTextEdit"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x76BE73EC; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 93; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleChannelTextEdit; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<93>::param_info<0>
-{
-  using param_type = std::pair<DDSKey, DDSKey>;
-  static constexpr auto GetName() { return "edit_info"; }
-  static constexpr auto GetType() { return "std::pair<DDSKey, DDSKey>"; }
-  static constexpr unsigned GetNameHash() { return 0x7A4F8EB4; }
-  static constexpr unsigned GetTypeNameHash() { return 0x5A7146D6; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<93>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "channel_text"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xA7DF04B9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<94>
-{
-  using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string);
-  using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "UpdateChannelText"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xDD70E988; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 94; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::UpdateChannelText; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<94>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -5724,7 +5588,7 @@ struct StormReflFuncInfo<User>::func_data_static<94>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<94>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<92>::param_info<1>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "channel_id"; }
@@ -5734,7 +5598,99 @@ struct StormReflFuncInfo<User>::func_data_static<94>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<94>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<93>
+{
+  using func_ptr_type = void (User::*)(DDSResponder &, DDSKey, DDSKey, DDSKey, int);
+  using return_type = void;
+  static constexpr int params_n = 5;
+  static constexpr auto GetName() { return "KickFromChannel"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xFFF3C528; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 93; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::KickFromChannel; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<93>::param_info<0>
+{
+  using param_type = DDSResponder &;
+  static constexpr auto GetName() { return "responder"; }
+  static constexpr auto GetType() { return "DDSResponder &"; }
+  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<93>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "src_user_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x2D11805B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<93>::param_info<2>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "src_user_endpoint"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xAF600F38; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<93>::param_info<3>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "channel_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x72F5A1AA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<93>::param_info<4>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "src_admin_level"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x67623132; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<94>
+{
+  using func_ptr_type = void (User::*)(std::pair<DDSKey, DDSKey>, std::string);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleChannelTextEdit"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x76BE73EC; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 94; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleChannelTextEdit; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<94>::param_info<0>
+{
+  using param_type = std::pair<DDSKey, DDSKey>;
+  static constexpr auto GetName() { return "edit_info"; }
+  static constexpr auto GetType() { return "std::pair<DDSKey, DDSKey>"; }
+  static constexpr unsigned GetNameHash() { return 0x7A4F8EB4; }
+  static constexpr unsigned GetTypeNameHash() { return 0x5A7146D6; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<94>::param_info<1>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "channel_text"; }
@@ -5746,57 +5702,21 @@ struct StormReflFuncInfo<User>::func_data_static<94>::param_info<2>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<95>
 {
-  using func_ptr_type = void (User::*)(std::pair<DDSKey, std::string>, int);
+  using func_ptr_type = void (User::*)(DDSKey, DDSKey, std::string);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleBuiltInChannelCreate"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "UpdateChannelText"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xDD51D4FB; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xDD70E988; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 95; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleBuiltInChannelCreate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::UpdateChannelText; }
   template <int i>
   struct param_info { };
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<95>::param_info<0>
-{
-  using param_type = std::pair<DDSKey, std::string>;
-  static constexpr auto GetName() { return "return_info"; }
-  static constexpr auto GetType() { return "std::pair<DDSKey, std::string>"; }
-  static constexpr unsigned GetNameHash() { return 0xAA7F81BE; }
-  static constexpr unsigned GetTypeNameHash() { return 0xA4BE8D15; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<95>::param_info<1>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "ec"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x8DE8BDFF; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<96>
-{
-  using func_ptr_type = void (User::*)(DDSKey, std::string);
-  using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleCommandResponderMessage"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x17495892; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 96; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandResponderMessage; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<User>::func_data_static<96>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "endpoint_id"; }
@@ -5806,27 +5726,73 @@ struct StormReflFuncInfo<User>::func_data_static<96>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<96>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<95>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "channel_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x72F5A1AA; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<95>::param_info<2>
 {
   using param_type = std::string;
-  static constexpr auto GetName() { return "msg"; }
+  static constexpr auto GetName() { return "channel_text"; }
   static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
+  static constexpr unsigned GetNameHash() { return 0xA7DF04B9; }
   static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<96>
+{
+  using func_ptr_type = void (User::*)(std::pair<DDSKey, std::string>, int);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleBuiltInChannelCreate"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xDD51D4FB; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 96; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleBuiltInChannelCreate; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<96>::param_info<0>
+{
+  using param_type = std::pair<DDSKey, std::string>;
+  static constexpr auto GetName() { return "return_info"; }
+  static constexpr auto GetType() { return "std::pair<DDSKey, std::string>"; }
+  static constexpr unsigned GetNameHash() { return 0xAA7F81BE; }
+  static constexpr unsigned GetTypeNameHash() { return 0xA4BE8D15; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<96>::param_info<1>
+{
+  using param_type = int;
+  static constexpr auto GetName() { return "ec"; }
+  static constexpr auto GetType() { return "int"; }
+  static constexpr unsigned GetNameHash() { return 0x8DE8BDFF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
 };
 
 template <>
 struct StormReflFuncInfo<User>::func_data_static<97>
 {
-  using func_ptr_type = void (User::*)(DDSKey);
+  using func_ptr_type = void (User::*)(DDSKey, std::string);
   using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleCommandUserLookupFail"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleCommandResponderMessage"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x0406BB36; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x17495892; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 97; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandUserLookupFail; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandResponderMessage; }
   template <int i>
   struct param_info { };
 };
@@ -5842,17 +5808,27 @@ struct StormReflFuncInfo<User>::func_data_static<97>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<User>::func_data_static<97>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "msg"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
 struct StormReflFuncInfo<User>::func_data_static<98>
 {
   using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
   static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "HandleCommandSquadLookupFail"; }
+  static constexpr auto GetName() { return "HandleCommandUserLookupFail"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x4E1E0992; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x0406BB36; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 98; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandSquadLookupFail; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandUserLookupFail; }
   template <int i>
   struct param_info { };
 };
@@ -5870,15 +5846,15 @@ struct StormReflFuncInfo<User>::func_data_static<98>::param_info<0>
 template <>
 struct StormReflFuncInfo<User>::func_data_static<99>
 {
-  using func_ptr_type = void (User::*)(DDSKey, int);
+  using func_ptr_type = void (User::*)(DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleBotCreate"; }
+  static constexpr int params_n = 1;
+  static constexpr auto GetName() { return "HandleCommandSquadLookupFail"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA902B9D0; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x4E1E0992; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 99; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleBotCreate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleCommandSquadLookupFail; }
   template <int i>
   struct param_info { };
 };
@@ -5894,7 +5870,33 @@ struct StormReflFuncInfo<User>::func_data_static<99>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<99>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<100>
+{
+  using func_ptr_type = void (User::*)(DDSKey, int);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleBotCreate"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xA902B9D0; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 100; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleBotCreate; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<100>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "endpoint_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<User>::func_data_static<100>::param_info<1>
 {
   using param_type = int;
   static constexpr auto GetName() { return "ec"; }
@@ -5904,7 +5906,7 @@ struct StormReflFuncInfo<User>::func_data_static<99>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<100>
+struct StormReflFuncInfo<User>::func_data_static<101>
 {
   using func_ptr_type = void (User::*)(DDSResponder &);
   using return_type = void;
@@ -5913,14 +5915,14 @@ struct StormReflFuncInfo<User>::func_data_static<100>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x02540D1A; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 100; }
+  static constexpr auto GetFunctionIndex() { return 101; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::GetInfo; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<100>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<101>::param_info<0>
 {
   using param_type = DDSResponder &;
   static constexpr auto GetName() { return "responder"; }
@@ -5930,7 +5932,7 @@ struct StormReflFuncInfo<User>::func_data_static<100>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<101>
+struct StormReflFuncInfo<User>::func_data_static<102>
 {
   using func_ptr_type = void (User::*)(std::tuple<int, std::string, DDSResponderData>, int, std::string);
   using return_type = void;
@@ -5939,14 +5941,14 @@ struct StormReflFuncInfo<User>::func_data_static<101>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x42DB6E29; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 101; }
+  static constexpr auto GetFunctionIndex() { return 102; }
   static constexpr func_ptr_type GetFunctionPtr() { return &User::HandleUserNameLookupForCall; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<101>::param_info<0>
+struct StormReflFuncInfo<User>::func_data_static<102>::param_info<0>
 {
   using param_type = std::tuple<int, std::string, DDSResponderData>;
   static constexpr auto GetName() { return "call_data"; }
@@ -5956,7 +5958,7 @@ struct StormReflFuncInfo<User>::func_data_static<101>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<101>::param_info<1>
+struct StormReflFuncInfo<User>::func_data_static<102>::param_info<1>
 {
   using param_type = int;
   static constexpr auto GetName() { return "ec"; }
@@ -5966,7 +5968,7 @@ struct StormReflFuncInfo<User>::func_data_static<101>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<User>::func_data_static<101>::param_info<2>
+struct StormReflFuncInfo<User>::func_data_static<102>::param_info<2>
 {
   using param_type = std::string;
   static constexpr auto GetName() { return "data"; }

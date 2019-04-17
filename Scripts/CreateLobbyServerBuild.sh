@@ -16,12 +16,15 @@ cp -p CMake/cotire.cmake LobbyServer/CMake
 cp -p CMake/Lobby/CMakeLists.txt LobbyServer
 
 cp -rp External/hash LobbyServer/External
+cp -rp External/binpack LobbyServer/External
 cp -rp External/mbedtls LobbyServer/External
 cp -rp External/sb LobbyServer/External
 cp -rp External/gsl LobbyServer/External
+cp -rp External/glm LobbyServer/External
 cp -rp External/asio LobbyServer/External
 cp -rp External/mongoc LobbyServer/External
 cp -rp External/libbson LobbyServer/External
+cp -rp External/colony LobbyServer/External
 cp -rp External/yajl LobbyServer/External
 
 cp -rp StormTech/StormData LobbyServer/StormTech
@@ -33,6 +36,9 @@ cp -rp StormTech/HurricaneDDS LobbyServer/StormTech
 cp -rp Lobby/Lobby LobbyServer/Lobby
 cp -rp Lobby/LobbyMain LobbyServer/Lobby
 cp -rp Lobby/GCPTemplates LobbyServer/Lobby
+
+cp -rp Shared/Runtime LobbyServer/Shared
+cp -rp Shared/Foundation LobbyServer/Shared
 
 cp -p ProjectSettings/* LobbyServer/ProjectSettings
 

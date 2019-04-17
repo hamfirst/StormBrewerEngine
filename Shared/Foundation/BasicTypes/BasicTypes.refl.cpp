@@ -2,7 +2,7 @@
 #include "Foundation/Common.h"
 #include "Foundation/BasicTypes/BasicTypes.refl.meta.h"
 
-#include <StormData/StormDataJson.h>
+#include "StormData/StormDataJson.h"
 
 Vector2::Vector2() :
   x(0), y(0)

@@ -3,7 +3,7 @@
 #include "PropertyFieldMetaData.h"
 #include "PropertyFieldDatabase.h"
 
-#include <StormRefl/StormReflMetaEnum.h>
+#include "StormRefl/StormReflMetaEnum.h"
 
 template <typename T>
 PropertyField * GetProperyMetaData(PropertyFieldDatabase & property_db);

@@ -191,9 +191,12 @@ void GameController::DestroyObserver(std::size_t observer_index, GameLogicContai
 void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index,
         GameLogicContainer & game, int team, uint32_t random_number, const GamePlayerLoadout & loadout)
 {
-  auto game_data = game.GetLowFrequencyInstanceDataForModify();
-  auto user_name = game_data.m_Observers[observer_index].m_UserName;
+  auto & game_data = game.GetLowFrequencyInstanceDataForModify();
+  auto & user_name = game_data.m_Observers[observer_index].m_UserName;
   game_data.m_Observers.RemoveAt(observer_index);
+
+  auto & stage = game.GetStage();
+  auto & map_props = stage.GetMapProperties();
 
   GamePlayer player;
   player.m_UserName = user_name;
@@ -202,7 +205,7 @@ void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::si
   if(team < 0)
   {
     auto team_counts = GetTeamCounts(game_data);
-    player.m_Team = GetRandomTeam(team_counts, random_number);
+    player.m_Team = GetRandomTeam(team_counts, random_number, map_props, game.GetGameInitSettings());
   }
   else
   {
@@ -214,9 +217,9 @@ void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::si
 
 void GameController::ConvertPlayerToObserver(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game)
 {
-  auto game_data = game.GetLowFrequencyInstanceDataForModify();
-  auto user_name = game_data.m_Players[player_index].m_UserName;
-  auto team = game_data.m_Players[player_index].m_Team;
+  auto & game_data = game.GetLowFrequencyInstanceDataForModify();
+  auto & user_name = game_data.m_Players[player_index].m_UserName;
+  auto & team = game_data.m_Players[player_index].m_Team;
   game_data.m_Players.RemoveAt(player_index);
 
   GameObserver observer;
@@ -233,12 +236,16 @@ void GameController::ConvertPlayerToObserver(std::size_t observer_index, std::si
 
 void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEvent> & ext, GameLogicContainer & game)
 {
+  auto & stage = game.GetStage();
+  auto & map_props = stage.GetMapProperties();
+  auto & game_settings = game.GetGameInitSettings();
+
   if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerJoinedEvent>())
   {
     auto ev = ext.Get<PlayerJoinedEvent>();
 
     auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
-    auto team = GetRandomTeam(team_counts, ev->m_RandomSeed);
+    auto team = GetRandomTeam(team_counts, ev->m_RandomSeed, map_props, game_settings);
     ConstructPlayer(ev->m_PlayerIndex, game, ev->m_UserName, team);
   }
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerLeaveEvent>())
@@ -369,7 +376,12 @@ int GameController::AddAIPlayer(GameLogicContainer & game, uint32_t random_numbe
     if (game_data.m_Players.HasAt(index) == false)
     {
       auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
-      ConstructPlayer(index, game, "AI", GetRandomTeam(team_counts, random_number));
+
+      auto & stage = game.GetStage();
+      auto & map_props = stage.GetMapProperties();
+      auto & game_settings = game.GetGameInitSettings();
+
+      ConstructPlayer(index, game, "AI", GetRandomTeam(team_counts, random_number, map_props, game_settings));
 
       auto & instance_data = game.GetInstanceData();
       instance_data.m_AIPlayerInfo.EmplaceAt(index);
@@ -400,7 +412,11 @@ void GameController::FillWithBots(GameLogicContainer & game, uint32_t random_num
       }
     }
 
-    auto team = GetRandomTeam(team_counts, random_number);
+    auto & stage = game.GetStage();
+    auto & map_props = stage.GetMapProperties();
+    auto & game_settings = game.GetGameInitSettings();
+
+    auto team = GetRandomTeam(team_counts, random_number, map_props, game_settings);
     ConstructBot(slot, game, "AI", team);
   }
 }
