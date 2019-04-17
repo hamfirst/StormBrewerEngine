@@ -23,7 +23,6 @@ struct UserGameInfo
   STORM_DATA_DEFAULT_CONSTRUCTION(UserGameInfo);
 
   RKey m_GameId;
-  RKey m_GameServerId;
 };
 
 struct UserInfo
@@ -151,19 +150,21 @@ struct GameMember
 
   RKey m_UserKey;
   RKey m_PlatformId;
+  RString m_Platform;
+
   RString m_Icon;
   RString m_Title;
 };
 
 
-enum STORM_REFL_ENUM class GameState
+enum STORM_REFL_ENUM class LobbyGameState
 {
   kWaiting,
   kCountdown,
   kStarted,
 };
 
-enum STORM_REFL_ENUM class GameType
+enum STORM_REFL_ENUM class LobbyGameType
 {
   kCasual,
   kCompetitive,
@@ -174,8 +175,8 @@ struct GameInfo
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameInfo);
 
-  REnum<GameState> m_State;
-  REnum<GameType> m_Type;
+  REnum<LobbyGameState> m_State;
+  REnum<LobbyGameType> m_Type;
 
   RInt m_Countdown;
   RKey m_GameLeader;

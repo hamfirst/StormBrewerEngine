@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PropertyFieldMetaData.h"
+#include "Foundation/PropertyMeta/PropertyFieldMetaData.h"
 
 class PropertyFieldDatabase
 {

@@ -168,6 +168,7 @@ struct UserChatMessageGame
   STORM_REFL;
   std::string c;
   std::string user;
+  std::string title;
   std::string msg;
 };
 
@@ -228,7 +229,6 @@ struct UserDestroyGame
 {
   STORM_REFL;
   std::string c;
-  DDSKey server_id;
   DDSKey game_id;
 };
 

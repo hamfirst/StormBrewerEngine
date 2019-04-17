@@ -1,6 +1,6 @@
 
 #include "Foundation/Common.h"
-#include "Semaphore.h"
+#include "Foundation/Thread/Semaphore.h"
 
 #ifndef _INCLUDEOS
 

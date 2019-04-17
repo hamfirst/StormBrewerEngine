@@ -2167,7 +2167,7 @@ template <>
 struct StormReflTypeInfo<UserChatMessageGame>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 4;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -2260,19 +2260,44 @@ template <>
 struct StormReflTypeInfo<UserChatMessageGame>::field_data_static<2>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "title"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x2B36786B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &UserChatMessageGame::title; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserChatMessageGame *>(obj); return &ptr->title; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserChatMessageGame *>(obj); return &ptr->title; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserChatMessageGame>::field_data<2, Self> : public StormReflTypeInfo<UserChatMessageGame>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.title; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.title; }
+  void SetDefault() { self.title = StormReflTypeInfo<UserChatMessageGame>::GetDefault().title; }
+};
+
+template <>
+struct StormReflTypeInfo<UserChatMessageGame>::field_data_static<3>
+{
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "msg"; }
   static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x688A5FAF; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UserChatMessageGame::msg; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserChatMessageGame *>(obj); return &ptr->msg; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserChatMessageGame *>(obj); return &ptr->msg; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserChatMessageGame>::field_data<2, Self> : public StormReflTypeInfo<UserChatMessageGame>::field_data_static<2>
+struct StormReflTypeInfo<UserChatMessageGame>::field_data<3, Self> : public StormReflTypeInfo<UserChatMessageGame>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -3118,7 +3143,7 @@ template <>
 struct StormReflTypeInfo<UserDestroyGame>
 {
   using MyBase = void;
-  static constexpr int fields_n = 3;
+  static constexpr int fields_n = 2;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -3186,44 +3211,19 @@ template <>
 struct StormReflTypeInfo<UserDestroyGame>::field_data_static<1>
 {
   using member_type = DDSKey; // unsigned long
-  static constexpr auto GetName() { return "server_id"; }
-  static constexpr auto GetType() { return "unsigned long"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x1844E6B7; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &UserDestroyGame::server_id; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserDestroyGame *>(obj); return &ptr->server_id; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserDestroyGame *>(obj); return &ptr->server_id; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<UserDestroyGame>::field_data<1, Self> : public StormReflTypeInfo<UserDestroyGame>::field_data_static<1>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, DDSKey> & Get() { return self.server_id; }
-  std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.server_id; }
-  void SetDefault() { self.server_id = StormReflTypeInfo<UserDestroyGame>::GetDefault().server_id; }
-};
-
-template <>
-struct StormReflTypeInfo<UserDestroyGame>::field_data_static<2>
-{
-  using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "game_id"; }
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE48FD905; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserDestroyGame::game_id; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserDestroyGame *>(obj); return &ptr->game_id; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserDestroyGame *>(obj); return &ptr->game_id; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserDestroyGame>::field_data<2, Self> : public StormReflTypeInfo<UserDestroyGame>::field_data_static<2>
+struct StormReflTypeInfo<UserDestroyGame>::field_data<1, Self> : public StormReflTypeInfo<UserDestroyGame>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

@@ -178,15 +178,16 @@ struct User
 #endif
 
   void STORM_REFL_FUNC JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer);
-  void STORM_REFL_FUNC SetInGame(DDSKey server_id, int game_id, DDSKey game_random_id, DDSKey endpoint_id, std::string game_info);
-  void STORM_REFL_FUNC DestroyGame(DDSKey server_id, DDSKey endpoint_id, int game_id);
-  void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey server_id, DDSKey endpoint_id, int game_id, DDSKey game_random_id, std::string game_info, bool success);
+  void STORM_REFL_FUNC SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id);
+  void STORM_REFL_FUNC DestroyGame(DDSKey endpoint_id, DDSKey game_id);
+  void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success);
   void STORM_REFL_FUNC SendGameChat(DDSKey endpoint_id, std::string msg);
   void STORM_REFL_FUNC SwitchTeams(DDSKey endpoint_id);
   void STORM_REFL_FUNC StartGame();
   void STORM_REFL_FUNC LeaveGame();
-  void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_random_id);
-  void STORM_REFL_FUNC HandleGameUpdate(std::tuple<int, DDSKey> game_info, std::string data);
+  void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg);
+  void STORM_REFL_FUNC HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data);
 
   // Squad Functions
 #ifdef ENABLE_SQUADS
@@ -355,7 +356,6 @@ public:
   bool m_InGame = false;
   bool m_SentInitialGameData = false;
   DDSKey m_GameId = 0;
-  DDSKey m_GameServerId = 0;
   DDSKey m_GameRandomId = 0;
 
   DDSKey m_GameEndpoint = 0;

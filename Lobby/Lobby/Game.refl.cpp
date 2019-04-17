@@ -32,6 +32,16 @@ void Game::Init(GameInitSettings settings)
                          level_name, m_GameInfo.m_JoinCode, !m_GameInfo.m_Password.emtpy(), false);
 }
 
+void Game::Destroy()
+{
+  for(auto user : m_GameInfo.m_Users)
+  {
+    m_Interface.Call(&User::NotifyLeftGame, user.second.m_UserKey, m_Interface.GetLocalKey(), m_GameRandomId);
+  }
+
+  Cleanup();
+}
+
 void Game::Cleanup()
 {
   m_Interface.CallShared(&GameList::RemoveGame, m_Interface.GetLocalKey());
@@ -40,7 +50,7 @@ void Game::Cleanup()
 
 void Game::Update()
 {
-  if(m_GameInfo.m_State == GameState::kCountdown)
+  if(m_GameInfo.m_State == LobbyGameState::kCountdown)
   {
     m_GameInfo.m_Countdown = m_GameInfo.m_Countdown - 1;
     if(m_GameInfo.m_Countdown <= 0)
@@ -48,7 +58,7 @@ void Game::Update()
       StartGame();
     }
   }
-  else if(m_GameInfo.m_State == GameState::kWaiting && m_GameInfo.m_Type == GameType::kCasual)
+  else if(m_GameInfo.m_State == LobbyGameState::kWaiting && m_GameInfo.m_Type == LobbyGameType::kCasual)
   {
     m_GameInfo.m_Countdown = kCasualGameAutoStartTime - (m_Interface.GetNetworkTime() - m_GameCreateTime);
     if(m_GameInfo.m_Countdown <= 0)
@@ -63,13 +73,37 @@ void Game::SetJoinCode(uint32_t join_code)
   m_GameInfo.m_JoinCode = join_code;
 }
 
-void Game::AddUser(DDSResponder & responder, DDSKey user_key)
+void Game::AddUser(DDSResponder & responder, DDSKey user_key, DDSKey endpoint_id, std::string name, std::string password, bool observer)
 {
+  if(m_GameInfo.m_Password != password)
+  {
+    DDSResponderCall(responder, m_Interface.GetLocalKey(), endpoint_id, m_GameRandomId, false);
+    return;
+  }
+
   DDSKey sub_id =
           m_Interface.CreateSubscription(DDSSubscriptionTarget<User>{}, user_key, ".m_UserInfo", &Game::HandleMemberUpdate, true, user_key);
 
+  GameMember member;
+  member.m_UserKey = user_key;
+  member.m_Name = name;
+
+  if(observer)
+  {
+    member.m_Team = -1;
+  }
+  else
+  {
+    auto & level_info = g_LobbyLevelList.GetLevelInfo(m_GameInfo.m_Settings->m_StageIndex);
+
+    auto team_counts = GetTeamCounts();
+    member.m_Team = GetRandomTeam(team_counts, DDSGetRandomNumber(), level_info, m_GameInfo.m_Settings.Value());
+  }
+
+  m_GameInfo.m_Users.EmplaceBack(std::move(member));
+
   m_MemberSubscriptionIds.emplace(std::make_pair(user_key, sub_id));
-  DDSResponderCall(responder, ChannelJoinResult::kSuccess);
+  DDSResponderCall(responder, m_Interface.GetLocalKey(), endpoint_id, m_GameRandomId, true);
 }
 
 void Game::RemoveUser(DDSKey user_key)
@@ -139,12 +173,12 @@ bool Game::AllPlayersReady() const
 void Game::StartGame()
 {
   m_GameInfo.m_Countdown = 0;
-  m_GameInfo.m_State = GameState::kStarted;
+  m_GameInfo.m_State = LobbyGameState::kStarted;
 }
 
 void Game::RequestStartGame(DDSKey user_key)
 {
-  if(m_GameInfo.m_State == GameState::kWaiting && m_GameInfo.m_Type == GameType::kPrivate && m_GameInfo.m_GameLeader == user_key)
+  if(m_GameInfo.m_State == LobbyGameState::kWaiting && m_GameInfo.m_Type == LobbyGameType::kPrivate && m_GameInfo.m_GameLeader == user_key)
   {
     StartGame();
   }
@@ -173,7 +207,7 @@ void Game::RandomizeTeams()
   std::shuffle(player_indices.begin(), player_indices.end(), DDSRandomGenerator{});
   for(auto & index : player_indices)
   {
-    auto team = GetRandomTeam(team_counts, DDSGetRandomNumber());
+    auto team = GetRandomTeam(team_counts, DDSGetRandomNumber(), map_props, m_GameInfo.m_Settings.Value());
     if(team <= num_teams && team_counts[team] + 1 < max_team_sizes[team])
     {
       m_GameInfo.m_Users[index].m_Team = team;
@@ -186,7 +220,7 @@ void Game::RandomizeTeams()
   }
 }
 
-void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message, std::string title)
+void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message)
 {
   std::string player_name;
   bool is_leader = (user_key == m_GameInfo.m_GameLeader);
@@ -204,14 +238,19 @@ void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message, st
     return;
   }
 
-
+  for(auto itr : m_GameInfo.m_Users)
+  {
+    m_Interface.Call(&User::HandleGameChat, itr.second.m_UserKey, m_Interface.GetLocalKey(), m_GameRandomId,
+            itr.second.m_Name, itr.second.m_Title, message);
+  }
 }
 
 void Game::UpdateSettings(DDSKey user_key, GameInitSettings settings)
 {
-  if(m_GameInfo.m_State == GameState::kWaiting && m_GameInfo.m_Type == GameType::kPrivate && m_GameInfo.m_GameLeader == user_key)
+  if(m_GameInfo.m_State == LobbyGameState::kWaiting && m_GameInfo.m_Type == LobbyGameType::kPrivate && m_GameInfo.m_GameLeader == user_key)
   {
     m_GameInfo.m_Settings = settings;
+    ValidateTeams();
   }
 }
 
@@ -276,7 +315,7 @@ void Game::HandleMemberUpdate(DDSKey user_key, std::string data)
     return;
   }
 
-  StormDataApplyChangePacket(itr->second, data.data());
+  StormDataApplyChangePacket(itr->second, data.c_str());
 }
 
 std::vector<int> Game::GetTeamCounts()
@@ -296,4 +335,32 @@ std::vector<int> Game::GetTeamCounts()
   }
 
   return team_counts;
+}
+
+void Game::ValidateTeams()
+{
+  auto & level_info = g_LobbyLevelList.GetLevelInfo(m_GameInfo.m_Settings->m_StageIndex);
+  auto max_teams = GetMaxTeams(level_info, m_GameInfo.m_Settings.Value());
+
+  std::vector<int> max_team_sizes;
+  for(int team = 0; team < max_teams; ++team)
+  {
+    max_team_sizes.emplace_back(GetMaxTeamSize(team, level_info, m_GameInfo.m_Settings.Value()));
+  }
+
+  std::vector<int> team_counts;
+  team_counts.resize(max_teams);
+
+  for(auto player : m_GameInfo.m_Users)
+  {
+    int team = player.second.m_Team;
+    if(team >= max_teams || team_counts[team] >= max_team_sizes[team])
+    {
+      player.second.m_Team = -1;
+    }
+    else
+    {
+      team_counts[team]++;
+    }
+  }
 }

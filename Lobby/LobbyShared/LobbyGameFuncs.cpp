@@ -4,14 +4,16 @@
 #include "Game/GameNetworkData.refl.h"
 #include "Runtime/Map/MapPropertiesDef.refl.h"
 
-int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number)
+int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number, const MapPropertiesDef & map_props, const GameInitSettings & settings)
 {
+  assert(GetMaxTeams(map_props, settings) == team_counts.size());
+
   std::vector<int> best_teams;
   int best_team_count = 100000;
 
   for (std::size_t index = 0, end = team_counts.size(); index < end; ++index)
   {
-    if (team_counts[index] < best_team_count)
+    if (team_counts[index] < best_team_count && team_counts[index] < GetMaxTeamSize(index, map_props, settings))
     {
       best_teams.clear();
       best_teams.push_back((int)index);
@@ -21,6 +23,11 @@ int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number)
     {
       best_teams.push_back((int)index);
     }
+  }
+
+  if(best_teams.empty())
+  {
+    return -1;
   }
 
   return best_teams[random_number % best_teams.size()];

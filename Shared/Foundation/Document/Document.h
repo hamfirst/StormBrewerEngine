@@ -6,7 +6,7 @@
 #include "Foundation/Delegate/Delegate.h"
 #include "Foundation/Document/DocumentTypes.refl.h"
 
-#include <StormData/StormDataChangeNotifier.h>
+#include "StormData/StormDataChangeNotifier.h"
 
 class DocumentCompiler;
 

@@ -9,7 +9,7 @@ struct GameInitSettings;
 struct LobbyMapProperties;
 struct MapPropertiesDef;
 
-int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number);
+int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number, const MapPropertiesDef & map_props, const GameInitSettings & settings);
 int GetMaxPlayers(const MapPropertiesDef & map_props, const GameInitSettings & settings);
 int GetMaxTeams(const MapPropertiesDef & map_props, const GameInitSettings & settings);
 int GetMaxTeamSize(int team, const MapPropertiesDef & map_props, const GameInitSettings & settings);
