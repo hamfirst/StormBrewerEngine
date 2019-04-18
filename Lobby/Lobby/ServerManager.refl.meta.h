@@ -3,6 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "ServerManager.refl.h"
+#include "SharedTypes.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
 
 
@@ -62,12 +63,12 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<0>
   using func_ptr_type = void (ServerManager::*)();
   using return_type = void;
   static constexpr int params_n = 0;
-  static constexpr auto GetName() { return "RequestNewToken"; }
+  static constexpr auto GetName() { return "RequestNewCloudToken"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x18E1851B; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xC78A5B6D; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 0; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::RequestNewToken; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::RequestNewCloudToken; }
   template <int i>
   struct param_info { };
 };
@@ -78,12 +79,12 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<1>
   using func_ptr_type = void (ServerManager::*)(bool, std::string, std::string);
   using return_type = void;
   static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleTokenResponse"; }
+  static constexpr auto GetName() { return "HandleCloudTokenResponse"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA77CB98C; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xDA7C08E0; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 1; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleTokenResponse; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleCloudTokenResponse; }
   template <int i>
   struct param_info { };
 };

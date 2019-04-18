@@ -585,8 +585,12 @@ if(BUILD_SERVER OR BUILD_TOOLS)
   add_dependencies(HurricaneDDS StormData)
   add_dependencies(GameServer Game)
   add_dependencies(GameServerExe Game)
+  add_dependencies(Lobby Game)
   add_dependencies(LobbyServerConnection Game)
   add_dependencies(LobbyServerConnection Lobby)
+  add_dependencies(GameServerExe Lobby)
+  add_dependencies(GameClientExe Lobby)
+
 endif()
 
 if(BUILD_TOOLS)

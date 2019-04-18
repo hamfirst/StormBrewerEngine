@@ -259,7 +259,7 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
       fprintf(fp, "  static constexpr auto GetType() { return \"%s\"; }\n", field.m_CannonicalType.c_str());
       fprintf(fp, "  static constexpr unsigned GetFieldNameHash() { return 0x%08X; }\n", crc32(field.m_Name));
       fprintf(fp, "  static constexpr unsigned GetTypeNameHash() { return 0x%08X; }\n", crc32(field.m_CannonicalType));
-      fprintf(fp, "  static constexpr bool HasDefault() { return %s; }\n", cl.m_NoDefault ? "false" : "true");
+      fprintf(fp, "  static constexpr bool HasDefault() { return %s; }\n", cl.m_NoDefault || field.m_IsArray ? "false" : "true");
       fprintf(fp, "  static constexpr auto GetFieldIndex() { return %d%s; }\n", (int)index, base_str.c_str());
       fprintf(fp, "  static constexpr auto GetMemberPtr() { return &%s::%s; }\n", cl.m_Name.c_str(), field.m_Name.c_str());
       fprintf(fp, "  static void * GetFromParent(void * obj) { auto ptr = static_cast<%s *>(obj); return &ptr->%s; }\n", cl.m_Name.c_str(), field.m_Name.c_str());
@@ -275,7 +275,7 @@ void OutputReflectedFile(const std::string & filename, const std::vector<Reflect
       fprintf(fp, "  match_const_t<Self, %s> & Get() { return self.%s; }\n", field.m_Type.c_str(), field.m_Name.c_str());
       fprintf(fp, "  std::add_const_t<std::remove_reference_t<%s>> & Get() const { return self.%s; }\n", field.m_Type.c_str(), field.m_Name.c_str());
 
-      if (cl.m_NoDefault == false)
+      if (cl.m_NoDefault == false && field.m_IsArray == false)
       {
         fprintf(fp, "  void SetDefault() { self.%s = StormReflTypeInfo<%s>::GetDefault().%s; }\n", field.m_Name.c_str(), cl.m_Name.c_str(), field.m_Name.c_str());
       }

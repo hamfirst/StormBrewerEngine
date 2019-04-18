@@ -7,8 +7,6 @@
 
 #include "Rewards.refl.meta.h"
 
-extern bool g_LoadRewards;
-
 #ifdef ENABLE_REWARDS
 
 Rewards::Rewards(DDSObjectInterface & obj_interface) :
@@ -19,27 +17,20 @@ Rewards::Rewards(DDSObjectInterface & obj_interface) :
 
 void Rewards::Initialize()
 {
-  if (g_LoadRewards)
+  FILE * fp = fopen("rewards.txt", "rt");
+  if (fp != nullptr)
   {
-    FILE * fp = fopen("rewards.txt", "rt");
-    if (fp != nullptr)
-    {
-      fseek(fp, 0, SEEK_END);
-      auto size = ftell(fp);
-      fseek(fp, 0, SEEK_SET);
+    fseek(fp, 0, SEEK_END);
+    auto size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
 
-      auto buffer = std::make_unique<char[]>(size + 1);
-      fread(buffer.get(), 1, size, fp);
-      fclose(fp);
+    auto buffer = std::make_unique<char[]>(size + 1);
+    fread(buffer.get(), 1, size, fp);
+    fclose(fp);
 
-      buffer[size] = 0;
+    buffer[size] = 0;
 
-      StormReflParseJson(m_Info, buffer.get());
-    }
-  }
-  else
-  {
-    StormReflParseJson(m_Info, m_Interface.QueryDatabaseSingleton("rewards"));
+    StormReflParseJson(m_Info, buffer.get());
   }
 }
 
@@ -67,11 +58,6 @@ void Rewards::UpdateRewards(int input_xp, int & xp, int & level, std::vector<Use
       return;
     }
   }
-}
-
-void Rewards::FetchRewards(DDSResponder & responder)
-{
-  DDSResponderCall(responder, StormReflEncodeJson(m_Info));
 }
 
 #endif

@@ -146,10 +146,10 @@ void ServerManager::Initialize()
     DDSLog::LogError("pk_parse_key -0x%x\n", -ret);
   }
 
-  auto payload = GetTokenAssertion();
+  auto payload = GetCloudTokenAssertion();
   bootstrap.PostUrl(m_CredentialsInfo.token_uri, "Content-Type: application/x-www-form-urlencoded\r\n", payload, [&](const std::string & resp)
   {
-    HandleTokenResponse(true, resp, "");
+    HandleCloudTokenResponse(true, resp, "");
   });
 
   bootstrap.Run();
@@ -231,15 +231,20 @@ void ServerManager::HandleServerListResponse(const std::string & response_data, 
   }
 }
 
-void ServerManager::RequestNewToken()
+void ServerManager::AssignGameServer(DDSKey game_id, int zone)
 {
-  auto payload = GetTokenAssertion();
 
-  DDSHttpRequest request(m_CredentialsInfo.token_uri, payload, "Content-Type: application/x-www-form-urlencoded\r\n");
-  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleTokenResponse);
 }
 
-void ServerManager::HandleTokenResponse(bool success, std::string body, std::string headers)
+void ServerManager::RequestNewCloudToken()
+{
+  auto payload = GetCloudTokenAssertion();
+
+  DDSHttpRequest request(m_CredentialsInfo.token_uri, payload, "Content-Type: application/x-www-form-urlencoded\r\n");
+  m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleCloudTokenResponse);
+}
+
+void ServerManager::HandleCloudTokenResponse(bool success, std::string body, std::string headers)
 {
   GoogleTokenResponse response;
   StormReflParseJson(response, body.data());
@@ -249,7 +254,7 @@ void ServerManager::HandleTokenResponse(bool success, std::string body, std::str
     DDSLog::LogInfo("Got invalid token");
     m_AuthorizationHeader.clear();
 
-    m_Interface.CreateTimer(std::chrono::seconds(10), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
+    m_Interface.CreateTimer(std::chrono::seconds(10), m_Interface.GetLocalKey(), &ServerManager::RequestNewCloudToken);
   }
   else
   {
@@ -258,7 +263,7 @@ void ServerManager::HandleTokenResponse(bool success, std::string body, std::str
         std::string("Authorization: ") + response.token_type + " " + response.access_token + "\r\n" +
         "Content-Type: application/json\r\n";
 
-    m_Interface.CreateTimer(std::chrono::seconds(response.expires_in - 100), m_Interface.GetLocalKey(), &ServerManager::RequestNewToken);
+    m_Interface.CreateTimer(std::chrono::seconds(response.expires_in - 100), m_Interface.GetLocalKey(), &ServerManager::RequestNewCloudToken);
   }
 }
 
@@ -340,7 +345,9 @@ void ServerManager::CheckForServerRequests()
 
 void ServerManager::CheckForTimedOutServers()
 {
-  auto timeout_time = time(nullptr) - 60;
+  static const int kServerTimeout = 60;
+
+  auto timeout_time = time(nullptr) - kServerTimeout;
   auto itr = std::remove_if(m_PendingServers.begin(), m_PendingServers.end(), [&](const PendingServer & server)
   {
     if(server.m_StartTime < timeout_time)
@@ -355,7 +362,7 @@ void ServerManager::CheckForTimedOutServers()
   m_PendingServers.erase(itr, m_PendingServers.end());
 }
 
-std::string ServerManager::GetTokenAssertion()
+std::string ServerManager::GetCloudTokenAssertion()
 {
   auto now = time(nullptr);
 

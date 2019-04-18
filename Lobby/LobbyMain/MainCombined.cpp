@@ -20,9 +20,7 @@
 
 #include <chrono>
 
-bool g_LoadRewards = false;
 std::string g_ExternalIp;
-
 
 int main(int argc, const char ** argv)
 {
@@ -58,8 +56,6 @@ int main(int argc, const char ** argv)
   {
     reset = true;
   }
-
-  g_LoadRewards = true;
 
 #ifdef _DEBUG
   auto coordinator = CreateCoordinatorState(true);

@@ -198,6 +198,13 @@ public:
           auto name_str = std::string(field->getName());
 
           bool ignore_field = false;
+          bool is_array = false;
+
+          auto type = qual_type.getTypePtrOrNull();
+          if(type && dyn_cast<ConstantArrayType>(type))
+          {
+            is_array = true;
+          }
 
           std::vector<std::string> annotations;
           if (field->hasAttrs())
@@ -229,10 +236,9 @@ public:
 
           if (!ignore_field)
           {
-            class_data.m_Fields.emplace_back(ReflectedField{ name_str, type_str, cannon_str, annotations });
+            class_data.m_Fields.emplace_back(ReflectedField{ name_str, type_str, cannon_str, annotations, is_array });
           }
         }
-
 
         //printf("Field: %s, %s\n", name_str.c_str(), type_str.c_str());
       }

@@ -11,6 +11,8 @@
 #include "Lobby/GameData.refl.h"
 #include "Lobby/LobbyConfig.h"
 
+#include "ProjectSettings/ProjectZones.h"
+
 struct UserPersistent
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UserPersistent);
@@ -142,6 +144,18 @@ struct UserPlatformIdLookup
   DDSKey m_PlatformId;
 };
 
+struct UserGameJoinInfo
+{
+  STORM_REFL;
+
+  DDSKey m_EndpointId;
+  std::string m_Password;
+  bool m_Observer;
+  LobbyGameType m_IntendedType;
+
+  UserZoneInfo m_ZoneInfo;
+};
+
 struct User
 {
   DDS_DATA_OBJECT(DDSDataObjectPriority::kMedium);
@@ -173,14 +187,15 @@ struct User
 #endif
 
   // Game Functions
-  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password);
-
-  void STORM_REFL_FUNC JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer);
+  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password, const UserZoneInfo & zone_info);
+  void STORM_REFL_FUNC JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info);
+  void STORM_REFL_FUNC JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info);
   void STORM_REFL_FUNC SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id);
   void STORM_REFL_FUNC DestroyGame(DDSKey endpoint_id, DDSKey game_id);
   void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success);
+  void STORM_REFL_FUNC HandleJoinCodeLookup(DDSKey game_id, const UserGameJoinInfo & join_info);
   void STORM_REFL_FUNC SendGameChat(DDSKey endpoint_id, std::string msg);
-  void STORM_REFL_FUNC SwitchTeams(DDSKey endpoint_id);
+  void STORM_REFL_FUNC SwitchTeams(DDSKey target_user, int team, DDSKey endpoint_id);
   void STORM_REFL_FUNC StartGame();
   void STORM_REFL_FUNC LeaveGame();
   void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);

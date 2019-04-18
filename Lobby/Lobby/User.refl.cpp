@@ -506,7 +506,7 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
-void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password)
+void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password, const UserZoneInfo & zone_info)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
@@ -552,21 +552,38 @@ void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data,
     return;
   }
 #endif
-  
-  //m_Interface.Call(&GameServerConnection::CreateGame, server_id, creator_data, password, creation_data);
+
+  auto game_id = DDSGetRandomNumber64();
+
+  m_Interface.Call(&Game::InitPrivateGame, game_id, creation_data, password);
+
+  UserGameJoinInfo join_info;
+  join_info.m_EndpointId = endpoint_id;
+  join_info.m_Password = password;
+  join_info.m_Observer = false;
+  join_info.m_ZoneInfo = zone_info;
+  join_info.m_IntendedType = LobbyGameType::kPrivate;
+
+  JoinGame(game_id, join_info);
 }
 
-void User::JoinGame(DDSKey game_id, DDSKey endpoint_id, std::string password, bool observer)
+void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
 {
-#ifdef ENABLE_SQUADS
-  std::string squad = m_UserInfo.m_SquadTag;
-#endif
+  GameUserJoinInfo game_info;
+  game_info.m_UserKey = m_Interface.GetLocalKey();
+  game_info.m_EndpointId = join_info.m_EndpointId;
+  game_info.m_Name = m_UserInfo.m_Name;
+  game_info.m_Password = join_info.m_Password;
+  game_info.m_Observer = join_info.m_Observer;
+  game_info.m_ZoneInfo = join_info.m_ZoneInfo;
+  game_info.m_IntendedType = join_info.m_IntendedType;
 
-  int celebration_id = m_Data.m_Celebration != -1 ? m_Data.m_CelebrationIDs[m_Data.m_Celebration] + 1 : 0;
-  bool new_player = m_Data.m_Stats.m_TimePlayed == 0;
+  m_Interface.CallWithResponder(&Game::AddUser, game_id, &User::HandleGameJoinResponse, this, game_info);
+}
 
-  m_Interface.CallWithResponder(&Game::AddUser, game_id, &User::HandleGameJoinResponse, this,
-          m_Interface.GetLocalKey(), endpoint_id, m_UserInfo.m_Name, password, observer);
+void User::JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info)
+{
+  m_Interface.CallSharedWithResponder(&GameList::LookupJoinCode, &User::HandleJoinCodeLookup, this, join_code, join_info);
 }
 
 void User::SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id)
@@ -616,6 +633,18 @@ void User::HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey gam
   }
 }
 
+void User::HandleJoinCodeLookup(DDSKey game_id, const UserGameJoinInfo & join_info)
+{
+  if(game_id == 0)
+  {
+    m_Interface.Call(&UserConnection::SendRuntimeError, join_info.m_EndpointId, std::string("Invalid join code"));
+  }
+  else
+  {
+    JoinGame(game_id, join_info);
+  }
+}
+
 void User::SendGameChat(DDSKey endpoint_id, std::string msg)
 {
   if (m_InGame == false || m_GameEndpoint != endpoint_id)
@@ -626,7 +655,7 @@ void User::SendGameChat(DDSKey endpoint_id, std::string msg)
   m_Interface.Call(&Game::SendChat, m_GameId, m_Interface.GetLocalKey(), m_GameEndpoint, msg);
 }
 
-void User::SwitchTeams(DDSKey endpoint_id)
+void User::SwitchTeams(DDSKey target_user, int team, DDSKey endpoint_id)
 {
   if (m_InGame == false || m_GameEndpoint != endpoint_id)
   {
@@ -638,7 +667,7 @@ void User::SwitchTeams(DDSKey endpoint_id)
     return;
   }
 
-  //m_Interface.Call(&GameServerConnection::UserSwitchTeams, m_GameServerId, m_GameId, m_Interface.GetLocalKey());
+  m_Interface.Call(&Game::RequestTeamSwitch, m_GameId, m_Interface.GetLocalKey(), target_user, team);
 }
 
 void User::StartGame()
@@ -648,7 +677,7 @@ void User::StartGame()
     return;
   }
 
-  //m_Interface.Call(&GameServerConnection::StartGame, m_GameServerId, m_GameId, m_GameRandomId, m_LocalInfo.m_Name.ToString());
+  m_Interface.Call(&Game::RequestStartGame, m_GameId, m_Interface.GetLocalKey());
 }
 
 void User::LeaveGame()

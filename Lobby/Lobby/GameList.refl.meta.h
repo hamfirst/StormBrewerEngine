@@ -292,7 +292,7 @@ template <>
 struct StormReflFuncInfo<GameList>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 4;
+  static constexpr int funcs_n = 5;
   template <int N> struct func_data_static {};
 };
 
@@ -498,6 +498,52 @@ struct StormReflFuncInfo<GameList>::func_data_static<3>::param_info<0>
   static constexpr auto GetType() { return "DDSKey"; }
   static constexpr unsigned GetNameHash() { return 0x91CAB86C; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<GameList>::func_data_static<4>
+{
+  using func_ptr_type = void (GameList::*)(DDSResponder &, uint32_t, const UserGameJoinInfo &);
+  using return_type = void;
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "LookupJoinCode"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x60BD4A51; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 4; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameList::LookupJoinCode; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<GameList>::func_data_static<4>::param_info<0>
+{
+  using param_type = DDSResponder &;
+  static constexpr auto GetName() { return "responder"; }
+  static constexpr auto GetType() { return "DDSResponder &"; }
+  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
+};
+
+template <>
+struct StormReflFuncInfo<GameList>::func_data_static<4>::param_info<1>
+{
+  using param_type = uint32_t;
+  static constexpr auto GetName() { return "join_code"; }
+  static constexpr auto GetType() { return "uint32_t"; }
+  static constexpr unsigned GetNameHash() { return 0xE64D7D01; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0E2AF381; }
+};
+
+template <>
+struct StormReflFuncInfo<GameList>::func_data_static<4>::param_info<2>
+{
+  using param_type = const UserGameJoinInfo &;
+  static constexpr auto GetName() { return "join_info"; }
+  static constexpr auto GetType() { return "const UserGameJoinInfo &"; }
+  static constexpr unsigned GetNameHash() { return 0x5AD17CCE; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEFC3F2A3; }
 };
 
 namespace StormReflFileInfo

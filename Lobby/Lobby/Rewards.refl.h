@@ -31,8 +31,6 @@ public:
 
   void Initialize();
 
-  void STORM_REFL_FUNC FetchRewards(DDSResponder & responder);
-
 public:
 
   void UpdateRewards(int input_xp, int & xp, int & level, std::vector<UserRewards> & outp_rewards) const;

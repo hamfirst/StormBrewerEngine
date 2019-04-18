@@ -40,6 +40,8 @@ set(GENERIC_SRC_Lobby
             UserConnection.refl.cpp
             UserEndpoint.cpp
             WelcomeInfo.refl.cpp
+            Playlist.refl.cpp
+            Matchmaker.refl.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -99,6 +101,10 @@ set(GENERIC_HEADER_Lobby
             UserEndpoint.h
             WelcomeInfo.refl.h
             WelcomeInfo.refl.meta.h
+            Playlist.refl.h
+            Playlist.refl.meta.h
+            Matchmaker.refl.h
+            Matchmaker.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
@@ -125,6 +131,8 @@ set(GENERIC_REFL_Lobby
             UserConnection.refl.h
             UserConnectionMessages.refl.h
             WelcomeInfo.refl.h
+            Playlist.refl.h
+            Matchmaker.refl.h
             #REFL_PLACEHOLDER
             )
 

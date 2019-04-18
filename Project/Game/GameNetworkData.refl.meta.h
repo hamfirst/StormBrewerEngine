@@ -951,7 +951,7 @@ struct StormReflTypeInfo<GameInstanceData>::field_data_static<1>
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 5> [2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0xBFAFA731; }
   static constexpr unsigned GetTypeNameHash() { return 0xF567AB0E; }
-  static constexpr bool HasDefault() { return true; }
+  static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Score; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInstanceData *>(obj); return &ptr->m_Score; }
@@ -965,7 +965,6 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<1, Self> : public StormRe
   field_data(Self & self) : self(self) {}
   match_const_t<Self, NetRangedNumber<int, 0, kMaxScore> [2]> & Get() { return self.m_Score; }
   std::add_const_t<std::remove_reference_t<NetRangedNumber<int, 0, kMaxScore> [2]>> & Get() const { return self.m_Score; }
-  void SetDefault() { self.m_Score = StormReflTypeInfo<GameInstanceData>::GetDefault().m_Score; }
 };
 
 template <>

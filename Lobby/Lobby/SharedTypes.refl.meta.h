@@ -42,7 +42,7 @@ struct StormReflEnumInfo<ChannelJoinResult>::elems<2>
 template <>
 struct StormReflEnumInfo<LobbyGameState>
 {
-  static constexpr int elems_n = 3;
+  static constexpr int elems_n = 5;
   static constexpr auto GetName() { return "LobbyGameState"; }
   static constexpr auto GetNameHash() { return 0xE5631489; }
   template <int N> struct elems { };
@@ -51,13 +51,21 @@ struct StormReflEnumInfo<LobbyGameState>
 template <>
 struct StormReflEnumInfo<LobbyGameState>::elems<0>
 {
+  static constexpr auto GetName() { return "kInitializing"; }
+  static constexpr auto GetNameHash() { return 0xABC68A1A; }
+  static constexpr auto GetValue() { return LobbyGameState::kInitializing; }
+};
+
+template <>
+struct StormReflEnumInfo<LobbyGameState>::elems<1>
+{
   static constexpr auto GetName() { return "kWaiting"; }
   static constexpr auto GetNameHash() { return 0xD2A808C8; }
   static constexpr auto GetValue() { return LobbyGameState::kWaiting; }
 };
 
 template <>
-struct StormReflEnumInfo<LobbyGameState>::elems<1>
+struct StormReflEnumInfo<LobbyGameState>::elems<2>
 {
   static constexpr auto GetName() { return "kCountdown"; }
   static constexpr auto GetNameHash() { return 0x991E82AA; }
@@ -65,7 +73,15 @@ struct StormReflEnumInfo<LobbyGameState>::elems<1>
 };
 
 template <>
-struct StormReflEnumInfo<LobbyGameState>::elems<2>
+struct StormReflEnumInfo<LobbyGameState>::elems<3>
+{
+  static constexpr auto GetName() { return "kAssigningServer"; }
+  static constexpr auto GetNameHash() { return 0xF998ACB1; }
+  static constexpr auto GetValue() { return LobbyGameState::kAssigningServer; }
+};
+
+template <>
+struct StormReflEnumInfo<LobbyGameState>::elems<4>
 {
   static constexpr auto GetName() { return "kStarted"; }
   static constexpr auto GetNameHash() { return 0x0EE413BC; }
@@ -171,6 +187,73 @@ struct StormReflTypeInfo<UserGameInfo>::field_data<0, Self> : public StormReflTy
   match_const_t<Self, RKey> & Get() { return self.m_GameId; }
   std::add_const_t<std::remove_reference_t<RKey>> & Get() const { return self.m_GameId; }
   void SetDefault() { self.m_GameId = StormReflTypeInfo<UserGameInfo>::GetDefault().m_GameId; }
+};
+
+template <>
+struct StormReflTypeInfo<UserZoneInfo>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "UserZoneInfo"; }
+  static constexpr auto GetNameHash() { return 0xC19DFF86; }
+  static constexpr bool HasDefault() { return true; }
+  static UserZoneInfo & GetDefault() { static UserZoneInfo def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<UserZoneInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserZoneInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<UserZoneInfo *>(ptr);
+    if(typeid(UserZoneInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const UserZoneInfo *>(ptr);
+    if(typeid(UserZoneInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<UserZoneInfo>::field_data_static<0>
+{
+  using member_type = int [7]; // int [7]
+  static constexpr auto GetName() { return "m_Latencies"; }
+  static constexpr auto GetType() { return "int [7]"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x453053FB; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF8E81D7F; }
+  static constexpr bool HasDefault() { return false; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &UserZoneInfo::m_Latencies; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserZoneInfo *>(obj); return &ptr->m_Latencies; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserZoneInfo *>(obj); return &ptr->m_Latencies; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserZoneInfo>::field_data<0, Self> : public StormReflTypeInfo<UserZoneInfo>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, int [7]> & Get() { return self.m_Latencies; }
+  std::add_const_t<std::remove_reference_t<int [7]>> & Get() const { return self.m_Latencies; }
 };
 
 template <>
@@ -2082,7 +2165,7 @@ namespace StormReflFileInfo
 {
   struct SharedTypes
   {
-    static const int types_n = 11;
+    static const int types_n = 12;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -2095,59 +2178,65 @@ namespace StormReflFileInfo
   template <>
   struct SharedTypes::type_info<1>
   {
-    using type = ::UserInfo;
+    using type = ::UserZoneInfo;
   };
 
   template <>
   struct SharedTypes::type_info<2>
   {
-    using type = ::UserApplication;
+    using type = ::UserInfo;
   };
 
   template <>
   struct SharedTypes::type_info<3>
   {
-    using type = ::ChannelMember;
+    using type = ::UserApplication;
   };
 
   template <>
   struct SharedTypes::type_info<4>
   {
-    using type = ::ChannelBot;
+    using type = ::ChannelMember;
   };
 
   template <>
   struct SharedTypes::type_info<5>
   {
-    using type = ::ChannelInfo;
+    using type = ::ChannelBot;
   };
 
   template <>
   struct SharedTypes::type_info<6>
   {
-    using type = ::SquadMember;
+    using type = ::ChannelInfo;
   };
 
   template <>
   struct SharedTypes::type_info<7>
   {
-    using type = ::SquadApplication;
+    using type = ::SquadMember;
   };
 
   template <>
   struct SharedTypes::type_info<8>
   {
-    using type = ::SquadInfo;
+    using type = ::SquadApplication;
   };
 
   template <>
   struct SharedTypes::type_info<9>
   {
-    using type = ::GameMember;
+    using type = ::SquadInfo;
   };
 
   template <>
   struct SharedTypes::type_info<10>
+  {
+    using type = ::GameMember;
+  };
+
+  template <>
+  struct SharedTypes::type_info<11>
   {
     using type = ::GameInfo;
   };

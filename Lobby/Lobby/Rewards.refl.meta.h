@@ -237,34 +237,8 @@ template <>
 struct StormReflFuncInfo<Rewards>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 1;
+  static constexpr int funcs_n = 0;
   template <int N> struct func_data_static {};
-};
-
-template <>
-struct StormReflFuncInfo<Rewards>::func_data_static<0>
-{
-  using func_ptr_type = void (Rewards::*)(DDSResponder &);
-  using return_type = void;
-  static constexpr int params_n = 1;
-  static constexpr auto GetName() { return "FetchRewards"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA7B9355D; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 0; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Rewards::FetchRewards; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<Rewards>::func_data_static<0>::param_info<0>
-{
-  using param_type = DDSResponder &;
-  static constexpr auto GetName() { return "responder"; }
-  static constexpr auto GetType() { return "DDSResponder &"; }
-  static constexpr unsigned GetNameHash() { return 0x5F311AF7; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF2AB2E46; }
 };
 
 namespace StormReflFileInfo

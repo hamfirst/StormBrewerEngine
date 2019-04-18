@@ -9,6 +9,8 @@
 
 #ifdef ENABLE_GAME_LIST
 
+struct UserGameJoinInfo;
+
 struct GameListGame
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameListGame);
@@ -35,6 +37,7 @@ public:
   void STORM_REFL_FUNC RemoveGame(DDSKey game_key);
 
   void STORM_REFL_FUNC AssignJoinCode(DDSKey game_key);
+  void STORM_REFL_FUNC LookupJoinCode(DDSResponder & responder, uint32_t join_code, const UserGameJoinInfo & join_info);
 public:
 
   RMap<DDSKey, GameListGame> m_GameList;

@@ -6,6 +6,7 @@
 #include <HurricaneDDS/DDSDataObject.h>
 
 #include "ProjectSettings/ProjectNetworkSettings.h"
+#include "ProjectSettings/ProjectZones.h"
 
 #include "LobbyConfig.h"
 
@@ -23,6 +24,12 @@ struct UserGameInfo
   STORM_DATA_DEFAULT_CONSTRUCTION(UserGameInfo);
 
   RKey m_GameId;
+};
+
+struct UserZoneInfo
+{
+  STORM_REFL;
+  int m_Latencies[kNumProjectZones];
 };
 
 struct UserInfo
@@ -159,8 +166,10 @@ struct GameMember
 
 enum STORM_REFL_ENUM class LobbyGameState
 {
+  kInitializing,
   kWaiting,
   kCountdown,
+  kAssigningServer,
   kStarted,
 };
 

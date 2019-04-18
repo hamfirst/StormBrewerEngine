@@ -315,7 +315,14 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     }
     else if (cmd == "switch_teams")
     {
-      m_Interface.Call(&User::SwitchTeams, m_UserId, m_Interface.GetLocalKey());
+      UserSwitchTeam req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::SwitchTeams, m_UserId, req.target_user, req.team, m_Interface.GetLocalKey());
     }
     else if (cmd == "start_game")
     {

@@ -2,10 +2,13 @@
 #include "GameList.refl.meta.h"
 #include "Game.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
+#include "User.refl.meta.h"
+#include "UserConnection.refl.meta.h"
 
 #include "StormRefl/StormReflJsonStd.h"
 
 #include "HurricaneDDS/DDSRandom.h"
+#include "HurricaneDDS/DDSResponderCall.h"
 
 #ifdef ENABLE_GAME_LIST
 
@@ -77,6 +80,19 @@ void GameList::AssignJoinCode(DDSKey game_key)
         return;
       }
     }
+  }
+}
+
+void GameList::LookupJoinCode(DDSResponder & responder, uint32_t join_code, const UserGameJoinInfo & join_info)
+{
+  auto itr = m_JoinCodeLookup.find(join_code);
+  if(itr != m_JoinCodeLookup.end())
+  {
+    DDSResponderCall(responder, itr->second, join_info);
+  }
+  else
+  {
+    DDSResponderCall(responder, 0, join_info);
   }
 }
 

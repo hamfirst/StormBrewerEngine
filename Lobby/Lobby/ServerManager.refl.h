@@ -6,6 +6,7 @@
 #include <HurricaneDDS/DDSDataObject.h>
 #include <HurricaneDDS/DDSKey.h>
 
+#include "SharedTypes.refl.h"
 #include "LobbyConfig.h"
 #include "GooglePlatform.refl.h"
 
@@ -55,20 +56,10 @@ public:
   void RequestServerList(const std::string & zone, const std::string & page_token, StormBootstrap & bootstrap);
   void HandleServerListResponse(const std::string & response_data, const std::string & zone, StormBootstrap & bootstrap);
 
-//  void STORM_REFL_FUNC AddServer(DDSKey server_key, std::string server_name, std::string location, std::string server_host, int ping_port);
-//  void STORM_REFL_FUNC RemoveServer(DDSKey server_key);
-//
-//  void STORM_REFL_FUNC AddGame(DDSKey server_key, int game_id, std::string name, std::string map, int cur_players, int max_players, bool password);
-//  void STORM_REFL_FUNC UpdateGame(DDSKey server_key, int game_id, int cur_players, int cur_observer);
-//  void STORM_REFL_FUNC StartGame(DDSKey server_key, int game_id);
-//  void STORM_REFL_FUNC RemoveGame(DDSKey server_key, int game_id);
-//
-//
-//  void STORM_REFL_FUNC HangUpAllServers();
+  void AssignGameServer(DDSKey game_id, int zone);
 
-
-  void STORM_REFL_FUNC RequestNewToken();
-  void STORM_REFL_FUNC HandleTokenResponse(bool success, std::string body, std::string headers);
+  void STORM_REFL_FUNC RequestNewCloudToken();
+  void STORM_REFL_FUNC HandleCloudTokenResponse(bool success, std::string body, std::string headers);
 
   void STORM_REFL_FUNC CreateServerInstance(int zone_index);
   void STORM_REFL_FUNC HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers);
@@ -81,10 +72,9 @@ public:
 
 private:
 
-  std::string GetTokenAssertion();
+  std::string GetCloudTokenAssertion();
 
 public:
-
 
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;

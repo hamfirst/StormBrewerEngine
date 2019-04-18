@@ -179,32 +179,6 @@ struct UserServerMessageGame
   std::string msg;
 };
 
-struct UserMapListRequest
-{
-  STORM_REFL;
-  std::string c;
-  DDSKey server_id = 0;
-};
-
-struct UserMapListMap
-{
-  STORM_REFL;
-  std::string map_name;
-  std::string creator;
-  int game_type = 0;
-  int max_teams = 0;
-  int player_limit = 0;
-  int time_limit = 0;
-  int score_limit = 0;
-};
-
-struct UserMapList
-{
-  STORM_REFL;
-  std::string c;
-  DDSKey server_id;
-  std::vector<UserMapListMap> maps;
-};
 
 struct UserGameCreate
 {
@@ -239,6 +213,14 @@ struct UserStartGame
   std::string ip_addr;
   std::string port;
   std::string token;
+};
+
+struct UserSwitchTeam
+{
+  STORM_REFL;
+  std::string c;
+  DDSKey target_user = 0;
+  int team;
 };
 
 struct UserCreateSquad
