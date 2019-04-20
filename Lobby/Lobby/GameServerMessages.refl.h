@@ -263,14 +263,19 @@ struct GameServerGameResult
   std::vector<GameServerResultPlayer> m_ConnectedUsers;
 };
 
-struct GameServerMeta
+struct GameServerLobbySettings
 {
   STORM_REFL;
   std::string m_LobbyServerIp = "127.0.0.1";
-  std::string m_ServerKey;
+};
+
+struct GameServerInfo
+{
+  STORM_REFL;
   std::string m_ServerName;
   std::string m_ServerZone;
   std::string m_ServerResourceId;
   std::string m_ExternalIp;
   int m_ExternalPort = DEFAULT_GAME_PORT;
 };
+

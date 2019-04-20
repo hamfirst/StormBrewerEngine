@@ -17,11 +17,12 @@
 
 
 
-LobbyServerConnection::LobbyServerConnection(const GameServerMeta & server_info) :
+LobbyServerConnection::LobbyServerConnection(const GameServerLobbySettings & lobby_settings, const GameServerInfo & server_info) :
   m_State(LobbyServerConnectionState::kDisconnected),
   m_LastPingTime(time(nullptr)),
   m_NextValidationId(1),
-  m_ServerSettings(server_info)
+  m_LobbySettings(lobby_settings),
+  m_ServerInfo(server_info)
 {
   
 }
@@ -34,7 +35,7 @@ void LobbyServerConnection::Connect()
   }
   
   m_State = LobbyServerConnectionState::kConnecting;
-  m_WebSocket.StartConnect(m_ServerSettings.m_LobbyServerIp.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
+  m_WebSocket.StartConnect(m_LobbySettings.m_LobbyServerIp.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
 }
 
 void LobbyServerConnection::Update()
@@ -149,10 +150,10 @@ void LobbyServerConnection::Update()
         uint64_t challenge_response = crc64(std::to_string(req.m_Challenge)) ^ kGameServerChallengePad;
         GameServerAuthenticateResponse resp;
         resp.m_Challenge = challenge_response;
-        resp.m_Name = m_ServerSettings.m_ServerName;
-        resp.m_Zone = m_ServerSettings.m_ServerZone;
-        resp.m_ResourceId = m_ServerSettings.m_ServerResourceId;
-        resp.m_ExternalIp = m_ServerSettings.m_ExternalIp;
+        resp.m_Name = m_ServerInfo.m_ServerName;
+        resp.m_Zone = m_ServerInfo.m_ServerZone;
+        resp.m_ResourceId = m_ServerInfo.m_ServerResourceId;
+        resp.m_ExternalIp = m_ServerInfo.m_ExternalIp;
 
         SendMessage(resp);
 

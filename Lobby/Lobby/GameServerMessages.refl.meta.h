@@ -2699,50 +2699,50 @@ struct StormReflTypeInfo<GameServerGameResult>::field_data<3, Self> : public Sto
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>
+struct StormReflTypeInfo<GameServerLobbySettings>
 {
   using MyBase = void;
-  static constexpr int fields_n = 7;
+  static constexpr int fields_n = 1;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
-  static constexpr auto GetName() { return "GameServerMeta"; }
-  static constexpr auto GetNameHash() { return 0x1961B3BC; }
+  static constexpr auto GetName() { return "GameServerLobbySettings"; }
+  static constexpr auto GetNameHash() { return 0xA6FC0E7A; }
   static constexpr bool HasDefault() { return true; }
-  static GameServerMeta & GetDefault() { static GameServerMeta def; return def; }
+  static GameServerLobbySettings & GetDefault() { static GameServerLobbySettings def; return def; }
 
   static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
   {
-    auto c = static_cast<GameServerMeta *>(ptr);
+    auto c = static_cast<GameServerLobbySettings *>(ptr);
     if(GetNameHash() == type_name_hash) return c;
     return nullptr;
   }
 
   static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
   {
-    auto c = static_cast<const GameServerMeta *>(ptr);
+    auto c = static_cast<const GameServerLobbySettings *>(ptr);
     if(GetNameHash() == type_name_hash) return c;
     return nullptr;
   }
 
   static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
   {
-    auto c = static_cast<GameServerMeta *>(ptr);
-    if(typeid(GameServerMeta).hash_code() == type_id_hash) return c;
+    auto c = static_cast<GameServerLobbySettings *>(ptr);
+    if(typeid(GameServerLobbySettings).hash_code() == type_id_hash) return c;
     return nullptr;
   }
 
   static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
   {
-    auto c = static_cast<const GameServerMeta *>(ptr);
-    if(typeid(GameServerMeta).hash_code() == type_id_hash) return c;
+    auto c = static_cast<const GameServerLobbySettings *>(ptr);
+    if(typeid(GameServerLobbySettings).hash_code() == type_id_hash) return c;
     return nullptr;
   }
 
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<0>
+struct StormReflTypeInfo<GameServerLobbySettings>::field_data_static<0>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_LobbyServerIp"; }
@@ -2751,48 +2751,66 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<0>
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_LobbyServerIp; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_LobbyServerIp; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_LobbyServerIp; }
+  static constexpr auto GetMemberPtr() { return &GameServerLobbySettings::m_LobbyServerIp; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerLobbySettings *>(obj); return &ptr->m_LobbyServerIp; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerLobbySettings *>(obj); return &ptr->m_LobbyServerIp; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<0, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<0>
+struct StormReflTypeInfo<GameServerLobbySettings>::field_data<0, Self> : public StormReflTypeInfo<GameServerLobbySettings>::field_data_static<0>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.m_LobbyServerIp; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_LobbyServerIp; }
-  void SetDefault() { self.m_LobbyServerIp = StormReflTypeInfo<GameServerMeta>::GetDefault().m_LobbyServerIp; }
+  void SetDefault() { self.m_LobbyServerIp = StormReflTypeInfo<GameServerLobbySettings>::GetDefault().m_LobbyServerIp; }
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<1>
+struct StormReflTypeInfo<GameServerInfo>
 {
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_ServerKey"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x10F8EFD5; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  using MyBase = void;
+  static constexpr int fields_n = 5;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GameServerInfo"; }
+  static constexpr auto GetNameHash() { return 0x051A96DE; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ServerKey; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ServerKey; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ServerKey; }
-};
+  static GameServerInfo & GetDefault() { static GameServerInfo def; return def; }
 
-template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<1, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<1>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_ServerKey; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ServerKey; }
-  void SetDefault() { self.m_ServerKey = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ServerKey; }
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerInfo *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerInfo *>(ptr);
+    if(typeid(GameServerInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerInfo *>(ptr);
+    if(typeid(GameServerInfo).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<2>
+struct StormReflTypeInfo<GameServerInfo>::field_data_static<0>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_ServerName"; }
@@ -2800,24 +2818,24 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<2>
   static constexpr unsigned GetFieldNameHash() { return 0x070A2B55; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ServerName; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ServerName; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ServerName; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GameServerInfo::m_ServerName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerInfo *>(obj); return &ptr->m_ServerName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerInfo *>(obj); return &ptr->m_ServerName; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<2, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<2>
+struct StormReflTypeInfo<GameServerInfo>::field_data<0, Self> : public StormReflTypeInfo<GameServerInfo>::field_data_static<0>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.m_ServerName; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ServerName; }
-  void SetDefault() { self.m_ServerName = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ServerName; }
+  void SetDefault() { self.m_ServerName = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ServerName; }
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<3>
+struct StormReflTypeInfo<GameServerInfo>::field_data_static<1>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_ServerZone"; }
@@ -2825,24 +2843,24 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<3>
   static constexpr unsigned GetFieldNameHash() { return 0xF9C29554; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ServerZone; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ServerZone; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ServerZone; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &GameServerInfo::m_ServerZone; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerInfo *>(obj); return &ptr->m_ServerZone; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerInfo *>(obj); return &ptr->m_ServerZone; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<3, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<3>
+struct StormReflTypeInfo<GameServerInfo>::field_data<1, Self> : public StormReflTypeInfo<GameServerInfo>::field_data_static<1>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.m_ServerZone; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ServerZone; }
-  void SetDefault() { self.m_ServerZone = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ServerZone; }
+  void SetDefault() { self.m_ServerZone = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ServerZone; }
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<4>
+struct StormReflTypeInfo<GameServerInfo>::field_data_static<2>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_ServerResourceId"; }
@@ -2850,24 +2868,24 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<4>
   static constexpr unsigned GetFieldNameHash() { return 0x484BB3D8; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ServerResourceId; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ServerResourceId; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ServerResourceId; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &GameServerInfo::m_ServerResourceId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerInfo *>(obj); return &ptr->m_ServerResourceId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerInfo *>(obj); return &ptr->m_ServerResourceId; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<4, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<4>
+struct StormReflTypeInfo<GameServerInfo>::field_data<2, Self> : public StormReflTypeInfo<GameServerInfo>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.m_ServerResourceId; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ServerResourceId; }
-  void SetDefault() { self.m_ServerResourceId = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ServerResourceId; }
+  void SetDefault() { self.m_ServerResourceId = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ServerResourceId; }
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<5>
+struct StormReflTypeInfo<GameServerInfo>::field_data_static<3>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_ExternalIp"; }
@@ -2875,24 +2893,24 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<5>
   static constexpr unsigned GetFieldNameHash() { return 0x371391DE; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 5; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ExternalIp; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ExternalIp; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ExternalIp; }
+  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetMemberPtr() { return &GameServerInfo::m_ExternalIp; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerInfo *>(obj); return &ptr->m_ExternalIp; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerInfo *>(obj); return &ptr->m_ExternalIp; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<5, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<5>
+struct StormReflTypeInfo<GameServerInfo>::field_data<3, Self> : public StormReflTypeInfo<GameServerInfo>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, std::string> & Get() { return self.m_ExternalIp; }
   std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_ExternalIp; }
-  void SetDefault() { self.m_ExternalIp = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ExternalIp; }
+  void SetDefault() { self.m_ExternalIp = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ExternalIp; }
 };
 
 template <>
-struct StormReflTypeInfo<GameServerMeta>::field_data_static<6>
+struct StormReflTypeInfo<GameServerInfo>::field_data_static<4>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_ExternalPort"; }
@@ -2900,27 +2918,27 @@ struct StormReflTypeInfo<GameServerMeta>::field_data_static<6>
   static constexpr unsigned GetFieldNameHash() { return 0xA9603CA6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 6; }
-  static constexpr auto GetMemberPtr() { return &GameServerMeta::m_ExternalPort; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerMeta *>(obj); return &ptr->m_ExternalPort; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerMeta *>(obj); return &ptr->m_ExternalPort; }
+  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetMemberPtr() { return &GameServerInfo::m_ExternalPort; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerInfo *>(obj); return &ptr->m_ExternalPort; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerInfo *>(obj); return &ptr->m_ExternalPort; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameServerMeta>::field_data<6, Self> : public StormReflTypeInfo<GameServerMeta>::field_data_static<6>
+struct StormReflTypeInfo<GameServerInfo>::field_data<4, Self> : public StormReflTypeInfo<GameServerInfo>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
   match_const_t<Self, int> & Get() { return self.m_ExternalPort; }
   std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_ExternalPort; }
-  void SetDefault() { self.m_ExternalPort = StormReflTypeInfo<GameServerMeta>::GetDefault().m_ExternalPort; }
+  void SetDefault() { self.m_ExternalPort = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ExternalPort; }
 };
 
 namespace StormReflFileInfo
 {
   struct GameServerMessages
   {
-    static const int types_n = 24;
+    static const int types_n = 25;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -3065,7 +3083,13 @@ namespace StormReflFileInfo
   template <>
   struct GameServerMessages::type_info<23>
   {
-    using type = ::GameServerMeta;
+    using type = ::GameServerLobbySettings;
+  };
+
+  template <>
+  struct GameServerMessages::type_info<24>
+  {
+    using type = ::GameServerInfo;
   };
 
 }
