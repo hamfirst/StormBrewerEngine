@@ -28,6 +28,19 @@ struct GameUserJoinInfo
   UserZoneInfo m_ZoneInfo;
 };
 
+struct GeneratedGameUser
+{
+  STORM_REFL;
+  DDSKey m_UserId = 0;
+  DDSKey m_EndpointId = 0;
+};
+
+struct GeneratedGame
+{
+  STORM_REFL;
+  std::vector<GeneratedGameUser> m_Users[kMaxTeams];
+};
+
 struct Game
 {
   DDS_TEMPORARY_OBJECT(true, DDSDataObjectPriority::kLow);
@@ -35,8 +48,8 @@ struct Game
   Game(DDSNodeInterface node_interface);
 
   void STORM_REFL_FUNC InitPrivateGame(const GameInitSettings & settings, std::string password);
-  void STORM_REFL_FUNC InitCasualGame(const GameInitSettings & settings);
-  void STORM_REFL_FUNC InitCompetitiveGame(const GameInitSettings & settings, std::vector<DDSKey> users, int zone);
+  void STORM_REFL_FUNC InitCasualGame(const GameInitSettings & settings, int zone);
+  void STORM_REFL_FUNC InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone);
 
   void Init(const GameInitSettings & settings);
 
@@ -70,6 +83,8 @@ struct Game
 
   void STORM_REFL_FUNC HandleMemberUpdate(DDSKey user_key, std::string data);
 
+  void STORM_REFL_FUNC HandleGameComplete();
+
 private:
 
   int FindBestZoneForPlayers();
@@ -85,7 +100,7 @@ public:
 
   std::vector<std::pair<GameUserJoinInfo, DDSResponderData>> m_PendingJoins;
 
-  std::vector<DDSKey> m_LockedUsers;
+  GeneratedGame m_CompetitiveGameInfo;
 
   std::map<DDSKey, DDSKey> m_MemberSubscriptionIds;
   std::map<DDSKey, GameToken> m_Tokens;

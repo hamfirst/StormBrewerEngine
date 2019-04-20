@@ -1,6 +1,10 @@
 
 #include "Lobby/LobbyLevelList.refl.meta.h"
 
+#include "Foundation/Document/Document.h"
+#include "Foundation/Document/DocumentCompiler.h"
+#include "Foundation/Document/DocumentDefaultLoader.h"
+
 #include "Runtime/Map/MapDef.refl.meta.h"
 
 #include "GameShared/GameLevelListAsset.refl.meta.h"
@@ -13,54 +17,32 @@ LobbyLevelList g_LobbyLevelList;
 
 LobbyLevelList::LobbyLevelList()
 {
-  auto ReadFileAsString = [](const std::string_view & file_name) -> std::string
-  {
-    auto fp = fopen(file_name.data(), "rb");
-    if(fp == nullptr)
-    {
-      return "" ;
-    }
+  DocumentDefaultLoader loader;
+  DocumentCompiler document_compiler(&loader);
 
-    fseek(fp, 0, SEEK_END);
-    auto len = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    std::string data;
-    data.resize(len + 1);
-    fread(data.data(), len, 1, fp);
-    data[len] = 0;
-    fclose(fp);
-
-    while(isspace(data.back()) || data.back() == 0)
-    {
-      data.pop_back();
-    }
-
-    return data;
-  };
-
-  auto asset_dir = ReadFileAsString("asset_dir.txt");
-  auto level_list_path = asset_dir + '/' + "LevelList.txt";
-
-  auto level_list_data = ReadFileAsString(level_list_path);
+  auto document = document_compiler.GetDocument("LevelList.txt");
+  auto document_json = document->GetDocumentJson();
 
   GameLevelListAsset level_list;
-  StormReflParseJson(level_list, level_list_data.c_str());
+  StormReflParseJson(level_list, document_json.c_str());
 
   for(auto & level : level_list.m_Levels)
   {
-    auto level_data_path = asset_dir + '/' + level.m_Path;
-    auto level_data = ReadFileAsString(level_data_path);
-
-    std::vector<LobbyMapHeaderElem> header;
-
-    const char * result = nullptr;
-    StormReflParseJson(header, level_data.c_str(), result);
+    auto level_document = document_compiler.GetDocument(level.m_Path.c_str());
+    auto level_document_json = level_document->GetDocumentJson();
 
     MapDefPropertiesOnly map_info;
-    StormReflParseJson(map_info, result);
+    StormReflParseJson(map_info, level_document_json.c_str());
 
-    m_Levels.emplace_back(*map_info.m_PropertiesInfo.m_MapProperties.GetValue());
+    if(map_info.m_PropertiesInfo.m_MapProperties.GetValue())
+    {
+      m_Levels.emplace_back(*map_info.m_PropertiesInfo.m_MapProperties.GetValue());
+    }
+    else
+    {
+      m_Levels.emplace_back();
+    }
+
     m_LevelNames.emplace_back(level.m_Name);
   }
 }

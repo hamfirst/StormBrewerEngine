@@ -10,7 +10,18 @@
 #include "LobbyConfig.h"
 #include "GooglePlatform.refl.h"
 
+#ifdef ENABLE_GOOGLE_CLOUD
 #include <mbedtls/pk.h>
+#else
+#include "Foundation/Allocator/IdAllocator.h"
+#endif
+
+#ifdef _LINUX
+using ProcessIdentifier = pid_t;
+#else
+using ProcessIdentifier = void *;
+#endif
+
 
 class StormBootstrap;
 
@@ -26,7 +37,6 @@ struct PendingServer
 struct ActiveServerGame
 {
   DDSKey m_GameId;
-
 };
 
 struct ActiveServer
@@ -53,43 +63,63 @@ public:
   ~ServerManager();
 
   void Initialize();
+  void Update();
+
+#ifdef ENABLE_GOOGLE_CLOUD
+
   void RequestServerList(const std::string & zone, const std::string & page_token, StormBootstrap & bootstrap);
   void HandleServerListResponse(const std::string & response_data, const std::string & zone, StormBootstrap & bootstrap);
-
-  void AssignGameServer(DDSKey game_id, int zone);
 
   void STORM_REFL_FUNC RequestNewCloudToken();
   void STORM_REFL_FUNC HandleCloudTokenResponse(bool success, std::string body, std::string headers);
 
-  void STORM_REFL_FUNC CreateServerInstance(int zone_index);
+  void CreateServerInstance(int zone_index);
   void STORM_REFL_FUNC HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers);
 
   void StopServerInstance(const std::string & zone, const std::string & resource_id);
   void STORM_REFL_FUNC HandleStopServerResponse(bool success, std::string body, std::string headers);
 
+#else
+
+  void CreateServerInstance(int zone_index);
+  void StopServerInstance(int zone_index, const std::string & resource_id);
+
+#endif
+
+
+  void STORM_REFL_FUNC AssignGameServer(DDSKey game_id, int zone);
   void STORM_REFL_FUNC CheckForServerRequests();
   void STORM_REFL_FUNC CheckForTimedOutServers();
 
 private:
 
+#ifdef ENABLE_GOOGLE_CLOUD
   std::string GetCloudTokenAssertion();
+#endif
 
-public:
+  void CreateDebugServer();
+  void StopDebugServer(std::size_t server_id);
 
 private:
-  STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
-  STORM_REFL_IGNORE GoogleCredentialsInfo m_CredentialsInfo;
+  DDSObjectInterface & m_Interface;
 
-  STORM_REFL_IGNORE mbedtls_pk_context m_PKContext;
-  STORM_REFL_IGNORE std::string m_AuthorizationHeader;
-  STORM_REFL_IGNORE GooglePlatformSettings m_Settings;
-  STORM_REFL_IGNORE std::string m_ProjectNameLowercase;
+#ifdef ENABLE_GOOGLE_CLOUD
+  GoogleCredentialsInfo m_CredentialsInfo;
 
-  STORM_REFL_IGNORE std::string m_CreateInstanceTemplate;
+  mbedtls_pk_context m_PKContext;
+  std::string m_AuthorizationHeader;
+  GooglePlatformSettings m_Settings;
+  std::string m_ProjectNameLowercase;
 
-  STORM_REFL_IGNORE std::vector<GameRequest> m_GameRequests;
+  std::string m_CreateInstanceTemplate;
+#else
+  IdAllocator m_ServerIdAllocator;
+  std::map<int, ProcessIdentifier> m_DebugServers;
+#endif
 
-  STORM_REFL_IGNORE std::vector<int> m_RequestedServersInZone;
-  STORM_REFL_IGNORE std::vector<PendingServer> m_PendingServers;
+  std::vector<GameRequest> m_GameRequests;
 
+  std::vector<int> m_RequestedServersInZone;
+  std::vector<PendingServer> m_PendingServers;
+  std::vector<ActiveServer> m_ActiveServers;
 };

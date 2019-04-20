@@ -29,7 +29,7 @@ struct UserGameInfo
 struct UserZoneInfo
 {
   STORM_REFL;
-  int m_Latencies[kNumProjectZones];
+  int m_Latencies[kNumProjectZones] = {};
 };
 
 struct UserInfo

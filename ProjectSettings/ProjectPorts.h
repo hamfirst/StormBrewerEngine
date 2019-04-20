@@ -2,7 +2,7 @@
 
 #define BASE_PORT        26000
 
-#define GAME_PORT           BASE_PORT + 0
+#define DEFAULT_GAME_PORT   BASE_PORT + 10
 
 #define LOBBY_USER_PORT     BASE_PORT + 1
 #define LOBBY_GAME_PORT     BASE_PORT + 2

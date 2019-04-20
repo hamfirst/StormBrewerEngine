@@ -370,9 +370,11 @@ public:
   bool m_SentInitialGameData = false;
   DDSKey m_GameId = 0;
   DDSKey m_GameRandomId = 0;
-
   DDSKey m_GameEndpoint = 0;
   DDSKey m_GameSubscriptionId = 0;
+
+  DDSKey m_InMatchmaking = false;
+  DDSKey m_MatchmakingEndpoint = 0;
 
   std::string m_CountryCode;
   std::string m_CurrencyCode;

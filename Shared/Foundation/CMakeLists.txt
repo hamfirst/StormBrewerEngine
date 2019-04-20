@@ -63,6 +63,7 @@ set(GENERIC_SRC_Foundation
             Time/StopWatch.cpp
             Time/Time.cpp
             TypeDatabase/TypeDatabase.cpp
+            Document/DocumentDefaultLoader.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -160,6 +161,7 @@ set(GENERIC_HEADER_Foundation
             Update/UpdateRegistrationTemplates.h
             Variant/Variant.h
             Waveform/Waveform.h
+            Document/DocumentDefaultLoader.h
             #HEADER_PLACEHOLDER
             )
 

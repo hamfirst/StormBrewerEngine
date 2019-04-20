@@ -12,12 +12,6 @@
 
 #include "ProjectSettings/ProjectNetworkSettings.h"
 
-
-struct LobbyMapHeaderElem
-{
-  STORM_REFL;
-};
-
 class LobbyLevelList
 {
 public:

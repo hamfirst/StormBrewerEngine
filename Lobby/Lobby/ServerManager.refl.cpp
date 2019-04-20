@@ -17,9 +17,18 @@
 #include "ProjectSettings/ProjectName.h"
 #include "ProjectSettings/ProjectZones.h"
 #include "ProjectSettings/ProjectVersion.h"
+#include "ProjectSettings/ProjectPorts.h"
 
 #include "ServerManager.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
+
+#ifdef _LINUX
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+#else
+
+#endif
 
 std::string ApplyTemplate(const std::string & templ, const std::unordered_map<std::string, std::string> & repl)
 {
@@ -97,11 +106,14 @@ ServerManager::ServerManager(DDSObjectInterface & iface) :
 
 ServerManager::~ServerManager()
 {
+#ifdef ENABLE_GOOGLE_CLOUD
   mbedtls_pk_free(&m_PKContext);
+#endif
 }
 
 void ServerManager::Initialize()
 {
+#ifdef ENABLE_GOOGLE_CLOUD
   m_ProjectNameLowercase = kProjectName;
   std::transform(m_ProjectNameLowercase.begin(), m_ProjectNameLowercase.end(), m_ProjectNameLowercase.begin(), tolower);
 
@@ -163,8 +175,15 @@ void ServerManager::Initialize()
   }
 
   bootstrap.Run();
+#endif
 }
 
+void ServerManager::Update()
+{
+
+}
+
+#ifdef ENABLE_GOOGLE_CLOUD
 void ServerManager::RequestServerList(const std::string & zone, const std::string & page_token, StormBootstrap & bootstrap)
 {
   auto url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances";
@@ -315,8 +334,9 @@ void ServerManager::HandleCreateServerResponse(int zone_index, bool success, std
   m_PendingServers.emplace_back(std::move(pending));
 }
 
-void ServerManager::StopServerInstance(const std::string & zone, const std::string & resource_id)
+void ServerManager::StopServerInstance(int zone_index, const std::string & resource_id)
 {
+  auto zone = g_ProjectZones[zone_index];
   std::string url = "https://www.googleapis.com/compute/v1/projects/" + m_Settings.project_id + "/zones/" + zone + "/instances/" + resource_id;
 
   DDSHttpRequest request(url, "", m_AuthorizationHeader.c_str());
@@ -338,6 +358,25 @@ void ServerManager::HandleStopServerResponse(bool success, std::string body, std
 
 }
 
+#else
+
+void ServerManager::CreateServerInstance(int zone_index)
+{
+  CreateDebugServer();
+}
+
+void ServerManager::StopServerInstance(int zone_index, const std::string & resource_id)
+{
+  StopDebugServer(strtoul(resource_id.c_str(), nullptr, 10));
+}
+
+#endif
+
+void ServerManager::AssignGameServer(DDSKey game_id, int zone)
+{
+
+}
+
 void ServerManager::CheckForServerRequests()
 {
 
@@ -352,7 +391,7 @@ void ServerManager::CheckForTimedOutServers()
   {
     if(server.m_StartTime < timeout_time)
     {
-      StopServerInstance(server.m_Zone, server.m_ResourceId);
+      StopServerInstance(server.m_ZoneIndex, server.m_ResourceId);
       return true;
     }
 
@@ -362,6 +401,7 @@ void ServerManager::CheckForTimedOutServers()
   m_PendingServers.erase(itr, m_PendingServers.end());
 }
 
+#ifdef ENABLE_GOOGLE_CLOUD
 std::string ServerManager::GetCloudTokenAssertion()
 {
   auto now = time(nullptr);
@@ -402,4 +442,66 @@ std::string ServerManager::GetCloudTokenAssertion()
   auto payload = "grant_type=" + UrlEncode("urn:ietf:params:oauth:grant-type:jwt-bearer") + "&assertion=" + encoded_str;
 
   return payload;
+}
+#endif
+
+void ServerManager::CreateDebugServer()
+{
+  auto server_id = m_ServerIdAllocator.Allocate();
+
+  PendingServer pending;
+  pending.m_ResourceId = std::to_string(server_id);
+  pending.m_InstanceName = "DebugServer";
+  pending.m_StartTime = time(nullptr);
+  pending.m_ZoneIndex = kNumProjectZones;
+  pending.m_Zone = "Debug";
+
+  static std::string command[] = {
+    "--external_ip=127.0.0.1",
+    "--external_port=" + std::to_string(DEFAULT_GAME_PORT + server_id),
+    "--id=" + pending.m_ResourceId,
+    "--name=" + pending.m_InstanceName,
+    "--zone=Debug"
+  };
+
+#ifdef _LINUX
+  auto pid = fork();
+
+  if(pid == 0)
+  {
+    static const int kNumCommandArgs = sizeof(command) / sizeof(command[0]);
+    char * args[kNumCommandArgs + 1];
+
+    for(int index = 0; index < kNumCommandArgs; ++index)
+    {
+      args[index] = command[index].data();
+    }
+
+    args[kNumCommandArgs] = nullptr;
+    execv("ServerExe", &args[0]);
+  }
+  else
+  {
+    m_DebugServers.emplace(std::make_pair(server_id, pid));
+  }
+#else
+  static_assert(false, "implement this");
+#endif
+}
+
+void ServerManager::StopDebugServer(std::size_t server_id)
+{
+#ifdef _LINUX
+
+  auto itr = m_DebugServers.find(server_id);
+  if(itr == m_DebugServers.end())
+  {
+    return;
+  }
+
+  kill(itr->second, SIGTERM);
+
+#else
+  static_assert(false, "implement this");
+#endif
 }

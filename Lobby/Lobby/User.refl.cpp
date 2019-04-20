@@ -164,13 +164,12 @@ void User::RemoveEndpoint(DDSKey key)
     m_Endpoints.erase(itr);
     if (m_Endpoints.size() == 0)
     {
-      LeaveGame();
-
 #ifdef ENABLE_CHANNELS
       LeaveAllChannels();
 #endif
     }
-    else if (key == m_GameEndpoint)
+
+    if (m_InGame && key == m_GameEndpoint)
     {
       LeaveGame();
     }

@@ -61,7 +61,7 @@ enum class ClientConnectionIntent
 struct GameNetworkClientInitSettings
 {
   const char * m_RemoteHost = "127.0.0.1";
-  int m_RemotePort = GAME_PORT;
+  int m_RemotePort = DEFAULT_GAME_PORT;
 
   uint64_t m_UserId = 0;
   uint64_t m_GameId = 0;

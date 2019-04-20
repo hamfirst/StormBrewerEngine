@@ -5,6 +5,8 @@
 
 #include <StormRefl/StormRefl.h>
 
+#include "ProjectSettings/ProjectPorts.h"
+
 #include "Game/GameNetworkData.refl.h"
 #include "Lobby/GameData.refl.h"
 
@@ -270,4 +272,5 @@ struct GameServerMeta
   std::string m_ServerZone;
   std::string m_ServerResourceId;
   std::string m_ExternalIp;
+  int m_ExternalPort = DEFAULT_GAME_PORT;
 };

@@ -147,6 +147,12 @@ int main(int argc, const char ** argv)
   lobby_server_settings.m_ServerResourceId = bootstrap.Get("id");
   lobby_server_settings.m_ExternalIp = bootstrap.Get("external_ip");
 
+  auto external_port = atoi(bootstrap.Get("external_port").c_str());
+  if(external_port != 0)
+  {
+    lobby_server_settings.m_ExternalPort = external_port;
+  }
+
 #if defined(_LINUX) && !defined(_INCLUDEOS)
   if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
   {
@@ -199,7 +205,7 @@ int main(int argc, const char ** argv)
 
   static LobbyServerConnection lobby_server_connection(lobby_server_settings);
 
-  static GameServer game_server(256, GAME_PORT, stage_manager, &lobby_server_connection);
+  static GameServer game_server(256, lobby_server_settings.m_ExternalPort, stage_manager, &lobby_server_connection);
   printf("  Server started!\n");
 
   static FrameClock frame_clock(1.0 / 60.0);

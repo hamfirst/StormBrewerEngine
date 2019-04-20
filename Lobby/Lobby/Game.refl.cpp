@@ -28,18 +28,19 @@ void Game::InitPrivateGame(const GameInitSettings & settings, std::string passwo
   m_GameInfo.m_Type = LobbyGameType::kPrivate;
 }
 
-void Game::InitCasualGame(const GameInitSettings & settings)
+void Game::InitCasualGame(const GameInitSettings & settings, int zone)
 {
   Init(settings);
   m_GameInfo.m_Type = LobbyGameType::kCasual;
+  m_ZoneIndex = zone;
 }
 
-void Game::InitCompetitiveGame(const GameInitSettings & settings, std::vector<DDSKey> users, int zone)
+void Game::InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone)
 {
   Init(settings);
   m_GameInfo.m_Type = LobbyGameType::kCompetitive;
 
-  m_LockedUsers = std::move(users);
+  m_CompetitiveGameInfo = game;
   m_ZoneIndex = zone;
 }
 
@@ -117,6 +118,12 @@ void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
     m_PendingJoins.emplace_back(std::make_pair(join_info, responder.m_Data));
+    return;
+  }
+
+  if(join_info.m_IntendedType != m_GameInfo.m_Type)
+  {
+    DDSResponderCall(responder, m_Interface.GetLocalKey(), join_info.m_EndpointId, m_GameRandomId, false);
     return;
   }
 
@@ -449,6 +456,11 @@ void Game::HandleMemberUpdate(DDSKey user_key, std::string data)
   }
 
   StormDataApplyChangePacket(itr->second, data.c_str());
+}
+
+void Game::HandleGameComplete()
+{
+  Destroy();
 }
 
 int Game::FindBestZoneForPlayers()

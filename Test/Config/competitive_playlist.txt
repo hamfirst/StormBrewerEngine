@@ -1,0 +1,20 @@
+{
+    "m_Elements":
+    [
+        {
+            "m_Name": "Default 1v1 Playlist",
+            "m_GameModes":
+            [
+                {
+
+                }
+            ],
+
+            "m_TeamSizes": [1, 1],
+            "m_AllowParties": false
+        }
+    ]
+}
+
+
+
