@@ -5,15 +5,16 @@
 
 #include <StormRefl/StormRefl.h>
 
+#include "ProjectSettings/ProjectVersion.h"
 #include "ProjectSettings/ProjectPorts.h"
+#include "ProjectSettings/ProjectRandom.h"
 
 #include "Game/GameNetworkData.refl.h"
 #include "Lobby/GameData.refl.h"
 
 
-static const uint64_t kGameServerChallengePad = 0xfd3473e1a57de6ff;
-static const int kGameServerVersion = 5;
-
+static const uint64_t kGameServerChallengePad = kProjectRandom1;
+static const int kGameServerMinorVersion = 0;
 
 
 enum STORM_REFL_ENUM class GameServerMessageType
