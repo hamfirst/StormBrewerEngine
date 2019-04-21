@@ -143,7 +143,6 @@ void GameServerEndpoint::ConnectToObject()
   }
 
   m_State = kConnected;
-  m_EndpointInterface.Call(&GameServerConnection::SetRemoteHost, m_ServerKey, m_EndpointInterface.GetRemoteIpAsString());
   m_EndpointInterface.ConnectToLocalObject(&GameServerConnection::ConnectToEndpoint, m_ServerKey);
 }
 

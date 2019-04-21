@@ -14,17 +14,7 @@
 static const uint64_t kGameServerChallengePad = 0xfd3473e1a57de6ff;
 static const int kGameServerVersion = 5;
 
-struct GameServerMapData
-{
-  STORM_REFL;
-  std::string m_Map;
-  std::string m_Creator;
-  int m_GameMode;
-  int m_ScoreLimit;
-  int m_TimeLimit;
-  int m_MaxPlayers;
-  int m_MaxTeams;
-};
+
 
 enum STORM_REFL_ENUM class GameServerMessageType
 {
@@ -85,17 +75,29 @@ struct GameServerAuthenticateRequest
   uint64_t m_Challenge = 0;
 };
 
+struct GameServerLobbySettings
+{
+  STORM_REFL;
+  std::string m_LobbyServerIp = "127.0.0.1";
+};
+
+struct GameServerInfo
+{
+  STORM_REFL;
+  std::string m_ServerName;
+  std::string m_ServerZone;
+  std::string m_ServerResourceId;
+  std::string m_ExternalIp;
+  int m_ExternalPort = DEFAULT_GAME_PORT;
+};
+
 struct GameServerAuthenticateResponse
 {
   STORM_REFL;
   static const GameServerMessageType Type = GameServerMessageType::kAuthResponse;
 
+  GameServerInfo m_ServerInfo;
   uint64_t m_Challenge = 0;
-
-  std::string m_Name;
-  std::string m_Zone;
-  std::string m_ResourceId;
-  std::string m_ExternalIp;
 };
 
 struct GameServerCreateGame
@@ -261,21 +263,5 @@ struct GameServerGameResult
   bool m_GameCompleted = false;
   std::vector<int> m_TeamScores;
   std::vector<GameServerResultPlayer> m_ConnectedUsers;
-};
-
-struct GameServerLobbySettings
-{
-  STORM_REFL;
-  std::string m_LobbyServerIp = "127.0.0.1";
-};
-
-struct GameServerInfo
-{
-  STORM_REFL;
-  std::string m_ServerName;
-  std::string m_ServerZone;
-  std::string m_ServerResourceId;
-  std::string m_ExternalIp;
-  int m_ExternalPort = DEFAULT_GAME_PORT;
 };
 

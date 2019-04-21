@@ -25,11 +25,6 @@ GameServerConnection::GameServerConnection(DDSNodeInterface node_interface) :
 
 }
 
-void GameServerConnection::SetRemoteHost(std::string host)
-{
-  m_RemoteHost = host;
-}
-
 void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string data)
 {
   if (m_Error)
@@ -58,11 +53,7 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
         return;
       }
 
-      m_ServerName = resp.m_Name;
-      m_ServerZone = resp.m_Zone;
-      m_ServerResourceId = resp.m_ResourceId;
-      m_ServerExternalIp = resp.m_ExternalIp;
-      
+      m_ServerInfo = resp.m_ServerInfo;
       m_State = GameServerConnectionState::kConnected;
     }
     else
@@ -125,17 +116,28 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
   }
 }
 
-void GameServerConnection::UserLeaveGame(int game_id, DDSKey user_key)
+void GameServerConnection::CreateGame(DDSKey game_id, const GameInitSettings & game_creation_data)
 {
 
 }
 
-void GameServerConnection::SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id)
+void GameServerConnection::DestroyGame(DDSKey game_id)
 {
 
 }
 
 void GameServerConnection::NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success)
+{
+
+}
+
+
+void GameServerConnection::NotifyUserLeaveGame(DDSKey game_, DDSKey user_key)
+{
+
+}
+
+void GameServerConnection::NotifyGameEnded(DDSKey game_id)
 {
 
 }
@@ -190,16 +192,6 @@ void GameServerConnection::PreMoveObject()
   }
 
   m_ConnectionId = {};
-}
-
-void GameServerConnection::CreateGame(GameInitSettings game_creation_data)
-{
-
-}
-
-void GameServerConnection::DestroyGame(int game_id)
-{
-
 }
 
 template <typename T>

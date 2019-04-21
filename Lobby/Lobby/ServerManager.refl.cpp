@@ -21,6 +21,7 @@
 
 #include "ServerManager.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
+#include "GameServerConnection.refl.h"
 
 #ifdef _LINUX
 #include <sys/types.h>
@@ -407,7 +408,13 @@ void ServerManager::HandleStopServerResponse(bool success, std::string body, std
 
 void ServerManager::AssignGameServer(DDSKey game_id, int zone)
 {
-
+  for(auto & server : m_ActiveServers)
+  {
+    if((server.m_ZoneIndex == -1 || server.m_ZoneIndex == zone) && server.m_ActiveGames < kMaxGamesPerServer)
+    {
+      server.m_ActiveGames++;
+    }
+  }
 }
 
 void ServerManager::HandleServerConnected(DDSKey game_server_key, const GameServerInfo & server_info, int num_active_games)

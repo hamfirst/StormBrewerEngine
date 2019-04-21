@@ -150,10 +150,7 @@ void LobbyServerConnection::Update()
         uint64_t challenge_response = crc64(std::to_string(req.m_Challenge)) ^ kGameServerChallengePad;
         GameServerAuthenticateResponse resp;
         resp.m_Challenge = challenge_response;
-        resp.m_Name = m_ServerInfo.m_ServerName;
-        resp.m_Zone = m_ServerInfo.m_ServerZone;
-        resp.m_ResourceId = m_ServerInfo.m_ServerResourceId;
-        resp.m_ExternalIp = m_ServerInfo.m_ExternalIp;
+        resp.m_ServerInfo = m_ServerInfo;
 
         SendMessage(resp);
 

@@ -19,16 +19,14 @@ public:
 
   GameServerConnection(DDSNodeInterface node_interface);
 
-  void STORM_REFL_FUNC SetRemoteHost(std::string host);
   void STORM_REFL_FUNC GotMessage(GameServerMessageType cmd, std::string data);
 
-  void STORM_REFL_FUNC CreateGame(GameInitSettings game_creation_data);
-  void STORM_REFL_FUNC DestroyGame(int game_id);
-  void STORM_REFL_FUNC UserLeaveGame(int game_id, DDSKey user_key);
-
-  void STORM_REFL_FUNC SendLaunchGame(int game_id, DDSKey user_id, DDSKey endpoint_id);
+  void STORM_REFL_FUNC CreateGame(DDSKey game_id, const GameInitSettings & game_creation_data);
+  void STORM_REFL_FUNC DestroyGame(DDSKey game_id);
 
   void STORM_REFL_FUNC NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success);
+  void STORM_REFL_FUNC NotifyUserLeaveGame(DDSKey game_, DDSKey user_key);
+  void STORM_REFL_FUNC NotifyGameEnded(DDSKey game_id);
 
 public:
 
@@ -44,16 +42,13 @@ public:
 public:
 
   GameServerConnectionState m_State;
+  GameServerInfo m_ServerInfo;
+
   uint64_t m_ExpectedChallengeResponse;
 
   std::vector<std::string> m_PendingMessages;
   std::string m_RemoteHost;
   bool m_Error;
-
-  std::string m_ServerName;
-  std::string m_ServerZone;
-  std::string m_ServerResourceId;
-  std::string m_ServerExternalIp;
 
 private:
 
