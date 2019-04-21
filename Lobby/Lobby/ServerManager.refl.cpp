@@ -28,7 +28,7 @@
 #include <unistd.h>
 #include <signal.h>
 #else
-
+#include <Windows.h>
 #endif
 
 std::string ApplyTemplate(const std::string & templ, const std::unordered_map<std::string, std::string> & repl)
@@ -586,12 +586,13 @@ void ServerManager::CreateDebugServer()
     "--zone=Debug"
   };
 
+  static const int kNumCommandArgs = sizeof(command) / sizeof(command[0]);
+
 #ifdef _LINUX
   auto pid = fork();
 
   if(pid == 0)
   {
-    static const int kNumCommandArgs = sizeof(command) / sizeof(command[0]);
     char * args[kNumCommandArgs + 1];
 
     for(int index = 0; index < kNumCommandArgs; ++index)
@@ -607,23 +608,39 @@ void ServerManager::CreateDebugServer()
     m_DebugServers.emplace(std::make_pair(server_id, pid));
   }
 #else
-  static_assert(false, "implement this");
+
+  std::string command_line;
+  for (int index = 0; index < kNumCommandArgs; ++index)
+  {
+    command_line += command[index];
+    command_line += " ";
+  }
+
+  STARTUPINFOA startup_info = { sizeof(STARTUPINFOA) };
+  PROCESS_INFORMATION proc_info;
+  if (CreateProcessA("ServerExe", command_line.data(), nullptr, nullptr, false, CREATE_NEW_CONSOLE, nullptr, nullptr, &startup_info, &proc_info))
+  {
+    m_DebugServers.emplace(std::make_pair(server_id, proc_info.hProcess));
+  }
+
 #endif
 }
 
 void ServerManager::StopDebugServer(std::size_t server_id)
 {
-#ifdef _LINUX
-
   auto itr = m_DebugServers.find(server_id);
-  if(itr == m_DebugServers.end())
+  if (itr == m_DebugServers.end())
   {
     return;
   }
 
+#ifdef _LINUX
+
   kill(itr->second, SIGTERM);
 
 #else
-  static_assert(false, "implement this");
+
+  TerminateProcess(itr->second, 0);
+
 #endif
 }

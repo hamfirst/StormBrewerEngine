@@ -36,7 +36,7 @@ void GameInstanceManager::Update()
 
 bool GameInstanceManager::JoinPlayer(NotNullPtr<GameClientConnection> client, const GameServerAuthenticateUserSuccess & auth)
 {
-
+  return false;
 }
 
 void GameInstanceManager::RemovePlayer(GameClientConnection * client)

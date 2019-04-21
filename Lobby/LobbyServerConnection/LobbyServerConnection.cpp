@@ -193,25 +193,8 @@ void LobbyServerConnection::Update()
             return;
           }
 
-#ifdef _DEBUG
-          GameServerAuthenticateUserSuccess new_msg;
-          new_msg.m_ResponseId = msg.m_ResponseId;
-          new_msg.m_UserId = rand();
-          new_msg.m_AccountId = rand();
-          new_msg.m_GameId = 0;
 
-          new_msg.m_Name = "User" + std::to_string(rand());
-
-          new_msg.m_GameData.m_Map = "miniball";
-          new_msg.m_GameData.m_Name = "miniball";
-          new_msg.m_GameData.m_PlayerLimit = 6;
-          new_msg.m_GameData.m_ScoreLimit = 10;
-          new_msg.m_GameData.m_TimeLimit = 0;
-
-          val->second(new_msg);
-#else
           val->second({});
-#endif
           m_Validations.erase(val);
           return;
         }

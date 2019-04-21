@@ -7,9 +7,8 @@
 #include <StormData/StormData.h>
 #include <StormData/StormDataTypes.h>
 
-class RUNTIME_EXPORT MapPropertiesDef
+struct RUNTIME_EXPORT MapPropertiesDef
 {
-public:
   STORM_DATA_DEFAULT_CONSTRUCTION(MapPropertiesDef);
 
   int m_MaxTeams = 0;

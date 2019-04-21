@@ -236,7 +236,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
     target_link_libraries(ServerExe GameServer)
     target_link_libraries(ServerExe Game)
     target_link_libraries(ServerExe GameShared)
-    target_link_libraries(ClientExe LobbyShared)
+    target_link_libraries(ServerExe LobbyShared)
     target_link_libraries(ServerExe Runtime)
 
     set_target_properties(ServerExe PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:GameServerExe.lib /WHOLEARCHIVE:GameServer.lib /WHOLEARCHIVE:Game.lib /WHOLEARCHIVE:Runtime.lib")
