@@ -49,3 +49,4 @@ static const int kMaxPlayers = 16;
 static const int kMaxTeams = 2;
 
 static const int kMaxLatency = 160;
+static const int kMaxGamesPerServer = 10;

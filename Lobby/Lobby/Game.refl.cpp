@@ -84,6 +84,11 @@ void Game::Destroy()
 
 void Game::Cleanup()
 {
+  if(m_AssignedServer != 0)
+  {
+    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
+  }
+
   m_Interface.CallShared(&GameList::RemoveGame, m_Interface.GetLocalKey());
   m_Interface.DestroySelf();
 }
@@ -108,9 +113,35 @@ void Game::Update()
   }
 }
 
+void Game::Reset()
+{
+  if(m_AssignedServer != 0)
+  {
+    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
+
+    m_AssignedServer = 0;
+    m_GameInfo.m_ServerIp = "";
+    m_GameInfo.m_ServerPort = 0;
+  }
+}
+
 void Game::SetJoinCode(uint32_t join_code)
 {
   m_GameInfo.m_JoinCode = join_code;
+}
+
+
+void Game::AssignGameServer(DDSKey server_id, const std::string & server_ip, int port)
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
+    return;
+  }
+
+  m_AssignedServer = server_id;
+  m_GameInfo.m_ServerIp = server_ip;
+  m_GameInfo.m_ServerPort = port;
 }
 
 void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)

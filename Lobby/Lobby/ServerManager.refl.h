@@ -6,14 +6,17 @@
 #include <HurricaneDDS/DDSDataObject.h>
 #include <HurricaneDDS/DDSKey.h>
 
+#include "Foundation/Allocator/IdAllocator.h"
+
 #include "SharedTypes.refl.h"
 #include "LobbyConfig.h"
 #include "GooglePlatform.refl.h"
+#include "GameServerMessages.refl.h"
+
+#define ENABLE_GOOGLE_CLOUD
 
 #ifdef ENABLE_GOOGLE_CLOUD
 #include <mbedtls/pk.h>
-#else
-#include "Foundation/Allocator/IdAllocator.h"
 #endif
 
 #ifdef _LINUX
@@ -27,25 +30,21 @@ class StormBootstrap;
 
 struct PendingServer
 {
-  std::string m_Zone;
   int m_ZoneIndex = -1;
-  std::string m_InstanceName;
   std::string m_ResourceId;
   time_t m_StartTime;
 };
 
-struct ActiveServerGame
-{
-  DDSKey m_GameId;
-};
-
 struct ActiveServer
 {
+  DDSKey m_ConnectionKey = 0;
   int m_ZoneIndex = -1;
 
-  uint32_t m_RemoteIp;
-  uint16_t m_RemotePort;
-  std::vector<ActiveServerGame> m_ActiveGames;
+  std::string m_Name;
+  std::string m_ResourceId;
+  std::string m_RemoteIp;
+  uint16_t m_RemotePort = 0;
+  int m_ActiveGames = 0;
 };
 
 struct GameRequest
@@ -59,11 +58,15 @@ struct ServerManager
 public:
   DDS_SHARED_OBJECT;
 
-  ServerManager(DDSObjectInterface & iface);
+  explicit ServerManager(DDSObjectInterface & iface);
   ~ServerManager();
 
   void Initialize();
   void Update();
+
+  void CreateServerInstance(int zone_index);
+  void StopServerInstance(const std::string & zone, const std::string & resource_id);
+  void StopServerInstance(int zone_index, const std::string & resource_id);
 
 #ifdef ENABLE_GOOGLE_CLOUD
 
@@ -73,23 +76,22 @@ public:
   void STORM_REFL_FUNC RequestNewCloudToken();
   void STORM_REFL_FUNC HandleCloudTokenResponse(bool success, std::string body, std::string headers);
 
-  void CreateServerInstance(int zone_index);
+  void CreateCloudServerInstance(int zone_index);
   void STORM_REFL_FUNC HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers);
 
-  void StopServerInstance(const std::string & zone, const std::string & resource_id);
+  void StopCloudServerInstance(const std::string & zone, const std::string & resource_id);
   void STORM_REFL_FUNC HandleStopServerResponse(bool success, std::string body, std::string headers);
-
-#else
-
-  void CreateServerInstance(int zone_index);
-  void StopServerInstance(int zone_index, const std::string & resource_id);
 
 #endif
 
-
   void STORM_REFL_FUNC AssignGameServer(DDSKey game_id, int zone);
-  void STORM_REFL_FUNC CheckForServerRequests();
+
+  void STORM_REFL_FUNC HandleServerConnected(DDSKey game_server_key, const GameServerInfo & server_info, int num_active_games);
+  void STORM_REFL_FUNC HandleServerDisconnected(DDSKey game_server_key);
+  void STORM_REFL_FUNC HandleGameEnded(DDSKey game_server_key);
+
   void STORM_REFL_FUNC CheckForTimedOutServers();
+  void STORM_REFL_FUNC CheckForAssignableGames();
 
 private:
 
@@ -103,7 +105,6 @@ private:
 private:
   DDSObjectInterface & m_Interface;
 
-#ifdef ENABLE_GOOGLE_CLOUD
   GoogleCredentialsInfo m_CredentialsInfo;
 
   mbedtls_pk_context m_PKContext;
@@ -112,10 +113,9 @@ private:
   std::string m_ProjectNameLowercase;
 
   std::string m_CreateInstanceTemplate;
-#else
+
   IdAllocator m_ServerIdAllocator;
   std::map<int, ProcessIdentifier> m_DebugServers;
-#endif
 
   std::vector<GameRequest> m_GameRequests;
 

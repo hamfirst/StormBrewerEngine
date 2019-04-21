@@ -36,7 +36,7 @@ static const int kInvalidValidationRequestId = 0;
 class LobbyServerConnection
 {
 public:
-  LobbyServerConnection(const GameServerMeta & server_info);
+  LobbyServerConnection(const GameServerLobbySettings & lobby_settings, const GameServerInfo & server_info);
 
   void Connect();
   void Update();
@@ -73,7 +73,8 @@ protected:
 private:
   LobbyServerConnectionState m_State;
   WebSocket m_WebSocket;
-  GameServerMeta m_ServerSettings;
+  GameServerLobbySettings m_LobbySettings;
+  GameServerInfo m_ServerInfo;
 
   std::vector<std::string> m_PendingMessages;
   uint64_t m_RelocationToken;

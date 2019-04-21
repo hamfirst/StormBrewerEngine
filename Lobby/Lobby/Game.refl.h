@@ -57,8 +57,10 @@ struct Game
   void STORM_REFL_FUNC Cleanup();
 
   void STORM_REFL_FUNC Update();
+  void STORM_REFL_FUNC Reset();
 
   void STORM_REFL_FUNC SetJoinCode(uint32_t join_code);
+  void STORM_REFL_FUNC AssignGameServer(DDSKey server_id, const std::string & server_ip, int port);
 
   void STORM_REFL_FUNC AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info);
   void STORM_REFL_FUNC RemoveUser(DDSKey user_key);
@@ -108,8 +110,6 @@ public:
   std::map<std::size_t, UserZoneInfo> m_UserZoneInfo;
 
   int m_ZoneIndex = -1;
-  uint32_t m_RemoteIp = 0;
-  uint16_t m_RemotePort = 0;
 
 private:
   DDSNodeInterface m_Interface;

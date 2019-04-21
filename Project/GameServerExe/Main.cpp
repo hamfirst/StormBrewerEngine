@@ -140,17 +140,19 @@ int main(int argc, const char ** argv)
   bootstrap.Run();
   bootstrap.PrintDebug();
 
-  GameServerMeta lobby_server_settings;
+  GameServerLobbySettings lobby_server_settings;
   StormReflParseJson(lobby_server_settings, bootstrap.Get("meta"));
-  lobby_server_settings.m_ServerName = bootstrap.Get("name");
-  lobby_server_settings.m_ServerZone = bootstrap.Get("zone");
-  lobby_server_settings.m_ServerResourceId = bootstrap.Get("id");
-  lobby_server_settings.m_ExternalIp = bootstrap.Get("external_ip");
+
+  GameServerInfo game_server_info;
+  game_server_info.m_ServerName = bootstrap.Get("name");
+  game_server_info.m_ServerZone = bootstrap.Get("zone");
+  game_server_info.m_ServerResourceId = bootstrap.Get("id");
+  game_server_info.m_ExternalIp = bootstrap.Get("external_ip");
 
   auto external_port = atoi(bootstrap.Get("external_port").c_str());
   if(external_port != 0)
   {
-    lobby_server_settings.m_ExternalPort = external_port;
+    game_server_info.m_ExternalPort = external_port;
   }
 
 #if defined(_LINUX) && !defined(_INCLUDEOS)
@@ -203,9 +205,9 @@ int main(int argc, const char ** argv)
   printf("  Starting server...\n");
   NetworkInit();
 
-  static LobbyServerConnection lobby_server_connection(lobby_server_settings);
+  static LobbyServerConnection lobby_server_connection(lobby_server_settings, game_server_info);
 
-  static GameServer game_server(256, lobby_server_settings.m_ExternalPort, stage_manager, &lobby_server_connection);
+  static GameServer game_server(256, game_server_info.m_ExternalPort, stage_manager, &lobby_server_connection);
   printf("  Server started!\n");
 
   static FrameClock frame_clock(1.0 / 60.0);

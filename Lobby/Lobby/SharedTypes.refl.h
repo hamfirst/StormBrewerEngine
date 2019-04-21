@@ -192,5 +192,7 @@ struct GameInfo
   RUInt m_JoinCode;
   RString m_Password;
   ROpaque<GameInitSettings> m_Settings;
+  RString m_ServerIp;
+  RInt m_ServerPort;
   RSparseList<GameMember> m_Users;
 };
