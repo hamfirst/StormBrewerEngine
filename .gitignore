@@ -241,6 +241,7 @@ Test/[Dd]ocument[Ss]erver
 Test/[Ee]ditor
 Test/ServerExe
 Test/DistFetch
+Test/LobbyExe
 Wizards/sbwiz/out/*
 External/libgit2/.HEADER
 External/libgit2/.editorconfig
