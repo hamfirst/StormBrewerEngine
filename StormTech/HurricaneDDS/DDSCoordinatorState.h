@@ -58,7 +58,7 @@ public:
   std::string QueryDatabaseSingleton(const char * collection_name);
   void UpsertDatabaseSingleton(const char * collection_name, const char * document);
 
-  time_t GetNetworkTime();
+  time_t GetNetworkTime() const;
 
   void * GetLocalObject(int target_object_type, DDSKey target_key);
 private:

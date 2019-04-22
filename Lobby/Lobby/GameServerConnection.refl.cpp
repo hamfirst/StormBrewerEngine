@@ -116,30 +116,73 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
   }
 }
 
-void GameServerConnection::CreateGame(DDSKey game_id, const GameInitSettings & game_creation_data)
+void GameServerConnection::CreateGame(const GameServerCreateGame & msg)
 {
-
+  m_ActiveGameIds.push_back(msg.m_GameId);
+  SendPacket(msg);
 }
 
-void GameServerConnection::DestroyGame(DDSKey game_id)
+void GameServerConnection::DestroyGame(const GameServerDestroyGame & msg)
 {
-
+  for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
+  {
+    if(*itr == msg.m_GameId)
+    {
+      m_ActiveGameIds.erase(itr);
+      SendPacket(msg);
+      break;
+    }
+  }
 }
 
-void GameServerConnection::NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success)
+void GameServerConnection::RemoveUserFromGame(DDSKey game_id, DDSKey user_id)
 {
+  for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
+  {
+    if(*itr == game_id)
+    {
+      GameServerForceUserDisconnect msg;
+      msg.m_GameId = game_id;
+      msg.m_UserId = user_id;
 
+      SendPacket(msg);
+      return;
+    }
+  }
 }
 
-
-void GameServerConnection::NotifyUserLeaveGame(DDSKey game_, DDSKey user_key)
+void GameServerConnection::NotifyUserQuitGame(DDSKey game_id, DDSKey user_key, bool ban)
 {
-
+  for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
+  {
+    if(*itr == game_id)
+    {
+      m_Interface.Call(&Game::HandleUserQuitGame, game_id, user_key, ban);
+      return;
+    }
+  }
 }
 
 void GameServerConnection::NotifyGameEnded(DDSKey game_id)
 {
+  for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
+  {
+    if(*itr == game_id)
+    {
+      m_Interface.Call(&Game::HandleGameComplete, game_id);
+      return;
+    }
+  }
+}
 
+void GameServerConnection::NotifyTokenRedeemedSuccess(DDSKey game_id, const GameServerAuthenticateUserSuccess & msg)
+{
+  SendPacket(msg);
+}
+
+void GameServerConnection::NotifyTokenRedeemedFailure(DDSKey game_id, const GameServerAuthenticateUserFailure & msg)
+{
+  SendPacket(msg);
 }
 
 void GameServerConnection::ConnectToEndpoint(DDSConnectionId connection_id)

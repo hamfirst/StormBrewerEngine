@@ -297,7 +297,7 @@ void DDSCoordinatorClientProtocol::SendCPUUsage()
   SendMessageToCoordinator(DDSGetServerMessage(DDSCoordinatorNodeCPUUsage{ DDSGetCPUUsage() }));
 }
 
-time_t DDSCoordinatorClientProtocol::GetNetworkTime()
+time_t DDSCoordinatorClientProtocol::GetNetworkTime() const
 {
   return m_NetworkTime + time(nullptr);
 }

@@ -96,5 +96,5 @@ bool IsGameFull(const std::vector<int> & team_counts, const MapPropertiesDef & m
 
 bool IsGameFullEnoughToStart(const std::vector<int> & team_counts, const MapPropertiesDef & map_props, const GameInitSettings & settings)
 {
-  return DoAllTeamsHavePlayers(team_counts, map_props, settings);
+  return IsGameFull(team_counts, map_props, settings);
 }

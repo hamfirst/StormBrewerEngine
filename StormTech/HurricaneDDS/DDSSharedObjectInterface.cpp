@@ -250,7 +250,7 @@ void DDSSharedObjectInterface::UpsertDatabaseSingleton(const char * collection_n
   return m_CoordinatorState.UpsertDatabaseSingleton(collection_name, document);
 }
 
-time_t DDSSharedObjectInterface::GetNetworkTime()
+time_t DDSSharedObjectInterface::GetNetworkTime() const
 {
   return m_CoordinatorState.GetNetworkTime();
 }

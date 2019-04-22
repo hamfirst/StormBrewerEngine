@@ -172,6 +172,15 @@ struct UserChatMessageGame
   std::string msg;
 };
 
+struct UserLaunchGameMessage
+{
+  STORM_REFL;
+  std::string c;
+  std::string server_ip;
+  int server_port;
+  DDSKey token;
+};
+
 struct UserServerMessageGame
 {
   STORM_REFL;

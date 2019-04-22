@@ -10,7 +10,7 @@
 template <>
 struct StormReflEnumInfo<GameServerMessageType>
 {
-  static constexpr int elems_n = 21;
+  static constexpr int elems_n = 23;
   static constexpr auto GetName() { return "GameServerMessageType"; }
   static constexpr auto GetNameHash() { return 0x51112183; }
   template <int N> struct elems { };
@@ -51,13 +51,29 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<3>
 template <>
 struct StormReflEnumInfo<GameServerMessageType>::elems<4>
 {
+  static constexpr auto GetName() { return "kCreateGame"; }
+  static constexpr auto GetNameHash() { return 0x655CE8AA; }
+  static constexpr auto GetValue() { return GameServerMessageType::kCreateGame; }
+};
+
+template <>
+struct StormReflEnumInfo<GameServerMessageType>::elems<5>
+{
+  static constexpr auto GetName() { return "kDestroyGame"; }
+  static constexpr auto GetNameHash() { return 0x46B474D7; }
+  static constexpr auto GetValue() { return GameServerMessageType::kDestroyGame; }
+};
+
+template <>
+struct StormReflEnumInfo<GameServerMessageType>::elems<6>
+{
   static constexpr auto GetName() { return "kAuthRequest"; }
   static constexpr auto GetNameHash() { return 0xE2B4C630; }
   static constexpr auto GetValue() { return GameServerMessageType::kAuthRequest; }
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<5>
+struct StormReflEnumInfo<GameServerMessageType>::elems<7>
 {
   static constexpr auto GetName() { return "kAuthResponse"; }
   static constexpr auto GetNameHash() { return 0x78CB96CB; }
@@ -65,7 +81,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<5>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<6>
+struct StormReflEnumInfo<GameServerMessageType>::elems<8>
 {
   static constexpr auto GetName() { return "kAuthUser"; }
   static constexpr auto GetNameHash() { return 0x564CE318; }
@@ -73,7 +89,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<6>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<7>
+struct StormReflEnumInfo<GameServerMessageType>::elems<9>
 {
   static constexpr auto GetName() { return "kAuthUserSuccess"; }
   static constexpr auto GetNameHash() { return 0x1739B89D; }
@@ -81,7 +97,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<7>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<8>
+struct StormReflEnumInfo<GameServerMessageType>::elems<10>
 {
   static constexpr auto GetName() { return "kAuthUserFail"; }
   static constexpr auto GetNameHash() { return 0xC6D86136; }
@@ -89,7 +105,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<8>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<9>
+struct StormReflEnumInfo<GameServerMessageType>::elems<11>
 {
   static constexpr auto GetName() { return "kRequestTeamSwitch"; }
   static constexpr auto GetNameHash() { return 0xF6000FAC; }
@@ -97,7 +113,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<9>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<10>
+struct StormReflEnumInfo<GameServerMessageType>::elems<12>
 {
   static constexpr auto GetName() { return "kTeamSwitch"; }
   static constexpr auto GetNameHash() { return 0x91DE20C4; }
@@ -105,7 +121,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<10>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<11>
+struct StormReflEnumInfo<GameServerMessageType>::elems<13>
 {
   static constexpr auto GetName() { return "kRandomizeTeams"; }
   static constexpr auto GetNameHash() { return 0xBC13DFEE; }
@@ -113,7 +129,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<11>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<12>
+struct StormReflEnumInfo<GameServerMessageType>::elems<14>
 {
   static constexpr auto GetName() { return "kResetGame"; }
   static constexpr auto GetNameHash() { return 0x25940320; }
@@ -121,7 +137,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<12>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<13>
+struct StormReflEnumInfo<GameServerMessageType>::elems<15>
 {
   static constexpr auto GetName() { return "kForceDisconnect"; }
   static constexpr auto GetNameHash() { return 0xB5631445; }
@@ -129,7 +145,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<13>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<14>
+struct StormReflEnumInfo<GameServerMessageType>::elems<16>
 {
   static constexpr auto GetName() { return "kUserDisconnected"; }
   static constexpr auto GetNameHash() { return 0x814B2937; }
@@ -137,7 +153,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<14>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<15>
+struct StormReflEnumInfo<GameServerMessageType>::elems<17>
 {
   static constexpr auto GetName() { return "kKillGame"; }
   static constexpr auto GetNameHash() { return 0xD34FC899; }
@@ -145,7 +161,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<15>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<16>
+struct StormReflEnumInfo<GameServerMessageType>::elems<18>
 {
   static constexpr auto GetName() { return "kGameScore"; }
   static constexpr auto GetNameHash() { return 0xEB1D059E; }
@@ -153,7 +169,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<16>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<17>
+struct StormReflEnumInfo<GameServerMessageType>::elems<19>
 {
   static constexpr auto GetName() { return "kUserStats"; }
   static constexpr auto GetNameHash() { return 0x1F577580; }
@@ -161,7 +177,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<17>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<18>
+struct StormReflEnumInfo<GameServerMessageType>::elems<20>
 {
   static constexpr auto GetName() { return "kRelocate"; }
   static constexpr auto GetNameHash() { return 0x84EB634C; }
@@ -169,7 +185,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<18>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<19>
+struct StormReflEnumInfo<GameServerMessageType>::elems<21>
 {
   static constexpr auto GetName() { return "kChangeCreator"; }
   static constexpr auto GetNameHash() { return 0x2CED1998; }
@@ -177,7 +193,7 @@ struct StormReflEnumInfo<GameServerMessageType>::elems<19>
 };
 
 template <>
-struct StormReflEnumInfo<GameServerMessageType>::elems<20>
+struct StormReflEnumInfo<GameServerMessageType>::elems<22>
 {
   static constexpr auto GetName() { return "kGameResult"; }
   static constexpr auto GetNameHash() { return 0x18689A00; }
@@ -708,6 +724,167 @@ struct StormReflTypeInfo<GameServerInfo>::field_data<4, Self> : public StormRefl
   match_const_t<Self, int> & Get() { return self.m_ExternalPort; }
   std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.m_ExternalPort; }
   void SetDefault() { self.m_ExternalPort = StormReflTypeInfo<GameServerInfo>::GetDefault().m_ExternalPort; }
+};
+
+template <>
+struct StormReflTypeInfo<GameServerCreateGame>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 2;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GameServerCreateGame"; }
+  static constexpr auto GetNameHash() { return 0x1E85D00A; }
+  static constexpr bool HasDefault() { return true; }
+  static GameServerCreateGame & GetDefault() { static GameServerCreateGame def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerCreateGame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerCreateGame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerCreateGame *>(ptr);
+    if(typeid(GameServerCreateGame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerCreateGame *>(ptr);
+    if(typeid(GameServerCreateGame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<GameServerCreateGame>::field_data_static<0>
+{
+  using member_type = GameInitSettings; // GameInitSettings
+  static constexpr auto GetName() { return "m_Settings"; }
+  static constexpr auto GetType() { return "GameInitSettings"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x136974EB; }
+  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GameServerCreateGame::m_Settings; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerCreateGame *>(obj); return &ptr->m_Settings; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerCreateGame *>(obj); return &ptr->m_Settings; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameServerCreateGame>::field_data<0, Self> : public StormReflTypeInfo<GameServerCreateGame>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, GameInitSettings> & Get() { return self.m_Settings; }
+  std::add_const_t<std::remove_reference_t<GameInitSettings>> & Get() const { return self.m_Settings; }
+  void SetDefault() { self.m_Settings = StormReflTypeInfo<GameServerCreateGame>::GetDefault().m_Settings; }
+};
+
+template <>
+struct StormReflTypeInfo<GameServerCreateGame>::field_data_static<1>
+{
+  using member_type = uint64_t; // unsigned long
+  static constexpr auto GetName() { return "m_GameId"; }
+  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA16AE06C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &GameServerCreateGame::m_GameId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerCreateGame *>(obj); return &ptr->m_GameId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerCreateGame *>(obj); return &ptr->m_GameId; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameServerCreateGame>::field_data<1, Self> : public StormReflTypeInfo<GameServerCreateGame>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint64_t> & Get() { return self.m_GameId; }
+  std::add_const_t<std::remove_reference_t<uint64_t>> & Get() const { return self.m_GameId; }
+  void SetDefault() { self.m_GameId = StormReflTypeInfo<GameServerCreateGame>::GetDefault().m_GameId; }
+};
+
+template <>
+struct StormReflTypeInfo<GameServerDestroyGame>
+{
+  using MyBase = void;
+  static constexpr int fields_n = 1;
+  template <int N> struct field_data_static {};
+  template <int N, typename Self> struct field_data {};
+  template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
+  static constexpr auto GetName() { return "GameServerDestroyGame"; }
+  static constexpr auto GetNameHash() { return 0x90190E07; }
+  static constexpr bool HasDefault() { return true; }
+  static GameServerDestroyGame & GetDefault() { static GameServerDestroyGame def; return def; }
+
+  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerDestroyGame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerDestroyGame *>(ptr);
+    if(GetNameHash() == type_name_hash) return c;
+    return nullptr;
+  }
+
+  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
+  {
+    auto c = static_cast<GameServerDestroyGame *>(ptr);
+    if(typeid(GameServerDestroyGame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
+  {
+    auto c = static_cast<const GameServerDestroyGame *>(ptr);
+    if(typeid(GameServerDestroyGame).hash_code() == type_id_hash) return c;
+    return nullptr;
+  }
+
+};
+
+template <>
+struct StormReflTypeInfo<GameServerDestroyGame>::field_data_static<0>
+{
+  using member_type = uint64_t; // unsigned long
+  static constexpr auto GetName() { return "m_GameId"; }
+  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xA16AE06C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 0; }
+  static constexpr auto GetMemberPtr() { return &GameServerDestroyGame::m_GameId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameServerDestroyGame *>(obj); return &ptr->m_GameId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameServerDestroyGame *>(obj); return &ptr->m_GameId; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<GameServerDestroyGame>::field_data<0, Self> : public StormReflTypeInfo<GameServerDestroyGame>::field_data_static<0>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, uint64_t> & Get() { return self.m_GameId; }
+  std::add_const_t<std::remove_reference_t<uint64_t>> & Get() const { return self.m_GameId; }
+  void SetDefault() { self.m_GameId = StormReflTypeInfo<GameServerDestroyGame>::GetDefault().m_GameId; }
 };
 
 template <>
@@ -2645,7 +2822,7 @@ namespace StormReflFileInfo
 {
   struct GameServerMessages
   {
-    static const int types_n = 24;
+    static const int types_n = 26;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -2694,101 +2871,113 @@ namespace StormReflFileInfo
   template <>
   struct GameServerMessages::type_info<7>
   {
-    using type = ::GameServerAuthenticateResponse;
+    using type = ::GameServerCreateGame;
   };
 
   template <>
   struct GameServerMessages::type_info<8>
   {
-    using type = ::GameServerAuthenticateUser;
+    using type = ::GameServerDestroyGame;
   };
 
   template <>
   struct GameServerMessages::type_info<9>
   {
-    using type = ::GameServerAuthenticateUserSuccess;
+    using type = ::GameServerAuthenticateResponse;
   };
 
   template <>
   struct GameServerMessages::type_info<10>
   {
-    using type = ::GameServerAuthenticateUserFailure;
+    using type = ::GameServerAuthenticateUser;
   };
 
   template <>
   struct GameServerMessages::type_info<11>
   {
-    using type = ::GameServerRequestTeamSwitch;
+    using type = ::GameServerAuthenticateUserSuccess;
   };
 
   template <>
   struct GameServerMessages::type_info<12>
   {
-    using type = ::GameServerRandomizeTeams;
+    using type = ::GameServerAuthenticateUserFailure;
   };
 
   template <>
   struct GameServerMessages::type_info<13>
   {
-    using type = ::GameServerResetGame;
+    using type = ::GameServerRequestTeamSwitch;
   };
 
   template <>
   struct GameServerMessages::type_info<14>
   {
-    using type = ::GameServerTeamSwitch;
+    using type = ::GameServerRandomizeTeams;
   };
 
   template <>
   struct GameServerMessages::type_info<15>
   {
-    using type = ::GameServerForceUserDisconnect;
+    using type = ::GameServerResetGame;
   };
 
   template <>
   struct GameServerMessages::type_info<16>
   {
-    using type = ::GameServerUserDisconnected;
+    using type = ::GameServerTeamSwitch;
   };
 
   template <>
   struct GameServerMessages::type_info<17>
   {
-    using type = ::GameServerRelocate;
+    using type = ::GameServerForceUserDisconnect;
   };
 
   template <>
   struct GameServerMessages::type_info<18>
   {
-    using type = ::GameServerKillGame;
+    using type = ::GameServerUserDisconnected;
   };
 
   template <>
   struct GameServerMessages::type_info<19>
   {
-    using type = ::GameServerScore;
+    using type = ::GameServerRelocate;
   };
 
   template <>
   struct GameServerMessages::type_info<20>
   {
-    using type = ::GameServerStats;
+    using type = ::GameServerKillGame;
   };
 
   template <>
   struct GameServerMessages::type_info<21>
   {
-    using type = ::GameServerChangeCreator;
+    using type = ::GameServerScore;
   };
 
   template <>
   struct GameServerMessages::type_info<22>
   {
-    using type = ::GameServerResultPlayer;
+    using type = ::GameServerStats;
   };
 
   template <>
   struct GameServerMessages::type_info<23>
+  {
+    using type = ::GameServerChangeCreator;
+  };
+
+  template <>
+  struct GameServerMessages::type_info<24>
+  {
+    using type = ::GameServerResultPlayer;
+  };
+
+  template <>
+  struct GameServerMessages::type_info<25>
   {
     using type = ::GameServerGameResult;
   };

@@ -23,6 +23,8 @@ enum STORM_REFL_ENUM class GameServerMessageType
   kIdentifyRelocate,
   kRelocated,
   kPing,
+  kCreateGame,
+  kDestroyGame,
   kAuthRequest,
   kAuthResponse,
   kAuthUser,
@@ -92,6 +94,21 @@ struct GameServerInfo
   int m_ExternalPort = DEFAULT_GAME_PORT;
 };
 
+struct GameServerCreateGame
+{
+  STORM_REFL;
+  static const GameServerMessageType Type = GameServerMessageType::kCreateGame;
+  GameInitSettings m_Settings;
+  uint64_t m_GameId = 0;
+};
+
+struct GameServerDestroyGame
+{
+  STORM_REFL;
+  static const GameServerMessageType Type = GameServerMessageType::kDestroyGame;
+  uint64_t m_GameId = 0;
+};
+
 struct GameServerAuthenticateResponse
 {
   STORM_REFL;
@@ -101,12 +118,6 @@ struct GameServerAuthenticateResponse
   uint64_t m_Challenge = 0;
 };
 
-struct GameServerCreateGame
-{
-  GameInitSettings m_Settings;
-  uint64_t m_GameId = 0;
-  uint64_t m_CreatorId = 0;
-};
 
 struct GameServerAuthenticateUser
 {

@@ -42,7 +42,7 @@ struct StormReflEnumInfo<ChannelJoinResult>::elems<2>
 template <>
 struct StormReflEnumInfo<LobbyGameState>
 {
-  static constexpr int elems_n = 5;
+  static constexpr int elems_n = 6;
   static constexpr auto GetName() { return "LobbyGameState"; }
   static constexpr auto GetNameHash() { return 0xE5631489; }
   template <int N> struct elems { };
@@ -86,6 +86,14 @@ struct StormReflEnumInfo<LobbyGameState>::elems<4>
   static constexpr auto GetName() { return "kStarted"; }
   static constexpr auto GetNameHash() { return 0x0EE413BC; }
   static constexpr auto GetValue() { return LobbyGameState::kStarted; }
+};
+
+template <>
+struct StormReflEnumInfo<LobbyGameState>::elems<5>
+{
+  static constexpr auto GetName() { return "kPostGame"; }
+  static constexpr auto GetNameHash() { return 0x335EBCD3; }
+  static constexpr auto GetValue() { return LobbyGameState::kPostGame; }
 };
 
 template <>
@@ -260,7 +268,7 @@ template <>
 struct StormReflTypeInfo<UserInfo>
 {
   using MyBase = void;
-  static constexpr int fields_n = 8;
+  static constexpr int fields_n = 9;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -327,20 +335,45 @@ struct StormReflTypeInfo<UserInfo>::field_data<0, Self> : public StormReflTypeIn
 template <>
 struct StormReflTypeInfo<UserInfo>::field_data_static<1>
 {
+  using member_type = RString; // RString
+  static constexpr auto GetName() { return "m_Platform"; }
+  static constexpr auto GetType() { return "RString"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xCF7E04E5; }
+  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &UserInfo::m_Platform; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_Platform; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_Platform; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UserInfo>::field_data<1, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, RString> & Get() { return self.m_Platform; }
+  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_Platform; }
+  void SetDefault() { self.m_Platform = StormReflTypeInfo<UserInfo>::GetDefault().m_Platform; }
+};
+
+template <>
+struct StormReflTypeInfo<UserInfo>::field_data_static<2>
+{
   using member_type = DDSKey; // unsigned long
   static constexpr auto GetName() { return "m_PlatformId"; }
   static constexpr auto GetType() { return "unsigned long"; }
   static constexpr unsigned GetFieldNameHash() { return 0x0ED94F3C; }
   static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_PlatformId; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_PlatformId; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_PlatformId; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<1, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<1>
+struct StormReflTypeInfo<UserInfo>::field_data<2, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -350,7 +383,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<1, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<2>
+struct StormReflTypeInfo<UserInfo>::field_data_static<3>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_Squad"; }
@@ -358,14 +391,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<2>
   static constexpr unsigned GetFieldNameHash() { return 0x42E66F87; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_Squad; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_Squad; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_Squad; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<2, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<2>
+struct StormReflTypeInfo<UserInfo>::field_data<3, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -375,7 +408,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<2, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<3>
+struct StormReflTypeInfo<UserInfo>::field_data_static<4>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_SquadTag"; }
@@ -383,14 +416,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<3>
   static constexpr unsigned GetFieldNameHash() { return 0x74B2CC01; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_SquadTag; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_SquadTag; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_SquadTag; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<3, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<3>
+struct StormReflTypeInfo<UserInfo>::field_data<4, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -400,7 +433,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<3, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<4>
+struct StormReflTypeInfo<UserInfo>::field_data_static<5>
 {
   using member_type = RString; // RString
   static constexpr auto GetName() { return "m_Icon"; }
@@ -408,14 +441,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<4>
   static constexpr unsigned GetFieldNameHash() { return 0x5B09BCC4; }
   static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_Icon; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_Icon; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_Icon; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<4, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<4>
+struct StormReflTypeInfo<UserInfo>::field_data<5, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -425,7 +458,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<4, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<5>
+struct StormReflTypeInfo<UserInfo>::field_data_static<6>
 {
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_VisibleFlags"; }
@@ -433,14 +466,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<5>
   static constexpr unsigned GetFieldNameHash() { return 0x5B00BCD9; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_VisibleFlags; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_VisibleFlags; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_VisibleFlags; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<5, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<5>
+struct StormReflTypeInfo<UserInfo>::field_data<6, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -450,7 +483,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<5, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<6>
+struct StormReflTypeInfo<UserInfo>::field_data_static<7>
 {
   using member_type = RInt; // RNumber<int>
   static constexpr auto GetName() { return "m_AdminLevel"; }
@@ -458,14 +491,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<6>
   static constexpr unsigned GetFieldNameHash() { return 0xACAEF821; }
   static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_AdminLevel; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_AdminLevel; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_AdminLevel; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<6, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<6>
+struct StormReflTypeInfo<UserInfo>::field_data<7, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -475,7 +508,7 @@ struct StormReflTypeInfo<UserInfo>::field_data<6, Self> : public StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<UserInfo>::field_data_static<7>
+struct StormReflTypeInfo<UserInfo>::field_data_static<8>
 {
   using member_type = UserGameInfo; // UserGameInfo
   static constexpr auto GetName() { return "m_Game"; }
@@ -483,14 +516,14 @@ struct StormReflTypeInfo<UserInfo>::field_data_static<7>
   static constexpr unsigned GetFieldNameHash() { return 0x1DB6A493; }
   static constexpr unsigned GetTypeNameHash() { return 0xF088D28F; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &UserInfo::m_Game; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UserInfo *>(obj); return &ptr->m_Game; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserInfo *>(obj); return &ptr->m_Game; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UserInfo>::field_data<7, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<7>
+struct StormReflTypeInfo<UserInfo>::field_data<8, Self> : public StormReflTypeInfo<UserInfo>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1922,7 +1955,7 @@ template <>
 struct StormReflTypeInfo<GameInfo>
 {
   using MyBase = void;
-  static constexpr int fields_n = 10;
+  static constexpr int fields_n = 8;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -2139,70 +2172,20 @@ struct StormReflTypeInfo<GameInfo>::field_data<6, Self> : public StormReflTypeIn
 template <>
 struct StormReflTypeInfo<GameInfo>::field_data_static<7>
 {
-  using member_type = RString; // RString
-  static constexpr auto GetName() { return "m_ServerIp"; }
-  static constexpr auto GetType() { return "RString"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x721479AC; }
-  static constexpr unsigned GetTypeNameHash() { return 0x01F631DC; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 7; }
-  static constexpr auto GetMemberPtr() { return &GameInfo::m_ServerIp; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInfo *>(obj); return &ptr->m_ServerIp; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInfo *>(obj); return &ptr->m_ServerIp; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameInfo>::field_data<7, Self> : public StormReflTypeInfo<GameInfo>::field_data_static<7>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RString> & Get() { return self.m_ServerIp; }
-  std::add_const_t<std::remove_reference_t<RString>> & Get() const { return self.m_ServerIp; }
-  void SetDefault() { self.m_ServerIp = StormReflTypeInfo<GameInfo>::GetDefault().m_ServerIp; }
-};
-
-template <>
-struct StormReflTypeInfo<GameInfo>::field_data_static<8>
-{
-  using member_type = RInt; // RNumber<int>
-  static constexpr auto GetName() { return "m_ServerPort"; }
-  static constexpr auto GetType() { return "RNumber<int>"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x1AB8089F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x75C9DA09; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 8; }
-  static constexpr auto GetMemberPtr() { return &GameInfo::m_ServerPort; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInfo *>(obj); return &ptr->m_ServerPort; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInfo *>(obj); return &ptr->m_ServerPort; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameInfo>::field_data<8, Self> : public StormReflTypeInfo<GameInfo>::field_data_static<8>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, RInt> & Get() { return self.m_ServerPort; }
-  std::add_const_t<std::remove_reference_t<RInt>> & Get() const { return self.m_ServerPort; }
-  void SetDefault() { self.m_ServerPort = StormReflTypeInfo<GameInfo>::GetDefault().m_ServerPort; }
-};
-
-template <>
-struct StormReflTypeInfo<GameInfo>::field_data_static<9>
-{
   using member_type = RSparseList<GameMember>; // RSparseList<GameMember>
   static constexpr auto GetName() { return "m_Users"; }
   static constexpr auto GetType() { return "RSparseList<GameMember>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x99B53589; }
   static constexpr unsigned GetTypeNameHash() { return 0xA023666F; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &GameInfo::m_Users; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameInfo *>(obj); return &ptr->m_Users; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameInfo *>(obj); return &ptr->m_Users; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameInfo>::field_data<9, Self> : public StormReflTypeInfo<GameInfo>::field_data_static<9>
+struct StormReflTypeInfo<GameInfo>::field_data<7, Self> : public StormReflTypeInfo<GameInfo>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

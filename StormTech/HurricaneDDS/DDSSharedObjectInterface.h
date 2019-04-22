@@ -23,7 +23,7 @@ public:
   std::string QueryDatabaseSingleton(const char * collection_name) override;
   void UpsertDatabaseSingleton(const char * collection_name, const char * document) override;
 
-  time_t GetNetworkTime() override;
+  time_t GetNetworkTime() const override;
 private:
 
   int GetObjectType(uint32_t object_type_name_hash) override;
@@ -79,7 +79,7 @@ public:
   std::string QueryDatabaseSingleton(const char * collection_name) override { NotImplemented(); return ""; }
   void UpsertDatabaseSingleton(const char * collection_name, const char * document) override { NotImplemented(); };
 
-  time_t GetNetworkTime() override { NotImplemented(); return{}; };
+  time_t GetNetworkTime() const override { NotImplemented(); return{}; };
 
 private:
 

@@ -9,23 +9,30 @@
 #include "GameServerMessages.refl.h"
 #include "LobbyConfig.h"
 
-struct GameToken
-{
-  STORM_REFL;
-  DDSKey m_UserKey;
-};
-
 struct GameUserJoinInfo
 {
   STORM_REFL;
   DDSKey m_UserKey = 0;
   DDSKey m_EndpointId = 0;
-  std::string m_Name;
+
+  UserInfo m_UserInfo;
+
   std::string m_Password;
   bool m_Observer = false;
   LobbyGameType m_IntendedType;
 
   UserZoneInfo m_ZoneInfo;
+};
+
+struct GameUserPrivateInfo
+{
+  STORM_REFL;
+
+  DDSKey m_EndpointId = 0;
+  DDSKey m_SubscriptionId = 0;
+  DDSKey m_Token = 0;
+  time_t m_TokenAssigned = 0;
+  UserZoneInfo m_UserZoneInfo;
 };
 
 struct GeneratedGameUser
@@ -52,12 +59,11 @@ struct Game
   void STORM_REFL_FUNC InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone);
 
   void Init(const GameInitSettings & settings);
+  void Update();
 
   void STORM_REFL_FUNC Destroy();
-  void STORM_REFL_FUNC Cleanup();
 
-  void STORM_REFL_FUNC Update();
-  void STORM_REFL_FUNC Reset();
+  void Reset();
 
   void STORM_REFL_FUNC SetJoinCode(uint32_t join_code);
   void STORM_REFL_FUNC AssignGameServer(DDSKey server_id, const std::string & server_ip, int port);
@@ -70,46 +76,49 @@ struct Game
   bool AllPlayersReady() const;
 #endif
 
-  void STORM_REFL_FUNC BeginCountdown();
-  void STORM_REFL_FUNC StartGame();
+  void BeginCountdown();
+  void StartGame();
+  void STORM_REFL_FUNC RequestReconnect(DDSKey user_key, DDSKey endpoint_id);
   void STORM_REFL_FUNC RequestStartGame(DDSKey user_key);
   void STORM_REFL_FUNC RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int team);
 
-  void STORM_REFL_FUNC RandomizeTeams();
+  void RandomizeTeams();
   void STORM_REFL_FUNC SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message);
   void STORM_REFL_FUNC UpdateSettings(DDSKey user_key, GameInitSettings settings);
-  void STORM_REFL_FUNC UpdateGameList();
+  void UpdateGameList();
 
   void STORM_REFL_FUNC RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSKey server_key);
-  void STORM_REFL_FUNC ExpireToken(DDSKey token);
 
   void STORM_REFL_FUNC HandleMemberUpdate(DDSKey user_key, std::string data);
-
+  void STORM_REFL_FUNC HandleUserQuitGame(DDSKey user_key, bool ban);
   void STORM_REFL_FUNC HandleGameComplete();
+  void STORM_REFL_FUNC HandleServerDisconnected();
 
 private:
 
   int FindBestZoneForPlayers();
   std::vector<int> GetTeamCounts();
   void ValidateTeams();
+  void LaunchGameForUser(DDSKey user_id, GameUserPrivateInfo & info);
 
 public:
   DDSKey m_AssignedServer = 0;
+  time_t m_InitTime = 0;
+
   GameInfo m_GameInfo;
 
-  int m_GameCreateTime;
-  DDSKey m_GameRandomId;
+  time_t m_GameCreateTime = 0;
+  time_t m_GameEndTime = 0;
+  DDSKey m_GameRandomId = 0;
 
   std::vector<std::pair<GameUserJoinInfo, DDSResponderData>> m_PendingJoins;
 
   GeneratedGame m_CompetitiveGameInfo;
-
-  std::map<DDSKey, DDSKey> m_MemberSubscriptionIds;
-  std::map<DDSKey, GameToken> m_Tokens;
-
-  std::map<std::size_t, UserZoneInfo> m_UserZoneInfo;
+  std::map<DDSKey, GameUserPrivateInfo> m_UserPrivateInfo;
 
   int m_ZoneIndex = -1;
+  std::string m_ServerIp;
+  int m_ServerPort;
 
 private:
   DDSNodeInterface m_Interface;

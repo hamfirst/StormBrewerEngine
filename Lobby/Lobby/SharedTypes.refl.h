@@ -37,6 +37,7 @@ struct UserInfo
   STORM_DATA_DEFAULT_CONSTRUCTION(UserInfo);
 
   RString m_Name;
+  RString m_Platform;
   DDSKey m_PlatformId;
 
 #ifdef ENABLE_SQUADS
@@ -171,6 +172,7 @@ enum STORM_REFL_ENUM class LobbyGameState
   kCountdown,
   kAssigningServer,
   kStarted,
+  kPostGame,
 };
 
 enum STORM_REFL_ENUM class LobbyGameType
@@ -192,7 +194,5 @@ struct GameInfo
   RUInt m_JoinCode;
   RString m_Password;
   ROpaque<GameInitSettings> m_Settings;
-  RString m_ServerIp;
-  RInt m_ServerPort;
   RSparseList<GameMember> m_Users;
 };

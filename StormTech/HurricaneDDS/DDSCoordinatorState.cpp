@@ -171,7 +171,7 @@ void DDSCoordinatorState::UpsertDatabaseSingleton(const char * collection_name, 
   m_ImmediateDatabase->QueryDatabaseUpsert(0, collection_name, document);
 }
 
-time_t DDSCoordinatorState::GetNetworkTime()
+time_t DDSCoordinatorState::GetNetworkTime() const
 {
   return time(nullptr);
 }

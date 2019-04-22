@@ -1,25 +1,34 @@
 
-#include "Lobby/Game.refl.meta.h"
-#include "Lobby/User.refl.meta.h"
-#include "Lobby/GameList.refl.meta.h"
-#include "Lobby/ServerManager.refl.meta.h"
-#include "Lobby/GameServerConnection.refl.meta.h"
-#include "Lobby/LobbyLevelList.refl.h"
-
-#include "LobbyShared/LobbyGameFuncs.h"
 
 #include "HurricaneDDS/DDSResponderCall.h"
 
+#include "Game.refl.meta.h"
+#include "User.refl.meta.h"
+#include "UserConnection.refl.meta.h"
+#include "GameList.refl.meta.h"
+#include "ServerManager.refl.meta.h"
+#include "GameServerConnection.refl.meta.h"
+#include "LobbyLevelList.refl.h"
+
+#include "LobbyShared/LobbyGameFuncs.h"
+
+
 static const int kCasualGameAutoStartTime = 90;
 
-Game::Game(DDSNodeInterface node_interface)
-  : m_Interface(node_interface)
+Game::Game(DDSNodeInterface node_interface) :
+  m_Interface(node_interface),
+  m_InitTime(node_interface.GetNetworkTime())
 {
 
 }
 
 void Game::InitPrivateGame(const GameInitSettings & settings, std::string password)
 {
+  if(m_GameInfo.m_State != LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   Init(settings);
 
   m_Interface.CallShared(&GameList::AssignJoinCode, m_Interface.GetLocalKey());
@@ -30,6 +39,11 @@ void Game::InitPrivateGame(const GameInitSettings & settings, std::string passwo
 
 void Game::InitCasualGame(const GameInitSettings & settings, int zone)
 {
+  if(m_GameInfo.m_State != LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   Init(settings);
   m_GameInfo.m_Type = LobbyGameType::kCasual;
   m_ZoneIndex = zone;
@@ -37,6 +51,11 @@ void Game::InitCasualGame(const GameInitSettings & settings, int zone)
 
 void Game::InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone)
 {
+  if(m_GameInfo.m_State != LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   Init(settings);
   m_GameInfo.m_Type = LobbyGameType::kCompetitive;
 
@@ -72,30 +91,17 @@ void Game::Init(const GameInitSettings & settings)
   m_PendingJoins.clear();
 }
 
-void Game::Destroy()
-{
-  for(auto user : m_GameInfo.m_Users)
-  {
-    m_Interface.Call(&User::NotifyLeftGame, user.second.m_UserKey, m_Interface.GetLocalKey(), m_GameRandomId);
-  }
-
-  Cleanup();
-}
-
-void Game::Cleanup()
-{
-  if(m_AssignedServer != 0)
-  {
-    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
-  }
-
-  m_Interface.CallShared(&GameList::RemoveGame, m_Interface.GetLocalKey());
-  m_Interface.DestroySelf();
-}
-
 void Game::Update()
 {
-  if(m_GameInfo.m_State == LobbyGameState::kCountdown)
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    static const int kNoInitDestroyTime = 5;
+    if(m_Interface.GetNetworkTime() - m_InitTime >= kNoInitDestroyTime)
+    {
+      Destroy();
+    }
+  }
+  else if(m_GameInfo.m_State == LobbyGameState::kCountdown)
   {
     m_GameInfo.m_Countdown = m_GameInfo.m_Countdown - 1;
     if(m_GameInfo.m_Countdown <= 0)
@@ -110,38 +116,143 @@ void Game::Update()
     {
       StartGame();
     }
+    else
+    {
+      auto team_sizes = GetTeamCounts();
+      auto & level_info = g_LobbyLevelList.GetLevelInfo(m_GameInfo.m_Settings->m_StageIndex);
+
+      if(IsGameFullEnoughToStart(team_sizes, level_info, m_GameInfo.m_Settings.Value()))
+      {
+        bool all_ready = true;
+
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
+        all_ready = AllPlayersReady();
+#endif
+
+        if(all_ready)
+        {
+          StartGame();
+        }
+      }
+    }
   }
+  else if(m_GameInfo.m_State == LobbyGameState::kPostGame)
+  {
+    static const int kPostGameDuration = 45;
+    if(m_Interface.GetNetworkTime() - m_GameEndTime > kPostGameDuration)
+    {
+      if(m_GameInfo.m_Type == LobbyGameType::kCompetitive)
+      {
+        Destroy();
+      }
+      else
+      {
+        Reset();
+      }
+    }
+  }
+
+//  if(m_GameInfo.m_Type != LobbyGameType::kCompetitive)
+//  {
+//    std::vector<DDSKey> dead_users;
+//
+//    for (auto & user : m_UserPrivateInfo)
+//    {
+//      static const int kTokenExpiration = 20;
+//      if (user.second.m_TokenAssigned > 0 &&
+//          m_Interface.GetNetworkTime() - user.second.m_TokenAssigned > kTokenExpiration)
+//      {
+//        dead_users.push_back(user.first);
+//      }
+//    }
+//
+//    for(auto user_id : dead_users)
+//    {
+//      RemoveUser(user_id);
+//    }
+//  }
+}
+
+void Game::Destroy()
+{
+  for(auto & join_info : m_PendingJoins)
+  {
+    auto responder = DDSResponder{m_Interface, join_info.second};
+    DDSResponderCall(responder, m_Interface.GetLocalKey(), join_info.first.m_EndpointId, m_GameRandomId);
+  }
+
+  for(auto user : m_GameInfo.m_Users)
+  {
+    m_Interface.Call(&User::NotifyLeftGame, user.second.m_UserKey, m_Interface.GetLocalKey(), m_GameRandomId);
+  }
+
+  if(m_GameInfo.m_State != LobbyGameState::kInitializing)
+  {
+    m_Interface.CallShared(&GameList::RemoveGame, m_Interface.GetLocalKey());
+  }
+
+  if(m_AssignedServer != 0)
+  {
+    GameServerDestroyGame msg;
+    msg.m_GameId = m_Interface.GetLocalKey();
+    m_Interface.Call(&GameServerConnection::DestroyGame, m_AssignedServer, msg);
+  }
+
+  m_Interface.DestroySelf();
 }
 
 void Game::Reset()
 {
   if(m_AssignedServer != 0)
   {
-    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
+    GameServerDestroyGame msg;
+    msg.m_GameId = m_Interface.GetLocalKey();
+    m_Interface.Call(&GameServerConnection::DestroyGame, m_AssignedServer, msg);
 
     m_AssignedServer = 0;
-    m_GameInfo.m_ServerIp = "";
-    m_GameInfo.m_ServerPort = 0;
+    m_ServerIp = "";
+    m_ServerPort = 0;
   }
+
+  for(auto & user_info : m_UserPrivateInfo)
+  {
+    user_info.second.m_Token = 0;
+    user_info.second.m_TokenAssigned = 0;
+  }
+
+  m_GameInfo.m_Countdown = 0;
+  m_GameInfo.m_State = LobbyGameState::kWaiting;
+
+  m_GameCreateTime = 0;
+  m_GameEndTime = 0;
 }
 
 void Game::SetJoinCode(uint32_t join_code)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Destroy();
+    return;
+  }
+
   m_GameInfo.m_JoinCode = join_code;
 }
-
 
 void Game::AssignGameServer(DDSKey server_id, const std::string & server_ip, int port)
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
-    m_Interface.CallShared(&ServerManager::HandleGameEnded, m_Interface.GetLocalKey());
+    GameServerDestroyGame msg;
+    msg.m_GameId = m_Interface.GetLocalKey();
+    m_Interface.Call(&GameServerConnection::DestroyGame, server_id, msg);
+
+    Destroy();
     return;
   }
 
   m_AssignedServer = server_id;
-  m_GameInfo.m_ServerIp = server_ip;
-  m_GameInfo.m_ServerPort = port;
+  m_ServerIp = server_ip;
+  m_ServerPort = port;
 }
 
 void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)
@@ -168,8 +279,6 @@ void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)
           join_info.m_UserKey, ".m_UserInfo", &Game::HandleMemberUpdate, true, join_info.m_UserKey);
 
   GameMember member;
-  member.m_UserKey = join_info.m_UserKey;
-  member.m_Name = join_info.m_Name;
 
   if(join_info.m_Observer)
   {
@@ -185,42 +294,67 @@ void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)
 
   auto player_index = m_GameInfo.m_Users.HighestIndex();
   m_GameInfo.m_Users.EmplaceBack(std::move(member));
-  m_UserZoneInfo.emplace(std::make_pair(player_index, join_info.m_ZoneInfo));
 
-  m_MemberSubscriptionIds.emplace(std::make_pair(join_info.m_UserKey, sub_id));
   DDSResponderCall(responder, m_Interface.GetLocalKey(), join_info.m_EndpointId, m_GameRandomId, true);
+
+  GameUserPrivateInfo private_info;
+  private_info.m_EndpointId = join_info.m_EndpointId;
+  private_info.m_SubscriptionId = sub_id;
+  private_info.m_UserZoneInfo = join_info.m_ZoneInfo;
+
+  if(m_GameInfo.m_State == LobbyGameState::kStarted)
+  {
+    LaunchGameForUser(join_info.m_UserKey, private_info);
+  }
+
+  m_UserPrivateInfo.emplace(std::make_pair(join_info.m_UserKey, private_info));
 }
 
 void Game::RemoveUser(DDSKey user_key)
 {
-  auto itr = m_MemberSubscriptionIds.find(user_key);
-  if (itr == m_MemberSubscriptionIds.end())
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
+    for(auto itr = m_PendingJoins.begin(), end = m_PendingJoins.end(); itr != end; ++itr)
+    {
+      if(itr->first.m_UserKey == user_key)
+      {
+        m_PendingJoins.erase(itr);
+        break;
+      }
+    }
+
     return;
   }
 
-  m_Interface.DestroySubscription<User>(user_key, itr->second);
-  m_MemberSubscriptionIds.erase(itr);
+  auto itr = m_UserPrivateInfo.find(user_key);
+  if(itr != m_UserPrivateInfo.end())
+  {
+    m_Interface.DestroySubscription<User>(user_key, itr->second.m_SubscriptionId);
+  }
 
   for (auto user : m_GameInfo.m_Users)
   {
     if (user.second.m_UserKey == user_key)
     {
       m_GameInfo.m_Users.RemoveAt(user.first);
-      m_UserZoneInfo.erase(user.first);
       break;
     }
   }
 
-  if(m_GameInfo.m_Users.Empty())
+  if(m_AssignedServer != 0)
   {
-    Cleanup();
+    m_Interface.Call(&GameServerConnection::RemoveUserFromGame, m_AssignedServer, m_Interface.GetLocalKey(), user_key);
   }
 }
 
 #if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
 void Game::ChangeReady(DDSKey user_key, bool ready)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   auto itr = m_GameInfo.m_Users.begin();
   while (itr != m_GameInfo.m_Users.end())
   {
@@ -257,6 +391,8 @@ bool Game::AllPlayersReady() const
 
 void Game::BeginCountdown()
 {
+  assert(m_AssignedServer == 0);
+
   static const int kStartGameCountdown = 10;
   m_GameInfo.m_Countdown = kStartGameCountdown;
   m_GameInfo.m_State = LobbyGameState::kCountdown;
@@ -273,6 +409,33 @@ void Game::StartGame()
 {
   m_GameInfo.m_Countdown = 0;
   m_GameInfo.m_State = LobbyGameState::kStarted;
+
+  for(auto & user : m_UserPrivateInfo)
+  {
+    LaunchGameForUser(user.first, user.second);
+  }
+}
+
+void Game::RequestReconnect(DDSKey user_key, DDSKey endpoint_id)
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing || m_AssignedServer == 0)
+  {
+    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "The game you were in has ended");
+    Destroy();
+    return;
+  }
+
+  auto itr = m_UserPrivateInfo.find(user_key);
+  if(itr == m_UserPrivateInfo.end())
+  {
+    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "You were removed from the game");
+    return;
+  }
+
+  m_Interface.Call(&GameServerConnection::RemoveUserFromGame, m_AssignedServer, m_Interface.GetLocalKey(), user_key);
+  itr->second.m_EndpointId = endpoint_id;
+
+  LaunchGameForUser(user_key, itr->second);
 }
 
 void Game::RequestStartGame(DDSKey user_key)
@@ -285,6 +448,11 @@ void Game::RequestStartGame(DDSKey user_key)
 
 void Game::RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int team)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   if(m_GameInfo.m_Type != LobbyGameType::kPrivate)
   {
     return;
@@ -393,6 +561,11 @@ void Game::RandomizeTeams()
 
 void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   std::string player_name;
   bool is_leader = (user_key == m_GameInfo.m_GameLeader);
   for(auto itr : m_GameInfo.m_Users)
@@ -418,6 +591,11 @@ void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message)
 
 void Game::UpdateSettings(DDSKey user_key, GameInitSettings settings)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   if(m_GameInfo.m_State == LobbyGameState::kWaiting && m_GameInfo.m_Type == LobbyGameType::kPrivate && m_GameInfo.m_GameLeader == user_key)
   {
     m_GameInfo.m_Settings = settings;
@@ -445,32 +623,53 @@ void Game::UpdateGameList()
 
 void Game::RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSKey server_key)
 {
-  auto itr = m_Tokens.find(token);
-  if(itr == m_Tokens.end())
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing || server_key != m_AssignedServer)
   {
-    m_Interface.Call(&GameServerConnection::NotifyTokenRedeemed, server_key, user_key, m_Interface.GetLocalKey(), response_id, false);
-  }
-  else
-  {
-    bool is_valid = itr->second.m_UserKey == user_key;
-    m_Interface.Call(&GameServerConnection::NotifyTokenRedeemed, server_key, user_key, m_Interface.GetLocalKey(), response_id, is_valid);
-    m_Tokens.erase(itr);
-  }
-}
+    GameServerAuthenticateUserFailure msg;
+    msg.m_ResponseId = response_id;
 
-void Game::ExpireToken(DDSKey token)
-{
-  auto itr = m_Tokens.find(token);
-  if(itr == m_Tokens.end())
-  {
+    m_Interface.Call(&GameServerConnection::NotifyTokenRedeemedFailure, server_key, m_Interface.GetLocalKey(), msg);
     return;
   }
 
-  m_Tokens.erase(itr);
+  auto itr = m_UserPrivateInfo.find(user_key);
+  if(itr != m_UserPrivateInfo.end())
+  {
+    for (auto user : m_GameInfo.m_Users)
+    {
+      if (user.second.m_UserKey == user_key)
+      {
+        if(itr->second.m_Token == token)
+        {
+          itr->second.m_Token = 0;
+          itr->second.m_TokenAssigned = 0;
+
+          GameServerAuthenticateUserSuccess msg;
+          msg.m_ResponseId = response_id;
+          msg.m_Name = user.second.m_Name;
+          msg.m_Team = user.second.m_Team;
+
+#ifdef ENABLE_SQUADS
+          msg.m_Squad = user.second.m_SquadTag;
+#endif
+        }
+      }
+    }
+  }
+
+  GameServerAuthenticateUserFailure msg;
+  msg.m_ResponseId = response_id;
+
+  m_Interface.Call(&GameServerConnection::NotifyTokenRedeemedFailure, server_key, m_Interface.GetLocalKey(), msg);
 }
 
 void Game::HandleMemberUpdate(DDSKey user_key, std::string data)
 {
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    return;
+  }
+
   auto itr = m_GameInfo.m_Users.begin();
   while (itr != m_GameInfo.m_Users.end())
   {
@@ -489,9 +688,49 @@ void Game::HandleMemberUpdate(DDSKey user_key, std::string data)
   StormDataApplyChangePacket(itr->second, data.c_str());
 }
 
+void Game::HandleUserQuitGame(DDSKey user_key, bool ban)
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Destroy();
+    return;
+  }
+
+  for (auto user : m_GameInfo.m_Users)
+  {
+    if (user.second.m_UserKey == user_key)
+    {
+      m_GameInfo.m_Users.RemoveAt(user.first);
+      m_UserPrivateInfo.erase(user_key);
+
+      bool ban_user = (m_GameInfo.m_Type == LobbyGameType::kCompetitive && ban);
+
+      m_Interface.Call(&User::NotifyLeftGame, user_key, m_Interface.GetLocalKey(), m_GameRandomId);
+      m_Interface.Call(&User::BanFromCompetitive, user_key);
+    }
+  }
+}
+
 void Game::HandleGameComplete()
 {
-  Destroy();
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Destroy();
+    return;
+  }
+
+  m_GameInfo.m_State = LobbyGameState::kPostGame;
+  m_GameEndTime = m_Interface.GetNetworkTime();
+}
+
+
+void Game::HandleServerDisconnected()
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Destroy();
+    return;
+  }
 }
 
 int Game::FindBestZoneForPlayers()
@@ -500,22 +739,22 @@ int Game::FindBestZoneForPlayers()
   static const int kMaxPing = 200;
 
   int zone_totals[kNumProjectZones] = {};
-  for(auto & elem : m_UserZoneInfo)
+  for(auto & elem : m_UserPrivateInfo)
   {
     auto & info = elem.second;
     for(int index = 0; index < kNumProjectZones; ++index)
     {
-      if(info.m_Latencies[index] < kMinPing)
+      if(info.m_UserZoneInfo.m_Latencies[index] < kMinPing)
       {
         zone_totals[index] += kMinPing;
       }
-      else if(info.m_Latencies[index] >= kMaxPing)
+      else if(info.m_UserZoneInfo.m_Latencies[index] >= kMaxPing)
       {
         zone_totals[index] += kMaxPing;
       }
       else
       {
-        zone_totals[index] += info.m_Latencies[index];
+        zone_totals[index] += info.m_UserZoneInfo.m_Latencies[index];
       }
     }
   }
@@ -579,4 +818,13 @@ void Game::ValidateTeams()
       team_counts[team]++;
     }
   }
+}
+
+void Game::LaunchGameForUser(DDSKey user_id, GameUserPrivateInfo & info)
+{
+  info.m_Token = DDSGetRandomNumber64();
+  info.m_TokenAssigned = m_Interface.GetNetworkTime();
+
+  m_Interface.Call(&User::NotifyLaunchGame, user_id, m_Interface.GetLocalKey(),
+          m_GameRandomId, m_ServerIp, m_ServerPort, info.m_Token);
 }

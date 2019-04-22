@@ -111,7 +111,7 @@ public:
   std::string QueryDatabaseSingleton(const char * collection_name) override;
   void UpsertDatabaseSingleton(const char * collection_name, const char * document) override;
 
-  time_t GetNetworkTime() override;
+  time_t GetNetworkTime() const override;
 
   std::string GetNodeMemoryReport();
 

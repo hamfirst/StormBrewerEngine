@@ -589,7 +589,7 @@ DDSRoutingTableNodeInfo DDSNodeState::GetNodeInfo(DDSKey key)
   return GetNodeDataForKey(key, *m_RoutingTable, m_RoutingKeyRanges);
 }
 
-time_t DDSNodeState::GetNetworkTime()
+time_t DDSNodeState::GetNetworkTime() const
 {
   if (!m_LocalNodeId)
   {

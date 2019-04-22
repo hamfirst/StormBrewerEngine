@@ -30,6 +30,8 @@ struct UserLocalData
 
   RString m_Name;
   RKey m_UserKey;
+
+  RString m_Platform;
   RKey m_PlatformId;
 
   RInt m_AdminLevel;
@@ -70,10 +72,14 @@ struct UserDatabaseObject
   RString m_UserNameLower;
 
   RString m_Platform;
-  DDSKey m_PlatformId = 0;
+  RKey m_PlatformId;
 
   RBool m_IsGuest = false;
   RInt m_AdminLevel = 0;
+
+  RNumber<time_t> m_CompetitiveBanStart;
+  RInt m_CompetitiveBanDuration;
+  RInt m_CompetitiveBanProbation;
 
 #ifdef ENABLE_CHANNELS
   RInt m_VisibilityFlags = 0;
@@ -198,7 +204,10 @@ struct User
   void STORM_REFL_FUNC SwitchTeams(DDSKey target_user, int team, DDSKey endpoint_id);
   void STORM_REFL_FUNC StartGame();
   void STORM_REFL_FUNC LeaveGame();
+  void STORM_REFL_FUNC ReconnectToGame(DDSKey endpoint_id);
+  void STORM_REFL_FUNC BanFromCompetitive();
   void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string server_ip, int server_port, DDSKey token);
   void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg);
   void STORM_REFL_FUNC HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data);
 
@@ -318,8 +327,12 @@ struct User
 
 public:
 
+  bool IsValidEndpoint(DDSKey endpoint_id) const;
+  bool IsBannedFromCompetitive() const;
+  bool IsOnProbationFromCompetitive() const;
+
   void BeginLoad();
-  void CheckCompleteLoad();  
+  void CheckCompleteLoad();
 
   static bool ValidateUserName(const std::string & name, int min_characters = 3, int max_characters = 32, bool allow_space = false);
 

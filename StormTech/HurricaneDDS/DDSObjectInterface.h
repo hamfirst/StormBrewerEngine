@@ -317,7 +317,7 @@ public:
   virtual std::string QueryDatabaseSingleton(const char * collection_name) = 0;
   virtual void UpsertDatabaseSingleton(const char * collection_name, const char * document) = 0;
 
-  virtual time_t GetNetworkTime() = 0;
+  virtual time_t GetNetworkTime() const = 0;
 
 private:
 

@@ -21,11 +21,14 @@ public:
 
   void STORM_REFL_FUNC GotMessage(GameServerMessageType cmd, std::string data);
 
-  void STORM_REFL_FUNC CreateGame(DDSKey game_id, const GameInitSettings & game_creation_data);
-  void STORM_REFL_FUNC DestroyGame(DDSKey game_id);
+  void STORM_REFL_FUNC CreateGame(const GameServerCreateGame & msg);
+  void STORM_REFL_FUNC DestroyGame(const GameServerDestroyGame & msg);
 
-  void STORM_REFL_FUNC NotifyTokenRedeemed(RKey user_key, RKey game_key, uint32_t response_id, bool success);
-  void STORM_REFL_FUNC NotifyUserLeaveGame(DDSKey game_, DDSKey user_key);
+  void STORM_REFL_FUNC RemoveUserFromGame(DDSKey game_id, DDSKey user_id);
+
+  void STORM_REFL_FUNC NotifyTokenRedeemedSuccess(DDSKey game_id, const GameServerAuthenticateUserSuccess & msg);
+  void STORM_REFL_FUNC NotifyTokenRedeemedFailure(DDSKey game_id, const GameServerAuthenticateUserFailure & msg);
+  void STORM_REFL_FUNC NotifyUserQuitGame(DDSKey game_id, DDSKey user_key, bool ban);
   void STORM_REFL_FUNC NotifyGameEnded(DDSKey game_id);
 
 public:
@@ -47,7 +50,8 @@ public:
   uint64_t m_ExpectedChallengeResponse;
 
   std::vector<std::string> m_PendingMessages;
-  std::string m_RemoteHost;
+  std::vector<DDSKey> m_ActiveGameIds;
+
   bool m_Error;
 
 private:

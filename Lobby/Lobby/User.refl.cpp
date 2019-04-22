@@ -46,6 +46,7 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_UserInfo.m_Name = m_Data.m_UserName;
 
   m_UserInfo.m_PlatformId = m_Data.m_PlatformId;
+  m_UserInfo.m_Platform = m_Data.m_Platform;
   m_UserInfo.m_AdminLevel = m_Data.m_AdminLevel;
 
   m_UserInfo.m_Icon = m_Data.m_Icon == -1 ? GetDefaultIcon() : m_Data.m_IconURLs[m_Data.m_Icon].ToString();
@@ -66,8 +67,8 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_LocalInfo.m_CelebrationNames = m_Data.m_CelebrationNames;
   m_LocalInfo.m_UserKey = m_Interface.GetLocalKey();
   m_LocalInfo.m_PlatformId = m_Data.m_PlatformId;
+  m_LocalInfo.m_Platform = m_Data.m_Platform;
   m_LocalInfo.m_Persistent = m_Data.m_Persistent;
-
 
 #ifdef ENABLE_SQUADS
   m_LocalInfo.m_OwnerSquad = m_Data.m_OwnerSquad;
@@ -571,7 +572,7 @@ void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
   GameUserJoinInfo game_info;
   game_info.m_UserKey = m_Interface.GetLocalKey();
   game_info.m_EndpointId = join_info.m_EndpointId;
-  game_info.m_Name = m_UserInfo.m_Name;
+  game_info.m_UserInfo = m_UserInfo;
   game_info.m_Password = join_info.m_Password;
   game_info.m_Observer = join_info.m_Observer;
   game_info.m_ZoneInfo = join_info.m_ZoneInfo;
@@ -701,8 +702,41 @@ void User::LeaveGame()
 #endif
 }
 
+void User::ReconnectToGame(DDSKey endpoint_id)
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+  m_GameEndpoint = endpoint_id;
+  m_Interface.Call(&Game::RequestReconnect, m_GameId, m_Interface.GetLocalKey(), endpoint_id);
+}
+
+void User::BanFromCompetitive()
+{
+  if(IsOnProbationFromCompetitive())
+  {
+    static const int kMaxBanDuration = 3000;
+    static const int kMaxProbationDuration = 6000;
+
+    m_Data.m_CompetitiveBanDuration = std::min((int)m_Data.m_CompetitiveBanDuration * 2, kMaxBanDuration);
+    m_Data.m_CompetitiveBanProbation = std::min((int)m_Data.m_CompetitiveBanProbation * 2, kMaxProbationDuration);
+  }
+  else
+  {
+    static const int kDefaultBanDuration = 300;
+    static const int kDefaultProbationDuration = 600;
+
+    m_Data.m_CompetitiveBanStart = m_Interface.GetNetworkTime();
+    m_Data.m_CompetitiveBanDuration = kDefaultBanDuration;
+    m_Data.m_CompetitiveBanProbation = kDefaultProbationDuration;
+  }
+}
+
 void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
 {
+
   if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
     return;
@@ -719,6 +753,21 @@ void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
   SendXPGain(m_GameEndpoint);
   ApplyXPGain(true);
 #endif
+}
+
+void User::NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string server_ip, int server_port, DDSKey token)
+{
+  if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
+  {
+    return;
+  }
+
+  UserLaunchGameMessage msg;
+  msg.c = "launch_game";
+  msg.server_ip = server_ip;
+  msg.server_port = server_port;
+  msg.token = token;
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(msg));
 }
 
 void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg)
@@ -2615,6 +2664,29 @@ void User::GetInfo(DDSResponder & responder)
   }
 
   DDSResponderCall(responder, data);
+}
+
+bool User::IsValidEndpoint(DDSKey endpoint_id) const
+{
+  for(auto & endp : m_Endpoints)
+  {
+    if(endp.first == endpoint_id)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool User::IsBannedFromCompetitive() const
+{
+  return m_Data.m_CompetitiveBanStart + m_Data.m_CompetitiveBanDuration > m_Interface.GetNetworkTime();
+}
+
+bool User::IsOnProbationFromCompetitive() const
+{
+  return m_Data.m_CompetitiveBanStart + m_Data.m_CompetitiveBanProbation > m_Interface.GetNetworkTime();
 }
 
 void User::BeginLoad()
