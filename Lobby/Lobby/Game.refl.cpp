@@ -8,6 +8,7 @@
 #include "GameList.refl.meta.h"
 #include "ServerManager.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
+#include "Matchmaker.refl.meta.h"
 #include "LobbyLevelList.refl.h"
 
 #include "LobbyShared/LobbyGameFuncs.h"
@@ -98,7 +99,7 @@ void Game::Update()
     static const int kNoInitDestroyTime = 5;
     if(m_Interface.GetNetworkTime() - m_InitTime >= kNoInitDestroyTime)
     {
-      Destroy();
+      Cleanup();
     }
   }
   else if(m_GameInfo.m_State == LobbyGameState::kCountdown)
@@ -143,7 +144,7 @@ void Game::Update()
     {
       if(m_GameInfo.m_Type == LobbyGameType::kCompetitive)
       {
-        Destroy();
+        Cleanup();
       }
       else
       {
@@ -151,29 +152,9 @@ void Game::Update()
       }
     }
   }
-
-//  if(m_GameInfo.m_Type != LobbyGameType::kCompetitive)
-//  {
-//    std::vector<DDSKey> dead_users;
-//
-//    for (auto & user : m_UserPrivateInfo)
-//    {
-//      static const int kTokenExpiration = 20;
-//      if (user.second.m_TokenAssigned > 0 &&
-//          m_Interface.GetNetworkTime() - user.second.m_TokenAssigned > kTokenExpiration)
-//      {
-//        dead_users.push_back(user.first);
-//      }
-//    }
-//
-//    for(auto user_id : dead_users)
-//    {
-//      RemoveUser(user_id);
-//    }
-//  }
 }
 
-void Game::Destroy()
+void Game::Cleanup()
 {
   for(auto & join_info : m_PendingJoins)
   {
@@ -231,7 +212,7 @@ void Game::SetJoinCode(uint32_t join_code)
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
-    Destroy();
+    Cleanup();
     return;
   }
 
@@ -246,7 +227,7 @@ void Game::AssignGameServer(DDSKey server_id, const std::string & server_ip, int
     msg.m_GameId = m_Interface.GetLocalKey();
     m_Interface.Call(&GameServerConnection::DestroyGame, server_id, msg);
 
-    Destroy();
+    Cleanup();
     return;
   }
 
@@ -337,6 +318,11 @@ void Game::RemoveUser(DDSKey user_key)
     if (user.second.m_UserKey == user_key)
     {
       m_GameInfo.m_Users.RemoveAt(user.first);
+
+      if(m_GameInfo.m_Type == LobbyGameType::kCasual)
+      {
+        m_Interface.CallShared(&Matchmaker::NotifyPlayerLeftCasualGame, m_Interface.GetLocalKey(), user.second.m_Team, m_ZoneIndex);
+      }
       break;
     }
   }
@@ -421,7 +407,7 @@ void Game::RequestReconnect(DDSKey user_key, DDSKey endpoint_id)
   if(m_GameInfo.m_State == LobbyGameState::kInitializing || m_AssignedServer == 0)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, "The game you were in has ended");
-    Destroy();
+    Cleanup();
     return;
   }
 
@@ -692,7 +678,7 @@ void Game::HandleUserQuitGame(DDSKey user_key, bool ban)
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
-    Destroy();
+    Cleanup();
     return;
   }
 
@@ -715,7 +701,7 @@ void Game::HandleGameComplete()
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
-    Destroy();
+    Cleanup();
     return;
   }
 
@@ -728,7 +714,7 @@ void Game::HandleServerDisconnected()
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
-    Destroy();
+    Cleanup();
     return;
   }
 }

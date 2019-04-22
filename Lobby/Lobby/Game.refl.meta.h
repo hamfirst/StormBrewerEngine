@@ -1015,12 +1015,12 @@ struct StormReflFuncInfo<Game>::func_data_static<3>
   using func_ptr_type = void (Game::*)();
   using return_type = void;
   static constexpr int params_n = 0;
-  static constexpr auto GetName() { return "Destroy"; }
+  static constexpr auto GetName() { return "Cleanup"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xB3F7BFE7; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x05F50D45; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 3; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::Destroy; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::Cleanup; }
   template <int i>
   struct param_info { };
 };

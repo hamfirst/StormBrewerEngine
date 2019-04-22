@@ -61,7 +61,7 @@ struct Game
   void Init(const GameInitSettings & settings);
   void Update();
 
-  void STORM_REFL_FUNC Destroy();
+  void STORM_REFL_FUNC Cleanup();
 
   void Reset();
 

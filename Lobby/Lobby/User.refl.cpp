@@ -618,7 +618,7 @@ void User::DestroyGame(DDSKey endpoint_id, DDSKey game_id)
     return;
   }
 
-  m_Interface.Call(&Game::Destroy, game_id);
+  m_Interface.Call(&Game::Cleanup, game_id);
 }
 
 void User::HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success)

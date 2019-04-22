@@ -33,6 +33,11 @@ void Matchmaker::Update()
     for (int playlist = 0; playlist < (int)m_CasualPlaylist.m_Elements.size(); ++playlist)
     {
       auto & bucket = m_CasualBuckets[zone].m_Buckets[playlist];
+
+      for(auto & user : bucket.m_Users)
+      {
+
+      }
     }
   }
 
@@ -102,7 +107,7 @@ void Matchmaker::NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone)
 
       if(has_players == false)
       {
-        m_Interface.Call(&Game::Destroy, game_id);
+        m_Interface.Call(&Game::Cleanup, game_id);
         refill_list.erase(itr);
       }
       return;
