@@ -144,7 +144,7 @@ void Channel::KickUser(DDSKey endpoint_id, DDSKey user_key, DDSKey src_user, int
   m_Interface.Call(&UserConnection::SendNotification, endpoint_id, std::string("User removed from channel ") + m_ChannelInfo.m_Name.ToString());
 }
 
-void Channel::SendChatToChannel(DDSKey user_key, DDSKey endpoint_id, std::string message, std::string title)
+void Channel::SendChatToChannel(DDSKey user_key, DDSKey endpoint_id, std::string message, int title)
 {
   bool in_channel = false;
   std::string user_name;

@@ -45,7 +45,7 @@ struct UserInfo
   RString m_SquadTag;
 #endif
 
-  RString m_Icon;
+  RInt m_Icon;
 
 #ifdef ENABLE_CHANNELS
   RInt m_VisibleFlags;
@@ -77,7 +77,7 @@ struct ChannelMember
 
   DDSKey m_UserKey;
   DDSKey m_PlatformId;
-  RString m_Icon;
+  RInt m_Icon;
   RInt m_AdminLevel;
   RInt m_MembershipFlags;
   UserGameInfo m_Game;
@@ -157,11 +157,13 @@ struct GameMember
 #endif
 
   RKey m_UserKey;
-  RKey m_PlatformId;
-  RString m_Platform;
 
-  RString m_Icon;
-  RString m_Title;
+  RInt m_AdminLevel;
+  RInt m_Icon;
+  RInt m_Title;
+  RInt m_Celebration;
+
+  ROpaque<GamePlayerLoadout> m_Loadout;
 };
 
 

@@ -400,7 +400,7 @@ struct StormReflFuncInfo<Channel>::func_data_static<2>::param_info<3>
 template <>
 struct StormReflFuncInfo<Channel>::func_data_static<3>
 {
-  using func_ptr_type = void (Channel::*)(DDSKey, DDSKey, std::string, std::string);
+  using func_ptr_type = void (Channel::*)(DDSKey, DDSKey, std::string, int);
   using return_type = void;
   static constexpr int params_n = 4;
   static constexpr auto GetName() { return "SendChatToChannel"; }
@@ -446,11 +446,11 @@ struct StormReflFuncInfo<Channel>::func_data_static<3>::param_info<2>
 template <>
 struct StormReflFuncInfo<Channel>::func_data_static<3>::param_info<3>
 {
-  using param_type = std::string;
+  using param_type = int;
   static constexpr auto GetName() { return "title"; }
-  static constexpr auto GetType() { return "std::string"; }
+  static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetNameHash() { return 0x2B36786B; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
 };
 
 template <>

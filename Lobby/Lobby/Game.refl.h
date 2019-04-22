@@ -15,9 +15,19 @@ struct GameUserJoinInfo
   DDSKey m_UserKey = 0;
   DDSKey m_EndpointId = 0;
 
-  UserInfo m_UserInfo;
+  std::string m_Name;
+
+#ifdef ENABLE_SQUADS
+  std::string m_SquadTag;
+#endif
+
+  int m_AdminLevel = 0;
+  int m_Icon = 0;
+  int m_Title = 0;
+  int m_Celebration = 0;
 
   std::string m_Password;
+
   bool m_Observer = false;
   LobbyGameType m_IntendedType;
 

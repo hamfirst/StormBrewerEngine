@@ -66,18 +66,13 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
     UserDatabaseObject default_admin;
     default_admin.m_AdminLevel = 9;
     default_admin.m_Title = 0;
-    default_admin.m_TitleList.EmplaceBack("Developer");
     default_admin.m_UserName = "NickW";
     default_admin.m_UserNameLower = "nickw";
     default_admin.m_Platform = "steam";
     default_admin.m_PlatformId = 76561197970016586ULL;
 
-    default_admin.m_IconNames.EmplaceBack("Custom Icon");
-    default_admin.m_IconURLs.EmplaceBack("img/icons/1.png");
-
     connection.QueryDatabaseInsert(User::GetUserIdForPlatformId("steam", 76561197970016586), "User", StormReflEncodeJson(default_admin));
 
-    default_admin.m_TitleList[0] = "Founder";
     default_admin.m_UserName = "StormBrewers";
     default_admin.m_UserNameLower = "stormbrewers";
     default_admin.m_PlatformId = 76561198232963580ULL;

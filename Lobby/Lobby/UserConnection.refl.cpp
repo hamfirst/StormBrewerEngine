@@ -129,11 +129,14 @@ void UserConnection::CreateUserObject(const std::string & name)
   initial_data.m_PlatformId = m_PlatformId;
   initial_data.m_Created = (int)m_Interface.GetNetworkTime();
 
-#if defined(ENABLE_REWARDS)
-  initial_data.m_TitleList.EmplaceBack("Newbie");
-  initial_data.m_IconNames.EmplaceBack("Newbie");
-  initial_data.m_IconURLs.EmplaceBack("img/icons/2.png");
-#endif
+  initial_data.m_Icon = 0;
+  initial_data.m_IconList.EmplaceBack(0);
+
+  initial_data.m_Title = 0;
+  initial_data.m_TitleList.EmplaceBack(0);
+
+  initial_data.m_Celebration = 0;
+  initial_data.m_CelebrationList.EmplaceBack(0);
 
   std::transform(initial_data.m_UserNameLower.begin(), initial_data.m_UserNameLower.end(), initial_data.m_UserNameLower.begin(), tolower);
 

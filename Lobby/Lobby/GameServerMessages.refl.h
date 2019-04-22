@@ -144,10 +144,12 @@ struct GameServerAuthenticateUserSuccess
 #endif
 
   int m_Team = 0;
+
   int m_AdminLevel = 0;
   int m_Icon = 0;
   int m_Title = 0;
   int m_Celebration = 0;
+
   bool m_NewPlayer = false;
 
   GamePlayerLoadout m_Loadout;

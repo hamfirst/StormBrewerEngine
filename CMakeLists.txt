@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
 file(READ ProjectSettings/ProjectName.txt PROJECT_NAME)
+string(REGEX REPLACE "\n$" "" PROJECT_NAME "${PROJECT_NAME}")
+
 file(WRITE ProjectSettings/ProjectName.h "#pragma once\n\nstatic const char * kProjectName = \"" ${PROJECT_NAME} "\";\n\n")
 
 project(${PROJECT_NAME})
