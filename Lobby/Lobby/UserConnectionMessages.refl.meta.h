@@ -2091,11 +2091,11 @@ struct StormReflTypeInfo<UserChatMessageOutgoing>::field_data<2, Self> : public 
 template <>
 struct StormReflTypeInfo<UserChatMessageOutgoing>::field_data_static<3>
 {
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  using member_type = int; // int
   static constexpr auto GetName() { return "b"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x71BEEFF9; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &UserChatMessageOutgoing::b; }
@@ -2108,8 +2108,8 @@ struct StormReflTypeInfo<UserChatMessageOutgoing>::field_data<3, Self> : public 
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.b; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.b; }
+  match_const_t<Self, int> & Get() { return self.b; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.b; }
   void SetDefault() { self.b = StormReflTypeInfo<UserChatMessageOutgoing>::GetDefault().b; }
 };
 
@@ -2259,11 +2259,11 @@ struct StormReflTypeInfo<UserChatMessageGame>::field_data<1, Self> : public Stor
 template <>
 struct StormReflTypeInfo<UserChatMessageGame>::field_data_static<2>
 {
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  using member_type = int; // int
   static constexpr auto GetName() { return "title"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0x2B36786B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserChatMessageGame::title; }
@@ -2276,8 +2276,8 @@ struct StormReflTypeInfo<UserChatMessageGame>::field_data<2, Self> : public Stor
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.title; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.title; }
+  match_const_t<Self, int> & Get() { return self.title; }
+  std::add_const_t<std::remove_reference_t<int>> & Get() const { return self.title; }
   void SetDefault() { self.title = StormReflTypeInfo<UserChatMessageGame>::GetDefault().title; }
 };
 

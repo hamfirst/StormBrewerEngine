@@ -49,7 +49,7 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_UserInfo.m_Platform = m_Data.m_Platform;
   m_UserInfo.m_AdminLevel = m_Data.m_AdminLevel;
 
-  m_UserInfo.m_Icon = m_Data.m_Icon == -1 ? GetDefaultIcon() : m_Data.m_IconURLs[m_Data.m_Icon].ToString();
+  m_UserInfo.m_Icon = m_Data.m_Icon;
 
 #ifdef ENABLE_CHANNELS
   m_UserInfo.m_VisibleFlags = m_Data.m_VisibilityFlags;
@@ -61,10 +61,9 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_LocalInfo.m_Title = m_Data.m_Title;
   m_LocalInfo.m_TitleList = m_Data.m_TitleList;
   m_LocalInfo.m_Icon = m_Data.m_Icon;
-  m_LocalInfo.m_IconNames = m_Data.m_IconNames;
-  m_LocalInfo.m_IconURL = m_UserInfo.m_Icon;
+  m_LocalInfo.m_IconList = m_Data.m_IconList;
   m_LocalInfo.m_Celebration = m_Data.m_Celebration;
-  m_LocalInfo.m_CelebrationNames = m_Data.m_CelebrationNames;
+  m_LocalInfo.m_CelebrationList = m_Data.m_CelebrationList;
   m_LocalInfo.m_UserKey = m_Interface.GetLocalKey();
   m_LocalInfo.m_PlatformId = m_Data.m_PlatformId;
   m_LocalInfo.m_Platform = m_Data.m_Platform;
@@ -184,29 +183,6 @@ void User::RemoveEndpoint(DDSKey key)
 
 void User::SetLocation(std::string country_code, std::string currency_code)
 {
-  if (country_code.length() != 0)
-  {
-    std::transform(country_code.begin(), country_code.end(), country_code.begin(), tolower);
-    std::string country_code_icon = "img/flags/" + country_code + ".png";
-    bool has_icon = false;
-    for (auto icon : m_Data.m_IconURLs)
-    {
-      if (icon.second == country_code)
-      {
-        has_icon = true;
-        break;
-      }
-    }
-
-    if (has_icon == false)
-    {
-      DDSResponder responder = CreateEmptyResponder(m_Interface);
-
-      std::transform(country_code.begin(), country_code.end(), country_code.begin(), toupper);
-      AddIcon(responder, country_code_icon, country_code, true, false);
-    }
-  }
-
   m_CountryCode = country_code;
   m_CurrencyCode = currency_code;
 }
@@ -240,17 +216,12 @@ void User::HandleGiftData(int ec, std::string data)
 
   for (auto & icon : gifts.m_Icons)
   {
-    AddIcon(responder, icon.second, icon.first, false, false);
+    AddIcon(responder, icon, false, false);
   }
 
   for (auto & title : gifts.m_Titles)
   {
     AddTitle(responder, title, false);
-  }
-
-  for (auto & channel : gifts.m_AutoJoins)
-  {
-    AddAutoJoinChannel(responder, channel);
   }
 
   if (
@@ -428,8 +399,8 @@ void User::SendChatToChannel(DDSKey src_endpoint_id, DDSKey channel_key, std::st
     m_CharsThrottle.SubCredits(message.size());
   }
 
-  m_Interface.Call(&Channel::SendChatToChannel, channel_key, m_Interface.GetLocalKey(), src_endpoint_id, message,
-    m_LocalInfo.m_Title == -1 ? std::string("") : m_LocalInfo.m_TitleList[m_LocalInfo.m_Title].ToString());
+  m_Interface.Call(&Channel::SendChatToChannel, channel_key,
+      m_Interface.GetLocalKey(), src_endpoint_id, message, m_LocalInfo.m_Title);
 }
 
 void User::HandleChannelJoinResponse(std::pair<DDSKey, DDSKey> join_info, ChannelJoinResult result)
@@ -572,7 +543,17 @@ void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
   GameUserJoinInfo game_info;
   game_info.m_UserKey = m_Interface.GetLocalKey();
   game_info.m_EndpointId = join_info.m_EndpointId;
-  game_info.m_UserInfo = m_UserInfo;
+  game_info.m_Name = m_Data.m_UserName;
+
+#ifdef ENABLE_SQUADS
+  game_info.m_SquadTag = m_UserInfo.m_SquadTag;
+#endif
+
+  game_info.m_AdminLevel = m_UserInfo.m_AdminLevel;
+  game_info.m_Icon = m_Data.m_Icon;
+  game_info.m_Title = m_Data.m_Title;
+  game_info.m_Celebration = m_Data.m_Celebration;
+
   game_info.m_Password = join_info.m_Password;
   game_info.m_Observer = join_info.m_Observer;
   game_info.m_ZoneInfo = join_info.m_ZoneInfo;
@@ -770,7 +751,7 @@ void User::NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string s
   SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(msg));
 }
 
-void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg)
+void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int title, std::string msg)
 {
   if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
@@ -1409,7 +1390,7 @@ void User::HandleSquadRequestLoadFailure(std::pair<int, DDSKey> squad_info)
 }
 #endif
 
-void User::AddTitle(DDSResponder & responder, std::string title, bool quiet)
+void User::AddTitle(DDSResponder & responder, int title, bool quiet)
 {
   for (auto user_title : m_LocalInfo.m_TitleList)
   {
@@ -1422,7 +1403,7 @@ void User::AddTitle(DDSResponder & responder, std::string title, bool quiet)
 
   if (quiet == false)
   {
-    SendNotification("You have aquired a new title: " + title);
+    SendNotification("You have acquired a new title!");
   }
 
   m_LocalInfo.m_TitleList.EmplaceBack(title);
@@ -1430,28 +1411,24 @@ void User::AddTitle(DDSResponder & responder, std::string title, bool quiet)
   DDSResponderCall(responder, "Title added successfully");
 }
 
-void User::SetTitle(int title_index)
+void User::SetTitle(int title)
 {
   if (m_ProfileThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
     return;
   }
 
-  if (title_index == -1)
+  for(auto elem : m_LocalInfo.m_TitleList)
   {
-    m_LocalInfo.m_Title = -1;
-    m_Data.m_Title = -1;
-    return;
-  }
-
-  if (m_LocalInfo.m_TitleList.HasAt(title_index))
-  {
-    m_LocalInfo.m_Title = title_index;
-    m_Data.m_Title = title_index;
+    if(elem.second == title)
+    {
+      m_LocalInfo.m_Title = title;
+      m_Data.m_Title = title;
+    }
   }
 }
 
-void User::RemoveTitle(DDSResponder & responder, std::string title)
+void User::RemoveTitle(DDSResponder & responder, int title)
 {
   for (auto user_title : m_LocalInfo.m_TitleList)
   {
@@ -1473,17 +1450,11 @@ void User::RemoveTitle(DDSResponder & responder, std::string title)
   DDSResponderCall(responder, "Title not found");
 }
 
-void User::AddIcon(DDSResponder & responder, std::string icon_url, std::string icon_name, bool set, bool quiet)
+void User::AddIcon(DDSResponder & responder, int icon, bool set, bool quiet)
 {
-  for (auto user_icon : m_LocalInfo.m_IconNames)
+  for (auto user_icon : m_LocalInfo.m_IconList)
   {
-    if (user_icon.second == icon_name)
-    {
-      DDSResponderCall(responder, "That user already has the icon");
-      return;
-    }
-
-    if (m_Data.m_IconURLs[user_icon.first] == icon_url)
+    if (user_icon.second == icon)
     {
       DDSResponderCall(responder, "That user already has the icon");
       return;
@@ -1492,62 +1463,60 @@ void User::AddIcon(DDSResponder & responder, std::string icon_url, std::string i
 
   if (quiet == false)
   {
-    SendNotification("You have aquired a new icon: " + icon_name);
+    SendNotification("You have acquired a new icon!");
   }
 
-  m_LocalInfo.m_IconNames.EmplaceBack(icon_name);
-  m_Data.m_IconNames.EmplaceBack(icon_name);
-  m_Data.m_IconURLs.EmplaceBack(icon_url);
+  m_LocalInfo.m_IconList.EmplaceBack(icon);
+  m_Data.m_IconList.EmplaceBack(icon);
 
   DDSResponderCall(responder, "Icon added successfully");
 
   if (set)
   {
-    SetIcon(m_Data.m_IconNames.HighestIndex());
+    SetIcon(m_Data.m_IconList[m_Data.m_IconList.HighestIndex()]);
   }
 }
 
-void User::SetIcon(int icon_index)
+void User::SetIcon(int icon)
 {
   if (m_ProfileThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
     return;
   }
 
-  if (icon_index == -1)
+  if (icon == -1)
   {
+    m_UserInfo.m_Icon = -1;
     m_LocalInfo.m_Icon = -1;
-    m_LocalInfo.m_IconURL = GetDefaultIcon();
     m_Data.m_Icon = -1;
-
-    m_UserInfo.m_Icon = GetDefaultIcon();
     return;
   }
 
-  if (m_LocalInfo.m_IconNames.HasAt(icon_index))
+  for (auto user_icon : m_LocalInfo.m_IconList)
   {
-    m_LocalInfo.m_Icon = icon_index;
-    m_LocalInfo.m_IconURL = m_Data.m_IconURLs[icon_index];
-    m_Data.m_Icon = icon_index;
-
-    m_UserInfo.m_Icon = m_Data.m_IconURLs[icon_index];
+    if (user_icon.second == icon)
+    {
+      m_LocalInfo.m_Icon = icon;
+      m_Data.m_Icon = icon;
+      m_UserInfo.m_Icon = icon;
+      return;
+    }
   }
 }
 
-void User::RemoveIcon(DDSResponder & responder, std::string icon)
+void User::RemoveIcon(DDSResponder & responder, int icon)
 {
-  for (auto user_icon : m_LocalInfo.m_IconNames)
+  for (auto user_icon : m_LocalInfo.m_IconList)
   {
-    if (user_icon.second == icon || m_Data.m_IconURLs[user_icon.first] == icon)
+    if (user_icon.second == icon)
     {
       if (m_LocalInfo.m_Icon == (int)user_icon.first)
       {
         SetIcon(-1);
       }
 
-      m_LocalInfo.m_IconNames.RemoveAt(user_icon.first);
-      m_Data.m_IconNames.RemoveAt(user_icon.first);
-      m_Data.m_IconURLs.RemoveAt(user_icon.first);
+      m_LocalInfo.m_IconList.RemoveAt(user_icon.first);
+      m_Data.m_IconList.RemoveAt(user_icon.first);
 
       DDSResponderCall(responder, "Icon successfully removed");
       return;
@@ -1557,17 +1526,11 @@ void User::RemoveIcon(DDSResponder & responder, std::string icon)
   DDSResponderCall(responder, "Icon not found");
 }
 
-void User::AddCelebration(DDSResponder & responder, int celebration_id, std::string celebration_name, bool set, bool quiet)
+void User::AddCelebration(DDSResponder & responder, int celebration, bool set, bool quiet)
 {
-  for (auto user_celeb : m_LocalInfo.m_CelebrationNames)
+  for (auto user_celeb : m_LocalInfo.m_CelebrationList)
   {
-    if (user_celeb.second == celebration_name)
-    {
-      DDSResponderCall(responder, "That user already has the celebration");
-      return;
-    }
-
-    if (m_Data.m_CelebrationIDs[user_celeb.first] == celebration_id)
+    if (user_celeb.second == celebration)
     {
       DDSResponderCall(responder, "That user already has the celebration");
       return;
@@ -1576,45 +1539,48 @@ void User::AddCelebration(DDSResponder & responder, int celebration_id, std::str
 
   if (quiet == false)
   {
-    SendNotification("You have aquired a new celebration: " + celebration_name);
+    SendNotification("You have acquired a new celebration!");
   }
 
-  m_LocalInfo.m_CelebrationNames.EmplaceBack(celebration_name);
-  m_Data.m_CelebrationNames.EmplaceBack(celebration_name);
-  m_Data.m_CelebrationIDs.EmplaceBack(celebration_id);
+  m_Data.m_CelebrationList.EmplaceBack(celebration);
+  m_LocalInfo.m_CelebrationList.EmplaceBack(celebration);
 
   DDSResponderCall(responder, "Celebration added successfully");
 
   if (set)
   {
-    SetCelebration(m_Data.m_CelebrationNames.HighestIndex());
+    SetCelebration(m_Data.m_CelebrationList[m_Data.m_CelebrationList.HighestIndex()]);
   }
 }
 
-void User::SetCelebration(int celebration_index)
+void User::SetCelebration(int celebration)
 {
   if (m_ProfileThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
     return;
   }
 
-  if (celebration_index == -1)
+  if (celebration == -1)
   {
     m_LocalInfo.m_Celebration = -1;
     m_Data.m_Celebration = -1;
     return;
   }
 
-  if (m_LocalInfo.m_CelebrationNames.HasAt(celebration_index))
+  for (auto user_celeb : m_LocalInfo.m_CelebrationList)
   {
-    m_LocalInfo.m_Celebration = celebration_index;
-    m_Data.m_Celebration = celebration_index;
+    if (user_celeb.second == celebration)
+    {
+      m_LocalInfo.m_Celebration = celebration;
+      m_Data.m_Celebration = celebration;
+      return;
+    }
   }
 }
 
-void User::RemoveCelebration(DDSResponder & responder, std::string celebration)
+void User::RemoveCelebration(DDSResponder & responder, int celebration)
 {
-  for (auto user_celeb : m_LocalInfo.m_CelebrationNames)
+  for (auto user_celeb : m_LocalInfo.m_CelebrationList)
   {
     if (user_celeb.second == celebration)
     {
@@ -1623,9 +1589,8 @@ void User::RemoveCelebration(DDSResponder & responder, std::string celebration)
         SetCelebration(-1);
       }
 
-      m_LocalInfo.m_CelebrationNames.RemoveAt(user_celeb.first);
-      m_Data.m_CelebrationNames.RemoveAt(user_celeb.first);
-      m_Data.m_CelebrationIDs.RemoveAt(user_celeb.first);
+      m_LocalInfo.m_CelebrationList.RemoveAt(user_celeb.first);
+      m_Data.m_CelebrationList.RemoveAt(user_celeb.first);
 
       DDSResponderCall(responder, "Celebration successfully removed");
       return;
@@ -1829,7 +1794,7 @@ void User::ApplyXPGain(bool quiet)
   {
     for (auto & icon : reward.m_Icons)
     {
-      AddIcon(responder, icon.second, icon.first, false, quiet);
+      AddIcon(responder, icon, false, quiet);
     }
 
     for (auto & title : reward.m_Titles)
@@ -1839,12 +1804,7 @@ void User::ApplyXPGain(bool quiet)
 
     for (auto & celeb : reward.m_Celebrations)
     {
-      AddCelebration(responder, celeb.second, celeb.first, false, true);
-    }
-
-    for (auto & auto_join : reward.m_AutoJoins)
-    {
-      AddAutoJoinChannel(responder, auto_join);
+      AddCelebration(responder, celeb, false, true);
     }
   }
 
@@ -2457,9 +2417,6 @@ void User::MakeAdmin(DDSResponder & responder, int admin_level)
     JoinChannel(0, "Support");
     JoinChannel(0, "Newbies");
 #endif
-
-    auto empty_responder = CreateEmptyResponder(m_Interface);
-    AddIcon(empty_responder, "img/icons/admin.png", "Admin", true, false);
   }
   else
   {
@@ -2766,11 +2723,6 @@ DDSKey User::GetUserIdForPlatformId(const std::string & platform, uint64_t platf
 {
   std::string steam_id_str = platform + std::to_string(platform_id);
   return crc64(steam_id_str);
-}
-
-std::string User::GetDefaultIcon()
-{
-  return "img/icons/default.png";
 }
 
 void User::HandleUserNameLookupForCall(std::tuple<int, std::string, DDSResponderData> call_data, int ec, std::string data)

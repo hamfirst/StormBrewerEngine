@@ -158,7 +158,7 @@ struct UserChatMessageOutgoing
   std::string c;
   std::string user;
   std::string msg;
-  std::string b;
+  int b;
   int t = 0;
   DDSKey channel_id = 0;
 };
@@ -168,7 +168,7 @@ struct UserChatMessageGame
   STORM_REFL;
   std::string c;
   std::string user;
-  std::string title;
+  int title;
   std::string msg;
 };
 

@@ -260,6 +260,16 @@ void Game::AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info)
           join_info.m_UserKey, ".m_UserInfo", &Game::HandleMemberUpdate, true, join_info.m_UserKey);
 
   GameMember member;
+  member.m_Name = join_info.m_Name;
+  member.m_UserKey = join_info.m_UserKey;
+  member.m_AdminLevel = join_info.m_AdminLevel;
+  member.m_Icon = join_info.m_Icon;
+  member.m_Title = join_info.m_Title;
+  member.m_Celebration = join_info.m_Celebration;
+
+#ifdef ENABLE_SQUADS
+  member.m_SquadTag = join_info.m_SquadTag;
+#endif
 
   if(join_info.m_Observer)
   {
@@ -634,10 +644,18 @@ void Game::RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSK
           msg.m_ResponseId = response_id;
           msg.m_Name = user.second.m_Name;
           msg.m_Team = user.second.m_Team;
+          msg.m_AdminLevel = user.second.m_AdminLevel;
+          msg.m_Icon = user.second.m_Icon;
+          msg.m_Title = user.second.m_Title;
+          msg.m_Celebration = user.second.m_Celebration;
+          msg.m_Loadout = user.second.m_Loadout.Value();
 
 #ifdef ENABLE_SQUADS
           msg.m_Squad = user.second.m_SquadTag;
 #endif
+
+          m_Interface.Call(&GameServerConnection::NotifyTokenRedeemedSuccess, server_key, m_Interface.GetLocalKey(), msg);
+          return;
         }
       }
     }

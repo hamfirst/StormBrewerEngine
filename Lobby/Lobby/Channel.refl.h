@@ -30,7 +30,7 @@ struct Channel
   void STORM_REFL_FUNC RemoveUser(DDSKey user_key);
   void STORM_REFL_FUNC KickUser(DDSKey endpoint_id, DDSKey user_key, DDSKey src_user, int src_admin_level);
 
-  void STORM_REFL_FUNC SendChatToChannel(DDSKey user_key, DDSKey endpoint_id, std::string message, std::string title);
+  void STORM_REFL_FUNC SendChatToChannel(DDSKey user_key, DDSKey endpoint_id, std::string message, int title);
 
   void STORM_REFL_FUNC AddBot(DDSKey bot_key, std::string user_name);
   void STORM_REFL_FUNC RemoveBot(DDSKey bot_key);

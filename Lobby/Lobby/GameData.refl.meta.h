@@ -320,7 +320,7 @@ template <>
 struct StormReflTypeInfo<UserRewards>
 {
   using MyBase = void;
-  static constexpr int fields_n = 4;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -362,11 +362,11 @@ struct StormReflTypeInfo<UserRewards>
 template <>
 struct StormReflTypeInfo<UserRewards>::field_data_static<0>
 {
-  using member_type = std::vector<std::pair<std::string, std::string> >; // std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >
+  using member_type = std::vector<int>; // std::vector<int, std::allocator<int> >
   static constexpr auto GetName() { return "m_Icons"; }
-  static constexpr auto GetType() { return "std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >"; }
+  static constexpr auto GetType() { return "std::vector<int, std::allocator<int> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x875CC01E; }
-  static constexpr unsigned GetTypeNameHash() { return 0xE3DEFE4C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x90559D98; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Icons; }
@@ -379,19 +379,19 @@ struct StormReflTypeInfo<UserRewards>::field_data<0, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<std::pair<std::string, std::string> >> & Get() { return self.m_Icons; }
-  std::add_const_t<std::remove_reference_t<std::vector<std::pair<std::string, std::string> >>> & Get() const { return self.m_Icons; }
+  match_const_t<Self, std::vector<int>> & Get() { return self.m_Icons; }
+  std::add_const_t<std::remove_reference_t<std::vector<int>>> & Get() const { return self.m_Icons; }
   void SetDefault() { self.m_Icons = StormReflTypeInfo<UserRewards>::GetDefault().m_Icons; }
 };
 
 template <>
 struct StormReflTypeInfo<UserRewards>::field_data_static<1>
 {
-  using member_type = std::vector<std::string>; // std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
+  using member_type = std::vector<int>; // std::vector<int, std::allocator<int> >
   static constexpr auto GetName() { return "m_Titles"; }
-  static constexpr auto GetType() { return "std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >"; }
+  static constexpr auto GetType() { return "std::vector<int, std::allocator<int> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8C7A166B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
+  static constexpr unsigned GetTypeNameHash() { return 0x90559D98; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Titles; }
@@ -404,19 +404,19 @@ struct StormReflTypeInfo<UserRewards>::field_data<1, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<std::string>> & Get() { return self.m_Titles; }
-  std::add_const_t<std::remove_reference_t<std::vector<std::string>>> & Get() const { return self.m_Titles; }
+  match_const_t<Self, std::vector<int>> & Get() { return self.m_Titles; }
+  std::add_const_t<std::remove_reference_t<std::vector<int>>> & Get() const { return self.m_Titles; }
   void SetDefault() { self.m_Titles = StormReflTypeInfo<UserRewards>::GetDefault().m_Titles; }
 };
 
 template <>
 struct StormReflTypeInfo<UserRewards>::field_data_static<2>
 {
-  using member_type = std::vector<std::pair<std::string, int> >; // std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int>, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >
+  using member_type = std::vector<int>; // std::vector<int, std::allocator<int> >
   static constexpr auto GetName() { return "m_Celebrations"; }
-  static constexpr auto GetType() { return "std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int>, std::allocator<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >"; }
+  static constexpr auto GetType() { return "std::vector<int, std::allocator<int> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x6E23B591; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC0C7027A; }
+  static constexpr unsigned GetTypeNameHash() { return 0x90559D98; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &UserRewards::m_Celebrations; }
@@ -429,34 +429,9 @@ struct StormReflTypeInfo<UserRewards>::field_data<2, Self> : public StormReflTyp
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<std::pair<std::string, int> >> & Get() { return self.m_Celebrations; }
-  std::add_const_t<std::remove_reference_t<std::vector<std::pair<std::string, int> >>> & Get() const { return self.m_Celebrations; }
+  match_const_t<Self, std::vector<int>> & Get() { return self.m_Celebrations; }
+  std::add_const_t<std::remove_reference_t<std::vector<int>>> & Get() const { return self.m_Celebrations; }
   void SetDefault() { self.m_Celebrations = StormReflTypeInfo<UserRewards>::GetDefault().m_Celebrations; }
-};
-
-template <>
-struct StormReflTypeInfo<UserRewards>::field_data_static<3>
-{
-  using member_type = std::vector<std::string>; // std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
-  static constexpr auto GetName() { return "m_AutoJoins"; }
-  static constexpr auto GetType() { return "std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x707647AC; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4F698566; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &UserRewards::m_AutoJoins; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<UserRewards *>(obj); return &ptr->m_AutoJoins; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UserRewards *>(obj); return &ptr->m_AutoJoins; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<UserRewards>::field_data<3, Self> : public StormReflTypeInfo<UserRewards>::field_data_static<3>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<std::string>> & Get() { return self.m_AutoJoins; }
-  std::add_const_t<std::remove_reference_t<std::vector<std::string>>> & Get() const { return self.m_AutoJoins; }
-  void SetDefault() { self.m_AutoJoins = StormReflTypeInfo<UserRewards>::GetDefault().m_AutoJoins; }
 };
 
 namespace StormReflFileInfo

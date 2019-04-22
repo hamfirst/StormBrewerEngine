@@ -35,10 +35,9 @@ struct UserRewards
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UserRewards);
 
-  std::vector<std::pair<std::string, std::string>> m_Icons;
-  std::vector<std::string> m_Titles;
-  std::vector<std::pair<std::string, int>> m_Celebrations;
-  std::vector<std::string> m_AutoJoins;
+  std::vector<int> m_Icons;
+  std::vector<int> m_Titles;
+  std::vector<int> m_Celebrations;
 };
 
 #endif

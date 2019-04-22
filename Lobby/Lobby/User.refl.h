@@ -38,16 +38,14 @@ struct UserLocalData
 
   UserPersistent m_Persistent;
 
-  RInt m_Title;
-  RMergeList<RString> m_TitleList;
-
   RInt m_Icon;
+  RMergeList<RInt> m_IconList;
 
-  RMergeList<RString> m_IconNames;
-  RString m_IconURL;
+  RInt m_Title;
+  RMergeList<RInt> m_TitleList;
 
   RInt m_Celebration;
-  RMergeList<RString> m_CelebrationNames;
+  RMergeList<RInt> m_CelebrationList;
 
 #ifdef ENABLE_CHANNELS
   RMergeList<RString> m_AutoJoinChannels;
@@ -88,15 +86,13 @@ struct UserDatabaseObject
   RInt m_Created;
 
   RInt m_Title = -1;
-  RMergeList<RString> m_TitleList;
+  RMergeList<RInt> m_TitleList;
 
   RInt m_Icon = -1;
-  RMergeList<RString> m_IconNames;
-  RMergeList<RString> m_IconURLs;
+  RMergeList<RInt> m_IconList;
 
   RInt m_Celebration = -1;
-  RMergeList<RString> m_CelebrationNames;
-  RMergeList<RInt> m_CelebrationIDs;
+  RMergeList<RInt> m_CelebrationList;
 
   RInt m_LastGamePlayed;
   GameStatsData m_Stats;
@@ -208,7 +204,7 @@ struct User
   void STORM_REFL_FUNC BanFromCompetitive();
   void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);
   void STORM_REFL_FUNC NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string server_ip, int server_port, DDSKey token);
-  void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, std::string title, std::string msg);
+  void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int title, std::string msg);
   void STORM_REFL_FUNC HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data);
 
   // Squad Functions
@@ -258,17 +254,17 @@ struct User
 #endif
 
   // Profile Functions
-  void STORM_REFL_FUNC AddTitle(DDSResponder & responder, std::string title, bool quiet);
-  void STORM_REFL_FUNC SetTitle(int title_index);
-  void STORM_REFL_FUNC RemoveTitle(DDSResponder & responder, std::string title);
+  void STORM_REFL_FUNC AddTitle(DDSResponder & responder, int title, bool quiet);
+  void STORM_REFL_FUNC SetTitle(int title);
+  void STORM_REFL_FUNC RemoveTitle(DDSResponder & responder, int title);
 
-  void STORM_REFL_FUNC AddIcon(DDSResponder & responder, std::string icon_url, std::string icon_name, bool set, bool quiet);
-  void STORM_REFL_FUNC SetIcon(int icon_index);
-  void STORM_REFL_FUNC RemoveIcon(DDSResponder & responder, std::string icon);
+  void STORM_REFL_FUNC AddIcon(DDSResponder & responder, int icon, bool set, bool quiet);
+  void STORM_REFL_FUNC SetIcon(int icon);
+  void STORM_REFL_FUNC RemoveIcon(DDSResponder & responder, int icon);
 
-  void STORM_REFL_FUNC AddCelebration(DDSResponder & responder, int celebration_id, std::string celebration_name, bool set, bool quiet);
-  void STORM_REFL_FUNC SetCelebration(int celebration_index);
-  void STORM_REFL_FUNC RemoveCelebration(DDSResponder & responder, std::string celebration);
+  void STORM_REFL_FUNC AddCelebration(DDSResponder & responder, int celebration, bool set, bool quiet);
+  void STORM_REFL_FUNC SetCelebration(int celebration);
+  void STORM_REFL_FUNC RemoveCelebration(DDSResponder & responder, int celebration);
 
   void STORM_REFL_FUNC UpdateStats(GameStatsData stats, GameInitSettings instance_data);
   void STORM_REFL_FUNC FetchStats(DDSResponder & responder);
@@ -337,7 +333,6 @@ public:
   static bool ValidateUserName(const std::string & name, int min_characters = 3, int max_characters = 32, bool allow_space = false);
 
   static DDSKey GetUserIdForPlatformId(const std::string & platform, uint64_t platform_id);
-  static std::string GetDefaultIcon();
 
 public:
 
