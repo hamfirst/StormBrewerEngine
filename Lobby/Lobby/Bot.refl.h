@@ -1,11 +1,12 @@
 #pragma once
 
-#include <HurricaneDDS/DDSDataObject.h>
-#include <HurricaneDDS/DDSThrottle.refl.h>
+#include "HurricaneDDS/DDSDataObject.h"
+#include "HurricaneDDS/DDSThrottle.refl.h"
 
-#include <StormRefl/StormReflJsonStd.h>
+#include "StormRefl/StormReflJsonStd.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "GameData.refl.h"
 #include "GameServerMessages.refl.h"
 

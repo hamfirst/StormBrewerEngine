@@ -30,17 +30,16 @@ set(GENERIC_SRC_Lobby
             GameServerEndpoint.cpp
             LoadBalancer.cpp
             LobbyLevelList.refl.cpp
+            Matchmaker.refl.cpp
             NodeState.cpp
             Rewards.refl.cpp
             ServerManager.refl.cpp
-            SharedTypes.refl.cpp
             Squad.refl.cpp
             SteamOpenIdValidatorPage.cpp
             User.refl.cpp
             UserConnection.refl.cpp
             UserEndpoint.cpp
             WelcomeInfo.refl.cpp
-            Matchmaker.refl.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -78,14 +77,14 @@ set(GENERIC_HEADER_Lobby
             LobbyConfig.h
             LobbyLevelList.refl.h
             LobbyLevelList.refl.meta.h
+            Matchmaker.refl.h
+            Matchmaker.refl.meta.h
             NodeState.h
             ProjectSettings.h
             Rewards.refl.h
             Rewards.refl.meta.h
             ServerManager.refl.h
             ServerManager.refl.meta.h
-            SharedTypes.refl.h
-            SharedTypes.refl.meta.h
             Squad.refl.h
             Squad.refl.meta.h
             SteamOpenIdValidatorPage.h
@@ -100,8 +99,6 @@ set(GENERIC_HEADER_Lobby
             UserEndpoint.h
             WelcomeInfo.refl.h
             WelcomeInfo.refl.meta.h
-            Matchmaker.refl.h
-            Matchmaker.refl.meta.h
             #HEADER_PLACEHOLDER
             )
 
@@ -119,16 +116,15 @@ set(GENERIC_REFL_Lobby
             GameServerMessages.refl.h
             GooglePlatform.refl.h
             LobbyLevelList.refl.h
+            Matchmaker.refl.h
             Rewards.refl.h
             ServerManager.refl.h
-            SharedTypes.refl.h
             Squad.refl.h
             SteamServerMessages.refl.h
             User.refl.h
             UserConnection.refl.h
             UserConnectionMessages.refl.h
             WelcomeInfo.refl.h
-            Matchmaker.refl.h
             #REFL_PLACEHOLDER
             )
 

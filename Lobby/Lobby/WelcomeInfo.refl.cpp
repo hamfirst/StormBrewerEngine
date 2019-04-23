@@ -9,8 +9,6 @@
 
 #ifdef ENABLE_WELCOME_INFO
 
-STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(WelcomeInfoTab);
-
 WelcomeInfo::WelcomeInfo(DDSObjectInterface & obj_interface) :
   m_Interface(obj_interface)
 {

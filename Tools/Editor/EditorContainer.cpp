@@ -64,7 +64,8 @@ DelegateList<void> g_GlobalUpdate;
 
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
-{  
+{
+  EngineInit(false, true);
   const char * doc_server_host = "localhost";
   
   printf("Attempting to connect to doc server\n");
@@ -174,7 +175,6 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
   m_ConnectingDialog.show();
 
-  EngineInit(false, true);
 
   printf("Creating offscreen surface\n");
   auto global_context = QOpenGLContext::globalShareContext();

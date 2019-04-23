@@ -51,7 +51,7 @@ void UserConnection::FinalizeUserLoaded()
   m_Interface.Call(&User::SetLocation, m_UserId, m_CountryCode, m_CurrencyCode);
 
 #ifdef ENABLE_GAME_LIST
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<GameList>{}, 0, "", &UserConnection::HandleGameListUpdate, true);
+  m_Interface.CreateSubscription(DDSSubscriptionTarget<GameList>{}, 0, ".m_GameList", &UserConnection::HandleGameListUpdate, true);
 #endif
 
 #ifdef ENABLE_WELCOME_INFO
@@ -191,7 +191,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     }
     else
 #endif
-#if defined(ENABLE_REWARDS) && defined(ENABLE_CHANNELS)
     if (cmd == "set_title")
     {
       UserSetProfileVal req;
@@ -214,10 +213,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SetIcon, m_UserId, req.val);
     }
-    else
-#endif
-#ifdef ENABLE_REWARDS
-    if (cmd == "set_celeb")
+    else if (cmd == "set_celeb")
     {
       UserSetProfileVal req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -229,7 +225,6 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
       m_Interface.Call(&User::SetCelebration, m_UserId, req.val);
     }
     else
-#endif
 #ifdef ENABLE_SQUADS
     if (cmd == "set_primary_squad")
     {
@@ -281,7 +276,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      //m_Interface.Call(&User::CreateGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.create_data, req.password);
+      m_Interface.Call(&User::CreatePrivateGame, m_UserId, m_Interface.GetLocalKey(), req.create_data, req.password, req.zone_info);
     }
     else if (cmd == "join_game")
     {
@@ -292,7 +287,36 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
         return;
       }
 
-      //m_Interface.Call(&User::JoinGame, m_UserId, req.server_id, m_Interface.GetLocalKey(), req.game_id, req.password, req.observer);
+      UserGameJoinInfo join_info;
+      join_info.m_EndpointId = m_Interface.GetLocalKey();
+      join_info.m_Password = req.password;
+      join_info.m_Observer = req.observer;
+      join_info.m_IntendedType = LobbyGameType::kPrivate;
+      join_info.m_ZoneInfo = req.zone_info;
+
+      m_Interface.Call(&User::JoinGameByLookupTable, m_UserId, req.join_code, join_info);
+    }
+    else if(cmd == "matchmake_casual")
+    {
+      UserMatchmakeRequest req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::StartMatchmakingCasual, m_UserId, req.playlist_mask, m_Interface.GetLocalKey(), req.zone_info);
+    }
+    else if(cmd == "matchmake_competitive")
+    {
+      UserMatchmakeRequest req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::StartMatchmakingCompetitive, m_UserId, req.playlist_mask, m_Interface.GetLocalKey(), req.zone_info);
     }
     else if (cmd == "destroy_game")
     {
@@ -316,7 +340,44 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SendGameChat, m_UserId, m_Interface.GetLocalKey(), req.msg);
     }
-    else if (cmd == "switch_teams")
+    else if (cmd == "start_game")
+    {
+      m_Interface.Call(&User::StartGame, m_UserId);
+    }
+    else if (cmd == "change_ready")
+    {
+      UserReadyGame req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::ChangeReady, m_UserId, req.ready);
+    }
+    else if (cmd == "change_loadout")
+    {
+      UserSwitchLoadout req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::ChangeLoadout, m_UserId, req.loadout);
+    }
+    else if (cmd == "change_settings")
+    {
+      UserSwitchSettings req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::ChangeGameSettings, m_UserId, req.settings);
+    }
+    else if (cmd == "change_team")
     {
       UserSwitchTeam req;
       if (StormReflParseJson(req, data.c_str()) == false)
@@ -327,9 +388,16 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::SwitchTeams, m_UserId, req.target_user, req.team, m_Interface.GetLocalKey());
     }
-    else if (cmd == "start_game")
+    else if (cmd == "kick_game_user")
     {
-      m_Interface.Call(&User::StartGame, m_UserId);
+      UserKickUserFromGame req;
+      if (StormReflParseJson(req, data.c_str()) == false)
+      {
+        SendConnectionError("Parse error");
+        return;
+      }
+
+      m_Interface.Call(&User::KickUserFromGame, m_UserId, req.user);
     }
     else if (cmd == "leave_game")
     {
@@ -647,12 +715,6 @@ void UserConnection::SendConnectionError(std::string msg)
   }
 }
 
-void UserConnection::SendLaunchGame(std::string ip_addr, int port, uint64_t token)
-{
-  UserStartGame msg{ "start_game", ip_addr, std::to_string(port), std::to_string(token) };
-  SendData(StormReflEncodeJson(msg));
-}
-
 void UserConnection::HandleUserInsert(int ec)
 {
   if (ec == 0)
@@ -688,7 +750,6 @@ void UserConnection::HandleGameListUpdate(std::string data)
 #ifdef ENABLE_WELCOME_INFO
 void UserConnection::HandleWelcomeInfoUpdate(std::string data)
 {
-
   m_Interface.SendDataToLocalConnection(*m_ConnectionId, StormReflEncodeJson(UserLocalInfoUpdate{ "winfo", std::move(data) }));
 }
 #endif

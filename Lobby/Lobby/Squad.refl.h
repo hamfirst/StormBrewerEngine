@@ -1,12 +1,13 @@
 #pragma once
 
-#include <StormData/StormData.h>
-#include <StormData/StormDataTypes.h>
+#include "StormData/StormData.h"
+#include "StormData/StormDataTypes.h"
 
-#include <HurricaneDDS/DDSDataObject.h>
-#include <HurricaneDDS/DDSThrottle.refl.h>
+#include "HurricaneDDS/DDSDataObject.h"
+#include "HurricaneDDS/DDSThrottle.refl.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "LobbyConfig.h"
 
 #ifdef ENABLE_SQUADS

@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "Game.refl.h"
-#include "SharedTypes.refl.meta.h"
+#include "LobbyShared/SharedTypes.refl.meta.h"
 #include "GameServerMessages.refl.meta.h"
 
 
@@ -11,7 +11,7 @@ template <>
 struct StormReflTypeInfo<GameUserJoinInfo>
 {
   using MyBase = void;
-  static constexpr int fields_n = 12;
+  static constexpr int fields_n = 11;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -128,45 +128,20 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<2, Self> : public StormRe
 template <>
 struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<3>
 {
-  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
-  static constexpr auto GetName() { return "m_SquadTag"; }
-  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x74B2CC01; }
-  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
-  static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_SquadTag; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_SquadTag; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_SquadTag; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<3, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<3>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::string> & Get() { return self.m_SquadTag; }
-  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_SquadTag; }
-  void SetDefault() { self.m_SquadTag = StormReflTypeInfo<GameUserJoinInfo>::GetDefault().m_SquadTag; }
-};
-
-template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<4>
-{
   using member_type = int; // int
   static constexpr auto GetName() { return "m_AdminLevel"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xACAEF821; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_AdminLevel; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_AdminLevel; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_AdminLevel; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<4, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<4>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<3, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -176,7 +151,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<4, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<5>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<4>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_Icon"; }
@@ -184,14 +159,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<5>
   static constexpr unsigned GetFieldNameHash() { return 0x5B09BCC4; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 5; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_Icon; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_Icon; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_Icon; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<5, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<5>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<4, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -201,7 +176,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<5, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<6>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<5>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_Title"; }
@@ -209,14 +184,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<6>
   static constexpr unsigned GetFieldNameHash() { return 0xA600E80B; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 6; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_Title; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_Title; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_Title; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<6, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<6>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<5, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -226,7 +201,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<6, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<7>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<6>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_Celebration"; }
@@ -234,14 +209,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<7>
   static constexpr unsigned GetFieldNameHash() { return 0x47D906C2; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 7; }
+  static constexpr auto GetFieldIndex() { return 6; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_Celebration; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_Celebration; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_Celebration; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<7, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<7>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<6, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<6>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -251,7 +226,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<7, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<8>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<7>
 {
   using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
   static constexpr auto GetName() { return "m_Password"; }
@@ -259,14 +234,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<8>
   static constexpr unsigned GetFieldNameHash() { return 0xC3EE92FB; }
   static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 8; }
+  static constexpr auto GetFieldIndex() { return 7; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_Password; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_Password; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_Password; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<8, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<8>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<7, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<7>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -276,7 +251,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<8, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<9>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<8>
 {
   using member_type = bool; // bool
   static constexpr auto GetName() { return "m_Observer"; }
@@ -284,14 +259,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<9>
   static constexpr unsigned GetFieldNameHash() { return 0x6D4390C9; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 9; }
+  static constexpr auto GetFieldIndex() { return 8; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_Observer; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_Observer; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_Observer; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<9, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<9>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<8, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<8>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -301,7 +276,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<9, Self> : public StormRe
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<10>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<9>
 {
   using member_type = LobbyGameType; // LobbyGameType
   static constexpr auto GetName() { return "m_IntendedType"; }
@@ -309,14 +284,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<10>
   static constexpr unsigned GetFieldNameHash() { return 0x01E307B7; }
   static constexpr unsigned GetTypeNameHash() { return 0x15A65C86; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetFieldIndex() { return 9; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_IntendedType; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_IntendedType; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_IntendedType; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<10, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<10>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<9, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<9>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -326,7 +301,7 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data<10, Self> : public StormR
 };
 
 template <>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<11>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<10>
 {
   using member_type = UserZoneInfo; // UserZoneInfo
   static constexpr auto GetName() { return "m_ZoneInfo"; }
@@ -334,14 +309,14 @@ struct StormReflTypeInfo<GameUserJoinInfo>::field_data_static<11>
   static constexpr unsigned GetFieldNameHash() { return 0xFAB36D71; }
   static constexpr unsigned GetTypeNameHash() { return 0xC19DFF86; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 11; }
+  static constexpr auto GetFieldIndex() { return 10; }
   static constexpr auto GetMemberPtr() { return &GameUserJoinInfo::m_ZoneInfo; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<GameUserJoinInfo *>(obj); return &ptr->m_ZoneInfo; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const GameUserJoinInfo *>(obj); return &ptr->m_ZoneInfo; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<GameUserJoinInfo>::field_data<11, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<11>
+struct StormReflTypeInfo<GameUserJoinInfo>::field_data<10, Self> : public StormReflTypeInfo<GameUserJoinInfo>::field_data_static<10>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -1012,7 +987,7 @@ template <>
 struct StormReflFuncInfo<Game>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 19;
+  static constexpr int funcs_n = 21;
   template <int N> struct func_data_static {};
 };
 
@@ -1431,15 +1406,15 @@ struct StormReflFuncInfo<Game>::func_data_static<11>::param_info<2>
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<12>
 {
-  using func_ptr_type = void (Game::*)(DDSKey, DDSKey, std::string);
+  using func_ptr_type = void (Game::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "SendChat"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "RequestKickUser"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xDDA27521; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xB5353893; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 12; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::SendChat; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::RequestKickUser; }
   template <int i>
   struct param_info { };
 };
@@ -1448,9 +1423,9 @@ template <>
 struct StormReflFuncInfo<Game>::func_data_static<12>::param_info<0>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_key"; }
+  static constexpr auto GetName() { return "requesting_user"; }
   static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x6186CA22; }
+  static constexpr unsigned GetNameHash() { return 0x2C06AEC6; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
@@ -1458,34 +1433,24 @@ template <>
 struct StormReflFuncInfo<Game>::func_data_static<12>::param_info<1>
 {
   using param_type = DDSKey;
-  static constexpr auto GetName() { return "endpoint_id"; }
+  static constexpr auto GetName() { return "target_user"; }
   static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
+  static constexpr unsigned GetNameHash() { return 0x408BC0F8; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<Game>::func_data_static<12>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "message"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xB6BD307F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<13>
 {
-  using func_ptr_type = void (Game::*)(DDSKey, GameInitSettings);
+  using func_ptr_type = void (Game::*)(DDSKey, DDSKey, std::string);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "UpdateSettings"; }
+  static constexpr int params_n = 3;
+  static constexpr auto GetName() { return "SendChat"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xE2AE42CF; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xDDA27521; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 13; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::UpdateSettings; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::SendChat; }
   template <int i>
   struct param_info { };
 };
@@ -1503,25 +1468,35 @@ struct StormReflFuncInfo<Game>::func_data_static<13>::param_info<0>
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<13>::param_info<1>
 {
-  using param_type = GameInitSettings;
-  static constexpr auto GetName() { return "settings"; }
-  static constexpr auto GetType() { return "GameInitSettings"; }
-  static constexpr unsigned GetNameHash() { return 0xE545A0C5; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBAC6DD28; }
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "endpoint_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x21AF7E36; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<13>::param_info<2>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "message"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xB6BD307F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
 };
 
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<14>
 {
-  using func_ptr_type = void (Game::*)(DDSKey, DDSKey, uint32_t, DDSKey);
+  using func_ptr_type = void (Game::*)(DDSKey, const GameInitSettings &);
   using return_type = void;
-  static constexpr int params_n = 4;
-  static constexpr auto GetName() { return "RedeemToken"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "ChangeSettings"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xD02F62AE; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x5518F99F; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 14; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::RedeemToken; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::ChangeSettings; }
   template <int i>
   struct param_info { };
 };
@@ -1539,45 +1514,25 @@ struct StormReflFuncInfo<Game>::func_data_static<14>::param_info<0>
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<14>::param_info<1>
 {
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "token"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0x5F37A13B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<Game>::func_data_static<14>::param_info<2>
-{
-  using param_type = uint32_t;
-  static constexpr auto GetName() { return "response_id"; }
-  static constexpr auto GetType() { return "uint32_t"; }
-  static constexpr unsigned GetNameHash() { return 0xFBF32840; }
-  static constexpr unsigned GetTypeNameHash() { return 0x0E2AF381; }
-};
-
-template <>
-struct StormReflFuncInfo<Game>::func_data_static<14>::param_info<3>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "server_key"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xB459A1F3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+  using param_type = const GameInitSettings &;
+  static constexpr auto GetName() { return "settings"; }
+  static constexpr auto GetType() { return "const GameInitSettings &"; }
+  static constexpr unsigned GetNameHash() { return 0xE545A0C5; }
+  static constexpr unsigned GetTypeNameHash() { return 0xEB959CD8; }
 };
 
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<15>
 {
-  using func_ptr_type = void (Game::*)(DDSKey, std::string);
+  using func_ptr_type = void (Game::*)(DDSKey, const GamePlayerLoadout &);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleMemberUpdate"; }
+  static constexpr auto GetName() { return "ChangeLoadout"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x4E85F53F; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xF3A4B638; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 15; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleMemberUpdate; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::ChangeLoadout; }
   template <int i>
   struct param_info { };
 };
@@ -1595,25 +1550,25 @@ struct StormReflFuncInfo<Game>::func_data_static<15>::param_info<0>
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<15>::param_info<1>
 {
-  using param_type = std::string;
-  static constexpr auto GetName() { return "data"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+  using param_type = const GamePlayerLoadout &;
+  static constexpr auto GetName() { return "loadout"; }
+  static constexpr auto GetType() { return "const GamePlayerLoadout &"; }
+  static constexpr unsigned GetNameHash() { return 0x7E65CE42; }
+  static constexpr unsigned GetTypeNameHash() { return 0x942B378B; }
 };
 
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<16>
 {
-  using func_ptr_type = void (Game::*)(DDSKey, bool);
+  using func_ptr_type = void (Game::*)(DDSKey, DDSKey, uint32_t, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "HandleUserQuitGame"; }
+  static constexpr int params_n = 4;
+  static constexpr auto GetName() { return "RedeemToken"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xD65AC9E7; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xD02F62AE; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 16; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleUserQuitGame; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::RedeemToken; }
   template <int i>
   struct param_info { };
 };
@@ -1631,6 +1586,98 @@ struct StormReflFuncInfo<Game>::func_data_static<16>::param_info<0>
 template <>
 struct StormReflFuncInfo<Game>::func_data_static<16>::param_info<1>
 {
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "token"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x5F37A13B; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<16>::param_info<2>
+{
+  using param_type = uint32_t;
+  static constexpr auto GetName() { return "response_id"; }
+  static constexpr auto GetType() { return "uint32_t"; }
+  static constexpr unsigned GetNameHash() { return 0xFBF32840; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0E2AF381; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<16>::param_info<3>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "server_key"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0xB459A1F3; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<17>
+{
+  using func_ptr_type = void (Game::*)(DDSKey, std::string);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleMemberUpdate"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x4E85F53F; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 17; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleMemberUpdate; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<17>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user_key"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x6186CA22; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<17>::param_info<1>
+{
+  using param_type = std::string;
+  static constexpr auto GetName() { return "data"; }
+  static constexpr auto GetType() { return "std::string"; }
+  static constexpr unsigned GetNameHash() { return 0xADF3F363; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<18>
+{
+  using func_ptr_type = void (Game::*)(DDSKey, bool);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "HandleUserQuitGame"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xD65AC9E7; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 18; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleUserQuitGame; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<18>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user_key"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x6186CA22; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Game>::func_data_static<18>::param_info<1>
+{
   using param_type = bool;
   static constexpr auto GetName() { return "ban"; }
   static constexpr auto GetType() { return "bool"; }
@@ -1639,7 +1686,7 @@ struct StormReflFuncInfo<Game>::func_data_static<16>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<Game>::func_data_static<17>
+struct StormReflFuncInfo<Game>::func_data_static<19>
 {
   using func_ptr_type = void (Game::*)();
   using return_type = void;
@@ -1648,14 +1695,14 @@ struct StormReflFuncInfo<Game>::func_data_static<17>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x638E9039; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 17; }
+  static constexpr auto GetFunctionIndex() { return 19; }
   static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleGameComplete; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<Game>::func_data_static<18>
+struct StormReflFuncInfo<Game>::func_data_static<20>
 {
   using func_ptr_type = void (Game::*)();
   using return_type = void;
@@ -1664,7 +1711,7 @@ struct StormReflFuncInfo<Game>::func_data_static<18>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x34A264B4; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 18; }
+  static constexpr auto GetFunctionIndex() { return 20; }
   static constexpr func_ptr_type GetFunctionPtr() { return &Game::HandleServerDisconnected; }
   template <int i>
   struct param_info { };

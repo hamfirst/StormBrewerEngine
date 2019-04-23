@@ -151,6 +151,22 @@ void GameServerConnection::RemoveUserFromGame(DDSKey game_id, DDSKey user_id)
   }
 }
 
+void GameServerConnection::ChangeUserLoadout(DDSKey game_id, DDSKey user_id, const GamePlayerLoadout & loadout)
+{
+  for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
+  {
+    if(*itr == game_id)
+    {
+      GameServerForceUserDisconnect msg;
+      msg.m_GameId = game_id;
+      msg.m_UserId = user_id;
+
+      SendPacket(msg);
+      return;
+    }
+  }
+}
+
 void GameServerConnection::NotifyUserQuitGame(DDSKey game_id, DDSKey user_key, bool ban)
 {
   for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)

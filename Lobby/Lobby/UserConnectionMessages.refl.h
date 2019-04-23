@@ -3,14 +3,17 @@
 #include <string>
 #include <vector>
 
-#include <StormRefl/StormRefl.h>
+#include "StormRefl/StormRefl.h"
 
-#include <HurricaneDDS/DDSKey.h>
-
-#include "Lobby/GameData.refl.h"
-#include "Lobby/LobbyConfig.h"
+#include "HurricaneDDS/DDSKey.h"
 
 #include "Game/GameNetworkData.refl.h"
+
+#include "LobbyShared/SharedTypes.refl.h"
+
+#include "GameData.refl.h"
+#include "LobbyConfig.h"
+
 
 
 struct GeolocationResponse
@@ -159,6 +162,7 @@ struct UserChatMessageOutgoing
   std::string user;
   std::string msg;
   int b;
+  int i;
   int t = 0;
   DDSKey channel_id = 0;
 };
@@ -169,6 +173,7 @@ struct UserChatMessageGame
   std::string c;
   std::string user;
   int title;
+  int icon;
   std::string msg;
 };
 
@@ -178,6 +183,8 @@ struct UserLaunchGameMessage
   std::string c;
   std::string server_ip;
   int server_port;
+  DDSKey user_id;
+  DDSKey game_id;
   DDSKey token;
 };
 
@@ -188,24 +195,31 @@ struct UserServerMessageGame
   std::string msg;
 };
 
-
 struct UserGameCreate
 {
   STORM_REFL;
   std::string c;
-  DDSKey server_id;
   GameInitSettings create_data;
   std::string password;
+  UserZoneInfo zone_info;
 };
 
 struct UserJoinGame
 {
   STORM_REFL;
   std::string c;
-  DDSKey server_id;
-  DDSKey game_id;
   std::string password;
+  uint32_t join_code;
   bool observer;
+  UserZoneInfo zone_info;
+};
+
+struct UserMatchmakeRequest
+{
+  STORM_REFL;
+  std::string c;
+  uint32_t playlist_mask;
+  UserZoneInfo zone_info;
 };
 
 struct UserDestroyGame
@@ -213,6 +227,13 @@ struct UserDestroyGame
   STORM_REFL;
   std::string c;
   DDSKey game_id;
+};
+
+struct UserReadyGame
+{
+  STORM_REFL;
+  std::string c;
+  bool ready;
 };
 
 struct UserStartGame
@@ -230,6 +251,27 @@ struct UserSwitchTeam
   std::string c;
   DDSKey target_user = 0;
   int team;
+};
+
+struct UserSwitchLoadout
+{
+  STORM_REFL;
+  std::string c;
+  GamePlayerLoadout loadout;
+};
+
+struct UserSwitchSettings
+{
+  STORM_REFL;
+  std::string c;
+  GameInitSettings settings;
+};
+
+struct UserKickUserFromGame
+{
+  STORM_REFL;
+  std::string c;
+  DDSKey user;
 };
 
 struct UserCreateSquad

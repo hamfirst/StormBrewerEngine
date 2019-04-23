@@ -8,9 +8,16 @@
 #include "ProjectSettings/ProjectNetworkSettings.h"
 #include "ProjectSettings/ProjectZones.h"
 
-#include "LobbyConfig.h"
+#include "Lobby/LobbyConfig.h"
 
 #include "Game/GameNetworkData.refl.h"
+
+struct WelcomeInfoTab
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(WelcomeInfoTab);
+  RString m_Name;
+  RString m_Info;
+};
 
 enum STORM_REFL_ENUM class ChannelJoinResult
 {
@@ -64,6 +71,7 @@ struct UserApplication
   RKey m_SquadId;
 };
 
+
 struct ChannelMember
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(ChannelMember);
@@ -104,6 +112,22 @@ struct ChannelInfo
   RSparseList<ChannelMember> m_Users;
   RMergeList<ChannelBot> m_Bots;
 };
+
+struct GameListGame
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(GameListGame);
+
+#ifdef ENABLE_GAME_LIST
+  RInt m_MaxPlayers;
+  RInt m_CurPlayers;
+  RBool m_Started;
+  RString m_Map;
+  RBool m_PasswordProtected;
+#endif
+
+  RUInt m_JoinCode;
+};
+
 
 struct SquadMember
 {
@@ -197,4 +221,52 @@ struct GameInfo
   RString m_Password;
   ROpaque<GameInitSettings> m_Settings;
   RSparseList<GameMember> m_Users;
+};
+
+struct UserPersistent
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(UserPersistent);
+
+#ifdef ENABLE_CHANNELS
+  RBool m_EnterExitMessages;
+  RBool m_TwelveHourClock;
+  RInt m_PlayerListSort;
+#endif
+};
+struct UserLocalData
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(UserLocalData);
+
+  RString m_Name;
+  RKey m_UserKey;
+
+  RString m_Platform;
+  RKey m_PlatformId;
+
+  RInt m_AdminLevel;
+
+  UserPersistent m_Persistent;
+
+  RInt m_Icon;
+  RMergeList<RInt> m_IconList;
+
+  RInt m_Title;
+  RMergeList<RInt> m_TitleList;
+
+  RInt m_Celebration;
+  RMergeList<RInt> m_CelebrationList;
+
+#ifdef ENABLE_CHANNELS
+  RMergeList<RString> m_AutoJoinChannels;
+  RMergeList<DDSSharedLocalCopyPtr<ChannelInfo>> m_Channels;
+#endif
+
+#ifdef ENABLE_SQUADS
+  RKey m_PrimarySquad;
+  RKey m_OwnerSquad;
+
+  RMap<DDSKey, SquadInfo> m_Squads;
+  RMergeList<UserApplication> m_Applications;
+  RMergeList<UserApplication> m_Requests;
+#endif
 };

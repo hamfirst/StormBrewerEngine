@@ -32,7 +32,6 @@ struct UserConnection
   void STORM_REFL_FUNC SendServerText(std::string msg);
   void STORM_REFL_FUNC SendRuntimeError(std::string msg);
   void STORM_REFL_FUNC SendConnectionError(std::string msg);
-  void STORM_REFL_FUNC SendLaunchGame(std::string ip_addr, int port, uint64_t token);
 
   void STORM_REFL_FUNC HandleUserInsert(int ec);
   void STORM_REFL_FUNC HandleLocalDataUpdate(std::string data);

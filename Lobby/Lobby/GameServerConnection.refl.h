@@ -1,8 +1,9 @@
 #pragma once
 
-#include <HurricaneDDS/DDSDataObject.h>
+#include "HurricaneDDS/DDSDataObject.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "GameServerMessages.refl.h"
 
 enum STORM_REFL_ENUM class GameServerConnectionState
@@ -25,6 +26,7 @@ public:
   void STORM_REFL_FUNC DestroyGame(const GameServerDestroyGame & msg);
 
   void STORM_REFL_FUNC RemoveUserFromGame(DDSKey game_id, DDSKey user_id);
+  void STORM_REFL_FUNC ChangeUserLoadout(DDSKey game_id, DDSKey user_id, const GamePlayerLoadout & loadout);
 
   void STORM_REFL_FUNC NotifyTokenRedeemedSuccess(DDSKey game_id, const GameServerAuthenticateUserSuccess & msg);
   void STORM_REFL_FUNC NotifyTokenRedeemedFailure(DDSKey game_id, const GameServerAuthenticateUserFailure & msg);

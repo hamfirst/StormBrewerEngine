@@ -7,7 +7,8 @@
 
 #include "Game/GameNetworkData.refl.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "LobbyConfig.h"
 
 struct PlaylistDatabaseElement
@@ -98,8 +99,13 @@ private:
                PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
   static void RemoveUser(DDSKey user, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
 
-  bool FindMatch(int zone, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list);
+  bool FindMatch(int zone, PlaylistDatabaseObj & playlist_data,
+          std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type);
+
+  void SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id, LobbyGameType game_type);
+
   static bool BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, int * team_sizes);
+
 
 private:
 

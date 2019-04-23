@@ -201,6 +201,13 @@ void Game::Reset()
     user_info.second.m_TokenAssigned = 0;
   }
 
+  for(auto user : m_GameInfo.m_Users)
+  {
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
+    user.second.m_Ready = false;
+#endif
+  }
+
   m_GameInfo.m_Countdown = 0;
   m_GameInfo.m_State = LobbyGameState::kWaiting;
 
@@ -321,6 +328,7 @@ void Game::RemoveUser(DDSKey user_key)
   if(itr != m_UserPrivateInfo.end())
   {
     m_Interface.DestroySubscription<User>(user_key, itr->second.m_SubscriptionId);
+    m_UserPrivateInfo.erase(itr);
   }
 
   for (auto user : m_GameInfo.m_Users)
@@ -340,6 +348,11 @@ void Game::RemoveUser(DDSKey user_key)
   if(m_AssignedServer != 0)
   {
     m_Interface.Call(&GameServerConnection::RemoveUserFromGame, m_AssignedServer, m_Interface.GetLocalKey(), user_key);
+  }
+
+  if(m_GameInfo.m_Type == LobbyGameType::kPrivate && m_GameInfo.m_Users.HighestIndex() == -1)
+  {
+    Cleanup();
   }
 }
 
@@ -446,6 +459,7 @@ void Game::RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int tea
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
+    Cleanup();
     return;
   }
 
@@ -519,6 +533,46 @@ void Game::RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int tea
   m_GameInfo.m_Users[target_user_index].m_Team = team;
 }
 
+void Game::RequestKickUser(DDSKey requesting_user, DDSKey target_user)
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Cleanup();
+    return;
+  }
+
+  if(m_GameInfo.m_Type != LobbyGameType::kPrivate)
+  {
+    return;
+  }
+
+  bool requesting_user_is_leader = false;
+  bool target_user_found = false;
+
+  for(auto user : m_GameInfo.m_Users)
+  {
+    if(user.second.m_UserKey == requesting_user)
+    {
+      if(user.second.m_UserKey == m_GameInfo.m_GameLeader)
+      {
+        requesting_user_is_leader = true;
+      }
+    }
+
+    if(user.second.m_UserKey == target_user)
+    {
+      target_user_found = true;
+    }
+  }
+
+  if(!requesting_user_is_leader || !target_user_found)
+  {
+    return;
+  }
+
+  RemoveUser(target_user);
+}
+
 void Game::RandomizeTeams()
 {
   auto & map_props = g_LobbyLevelList.GetLevelInfo(m_GameInfo.m_Settings->m_StageIndex);
@@ -581,14 +635,15 @@ void Game::SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message)
   for(auto itr : m_GameInfo.m_Users)
   {
     m_Interface.Call(&User::HandleGameChat, itr.second.m_UserKey, m_Interface.GetLocalKey(), m_GameRandomId,
-            itr.second.m_Name, itr.second.m_Title, message);
+            itr.second.m_Name, itr.second.m_Icon, itr.second.m_Title, message);
   }
 }
 
-void Game::UpdateSettings(DDSKey user_key, GameInitSettings settings)
+void Game::ChangeSettings(DDSKey user_key, const GameInitSettings & settings)
 {
   if(m_GameInfo.m_State == LobbyGameState::kInitializing)
   {
+    Cleanup();
     return;
   }
 
@@ -596,6 +651,24 @@ void Game::UpdateSettings(DDSKey user_key, GameInitSettings settings)
   {
     m_GameInfo.m_Settings = settings;
     ValidateTeams();
+  }
+}
+
+void Game::ChangeLoadout(DDSKey user_key, const GamePlayerLoadout & loadout)
+{
+  if(m_GameInfo.m_State == LobbyGameState::kInitializing)
+  {
+    Cleanup();
+    return;
+  }
+
+  for(auto user : m_GameInfo.m_Users)
+  {
+    if(user.second.m_UserKey == user_key)
+    {
+      user.second.m_Loadout = loadout;
+      break;
+    }
   }
 }
 

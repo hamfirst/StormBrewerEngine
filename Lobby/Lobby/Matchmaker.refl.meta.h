@@ -4,7 +4,7 @@
 
 #include "Matchmaker.refl.h"
 #include "Game/GameNetworkData.refl.meta.h"
-#include "SharedTypes.refl.meta.h"
+#include "LobbyShared/SharedTypes.refl.meta.h"
 
 
 template <>

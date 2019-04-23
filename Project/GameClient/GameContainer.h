@@ -62,6 +62,9 @@ public:
   void SetClientSystems(NullOptPtr<GameClientSystems> client_systems);
 
   RenderState & GetRenderState();
+
+  void StartLobbyClient(const LobbyClientConnectionSettings & settings);
+  void StopLobbyClient();
   
   void StartNetworkClient(const GameNetworkClientInitSettings & settings);
   void StopNetworkClient();
@@ -105,6 +108,7 @@ private:
   std::unique_ptr<GameMode> m_NextMode;
   std::unique_ptr<GameNetworkClient> m_Client;
   std::unique_ptr<GameClientLatencyChecker> m_LatencyChecker;
+  std::unique_ptr<LobbyClientConnection> m_LobbyConnection;
   std::unique_ptr<GameContainerInitSettings> m_InitSettings;
 
   NullOptPtr<GameClientInstanceContainer> m_ClientInstanceData;

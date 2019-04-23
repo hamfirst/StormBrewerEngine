@@ -1,19 +1,20 @@
 #pragma once
 
-#include <StormRefl/StormRefl.h>
-#include <StormData/StormDataTypes.h>
+#include "StormRefl/StormRefl.h"
+#include "StormData/StormDataTypes.h"
 
-#include <HurricaneDDS/DDSDataObject.h>
-#include <HurricaneDDS/DDSKey.h>
+#include "HurricaneDDS/DDSDataObject.h"
+#include "HurricaneDDS/DDSKey.h"
 
 #include "Foundation/Allocator/IdAllocator.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "LobbyConfig.h"
 #include "GooglePlatform.refl.h"
 #include "GameServerMessages.refl.h"
 
-#define ENABLE_GOOGLE_CLOUD
+//#define ENABLE_GOOGLE_CLOUD
 
 #ifdef ENABLE_GOOGLE_CLOUD
 #include <mbedtls/pk.h>
@@ -105,16 +106,19 @@ private:
 private:
   DDSObjectInterface & m_Interface;
 
+#ifdef ENABLE_GOOGLE_CLOUDE
   GoogleCredentialsInfo m_CredentialsInfo;
-
   mbedtls_pk_context m_PKContext;
+
   std::string m_AuthorizationHeader;
   GooglePlatformSettings m_Settings;
   std::string m_ProjectNameLowercase;
 
   std::string m_CreateInstanceTemplate;
+#endif
 
   IdAllocator m_ServerIdAllocator;
+
   std::map<int, ProcessIdentifier> m_DebugServers;
 
   std::vector<GameRequest> m_GameRequests;

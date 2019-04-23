@@ -1,17 +1,13 @@
 #pragma once
 
-#include <HurricaneDDS/DDSDataObject.h>
+#include "HurricaneDDS/DDSDataObject.h"
+
+#include "LobbyShared/SharedTypes.refl.h"
 
 #include "LobbyConfig.h"
 
-#ifdef ENABLE_WELCOME_INFO
 
-struct WelcomeInfoTab
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(WelcomeInfoTab);
-  RString m_Name;
-  RString m_Info;
-};
+#ifdef ENABLE_WELCOME_INFO
 
 struct WelcomeInfo
 {

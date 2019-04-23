@@ -27,6 +27,7 @@ set(GENERIC_SRC_Foundation
             Common.cpp
             Document/Document.cpp
             Document/DocumentCompiler.cpp
+            Document/DocumentDefaultLoader.cpp
             FileSystem/Directory.cpp
             FileSystem/File.cpp
             FileSystem/FileMapping.cpp
@@ -46,7 +47,7 @@ set(GENERIC_SRC_Foundation
             Profiling/Profiling.cpp
             PropertyMeta/PropertyFieldDatabase.cpp
             Random/Random.cpp
-  Script/ScriptClass.cpp
+            Script/ScriptClass.cpp
             Script/ScriptClassInstance.cpp
             Script/ScriptClassRef.cpp
             Script/ScriptFuncPtr.cpp
@@ -63,7 +64,6 @@ set(GENERIC_SRC_Foundation
             Time/StopWatch.cpp
             Time/Time.cpp
             TypeDatabase/TypeDatabase.cpp
-            Document/DocumentDefaultLoader.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -93,6 +93,7 @@ set(GENERIC_HEADER_Foundation
             Delegate/DelegateList.h
             Document/Document.h
             Document/DocumentCompiler.h
+            Document/DocumentDefaultLoader.h
             Document/DocumentLoader.h
             Document/DocumentTypes.refl.h
             Document/DocumentTypes.refl.meta.h
@@ -133,7 +134,7 @@ set(GENERIC_HEADER_Foundation
             PropertyMeta/PropertyFieldMetaData.h
             PropertyMeta/PropertyFieldMetaFuncs.h
             Random/Random.h
-  Script/ScriptClass.h
+            Script/ScriptClass.h
             Script/ScriptClassDelegate.h
             Script/ScriptClassInstance.h
             Script/ScriptClassRef.h
@@ -161,7 +162,6 @@ set(GENERIC_HEADER_Foundation
             Update/UpdateRegistrationTemplates.h
             Variant/Variant.h
             Waveform/Waveform.h
-            Document/DocumentDefaultLoader.h
             #HEADER_PLACEHOLDER
             )
 

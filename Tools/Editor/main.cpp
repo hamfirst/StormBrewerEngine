@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
 #if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticInit();
 #endif
-  NetworkInit();
   //QApplication::setAttribute(Qt::AA_UseOpenGLES);
   QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
@@ -71,8 +70,5 @@ int main(int argc, char *argv[])
 
   auto ret = a.exec();
 
-#if NET_BACKEND == NET_BACKEND_WEBRTC
-  StormWebrtcStaticCleanup();
-#endif
   return 0;
 }

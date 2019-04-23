@@ -21,13 +21,11 @@
 #include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
 #include "Rewards.refl.meta.h"
+#include "Matchmaker.refl.meta.h"
 #include "LobbyLevelList.refl.h"
 
 #include "CommandParse.h"
 #include "LobbyConfig.h"
-
-STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserPersistent);
-STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(UserLocalData);
 
 UserNameLookup::UserNameLookup(const char * user_name) : m_UserNameLower(user_name) { std::transform(m_UserNameLower.begin(), m_UserNameLower.end(), m_UserNameLower.begin(), tolower); }
 UserNameLookup::UserNameLookup(std::string & user_name) : UserNameLookup(user_name.c_str()) {}
@@ -169,13 +167,13 @@ void User::RemoveEndpoint(DDSKey key)
 #endif
     }
 
-    if (m_InGame && key == m_GameEndpoint)
-    {
-      LeaveGame();
-    }
-
     if(m_Endpoints.size() == 0 && m_Data.m_IsGuest)
     {
+      if (m_InGame && key == m_GameEndpoint)
+      {
+        LeaveGame();
+      }
+
       m_Interface.DestroySelf();
     }
   }
@@ -400,7 +398,7 @@ void User::SendChatToChannel(DDSKey src_endpoint_id, DDSKey channel_key, std::st
   }
 
   m_Interface.Call(&Channel::SendChatToChannel, channel_key,
-      m_Interface.GetLocalKey(), src_endpoint_id, message, m_LocalInfo.m_Title);
+      m_Interface.GetLocalKey(), src_endpoint_id, message, m_LocalInfo.m_Icon, m_LocalInfo.m_Title);
 }
 
 void User::HandleChannelJoinResponse(std::pair<DDSKey, DDSKey> join_info, ChannelJoinResult result)
@@ -477,7 +475,7 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
-void User::CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password, const UserZoneInfo & zone_info)
+void User::CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creation_data, std::string password, const UserZoneInfo & zone_info)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
   {
@@ -565,6 +563,24 @@ void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
 void User::JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info)
 {
   m_Interface.CallSharedWithResponder(&GameList::LookupJoinCode, &User::HandleJoinCodeLookup, this, join_code, join_info);
+}
+
+void User::StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
+{
+  PlaylistBucketUserList user_list;
+  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
+  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
+
+  m_Interface.CallShared(&Matchmaker::AddCompetitiveUser, user_list, zone_info, playlist_mask);
+}
+
+void User::StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
+{
+  PlaylistBucketUserList user_list;
+  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
+  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
+
+  m_Interface.CallShared(&Matchmaker::AddCasualUser, user_list, zone_info, playlist_mask);
 }
 
 void User::SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id)
@@ -661,6 +677,48 @@ void User::StartGame()
   m_Interface.Call(&Game::RequestStartGame, m_GameId, m_Interface.GetLocalKey());
 }
 
+void User::ChangeReady(bool ready)
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
+  m_Interface.Call(&Game::ChangeReady, m_GameId, m_Interface.GetLocalKey(), ready);
+#endif
+}
+
+void User::ChangeLoadout(const GamePlayerLoadout & loadout)
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+  m_Interface.Call(&Game::ChangeLoadout, m_GameId, m_Interface.GetLocalKey(), loadout);
+}
+
+void User::ChangeGameSettings(const GameInitSettings & settings)
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+  m_Interface.Call(&Game::ChangeSettings, m_GameId, m_Interface.GetLocalKey(), settings);
+}
+
+void User::KickUserFromGame(DDSKey user_id)
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+  m_Interface.Call(&Game::RequestKickUser, m_GameId, m_Interface.GetLocalKey(), user_id);
+}
+
 void User::LeaveGame()
 {
   if (m_InGame == false)
@@ -715,9 +773,10 @@ void User::BanFromCompetitive()
   }
 }
 
+
+
 void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
 {
-
   if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
     return;
@@ -747,11 +806,25 @@ void User::NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string s
   msg.c = "launch_game";
   msg.server_ip = server_ip;
   msg.server_port = server_port;
+  msg.user_id = m_Interface.GetLocalKey();
+  msg.game_id = game_id;
   msg.token = token;
   SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(msg));
 }
 
-void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int title, std::string msg)
+void User::NotifyResetGame(DDSKey game_id, DDSKey game_random_id)
+{
+  if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
+  {
+    return;
+  }
+
+  UserMessageBase msg;
+  msg.c = "reset_game";
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(msg));
+}
+
+void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int icon, int title, std::string msg)
 {
   if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
@@ -761,6 +834,7 @@ void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string nam
   UserChatMessageGame chat;
   chat.c = "game_chat";
   chat.user = name;
+  chat.icon = icon;
   chat.title = title;
   chat.msg = msg;
   SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(chat));

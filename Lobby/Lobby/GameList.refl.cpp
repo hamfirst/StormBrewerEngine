@@ -10,9 +10,7 @@
 #include "HurricaneDDS/DDSRandom.h"
 #include "HurricaneDDS/DDSResponderCall.h"
 
-#ifdef ENABLE_GAME_LIST
 
-STORM_DATA_DEFAULT_CONSTRUCTION_IMPL(GameListGame);
 
 GameList::GameList(DDSObjectInterface & iface) :
   m_Interface(iface)
@@ -24,11 +22,15 @@ void GameList::AddGame(DDSKey game_key, int cur_players, int max_players,
                        std::string map, uint32_t join_code, bool password, bool started)
 {
   GameListGame game_data;
+
+#ifdef ENABLE_GAME_LIST
   game_data.m_MaxPlayers = max_players;
   game_data.m_CurPlayers = cur_players;
   game_data.m_PasswordProtected = password;
   game_data.m_Started = started;
   game_data.m_Map = map;
+#endif
+
   game_data.m_JoinCode = join_code;
   m_GameList.InsertAt(game_key, std::move(game_data));
   m_JoinCodeLookup.insert(std::make_pair(join_code, game_key));
@@ -36,6 +38,7 @@ void GameList::AddGame(DDSKey game_key, int cur_players, int max_players,
 
 void GameList::UpdateGame(DDSKey game_key, int cur_players, int max_players, std::string map, bool started)
 {
+#ifdef ENABLE_GAME_LIST
   auto cur_data = m_GameList.TryGet(game_key);
   if(cur_data)
   {
@@ -46,6 +49,7 @@ void GameList::UpdateGame(DDSKey game_key, int cur_players, int max_players, std
     new_data.m_Map = map;
     *cur_data = std::move(new_data);
   }
+#endif
 }
 
 void GameList::AssignJoinCode(DDSKey game_key)
@@ -110,4 +114,3 @@ void GameList::RemoveGame(DDSKey game_key)
   }
 }
 
-#endif

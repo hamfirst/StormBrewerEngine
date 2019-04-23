@@ -7,60 +7,14 @@
 
 #include "Game/GameNetworkData.refl.h"
 
-#include "Lobby/SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "Lobby/GameData.refl.h"
 #include "Lobby/LobbyConfig.h"
 
 #include "ProjectSettings/ProjectZones.h"
 
-struct UserPersistent
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(UserPersistent);
 
-#ifdef ENABLE_CHANNELS
-  RBool m_EnterExitMessages;
-  RBool m_TwelveHourClock;
-  RInt m_PlayerListSort;
-#endif
-};
-
-struct UserLocalData
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(UserLocalData);
-
-  RString m_Name;
-  RKey m_UserKey;
-
-  RString m_Platform;
-  RKey m_PlatformId;
-
-  RInt m_AdminLevel;
-
-  UserPersistent m_Persistent;
-
-  RInt m_Icon;
-  RMergeList<RInt> m_IconList;
-
-  RInt m_Title;
-  RMergeList<RInt> m_TitleList;
-
-  RInt m_Celebration;
-  RMergeList<RInt> m_CelebrationList;
-
-#ifdef ENABLE_CHANNELS
-  RMergeList<RString> m_AutoJoinChannels;
-  RMergeList<DDSSharedLocalCopyPtr<ChannelInfo>> m_Channels;
-#endif
-
-#ifdef ENABLE_SQUADS
-  RKey m_PrimarySquad;
-  RKey m_OwnerSquad;
-
-  RMap<DDSKey, SquadInfo> m_Squads;
-  RMergeList<UserApplication> m_Applications;
-  RMergeList<UserApplication> m_Requests;
-#endif
-};
 
 struct UserDatabaseObject
 {
@@ -189,9 +143,11 @@ struct User
 #endif
 
   // Game Functions
-  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, GameInitSettings creation_data, std::string password, const UserZoneInfo & zone_info);
+  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creation_data, std::string password, const UserZoneInfo & zone_info);
   void STORM_REFL_FUNC JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info);
   void STORM_REFL_FUNC JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info);
+  void STORM_REFL_FUNC StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info);
+  void STORM_REFL_FUNC StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info);
   void STORM_REFL_FUNC SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id);
   void STORM_REFL_FUNC DestroyGame(DDSKey endpoint_id, DDSKey game_id);
   void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success);
@@ -199,12 +155,17 @@ struct User
   void STORM_REFL_FUNC SendGameChat(DDSKey endpoint_id, std::string msg);
   void STORM_REFL_FUNC SwitchTeams(DDSKey target_user, int team, DDSKey endpoint_id);
   void STORM_REFL_FUNC StartGame();
+  void STORM_REFL_FUNC ChangeReady(bool ready);
+  void STORM_REFL_FUNC ChangeLoadout(const GamePlayerLoadout & loadout);
+  void STORM_REFL_FUNC ChangeGameSettings(const GameInitSettings & settings);
+  void STORM_REFL_FUNC KickUserFromGame(DDSKey user_id);
   void STORM_REFL_FUNC LeaveGame();
   void STORM_REFL_FUNC ReconnectToGame(DDSKey endpoint_id);
   void STORM_REFL_FUNC BanFromCompetitive();
   void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);
   void STORM_REFL_FUNC NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string server_ip, int server_port, DDSKey token);
-  void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int title, std::string msg);
+  void STORM_REFL_FUNC NotifyResetGame(DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int icon, int title, std::string msg);
   void STORM_REFL_FUNC HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data);
 
   // Squad Functions

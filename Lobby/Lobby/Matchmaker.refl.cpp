@@ -33,10 +33,49 @@ void Matchmaker::Update()
     for (int playlist = 0; playlist < (int)m_CasualPlaylist.m_Elements.size(); ++playlist)
     {
       auto & bucket = m_CasualBuckets[zone].m_Buckets[playlist];
-
-      for(auto & user : bucket.m_Users)
+      for(auto & game : m_CasualRefillGames[zone].m_Games)
       {
+        bool found_match;
 
+        do
+        {
+          found_match = false;
+          for (auto itr = bucket.m_Users.begin(), end = bucket.m_Users.end(); itr != end; ++itr)
+          {
+            auto & user = *itr;
+
+            int players_in_bucket = (int)user.m_ExtraUsers.size() + 1;
+            if (game.m_Playlist == playlist)
+            {
+              for (int team = 0; team < kMaxTeams; ++team)
+              {
+                auto players_on_team = game.m_PlayersAssigned[team] - game.m_PlayersLeft[team];
+                auto spots_available = game.m_PlayersNeeded[team] - players_on_team;
+
+                if (spots_available >= players_in_bucket)
+                {
+                  SendGameInfo(user.m_PrimaryUser.m_UserKey, user.m_PrimaryUser.m_EndpointId, game.m_GameId, LobbyGameType::kCasual);
+                  for(auto & extra_user : user.m_ExtraUsers)
+                  {
+                    SendGameInfo(extra_user.m_UserKey, extra_user.m_EndpointId, game.m_GameId, LobbyGameType::kCasual);
+                  }
+
+                  game.m_PlayersAssigned[team] += players_in_bucket;
+                  bucket.m_Users.erase(itr);
+
+                  found_match = true;
+                  break;
+                }
+              }
+
+              if(found_match)
+              {
+                break;
+              }
+            }
+          }
+        }
+        while(found_match);
       }
     }
   }
@@ -49,13 +88,13 @@ void Matchmaker::Update()
 
     for(int zone = 0; zone < kNumProjectZones; ++zone)
     {
-      if(FindMatch(zone, m_CasualPlaylist, m_CasualBuckets, m_CasualRefillGames.data()))
+      if(FindMatch(zone, m_CasualPlaylist, m_CasualBuckets, m_CasualRefillGames.data(), LobbyGameType::kCasual))
       {
         found_match = true;
         break;
       }
 
-      if(FindMatch(zone, m_CompetitivePlaylist, m_CompetitiveBuckets, nullptr))
+      if(FindMatch(zone, m_CompetitivePlaylist, m_CompetitiveBuckets, nullptr, LobbyGameType::kCompetitive))
       {
         found_match = true;
         break;
@@ -204,7 +243,8 @@ void Matchmaker::RemoveUser(DDSKey user, PlaylistDatabaseObj & playlist_data, st
   }
 }
 
-bool Matchmaker::FindMatch(int zone, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list)
+bool Matchmaker::FindMatch(int zone, PlaylistDatabaseObj & playlist_data,
+        std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type)
 {
   for (int playlist = 0; playlist < (int)playlist_data.m_Elements.size(); ++playlist)
   {
@@ -234,12 +274,7 @@ bool Matchmaker::FindMatch(int zone, PlaylistDatabaseObj & playlist_data, std::v
       {
         for(auto & user : game.m_Users[team])
         {
-          UserGameJoinInfo join_info;
-          join_info.m_EndpointId = user.m_EndpointId;
-          join_info.m_Observer = false;
-          join_info.m_IntendedType = LobbyGameType::kCompetitive;
-
-          m_Interface.Call(&User::JoinGame, user.m_UserId, game_id, join_info);
+          SendGameInfo(user.m_UserId, user.m_EndpointId, game_id, type);
 
           RemoveCompetitiveUser(user.m_UserId);
           RemoveCasualUser(user.m_UserId);
@@ -267,6 +302,16 @@ bool Matchmaker::FindMatch(int zone, PlaylistDatabaseObj & playlist_data, std::v
   }
 
   return false;
+}
+
+void Matchmaker::SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id, LobbyGameType game_type)
+{
+  UserGameJoinInfo join_info;
+  join_info.m_EndpointId = endpoint_id;
+  join_info.m_Observer = false;
+  join_info.m_IntendedType = game_type;
+
+  m_Interface.Call(&User::JoinGame, user_id, game_id, join_info);
 }
 
 bool Matchmaker::BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, int * team_sizes)

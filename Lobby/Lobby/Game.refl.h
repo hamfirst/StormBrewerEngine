@@ -1,11 +1,12 @@
 #pragma once
 
-#include <HurricaneDDS/DDSDataObject.h>
-#include <HurricaneDDS/DDSConnectionId.h>
+#include "HurricaneDDS/DDSDataObject.h"
+#include "HurricaneDDS/DDSConnectionId.h"
 
 #include "ProjectSettings/ProjectZones.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "GameServerMessages.refl.h"
 #include "LobbyConfig.h"
 
@@ -91,10 +92,12 @@ struct Game
   void STORM_REFL_FUNC RequestReconnect(DDSKey user_key, DDSKey endpoint_id);
   void STORM_REFL_FUNC RequestStartGame(DDSKey user_key);
   void STORM_REFL_FUNC RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int team);
+  void STORM_REFL_FUNC RequestKickUser(DDSKey requesting_user, DDSKey target_user);
 
   void RandomizeTeams();
   void STORM_REFL_FUNC SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message);
-  void STORM_REFL_FUNC UpdateSettings(DDSKey user_key, GameInitSettings settings);
+  void STORM_REFL_FUNC ChangeSettings(DDSKey user_key, const GameInitSettings & settings);
+  void STORM_REFL_FUNC ChangeLoadout(DDSKey user_key, const GamePlayerLoadout & loadout);
   void UpdateGameList();
 
   void STORM_REFL_FUNC RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSKey server_key);

@@ -119,6 +119,16 @@ RenderState & GameContainer::GetRenderState()
   return m_RenderState;
 }
 
+void GameContainer::StartLobbyClient(const LobbyClientConnectionSettings & settings)
+{
+  m_LobbyConnection = std::make_unique<LobbyClientConnection>(settings);
+}
+
+void GameContainer::StopLobbyClient()
+{
+  m_LobbyConnection.reset();
+}
+
 void GameContainer::StartNetworkClient(const GameNetworkClientInitSettings & settings)
 {
   m_Client = std::make_unique<GameNetworkClient>(*this, settings);

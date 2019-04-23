@@ -15,18 +15,20 @@
 
 #include "Game/GameSimulationStats.refl.meta.h"
 
+#include "LobbyShared/SharedTypes.refl.meta.h"
+
 #include "Lobby/UserConnectionMessages.refl.meta.h"
-#include "Lobby/SharedTypes.refl.meta.h"
 
 #include "LobbyClientConnection/LobbyClientConnection.h"
 
-LobbyClientConnection::LobbyClientConnection(LobbyLoginMode login_mode, std::string token, std::string load_balancer_host) :
+LobbyClientConnection::LobbyClientConnection(const LobbyClientConnectionSettings & settings) :
         m_State(LobbyClientConnectionState::kDisconnected),
         m_ClientState(LobbyClientState::kDisconnected),
+        m_RelocationState(LobbyRelocationState::kNotRelocating),
         m_LastPingTime(time(nullptr)),
-        m_LoginMode(login_mode),
-        m_LoginToken(std::move(token)),
-        m_LoadBalancerHost(std::move(load_balancer_host)),
+        m_LoginMode(settings.m_LoginMode),
+        m_LoginToken(settings.m_Token),
+        m_LoadBalancerHost(settings.m_LoadBalancerHostName),
         m_RelocationToken(0)
 {
 
@@ -43,6 +45,8 @@ void LobbyClientConnection::Connect()
   m_ClientState = LobbyClientState::kConnecting;
   m_WebSocket.StartConnect(m_LoadBalancerHost.c_str(), LOBBY_LB_PORT, "/", "localhost", kProjectName);
   m_RelocationToken = 0;
+
+  m_ConnectionError.clear();
 }
 
 void LobbyClientConnection::Update()
@@ -51,6 +55,61 @@ void LobbyClientConnection::Update()
   {
     Connect();
     return;
+  }
+
+  if(m_RelocationState == LobbyRelocationState::kConnecting)
+  {
+    if(m_WebSocket.IsConnected())
+    {
+      UserMessageIdentifyResponse resp;
+      resp.token = std::to_string(m_RelocationToken);
+
+      SendMessage(resp, "lr");
+
+      m_RelocationState = LobbyRelocationState::kAuthenticating;
+      m_RelocationToken = 0;
+    }
+    else if(m_WebSocket.IsConnecting() == false)
+    {
+      SetDisconnected("Lost connection to server");
+      return;
+    }
+    else
+    {
+      return;
+    }
+  }
+  else if(m_RelocationState == LobbyRelocationState::kAuthenticating)
+  {
+    auto packet = m_WebSocket.PollPacket();
+
+    if (packet == false)
+    {
+      if (m_WebSocket.IsConnected() == false)
+      {
+        SetDisconnected("Lost connection to server");
+      }
+      return;
+    }
+
+    auto str = BufferToString(packet->m_Buffer);
+
+    UserMessageBase base_msg;
+    StormReflParseJson(base_msg, str);
+
+    if(base_msg.c != "relocated")
+    {
+      SetDisconnected("Relocation failure");
+      return;
+    }
+
+    for(auto & msg : m_PendingMessages)
+    {
+      m_WebSocket.SendString(msg);
+    }
+
+    m_PendingMessages.clear();
+    m_RelocationState = LobbyRelocationState::kNotRelocating;
   }
 
   if(m_State == LobbyClientConnectionState::kLoadBalancerConnecting)
@@ -67,7 +126,7 @@ void LobbyClientConnection::Update()
       {
         if (m_WebSocket.IsConnected() == false)
         {
-          m_State = LobbyClientConnectionState::kDisconnected;
+          SetDisconnected("Lost connection to server");
         }
         return;
       }
@@ -90,7 +149,7 @@ void LobbyClientConnection::Update()
     }
     else if(m_WebSocket.IsConnecting() == false)
     {
-      m_State = LobbyClientConnectionState::kDisconnected;
+      SetDisconnected("Lost connection to server");
       return;
     }
     else
@@ -119,7 +178,7 @@ void LobbyClientConnection::Update()
     {
       if (m_WebSocket.IsConnected() == false)
       {
-        m_State = LobbyClientConnectionState::kDisconnected;
+        SetDisconnected("Lost connection to server");
       }
       return;
     }
@@ -128,6 +187,20 @@ void LobbyClientConnection::Update()
 
     UserMessageBase base_msg;
     StormReflParseJson(base_msg, str);
+
+    if(base_msg.c == "error")
+    {
+      UserMessageConnectionError err;
+      if(StormReflParseJson(err, str) == false)
+      {
+        ParseError();
+      }
+      else
+      {
+        SetDisconnected(err.msg.c_str());
+      }
+      return;
+    }
 
     switch (m_State)
     {
@@ -178,24 +251,16 @@ void LobbyClientConnection::Update()
           }
 
           UserMessageIdentifyResponse resp;
-          if(m_RelocationToken != 0)
+          switch(m_LoginMode)
           {
-            resp.c = "lr";
-            resp.token = std::to_string(m_RelocationToken);
-          }
-          else
-          {
-            switch(m_LoginMode)
-            {
 #ifdef ENABLE_AUTH_GUEST
-            case LobbyLoginMode::kGuest:
-              resp.c = "lguest";
-              break;
+          case LobbyLoginMode::kGuest:
+            resp.c = "lguest";
+            break;
 #endif
-            default:
-              assert(false);
-              break;
-            }
+          default:
+            assert(false);
+            break;
           }
 
           m_State = LobbyClientConnectionState::kIdentifyingResponse;
@@ -215,13 +280,236 @@ void LobbyClientConnection::Update()
               m_ClientState = LobbyClientState::kConnected;
             }
           }
-          else if(base_msg.c == "")
+          else if(base_msg.c == "new_user")
           {
-
+            m_ClientState = LobbyClientState::kNewUser;
+          }
+          else if(base_msg.c == "repick_new_user")
+          {
+            m_ClientState = LobbyClientState::kNewUserRepick;
+          }
+          else
+          {
+            ParseError();
           }
         }
         break;
       case LobbyClientConnectionState::kConnected:
+        {
+          if(base_msg.c == "local")
+          {
+            UserLocalInfoUpdate msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            if(m_UserLocalData.IsValid() == false)
+            {
+              m_UserLocalData.Emplace();
+            }
+
+            StormDataApplyChangePacket(m_UserLocalData.Value(), msg.data.c_str());
+            m_LocalDataUpdateCallback();
+            return;
+          }
+          else if(base_msg.c == "server")
+          {
+            UserLocalInfoUpdate msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            if(m_GameList.IsValid() == false)
+            {
+              m_GameList.Emplace();
+            }
+
+            StormDataApplyChangePacket(m_GameList.Value(), msg.data.c_str());
+            m_GameListUpdateCallback();
+            return;
+          }
+          else if(base_msg.c == "winfo")
+          {
+            UserLocalInfoUpdate msg;
+            if (StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            if (m_WelcomeInfo.IsValid() == false)
+            {
+              m_WelcomeInfo.Emplace();
+            }
+
+            StormDataApplyChangePacket(m_WelcomeInfo.Value(), msg.data.c_str());
+            m_WelcomeInfoUpdateCallback();
+            return;
+          }
+          else if(base_msg.c == "c")
+          {
+            UserChatMessageOutgoing msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_ChatCallback(msg.channel_id, msg.user, msg.msg, msg.i, msg.b, msg.t);
+            return;
+          }
+          else if(base_msg.c == "rterr")
+          {
+            UserMessageRuntimeError msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_RuntimeErrorCallback(msg.msg);
+            return;
+          }
+          else if(base_msg.c == "smsg")
+          {
+            UserMessageRuntimeError msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_ServerMessageCallback(msg.msg);
+            return;
+          }
+          else if(base_msg.c == "stxt")
+          {
+            UserMessageRuntimeError msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_ServerTextCallback(msg.msg);
+            return;
+          }
+          else if(base_msg.c == "join_game")
+          {
+            UserGameInfoUpdate msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_GameInfo.Emplace();
+            StormDataApplyChangePacket(m_GameInfo.Value(), msg.data.c_str());
+          }
+          else if(base_msg.c == "game")
+          {
+            UserGameInfoUpdate msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            if(m_GameInfo.IsValid())
+            {
+              StormDataApplyChangePacket(m_GameInfo.Value(), msg.data.c_str());
+            }
+          }
+          else if(base_msg.c == "game_preview")
+          {
+            UserGamePreviewUpdate msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            if(msg.request_id != m_GameListPreviewRequestId)
+            {
+              return;
+            }
+
+            if(m_GameListPreview.IsValid() == false)
+            {
+              m_GameListPreview.Emplace();
+            }
+
+            StormDataApplyChangePacket(m_GameInfo.Value(), msg.data.c_str());
+            m_GamePreviewUpdateCallback();
+          }
+          else if(base_msg.c == "game_preview_cancel")
+          {
+            m_GameListPreview.Clear();
+            m_GamePreviewCancelCallback();
+          }
+          else if(base_msg.c == "launch_game")
+          {
+            UserLaunchGameMessage msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_LaunchGameCallback(msg.server_ip, msg.server_port, msg.user_id, msg.game_id, msg.token);
+          }
+          else if(base_msg.c == "reset_game")
+          {
+            m_ResetGameCallback();
+          }
+          else if(base_msg.c == "game_chat")
+          {
+            UserChatMessageGame msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_GameChatCallback(msg.user, msg.msg, msg.icon, msg.title);
+          }
+          else if(base_msg.c == "user_stats")
+          {
+            UserStatsData msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_StatsCallback(msg.name, msg.stats, msg.last_game_played);
+          }
+          else if(base_msg.c == "edit_lobby_info")
+          {
+
+          }
+          else if(base_msg.c == "edit_channel_info")
+          {
+
+          }
+#ifdef ENABLE_REWARDS
+          else if(base_msg.c == "xp")
+          {
+            UserGotXP msg;
+            if(StormReflParseJson(msg, str) == false)
+            {
+              ParseError();
+              return;
+            }
+
+            m_XPCallback(msg.xp, msg.level, msg.last, msg.xp_info);
+          }
+#endif
+        }
         break;
     }
   }
@@ -231,6 +519,11 @@ void LobbyClientConnection::Update()
 LobbyClientState LobbyClientConnection::GetState() const
 {
   return m_ClientState;
+}
+
+const std::string & LobbyClientConnection::GetConnectionError() const
+{
+  return m_ConnectionError;
 }
 
 void LobbyClientConnection::SetLatencySamples(const std::vector<int> & samples)
@@ -250,6 +543,92 @@ void LobbyClientConnection::SendNewUserName(const std::string_view & name)
   msg.uname = name;
 
   SendMessage(msg, "user_name");
+}
+
+void LobbyClientConnection::SendCreatePrivateGame(const GameInitSettings & settings, const std::string_view & password)
+{
+  UserGameCreate msg;
+
+  msg.create_data = settings;
+  msg.password = password;
+
+  for(int zone = 0; zone < kNumProjectZones; ++zone)
+  {
+    msg.zone_info.m_Latencies[zone] = m_LatencySamples[zone];
+  }
+
+  SendMessage(msg, "create_game");
+}
+
+void LobbyClientConnection:: SendJoinPrivateGame(uint32_t join_code, const std::string_view & password, bool observer)
+{
+  UserJoinGame msg;
+  msg.password = password;
+  msg.join_code = join_code;
+  msg.observer = observer;
+
+  for(int zone = 0; zone < kNumProjectZones; ++zone)
+  {
+    msg.zone_info.m_Latencies[zone] = m_LatencySamples[zone];
+  }
+
+  SendMessage(msg, "join_game");
+}
+
+void LobbyClientConnection::SendJoinMatchmaker(uint32_t playlist_mask, bool ranked)
+{
+  UserMatchmakeRequest msg;
+
+  msg.playlist_mask = playlist_mask;
+
+  for(int zone = 0; zone < kNumProjectZones; ++zone)
+  {
+    msg.zone_info.m_Latencies[zone] = m_LatencySamples[zone];
+  }
+
+  SendMessage(msg, ranked ? "matchmake_competitive" : "matchmake_casual");
+}
+
+void LobbyClientConnection::SendGameReady(bool ready)
+{
+  UserReadyGame msg;
+  msg.ready = ready;
+  SendMessage(msg, "change_ready");
+}
+
+void LobbyClientConnection::SendGameStart()
+{
+  UserMessageBase msg;
+  SendMessage(msg, "start_game");
+}
+
+void LobbyClientConnection::SendGameChangeLoadout(const GamePlayerLoadout & loadout)
+{
+  UserSwitchLoadout msg;
+  msg.loadout = loadout;
+  SendMessage(msg, "change_loadout");
+}
+
+void LobbyClientConnection::SendGameChangeSettings(const GameInitSettings & settings)
+{
+  UserSwitchSettings msg;
+  msg.settings = settings;
+  SendMessage(msg, "change_loadout");
+}
+
+void LobbyClientConnection::SendGameTeamSwitch(DDSKey user_id, int team)
+{
+  UserSwitchTeam msg;
+  msg.team = team;
+  msg.target_user = user_id;
+  SendMessage(msg, "change_team");
+}
+
+void LobbyClientConnection::SendGameKickUser(DDSKey user_id)
+{
+  UserKickUserFromGame msg;
+  msg.user = user_id;
+  SendMessage(msg, "kick_game_user");
 }
 
 void LobbyClientConnection::SendGameChat(const std::string_view & msg)
@@ -287,6 +666,24 @@ void LobbyClientConnection::Relocate(UserMessageRelocate & msg)
 
 void LobbyClientConnection::ParseError()
 {
+  SetDisconnected("Parse Error");
+}
+
+void LobbyClientConnection::SetDisconnected(czstr error_message)
+{
   m_WebSocket.Close();
+
   m_State = LobbyClientConnectionState::kDisconnected;
+  m_ClientState = LobbyClientState::kDisconnected;
+  m_RelocationState = LobbyRelocationState::kNotRelocating;
+
+  m_UserLocalData.Clear();
+  m_GameInfo.Clear();
+  m_WelcomeInfo.Clear();
+  m_GameList.Clear();
+  m_GameListPreview.Clear();
+
+  m_ConnectionError = error_message;
+
+
 }

@@ -34,6 +34,7 @@
 
 #ifndef _WEB
 
+bool g_NetworkInitialized = false;
 std::unique_ptr<StormSockets::StormSocketBackend> g_NetworkBackend;
 std::unique_ptr<StormSockets::StormSocketClientFrontendWebsocket> g_NetworkFrontendWebsocket;
 std::unique_ptr<StormSockets::StormSocketClientFrontendHttp> g_NetworkFrontendHttp;
@@ -48,6 +49,12 @@ NetworkHttpData g_HttpData[kBackendMaxConnections];
 
 void NetworkInit()
 {
+  if(g_NetworkInitialized)
+  {
+    return;
+  }
+
+  g_NetworkInitialized = true;
 #ifdef _MSC_VER
   WSADATA wsaData = {};
   WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -78,6 +85,11 @@ void NetworkInit()
 
 void NetworkUpdate()
 {
+  if(g_NetworkInitialized == false)
+  {
+    return;
+  }
+
 #ifndef _WEB
 
 #ifdef _INCLUDEOS
@@ -206,6 +218,11 @@ void NetworkUpdate()
 
 void NetworkShutdown()
 {
+  if(g_NetworkInitialized == false)
+  {
+    return;
+  }
+
 #ifndef _WEB
   g_NetworkFrontendWebsocket.reset();
   g_NetworkFrontendHttp.reset();
@@ -215,6 +232,8 @@ void NetworkShutdown()
 #ifdef _MSC_VER
   WSACleanup();
 #endif
+
+  g_NetworkInitialized = false;
 }
 
 

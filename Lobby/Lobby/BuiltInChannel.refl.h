@@ -1,8 +1,9 @@
 #pragma once
 
-#include <HurricaneDDS/DDSDataObject.h>
+#include "HurricaneDDS/DDSDataObject.h"
 
-#include "SharedTypes.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "LobbyConfig.h"
 
 #ifdef ENABLE_CHANNELS

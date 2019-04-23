@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "ServerManager.refl.h"
-#include "SharedTypes.refl.meta.h"
+#include "LobbyShared/SharedTypes.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
 #include "GameServerMessages.refl.meta.h"
 
@@ -54,176 +54,12 @@ template <>
 struct StormReflFuncInfo<ServerManager>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 10;
+  static constexpr int funcs_n = 6;
   template <int N> struct func_data_static {};
 };
 
 template <>
 struct StormReflFuncInfo<ServerManager>::func_data_static<0>
-{
-  using func_ptr_type = void (ServerManager::*)();
-  using return_type = void;
-  static constexpr int params_n = 0;
-  static constexpr auto GetName() { return "RequestNewCloudToken"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xC78A5B6D; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 0; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::RequestNewCloudToken; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<1>
-{
-  using func_ptr_type = void (ServerManager::*)(bool, std::string, std::string);
-  using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleCloudTokenResponse"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xDA7C08E0; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 1; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleCloudTokenResponse; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<0>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "success"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0x6F00DFB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "body"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xDBA80BB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "headers"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xF7034F85; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>
-{
-  using func_ptr_type = void (ServerManager::*)(int, bool, std::string, std::string);
-  using return_type = void;
-  static constexpr int params_n = 4;
-  static constexpr auto GetName() { return "HandleCreateServerResponse"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0xA2B46DF0; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 2; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleCreateServerResponse; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>::param_info<0>
-{
-  using param_type = int;
-  static constexpr auto GetName() { return "zone_index"; }
-  static constexpr auto GetType() { return "int"; }
-  static constexpr unsigned GetNameHash() { return 0x265DC8A7; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>::param_info<1>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "success"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0x6F00DFB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "body"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xDBA80BB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<2>::param_info<3>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "headers"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xF7034F85; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<3>
-{
-  using func_ptr_type = void (ServerManager::*)(bool, std::string, std::string);
-  using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "HandleStopServerResponse"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x9FCC32F5; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 3; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleStopServerResponse; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<3>::param_info<0>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "success"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0x6F00DFB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<3>::param_info<1>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "body"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xDBA80BB2; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<3>::param_info<2>
-{
-  using param_type = std::string;
-  static constexpr auto GetName() { return "headers"; }
-  static constexpr auto GetType() { return "std::string"; }
-  static constexpr unsigned GetNameHash() { return 0xF7034F85; }
-  static constexpr unsigned GetTypeNameHash() { return 0xC508D6F7; }
-};
-
-template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<4>
 {
   using func_ptr_type = void (ServerManager::*)(DDSKey, int);
   using return_type = void;
@@ -232,14 +68,14 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<4>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x7391CC0F; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 4; }
+  static constexpr auto GetFunctionIndex() { return 0; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::AssignGameServer; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<4>::param_info<0>
+struct StormReflFuncInfo<ServerManager>::func_data_static<0>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_id"; }
@@ -249,7 +85,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<4>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<4>::param_info<1>
+struct StormReflFuncInfo<ServerManager>::func_data_static<0>::param_info<1>
 {
   using param_type = int;
   static constexpr auto GetName() { return "zone"; }
@@ -259,7 +95,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<4>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<5>
+struct StormReflFuncInfo<ServerManager>::func_data_static<1>
 {
   using func_ptr_type = void (ServerManager::*)(DDSKey, const GameServerInfo &, int);
   using return_type = void;
@@ -268,14 +104,14 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<5>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x4736D5D6; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 5; }
+  static constexpr auto GetFunctionIndex() { return 1; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleServerConnected; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<0>
+struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_server_key"; }
@@ -285,7 +121,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<1>
+struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<1>
 {
   using param_type = const GameServerInfo &;
   static constexpr auto GetName() { return "server_info"; }
@@ -295,7 +131,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<1>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<2>
+struct StormReflFuncInfo<ServerManager>::func_data_static<1>::param_info<2>
 {
   using param_type = int;
   static constexpr auto GetName() { return "num_active_games"; }
@@ -305,7 +141,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<5>::param_info<2>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<6>
+struct StormReflFuncInfo<ServerManager>::func_data_static<2>
 {
   using func_ptr_type = void (ServerManager::*)(DDSKey);
   using return_type = void;
@@ -314,14 +150,14 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<6>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x34A264B4; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 6; }
+  static constexpr auto GetFunctionIndex() { return 2; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleServerDisconnected; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<6>::param_info<0>
+struct StormReflFuncInfo<ServerManager>::func_data_static<2>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_server_key"; }
@@ -331,7 +167,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<6>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<7>
+struct StormReflFuncInfo<ServerManager>::func_data_static<3>
 {
   using func_ptr_type = void (ServerManager::*)(DDSKey);
   using return_type = void;
@@ -340,14 +176,14 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<7>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x33B9E361; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 7; }
+  static constexpr auto GetFunctionIndex() { return 3; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::HandleGameEnded; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<7>::param_info<0>
+struct StormReflFuncInfo<ServerManager>::func_data_static<3>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_server_key"; }
@@ -357,7 +193,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<7>::param_info<0>
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<8>
+struct StormReflFuncInfo<ServerManager>::func_data_static<4>
 {
   using func_ptr_type = void (ServerManager::*)();
   using return_type = void;
@@ -366,14 +202,14 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<8>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xD3181DB0; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 8; }
+  static constexpr auto GetFunctionIndex() { return 4; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::CheckForTimedOutServers; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<ServerManager>::func_data_static<9>
+struct StormReflFuncInfo<ServerManager>::func_data_static<5>
 {
   using func_ptr_type = void (ServerManager::*)();
   using return_type = void;
@@ -382,7 +218,7 @@ struct StormReflFuncInfo<ServerManager>::func_data_static<9>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0xD8A24013; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 9; }
+  static constexpr auto GetFunctionIndex() { return 5; }
   static constexpr func_ptr_type GetFunctionPtr() { return &ServerManager::CheckForAssignableGames; }
   template <int i>
   struct param_info { };

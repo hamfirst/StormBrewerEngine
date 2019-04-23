@@ -1,28 +1,16 @@
 #pragma once
 
-#include <StormRefl/StormRefl.h>
-#include <StormData/StormDataTypes.h>
+#include "StormRefl/StormRefl.h"
+#include "StormData/StormDataTypes.h"
 
-#include <HurricaneDDS/DDSDataObject.h>
+#include "HurricaneDDS/DDSDataObject.h"
+
+#include "LobbyShared/SharedTypes.refl.h"
 
 #include "LobbyConfig.h"
 
-#ifdef ENABLE_GAME_LIST
 
 struct UserGameJoinInfo;
-
-struct GameListGame
-{
-  STORM_DATA_DEFAULT_CONSTRUCTION(GameListGame);
-
-  RInt m_MaxPlayers;
-  RInt m_CurPlayers;
-  RBool m_PasswordProtected;
-  RBool m_Started;
-  RString m_Map;
-  RUInt m_JoinCode;
-};
-
 
 struct GameList
 {
@@ -46,5 +34,3 @@ public:
 private:
   STORM_REFL_IGNORE DDSObjectInterface & m_Interface;
 };
-
-#endif
