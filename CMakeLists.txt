@@ -618,6 +618,7 @@ endif()
 if(EXPORT_TEST)
   foreach(OUTPUT ${OUTPUTS})
 
+
     add_custom_target(Test${OUTPUT} ALL
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${OUTPUT}> ${CMAKE_CURRENT_SOURCE_DIR}/Test/
       DEPENDS ${OUTPUT}
@@ -625,6 +626,8 @@ if(EXPORT_TEST)
     )
     
     set_target_properties(Test${OUTPUT} PROPERTIES FOLDER Executable)
+    set_property(TARGET ${OUTPUT} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/Test")
+    set_property(TARGET Test${OUTPUT} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/Test")
 
   endforeach()
 endif()

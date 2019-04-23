@@ -6,6 +6,9 @@
 
 #ifndef _WEB
 
+
+extern std::mutex g_NetworkMutex;
+
 WebSocket::WebSocket()
 {
 }
@@ -38,7 +41,15 @@ WebSocket & WebSocket::operator = (WebSocket && rhs) noexcept
 void WebSocket::StartConnect(const char * host, int port, const char * uri, const char * origin, const char * protocol, int timeout)
 {
   Cleanup();
+
+  std::unique_lock lock(g_NetworkMutex);
+
   m_WebsocketId = (int)g_WebsocketIdAllocator.Allocate();
+
+  if (m_WebsocketId == IdAllocator::kInvalidId)
+  {
+    return;
+  }
 
   auto & ws = g_WebsocketData[m_WebsocketId];
 
@@ -87,6 +98,8 @@ Optional<WebsocketPacket> WebSocket::RecvPacket()
     return {};
   }
 
+  std::unique_lock lock(g_NetworkMutex);
+
   auto & ws = g_WebsocketData[m_WebsocketId];
   while(ws.m_Packets.size() == 0)
   {
@@ -95,7 +108,9 @@ Optional<WebsocketPacket> WebSocket::RecvPacket()
       return {};
     }
 
+    lock.unlock();
     NetworkUpdate();
+    lock.lock();
   }
 
   auto packet = std::move(ws.m_Packets.front());
@@ -109,6 +124,8 @@ Optional<WebsocketPacket> WebSocket::PollPacket()
   {
     return {};
   }
+
+  std::unique_lock lock(g_NetworkMutex);
 
   auto & ws = g_WebsocketData[m_WebsocketId];
   if(ws.m_Packets.size() == 0)
@@ -137,6 +154,8 @@ void WebSocket::SendPacket(const void * data, std::size_t data_len, WebSocketPac
   {
     return;
   }
+
+  std::unique_lock lock(g_NetworkMutex);
 
   auto & ws = g_WebsocketData[m_WebsocketId];
   if(ws.m_Disconnected)
@@ -176,7 +195,10 @@ void WebSocket::Cleanup()
     return;
   }
 
+  std::unique_lock lock(g_NetworkMutex);
+
   auto & ws = g_WebsocketData[m_WebsocketId];
+  ASSERT(ws.m_Freed == false, "Invalid websocket state");
   ws.m_Freed = true;
 
   if(ws.m_Disconnected)

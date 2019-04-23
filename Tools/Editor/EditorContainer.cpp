@@ -210,6 +210,8 @@ EditorContainer::EditorContainer(QWidget *parent) :
 
 EditorContainer::~EditorContainer()
 {
+  m_DocumentServerThread.Disconnect();
+
   EngineCleanup();
 
   for (auto itr = m_DocumentEditors.begin(); itr != m_DocumentEditors.end(); ++itr)
@@ -389,11 +391,6 @@ void EditorContainer::closeEvent(QCloseEvent * ev)
   m_HostWidgets.clear();
 
   closeAllTabs();
-
-  if (m_EngineInitialized)
-  {
-    EngineCleanup();
-  }
 
   if(m_DownloadBuild)
   {

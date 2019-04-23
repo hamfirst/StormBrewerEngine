@@ -34,6 +34,7 @@ public:
   ~DocumentServerThread();
 
   void Connect(std::string host);
+  void Disconnect();
   bool GetEvent(DocumentServerEvent & ev);
   void SendData(int connection_gen, std::string && packet);
 

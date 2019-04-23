@@ -13,12 +13,19 @@ DocumentServerThread::DocumentServerThread() :
 
 DocumentServerThread::~DocumentServerThread()
 {
-  m_ThreadStopRequested = true;
-  m_WebSocket.Close();
-  m_Thread.join();
+  Disconnect();
 }
 
 void DocumentServerThread::Connect(std::string host)
+{
+  Disconnect();
+
+  m_Host = host;
+  m_ThreadStopRequested = false;
+  m_Thread = std::thread(&DocumentServerThread::DocumentServerThreadMain, this);
+}
+
+void DocumentServerThread::Disconnect()
 {
   if (m_ThreadStopRequested != true)
   {
@@ -26,10 +33,6 @@ void DocumentServerThread::Connect(std::string host)
     m_WebSocket.Close();
     m_Thread.join();
   }
-
-  m_Host = host;
-  m_ThreadStopRequested = false;
-  m_Thread = std::thread(&DocumentServerThread::DocumentServerThreadMain, this);
 }
 
 bool DocumentServerThread::GetEvent(DocumentServerEvent & ev)
@@ -49,7 +52,6 @@ void DocumentServerThread::DocumentServerThreadMain()
   {
     if (connected == false)
     {
-      m_WebSocket.StartConnect(m_Host.data(), 27800, "/", m_Host.data(), nullptr, 2000);
       if (m_WebSocket.IsConnected())
       {
         m_ConnectionGen++;
@@ -65,6 +67,10 @@ void DocumentServerThread::DocumentServerThreadMain()
 
         connected = true;
       }   
+      else if (m_WebSocket.IsConnecting() == false)
+      {
+        m_WebSocket.StartConnect(m_Host.data(), 27800, "/", m_Host.data(), nullptr, 2000);
+      }
     }
     else
     {

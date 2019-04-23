@@ -681,7 +681,7 @@ void AssetLoader::ReloadThread()
     {
       while (m_Running)
       {
-        auto packet = m_ReloadServerSocket->RecvPacket();
+        auto packet = m_ReloadServerSocket->PollPacket();
         if (!packet)
         {
           break;

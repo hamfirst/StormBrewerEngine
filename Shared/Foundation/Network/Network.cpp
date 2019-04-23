@@ -45,10 +45,14 @@ NetworkWebsocketData g_WebsocketData[kBackendMaxConnections];
 IdAllocator g_HttpIdAllocator(kBackendMaxConnections, false);
 NetworkHttpData g_HttpData[kBackendMaxConnections];
 
+std::mutex g_NetworkMutex;
+
 #endif
 
 void NetworkInit()
 {
+  std::unique_lock lock(g_NetworkMutex);
+
   if(g_NetworkInitialized)
   {
     return;
@@ -85,6 +89,7 @@ void NetworkInit()
 
 void NetworkUpdate()
 {
+  std::unique_lock lock(g_NetworkMutex);
   if(g_NetworkInitialized == false)
   {
     return;
@@ -141,6 +146,8 @@ void NetworkUpdate()
     }
     case StormSockets::StormSocketEventType::Disconnected:
       ws_data->m_Disconnected = true;
+      ws_data->m_State = NetworkConnectionState::kDisconnected;
+
       if(ws_data->m_Freed)
       {
         g_WebsocketIdAllocator.Release((std::size_t)websocket_id);
@@ -218,6 +225,8 @@ void NetworkUpdate()
 
 void NetworkShutdown()
 {
+  std::unique_lock lock(g_NetworkMutex);
+
   if(g_NetworkInitialized == false)
   {
     return;
