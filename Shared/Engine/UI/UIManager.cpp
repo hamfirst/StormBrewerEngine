@@ -131,6 +131,8 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, WrapTextScaled);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, ClearCurrentTextInput);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawSprite);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetAnimationIndex);
+  BIND_SCRIPT_INTERFACE(ui_interface, script_interface, GetSpriteSize);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, FrameAdvance);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawAtlas);
   BIND_SCRIPT_INTERFACE(ui_interface, script_interface, DrawLine);
@@ -150,6 +152,16 @@ void UIManager::LoadScripts(const Vector2 & screen_size, bool immediate_load,
 bool UIManager::FinishedLoading() const
 {
   return m_ScriptLoader && m_ScriptLoader->Complete();
+}
+
+NotNullPtr<ScriptState> UIManager::GetScriptState()
+{
+  return m_ScriptState.GetPtr();
+}
+
+NotNullPtr<const ScriptState> UIManager::GetScriptState() const
+{
+  return m_ScriptState.GetPtr();
 }
 
 void UIManager::Update(float delta_time, InputState & input_state, RenderState & render_state)
@@ -179,9 +191,9 @@ void UIManager::Update(float delta_time, InputState & input_state, RenderState &
   ProcessActiveAreas(delta_time, input_state, render_state);
 }
 
-void UIManager::Render(RenderState & render_state)
+void UIManager::Render(RenderState & render_state, const Optional<RenderVec2> & override_script_render_size)
 {
-  UpdateScriptGlobals(render_state.GetRenderSize());
+  UpdateScriptGlobals(override_script_render_size ? override_script_render_size.Value() : render_state.GetRenderSize());
 
   auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
   auto render_size = (RenderVec2)render_state.GetRenderSize();

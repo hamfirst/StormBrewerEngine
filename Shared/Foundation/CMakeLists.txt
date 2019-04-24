@@ -162,6 +162,7 @@ set(GENERIC_HEADER_Foundation
             Update/UpdateRegistrationTemplates.h
             Variant/Variant.h
             Waveform/Waveform.h
+            Script/ScriptDataObject.h
             #HEADER_PLACEHOLDER
             )
 

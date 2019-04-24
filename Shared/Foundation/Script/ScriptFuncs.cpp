@@ -27,6 +27,14 @@ int ScriptFuncs::PushValue(void * state, const bool & val)
   return 1;
 }
 
+int ScriptFuncs::PushValue(void * state, const char * val)
+{
+  auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, 1);
+  lua_pushstring(lua_state, val);
+  return 1;
+}
+
 int ScriptFuncs::PushValue(void * state, const std::string & val)
 {
   auto lua_state = static_cast<lua_State *>(state);
@@ -247,6 +255,13 @@ void ScriptFuncs::Discard(void * state, int num_stack_vals)
   auto lua_state = static_cast<lua_State *>(state);
   ScriptStackCheck check(lua_state, -num_stack_vals);
   lua_pop(lua_state, num_stack_vals);
+}
+
+void ScriptFuncs::SetTableValue(void * state)
+{
+  auto lua_state = static_cast<lua_State *>(state);
+  ScriptStackCheck check(lua_state, -2);
+  lua_settable(lua_state, -3);
 }
 
 void ScriptFuncs::ReportMessage(void * state, czstr message)

@@ -11,7 +11,7 @@ function InitMainMenu()
   local online_menu = PushMenuElement(QuickMenu:new())
   online_menu:PushMenuAction("Play Ranked", function() game:Quit() end)
   online_menu:PushMenuAction("Play Casual", function() game:Quit() end)
-  online_menu:PushMenuAction("Private Game", function() game:Quit() end)
+  online_menu:PushMenuAction("Private Game", function() CleanupMenu() InitPrivateGameMenu() end)
 
   local play_menu = PushMenuElement(QuickMenu:new())
   play_menu:PushSubMenu("Play Online", online_menu)

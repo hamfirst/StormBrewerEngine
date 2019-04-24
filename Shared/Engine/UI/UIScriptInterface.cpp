@@ -282,7 +282,7 @@ void UIScriptInterface::ClearCurrentTextInput()
   m_UIManager->m_ContainerWindow.ClearAllTextInputContext();
 }
 
-void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame)
+void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame, float alpha)
 {
   if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)
   {
@@ -311,14 +311,36 @@ void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, boo
   }
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
-  engine_data->RenderSprite(sprite, *m_RenderState, anim_index, anim_frame, 0, Vector2f{x, y}, {}, Color(1.0f, 1.0f, 1.0f, 1.0f), shader);
+  engine_data->RenderSprite(sprite, *m_RenderState, anim_index, anim_frame, 0,
+          RenderVec2{ m_DrawArea.m_Start } + Vector2f{x, y}, {}, Color(1.0f, 1.0f, 1.0f, alpha), shader);
+}
+
+int UIScriptInterface::GetAnimationIndex(int sprite_id, const std::string & animation_name)
+{
+  if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)
+  {
+    return -1;
+  }
+
+  auto & sprite = m_UIManager->m_ScriptLoader->m_SpriteAssets[sprite_id & UIScriptLoader::kIndexMask];
+  return sprite->GetAnimationIndex(crc32(animation_name));
+}
+
+std::tuple<int, int> UIScriptInterface::GetSpriteSize(int sprite_id, int anim_index, int anim_frame)
+{
+  if((sprite_id & UIScriptLoader::kIdMask) != UIScriptLoader::kSpriteId)
+  {
+    return std::make_tuple(0, 0);
+  }
+
+  auto & sprite = m_UIManager->m_ScriptLoader->m_SpriteAssets[sprite_id & UIScriptLoader::kIndexMask];
+
+  AnimationState state;
+  sprite->SyncFrameData(anim_index, anim_frame, 0, state);
+  return std::make_tuple(state.m_FrameWidth, state.m_FrameHeight);
 }
 
 void UIScriptInterface::DrawAtlas(int atlas_id, std::string & elem_name, int x, int y, int width, int height)
@@ -415,8 +437,11 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
 
   QuadVertexBufferBuilder buffer_builder;
 
+  int size_x = (int)roundf(texture->GetWidth() * scale_x);
+  int size_y = (int)roundf(texture->GetHeight() * scale_y);
+
   QuadVertexBuilderInfo quad;
-  quad.m_Position = Box::FromStartAndWidthHeight(Vector2(x, y), texture->GetSize());
+  quad.m_Position = Box::FromStartAndWidthHeight(Vector2(x, y), Vector2(size_x, size_y));
   quad.m_Color = Color(r, g, b, a);
   quad.m_TexCoords = Box::FromPoints(Vector2{}, texture->GetSize());
   quad.m_TextureSize = texture->GetSize();
@@ -440,7 +465,7 @@ void UIScriptInterface::DrawTextureInternal(int texture_id, int x, int y, float 
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), RenderVec2{ m_DrawArea.m_Start });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ scale_x, 0, 0, scale_y });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0, 0, 0, 1.0 });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);

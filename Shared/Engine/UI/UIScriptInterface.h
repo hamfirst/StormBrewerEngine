@@ -62,7 +62,9 @@ public:
   std::pair<std::string, int> WrapTextScaled(int font_id, const std::string & text, int width, float scale);
   void ClearCurrentTextInput();
 
-  void DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame);
+  void DrawSprite(int sprite_id, int x, int y, bool flip_x, bool flip_y, int anim_index, int anim_frame, float alpha);
+  int GetAnimationIndex(int sprite_id, const std::string & animation_name);
+  std::tuple<int, int> GetSpriteSize(int sprite_id, int anim_index, int anim_frame);
   std::tuple<int, int, int> FrameAdvance(int sprite_id, std::string & anim_name, int anim_index, int anim_frame, int anim_delay, bool loop);
 
   void DrawAtlas(int atlas_id, std::string & elem_name, int x, int y, int width, int height);

@@ -1,6 +1,8 @@
 
 Button = Elem:construct()
 Button.text = ""
+Button.font = font
+Button.text_offset_y = 0
 Button.alpha = 1.0
 Button.parent_alpha = 1.0
 Button.scale = 1.0
@@ -39,6 +41,12 @@ Button.text_hover_b = default_text_highlighted_b
 Button.text_toggled_r = default_text_selected_r
 Button.text_toggled_g = default_text_selected_g
 Button.text_toggled_b = default_text_selected_g
+Button.image_r = 1
+Button.image_g = 1
+Button.image_b = 1
+Button.image_a = 1
+Button.image_scale_x = 1
+Button.image_scale_y = 1
 
 function Button:Draw()
 
@@ -78,14 +86,27 @@ function Button:Draw()
     r, g, b = self.text_r, self.text_g, self.text_b
   end
 
-  ui:DrawFilledRectangle(0, 0, self.width - 1, self.height - 1, bkg_r, bkg_g, bkg_b, alpha)
+  ui:DrawFilledRectangle(0, 0, self.width - 2, self.height - 2, bkg_r, bkg_g, bkg_b, alpha)
   ui:DrawRectangle(0, 0, self.width - 1, self.height - 1, border_r, border_g, border_b, alpha)
 
   ui:FlushGeometry()
 
-  local width, height = ui:MeasureTextScaled(font, self.text, self.scale)
+  local width, height = ui:MeasureTextScaled(self.font, self.text, self.scale)
+  local text_y = self.height / 2 + 1 - height / 2
 
-  ui:DrawTextScaled(font, self.text, self.width / 2 - width / 2, self.height / 2 + 1 - height / 2, 
+  if self.image ~= nil then
+
+    local width, height = ui:GetTextureSize(self.image)  
+    width = width * self.image_scale_x
+    height = height * self.image_scale_y
+
+    ui:DrawTextureScaleTint(self.image, self.width / 2 - width / 2, self.height / 2 - height / 2 + 5 + self.text_offset_y,
+      self.image_scale_x, self.image_scale_y, self.image_r, self.image_g, self.image_b, self.image_a * alpha)
+
+      text_y = text_y - height / 2 - 5
+  end
+
+  ui:DrawTextScaled(self.font, self.text, self.width / 2 - width / 2, text_y + self.text_offset_y,
                             r, g, b, alpha, kNormal, self.scale)
 
 end
@@ -127,6 +148,8 @@ function Button:Clicked()
       AddLerp(self, "height", self.height + 20, 0.3)
       AddLerp(self, "alpha", 0, 0.3)
       AddLerp(self, "scale", 1.3, 0.3)
+      AddLerp(self, "image_scale_x", self.image_scale_x * 1.3, 0.3)
+      AddLerp(self, "image_scale_y", self.image_scale_y * 1.3, 0.3)
     end
   else
     self.toggled = not self.toggled

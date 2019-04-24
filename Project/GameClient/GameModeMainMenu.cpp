@@ -7,6 +7,12 @@
 #include "GameClient/GameModeMapSettings.h"
 #include "GameClient/GameContainer.h"
 
+#include "GameShared/GamePlayListAsset.refl.meta.h"
+
+#include "Foundation/Script/ScriptDataObject.h"
+
+#include "Runtime/UI/UIResource.h"
+
 #include "Engine/Engine.h"
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -14,12 +20,13 @@
 #include "Engine/Audio/MusicManager.h"
 #include "Engine/UI/UIManager.h"
 
-#include "Runtime/UI/UIResource.h"
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/MainMenu.ui", g_MainMenuUI);
 
 GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
-  GameMode(game)
+  GameMode(game),
+  m_CasualPlaylist("./CasualPlaylist.txt"),
+  m_CompetitivePlaylist("./CompetitivePlaylist.txt")
 {
 
 }
@@ -42,6 +49,11 @@ void GameModeMainMenu::OnAssetsLoaded()
   auto ui = container.GetUIManager();
 
   auto & game_interface = ui->CreateGameInterface();
+
+  game_interface.AddVariable("casual_playlist",
+          CreateScriptDataObject(ui->GetScriptState(), m_CasualPlaylist.GetPlayListAsset().GetData()));
+  game_interface.AddVariable("competitive_playlist",
+          CreateScriptDataObject(ui->GetScriptState(), m_CompetitivePlaylist.GetPlayListAsset().GetData()));
 
   BIND_SCRIPT_INTERFACE(game_interface, this, PlayOnline);
   BIND_SCRIPT_INTERFACE(game_interface, this, PlayOffline);

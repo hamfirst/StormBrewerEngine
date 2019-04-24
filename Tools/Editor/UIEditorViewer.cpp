@@ -203,7 +203,7 @@ void UIEditorViewer::paintGL()
   m_RenderState.BindVertexBuffer(vertex_buffer);
   m_RenderState.Draw();
 
-  m_UIManager->Render(m_RenderState);
+  m_UIManager->Render(m_RenderState, RenderVec2{kDefaultResolutionWidth, kDefaultResolutionHeight});
 }
 
 void UIEditorViewer::showEvent(QShowEvent * ev)

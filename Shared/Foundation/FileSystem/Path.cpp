@@ -103,11 +103,12 @@ std::string GetFullPath(const std::string & path, const std::string & root_path)
   else
   {
     std::error_code ec;
-    auto canonical_path = fs::canonical(fs::path(root_path) / fs::path(path), ec);
+    auto combined_path = fs::path(root_path) / fs::path(path);
+    auto canonical_path = fs::canonical(combined_path, ec);
 
     if(ec)
     {
-      return path;
+      return combined_path.string();
     }
 
     return canonical_path.string();

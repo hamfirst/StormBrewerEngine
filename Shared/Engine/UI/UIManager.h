@@ -35,10 +35,14 @@ public:
 
   void LoadScripts(const Vector2 & screen_size, bool immediate_load = false,
           Delegate<void> && load_complete_callback = {}, Delegate<void, czstr> && error_output = {});
+
   bool FinishedLoading() const;
 
+  NotNullPtr<ScriptState> GetScriptState();
+  NotNullPtr<const ScriptState> GetScriptState() const;
+
   void Update(float delta_time, InputState & input_state, RenderState & render_state);
-  void Render(RenderState & render_state);
+  void Render(RenderState & render_state, const Optional<RenderVec2> & override_script_render_size = {});
 
   void Pause();
   void Unpause();

@@ -37,6 +37,16 @@ private:
   friend class ScriptClassInternal;
   friend class ScriptFuncs;
 
+  template <typename T>
+  friend void SetScriptDataObjectValue(NotNullPtr<ScriptState> state, std::size_t index, const T & t);
+
+  template <typename T>
+  friend void SetScriptDataObjectValue(NotNullPtr<ScriptState> state, czstr name, const T & t);
+
+  template <typename T>
+  friend struct CreateScriptDataObjectStruct;
+
+
 private:
 
   void * m_LuaState;

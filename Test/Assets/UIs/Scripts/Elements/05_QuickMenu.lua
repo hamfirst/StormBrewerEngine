@@ -172,8 +172,10 @@ function QuickMenu:ShowPreview()
     v.pressable = false
   end
 
-  self.alpha = 0.5
+  self.alpha = 0
   self.bottom_button.alpha = 0
+
+  AddLerp(self, "alpha", 0.5, 0.1, nil, EaseInCubic)
 end
 
 function QuickMenu:TransitionIn()

@@ -305,7 +305,7 @@ int UIScriptLoader::LoadAtlas(std::string path)
 
 int UIScriptLoader::LoadSprite(std::string path)
 {
-  int id = static_cast<int>(m_AudioAssets.size());
+  int id = static_cast<int>(m_SpriteAssets.size());
   m_SpriteAssets.emplace_back(SpriteResource::Load(path.data()));
   return id | kSpriteId;
 }

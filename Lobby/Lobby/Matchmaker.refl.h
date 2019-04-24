@@ -6,27 +6,12 @@
 #include "HurricaneDDS/DDSDataObject.h"
 
 #include "Game/GameNetworkData.refl.h"
+#include "GameShared/GamePlayListAsset.refl.h"
 
 #include "LobbyShared/SharedTypes.refl.h"
 
 #include "LobbyConfig.h"
 
-struct PlaylistDatabaseElement
-{
-  STORM_REFL;
-
-  std::string m_Name;
-  std::vector<GameInitSettings> m_GameModes;
-  int m_TeamSizes[kMaxTeams] = {};
-  bool m_AllowParties = false;
-  int m_TotalGameSize = 0;
-};
-
-struct PlaylistDatabaseObj
-{
-  STORM_REFL;
-  std::vector<PlaylistDatabaseElement> m_Elements;
-};
 
 struct PlaylistBucketUser
 {
@@ -93,13 +78,13 @@ public:
 
 private:
 
-  static void ReadPlaylistFile(czstr playlist_file, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
+  static void ReadPlaylistFile(czstr playlist_file, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
 
   static void AddUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask,
-               PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
-  static void RemoveUser(DDSKey user, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
+                      PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
+  static void RemoveUser(DDSKey user, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
 
-  bool FindMatch(int zone, PlaylistDatabaseObj & playlist_data,
+  bool FindMatch(int zone, PlaylistAsset & playlist_data,
           std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type);
 
   void SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id, LobbyGameType game_type);
@@ -109,8 +94,8 @@ private:
 
 private:
 
-  PlaylistDatabaseObj m_CasualPlaylist;
-  PlaylistDatabaseObj m_CompetitivePlaylist;
+  PlaylistAsset m_CasualPlaylist;
+  PlaylistAsset m_CompetitivePlaylist;
 
   std::vector<PlaylistBucketList> m_CasualBuckets;
   std::vector<PlaylistBucketList> m_CompetitiveBuckets;

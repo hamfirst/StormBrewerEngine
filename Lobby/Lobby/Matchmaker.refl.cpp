@@ -4,6 +4,10 @@
 
 #include "StormData/StormDataJson.h"
 
+#include "Foundation/Document/Document.h"
+#include "Foundation/Document/DocumentCompiler.h"
+#include "Foundation/Document/DocumentDefaultLoader.h"
+
 #include "LobbyShared/LobbyGameFuncs.h"
 
 #include "Matchmaker.refl.meta.h"
@@ -22,8 +26,8 @@ Matchmaker::Matchmaker(DDSObjectInterface & obj_interface) :
 
 void Matchmaker::Initialize()
 {
-  ReadPlaylistFile("Config/casual_playlist.txt", m_CasualPlaylist, m_CasualBuckets);
-  ReadPlaylistFile("Config/competitive_playlist.txt", m_CompetitivePlaylist, m_CompetitiveBuckets);
+  ReadPlaylistFile("./CasualPlaylist.txt", m_CasualPlaylist, m_CasualBuckets);
+  ReadPlaylistFile("./CompetitivePlaylist.txt", m_CompetitivePlaylist, m_CompetitiveBuckets);
 }
 
 void Matchmaker::Update()
@@ -154,22 +158,15 @@ void Matchmaker::NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone)
   }
 }
 
-void Matchmaker::ReadPlaylistFile(czstr playlist_file, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
+void Matchmaker::ReadPlaylistFile(czstr playlist_file, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
 {
-  auto fp = fopen(playlist_file, "rt");
-  assert(fp != nullptr);
+  DocumentDefaultLoader loader;
+  DocumentCompiler document_compiler(&loader);
 
-  fseek(fp, 0, SEEK_END);
-  auto size = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
+  auto document = document_compiler.GetDocument(playlist_file);
+  auto document_json = document->GetDocumentJson();
 
-  auto buffer = std::make_unique<char[]>(size + 1);
-  fread(buffer.get(), 1, size, fp);
-  fclose(fp);
-
-  buffer[size] = 0;
-
-  StormReflParseJson(playlist_data, buffer.get());
+  StormReflParseJson(playlist_data, document_json.c_str());
 
   for(auto & elem : playlist_data.m_Elements)
   {
@@ -200,7 +197,7 @@ void Matchmaker::ReadPlaylistFile(czstr playlist_file, PlaylistDatabaseObj & pla
 }
 
 void Matchmaker::AddUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask,
-                         PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
+                         PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
 {
   for(int zone = 0; zone < kNumProjectZones; ++zone)
   {
@@ -224,7 +221,7 @@ void Matchmaker::AddUser(const PlaylistBucketUserList & user, const UserZoneInfo
   }
 }
 
-void Matchmaker::RemoveUser(DDSKey user, PlaylistDatabaseObj & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
+void Matchmaker::RemoveUser(DDSKey user, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
 {
   for(int zone = 0; zone < kNumProjectZones; ++zone)
   {
@@ -243,7 +240,7 @@ void Matchmaker::RemoveUser(DDSKey user, PlaylistDatabaseObj & playlist_data, st
   }
 }
 
-bool Matchmaker::FindMatch(int zone, PlaylistDatabaseObj & playlist_data,
+bool Matchmaker::FindMatch(int zone, PlaylistAsset & playlist_data,
         std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type)
 {
   for (int playlist = 0; playlist < (int)playlist_data.m_Elements.size(); ++playlist)

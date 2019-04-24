@@ -26,6 +26,7 @@ set(GENERIC_SRC_GameShared
             Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
             Systems/GameServerObjectOverlapSystem.cpp
+            GamePlayList.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -48,12 +49,16 @@ set(GENERIC_HEADER_GameShared
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
+            GamePlayListAsset.refl.h
+            GamePlayListAsset.refl.meta.h
+            GamePlayList.h
             #HEADER_PLACEHOLDER
             )
 
 set(GENERIC_REFL_GameShared 
             BehaviorTree/States/PlayAnimationBotState.refl.h
             GameLevelListAsset.refl.h
+            GamePlayListAsset.refl.h
             #REFL_PLACEHOLDER
             )
 

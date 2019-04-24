@@ -3,6 +3,8 @@
 #include "Foundation/Time/StopWatch.h"
 #include "Foundation/Sequencer/Sequencer.h"
 
+#include "GameShared/GamePlayList.h"
+
 #include "GameClient/GameMode.h"
 
 #include "Engine/UI/UIManager.h"
@@ -35,7 +37,9 @@ protected:
 private:
 
   Sequencer m_Sequencer;
-
+  
+  GamePlayList m_CasualPlaylist;
+  GamePlayList m_CompetitivePlaylist;
 };
 
 

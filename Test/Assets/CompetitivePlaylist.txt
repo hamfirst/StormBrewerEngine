@@ -1,8 +1,10 @@
+[]
+
 {
     "m_Elements":
     [
         {
-            "m_Name": "Default 1v1 Playlist",
+            "m_Name": "1 V 1",
             "m_GameModes":
             [
                 {
