@@ -130,7 +130,7 @@ function InitTestMenu()
   popup.width = 300
   popup.height = 150
   
-  local fader = PushMenuElement(Fader:new())
+  fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
 
   input.EnterPressed = function()

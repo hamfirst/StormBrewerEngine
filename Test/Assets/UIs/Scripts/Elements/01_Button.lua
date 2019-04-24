@@ -44,6 +44,10 @@ function Button:Draw()
 
   local cur_state = self:GetState()
 
+  if self.pressable == false then
+    cur_state = kActive
+  end
+
   local r, g, b = 0, 0, 0
   local bkg_r, bkg_g, bkg_b = 0, 0, 0
   local border_r, border_g, border_b = 0, 0, 0
@@ -93,6 +97,11 @@ function Button:StateChanged(prev_state, new_state)
 
   if prev_state == kActive and new_state == kHover then
       ui:PlayAudio(hover_audio)
+      self:Hovered()
+  end
+
+  if prev_state == kHover and new_state == kActive then
+    self:Unhovered()
   end
 end
 
@@ -124,6 +133,14 @@ function Button:Clicked()
   end
 
   self:Pressed()
+end
+
+function Button:Hovered()
+
+end
+
+function Button:Unhovered()
+
 end
 
 function Button:Pressed()

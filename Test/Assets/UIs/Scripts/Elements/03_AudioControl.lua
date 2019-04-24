@@ -19,7 +19,7 @@ function AudioControl:Draw()
   end
 
   self.width, self.height = ui:GetTextureSize(texture_id)
-  ui:DrawTexture(texture_id, 0, 0)
+  ui:DrawTextureTint(texture_id, 0, 0, 1, 1, 1, 0.4)
 end
 
 function AudioControl:Clicked()

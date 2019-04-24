@@ -217,7 +217,7 @@ function InitStagingMenu()
   quitpopup.height = 150
   quitpopup.text = "Quick Back to Main Menu?"
   
-  local fader = PushMenuElement(Fader:new())
+  fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
 
   quit.fade = false

@@ -64,6 +64,7 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
     OPEN_EXISTING,
     FILE_FLAG_BACKUP_SEMANTICS,
     NULL);
+
 #elif defined(_LINUX)
   m_Data->m_NotifyHandle = inotify_init();
   if(m_Data->m_NotifyHandle == -1)
@@ -516,7 +517,7 @@ void FileSystemWatcher::NotifyThread()
         WideCharToMultiByte(CP_UTF8, 0, &filename[0], (int)filename.size(), &conv_filename[0], size_needed, nullptr, nullptr);
 
         std::string changed_filename("./" + conv_filename);
-        std::string full_path = m_RootPath + conv_filename;
+        std::string full_path = (fs::path(m_RootPath) / fs::path(conv_filename)).string();
 
         auto path = fs::path(changed_filename);
         auto status = fs::status(full_path);

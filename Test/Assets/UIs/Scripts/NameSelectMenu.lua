@@ -61,7 +61,7 @@ function InitNameSelectMenu()
 
   CreateDefualtControls();
 
-  local fader = PushMenuElement(Fader:new())
+  fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
 
   FadeFromButtonPress(fader, submit, function() game:Submit(input:GetText()) end)
