@@ -2,13 +2,13 @@
 
 #include "Foundation/Time/StopWatch.h"
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 
-class GameModeLoadingGlobal : public GameMode
+class GameModeLogo : public GameMode
 {
 public:
-  GameModeLoadingGlobal(GameContainer & game);
-  ~GameModeLoadingGlobal();
+  GameModeLogo(GameContainer & game);
+  ~GameModeLogo();
 
   virtual void Initialize() override;
   virtual void OnAssetsLoaded() override;
@@ -18,6 +18,9 @@ public:
 
 protected:
 
+private:
+
+  StopWatch m_Timer;
 };
 
 

@@ -1,7 +1,7 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeOfflineStaging.h"
-#include "GameClient/GameModeMainMenu.h"
-#include "GameClient/GameModeLocalMultiplayer.h"
+#include "GameClient/Modes/GameModeOfflineStaging.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeLocalMultiplayer.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/Asset/TextureAsset.h"

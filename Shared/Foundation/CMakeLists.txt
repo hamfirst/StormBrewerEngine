@@ -138,6 +138,7 @@ set(GENERIC_HEADER_Foundation
             Script/ScriptClassDelegate.h
             Script/ScriptClassInstance.h
             Script/ScriptClassRef.h
+            Script/ScriptDataObject.h
             Script/ScriptFuncPtr.h
             Script/ScriptFuncs.h
             Script/ScriptInterface.h
@@ -162,7 +163,6 @@ set(GENERIC_HEADER_Foundation
             Update/UpdateRegistrationTemplates.h
             Variant/Variant.h
             Waveform/Waveform.h
-            Script/ScriptDataObject.h
             #HEADER_PLACEHOLDER
             )
 

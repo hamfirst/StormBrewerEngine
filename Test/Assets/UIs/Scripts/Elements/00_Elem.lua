@@ -141,6 +141,10 @@ function Elem:SetClip(enabled)
   self.clickable.Clip = enabled
 end
 
+function Elem:SetWantsInput(enabled)
+  self.clickable.WantsInput = enabled
+end
+
 function Elem:Destroyed()
 
 end

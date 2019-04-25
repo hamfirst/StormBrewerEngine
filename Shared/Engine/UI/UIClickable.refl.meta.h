@@ -50,7 +50,7 @@ template <>
 struct StormReflTypeInfo<UIClickable>
 {
   using MyBase = void;
-  static constexpr int fields_n = 14;
+  static constexpr int fields_n = 15;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -331,20 +331,44 @@ struct StormReflTypeInfo<UIClickable>::field_data<9, Self> : public StormReflTyp
 template <>
 struct StormReflTypeInfo<UIClickable>::field_data_static<10>
 {
+  using member_type = bool; // bool
+  static constexpr auto GetName() { return "WantsInput"; }
+  static constexpr auto GetType() { return "bool"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x7C61B3B0; }
+  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
+  static constexpr bool HasDefault() { return false; }
+  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetMemberPtr() { return &UIClickable::WantsInput; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->WantsInput; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->WantsInput; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<UIClickable>::field_data<10, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<10>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, bool> & Get() { return self.WantsInput; }
+  std::add_const_t<std::remove_reference_t<bool>> & Get() const { return self.WantsInput; }
+};
+
+template <>
+struct StormReflTypeInfo<UIClickable>::field_data_static<11>
+{
   using member_type = int; // int
   static constexpr auto GetName() { return "X"; }
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetFieldNameHash() { return 0xB7B2364B; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 10; }
+  static constexpr auto GetFieldIndex() { return 11; }
   static constexpr auto GetMemberPtr() { return &UIClickable::X; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->X; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->X; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIClickable>::field_data<10, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<10>
+struct StormReflTypeInfo<UIClickable>::field_data<11, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<11>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -353,7 +377,7 @@ struct StormReflTypeInfo<UIClickable>::field_data<10, Self> : public StormReflTy
 };
 
 template <>
-struct StormReflTypeInfo<UIClickable>::field_data_static<11>
+struct StormReflTypeInfo<UIClickable>::field_data_static<12>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "Y"; }
@@ -361,14 +385,14 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<11>
   static constexpr unsigned GetFieldNameHash() { return 0xC0B506DD; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 11; }
+  static constexpr auto GetFieldIndex() { return 12; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Y; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Y; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->Y; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIClickable>::field_data<11, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<11>
+struct StormReflTypeInfo<UIClickable>::field_data<12, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<12>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -377,7 +401,7 @@ struct StormReflTypeInfo<UIClickable>::field_data<11, Self> : public StormReflTy
 };
 
 template <>
-struct StormReflTypeInfo<UIClickable>::field_data_static<12>
+struct StormReflTypeInfo<UIClickable>::field_data_static<13>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "Width"; }
@@ -385,14 +409,14 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<12>
   static constexpr unsigned GetFieldNameHash() { return 0x4DDB6A2B; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 12; }
+  static constexpr auto GetFieldIndex() { return 13; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Width; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Width; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->Width; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIClickable>::field_data<12, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<12>
+struct StormReflTypeInfo<UIClickable>::field_data<13, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<13>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -401,7 +425,7 @@ struct StormReflTypeInfo<UIClickable>::field_data<12, Self> : public StormReflTy
 };
 
 template <>
-struct StormReflTypeInfo<UIClickable>::field_data_static<13>
+struct StormReflTypeInfo<UIClickable>::field_data_static<14>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "Height"; }
@@ -409,14 +433,14 @@ struct StormReflTypeInfo<UIClickable>::field_data_static<13>
   static constexpr unsigned GetFieldNameHash() { return 0xF2E1E039; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 13; }
+  static constexpr auto GetFieldIndex() { return 14; }
   static constexpr auto GetMemberPtr() { return &UIClickable::Height; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<UIClickable *>(obj); return &ptr->Height; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const UIClickable *>(obj); return &ptr->Height; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<UIClickable>::field_data<13, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<13>
+struct StormReflTypeInfo<UIClickable>::field_data<14, Self> : public StormReflTypeInfo<UIClickable>::field_data_static<14>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

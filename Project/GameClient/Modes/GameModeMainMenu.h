@@ -5,7 +5,7 @@
 
 #include "GameShared/GamePlayList.h"
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 
 #include "Engine/UI/UIManager.h"
 

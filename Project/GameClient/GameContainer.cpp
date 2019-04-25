@@ -1,6 +1,6 @@
 #include "GameClient/GameClientCommon.h"
 #include "GameClient/GameContainer.h"
-#include "GameClient/GameModeLoadingGlobal.h"
+#include "GameClient/Modes/GameModeLoadingGlobal.h"
 #include "GameClient/GameNetworkClient.h"
 #include "GameClient/GameCamera.h"
 

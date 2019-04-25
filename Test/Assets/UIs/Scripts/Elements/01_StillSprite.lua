@@ -23,7 +23,7 @@ function StillSprite:Draw()
     local width, height = ui:GetSpriteSize(self.sprite_id, self.anim_index, self.anim_frame)
 
     if width > 0 and height > 0 then
-        ui:DrawSprite(self.sprite_id, 0, 0, false, false, self.anim_index, self.anim_frame, alpha)
+        ui:DrawSprite(self.sprite_id, width / 2, height / 2, false, false, self.anim_index, self.anim_frame, alpha)
     end
 
     if self.draw_frame then

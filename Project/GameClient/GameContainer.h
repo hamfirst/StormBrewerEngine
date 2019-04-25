@@ -12,7 +12,7 @@
 
 #include "GameShared/GameStageManager.h"
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientSave.h"
 #include "GameClient/GameClientLatencyChecker.h"

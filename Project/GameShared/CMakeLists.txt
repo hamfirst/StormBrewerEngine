@@ -19,6 +19,7 @@ set(GENERIC_SRC_GameShared
             GameEventReconciler.cpp
             GameLevelList.cpp
             GameLogicContainer.cpp
+            GamePlayList.cpp
             GameSharedCommon.cpp
             GameStageManager.cpp
             GameValidation.cpp
@@ -26,7 +27,6 @@ set(GENERIC_SRC_GameShared
             Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
             Systems/GameServerObjectOverlapSystem.cpp
-            GamePlayList.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -41,6 +41,9 @@ set(GENERIC_HEADER_GameShared
             GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
             GameLogicContainer.h
+            GamePlayList.h
+            GamePlayListAsset.refl.h
+            GamePlayListAsset.refl.meta.h
             GameProtocol.h
             GameSharedCommon.h
             GameStageManager.h
@@ -49,9 +52,6 @@ set(GENERIC_HEADER_GameShared
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h
             Systems/GameServerObjectOverlapSystem.h
-            GamePlayListAsset.refl.h
-            GamePlayListAsset.refl.meta.h
-            GamePlayList.h
             #HEADER_PLACEHOLDER
             )
 

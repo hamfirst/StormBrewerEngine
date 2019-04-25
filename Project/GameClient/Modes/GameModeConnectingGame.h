@@ -5,15 +5,15 @@
 #include "Foundation/Variant/Variant.h"
 
 #include "Game/GameNetworkData.refl.h"
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 
 #include "Engine/UI/UIManager.h"
 
-class GameModeConnecting : public GameMode
+class GameModeConnectingGame : public GameMode
 {
 public:
-  GameModeConnecting(GameContainer & game);
-  ~GameModeConnecting();
+  GameModeConnectingGame(GameContainer & game);
+  ~GameModeConnectingGame();
 
   void Initialize() override;
   void OnAssetsLoaded() override;

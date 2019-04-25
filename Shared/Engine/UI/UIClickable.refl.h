@@ -43,6 +43,7 @@ public:
 
   bool Enabled = true;
   bool Clip = true;
+  bool WantsInput = true;
   int X = 0;
   int Y = 0;
   int Width = 0;

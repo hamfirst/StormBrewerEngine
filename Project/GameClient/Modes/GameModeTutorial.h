@@ -1,18 +1,19 @@
 #pragma once
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientInstanceContainer.h"
 
 #include "Engine/Camera/Camera.h"
 
 #include "Foundation/Time/FrameClock.h"
+#include "Foundation/Sequencer/Sequencer.h"
 
-class GameModeLocalMultiplayer : public GameMode, public GameClientEventSender
+class GameModeTutorial : public GameMode, public GameClientEventSender
 {
 public:
-  GameModeLocalMultiplayer(GameContainer & game, const std::vector<bool> & attached_players, const GameInitSettings game_settings);
-  ~GameModeLocalMultiplayer() override;
+  GameModeTutorial(GameContainer & game);
+  ~GameModeTutorial() override;
 
   void Initialize() override;
   void OnAssetsLoaded() override;
@@ -26,13 +27,17 @@ protected:
 
   void SendClientEvent(std::size_t class_id, const void * event_ptr, std::size_t client_index) override;
 
+  void Pause();
+  void Resume();
+
 private:
   std::unique_ptr<GameClientInstanceContainer> m_InstanceContainer;
   std::unique_ptr<GameClientSystems> m_ClientSystems;
 
-  std::vector<bool> m_AttachedPlayers;
+  Sequencer m_Sequencer;
 
   FrameClock m_FrameClock;
+  bool m_Paused = false;
 };
 
 

@@ -530,7 +530,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       elem->m_State = (int)UIClickableState::kActive;
     }
 
-    if (elem->m_State == (int)UIClickableState::kPressed)
+    if (elem->m_State == (int)UIClickableState::kPressed && elem->WantsInput)
     {
       if (cur_pressed_clickable)
       {
@@ -564,7 +564,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
       if(elem->m_ActiveArea)
       {
         auto box = elem->m_ActiveArea.Value();
-        if (PointInBox(box, pointer_pos))
+        if (PointInBox(box, pointer_pos) && elem->WantsInput)
         {
           cur_hover_clickable = elem;
           break;

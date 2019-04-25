@@ -313,7 +313,7 @@ void UIScriptInterface::DrawSprite(int sprite_id, int x, int y, bool flip_x, boo
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState->GetFullRenderDimensions());
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), screen_bounds);
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("U_ColorMatrix"), Mat4f());
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   engine_data->RenderSprite(sprite, *m_RenderState, anim_index, anim_frame, 0,
           RenderVec2{ m_DrawArea.m_Start } + Vector2f{x, y}, { 1, 0, 0, 1 }, Color(1.0f, 1.0f, 1.0f, alpha), shader);

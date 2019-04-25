@@ -6,7 +6,7 @@
 
 #include "Engine/UI/UIManager.h"
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "GameClient/GameClientInstanceContainer.h"
 #include "GameClient/GameClientSystems.h"
 

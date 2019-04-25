@@ -1,32 +1,32 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeConnecting.h"
-#include "GameClient/GameModeOnlineGameplay.h"
-#include "GameClient/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeOnlineGameplay.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
-#include "GameClient/GameModeOnlineStaging.h"
+#include "GameClient/Modes/GameModeOnlineStaging.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
 
-GameModeConnecting::GameModeConnecting(GameContainer & game) :
+GameModeConnectingGame::GameModeConnectingGame(GameContainer & game) :
   GameMode(game),
   m_ConnectFailed(false),
   m_LastConnect(0)
 {
 }
 
-GameModeConnecting::~GameModeConnecting()
+GameModeConnectingGame::~GameModeConnectingGame()
 {
 
 }
 
-void GameModeConnecting::Initialize()
+void GameModeConnectingGame::Initialize()
 {
   GetAssets().LoadAsset<TextureAsset>("./Images/stormbrewers_logo.png", "logo");
 }
 
-void GameModeConnecting::OnAssetsLoaded()
+void GameModeConnectingGame::OnAssetsLoaded()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
@@ -37,7 +37,7 @@ void GameModeConnecting::OnAssetsLoaded()
   m_FrameClock.Start();
 }
 
-void GameModeConnecting::Update()
+void GameModeConnectingGame::Update()
 {
   auto & container = GetContainer();
   container.GetWindow().Update();
@@ -69,7 +69,7 @@ void GameModeConnecting::Update()
   }
 }
 
-void GameModeConnecting::Render()
+void GameModeConnectingGame::Render()
 {
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
@@ -135,7 +135,7 @@ void GameModeConnecting::Render()
   container.RenderUIManager();
 }
 
-void GameModeConnecting::Back()
+void GameModeConnectingGame::Back()
 {
   auto & container = GetContainer();
   container.StopNetworkClient();

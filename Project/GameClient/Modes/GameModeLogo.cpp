@@ -1,8 +1,8 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeLogo.h"
-#include "GameClient/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeLogo.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
-#include "GameClient/GameModeSinglePlayerBots.h"
+#include "GameClient/Modes/GameModeSinglePlayerBots.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"

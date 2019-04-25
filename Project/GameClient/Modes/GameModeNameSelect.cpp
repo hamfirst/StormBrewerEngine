@@ -1,11 +1,11 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeNameSelect.h"
-#include "GameClient/GameModeMainMenu.h"
-#include "GameClient/GameModeConnecting.h"
-#include "GameClient/GameModeJoinPrivateGame.h"
-#include "GameClient/GameModeMapSettings.h"
+#include "GameClient/Modes/GameModeNameSelect.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeJoinPrivateGame.h"
+#include "GameClient/Modes/GameModeMapSettings.h"
 #include "GameClient/GameContainer.h"
-#include "GameClient/GameModeNameSelect.h"
+#include "GameClient/Modes/GameModeNameSelect.h"
 
 #include "GameShared/GameValidation.h"
 
@@ -112,7 +112,7 @@ void GameModeNameSelect::GoToNextMode()
   }
   else if (m_NextMode == GameModeNameSelectNextScreen::kJoinOnline)
   {
-    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
   }
   else
   {

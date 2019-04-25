@@ -34,25 +34,25 @@ set(GENERIC_SRC_GameClient
             GameClientSystems.cpp
             GameClientUIManager.cpp
             GameContainer.cpp
-            GameMode.cpp
-            GameModeConnecting.cpp
-            GameModeEndGame.cpp
-            GameModeJoinPrivateGame.cpp
-            GameModeLoadingGlobal.cpp
-            GameModeLocalMultiplayer.cpp
-            GameModeLogo.cpp
-            GameModeMainMenu.cpp
-            GameModeMapSettings.cpp
-            GameModeNameSelect.cpp
-            GameModeOfflineStaging.cpp
-            GameModeOnlineGameplay.cpp
-            GameModeOnlineStaging.cpp
-            GameModeSinglePlayerBots.cpp
-            GameModeStagingBase.cpp
-            GameModeTutorial.cpp
             GameNetworkClient.cpp
             GameServerEventResponder.cpp
             GameShaders.cpp
+            Modes/GameMode.cpp
+            Modes/GameModeConnectingGame.cpp
+            Modes/GameModeEndGame.cpp
+            Modes/GameModeJoinPrivateGame.cpp
+            Modes/GameModeLoadingGlobal.cpp
+            Modes/GameModeLocalMultiplayer.cpp
+            Modes/GameModeLogo.cpp
+            Modes/GameModeMainMenu.cpp
+            Modes/GameModeMapSettings.cpp
+            Modes/GameModeNameSelect.cpp
+            Modes/GameModeOfflineStaging.cpp
+            Modes/GameModeOnlineGameplay.cpp
+            Modes/GameModeOnlineStaging.cpp
+            Modes/GameModeSinglePlayerBots.cpp
+            Modes/GameModeStagingBase.cpp
+            Modes/GameModeTutorial.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -84,25 +84,25 @@ set(GENERIC_HEADER_GameClient
             GameClientSystems.h
             GameClientUIManager.h
             GameContainer.h
-            GameMode.h
-            GameModeConnecting.h
-            GameModeEndGame.h
-            GameModeJoinPrivateGame.h
-            GameModeLoadingGlobal.h
-            GameModeLocalMultiplayer.h
-            GameModeLogo.h
-            GameModeMainMenu.h
-            GameModeMapSettings.h
-            GameModeNameSelect.h
-            GameModeOfflineStaging.h
-            GameModeOnlineGameplay.h
-            GameModeOnlineStaging.h
-            GameModeSinglePlayerBots.h
-            GameModeStagingBase.h
-            GameModeTutorial.h
             GameNetworkClient.h
             GameServerEventResponder.h
             GameShaders.h
+            Modes/GameMode.h
+            Modes/GameModeConnectingGame.h
+            Modes/GameModeEndGame.h
+            Modes/GameModeJoinPrivateGame.h
+            Modes/GameModeLoadingGlobal.h
+            Modes/GameModeLocalMultiplayer.h
+            Modes/GameModeLogo.h
+            Modes/GameModeMainMenu.h
+            Modes/GameModeMapSettings.h
+            Modes/GameModeNameSelect.h
+            Modes/GameModeOfflineStaging.h
+            Modes/GameModeOnlineGameplay.h
+            Modes/GameModeOnlineStaging.h
+            Modes/GameModeSinglePlayerBots.h
+            Modes/GameModeStagingBase.h
+            Modes/GameModeTutorial.h
             #HEADER_PLACEHOLDER
             )
 

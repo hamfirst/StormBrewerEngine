@@ -1,11 +1,11 @@
 
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeConnecting.h"
-#include "GameClient/GameModeOnlineGameplay.h"
-#include "GameClient/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeOnlineGameplay.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
-#include "GameClient/GameModeOnlineStaging.h"
+#include "GameClient/Modes/GameModeOnlineStaging.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"

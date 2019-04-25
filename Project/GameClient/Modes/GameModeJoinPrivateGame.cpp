@@ -1,7 +1,7 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeJoinPrivateGame.h"
-#include "GameClient/GameModeMainMenu.h"
-#include "GameClient/GameModeConnecting.h"
+#include "GameClient/Modes/GameModeJoinPrivateGame.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
 #include "GameClient/GameContainer.h"
 
 #include "GameShared/GameValidation.h"

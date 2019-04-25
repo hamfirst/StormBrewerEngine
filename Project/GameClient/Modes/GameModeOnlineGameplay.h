@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "GameClient/GameClientSystems.h"
 
 #include "Engine/Camera/Camera.h"

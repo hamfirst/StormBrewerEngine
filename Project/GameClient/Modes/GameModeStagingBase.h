@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "Game/GameNetworkData.refl.h"
 
 #include "Engine/UI/UIManager.h"

@@ -1,10 +1,10 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeConnecting.h"
-#include "GameClient/GameModeOnlineGameplay.h"
-#include "GameClient/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeOnlineGameplay.h"
+#include "GameClient/Modes/GameModeMainMenu.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
-#include "GameClient/GameModeEndGame.h"
+#include "GameClient/Modes/GameModeEndGame.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -67,7 +67,7 @@ void GameModeOnlineGameplay::Update()
 
   if (client.GetConnectionState() != ClientConnectionState::kConnected)
   {
-    container.SwitchMode(GameModeDef<GameModeConnecting>{});
+    container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
     return;
   }
 

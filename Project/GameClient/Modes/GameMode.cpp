@@ -1,5 +1,5 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameMode.h"
+#include "GameClient/Modes/GameMode.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/Shader/ShaderManager.h"

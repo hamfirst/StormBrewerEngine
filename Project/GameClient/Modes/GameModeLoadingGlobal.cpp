@@ -1,8 +1,8 @@
 #include "GameClient/GameClientCommon.h"
-#include "GameClient/GameModeLoadingGlobal.h"
-#include "GameClient/GameModeLogo.h"
-#include "GameClient/GameModeConnecting.h"
-#include "GameClient/GameModeSinglePlayerBots.h"
+#include "GameClient/Modes/GameModeLoadingGlobal.h"
+#include "GameClient/Modes/GameModeLogo.h"
+#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeSinglePlayerBots.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
 
@@ -47,7 +47,7 @@ void GameModeLoadingGlobal::Update()
       {
         GameNetworkClientInitSettings net_settings;
         container.StartNetworkClient(net_settings);
-        container.SwitchMode(GameModeDef<GameModeConnecting>{});
+        container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
       }
       else if (init_settings->m_AutoBotGame)
       {
