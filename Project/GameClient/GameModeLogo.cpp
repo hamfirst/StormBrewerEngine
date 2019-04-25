@@ -33,7 +33,7 @@ void GameModeLogo::Update()
   auto & container = GetContainer();
   container.GetWindow().Update();
 
-  bool timer_allowed = m_Timer.GetTimeSinceStart() > 100.0;
+  bool timer_allowed = m_Timer.GetTimeSinceStart() > 1.5;
   bool global_loaded = container.AllGlobalResourcesLoaded();
 
   if (timer_allowed && global_loaded)
