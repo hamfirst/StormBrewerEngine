@@ -1,0 +1,10 @@
+[]
+
+{
+    "m_Functions": {
+        "0": {
+            "m_Name": "Search"
+        }
+    },
+    "m_InitFunction": "InitCompetitivePlaylistMenu"
+}

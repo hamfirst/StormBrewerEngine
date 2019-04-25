@@ -98,7 +98,7 @@ void GameModeSinglePlayerBots::Update()
 
   if (game_data.m_WiningTeam)
   {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, 
+    container.SwitchMode<GameModeEndGame>(
       std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineSingleplayer);
     return;
   }
@@ -230,7 +230,7 @@ void GameModeSinglePlayerBots::Render()
   if (ui_manager.WantsToQuit())
   {
     auto & container = GetContainer();
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
   }
 
   //RenderProfilerData(render_state);

@@ -8,30 +8,23 @@ function InitMainMenu()
   title_image.x = screen_start_x
   title_image.y = screen_end_y - title_image.height
 
-  local online_menu = PushMenuElement(QuickMenu:new())
-  online_menu:PushMenuAction("Play Ranked", function() game:Quit() end)
-  online_menu:PushMenuAction("Play Casual", function() game:Quit() end)
-  online_menu:PushMenuAction("Private Game", function() CleanupMenu() InitPrivateGameMenu() end)
-
   local play_menu = PushMenuElement(QuickMenu:new())
-  play_menu:PushSubMenu("Play Online", online_menu)
-  play_menu:PushMenuAction("Play Local", function() end)
+  play_menu:PushMenuAction("Play Online", function() game:PlayOnline() end)
+  play_menu:PushMenuAction("Play Local", function() game:PlayOffline() end)
   
   local start_menu = PushMenuElement(QuickMenu:new())
   start_menu:PushSubMenu("Play", play_menu)
-  start_menu:PushMenuAction("Tutorial", function()  end)
+  start_menu:PushMenuAction("Tutorial", function() game:Tutorial() end)
 
   if game:CanQuit() then
-    start_menu:SetBottomButton("Quit", function () game:Quit() end)
+    start_menu:SetBottomButton("Quit", function () fader:FadeToSolidThen(function() game:Quit() end) end)
   end
 
   start_menu:Show()
   
-  CreateDefualtControls();
+  CreateDefualtControls()
+  CreatePopupFader()
 
   fader = PushMenuElement(Fader:new())
   fader:FadeToClear()
-
 end
-
-

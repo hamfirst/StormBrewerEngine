@@ -54,6 +54,7 @@ std::unique_ptr<DDSNodeState> CreateNodeState(const NodeSettings & settings)
   StormSockets::StormSocketServerFrontendWebsocketSettings user_endpoint_settings;
   user_endpoint_settings.ListenSettings.Port = settings.m_UserPort;
   user_endpoint_settings.MaxConnections = 20000;
+  user_endpoint_settings.Protocol = kProjectName;
 
   StormSockets::StormSocketServerFrontendWebsocketSettings server_endpoint_settings;
   server_endpoint_settings.ListenSettings.Port = settings.m_GameServerPort;

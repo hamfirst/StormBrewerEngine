@@ -45,15 +45,15 @@ void GameModeConnectingGame::Update()
   if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
     m_FrameClock.BeginFrame();
-    container.GetClient().Update();
+    container.GetGameClient().Update();
   }
 
-  if (container.GetClient().GetConnectionState() == ClientConnectionState::kConnected)
+  if (container.GetGameClient().GetConnectionState() == ClientConnectionState::kConnected)
   {
-    container.SwitchMode(GameModeDef<GameModeOnlineGameplay>{});
+    container.SwitchMode<GameModeOnlineGameplay>();
   }
 
-  if (container.GetClient().GetConnectionState() == ClientConnectionState::kDisconnected)
+  if (container.GetGameClient().GetConnectionState() == ClientConnectionState::kDisconnected)
   {
     m_ConnectFailed = true;
 
@@ -62,7 +62,7 @@ void GameModeConnectingGame::Update()
     {
       m_LastConnect = cur_time;
 
-      auto settings = container.GetClient().GetSettings();
+      auto settings = container.GetGameClient().GetSettings();
       container.StopNetworkClient();
       container.StartNetworkClient(settings);
     }
@@ -86,7 +86,7 @@ void GameModeConnectingGame::Render()
     render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize(window_size / 2.0f, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
 
     const char * status_msg = "";
-    switch (container.GetClient().GetConnectionState())
+    switch (container.GetGameClient().GetConnectionState())
     {
     case ClientConnectionState::kConnecting:
     case ClientConnectionState::kDisconnected:
@@ -116,7 +116,7 @@ void GameModeConnectingGame::Render()
     g_TextManager.RenderText(status_msg, -1, 1, render_state);
 
     if (m_ConnectFailed &&
-      container.GetClient().GetConnectionState() != ClientConnectionState::kLoading)
+            container.GetGameClient().GetConnectionState() != ClientConnectionState::kLoading)
     {
       status_msg = "The servers may be offline";
       auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
@@ -139,5 +139,5 @@ void GameModeConnectingGame::Back()
 {
   auto & container = GetContainer();
   container.StopNetworkClient();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }

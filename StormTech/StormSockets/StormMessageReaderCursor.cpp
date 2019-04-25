@@ -318,7 +318,7 @@ namespace StormSockets
         continue;
       }
 
-      hash = crc32additive(hash, c);
+      hash = crc32additive(hash, tolower(c));
       Advance(1);
     }
 

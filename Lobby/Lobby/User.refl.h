@@ -291,7 +291,7 @@ public:
   void BeginLoad();
   void CheckCompleteLoad();
 
-  static bool ValidateUserName(const std::string & name, int min_characters = 3, int max_characters = 32, bool allow_space = false);
+  static bool ValidateName(const std::string & name, int min_characters = 3, int max_characters = 32, bool allow_space = false);
 
   static DDSKey GetUserIdForPlatformId(const std::string & platform, uint64_t platform_id);
 

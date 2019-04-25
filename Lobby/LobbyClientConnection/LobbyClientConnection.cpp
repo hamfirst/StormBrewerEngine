@@ -28,6 +28,7 @@ LobbyClientConnection::LobbyClientConnection(const LobbyClientConnectionSettings
         m_LastPingTime(time(nullptr)),
         m_LoginMode(settings.m_LoginMode),
         m_LoginToken(settings.m_Token),
+        m_GuestUserName(settings.m_GuestUserName),
         m_LoadBalancerHost(settings.m_LoadBalancerHostName),
         m_RelocationToken(0)
 {
@@ -51,12 +52,6 @@ void LobbyClientConnection::Connect()
 
 void LobbyClientConnection::Update()
 {
-  if (m_State == LobbyClientConnectionState::kDisconnected)
-  {
-    Connect();
-    return;
-  }
-
   if(m_RelocationState == LobbyRelocationState::kConnecting)
   {
     if(m_WebSocket.IsConnected())
@@ -121,12 +116,11 @@ void LobbyClientConnection::Update()
     else
     {
       auto packet = m_WebSocket.PollPacket();
-
       if (packet == false)
       {
         if (m_WebSocket.IsConnected() == false)
         {
-          SetDisconnected("Lost connection to server");
+          SetDisconnected("Failed to establish connection to server");
         }
         return;
       }
@@ -168,6 +162,11 @@ void LobbyClientConnection::Update()
       UserMessageBase ping;
       SendMessage(ping, "ping");
     }
+  }
+
+  if(m_State == LobbyClientConnectionState::kDisconnected)
+  {
+    return;
   }
 
   while (true)
@@ -255,7 +254,8 @@ void LobbyClientConnection::Update()
           {
 #ifdef ENABLE_AUTH_GUEST
           case LobbyLoginMode::kGuest:
-            resp.c = "lguest";
+            resp.user_name = m_GuestUserName;
+            SendMessage(resp, "lguest");
             break;
 #endif
           default:
@@ -291,6 +291,7 @@ void LobbyClientConnection::Update()
           else
           {
             ParseError();
+            return;
           }
         }
         break;
@@ -524,6 +525,11 @@ LobbyClientState LobbyClientConnection::GetState() const
 const std::string & LobbyClientConnection::GetConnectionError() const
 {
   return m_ConnectionError;
+}
+
+bool LobbyClientConnection::HasLatencySamples() const
+{
+  return m_LatencySamples.size() > 0;
 }
 
 void LobbyClientConnection::SetLatencySamples(const std::vector<int> & samples)

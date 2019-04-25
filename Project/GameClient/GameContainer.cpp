@@ -119,14 +119,50 @@ RenderState & GameContainer::GetRenderState()
   return m_RenderState;
 }
 
-void GameContainer::StartLobbyClient(const LobbyClientConnectionSettings & settings)
+void GameContainer::StartLobbyClient()
 {
+  LobbyClientConnectionSettings settings;
+  settings.m_LoadBalancerHostName = m_InitSettings->m_LoadBalancerHostName;
+  settings.m_LoginMode = m_InitSettings->m_LoginMode;
+  settings.m_Token = m_InitSettings->m_Token;
+  settings.m_GuestUserName = m_InitSettings->m_UserName;
+
   m_LobbyConnection = std::make_unique<LobbyClientConnection>(settings);
 }
 
 void GameContainer::StopLobbyClient()
 {
   m_LobbyConnection.reset();
+}
+
+bool GameContainer::HasLobbyClient()
+{
+  return m_LobbyConnection.get();
+}
+
+LobbyClientConnection & GameContainer::GetLobbyClient()
+{
+  return *m_LobbyConnection.get();
+}
+
+void GameContainer::StartLatencyChecker()
+{
+  m_LatencyChecker = std::make_unique<GameClientLatencyChecker>();
+}
+
+void GameContainer::StopLatencyChecker()
+{
+  m_LatencyChecker.reset();
+}
+
+bool GameContainer::HasLatencyChecker()
+{
+  return m_LatencyChecker.get();
+}
+
+GameClientLatencyChecker & GameContainer::GetLatencyChecker()
+{
+  return *m_LatencyChecker.get();
 }
 
 void GameContainer::StartNetworkClient(const GameNetworkClientInitSettings & settings)
@@ -144,7 +180,7 @@ bool GameContainer::HasClient() const
   return m_Client.get() != nullptr;
 }
 
-GameNetworkClient & GameContainer::GetClient()
+GameNetworkClient & GameContainer::GetGameClient()
 {
   ASSERT(m_Client, "Attempting to get client when network client has not been started");
   return *m_Client.get();

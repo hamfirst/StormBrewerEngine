@@ -18,7 +18,7 @@
 GLOBAL_ASSET(UIResourcePtr, "./UIs/MapSettings.ui", g_MapSettingsSelectUI);
 
 GameModeMapSettings::GameModeMapSettings(GameContainer &game, GameModeMapSettingsNextScreen next_screen) :
-    GameMode(game),
+    GameModeOnlineBase(game),
     m_NextScreen(next_screen),
     m_ScriptInterface(nullptr)
 {
@@ -84,6 +84,14 @@ void GameModeMapSettings::OnAssetsLoaded()
 
 void GameModeMapSettings::Update()
 {
+  if(m_NextScreen == GameModeMapSettingsNextScreen::kPrivateGame)
+  {
+    if(HandleDisconnect())
+    {
+      return;
+    }
+  }
+
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
 
@@ -107,7 +115,7 @@ void GameModeMapSettings::Render()
 void GameModeMapSettings::Back()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }
 
 void GameModeMapSettings::Submit()
@@ -116,11 +124,8 @@ void GameModeMapSettings::Submit()
 
   switch(m_NextScreen)
   {
-    case GameModeMapSettingsNextScreen::kOfflineBots:
-      container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, m_Settings, false);
-      break;
     case GameModeMapSettingsNextScreen::kOfflineStaging:
-      container.SwitchMode(GameModeDef<GameModeOfflineStaging>{}, m_Settings);
+      container.SwitchMode<GameModeOfflineStaging>(m_Settings);
       break;
     case GameModeMapSettingsNextScreen::kPrivateGame:
       break;

@@ -293,6 +293,6 @@ void GameModeStagingBase::CancelMapChanges()
 void GameModeStagingBase::Quit()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }
 

@@ -61,6 +61,7 @@ struct LobbyClientConnectionSettings
   LobbyLoginMode m_LoginMode;
   std::string m_Token;
   std::string m_LoadBalancerHostName;
+  std::string m_GuestUserName;
 };
 
 class LobbyClientConnection
@@ -80,6 +81,7 @@ public:
   const Optional<RMap<DDSKey, GameListGame>> & GetGameList() { return m_GameList; }
   const Optional<GameListGame> & GetGameListPreview() { return m_GameListPreview; }
 
+  bool HasLatencySamples() const;
   void SetLatencySamples(const std::vector<int> & samples);
 
   void SendNewUserName(const std::string_view & name);
@@ -142,6 +144,7 @@ private:
   std::string m_LoadBalancerHost;
   LobbyLoginMode m_LoginMode;
   std::string m_LoginToken;
+  std::string m_GuestUserName;
 
   std::vector<int> m_LatencySamples;
 

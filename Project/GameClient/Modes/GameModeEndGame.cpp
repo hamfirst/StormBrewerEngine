@@ -126,7 +126,7 @@ void GameModeEndGame::Update()
   if (ui_manager.WantsToQuit())
   {
     auto & container = GetContainer();
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
   }
 }
 
@@ -174,10 +174,10 @@ void GameModeEndGame::PlayAgain()
 
     break;
   case EndGamePlayAgainMode::kOfflineMultiplayer:
-    container.SwitchMode(GameModeDef<GameModeOfflineStaging>{}, init_settings);
+    container.SwitchMode<GameModeOfflineStaging>(init_settings);
     break;
   case EndGamePlayAgainMode::kOfflineSingleplayer:
-    container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, init_settings, false);
+    container.SwitchMode<GameModeSinglePlayerBots>(init_settings, false);
     break;
   }
 }
@@ -185,5 +185,5 @@ void GameModeEndGame::PlayAgain()
 void GameModeEndGame::Quit()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }

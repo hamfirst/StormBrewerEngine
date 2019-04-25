@@ -81,7 +81,7 @@ int main(int argc, const char ** argv)
   node_settings.m_HTMLPath = html_dir;
   auto node = CreateNodeState(node_settings);
 
-  auto load_balancer = CreateLoadBalancer();
+  auto load_balancer = CreateLoadBalancer("127.0.0.1", COORDINATOR_LB_PORT, LOBBY_LB_PORT);
 
   //DDSShutdownRegisterNode(node.get());
 

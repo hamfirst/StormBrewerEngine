@@ -22,7 +22,6 @@ set(GENERIC_SRC_GameShared
             GamePlayList.cpp
             GameSharedCommon.cpp
             GameStageManager.cpp
-            GameValidation.cpp
             GameWebrtc.cpp
             Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
@@ -47,7 +46,6 @@ set(GENERIC_HEADER_GameShared
             GameProtocol.h
             GameSharedCommon.h
             GameStageManager.h
-            GameValidation.h
             Systems/CVCPushSystem.h
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h

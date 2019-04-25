@@ -23,14 +23,15 @@ class GameMode;
 class GameNetworkClient;
 class GameClientInstanceContainer;
 
-template <typename GameMode>
-struct GameModeDef {};
-
 struct GameContainerInitSettings
 {
   bool m_AutoConnect = false;
   bool m_AutoBotGame = false;
-  std::string m_UserName = "Player";
+
+  LobbyLoginMode m_LoginMode = LobbyLoginMode::kGuest;
+  std::string m_LoadBalancerHostName = "127.0.0.1";
+  std::string m_Token;
+  std::string m_UserName;
 };
 
 class GameContainer
@@ -63,13 +64,20 @@ public:
 
   RenderState & GetRenderState();
 
-  void StartLobbyClient(const LobbyClientConnectionSettings & settings);
+  void StartLobbyClient();
   void StopLobbyClient();
+  bool HasLobbyClient();
+  LobbyClientConnection & GetLobbyClient();
+
+  void StartLatencyChecker();
+  void StopLatencyChecker();
+  bool HasLatencyChecker();
+  GameClientLatencyChecker & GetLatencyChecker();
   
   void StartNetworkClient(const GameNetworkClientInitSettings & settings);
   void StopNetworkClient();
   bool HasClient() const;
-  GameNetworkClient & GetClient();
+  GameNetworkClient & GetGameClient();
 
   bool AllGlobalResourcesLoaded();
 
@@ -78,7 +86,7 @@ public:
   void InputEvent();
 
   template <typename Mode, typename ... Args>
-  void SwitchMode(const GameModeDef<Mode> & def, Args && ... args)
+  void SwitchMode(Args && ... args)
   {
     if (m_Updating)
     {

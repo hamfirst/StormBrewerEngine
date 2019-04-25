@@ -1,5 +1,4 @@
-#include "GameShared/GameSharedCommon.h"
-#include "GameShared/GameValidation.h"
+#include "LobbyShared/LobbyValidation.h"
 
 static const int kMinCharacters = 3;
 static const int kMaxCharacters = 16;

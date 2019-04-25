@@ -207,7 +207,7 @@ namespace StormSockets
                     break;
                   }
 
-                  test_hash = crc32additive(test_hash, c);
+                  test_hash = crc32additive(test_hash, tolower(c));
                 }
 
                 test_hash = crc32end(test_hash);
@@ -291,8 +291,7 @@ namespace StormSockets
     auto writer = m_Backend->CreateWriter();
 
     auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-
-    std::mt19937_64 generator(seed);
+    static std::mt19937_64 generator(seed);
 
     char sec_key[256];
     int offs = 0;

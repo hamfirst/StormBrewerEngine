@@ -199,7 +199,7 @@ void GameModeTutorial::Render()
   if (ui_manager.WantsToQuit())
   {
     auto & container = GetContainer();
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
   }
 }
 

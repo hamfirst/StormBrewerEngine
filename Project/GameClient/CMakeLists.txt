@@ -39,6 +39,7 @@ set(GENERIC_SRC_GameClient
             GameShaders.cpp
             Modes/GameMode.cpp
             Modes/GameModeConnectingGame.cpp
+            Modes/GameModeConnectingLobby.cpp
             Modes/GameModeEndGame.cpp
             Modes/GameModeJoinPrivateGame.cpp
             Modes/GameModeLoadingGlobal.cpp
@@ -48,11 +49,14 @@ set(GENERIC_SRC_GameClient
             Modes/GameModeMapSettings.cpp
             Modes/GameModeNameSelect.cpp
             Modes/GameModeOfflineStaging.cpp
+            Modes/GameModeOnlineBase.cpp
             Modes/GameModeOnlineGameplay.cpp
             Modes/GameModeOnlineStaging.cpp
             Modes/GameModeSinglePlayerBots.cpp
             Modes/GameModeStagingBase.cpp
             Modes/GameModeTutorial.cpp
+            Modes/GameModePlayOnline.cpp
+            Modes/GameModePlaylistMenu.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -89,6 +93,7 @@ set(GENERIC_HEADER_GameClient
             GameShaders.h
             Modes/GameMode.h
             Modes/GameModeConnectingGame.h
+            Modes/GameModeConnectingLobby.h
             Modes/GameModeEndGame.h
             Modes/GameModeJoinPrivateGame.h
             Modes/GameModeLoadingGlobal.h
@@ -98,11 +103,14 @@ set(GENERIC_HEADER_GameClient
             Modes/GameModeMapSettings.h
             Modes/GameModeNameSelect.h
             Modes/GameModeOfflineStaging.h
+            Modes/GameModeOnlineBase.h
             Modes/GameModeOnlineGameplay.h
             Modes/GameModeOnlineStaging.h
             Modes/GameModeSinglePlayerBots.h
             Modes/GameModeStagingBase.h
             Modes/GameModeTutorial.h
+            Modes/GameModePlayOnline.h
+            Modes/GameModePlaylistMenu.h
             #HEADER_PLACEHOLDER
             )
 

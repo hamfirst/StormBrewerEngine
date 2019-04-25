@@ -1,13 +1,10 @@
 #include "GameClient/GameClientCommon.h"
 #include "GameClient/Modes/GameModeNameSelect.h"
 #include "GameClient/Modes/GameModeMainMenu.h"
-#include "GameClient/Modes/GameModeConnectingGame.h"
-#include "GameClient/Modes/GameModeJoinPrivateGame.h"
-#include "GameClient/Modes/GameModeMapSettings.h"
+#include "GameClient/Modes/GameModeConnectingLobby.h"
 #include "GameClient/GameContainer.h"
-#include "GameClient/Modes/GameModeNameSelect.h"
 
-#include "GameShared/GameValidation.h"
+#include "LobbyShared/LobbyValidation.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -17,9 +14,9 @@
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/NameSelect.ui", g_NameSelectUI);
 
-GameModeNameSelect::GameModeNameSelect(GameContainer & game, GameModeNameSelectNextScreen next_mode) :
-  GameMode(game),
-  m_NextMode(next_mode)
+GameModeNameSelect::GameModeNameSelect(GameContainer & game, bool repick) :
+  GameModeOnlineBase(game),
+  m_Repick(repick)
 {
   
 }
@@ -39,6 +36,7 @@ void GameModeNameSelect::OnAssetsLoaded()
   auto & container = GetContainer();
 
   auto ui = container.GetUIManager();
+  ui->SetGlobal("name_repick", m_Repick);
 
   auto & game_interface = ui->CreateGameInterface();
   BIND_SCRIPT_INTERFACE(game_interface, this, Submit);
@@ -51,7 +49,13 @@ void GameModeNameSelect::OnAssetsLoaded()
 
 void GameModeNameSelect::Update()
 {
-  m_Sequencer.Update();
+  if(m_Repick)
+  {
+    if(HandleDisconnect())
+    {
+      return;
+    }
+  }
 
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
@@ -81,6 +85,14 @@ bool GameModeNameSelect::Submit(std::string & user_name)
   }
 
   auto & container = GetContainer();
+  if(m_Repick)
+  {
+    container.GetLobbyClient().SendNewUserName(user_name);
+  }
+  else
+  {
+    container.GetInitSettings()->m_UserName = user_name;
+  }
 
   GoToNextMode();
   return true;
@@ -99,23 +111,12 @@ bool GameModeNameSelect::CheckSubmitValidUserName(std::string & user_name)
 void GameModeNameSelect::Back()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.StopNetworkClient();
+  container.SwitchMode<GameModeMainMenu>();
 }
 
 void GameModeNameSelect::GoToNextMode()
 {
   auto & container = GetContainer();
-
-  if (m_NextMode == GameModeNameSelectNextScreen::kJoinPrivate)
-  {
-    container.SwitchMode(GameModeDef<GameModeJoinPrivateGame>{});
-  }
-  else if (m_NextMode == GameModeNameSelectNextScreen::kJoinOnline)
-  {
-    container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
-  }
-  else
-  {
-    container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kPrivateGame);
-  }
+  container.SwitchMode<GameModeConnectingLobby>();
 }

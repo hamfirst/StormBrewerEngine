@@ -2,27 +2,27 @@
 
 {
     "m_Functions": {
+        "2": {
+            "m_DebugOutput": false,
+            "m_Value": "5",
+            "m_Name": "GetPlayerMaxCount"
+        },
         "0": {
+            "m_DebugOutput": false,
             "m_Value": "2",
-            "m_Name": "GetTeamCount",
-            "m_DebugOutput": false
+            "m_Name": "GetTeamCount"
         },
         "1": {
+            "m_DebugOutput": false,
             "m_Value": "5",
-            "m_Name": "GetPlayerCount",
-            "m_DebugOutput": false
-        },
-        "2": {
-            "m_Value": "5",
-            "m_Name": "GetPlayerMaxCount",
-            "m_DebugOutput": false
+            "m_Name": "GetPlayerCount"
         }
     },
-    "m_InitFunction": "InitTestMenu",
     "m_Variables": {
         "0": {
-            "m_Value": "1",
-            "m_Name": "allow_observers"
+            "m_Name": "allow_observers",
+            "m_Value": "1"
         }
-    }
+    },
+    "m_InitFunction": "InitTestMenu"
 }

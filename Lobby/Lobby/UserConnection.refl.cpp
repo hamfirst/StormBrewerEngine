@@ -1,19 +1,20 @@
 
-#include <hash/Hash64.h>
-
-#include <HurricaneDDS/DDSRandom.h>
-
-#include <StormRefl/StormReflJsonStd.h>
-
 #include "UserConnection.refl.meta.h"
 #include "User.refl.meta.h"
 #include "GameServerConnection.refl.meta.h"
-
 #include "UserConnectionMessages.refl.meta.h"
 #include "GameList.refl.meta.h"
 #include "BanList.refl.meta.h"
 #include "WelcomeInfo.refl.meta.h"
 #include "GameServerConnection.refl.h"
+
+#include "LobbyShared/LobbyValidation.h"
+
+#include <hash/Hash64.h>
+
+#include "HurricaneDDS/DDSRandom.h"
+
+#include "StormRefl/StormReflJsonStd.h"
 
 UserConnection::UserConnection(DDSNodeInterface node_interface) :
   m_Interface(node_interface), m_State(UserConnectionState::kLoadingUser), m_Error(false), m_Relocating(false)
@@ -115,7 +116,7 @@ void UserConnection::LoadUser(std::string platform, uint64_t platform_id, uint64
 
 void UserConnection::CreateUserObject(const std::string & name)
 {
-  if (User::ValidateUserName(name, 2, 20) == false)
+  if (ValidUserName(name.c_str()) == false)
   {
     UserMessageBase msg{ "repick_new_user" };
     SendData(StormReflEncodeJson(msg));

@@ -121,8 +121,10 @@ void NetworkUpdate()
     switch(event.Type)
     {
     case StormSockets::StormSocketEventType::ClientConnected:
+      printf("WebSocket client connected\n");
       break;
     case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
+      printf("WebSocket handshake complete\n");
       ws_data->m_State = NetworkConnectionState::kConnected;
       break;
     case StormSockets::StormSocketEventType::Data:
@@ -145,6 +147,7 @@ void NetworkUpdate()
       break;
     }
     case StormSockets::StormSocketEventType::Disconnected:
+      printf("WebSocket client disconnected\n");
       ws_data->m_Disconnected = true;
       ws_data->m_State = NetworkConnectionState::kDisconnected;
 
@@ -178,8 +181,10 @@ void NetworkUpdate()
     switch(event.Type)
     {
     case StormSockets::StormSocketEventType::ClientConnected:
+      printf("Http client connected\n");
       break;
     case StormSockets::StormSocketEventType::ClientHandShakeCompleted:
+      printf("Http client handshake complete\n");
       req_data->m_State = NetworkConnectionState::kConnected;
       break;
     case StormSockets::StormSocketEventType::Data:
@@ -209,6 +214,7 @@ void NetworkUpdate()
       break;
     }
     case StormSockets::StormSocketEventType::Disconnected:
+      printf("Http client disconnected\n");
       req_data->m_Disconnected = true;
       if(req_data->m_Freed)
       {

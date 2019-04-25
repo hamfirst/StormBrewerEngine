@@ -1,4 +1,5 @@
 
+name_repick = true
 
 function InitNameSelectMenu()
 
@@ -21,6 +22,22 @@ function InitNameSelectMenu()
   error.g = 0.2
   error.b = 0.2
   error.alpha = 0
+
+  if name_repick then
+    print("repick ")
+    local repick = PushMenuElement(Label:new())
+    repick.x = -130
+    repick.y = 80
+    repick.height = 70
+    repick.width = 260
+    repick.text = "That user name is already taken"
+    repick.centered = true
+    repick.r = 1
+    repick.g = 0.2
+    repick.b = 0.2
+    repick.alpha = 4
+    AddLerp(repick, "alpha", 0, 8)
+  end
 
   local input = PushMenuElement(TextInput:new())
   input.x = -130

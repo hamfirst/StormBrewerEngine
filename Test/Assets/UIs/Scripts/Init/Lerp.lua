@@ -12,11 +12,24 @@ function ClearLerp(obj, var_name)
   end
 end
 
+function RemoveAllLerps(obj)
+  for k, v in pairs(active_lerps) do
+    if v.obj == obj then
+      active_lerps[k] = nil
+      return
+    end
+  end
+end
+
 function AddLerp(obj, var_name, target_val, t, onfinish, easing_func)
 
   ClearLerp(obj, var_name)
 
   local cur_val = obj[var_name]
+
+  if easing_func == nil then
+    easing_func = EaseInCubic
+  end
 
   lerp = {
     obj = obj,

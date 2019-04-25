@@ -3,21 +3,14 @@
 #include "Foundation/Time/StopWatch.h"
 #include "Foundation/Sequencer/Sequencer.h"
 
-#include "GameClient/Modes/GameMode.h"
+#include "GameClient/Modes/GameModeOnlineBase.h"
 
 #include "Engine/UI/UIManager.h"
 
-enum class GameModeNameSelectNextScreen
-{
-  kJoinOnline,
-  kCreatePrivate,
-  kJoinPrivate,
-};
-
-class GameModeNameSelect : public GameMode
+class GameModeNameSelect : public GameModeOnlineBase
 {
 public:
-  GameModeNameSelect(GameContainer & game, GameModeNameSelectNextScreen next_screen);
+  GameModeNameSelect(GameContainer & game, bool repick);
   ~GameModeNameSelect() override;
 
   void Initialize() override;
@@ -36,10 +29,7 @@ protected:
   void GoToNextMode();
 
 private:
-
-  GameModeNameSelectNextScreen m_NextMode;
-
-  Sequencer m_Sequencer;
+  bool m_Repick;
 };
 
 

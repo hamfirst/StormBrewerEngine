@@ -4,7 +4,7 @@
 #include "GameClient/Modes/GameModeConnectingGame.h"
 #include "GameClient/GameContainer.h"
 
-#include "GameShared/GameValidation.h"
+#include "LobbyShared/LobbyValidation.h"
 
 #include "Engine/Asset/TextureAsset.h"
 #include "Engine/Text/TextManager.h"
@@ -118,5 +118,5 @@ bool GameModeJoinPrivateGame::CheckSubmitValidGameCode(std::string & user_name)
 void GameModeJoinPrivateGame::Back()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }

@@ -80,6 +80,6 @@ void GameModeOfflineStaging::Start()
 void GameModeOfflineStaging::Back()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+  container.SwitchMode<GameModeMainMenu>();
 }
 

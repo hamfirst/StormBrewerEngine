@@ -32,13 +32,14 @@ void GameModeLogo::Update()
 {
   auto & container = GetContainer();
   container.GetWindow().Update();
+  container.UpdateUIManager();
 
   bool timer_allowed = m_Timer.GetTimeSinceStart() > 1.5;
   bool global_loaded = container.AllGlobalResourcesLoaded();
 
   if (timer_allowed && global_loaded)
   {
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
     return;
   }
 }

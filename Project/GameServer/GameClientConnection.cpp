@@ -6,8 +6,6 @@
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameMessages.refl.meta.h"
 
-#include "GameShared/GameValidation.h"
-
 GameClientConnection::GameClientConnection(GameServer & server, uint32_t connection_id, ServerProtocol & protocol) :
   m_Server(server),
   m_ConnectionId(connection_id),

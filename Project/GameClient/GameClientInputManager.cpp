@@ -185,7 +185,7 @@ void GameClientInputManager::SendInput(std::size_t client_index, ClientInput & i
 
   if (m_GameContainer.HasClient())
   {
-    m_GameContainer.GetClient().UpdateInput(std::move(input), false);
+    m_GameContainer.GetGameClient().UpdateInput(std::move(input), false);
   }
   else
   {

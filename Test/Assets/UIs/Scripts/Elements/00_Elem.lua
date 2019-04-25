@@ -78,6 +78,8 @@ function Elem:destroy()
       self.context:delete()
       self.context = nil
   end
+
+  RemoveAllLerps(self)
 end
 
 function Elem:Update(dt)

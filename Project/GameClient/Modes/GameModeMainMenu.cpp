@@ -1,8 +1,7 @@
 #include "GameClient/GameClientCommon.h"
 #include "GameClient/Modes/GameModeMainMenu.h"
-#include "GameClient/Modes/GameModeConnectingGame.h"
+#include "GameClient/Modes/GameModeConnectingLobby.h"
 #include "GameClient/Modes/GameModeNameSelect.h"
-#include "GameClient/Modes/GameModeSinglePlayerBots.h"
 #include "GameClient/Modes/GameModeTutorial.h"
 #include "GameClient/Modes/GameModeMapSettings.h"
 #include "GameClient/GameContainer.h"
@@ -23,10 +22,11 @@
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/MainMenu.ui", g_MainMenuUI);
 
-GameModeMainMenu::GameModeMainMenu(GameContainer & game) :
+GameModeMainMenu::GameModeMainMenu(GameContainer & game, const std::string_view & error_msg) :
   GameMode(game),
   m_CasualPlaylist("./CasualPlaylist.txt"),
-  m_CompetitivePlaylist("./CompetitivePlaylist.txt")
+  m_CompetitivePlaylist("./CompetitivePlaylist.txt"),
+  m_ErrorMessage(error_msg)
 {
 
 }
@@ -59,12 +59,15 @@ void GameModeMainMenu::OnAssetsLoaded()
   BIND_SCRIPT_INTERFACE(game_interface, this, PlayOffline);
   BIND_SCRIPT_INTERFACE(game_interface, this, Tutorial);
   BIND_SCRIPT_INTERFACE(game_interface, this, PlaySingleplayer);
-  BIND_SCRIPT_INTERFACE(game_interface, this, CreatePrivateMatch);
-  BIND_SCRIPT_INTERFACE(game_interface, this, JoinPrivateMatch);
   BIND_SCRIPT_INTERFACE(game_interface, this, CanQuit);
   BIND_SCRIPT_INTERFACE(game_interface, this, Quit);
 
   container.GetUIManager()->PushUIDef(g_MainMenuUI);
+
+  if(!m_ErrorMessage.empty())
+  {
+    ui->Call("ShowErrorPopup", { m_ErrorMessage });
+  }
 }
 
 void GameModeMainMenu::Update()
@@ -99,37 +102,33 @@ void GameModeMainMenu::InputEvent()
 void GameModeMainMenu::PlayOnline()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinOnline);
+
+  if(container.GetInitSettings()->m_LoginMode == LobbyLoginMode::kGuest)
+  {
+    container.SwitchMode<GameModeNameSelect>(false);
+  }
+  else
+  {
+    container.SwitchMode<GameModeConnectingLobby>();
+  }
 }
 
 void GameModeMainMenu::PlayOffline()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kPrivateGame);
+  container.SwitchMode<GameModeMapSettings>(GameModeMapSettingsNextScreen::kOfflineStaging);
 }
 
 void GameModeMainMenu::Tutorial()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeTutorial>{});
+  container.SwitchMode<GameModeTutorial>();
 }
 
 void GameModeMainMenu::PlaySingleplayer()
 {
   auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeMapSettings>{}, GameModeMapSettingsNextScreen::kOfflineBots);
-}
-
-void GameModeMainMenu::CreatePrivateMatch()
-{
-  auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kCreatePrivate);
-}
-
-void GameModeMainMenu::JoinPrivateMatch()
-{
-  auto & container = GetContainer();
-  container.SwitchMode(GameModeDef<GameModeNameSelect>{}, GameModeNameSelectNextScreen::kJoinPrivate);
+  container.SwitchMode<GameModeTutorial>();
 }
 
 bool GameModeMainMenu::CanQuit()

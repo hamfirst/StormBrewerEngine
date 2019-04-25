@@ -883,13 +883,13 @@ void User::CreateSquad(DDSKey creator_endpoint, std::string squad_name, std::str
     return;
   }
 
-  if (User::ValidateUserName(squad_name, 3, 32, true) == false)
+  if (User::ValidateName(squad_name, 3, 32, true) == false)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, creator_endpoint, "Invalid squad name");
     return;
   }
 
-  if (User::ValidateUserName(squad_tag, 1, 8) == false)
+  if (User::ValidateName(squad_tag, 1, 8) == false)
   {
     m_Interface.Call(&UserConnection::SendRuntimeError, creator_endpoint, "Invalid squad tag");
     return;
@@ -1739,7 +1739,7 @@ void User::FetchStats(DDSResponder & responder)
 #ifdef ENABLE_CHANNELS
 void User::AddAutoJoinChannel(DDSResponder & responder, const std::string & channel_name)
 {
-  if (User::ValidateUserName(channel_name, 1, 16) == false)
+  if (User::ValidateName(channel_name, 1, 16) == false)
   {
     DDSResponderCall(responder, "Invalid channel name");
     return;
@@ -2404,7 +2404,7 @@ void User::ProcessSlashCommand(DDSKey endpoint_id, DDSKey channel_id, std::strin
     std::string channel_name;
     ParseArgumentDefault(ptr, channel_name);
 
-    if (User::ValidateUserName(channel_name, 1, 16) == false)
+    if (User::ValidateName(channel_name, 1, 16) == false)
     {
       User::HandleCommandResponderMessage(endpoint_id, "Invalid channel name");
       return;
@@ -2770,7 +2770,7 @@ void User::CheckCompleteLoad()
   m_Interface.FinalizeObjectLoad();
 }
 
-bool User::ValidateUserName(const std::string & name, int min_characters, int max_characters, bool allow_space)
+bool User::ValidateName(const std::string & name, int min_characters, int max_characters, bool allow_space)
 {
   if ((int)name.size() < min_characters || (int)name.size() > max_characters)
   {

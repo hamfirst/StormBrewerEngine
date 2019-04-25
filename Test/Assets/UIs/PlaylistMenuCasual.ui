@@ -1,0 +1,10 @@
+[]
+
+{
+    "m_InitFunction": "InitCasualPlaylistMenu",
+    "m_Functions": {
+        "0": {
+            "m_Name": "Search"
+        }
+    }
+}

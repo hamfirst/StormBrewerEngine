@@ -102,7 +102,7 @@ void GameModeLocalMultiplayer::Update()
 
   if (game_data.m_WiningTeam)
   {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
+    container.SwitchMode<GameModeEndGame>(std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
     return;
   }
 
@@ -117,7 +117,7 @@ void GameModeLocalMultiplayer::Update()
 
   if (num_local_players_alive == 0)
   {
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
+    container.SwitchMode<GameModeEndGame>(std::move(m_InstanceContainer), std::move(m_ClientSystems), EndGamePlayAgainMode::kOfflineMultiplayer);
     return;
   }
 
@@ -168,7 +168,7 @@ void GameModeLocalMultiplayer::Update()
   if (ui_manager.WantsToQuit())
   {
     auto & container = GetContainer();
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
   }
 }
 

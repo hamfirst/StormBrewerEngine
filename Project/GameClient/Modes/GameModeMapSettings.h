@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "GameClient/Modes/GameMode.h"
+#include "GameClient/Modes/GameModeOnlineBase.h"
 #include "Game/GameNetworkData.refl.h"
 
 #include "Engine/UI/UIManager.h"
@@ -9,12 +9,11 @@
 
 enum class GameModeMapSettingsNextScreen
 {
-  kOfflineBots,
   kOfflineStaging,
   kPrivateGame,
 };
 
-class GameModeMapSettings : public GameMode
+class GameModeMapSettings : public GameModeOnlineBase
 {
 public:
   GameModeMapSettings(GameContainer & game, GameModeMapSettingsNextScreen next_screen);

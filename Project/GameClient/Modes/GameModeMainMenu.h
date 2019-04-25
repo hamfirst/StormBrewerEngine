@@ -12,7 +12,7 @@
 class GameModeMainMenu : public GameMode
 {
 public:
-  explicit GameModeMainMenu(GameContainer & game);
+  explicit GameModeMainMenu(GameContainer & game, const std::string_view & error_msg = "");
   ~GameModeMainMenu() override;
 
   void Initialize() override;
@@ -28,8 +28,6 @@ protected:
   void PlayOffline();
   void Tutorial();
   void PlaySingleplayer();
-  void CreatePrivateMatch();
-  void JoinPrivateMatch();
   
   bool CanQuit();
   void Quit();
@@ -40,6 +38,8 @@ private:
   
   GamePlayList m_CasualPlaylist;
   GamePlayList m_CompetitivePlaylist;
+
+  std::string m_ErrorMessage;
 };
 
 

@@ -33,12 +33,12 @@ GameModeOnlineGameplay::~GameModeOnlineGameplay()
 void GameModeOnlineGameplay::Initialize()
 {
   auto & container = GetContainer();
-  container.SetInstanceData(container.GetClient().GetClientInstanceData());
+  container.SetInstanceData(container.GetGameClient().GetClientInstanceData());
   m_ClientSystems = std::make_unique<GameClientSystems>(GetContainer());
 
   container.SetClientSystems(m_ClientSystems.get());
-  container.SetInstanceData(container.GetClient().GetClientInstanceData());
-  container.GetClient().FinalizeLevelLoad();
+  container.SetInstanceData(container.GetGameClient().GetClientInstanceData());
+  container.GetGameClient().FinalizeLevelLoad();
 }
 
 void GameModeOnlineGameplay::OnAssetsLoaded()
@@ -59,7 +59,7 @@ void GameModeOnlineGameplay::Update()
   PROFILE_SCOPE("Server update");
 
   auto & container = GetContainer();
-  auto & client = container.GetClient();
+  auto & client = container.GetGameClient();
 
   auto instance_data = client.GetClientInstanceData();
   auto & game_data = client.GetClientInstanceData()->GetGlobalInstanceData();
@@ -67,15 +67,15 @@ void GameModeOnlineGameplay::Update()
 
   if (client.GetConnectionState() != ClientConnectionState::kConnected)
   {
-    container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
+    container.SwitchMode<GameModeConnectingGame>();
     return;
   }
 
   if (game_data.m_WiningTeam)
   {
-    auto instance = container.GetClient().ConvertToOffline();
+    auto instance = container.GetGameClient().ConvertToOffline();
     container.StopNetworkClient();
-    container.SwitchMode(GameModeDef<GameModeEndGame>{}, std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
+    container.SwitchMode<GameModeEndGame>(std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
     return;
   }
 
@@ -133,7 +133,7 @@ void GameModeOnlineGameplay::Update()
   {
     auto & container = GetContainer();
     container.StopNetworkClient();
-    container.SwitchMode(GameModeDef<GameModeMainMenu>{});
+    container.SwitchMode<GameModeMainMenu>();
   }
 }
 

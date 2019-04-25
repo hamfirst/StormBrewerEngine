@@ -47,15 +47,15 @@ void GameModeLoadingGlobal::Update()
       {
         GameNetworkClientInitSettings net_settings;
         container.StartNetworkClient(net_settings);
-        container.SwitchMode(GameModeDef<GameModeConnectingGame>{});
+        container.SwitchMode<GameModeConnectingGame>();
       }
       else if (init_settings->m_AutoBotGame)
       {
-        container.SwitchMode(GameModeDef<GameModeSinglePlayerBots>{}, GameInitSettings{}, false);
+        container.SwitchMode<GameModeSinglePlayerBots>(GameInitSettings{}, false);
       }
       else
       {
-        container.SwitchMode(GameModeDef<GameModeLogo>{});
+        container.SwitchMode<GameModeLogo>();
       }
     }
   }

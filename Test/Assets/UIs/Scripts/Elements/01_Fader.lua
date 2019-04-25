@@ -7,7 +7,7 @@ Fader.g = default_fade_g
 Fader.b = default_fade_b
 Fader.x = screen_start_x
 Fader.y = screen_start_y
-Fader.fade_speed = 0.5
+Fader.fade_speed = 0.3
 Fader.width = screen_width
 Fader.height = screen_height
 

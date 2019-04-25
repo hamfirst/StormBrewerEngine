@@ -83,7 +83,7 @@ std::unique_ptr<DDSCoordinatorState> CreateCoordinatorState(bool reset_db, const
   StormSockets::StormSocketServerFrontendWebsocketSettings coordinator_settings;
   coordinator_settings.ListenSettings.Port = COORDINATOR_PORT;
   StormSockets::StormSocketServerFrontendWebsocketSettings lb_settings;
-  lb_settings.ListenSettings.Port = LOBBY_LB_PORT;
+  lb_settings.ListenSettings.Port = COORDINATOR_LB_PORT;
   lb_settings.Protocol = kProjectName;
 
   auto coordinator = 

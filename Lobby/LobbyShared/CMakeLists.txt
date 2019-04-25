@@ -12,12 +12,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GENERIC_SRC_LobbyShared 
             LobbyGameFuncs.cpp
+            LobbyValidation.cpp
             SharedTypes.refl.cpp
             #CPP_PLACEHOLDER
             )
 
 set(GENERIC_HEADER_LobbyShared 
             LobbyGameFuncs.h
+            LobbyValidation.h
             SharedTypes.refl.h
             SharedTypes.refl.meta.h
             #HEADER_PLACEHOLDER

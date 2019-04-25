@@ -1,12 +1,13 @@
 
 rank_sprites = loader:LoadSprite("./Sprites/RankIcons.sprite")
+competitive_ranks = {}
 
 function InitCasualPlaylistMenu()
   InitPlaylistMenu(game.casual_playlist, "Casual")
 end
 
 function InitCompetitivePlaylistMenu()
-  InitPlaylistMenu(game.competitive_playlist, "Competitive", {})
+  InitPlaylistMenu(game.competitive_playlist, "Competitive", competitive_ranks)
 end
 
 function InitPlaylistMenu(playlist_list, playlist_name, ranks)
@@ -15,6 +16,7 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
     playlist_list = {}
     playlist_list.m_Elements = {}
     playlist_list.m_Elements[1] = {m_Name="1 v 1"}
+    playlist_list.m_Elements[2] = {m_Name="2 v 2"}
   end
 
   local playlist_count = #playlist_list.m_Elements
