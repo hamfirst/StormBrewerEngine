@@ -1,0 +1,131 @@
+[]
+
+{
+    "m_Animations": {
+        "2": {
+            "m_Events": { },
+            "m_Name": "White",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "10002010020906008576",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "10002010020906008577",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "10002010020906008578",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "10002010020906008579",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "3": {
+            "m_Events": { },
+            "m_Name": "Yellow",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "518213655670554624",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "518213655670554625",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "518213655670554626",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "518213655670554627",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "0": {
+            "m_Events": { },
+            "m_Name": "Blue",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "359713290680532992",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "359713290680532993",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "359713290680532994",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "359713290680532995",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "4": {
+            "m_Name": "Unranked",
+            "m_Frames": {
+                "0": {
+                    "m_FrameDuration": 5,
+                    "m_FrameId": "17143710133507850240"
+                }
+            },
+            "m_Events": { }
+        },
+        "1": {
+            "m_Events": { },
+            "m_Name": "Red",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "16279663250147115008",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "16279663250147115009",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "16279663250147115010",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "16279663250147115011",
+                    "m_FrameDuration": 5
+                }
+            }
+        }
+    },
+    "m_Textures": {
+        "0": {
+            "m_FrameWidth": 32,
+            "m_FrameHeight": 32,
+            "m_Filename": ".\/Images\/UI\/RankIcons.png"
+        },
+        "1": {
+            "m_FrameWidth": 32,
+            "m_FrameHeight": 32,
+            "m_Filename": ".\/Images\/UI\/RankIcons_Red.png"
+        },
+        "3": {
+            "m_FrameWidth": 32,
+            "m_FrameHeight": 32,
+            "m_Filename": ".\/Images\/UI\/RankIcons_Yellow.png"
+        },
+        "4": {
+            "m_Filename": ".\/Images\/UI\/UnrankedIcon.png",
+            "m_FrameWidth": 32,
+            "m_FrameHeight": 32
+        },
+        "2": {
+            "m_FrameWidth": 32,
+            "m_FrameHeight": 32,
+            "m_Filename": ".\/Images\/UI\/RankIcons_White.png"
+        }
+    }
+}
