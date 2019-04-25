@@ -165,6 +165,7 @@ struct Box
   static Box FromStartAndWidthHeight(const Vector2 & start, const Vector2 & width_height);
   static Box FromFrameCenterAndSize(const Vector2 & frame_center, const Vector2 & frame_size);
   static Box FromBaselineAndOffset(const Box & baseline, const Vector2 & offset);
+  static Box FromExtent(const Vector2 & extent);
   static Box FromPoint(const Vector2 & pos);
   static Box FromPoints(const Vector2 & a, const Vector2 & b);
 

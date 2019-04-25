@@ -53,6 +53,9 @@ void SpriteBaseTimelineElement::paintEvent(QPaintEvent * ev)
   if (img)
   {
     p.drawImage(QRect(0, 0, width(), height()), img.Value(), QRect(src_x, src_y, src_w, src_h));
+
+    p.setPen(QColor(0, 0, 0, 60));
+    p.drawRect(QRect(0, 0, width() - 1, height() - 1));
   }
 }
 

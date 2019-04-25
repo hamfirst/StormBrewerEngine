@@ -305,7 +305,7 @@ bool SpriteResource::SyncToFrame(uint32_t animation_name_hash, AnimationState & 
 
 void SpriteResource::SyncFrameData(int animation_index, int animation_frame, int animation_delay, AnimationState & anim_state) const
 {
-  if (animation_index < 0)
+  if (animation_index < 0 || animation_index >= (int)m_AnimStart.size())
   {
     anim_state = {};
     return;

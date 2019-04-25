@@ -174,14 +174,19 @@ void SpriteBaseTextureFrameElement::paintEvent(QPaintEvent * ev)
   int font_height = fontMetrics().lineSpacing();
   p.drawText(5, font_height, texture_def->m_Filename.data());
 
+  p.setPen(QColor(0, 0, 0, 60));
+
   VisitElements([&](QImage * img, int dst_x, int dst_y, int dst_w, int dst_h, int src_x, int src_y, int src_w, int src_h, int frame_index)
   {
     if (frame_index == m_HighlightedFrame)
     {
       p.drawImage(QRect(dst_x, dst_y, dst_w, dst_h), *img, QRect(src_x, src_y, src_w, src_h));
-      p.setPen(QPen(Qt::darkBlue, 4));
+
+      auto prev_pen = p.pen();
+
+      p.setPen(QPen(QColor(70, 70, 250, 160), 4));
       p.drawRect(dst_x - border_size, dst_y - border_size, dst_w + border_size, dst_h + border_size);
-      p.setPen(Qt::black);
+      p.setPen(prev_pen);
     }
     else
     {

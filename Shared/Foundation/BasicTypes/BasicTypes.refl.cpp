@@ -73,6 +73,12 @@ Box Box::FromBaselineAndOffset(const Box & baseline, const Vector2 & offset)
   return b;
 }
 
+Box Box::FromExtent(const Vector2 & extent)
+{
+  Box b = { Vector2(0, 0), extent };
+  return b;
+}
+
 Box Box::FromPoint(const Vector2 & pos)
 {
   return Box{ pos, pos };

@@ -1442,7 +1442,10 @@ extern "C"
 			gl3winit = true;
 			load_procs();
 
-			setup_debugger();
+      if (!egl_mode)
+      {
+        setup_debugger();
+      }
 		}
 
 		return 1;

@@ -184,7 +184,7 @@ void FrameEditorAnchorEditor::WriteData(Vector2 & pos)
   repaint();
 }
 
-Vector2 FrameEditorAnchorEditor::GetPreviewData()
+Optional<Vector2> FrameEditorAnchorEditor::GetPreviewData()
 {
   if (m_SelectedAnchor.size() == 0)
   {
@@ -221,10 +221,16 @@ Vector2 FrameEditorAnchorEditor::GetPreviewData()
 
 void FrameEditorAnchorEditor::Copy()
 {
+  auto preview_data = GetPreviewData();
+  if (!preview_data)
+  {
+    return;
+  }
+
   FrameCopyData data;
   data.m_Valid = true;
   data.m_Type = FrameDataDefType::kAnchor;
-  data.m_Data = StormReflEncodeJson(GetPreviewData());
+  data.m_Data = StormReflEncodeJson(preview_data.Value());
 
   QClipboard *clipboard = QApplication::clipboard();
   clipboard->setText(StormReflEncodeJson(data).data());
@@ -232,6 +238,12 @@ void FrameEditorAnchorEditor::Copy()
 
 void FrameEditorAnchorEditor::Paste()
 {
+  auto preview_data = GetPreviewData();
+  if (!preview_data)
+  {
+    return;
+  }
+
   QClipboard *clipboard = QApplication::clipboard();
   auto clipboard_data = clipboard->text();
 
@@ -251,13 +263,16 @@ void FrameEditorAnchorEditor::DrawData()
 {
   auto preview_data = GetPreviewData();
 
-  if (m_Preview)
+  if (preview_data)
   {
-    DrawHighlightedCornerControl(preview_data);
-  }
-  else
-  {
-    DrawCornerControl(preview_data);
+    if (m_Preview)
+    {
+      DrawHighlightedCornerControl(preview_data.Value());
+    }
+    else
+    {
+      DrawCornerControl(preview_data.Value());
+    }
   }
 }
 
@@ -269,16 +284,18 @@ void FrameEditorAnchorEditor::DrawPreview(const Vector2 & frame_pos, bool alt, b
   auto cursor_pos = Vector2(pos.x(), pos.y());
 
   auto preview_point = GetPreviewData();
-
-  auto screen_point = TransformFrameToScreen(preview_point);
-
-  if (ManhattanDist(screen_point, cursor_pos) < 20)
+  if (preview_point)
   {
-    m_Preview = true;
-  }
-  else
-  {
-    m_Preview = false;
+    auto screen_point = TransformFrameToScreen(preview_point.Value());
+
+    if (ManhattanDist(screen_point, cursor_pos) < 20)
+    {
+      m_Preview = true;
+    }
+    else
+    {
+      m_Preview = false;
+    }
   }
 
   repaint();
@@ -320,7 +337,7 @@ void FrameEditorAnchorEditor::DrawEnd(const Vector2 & pos, bool alt, bool shift,
   if (m_PreviewLocation)
   {
     auto data = GetPreviewData();
-    WriteData(data);
+    WriteData(data.Value());
   }
 
   m_PreviewLocation.Clear();

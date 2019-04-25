@@ -19,6 +19,10 @@ public:
 
 protected:
 
+  void closeEvent(QCloseEvent * ev) override;
+
+  void closeChildWidgets();
+
   void OpenAnimEditorDialog(int animation_index = -1);
   void OpenAnimEventDialog(int animation_index);
 
@@ -35,7 +39,7 @@ private:
   SpriteBaseDef & m_Sprite;
   SpriteBaseTextureLoadList & m_TextureAccess;
 
-  std::vector<std::unique_ptr<SpriteBaseAnimationFrameListEditorDialog>> m_EditorDialogs;
-  std::vector<std::unique_ptr<SpriteBaseAnimationEventEditorDialog>> m_EventDialogs;
+  std::vector<SpriteBaseAnimationFrameListEditorDialog *> m_EditorDialogs;
+  std::vector<SpriteBaseAnimationEventEditorDialog *> m_EventDialogs;
 };
 

@@ -56,7 +56,6 @@ private:
   std::string m_FilePath;
 
   RenderState m_RenderState;
-  VertexBuffer m_VertexBuffer;
   ShaderProgram m_GridShader;
   VertexBuffer m_GridBuffer;
 

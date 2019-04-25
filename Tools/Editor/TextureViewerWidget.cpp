@@ -161,18 +161,6 @@ void TextureViewerWidget::initializeGL()
   m_RenderState.InitRenderState(width(), height());
 
   m_GridShader = MakeQuickShaderProgram(kTextureViewerWidgetGridVertexShader, kTextureViewerWidgetGridFragmentShader);
-
-  QuadVertexBufferBuilder builder;
-  QuadVertexBuilderInfo quad;
-  quad.m_Position.m_Start = Vector2(0, 0);
-  quad.m_Position.m_End = Vector2(1, 1);
-  quad.m_TexCoords.m_Start = Vector2(0, 0);
-  quad.m_TexCoords.m_End = Vector2(1, 1);
-  quad.m_TextureSize = Vector2(1, 1);
-  quad.m_Color = Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-  builder.AddQuad(quad);
-  builder.FillVertexBuffer(m_VertexBuffer);
 }
 
 void TextureViewerWidget::resizeGL(int w, int h)
@@ -194,18 +182,26 @@ void TextureViewerWidget::paintGL()
   TextureAsset * asset = m_TextureAsset.Get();
   if (asset && asset->IsLoaded())
   {
+    auto & vertex_buffer = m_RenderState.GetScratchBuffer();
+
+    QuadVertexBufferBuilder builder;
+    QuadVertexBuilderInfo quad;
+    quad.m_Position = Box::FromFrameCenterAndSize({}, asset->GetSize());
+    quad.m_TexCoords = Box::FromExtent(asset->GetSize());
+    quad.m_TextureSize = asset->GetSize();
+    quad.m_Color = Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    builder.AddQuad(quad);
+    builder.FillVertexBuffer(vertex_buffer);
+
     auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
     m_RenderState.BindShader(shader);
-    m_RenderState.BindVertexBuffer(m_VertexBuffer);
     m_RenderState.BindTexture(*asset);
-
-    RenderVec2 tex_center = RenderVec2{ asset->GetWidth(), asset->GetHeight() } * 0.5f;
-    RenderVec2 window_center = RenderVec2{ width(), height() } * 0.5f;
-    RenderVec2 window_size = RenderVec2{ width(), height() } * (1.0f / m_Magnification.Get());
+    m_RenderState.BindVertexBuffer(vertex_buffer);
 
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), m_RenderState.GetFullRenderDimensions());
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), window_center * -1.0f);
-    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1, 0, 0, 1 });
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), m_Center * m_Magnification.Get());
+    shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ m_Magnification.Get(), 0, 0, m_Magnification.Get() });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1, 1, 1, 1 });
     shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });

@@ -10,7 +10,7 @@
 #include <QTime>
 #include <QScrollBar>
 
-class DraggableList : public QWidget
+class DraggableList : public QFrame
 {
   Q_OBJECT
 public:
@@ -51,7 +51,6 @@ protected:
   std::vector<std::unique_ptr<QtLerpVar>> m_WidgetPositions;
   std::vector<bool> m_IsSelected;
   QScrollBar * m_Scroll;
-  QFrame * m_Frame;
   std::unique_ptr<QtLerpVar> m_ScrollVal;
 
   Qt::Orientation m_Orientation;

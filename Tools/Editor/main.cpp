@@ -22,6 +22,13 @@ FrameDataDef g_FrameData;
 #ifdef _MSC_VER
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
+
+bool g_UseEGL = false;
+
+#else
+
+bool g_UseEGL = false;
+
 #endif
 
 
@@ -47,7 +54,12 @@ int main(int argc, char *argv[])
 #if NET_BACKEND == NET_BACKEND_WEBRTC
   StormWebrtcStaticInit();
 #endif
-  //QApplication::setAttribute(Qt::AA_UseOpenGLES);
+
+  if (g_UseEGL)
+  {
+    QApplication::setAttribute(Qt::AA_UseOpenGLES);
+  }
+
   QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   QSurfaceFormat format;

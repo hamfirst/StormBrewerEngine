@@ -10,8 +10,11 @@
 #include <QFrame>
 #include <QPainter>
 
-DraggableList::DraggableList(Qt::Orientation orientation, bool invert, QWidget *parent) : QWidget(parent)
+DraggableList::DraggableList(Qt::Orientation orientation, bool invert, QWidget *parent) : QFrame(parent)
 {
+  setFrameStyle(QFrame::Panel);
+  setFrameShadow(QFrame::Sunken);
+
   m_Orientation = orientation;
   m_Invert = invert;
   m_Scroll = new QScrollBar(orientation, this);
@@ -27,10 +30,6 @@ DraggableList::DraggableList(Qt::Orientation orientation, bool invert, QWidget *
   connect(m_Scroll, &QScrollBar::valueChanged, this, &DraggableList::scrollValueChanged);
 
   setMouseTracking(true);
-
-  m_Frame = new QFrame(this);
-  m_Frame->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  m_Frame->setAttribute(Qt::WA_TransparentForMouseEvents);
 
   m_ScrollVal = std::make_unique<QtLerpVar>(false);
 
@@ -61,8 +60,6 @@ void DraggableList::SetInitialWidgets(const std::vector<QWidget *> & widgets)
   }
 
   finalizePositions(true);
-
-  m_Frame->raise();
 }
 
 void DraggableList::AddWidget(QWidget * widget, int index)
@@ -83,7 +80,6 @@ void DraggableList::AddWidget(QWidget * widget, int index)
   updateContent();
 
   m_WidgetPositions[index]->Complete();
-  m_Frame->raise();
 }
 
 void DraggableList::RemoveWidget(QWidget * widget)
@@ -278,8 +274,6 @@ void DraggableList::resizeEvent(QResizeEvent *event)
     m_Scroll->setGeometry(QRect(event->size().width() - scroll_size - 2, 1, scroll_size - 2, event->size().height() - 2));
   }
 
-  m_Frame->setGeometry(QRect(0, 0, event->size().width(), event->size().height()));
-
   updateContent();
   finalizePositions(true);
 }
@@ -313,7 +307,6 @@ void DraggableList::mouseReleaseEvent(QMouseEvent *)
     finalizePositions(true);
   }
 }
-
 
 void DraggableList::updateScrolls()
 {

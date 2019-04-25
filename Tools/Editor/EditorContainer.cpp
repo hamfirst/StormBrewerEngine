@@ -62,10 +62,12 @@ Delegate<void> g_GlobalRedo;
 
 DelegateList<void> g_GlobalUpdate;
 
+extern bool g_UseEGL;
+
 EditorContainer::EditorContainer(QWidget *parent) : 
   QMainWindow(parent)
 {
-  EngineInit(false, true);
+  EngineInit(g_UseEGL, true);
   const char * doc_server_host = "localhost";
   
   printf("Attempting to connect to doc server\n");

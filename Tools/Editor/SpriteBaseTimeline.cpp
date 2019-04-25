@@ -78,7 +78,6 @@ void SpriteBaseTimeline::AddFrame(uint64_t frame_id)
   });
 
   m_FrameList->AddWidget(widget.get());
-
   m_Frames.push_back(std::make_pair(frame_data, std::move(widget)));
 }
 

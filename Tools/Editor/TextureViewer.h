@@ -40,7 +40,6 @@ private:
   std::string m_FilePath;
 
   RenderState m_RenderState;
-  VertexBuffer m_VertexBuffer;
 
   RenderVec2 m_Center = {};
   QtLerpVar m_Magnification;

@@ -9,13 +9,191 @@
         }
     },
     "m_Anchors": { },
+    "m_Animations": {
+        "0": {
+            "m_Name": "Idle",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630848",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "2": {
+            "m_Name": "Jump",
+            "m_Events": { },
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630855",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "8": {
+            "m_Name": "Up_Idle",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630848",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "3": {
+            "m_Name": "Fall",
+            "m_Events": { },
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630856",
+                    "m_FrameDuration": 5
+                }
+            }
+        },
+        "5": {
+            "m_Name": "Up_Move",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630849",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "713696382023630850",
+                    "m_FrameDuration": 5
+                },
+                "4": {
+                    "m_FrameId": "713696382023630853",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "713696382023630851",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "713696382023630852",
+                    "m_FrameDuration": 5
+                },
+                "5": {
+                    "m_FrameId": "713696382023630854",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "9": {
+            "m_Name": "Down_Idle",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630848",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "7": {
+            "m_Name": "Side_Idle",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630848",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "1": {
+            "m_Name": "Run",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630849",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "713696382023630850",
+                    "m_FrameDuration": 5
+                },
+                "4": {
+                    "m_FrameId": "713696382023630853",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "713696382023630851",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "713696382023630852",
+                    "m_FrameDuration": 5
+                },
+                "5": {
+                    "m_FrameId": "713696382023630854",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "4": {
+            "m_Name": "Side_Move",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630849",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "713696382023630850",
+                    "m_FrameDuration": 5
+                },
+                "4": {
+                    "m_FrameId": "713696382023630853",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "713696382023630851",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "713696382023630852",
+                    "m_FrameDuration": 5
+                },
+                "5": {
+                    "m_FrameId": "713696382023630854",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        },
+        "6": {
+            "m_Name": "Down_Move",
+            "m_Frames": {
+                "0": {
+                    "m_FrameId": "713696382023630849",
+                    "m_FrameDuration": 5
+                },
+                "1": {
+                    "m_FrameId": "713696382023630850",
+                    "m_FrameDuration": 5
+                },
+                "4": {
+                    "m_FrameId": "713696382023630853",
+                    "m_FrameDuration": 5
+                },
+                "2": {
+                    "m_FrameId": "713696382023630851",
+                    "m_FrameDuration": 5
+                },
+                "3": {
+                    "m_FrameId": "713696382023630852",
+                    "m_FrameDuration": 5
+                },
+                "5": {
+                    "m_FrameId": "713696382023630854",
+                    "m_FrameDuration": 5
+                }
+            },
+            "m_Events": { }
+        }
+    },
     "m_FrameData": {
         "713696382023630851": { },
         "713696382023630855": { },
         "713696382023630856": { },
-        "713696382023630849": { },
-        "713696382023630853": { },
-        "713696382023630850": { },
         "713696382023630854": { },
         "713696382023630848": {
             "m_Anchors": {
@@ -35,7 +213,10 @@
                 }
             }
         },
-        "713696382023630852": { }
+        "713696382023630849": { },
+        "713696382023630852": { },
+        "713696382023630853": { },
+        "713696382023630850": { }
     },
     "m_InstanceData": {
         "m_SingleBoxData": {
@@ -50,187 +231,6 @@
                         "y": -11,
                         "x": -3
                     }
-                }
-            }
-        }
-    },
-    "m_Animations": {
-        "0": {
-            "m_Name": "Idle",
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630848",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "3": {
-            "m_Name": "Fall",
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630856",
-                    "m_FrameDuration": 5
-                }
-            },
-            "m_Events": { }
-        },
-        "5": {
-            "m_Name": "Up_Move",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630849",
-                    "m_FrameDuration": 5
-                },
-                "1": {
-                    "m_FrameId": "713696382023630850",
-                    "m_FrameDuration": 5
-                },
-                "4": {
-                    "m_FrameId": "713696382023630853",
-                    "m_FrameDuration": 5
-                },
-                "3": {
-                    "m_FrameId": "713696382023630852",
-                    "m_FrameDuration": 5
-                },
-                "5": {
-                    "m_FrameId": "713696382023630854",
-                    "m_FrameDuration": 5
-                },
-                "2": {
-                    "m_FrameId": "713696382023630851",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "8": {
-            "m_Name": "Up_Idle",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630848",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "2": {
-            "m_Name": "Jump",
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630855",
-                    "m_FrameDuration": 5
-                }
-            },
-            "m_Events": { }
-        },
-        "9": {
-            "m_Name": "Down_Idle",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630848",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "7": {
-            "m_Name": "Side_Idle",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630848",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "1": {
-            "m_Name": "Run",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630849",
-                    "m_FrameDuration": 5
-                },
-                "1": {
-                    "m_FrameId": "713696382023630850",
-                    "m_FrameDuration": 5
-                },
-                "4": {
-                    "m_FrameId": "713696382023630853",
-                    "m_FrameDuration": 5
-                },
-                "3": {
-                    "m_FrameId": "713696382023630852",
-                    "m_FrameDuration": 5
-                },
-                "5": {
-                    "m_FrameId": "713696382023630854",
-                    "m_FrameDuration": 5
-                },
-                "2": {
-                    "m_FrameId": "713696382023630851",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "4": {
-            "m_Name": "Side_Move",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630849",
-                    "m_FrameDuration": 5
-                },
-                "1": {
-                    "m_FrameId": "713696382023630850",
-                    "m_FrameDuration": 5
-                },
-                "4": {
-                    "m_FrameId": "713696382023630853",
-                    "m_FrameDuration": 5
-                },
-                "3": {
-                    "m_FrameId": "713696382023630852",
-                    "m_FrameDuration": 5
-                },
-                "5": {
-                    "m_FrameId": "713696382023630854",
-                    "m_FrameDuration": 5
-                },
-                "2": {
-                    "m_FrameId": "713696382023630851",
-                    "m_FrameDuration": 5
-                }
-            }
-        },
-        "6": {
-            "m_Name": "Down_Move",
-            "m_Events": { },
-            "m_Frames": {
-                "0": {
-                    "m_FrameId": "713696382023630849",
-                    "m_FrameDuration": 5
-                },
-                "1": {
-                    "m_FrameId": "713696382023630850",
-                    "m_FrameDuration": 5
-                },
-                "4": {
-                    "m_FrameId": "713696382023630853",
-                    "m_FrameDuration": 5
-                },
-                "3": {
-                    "m_FrameId": "713696382023630852",
-                    "m_FrameDuration": 5
-                },
-                "5": {
-                    "m_FrameId": "713696382023630854",
-                    "m_FrameDuration": 5
-                },
-                "2": {
-                    "m_FrameId": "713696382023630851",
-                    "m_FrameDuration": 5
                 }
             }
         }

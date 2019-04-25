@@ -31,7 +31,7 @@ protected:
   void RefreshOptions();
 
   void WriteData(Vector2 & pos);
-  Vector2 GetPreviewData();
+  Optional<Vector2> GetPreviewData();
 
 protected:
 

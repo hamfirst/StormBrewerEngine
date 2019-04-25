@@ -33,7 +33,7 @@ void GameModeLogo::Update()
   auto & container = GetContainer();
   container.GetWindow().Update();
 
-  bool timer_allowed = m_Timer.GetTimeSinceStart() > 1.0;
+  bool timer_allowed = m_Timer.GetTimeSinceStart() > 100.0;
   bool global_loaded = container.AllGlobalResourcesLoaded();
 
   if (timer_allowed && global_loaded)
@@ -59,7 +59,7 @@ void GameModeLogo::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
 
-    render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize(window_size / 2.0f, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
+    render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize({}, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
   }
 }
 

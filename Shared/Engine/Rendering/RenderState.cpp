@@ -573,7 +573,7 @@ void RenderState::DrawDebugTexturedQuad(const Box & b, const Color & c, const Te
 
   auto & shader = screen_space ? g_ShaderManager.GetDefaultScreenSpaceShader() : g_ShaderManager.GetDefaultWorldSpaceShader();
   BindShader(shader);
-  BindTexture(GetDefaultTexture());
+  BindTexture(texture);
   BindVertexBuffer(m_ScratchVertexBuffer);
 
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), GetFullRenderDimensions());
@@ -581,7 +581,7 @@ void RenderState::DrawDebugTexturedQuad(const Box & b, const Color & c, const Te
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), RenderVec4{ 1.0f, 0, 0, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), RenderVec4{ 1.0f, 1.0f, 1.0f, 1.0f });
-  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ 0.0f, 0.0f, 1.0f, 1.0f });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1.0f, -1.0f, 1.0f, 1.0f });
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
 
   Draw();
