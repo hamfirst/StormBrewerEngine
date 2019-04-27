@@ -13,6 +13,9 @@
 #include <StormBootstrap/StormBootstrap.h>
 
 #include <mbedtls/sha256.h>
+#include <sb/vector.h>
+
+#include "Foundation/FileSystem/Path.h"
 
 #include "ProjectSettings/ProjectName.h"
 #include "ProjectSettings/ProjectZones.h"
@@ -21,6 +24,7 @@
 
 #include "ServerManager.refl.meta.h"
 #include "GooglePlatform.refl.meta.h"
+#include "Game.refl.meta.h"
 #include "GameServerConnection.refl.h"
 
 #ifdef _LINUX
@@ -110,6 +114,11 @@ ServerManager::~ServerManager()
 #ifdef ENABLE_GOOGLE_CLOUD
   mbedtls_pk_free(&m_PKContext);
 #endif
+
+  while(m_DebugServers.size() > 0)
+  {
+    StopDebugServer(m_DebugServers.begin()->first);
+  }
 }
 
 void ServerManager::Initialize()
@@ -181,20 +190,26 @@ void ServerManager::Initialize()
 
 void ServerManager::Update()
 {
+  CheckForTimedOutServers();
   CheckForAssignableGames();
+  CheckForNewServersNeeded();
 }
 
 void ServerManager::CreateServerInstance(int zone_index)
 {
+  DDSLog::LogInfo("Creating server in zone %d", zone_index);
   if(zone_index == -1)
   {
     CreateDebugServer();
+    return;
   }
 #ifdef ENABLE_GOOGLE_CLOUD
   else
   {
     CreateCloudServerInstance(zone_index);
   }
+#else
+  CreateDebugServer();
 #endif
 }
 
@@ -203,12 +218,17 @@ void ServerManager::StopServerInstance(const std::string & zone, const std::stri
   if(zone == "Debug")
   {
     StopDebugServer(strtoul(resource_id.c_str(), nullptr, 10));
+    return;
   }
 #ifdef ENABLE_GOOGLE_CLOUD
   else
   {
     StopCloudServerInstance(zone, resource_id);
   }
+#else
+
+  DDSLog::LogInfo("Destroying server in zone %s-%s", zone.c_str(), resource_id.c_str());
+  StopDebugServer(strtoul(resource_id.c_str(), nullptr, 10));
 #endif
 }
 
@@ -346,8 +366,6 @@ void ServerManager::CreateCloudServerInstance(int zone_index)
 
   DDSHttpRequest request(url, request_body, m_AuthorizationHeader);
   m_Interface.CreateHttpRequest(request, m_Interface.GetLocalKey(), &ServerManager::HandleCreateServerResponse, zone_index);
-
-  m_RequestedServersInZone[zone_index]++;
 }
 
 void ServerManager::HandleCreateServerResponse(int zone_index, bool success, std::string body, std::string headers)
@@ -408,13 +426,12 @@ void ServerManager::HandleStopServerResponse(bool success, std::string body, std
 
 void ServerManager::AssignGameServer(DDSKey game_id, int zone)
 {
-  for(auto & server : m_ActiveServers)
-  {
-    if((server.m_ZoneIndex == -1 || server.m_ZoneIndex == zone) && server.m_ActiveGames < kMaxGamesPerServer)
-    {
-      server.m_ActiveGames++;
-    }
-  }
+  DDSLog::LogInfo("Requesting server game assignment in zone %d", zone);
+
+  GameRequest request;
+  request.m_GameId = game_id;
+  request.m_Zone = zone;
+  m_GameRequests.emplace_back(request);
 }
 
 void ServerManager::HandleServerConnected(DDSKey game_server_key, const GameServerInfo & server_info, int num_active_games)
@@ -522,7 +539,95 @@ void ServerManager::CheckForTimedOutServers()
 
 void ServerManager::CheckForAssignableGames()
 {
+  auto index = 0;
+  while(index < (int)m_GameRequests.size())
+  {
+    bool assigned_server = false;
 
+    auto & request = m_GameRequests[index];
+    for (auto & server : m_ActiveServers)
+    {
+      if ((server.m_ZoneIndex == -1 || server.m_ZoneIndex == request.m_Zone) && server.m_ActiveGames < kMaxGamesPerServer)
+      {
+        server.m_ActiveGames++;
+        m_GameRequests.erase(m_GameRequests.begin() + index);
+
+        m_Interface.Call(&Game::AssignGameServer, request.m_GameId, server.m_ConnectionKey, server.m_RemoteIp, server.m_RemotePort);
+        assigned_server = true;
+        break;
+      }
+    }
+
+    if(assigned_server == false)
+    {
+      ++index;
+    }
+  }
+}
+
+void ServerManager::CheckForNewServersNeeded()
+{
+  if(m_GameRequests.size() == 0)
+  {
+    return;
+  }
+
+#ifdef ENABLE_GOOGLE_CLOUD
+
+  int games_in_zone[kNumProjectZones] = {};
+  for(auto & elem : m_GameRequests)
+  {
+    games_in_zone[elem.m_Zone]++;
+  }
+
+  int pending_servers_in_zone[kNumProjectZones] = {};
+  for(auto & elem : m_PendingServers)
+  {
+    if(elem.m_ZoneIndex != -1)
+    {
+      pending_servers_in_zone[elem.m_Zone]++;
+    }
+  }
+
+  int servers_needed_in_zone[kNumProjectZones] = {};
+  for(int index = 0; index < kNumProjectZones; ++index)
+  {
+    servers_needed_in_zone = (games_in_zone + (kMaxGamesPerServer - 1)) / kMaxGamesPerServer;
+  }
+
+  for(int index = 0; index < kNumProjectZones; ++index)
+  {
+    while(servers_needed_in_zone[index] > m_RequestedServersInZone[index] + pending_servers_in_zone)
+    {
+      CreateServerInstance(index);
+    }
+  }
+
+#else
+
+  int servers_needed = (m_GameRequests.size() + (kMaxGamesPerServer - 1)) / kMaxGamesPerServer;
+  while(servers_needed > m_PendingServers.size())
+  {
+    CreateDebugServer();
+  }
+
+#endif
+
+
+}
+
+void ServerManager::CheckForExtraneousServers()
+{
+  for(int index = 0; index < m_ActiveServers.size(); index++)
+  {
+    auto & server = m_ActiveServers[index];
+    if(server.m_ActiveGames == 0)
+    {
+      StopServerInstance(server.m_ZoneIndex, server.m_ResourceId);
+      m_ActiveServers.erase(m_ActiveServers.begin() + index);
+      index--;
+    }
+  }
 }
 
 #ifdef ENABLE_GOOGLE_CLOUD
@@ -571,14 +676,17 @@ std::string ServerManager::GetCloudTokenAssertion()
 
 void ServerManager::CreateDebugServer()
 {
+  DDSLog::LogInfo("Starting debug server");
   auto server_id = m_ServerIdAllocator.Allocate();
 
   PendingServer pending;
   pending.m_ResourceId = std::to_string(server_id);
   pending.m_StartTime = time(nullptr);
-  pending.m_ZoneIndex = kNumProjectZones;
+  pending.m_ZoneIndex = -1;
+  m_PendingServers.emplace_back(pending);
 
-  static std::string command[] = {
+  static std::string command[] =
+  {
     "--external_ip=127.0.0.1",
     "--external_port=" + std::to_string(DEFAULT_GAME_PORT + server_id),
     "--id=" + pending.m_ResourceId,
@@ -593,14 +701,15 @@ void ServerManager::CreateDebugServer()
 
   if(pid == 0)
   {
-    char * args[kNumCommandArgs + 1];
+    char * args[kNumCommandArgs + 2];
 
+    args[0] = (char *)"./ServerExe";
     for(int index = 0; index < kNumCommandArgs; ++index)
     {
-      args[index] = command[index].data();
+      args[index + 1] = command[index].data();
     }
 
-    args[kNumCommandArgs] = nullptr;
+    args[kNumCommandArgs + 1] = nullptr;
     execv("ServerExe", &args[0]);
   }
   else
@@ -622,8 +731,8 @@ void ServerManager::CreateDebugServer()
   {
     m_DebugServers.emplace(std::make_pair(server_id, proc_info.hProcess));
   }
-
 #endif
+
 }
 
 void ServerManager::StopDebugServer(std::size_t server_id)
@@ -634,6 +743,7 @@ void ServerManager::StopDebugServer(std::size_t server_id)
     return;
   }
 
+  DDSLog::LogInfo("Stopping debug server");
 #ifdef _LINUX
 
   kill(itr->second, SIGTERM);
@@ -643,4 +753,6 @@ void ServerManager::StopDebugServer(std::size_t server_id)
   TerminateProcess(itr->second, 0);
 
 #endif
+
+  m_DebugServers.erase(itr);
 }

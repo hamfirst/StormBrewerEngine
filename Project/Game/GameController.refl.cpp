@@ -188,8 +188,13 @@ void GameController::DestroyObserver(std::size_t observer_index, GameLogicContai
 }
 
 
+#ifdef NET_USE_LOADOUT
 void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index,
         GameLogicContainer & game, int team, uint32_t random_number, const GamePlayerLoadout & loadout)
+#else
+void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index,
+        GameLogicContainer & game, int team, uint32_t random_number)
+#endif
 {
   auto & game_data = game.GetLowFrequencyInstanceDataForModify();
   auto & user_name = game_data.m_Observers[observer_index].m_UserName;
@@ -200,7 +205,10 @@ void GameController::ConvertObserverToPlayer(std::size_t observer_index, std::si
 
   GamePlayer player;
   player.m_UserName = user_name;
+
+#ifdef NET_USE_LOADOUT
   player.m_Loadout = loadout;
+#endif
 
   if(team < 0)
   {
@@ -243,10 +251,7 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
   if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerJoinedEvent>())
   {
     auto ev = ext.Get<PlayerJoinedEvent>();
-
-    auto team_counts = GetTeamCounts(game.GetLowFrequencyInstanceData());
-    auto team = GetRandomTeam(team_counts, ev->m_RandomSeed, map_props, game_settings);
-    ConstructPlayer(ev->m_PlayerIndex, game, ev->m_UserName, team);
+    ConstructPlayer(ev->m_PlayerIndex, game, ev->m_UserName, ev->m_Team);
   }
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<PlayerLeaveEvent>())
   {
@@ -265,12 +270,14 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
     auto & game_state = game.GetLowFrequencyInstanceDataForModify();
     game_state.m_Players[ev->m_PlayerIndex].m_Team = ev->m_Team;
   }
+#ifdef NET_USE_LOADOUT
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangeLoadoutEvent>())
   {
     auto ev = ext.Get<ChangeLoadoutEvent>();
     auto & game_state = game.GetLowFrequencyInstanceDataForModify();
     game_state.m_Players[ev->m_PlayerIndex].m_Loadout = ev->m_Loadout;
   }
+#endif
 #ifdef NET_ALLOW_OBSERVERS
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ObserverJoinedEvent>())
   {
@@ -291,7 +298,12 @@ void GameController::ProcessExternal(const NetPolymorphic<GameNetworkExternalEve
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangeObserverToPlayer>())
   {
     auto ev = ext.Get<ChangeObserverToPlayer>();
+
+#ifdef NET_USE_LOADOUT
     ConvertObserverToPlayer(ev->m_ObserverIndex, ev->m_PlayerIndex, game, ev->m_Team, ev->m_RandomSeed, ev->m_Loadout);
+#else
+    ConvertObserverToPlayer(ev->m_ObserverIndex, ev->m_PlayerIndex, game, ev->m_Team, ev->m_RandomSeed);
+#endif
   }
   else if (ext.GetClassId() == GameNetworkExternalEvent::__s_TypeDatabase.GetClassId<ChangePlayerToObserver>())
   {
@@ -348,16 +360,16 @@ void GameController::CleanupPlayer(GameLogicContainer & game, std::size_t player
     return;
   }
 
-  auto & game_data = game.GetInstanceData();
-  if (kMaxTeams > 1 && game_data.m_WiningTeam)
-  {
-    auto winning_team = GetOnlyTeamWithPlayers(game);
-    if (winning_team)
-    {
-      EndGame(-1, game);
-      return;
-    }
-  }
+//  auto & game_data = game.GetInstanceData();
+//  if (kMaxTeams > 1 && game_data.m_WiningTeam)
+//  {
+//    auto winning_team = GetOnlyTeamWithPlayers(game);
+//    if (winning_team)
+//    {
+//      EndGame(-1, game);
+//      return;
+//    }
+//  }
 
   auto & obj_manager = game.GetObjectManager();
   auto player_obj = obj_manager.GetReservedSlotObject(player_index);
@@ -442,13 +454,31 @@ int GameController::GetScoreLimit(GameLogicContainer & game) const
 #endif
 
 #ifdef NET_USE_ROUND_TIMER
+void GameController::RoundStarted(GameLogicContainer & game) const
+{
+
+}
+
+void GameController::RoundEnded(GameLogicContainer & game) const
+{
+
+}
+
+void GameController::RoundReset(GameLogicContainer & game) const
+{
+
+}
+
 int GameController::GetTimeLimit(GameLogicContainer & game) const
 {
 #ifdef NET_USE_TIME_LIMIT
-  return game.GetLowFrequencyInstanceData().m_Settings.m_TimeLimit * 60 * 60;
-#else
-  return kMaxRoundTimer;
+  if(game.GetLowFrequencyInstanceData().m_Settings.m_TimeLimit != 0)
+  {
+    game.GetLowFrequencyInstanceData().m_Settings.m_TimeLimit * 60 * 60;
+  }
 #endif
+
+  return kMaxRoundTimer;
 }
 #endif
 
@@ -555,16 +585,6 @@ void GameController::Update(GameLogicContainer & game)
     return;
   }
 
-#ifdef NET_USE_COUNTDOWN
-
-  if (game_data.m_Countdown > 0)
-  {
-    --game_data.m_Countdown;
-    return;
-  }
-
-#endif
-
   auto & obj_manager = game.GetObjectManager();
 
   ServerObjectUpdateList update_list;
@@ -617,13 +637,33 @@ void GameController::Update(GameLogicContainer & game)
   if (game_data.m_RoundTimer > 0)
   {
     --game_data.m_RoundTimer;
-    return;
   }
   else
   {
-    auto winning_team = GetDefaultWinningTeam();
-    EndGame(winning_team ? winning_team.Value() : kMaxTeams, game);
+    if(game_data.m_RoundState == RoundState::kPreRound)
+    {
+      game_data.m_RoundState = RoundState::kRound;
+      game_data.m_RoundTimer = GetTimeLimit(game);
+
+      RoundStarted(game);
+    }
+    else if(game_data.m_RoundState == RoundState::kRound)
+    {
+      game_data.m_RoundState = RoundState::kPostRound;
+      game_data.m_RoundTimer = kPostRoundTimer;
+
+      RoundEnded(game);
+    }
+    else if(game_data.m_RoundState == RoundState::kPostRound)
+    {
+      game_data.m_RoundState = RoundState::kPreRound;
+      game_data.m_RoundTimer = kPostRoundTimer;
+
+      RoundReset(game);
+    }
   }
+
+
 #endif
 
 #if NET_MODE == NET_MODE_GGPO
@@ -635,11 +675,9 @@ void GameController::StartGame(GameLogicContainer & game)
 {
   auto & global_data = game.GetInstanceData();
 
-#ifdef NET_USE_COUNTDOWN
-  global_data.m_Countdown = kMaxCountdown;
-#endif
 #ifdef NET_USE_ROUND_TIMER
-  global_data.m_RoundTimer = GetTimeLimit(game);
+  global_data.m_RoundState = RoundState::kPreRound;
+  global_data.m_RoundTimer = kPostRoundTimer;
 #endif
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC

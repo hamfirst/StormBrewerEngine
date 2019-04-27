@@ -254,7 +254,7 @@ template <>
 struct StormReflFuncInfo<GameServerConnection>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 9;
+  static constexpr int funcs_n = 8;
   template <int N> struct func_data_static {};
 };
 
@@ -385,15 +385,15 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<3>::param_info<
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<4>
 {
-  using func_ptr_type = void (GameServerConnection::*)(DDSKey, DDSKey, const GamePlayerLoadout &);
+  using func_ptr_type = void (GameServerConnection::*)(DDSKey, const GameServerAuthenticateUserSuccess &);
   using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "ChangeUserLoadout"; }
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "NotifyTokenRedeemedSuccess"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x32316BE2; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x054EBF07; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 4; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::ChangeUserLoadout; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyTokenRedeemedSuccess; }
   template <int i>
   struct param_info { };
 };
@@ -411,35 +411,25 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<4>::param_info<
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<4>::param_info<1>
 {
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "user_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xA76ED395; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<4>::param_info<2>
-{
-  using param_type = const GamePlayerLoadout &;
-  static constexpr auto GetName() { return "loadout"; }
-  static constexpr auto GetType() { return "const GamePlayerLoadout &"; }
-  static constexpr unsigned GetNameHash() { return 0x7E65CE42; }
-  static constexpr unsigned GetTypeNameHash() { return 0x942B378B; }
+  using param_type = const GameServerAuthenticateUserSuccess &;
+  static constexpr auto GetName() { return "msg"; }
+  static constexpr auto GetType() { return "const GameServerAuthenticateUserSuccess &"; }
+  static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
+  static constexpr unsigned GetTypeNameHash() { return 0x72DE6481; }
 };
 
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<5>
 {
-  using func_ptr_type = void (GameServerConnection::*)(DDSKey, const GameServerAuthenticateUserSuccess &);
+  using func_ptr_type = void (GameServerConnection::*)(DDSKey, const GameServerAuthenticateUserFailure &);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "NotifyTokenRedeemedSuccess"; }
+  static constexpr auto GetName() { return "NotifyTokenRedeemedFailure"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x054EBF07; }
+  static constexpr unsigned GetFunctionNameHash() { return 0x4BD56374; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 5; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyTokenRedeemedSuccess; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyTokenRedeemedFailure; }
   template <int i>
   struct param_info { };
 };
@@ -457,25 +447,25 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<5>::param_info<
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<5>::param_info<1>
 {
-  using param_type = const GameServerAuthenticateUserSuccess &;
+  using param_type = const GameServerAuthenticateUserFailure &;
   static constexpr auto GetName() { return "msg"; }
-  static constexpr auto GetType() { return "const GameServerAuthenticateUserSuccess &"; }
+  static constexpr auto GetType() { return "const GameServerAuthenticateUserFailure &"; }
   static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
-  static constexpr unsigned GetTypeNameHash() { return 0x72DE6481; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF9A99ED0; }
 };
 
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>
 {
-  using func_ptr_type = void (GameServerConnection::*)(DDSKey, const GameServerAuthenticateUserFailure &);
+  using func_ptr_type = void (GameServerConnection::*)(DDSKey, DDSKey);
   using return_type = void;
   static constexpr int params_n = 2;
-  static constexpr auto GetName() { return "NotifyTokenRedeemedFailure"; }
+  static constexpr auto GetName() { return "NotifyUserDisconnected"; }
   static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x4BD56374; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xD0771BC5; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
   static constexpr auto GetFunctionIndex() { return 6; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyTokenRedeemedFailure; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyUserDisconnected; }
   template <int i>
   struct param_info { };
 };
@@ -493,42 +483,6 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<
 template <>
 struct StormReflFuncInfo<GameServerConnection>::func_data_static<6>::param_info<1>
 {
-  using param_type = const GameServerAuthenticateUserFailure &;
-  static constexpr auto GetName() { return "msg"; }
-  static constexpr auto GetType() { return "const GameServerAuthenticateUserFailure &"; }
-  static constexpr unsigned GetNameHash() { return 0x688A5FAF; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF9A99ED0; }
-};
-
-template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>
-{
-  using func_ptr_type = void (GameServerConnection::*)(DDSKey, DDSKey, bool);
-  using return_type = void;
-  static constexpr int params_n = 3;
-  static constexpr auto GetName() { return "NotifyUserQuitGame"; }
-  static constexpr auto GetReturnType() { return "void"; }
-  static constexpr unsigned GetFunctionNameHash() { return 0x8B12BEF0; }
-  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 7; }
-  static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyUserQuitGame; }
-  template <int i>
-  struct param_info { };
-};
-
-template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>::param_info<0>
-{
-  using param_type = DDSKey;
-  static constexpr auto GetName() { return "game_id"; }
-  static constexpr auto GetType() { return "DDSKey"; }
-  static constexpr unsigned GetNameHash() { return 0xE48FD905; }
-  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
-};
-
-template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>::param_info<1>
-{
   using param_type = DDSKey;
   static constexpr auto GetName() { return "user_key"; }
   static constexpr auto GetType() { return "DDSKey"; }
@@ -537,17 +491,7 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>::param_info<
 };
 
 template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>::param_info<2>
-{
-  using param_type = bool;
-  static constexpr auto GetName() { return "ban"; }
-  static constexpr auto GetType() { return "bool"; }
-  static constexpr unsigned GetNameHash() { return 0x62FED0E5; }
-  static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
-};
-
-template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<8>
+struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>
 {
   using func_ptr_type = void (GameServerConnection::*)(DDSKey);
   using return_type = void;
@@ -556,14 +500,14 @@ struct StormReflFuncInfo<GameServerConnection>::func_data_static<8>
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x15129AE3; }
   static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
-  static constexpr auto GetFunctionIndex() { return 8; }
+  static constexpr auto GetFunctionIndex() { return 7; }
   static constexpr func_ptr_type GetFunctionPtr() { return &GameServerConnection::NotifyGameEnded; }
   template <int i>
   struct param_info { };
 };
 
 template <>
-struct StormReflFuncInfo<GameServerConnection>::func_data_static<8>::param_info<0>
+struct StormReflFuncInfo<GameServerConnection>::func_data_static<7>::param_info<0>
 {
   using param_type = DDSKey;
   static constexpr auto GetName() { return "game_id"; }

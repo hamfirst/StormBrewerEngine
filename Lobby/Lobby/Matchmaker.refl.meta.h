@@ -105,7 +105,7 @@ template <>
 struct StormReflTypeInfo<PlaylistBucketUserList>
 {
   using MyBase = void;
-  static constexpr int fields_n = 2;
+  static constexpr int fields_n = 3;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -192,6 +192,31 @@ struct StormReflTypeInfo<PlaylistBucketUserList>::field_data<1, Self> : public S
   match_const_t<Self, std::vector<PlaylistBucketUser>> & Get() { return self.m_ExtraUsers; }
   std::add_const_t<std::remove_reference_t<std::vector<PlaylistBucketUser>>> & Get() const { return self.m_ExtraUsers; }
   void SetDefault() { self.m_ExtraUsers = StormReflTypeInfo<PlaylistBucketUserList>::GetDefault().m_ExtraUsers; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaylistBucketUserList>::field_data_static<2>
+{
+  using member_type = DDSKey; // unsigned long
+  static constexpr auto GetName() { return "m_MatchmakerRandomId"; }
+  static constexpr auto GetType() { return "unsigned long"; }
+  static constexpr unsigned GetFieldNameHash() { return 0x9D460336; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4F6404D1; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetMemberPtr() { return &PlaylistBucketUserList::m_MatchmakerRandomId; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistBucketUserList *>(obj); return &ptr->m_MatchmakerRandomId; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistBucketUserList *>(obj); return &ptr->m_MatchmakerRandomId; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlaylistBucketUserList>::field_data<2, Self> : public StormReflTypeInfo<PlaylistBucketUserList>::field_data_static<2>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, DDSKey> & Get() { return self.m_MatchmakerRandomId; }
+  std::add_const_t<std::remove_reference_t<DDSKey>> & Get() const { return self.m_MatchmakerRandomId; }
+  void SetDefault() { self.m_MatchmakerRandomId = StormReflTypeInfo<PlaylistBucketUserList>::GetDefault().m_MatchmakerRandomId; }
 };
 
 template <>
@@ -609,7 +634,7 @@ template <>
 struct StormReflFuncInfo<Matchmaker>
 {
   using MyBase = void;
-  static constexpr int funcs_n = 5;
+  static constexpr int funcs_n = 6;
   template <int N> struct func_data_static {};
 };
 
@@ -708,9 +733,9 @@ struct StormReflFuncInfo<Matchmaker>::func_data_static<1>::param_info<2>
 template <>
 struct StormReflFuncInfo<Matchmaker>::func_data_static<2>
 {
-  using func_ptr_type = void (Matchmaker::*)(DDSKey);
+  using func_ptr_type = void (Matchmaker::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 1;
+  static constexpr int params_n = 2;
   static constexpr auto GetName() { return "RemoveCasualUser"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x1B3E132E; }
@@ -732,11 +757,21 @@ struct StormReflFuncInfo<Matchmaker>::func_data_static<2>::param_info<0>
 };
 
 template <>
+struct StormReflFuncInfo<Matchmaker>::func_data_static<2>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "random_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x27DFF64C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
 struct StormReflFuncInfo<Matchmaker>::func_data_static<3>
 {
-  using func_ptr_type = void (Matchmaker::*)(DDSKey);
+  using func_ptr_type = void (Matchmaker::*)(DDSKey, DDSKey);
   using return_type = void;
-  static constexpr int params_n = 1;
+  static constexpr int params_n = 2;
   static constexpr auto GetName() { return "RemoveCompetitiveUser"; }
   static constexpr auto GetReturnType() { return "void"; }
   static constexpr unsigned GetFunctionNameHash() { return 0x2703EB86; }
@@ -754,6 +789,16 @@ struct StormReflFuncInfo<Matchmaker>::func_data_static<3>::param_info<0>
   static constexpr auto GetName() { return "user"; }
   static constexpr auto GetType() { return "DDSKey"; }
   static constexpr unsigned GetNameHash() { return 0x8D93D649; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Matchmaker>::func_data_static<3>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "random_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x27DFF64C; }
   static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
@@ -801,6 +846,42 @@ struct StormReflFuncInfo<Matchmaker>::func_data_static<4>::param_info<2>
   static constexpr auto GetType() { return "int"; }
   static constexpr unsigned GetNameHash() { return 0xA0EBC007; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
+};
+
+template <>
+struct StormReflFuncInfo<Matchmaker>::func_data_static<5>
+{
+  using func_ptr_type = void (Matchmaker::*)(DDSKey, DDSKey);
+  using return_type = void;
+  static constexpr int params_n = 2;
+  static constexpr auto GetName() { return "CancelMatchmakingForUser"; }
+  static constexpr auto GetReturnType() { return "void"; }
+  static constexpr unsigned GetFunctionNameHash() { return 0xBE1B3616; }
+  static constexpr unsigned GetReturnTypeNameHash() { return 0xD27BD9EE; }
+  static constexpr auto GetFunctionIndex() { return 5; }
+  static constexpr func_ptr_type GetFunctionPtr() { return &Matchmaker::CancelMatchmakingForUser; }
+  template <int i>
+  struct param_info { };
+};
+
+template <>
+struct StormReflFuncInfo<Matchmaker>::func_data_static<5>::param_info<0>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "user"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x8D93D649; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
+};
+
+template <>
+struct StormReflFuncInfo<Matchmaker>::func_data_static<5>::param_info<1>
+{
+  using param_type = DDSKey;
+  static constexpr auto GetName() { return "random_id"; }
+  static constexpr auto GetType() { return "DDSKey"; }
+  static constexpr unsigned GetNameHash() { return 0x27DFF64C; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1C5C8347; }
 };
 
 namespace StormReflFileInfo

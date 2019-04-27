@@ -230,8 +230,10 @@ void GameNetworkClient::HandleSimUpdate(GameGGPOServerGameState && game_state)
 
     m_LoadingState.Clear();
 
+    auto low_freq_data = game_state.m_LowFrequencyData.GetPtr();
+
     m_InstanceContainer = std::move(m_LoadingInstanceContainer);
-    m_InstanceContainer->InitializeFromRemoteState(game_state.m_State, game_state.m_LowFrequencyData.GetPtr());
+    m_InstanceContainer->InitializeFromRemoteState(game_state.m_State, low_freq_data);
     m_FinalizedLoad = false;
 
     m_State = ClientConnectionState::kConnected;
@@ -460,6 +462,8 @@ void GameNetworkClient::InitConnection(ProtocolType & protocol)
   m_Protocol->GetReceiverChannel<2>().RegisterGenericCallback(&GameNetworkClient::HandleEntityEvent, this);
   m_Protocol->GetReceiverChannel<4>().RegisterCallback(&GameNetworkClient::HandleClientDataUpdate, this);
 #endif
+  
+  printf("Connection established, sending join\n");
 
   SendPing();
   SendJoinServer();

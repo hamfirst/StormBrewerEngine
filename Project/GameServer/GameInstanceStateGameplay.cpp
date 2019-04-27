@@ -47,6 +47,7 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
     auto & player_info = m_PlayerInfo.EmplaceAt(elem.first);
     player_info.m_Loaded = true;
     player_info.m_LoadToken = 0;
+    player_info.m_RequestedTeam = elem.second.m_Team;
     player_info.m_ClientFrame = 0;
     player_info.m_InputFrame = 0;
     player_info.m_LastAuthCommitFrame = 0;
@@ -88,14 +89,17 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   }
 
 #ifdef NET_FILL_WITH_BOTS
-  while (low_freq_data.m_Players.Size() != kMaxPlayers)
+  auto team_counts = m_Controller.GetTeamCounts(low_freq_data);
+  bool all_teams_full = true;
+  for(int team = 0; team < kMaxTeams; ++team)
   {
-    auto player_id = m_PlayerIdAllocator.Allocate();
+    while(team_counts[team] < m_StateData.GetTeamInfo().m_MaxTeamSizes[team])
+    {
+      auto player_id = m_PlayerIdAllocator.Allocate();
+      m_Controller.ConstructBot(player_id, logic_container, "AI", team);
 
-
-    auto team_counts = m_Controller.GetTeamCounts(low_freq_data);
-    auto team = GetRandomTeam(team_counts, GetRandomNumber(), map_props, game_settings);
-    m_Controller.ConstructBot(player_id, logic_container, "AI", team);
+      team_counts[team]++;
+    }
   }
 #endif
 
@@ -184,12 +188,12 @@ bool GameInstanceStateGameplay::JoinPlayer(std::size_t client_index, const GameJ
   player_info.m_Loaded = false;
   player_info.m_LoadToken = load_token;
   player_info.m_PlayerIndex = -1;
+  player_info.m_RequestedTeam = join_game.m_Team;
 
   LoadLevelMessage msg;
   msg.m_LoadToken = load_token;
   msg.m_Settings = m_StateData.GetInitSettings();
   client_data.m_Client->SendLoadLevel(msg);
-
   return true;
 }
 
@@ -257,10 +261,12 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
   player_info.m_LastAuthCommitFrame = m_CurrentState->m_InstanceData.m_FrameCount;
 
   auto player_id = m_PlayerIdAllocator.Allocate();
+
 #ifdef NET_LATE_JOIN_REMOVE_BOT
 
   for (auto test_player_info : m_CurrentState->m_InstanceData.m_AIPlayerInfo)
   {
+    m_PlayerIdAllocator.Release(player_id);
     player_id = test_player_info.first;
     break;
   }
@@ -301,7 +307,7 @@ void GameInstanceStateGameplay::HandlePlayerLoaded(std::size_t client_index, con
     PlayerJoinedEvent ev;
     ev.m_PlayerIndex = (uint8_t)player_id;
     ev.m_UserName = client_info.m_UserName;
-    ev.m_RandomSeed = client_info.m_RandomSeed;
+    ev.m_Team = player_info.m_RequestedTeam;
 
     m_PendingExternals.emplace_back(std::move(ev));
   }
@@ -369,6 +375,7 @@ void GameInstanceStateGameplay::HandleTextChat(std::size_t client_index, const S
   }
 }
 
+#ifdef NET_USE_LOADOUT
 void GameInstanceStateGameplay::HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg)
 {
 #ifdef NET_ALLOW_LOADOUT_CHANGE_AFTER_START
@@ -379,6 +386,7 @@ void GameInstanceStateGameplay::HandleChangeLoadout(std::size_t client_index, co
   m_PendingExternals.emplace_back(ev);
 #endif
 }
+#endif
 
 #if NET_MODE == NET_MODE_GGPO
 
@@ -512,6 +520,8 @@ void GameInstanceStateGameplay::UpdatePlayer(std::size_t client_index, GameGGPOC
 {
   auto & client_info = m_StateData.GetClient(client_index);
   auto & player_info = m_PlayerInfo[client_index];
+
+  player_info.m_GotInitialAck = true;
 
   auto current_frame = m_CurrentState->m_InstanceData.m_FrameCount;
   int latest_input = -1;
@@ -810,10 +820,13 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
 
   packet.m_State = *m_SimHistory.Get(history_frame);
 
-  if(player.m_ClientFrame == 0)
+  if(player.m_GotInitialAck == false || player.m_SentInitialData == false)
   {
+    printf("Sending intial low freq sync\n");
     packet.m_LowFrequencyData = *m_LowFrequencyHistory.Get(history_frame)->get();
   }
+
+  player.m_SentInitialData = true;
 
   auto input_visitor = [&](int time, HistoryInput & inp)
   {
@@ -876,6 +889,7 @@ void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameIn
     packet.m_LocalData->EmplaceBack(GameHistoryClientLocal{ time, inp });
   };
   player.m_LocalDataHistory.VisitElementsSince(packet.m_EventStartFrame, local_data_visitor);
+
 
   client_info.m_Client->SyncGameState(packet);
 }

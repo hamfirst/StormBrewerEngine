@@ -31,6 +31,13 @@ void GameModeNameSelect::Initialize()
   auto & container = GetContainer();
 }
 
+void GameModeNameSelect::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
+}
+
 void GameModeNameSelect::OnAssetsLoaded()
 {
   auto & container = GetContainer();
@@ -55,6 +62,12 @@ void GameModeNameSelect::Update()
     {
       return;
     }
+  }
+  else
+  {
+    std::string default_name("nick");
+    Submit(default_name);
+    return;
   }
 
   auto & container = GetContainer();

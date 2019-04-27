@@ -10,6 +10,7 @@ struct PlaylistAssetElement
   STORM_REFL;
 
   std::string m_Name;
+  std::string m_InternalName;
   std::vector<GameInitSettings> m_GameModes;
   int m_TeamSizes[kMaxTeams] = {};
   bool m_AllowParties = false;

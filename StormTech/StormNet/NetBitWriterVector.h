@@ -45,6 +45,7 @@ private:
   std::vector<uint8_t> m_Buffer;
   int m_Bit = 8;
   int m_TotalBits = 0;
+  int m_ReserveBytes = 0;
 };
 
 

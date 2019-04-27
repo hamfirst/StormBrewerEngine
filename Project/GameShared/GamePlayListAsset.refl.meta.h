@@ -10,7 +10,7 @@ template <>
 struct StormReflTypeInfo<PlaylistAssetElement>
 {
   using MyBase = void;
-  static constexpr int fields_n = 5;
+  static constexpr int fields_n = 6;
   template <int N> struct field_data_static {};
   template <int N, typename Self> struct field_data {};
   template <int N> struct annotations { static constexpr int annotations_n = 0; template <int A> struct annoation { }; };
@@ -77,20 +77,45 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<0, Self> : public Sto
 template <>
 struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<1>
 {
+  using member_type = std::string; // std::basic_string<char, std::char_traits<char>, std::allocator<char> >
+  static constexpr auto GetName() { return "m_InternalName"; }
+  static constexpr auto GetType() { return "std::basic_string<char, std::char_traits<char>, std::allocator<char> >"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xF79B5C65; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E9D252D; }
+  static constexpr bool HasDefault() { return true; }
+  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_InternalName; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistAssetElement *>(obj); return &ptr->m_InternalName; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistAssetElement *>(obj); return &ptr->m_InternalName; }
+};
+
+template <typename Self>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data<1, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<1>
+{
+  Self & self;
+  field_data(Self & self) : self(self) {}
+  match_const_t<Self, std::string> & Get() { return self.m_InternalName; }
+  std::add_const_t<std::remove_reference_t<std::string>> & Get() const { return self.m_InternalName; }
+  void SetDefault() { self.m_InternalName = StormReflTypeInfo<PlaylistAssetElement>::GetDefault().m_InternalName; }
+};
+
+template <>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<2>
+{
   using member_type = std::vector<GameInitSettings>; // std::vector<GameInitSettings, std::allocator<GameInitSettings> >
   static constexpr auto GetName() { return "m_GameModes"; }
   static constexpr auto GetType() { return "std::vector<GameInitSettings, std::allocator<GameInitSettings> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF14C6D04; }
   static constexpr unsigned GetTypeNameHash() { return 0xC7D24044; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1; }
+  static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_GameModes; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistAssetElement *>(obj); return &ptr->m_GameModes; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistAssetElement *>(obj); return &ptr->m_GameModes; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data<1, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<1>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data<2, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<2>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -100,7 +125,7 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<1, Self> : public Sto
 };
 
 template <>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<2>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
 {
   using member_type = int [2]; // int [2]
   static constexpr auto GetName() { return "m_TeamSizes"; }
@@ -108,14 +133,14 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<2>
   static constexpr unsigned GetFieldNameHash() { return 0x27BB0D16; }
   static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
   static constexpr bool HasDefault() { return false; }
-  static constexpr auto GetFieldIndex() { return 2; }
+  static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_TeamSizes; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistAssetElement *>(obj); return &ptr->m_TeamSizes; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistAssetElement *>(obj); return &ptr->m_TeamSizes; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data<2, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<2>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data<3, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -124,7 +149,7 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<2, Self> : public Sto
 };
 
 template <>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<4>
 {
   using member_type = bool; // bool
   static constexpr auto GetName() { return "m_AllowParties"; }
@@ -132,14 +157,14 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
   static constexpr unsigned GetFieldNameHash() { return 0xCA485774; }
   static constexpr unsigned GetTypeNameHash() { return 0x55813692; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3; }
+  static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_AllowParties; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistAssetElement *>(obj); return &ptr->m_AllowParties; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistAssetElement *>(obj); return &ptr->m_AllowParties; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data<3, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data<4, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<4>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -149,7 +174,7 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<3, Self> : public Sto
 };
 
 template <>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<4>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<5>
 {
   using member_type = int; // int
   static constexpr auto GetName() { return "m_TotalGameSize"; }
@@ -157,14 +182,14 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<4>
   static constexpr unsigned GetFieldNameHash() { return 0xDC97E526; }
   static constexpr unsigned GetTypeNameHash() { return 0x1451DAB1; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4; }
+  static constexpr auto GetFieldIndex() { return 5; }
   static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_TotalGameSize; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<PlaylistAssetElement *>(obj); return &ptr->m_TotalGameSize; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlaylistAssetElement *>(obj); return &ptr->m_TotalGameSize; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<PlaylistAssetElement>::field_data<4, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<4>
+struct StormReflTypeInfo<PlaylistAssetElement>::field_data<5, Self> : public StormReflTypeInfo<PlaylistAssetElement>::field_data_static<5>
 {
   Self & self;
   field_data(Self & self) : self(self) {}

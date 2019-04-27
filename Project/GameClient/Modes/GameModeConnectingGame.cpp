@@ -2,6 +2,7 @@
 #include "GameClient/Modes/GameModeConnectingGame.h"
 #include "GameClient/Modes/GameModeOnlineGameplay.h"
 #include "GameClient/Modes/GameModeMainMenu.h"
+#include "GameClient/Modes/GameModePlayOnline.h"
 #include "GameClient/GameContainer.h"
 #include "GameClient/GameNetworkClient.h"
 #include "GameClient/Modes/GameModeOnlineStaging.h"
@@ -10,9 +11,10 @@
 #include "Engine/Text/TextManager.h"
 
 GameModeConnectingGame::GameModeConnectingGame(GameContainer & game) :
-  GameMode(game),
+  GameModeOnlineBase(game),
   m_ConnectFailed(false),
-  m_LastConnect(0)
+  m_Start(GetTimeSeconds()),
+  m_LastConnect(GetTimeSeconds())
 {
 }
 
@@ -39,18 +41,42 @@ void GameModeConnectingGame::OnAssetsLoaded()
 
 void GameModeConnectingGame::Update()
 {
+  if(HandleDisconnect())
+  {
+    return;
+  }
+
   auto & container = GetContainer();
   container.GetWindow().Update();
 
   if (m_FrameClock.ShouldSkipFrameUpdate() == false)
   {
     m_FrameClock.BeginFrame();
-    container.GetGameClient().Update();
+
+    if(container.HasClient())
+    {
+      container.GetGameClient().Update();
+    }
+  }
+
+  if(container.HasClient() == false)
+  {
+#ifndef NET_FORCE_CASUAL_GAMES
+    if(container.HasLobbyClient())
+    {
+      GetContainer().SwitchMode<GameModePlayOnline>("Failed to connect to game server");
+      return;
+    }
+#endif
+
+    GetContainer().SwitchMode<GameModeMainMenu>("Failed to connect to game server");
+    return;
   }
 
   if (container.GetGameClient().GetConnectionState() == ClientConnectionState::kConnected)
   {
     container.SwitchMode<GameModeOnlineGameplay>();
+    return;
   }
 
   if (container.GetGameClient().GetConnectionState() == ClientConnectionState::kDisconnected)
@@ -58,7 +84,25 @@ void GameModeConnectingGame::Update()
     m_ConnectFailed = true;
 
     auto cur_time = GetTimeSeconds();
-    if (cur_time - m_LastConnect > 5.0f)
+
+    if(cur_time - m_Start > 20.0f)
+    {
+      container.StopNetworkClient();
+
+#ifndef NET_FORCE_CASUAL_GAMES
+      if(container.HasLobbyClient())
+      {
+        GetContainer().SwitchMode<GameModePlayOnline>("Failed to connect to game server");
+        return;
+      }
+#endif
+
+      GetContainer().StopLobbyClient();
+      GetContainer().SwitchMode<GameModeMainMenu>("Failed to connect to game server");
+      return;
+    }
+
+    if (cur_time - m_LastConnect > 5.0f && container.HasClient())
     {
       m_LastConnect = cur_time;
 
@@ -83,7 +127,7 @@ void GameModeConnectingGame::Render()
     auto window_size = render_state.GetRenderSize();
     auto texture_size = texture->GetSize();
 
-    render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize(window_size / 2.0f, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
+    render_state.DrawDebugTexturedQuad(Box::FromFrameCenterAndSize({}, texture_size), Color(255, 255, 255, 255), texture->GetTexture(), true);
 
     const char * status_msg = "";
     switch (container.GetGameClient().GetConnectionState())
@@ -114,22 +158,6 @@ void GameModeConnectingGame::Render()
     g_TextManager.SetTextMode();
     g_TextManager.SetTextPos(text_pos);
     g_TextManager.RenderText(status_msg, -1, 1, render_state);
-
-    if (m_ConnectFailed &&
-            container.GetGameClient().GetConnectionState() != ClientConnectionState::kLoading)
-    {
-      status_msg = "The servers may be offline";
-      auto text_size = g_TextManager.GetTextSize(status_msg, -1, 1);
-
-      Vector2 text_pos = {};
-      text_pos.y -= texture_size.y / 2 + 25;
-      text_pos.x -= text_size.Size().x / 2;
-
-      g_TextManager.SetPrimaryColor(Color(255, 0, 0, 255));
-      g_TextManager.SetTextMode();
-      g_TextManager.SetTextPos(text_pos);
-      g_TextManager.RenderText(status_msg, -1, 1, render_state);
-    }
   }
 
   container.RenderUIManager();

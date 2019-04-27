@@ -101,8 +101,6 @@ namespace StormSockets
 
   void StormSocketFrontendBase::CleanupAllConnections()
   {
-    m_Backend->PrintConnections();
-
     m_OwnedConnectionLock.lock();
     auto connections = m_OwnedConnections;
     for (auto connection_id : connections)

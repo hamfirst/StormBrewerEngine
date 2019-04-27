@@ -39,6 +39,12 @@ struct UserZoneInfo
   int m_Latencies[kNumProjectZones] = {};
 };
 
+struct UserRankInfo
+{
+  STORM_DATA_DEFAULT_CONSTRUCTION(UserRankInfo);
+  RFloat m_Rank;
+};
+
 struct UserInfo
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(UserInfo);
@@ -187,7 +193,9 @@ struct GameMember
   RInt m_Title;
   RInt m_Celebration;
 
+#ifdef NET_USE_LOADOUT
   ROpaque<GamePlayerLoadout> m_Loadout;
+#endif
 };
 
 
@@ -208,6 +216,12 @@ enum STORM_REFL_ENUM class LobbyGameType
   kPrivate,
 };
 
+struct GameInfoTeamSizes
+{
+  STORM_REFL;
+  int m_MaxTeamSizes[kMaxTeams] = {};
+};
+
 struct GameInfo
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(GameInfo);
@@ -220,6 +234,8 @@ struct GameInfo
   RUInt m_JoinCode;
   RString m_Password;
   ROpaque<GameInitSettings> m_Settings;
+  ROpaque<GameInfoTeamSizes> m_TeamSizes;
+
   RSparseList<GameMember> m_Users;
 };
 
@@ -244,6 +260,8 @@ struct UserLocalData
   RKey m_PlatformId;
 
   RInt m_AdminLevel;
+
+  RMap<uint32_t, UserRankInfo> m_RankInfo;
 
   UserPersistent m_Persistent;
 

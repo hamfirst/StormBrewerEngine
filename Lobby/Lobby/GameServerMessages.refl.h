@@ -11,6 +11,7 @@
 
 #include "Game/GameNetworkData.refl.h"
 #include "Lobby/GameData.refl.h"
+#include "LobbyShared/SharedTypes.refl.h"
 
 
 static const uint64_t kGameServerChallengePad = kProjectRandom1;
@@ -82,6 +83,7 @@ struct GameServerLobbySettings
 {
   STORM_REFL;
   std::string m_LobbyServerIp = "127.0.0.1";
+  int m_LobbyServerPort = LOBBY_GAME_PORT;
 };
 
 struct GameServerInfo
@@ -100,6 +102,7 @@ struct GameServerCreateGame
   static const GameServerMessageType Type = GameServerMessageType::kCreateGame;
   GameInitSettings m_Settings;
   uint64_t m_GameId = 0;
+  GameInfoTeamSizes m_TeamInfo;
 };
 
 struct GameServerDestroyGame
@@ -136,6 +139,8 @@ struct GameServerAuthenticateUserSuccess
   static const GameServerMessageType Type = GameServerMessageType::kAuthUserSuccess;
 
   uint32_t m_ResponseId = 0;
+  DDSKey m_GameId = 0;
+  DDSKey m_UserId = 0;
 
   std::string m_Name;
 
@@ -152,7 +157,9 @@ struct GameServerAuthenticateUserSuccess
 
   bool m_NewPlayer = false;
 
+#ifdef NET_USE_LOADOUT
   GamePlayerLoadout m_Loadout;
+#endif
 };
 
 struct GameServerAuthenticateUserFailure

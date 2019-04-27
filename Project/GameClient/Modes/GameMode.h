@@ -14,6 +14,7 @@ public:
   virtual ~GameMode();
 
   virtual void Initialize();
+  virtual void Deinit();
   virtual void OnAssetsLoaded();
   virtual void InputEvent();
 

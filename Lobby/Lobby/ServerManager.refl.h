@@ -91,8 +91,10 @@ public:
   void STORM_REFL_FUNC HandleServerDisconnected(DDSKey game_server_key);
   void STORM_REFL_FUNC HandleGameEnded(DDSKey game_server_key);
 
-  void STORM_REFL_FUNC CheckForTimedOutServers();
-  void STORM_REFL_FUNC CheckForAssignableGames();
+  void CheckForTimedOutServers();
+  void CheckForAssignableGames();
+  void CheckForNewServersNeeded();
+  void CheckForExtraneousServers();
 
 private:
 
@@ -124,6 +126,7 @@ private:
   std::vector<GameRequest> m_GameRequests;
 
   std::vector<int> m_RequestedServersInZone;
+
   std::vector<PendingServer> m_PendingServers;
   std::vector<ActiveServer> m_ActiveServers;
 };

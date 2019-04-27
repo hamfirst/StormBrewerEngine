@@ -57,6 +57,7 @@ set(GENERIC_SRC_GameClient
             Modes/GameModeTutorial.cpp
             Modes/GameModePlayOnline.cpp
             Modes/GameModePlaylistMenu.cpp
+            Modes/GameModeFindingMatch.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -111,6 +112,7 @@ set(GENERIC_HEADER_GameClient
             Modes/GameModeTutorial.h
             Modes/GameModePlayOnline.h
             Modes/GameModePlaylistMenu.h
+            Modes/GameModeFindingMatch.h
             #HEADER_PLACEHOLDER
             )
 

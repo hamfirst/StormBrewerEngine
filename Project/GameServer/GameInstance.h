@@ -6,7 +6,11 @@
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/GameEventReconciler.h"
 
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "ProjectSettings/ProjectNetworkSettings.h"
+
+
 #include "Game/GameMessages.refl.h"
 #include "Game/GameNetworkData.refl.h"
 #include "Game/GameSimulationEventCallbacks.h"
@@ -17,6 +21,8 @@
 class GameClientConnection;
 class GameServer;
 class GameInstanceStateBase;
+
+struct GameInfoTeamSizes;
 
 using GameSimulationActionList = std::vector<Delegate<void, GameLogicContainer &>>;
 
@@ -33,7 +39,7 @@ class GameInstance
 public:
 
   GameInstance(GameServer & server, uint64_t game_id,
-          const GameInitSettings & settings, GameStageManager & stage_manager);
+          const GameInitSettings & settings, const GameInfoTeamSizes & team_info, GameStageManager & stage_manager);
 
   ~GameInstance();
 
@@ -44,7 +50,10 @@ public:
 
   void HandlePlayerLoaded(GameClientConnection * client, const FinishLoadingMessage & finish_loading);
   void HandleTextChat(GameClientConnection * client, const SendTextChatMessage & text_message);
+
+#ifdef NET_USE_LOADOUT
   void HandleChangeLoadout(GameClientConnection * client, const ChangeLoadoutMessage & text_message);
+#endif
 
 #if NET_MODE == NET_MODE_GGPO
 

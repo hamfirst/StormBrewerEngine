@@ -1032,7 +1032,7 @@ namespace StormSockets
         {
           if (connection.m_PendingSendBlockStart != InvalidBlockHandle)
           {
-            printf("bad\n");
+            //printf("bad\n");
           }
 
           QueueCloseSocket(id);
@@ -1217,7 +1217,7 @@ namespace StormSockets
   {
     if (error)
     {
-      printf("Accept error: %s (%d)\n", error.message().data(), error.value());
+      //printf("Accept error: %s (%d)\n", error.message().data(), error.value());
       return;
     }
 
@@ -1226,7 +1226,7 @@ namespace StormSockets
     auto acceptor_itr = m_Acceptors.find(acceptor_id);
     if (acceptor_itr == m_Acceptors.end())
     {
-      printf("Acceptor not found\n");
+      //printf("Acceptor not found\n");
       return;
     }
 
@@ -1241,7 +1241,7 @@ namespace StormSockets
 
     if (connection_id == StormSocketConnectionId::InvalidConnectionId)
     {
-      printf("Ran out of connection slots\n");
+      //printf("Ran out of connection slots\n");
       new_socket.close();
       new_socket = asio::ip::tcp::socket(m_IOService);
       return;

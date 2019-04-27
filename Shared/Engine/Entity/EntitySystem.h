@@ -23,6 +23,7 @@ public:
 
   void FindAllEntitiesWithName(czstr name, std::vector<NotNullPtr<Entity>> & outp_entities);
   void DestroyAllEntities();
+  void RemoveServerObjectManagerFromAllEntities();
 
   void BeginFrame();
   void FinalizeEvents();

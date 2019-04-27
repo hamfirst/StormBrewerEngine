@@ -58,16 +58,21 @@ void Matchmaker::Update()
 
                 if (spots_available >= players_in_bucket)
                 {
-                  SendGameInfo(user.m_PrimaryUser.m_UserKey, user.m_PrimaryUser.m_EndpointId, game.m_GameId, LobbyGameType::kCasual);
+                  SendGameInfo(user.m_PrimaryUser.m_UserKey, user.m_PrimaryUser.m_EndpointId,
+                          game.m_GameId, team, user.m_MatchmakerRandomId, LobbyGameType::kCasual);
+
                   for(auto & extra_user : user.m_ExtraUsers)
                   {
-                    SendGameInfo(extra_user.m_UserKey, extra_user.m_EndpointId, game.m_GameId, LobbyGameType::kCasual);
+                    SendGameInfo(extra_user.m_UserKey, extra_user.m_EndpointId, game.m_GameId,
+                            team, user.m_MatchmakerRandomId, LobbyGameType::kCasual);
                   }
 
                   game.m_PlayersAssigned[team] += players_in_bucket;
                   bucket.m_Users.erase(itr);
 
                   found_match = true;
+
+                  DDSLog::LogInfo("Found refill game!");
                   break;
                 }
               }
@@ -110,26 +115,29 @@ void Matchmaker::Update()
 
 void Matchmaker::AddCasualUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask)
 {
+  DDSLog::LogInfo("Adding casual user %zu", user.m_PrimaryUser.m_UserKey);
   AddUser(user, zone_info, playlist_mask, m_CasualPlaylist, m_CasualBuckets);
 }
 
 void Matchmaker::AddCompetitiveUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask)
 {
+  DDSLog::LogInfo("Adding competitive user %zu", user.m_PrimaryUser.m_UserKey);
   AddUser(user, zone_info, playlist_mask, m_CompetitivePlaylist, m_CompetitiveBuckets);
 }
 
-void Matchmaker::RemoveCasualUser(DDSKey user)
+void Matchmaker::RemoveCasualUser(DDSKey user, DDSKey random_id)
 {
-  RemoveUser(user, m_CasualPlaylist, m_CasualBuckets);
+  RemoveUser(user, random_id, m_CasualPlaylist, m_CasualBuckets);
 }
 
-void Matchmaker::RemoveCompetitiveUser(DDSKey user)
+void Matchmaker::RemoveCompetitiveUser(DDSKey user, DDSKey random_id)
 {
-  RemoveUser(user, m_CompetitivePlaylist, m_CompetitiveBuckets);
+  RemoveUser(user, random_id, m_CompetitivePlaylist, m_CompetitiveBuckets);
 }
 
 void Matchmaker::NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone)
 {
+  DDSLog::LogInfo("Player left casual game");
   auto & refill_list = m_CasualRefillGames[zone].m_Games;
   for(auto itr = refill_list.begin(); itr != refill_list.end(); ++itr)
   {
@@ -150,12 +158,19 @@ void Matchmaker::NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone)
 
       if(has_players == false)
       {
-        m_Interface.Call(&Game::Cleanup, game_id);
+        m_Interface.Call(&Game::MatchmakerDestroyGame, game_id);
         refill_list.erase(itr);
       }
       return;
     }
   }
+}
+
+void Matchmaker::CancelMatchmakingForUser(DDSKey user, DDSKey random_id)
+{
+  DDSLog::LogInfo("Matchmaking cancelled");
+  RemoveCasualUser(user, random_id);
+  RemoveCompetitiveUser(user, random_id);
 }
 
 void Matchmaker::ReadPlaylistFile(czstr playlist_file, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
@@ -221,7 +236,7 @@ void Matchmaker::AddUser(const PlaylistBucketUserList & user, const UserZoneInfo
   }
 }
 
-void Matchmaker::RemoveUser(DDSKey user, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
+void Matchmaker::RemoveUser(DDSKey user, DDSKey random_id, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list)
 {
   for(int zone = 0; zone < kNumProjectZones; ++zone)
   {
@@ -230,7 +245,7 @@ void Matchmaker::RemoveUser(DDSKey user, PlaylistAsset & playlist_data, std::vec
       auto & bucket = bucket_list[zone].m_Buckets[playlist];
       for(auto itr = bucket.m_Users.begin(); itr != bucket.m_Users.end(); ++itr)
       {
-        if(itr->m_PrimaryUser.m_UserKey == user)
+        if(itr->m_PrimaryUser.m_UserKey == user && itr->m_MatchmakerRandomId == random_id)
         {
           bucket.m_Users.erase(itr);
           break;
@@ -259,22 +274,40 @@ bool Matchmaker::FindMatch(int zone, PlaylistAsset & playlist_data,
     }
 
     GeneratedGame game;
-    if(BuildGameFromUsers(bucket, game, playlist_data.m_Elements[playlist].m_TeamSizes))
+    std::vector<int> team_sizes;
+    team_sizes.resize(kMaxTeams);
+
+    for(int team = 0; team < kMaxTeams; ++team)
     {
+      team_sizes[team] = playlist_data.m_Elements[playlist].m_TeamSizes[team];
+    }
+
+    if(BuildGameFromUsers(bucket, game, team_sizes))
+    {
+      DDSLog::LogInfo("Found match");
+
       int mode_index = DDSGetRandomNumber() % playlist_data.m_Elements[playlist].m_GameModes.size();
       auto & game_mode = playlist_data.m_Elements[playlist].m_GameModes[mode_index];
 
       DDSKey game_id = DDSGetRandomNumber64();
-      m_Interface.Call(&Game::InitCompetitiveGame, game_id, game_mode, game, zone);
+
+      if(type == LobbyGameType::kCompetitive)
+      {
+        m_Interface.Call(&Game::InitCompetitiveGame, game_id, game_mode, game, zone, team_sizes);
+      }
+      else
+      {
+        m_Interface.Call(&Game::InitCasualGame, game_id, game_mode, game, zone, team_sizes);
+      }
 
       for(int team = 0; team < kMaxTeams; ++team)
       {
         for(auto & user : game.m_Users[team])
         {
-          SendGameInfo(user.m_UserId, user.m_EndpointId, game_id, type);
+          SendGameInfo(user.m_UserId, user.m_EndpointId, game_id, team, user.m_MatchmakerRandomId, type);
 
-          RemoveCompetitiveUser(user.m_UserId);
-          RemoveCasualUser(user.m_UserId);
+          RemoveCompetitiveUser(user.m_UserId, user.m_MatchmakerRandomId);
+          RemoveCasualUser(user.m_UserId, user.m_MatchmakerRandomId);
         }
       }
 
@@ -301,27 +334,31 @@ bool Matchmaker::FindMatch(int zone, PlaylistAsset & playlist_data,
   return false;
 }
 
-void Matchmaker::SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id, LobbyGameType game_type)
+void Matchmaker::SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id,
+        int team, DDSKey matchmaker_random_id, LobbyGameType game_type)
 {
+  DDSLog::LogInfo("Sending match info to %zu", user_id);
   UserGameJoinInfo join_info;
   join_info.m_EndpointId = endpoint_id;
   join_info.m_Observer = false;
   join_info.m_IntendedType = game_type;
+  join_info.m_AssignedTeam = team;
+  join_info.m_MatchmakerRandomId = matchmaker_random_id;
 
-  m_Interface.Call(&User::JoinGame, user_id, game_id, join_info);
+  m_Interface.Call(&User::JoinGameByMatchmaker, user_id, game_id, matchmaker_random_id, join_info);
 }
 
-bool Matchmaker::BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, int * team_sizes)
+bool Matchmaker::BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, const std::vector<int> & team_sizes)
 {
   for(auto & user_info : bucket.m_Users)
   {
     int team_with_lowest_players = 0;
-    int lowest_players = 0;
+    int lowest_players = out_game.m_Users[0].size();
 
     for(int team = 1; team < kMaxTeams; ++team)
     {
       auto team_size = out_game.m_Users[team].size();
-      if(lowest_players < team_size)
+      if(team_size < lowest_players)
       {
         team_with_lowest_players = team;
         lowest_players = team_size;
@@ -333,6 +370,7 @@ bool Matchmaker::BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame
       GeneratedGameUser user_data;
       user_data.m_UserId = user_info.m_PrimaryUser.m_UserKey;
       user_data.m_EndpointId = user_info.m_PrimaryUser.m_EndpointId;
+      user_data.m_MatchmakerRandomId = user_info.m_MatchmakerRandomId;
 
       out_game.m_Users[team_with_lowest_players].emplace_back(user_data);
 
@@ -340,6 +378,7 @@ bool Matchmaker::BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame
       {
         user_data.m_UserId = extra_user.m_UserKey;
         user_data.m_EndpointId = extra_user.m_EndpointId;
+        user_data.m_MatchmakerRandomId = user_info.m_MatchmakerRandomId;
 
         out_game.m_Users[team_with_lowest_players].emplace_back(user_data);
       }

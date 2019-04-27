@@ -18,6 +18,8 @@ class GameModeMapSettings : public GameModeOnlineBase
 public:
   GameModeMapSettings(GameContainer & game, GameModeMapSettingsNextScreen next_screen);
 
+  void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
 
   void Update() override;

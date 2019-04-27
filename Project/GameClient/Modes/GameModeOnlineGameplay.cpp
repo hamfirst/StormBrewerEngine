@@ -71,19 +71,21 @@ void GameModeOnlineGameplay::Update()
     return;
   }
 
-  if (game_data.m_WiningTeam)
-  {
-    auto instance = container.GetGameClient().ConvertToOffline();
-    container.StopNetworkClient();
-    container.SwitchMode<GameModeEndGame>(std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
-    return;
-  }
-
   auto & engine_state = container.GetEngineState();
   auto comp_system = engine_state.GetComponentSystem();
   auto entity_system = engine_state.GetEntitySystem();
   auto visual_effects = engine_state.GetVisualEffectManager();
   auto map_system = engine_state.GetMapSystem();
+
+  if (game_data.m_WiningTeam)
+  {
+    auto instance = container.GetGameClient().ConvertToOffline();
+    container.StopNetworkClient();
+    container.SwitchMode<GameModeEndGame>(std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
+
+    entity_system->RemoveServerObjectManagerFromAllEntities();
+    return;
+  }
 
   auto & ui_manager = container.GetClientSystems()->GetUIManager();
   auto & input_manager = container.GetClientSystems()->GetInputManager();

@@ -11,6 +11,7 @@ NetTransmitterClientWebsocket::NetTransmitterClientWebsocket()
 
 NetBitWriter & NetTransmitterClientWebsocket::CreateWriter(NetPipeMode mode, int channel_index, int channel_bits, bool ack)
 {
+  m_Writer.Reset();
   CreateDefaultMessage(m_Writer, channel_index, channel_bits, ack);
   return m_Writer;
 }

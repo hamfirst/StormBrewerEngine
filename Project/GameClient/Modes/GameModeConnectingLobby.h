@@ -14,7 +14,8 @@ enum class GameModeConnectingLobbyIntent
   kOnlineMenu,
   kCompetitive,
   kCasual,
-  kPrivate,
+  kHostPrivate,
+  kJoinPrivate,
 };
 
 class GameModeConnectingLobby : public GameMode
@@ -24,6 +25,7 @@ public:
   ~GameModeConnectingLobby();
 
   void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
 
   void Update() override;

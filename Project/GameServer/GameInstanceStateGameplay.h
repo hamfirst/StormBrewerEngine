@@ -17,19 +17,22 @@
 
 struct GameInstanceStateGameplayPlayer
 {
-  int m_PlayerIndex;
-  bool m_Loaded;
-  uint64_t m_LoadToken;
+  int m_PlayerIndex = -1;
+  bool m_Loaded = false;
+  bool m_GotInitialAck = false;
+  bool m_SentInitialData = false;
+  uint64_t m_LoadToken = 0;
+  int m_RequestedTeam = 0;
 
 
 #ifdef NET_ALLOW_OBSERVERS
-  int m_ObserverIndex;
+  int m_ObserverIndex = -1;
 #endif
 
 #if NET_MODE == NET_MODE_GGPO
-  int m_ClientFrame;
-  int m_InputFrame;
-  int m_LastAuthCommitFrame;
+  int m_ClientFrame = 0;
+  int m_InputFrame = 0;
+  int m_LastAuthCommitFrame = 0;
   HistoryList<ClientLocalData> m_LocalDataHistory;
 #endif
 };
@@ -47,7 +50,10 @@ public:
 
   void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
   void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) override;
+
+#ifdef NET_USE_LOADOUT
   void HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg) override;
+#endif
 
 #if NET_MODE == NET_MODE_GGPO
 

@@ -1,13 +1,12 @@
 
 rank_sprites = loader:LoadSprite("./Sprites/RankIcons.sprite")
-competitive_ranks = {}
 
 function InitCasualPlaylistMenu()
   InitPlaylistMenu(game.casual_playlist, "Casual")
 end
 
 function InitCompetitivePlaylistMenu()
-  InitPlaylistMenu(game.competitive_playlist, "Competitive", competitive_ranks)
+  InitPlaylistMenu(game.competitive_playlist, "Competitive", game.competitive_ranks)
 end
 
 function InitPlaylistMenu(playlist_list, playlist_name, ranks)
@@ -106,7 +105,7 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
     if ranks ~= nil then
       local rank = ranks[v.m_Name]
       if rank == nil then
-        rank = 3
+        rank = -1
       end
 
 

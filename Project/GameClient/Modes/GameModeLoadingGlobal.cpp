@@ -37,7 +37,14 @@ void GameModeLoadingGlobal::Update()
   container.GetWindow().Update();
   container.UpdateUIManager();
 
-  if(container.GetSave().IsLoaded() &&
+  auto & level_list = container.GetLevelList();
+  if(m_StartedPreload == false && level_list.IsLevelListLoaded())
+  {
+    level_list.PreloadAllLevels();
+    m_StartedPreload = true;
+  }
+
+  if(container.GetSave().IsLoaded() && m_StartedPreload && level_list.IsPreloadComplete() &&
      g_GlobalAssetList.AllAssetsLoaded())
   {
     auto init_settings = container.GetInitSettings();

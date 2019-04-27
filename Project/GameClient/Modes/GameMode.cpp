@@ -21,6 +21,11 @@ void GameMode::Initialize()
 
 }
 
+void GameMode::Deinit()
+{
+
+}
+
 void GameMode::OnAssetsLoaded()
 {
 

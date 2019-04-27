@@ -3,17 +3,18 @@
 #include "Foundation/Time/StopWatch.h"
 #include "Foundation/Sequencer/Sequencer.h"
 
-#include "GameClient/Modes/GameMode.h"
+#include "GameClient/Modes/GameModeOnlineBase.h"
 
 #include "Engine/UI/UIManager.h"
 
-class GameModeJoinPrivateGame : public GameMode
+class GameModeJoinPrivateGame : public GameModeOnlineBase
 {
 public:
   explicit GameModeJoinPrivateGame(GameContainer & game);
   ~GameModeJoinPrivateGame() override;
 
   void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
 
   void Update() override;

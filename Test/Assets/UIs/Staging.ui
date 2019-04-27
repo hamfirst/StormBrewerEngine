@@ -2,85 +2,85 @@
 
 {
     "m_Functions": {
-        "8": {
-            "m_Name": "Ready",
+        "1": {
+            "m_Value": "10",
+            "m_Name": "GetPlayerCount",
             "m_DebugOutput": false
+        },
+        "7": {
+            "m_DebugOutput": false,
+            "m_Name": "GetGameTimer",
+            "m_Value": "30 "
+        },
+        "0": {
+            "m_Value": "2",
+            "m_Name": "GetTeamCount",
+            "m_DebugOutput": false
+        },
+        "3": {
+            "m_Name": "SendChat"
+        },
+        "8": {
+            "m_DebugOutput": false,
+            "m_Name": "Ready"
         },
         "5": {
             "m_Name": "CommitMapChanges"
-        },
-        "2": {
-            "m_DebugOutput": false,
-            "m_Value": "5",
-            "m_Name": "GetPlayerMaxCount"
         },
         "4": {
             "m_Name": "Quit"
         },
         "6": {
-            "m_Name": "CancelMapChanges",
-            "m_Value": ""
-        },
-        "0": {
-            "m_DebugOutput": false,
-            "m_Value": "2",
-            "m_Name": "GetTeamCount"
-        },
-        "1": {
-            "m_DebugOutput": false,
-            "m_Value": "10",
-            "m_Name": "GetPlayerCount"
-        },
-        "7": {
-            "m_Value": "30 ",
-            "m_DebugOutput": false,
-            "m_Name": "GetGameTimer"
-        },
-        "3": {
-            "m_Name": "SendChat"
-        }
-    },
-    "m_InitFunction": "InitStagingMenu",
-    "m_Variables": {
-        "9": {
-            "m_Name": "allow_mapsettings",
-            "m_Value": "true"
+            "m_Value": "",
+            "m_Name": "CancelMapChanges"
         },
         "2": {
-            "m_Value": "true",
-            "m_Name": "allow_ready"
-        },
-        "0": {
-            "m_Value": "true",
-            "m_Name": "allow_observers"
-        },
-        "1": {
-            "m_Value": "true",
-            "m_Name": "allow_chat"
-        },
-        "7": {
-            "m_Value": "true",
-            "m_Name": "allow_map_change"
-        },
+            "m_Value": "5",
+            "m_Name": "GetPlayerMaxCount",
+            "m_DebugOutput": false
+        }
+    },
+    "m_Variables": {
         "6": {
-            "m_Value": "WWWWWWWWWWWWWWW's Game",
-            "m_Name": "game_name"
+            "m_Name": "game_name",
+            "m_Value": "WWWWWWWWWWWWWWW's Game"
         },
         "4": {
-            "m_Value": "true",
-            "m_Name": "allow_loadout"
+            "m_Name": "allow_loadout",
+            "m_Value": "false"
         },
         "3": {
-            "m_Value": "true",
-            "m_Name": "allow_playerlist"
+            "m_Name": "allow_playerlist",
+            "m_Value": "true"
+        },
+        "0": {
+            "m_Name": "allow_observers",
+            "m_Value": "true"
         },
         "8": {
-            "m_Value": "true",
-            "m_Name": "allow_gametimer"
+            "m_Name": "allow_gametimer",
+            "m_Value": "true"
         },
         "5": {
-            "m_Value": "ZZZZ",
-            "m_Name": "game_code"
+            "m_Name": "game_code",
+            "m_Value": "ZZZZ"
+        },
+        "7": {
+            "m_Name": "allow_map_change",
+            "m_Value": "false"
+        },
+        "1": {
+            "m_Name": "allow_chat",
+            "m_Value": "true"
+        },
+        "9": {
+            "m_Value": "false",
+            "m_Name": "allow_mapsettings"
+        },
+        "2": {
+            "m_Name": "allow_ready",
+            "m_Value": "true"
         }
-    }
+    },
+    "m_InitFunction": "InitStagingMenu"
 }

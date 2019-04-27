@@ -297,8 +297,10 @@ void DDSCoordinatorState::GotMessageFromServer(DDSNodeId server_id, DDSCoordinat
 
 bool DDSCoordinatorState::SendTargetedMessage(DDSDataObjectAddress addr, DDSCoordinatorProtocolMessageType type, std::string && message, bool force_process)
 {
+  DDSLog::LogVerbose("-- Sending targeted message (coordinator) %s (%zu)", StormReflGetEnumAsString(type), addr.m_ObjectKey);
   if (m_QueueMessageDepth && force_process == false)
   {
+    DDSLog::LogVerbose("-- Queueing targeted message (coordinator) %s (%zu)", StormReflGetEnumAsString(type), addr.m_ObjectKey);
     m_QueuedTargetedMessages.emplace(std::make_tuple(addr, type, message));
     return true;
   }
@@ -516,7 +518,7 @@ void DDSCoordinatorState::EndQueueingMessages()
 
     while (m_QueuedTargetedMessages.size())
     {
-      auto message = m_QueuedTargetedMessages.back();
+      auto message = m_QueuedTargetedMessages.front();
       SendTargetedMessage(std::get<0>(message), std::get<1>(message), std::move(std::get<2>(message)), true);
       m_QueuedTargetedMessages.pop();
     }

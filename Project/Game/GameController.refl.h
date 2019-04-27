@@ -35,8 +35,14 @@ public:
   void ConstructObserver(std::size_t observer_index, GameLogicContainer & game, const std::string & name);
   void DestroyObserver(std::size_t observer_index, GameLogicContainer & game);
 
+#ifdef NET_USE_LOADOUT
   void ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game, int team,
           uint32_t random_number, const GamePlayerLoadout & loadout);
+#else
+  void ConvertObserverToPlayer(std::size_t observer_index, std::size_t player_index,
+          GameLogicContainer & game, int team, uint32_t random_number);
+#endif
+
   void ConvertPlayerToObserver(std::size_t observer_index, std::size_t player_index, GameLogicContainer & game);
 #endif
 
@@ -55,6 +61,10 @@ public:
 #endif
 
 #ifdef NET_USE_ROUND_TIMER
+
+  void RoundStarted(GameLogicContainer & game) const;
+  void RoundEnded(GameLogicContainer & game) const;
+  void RoundReset(GameLogicContainer & game) const;
   int GetTimeLimit(GameLogicContainer & game) const;
 #endif
 

@@ -5,6 +5,7 @@
     [
         {
             "m_Name": "1 V 1",
+            "m_InternalName": "1v1",
             "m_GameModes":
             [
                 {

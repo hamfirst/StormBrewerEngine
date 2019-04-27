@@ -29,6 +29,8 @@ struct UserDatabaseObject
   RBool m_IsGuest = false;
   RInt m_AdminLevel = 0;
 
+  RMap<uint32_t, UserRankInfo> m_CompetitiveRanks;
+
   RNumber<time_t> m_CompetitiveBanStart;
   RInt m_CompetitiveBanDuration;
   RInt m_CompetitiveBanProbation;
@@ -106,8 +108,10 @@ struct UserGameJoinInfo
 
   DDSKey m_EndpointId;
   std::string m_Password;
-  bool m_Observer;
+  bool m_Observer = false;
   LobbyGameType m_IntendedType;
+  int m_AssignedTeam = -1;
+  DDSKey m_MatchmakerRandomId = 0;
 
   UserZoneInfo m_ZoneInfo;
 };
@@ -143,12 +147,18 @@ struct User
 #endif
 
   // Game Functions
-  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creation_data, std::string password, const UserZoneInfo & zone_info);
-  void STORM_REFL_FUNC JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info);
+  void JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info);
+  void LeaveGame();
   void STORM_REFL_FUNC JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info);
+  void STORM_REFL_FUNC JoinGameByMatchmaker(DDSKey game_id, DDSKey matchmaker_random_id, const UserGameJoinInfo & join_info);
   void STORM_REFL_FUNC StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info);
   void STORM_REFL_FUNC StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info);
+  void STORM_REFL_FUNC CancelMatchmaking();
+  void STORM_REFL_FUNC RemoveFromMatchmaking(DDSKey endpoint_id);
+  void STORM_REFL_FUNC RejoinMatchmaking(DDSKey endpoint_id, DDSKey matchmaking_random_id);
+  void STORM_REFL_FUNC CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creation_data, std::string password, const UserZoneInfo & zone_info);
   void STORM_REFL_FUNC SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id);
+  void STORM_REFL_FUNC RequestLeaveGame();
   void STORM_REFL_FUNC DestroyGame(DDSKey endpoint_id, DDSKey game_id);
   void STORM_REFL_FUNC HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success);
   void STORM_REFL_FUNC HandleJoinCodeLookup(DDSKey game_id, const UserGameJoinInfo & join_info);
@@ -156,15 +166,20 @@ struct User
   void STORM_REFL_FUNC SwitchTeams(DDSKey target_user, int team, DDSKey endpoint_id);
   void STORM_REFL_FUNC StartGame();
   void STORM_REFL_FUNC ChangeReady(bool ready);
+
+#ifdef NET_USE_LOADOUT
   void STORM_REFL_FUNC ChangeLoadout(const GamePlayerLoadout & loadout);
+#endif
+
   void STORM_REFL_FUNC ChangeGameSettings(const GameInitSettings & settings);
   void STORM_REFL_FUNC KickUserFromGame(DDSKey user_id);
-  void STORM_REFL_FUNC LeaveGame();
-  void STORM_REFL_FUNC ReconnectToGame(DDSKey endpoint_id);
+  void STORM_REFL_FUNC ReconnectToGame(DDSKey endpoint_id, DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC DeclineReconnectToGame();
   void STORM_REFL_FUNC BanFromCompetitive();
-  void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC NotifyLeftGame(DDSKey game_id, DDSKey game_random_id, bool allow_reconnect);
   void STORM_REFL_FUNC NotifyLaunchGame(DDSKey game_id, DDSKey game_random_id, std::string server_ip, int server_port, DDSKey token);
   void STORM_REFL_FUNC NotifyResetGame(DDSKey game_id, DDSKey game_random_id);
+  void STORM_REFL_FUNC NotifyReconnectGameEnded(DDSKey game_id, DDSKey game_random_id);
   void STORM_REFL_FUNC HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int icon, int title, std::string msg);
   void STORM_REFL_FUNC HandleGameUpdate(std::tuple<DDSKey, DDSKey> game_info, std::string data);
 
@@ -337,13 +352,21 @@ public:
 
   bool m_InGame = false;
   bool m_SentInitialGameData = false;
+  DDSKey m_PendingGameId = 0;
   DDSKey m_GameId = 0;
   DDSKey m_GameRandomId = 0;
   DDSKey m_GameEndpoint = 0;
   DDSKey m_GameSubscriptionId = 0;
 
-  DDSKey m_InMatchmaking = false;
+  bool m_InMatchmaking = false;
   DDSKey m_MatchmakingEndpoint = 0;
+  DDSKey m_MatchmakingRandomId = 0;
+  uint32_t m_MatchmakingPlaylistMask = 0;
+  UserZoneInfo m_MatchmakingZoneInfo;
+  bool m_MatchmakingRanked = false;
+
+  DDSKey m_ReconnectGame = 0;
+  DDSKey m_ReconnectGameRandomId = 0;
 
   std::string m_CountryCode;
   std::string m_CurrencyCode;

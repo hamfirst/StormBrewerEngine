@@ -23,27 +23,16 @@ struct GameFullState
   GameInstanceData m_InstanceData;
 };
 
-struct GameStateStagingPlayer
-{
-  NET_REFL;
-  std::string m_UserName;
-  bool m_GameLeader = false;
-
-#if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
-  bool m_Ready = false;
-#endif
-
-  GamePlayerLoadout m_Loadout;
-  NetRangedNumber<int, -1, kMaxTeams - 1> m_Team = 0;
-};
-
 struct GameStateLoadingPlayer
 {
   NET_REFL;
   std::string m_UserName;
   bool m_Loaded = false;
-  GamePlayerLoadout m_Loadout;
   NetRangedNumber<int, -1, kMaxTeams - 1> m_Team = 0;
+
+#ifdef NET_USE_LOADOUT
+  GamePlayerLoadout m_Loadout;
+#endif
 };
 
 struct GameStateLoading
@@ -103,6 +92,7 @@ struct GameGGPOServerGameState
 {
   NET_REFL;
   STORM_REFL_NODEFAULT;
+
 
   int m_AckFrame = 0;
   int m_ServerFrame = 0;

@@ -5,6 +5,7 @@
 #include "GameClient/Modes/GameModePlayOnline.h"
 #include "GameClient/Modes/GameModeMapSettings.h"
 #include "GameClient/Modes/GameModePlaylistMenu.h"
+#include "GameClient/Modes/GameModeJoinPrivateGame.h"
 #include "GameClient/GameContainer.h"
 
 #include "Engine/UI/UIManager.h"
@@ -43,6 +44,13 @@ void GameModeConnectingLobby::Initialize()
   }
 
   m_StopWatch.Start();
+}
+
+void GameModeConnectingLobby::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
 }
 
 void GameModeConnectingLobby::OnAssetsLoaded()
@@ -89,7 +97,7 @@ void GameModeConnectingLobby::Update()
       return;
     }
   }
-  else if(lobby_client.GetState() != LobbyClientState::kConnecting && lobby_client.GetState() != LobbyClientState::kCreatingAccount)
+  else if(lobby_client.GetState() == LobbyClientState::kConnected && lobby_client.GetUserLocalData().IsValid())
   {
     if(m_FinishedConnect == false)
     {
@@ -127,7 +135,8 @@ void GameModeConnectingLobby::Back()
 void GameModeConnectingLobby::ConnectComplete()
 {
   auto & container = GetContainer();
-  switch(container.GetLobbyClient().GetState())
+  auto & lobby_client = container.GetLobbyClient();
+  switch(lobby_client.GetState())
   {
     case LobbyClientState::kNewUser:
       container.SwitchMode<GameModeNameSelect>(false);
@@ -147,10 +156,15 @@ void GameModeConnectingLobby::ConnectComplete()
         case GameModeConnectingLobbyIntent::kCasual:
           container.SwitchMode<GameModePlaylistMenu>(false);
           break;
-        case GameModeConnectingLobbyIntent::kPrivate:
+        case GameModeConnectingLobbyIntent::kHostPrivate:
           container.SwitchMode<GameModeMapSettings>(GameModeMapSettingsNextScreen::kPrivateGame);
           break;
+        case GameModeConnectingLobbyIntent::kJoinPrivate:
+          container.SwitchMode<GameModeJoinPrivateGame>();
+          break;
       }
+      break;
+
     default:
       Back();
       break;

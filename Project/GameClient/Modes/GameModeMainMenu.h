@@ -3,8 +3,6 @@
 #include "Foundation/Time/StopWatch.h"
 #include "Foundation/Sequencer/Sequencer.h"
 
-#include "GameShared/GamePlayList.h"
-
 #include "GameClient/Modes/GameMode.h"
 
 #include "Engine/UI/UIManager.h"
@@ -16,6 +14,7 @@ public:
   ~GameModeMainMenu() override;
 
   void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
 
   void Update() override;
@@ -28,16 +27,10 @@ protected:
   void PlayOffline();
   void Tutorial();
   void PlaySingleplayer();
-  
-  bool CanQuit();
+
   void Quit();
 
 private:
-
-  Sequencer m_Sequencer;
-  
-  GamePlayList m_CasualPlaylist;
-  GamePlayList m_CompetitivePlaylist;
 
   std::string m_ErrorMessage;
 };

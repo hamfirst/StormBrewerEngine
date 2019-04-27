@@ -17,6 +17,7 @@ const GameStage * GameStageManager::GetStage(const GameInitSettings & settings) 
 {
   if (settings.m_StageIndex >= m_Stages.size())
   {
+    assert(false);
     return nullptr;
   }
   

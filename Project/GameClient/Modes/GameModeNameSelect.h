@@ -14,6 +14,7 @@ public:
   ~GameModeNameSelect() override;
 
   void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
 
   void Update() override;

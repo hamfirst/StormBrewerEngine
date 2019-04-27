@@ -8,6 +8,7 @@ class GameServerEndpoint
 {
 public:
   GameServerEndpoint(const DDSEndpointInterface & endpoint_interface);
+  ~GameServerEndpoint();
 
   void HandleData(const char * data);
   void HandleDisconnect();

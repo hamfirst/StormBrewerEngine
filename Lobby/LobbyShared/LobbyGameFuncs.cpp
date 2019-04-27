@@ -49,7 +49,15 @@ int GetMaxPlayers(const MapPropertiesDef & map_props, const GameInitSettings & s
   }
 #endif
 
-  return max_players;
+  int max_teams = GetMaxTeams(map_props, settings);
+  int max_players_based_on_teams = 0;
+
+  for(int team = 0; team < max_teams; ++team)
+  {
+    max_players_based_on_teams += GetMaxTeamSize(team, map_props, settings);
+  }
+
+  return std::min(max_players, max_players_based_on_teams);
 }
 
 int GetMaxTeams(const MapPropertiesDef & map_props, const GameInitSettings & settings)
@@ -64,7 +72,7 @@ int GetMaxTeams(const MapPropertiesDef & map_props, const GameInitSettings & set
 
 int GetMaxTeamSize(int team, const MapPropertiesDef & map_props, const GameInitSettings & settings)
 {
-  return GetMaxPlayers(map_props, settings) / GetMaxTeams(map_props, settings);
+  return kMaxPlayers / GetMaxTeams(map_props, settings);
 }
 
 bool DoAllTeamsHavePlayers(const std::vector<int> & team_counts, const MapPropertiesDef & map_props, const GameInitSettings & settings)
@@ -81,20 +89,25 @@ bool DoAllTeamsHavePlayers(const std::vector<int> & team_counts, const MapProper
   return true;
 }
 
-bool IsGameFull(const std::vector<int> & team_counts, const MapPropertiesDef & map_props, const GameInitSettings & settings)
+bool IsGameFull(const std::vector<int> & team_counts, const std::vector<int> & max_team_sizes,
+        const MapPropertiesDef & map_props, const GameInitSettings & settings)
 {
   assert(GetMaxTeams(map_props, settings) == team_counts.size());
+  assert(team_counts.size() == max_team_sizes.size());
 
-  int total_players = 0;
-  for(auto & team_size : team_counts)
+  for(auto index = 0; index < team_counts.size(); ++index)
   {
-    total_players += (int)team_size;
+    if(team_counts[index] != max_team_sizes[index])
+    {
+      return false;
+    }
   }
 
-  return total_players == GetMaxPlayers(map_props, settings);
+  return true;
 }
 
-bool IsGameFullEnoughToStart(const std::vector<int> & team_counts, const MapPropertiesDef & map_props, const GameInitSettings & settings)
+bool IsGameFullEnoughToStart(const std::vector<int> & team_counts, const std::vector<int> & max_team_sizes,
+        const MapPropertiesDef & map_props, const GameInitSettings & settings)
 {
-  return IsGameFull(team_counts, map_props, settings);
+  return IsGameFull(team_counts, max_team_sizes, map_props, settings);
 }

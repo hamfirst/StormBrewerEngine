@@ -44,10 +44,15 @@ void NetClientBackendWebsocket::Update()
       while (true)
       {
         auto packet = m_Host->PollPacket();
+        if(packet.IsValid() == false)
+        {
+          break;
+        }
+
         if (m_Transmitter.m_Disconnected == false)
         {
           NetBitReaderBuffer reader(packet->m_Buffer.Get(), packet->m_Buffer.GetSize());
-          m_Interface->GotMessage(reader);          
+          m_Interface->GotMessage(reader);
         }
       }
     }

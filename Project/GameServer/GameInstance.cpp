@@ -10,16 +10,17 @@
 #include "Game/GameFullState.refl.meta.h"
 #include "Game/GameStage.h"
 
+
 #include <sb/vector.h>
 
 #include <ctime>
 
 
 GameInstance::GameInstance(GameServer & server, uint64_t game_id, const GameInitSettings & settings,
-                           GameStageManager & stage_manager) :
+                           const GameInfoTeamSizes & team_info, GameStageManager & stage_manager) :
   m_Server(server),
   m_GameId(game_id),
-  m_StateData(this, settings, stage_manager)
+  m_StateData(this, settings, team_info, stage_manager)
 {
   m_State = std::make_unique<GameInstanceStateLoading>(m_StateData);
 }
@@ -77,11 +78,13 @@ void GameInstance::HandleTextChat(GameClientConnection * client, const SendTextC
   m_State->HandleTextChat(player_index, text_message);
 }
 
+#ifdef NET_USE_LOADOUT
 void GameInstance::HandleChangeLoadout(GameClientConnection * client, const ChangeLoadoutMessage & text_message)
 {
   auto player_index = GetPlayerIndex(client);
   m_State->HandleChangeLoadout(player_index, text_message);
 }
+#endif
 
 #if NET_MODE == NET_MODE_GGPO
 

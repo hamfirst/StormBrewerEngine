@@ -15,7 +15,7 @@
 GLOBAL_ASSET(UIResourcePtr, "./UIs/JoinPrivateGame.ui", g_JoinPrivateGameUI);
 
 GameModeJoinPrivateGame::GameModeJoinPrivateGame(GameContainer & game) :
-        GameMode(game)
+        GameModeOnlineBase(game)
 {
 
 }
@@ -28,6 +28,13 @@ GameModeJoinPrivateGame::~GameModeJoinPrivateGame()
 void GameModeJoinPrivateGame::Initialize()
 {
 
+}
+
+void GameModeJoinPrivateGame::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
 }
 
 void GameModeJoinPrivateGame::OnAssetsLoaded()
@@ -49,6 +56,11 @@ void GameModeJoinPrivateGame::OnAssetsLoaded()
 
 void GameModeJoinPrivateGame::Update()
 {
+  if(HandleDisconnect())
+  {
+    return;
+  }
+
   m_Sequencer.Update();
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();

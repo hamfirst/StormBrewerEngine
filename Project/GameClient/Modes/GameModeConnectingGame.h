@@ -5,11 +5,11 @@
 #include "Foundation/Variant/Variant.h"
 
 #include "Game/GameNetworkData.refl.h"
-#include "GameClient/Modes/GameMode.h"
+#include "GameClient/Modes/GameModeOnlineBase.h"
 
 #include "Engine/UI/UIManager.h"
 
-class GameModeConnectingGame : public GameMode
+class GameModeConnectingGame : public GameModeOnlineBase
 {
 public:
   GameModeConnectingGame(GameContainer & game);
@@ -30,6 +30,7 @@ protected:
 
   bool m_ConnectFailed;
 
+  double m_Start;
   double m_LastConnect;
   FrameClock m_FrameClock;
 };

@@ -46,6 +46,8 @@ protected:
   virtual void CleanupClient(GameClientConnection & client, ProtocolType & proto) override;
 
 private:
+  friend class GameInstanceManager;
+
   GameStageManager & m_StageManager;
   NullOptPtr<LobbyServerConnection> m_LobbyConnection;
 

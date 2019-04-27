@@ -9,6 +9,7 @@ class UserEndpoint
 {
 public:
   UserEndpoint(const DDSEndpointInterface & endpoint_interface);
+  ~UserEndpoint();
 
   void HandleData(const char * data);
   void HandleDisconnect();
@@ -18,6 +19,10 @@ private:
   void ConnectionError(const char * err_msg);
   void HandleReverseLookup(const DDSResolverRequest & resolver_data);
   void HandleTorBlacklistLookup(const DDSResolverRequest & resolver_data);
+
+#ifdef ENABLE_AUTH_GUEST
+  void SetGuestUserId(uint64_t guest_id);
+#endif
 
 #ifdef ENABLE_AUTH_STEAM
   void HandleSteamTokenValidation(bool success, const std::string & steam_id);

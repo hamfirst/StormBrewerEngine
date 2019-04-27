@@ -44,7 +44,7 @@ void LobbyClientConnection::Connect()
 
   m_State = LobbyClientConnectionState::kLoadBalancerConnecting;
   m_ClientState = LobbyClientState::kConnecting;
-  m_WebSocket.StartConnect(m_LoadBalancerHost.c_str(), LOBBY_LB_PORT, "/", "localhost", kProjectName);
+  m_WebSocket.StartConnect(m_LoadBalancerHost.c_str(), LOBBY_LB_PORT, "/", "stormbrewers.com", kProjectName);
   m_RelocationToken = 0;
 
   m_ConnectionError.clear();
@@ -410,6 +410,7 @@ void LobbyClientConnection::Update()
 
             m_GameInfo.Emplace();
             StormDataApplyChangePacket(m_GameInfo.Value(), msg.data.c_str());
+            m_GameJoinCallback();
           }
           else if(base_msg.c == "game")
           {
@@ -423,7 +424,23 @@ void LobbyClientConnection::Update()
             if(m_GameInfo.IsValid())
             {
               StormDataApplyChangePacket(m_GameInfo.Value(), msg.data.c_str());
+              m_GameDataUpdateCallback();
             }
+          }
+          else if(base_msg.c == "game_join_failed")
+          {
+            m_GameJoinFailedCallback();
+          }
+          else if(base_msg.c == "cancel_matchmaking")
+          {
+            m_CancelMatchmakingCallback();
+          }
+          else if(base_msg.c == "leave_game")
+          {
+            m_GameInfo.Clear();
+            m_GameLaunchInfo.Clear();
+
+            m_GameLeaveCallback();
           }
           else if(base_msg.c == "game_preview")
           {
@@ -461,11 +478,19 @@ void LobbyClientConnection::Update()
               return;
             }
 
-            m_LaunchGameCallback(msg.server_ip, msg.server_port, msg.user_id, msg.game_id, msg.token);
+            m_GameLaunchInfo.Emplace();
+            m_GameLaunchInfo->m_ServerIp = msg.server_ip;
+            m_GameLaunchInfo->m_ServerPort = msg.server_port;
+            m_GameLaunchInfo->m_UserId = msg.user_id;
+            m_GameLaunchInfo->m_GameId = msg.game_id;
+            m_GameLaunchInfo->m_Token = msg.token;
+
+            m_LaunchGameCallback();
           }
           else if(base_msg.c == "reset_game")
           {
             m_ResetGameCallback();
+            m_GameLaunchInfo.Clear();
           }
           else if(base_msg.c == "game_chat")
           {
@@ -595,6 +620,12 @@ void LobbyClientConnection::SendJoinMatchmaker(uint32_t playlist_mask, bool rank
   SendMessage(msg, ranked ? "matchmake_competitive" : "matchmake_casual");
 }
 
+void LobbyClientConnection::CancelMatchmaker()
+{
+  UserMessageBase msg;
+  SendMessage(msg, "cancel_matchmaking");
+}
+
 void LobbyClientConnection::SendGameReady(bool ready)
 {
   UserReadyGame msg;
@@ -608,18 +639,20 @@ void LobbyClientConnection::SendGameStart()
   SendMessage(msg, "start_game");
 }
 
+#ifdef NET_USE_LOADOUT
 void LobbyClientConnection::SendGameChangeLoadout(const GamePlayerLoadout & loadout)
 {
   UserSwitchLoadout msg;
   msg.loadout = loadout;
   SendMessage(msg, "change_loadout");
 }
+#endif
 
 void LobbyClientConnection::SendGameChangeSettings(const GameInitSettings & settings)
 {
   UserSwitchSettings msg;
   msg.settings = settings;
-  SendMessage(msg, "change_loadout");
+  SendMessage(msg, "change_settings");
 }
 
 void LobbyClientConnection::SendGameTeamSwitch(DDSKey user_id, int team)
@@ -642,6 +675,18 @@ void LobbyClientConnection::SendGameChat(const std::string_view & msg)
   UserChatMessageIncoming chat;
   chat.msg = msg;
   SendMessage(chat, "game_chat");
+}
+
+void LobbyClientConnection::SendCancelMatchmaking()
+{
+  UserMessageBase msg;
+  SendMessage(msg, "cancel_matchmaking");
+}
+
+void LobbyClientConnection::SendLeaveGame()
+{
+  UserMessageBase msg;
+  SendMessage(msg, "leave_game");
 }
 
 template <typename T>
@@ -688,6 +733,7 @@ void LobbyClientConnection::SetDisconnected(czstr error_message)
   m_WelcomeInfo.Clear();
   m_GameList.Clear();
   m_GameListPreview.Clear();
+  m_GameLaunchInfo.Clear();
 
   m_ConnectionError = error_message;
 

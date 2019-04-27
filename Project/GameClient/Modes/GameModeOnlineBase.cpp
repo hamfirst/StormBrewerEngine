@@ -21,18 +21,31 @@ bool GameModeOnlineBase::HandleDisconnect()
     return false;
   }
 
-  if (GetContainer().HasLobbyClient())
+  auto & container = GetContainer();
+  if (container.HasLobbyClient())
   {
-    GetContainer().SwitchMode<GameModeMainMenu>(GetContainer().GetLobbyClient().GetConnectionError());
+    auto & lobby_client = GetContainer().GetLobbyClient();
+    auto connection_error = lobby_client.GetConnectionError();
+    container.StopLobbyClient();
+    container.SwitchMode<GameModeMainMenu>(connection_error);
   }
   else
   {
-    GetContainer().SwitchMode<GameModeMainMenu>();
+    container.SwitchMode<GameModeMainMenu>();
   }
   return true;
 }
 
 bool GameModeOnlineBase::StillOnline()
 {
-  return GetContainer().HasLobbyClient() && GetContainer().GetLobbyClient().GetState() != LobbyClientState::kDisconnected;
+  if(GetContainer().HasLobbyClient())
+  {
+    GetContainer().GetLobbyClient().Update();
+    if(GetContainer().GetLobbyClient().GetState() == LobbyClientState::kDisconnected)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }

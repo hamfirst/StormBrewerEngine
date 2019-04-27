@@ -47,6 +47,23 @@ Map GameLevelList::LoadLevel(std::size_t stage_index)
   return MapResource::Load(level_list->m_Levels[stage_index].m_Path.data());
 }
 
+const MapDef & GameLevelList::GetPreloadedMap(std::size_t stage_index) const
+{
+  return *m_PreloadedMaps[stage_index].GetData();
+}
+
+const MapPropertiesDef & GameLevelList::GetPreloadedMapProperties(std::size_t stage_index) const
+{
+  auto props = m_PreloadedMaps[stage_index].GetData()->m_PropertiesInfo.m_MapProperties.GetValue();
+  if(props)
+  {
+    return *props;
+  }
+
+  static MapPropertiesDef default_props;
+  return default_props;
+}
+
 const LevelListPtr & GameLevelList::GetLevelListAsset() const
 {
   return m_LevelListResource;

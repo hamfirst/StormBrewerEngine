@@ -56,6 +56,7 @@ public:
   void PushUIDef(const UIResourcePtr & ui);
   void ClearUI();
   ScriptInterface & CreateGameInterface();
+  void ClearGameInterface();
 
   bool Call(czstr name, NullOptPtr<ScriptValue> return_val = nullptr);
   bool Call(czstr name, std::initializer_list<ScriptValue> args, NullOptPtr<ScriptValue> return_val = nullptr);

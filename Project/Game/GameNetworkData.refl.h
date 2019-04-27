@@ -32,12 +32,11 @@ static const int kTurnUpdateTime = 60 * 2;
 static const int kMaxScore = 5;
 #endif
 
-#ifdef NET_USE_COUNTDOWN
-static const int kMaxCountdown = 180;
-#endif
-
 #ifdef NET_USE_ROUND_TIMER
+
+static const int kPreRoundTimer = 60 * 5;
 static const int kMaxRoundTimer = 60 * 60 * 5;
+static const int kPostRoundTimer = 60 * 5;
 
 enum STORM_REFL_ENUM class RoundState
 {
@@ -113,10 +112,12 @@ struct AIPlayerInfo
   NET_REFL;
 };
 
+#ifdef NET_USE_LOADOUT
 struct GamePlayerLoadout
 {
   NET_REFL;
 };
+#endif
 
 struct GamePlayer
 {
@@ -124,7 +125,10 @@ struct GamePlayer
 
   std::string m_UserName;
   NetRangedNumber<int, 0, kMaxTeams - 1> m_Team;
+
+#ifdef NET_USE_LOADOUT
   GamePlayerLoadout m_Loadout;
+#endif
 };
 
 #ifdef NET_ALLOW_OBSERVERS
@@ -157,13 +161,10 @@ struct GameInstanceData
 #endif
   NetOptional<NetRangedNumber<int, -1, kMaxTeams>> m_WiningTeam;
 
-#ifdef NET_USE_COUNTDOWN
-  NetRangedNumber<int, 0, kMaxCountdown> m_Countdown = 0;
-#endif
 
 #ifdef NET_USE_ROUND_TIMER
   NetEnum<RoundState> m_RoundState;
-  NetRangedNumber<int, 0, kMaxRoundTimer> m_RoundTimer = kMaxCountdown;
+  NetRangedNumber<int, 0, kMaxRoundTimer> m_RoundTimer = kMaxRoundTimer;
 #endif
 
 #ifdef NET_USE_RANDOM

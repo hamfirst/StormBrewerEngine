@@ -18,6 +18,7 @@ public:
 
 protected:
 
+  bool m_StartedPreload = false;
 };
 
 

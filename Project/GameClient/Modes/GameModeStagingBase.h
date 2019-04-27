@@ -1,23 +1,26 @@
 
 #pragma once
 
-#include "GameClient/Modes/GameMode.h"
+#include "GameClient/Modes/GameModeOnlineBase.h"
 #include "Game/GameNetworkData.refl.h"
 
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UITextureBinding.h"
 
-class GameModeStagingBase : public GameMode
+class GameModeStagingBase : public GameModeOnlineBase
 {
 public:
   GameModeStagingBase(GameContainer & game);
 
+  void Initialize() override;
+  void Deinit() override;
   void OnAssetsLoaded() override;
   void Update() override;
   void Render() override;
 
 protected:
 
+  virtual bool IsOnline() { return false; }
   virtual bool AllowChat() { return true; }
   virtual bool AllowPlayerList() { return true; }
   virtual bool AllowLoadout() { return true; }
@@ -32,9 +35,9 @@ protected:
   virtual int GetPlayerCount(int team_index) { return 0; }
   virtual int GetPlayerMaxCount(int team_index) { return kMaxPlayers; }
   virtual int GetPlayerId(int team, int player_index);
-  virtual std::string GetTeamName(int team, int player_index);
+  virtual std::string GetTeamName(int team);
   virtual std::tuple<float, float, float> GetTeamColor(int team);
-  virtual std::tuple<float, float, float> GetTeamColorDark(int team);
+  virtual std::tuple<float, float, float> GetTeamDarkColor(int team);
   virtual std::string GetPlayerName(int player_id);
   virtual int GetPlayerState(int player_id);
   virtual bool GetPlayerReady(int player_id);
@@ -45,13 +48,15 @@ protected:
 
   virtual void DefaultAction(int player_id) {}
 
+  virtual bool TransitionToNextState() { return false; }
+  virtual void Quit() {}
+
   std::tuple<int, int, int, int> GetCurrentOptions();
   void LoadMap(int map_index);
   void SetMapOptions(int player_count, int score_limit, int time_limit);
   void CommitMapChanges();
   void CancelMapChanges();
 
-  void Quit();
 
 protected:
 

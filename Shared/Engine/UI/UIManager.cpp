@@ -317,6 +317,12 @@ ScriptInterface & UIManager::CreateGameInterface()
   return m_GameInterfaceObject.Value();
 }
 
+void UIManager::ClearGameInterface()
+{
+  m_GameInterfaceObject.Clear();
+  m_ScriptState->SetGlobal("game", {});
+}
+
 bool UIManager::Call(czstr name, NullOptPtr<ScriptValue> return_val)
 {
   bool success = m_ScriptState->Call(name, {}, return_val);

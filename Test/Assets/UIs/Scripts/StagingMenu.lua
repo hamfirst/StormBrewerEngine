@@ -21,10 +21,8 @@ function InitStagingMenu()
 
       if self.toggled then
         self.text = "Ready"
-        game:Ready(true)
       else
         self.text = "Ready Up"
-        game:Ready(false)
       end
 
       Button.Draw(self)
@@ -32,6 +30,14 @@ function InitStagingMenu()
       if self.toggled then
         ui:DrawTextureTint(player_ready_icon, 40, 11, 0, 0, 0, 0.6)
       end
+    end
+
+    function ready:ToggleOn()
+      game:Ready(true)
+    end
+
+    function ready:ToggleOff()
+      game:Ready(false)
     end
   end
 
@@ -77,7 +83,13 @@ function InitStagingMenu()
     game_timer.height = 50
 
     function game_timer:Update(dt)
-      game_timer.text = "Game Starts In: " .. game:GetGameTimer()
+
+      local game_timer_text = game:GetGameTimer();
+      if game_timer_text ~= "" then
+        game_timer.text = "Game Starts In: " .. game:GetGameTimer()
+      else
+        game_timer.text = ""
+      end
     end
   end
 
@@ -215,7 +227,7 @@ function InitStagingMenu()
   quitpopup.y = -75
   quitpopup.width = 300
   quitpopup.height = 150
-  quitpopup.text = "Quick Back to Main Menu?"
+  quitpopup.text = "Quit Out Of The Game?"
   
   fader = PushMenuElement(Fader:new())
   fader:FadeToClear()

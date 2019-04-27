@@ -25,9 +25,21 @@
 GLOBAL_ASSET(UIResourcePtr, "./UIs/Staging.ui", g_StagingUI);
 
 GameModeStagingBase::GameModeStagingBase(GameContainer & game) :
-  GameMode(game)
+  GameModeOnlineBase(game)
 {
 
+}
+
+void GameModeStagingBase::Initialize()
+{
+
+}
+
+void GameModeStagingBase::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
 }
 
 void GameModeStagingBase::OnAssetsLoaded()
@@ -78,7 +90,7 @@ void GameModeStagingBase::OnAssetsLoaded()
 #endif
 
   game_interface.AddVariable("allow_chat", AllowChat());
-  game_interface.AddVariable("allow_reader", AllowReady());
+  game_interface.AddVariable("allow_ready", AllowReady());
   game_interface.AddVariable("allow_playerlist", AllowPlayerList());
   game_interface.AddVariable("allow_loadout", AllowLoadout());
   game_interface.AddVariable("allow_gametimer", AllowGameTimer());
@@ -93,13 +105,14 @@ void GameModeStagingBase::OnAssetsLoaded()
   BIND_SCRIPT_INTERFACE(game_interface, this, GetPlayerId);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetTeamName);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetTeamColor);
-  BIND_SCRIPT_INTERFACE(game_interface, this, GetTeamColorDark);
+  BIND_SCRIPT_INTERFACE(game_interface, this, GetTeamDarkColor);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetPlayerName);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetPlayerState);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetPlayerReady);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetPlayerActions);
   BIND_SCRIPT_INTERFACE(game_interface, this, Ready);
   BIND_SCRIPT_INTERFACE(game_interface, this, SendChat);
+  BIND_SCRIPT_INTERFACE(game_interface, this, Quit);
   BIND_SCRIPT_INTERFACE(game_interface, this, DefaultAction);
   BIND_SCRIPT_INTERFACE(game_interface, this, GetCurrentOptions);
   BIND_SCRIPT_INTERFACE(game_interface, this, LoadMap);
@@ -113,7 +126,19 @@ void GameModeStagingBase::OnAssetsLoaded()
 void GameModeStagingBase::Update()
 {
   auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
+
+  if(IsOnline())
+  {
+    if(HandleDisconnect())
+    {
+      return;
+    }
+  }
+  
+  if(TransitionToNextState())
+  {
+    return;
+  }
 
   container.GetWindow().Update();
   container.UpdateUIManager();
@@ -137,7 +162,7 @@ int GameModeStagingBase::GetPlayerId(int team, int player_index)
   return team * kMaxPlayers + player_index;
 }
 
-std::string GameModeStagingBase::GetTeamName(int team, int player_index)
+std::string GameModeStagingBase::GetTeamName(int team)
 {
   switch(team)
   {
@@ -163,7 +188,7 @@ std::tuple<float, float, float> GameModeStagingBase::GetTeamColor(int team)
   return std::make_tuple(color.r, color.g, color.b);
 }
 
-std::tuple<float, float, float> GameModeStagingBase::GetTeamColorDark(int team)
+std::tuple<float, float, float> GameModeStagingBase::GetTeamDarkColor(int team)
 {
   auto color = PlayerComponent::GetTeamDarkColor(team);
   return std::make_tuple(color.r, color.g, color.b);
@@ -288,11 +313,5 @@ void GameModeStagingBase::CommitMapChanges()
 void GameModeStagingBase::CancelMapChanges()
 {
   m_Settings = GetAppliedOptions();
-}
-
-void GameModeStagingBase::Quit()
-{
-  auto & container = GetContainer();
-  container.SwitchMode<GameModeMainMenu>();
 }
 

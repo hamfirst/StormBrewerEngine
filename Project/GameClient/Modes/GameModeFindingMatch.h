@@ -6,11 +6,20 @@
 
 #include "Engine/UI/UIManager.h"
 
-class GameModePlaylistMenu : public GameModeOnlineBase
+enum class GameModeFindingMatchState
+{
+  kWaiting,
+  kInGame,
+  kCancelling,
+  kCanceled,
+  kFailed,
+};
+
+class GameModeFindingMatch : public GameModeOnlineBase
 {
 public:
-  GameModePlaylistMenu(GameContainer & game, bool competitive);
-  ~GameModePlaylistMenu();
+  GameModeFindingMatch(GameContainer & game);
+  ~GameModeFindingMatch();
 
   void Initialize() override;
   void Deinit() override;
@@ -21,13 +30,8 @@ public:
 
 protected:
 
-  void Search(int playlist_mask);
   void Back();
 
 private:
-
-  GamePlayList m_CasualPlaylist;
-  GamePlayList m_CompetitivePlaylist;
-
-  bool m_Competitive;
+  GameModeFindingMatchState m_State = GameModeFindingMatchState::kWaiting;
 };

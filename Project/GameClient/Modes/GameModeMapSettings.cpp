@@ -25,6 +25,18 @@ GameModeMapSettings::GameModeMapSettings(GameContainer &game, GameModeMapSetting
 
 }
 
+void GameModeMapSettings::Initialize()
+{
+
+}
+
+void GameModeMapSettings::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
+}
+
 void GameModeMapSettings::OnAssetsLoaded()
 {
   auto & container = GetContainer();

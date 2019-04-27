@@ -34,8 +34,6 @@ enum class LobbyClientState
   kNewUserRepick,
   kCreatingAccount,
   kConnected,
-  kInGame,
-  kStartedGame,
 };
 
 enum class LobbyRelocationState
@@ -64,6 +62,15 @@ struct LobbyClientConnectionSettings
   std::string m_GuestUserName;
 };
 
+struct LobbyGameLaunchInfo
+{
+  std::string m_ServerIp;
+  int m_ServerPort;
+  DDSKey m_UserId;
+  DDSKey m_GameId;
+  DDSKey m_Token;
+};
+
 class LobbyClientConnection
 {
 public:
@@ -80,6 +87,7 @@ public:
   const Optional<RMergeList<WelcomeInfoTab>> & GetWelcomeInfo() { return m_WelcomeInfo; }
   const Optional<RMap<DDSKey, GameListGame>> & GetGameList() { return m_GameList; }
   const Optional<GameListGame> & GetGameListPreview() { return m_GameListPreview; }
+  const Optional<LobbyGameLaunchInfo> & GetGameLaunchInfo() { return m_GameLaunchInfo; }
 
   bool HasLatencySamples() const;
   void SetLatencySamples(const std::vector<int> & samples);
@@ -88,29 +96,37 @@ public:
   void SendCreatePrivateGame(const GameInitSettings & settings, const std::string_view & password);
   void SendJoinPrivateGame(uint32_t join_code, const std::string_view & password, bool observer);
   void SendJoinMatchmaker(uint32_t playlist_mask, bool ranked);
+  void CancelMatchmaker();
 
   void SendGameReady(bool ready);
   void SendGameStart();
+#ifdef NET_USE_LOADOUT
   void SendGameChangeLoadout(const GamePlayerLoadout & loadout);
+#endif
   void SendGameChangeSettings(const GameInitSettings & settings);
   void SendGameTeamSwitch(DDSKey user_id, int team);
   void SendGameKickUser(DDSKey user_id);
   void SendGameChat(const std::string_view & msg);
+  void SendCancelMatchmaking();
+  void SendLeaveGame();
 
-  void SetLocalDataUpdateCallback(Delegate<void> & cb) { m_LocalDataUpdateCallback = cb; }
-  void SetGameJoinCallback(Delegate<void> & cb) { m_GameJoinCallback = cb; }
-  void SetGameDataUpdateCallback(Delegate<void> & cb) { m_GameDataUpdateCallback = cb; }
-  void SetGameListUpdateCallback(Delegate<void> & cb) { m_GameListUpdateCallback = cb; }
-  void SetWelcomeInfoUpdateCallback(Delegate<void> & cb) { m_WelcomeInfoUpdateCallback = cb; }
-  void SetGamePreviewUpdateCallback(Delegate<void> & cb) { m_GamePreviewUpdateCallback = cb; }
-  void SetGamePreviewCancelCallback(Delegate<void> & cb) { m_GamePreviewCancelCallback = cb; }
+  void SetLocalDataUpdateCallback(const Delegate<void> & cb) { m_LocalDataUpdateCallback = cb; }
+  void SetGameJoinCallback(const Delegate<void> & cb) { m_GameJoinCallback = cb; }
+  void SetGameJoinFailedCallback(const Delegate<void> & cb) { m_GameJoinFailedCallback = cb; }
+  void SetGameDataUpdateCallback(const Delegate<void> & cb) { m_GameDataUpdateCallback = cb; }
+  void SetGameLeaveCallback(const Delegate<void> & cb) { m_GameLeaveCallback = cb; }
+  void SetCancelMatchmakingCallback(const Delegate<void> & cb) { m_CancelMatchmakingCallback = cb; }
+  void SetGameListUpdateCallback(const Delegate<void> & cb) { m_GameListUpdateCallback = cb; }
+  void SetWelcomeInfoUpdateCallback(const Delegate<void> & cb) { m_WelcomeInfoUpdateCallback = cb; }
+  void SetGamePreviewUpdateCallback(const Delegate<void> & cb) { m_GamePreviewUpdateCallback = cb; }
+  void SetGamePreviewCancelCallback(const Delegate<void> & cb) { m_GamePreviewCancelCallback = cb; }
 
   void SetNotificationCallback(const Delegate<void, const std::string_view &> & cb) { m_NotificationCallback = cb; }
   void SetServerMessageCallback(const Delegate<void, const std::string_view &> & cb) { m_ServerMessageCallback = cb; }
   void SetServerTextCallback(const Delegate<void, const std::string_view &> & cb) { m_ServerTextCallback = cb; }
   void SetRuntimeErrorCallback(const Delegate<void, const std::string_view &> & cb) { m_RuntimeErrorCallback = cb; }
 
-  void SetLaunchGameCallback(const Delegate<void, const std::string_view &, int, DDSKey, DDSKey, DDSKey> & cb) { m_LaunchGameCallback = cb; }
+  void SetLaunchGameCallback(const Delegate<void> & cb) { m_LaunchGameCallback = cb; }
   void SetResetGameCallback(const Delegate<void> & cb) { m_ResetGameCallback = cb; }
 
 #ifdef ENABLE_REWARDS
@@ -153,10 +169,14 @@ private:
   Optional<RMergeList<WelcomeInfoTab>> m_WelcomeInfo;
   Optional<RMap<DDSKey, GameListGame>> m_GameList;
   Optional<GameListGame> m_GameListPreview;
+  Optional<LobbyGameLaunchInfo> m_GameLaunchInfo;
 
   Delegate<void> m_LocalDataUpdateCallback;
   Delegate<void> m_GameJoinCallback;
+  Delegate<void> m_GameJoinFailedCallback;
   Delegate<void> m_GameDataUpdateCallback;
+  Delegate<void> m_GameLeaveCallback;
+  Delegate<void> m_CancelMatchmakingCallback;
   Delegate<void> m_GameListUpdateCallback;
   Delegate<void> m_WelcomeInfoUpdateCallback;
   Delegate<void> m_GamePreviewUpdateCallback;
@@ -167,7 +187,7 @@ private:
   Delegate<void, const std::string_view &> m_ServerTextCallback;
   Delegate<void, const std::string_view &> m_RuntimeErrorCallback;
 
-  Delegate<void, const std::string_view &, int, DDSKey, DDSKey, DDSKey> m_LaunchGameCallback;
+  Delegate<void> m_LaunchGameCallback;
   Delegate<void> m_ResetGameCallback;
 
 #ifdef ENABLE_REWARDS
@@ -178,7 +198,6 @@ private:
   Delegate<void, DDSKey, const std::string_view &, const std::string_view &, int, int, time_t> m_ChatCallback;
 
   Delegate<void, const std::string_view &, const GameStatsData &, int> m_StatsCallback;
-
 
   std::string m_ConnectionError;
   time_t m_LastPingTime;

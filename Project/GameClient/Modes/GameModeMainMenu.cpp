@@ -8,8 +8,6 @@
 
 #include "GameShared/GamePlayListAsset.refl.meta.h"
 
-#include "Foundation/Script/ScriptDataObject.h"
-
 #include "Runtime/UI/UIResource.h"
 
 #include "Engine/Engine.h"
@@ -24,8 +22,6 @@ GLOBAL_ASSET(UIResourcePtr, "./UIs/MainMenu.ui", g_MainMenuUI);
 
 GameModeMainMenu::GameModeMainMenu(GameContainer & game, const std::string_view & error_msg) :
   GameMode(game),
-  m_CasualPlaylist("./CasualPlaylist.txt"),
-  m_CompetitivePlaylist("./CompetitivePlaylist.txt"),
   m_ErrorMessage(error_msg)
 {
 
@@ -41,25 +37,42 @@ void GameModeMainMenu::Initialize()
 
 }
 
+void GameModeMainMenu::Deinit()
+{
+  auto & container = GetContainer();
+  container.GetUIManager()->ClearUI();
+  container.GetUIManager()->ClearGameInterface();
+}
+
 void GameModeMainMenu::OnAssetsLoaded()
 {
   auto & container = GetContainer();
-  auto & render_state = container.GetRenderState();
-
   auto ui = container.GetUIManager();
 
   auto & game_interface = ui->CreateGameInterface();
 
-  game_interface.AddVariable("casual_playlist",
-          CreateScriptDataObject(ui->GetScriptState(), m_CasualPlaylist.GetPlayListAsset().GetData()));
-  game_interface.AddVariable("competitive_playlist",
-          CreateScriptDataObject(ui->GetScriptState(), m_CompetitivePlaylist.GetPlayListAsset().GetData()));
+#ifdef NET_ALLOW_OFFLINE_GAME
+  game_interface.AddVariable("allow_local", true);
+#else
+  game_interface.AddVariable("allow_local", false);
+#endif
+
+#ifdef NET_ALLOW_TUTORIAL
+  game_interface.AddVariable("allow_tutorial", true);
+#else
+  game_interface.AddVariable("allow_tutorial", false);
+#endif
+
+#if defined(_WEB) || defined(_ANDROID) || defined(_IOS)
+  game_interface.AddVariable("allow_quit", false);
+#else
+  game_interface.AddVariable("allow_quit", true);
+#endif
 
   BIND_SCRIPT_INTERFACE(game_interface, this, PlayOnline);
   BIND_SCRIPT_INTERFACE(game_interface, this, PlayOffline);
   BIND_SCRIPT_INTERFACE(game_interface, this, Tutorial);
   BIND_SCRIPT_INTERFACE(game_interface, this, PlaySingleplayer);
-  BIND_SCRIPT_INTERFACE(game_interface, this, CanQuit);
   BIND_SCRIPT_INTERFACE(game_interface, this, Quit);
 
   container.GetUIManager()->PushUIDef(g_MainMenuUI);
@@ -72,8 +85,6 @@ void GameModeMainMenu::OnAssetsLoaded()
 
 void GameModeMainMenu::Update()
 {
-  m_Sequencer.Update();
-
   auto & container = GetContainer();
   auto & render_state = container.GetRenderState();
 
@@ -131,14 +142,6 @@ void GameModeMainMenu::PlaySingleplayer()
   container.SwitchMode<GameModeTutorial>();
 }
 
-bool GameModeMainMenu::CanQuit()
-{
-#if defined(_WEB) || defined(_ANDROID) || defined(_IOS)
-  return false;
-#else
-  return true;
-#endif
-}
 
 void GameModeMainMenu::Quit()
 {

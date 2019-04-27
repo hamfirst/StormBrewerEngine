@@ -26,6 +26,7 @@ struct PlaylistBucketUserList
 
   PlaylistBucketUser m_PrimaryUser;
   std::vector<PlaylistBucketUser> m_ExtraUsers;
+  DDSKey m_MatchmakerRandomId;
 };
 
 struct PlaylistBucket
@@ -71,10 +72,12 @@ public:
   void STORM_REFL_FUNC AddCasualUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask);
   void STORM_REFL_FUNC AddCompetitiveUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask);
 
-  void STORM_REFL_FUNC RemoveCasualUser(DDSKey user);
-  void STORM_REFL_FUNC RemoveCompetitiveUser(DDSKey user);
+  void STORM_REFL_FUNC RemoveCasualUser(DDSKey user, DDSKey random_id);
+  void STORM_REFL_FUNC RemoveCompetitiveUser(DDSKey user, DDSKey random_id);
 
   void STORM_REFL_FUNC NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone);
+
+  void STORM_REFL_FUNC CancelMatchmakingForUser(DDSKey user, DDSKey random_id);
 
 private:
 
@@ -82,14 +85,15 @@ private:
 
   static void AddUser(const PlaylistBucketUserList & user, const UserZoneInfo & zone_info, uint32_t playlist_mask,
                       PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
-  static void RemoveUser(DDSKey user, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
+  static void RemoveUser(DDSKey user, DDSKey random_id, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
 
   bool FindMatch(int zone, PlaylistAsset & playlist_data,
           std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type);
 
-  void SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id, LobbyGameType game_type);
+  void SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id,
+          int team, DDSKey matchmaker_random_id, LobbyGameType game_type);
 
-  static bool BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, int * team_sizes);
+  static bool BuildGameFromUsers(const PlaylistBucket & bucket, GeneratedGame & out_game, const std::vector<int> & team_sizes);
 
 
 private:

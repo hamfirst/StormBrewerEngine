@@ -4,11 +4,12 @@
 
 #include "GameShared/GameStageManager.h"
 
-GameInstanceStateData::GameInstanceStateData(NotNullPtr<GameInstance> instance, const GameInitSettings & init_settings, 
-                                             GameStageManager & stage_manager) :
+GameInstanceStateData::GameInstanceStateData(NotNullPtr<GameInstance> instance, const GameInitSettings & init_settings,
+                                             const GameInfoTeamSizes & team_info, GameStageManager & stage_manager) :
   m_Instance(instance),
   m_StageManager(stage_manager),
-  m_InitSettings(init_settings)
+  m_InitSettings(init_settings),
+  m_TeamSizes(team_info)
 {
 
 }
@@ -23,6 +24,11 @@ GameInstanceStatePlayer & GameInstanceStateData::GetClient(std::size_t index)
 const GameInitSettings & GameInstanceStateData::GetInitSettings() const
 {
   return m_InitSettings;
+}
+
+const GameInfoTeamSizes & GameInstanceStateData::GetTeamInfo() const
+{
+  return m_TeamSizes;
 }
 
 void GameInstanceStateData::ChangeInitSettings(const GameInitSettings & init_settings)

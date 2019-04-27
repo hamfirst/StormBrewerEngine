@@ -6,9 +6,10 @@
 #include <cstring>
 
 NetBitWriterVector::NetBitWriterVector(int reserve_bytes) : 
-  m_Bit(8)
+  m_Bit(8),
+  m_ReserveBytes(reserve_bytes)
 {
-  m_Buffer.reserve(reserve_bytes);
+  m_Buffer.reserve(m_ReserveBytes);
 }
 
 void NetBitWriterVector::WriteBits(uint64_t val, int num_bits)
@@ -157,6 +158,7 @@ void NetBitWriterVector::RollBack(NetBitWriterCursor & cursor)
 void NetBitWriterVector::Reset()
 {
   m_Buffer.clear();
+  m_Buffer.reserve(m_ReserveBytes);
   m_Bit = 8;
   m_TotalBits = 0;
 }
@@ -196,11 +198,20 @@ void NetBitWriterVector::WriteBitsInternal(uint64_t val, int num_bits)
     return;
   }
 
+  if(m_Buffer.size() == 0)
+  {
+    NET_THROW(std::out_of_range("Bit writer did not have enough data"));
+    return;
+  }
+
   uint64_t free_bit_mask = (1 << free_bits) - 1;
   uint64_t used_bit_mask = (1 << m_Bit) - 1;
   uint64_t masked_bits = val & free_bit_mask;
 
-  m_Buffer.back() = (m_Buffer.back() & (uint8_t)used_bit_mask) | (uint8_t)(masked_bits << m_Bit);
+  auto & back_byte = m_Buffer[m_Buffer.size() - 1];
+  auto used_bits = back_byte & (uint8_t)used_bit_mask;
+
+  back_byte = used_bits | (uint8_t)(masked_bits << m_Bit);
   m_Bit = std::min(8, m_Bit + num_bits);
 
   WriteBitsInternal(val >> free_bits, num_bits - std::min(num_bits, (int)free_bits));

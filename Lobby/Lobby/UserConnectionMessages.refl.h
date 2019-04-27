@@ -127,7 +127,7 @@ struct UserGameInfoUpdate
   STORM_REFL;
   std::string c;
   std::string data;
-  int game_id;
+  DDSKey game_id;
 };
 
 struct UserChannelInfoUpdate
@@ -253,12 +253,14 @@ struct UserSwitchTeam
   int team;
 };
 
+#ifdef NET_USE_LOADOUT
 struct UserSwitchLoadout
 {
   STORM_REFL;
   std::string c;
   GamePlayerLoadout loadout;
 };
+#endif
 
 struct UserSwitchSettings
 {

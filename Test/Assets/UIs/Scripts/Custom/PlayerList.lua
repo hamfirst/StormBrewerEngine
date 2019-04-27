@@ -75,17 +75,14 @@ PushPostLoadFunc(function()
 
     if game.GetPlayerReady == nil then
       function game:GetPlayerReady(player_id)
-        if player_id % 3 == 1 then return 1 end
-        return 0
+        if player_id % 3 == 1 then return true end
+        return false
       end      
     end
 
     if game.GetPlayerActions == nil then
       function game:GetPlayerActions(player_id)
         local actions = {}
-        actions["Kick"] = "KickPlayer"
-        actions["Switch To Red"] = "SwitchTo0"
-        actions["Switch To Blue"] = "SwitchTo1"
         return actions
       end
     end
@@ -250,7 +247,7 @@ function PlayerList:Draw()
           ui:DrawTextureTint(game_leader_icon, 16, y + height / 2 - 8, 1, 1, 1, 1)
         end
 
-        if game:GetPlayerReady(player_id) == 1 then
+        if game:GetPlayerReady(player_id) == true then
           ui:DrawTextureTint(player_ready_icon, 1, y + height / 2 - 8, r, g, b, 1)
         end
       else
@@ -275,7 +272,7 @@ function PlayerList:Draw()
           ui:DrawTextureTint(game_leader_icon, 16, y + height / 2 - 8, 1, 1, 1, 1)
         end
 
-        if game:GetPlayerReady(player_id) == 1 then
+        if game:GetPlayerReady(player_id) == true then
           ui:DrawTextureTint(player_ready_icon, 1, y + height / 2 - 8, r, g, b, 1)
         end
       end
@@ -310,10 +307,15 @@ function PlayerList:SelectPlayer()
     self.selected_player_id = self.highlighted_player_id
     self.selected_menu_pos = self.highlighted_menu_pos    
 
-    ui:PlayAudio(click_audio)
 
     local player_id = self.selected_player_id
     local actions = game:GetPlayerActions(player_id)
+
+    if #actions == 0 then
+      return
+    end
+
+    ui:PlayAudio(click_audio)
 
     context_menu:Reset()
 

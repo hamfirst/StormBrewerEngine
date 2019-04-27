@@ -15,6 +15,7 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
   m_GotJoin(false)
 {
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandlePing, this);
+  m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleJoinServer, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleFinishLoading, this);
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandleTextChat, this);
 
@@ -79,6 +80,7 @@ void GameClientConnection::SendDeliberateSystemSync(void * data, int type_index)
 
 void GameClientConnection::ForceDisconnect()
 {
+  printf("Forcing user disconnected\n");
   RemoveFromGame();
   m_Server.DisconnectClient(m_ConnectionId);
 }
@@ -109,17 +111,20 @@ void GameClientConnection::HandlePing(const PingMessage & request)
 
 void GameClientConnection::HandleJoinServer(const JoinServerMessage & request)
 {
+  printf("Got join server\n");
   if(m_GameInstance || m_GotJoin)
   {
     m_Server.DisconnectClient(m_ConnectionId);
     return;
   }
 
+  m_Server.ValidateUser(this, request);
   m_GotJoin = true;
 }
 
 void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & request)
 {
+  printf("Got finish loading\n");
   if (m_GameInstance == nullptr)
   {
     m_Server.DisconnectClient(m_ConnectionId);
@@ -131,6 +136,7 @@ void GameClientConnection::HandleFinishLoading(const FinishLoadingMessage & requ
 
 void GameClientConnection::HandleTextChat(const SendTextChatMessage &request)
 {
+  printf("Got text chat\n");
   if (m_GameInstance == nullptr)
   {
     m_Server.DisconnectClient(m_ConnectionId);

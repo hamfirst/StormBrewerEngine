@@ -138,6 +138,16 @@ int main(int argc, const char ** argv)
   });
 
   bootstrap.Run();
+
+  if(bootstrap.HasValue("D"))
+  {
+    bootstrap.Set("external_ip", "127.0.0.1");
+    bootstrap.Set("external_port", std::to_string(DEFAULT_GAME_PORT));
+    bootstrap.Set("zone", "Debug");
+    bootstrap.Set("name", "DebugServer");
+    bootstrap.Set("id", "");
+  }
+
   bootstrap.PrintDebug();
 
   GameServerLobbySettings lobby_server_settings;
@@ -156,12 +166,6 @@ int main(int argc, const char ** argv)
   }
 
 #if defined(_LINUX) && !defined(_INCLUDEOS)
-  if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
-  {
-    printf("Entering Daemon Mode");
-    daemon(1, 0);
-  }
-
   FILE * fp = fopen("ServerExe.pid", "wt");
   auto pid = std::to_string(getpid());
   fprintf(fp, "%s", pid.data());
@@ -206,6 +210,7 @@ int main(int argc, const char ** argv)
   NetworkInit();
 
   static LobbyServerConnection lobby_server_connection(lobby_server_settings, game_server_info);
+  printf("  Connecting to lobby...\n");
 
   static GameServer game_server(256, game_server_info.m_ExternalPort, stage_manager, &lobby_server_connection);
   printf("  Server started!\n");
@@ -217,6 +222,7 @@ int main(int argc, const char ** argv)
 
   while (g_QuitServer == false)
   {
+    NetworkUpdate();
     game_server.Update();
 
     if (frame_clock.ShouldSkipFrameUpdate() == false)
@@ -255,6 +261,7 @@ void UpdateServers(GameServer & game_server, FrameClock & frame_clock)
     return;
   }
 
+  NetworkUpdate();
   game_server.Update();
 
   if (frame_clock.ShouldSkipFrameUpdate() == false)

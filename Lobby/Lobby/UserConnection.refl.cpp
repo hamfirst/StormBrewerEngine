@@ -42,7 +42,6 @@ void UserConnection::ConnectToEndpoint(DDSConnectionId connection_id)
 
 void UserConnection::FinalizeUserLoaded()
 {
-  DDSLog::LogVerbose("Loading User");
 
   SendData(StormReflEncodeJson(UserMessageBase{"logged_in"}));
 
@@ -111,7 +110,10 @@ void UserConnection::LoadUser(std::string platform, uint64_t platform_id, uint64
   m_UserId = user_id;
   m_UserName = chosen_user_name;
 
-  m_Interface.CreateSubscription(DDSSubscriptionTarget<User>{}, m_UserId, ".m_LocalInfo", &UserConnection::HandleLocalDataUpdate, true, &UserConnection::UserDoesntExist, true);
+  DDSLog::LogInfo("Loading User %zu", m_UserId);
+
+  m_Interface.CreateSubscription(DDSSubscriptionTarget<User>{}, m_UserId, ".m_LocalInfo",
+          &UserConnection::HandleLocalDataUpdate, true, &UserConnection::UserDoesntExist, true);
 }
 
 void UserConnection::CreateUserObject(const std::string & name)
@@ -319,6 +321,10 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::StartMatchmakingCompetitive, m_UserId, req.playlist_mask, m_Interface.GetLocalKey(), req.zone_info);
     }
+    else if(cmd == "cancel_matchmaking")
+    {
+      m_Interface.Call(&User::RemoveFromMatchmaking, m_UserId, m_Interface.GetLocalKey());
+    }
     else if (cmd == "destroy_game")
     {
       UserDestroyGame req;
@@ -356,6 +362,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::ChangeReady, m_UserId, req.ready);
     }
+#ifdef NET_USE_LOADOUT
     else if (cmd == "change_loadout")
     {
       UserSwitchLoadout req;
@@ -367,6 +374,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
 
       m_Interface.Call(&User::ChangeLoadout, m_UserId, req.loadout);
     }
+#endif
     else if (cmd == "change_settings")
     {
       UserSwitchSettings req;
@@ -402,7 +410,7 @@ void UserConnection::GotMessage(std::string cmd, std::string data)
     }
     else if (cmd == "leave_game")
     {
-      m_Interface.Call(&User::LeaveGame, m_UserId);
+      m_Interface.Call(&User::RequestLeaveGame, m_UserId);
     }
     else if (cmd == "fetch_stats")
     {
@@ -673,6 +681,7 @@ void UserConnection::UserDoesntExist()
 
 void UserConnection::SendData(std::string data)
 {
+  DDSLog::LogInfo("Sending %s", data.c_str());
   if (m_ConnectionId)
   {
     m_Interface.SendDataToLocalConnection(*m_ConnectionId, data);

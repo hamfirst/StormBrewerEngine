@@ -48,5 +48,6 @@ private:
   std::vector<NetPipeMode> m_IncStreams;
   std::vector<NetPipeMode> m_OutStreams;
 
-  StaticSizedArrayAlloc<NetTransmitterServerWebsocket> m_Transmitters;
+  //StaticSizedArrayAlloc<NetTransmitterServerWebsocket> m_Transmitters;
+  std::vector<std::unique_ptr<NetTransmitterServerWebsocket>> m_Transmitters;
 };

@@ -1,10 +1,10 @@
 []
 
 {
+    "m_InitFunction": "InitConnectingMenu",
     "m_Functions": {
         "0": {
             "m_Name": "Back"
         }
-    },
-    "m_InitFunction": "InitConnectingMenu"
+    }
 }

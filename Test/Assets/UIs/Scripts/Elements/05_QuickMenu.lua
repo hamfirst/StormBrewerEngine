@@ -176,6 +176,8 @@ function QuickMenu:ShowPreview()
   self.bottom_button.alpha = 0
 
   AddLerp(self, "alpha", 0.5, 0.1, nil, EaseInCubic)
+  
+  self:Update()
 end
 
 function QuickMenu:TransitionIn()

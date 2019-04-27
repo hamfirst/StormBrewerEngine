@@ -717,111 +717,11 @@ struct StormReflTypeInfo<SendTextChatMessage>::field_data<1 + StormReflTypeInfo<
   void SetDefault() { self.m_TeamOnly = StormReflTypeInfo<SendTextChatMessage>::GetDefault().m_TeamOnly; }
 };
 
-template <>
-struct StormReflTypeInfo<ChangeLoadoutMessage>
-{
-  using MyBase = ToServerMessage;
-  static constexpr int fields_n = 2 + StormReflTypeInfo<MyBase>::fields_n;
-  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
-  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
-  {
-    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
-  };
-  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
-  static constexpr auto GetName() { return "ChangeLoadoutMessage"; }
-  static constexpr auto GetNameHash() { return 0x3F6B92A1; }
-  static constexpr bool HasDefault() { return true; }
-  static ChangeLoadoutMessage & GetDefault() { static ChangeLoadoutMessage def; return def; }
-
-  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
-  {
-    auto c = static_cast<ChangeLoadoutMessage *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    if(0x4C3A63B8 == type_name_hash) return static_cast<ToServerMessage *>(c);
-    return nullptr;
-  }
-
-  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
-  {
-    auto c = static_cast<const ChangeLoadoutMessage *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    if(0x4C3A63B8 == type_name_hash) return static_cast<const ToServerMessage *>(c);
-    return nullptr;
-  }
-
-  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
-  {
-    auto c = static_cast<ChangeLoadoutMessage *>(ptr);
-    if(typeid(ChangeLoadoutMessage).hash_code() == type_id_hash) return c;
-    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<ToServerMessage *>(c);
-    return nullptr;
-  }
-
-  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
-  {
-    auto c = static_cast<const ChangeLoadoutMessage *>(ptr);
-    if(typeid(ChangeLoadoutMessage).hash_code() == type_id_hash) return c;
-    if(typeid(ToServerMessage).hash_code() == type_id_hash) return static_cast<const ToServerMessage *>(c);
-    return nullptr;
-  }
-
-};
-
-template <>
-struct StormReflTypeInfo<ChangeLoadoutMessage>::field_data_static<0 + StormReflTypeInfo<ToServerMessage>::fields_n>
-{
-  using member_type = uint8_t; // unsigned char
-  static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "unsigned char"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<ToServerMessage>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &ChangeLoadoutMessage::m_PlayerIndex; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeLoadoutMessage *>(obj); return &ptr->m_PlayerIndex; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeLoadoutMessage *>(obj); return &ptr->m_PlayerIndex; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ChangeLoadoutMessage>::field_data<0 + StormReflTypeInfo<ToServerMessage>::fields_n, Self> : public StormReflTypeInfo<ChangeLoadoutMessage>::field_data_static<0 + StormReflTypeInfo<ToServerMessage>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint8_t> & Get() { return self.m_PlayerIndex; }
-  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_PlayerIndex; }
-  void SetDefault() { self.m_PlayerIndex = StormReflTypeInfo<ChangeLoadoutMessage>::GetDefault().m_PlayerIndex; }
-};
-
-template <>
-struct StormReflTypeInfo<ChangeLoadoutMessage>::field_data_static<1 + StormReflTypeInfo<ToServerMessage>::fields_n>
-{
-  using member_type = GamePlayerLoadout; // GamePlayerLoadout
-  static constexpr auto GetName() { return "m_Loadout"; }
-  static constexpr auto GetType() { return "GamePlayerLoadout"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEB97BB97; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFEBDA94B; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<ToServerMessage>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &ChangeLoadoutMessage::m_Loadout; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeLoadoutMessage *>(obj); return &ptr->m_Loadout; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeLoadoutMessage *>(obj); return &ptr->m_Loadout; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ChangeLoadoutMessage>::field_data<1 + StormReflTypeInfo<ToServerMessage>::fields_n, Self> : public StormReflTypeInfo<ChangeLoadoutMessage>::field_data_static<1 + StormReflTypeInfo<ToServerMessage>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, GamePlayerLoadout> & Get() { return self.m_Loadout; }
-  std::add_const_t<std::remove_reference_t<GamePlayerLoadout>> & Get() const { return self.m_Loadout; }
-  void SetDefault() { self.m_Loadout = StormReflTypeInfo<ChangeLoadoutMessage>::GetDefault().m_Loadout; }
-};
-
 namespace StormReflFileInfo
 {
   struct GameMessages
   {
-    static const int types_n = 10;
+    static const int types_n = 9;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -877,12 +777,6 @@ namespace StormReflFileInfo
   struct GameMessages::type_info<8>
   {
     using type = ::SendTextChatMessage;
-  };
-
-  template <>
-  struct GameMessages::type_info<9>
-  {
-    using type = ::ChangeLoadoutMessage;
   };
 
 }

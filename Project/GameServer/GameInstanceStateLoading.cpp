@@ -32,6 +32,7 @@ bool GameInstanceStateLoading::JoinPlayer(std::size_t client_index, const GameJo
 
 void GameInstanceStateLoading::RemovePlayer(std::size_t client_index)
 {
+  printf("Removing player from loading state\n");
   m_State.m_Players.RemoveAt(client_index);
   m_LoadTokens.RemoveAt(client_index);
 }
@@ -87,7 +88,7 @@ void GameInstanceStateLoading::HandlePlayerLoaded(std::size_t client_index, cons
 
 bool GameInstanceStateLoading::CheckFinishedLoading() const
 {
-  return false;
+  return m_TimeToWaitForLoad <= 0;
 }
 
 void GameInstanceStateLoading::AddPlayer(std::size_t client_index, int team)

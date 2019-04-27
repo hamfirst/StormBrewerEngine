@@ -88,6 +88,11 @@ public:
   template <typename Mode, typename ... Args>
   void SwitchMode(Args && ... args)
   {
+    if(m_Mode.get())
+    {
+      m_Mode->Deinit();
+    }
+
     if (m_Updating)
     {
       m_NextMode = std::make_unique<Mode>(*this, std::forward<Args>(args)...);

@@ -127,16 +127,16 @@ struct StormReflTypeInfo<PlayerJoinedEvent>::field_data<0 + StormReflTypeInfo<Ga
 template <>
 struct StormReflTypeInfo<PlayerJoinedEvent>::field_data_static<1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
-  using member_type = uint32_t; // unsigned int
-  static constexpr auto GetName() { return "m_RandomSeed"; }
-  static constexpr auto GetType() { return "unsigned int"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x37FE06D1; }
-  static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
+  using member_type = uint8_t; // unsigned char
+  static constexpr auto GetName() { return "m_Team"; }
+  static constexpr auto GetType() { return "unsigned char"; }
+  static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
+  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &PlayerJoinedEvent::m_RandomSeed; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerJoinedEvent *>(obj); return &ptr->m_RandomSeed; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerJoinedEvent *>(obj); return &ptr->m_RandomSeed; }
+  static constexpr auto GetMemberPtr() { return &PlayerJoinedEvent::m_Team; }
+  static void * GetFromParent(void * obj) { auto ptr = static_cast<PlayerJoinedEvent *>(obj); return &ptr->m_Team; }
+  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const PlayerJoinedEvent *>(obj); return &ptr->m_Team; }
 };
 
 template <typename Self>
@@ -144,9 +144,9 @@ struct StormReflTypeInfo<PlayerJoinedEvent>::field_data<1 + StormReflTypeInfo<Ga
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint32_t> & Get() { return self.m_RandomSeed; }
-  std::add_const_t<std::remove_reference_t<uint32_t>> & Get() const { return self.m_RandomSeed; }
-  void SetDefault() { self.m_RandomSeed = StormReflTypeInfo<PlayerJoinedEvent>::GetDefault().m_RandomSeed; }
+  match_const_t<Self, uint8_t> & Get() { return self.m_Team; }
+  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_Team; }
+  void SetDefault() { self.m_Team = StormReflTypeInfo<PlayerJoinedEvent>::GetDefault().m_Team; }
 };
 
 template <>
@@ -628,7 +628,7 @@ template <>
 struct StormReflTypeInfo<ChangeObserverToPlayer>
 {
   using MyBase = GameNetworkExternalEvent;
-  static constexpr int fields_n = 5 + StormReflTypeInfo<MyBase>::fields_n;
+  static constexpr int fields_n = 4 + StormReflTypeInfo<MyBase>::fields_n;
   template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
   template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
   {
@@ -727,45 +727,20 @@ struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<1 + StormReflTypeIn
 template <>
 struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
-  using member_type = GamePlayerLoadout; // GamePlayerLoadout
-  static constexpr auto GetName() { return "m_Loadout"; }
-  static constexpr auto GetType() { return "GamePlayerLoadout"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEB97BB97; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFEBDA94B; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &ChangeObserverToPlayer::m_Loadout; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeObserverToPlayer *>(obj); return &ptr->m_Loadout; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeObserverToPlayer *>(obj); return &ptr->m_Loadout; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, GamePlayerLoadout> & Get() { return self.m_Loadout; }
-  std::add_const_t<std::remove_reference_t<GamePlayerLoadout>> & Get() const { return self.m_Loadout; }
-  void SetDefault() { self.m_Loadout = StormReflTypeInfo<ChangeObserverToPlayer>::GetDefault().m_Loadout; }
-};
-
-template <>
-struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
   using member_type = NetRangedNumber<int, 0, kMaxTeams - 1>; // NetRangedNumber<int, 0, 1>
   static constexpr auto GetName() { return "m_Team"; }
   static constexpr auto GetType() { return "NetRangedNumber<int, 0, 1>"; }
   static constexpr unsigned GetFieldNameHash() { return 0xFA7D3300; }
   static constexpr unsigned GetTypeNameHash() { return 0x98C808CD; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
+  static constexpr auto GetFieldIndex() { return 2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ChangeObserverToPlayer::m_Team; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeObserverToPlayer *>(obj); return &ptr->m_Team; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeObserverToPlayer *>(obj); return &ptr->m_Team; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
+struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<2 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -775,7 +750,7 @@ struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<3 + StormReflTypeIn
 };
 
 template <>
-struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<4 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
+struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
   using member_type = uint32_t; // unsigned int
   static constexpr auto GetName() { return "m_RandomSeed"; }
@@ -783,14 +758,14 @@ struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<4 + StormRef
   static constexpr unsigned GetFieldNameHash() { return 0x37FE06D1; }
   static constexpr unsigned GetTypeNameHash() { return 0x562EF932; }
   static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 4 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
+  static constexpr auto GetFieldIndex() { return 3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
   static constexpr auto GetMemberPtr() { return &ChangeObserverToPlayer::m_RandomSeed; }
   static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeObserverToPlayer *>(obj); return &ptr->m_RandomSeed; }
   static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeObserverToPlayer *>(obj); return &ptr->m_RandomSeed; }
 };
 
 template <typename Self>
-struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<4 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<4 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
+struct StormReflTypeInfo<ChangeObserverToPlayer>::field_data<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeObserverToPlayer>::field_data_static<3 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
 {
   Self & self;
   field_data(Self & self) : self(self) {}
@@ -999,111 +974,11 @@ struct StormReflTypeInfo<ChangePlayerTeam>::field_data<1 + StormReflTypeInfo<Gam
   void SetDefault() { self.m_Team = StormReflTypeInfo<ChangePlayerTeam>::GetDefault().m_Team; }
 };
 
-template <>
-struct StormReflTypeInfo<ChangeLoadoutEvent>
-{
-  using MyBase = GameNetworkExternalEvent;
-  static constexpr int fields_n = 2 + StormReflTypeInfo<MyBase>::fields_n;
-  template <int N> struct field_data_static : public StormReflTypeInfo<MyBase>::field_data_static<N> {};
-  template <int N, typename Self> struct field_data : public StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>
-  {
-    field_data(Self & self) : StormReflTypeInfo<MyBase>::field_data<N, match_const_t<Self, MyBase>>(self) {}
-  };
-  template <int N> struct annotations : public StormReflTypeInfo<MyBase>::annotations<N> {};
-  static constexpr auto GetName() { return "ChangeLoadoutEvent"; }
-  static constexpr auto GetNameHash() { return 0xB2C78060; }
-  static constexpr bool HasDefault() { return true; }
-  static ChangeLoadoutEvent & GetDefault() { static ChangeLoadoutEvent def; return def; }
-
-  static void * CastFromTypeNameHash(uint32_t type_name_hash, void * ptr)
-  {
-    auto c = static_cast<ChangeLoadoutEvent *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    if(0xDD637770 == type_name_hash) return static_cast<GameNetworkExternalEvent *>(c);
-    return nullptr;
-  }
-
-  static const void * CastFromTypeNameHash(uint32_t type_name_hash, const void * ptr)
-  {
-    auto c = static_cast<const ChangeLoadoutEvent *>(ptr);
-    if(GetNameHash() == type_name_hash) return c;
-    if(0xDD637770 == type_name_hash) return static_cast<const GameNetworkExternalEvent *>(c);
-    return nullptr;
-  }
-
-  static void * CastFromTypeIdHash(std::size_t type_id_hash, void * ptr)
-  {
-    auto c = static_cast<ChangeLoadoutEvent *>(ptr);
-    if(typeid(ChangeLoadoutEvent).hash_code() == type_id_hash) return c;
-    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<GameNetworkExternalEvent *>(c);
-    return nullptr;
-  }
-
-  static const void * CastFromTypeIdHash(std::size_t type_id_hash, const void * ptr)
-  {
-    auto c = static_cast<const ChangeLoadoutEvent *>(ptr);
-    if(typeid(ChangeLoadoutEvent).hash_code() == type_id_hash) return c;
-    if(typeid(GameNetworkExternalEvent).hash_code() == type_id_hash) return static_cast<const GameNetworkExternalEvent *>(c);
-    return nullptr;
-  }
-
-};
-
-template <>
-struct StormReflTypeInfo<ChangeLoadoutEvent>::field_data_static<0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
-  using member_type = uint8_t; // unsigned char
-  static constexpr auto GetName() { return "m_PlayerIndex"; }
-  static constexpr auto GetType() { return "unsigned char"; }
-  static constexpr unsigned GetFieldNameHash() { return 0x5BD26FC9; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF80DFA26; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &ChangeLoadoutEvent::m_PlayerIndex; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeLoadoutEvent *>(obj); return &ptr->m_PlayerIndex; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeLoadoutEvent *>(obj); return &ptr->m_PlayerIndex; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ChangeLoadoutEvent>::field_data<0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeLoadoutEvent>::field_data_static<0 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, uint8_t> & Get() { return self.m_PlayerIndex; }
-  std::add_const_t<std::remove_reference_t<uint8_t>> & Get() const { return self.m_PlayerIndex; }
-  void SetDefault() { self.m_PlayerIndex = StormReflTypeInfo<ChangeLoadoutEvent>::GetDefault().m_PlayerIndex; }
-};
-
-template <>
-struct StormReflTypeInfo<ChangeLoadoutEvent>::field_data_static<1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
-  using member_type = GamePlayerLoadout; // GamePlayerLoadout
-  static constexpr auto GetName() { return "m_Loadout"; }
-  static constexpr auto GetType() { return "GamePlayerLoadout"; }
-  static constexpr unsigned GetFieldNameHash() { return 0xEB97BB97; }
-  static constexpr unsigned GetTypeNameHash() { return 0xFEBDA94B; }
-  static constexpr bool HasDefault() { return true; }
-  static constexpr auto GetFieldIndex() { return 1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n; }
-  static constexpr auto GetMemberPtr() { return &ChangeLoadoutEvent::m_Loadout; }
-  static void * GetFromParent(void * obj) { auto ptr = static_cast<ChangeLoadoutEvent *>(obj); return &ptr->m_Loadout; }
-  static const void * GetFromParentConst(const void * obj) { auto ptr = static_cast<const ChangeLoadoutEvent *>(obj); return &ptr->m_Loadout; }
-};
-
-template <typename Self>
-struct StormReflTypeInfo<ChangeLoadoutEvent>::field_data<1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n, Self> : public StormReflTypeInfo<ChangeLoadoutEvent>::field_data_static<1 + StormReflTypeInfo<GameNetworkExternalEvent>::fields_n>
-{
-  Self & self;
-  field_data(Self & self) : self(self) {}
-  match_const_t<Self, GamePlayerLoadout> & Get() { return self.m_Loadout; }
-  std::add_const_t<std::remove_reference_t<GamePlayerLoadout>> & Get() const { return self.m_Loadout; }
-  void SetDefault() { self.m_Loadout = StormReflTypeInfo<ChangeLoadoutEvent>::GetDefault().m_Loadout; }
-};
-
 namespace StormReflFileInfo
 {
   struct GameNetworkExternals
   {
-    static const int types_n = 11;
+    static const int types_n = 10;
     template <int i> struct type_info { using type = void; };
   };
 
@@ -1165,12 +1040,6 @@ namespace StormReflFileInfo
   struct GameNetworkExternals::type_info<9>
   {
     using type = ::ChangePlayerTeam;
-  };
-
-  template <>
-  struct GameNetworkExternals::type_info<10>
-  {
-    using type = ::ChangeLoadoutEvent;
   };
 
 }

@@ -130,7 +130,14 @@ GameStage::~GameStage()
 
 const MapPropertiesDef & GameStage::GetMapProperties() const
 {
-  return *m_Map->m_PropertiesInfo.m_MapProperties.GetValue();
+  auto map_props = m_Map->m_PropertiesInfo.m_MapProperties.GetValue();
+  if(map_props)
+  {
+    return *map_props;
+  }
+
+  static MapPropertiesDef default_map_props;
+  return default_map_props;
 }
 
 const StaticCollisionDatabase & GameStage::GetCollisionDatabase() const

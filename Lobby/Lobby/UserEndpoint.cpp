@@ -23,7 +23,7 @@ char g_SteamInfoUrl[] = "https://api.steampowered.com/ISteamMicroTxn/GetUserInfo
 UserEndpoint::UserEndpoint(const DDSEndpointInterface & endpoint_interface) :
   m_EndpointInterface(endpoint_interface), m_State(kVersionRequest), m_Error(false), m_PlatformId(0), m_ConnectionKey(0)
 {
-  DDSLog::LogInfo("Got connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
+  DDSLog::LogInfo("Got user connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
 
   UserVersionRequest version_request;
   version_request.c = "version";
@@ -45,6 +45,11 @@ UserEndpoint::UserEndpoint(const DDSEndpointInterface & endpoint_interface) :
   m_EndpointInterface.Send(version_request);
 }
 
+UserEndpoint::~UserEndpoint()
+{
+  DDSLog::LogInfo("Lost user connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
+}
+
 void UserEndpoint::HandleData(const char * data)
 {
   if (m_Error)
@@ -52,7 +57,7 @@ void UserEndpoint::HandleData(const char * data)
     return;
   }
 
-  DDSLog::LogVerbose("Got data %s\n", data);
+  DDSLog::LogInfo("Got user data %s", data);
 
   const char * cmd_start = StormDataFindJsonStartByPath(".c", data);
   std::string cmd;
@@ -106,7 +111,6 @@ void UserEndpoint::HandleData(const char * data)
 #ifdef ENABLE_AUTH_GUEST
       else if (response.c == "lguest")
       {
-        DDSLog::LogVerbose("Logging in with guest account");
         m_IsGuest = true;
         m_ChosenUserName = response.user_name;
         m_Platform = "guest";
@@ -114,6 +118,8 @@ void UserEndpoint::HandleData(const char * data)
         m_CountryCode = "us";
         m_CurrencyCode = "usd";
 
+        DDSLog::LogInfo("Logging in with guest account - %zu", m_PlatformId);
+        SetGuestUserId(m_PlatformId);
         FinalizeConnect();
       }
 #endif
@@ -286,6 +292,16 @@ void UserEndpoint::HandleTorBlacklistLookup(const DDSResolverRequest & resolver_
   UserMessageIdentifyRequest ident_request = { "identify" };
   m_EndpointInterface.Send(ident_request);
 }
+
+#ifdef ENABLE_AUTH_GUEST
+void UserEndpoint::SetGuestUserId(uint64_t guest_id)
+{
+  m_Platform = "guest";
+  m_PlatformId = guest_id;
+  m_UserId = User::GetUserIdForPlatformId(m_Platform, m_PlatformId);
+}
+#endif
+
 
 #ifdef ENABLE_AUTH_STEAM
 void UserEndpoint::HandleSteamTokenValidation(bool valid, const std::string & steam_id)

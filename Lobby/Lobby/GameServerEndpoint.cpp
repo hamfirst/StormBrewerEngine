@@ -9,11 +9,19 @@ GameServerEndpoint::GameServerEndpoint(const DDSEndpointInterface & endpoint_int
   m_EndpointInterface(endpoint_interface),
   m_Version(0)
 {
+  DDSLog::LogInfo("Got server connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
+}
 
+GameServerEndpoint::~GameServerEndpoint()
+{
+  DDSLog::LogInfo("Lost server connect from %s:%d", m_EndpointInterface.GetRemoteIpAsString().data(), m_EndpointInterface.GetRemotePort());
 }
 
 void GameServerEndpoint::HandleData(const char * data)
 {
+
+  DDSLog::LogInfo("Got server %s", data);
+
   Hash hash = crc32begin();
   while (true)
   {
@@ -152,6 +160,8 @@ void GameServerEndpoint::SendPacket(const T & t)
   std::string packet_data = StormReflGetEnumAsString(T::Type);
   packet_data += ' ';
   StormReflEncodeJson(t, packet_data);
+
+  DDSLog::LogInfo("Send server %s", packet_data.c_str());
 
   m_EndpointInterface.SendData(packet_data);
 }

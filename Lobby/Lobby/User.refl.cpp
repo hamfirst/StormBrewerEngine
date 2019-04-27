@@ -40,7 +40,9 @@ User::User(DDSNodeInterface node_interface, UserDatabaseObject & db_object) :
   m_SquadCreationThrottle(1, (1.0f / 30.0f)),
   m_ProfileThrottle(4, 2),
   m_GameThrottle(8, 2)
-{ 
+{
+  DDSLog::LogInfo("User object created %zu", m_Interface.GetLocalKey());
+
   m_UserInfo.m_Name = m_Data.m_UserName;
 
   m_UserInfo.m_PlatformId = m_Data.m_PlatformId;
@@ -167,14 +169,19 @@ void User::RemoveEndpoint(DDSKey key)
 #endif
     }
 
-    if(m_Endpoints.size() == 0 && m_Data.m_IsGuest)
+    RemoveFromMatchmaking(key);
+
+    if(m_Endpoints.size() == 0)
     {
       if (m_InGame && key == m_GameEndpoint)
       {
         LeaveGame();
       }
 
-      m_Interface.DestroySelf();
+      if(m_Data.m_IsGuest)
+      {
+        m_Interface.DestroySelf();
+      }
     }
   }
 }
@@ -475,6 +482,168 @@ void User::HandleChannelUpdate(DDSKey channel_key, std::string data, int version
 
 #endif
 
+void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
+{
+  GameUserJoinInfo game_info;
+  game_info.m_UserKey = m_Interface.GetLocalKey();
+  game_info.m_EndpointId = join_info.m_EndpointId;
+  game_info.m_Name = m_Data.m_UserName;
+
+#ifdef ENABLE_SQUADS
+  game_info.m_SquadTag = m_UserInfo.m_SquadTag;
+#endif
+
+  game_info.m_AdminLevel = m_UserInfo.m_AdminLevel;
+  game_info.m_Icon = m_Data.m_Icon;
+  game_info.m_Title = m_Data.m_Title;
+  game_info.m_Celebration = m_Data.m_Celebration;
+
+  game_info.m_Password = join_info.m_Password;
+  game_info.m_Observer = join_info.m_Observer;
+  game_info.m_ZoneInfo = join_info.m_ZoneInfo;
+  game_info.m_IntendedType = join_info.m_IntendedType;
+
+  m_PendingGameId = game_id;
+  m_Interface.CallWithResponder(&Game::RequestAddUser, game_id, &User::HandleGameJoinResponse, this, game_info);
+}
+
+void User::LeaveGame()
+{
+  if (m_InGame == false)
+  {
+    return;
+  }
+
+  m_Interface.Call(&Game::RequestRemoveUser, m_GameId, m_Interface.GetLocalKey());
+  m_Interface.DestroySubscription<Game>(m_GameId, m_GameSubscriptionId);
+
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(UserMessageBase{"leave_game"}));
+
+  m_InGame = false;
+  m_PendingGameId = 0;
+  m_GameId = 0;
+  m_UserInfo.m_Game = UserGameInfo{};
+
+  m_MatchmakingRandomId = 0;
+  m_MatchmakingEndpoint = 0;
+
+
+  m_ReconnectGame = 0;
+  m_ReconnectGameRandomId = 0;
+
+#ifdef ENABLE_REWARDS
+  SendXPGain(m_GameEndpoint);
+  ApplyXPGain(true);
+#endif
+}
+
+void User::JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info)
+{
+  CancelMatchmaking();
+  LeaveGame();
+
+  m_Interface.CallSharedWithResponder(&GameList::LookupJoinCode, &User::HandleJoinCodeLookup, this, join_code, join_info);
+}
+
+void User::JoinGameByMatchmaker(DDSKey game_id, DDSKey matchmaker_random_id, const UserGameJoinInfo & join_info)
+{
+  DDSLog::LogInfo("Got Matchmaker response for user %zu", m_Interface.GetLocalKey());
+  if(m_InMatchmaking == false || m_MatchmakingEndpoint != join_info.m_EndpointId || m_MatchmakingRandomId != matchmaker_random_id)
+  {
+    m_Interface.Call(&Game::RequestRemoveUser, game_id, m_Interface.GetLocalKey());
+    return;
+  }
+
+  m_InMatchmaking = false;
+  JoinGame(game_id, join_info);
+}
+
+void User::StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
+{
+  CancelMatchmaking();
+  LeaveGame();
+
+  m_InMatchmaking = true;
+  m_MatchmakingEndpoint = endpoint_id;
+  m_MatchmakingRandomId = DDSGetRandomNumber64();
+  m_MatchmakingPlaylistMask = playlist_mask;
+  m_MatchmakingZoneInfo = zone_info;
+  m_MatchmakingRanked = true;
+
+  DDSLog::LogInfo("Requesting competitive match %zu", m_MatchmakingRandomId);
+
+  PlaylistBucketUserList user_list;
+  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
+  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
+  user_list.m_MatchmakerRandomId = m_MatchmakingRandomId;
+
+  m_Interface.CallShared(&Matchmaker::AddCompetitiveUser, user_list, zone_info, playlist_mask);
+}
+
+void User::StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
+{
+  CancelMatchmaking();
+  LeaveGame();
+
+  m_InMatchmaking = true;
+  m_MatchmakingEndpoint = endpoint_id;
+  m_MatchmakingRandomId = DDSGetRandomNumber64();
+  m_MatchmakingPlaylistMask = playlist_mask;
+  m_MatchmakingZoneInfo = zone_info;
+  m_MatchmakingRanked = false;
+
+  DDSLog::LogInfo("Requesting casual match %zu", m_MatchmakingRandomId);
+
+  PlaylistBucketUserList user_list;
+  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
+  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
+  user_list.m_MatchmakerRandomId = m_MatchmakingRandomId;
+
+  m_Interface.CallShared(&Matchmaker::AddCasualUser, user_list, zone_info, playlist_mask);
+}
+
+void User::CancelMatchmaking()
+{
+  if(m_InMatchmaking)
+  {
+    RemoveFromMatchmaking(m_MatchmakingEndpoint);
+  }
+}
+
+void User::RemoveFromMatchmaking(DDSKey endpoint_id)
+{
+  if(m_MatchmakingEndpoint == endpoint_id)
+  {
+    if (m_InMatchmaking)
+    {
+      m_Interface.CallShared(&Matchmaker::CancelMatchmakingForUser, m_Interface.GetLocalKey(), m_MatchmakingRandomId);
+      m_InMatchmaking = false;
+
+      SendToEndpoint(m_MatchmakingEndpoint, StormReflEncodeJson(UserMessageBase{"cancel_matchmaking"}));
+    }
+
+    m_MatchmakingEndpoint = 0;
+    m_MatchmakingRandomId = 0;
+  }
+}
+
+void User::RejoinMatchmaking(DDSKey endpoint_id, DDSKey matchmaking_random_id)
+{
+  if(m_MatchmakingEndpoint != endpoint_id || m_MatchmakingRandomId != matchmaking_random_id)
+  {
+    return;
+  }
+
+  if(m_MatchmakingRanked)
+  {
+    StartMatchmakingCompetitive(m_MatchmakingPlaylistMask, m_MatchmakingEndpoint, m_MatchmakingZoneInfo);
+  }
+  else
+  {
+    StartMatchmakingCasual(m_MatchmakingPlaylistMask, m_MatchmakingEndpoint, m_MatchmakingZoneInfo);
+  }
+}
+
 void User::CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creation_data, std::string password, const UserZoneInfo & zone_info)
 {
   if (m_GameCreationThrottle.GrabCredits(m_Interface.GetNetworkTime(), 1) == false)
@@ -536,60 +705,13 @@ void User::CreatePrivateGame(DDSKey endpoint_id, const GameInitSettings & creati
   JoinGame(game_id, join_info);
 }
 
-void User::JoinGame(DDSKey game_id, const UserGameJoinInfo & join_info)
-{
-  GameUserJoinInfo game_info;
-  game_info.m_UserKey = m_Interface.GetLocalKey();
-  game_info.m_EndpointId = join_info.m_EndpointId;
-  game_info.m_Name = m_Data.m_UserName;
-
-#ifdef ENABLE_SQUADS
-  game_info.m_SquadTag = m_UserInfo.m_SquadTag;
-#endif
-
-  game_info.m_AdminLevel = m_UserInfo.m_AdminLevel;
-  game_info.m_Icon = m_Data.m_Icon;
-  game_info.m_Title = m_Data.m_Title;
-  game_info.m_Celebration = m_Data.m_Celebration;
-
-  game_info.m_Password = join_info.m_Password;
-  game_info.m_Observer = join_info.m_Observer;
-  game_info.m_ZoneInfo = join_info.m_ZoneInfo;
-  game_info.m_IntendedType = join_info.m_IntendedType;
-
-  m_Interface.CallWithResponder(&Game::AddUser, game_id, &User::HandleGameJoinResponse, this, game_info);
-}
-
-void User::JoinGameByLookupTable(uint32_t join_code, const UserGameJoinInfo & join_info)
-{
-  m_Interface.CallSharedWithResponder(&GameList::LookupJoinCode, &User::HandleJoinCodeLookup, this, join_code, join_info);
-}
-
-void User::StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
-{
-  PlaylistBucketUserList user_list;
-  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
-  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
-
-  m_Interface.CallShared(&Matchmaker::AddCompetitiveUser, user_list, zone_info, playlist_mask);
-}
-
-void User::StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, const UserZoneInfo & zone_info)
-{
-  PlaylistBucketUserList user_list;
-  user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
-  user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
-
-  m_Interface.CallShared(&Matchmaker::AddCasualUser, user_list, zone_info, playlist_mask);
-}
-
 void User::SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id)
 {
   LeaveGame();
 
   if (m_Endpoints.find(endpoint_id) == m_Endpoints.end())
   {
-    m_Interface.Call(&Game::RemoveUser, game_id, m_Interface.GetLocalKey());
+    m_Interface.Call(&Game::RequestRemoveUser, game_id, m_Interface.GetLocalKey());
     return;
   }
 
@@ -608,6 +730,11 @@ void User::SetInGame(DDSKey game_id, DDSKey game_random_id, DDSKey endpoint_id)
     DDSSubscriptionTarget<Game>{}, game_id, ".m_GameInfo", &User::HandleGameUpdate, true, std::make_tuple(game_id, game_random_id));
 }
 
+void User::RequestLeaveGame()
+{
+  LeaveGame();
+}
+
 void User::DestroyGame(DDSKey endpoint_id, DDSKey game_id)
 {
   if (m_LocalInfo.m_AdminLevel == 0)
@@ -615,18 +742,25 @@ void User::DestroyGame(DDSKey endpoint_id, DDSKey game_id)
     return;
   }
 
-  m_Interface.Call(&Game::Cleanup, game_id);
+  m_Interface.Call(&Game::AdminDestroyGame, game_id);
 }
 
 void User::HandleGameJoinResponse(DDSKey game_id, DDSKey endpoint_id, DDSKey game_random_id, bool success)
 {
-  if (success == false)
+  if(game_id == m_PendingGameId)
   {
-    m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, std::string("Could not connect to game"));
-  }
-  else
-  {
-    SetInGame(game_id, game_random_id, endpoint_id);
+    if (success == false)
+    {
+      m_Interface.Call(&UserConnection::SendRuntimeError, endpoint_id, std::string("Could not connect to game"));
+      SendToEndpoint(endpoint_id, StormReflEncodeJson(UserMessageBase{"game_join_failed"}));
+
+      m_MatchmakingRandomId = 0;
+      m_MatchmakingEndpoint = 0;
+    }
+    else
+    {
+      SetInGame(game_id, game_random_id, endpoint_id);
+    }
   }
 }
 
@@ -689,6 +823,7 @@ void User::ChangeReady(bool ready)
 #endif
 }
 
+#ifdef NET_USE_LOADOUT
 void User::ChangeLoadout(const GamePlayerLoadout & loadout)
 {
   if (m_InGame == false)
@@ -698,6 +833,7 @@ void User::ChangeLoadout(const GamePlayerLoadout & loadout)
 
   m_Interface.Call(&Game::ChangeLoadout, m_GameId, m_Interface.GetLocalKey(), loadout);
 }
+#endif
 
 void User::ChangeGameSettings(const GameInitSettings & settings)
 {
@@ -719,37 +855,22 @@ void User::KickUserFromGame(DDSKey user_id)
   m_Interface.Call(&Game::RequestKickUser, m_GameId, m_Interface.GetLocalKey(), user_id);
 }
 
-void User::LeaveGame()
+void User::ReconnectToGame(DDSKey endpoint_id, DDSKey game_id, DDSKey game_random_id)
 {
-  if (m_InGame == false)
+  if(m_InGame && m_GameId == game_id && m_GameRandomId == game_random_id)
   {
-    return;
+    m_GameEndpoint = endpoint_id;
+    m_Interface.Call(&Game::RequestSwitchEndpoint, m_GameId, m_Interface.GetLocalKey(), endpoint_id);
   }
-
-  m_Interface.Call(&Game::RemoveUser, m_GameId, m_Interface.GetLocalKey());
-  m_Interface.DestroySubscription<Game>(m_GameId, m_GameSubscriptionId);
-
-  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(UserMessageBase{"leave_game"}));
-
-  m_InGame = false;
-  m_GameId = 0;
-  m_UserInfo.m_Game = UserGameInfo{};
-
-#ifdef ENABLE_REWARDS
-  SendXPGain(m_GameEndpoint);
-  ApplyXPGain(true);
-#endif
+  else if(m_ReconnectGame == game_id && m_ReconnectGameRandomId == game_random_id)
+  {
+  }
 }
 
-void User::ReconnectToGame(DDSKey endpoint_id)
+void User::DeclineReconnectToGame()
 {
-  if (m_InGame == false)
-  {
-    return;
-  }
-
-  m_GameEndpoint = endpoint_id;
-  m_Interface.Call(&Game::RequestReconnect, m_GameId, m_Interface.GetLocalKey(), endpoint_id);
+  m_ReconnectGame = 0;
+  m_ReconnectGameRandomId = 0;
 }
 
 void User::BanFromCompetitive()
@@ -773,9 +894,7 @@ void User::BanFromCompetitive()
   }
 }
 
-
-
-void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
+void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id, bool allow_reconnect)
 {
   if (m_InGame == false || m_GameId != game_id || m_GameRandomId != game_random_id)
   {
@@ -788,6 +907,12 @@ void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id)
   m_GameId = 0;
 
   m_UserInfo.m_Game = UserGameInfo{};
+
+  if(allow_reconnect)
+  {
+    m_ReconnectGame = game_id;
+    m_ReconnectGameRandomId = game_random_id;
+  }
 
 #ifdef ENABLE_REWARDS
   SendXPGain(m_GameEndpoint);
@@ -822,6 +947,15 @@ void User::NotifyResetGame(DDSKey game_id, DDSKey game_random_id)
   UserMessageBase msg;
   msg.c = "reset_game";
   SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(msg));
+}
+
+void User::NotifyReconnectGameEnded(DDSKey game_id, DDSKey game_random_id)
+{
+  if(game_id == m_ReconnectGame && game_random_id == m_ReconnectGameRandomId)
+  {
+    m_ReconnectGame = 0;
+    m_ReconnectGameRandomId = 0;
+  }
 }
 
 void User::HandleGameChat(DDSKey game_id, DDSKey game_random_id, std::string name, int icon, int title, std::string msg)

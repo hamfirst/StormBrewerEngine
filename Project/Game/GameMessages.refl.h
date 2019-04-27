@@ -67,9 +67,11 @@ struct SendTextChatMessage : public ToServerMessage
   bool m_TeamOnly;
 };
 
+#ifdef NET_USE_LOADOUT
 struct ChangeLoadoutMessage : public ToServerMessage
 {
   NET_REFL;
   uint8_t m_PlayerIndex;
   GamePlayerLoadout m_Loadout;
 };
+#endif

@@ -12,6 +12,7 @@
 #include "Game.refl.meta.h"
 #include "GameList.refl.meta.h"
 #include "Bot.refl.meta.h"
+#include "ServerManager.refl.meta.h"
 
 #include "GameServerMessages.refl.meta.h"
 #include "UserConnectionMessages.refl.meta.h"
@@ -28,6 +29,11 @@ GameServerConnection::GameServerConnection(DDSNodeInterface node_interface) :
 void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string data)
 {
   if (m_Error)
+  {
+    return;
+  }
+
+  if(cmd == GameServerMessageType::kPing)
   {
     return;
   }
@@ -55,6 +61,10 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
 
       m_ServerInfo = resp.m_ServerInfo;
       m_State = GameServerConnectionState::kConnected;
+
+      DDSLog::LogInfo("Game server authenticated");
+
+      m_Interface.CallShared(&ServerManager::HandleServerConnected, m_Interface.GetLocalKey(), resp.m_ServerInfo, 0);
     }
     else
     {
@@ -151,6 +161,7 @@ void GameServerConnection::RemoveUserFromGame(DDSKey game_id, DDSKey user_id)
   }
 }
 
+#ifdef NET_USE_LOADOUT
 void GameServerConnection::ChangeUserLoadout(DDSKey game_id, DDSKey user_id, const GamePlayerLoadout & loadout)
 {
   for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
@@ -166,14 +177,15 @@ void GameServerConnection::ChangeUserLoadout(DDSKey game_id, DDSKey user_id, con
     }
   }
 }
+#endif
 
-void GameServerConnection::NotifyUserQuitGame(DDSKey game_id, DDSKey user_key, bool ban)
+void GameServerConnection::NotifyUserDisconnected(DDSKey game_id, DDSKey user_key)
 {
   for(auto itr = m_ActiveGameIds.begin(), end = m_ActiveGameIds.end(); itr != end; ++itr)
   {
     if(*itr == game_id)
     {
-      m_Interface.Call(&Game::HandleUserQuitGame, game_id, user_key, ban);
+      m_Interface.Call(&Game::HandleUserDisconnected, game_id, user_key);
       return;
     }
   }
@@ -229,7 +241,7 @@ void GameServerConnection::PreDestroy()
 {
   if (m_State == GameServerConnectionState::kConnected)
   {
-
+    m_Interface.CallShared(&ServerManager::HandleServerDisconnected, m_Interface.GetLocalKey());
   }
 }
 
@@ -264,6 +276,8 @@ void GameServerConnection::SendPacket(const T & t)
   std::string packet_data = StormReflGetEnumAsString(T::Type);
   packet_data += ' ';
   StormReflEncodeJson(t, packet_data);
+
+  DDSLog::LogInfo("Send server %s", packet_data.c_str());
 
   if (m_ConnectionId)
   {

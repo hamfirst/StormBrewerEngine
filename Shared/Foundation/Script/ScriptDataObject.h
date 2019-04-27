@@ -81,6 +81,42 @@ struct CreateScriptDataObjectStruct<std::vector<T>>
   }
 };
 
+template <typename T>
+struct CreateScriptDataObjectStruct<std::map<std::string, T>>
+{
+  static ScriptObject CreateScriptDataObject(NotNullPtr<ScriptState> state, const std::map<std::string, T> & t)
+  {
+    auto obj = state->CreateScriptObject();
+    ScriptFuncs::PushValue(state->m_LuaState, obj);
+
+    for(auto & elem : t)
+    {
+      SetScriptDataObjectValue(state, elem.first.c_str(), elem.second);
+    }
+
+    ScriptFuncs::Discard(state->m_LuaState, 1);
+    return obj;
+  }
+};
+
+template <typename T>
+struct CreateScriptDataObjectStruct<std::unordered_map<std::string, T>>
+{
+  static ScriptObject CreateScriptDataObject(NotNullPtr<ScriptState> state, const std::unordered_map<std::string, T> & t)
+  {
+    auto obj = state->CreateScriptObject();
+    ScriptFuncs::PushValue(state->m_LuaState, obj);
+
+    for(auto & elem : t)
+    {
+      SetScriptDataObjectValue(state, elem.first.c_str(), elem.second);
+    }
+
+    ScriptFuncs::Discard(state->m_LuaState, 1);
+    return obj;
+  }
+};
+
 template <typename T, int i>
 struct CreateScriptDataObjectStruct<T[i]>
 {

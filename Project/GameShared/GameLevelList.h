@@ -23,6 +23,8 @@ public:
   bool IsPreloadComplete();
 
   Map LoadLevel(std::size_t stage_index);
+  const MapDef & GetPreloadedMap(std::size_t stage_index) const;
+  const MapPropertiesDef & GetPreloadedMapProperties(std::size_t stage_index) const;
 
   const LevelListPtr & GetLevelListAsset() const;
   std::size_t GetNumLevels();

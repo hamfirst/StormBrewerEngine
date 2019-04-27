@@ -154,6 +154,14 @@ void EntitySystem::DestroyAllEntities()
   });
 }
 
+void EntitySystem::RemoveServerObjectManagerFromAllEntities()
+{
+  auto allocator = static_cast<SkipField<Entity> *>(m_EntityAllocator);
+  allocator->VisitAll([](Entity & entity) {
+    entity.m_ServerObjectManager = nullptr;
+  });
+}
+
 void EntitySystem::BeginFrame()
 {
   auto visitor = [&](auto & entity)

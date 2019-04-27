@@ -26,11 +26,14 @@ public:
   void STORM_REFL_FUNC DestroyGame(const GameServerDestroyGame & msg);
 
   void STORM_REFL_FUNC RemoveUserFromGame(DDSKey game_id, DDSKey user_id);
+
+#ifdef NET_USE_LOADOUT
   void STORM_REFL_FUNC ChangeUserLoadout(DDSKey game_id, DDSKey user_id, const GamePlayerLoadout & loadout);
+#endif
 
   void STORM_REFL_FUNC NotifyTokenRedeemedSuccess(DDSKey game_id, const GameServerAuthenticateUserSuccess & msg);
   void STORM_REFL_FUNC NotifyTokenRedeemedFailure(DDSKey game_id, const GameServerAuthenticateUserFailure & msg);
-  void STORM_REFL_FUNC NotifyUserQuitGame(DDSKey game_id, DDSKey user_key, bool ban);
+  void STORM_REFL_FUNC NotifyUserDisconnected(DDSKey game_id, DDSKey user_key);
   void STORM_REFL_FUNC NotifyGameEnded(DDSKey game_id);
 
 public:

@@ -521,7 +521,7 @@ void DDSNodeState::SendTargetedMessage(DDSDataObjectAddress addr, DDSServerToSer
 {
   if (m_QueueMessageDepth && force_process == false)
   {
-    DDSLog::LogVerbose("-- Queueing targeted message %s", StormReflGetEnumAsString(type));
+    DDSLog::LogVerbose("-- Queueing targeted message %s (%zu)", StormReflGetEnumAsString(type), addr.m_ObjectKey);
 
     int priority = (int)DDSDataObjectPriority::kHigh;
     if (addr.m_ObjectType < (int)m_DataObjectList.size())

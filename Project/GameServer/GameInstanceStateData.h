@@ -4,6 +4,8 @@
 #include "Foundation/SparseList/SparseList.h"
 #include "Foundation/Allocator/IdAllocator.h"
 
+#include "LobbyShared/SharedTypes.refl.h"
+
 #include "Game/GameNetworkData.refl.h"
 
 class GameInstance;
@@ -36,7 +38,8 @@ struct GameInstanceStateDef
 class GameInstanceStateData
 {
 public:
-  GameInstanceStateData(NotNullPtr<GameInstance> instance, const GameInitSettings & init_settings, GameStageManager & stage_manager);
+  GameInstanceStateData(NotNullPtr<GameInstance> instance, const GameInitSettings & init_settings,
+          const GameInfoTeamSizes & team_info, GameStageManager & stage_manager);
 
   template <typename Visitor>
   void VisitPlayers(Visitor && visitor)
@@ -56,6 +59,7 @@ public:
 
   GameInstanceStatePlayer & GetClient(std::size_t index);
   const GameInitSettings & GetInitSettings() const;
+  const GameInfoTeamSizes & GetTeamInfo() const;
   void ChangeInitSettings(const GameInitSettings & init_settings);
 
   const GameStage & GetStage() const;
@@ -73,6 +77,7 @@ private:
   GameStageManager & m_StageManager;
 
   GameInitSettings m_InitSettings;
+  GameInfoTeamSizes m_TeamSizes;
   IdAllocator m_IdAllocator;
   SparseList<GameInstanceStatePlayer> m_Players;
 };

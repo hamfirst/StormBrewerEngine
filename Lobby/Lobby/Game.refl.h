@@ -15,6 +15,7 @@ struct GameUserJoinInfo
   STORM_REFL;
   DDSKey m_UserKey = 0;
   DDSKey m_EndpointId = 0;
+  DDSKey m_MatchmakerRandomId = 0;
 
   std::string m_Name;
 
@@ -30,6 +31,7 @@ struct GameUserJoinInfo
   std::string m_Password;
 
   bool m_Observer = false;
+  int m_AssignedTeam = -1;
   LobbyGameType m_IntendedType;
 
   UserZoneInfo m_ZoneInfo;
@@ -42,6 +44,7 @@ struct GameUserPrivateInfo
   DDSKey m_EndpointId = 0;
   DDSKey m_SubscriptionId = 0;
   DDSKey m_Token = 0;
+  DDSKey m_MatchmakerRandomId = 0;
   time_t m_TokenAssigned = 0;
   UserZoneInfo m_UserZoneInfo;
 };
@@ -51,6 +54,15 @@ struct GeneratedGameUser
   STORM_REFL;
   DDSKey m_UserId = 0;
   DDSKey m_EndpointId = 0;
+  DDSKey m_MatchmakerRandomId = 0;
+};
+
+struct GameModifyAction
+{
+  STORM_REFL;
+  bool m_Join = true;
+  GameUserJoinInfo m_JoinInfo;
+  DDSResponderData m_ResponderData;
 };
 
 struct GeneratedGame
@@ -66,67 +78,84 @@ struct Game
   Game(DDSNodeInterface node_interface);
 
   void STORM_REFL_FUNC InitPrivateGame(const GameInitSettings & settings, std::string password);
-  void STORM_REFL_FUNC InitCasualGame(const GameInitSettings & settings, int zone);
-  void STORM_REFL_FUNC InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone);
+  void STORM_REFL_FUNC InitCasualGame(const GameInitSettings & settings, const GeneratedGame & game, int zone, const std::vector<int> & team_sizes);
+  void STORM_REFL_FUNC InitCompetitiveGame(const GameInitSettings & settings, const GeneratedGame & game, int zone, const std::vector<int> & team_sizes);
 
   void Init(const GameInitSettings & settings);
   void Update();
 
-  void STORM_REFL_FUNC Cleanup();
-
+  void Cleanup();
   void Reset();
+
+  void STORM_REFL_FUNC RequestAddUser(DDSResponder & responder, const GameUserJoinInfo & join_info);
+  void STORM_REFL_FUNC RequestRemoveUser(DDSKey user_key);
 
   void STORM_REFL_FUNC SetJoinCode(uint32_t join_code);
   void STORM_REFL_FUNC AssignGameServer(DDSKey server_id, const std::string & server_ip, int port);
-
-  void STORM_REFL_FUNC AddUser(DDSResponder & responder, const GameUserJoinInfo & join_info);
-  void STORM_REFL_FUNC RemoveUser(DDSKey user_key);
 
 #if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   void STORM_REFL_FUNC ChangeReady(DDSKey user_key, bool ready);
   bool AllPlayersReady() const;
 #endif
 
-  void BeginCountdown();
-  void StartGame();
-  void STORM_REFL_FUNC RequestReconnect(DDSKey user_key, DDSKey endpoint_id);
+  void STORM_REFL_FUNC RequestSwitchEndpoint(DDSKey user_key, DDSKey endpoint_id);
   void STORM_REFL_FUNC RequestStartGame(DDSKey user_key);
   void STORM_REFL_FUNC RequestTeamSwitch(DDSKey requesting_user, DDSKey target_user, int team);
   void STORM_REFL_FUNC RequestKickUser(DDSKey requesting_user, DDSKey target_user);
 
-  void RandomizeTeams();
   void STORM_REFL_FUNC SendChat(DDSKey user_key, DDSKey endpoint_id, std::string message);
   void STORM_REFL_FUNC ChangeSettings(DDSKey user_key, const GameInitSettings & settings);
+
+#ifdef NET_USE_LOADOUT
   void STORM_REFL_FUNC ChangeLoadout(DDSKey user_key, const GamePlayerLoadout & loadout);
-  void UpdateGameList();
+#endif
 
   void STORM_REFL_FUNC RedeemToken(DDSKey user_key, DDSKey token, uint32_t response_id, DDSKey server_key);
 
   void STORM_REFL_FUNC HandleMemberUpdate(DDSKey user_key, std::string data);
-  void STORM_REFL_FUNC HandleUserQuitGame(DDSKey user_key, bool ban);
+  void STORM_REFL_FUNC HandleUserDisconnected(DDSKey user_key);
   void STORM_REFL_FUNC HandleGameComplete();
   void STORM_REFL_FUNC HandleServerDisconnected();
 
+  void STORM_REFL_FUNC AdminDestroyGame();
+  void STORM_REFL_FUNC MatchmakerDestroyGame();
+
 private:
+
+  bool AddUser(const GameUserJoinInfo & join_info);
+  void RemoveUser(DDSKey user_key);
+
+  void BeginCountdown();
+  void StartGame();
+  void AbandonGame();
+
+  void RandomizeTeams();
+  void UpdateGameList();
+
 
   int FindBestZoneForPlayers();
   std::vector<int> GetTeamCounts();
+  std::vector<int> GetMaxTeamCounts();
   void ValidateTeams();
+  void UpdateTeamSizes();
+  bool FindUserInGeneratedGame(DDSKey user_id, bool remove_if_found, int & out_team);
+  bool AllGeneratedUsersConnected();
   void LaunchGameForUser(DDSKey user_id, GameUserPrivateInfo & info);
 
 public:
   DDSKey m_AssignedServer = 0;
   time_t m_InitTime = 0;
 
+  std::vector<int> m_TeamSizeOverrides;
   GameInfo m_GameInfo;
 
   time_t m_GameCreateTime = 0;
   time_t m_GameEndTime = 0;
   DDSKey m_GameRandomId = 0;
 
-  std::vector<std::pair<GameUserJoinInfo, DDSResponderData>> m_PendingJoins;
+  std::vector<GameModifyAction> m_PendingActions;
 
-  GeneratedGame m_CompetitiveGameInfo;
+  GeneratedGame m_MatchmakerGameInfo;
   std::map<DDSKey, GameUserPrivateInfo> m_UserPrivateInfo;
 
   int m_ZoneIndex = -1;

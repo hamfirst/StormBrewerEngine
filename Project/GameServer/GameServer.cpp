@@ -51,7 +51,7 @@ int GameServer::ValidateUser(NotNullPtr<GameClientConnection> connection, const 
   {
     return m_LobbyConnection->RequestValidation(request, [this, connection](const Optional<GameServerAuthenticateUserSuccess> & resp)
     {
-      if(resp.IsValid() == false || m_GameInstanceManager.JoinPlayer(connection, resp.Value()))
+      if(resp.IsValid() == false || m_GameInstanceManager.JoinPlayer(connection, resp.Value()) == false)
       {
         connection->ForceDisconnect();
       }

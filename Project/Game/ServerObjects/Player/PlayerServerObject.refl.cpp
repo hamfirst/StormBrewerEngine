@@ -223,7 +223,7 @@ bool PlayerServerObject::HandleDamageEvent(const DamageEvent & ev, const EventMe
 #ifdef NET_USE_ROUND_TIMER
     auto other_player = game.GetObjectManager().GetReservedSlotObjectAs<PlayerServerObject>(GetSlotIndex() == 0 ? 1 : 0);
     game.GetInstanceData().m_RoundState = RoundState::kPostRound;
-    game.GetInstanceData().m_RoundTimer = kMaxCountdown;
+    game.GetInstanceData().m_RoundTimer = kMaxRoundTimer;
 #endif
     m_Health = 0;
   }

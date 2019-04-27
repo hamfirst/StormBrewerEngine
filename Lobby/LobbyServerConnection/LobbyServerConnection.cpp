@@ -35,7 +35,7 @@ void LobbyServerConnection::Connect()
   }
   
   m_State = LobbyServerConnectionState::kConnecting;
-  m_WebSocket.StartConnect(m_LobbySettings.m_LobbyServerIp.c_str(), LOBBY_GAME_PORT, "/", kProjectName);
+  m_WebSocket.StartConnect(m_LobbySettings.m_LobbyServerIp.c_str(), m_LobbySettings.m_LobbyServerPort, "/", "stormbrewers.com", kProjectName);
 }
 
 void LobbyServerConnection::Update()
@@ -230,6 +230,17 @@ void LobbyServerConnection::Update()
           }
 
           Relocate(msg);
+        }
+        else if (type == GameServerMessageType::kCreateGame)
+        {
+          GameServerCreateGame msg;
+          if (StormReflParseJson(msg, data_start) == false)
+          {
+            ParseError();
+            return;
+          }
+
+          m_CreateGameCallback(msg);
         }
         else if (type == GameServerMessageType::kKillGame)
         {
