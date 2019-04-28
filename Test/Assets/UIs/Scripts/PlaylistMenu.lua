@@ -6,7 +6,7 @@ function InitCasualPlaylistMenu()
 end
 
 function InitCompetitivePlaylistMenu()
-  InitPlaylistMenu(game.competitive_playlist, "Competitive", game.competitive_ranks)
+  InitPlaylistMenu(game.competitive_playlist, "Ranked", game.competitive_ranks)
 end
 
 function InitPlaylistMenu(playlist_list, playlist_name, ranks)
@@ -26,16 +26,16 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
     return
   end
 
-  local button_width = 150
+  local button_width = 100
   local button_pad = 5
-  local button_height = 180
+  local button_height = 60
   local total_width = playlist_count * (button_width + button_pad) - button_pad
   local button_start = -total_width / 2
 
   local header = PushMenuElement(HeaderContainer:new())
   header.x = -total_width / 2 - 40
-  header.y = screen_start_y + 100
-  header.height = screen_height - 200
+  header.y = button_height / -2 - 50
+  header.height = button_height + 100
   header.width = total_width + 80
   header.text = playlist_name
 
@@ -47,10 +47,10 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
   search.text = "Search"
 
   local cancel = PushMenuElement(Button:new())
-  cancel.x = screen_end_x - 100
-  cancel.y = screen_start_y + 30
+  cancel.x = screen_end_x - 80
+  cancel.y = screen_start_y + 10
   cancel.width = 70
-  cancel.height = 20
+  cancel.height = font_height
   cancel.text = "Cancel"
   cancel.back = true
   
@@ -78,7 +78,13 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
   for k, v in pairs(playlist_list.m_Elements) do
     local button = PushMenuElement(Button:new())
     button.toggleable = true
-    button.font = large_header_font
+
+    if ranks == nil then
+      button.font = large_header_font
+    else
+      button.font = small_header_font
+    end
+
     button.scale = 1
 
     button.x = button_start + ((k - 1) * (button_width + button_pad))
@@ -150,7 +156,7 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
       local anim_index = ui:GetAnimationIndex(rank_sprites, rank_anim)
       local width, height = ui:GetSpriteSize(rank_sprites, rank_anim, rank_frame)
 
-      button.text_offset_y = -25
+      button.text_offset_y = -20
 
       local sprite = StillSprite:new(button)
       sprite:SetWantsInput(false)
@@ -176,7 +182,7 @@ function InitPlaylistMenu(playlist_list, playlist_name, ranks)
   fader:FadeToClear()
 
   FadeFromButtonPress(fader, search, function() game:Search(playlist_mask) end)
-  FadeFromButtonPress(fader, cancel, function() CleanupMenu() InitMainMenu() end)
+  FadeFromButtonPress(fader, cancel, function() game:Back() end)
 end
 
 

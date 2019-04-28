@@ -220,7 +220,7 @@ int main(int argc, const char ** argv)
 
 #ifndef _INCLUDEOS
 
-  while (g_QuitServer == false)
+  while (g_QuitServer == false && game_server.WantsToQuit() == false)
   {
     NetworkUpdate();
     game_server.Update();

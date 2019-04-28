@@ -3,20 +3,20 @@
 {
     "m_InitFunction": "InitPlayOnlineMenu",
     "m_Functions": {
-        "4": {
-            "m_Name": "Back"
-        },
         "3": {
             "m_Name": "JoinPrivate"
+        },
+        "4": {
+            "m_Name": "Back"
         },
         "2": {
             "m_Name": "CreatePrivate"
         },
-        "0": {
-            "m_Name": "SearchCompetitive"
-        },
         "1": {
             "m_Name": "SearchCasual"
+        },
+        "0": {
+            "m_Name": "SearchCompetitive"
         }
     }
 }

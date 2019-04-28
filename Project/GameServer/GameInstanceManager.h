@@ -23,6 +23,9 @@ public:
 
   bool JoinPlayer(NotNullPtr<GameClientConnection> client, const GameServerAuthenticateUserSuccess & auth);
   void RemovePlayer(NotNullPtr<GameClientConnection> client);
+
+  void NotifyLobbyNoLongerAcceptingPlayers(uint64_t game_id);
+
 private:
   GameServer & m_Server;
   GameStageManager & m_StageManager;

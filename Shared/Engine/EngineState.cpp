@@ -41,6 +41,13 @@ void EngineState::DestroyAllEntities()
   return m_EntitySystem->DestroyAllEntities();
 }
 
+void EngineState::DestroyAllGameplayObjects()
+{
+  m_EntitySystem->DestroyAllEntities();
+  m_VisualEffectManager->DestroyAllEffects();
+  m_MapSystem->UnloadAllMaps();
+}
+
 std::size_t EngineState::LoadMap(NotNullPtr<MapResource> map)
 {
   return m_MapSystem->InstantiateMap(*map->GetData(), {});

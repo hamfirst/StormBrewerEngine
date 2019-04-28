@@ -26,3 +26,19 @@ function CreateDefualtControls()
   default_controls.y = half_screen_height - 40
   return default_controls
 end
+
+function FadeInDefaultControls(default_controls)
+  default_controls.audio.alpha = 1
+  default_controls.music.alpha = 1
+  default_controls.fullscreen.alpha = 1
+
+  AddLerp(default_controls.audio, "alpha", 1, 0.2)
+  AddLerp(default_controls.music, "alpha", 1, 0.2)
+  AddLerp(default_controls.fullscreen, "alpha", 1, 0.2)
+end
+
+function FadeOutDefaultControls(default_controls)
+  AddLerp(default_controls.audio, "alpha", 0, 0.2)
+  AddLerp(default_controls.music, "alpha", 0, 0.2)
+  AddLerp(default_controls.fullscreen, "alpha", 0, 0.2)
+end

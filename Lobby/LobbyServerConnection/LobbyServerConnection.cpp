@@ -401,6 +401,15 @@ void LobbyServerConnection::NotifyPlayerLeft(uint64_t user_id, uint64_t game_id)
   SendMessage(msg);
 }
 
+void LobbyServerConnection::NotifyAcceptingPlayers(uint64_t game_id, bool accepting)
+{
+  GameServerAcceptingPlayers msg;
+  msg.m_GameId = game_id;
+  msg.m_AcceptingPlayers = accepting;
+
+  SendMessage(msg);
+}
+
 void LobbyServerConnection::SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInitSettings & settings)
 {
   GameServerStats msg = {};

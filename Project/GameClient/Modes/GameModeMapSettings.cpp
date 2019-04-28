@@ -27,7 +27,9 @@ GameModeMapSettings::GameModeMapSettings(GameContainer &game, GameModeMapSetting
 
 void GameModeMapSettings::Initialize()
 {
-
+#ifndef NET_USE_MAP_SELECTION
+  Submit();
+#endif
 }
 
 void GameModeMapSettings::Deinit()
@@ -137,7 +139,11 @@ void GameModeMapSettings::Submit()
   switch(m_NextScreen)
   {
     case GameModeMapSettingsNextScreen::kOfflineStaging:
+#ifdef NET_USE_OFFLINE_STAGING
       container.SwitchMode<GameModeOfflineStaging>(m_Settings);
+#else
+      container.SwitchMode<GameModeSinglePlayerBots>(m_Settings, false);
+#endif
       break;
     case GameModeMapSettingsNextScreen::kPrivateGame:
       break;

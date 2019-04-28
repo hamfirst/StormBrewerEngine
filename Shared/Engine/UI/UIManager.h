@@ -43,6 +43,7 @@ public:
 
   void Update(float delta_time, InputState & input_state, RenderState & render_state);
   void Render(RenderState & render_state, const Optional<RenderVec2> & override_script_render_size = {});
+  void RenderSpecial(czstr function_name, RenderState & render_state, const Optional<RenderVec2> & override_script_render_size = {});
 
   void Pause();
   void Unpause();

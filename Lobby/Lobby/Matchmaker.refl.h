@@ -26,6 +26,7 @@ struct PlaylistBucketUserList
 
   PlaylistBucketUser m_PrimaryUser;
   std::vector<PlaylistBucketUser> m_ExtraUsers;
+  time_t m_TimePutInMatchmaker;
   DDSKey m_MatchmakerRandomId;
 };
 
@@ -50,6 +51,7 @@ struct RefillGame
   int m_PlayersNeeded[kMaxTeams] = {0};
   int m_PlayersAssigned[kMaxTeams] = {0};
   int m_PlayersLeft[kMaxTeams] = {0};
+  bool m_AllowRefill = true;
 };
 
 struct RefillGameList
@@ -76,6 +78,7 @@ public:
   void STORM_REFL_FUNC RemoveCompetitiveUser(DDSKey user, DDSKey random_id);
 
   void STORM_REFL_FUNC NotifyPlayerLeftCasualGame(DDSKey game_id, int team, int zone);
+  void STORM_REFL_FUNC NotifyGameAcceptingPlayers(DDSKey game_id, int zone, bool accepting_players);
 
   void STORM_REFL_FUNC CancelMatchmakingForUser(DDSKey user, DDSKey random_id);
 
@@ -87,8 +90,16 @@ private:
                       PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
   static void RemoveUser(DDSKey user, DDSKey random_id, PlaylistAsset & playlist_data, std::vector<PlaylistBucketList> & bucket_list);
 
+  void RefillMatches();
+  void CreateNewMatches();
+  void CreatePartialMatchesIfWaitingTooLong();
+
   bool FindMatch(int zone, PlaylistAsset & playlist_data,
           std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type);
+
+  bool CreatePartialMatch(DDSKey user_id);
+  void FinalizeGame(GeneratedGame & game, int zone, int playlist, const std::vector<int> & team_sizes, PlaylistAsset & playlist_data,
+                    std::vector<PlaylistBucketList> & bucket_list, RefillGameList * refill_list, LobbyGameType type);
 
   void SendGameInfo(DDSKey user_id, DDSKey endpoint_id, DDSKey game_id,
           int team, DDSKey matchmaker_random_id, LobbyGameType game_type);

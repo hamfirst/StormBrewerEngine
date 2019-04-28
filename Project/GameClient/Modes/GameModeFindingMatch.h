@@ -18,7 +18,7 @@ enum class GameModeFindingMatchState
 class GameModeFindingMatch : public GameModeOnlineBase
 {
 public:
-  GameModeFindingMatch(GameContainer & game);
+  GameModeFindingMatch(GameContainer & game, bool ranked);
   ~GameModeFindingMatch();
 
   void Initialize() override;
@@ -34,4 +34,6 @@ protected:
 
 private:
   GameModeFindingMatchState m_State = GameModeFindingMatchState::kWaiting;
+  bool m_Ranked;
+  double m_StartTime;
 };

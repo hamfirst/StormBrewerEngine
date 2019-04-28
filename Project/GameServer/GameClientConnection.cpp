@@ -12,6 +12,7 @@ GameClientConnection::GameClientConnection(GameServer & server, uint32_t connect
   m_Protocol(protocol),
   m_GameInstance(nullptr),
   m_GameId(0),
+  m_UserId(0),
   m_GotJoin(false)
 {
   m_Protocol.GetReceiverChannel<0>().RegisterCallback(&GameClientConnection::HandlePing, this);

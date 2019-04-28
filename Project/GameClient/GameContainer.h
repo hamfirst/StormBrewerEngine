@@ -61,6 +61,7 @@ public:
 
   NullOptPtr<GameClientSystems> GetClientSystems();
   void SetClientSystems(NullOptPtr<GameClientSystems> client_systems);
+  void ResetAllGameplaySystems();
 
   RenderState & GetRenderState();
 

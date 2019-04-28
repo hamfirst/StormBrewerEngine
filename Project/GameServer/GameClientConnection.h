@@ -60,6 +60,7 @@ private:
 
 private:
   friend class GameInstanceManager;
+  friend class GameServer;
 
   GameServer & m_Server;
 
@@ -68,6 +69,7 @@ private:
 
   GameInstance * m_GameInstance;
   uint64_t m_GameId;
+  uint64_t m_UserId;
   bool m_GotJoin;
 };
 

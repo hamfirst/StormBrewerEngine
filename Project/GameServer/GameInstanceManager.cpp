@@ -75,6 +75,8 @@ bool GameInstanceManager::JoinPlayer(NotNullPtr<GameClientConnection> client, co
   if(itr->second->JoinPlayer(client, join_info, false))
   {
     client->m_GameInstance = itr->second.get();
+    client->m_GameId = auth.m_GameId;
+    client->m_UserId = auth.m_UserId;
     return true;
   }
 
@@ -83,9 +85,15 @@ bool GameInstanceManager::JoinPlayer(NotNullPtr<GameClientConnection> client, co
 
 void GameInstanceManager::RemovePlayer(GameClientConnection * client)
 {
-  if (client->GetGameInstance() != nullptr)
+  auto game_instance = client->GetGameInstance();
+  if (game_instance != nullptr)
   {
-    client->GetGameInstance()->RemovePlayer(client);
+    m_LobbyConnection->NotifyPlayerLeft(client->m_UserId, client->m_GameId);
+    game_instance->RemovePlayer(client);
   }
 }
 
+void GameInstanceManager::NotifyLobbyNoLongerAcceptingPlayers(uint64_t game_id)
+{
+  m_LobbyConnection->NotifyAcceptingPlayers(game_id, false);
+}

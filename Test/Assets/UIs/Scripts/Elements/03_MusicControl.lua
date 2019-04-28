@@ -3,6 +3,7 @@ music_on_texture = loader:LoadTexture("./Images/UI/MusicOn.png")
 music_off_texture = loader:LoadTexture("./Images/UI/MusicOff.png")
 
 MusicControl = Elem:construct()
+MusicControl.alpha = 1
 
 function MusicControl:setup(o)
   Elem:setup(o)
@@ -19,7 +20,7 @@ function MusicControl:Draw()
   end
 
   self.width, self.height = ui:GetTextureSize(texture_id)
-  ui:DrawTextureTint(texture_id, 0, 0, 1, 1, 1, 0.4)
+  ui:DrawTextureTint(texture_id, 0, 0, 1, 1, 1, self.alpha * 0.4)
 end
 
 function MusicControl:Clicked()

@@ -116,6 +116,11 @@ public:
     return GetAllocAt(id);
   }
 
+  std::size_t GetMaxAllocs() const
+  {
+    return m_MaxAllocs;
+  }
+
 private:
   Type * GetAllocAt(std::size_t index)
   {

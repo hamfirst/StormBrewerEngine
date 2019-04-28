@@ -31,7 +31,13 @@ GameModeTutorial::GameModeTutorial(GameContainer & game) :
 
 GameModeTutorial::~GameModeTutorial()
 {
+  auto & container = GetContainer();
+  container.ResetAllGameplaySystems();
+
+  container.SetInstanceData(nullptr);
+  container.SetClientSystems(nullptr);
   m_ClientSystems.reset();
+  m_InstanceContainer.reset();
 }
 
 void GameModeTutorial::Initialize()
@@ -61,19 +67,11 @@ void GameModeTutorial::OnAssetsLoaded()
   m_InstanceContainer->GetGlobalInstanceData().m_AIPlayerInfo.RemoveAt(0);
 
   m_InstanceContainer->GetGameController().StartGame(game_logic);
-#ifdef NET_USE_SCORE
-  m_InstanceContainer->GetGlobalInstanceData().m_Score[2] = 4;
-#endif
 
   m_InstanceContainer->GetLevelLoader().FinalizeLevel();
   m_InstanceContainer->GetEntitySync().ActivateEntities();
 
   m_FrameClock.Start();
-
-  //g_MusicManager.FadeTo(GetContainer().GetClientGlobalResources().GameplayLoop, 0.5f, 0.2f, 2.0f);
-  //g_MusicManager.PlayClip(GetContainer().GetClientGlobalResources().GameplayStart, 0.2f, true);
-
-  m_ClientSystems->GetUIManager().DisablePopup();
 }
 
 void GameModeTutorial::Update()

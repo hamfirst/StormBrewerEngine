@@ -27,6 +27,11 @@ GameModeOnlineGameplay::GameModeOnlineGameplay(GameContainer & game) :
 
 GameModeOnlineGameplay::~GameModeOnlineGameplay()
 {
+  auto & container = GetContainer();
+  container.ResetAllGameplaySystems();
+
+  container.SetInstanceData(nullptr);
+  container.SetClientSystems(nullptr);
   m_ClientSystems.reset();
 }
 
@@ -82,8 +87,6 @@ void GameModeOnlineGameplay::Update()
     auto instance = container.GetGameClient().ConvertToOffline();
     container.StopNetworkClient();
     container.SwitchMode<GameModeEndGame>(std::move(instance), std::move(m_ClientSystems), EndGamePlayAgainMode::kOnlineGameplay);
-
-    entity_system->RemoveServerObjectManagerFromAllEntities();
     return;
   }
 
@@ -136,6 +139,7 @@ void GameModeOnlineGameplay::Update()
     auto & container = GetContainer();
     container.StopNetworkClient();
     container.SwitchMode<GameModeMainMenu>();
+    container.ResetAllGameplaySystems();
   }
 }
 
@@ -176,17 +180,5 @@ void GameModeOnlineGameplay::Render()
     input_manager.Render();
     ui_manager.Render();
   }
-
-  //RenderProfilerData(render_state);
-
-  m_FPSClock.Update();
-  std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2f(40, 40) - render_state.GetRenderSize() / 2.0f);
-  g_TextManager.SetPrimaryColor();
-  g_TextManager.SetShadowColor();
-  g_TextManager.SetTextMode(TextRenderMode::kOutlined);
-  g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(fps_data.data(), -1, 1, render_state);
-
 }
 

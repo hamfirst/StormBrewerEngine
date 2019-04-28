@@ -133,7 +133,7 @@ function PlayerList:Update()
   self.scrollbar:SetScrollArea(self.height, self.content_height)
   self.scrollbar.x = self.x + self.width + 1
   self.scrollbar.y = self.y
-  self.scrollbar.width = 16
+  self.scrollbar.width = 10
   self.scrollbar.height = self.height
 end
 

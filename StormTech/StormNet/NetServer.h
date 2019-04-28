@@ -102,6 +102,19 @@ protected:
     ptr->m_Protocol.GotMessage(reader);
   }
 
+  template <typename Visitor>
+  void VisitClients(Visitor && visitor)
+  {
+    for(std::size_t index = 0, end = m_Clients.GetMaxAllocs(); index < end; ++index)
+    {
+      auto ptr = m_Clients.GetElementForId(index);
+      if(ptr)
+      {
+        visitor(&ptr->m_Client);
+      }
+    }
+  }
+
 private:
 
   struct ClientInfo

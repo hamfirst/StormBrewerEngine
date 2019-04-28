@@ -67,6 +67,7 @@ public:
   std::string m_Platform;
   uint64_t m_PlatformId;
   uint64_t m_UserId;
+  bool m_IsGuest;
 
 #ifdef ENABLE_GAME_LIST
   DDSKey m_GamePreviewServerId = 0;

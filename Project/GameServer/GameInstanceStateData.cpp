@@ -1,6 +1,7 @@
 
 #include "GameServer/GameInstanceStateData.h"
 #include "GameServer/GameInstance.h"
+#include "GameServer/GameServer.h"
 
 #include "GameShared/GameStageManager.h"
 
@@ -34,6 +35,11 @@ const GameInfoTeamSizes & GameInstanceStateData::GetTeamInfo() const
 void GameInstanceStateData::ChangeInitSettings(const GameInitSettings & init_settings)
 {
   m_InitSettings = init_settings;
+}
+
+void GameInstanceStateData::NotifyLobbyNoLongerAcceptingPlayers()
+{
+  m_Instance->m_Server.GetGameInstanceManager().NotifyLobbyNoLongerAcceptingPlayers(m_Instance->m_GameId);
 }
 
 const GameStage & GameInstanceStateData::GetStage() const

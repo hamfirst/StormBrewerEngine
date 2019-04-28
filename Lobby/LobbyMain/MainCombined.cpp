@@ -39,14 +39,6 @@ int main(int argc, const char ** argv)
 
   g_ExternalIp = bootstrap.Get("external_ip");
 
-#ifdef _LINUX
-  if (bootstrap.HasValue("D") || bootstrap.HasValue("daemon"))
-  {
-    printf("Entering Daemon Mode");
-    daemon(1, 0);
-  }
-#endif
-
   DDSDatabaseInit();
   DDSCPUUsageInit();
   //DDSSetupShutdownSignalHandler();

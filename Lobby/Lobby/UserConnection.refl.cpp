@@ -108,6 +108,7 @@ void UserConnection::LoadUser(std::string platform, uint64_t platform_id, uint64
   m_Platform = platform;
   m_PlatformId = platform_id;
   m_UserId = user_id;
+  m_IsGuest = guest;
   m_UserName = chosen_user_name;
 
   DDSLog::LogInfo("Loading User %zu", m_UserId);
@@ -132,6 +133,7 @@ void UserConnection::CreateUserObject(const std::string & name)
   initial_data.m_PlatformId = m_PlatformId;
   initial_data.m_Created = (int)m_Interface.GetNetworkTime();
 
+  initial_data.m_IsGuest = m_IsGuest;
   initial_data.m_Icon = 0;
   initial_data.m_IconList.EmplaceBack(0);
 

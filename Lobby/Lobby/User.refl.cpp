@@ -576,6 +576,7 @@ void User::StartMatchmakingCompetitive(uint32_t playlist_mask, DDSKey endpoint_i
   user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
   user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
   user_list.m_MatchmakerRandomId = m_MatchmakingRandomId;
+  user_list.m_TimePutInMatchmaker = m_Interface.GetNetworkTime();
 
   m_Interface.CallShared(&Matchmaker::AddCompetitiveUser, user_list, zone_info, playlist_mask);
 }
@@ -598,6 +599,7 @@ void User::StartMatchmakingCasual(uint32_t playlist_mask, DDSKey endpoint_id, co
   user_list.m_PrimaryUser.m_UserKey = m_Interface.GetLocalKey();
   user_list.m_PrimaryUser.m_EndpointId = endpoint_id;
   user_list.m_MatchmakerRandomId = m_MatchmakingRandomId;
+  user_list.m_TimePutInMatchmaker = m_Interface.GetNetworkTime();
 
   m_Interface.CallShared(&Matchmaker::AddCasualUser, user_list, zone_info, playlist_mask);
 }
@@ -902,6 +904,7 @@ void User::NotifyLeftGame(DDSKey game_id, DDSKey game_random_id, bool allow_reco
   }
 
   m_Interface.DestroySubscription<GameServerConnection>(m_GameId, m_GameSubscriptionId);
+  SendToEndpoint(m_GameEndpoint, StormReflEncodeJson(UserMessageBase{"leave_game"}));
 
   m_InGame = false;
   m_GameId = 0;

@@ -88,7 +88,26 @@ void GameInstanceStateLoading::HandlePlayerLoaded(std::size_t client_index, cons
 
 bool GameInstanceStateLoading::CheckFinishedLoading() const
 {
-  return m_TimeToWaitForLoad <= 0;
+  int team_counts[kMaxTeams] = {};
+  for (auto elem : m_State.m_Players)
+  {
+    if (elem.second.m_Team != -1 && elem.second.m_Loaded)
+    {
+      team_counts[elem.second.m_Team]++;
+    }
+  }
+
+  bool all_teams_maxed = true;
+  for(int team = 0; team < kMaxTeams; ++team)
+  {
+    if(team_counts[team] < m_StateData.GetTeamInfo().m_MaxTeamSizes[team])
+    {
+      all_teams_maxed = false;
+      break;
+    }
+  }
+
+  return all_teams_maxed || m_TimeToWaitForLoad <= 0;
 }
 
 void GameInstanceStateLoading::AddPlayer(std::size_t client_index, int team)

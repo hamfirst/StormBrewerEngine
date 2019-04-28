@@ -27,7 +27,7 @@ function InitNameSelectMenu()
     print("repick ")
     local repick = PushMenuElement(Label:new())
     repick.x = -130
-    repick.y = 80
+    repick.y = -70
     repick.height = 70
     repick.width = 260
     repick.text = "That user name is already taken"

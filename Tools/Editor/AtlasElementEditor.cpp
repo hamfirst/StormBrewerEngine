@@ -177,14 +177,14 @@ Optional<AtlasDefElementPosition> AtlasElementEditor::GetPreviewData()
       data.m_EndOffsetX = 0;
     }
 
-    if(data.m_StartOffsetY < 0)
-    {
-      data.m_StartOffsetY = 0;
-    }
-
     if(data.m_EndOffsetY < 0)
     {
       data.m_EndOffsetY = 0;
+    }
+
+    if(data.m_StartOffsetY < 0)
+    {
+      data.m_StartOffsetY = 0;
     }
   }
 
@@ -206,13 +206,13 @@ void AtlasElementEditor::VisitPoints(Visitor && visitor, NotNullPtr<AtlasDefElem
   {
     bool allow_x = elem_ptr->m_Type == AtlasDefType::k3SliceHorizontal || elem_ptr->m_Type == AtlasDefType::k9Slice;
     bool allow_y = elem_ptr->m_Type == AtlasDefType::k3SliceVertical || elem_ptr->m_Type == AtlasDefType::k9Slice;
-    visitor(4, ProxyPoint{ elem_ptr->m_StartOffsetX, elem_ptr->m_StartOffsetY,
+    visitor(4, ProxyPoint{ elem_ptr->m_StartOffsetX, elem_ptr->m_EndOffsetY,
                            elem_ptr->m_StartX, elem_ptr->m_StartY, allow_x, allow_y, false, false });
-    visitor(5, ProxyPoint{ elem_ptr->m_EndOffsetX, elem_ptr->m_StartOffsetY,
+    visitor(5, ProxyPoint{ elem_ptr->m_EndOffsetX, elem_ptr->m_EndOffsetY,
                            elem_ptr->m_EndX, elem_ptr->m_StartY, allow_x, allow_y, true, false });
-    visitor(6, ProxyPoint{ elem_ptr->m_StartOffsetX, elem_ptr->m_EndOffsetY,
+    visitor(6, ProxyPoint{ elem_ptr->m_StartOffsetX, elem_ptr->m_StartOffsetY,
                            elem_ptr->m_StartX, elem_ptr->m_EndY, allow_x, allow_y, false, true });
-    visitor(7, ProxyPoint{ elem_ptr->m_EndOffsetX, elem_ptr->m_EndOffsetY,
+    visitor(7, ProxyPoint{ elem_ptr->m_EndOffsetX, elem_ptr->m_StartOffsetY,
                            elem_ptr->m_EndX, elem_ptr->m_EndY, allow_x, allow_y, true, true });
   }
 }
@@ -228,8 +228,8 @@ void AtlasElementEditor::VisitEdges(Visitor && visitor, NotNullPtr<AtlasDefEleme
   if(elem_ptr->m_Type == AtlasDefType::k3SliceVertical ||
      elem_ptr->m_Type == AtlasDefType::k9Slice)
   {
-    visitor(4, elem_ptr->m_StartX, elem_ptr->m_StartY + elem_ptr->m_StartOffsetY, elem_ptr->m_EndX, elem_ptr->m_StartY + elem_ptr->m_StartOffsetY);
-    visitor(5, elem_ptr->m_StartX, elem_ptr->m_EndY - elem_ptr->m_EndOffsetY, elem_ptr->m_EndX, elem_ptr->m_EndY - elem_ptr->m_EndOffsetY);
+    visitor(4, elem_ptr->m_StartX, elem_ptr->m_StartY + elem_ptr->m_EndOffsetY, elem_ptr->m_EndX, elem_ptr->m_StartY + elem_ptr->m_EndOffsetY);
+    visitor(5, elem_ptr->m_StartX, elem_ptr->m_EndY - elem_ptr->m_StartOffsetY, elem_ptr->m_EndX, elem_ptr->m_EndY - elem_ptr->m_StartOffsetY);
   }
 
   if(elem_ptr->m_Type == AtlasDefType::k3SliceHorizontal ||

@@ -106,7 +106,7 @@ function Button:Draw()
       text_y = text_y - height / 2 - 5
   end
 
-  ui:DrawTextScaled(self.font, self.text, self.width / 2 - width / 2, text_y + self.text_offset_y,
+  ui:DrawTextScaled(self.font, self.text, self.width / 2 - width / 2, text_y + self.text_offset_y + 1,
                             r, g, b, alpha, kNormal, self.scale)
 
 end

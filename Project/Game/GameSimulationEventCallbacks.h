@@ -8,6 +8,7 @@ class GameSimulationEventCallbacks
 {
 public:
   virtual void HandleWinGame(int winning_team) {};
+  virtual void HandleNoLongerAcceptingPlayers() {};
 
 #if NET_MODE == NET_MODE_TURN_BASED_DETERMINISTIC
   virtual void HandleTimeExpired() {};

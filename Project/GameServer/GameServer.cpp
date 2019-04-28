@@ -27,7 +27,16 @@ GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manag
 #endif
   m_GameInstanceManager(*this, stage_manager, lobby_connection)
 {
-
+  m_LobbyConnection->SetDisconnectCallback([&](uint64_t user_id, uint64_t game_id)
+  {
+    VisitClients([&](NotNullPtr<GameClientConnection> client_ptr)
+    {
+      if(client_ptr->m_UserId == user_id)
+      {
+        client_ptr->ForceDisconnect();
+      }
+    });
+  });
 }
 
 GameServer::~GameServer()
@@ -42,7 +51,22 @@ void GameServer::Update()
   if(m_LobbyConnection)
   {
     m_LobbyConnection->Update();
+    
+    if(m_LobbyConnected == false && m_LobbyConnection->IsConnected())
+    {
+      m_LobbyConnected = true;
+    }
+    
+    if(m_LobbyConnected == true && m_LobbyConnection->IsConnected() == false)
+    {
+      m_WantsToQuit = true;
+    }
   }
+}
+
+bool GameServer::WantsToQuit()
+{
+  return m_WantsToQuit;
 }
 
 int GameServer::ValidateUser(NotNullPtr<GameClientConnection> connection, const JoinServerMessage & request)

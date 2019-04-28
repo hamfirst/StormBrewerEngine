@@ -252,6 +252,32 @@ void UIManager::Render(RenderState & render_state, const Optional<RenderVec2> & 
   RemoveDeadClickables();
 }
 
+void UIManager::RenderSpecial(czstr function_name, RenderState & render_state, const Optional<RenderVec2> & override_script_render_size)
+{
+  UpdateScriptGlobals(override_script_render_size ? override_script_render_size.Value() : render_state.GetRenderSize());
+
+  auto & shader = g_ShaderManager.GetDefaultScreenSpaceShader();
+  auto render_size = (RenderVec2)render_state.GetRenderSize();
+
+  render_state.BindShader(shader);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ScreenSize"), render_state.GetFullRenderDimensions());
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Color"), Color(255, 255, 255, 255));
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Matrix"), 1.0f, 0.0f, 0.0f, 1.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), 0.0f, 0.0f);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Texture"), 0);
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Bounds"), RenderVec4{ -1, -1, 1, 1 });
+  shader.SetUniform(COMPILE_TIME_CRC32_STR("u_ColorMatrix"), Mat4f());
+
+  auto active_area = Box::FromFrameCenterAndSize({}, render_size);
+
+  m_ScriptInterface->BeginRendering(&render_state);
+  m_ScriptInterface->SetDrawArea(Box{}, active_area, false);
+  m_ScriptState->Call(function_name, {});
+  m_ScriptInterface->EndRendering();
+
+  RemoveDeadClickables();
+}
+
 void UIManager::Pause()
 {
   m_Paused = true;
@@ -538,7 +564,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
 
     if (elem->m_State == (int)UIClickableState::kPressed && elem->WantsInput)
     {
-      if (cur_pressed_clickable)
+      if (cur_pressed_clickable || elem->m_ActiveArea.IsValid() == false)
       {
         elem->OnStateChange(elem->m_State, (int)UIClickableState::kActive);
         elem->m_State = (int)UIClickableState::kActive;
@@ -720,7 +746,7 @@ void UIManager::ProcessActiveAreas(float delta_time, InputState & input_state, R
   }
 
   auto active_clickable = cur_pressed_clickable ? cur_pressed_clickable : cur_hover_clickable;
-  if(active_clickable)
+  if(active_clickable && active_clickable->m_ActiveArea)
   {
     auto relative_pos = GetRelativePos(active_clickable);
     if(active_clickable != prev_active_clickable)

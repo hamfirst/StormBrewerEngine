@@ -116,6 +116,7 @@ struct Game
   void STORM_REFL_FUNC HandleUserDisconnected(DDSKey user_key);
   void STORM_REFL_FUNC HandleGameComplete();
   void STORM_REFL_FUNC HandleServerDisconnected();
+  void STORM_REFL_FUNC HandleAcceptingNewPlayers(bool accepting_new_players);
 
   void STORM_REFL_FUNC AdminDestroyGame();
   void STORM_REFL_FUNC MatchmakerDestroyGame();
@@ -134,8 +135,8 @@ private:
 
 
   int FindBestZoneForPlayers();
-  std::vector<int> GetTeamCounts();
-  std::vector<int> GetMaxTeamCounts();
+  std::vector<int> GetTeamCounts() const;
+  std::vector<int> GetMaxTeamCounts() const;
   void ValidateTeams();
   void UpdateTeamSizes();
   bool FindUserInGeneratedGame(DDSKey user_id, bool remove_if_found, int & out_team);
@@ -161,6 +162,8 @@ public:
   int m_ZoneIndex = -1;
   std::string m_ServerIp;
   int m_ServerPort;
+  
+  bool m_AcceptingNewPlayers = true;
 
 private:
   DDSNodeInterface m_Interface;

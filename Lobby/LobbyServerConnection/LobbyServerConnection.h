@@ -58,6 +58,7 @@ public:
   void UpdateScore(uint64_t game_id, const std::string & score);
 
   void NotifyPlayerLeft(uint64_t user_id, uint64_t game_id);
+  void NotifyAcceptingPlayers(uint64_t game_id, bool accepting);
   void SendStats(uint64_t account_id, GameSimulationStats & stats, const GameInitSettings & settings);
   void SendGameComplete(uint64_t game_id, bool complete, const std::vector<std::pair<uint64_t, GameSimulationStats>> & players, const std::vector<int> & team_scores);
 

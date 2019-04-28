@@ -34,6 +34,7 @@ public:
   ~GameServer();
 
   void Update() override;
+  bool WantsToQuit();
 
   int ValidateUser(NotNullPtr<GameClientConnection> connection, const JoinServerMessage & request);
   void CancelUserValidation(int validation_id);
@@ -50,6 +51,8 @@ private:
 
   GameStageManager & m_StageManager;
   NullOptPtr<LobbyServerConnection> m_LobbyConnection;
+  bool m_LobbyConnected = false;
+  bool m_WantsToQuit = false;
 
   GameNetServerBackend m_Backend;
   GameInstanceManager m_GameInstanceManager;

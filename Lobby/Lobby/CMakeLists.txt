@@ -80,7 +80,6 @@ set(GENERIC_HEADER_Lobby
             Matchmaker.refl.h
             Matchmaker.refl.meta.h
             NodeState.h
-            ProjectSettings.h
             Rewards.refl.h
             Rewards.refl.meta.h
             ServerManager.refl.h

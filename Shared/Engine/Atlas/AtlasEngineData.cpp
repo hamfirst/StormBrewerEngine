@@ -144,14 +144,14 @@ void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const 
     // Top left
     quad.m_Position.m_Start = Vector2{position.m_Start.x, position.m_End.y - elem_def.m_EndOffsetY};
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_EndOffsetY};
-    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX, elem_def.m_EndY - elem_def.m_EndOffsetY};
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_StartOffsetX, elem_def.m_EndOffsetY};
     buffer_builder.AddQuad(quad);
 
     // Bottom right
     quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, position.m_Start.y};
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_StartOffsetY};
-    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX, elem_def.m_StartY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_EndX - elem_def.m_EndOffsetX, elem_def.m_StartY};
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_StartOffsetY};
     buffer_builder.AddQuad(quad);
 
@@ -159,8 +159,8 @@ void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const 
     quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
                                       position.m_End.y - elem_def.m_EndOffsetY};
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_EndOffsetY};
-    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
-                                       position.m_End.y - elem_def.m_EndOffsetY};
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_EndX - elem_def.m_EndOffsetX,
+                                       elem_def.m_EndY - elem_def.m_EndOffsetY};
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, elem_def.m_EndOffsetY};
     buffer_builder.AddQuad(quad);
 
@@ -191,7 +191,7 @@ void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const 
     quad.m_Position.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
                                       position.m_Start.y + elem_def.m_StartOffsetY};
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{elem_def.m_EndOffsetX, repeat_height};
-    quad.m_TexCoords.m_Start = Vector2{position.m_End.x - elem_def.m_EndOffsetX,
+    quad.m_TexCoords.m_Start = Vector2{elem_def.m_EndX - elem_def.m_EndOffsetX,
                                        elem_def.m_StartY + elem_def.m_StartOffsetY};
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{elem_def.m_EndOffsetX, repeat_texture_height};
     if (elem_def.m_RepeatVertical)
@@ -223,7 +223,7 @@ void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const 
                                       position.m_End.y - elem_def.m_EndOffsetY};
     quad.m_Position.m_End = quad.m_Position.m_Start + Vector2{repeat_width, elem_def.m_EndOffsetY};
     quad.m_TexCoords.m_Start = Vector2{elem_def.m_StartX + elem_def.m_StartOffsetX,
-                                       position.m_End.y - elem_def.m_EndOffsetY};
+                                       elem_def.m_EndY - elem_def.m_EndOffsetY};
     quad.m_TexCoords.m_End = quad.m_TexCoords.m_Start + Vector2{repeat_texture_width, elem_def.m_EndOffsetY};
     if (elem_def.m_RepeatHorizontal)
     {
@@ -375,7 +375,7 @@ void AtlasEngineData::SetupRender(RenderState & render_state, czstr name, const 
     }
   }
 
-  buffer_builder.FillVertexBufferInvertY(m_VertexBuffer, pos);
+  buffer_builder.FillVertexBuffer(m_VertexBuffer);
   render_state.BindTexture(*texture);
   render_state.BindVertexBuffer(m_VertexBuffer);
 }

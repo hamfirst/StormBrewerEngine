@@ -31,7 +31,7 @@ public:
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
   void FillVertexBufferInvertY(VertexBuffer & vertex_buffer, const Box & bounds);
 
-private:
+public:
 
   std::vector<QuadVertexBuilderInfo> m_Quads;
 };
@@ -60,7 +60,7 @@ public:
   VertexBuffer CreateVertexBuffer();
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
 
-private:
+public:
 
   std::vector<LineVertexBuilderInfo> m_Lines;
 };
@@ -86,7 +86,7 @@ public:
 
   void FillVertexBuffer(VertexBuffer & vertex_buffer);
 
-private:
+public:
 
   std::vector<PointVertexBuilderInfo> m_Points;
 };

@@ -62,8 +62,8 @@ public:
   const GameInfoTeamSizes & GetTeamInfo() const;
   void ChangeInitSettings(const GameInitSettings & init_settings);
 
+  void NotifyLobbyNoLongerAcceptingPlayers();
   const GameStage & GetStage() const;
-  uint32_t GetPrivateRoomId() const;
 
 protected:
 

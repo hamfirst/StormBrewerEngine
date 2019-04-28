@@ -42,6 +42,7 @@ enum STORM_REFL_ENUM class GameServerMessageType
   kUserStats,
   kRelocate,
   kChangeCreator,
+  kAcceptingNewPlayers,
   kGameResult,
 };
 
@@ -266,6 +267,14 @@ struct GameServerChangeCreator
   std::string m_Creator;
 };
 
+
+struct GameServerAcceptingPlayers
+{
+  STORM_REFL;
+  static const GameServerMessageType Type = GameServerMessageType::kAcceptingNewPlayers;
+  uint64_t m_GameId;
+  bool m_AcceptingPlayers;
+};
 
 struct GameServerResultPlayer
 {

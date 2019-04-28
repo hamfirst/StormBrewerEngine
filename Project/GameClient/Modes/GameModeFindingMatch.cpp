@@ -10,8 +10,10 @@
 
 GLOBAL_ASSET(UIResourcePtr, "./UIs/FindingMatch.ui", g_FindingMatchMenu);
 
-GameModeFindingMatch::GameModeFindingMatch(GameContainer & game) :
-        GameModeOnlineBase(game)
+GameModeFindingMatch::GameModeFindingMatch(GameContainer & game, bool ranked) :
+        GameModeOnlineBase(game),
+        m_Ranked(ranked),
+        m_StartTime(GetTimeSeconds())
 {
   auto & container = GetContainer();
   auto & lobby_connection = container.GetLobbyClient();
@@ -111,6 +113,22 @@ void GameModeFindingMatch::Update()
   {
     container.SwitchMode<GameModeOnlineStaging>();
     return;
+  }
+
+  if(m_Ranked == false)
+  {
+    auto timer = kMaxTimeInMatchmaker - (int)(GetTimeSeconds() - m_StartTime);
+    auto minutes = timer / 60;
+    auto seconds = timer % 60;
+
+    char timer_str[20];
+    snprintf(timer_str, sizeof(timer_str), "%d:%02d", minutes, seconds);
+
+    container.GetUIManager()->SetGlobal("time_to_wait", ScriptValue(std::string(timer_str)));
+  }
+  else
+  {
+    container.GetUIManager()->SetGlobal("time_to_wait", ScriptValue(std::string("")));
   }
 
   auto & render_state = container.GetRenderState();

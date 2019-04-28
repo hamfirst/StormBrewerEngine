@@ -93,7 +93,25 @@ void GameServerConnection::GotMessage(GameServerMessageType cmd, std::string dat
     }
     else if (cmd == GameServerMessageType::kUserDisconnected)
     {
+      GameServerUserDisconnected msg;
+      if (StormReflParseJson(msg, data.data()) == false)
+      {
+        ForceDisconnect();
+        return;
+      }
 
+      m_Interface.Call(&Game::HandleUserDisconnected, msg.m_GameId, msg.m_UserId);
+    }
+    else if (cmd == GameServerMessageType::kAcceptingNewPlayers)
+    {
+      GameServerAcceptingPlayers msg;
+      if (StormReflParseJson(msg, data.data()) == false)
+      {
+        ForceDisconnect();
+        return;
+      }
+      
+      m_Interface.Call(&Game::HandleAcceptingNewPlayers, msg.m_GameId, msg.m_AcceptingPlayers);
     }
     else if (cmd == GameServerMessageType::kGameScore)
     {

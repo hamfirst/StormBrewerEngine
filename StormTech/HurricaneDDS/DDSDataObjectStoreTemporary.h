@@ -451,11 +451,6 @@ public:
           break;
         }
       }
-
-      if (found_sub == false)
-      {
-        DDSLog::LogError("Could not find subscription to destroy");
-      }
     }
     break;
     case DDSServerToServerMessageType::kSubscriptionDeleted:

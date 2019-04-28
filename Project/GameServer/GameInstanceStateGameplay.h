@@ -50,6 +50,7 @@ public:
 
   void HandlePlayerLoaded(std::size_t client_index, const FinishLoadingMessage & msg) override;
   void HandleTextChat(std::size_t client_index, const SendTextChatMessage & msg) override;
+  void HandleNoLongerAcceptingPlayers() override;
 
 #ifdef NET_USE_LOADOUT
   void HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg) override;

@@ -305,6 +305,15 @@ void Game::Reset()
 #endif
   }
 
+  if(m_GameInfo.m_Type == LobbyGameType::kCasual)
+  {
+    if (m_AcceptingNewPlayers == false)
+    {
+      m_AcceptingNewPlayers = true;
+      m_Interface.CallShared(&Matchmaker::NotifyGameAcceptingPlayers, m_Interface.GetLocalKey(), m_ZoneIndex, true);
+    }
+  }
+
   m_GameInfo.m_Countdown = 0;
   m_GameInfo.m_State = LobbyGameState::kWaiting;
 
@@ -418,6 +427,14 @@ bool Game::AllPlayersReady() const
     }
   }
 
+  auto team_sizes = GetTeamCounts();
+  for(int team = 0; team < kMaxTeams; ++team)
+  {
+    if(team_sizes[team] != m_GameInfo.m_TeamSizes->m_MaxTeamSizes[team])
+    {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -737,11 +754,11 @@ void Game::HandleUserDisconnected(DDSKey user_key)
   {
     if (user.second.m_UserKey == user_key)
     {
-      m_GameInfo.m_Users.RemoveAt(user.first);
-      m_UserPrivateInfo.erase(user_key);
-
       bool allow_reconnect = m_GameInfo.m_Type == LobbyGameType::kCompetitive;
       m_Interface.Call(&User::NotifyLeftGame, user_key, m_Interface.GetLocalKey(), m_GameRandomId, allow_reconnect);
+
+      RemoveUser(user_key);
+      return;
     }
   }
 }
@@ -770,6 +787,18 @@ void Game::HandleServerDisconnected()
   }
 
   DDSLog::LogInfo("Server disconnected");
+}
+
+void Game::HandleAcceptingNewPlayers(bool accepting_new_players)
+{
+  if(m_GameInfo.m_Type == LobbyGameType::kCasual)
+  {
+    if (m_AcceptingNewPlayers != accepting_new_players)
+    {
+      m_AcceptingNewPlayers = accepting_new_players;
+      m_Interface.CallShared(&Matchmaker::NotifyGameAcceptingPlayers, m_Interface.GetLocalKey(), accepting_new_players, m_ZoneIndex);
+    }
+  }
 }
 
 void Game::AdminDestroyGame()
@@ -882,7 +911,8 @@ void Game::RemoveUser(DDSKey user_key)
     m_Interface.Call(&GameServerConnection::RemoveUserFromGame, m_AssignedServer, m_Interface.GetLocalKey(), user_key);
   }
 
-  if(m_GameInfo.m_Type == LobbyGameType::kPrivate && m_GameInfo.m_Users.HighestIndex() == -1)
+  // Competitive and causal games are destroyed by the matchmaker
+  if(m_GameInfo.m_Users.HighestIndex() == -1 && m_GameInfo.m_Type == LobbyGameType::kPrivate)
   {
     Cleanup();
   }
@@ -1017,7 +1047,7 @@ int Game::FindBestZoneForPlayers()
   return best_zone;
 }
 
-std::vector<int> Game::GetTeamCounts()
+std::vector<int> Game::GetTeamCounts() const
 {
   std::vector<int> team_counts;
   team_counts.resize(kMaxTeams);
@@ -1032,7 +1062,7 @@ std::vector<int> Game::GetTeamCounts()
   return team_counts;
 }
 
-std::vector<int> Game::GetMaxTeamCounts()
+std::vector<int> Game::GetMaxTeamCounts() const
 {
   std::vector<int> team_counts;
   team_counts.resize(kMaxTeams);

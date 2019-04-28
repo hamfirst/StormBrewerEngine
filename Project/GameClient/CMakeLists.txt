@@ -41,6 +41,7 @@ set(GENERIC_SRC_GameClient
             Modes/GameModeConnectingGame.cpp
             Modes/GameModeConnectingLobby.cpp
             Modes/GameModeEndGame.cpp
+            Modes/GameModeFindingMatch.cpp
             Modes/GameModeJoinPrivateGame.cpp
             Modes/GameModeLoadingGlobal.cpp
             Modes/GameModeLocalMultiplayer.cpp
@@ -52,12 +53,11 @@ set(GENERIC_SRC_GameClient
             Modes/GameModeOnlineBase.cpp
             Modes/GameModeOnlineGameplay.cpp
             Modes/GameModeOnlineStaging.cpp
+            Modes/GameModePlayOnline.cpp
+            Modes/GameModePlaylistMenu.cpp
             Modes/GameModeSinglePlayerBots.cpp
             Modes/GameModeStagingBase.cpp
             Modes/GameModeTutorial.cpp
-            Modes/GameModePlayOnline.cpp
-            Modes/GameModePlaylistMenu.cpp
-            Modes/GameModeFindingMatch.cpp
             #CPP_PLACEHOLDER
             )
 
@@ -87,6 +87,8 @@ set(GENERIC_HEADER_GameClient
             GameClientSaveFileData.refl.h
             GameClientSaveFileData.refl.meta.h
             GameClientSystems.h
+            GameClientUIData.refl.h
+            GameClientUIData.refl.meta.h
             GameClientUIManager.h
             GameContainer.h
             GameNetworkClient.h
@@ -96,6 +98,7 @@ set(GENERIC_HEADER_GameClient
             Modes/GameModeConnectingGame.h
             Modes/GameModeConnectingLobby.h
             Modes/GameModeEndGame.h
+            Modes/GameModeFindingMatch.h
             Modes/GameModeJoinPrivateGame.h
             Modes/GameModeLoadingGlobal.h
             Modes/GameModeLocalMultiplayer.h
@@ -107,12 +110,11 @@ set(GENERIC_HEADER_GameClient
             Modes/GameModeOnlineBase.h
             Modes/GameModeOnlineGameplay.h
             Modes/GameModeOnlineStaging.h
+            Modes/GameModePlayOnline.h
+            Modes/GameModePlaylistMenu.h
             Modes/GameModeSinglePlayerBots.h
             Modes/GameModeStagingBase.h
             Modes/GameModeTutorial.h
-            Modes/GameModePlayOnline.h
-            Modes/GameModePlaylistMenu.h
-            Modes/GameModeFindingMatch.h
             #HEADER_PLACEHOLDER
             )
 
@@ -124,6 +126,7 @@ set(GENERIC_REFL_GameClient
             EffectLayers/CollisionDrawer.refl.h
             GameClientController.refl.h
             GameClientSaveFileData.refl.h
+            GameClientUIData.refl.h
             #REFL_PLACEHOLDER
             )
 

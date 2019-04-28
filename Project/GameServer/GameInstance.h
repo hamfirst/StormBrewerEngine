@@ -66,8 +66,11 @@ public:
 
 #endif
 
+  uint64_t GetGameId() const { return m_GameId; }
+
   std::size_t GetNumPlayers();
   std::vector<GameClientConnection *> GetConnectedPlayers() const;
+
 
 protected:
   friend class GameInstanceStateData;

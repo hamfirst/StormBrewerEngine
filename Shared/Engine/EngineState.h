@@ -35,7 +35,9 @@ public:
   NotNullPtr<Entity> CreateEntity(NotNullPtr<EntityResource> resource,
           NullOptPtr<const ServerObject> server_object = nullptr,
           NullOptPtr<const ServerObjectManager> obj_manager = nullptr, bool activate = true);
+
   void DestroyAllEntities();
+  void DestroyAllGameplayObjects();
 
   std::size_t LoadMap(NotNullPtr<MapResource> map);
   NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);

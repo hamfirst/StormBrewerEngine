@@ -35,7 +35,13 @@ GameModeSinglePlayerBots::GameModeSinglePlayerBots(GameContainer & game, const G
 
 GameModeSinglePlayerBots::~GameModeSinglePlayerBots()
 {
+  auto & container = GetContainer();
+  container.ResetAllGameplaySystems();
+
+  container.SetInstanceData(nullptr);
+  container.SetClientSystems(nullptr);
   m_ClientSystems.reset();
+  m_InstanceContainer.reset();
 }
 
 void GameModeSinglePlayerBots::Initialize()
@@ -62,7 +68,7 @@ void GameModeSinglePlayerBots::OnAssetsLoaded()
 #endif
 
   m_InstanceContainer->GetGameController().ConstructPlayer(0, game_logic, "Player", 0);
-  //m_InstanceContainer->GetGameController().FillWithBots(game_logic, GetRandomNumber());
+  m_InstanceContainer->GetGameController().FillWithBots(game_logic, GetRandomNumber());
   m_InstanceContainer->GetGameController().StartGame(game_logic);
   m_InstanceContainer->GetClientLocalData(0).m_PlayerIndex = 0;
 
@@ -232,17 +238,6 @@ void GameModeSinglePlayerBots::Render()
     auto & container = GetContainer();
     container.SwitchMode<GameModeMainMenu>();
   }
-
-  //RenderProfilerData(render_state);
-
-  m_FPSClock.Update();
-  std::string fps_data = std::to_string(m_FPSClock.GetFrameCount());
-  g_TextManager.SetTextPos(Vector2f(40, 40) - render_state.GetRenderSize() / 2.0f);
-  g_TextManager.SetPrimaryColor();
-  g_TextManager.SetShadowColor();
-  g_TextManager.SetTextMode(TextRenderMode::kOutlined);
-  g_TextManager.ClearTextBounds();
-  g_TextManager.RenderText(fps_data.data(), -1, 1, render_state);
 }
 
 bool GameModeSinglePlayerBots::IsLoaded()

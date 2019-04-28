@@ -12,6 +12,8 @@
 
 #include "Game/GameNetworkData.refl.h"
 
+static const int kMaxTimeInMatchmaker = 60;
+
 struct WelcomeInfoTab
 {
   STORM_DATA_DEFAULT_CONSTRUCTION(WelcomeInfoTab);

@@ -7,7 +7,6 @@
 #include "Engine/Camera/Camera.h"
 
 #include "Foundation/Time/FrameClock.h"
-#include "Foundation/Time/FPSClock.h"
 
 class GameModeSinglePlayerBots : public GameMode, public GameClientEventSender
 {
@@ -34,7 +33,6 @@ private:
   Sequencer m_Sequencer;
 
   FrameClock m_FrameClock;
-  FPSClock m_FPSClock;
   bool m_ShowTutorial;
 
 };

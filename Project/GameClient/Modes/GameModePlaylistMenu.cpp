@@ -113,7 +113,7 @@ void GameModePlaylistMenu::Search(int playlist_mask)
 {
   auto & container = GetContainer();
   container.GetLobbyClient().SendJoinMatchmaker(playlist_mask, m_Competitive);
-  container.SwitchMode<GameModeFindingMatch>();
+  container.SwitchMode<GameModeFindingMatch>(m_Competitive);
 }
 
 void GameModePlaylistMenu::Back()

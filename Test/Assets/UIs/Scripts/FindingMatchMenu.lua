@@ -1,4 +1,6 @@
 
+time_to_wait = "test"
+
 function InitFindingMatchMenu()
 
   local time_delayed = 0
@@ -12,6 +14,19 @@ function InitFindingMatchMenu()
   label.alpha = 1
   label.text = "Searching For Match"
   label.centered = false
+
+  local timer = PushMenuElement(Label:new())
+  timer.x = -100
+  timer.y = -10
+  timer.width = 200
+  timer.height = 50
+  timer.font = font
+  timer.alpha = 1
+  timer.centered = true
+
+  function timer:Update()
+    timer.text = time_to_wait
+  end
 
   local cancel = PushMenuElement(Button:new())
   cancel.x = screen_end_x -130

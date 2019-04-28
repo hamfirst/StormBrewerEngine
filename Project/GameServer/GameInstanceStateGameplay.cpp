@@ -375,6 +375,11 @@ void GameInstanceStateGameplay::HandleTextChat(std::size_t client_index, const S
   }
 }
 
+void GameInstanceStateGameplay::HandleNoLongerAcceptingPlayers()
+{
+  m_StateData.NotifyLobbyNoLongerAcceptingPlayers();
+}
+
 #ifdef NET_USE_LOADOUT
 void GameInstanceStateGameplay::HandleChangeLoadout(std::size_t client_index, const ChangeLoadoutMessage & msg)
 {

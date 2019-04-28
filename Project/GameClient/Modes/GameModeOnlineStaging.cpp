@@ -127,6 +127,9 @@ int GameModeOnlineStaging::GetTeamCount()
 
 int GameModeOnlineStaging::GetPlayerCount(int team_index)
 {
+#ifdef NET_FILL_WITH_BOTS
+  return m_GameInfo.m_TeamSizes->m_MaxTeamSizes[team_index];
+#else
   int team_count = 0;
   for(auto elem : m_GameInfo.m_Users)
   {
@@ -137,6 +140,7 @@ int GameModeOnlineStaging::GetPlayerCount(int team_index)
   }
 
   return team_count;
+#endif
 }
 
 int GameModeOnlineStaging::GetPlayerMaxCount(int team_index)
@@ -152,7 +156,7 @@ int GameModeOnlineStaging::GetPlayerId(int team, int player_index)
 std::string GameModeOnlineStaging::GetPlayerName(int player_id)
 {
   auto member = FindMember(player_id);
-  return member ? member->m_Name.c_str() : "";
+  return member ? member->m_Name.c_str() : "Bot";
 }
 
 int GameModeOnlineStaging::GetPlayerState(int player_id)
@@ -175,7 +179,7 @@ bool GameModeOnlineStaging::GetPlayerReady(int player_id)
 {
 #if defined(NET_USE_READY) || defined(NET_USE_READY_PRIVATE_GAME)
   auto member = FindMember(player_id);
-  return member ? (bool)member->m_Ready : false;
+  return member ? (bool)member->m_Ready : true;
 #else
   return false;
 #endif

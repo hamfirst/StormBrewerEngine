@@ -193,6 +193,7 @@ void ServerManager::Update()
   CheckForTimedOutServers();
   CheckForAssignableGames();
   CheckForNewServersNeeded();
+  CheckForExtraneousServers();
 }
 
 void ServerManager::CreateServerInstance(int zone_index)
@@ -685,7 +686,7 @@ void ServerManager::CreateDebugServer()
   pending.m_ZoneIndex = -1;
   m_PendingServers.emplace_back(pending);
 
-  static std::string command[] =
+  std::string command[] =
   {
     "--external_ip=127.0.0.1",
     "--external_port=" + std::to_string(DEFAULT_GAME_PORT + server_id),
@@ -707,6 +708,11 @@ void ServerManager::CreateDebugServer()
     for(int index = 0; index < kNumCommandArgs; ++index)
     {
       args[index + 1] = command[index].data();
+    }
+
+    for(int index = 0; index < kNumCommandArgs + 1; ++index)
+    {
+      printf("%s ", args[index]);
     }
 
     args[kNumCommandArgs + 1] = nullptr;
@@ -755,4 +761,5 @@ void ServerManager::StopDebugServer(std::size_t server_id)
 #endif
 
   m_DebugServers.erase(itr);
+  m_ServerIdAllocator.Release(server_id);
 }

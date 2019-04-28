@@ -114,6 +114,11 @@ void GameContainer::SetClientSystems(NullOptPtr<GameClientSystems> client_system
   m_ClientSystems = client_systems;
 }
 
+void GameContainer::ResetAllGameplaySystems()
+{
+  m_EngineState.DestroyAllGameplayObjects();
+}
+
 RenderState & GameContainer::GetRenderState()
 {
   return m_RenderState;

@@ -3,6 +3,7 @@ audio_on_texture = loader:LoadTexture("./Images/UI/MuteOff.png")
 audio_off_texture = loader:LoadTexture("./Images/UI/Mute.png")
 
 AudioControl = Elem:construct()
+AudioControl.alpha = 1.0
 
 function AudioControl:setup(o)
   Elem:setup(o)
@@ -19,7 +20,7 @@ function AudioControl:Draw()
   end
 
   self.width, self.height = ui:GetTextureSize(texture_id)
-  ui:DrawTextureTint(texture_id, 0, 0, 1, 1, 1, 0.4)
+  ui:DrawTextureTint(texture_id, 0, 0, 1, 1, 1, self.alpha * 0.4)
 end
 
 function AudioControl:Clicked()

@@ -40,7 +40,13 @@ GameModeLocalMultiplayer::GameModeLocalMultiplayer(GameContainer & game, const s
 
 GameModeLocalMultiplayer::~GameModeLocalMultiplayer()
 {
+  auto & container = GetContainer();
+  container.ResetAllGameplaySystems();
+
+  container.SetInstanceData(nullptr);
+  container.SetClientSystems(nullptr);
   m_ClientSystems.reset();
+  m_InstanceContainer.reset();
 }
 
 void GameModeLocalMultiplayer::Initialize()

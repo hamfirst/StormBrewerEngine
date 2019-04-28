@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #else
 
-  int multiplier = 1;
+  int multiplier = 3;
 #endif
   for (int index = 0; index < argc; index++)
   {

@@ -4,8 +4,8 @@
 
 class GameContainer;
 
-static const int kDefaultResolutionWidth = 840;
-static const int kDefaultResolutionHeight = 480;
+static const int kDefaultResolutionWidth = 420;
+static const int kDefaultResolutionHeight = 240;
 
 
 struct CameraShakeInfo
