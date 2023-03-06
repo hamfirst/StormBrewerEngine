@@ -151,7 +151,7 @@ public:
           auto name = base.getBaseTypeIdentifier()->getName();
           auto qual_name = clang::TypeName::getFullyQualifiedName(base, m_ASTContext, *g_PrintingPolicy);
 
-          class_data.m_BaseClasses.emplace_back(ReflectionDataBase{name, qual_name});
+          class_data.m_BaseClasses.emplace_back(ReflectionDataBase{name.str(), qual_name});
 
           auto record_type = base->getAs<RecordType>();
           if (record_type)
@@ -357,7 +357,7 @@ public:
             continue;
           }
 
-          ReflectedFunc func = { method->getName() };
+          ReflectedFunc func = { method->getName().str() };
           auto func_qual_type = m_ASTContext.getMemberPointerType(method->getType(), method->getParent()->getTypeForDecl());
 
           func.m_FullSignature = clang::TypeName::getFullyQualifiedName(func_qual_type, m_ASTContext, *g_PrintingPolicy);
@@ -365,7 +365,7 @@ public:
 
           for (auto param : method->parameters())
           {
-            func.m_Params.emplace_back(ReflectedParam{ param->getName(), clang::TypeName::getFullyQualifiedName(param->getType(), m_ASTContext, *g_PrintingPolicy) });
+            func.m_Params.emplace_back(ReflectedParam{ param->getName().str(), clang::TypeName::getFullyQualifiedName(param->getType(), m_ASTContext, *g_PrintingPolicy) });
           }
 
           class_data.m_Funcs.emplace_back(std::move(func));
@@ -425,7 +425,7 @@ public:
 
     for (auto && enum_elem : decl->enumerators())
     {
-      data.m_Elems.emplace_back(ReflectedEnumElem{ enum_elem->getName(), enum_elem->getQualifiedNameAsString() });
+      data.m_Elems.emplace_back(ReflectedEnumElem{ enum_elem->getName().str(), enum_elem->getQualifiedNameAsString() });
     }
 
     m_Enums.push_back(data);
@@ -490,7 +490,7 @@ public:
     StringRef file_name,
     bool is_angled,
     CharSourceRange filename_range,
-    const FileEntry *file,
+    OptionalFileEntryRef file,
     StringRef search_path,
     StringRef relative_path,
     const clang::Module *imported,
@@ -503,9 +503,10 @@ public:
       return;
     }
 
-    if (g_DependencyDir.length() > 0 && file != nullptr)
+    if (g_DependencyDir.length() > 0 && file.has_value())
     {
-      auto file_path = file->tryGetRealPathName();
+      auto& file_ref = *file;
+      auto file_path = file_ref.getFileEntry().tryGetRealPathName();
       if (file_path.size() > 0)
       {
         m_Dependencies.emplace_back(file_path);
@@ -515,7 +516,7 @@ public:
     auto file_entry = m_SourceManager.getFileEntryForID(full_souce_loc.getFileID());
     if (m_SourceFile == file_entry->getName())
     {
-      m_Includes.push_back(relative_path);
+      m_Includes.push_back(relative_path.str());
     }
   }
 
@@ -600,13 +601,13 @@ int main(int argc, const char **argv)
   g_PrintingPolicy = &policy;
 
   cl::OptionCategory option_category("StormRefl");
-  CommonOptionsParser op(argc, argv, option_category);
-  if (op.getSourcePathList().size() == 0)
+  auto op = CommonOptionsParser::create(argc, argv, option_category);
+  if (op->getSourcePathList().size() == 0)
   {
     return 0;
   }
 
-  ClangTool Tool(op.getCompilations(), op.getSourcePathList());
+  ClangTool Tool(op->getCompilations(), op->getSourcePathList());
   int result = Tool.run(newFrontendActionFactory<StormReflFrontendAction>().get());
   return result;
 }

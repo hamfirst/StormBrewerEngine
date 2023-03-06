@@ -476,11 +476,11 @@ struct StormReflTypeInfo<RefillGame>::field_data<1, Self> : public StormReflType
 template <>
 struct StormReflTypeInfo<RefillGame>::field_data_static<2>
 {
-  using member_type = int [2]; // int [2]
+  using member_type = int[2]; // int[2]
   static constexpr auto GetName() { return "m_PlayersNeeded"; }
-  static constexpr auto GetType() { return "int [2]"; }
+  static constexpr auto GetType() { return "int[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0xF75AEFCE; }
-  static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC425B9BF; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &RefillGame::m_PlayersNeeded; }
@@ -493,18 +493,18 @@ struct StormReflTypeInfo<RefillGame>::field_data<2, Self> : public StormReflType
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [2]> & Get() { return self.m_PlayersNeeded; }
-  std::add_const_t<std::remove_reference_t<int [2]>> & Get() const { return self.m_PlayersNeeded; }
+  match_const_t<Self, int[2]> & Get() { return self.m_PlayersNeeded; }
+  std::add_const_t<std::remove_reference_t<int[2]>> & Get() const { return self.m_PlayersNeeded; }
 };
 
 template <>
 struct StormReflTypeInfo<RefillGame>::field_data_static<3>
 {
-  using member_type = int [2]; // int [2]
+  using member_type = int[2]; // int[2]
   static constexpr auto GetName() { return "m_PlayersAssigned"; }
-  static constexpr auto GetType() { return "int [2]"; }
+  static constexpr auto GetType() { return "int[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x21EF091D; }
-  static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC425B9BF; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &RefillGame::m_PlayersAssigned; }
@@ -517,18 +517,18 @@ struct StormReflTypeInfo<RefillGame>::field_data<3, Self> : public StormReflType
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [2]> & Get() { return self.m_PlayersAssigned; }
-  std::add_const_t<std::remove_reference_t<int [2]>> & Get() const { return self.m_PlayersAssigned; }
+  match_const_t<Self, int[2]> & Get() { return self.m_PlayersAssigned; }
+  std::add_const_t<std::remove_reference_t<int[2]>> & Get() const { return self.m_PlayersAssigned; }
 };
 
 template <>
 struct StormReflTypeInfo<RefillGame>::field_data_static<4>
 {
-  using member_type = int [2]; // int [2]
+  using member_type = int[2]; // int[2]
   static constexpr auto GetName() { return "m_PlayersLeft"; }
-  static constexpr auto GetType() { return "int [2]"; }
+  static constexpr auto GetType() { return "int[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x9921DD84; }
-  static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC425B9BF; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 4; }
   static constexpr auto GetMemberPtr() { return &RefillGame::m_PlayersLeft; }
@@ -541,8 +541,8 @@ struct StormReflTypeInfo<RefillGame>::field_data<4, Self> : public StormReflType
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [2]> & Get() { return self.m_PlayersLeft; }
-  std::add_const_t<std::remove_reference_t<int [2]>> & Get() const { return self.m_PlayersLeft; }
+  match_const_t<Self, int[2]> & Get() { return self.m_PlayersLeft; }
+  std::add_const_t<std::remove_reference_t<int[2]>> & Get() const { return self.m_PlayersLeft; }
 };
 
 template <>

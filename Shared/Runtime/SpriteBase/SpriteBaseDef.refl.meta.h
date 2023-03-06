@@ -328,11 +328,11 @@ struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data<1, Self> : public
 template <>
 struct StormReflTypeInfo<SpriteBaseAnimationEvent>::field_data_static<2>
 {
-  using member_type = RPolymorphic<SpriteAnimationEventDataBase>; // RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>
+  using member_type = RPolymorphic<SpriteAnimationEventDataBase>; // RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase> >
   static constexpr auto GetName() { return "m_EventData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase, void>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<SpriteAnimationEventDataBase, TypeDatabase<SpriteAnimationEventDataBase>, TypeDatabaseTypeInfo<SpriteAnimationEventDataBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x8D45A16F; }
-  static constexpr unsigned GetTypeNameHash() { return 0xEA49E70D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4ADB9EEB; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &SpriteBaseAnimationEvent::m_EventData; }

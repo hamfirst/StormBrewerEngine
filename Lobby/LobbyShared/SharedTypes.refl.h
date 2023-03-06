@@ -21,7 +21,7 @@ struct WelcomeInfoTab
   RString m_Info;
 };
 
-enum STORM_REFL_ENUM class ChannelJoinResult
+enum class STORM_REFL_ENUM ChannelJoinResult
 {
   kSuccess,
   kLocked,
@@ -201,7 +201,7 @@ struct GameMember
 };
 
 
-enum STORM_REFL_ENUM class LobbyGameState
+enum class STORM_REFL_ENUM LobbyGameState
 {
   kInitializing,
   kWaiting,
@@ -211,7 +211,7 @@ enum STORM_REFL_ENUM class LobbyGameState
   kPostGame,
 };
 
-enum STORM_REFL_ENUM class LobbyGameType
+enum class STORM_REFL_ENUM LobbyGameType
 {
   kCasual,
   kCompetitive,

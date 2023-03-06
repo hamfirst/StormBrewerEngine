@@ -12,7 +12,7 @@
 #include "DDSResponder.refl.h"
 #include "DDSSharedMessages.refl.h"
 
-enum STORM_REFL_ENUM class DDSServerToServerMessageType
+enum class STORM_REFL_ENUM DDSServerToServerMessageType
 {
   kHandshakeRequest,
   kHandshakeResponse,
@@ -74,7 +74,7 @@ struct DDSExportedMessage
   std::string m_Message;
 };
 
-enum STORM_REFL_ENUM class DDSExportedObjectState
+enum class STORM_REFL_ENUM DDSExportedObjectState
 {
   kNotLoaded,
   kLoaded,

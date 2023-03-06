@@ -5,7 +5,7 @@
 QtLerpVar::QtLerpVar(bool create_updater, float time, QObject *parent) : QObject(parent)
 {
   m_Time = (int)(time * 1000);
-  m_Timer = new QTime();
+  m_Timer = new QElapsedTimer();
 
   m_Target = 0;
   m_Var = 0;

@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_CHANNELS
 
-enum STORM_REFL_ENUM class ChannelState
+enum class STORM_REFL_ENUM ChannelState
 {
   kCheckingForBuiltIn,
   kCheckingForSquad,

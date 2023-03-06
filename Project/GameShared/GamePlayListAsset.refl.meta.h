@@ -127,11 +127,11 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<2, Self> : public Sto
 template <>
 struct StormReflTypeInfo<PlaylistAssetElement>::field_data_static<3>
 {
-  using member_type = int [2]; // int [2]
+  using member_type = int[2]; // int[2]
   static constexpr auto GetName() { return "m_TeamSizes"; }
-  static constexpr auto GetType() { return "int [2]"; }
+  static constexpr auto GetType() { return "int[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x27BB0D16; }
-  static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC425B9BF; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &PlaylistAssetElement::m_TeamSizes; }
@@ -144,8 +144,8 @@ struct StormReflTypeInfo<PlaylistAssetElement>::field_data<3, Self> : public Sto
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [2]> & Get() { return self.m_TeamSizes; }
-  std::add_const_t<std::remove_reference_t<int [2]>> & Get() const { return self.m_TeamSizes; }
+  match_const_t<Self, int[2]> & Get() { return self.m_TeamSizes; }
+  std::add_const_t<std::remove_reference_t<int[2]>> & Get() const { return self.m_TeamSizes; }
 };
 
 template <>

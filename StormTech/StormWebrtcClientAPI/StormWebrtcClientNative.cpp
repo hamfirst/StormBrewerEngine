@@ -40,6 +40,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <stdexcept>
 
 StormWebrtcClientNative::StormWebrtcClientNative(const StormWebrtcClientChannelList & in_channels, const StormWebrtcClientChannelList & out_channels) :
   m_Socket((int)INVALID_SOCKET),

@@ -281,7 +281,7 @@ void DraggableList::resizeEvent(QResizeEvent *event)
 void DraggableList::wheelEvent(QWheelEvent * event)
 {
   const int scroll_amount = 40;
-  if (event->delta() > 0)
+  if (event->angleDelta().y() > 0)
   {
     m_ScrollVal->SetTarget(std::max(m_ScrollVal->GetTarget() - scroll_amount, 0.0f));
   }

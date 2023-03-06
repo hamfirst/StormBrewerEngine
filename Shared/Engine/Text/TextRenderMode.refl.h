@@ -3,7 +3,7 @@
 
 #include "StormRefl/StormRefl.h"
 
-enum STORM_REFL_ENUM class TextRenderMode
+enum class STORM_REFL_ENUM TextRenderMode
 {
   kNormal,
   kShadowed,

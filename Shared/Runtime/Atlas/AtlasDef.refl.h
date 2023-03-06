@@ -7,7 +7,7 @@
 #include "Runtime/RuntimeCommon.h"
 
 
-enum STORM_REFL_ENUM class AtlasDefType
+enum class STORM_REFL_ENUM AtlasDefType
 {
   kImage,
   kRepeat,

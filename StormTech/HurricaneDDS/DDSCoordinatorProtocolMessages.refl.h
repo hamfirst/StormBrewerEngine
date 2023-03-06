@@ -10,7 +10,7 @@
 
 #include <StormData/StormDataChangeType.refl.h>
 
-enum STORM_REFL_ENUM class DDSCoordinatorProtocolMessageType
+enum class STORM_REFL_ENUM DDSCoordinatorProtocolMessageType
 {
   kUnknown,
   kHandshakeRequest,

@@ -77,11 +77,11 @@ struct StormReflTypeInfo<ServerObjectDef>::field_data<0, Self> : public StormRef
 template <>
 struct StormReflTypeInfo<ServerObjectDef>::field_data_static<1>
 {
-  using member_type = RPolymorphic<ServerObjectInitData>; // RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData, void>, TypeDatabaseTypeInfo<ServerObjectInitData, void>, false>
+  using member_type = RPolymorphic<ServerObjectInitData>; // RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData>, TypeDatabaseTypeInfo<ServerObjectInitData> >
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData, void>, TypeDatabaseTypeInfo<ServerObjectInitData, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<ServerObjectInitData, TypeDatabase<ServerObjectInitData>, TypeDatabaseTypeInfo<ServerObjectInitData> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0x98B2E037; }
+  static constexpr unsigned GetTypeNameHash() { return 0x4E524A95; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &ServerObjectDef::m_InitData; }

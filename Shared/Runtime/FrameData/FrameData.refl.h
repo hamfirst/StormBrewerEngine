@@ -85,7 +85,7 @@ public:
   RMergeList<FrameDataAnchorElement> m_Anchors;
 };
 
-enum STORM_REFL_ENUM class FrameDataDefType
+enum class STORM_REFL_ENUM FrameDataDefType
 {
   kSingleBox,
   kMultiBox,

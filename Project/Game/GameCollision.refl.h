@@ -3,7 +3,7 @@
 
 #include "Foundation/Common.h"
 
-enum STORM_REFL_ENUM class GameCollisionType : uint32_t
+enum class STORM_REFL_ENUM GameCollisionType : uint32_t
 {
   kCollisionSolid = 0x01,
   kCollisionOneWay = 0x02,

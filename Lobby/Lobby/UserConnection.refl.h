@@ -7,7 +7,7 @@
 #include "LobbyConfig.h"
 
 
-enum STORM_REFL_ENUM class UserConnectionState
+enum class STORM_REFL_ENUM UserConnectionState
 {
   kRequestingUserName,
   kLoadingUser,

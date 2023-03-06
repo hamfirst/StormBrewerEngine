@@ -81,7 +81,7 @@ struct RUNTIME_EXPORT MapServerObjectLayer
   RMergeList<MapServerObject> STORM_REFL_ATTR(noui) m_Objects;
 };
 
-enum STORM_REFL_ENUM class MapParallaxLayerObjectType
+enum class STORM_REFL_ENUM MapParallaxLayerObjectType
 {
   kTexture,
   kSprite,

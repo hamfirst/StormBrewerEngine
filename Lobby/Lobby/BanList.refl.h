@@ -5,7 +5,7 @@
 
 #ifdef ENABLE_BAN_LIST
 
-enum STORM_REFL_ENUM class BanType
+enum class STORM_REFL_ENUM BanType
 {
   kRemoteIp,
   kRemoteHost,

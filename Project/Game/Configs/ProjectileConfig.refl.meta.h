@@ -117,11 +117,11 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data<1, Self> : public StormRe
 template <>
 struct StormReflTypeInfo<ProjectileConfig>::field_data_static<2>
 {
-  using member_type = RPolymorphic<ProjectileMotionBaseConfig, ProjectileMotionBase>; // RPolymorphicBase<ProjectileMotionBaseConfig, TypeDatabase<ProjectileMotionBaseConfig, ProjectileMotionBase>, TypeDatabaseTypeInfo<ProjectileMotionBaseConfig, ProjectileMotionBase>, false>
+  using member_type = RPolymorphic<ProjectileMotionBaseConfig, ProjectileMotionBase>; // RPolymorphicBase<ProjectileMotionBaseConfig, TypeDatabase<ProjectileMotionBaseConfig, ProjectileMotionBase>, TypeDatabaseTypeInfo<ProjectileMotionBaseConfig, ProjectileMotionBase> >
   static constexpr auto GetName() { return "m_MotionConfig"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<ProjectileMotionBaseConfig, TypeDatabase<ProjectileMotionBaseConfig, ProjectileMotionBase>, TypeDatabaseTypeInfo<ProjectileMotionBaseConfig, ProjectileMotionBase>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<ProjectileMotionBaseConfig, TypeDatabase<ProjectileMotionBaseConfig, ProjectileMotionBase>, TypeDatabaseTypeInfo<ProjectileMotionBaseConfig, ProjectileMotionBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x1642AC4A; }
-  static constexpr unsigned GetTypeNameHash() { return 0xBCC3A8A9; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8558AB20; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_MotionConfig; }
@@ -142,11 +142,11 @@ struct StormReflTypeInfo<ProjectileConfig>::field_data<2, Self> : public StormRe
 template <>
 struct StormReflTypeInfo<ProjectileConfig>::field_data_static<3>
 {
-  using member_type = RPolymorphic<ProjectileResponseBaseConfig, ProjectileResponseBase>; // RPolymorphicBase<ProjectileResponseBaseConfig, TypeDatabase<ProjectileResponseBaseConfig, ProjectileResponseBase>, TypeDatabaseTypeInfo<ProjectileResponseBaseConfig, ProjectileResponseBase>, false>
+  using member_type = RPolymorphic<ProjectileResponseBaseConfig, ProjectileResponseBase>; // RPolymorphicBase<ProjectileResponseBaseConfig, TypeDatabase<ProjectileResponseBaseConfig, ProjectileResponseBase>, TypeDatabaseTypeInfo<ProjectileResponseBaseConfig, ProjectileResponseBase> >
   static constexpr auto GetName() { return "m_ResponseConfig"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<ProjectileResponseBaseConfig, TypeDatabase<ProjectileResponseBaseConfig, ProjectileResponseBase>, TypeDatabaseTypeInfo<ProjectileResponseBaseConfig, ProjectileResponseBase>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<ProjectileResponseBaseConfig, TypeDatabase<ProjectileResponseBaseConfig, ProjectileResponseBase>, TypeDatabaseTypeInfo<ProjectileResponseBaseConfig, ProjectileResponseBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x5316BFBD; }
-  static constexpr unsigned GetTypeNameHash() { return 0x31C096A1; }
+  static constexpr unsigned GetTypeNameHash() { return 0x8D535D44; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &ProjectileConfig::m_ResponseConfig; }

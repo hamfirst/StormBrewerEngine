@@ -1,0 +1,75 @@
+
+if(BUILD_SERVER OR BUILD_TOOLS)
+    add_subdirectory(Project/GameServer)
+    add_subdirectory(Project/GameServerExe)
+
+    set_target_properties(GameServer PROPERTIES FOLDER Project)
+    set_target_properties(GameServerExe PROPERTIES FOLDER Project)
+
+    add_dependencies(GameServer Game)
+    add_dependencies(GameServerExe Game)
+    add_dependencies(GameServerExe Lobby)
+
+    add_subdirectory(Lobby/LobbyServerConnection)
+    set_target_properties(LobbyServerConnection PROPERTIES FOLDER Project)
+
+    add_dependencies(LobbyServerConnection Game)
+    add_dependencies(LobbyServerConnection Lobby)
+
+    add_executable(ServerExe Dummy.cpp)
+
+    if(MSVC)
+        target_link_libraries(ServerExe GameServerExe)
+        target_link_libraries(ServerExe GameServer)
+        target_link_libraries(ServerExe Game)
+        target_link_libraries(ServerExe GameShared)
+        target_link_libraries(ServerExe LobbyShared)
+        target_link_libraries(ServerExe Runtime)
+
+        set_target_properties(ServerExe PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:GameServerExe.lib /WHOLEARCHIVE:GameServer.lib /WHOLEARCHIVE:Game.lib /WHOLEARCHIVE:Runtime.lib")
+
+    else()
+        target_link_libraries(ServerExe -Wl,--whole-archive GameServerExe -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe -Wl,--whole-archive GameServer -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe -Wl,--whole-archive Game -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe -Wl,--whole-archive GameShared -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe -Wl,--whole-archive LobbyShared -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe -Wl,--whole-archive Runtime -Wl,--no-whole-archive)
+    endif()
+
+    target_link_libraries(ServerExe LobbyServerConnection)
+    target_link_libraries(ServerExe EngineStubs)
+    target_link_libraries(ServerExe Foundation)
+    target_link_libraries(ServerExe binpack)
+    target_link_libraries(ServerExe lua)
+    target_link_libraries(ServerExe StormNetCustomBindings)
+    target_link_libraries(ServerExe StormNetBindingsEnet)
+    target_link_libraries(ServerExe StormNet)
+    target_link_libraries(ServerExe StormData)
+    target_link_libraries(ServerExe StormWebrtc)
+    target_link_libraries(ServerExe StormWebrtcServerAPI)
+    target_link_libraries(ServerExe StormWebrtcClientAPI)
+    target_link_libraries(ServerExe StormBootstrap)
+    target_link_libraries(ServerExe StormSocketCPP)
+    target_link_libraries(ServerExe glm)
+    target_link_libraries(ServerExe asio)
+    target_link_libraries(ServerExe ENet)
+    target_link_libraries(ServerExe usrsctp-static)
+    target_link_libraries(ServerExe mbedtls)
+
+    if(UNIX)
+        target_link_libraries(ServerExe stdc++fs)
+        target_link_libraries(ServerExe -Wl,--whole-archive pthread -Wl,--no-whole-archive)
+        target_link_libraries(ServerExe rt m c dl)
+
+        #set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+        #set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+        #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static")
+
+        #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_START_STATIC 1)
+        #set_target_properties(ServerExe PROPERTIES LINK_SEARCH_END_STATIC 1)
+    endif()
+
+    set_target_properties(ServerExe PROPERTIES FOLDER Executable)
+    set(OUTPUTS ${OUTPUTS} ServerExe)
+endif()

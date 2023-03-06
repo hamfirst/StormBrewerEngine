@@ -38,7 +38,7 @@ static const int kPreRoundTimer = 60 * 5;
 static const int kMaxRoundTimer = 60 * 60 * 5;
 static const int kPostRoundTimer = 60 * 5;
 
-enum STORM_REFL_ENUM class RoundState
+enum class STORM_REFL_ENUM RoundState
 {
   kPreRound,
   kRound,

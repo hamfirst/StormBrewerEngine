@@ -64,7 +64,7 @@ protected:
   int m_DraggingTargetIndex;
   int m_DragTimerLastUpdate;
   float m_DragScrollError;
-  QTime m_DragTimer;
+  QElapsedTimer m_DragTimer;
 
 signals:
   void dragComplete(int start_index, int end_index);

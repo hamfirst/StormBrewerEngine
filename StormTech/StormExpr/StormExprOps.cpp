@@ -3,6 +3,7 @@
 #include "StormExprValueBlockList.h"
 
 #include <cmath>
+#include <stdexcept>
 
 StormExprOp StormExprGetOpForOperator(StormExprOperatorType op, bool quick_version)
 {

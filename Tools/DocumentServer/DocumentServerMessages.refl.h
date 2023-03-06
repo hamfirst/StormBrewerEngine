@@ -7,7 +7,7 @@
 
 static const int kDocumentServerVersion = 1;
 
-enum STORM_REFL_ENUM class DocumentServerMessageType
+enum class STORM_REFL_ENUM DocumentServerMessageType
 {
   kUnknown,
   kNew,
@@ -21,7 +21,7 @@ enum STORM_REFL_ENUM class DocumentServerMessageType
   kShutdown,
 };
 
-enum STORM_REFL_ENUM class DocumentClientMessageType
+enum class STORM_REFL_ENUM DocumentClientMessageType
 {
   kUnknown,
   kNewFileError,

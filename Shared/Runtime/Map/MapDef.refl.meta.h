@@ -92,11 +92,11 @@ struct StormReflTypeInfo<MapPropertiesInfo>
 template <>
 struct StormReflTypeInfo<MapPropertiesInfo>::field_data_static<0>
 {
-  using member_type = RPolymorphic<MapPropertiesDef, void, true>; // RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>
+  using member_type = RPolymorphic<MapPropertiesDef, void, true>; // RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef>, TypeDatabaseTypeInfo<MapPropertiesDef>, true>
   static constexpr auto GetName() { return "m_MapProperties"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef, void>, TypeDatabaseTypeInfo<MapPropertiesDef, void>, true>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapPropertiesDef, TypeDatabase<MapPropertiesDef>, TypeDatabaseTypeInfo<MapPropertiesDef>, true>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x841C9243; }
-  static constexpr unsigned GetTypeNameHash() { return 0x6DB54CE0; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC69D4C27; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapPropertiesInfo::m_MapProperties; }
@@ -1690,11 +1690,11 @@ struct StormReflTypeInfo<MapEffectLayer>::field_data<2, Self> : public StormRefl
 template <>
 struct StormReflTypeInfo<MapEffectLayer>::field_data_static<3>
 {
-  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>; // RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>
+  using member_type = RPolymorphic<MapEffectLayerInitData, MapEffectLayerLogicBase>; // RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase> >
   static constexpr auto GetName() { return "m_EffectLayerData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<MapEffectLayerInitData, TypeDatabase<MapEffectLayerInitData, MapEffectLayerLogicBase>, TypeDatabaseTypeInfo<MapEffectLayerInitData, MapEffectLayerLogicBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1AE0B1F; }
-  static constexpr unsigned GetTypeNameHash() { return 0x2FE182EA; }
+  static constexpr unsigned GetTypeNameHash() { return 0xD5961694; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 3; }
   static constexpr auto GetMemberPtr() { return &MapEffectLayer::m_EffectLayerData; }
@@ -1822,11 +1822,11 @@ struct StormReflTypeInfo<MapAnchor>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapAnchor>::field_data_static<2>
 {
-  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase>, TypeDatabaseTypeInfo<AnchorDataBase> >
   static constexpr auto GetName() { return "m_AnchorData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase>, TypeDatabaseTypeInfo<AnchorDataBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x73BF9C78; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0A61DC07; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapAnchor::m_AnchorData; }
@@ -2136,11 +2136,11 @@ struct StormReflTypeInfo<MapPath>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapPath>::field_data_static<2>
 {
-  using member_type = RPolymorphic<PathDataBase>; // RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>
+  using member_type = RPolymorphic<PathDataBase>; // RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase>, TypeDatabaseTypeInfo<PathDataBase> >
   static constexpr auto GetName() { return "m_PathData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase, void>, TypeDatabaseTypeInfo<PathDataBase, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<PathDataBase, TypeDatabase<PathDataBase>, TypeDatabaseTypeInfo<PathDataBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x07EB2D9C; }
-  static constexpr unsigned GetTypeNameHash() { return 0x404592FC; }
+  static constexpr unsigned GetTypeNameHash() { return 0x08B5DEAD; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapPath::m_PathData; }
@@ -2293,11 +2293,11 @@ struct StormReflTypeInfo<MapVolume>::annotations<1>::annoation<0>
 template <>
 struct StormReflTypeInfo<MapVolume>::field_data_static<2>
 {
-  using member_type = RPolymorphic<VolumeDataBase>; // RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>
+  using member_type = RPolymorphic<VolumeDataBase>; // RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase>, TypeDatabaseTypeInfo<VolumeDataBase> >
   static constexpr auto GetName() { return "m_VolumeData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase, void>, TypeDatabaseTypeInfo<VolumeDataBase, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<VolumeDataBase, TypeDatabase<VolumeDataBase>, TypeDatabaseTypeInfo<VolumeDataBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0xE1971791; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF08E00EE; }
+  static constexpr unsigned GetTypeNameHash() { return 0x115E5C18; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 2; }
   static constexpr auto GetMemberPtr() { return &MapVolume::m_VolumeData; }

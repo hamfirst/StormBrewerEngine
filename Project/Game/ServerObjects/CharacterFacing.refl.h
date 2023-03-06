@@ -5,7 +5,7 @@
 #include "Game/GameServerTypes.h"
 #include "Game/GameNetworkData.refl.h"
 
-enum STORM_REFL_ENUM class CharacterFacing
+enum class STORM_REFL_ENUM CharacterFacing
 {
   kLeft,
   kRight,

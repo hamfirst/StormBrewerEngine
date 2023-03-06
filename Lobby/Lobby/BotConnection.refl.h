@@ -9,7 +9,7 @@
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 
-enum STORM_REFL_ENUM class BotConnectionState
+enum class STORM_REFL_ENUM BotConnectionState
 {
   kWaitingForConnection,
   kAuthenticating,

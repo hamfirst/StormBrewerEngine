@@ -878,11 +878,11 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<0, Self> : public StormRe
 template <>
 struct StormReflTypeInfo<GameInstanceData>::field_data_static<1>
 {
-  using member_type = NetRangedNumber<int, 0, kMaxScore> [2]; // NetRangedNumber<int, 0, 5> [2]
+  using member_type = NetRangedNumber<int, 0, kMaxScore>[2]; // NetRangedNumber<int, 0, 5>[2]
   static constexpr auto GetName() { return "m_Score"; }
-  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 5> [2]"; }
+  static constexpr auto GetType() { return "NetRangedNumber<int, 0, 5>[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0xBFAFA731; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF567AB0E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x569302BA; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &GameInstanceData::m_Score; }
@@ -895,8 +895,8 @@ struct StormReflTypeInfo<GameInstanceData>::field_data<1, Self> : public StormRe
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, NetRangedNumber<int, 0, kMaxScore> [2]> & Get() { return self.m_Score; }
-  std::add_const_t<std::remove_reference_t<NetRangedNumber<int, 0, kMaxScore> [2]>> & Get() const { return self.m_Score; }
+  match_const_t<Self, NetRangedNumber<int, 0, kMaxScore>[2]> & Get() { return self.m_Score; }
+  std::add_const_t<std::remove_reference_t<NetRangedNumber<int, 0, kMaxScore>[2]>> & Get() const { return self.m_Score; }
 };
 
 template <>

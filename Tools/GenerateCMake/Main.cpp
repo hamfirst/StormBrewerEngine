@@ -1,4 +1,5 @@
 
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -329,7 +330,7 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   std::ofstream cmake_file;
   cmake_file.open(cmake_file_path.c_str());
 
-  cmake_file << "cmake_minimum_required(VERSION 3.1.0)\n\n";
+  cmake_file << "cmake_minimum_required(VERSION 3.20.0)\n\n";
   cmake_file << "include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}\n";
   cmake_file << "                    ${PROJECT_SOURCE_DIR}/External\n";
   cmake_file << "                    ${PROJECT_SOURCE_DIR}/StormTech\n";
@@ -439,19 +440,6 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     cmake_file << "\n\n";
   }
 
-  if(options.m_Refl)
-  {
-    cmake_file << "if(GENERATE_REFL)\n";
-    cmake_file << "  foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
-    cmake_file << "    string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
-    cmake_file << "    add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
-    cmake_file << "                       COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -I${CMAKE_CURRENT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR} -I${PROJECT_SOURCE_DIR}/StormTech -I${PROJECT_SOURCE_DIR}/Tools -I${PROJECT_SOURCE_DIR}/Shared -I${PROJECT_SOURCE_DIR}/Project -I${PROJECT_SOURCE_DIR}/Lobby -I${PROJECT_SOURCE_DIR}/External -I${CLANG_HEADER_PATH} -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS\n";
-    cmake_file << "                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
-    cmake_file << "                       IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
-    cmake_file << "  endforeach()\n";
-    cmake_file << "endif()\n\n";
-  }
-
   if(options.m_IncludePlatformFiles)
   {
     cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} ${PLATFORM_SRC_" + project_name + "}\n";
@@ -463,6 +451,21 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
   {
     cmake_file << "add_library(" + project_name + " STATIC ${GENERIC_SRC_" + project_name + "} " "${GENERIC_HEADER_" + project_name + "})\n";
     cmake_file << "source_group(TREE \"${CMAKE_CURRENT_SOURCE_DIR}\" FILES ${GENERIC_SRC_" + project_name + "} " "${GENERIC_HEADER_" + project_name + "})\n\n";
+  }
+
+  if(options.m_Refl)
+  {
+    cmake_file << "if(GENERATE_REFL)\n";
+    cmake_file << "  foreach(REFL_FILE ${GENERIC_REFL_" + project_name + "})\n";
+    cmake_file << "    string(REPLACE \".refl.h\" \".refl.meta.h\" META_FILE ${REFL_FILE})\n";
+    cmake_file << "    add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${META_FILE}\n";
+    cmake_file << "                       COMMAND stormrefl ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE} -- -I${CLANG_HEADER_PATH} \"-I$<JOIN:$<TARGET_PROPERTY:" + project_name + ",INCLUDE_DIRECTORIES>,;-I>\" -DSTORM_REFL_PARSE -D_CRT_SECURE_NO_WARNINGS -std=c++17 -x c++ -Wno-pragma-once-outside-header -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS\n";
+    cmake_file << "                       COMMAND_EXPAND_LISTS\n";
+    cmake_file << "                       VERBATIM\n";
+    cmake_file << "                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE}\n";
+    cmake_file << "                       IMPLICIT_DEPENDS CXX ${CMAKE_CURRENT_SOURCE_DIR}/${REFL_FILE})\n";
+    cmake_file << "  endforeach()\n";
+    cmake_file << "endif()\n\n";
   }
 
   if (files.m_NatvisFiles.size() > 0)
@@ -477,13 +480,9 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     cmake_file << "endif()\n\n";
   }
 
-
   if (options.m_PCH && files.m_PCHFile.size() > 0)
   {
-    cmake_file << "set_target_properties(" + project_name + " PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT " + files.m_PCHFile + ")\n\n";
-    cmake_file << "if(GENERATE_PCH)\n";
-    cmake_file << "  cotire(" + project_name + ")\n";
-    cmake_file << "endif()\n";
+    cmake_file << "target_precompile_headers(" + project_name + " PRIVATE " + files.m_PCHFile + ")\n\n";
   }
 
   cmake_file.close();

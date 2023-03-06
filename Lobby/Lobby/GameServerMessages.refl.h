@@ -18,7 +18,7 @@ static const uint64_t kGameServerChallengePad = kProjectRandom1;
 static const int kGameServerMinorVersion = 0;
 
 
-enum STORM_REFL_ENUM class GameServerMessageType
+enum class STORM_REFL_ENUM GameServerMessageType
 {
   kIdentifyNew,
   kIdentifyRelocate,

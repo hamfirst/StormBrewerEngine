@@ -2,7 +2,7 @@
 
 #include <StormRefl/StormRefl.h>
 
-enum STORM_REFL_ENUM class DamageType
+enum class STORM_REFL_ENUM DamageType
 {
   kMelee,
   kFall,

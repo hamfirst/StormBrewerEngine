@@ -52,11 +52,11 @@ struct StormReflTypeInfo<MapEditorAnchorInitData>
 template <>
 struct StormReflTypeInfo<MapEditorAnchorInitData>::field_data_static<0>
 {
-  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>
+  using member_type = RPolymorphic<AnchorDataBase>; // RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase>, TypeDatabaseTypeInfo<AnchorDataBase> >
   static constexpr auto GetName() { return "m_InitData"; }
-  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase, void>, TypeDatabaseTypeInfo<AnchorDataBase, void>, false>"; }
+  static constexpr auto GetType() { return "RPolymorphicBase<AnchorDataBase, TypeDatabase<AnchorDataBase>, TypeDatabaseTypeInfo<AnchorDataBase> >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x880F1CB3; }
-  static constexpr unsigned GetTypeNameHash() { return 0xDC04E34E; }
+  static constexpr unsigned GetTypeNameHash() { return 0x0A61DC07; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &MapEditorAnchorInitData::m_InitData; }

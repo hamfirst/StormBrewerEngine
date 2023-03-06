@@ -850,11 +850,11 @@ struct StormReflTypeInfo<GeneratedGame>
 template <>
 struct StormReflTypeInfo<GeneratedGame>::field_data_static<0>
 {
-  using member_type = std::vector<GeneratedGameUser> [2]; // std::vector<GeneratedGameUser, std::allocator<GeneratedGameUser> > [2]
+  using member_type = std::vector<GeneratedGameUser>[2]; // std::vector<GeneratedGameUser>[2]
   static constexpr auto GetName() { return "m_Users"; }
-  static constexpr auto GetType() { return "std::vector<GeneratedGameUser, std::allocator<GeneratedGameUser> > [2]"; }
+  static constexpr auto GetType() { return "std::vector<GeneratedGameUser>[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x99B53589; }
-  static constexpr unsigned GetTypeNameHash() { return 0xB5AD626D; }
+  static constexpr unsigned GetTypeNameHash() { return 0x959E6160; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GeneratedGame::m_Users; }
@@ -867,8 +867,8 @@ struct StormReflTypeInfo<GeneratedGame>::field_data<0, Self> : public StormReflT
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, std::vector<GeneratedGameUser> [2]> & Get() { return self.m_Users; }
-  std::add_const_t<std::remove_reference_t<std::vector<GeneratedGameUser> [2]>> & Get() const { return self.m_Users; }
+  match_const_t<Self, std::vector<GeneratedGameUser>[2]> & Get() { return self.m_Users; }
+  std::add_const_t<std::remove_reference_t<std::vector<GeneratedGameUser>[2]>> & Get() const { return self.m_Users; }
 };
 
 template <>

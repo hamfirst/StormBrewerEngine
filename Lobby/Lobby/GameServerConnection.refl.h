@@ -6,7 +6,7 @@
 
 #include "GameServerMessages.refl.h"
 
-enum STORM_REFL_ENUM class GameServerConnectionState
+enum class STORM_REFL_ENUM GameServerConnectionState
 {
   kWaitingForConnection,
   kAuthenticating,

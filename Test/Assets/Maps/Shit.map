@@ -3,14 +3,14 @@
 {
     "m_ManualTileLayers": {
         "0": {
-            "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet",
-            "m_Animations": { },
-            "m_Name": "Tile Layer",
-            "m_LayerOrder": 0,
-            "m_CollisionLayer": true,
             "m_Tiles": {
                 "0": [18446744039349813256,11695311425793687552]
-            }
+            },
+            "m_LayerOrder": 0,
+            "m_Name": "Tile Layer",
+            "m_CollisionLayer": true,
+            "m_Animations": { },
+            "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet"
         }
     }
 }

@@ -5,7 +5,7 @@
 #include "Runtime/Component/ComponentInitData.refl.h"
 #include "Engine/Component/Component.h"
 
-enum STORM_REFL_ENUM class PlayAnimationComponentLoopMode
+enum class STORM_REFL_ENUM PlayAnimationComponentLoopMode
 {
   kPlayLooping,
   kPlayOnceAndDestroy,

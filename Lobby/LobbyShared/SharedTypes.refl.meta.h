@@ -336,11 +336,11 @@ struct StormReflTypeInfo<UserZoneInfo>
 template <>
 struct StormReflTypeInfo<UserZoneInfo>::field_data_static<0>
 {
-  using member_type = int [7]; // int [7]
+  using member_type = int[7]; // int[7]
   static constexpr auto GetName() { return "m_Latencies"; }
-  static constexpr auto GetType() { return "int [7]"; }
+  static constexpr auto GetType() { return "int[7]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x453053FB; }
-  static constexpr unsigned GetTypeNameHash() { return 0xF8E81D7F; }
+  static constexpr unsigned GetTypeNameHash() { return 0xB9524DFA; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &UserZoneInfo::m_Latencies; }
@@ -353,8 +353,8 @@ struct StormReflTypeInfo<UserZoneInfo>::field_data<0, Self> : public StormReflTy
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [7]> & Get() { return self.m_Latencies; }
-  std::add_const_t<std::remove_reference_t<int [7]>> & Get() const { return self.m_Latencies; }
+  match_const_t<Self, int[7]> & Get() { return self.m_Latencies; }
+  std::add_const_t<std::remove_reference_t<int[7]>> & Get() const { return self.m_Latencies; }
 };
 
 template <>
@@ -2076,11 +2076,11 @@ struct StormReflTypeInfo<GameInfoTeamSizes>
 template <>
 struct StormReflTypeInfo<GameInfoTeamSizes>::field_data_static<0>
 {
-  using member_type = int [2]; // int [2]
+  using member_type = int[2]; // int[2]
   static constexpr auto GetName() { return "m_MaxTeamSizes"; }
-  static constexpr auto GetType() { return "int [2]"; }
+  static constexpr auto GetType() { return "int[2]"; }
   static constexpr unsigned GetFieldNameHash() { return 0x810DE47B; }
-  static constexpr unsigned GetTypeNameHash() { return 0x859FE93A; }
+  static constexpr unsigned GetTypeNameHash() { return 0xC425B9BF; }
   static constexpr bool HasDefault() { return false; }
   static constexpr auto GetFieldIndex() { return 0; }
   static constexpr auto GetMemberPtr() { return &GameInfoTeamSizes::m_MaxTeamSizes; }
@@ -2093,8 +2093,8 @@ struct StormReflTypeInfo<GameInfoTeamSizes>::field_data<0, Self> : public StormR
 {
   Self & self;
   field_data(Self & self) : self(self) {}
-  match_const_t<Self, int [2]> & Get() { return self.m_MaxTeamSizes; }
-  std::add_const_t<std::remove_reference_t<int [2]>> & Get() const { return self.m_MaxTeamSizes; }
+  match_const_t<Self, int[2]> & Get() { return self.m_MaxTeamSizes; }
+  std::add_const_t<std::remove_reference_t<int[2]>> & Get() const { return self.m_MaxTeamSizes; }
 };
 
 template <>

@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <utility>
+#include <stdexcept>
+#include <cstring>
 
 #include "Foundation/Optional/NullOpt.h"
 

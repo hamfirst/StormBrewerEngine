@@ -2,7 +2,7 @@
 
 #include <StormRefl/StormRefl.h>
 
-#include <time.h>
+#include <ctime>
 
 class DDSThrottle
 {

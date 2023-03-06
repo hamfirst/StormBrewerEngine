@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTime>
+#include <QElapsedTimer>
 
 class LerpVar : public QObject
 {
@@ -104,7 +105,7 @@ private:
   float m_Target;
   float m_Var;
 
-  QTime * m_Timer;
+  QElapsedTimer * m_Timer;
   int m_Time;
 
   bool m_Modified;

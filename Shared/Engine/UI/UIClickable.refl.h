@@ -9,7 +9,7 @@
 
 class UIManager;
 
-enum STORM_REFL_ENUM class UIClickableState
+enum class STORM_REFL_ENUM UIClickableState
 {
   kDisabled,
   kActive,

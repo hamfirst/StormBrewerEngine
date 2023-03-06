@@ -91,11 +91,11 @@ struct StormReflTypeInfo<EntityDef>::annotations<0>::annoation<0>
 template <>
 struct StormReflTypeInfo<EntityDef>::field_data_static<1>
 {
-  using member_type = RMergeList<RPolymorphic<ComponentInitData> >; // RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >
+  using member_type = RMergeList<RPolymorphic<ComponentInitData> >; // RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData>, TypeDatabaseTypeInfo<ComponentInitData> > >
   static constexpr auto GetName() { return "m_Components"; }
-  static constexpr auto GetType() { return "RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData, void>, TypeDatabaseTypeInfo<ComponentInitData, void>, false> >"; }
+  static constexpr auto GetType() { return "RMergeList<RPolymorphicBase<ComponentInitData, TypeDatabase<ComponentInitData>, TypeDatabaseTypeInfo<ComponentInitData> > >"; }
   static constexpr unsigned GetFieldNameHash() { return 0x64F11C30; }
-  static constexpr unsigned GetTypeNameHash() { return 0x2CECCE09; }
+  static constexpr unsigned GetTypeNameHash() { return 0xE4AC32ED; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 1; }
   static constexpr auto GetMemberPtr() { return &EntityDef::m_Components; }

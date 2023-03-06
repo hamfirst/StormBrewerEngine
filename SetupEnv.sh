@@ -41,19 +41,26 @@ read_var_with_default() {
 
 echo "Setting up project environment settings"
 
-if [[ -z ${QT_DIR} && -d ~/Qt/5.11.1/gcc_64 ]]; then
-    QT_DIR=~/Qt/5.11.1/gcc_64
+if [[ -z ${QT_DIR} && -d ~/Qt/5.15.2 ]]; then
+    QT_DIR=~/Qt/5.15.2/
 fi
 
-if [[ -z ${CLANG_HEADER_PATH} && -d /usr/local/lib/clang/8.0.0/include ]]; then
-    CLANG_HEADER_PATH=/usr/local/lib/clang/8.0.0/include
+if [[ -z ${LLVM_ROOT_PATH} && -d ~/llvm-project ]]; then
+    LLVM_ROOT_PATH=~/llvm-project
+fi
+
+if [[ -z ${LLVM_BUILD_PATH} && -d ~/llvm-project/build ]]; then
+    LLVM_BUILD_PATH=~/llvm-project/build
 fi
 
 read_var_with_default "Enter QT Directory" true ${QT_DIR}
 export QT_DIR=${return_val}
 
-read_var_with_default "Enter Clang Header Directory" true ${CLANG_HEADER_PATH}
-export CLANG_HEADER_PATH=${return_val}
+read_var_with_default "Enter LLVM Root Directory" true ${LLVM_ROOT_PATH}
+export LLVM_ROOT_PATH=${return_val}
+
+read_var_with_default "Enter LLVM Build Directory" true ${LLVM_BUILD_PATH}
+export LLVM_BUILD_PATH=${return_val}
 
 read_var_with_default "Enter Emcripten SDK Directory" false ${EM_SDK_PATH}
 export EM_SDK_PATH=${return_val}
@@ -64,7 +71,8 @@ touch ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 echo "QT_DIR="${QT_DIR} >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 echo "CMAKE_DIR=" >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 echo "MINGW_DIR=" >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
-echo "CLANG_HEADER_PATH="${CLANG_HEADER_PATH} >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
+echo "LLVM_ROOT_PATH="${LLVM_ROOT_PATH} >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
+echo "LLVM_BUILD_PATH="${LLVM_BUILD_PATH} >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 echo "EM_SDK_PATH="${EM_SDK_PATH} >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 echo "VC_PATH=" >> ${PROJECT_DIR}/ProjectSettings/ProjectEnv.txt
 
