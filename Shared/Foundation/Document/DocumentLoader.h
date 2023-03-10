@@ -1,8 +1,6 @@
 #pragma once
 
-#ifndef _INCLUDEOS
 #include <filesystem>
-#endif
 
 using DocumentLoadCallback = Delegate<void, uint32_t, void *, std::size_t, time_t>;
 

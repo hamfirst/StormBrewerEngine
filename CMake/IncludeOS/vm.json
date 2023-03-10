@@ -1,9 +1,0 @@
-{
-  "net": [
-    {
-      "device": "vmxnet3",
-      "backend": "user"
-    }
-  ],
-  "mem": 595
-}

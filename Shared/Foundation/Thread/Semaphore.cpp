@@ -2,8 +2,6 @@
 #include "Foundation/Common.h"
 #include "Foundation/Thread/Semaphore.h"
 
-#ifndef _INCLUDEOS
-
 void Semaphore::WaitOne(int ms)
 {
   std::unique_lock<std::mutex> lck(m_Mutex);
@@ -40,5 +38,3 @@ void Semaphore::Release(int amount)
     m_ConditionVariable.notify_all();
   }
 }
-
-#endif

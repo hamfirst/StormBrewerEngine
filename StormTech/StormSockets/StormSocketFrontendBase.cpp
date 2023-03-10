@@ -5,10 +5,6 @@
 #include <stdexcept>
 #include <sstream>
 
-#ifdef _INCLUDEOS
-#include <kernel/os.hpp>
-#endif
-
 #define MBED_CHECK_ERROR if(error < 0) { std::stringstream ss; ss << std::hex << -error; throw std::runtime_error("Certificate load error 0x" + ss.str()); };
 
 namespace StormSockets
@@ -121,11 +117,7 @@ namespace StormSockets
 
       m_OwnedConnectionLock.unlock();
 
-#ifndef _INCLUDEOS
       std::this_thread::yield();
-#else
-      OS::block();
-#endif
     }
   }
 
@@ -274,9 +266,7 @@ namespace StormSockets
     connect_message.RemotePort = remote_port;
     while (m_EventQueue.Enqueue(connect_message) == false)
     {
-#ifndef _INCLUDEOS
       std::this_thread::yield();
-#endif
     }
 
     if (m_EventSemaphore)
@@ -297,9 +287,7 @@ namespace StormSockets
     connect_message.RemotePort = connection.m_RemotePort;
     while (m_EventQueue.Enqueue(connect_message) == false)
     {
-#ifndef _INCLUDEOS
       std::this_thread::yield();
-#endif
     }
 
     if (m_EventSemaphore)
@@ -320,9 +308,7 @@ namespace StormSockets
 
     while (m_EventQueue.Enqueue(disconnect_message) == false)
     {
-#ifndef _INCLUDEOS
       std::this_thread::yield();
-#endif
     }
 
     if (m_EventSemaphore)

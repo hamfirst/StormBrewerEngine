@@ -53,10 +53,8 @@ namespace StormSockets
 
   struct StormSocketInitSettings
   {
-#ifndef _INCLUDEOS
     int NumIOThreads = std::thread::hardware_concurrency();
     int NumSendThreads = std::thread::hardware_concurrency();
- #endif
 
     int MaxConnections = 256;
 

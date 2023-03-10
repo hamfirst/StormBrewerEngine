@@ -15,9 +15,7 @@
 #include "Runtime/DocumentResource/DocumentResourceLoader.h"
 #include "Runtime/BinaryResource/BinaryResourceLoader.h"
 
-#ifndef _INCLUDEOS
 #include <filesystem>
-#endif
 
 class RenderState;
 

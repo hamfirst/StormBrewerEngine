@@ -348,9 +348,7 @@ namespace StormSockets
 							Profiling::EndProfiler(prof, ProfilerCategory::kEnqueue);
 							return true;
 						}
-#ifndef _INCLUDEOS
             std::this_thread::yield();
-#endif
 					}
 				}
 			}

@@ -1,10 +1,6 @@
 #pragma once
 
-#ifndef _INCLUDEOS
 #include <asio/asio.hpp>
-#else
-#include <net/inet>
-#endif
 
 #include <map>
 #include <optional>
@@ -52,7 +48,6 @@ namespace StormSockets
     StormFixedBlockAllocator m_PendingSendBlocks;
 
     std::unique_ptr<StormSocketConnectionBase[]> m_Connections;
-#ifndef _INCLUDEOS
 
     std::unique_ptr<std::optional<asio::steady_timer>[]> m_Timeouts;
   
@@ -82,13 +77,6 @@ namespace StormSockets
     static const int kBufferSetCount = 8;
     typedef std::array<asio::const_buffer, 8> SendBuffer;
 
-#else
-
-    std::unique_ptr<std::optional<id_t>[]> m_Timeouts;
-    std::unique_ptr<std::optional<net::tcp::Connection_ptr>[]> m_ClientSockets;
-
-#endif
-
     std::unique_ptr<StormMessageMegaQueue<StormMessageWriter>[]> m_OutputQueue;
     std::unique_ptr<StormMessageMegaContainer<StormMessageWriter>[]> m_OutputQueueArray;
     std::unique_ptr<StormGenIndex[]> m_OutputQueueIncdices;
@@ -103,14 +91,10 @@ namespace StormSockets
     {
       StormSocketFrontend * m_Frontend;
 
-#ifndef _INCLUDEOS      
       asio::ip::tcp::acceptor m_Acceptor;
 
       asio::ip::tcp::socket m_AcceptSocket;
       asio::ip::tcp::endpoint m_AcceptEndpoint;
-#else
-      net::tcp::Listener * m_Listener;
-#endif
     };
 
     StormMutex m_AcceptorLock;
@@ -183,10 +167,8 @@ namespace StormSockets
     StormSocketConnectionId AllocateConnection(StormSocketFrontend * frontend, uint32_t remote_ip, uint16_t remote_port, bool for_connect, const void * init_data);
     void FreeConnectionSlot(StormSocketConnectionId id);
 
-#ifndef _INCLUDEOS
     void PrepareToAccept(StormSocketBackendAcceptorId acceptor_id);
     void AcceptNewConnection(const asio::error_code& error, StormSocketBackendAcceptorId acceptor_id);
-#endif
 
     void BootstrapConnection(StormSocketConnectionId connection_id, StormSocketConnectionBase & connection, void * ssl_config_ptr);
     void PrepareToConnect(StormSocketConnectionId id, uint32_t addr, uint16_t port);
@@ -199,19 +181,16 @@ namespace StormSockets
     void PrepareToRecv(StormSocketConnectionId connection_id);
     void TryProcessReceivedData(StormSocketConnectionId connection_id, bool recv_failure);
 
-#ifndef _INCLUDEOS
     void IOThreadMain();
     void SendThreadMain(int thread_index);
-#endif
+
     void TransmitConnectionPackets(StormSocketConnectionId connection_id);
 
     StormFixedBlockHandle ReleasePendingSendBlock(StormFixedBlockHandle send_block_handle, StormPendingSendBlock * send_block);
     void ReleaseSendQueue(StormSocketConnectionId connection_id, int connection_gen);
     StormMessageWriter EncryptWriter(StormSocketConnectionId connection_id, StormMessageWriter & writer);
 
-#ifndef _INCLUDEOS
     void CloseSocketThread();
-#endif
     void QueueCloseSocket(StormSocketConnectionId id);
     void CloseSocket(StormSocketConnectionId id);
 

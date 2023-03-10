@@ -43,7 +43,6 @@ namespace StormSockets
 
   void StormMessageWriter::DebugPrint()
   {
-#ifndef _INCLUDEOS
     StormFixedBlockHandle block_handle = m_PacketInfo->m_StartBlock;
     int len = m_PacketInfo->m_TotalLength;
 
@@ -63,7 +62,6 @@ namespace StormSockets
       
       block_handle = m_Allocator->GetNextBlock(block_handle);
     }
-#endif  
   }
 
   void StormMessageWriter::WriteByte(uint8_t b)

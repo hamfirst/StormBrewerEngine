@@ -6,10 +6,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}
 
 set(CMAKE_CXX_STANDARD 17)
 
-if(INCLUDEOS)
-  add_definitions(-D_INCLUDEOS)
-endif()
-
 set(GENERIC_SRC_StormBootstrap 
             StormBootstrap.cpp
   StormBootstrapPlatform.cpp)

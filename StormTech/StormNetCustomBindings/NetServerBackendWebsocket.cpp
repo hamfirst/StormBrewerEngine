@@ -20,10 +20,8 @@ NetServerBackendWebsocket::NetServerBackendWebsocket(NetServerInterface * iface,
 {
   StormSockets::StormSocketInitSettings backend_settings;
 
-#ifndef _INCLUDEOS
   backend_settings.NumIOThreads = 1;
   backend_settings.NumSendThreads = 1;
-#endif
 
   backend_settings.MaxConnections = settings.m_MaxConnections;
 

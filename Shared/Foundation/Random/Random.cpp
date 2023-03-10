@@ -4,15 +4,8 @@
 #include <random>
 #include <chrono>
 
-#ifndef _INCLUDEOS
 static std::mt19937 s_RandomEngine(std::random_device{}());
 static std::mt19937_64 s_RandomEngine64(std::random_device{}());
-#else
-#include <ctime>
-
-static std::mt19937 s_RandomEngine(time(nullptr));
-static std::mt19937_64 s_RandomEngine64(time(nullptr));
-#endif
 
 uint32_t GetRandomNumber()
 {

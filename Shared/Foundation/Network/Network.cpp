@@ -26,12 +26,6 @@
 #include <fcntl.h>
 #endif
 
-#ifdef _INCLUDEOS
-
-#include <kernel/events.hpp>
-
-#endif
-
 #ifndef _WEB
 
 bool g_NetworkInitialized = false;
@@ -68,10 +62,8 @@ void NetworkInit()
   StormSockets::StormSocketInitSettings backend_settings;
   backend_settings.MaxConnections = kBackendMaxConnections;
 
-#ifndef _INCLUDEOS
   backend_settings.NumIOThreads = 1;
   backend_settings.NumSendThreads = 1;
-#endif
 
   backend_settings.HeapSize = 0;
   backend_settings.LoadSystemCertificates = true;
@@ -96,10 +88,6 @@ void NetworkUpdate()
   }
 
 #ifndef _WEB
-
-#ifdef _INCLUDEOS
-  Events::get().process_events();
-#endif
 
   StormSockets::StormSocketEventInfo event;
   while(g_NetworkFrontendWebsocket->GetEvent(event))
@@ -254,7 +242,7 @@ void NetworkShutdown()
 
 bool ProbePort(const char * host, int port, int timeout)
 {
-#if defined(_WEB) || defined(_INCLUDEOS)
+#if defined(_WEB)
   return false;
 #else
   auto host_info = gethostbyname(host);

@@ -164,7 +164,7 @@ int mbedtls_platform_entropy_poll( void *data,
     ssize_t read_len;
     ((void) data);
 
-#if defined(HAVE_GETRANDOM) && !defined(MBEDTLS_INCLUDEOS)
+#if defined(HAVE_GETRANDOM)
     if( has_getrandom == -1 )
         has_getrandom = ( check_version_3_17_plus() == 0 );
 

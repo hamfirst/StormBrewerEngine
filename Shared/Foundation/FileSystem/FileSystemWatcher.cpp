@@ -4,10 +4,8 @@
 #include "Foundation/FileSystem/Path.h"
 #include "Foundation/FileSystem/File.h"
 
-#ifndef _INCLUDEOS
 #include <filesystem>
 namespace fs = std::filesystem;
-#endif
 
 #ifdef _MSC_VER
 
@@ -49,7 +47,6 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
   m_Notify(notify),
   m_ExitThread(false)
 {
-#ifndef _INCLUDEOS
 
 #ifdef _MSC_VER
 
@@ -74,13 +71,10 @@ FileSystemWatcher::FileSystemWatcher(const std::string & root_path, Delegate<voi
 #endif
 
   m_NotifyThread = std::thread(&FileSystemWatcher::NotifyThread, this);
-
-#endif
 }
 
 FileSystemWatcher::~FileSystemWatcher()
 {
-#ifndef _INCLUDEOS
   m_ExitThread = true;
 
 #ifdef _MSC_VER
@@ -91,12 +85,10 @@ FileSystemWatcher::~FileSystemWatcher()
 #endif
 
   m_NotifyThread.join();
-#endif
 }
 
 Optional<std::tuple<FileSystemOperation, std::string, std::string, std::time_t>> FileSystemWatcher::GetFileChange()
 {
-#ifndef _INCLUDEOS
   std::lock_guard<std::mutex> lock(m_QueueMutex);
 
   if (m_FilesChanged.size() == 0)
@@ -108,10 +100,6 @@ Optional<std::tuple<FileSystemOperation, std::string, std::string, std::time_t>>
   m_FilesChanged.pop();
 
   return ret_val;
-#else
-
-  return {};
-#endif
 }
 
 bool FileSystemWatcher::IsInvisibleFile(const std::string & filename)
@@ -121,7 +109,6 @@ bool FileSystemWatcher::IsInvisibleFile(const std::string & filename)
 
 bool FileSystemWatcher::IsInvisiblePath(const std::string & path)
 {
-#ifndef _INCLUDEOS
   auto fs_path = fs::path(path);
   for(auto & sec : fs_path)
   {
@@ -130,14 +117,12 @@ bool FileSystemWatcher::IsInvisiblePath(const std::string & path)
       return true;
     }
   }
-#endif
 
   return false;
 }
 
 void FileSystemWatcher::IterateDirectory(const std::string & local_path, const std::string & root_dir, FileSystemDirectory & dir)
 {
-#ifndef _INCLUDEOS
   auto full_path = JoinPath(root_dir, local_path);
 
 #ifdef _LINUX
@@ -183,7 +168,6 @@ void FileSystemWatcher::IterateDirectory(const std::string & local_path, const s
       dir.m_Directories.emplace(std::make_pair(itr_filename, std::move(sub_dir)));
     }
   }
-#endif
 }
 
 NullOptPtr<FileSystemDirectory> FileSystemWatcher::GetDirectoryAtPath(const char * path, FileSystemDirectory & base)
@@ -304,19 +288,16 @@ Optional<std::pair<FileSystemDirectory *, FileSystemDirectory::FileIterator>> Fi
 void FileSystemWatcher::TriggerOperationForFile(const std::string & filename, const std::string & path,
   FileSystemOperation op, std::time_t last_write)
 {
-#ifndef _INCLUDEOS
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   m_FilesChanged.emplace(std::make_tuple(op, path, filename, last_write));
 
   lock.unlock();
 
   m_Notify();
-#endif
 }
 
 void FileSystemWatcher::TriggerOperationForDirectoryFiles(FileSystemDirectory & base, const std::string & base_path, FileSystemOperation op)
 {
-#ifndef _INCLUDEOS
   std::unique_lock<std::mutex> lock(m_QueueMutex);
   for (auto elem : base.m_Files)
   {
@@ -329,12 +310,10 @@ void FileSystemWatcher::TriggerOperationForDirectoryFiles(FileSystemDirectory & 
   {
     TriggerOperationForDirectoryFiles(*elem.second.get(), base_path + elem.first + "/", op);
   }
-#endif
 }
 
 void FileSystemWatcher::NotifyThread()
 {
-#ifndef _INCLUDEOS
   std::string last_change;
   uint32_t last_change_time = 0;
 
@@ -630,5 +609,4 @@ void FileSystemWatcher::NotifyThread()
     }
 #endif
   }
-#endif
 }

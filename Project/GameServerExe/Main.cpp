@@ -38,24 +38,9 @@
 #include <sys/types.h>
 #endif
 
-#ifdef _INCLUDEOS
-#include <service>
-#include <chrono>
-#include <timers>
-#include <debug>
-#include <memdisk>
-
-#include <net/inet>
-#include <kernel/os.hpp>
-
-int ReturnError(int err) { return err; }
-void UpdateServers(GameServer & game_server, FrameClock & frame_clock);
-
-#else
 #include <thread>
 
 int ReturnError(int err) { return err; }
-#endif
 
 double send_time;
 
@@ -68,21 +53,6 @@ void StormWebrtcStaticCleanup();
 
 int main(int argc, const char ** argv)
 {
-#ifdef _INCLUDEOS
-  printf("Waiting for network configuration\n");
-
-  auto & inet = net::Super_stack::get(0);
-  bool configured = false;
-
-  inet.on_config([&](auto & stack) { configured = true; });
-
-  while(configured == false)
-  {
-    OS::block();
-  }
-
-#endif
-
   printf("Starting server!\n");
 
   StormBootstrap bootstrap(argc, argv);
@@ -165,7 +135,7 @@ int main(int argc, const char ** argv)
     game_server_info.m_ExternalPort = external_port;
   }
 
-#if defined(_LINUX) && !defined(_INCLUDEOS)
+#if defined(_LINUX)
   FILE * fp = fopen("ServerExe.pid", "wt");
   auto pid = std::to_string(getpid());
   fprintf(fp, "%s", pid.data());
@@ -174,10 +144,6 @@ int main(int argc, const char ** argv)
 
 #ifdef _DEBUG
   g_LagSim = 0;
-
-#ifdef _INCLUDEOS
-  GDB_ENTRY;
-#endif
 #endif
 
   printf("Game Server\n");
@@ -218,8 +184,6 @@ int main(int argc, const char ** argv)
   static FrameClock frame_clock(1.0 / 60.0);
   frame_clock.Start();
 
-#ifndef _INCLUDEOS
-
   while (g_QuitServer == false && game_server.WantsToQuit() == false)
   {
     NetworkUpdate();
@@ -242,41 +206,5 @@ int main(int argc, const char ** argv)
   StormWebrtcStaticCleanup();
 #endif
 
-#else
-
-  UpdateServers(game_server, frame_clock);
-  printf("Server update loop started\n");
-#endif
-
   return 0;
 }
-
-
-#ifdef _INCLUDEOS
-
-void UpdateServers(GameServer & game_server, FrameClock & frame_clock)
-{
-  if(g_QuitServer)
-  {
-    return;
-  }
-
-  NetworkUpdate();
-  game_server.Update();
-
-  if (frame_clock.ShouldSkipFrameUpdate() == false)
-  {
-    frame_clock.BeginFrame();
-    game_server.GetGameInstanceManager().Update();
-  }
-
-  Timers::oneshot(
-		std::chrono::milliseconds(1),
-		[&](auto)
-		{
-		  UpdateServers(game_server, frame_clock);
-		}
-  );
-}
-
-#endif

@@ -26,10 +26,6 @@
  *  This file is part of mbed TLS (https://tls.mbed.org)
  */
 
-#ifdef _INCLUDEOS
-#define MBEDTLS_INCLUDEOS
-#endif
-
 #ifndef MBEDTLS_CONFIG_H
 #define MBEDTLS_CONFIG_H
 
@@ -246,10 +242,7 @@
  * You will need to provide a header "timing_alt.h" and an implementation at
  * compile time.
  */
-
-#ifdef MBEDTLS_INCLUDEOS
-#define MBEDTLS_TIMING_ALT
-#endif
+//#define MBEDTLS_TIMING_ALT
 
 /**
  * \def MBEDTLS_AES_ALT
@@ -1068,9 +1061,7 @@
  *
  * Enable the checkup functions (*_self_test).
  */
-#ifndef MBEDTLS_INCLUDEOS
 #define MBEDTLS_SELF_TEST
-#endif
 
 /**
  * \def MBEDTLS_SHA256_SMALLER
@@ -1429,9 +1420,7 @@
  *
  * Uncomment this to allow your own alternate threading implementation.
  */
-#ifndef MBEDTLS_INCLUDEOS
 #define MBEDTLS_THREADING_ALT
-#endif
 
 /**
  * \def MBEDTLS_THREADING_PTHREAD
@@ -2156,9 +2145,7 @@
  *
  * This module provides networking routines.
  */
-#ifndef MBEDTLS_INCLUDEOS
 #define MBEDTLS_NET_C
-#endif
 
 /**
  * \def MBEDTLS_OID_C
@@ -2522,9 +2509,7 @@
  *
  * Enable this layer to allow use of mutexes within mbed TLS
  */
-#ifndef MBEDTLS_INCLUDEOS
 #define MBEDTLS_THREADING_C
-#endif
 
 /**
  * \def MBEDTLS_TIMING_C

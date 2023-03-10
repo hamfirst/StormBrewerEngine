@@ -314,10 +314,8 @@ void StormBootstrap::InitNetwork()
     StormSockets::StormSocketInitSettings backend_settings;
     backend_settings.MaxConnections = kMaxConnections;
 
-#ifndef _INCLUDEOS
     backend_settings.NumIOThreads = 1;
     backend_settings.NumSendThreads = 1;
-#endif
 
     backend_settings.HeapSize = 0;
     backend_settings.LoadSystemCertificates = true;

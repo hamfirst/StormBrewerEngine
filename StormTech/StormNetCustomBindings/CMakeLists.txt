@@ -3,17 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/.. ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/External ${PROJECT_SOURCE_DIR}/Shared)
 set(CMAKE_CXX_STANDARD 17)
 
-if(INCLUDEOS)
-
-  add_definitions(-D_INCLUDEOS)
-
-  set(GENERIC_SRC_StormNetCustomBindings
-              ./NetClientBackendWebsocket.cpp
-              ./NetServerBackendWebsocket.cpp
-              ./NetTransmitterServerWebsocket.cpp
-              ./NetTransmitterClientWebsocket.cpp
-              )
-elseif(WEB)
+if(WEB)
   set(GENERIC_SRC_StormNetCustomBindings
               ./NetClientBackendWebrtc.cpp
               ./NetClientBackendWebsocket.cpp

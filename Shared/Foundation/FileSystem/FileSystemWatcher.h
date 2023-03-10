@@ -7,10 +7,7 @@
 #include <queue>
 #include <unordered_map>
 #include <chrono>
-
-#ifndef _INCLUDEOS
 #include <filesystem>
-#endif
 
 #include "Foundation/Optional/NullOpt.h"
 #include "Foundation/Optional/Optional.h"
@@ -70,10 +67,8 @@ private:
 
   Delegate<void> m_Notify;
 
-#ifndef _INCLUDEOS
   std::mutex m_QueueMutex;
   std::thread m_NotifyThread;
-#endif
 
   std::queue<std::tuple<FileSystemOperation, std::string, std::string, std::time_t>> m_FilesChanged;
 
