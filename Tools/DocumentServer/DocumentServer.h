@@ -18,6 +18,7 @@
 #include "Foundation/Document/Document.h"
 #include "Foundation/Document/DocumentCompiler.h"
 #include "Foundation/FileSystem/FileSystemWatcher.h"
+#include "StormSockets/StormSocketServerTypes.h"
 
 namespace StormSockets
 {
@@ -87,6 +88,22 @@ private:
   void SendMessageToClient(DocumentClientMessageType type, StormSockets::StormSocketConnectionId client_id, uint32_t document_id, const std::string & packet);
 
   void VCSThread();
+
+
+  void HandleCompilerClientConnect(StormSockets::StormSocketEventInfo & event_info);
+  void HandleCompilerClientData(StormSockets::StormSocketEventInfo & event_info);
+  void HandleCompilerClientDisconnect(StormSockets::StormSocketEventInfo & event_info);
+
+  void HandleDocumentClientConnected(const StormSockets::StormSocketEventInfo & event_info);
+  void HandleDocumentClientData(StormSockets::StormSocketEventInfo & event_info);
+  void HandleDocumentClientDisconnected(StormSockets::StormSocketEventInfo & event_info);
+
+  void HandleAssetClientData(StormSockets::StormSocketEventInfo & event_info);
+  void HandleAssetClientDisconnect(StormSockets::StormSocketEventInfo & event_info);
+
+  void HandleReloadClientConnected(const StormSockets::StormSocketEventInfo & event_info);
+  void HandleReloadClientDisconnected(StormSockets::StormSocketEventInfo & event_info);
+
 private:
 
   std::string m_RootPath;
@@ -132,4 +149,8 @@ private:
   StormSockets::StormMessageQueue<DocumentServerVCSOperation> m_CheckoutResponses;
   StormSockets::StormMessageQueue<DocumentServerVCSQuery> m_StatusQueries;
   StormSockets::StormMessageQueue<DocumentServerVCSQuery> m_StatusQueryResponses;
+
+  void ProcessFileSystemChanges();
+
+  void ProcessVersionControl();
 };

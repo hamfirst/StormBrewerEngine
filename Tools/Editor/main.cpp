@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
   QSurfaceFormat::setDefaultFormat(format);
 
   QApplication a(argc, argv);
-  a.setStyleSheet(g_QtStyle);
+  //a.setStyleSheet(g_QtStyle);
 
   EditorContainer w;
 

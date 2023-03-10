@@ -107,20 +107,16 @@ DocumentServer::~DocumentServer()
 
 void DocumentServer::Run()
 {
-  std::vector<char> recv_buffer;
   while (m_Quit == false)
   {
-    StormSockets::StormSocketEventInfo event_info;
     m_Semaphore.WaitOne();
-    
+
+    StormSockets::StormSocketEventInfo event_info;
     while (m_DocServerFrontend->GetEvent(event_info))
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientConnected)
       {
-        Log("Got document server connection");
-
-        uint32_t connection_id = event_info.ConnectionId;
-        m_DocServerClients.emplace(std::make_pair(connection_id, DocumentServerClientInfo{}));
+        HandleDocumentClientConnected(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::ClientHandShakeCompleted)
       {
@@ -128,53 +124,11 @@ void DocumentServer::Run()
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Data)
       {
-        if (m_RecvBufferSize < event_info.GetWebsocketReader().GetDataLength() + 1)
-        {
-          m_RecvBuffer = std::make_unique<char[]>(event_info.GetWebsocketReader().GetDataLength() + 1);
-          m_RecvBufferSize = event_info.GetWebsocketReader().GetDataLength() + 1;
-        }
-
-        int packet_length = event_info.GetWebsocketReader().GetDataLength();
-        m_RecvBuffer[packet_length] = 0;
-
-        event_info.GetWebsocketReader().ReadByteBlock(m_RecvBuffer.get(), event_info.GetWebsocketReader().GetDataLength());
-        ProcessMessage(event_info.ConnectionId, m_RecvBuffer.get(), event_info.GetWebsocketReader().GetDataLength());
+        HandleDocumentClientData(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        Log("Lost document server connection");
-
-        uint32_t connection_id = event_info.ConnectionId;
-        auto client_itr = m_DocServerClients.find(connection_id);
-        if (client_itr != m_DocServerClients.end())
-        {
-          for (auto & doc : client_itr->second.m_DocumentList)
-          {
-            auto doc_itr = m_OpenDocuments.find(doc.m_FileId);
-            if (doc_itr != m_OpenDocuments.end())
-            {
-              for (std::size_t index = 0, end = doc_itr->second.m_Connections.size(); index < end; index++)
-              {
-                if (doc_itr->second.m_Connections[index].m_ConnectionId == connection_id)
-                {
-                  vremove_index_quick(doc_itr->second.m_Connections, index);
-                  break;
-                }
-              }
-
-              if (doc_itr->second.m_Connections.size() == 0)
-              {
-                doc_itr->second.m_Document->Save(m_RootPath);
-                doc_itr->second.m_Document->DecRef();
-                m_OpenDocuments.erase(doc_itr);
-              }
-            }
-          }
-
-          m_DocServerClients.erase(client_itr);
-        }
-
-        m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+        HandleDocumentClientDisconnected(event_info);
       }
     }
 
@@ -186,59 +140,11 @@ void DocumentServer::Run()
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Data)
       {
-        recv_buffer.resize(event_info.GetWebsocketReader().GetDataLength() + 1);
-        event_info.GetWebsocketReader().ReadByteBlock(recv_buffer.data(), event_info.GetWebsocketReader().GetDataLength());
-        recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;        
-
-        char * path = recv_buffer.data();
-
-        auto full_path = GetFullPath(path);
-        Hash file_hash = crc32(full_path);
-
-        auto cache_itr = m_CachedAssets.find(file_hash);
-        if (cache_itr == m_CachedAssets.end())
-        {
-          File file = FileOpen(full_path.data(), FileOpenMode::kRead);
-
-          if (file.GetFileOpenError())
-          {
-            char error_str[20];
-            int str_len = snprintf(error_str, sizeof(error_str), "%d", file.GetFileOpenError());
-
-            auto response = m_AssetServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
-            response.WriteByteBlock(error_str, 0, str_len);
-            m_AssetServerFrontend->FinalizeOutgoingPacket(response);
-            m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
-            m_AssetServerFrontend->FreeOutgoingPacket(response);
-
-            Log("Error File %s", path);
-            continue;
-          }
-          else
-          {
-            auto result = m_CachedAssets.emplace(std::make_pair(file_hash, file.ReadFileFull()));
-            cache_itr = result.first;
-
-            if(m_AddedAssets.find(file_hash) == m_AddedAssets.end())
-            {
-              m_AddRequests.Enqueue(path);
-              m_AddedAssets.emplace(file_hash);
-            }
-          }
-        }
-
-        auto response = m_AssetServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
-        response.WriteByteBlock(cache_itr->second.Get(), 0, cache_itr->second.GetSize());
-        m_AssetServerFrontend->FinalizeOutgoingPacket(response);
-        m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
-        m_AssetServerFrontend->FreeOutgoingPacket(response);
-
-        Log("Served File %s", path);
+        HandleAssetClientData(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        Log("Lost asset server connection");
-        m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+        HandleAssetClientDisconnect(event_info);
       }
     }
 
@@ -246,14 +152,11 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientHandShakeCompleted)
       {
-        Log("Got reload server connection");
-        m_ReloadConnections.push_back(event_info.ConnectionId);
+        HandleReloadClientConnected(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        vremove_quick(m_ReloadConnections, event_info.ConnectionId);
-        m_ReloadServerFrontend->FinalizeConnection(event_info.ConnectionId);
-        Log("Lost reload server connection");
+        HandleReloadClientDisconnected(event_info);
       }
     }
 
@@ -261,218 +164,160 @@ void DocumentServer::Run()
     {
       if (event_info.Type == StormSockets::StormSocketEventType::ClientConnected)
       {
-        Log("Got compiler server connection");
-
-        m_CompileServerClients.emplace(std::make_pair(event_info.ConnectionId, CompilerServerClientInfo{ event_info.ConnectionId }));
+        HandleCompilerClientConnect(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Data)
       {
-        recv_buffer.resize(event_info.GetWebsocketReader().GetDataLength() + 1);
-        event_info.GetWebsocketReader().ReadByteBlock(recv_buffer.data(), event_info.GetWebsocketReader().GetDataLength());
-        recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;
-
-        char * path = recv_buffer.data();
-        auto path_hash = crc32lowercase(path);
-
-        Log("Got compiler server request: %s", path);
-
-        Document * document = nullptr;
-
-        auto client_info = m_CompileServerClients.find(event_info.ConnectionId);
-        if (client_info == m_CompileServerClients.end())
-        {
-          return;
-        }
-
-        for(auto & elem : client_info->second.m_FileIds)
-        {
-          if (elem.second == path_hash)
-          {
-            document = elem.first;
-            break;
-          }
-        }
-
-        if (document == nullptr)
-        {
-          document = m_DocumentCompiler.GetDocument(path);
-          document->AddRef();
-          client_info->second.m_FileIds.emplace_back(std::make_pair(document, path_hash));
-        }
-
-        if (document->GetState() != DocumentState::kLoaded)
-        {
-          auto response = m_CompilerServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
-          m_CompilerServerFrontend->FinalizeOutgoingPacket(response);
-          m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
-          m_CompilerServerFrontend->FreeOutgoingPacket(response);
-
-          Log("Error File %s", path);
-          continue;
-        }
-
-        auto json = document->GetDocumentJson();
-
-        auto response = m_CompilerServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
-        response.WriteByteBlock(json.data(), 0, json.size());
-        m_CompilerServerFrontend->FinalizeOutgoingPacket(response);
-        m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
-        m_CompilerServerFrontend->FreeOutgoingPacket(response);
-
-        Log("Served File %s", path);
+        HandleCompilerClientData(event_info);
       }
       else if (event_info.Type == StormSockets::StormSocketEventType::Disconnected)
       {
-        auto client_info = m_CompileServerClients.find(event_info.ConnectionId);
-        if (client_info != m_CompileServerClients.end())
-        {
-          for (auto elem : client_info->second.m_FileIds)
-          {
-            elem.first->DecRef();
-          }
-
-          m_CompileServerClients.erase(client_info);
-        }
-
-        Log("Lost compiler server connection");
-        m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+        HandleCompilerClientDisconnect(event_info);
       }
     }
 
-    while (true)
+    ProcessFileSystemChanges();
+    ProcessVersionControl();
+  }
+}
+
+void DocumentServer::ProcessVersionControl()
+{
+  DocumentServerVCSQuery query;
+  while(m_StatusQueryResponses.TryDequeue(query))
+  {
+    // Do something with these?
+  }
+
+  DocumentServerVCSOperation resp;
+  while(m_AddResponses.TryDequeue(resp))
+  {
+    if(resp.m_Success)
     {
-      auto changed_file = m_FilesystemWatcher->GetFileChange();
-      if (!changed_file)
-      {
-        break;
-      }
-
-      auto type = std::get<0>(changed_file.Value());
-      auto path = std::get<1>(changed_file.Value());
-      auto file = std::get<2>(changed_file.Value());
-      auto last_modified = std::get<3>(changed_file.Value());
-
-      switch (type)
-      {
-      case FileSystemOperation::kAdd:
-        Log("Added File %s", file.data());
-        m_FileNameDatabase.Insert(file.data(), path.data());
-        break;
-      case FileSystemOperation::kDelete:
-        Log("Removed File %s", file.data());
-        m_FileNameDatabase.Remove(file.data(), path.data());
-        HandleDocumentRemoved(path.data());
-        break;
-      case FileSystemOperation::kModify:
-        Log("Modified File %s", file.data());
-        HandleDocumentModified(path.data(), last_modified);
-        break;
-      default:
-        break;
-      }
-
-      auto full_path = GetFullPath(path);
-      Hash file_hash = crc32(full_path);
-      auto itr = m_CachedAssets.find(file_hash);
-
-      if (itr != m_CachedAssets.end())
-      {
-        if (type == FileSystemOperation::kDelete)
-        {
-          m_CachedAssets.erase(itr);
-        }
-        else
-        {
-          bool retry = true;
-          int attempts = 0;
-          while (retry)
-          {
-            File file = FileOpen(full_path.data(), FileOpenMode::kRead);
-
-            if (file.GetFileOpenError())
-            {
-              if (file.GetFileOpenError() != 13)
-              {
-                Log("Error File %s", path.data());
-                retry = false;
-                break;
-              }
-
-              attempts++;
-              if (attempts > 10)
-              {
-                Log("Error File %s", path.data());
-                retry = false;
-                break;
-              }
-
-              std::this_thread::sleep_for(std::chrono::milliseconds(1));
-              continue;
-            }
-            else
-            {
-              itr->second = file.ReadFileFull();
-              break;
-            }
-          }
-
-          if (retry == false)
-          {
-            continue;
-          }
-        }
-      }
-
-      auto response = m_ReloadServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
-      auto reload_packet = path;
-      response.WriteByteBlock(reload_packet.data(), 0, reload_packet.size());
-      m_ReloadServerFrontend->FinalizeOutgoingPacket(response);
-
-      for (auto connection_id : m_ReloadConnections)
-      {
-        m_ReloadServerFrontend->SendPacketToConnection(response, connection_id);
-        Log("Served file change: %s", reload_packet.data());
-      }
-
-      m_ReloadServerFrontend->FreeOutgoingPacket(response);
+      Log("VCS Added file %s", resp.m_FilePath.c_str());
     }
+  }
 
-    DocumentServerVCSQuery query;
-    while(m_StatusQueryResponses.TryDequeue(query))
+  while(m_CheckoutResponses.TryDequeue(resp))
+  {
+    auto itr = m_OpenDocuments.find(crc32(resp.m_FilePath));
+    if(itr != m_OpenDocuments.end())
     {
-      // Do something with these?
-    }
-
-    DocumentServerVCSOperation resp;
-    while(m_AddResponses.TryDequeue(resp))
-    {
-      if(resp.m_Success)
+      if (resp.m_Success)
       {
-        Log("VCS Added file %s", resp.m_FilePath.c_str());
+        itr->second.m_Document->Save(m_RootPath);
       }
-    }
-
-    while(m_CheckoutResponses.TryDequeue(resp))
-    {
-      auto itr = m_OpenDocuments.find(crc32(resp.m_FilePath));
-      if(itr != m_OpenDocuments.end())
+      else
       {
-        if (resp.m_Success)
+        for(auto & con : itr->second.m_Connections)
         {
-          itr->second.m_Document->Save(m_RootPath);
-        }
-        else
-        {
-          for(auto & con : itr->second.m_Connections)
-          {
-            SendMessageToClient(DocumentClientMessageType::kCheckoutError, con.m_ConnectionId, con.m_DocumentId, resp.m_FilePath);
-          }
+          SendMessageToClient(DocumentClientMessageType::kCheckoutError, con.m_ConnectionId, con.m_DocumentId, resp.m_FilePath);
         }
       }
     }
   }
 }
 
+void DocumentServer::ProcessFileSystemChanges()
+{
+  while (true)
+  {
+    auto changed_file = m_FilesystemWatcher->GetFileChange();
+    if (!changed_file)
+    {
+      break;
+    }
+
+    auto type = std::get<0>(changed_file.Value());
+    auto path = std::get<1>(changed_file.Value());
+    auto file = std::get<2>(changed_file.Value());
+    auto last_modified = std::get<3>(changed_file.Value());
+
+    switch (type)
+    {
+    case FileSystemOperation::kAdd:
+      Log("Added File %s", file.data());
+      m_FileNameDatabase.Insert(file.data(), path.data());
+      break;
+    case FileSystemOperation::kDelete:
+      Log("Removed File %s", file.data());
+      m_FileNameDatabase.Remove(file.data(), path.data());
+      HandleDocumentRemoved(path.data());
+      break;
+    case FileSystemOperation::kModify:
+      Log("Modified File %s", file.data());
+      HandleDocumentModified(path.data(), last_modified);
+      break;
+    default:
+      break;
+    }
+
+    auto full_path = GetFullPath(path);
+    Hash file_hash = crc32(full_path);
+    auto itr = m_CachedAssets.find(file_hash);
+
+    if (itr != m_CachedAssets.end())
+    {
+      if (type == FileSystemOperation::kDelete)
+      {
+        m_CachedAssets.erase(itr);
+      }
+      else
+      {
+        bool retry = true;
+        int attempts = 0;
+        while (retry)
+        {
+          File file = FileOpen(full_path.data(), FileOpenMode::kRead);
+
+          if (file.GetFileOpenError())
+          {
+            if (file.GetFileOpenError() != 13)
+            {
+              Log("Error File %s", path.data());
+              retry = false;
+              break;
+            }
+
+            attempts++;
+            if (attempts > 10)
+            {
+              Log("Error File %s", path.data());
+              retry = false;
+              break;
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            continue;
+          }
+          else
+          {
+            itr->second = file.ReadFileFull();
+            break;
+          }
+        }
+
+        if (retry == false)
+        {
+          continue;
+        }
+      }
+    }
+
+    auto response = m_ReloadServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
+    auto reload_packet = path;
+    response.WriteByteBlock(reload_packet.data(), 0, reload_packet.size());
+    m_ReloadServerFrontend->FinalizeOutgoingPacket(response);
+
+    for (auto connection_id : m_ReloadConnections)
+    {
+      m_ReloadServerFrontend->SendPacketToConnection(response, connection_id);
+      Log("Served file change: %s", reload_packet.data());
+    }
+
+    m_ReloadServerFrontend->FreeOutgoingPacket(response);
+  }
+}
 
 void DocumentServer::Log(const char * fmt, ...)
 {
@@ -534,7 +379,7 @@ void DocumentServer::HandleDocumentChange(uint32_t file_hash, Document * documen
   auto change_itr = m_PendingChangedDocuments.find(document->GetFileId());
   if (change_itr == m_PendingChangedDocuments.end())
   {
-    m_PendingChangedDocuments.emplace(std::make_pair(file_hash, &doc_itr->second));
+    m_PendingChangedDocuments.emplace(file_hash, &doc_itr->second);
   }
 }
 
@@ -1104,4 +949,219 @@ void DocumentServer::VCSThread()
       m_CheckoutResponses.Enqueue(std::move(resp));
     }
   }
+}
+
+
+void DocumentServer::HandleCompilerClientConnect(StormSockets::StormSocketEventInfo & event_info)
+{
+  Log("Got compiler server connection");
+  m_CompileServerClients.emplace(event_info.ConnectionId, CompilerServerClientInfo{event_info.ConnectionId });
+}
+
+void DocumentServer::HandleCompilerClientData(StormSockets::StormSocketEventInfo & event_info)
+{
+  std::vector<char> recv_buffer;
+  recv_buffer.resize(event_info.GetWebsocketReader().GetDataLength() + 1);
+  event_info.GetWebsocketReader().ReadByteBlock(recv_buffer.data(), event_info.GetWebsocketReader().GetDataLength());
+  recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;
+
+  char * path = recv_buffer.data();
+  auto path_hash = crc32lowercase(path);
+
+  Log("Got compiler server request: %s", path);
+
+  Document * document = nullptr;
+
+  auto client_info = m_CompileServerClients.find(event_info.ConnectionId);
+  if (client_info == m_CompileServerClients.end())
+  {
+    Log("Ignoring request due to client not in active clients list");
+    return;
+  }
+
+  for(auto & elem : client_info->second.m_FileIds)
+  {
+    if (elem.second == path_hash)
+    {
+      document = elem.first;
+      break;
+    }
+  }
+
+  if (document == nullptr)
+  {
+    document = m_DocumentCompiler.GetDocument(path);
+    document->AddRef();
+    client_info->second.m_FileIds.emplace_back(document, path_hash);
+  }
+
+  if (document->GetState() != DocumentState::kLoaded)
+  {
+    auto response = m_CompilerServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
+    m_CompilerServerFrontend->FinalizeOutgoingPacket(response);
+    m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
+    m_CompilerServerFrontend->FreeOutgoingPacket(response);
+
+    Log("Error File %s", path);
+    return;
+  }
+
+  auto json = document->GetDocumentJson();
+
+  auto response = m_CompilerServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
+  response.WriteByteBlock(json.data(), 0, json.size());
+  m_CompilerServerFrontend->FinalizeOutgoingPacket(response);
+  m_CompilerServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
+  m_CompilerServerFrontend->FreeOutgoingPacket(response);
+
+  Log("Served File %s", path);
+}
+
+void DocumentServer::HandleCompilerClientDisconnect(StormSockets::StormSocketEventInfo & event_info)
+{
+  auto client_info = m_CompileServerClients.find(event_info.ConnectionId);
+  if (client_info != m_CompileServerClients.end())
+  {
+    for (auto elem : client_info->second.m_FileIds)
+    {
+      elem.first->DecRef();
+    }
+
+    m_CompileServerClients.erase(client_info);
+  }
+
+  Log("Lost compiler server connection");
+  m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+}
+
+void DocumentServer::HandleDocumentClientConnected(const StormSockets::StormSocketEventInfo & event_info)
+{
+  Log("Got document server connection");
+
+  uint32_t connection_id = event_info.ConnectionId;
+  m_DocServerClients.emplace(connection_id, DocumentServerClientInfo{});
+}
+
+void DocumentServer::HandleDocumentClientData(StormSockets::StormSocketEventInfo & event_info)
+{
+  if (m_RecvBufferSize < event_info.GetWebsocketReader().GetDataLength() + 1)
+  {
+    m_RecvBuffer = std::make_unique<char[]>(event_info.GetWebsocketReader().GetDataLength() + 1);
+    m_RecvBufferSize = event_info.GetWebsocketReader().GetDataLength() + 1;
+  }
+
+  int packet_length = event_info.GetWebsocketReader().GetDataLength();
+  m_RecvBuffer[packet_length] = 0;
+
+  event_info.GetWebsocketReader().ReadByteBlock(m_RecvBuffer.get(), event_info.GetWebsocketReader().GetDataLength());
+  ProcessMessage(event_info.ConnectionId, m_RecvBuffer.get(), event_info.GetWebsocketReader().GetDataLength());
+}
+
+void DocumentServer::HandleDocumentClientDisconnected(StormSockets::StormSocketEventInfo & event_info)
+{
+  Log("Lost document server connection");
+
+  uint32_t connection_id = event_info.ConnectionId;
+  auto client_itr = m_DocServerClients.find(connection_id);
+  if (client_itr != m_DocServerClients.end())
+  {
+    for (auto & doc : client_itr->second.m_DocumentList)
+    {
+      auto doc_itr = m_OpenDocuments.find(doc.m_FileId);
+      if (doc_itr != m_OpenDocuments.end())
+      {
+        for (std::size_t index = 0, end = doc_itr->second.m_Connections.size(); index < end; index++)
+        {
+          if (doc_itr->second.m_Connections[index].m_ConnectionId == connection_id)
+          {
+            vremove_index_quick(doc_itr->second.m_Connections, index);
+            break;
+          }
+        }
+
+        if (doc_itr->second.m_Connections.empty())
+        {
+          doc_itr->second.m_Document->Save(m_RootPath);
+          doc_itr->second.m_Document->DecRef();
+          m_OpenDocuments.erase(doc_itr);
+        }
+      }
+    }
+
+    m_DocServerClients.erase(client_itr);
+  }
+
+  m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+}
+
+void DocumentServer::HandleAssetClientData(StormSockets::StormSocketEventInfo & event_info)
+{
+  std::vector<char> recv_buffer;
+  recv_buffer.resize(event_info.GetWebsocketReader().GetDataLength() + 1);
+  event_info.GetWebsocketReader().ReadByteBlock(recv_buffer.data(), event_info.GetWebsocketReader().GetDataLength());
+  recv_buffer[event_info.GetWebsocketReader().GetDataLength()] = 0;
+
+  char * path = recv_buffer.data();
+
+  auto full_path = GetFullPath(path);
+  Hash file_hash = crc32(full_path);
+
+  auto cache_itr = m_CachedAssets.find(file_hash);
+  if (cache_itr == m_CachedAssets.end())
+  {
+    File file = FileOpen(full_path.data(), FileOpenMode::kRead);
+
+    if (file.GetFileOpenError())
+    {
+      char error_str[20];
+      int str_len = snprintf(error_str, sizeof(error_str), "%d", file.GetFileOpenError());
+
+      auto response = m_AssetServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Text, true);
+      response.WriteByteBlock(error_str, 0, str_len);
+      m_AssetServerFrontend->FinalizeOutgoingPacket(response);
+      m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
+      m_AssetServerFrontend->FreeOutgoingPacket(response);
+
+      Log("Error File %s", path);
+      return;
+    }
+    else
+    {
+      auto result = m_CachedAssets.emplace(file_hash, file.ReadFileFull());
+      cache_itr = result.first;
+
+      if(m_AddedAssets.find(file_hash) == m_AddedAssets.end())
+      {
+        m_AddRequests.Enqueue(path);
+        m_AddedAssets.emplace(file_hash);
+      }
+    }
+  }
+
+  auto response = m_AssetServerFrontend->CreateOutgoingPacket(StormSockets::StormSocketWebsocketDataType::Binary, true);
+  response.WriteByteBlock(cache_itr->second.Get(), 0, cache_itr->second.GetSize());
+  m_AssetServerFrontend->FinalizeOutgoingPacket(response);
+  m_AssetServerFrontend->SendPacketToConnection(response, event_info.ConnectionId);
+  m_AssetServerFrontend->FreeOutgoingPacket(response);
+
+  Log("Served File %s", path);
+}
+
+void DocumentServer::HandleAssetClientDisconnect(StormSockets::StormSocketEventInfo & event_info)
+{
+  Log("Lost asset server connection");
+  m_DocServerFrontend->FinalizeConnection(event_info.ConnectionId);
+}
+
+void DocumentServer::HandleReloadClientConnected(const StormSockets::StormSocketEventInfo & event_info)
+{
+  Log("Got reload server connection");
+  m_ReloadConnections.push_back(event_info.ConnectionId);
+}
+
+void DocumentServer::HandleReloadClientDisconnected(StormSockets::StormSocketEventInfo & event_info)
+{
+  vremove_quick(m_ReloadConnections, event_info.ConnectionId);
+  m_ReloadServerFrontend->FinalizeConnection(event_info.ConnectionId);
+  Log("Lost reload server connection");
 }
