@@ -2,8 +2,8 @@
 #pragma once
 
 #include "Game/GameCommon.h"
-#include "Game/GameServerTypes.h"
-#include "Game/GameNetworkData.refl.h"
+#include "Game/GameTypes.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 enum class STORM_REFL_ENUM CharacterFacing
 {

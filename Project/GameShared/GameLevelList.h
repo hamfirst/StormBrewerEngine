@@ -4,8 +4,8 @@
 
 #include "GameShared/GameLevelListAsset.refl.h"
 
-#include "Game/GameNetworkData.refl.h"
-#include "Game/GameStage.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
+#include "Game/Stage/GameStage.h"
 
 #include "Runtime/Map/MapResource.h"
 #include "Runtime/GenericResource/GenericResource.h"

@@ -2,9 +2,9 @@
 #include "GameServer/GameClientConnection.h"
 #include "GameServer/GameServer.h"
 
-#include "Game/GameNetworkData.refl.meta.h"
-#include "Game/GameFullState.refl.meta.h"
-#include "Game/GameMessages.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
 
 GameClientConnection::GameClientConnection(GameServer & server, uint32_t connection_id, ServerProtocol & protocol) :
   m_Server(server),

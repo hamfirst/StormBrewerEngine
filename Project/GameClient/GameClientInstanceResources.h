@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 class GameClientInstanceResources
 {

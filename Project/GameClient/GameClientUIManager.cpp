@@ -6,9 +6,9 @@
 #include "GameClient/GameClientSystems.h"
 #include "GameClient/GameClientUIData.refl.meta.h"
 
-#include "Game/GameNetworkEvents.refl.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
-#include "Game/Configs/GameConfig.refl.h"
+#include "Game/GameController/Config/GameConfig.refl.h"
 
 #include "Engine/Window/Window.h"
 #include "Engine/Input/ControlId.h"

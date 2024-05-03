@@ -5,9 +5,9 @@
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/Systems/GameLogicSystems.h"
 
-#include "Game/GameServerEventSender.h"
-#include "Game/GameStage.h"
-#include "Game/GameCollision.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/Stage/GameStage.h"
+#include "Game/Stage/GameCollision.refl.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.meta.h"
@@ -16,8 +16,8 @@
 
 #include "Game/ServerObjects/Projectile/ProjectileServerObject.refl.meta.h"
 
-#include "Game/Configs/PlayerConfig.refl.meta.h"
-#include "Game/Configs/ProjectileConfig.refl.meta.h"
+#include "Game/ServerObjects/Player/Config/PlayerConfig.refl.meta.h"
+#include "Game/ServerObjects/Projectile/Config/ProjectileConfig.refl.meta.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Entity/EntityResource.h"

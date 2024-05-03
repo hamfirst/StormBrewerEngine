@@ -5,8 +5,8 @@
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/Systems/GameLogicSystems.h"
 
-#include "Game/GameServerEventSender.h"
-#include "Game/GameStage.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/Stage/GameStage.h"
 #include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 
 #include "Runtime/ServerObject/ServerObject.h"

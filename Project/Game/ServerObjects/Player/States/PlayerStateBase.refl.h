@@ -4,10 +4,10 @@
 #include "StormNet/NetReflectionTypeDatabase.h"
 
 #include "Game/GameCommon.h"
-#include "Game/GameServerTypes.h"
+#include "Game/GameTypes.h"
 #include "GameShared/GameLogicContainer.h"
 
-#include "Game/Configs/PlayerConfig.refl.h"
+#include "Game/ServerObjects/Player/Config/PlayerConfig.refl.h"
 
 #include "Runtime/Event/EventHandler.h"
 #include "Runtime/Config/ConfigResource.h"

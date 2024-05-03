@@ -5,8 +5,8 @@
 #include "PlayerServerObject.refl.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.meta.h"
 #include "Game/ServerObjects/Player/States/PlayerStateBase.refl.meta.h"
-#include "Game/Data/DealDamageAnimationEvent.refl.meta.h"
-#include "Game/Configs/PlayerConfig.refl.meta.h"
+#include "Game/AnimationEvents/DealDamageAnimationEvent.refl.meta.h"
+#include "Game/ServerObjects/Player/Config/PlayerConfig.refl.meta.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
 
 

@@ -253,7 +253,7 @@ bool DDSNodeState::GotMessageFromCoordinator(DDSCoordinatorProtocolMessageType c
 {
   if (coordinator_type == DDSCoordinatorProtocolMessageType::kSyncAllClear)
   {
-    DDSCoordinatorSyncAllClear msg;
+    DDSCoordinatorSyncAllClear msg = {};
     if (StormReflParseJson(msg, data) == false)
     {
       DDSLog::LogError("Invalid coordinator message");
@@ -415,7 +415,7 @@ void DDSNodeState::GotMessageFromServer(DDSNodeId node_id, DDSServerToServerMess
   }
   else if (type == DDSServerToServerMessageType::kDestroySharedLocalCopySubscription)
   {
-    DDSDestroySharedLocalCopySubscription sub_info;
+    DDSDestroySharedLocalCopySubscription sub_info = {};
     if (StormReflParseJson(sub_info, data) == false)
     {
       DDSLog::LogError("Invalid targeted message");
@@ -426,7 +426,7 @@ void DDSNodeState::GotMessageFromServer(DDSNodeId node_id, DDSServerToServerMess
   }
   else if (type == DDSServerToServerMessageType::kSharedLocalCopyInit)
   {
-    DDSSharedLocalCopyInit sub_info;
+    DDSSharedLocalCopyInit sub_info = {};
     if (StormReflParseJson(sub_info, data) == false)
     {
       DDSLog::LogError("Invalid targeted message");
@@ -443,7 +443,7 @@ void DDSNodeState::GotMessageFromServer(DDSNodeId node_id, DDSServerToServerMess
   }
   else if (type == DDSServerToServerMessageType::kSharedLocalCopyHostDestroyed)
   {
-    DDSSharedLocalCopyHostDestroyed sub_info;
+    DDSSharedLocalCopyHostDestroyed sub_info = {};
     if (StormReflParseJson(sub_info, data) == false)
     {
       DDSLog::LogError("Invalid targeted message");
@@ -494,7 +494,7 @@ void DDSNodeState::GotMessageFromServer(DDSNodeId node_id, DDSServerToServerMess
   }
   else if (type == DDSServerToServerMessageType::kSharedLocalCopyAck)
   {
-    DDSSharedLocalCopyAck sub_info;
+    DDSSharedLocalCopyAck sub_info = {};
     if (StormReflParseJson(sub_info, data) == false)
     {
       DDSLog::LogError("Invalid targeted message");
@@ -505,7 +505,7 @@ void DDSNodeState::GotMessageFromServer(DDSNodeId node_id, DDSServerToServerMess
   }
   else if (type == DDSServerToServerMessageType::kSharedLocalCopyDatabaseDump)
   {
-    DDSSharedLocalCopyDatabaseDump db_dump;
+    DDSSharedLocalCopyDatabaseDump db_dump = {};
 
     if (StormReflParseJson(db_dump, data) == false)
     {
@@ -580,8 +580,8 @@ void DDSNodeState::SendTargetedMessage(DDSDataObjectAddress addr, DDSServerToSer
     }
   }
 
-  auto result = m_PendingTargetedMessages.emplace(std::make_pair(addr, std::vector<std::pair<DDSServerToServerMessageType, std::string>>{}));
-  result.first->second.emplace_back(std::make_pair(type, message));
+  auto result = m_PendingTargetedMessages.emplace(addr, std::vector<std::pair<DDSServerToServerMessageType, std::string>>{});
+  result.first->second.emplace_back(type, message);
 }
 
 DDSRoutingTableNodeInfo DDSNodeState::GetNodeInfo(DDSKey key)
@@ -611,7 +611,7 @@ void * DDSNodeState::GetLocalObject(int target_object_type, DDSKey target_key)
   {
     if (m_IncomingKeyspace.IsComplete())
     {
-      m_DataObjectList[target_object_type]->GetDataObjectForKey(target_key);
+      return m_DataObjectList[target_object_type]->GetDataObjectForKey(target_key);
     }
   }
 
@@ -1071,7 +1071,7 @@ void DDSNodeState::EndQueueingMessages()
     {
       bool got_message = false;
 
-      while (m_QueuedTargetedMessages[0].size())
+      while (!m_QueuedTargetedMessages[0].empty())
       {
         auto & message = m_QueuedTargetedMessages[0].front();
         SendTargetedMessage(std::get<0>(message), std::get<1>(message), std::move(std::get<2>(message)), true);
@@ -1080,7 +1080,7 @@ void DDSNodeState::EndQueueingMessages()
 
       for (int index = 1; index < (int)DDSDataObjectPriority::kCount; index++)
       {
-        if (m_QueuedTargetedMessages[index].size())
+        if (!m_QueuedTargetedMessages[index].empty())
         {
           auto & message = m_QueuedTargetedMessages[index].front();
           SendTargetedMessage(std::get<0>(message), std::get<1>(message), std::move(std::get<2>(message)), true);

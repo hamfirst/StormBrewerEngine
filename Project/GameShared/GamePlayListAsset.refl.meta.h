@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "GamePlayListAsset.refl.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 
 
 template <>

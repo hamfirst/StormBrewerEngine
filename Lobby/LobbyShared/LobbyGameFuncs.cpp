@@ -1,7 +1,7 @@
 
 #include "LobbyShared/LobbyGameFuncs.h"
 
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 #include "Runtime/Map/MapPropertiesDef.refl.h"
 
 int GetRandomTeam(const std::vector<int> & team_counts, uint32_t random_number, const MapPropertiesDef & map_props, const GameInitSettings & settings)

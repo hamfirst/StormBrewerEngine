@@ -3,9 +3,9 @@
 #include "Foundation/Network/WebSocket.h"
 #include "Foundation/Delegate/Delegate.h"
 
-#include "Game/GameNetworkData.refl.h"
-#include "Game/GameMessages.refl.h"
-#include "Game/GameSimulationStats.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameMessages.refl.h"
+#include "Game/SimulationEvents/GameSimulationStats.refl.h"
 
 #include "Lobby/GameServerMessages.refl.h"
 

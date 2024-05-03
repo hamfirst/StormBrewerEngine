@@ -6,8 +6,8 @@
 #include "GameShared/Systems/GameLogicSystems.h"
 #include "GameShared/BehaviorTree/BehaviorTree.h"
 
-#include "Game/GameServerEventSender.h"
-#include "Game/GameStage.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/Stage/GameStage.h"
 #include "Game/ServerObjects/CharacterFacing.refl.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 

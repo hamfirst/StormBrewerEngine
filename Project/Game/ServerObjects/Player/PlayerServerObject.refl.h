@@ -2,16 +2,16 @@
 #pragma once
 
 #include "Game/GameCommon.h"
-#include "Game/GameServerTypes.h"
+#include "Game/GameTypes.h"
 #include "GameShared/GameLogicContainer.h"
 
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateBase.refl.h"
 
 #include "Game/GameplayEvents/PlaceholderEvent.h"
-#include "Game/Data/DealDamageAnimationEvent.refl.h"
+#include "Game/AnimationEvents/DealDamageAnimationEvent.refl.h"
 
-#include "Game/Configs/PlayerConfig.refl.h"
+#include "Game/ServerObjects/Player/Config/PlayerConfig.refl.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Config/ConfigResource.h"

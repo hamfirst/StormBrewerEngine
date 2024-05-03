@@ -22,6 +22,16 @@
     <inspection_tool class="OCUnusedPropertyInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedStructInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedTemplateParameterInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Simplify" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="clangTidyCheckOptions">
+        <list>
+          <ClangTidyCheckOption>
+            <option name="optionName" value="clion-simplify.SimplifyEqualToTrueFalse" />
+            <option name="optionValue" value="0" />
+          </ClangTidyCheckOption>
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="TsLint" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="UnreachableCode" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedExpressionResult" enabled="false" level="WARNING" enabled_by_default="false" />

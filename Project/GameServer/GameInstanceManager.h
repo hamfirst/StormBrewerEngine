@@ -3,7 +3,7 @@
 #include "GameServer/GameClientConnection.h"
 #include "GameServer/GameInstance.h"
 
-#include "Game/GameMessages.refl.h"
+#include "Game/NetworkEvents/GameMessages.refl.h"
 
 class GameServer;
 class GameStageManager;

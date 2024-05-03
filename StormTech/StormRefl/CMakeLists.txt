@@ -23,7 +23,9 @@ set(GENERIC_HEADER_StormRefl
             ./StormReflJson.h
             ./StormReflMetaHelpers.h
             ./StormReflMetaInfoBase.h
-            ./StormReflJsonStd.h
+            ./StormReflBinary.h
+            ./StormReflBinaryBuffer.h
+            ./StormReflBinaryType.h
             #HEADER_PLACEHOLDER
             )
 

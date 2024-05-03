@@ -12,7 +12,7 @@ struct CameraShakeInfo
 {
   float m_StartTime;
   float m_Duration;
-  float m_Amplitute;
+  float m_Amplitude;
   float m_Frequency;
 
   std::unique_ptr<float[]> m_Samples;
@@ -22,7 +22,7 @@ struct CameraShakeInfo
 class GameCamera : public Camera
 {
 public:
-  GameCamera(GameContainer & container);
+  explicit GameCamera(GameContainer & container);
 
   void Update();
 
@@ -30,7 +30,7 @@ public:
   Vector2 TransformWorldSpaceToGameplaySpace(const Vector2 & vec);
   Box TransformWorldSpaceToGameplaySpace(const Box & box);
 
-  void Shake(float duration, float amplitute, float frequency = 60.0f);
+  void Shake(float duration, float amplitude, float frequency = 60.0f);
 
 protected:
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Game/GameController.refl.h"
-#include "Game/GameServerEventSender.h"
+#include "Game/GameController/GameController.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
 
 #include "GameShared/GameEventReconciler.h"
 

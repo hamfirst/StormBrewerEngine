@@ -8,8 +8,8 @@
 #include "GameShared/GameLogicContainer.h"
 #include "GameShared/GameProtocol.h"
 
-#include "Game/GameMessages.refl.meta.h"
-#include "Game/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 

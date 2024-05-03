@@ -4,7 +4,7 @@
 
 #include "User.refl.h"
 #include "HurricaneDDS/DDSThrottle.refl.meta.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 #include "LobbyShared/SharedTypes.refl.meta.h"
 #include "Lobby/GameData.refl.meta.h"
 

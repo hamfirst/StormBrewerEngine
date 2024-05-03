@@ -1,8 +1,8 @@
 
 #include "Game/GameCommon.h"
 
-#include "Game/GameController.refl.h"
-#include "Game/GameServerEventSender.h"
+#include "Game/GameController/GameController.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
 
 #include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 #include "Game/ServerObjects/Bot/BotServerObject.refl.meta.h"

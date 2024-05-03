@@ -80,10 +80,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
     endif()
 
     if(UNIX AND NOT APPLE)
-        add_subdirectory("${PROJECT_SOURCE_DIR}/External/Linux/SDL_build")
-
-        set_target_properties(SDL2main PROPERTIES FOLDER External)
-        set_target_properties(SDL2-static PROPERTIES FOLDER External)
+        find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
     endif()
 endif()
 

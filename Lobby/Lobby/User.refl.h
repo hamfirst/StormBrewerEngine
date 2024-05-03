@@ -5,7 +5,7 @@
 
 #include <StormRefl/StormReflJsonStd.h>
 
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 #include "LobbyShared/SharedTypes.refl.h"
 

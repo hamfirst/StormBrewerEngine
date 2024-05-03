@@ -4,8 +4,8 @@
 
 #include "GameServer/GameServer.h"
 
-#include "Game/GameFullState.refl.meta.h"
-#include "Game/GameMessages.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
 
 #include "GameShared/GameProtocol.h"
 
@@ -27,16 +27,19 @@ GameServer::GameServer(int max_clients, int port, GameStageManager & stage_manag
 #endif
   m_GameInstanceManager(*this, stage_manager, lobby_connection)
 {
-  m_LobbyConnection->SetDisconnectCallback([&](uint64_t user_id, uint64_t game_id)
+  if(m_LobbyConnection != nullptr)
   {
-    VisitClients([&](NotNullPtr<GameClientConnection> client_ptr)
+    m_LobbyConnection->SetDisconnectCallback([&](uint64_t user_id, uint64_t game_id)
     {
-      if(client_ptr->m_UserId == user_id)
+      VisitClients([&](NotNullPtr<GameClientConnection> client_ptr)
       {
-        client_ptr->ForceDisconnect();
-      }
+        if(client_ptr->m_UserId == user_id)
+        {
+          client_ptr->ForceDisconnect();
+        }
+      });
     });
-  });
+  }
 }
 
 GameServer::~GameServer()

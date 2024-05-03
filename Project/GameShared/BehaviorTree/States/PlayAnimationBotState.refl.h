@@ -2,7 +2,7 @@
 #pragma once
 
 #include "GameShared/GameSharedCommon.h"
-#include "Game/GameFullState.refl.h"
+#include "Game/State/GameFullState.refl.h"
 
 #include "Game/ServerObjects/Bot/BotServerObject.refl.h"
 

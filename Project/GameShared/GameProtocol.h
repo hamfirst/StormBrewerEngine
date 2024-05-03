@@ -9,10 +9,10 @@
 #include "StormNet/NetPipeDeltaStateReliable.h"
 #include "StormNet/NetReflection.h"
 
-#include "Game/GameFullState.refl.meta.h"
-#include "Game/GameMessages.refl.meta.h"
-#include "Game/GameNetworkData.refl.meta.h"
-#include "Game/GameNetworkEvents.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.meta.h"
 
 #include "ProjectSettings/ProjectNetworkSettings.h"
 

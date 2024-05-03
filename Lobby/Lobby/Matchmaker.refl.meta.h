@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "Matchmaker.refl.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 #include "GameShared/GamePlayListAsset.refl.meta.h"
 #include "LobbyShared/SharedTypes.refl.meta.h"
 

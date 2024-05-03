@@ -31,6 +31,7 @@ struct GenerateOptions
   bool m_Placeholder = false;
   bool m_PCH = false;
   bool m_BigObj = false;
+  std::vector<std::string> m_UICDirectories;
 };
 
 
@@ -145,6 +146,12 @@ void ProcessOption(const std::string & option, GenerateOptions & out)
   if (option == "bigobj")
   {
     out.m_BigObj = true;
+  }
+
+  static const std::string ui_directive = "uidir=";
+  if(option.find(ui_directive) == 0)
+  {
+    out.m_UICDirectories.push_back(option.substr(ui_directive.size()));
   }
 }
 
@@ -354,6 +361,11 @@ void FinalizeProject(const fs::path & p, const fs::path & project_file, const st
     cmake_file << "find_package(Qt5 REQUIRED COMPONENTS Core Widgets)\n";
     cmake_file << "include_directories(${Qt5Widgets_INCLUDE_DIRS})\n";
     cmake_file << "set(CMAKE_POSITION_INDEPENDENT_CODE ON)\n\n";
+
+    for(const std::string & uidir : options.m_UICDirectories)
+    {
+      cmake_file << "set(CMAKE_AUTOUIC_SEARCH_PATHS \"${CMAKE_AUTOUIC_SEARCH_PATHS}\" " + uidir + ")\n";
+    }
   }
 
   if (options.m_BigObj)

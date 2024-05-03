@@ -5,9 +5,9 @@
 #include "GameShared/Systems/GameLogicSystems.h"
 #include "GameShared/GameLogicContainer.h"
 
-#include "Game/GameServerEventSender.h"
-#include "Game/GameStage.h"
-#include "Game/GameCollision.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/Stage/GameStage.h"
+#include "Game/Stage/GameCollision.refl.h"
 
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.meta.h"
@@ -166,7 +166,7 @@ void GameServerObjectBase::PushReceiveDamageEventBoxes(uint32_t multi_box_name_h
 void GameServerObjectBase::PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container)
 {
   game_container.GetSystems().GetCollisionDatabase().PushDynamicCollision(b,
-          (uint32_t)GameCollisionType::kCollisionDamagable, CollisionDatabaseObjectInfo(GetObjectHandle()), m_CollisionId);
+                                                                          (uint32_t)GameCollisionType::kCollisionDamageable, CollisionDatabaseObjectInfo(GetObjectHandle()), m_CollisionId);
 }
 
 void GameServerObjectBase::PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container)

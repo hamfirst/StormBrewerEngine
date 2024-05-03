@@ -5,7 +5,7 @@
 #include "GameServer/GameInstanceStateData.h"
 #include "GameServer/GameClientConnection.h"
 
-#include "Game/GameController.refl.h"
+#include "Game/GameController/GameController.refl.h"
 #include "ProjectSettings/ProjectNetworkSettings.h"
 
 static const int kTimeToWaitForLoad = 10 * 60;

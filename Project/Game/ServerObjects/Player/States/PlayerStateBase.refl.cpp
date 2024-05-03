@@ -4,8 +4,8 @@
 
 
 #include "GameShared/GameLogicContainer.h"
-#include "Game/GameServerEventSender.h"
-#include "Game/GameStage.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/Stage/GameStage.h"
 
 #include "Game/ServerObjects/Player/PlayerServerObject.refl.h"
 

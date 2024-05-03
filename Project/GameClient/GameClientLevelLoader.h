@@ -4,8 +4,8 @@
 
 #include "Runtime/Map/MapResource.h"
 
-#include "Game/GameNetworkData.refl.h"
-#include "Game/GameNetworkEvents.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.h"
 
 class GameContainer;
 

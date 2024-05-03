@@ -41,17 +41,17 @@
 #include "DocumentServer/DocumentServerMessages.refl.meta.h"
 
 #include "EditorContainer.h"
-#include "SelectFromListDialog.h"
-#include "TextureViewer.h"
-#include "FontViewer.h"
-#include "AudioViewer.h"
-#include "DocumentEditorWidgetBase.h"
-#include "DocumentEditorConfig.h"
-#include "DistributionContainer.h"
-#include "GameServerWidget.h"
-#include "GameClientWidget.h"
-#include "GameHostWidget.h"
-#include "MapEditorTypes.refl.meta.h"
+#include "Tools/Editor/UI/UtilityWidgets/SelectFromListDialog.h"
+#include "AssetEditors/Texture/TextureViewer.h"
+#include "AssetEditors/Font/FontViewer.h"
+#include "AssetEditors/Audio/AudioViewer.h"
+#include "AssetEditors/DocumentEditor/DocumentEditorWidgetBase.h"
+#include "AssetEditors/DocumentEditor/DocumentEditorConfig.h"
+#include "AssetEditors/MapEditor/MapEditorTypes.refl.meta.h"
+#include "Distribution/DistributionContainer.h"
+#include "Game/GameServerWidget.h"
+#include "Game/GameClientWidget.h"
+#include "Game/GameHostWidget.h"
 
 #pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "Imm32.lib")

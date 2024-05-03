@@ -167,7 +167,7 @@ if(BUILD_CLIENT OR BUILD_TOOLS)
 
         else()
             if(UNIX AND NOT APPLE)
-                target_link_libraries(ClientExe SDL2-static)
+                target_link_libraries(ClientExe SDL2::SDL2)
             endif()
 
             target_link_libraries(ClientExe stdc++fs)

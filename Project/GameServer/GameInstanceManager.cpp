@@ -3,8 +3,8 @@
 #include "GameServer/GameInstance.h"
 #include "GameServer/GameServer.h"
 
-#include "Game/GameMessages.refl.meta.h"
-#include "Game/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
 
 #include "LobbyServerConnection/LobbyServerConnection.h"
 

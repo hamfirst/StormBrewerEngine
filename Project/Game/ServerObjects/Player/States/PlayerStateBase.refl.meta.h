@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "PlayerStateBase.refl.h"
-#include "Game/Configs/PlayerConfig.refl.meta.h"
+#include "Game/ServerObjects/Player/Config/PlayerConfig.refl.meta.h"
 
 
 template <>

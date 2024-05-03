@@ -4,7 +4,7 @@
 
 #include "ProjectileServerObject.refl.h"
 #include "Game/ServerObjects/GameServerObjectBase.refl.meta.h"
-#include "Game/Configs/ProjectileConfig.refl.meta.h"
+#include "Game/ServerObjects/Projectile/Config/ProjectileConfig.refl.meta.h"
 #include "Game/ServerObjects/Projectile/Motion/ProjectileMotionBase.refl.meta.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
 

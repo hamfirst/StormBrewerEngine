@@ -5,7 +5,7 @@
 #include "BotMessages.refl.h"
 #include "Lobby/GameData.refl.meta.h"
 #include "Lobby/GameServerMessages.refl.meta.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 
 
 namespace StormReflFileInfo

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 #include <unordered_map>
 
@@ -18,5 +19,5 @@ public:
 private:
 
   std::vector<StormExprValueProvider> m_Values;
-  std::unordered_map<std::uint32_t, std::size_t> m_NameLookup;
+  std::unordered_map<uint32_t, std::size_t> m_NameLookup;
 };

@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "PlayAnimationBotState.refl.h"
-#include "Game/GameFullState.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
 #include "Game/ServerObjects/Bot/BotServerObject.refl.meta.h"
 
 

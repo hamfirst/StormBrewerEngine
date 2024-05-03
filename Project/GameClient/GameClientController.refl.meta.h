@@ -3,8 +3,8 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "GameClientController.refl.h"
-#include "Game/GameNetworkData.refl.meta.h"
-#include "Game/GameNetworkEvents.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.meta.h"
 
 
 template <>

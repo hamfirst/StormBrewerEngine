@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "GameServerObjectBase.refl.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 #include "Game/ServerObjects/CharacterFacing.refl.meta.h"
 #include "Runtime/ServerObject/ServerObjectInitData.refl.meta.h"
 

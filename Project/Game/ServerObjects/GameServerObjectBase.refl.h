@@ -3,9 +3,9 @@
 
 #include "Game/GameCommon.h"
 
-#include "Game/GameServerTypes.h"
+#include "Game/GameTypes.h"
 #include "GameShared/GameLogicContainer.h"
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 #include "Game/ServerObjects/CharacterFacing.refl.h"
 #include "Game/GameplayEvents/DamageEvent.h"

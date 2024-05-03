@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/GameNetworkEvents.refl.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.h"
 
 class GameClientEventSender
 {

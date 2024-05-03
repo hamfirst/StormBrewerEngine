@@ -16,8 +16,8 @@
 #include "Runtime/Map/MapResource.h"
 #include "Runtime/Asset/Asset.h"
 
-#include "Game/GameFullState.refl.meta.h"
-#include "Game/GameMessages.refl.meta.h"
+#include "Game/State/GameFullState.refl.meta.h"
+#include "Game/NetworkEvents/GameMessages.refl.meta.h"
 
 #include "GameServer/GameServer.h"
 

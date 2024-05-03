@@ -2,7 +2,7 @@
 #pragma once
 
 #include "GameClient/Modes/GameModeOnlineBase.h"
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 #include "Engine/UI/UIManager.h"
 #include "Engine/UI/UITextureBinding.h"

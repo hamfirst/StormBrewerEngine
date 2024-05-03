@@ -25,7 +25,7 @@ enum class NetworkConnectionState
 struct NetworkWebsocketData
 {
   StormSockets::StormSocketConnectionId m_ConnectionId = StormSockets::StormSocketConnectionId::InvalidConnectionId;
-  NetworkConnectionState m_State = NetworkConnectionState::kDisconnected;
+  volatile NetworkConnectionState m_State = NetworkConnectionState::kDisconnected;
   std::queue<WebsocketPacket> m_Packets;
 
   bool m_Freed = false;

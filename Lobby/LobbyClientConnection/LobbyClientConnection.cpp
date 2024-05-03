@@ -13,7 +13,7 @@
 #include "ProjectSettings/ProjectVersion.h"
 #include "ProjectSettings/ProjectPorts.h"
 
-#include "Game/GameSimulationStats.refl.meta.h"
+#include "Game/SimulationEvents/GameSimulationStats.refl.meta.h"
 
 #include "LobbyShared/SharedTypes.refl.meta.h"
 

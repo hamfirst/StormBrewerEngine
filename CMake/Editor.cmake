@@ -116,7 +116,7 @@ if(BUILD_TOOLS)
     endif()
 
     if(UNIX AND NOT APPLE)
-        target_link_libraries(EditorExe SDL2-static)
+        target_link_libraries(EditorExe SDL2::SDL2)
     endif()
 
     if(NOT MSVC)

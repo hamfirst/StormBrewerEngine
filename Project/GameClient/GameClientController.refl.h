@@ -4,10 +4,10 @@
 
 #include "Runtime/Map/MapResource.h"
 
-#include "Game/GameNetworkData.refl.h"
-#include "Game/GameNetworkEvents.refl.h"
-#include "Game/GameSimulationEventCallbacks.h"
-#include "Game/GameServerEventSender.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkEvents.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/SimulationEvents/GameSimulationEventCallbacks.h"
 
 class GameContainer;
 

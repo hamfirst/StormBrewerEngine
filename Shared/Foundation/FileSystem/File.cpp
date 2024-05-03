@@ -63,8 +63,19 @@ File::File(czstr path, FileOpenMode mode)
     m_FileData.m_FileOpenError = 0;
 
     fseek(m_FileData.m_File, 0, SEEK_END);
-    m_FileData.m_FileLength = ftell(m_FileData.m_File);
-    fseek(m_FileData.m_File, 0, SEEK_SET);
+    long int file_size = ftell(m_FileData.m_File);
+    if(file_size < 0 || file_size > 0xFFFFFFFFULL)
+    {
+      m_FileData.m_FileOpenError = errno;
+      fclose(m_FileData.m_File);
+      m_FileData.m_File = nullptr;
+      m_FileData.m_FileLength = 0;
+    }
+    else
+    {
+      m_FileData.m_FileLength = file_size;
+      fseek(m_FileData.m_File, 0, SEEK_SET);
+    }
   }
   else
   {

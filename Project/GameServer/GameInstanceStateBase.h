@@ -10,12 +10,12 @@
 
 #include "GameServer/GameInstanceStateData.h"
 
-#include "Game/GameMessages.refl.h"
-#include "Game/GameNetworkData.refl.h"
-#include "Game/GameSimulationEventCallbacks.h"
-#include "Game/GameFullState.refl.h"
-#include "Game/GameController.refl.h"
-#include "Game/GameServerEventSender.h"
+#include "Game/NetworkEvents/GameMessages.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
+#include "Game/SimulationEvents/GameSimulationEventCallbacks.h"
+#include "Game/State/GameFullState.refl.h"
+#include "Game/GameController/GameController.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
 
 class GameClientConnection;
 class GameServer;

@@ -12,5 +12,12 @@
             "m_Animations": { },
             "m_TileSheet": ".\/TileSheets\/Tiles.tilesheet"
         }
+    },
+    "m_EntityLayers": {
+        "0": {
+            "m_Entities": { },
+            "m_LayerOrder": 0,
+            "m_Name": "Entity Layer"
+        }
     }
 }

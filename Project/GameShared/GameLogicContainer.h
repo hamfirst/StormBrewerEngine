@@ -32,8 +32,8 @@ public:
   GameLogicContainer(const GameLogicContainer & rhs) = default;
   GameLogicContainer(GameLogicContainer && rhs) = default;
 
-  GameLogicContainer & operator = (const GameLogicContainer & rhs) = default;
-  GameLogicContainer & operator = (GameLogicContainer && rhs) = default;
+  GameLogicContainer & operator = (const GameLogicContainer & rhs) = delete;
+  GameLogicContainer & operator = (GameLogicContainer && rhs) = delete;
 
   GameController & GetGameController();
   const GameInitSettings & GetGameInitSettings();

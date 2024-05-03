@@ -11,7 +11,7 @@
 #include "Lobby/GameServerMessages.refl.h"
 #include "Lobby/LobbyConfig.h"
 
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 #if defined(ENABLE_BOTS) && defined(ENABLE_CHANNELS)
 

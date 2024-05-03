@@ -46,12 +46,12 @@ Box GameCamera::TransformWorldSpaceToGameplaySpace(const Box & box)
 }
 
 
-void GameCamera::Shake(float duration, float amplitute, float frequency)
+void GameCamera::Shake(float duration, float amplitude, float frequency)
 {
   CameraShakeInfo shake_info;
   shake_info.m_StartTime = (float)GetTimeSeconds();
   shake_info.m_Duration = duration;
-  shake_info.m_Amplitute = amplitute;
+  shake_info.m_Amplitude = amplitude;
   shake_info.m_Frequency = frequency;
   shake_info.m_NumSamples = (int)(duration * frequency + 0.999f);
 
@@ -81,7 +81,7 @@ RenderVec2 GameCamera::EvalShake(const CameraShakeInfo & shake_info, float t)
   float yb = shake_info.m_Samples[s0 + shake_info.m_NumSamples];
   float yy = ym * x + yb;
 
-  return RenderVec2{ xy, yy } * (k * shake_info.m_Amplitute);
+  return RenderVec2{ xy, yy } * (k * shake_info.m_Amplitude);
 }
 
 

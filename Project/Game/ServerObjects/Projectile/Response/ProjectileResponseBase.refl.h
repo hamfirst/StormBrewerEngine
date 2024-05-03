@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Game/GameCommon.h"
-#include "Game/GameServerTypes.h"
+#include "Game/GameTypes.h"
 #include "GameShared/GameLogicContainer.h"
 
 #include "Runtime/Sprite/SpriteResource.h"

@@ -10,8 +10,8 @@
 #include "GameShared/GameProtocol.h"
 #include "GameShared/GameEventReconciler.h"
 
-#include "Game/GameController.refl.h"
-#include "Game/GameFullState.refl.h"
+#include "Game/GameController/GameController.refl.h"
+#include "Game/State/GameFullState.refl.h"
 #include "ProjectSettings/ProjectNetworkSettings.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 

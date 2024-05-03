@@ -7,8 +7,8 @@
 
 #include "GameShared/Systems/GameLogicSystems.h"
 
-#include "Game/GameServerEventSender.h"
-#include "Game/GameFullState.refl.h"
+#include "Game/NetworkEvents/GameServerEventSender.h"
+#include "Game/State/GameFullState.refl.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #include "GameServer/GameInstanceStateBase.h"

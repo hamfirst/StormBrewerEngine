@@ -3,7 +3,7 @@
 #include <StormRefl/StormReflMetaInfoBase.h>
 
 #include "GameServerMessages.refl.h"
-#include "Game/GameNetworkData.refl.meta.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.meta.h"
 #include "Lobby/GameData.refl.meta.h"
 #include "LobbyShared/SharedTypes.refl.meta.h"
 

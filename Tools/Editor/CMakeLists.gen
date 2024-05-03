@@ -2,3 +2,7 @@ qt
 platform
 refl
 placeholder
+uidir=UI
+uidir=UI/UtilityWidgets
+uidir=AssetEditors/FrameEditor
+uidir=AssetEditors/Atlas

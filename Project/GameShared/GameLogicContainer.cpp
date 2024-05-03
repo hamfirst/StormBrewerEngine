@@ -1,4 +1,4 @@
-#include <Project/Game/GameNetworkData.refl.h>
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 #include "GameShared/GameSharedCommon.h"
 #include "GameShared/GameLogicContainer.h"
 

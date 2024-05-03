@@ -10,9 +10,9 @@
 
 #include "ui_EditorContainer.h"
 
-#include "ConnectingDialog.h"
-#include "DocumentEditorBase.h"
-#include "DocumentServerThread.h"
+#include "DocumentServer/ConnectingDialog.h"
+#include "Tools/Editor/AssetEditors/DocumentEditor/DocumentEditorBase.h"
+#include "Tools/Editor/DocumentServer/DocumentServerThread.h"
 
 class QTabWidget;
 class QOpenGLContext;
@@ -28,7 +28,7 @@ class EditorContainer : public QMainWindow
   Q_OBJECT
 
 public:
-  EditorContainer(QWidget *parent = Q_NULLPTR);
+  explicit EditorContainer(QWidget *parent = Q_NULLPTR);
   ~EditorContainer();
 
   void OpenEditorForFile(czstr file);

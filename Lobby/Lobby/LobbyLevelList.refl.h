@@ -7,7 +7,7 @@
 
 #include "StormRefl/StormRefl.h"
 
-#include "Game/GameNetworkData.refl.h"
+#include "Game/NetworkEvents/GameNetworkData.refl.h"
 #include "Runtime/Map/MapDef.refl.h"
 
 #include "ProjectSettings/ProjectNetworkSettings.h"
