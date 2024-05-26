@@ -14,9 +14,9 @@ public:
 
   MapEffectLayerInstance(MapDef & map, std::size_t layer_index);
 
-  void Init(GameContainer & game_container);
-  void Update(GameContainer & game_container);
-  void Draw(GameContainer & game_container, const Box & viewport_bounds, 
+  void Init(GameContainer & world);
+  void Update(GameContainer & world);
+  void Draw(GameContainer & world, const Box & viewport_bounds,
             const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state);
 
   int GetLayerOrder() const;

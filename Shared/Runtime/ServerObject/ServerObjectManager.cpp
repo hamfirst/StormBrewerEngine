@@ -380,9 +380,9 @@ void ServerObjectManager::Deserialize(NetBitReader & reader)
 }
 
 void ServerObjectManager::InitAllObjects(
-        const std::vector<ServerObjectStaticInitData> & static_objects,
-        const std::vector<ServerObjectStaticInitData> & dynamic_objects,
-        GameLogicContainer & game_container)
+  const std::vector<ServerObjectStaticInitData> & static_objects,
+  const std::vector<ServerObjectStaticInitData> & dynamic_objects,
+  GameWorld & world)
 {
   if(m_Initialized)
   {
@@ -394,7 +394,7 @@ void ServerObjectManager::InitAllObjects(
   {
     auto type_index = m_StaticObjects[slot_index]->m_TypeIndex;
     g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(m_StaticObjects[slot_index],
-      obj.m_InitData.GetValue(), game_container);
+      obj.m_InitData.GetValue(), world);
 
     m_StaticObjects[slot_index]->InitPosition(obj.m_InitPosition);
     m_StaticObjects[slot_index]->InitStaticComponents();
@@ -410,7 +410,7 @@ void ServerObjectManager::InitAllObjects(
       auto type_index = ptr->m_TypeIndex;
 
       g_ServerObjectSystem.m_ObjectTypes[type_index].m_ObjectInit(ptr,
-        obj.m_InitData.GetValue(), game_container);
+        obj.m_InitData.GetValue(), world);
 
       ptr->InitPosition(obj.m_InitPosition);
       ptr->InitStaticComponents();
@@ -436,7 +436,7 @@ int ServerObjectManager::GetNewDynamicObjectId()
 }
 
 NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, bool unsynced,
-        NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
+                                                                          NullOptPtr<const ServerObjectInitData> init_data, bool original, GameWorld & world)
 {
   auto slot_index = GetNewDynamicObjectId();
   if (slot_index == -1)
@@ -444,11 +444,11 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
     return nullptr;
   }
 
-  return CreateDynamicObjectInternal(type_index, slot_index, unsynced, init_data, original, game_container);
+  return CreateDynamicObjectInternal(type_index, slot_index, unsynced, init_data, original, world);
 }
 
 NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int type_index, int slot_index, bool unsynced,
-        NullOptPtr<const ServerObjectInitData> init_data, bool original, GameLogicContainer & game_container)
+                                                                          NullOptPtr<const ServerObjectInitData> init_data, bool original, GameWorld & world)
 {
   auto ptr = g_ServerObjectSystem.AllocateObject(type_index);
   ptr->m_IsStatic = false;
@@ -474,7 +474,7 @@ NullOptPtr<ServerObject> ServerObjectManager::CreateDynamicObjectInternal(int ty
 
   if(m_Initialized)
   {
-    g_ServerObjectSystem.InitObject(ptr, init_data, game_container);
+    g_ServerObjectSystem.InitObject(ptr, init_data, world);
     ptr->InitStaticComponents();
   }
 

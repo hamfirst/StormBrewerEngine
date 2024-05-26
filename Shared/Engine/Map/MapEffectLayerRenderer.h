@@ -13,8 +13,8 @@ public:
   MapEffectLayerRenderer();
   virtual ~MapEffectLayerRenderer();
   
-  virtual void Init(GameContainer & game_container);
-  virtual void Update(GameContainer & game_container);
-  virtual void Render(GameContainer & game_container, const Box & viewport_bounds, 
+  virtual void Init(GameContainer & world);
+  virtual void Update(GameContainer & world);
+  virtual void Render(GameContainer & world, const Box & viewport_bounds,
                       const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state);
 };

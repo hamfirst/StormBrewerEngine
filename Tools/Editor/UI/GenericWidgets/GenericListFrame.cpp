@@ -48,7 +48,7 @@ void GenericListFrame::SetRemoveButtonEnabled(bool enable)
 
 void GenericListFrame::RepositionElements()
 {
-  auto title_width = fontMetrics().width(title());
+  auto title_width = fontMetrics().horizontalAdvance(title());
 
   int x = title_width + 20;
   if (m_AddButton)

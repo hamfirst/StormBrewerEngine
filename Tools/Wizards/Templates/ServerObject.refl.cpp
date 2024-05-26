@@ -10,17 +10,17 @@
 czstr g_{class_name}EntityFile = "./Entities/Entity.entity";
 GLOBAL_ASSET(EntityResourcePtr, g_{class_name}EntityFile, g_{class_name}Entity);
 
-void {class_name}::Init(const {class_name}InitData & init_data, GameLogicContainer & game_container)
+void {class_name}::Init(const {class_name}InitData & init_data, GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::UpdateFirst(GameLogicContainer & game_container)
+void {class_name}::UpdateFirst(GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::UpdateMiddle(GameLogicContainer & game_container)
+void {class_name}::UpdateMiddle(GameLogicContainer & world)
 {{
 
 }}

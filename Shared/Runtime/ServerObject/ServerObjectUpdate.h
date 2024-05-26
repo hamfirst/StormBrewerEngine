@@ -3,9 +3,9 @@
 #include "Runtime/ServerObject/ServerObject.h"
 #include "Foundation/Update/UpdateBucketList.h"
 
-class GameLogicContainer;
+class GameWorld;
 
-using ServerObjectUpdateFunc = void (ServerObject::*)(GameLogicContainer &);
+using ServerObjectUpdateFunc = void (ServerObject::*)(GameWorld &);
 
 extern template class UpdateList<ServerObject, ServerObjectUpdateFunc>;
 

@@ -5,7 +5,7 @@
 
 #include "Game/GameCommon.h"
 #include "Game/GameTypes.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 
 #include "Game/ServerObjects/Player/Config/PlayerConfig.refl.h"
 
@@ -27,17 +27,17 @@ public:
   DECLARE_PLAYER_STATE;
   NET_DECLARE_BASE_TYPE;
 
-  virtual void Init(PlayerServerObject & player, GameLogicContainer & game_container) {};
-  virtual void PreUpdate(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void Init(PlayerServerObject & player, GameWorld & world) {};
+  virtual void PreUpdate(PlayerServerObject & player, GameWorld & world) {};
 
-  virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) {};
-  virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) {};
-  virtual void Animate(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void Move(PlayerServerObject & player, GameWorld & world) {};
+  virtual void Transition(PlayerServerObject & player, GameWorld & world) {};
+  virtual void Animate(PlayerServerObject & player, GameWorld & world) {};
 
-  virtual void PostUpdate(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void PostUpdate(PlayerServerObject & player, GameWorld & world) {};
 
-  virtual void Cleanup(PlayerServerObject & player, GameLogicContainer & game_container) {};
-  virtual void Destroy(PlayerServerObject & player, GameLogicContainer & game_container) {};
+  virtual void Cleanup(PlayerServerObject & player, GameWorld & world) {};
+  virtual void Destroy(PlayerServerObject & player, GameWorld & world) {};
 
 };
 

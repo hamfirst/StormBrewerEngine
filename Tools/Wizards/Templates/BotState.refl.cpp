@@ -14,19 +14,19 @@
 
 NET_REGISTER_TYPE({class_name}, BotStateBase);
 
-void {class_name}::Move(BotServerObject & Bot, GameLogicContainer & game_container)
+void {class_name}::Move(BotServerObject & Bot, GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::Transition(BotServerObject & Bot, GameLogicContainer & game_container)
+void {class_name}::Transition(BotServerObject & Bot, GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::Animate(BotServerObject & Bot, GameLogicContainer & game_container)
+void {class_name}::Animate(BotServerObject & Bot, GameLogicContainer & world)
 {{
 	Bot.FrameAdvance(COMPILE_TIME_CRC32_STR(""Animation""));
 
-    Bot.TriggerAnimationEvents(game_container, *this);
+    Bot.TriggerAnimationEvents(world, *this);
 }}

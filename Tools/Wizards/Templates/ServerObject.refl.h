@@ -29,9 +29,9 @@ public:
   {class_name} & operator = (const {class_name} & rhs) = default;
   {class_name} & operator = ({class_name} && rhs) = default;
 
-  void Init(const {class_name}InitData & init_data, GameLogicContainer & game_container);
-  void UpdateFirst(GameLogicContainer & game_container);
-  void UpdateMiddle(GameLogicContainer & game_container);
+  void Init(const {class_name}InitData & init_data, GameLogicContainer & world);
+  void UpdateFirst(GameLogicContainer & world);
+  void UpdateMiddle(GameLogicContainer & world);
 
   virtual czstr GetDefaultEntityBinding() const override;
 public:

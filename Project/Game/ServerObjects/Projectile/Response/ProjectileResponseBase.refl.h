@@ -3,7 +3,7 @@
 
 #include "Game/GameCommon.h"
 #include "Game/GameTypes.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 
 #include "Runtime/Sprite/SpriteResource.h"
 #include "Runtime/Config/ConfigResource.h"
@@ -25,8 +25,8 @@ public:
   NET_REFL;
 
   virtual void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result,
-                            ProjectileServerObject & proj, GameLogicContainer & game_container);
-  virtual void HandleRangeExpired(ProjectileServerObject & proj, GameLogicContainer & game_container);
+                            ProjectileServerObject & proj, GameWorld & world);
+  virtual void HandleRangeExpired(ProjectileServerObject & proj, GameWorld & world);
 };
 
 

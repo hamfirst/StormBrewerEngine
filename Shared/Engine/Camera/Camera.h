@@ -26,7 +26,7 @@ public:
   RenderVec2 TransformFromScreenSpaceToWorldSpace(const RenderVec2 & pos);
   RenderVec2 TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos);
 
-  void Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state);
+  void Draw(GameContainer & world, NotNullPtr<EngineState> engine_state, RenderState & render_state);
 
 private:
   RenderVec2 m_ScreenResolution;

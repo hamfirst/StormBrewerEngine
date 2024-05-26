@@ -2,7 +2,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "GameShared/Systems/GameLogicSystems.h"
 
 #include "Game/NetworkEvents/GameServerEventSender.h"
@@ -52,20 +52,20 @@ public:
   ProjectileServerObject & operator = (const ProjectileServerObject & rhs) = default;
   ProjectileServerObject & operator = (ProjectileServerObject && rhs) = default;
 
-  void Init(const ProjectileServerObjectInitData & init_data, GameLogicContainer & game_container);
-  void UpdateFirst(GameLogicContainer & game_container);
-  void UpdateMiddle(GameLogicContainer & game_container);
+  void Init(const ProjectileServerObjectInitData & init_data, GameWorld & world);
+  void UpdateFirst(GameWorld & world);
+  void UpdateMiddle(GameWorld & world);
 
-  void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result, GameLogicContainer & game_container);
-  void HandleRangeExpired(GameLogicContainer & game_container);
+  void HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result, GameWorld & world);
+  void HandleRangeExpired(GameWorld & world);
 
   static NotNullPtr<ProjectileServerObject> SpawnProjectile(const GameNetVec2 & pos, const GameNetVec2 & dir,
-          int team_index, const ServerObjectHandle & handle,
-          const ConfigPtr<ProjectileConfig> & config, GameLogicContainer & game_container);
+                                                            int team_index, const ServerObjectHandle & handle,
+                                                            const ConfigPtr<ProjectileConfig> & config, GameWorld & world);
 
   virtual czstr GetEntityBinding() const override;
   virtual czstr GetDefaultEntityBinding() const override;
-  virtual Optional<int> GetAssociatedPlayer(GameLogicContainer & game_container) const override;
+  virtual Optional<int> GetAssociatedPlayer(GameWorld & world) const override;
   virtual void InitStaticComponents() override;
 
 public:

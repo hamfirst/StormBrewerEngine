@@ -5,7 +5,7 @@
 
 class ServerObject;
 
-class GameLogicContainer;
+class GameWorld;
 
 class ServerObjectEventDispatch
 {
@@ -36,7 +36,7 @@ public:
 
 private:
 
-  using FuncType = void (ServerObject::*)(GameLogicContainer &);
+  using FuncType = void (ServerObject::*)(GameWorld &);
 
   struct EventHandlerInfo
   {

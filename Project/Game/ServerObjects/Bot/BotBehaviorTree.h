@@ -2,7 +2,7 @@
 #include "GameShared/BehaviorTree/BehaviorTree.h"
 #include "GameShared/BehaviorTree/States/PlayAnimationBotState.refl.h"
 
-using BT = StormBehaviorTreeTemplateBuilder<BotServerObject, GameLogicContainer>;
+using BT = StormBehaviorTreeTemplateBuilder<BotServerObject, GameWorld>;
 
 inline BT SELECT()
 {

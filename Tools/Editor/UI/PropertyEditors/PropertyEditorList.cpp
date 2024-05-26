@@ -89,7 +89,7 @@ void PropertyEditorList::RespositionChildren()
 {
   m_Frame->setGeometry(0, 0, width() - 1, height() - 1);
 
-  auto title_width = m_Frame->fontMetrics().width(m_Frame->title());
+  auto title_width = m_Frame->fontMetrics().horizontalAdvance(m_Frame->title());
   m_AddButton->setGeometry(title_width + 20, 0, 20, 15);
 
   int y = 17;
@@ -98,7 +98,7 @@ void PropertyEditorList::RespositionChildren()
   {
     auto frame = elem.second.m_FrameLabel.get();
     auto child_height = elem.second.m_Widget->minimumHeight();
-    auto title_width = frame->fontMetrics().width(frame->title());
+    auto title_width = frame->fontMetrics().horizontalAdvance(frame->title());
 
     elem.second.m_FrameLabel->setGeometry(3, y, width() - 6, elem.second.m_Widget->minimumHeight() + 19);
     elem.second.m_RemoveButton->setGeometry(title_width + 20, 0, 20, 15);

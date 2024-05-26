@@ -13,18 +13,18 @@
 
 NET_REGISTER_TYPE({class_name}, PlayerStateBase);
 
-void {class_name}::Move(PlayerServerObject & player, GameLogicContainer & game_container)
+void {class_name}::Move(PlayerServerObject & player, GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::Transition(PlayerServerObject & player, GameLogicContainer & game_container)
+void {class_name}::Transition(PlayerServerObject & player, GameLogicContainer & world)
 {{
 
 }}
 
-void {class_name}::Animate(PlayerServerObject & player, GameLogicContainer & game_container)
+void {class_name}::Animate(PlayerServerObject & player, GameLogicContainer & world)
 {{
   player.FrameAdvance(COMPILE_TIME_CRC32_STR(""Animation""));
-  player.TriggerAnimationEvents(game_container, *this);
+  player.TriggerAnimationEvents(world, *this);
 }}

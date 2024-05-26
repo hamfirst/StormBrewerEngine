@@ -204,7 +204,7 @@ void EntitySystem::DrawAllEntities(const Box & viewport_bounds, DrawList & draw_
     int draw_order = 0;
 #endif
 
-    draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+    draw_list.PushDraw(entity.GetLayer(), draw_order, [this, e = &entity](GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {      
       PROFILE_SCOPE("Draw Entity");
       DrawEntity(e, viewport_bounds, screen_center, render_state);

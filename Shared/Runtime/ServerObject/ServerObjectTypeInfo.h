@@ -10,7 +10,7 @@ class ServerObjectUpdateList;
 class ServerObjectNetBitWriter;
 class ServerObjectNetBitReader;
 
-class GameLogicContainer;
+class GameWorld;
 
 struct ServerObjectComponentInfo
 {
@@ -36,7 +36,7 @@ struct ServerObjectTypeInfo
   NotNullPtr<ServerObject>(*m_ObjectDuplicate)(NotNullPtr<const ServerObject> rhs);
 
   void(*m_ObjectInit)(NotNullPtr<ServerObject> object, NullOptPtr<const ServerObjectInitData> init_data,
-                      GameLogicContainer & game_container);
+                      GameWorld & world);
   void(*m_ObjectCopy)(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs);
   void(*m_ObjectResetHandles)(NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager);
   void(*m_ObjectDestroy)(NotNullPtr<ServerObject> object);

@@ -72,7 +72,7 @@ private:
   friend class GameInstanceStateGameplay;
 
   GameFullState CreateDefaultGameState() const;
-  void InitAllObjects(GameLogicContainer & game_container) const;
+  void InitAllObjects(GameWorld & world) const;
 
 private:
 

@@ -23,9 +23,9 @@ public:
 
 private:
 
-  bool IsLocal(NotNullPtr<ServerObject> server_obj, GameLogicContainer & game_container);
+  bool IsLocal(NotNullPtr<ServerObject> server_obj, GameWorld & world);
   void SyncEntityList(SparseList<EntityHandle> & entity_list, ServerObjectManager & obj_manager,
-                      GameLogicContainer & game_container, bool process_local, bool process_nonlocal);
+                      GameWorld & world, bool process_local, bool process_nonlocal);
 
 private:
   GameContainer & m_GameContainer;

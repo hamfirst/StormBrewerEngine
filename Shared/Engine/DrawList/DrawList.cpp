@@ -30,7 +30,7 @@ void DrawList::PushDraw(int layer_order, int draw_key, DrawListRenderCall && cb)
   itr->second.emplace_back(std::make_pair(draw_key, std::move(cb)));
 }
 
-void DrawList::Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+void DrawList::Draw(GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
 {
   for (auto & elem : m_DrawCallbacks)
   {
@@ -40,7 +40,7 @@ void DrawList::Draw(GameContainer & game_container, const Box & viewport_bounds,
 
     for (auto & draw_info : elem.second)
     {
-      draw_info.second(game_container, viewport_bounds, screen_center, render_state);
+      draw_info.second(world, viewport_bounds, screen_center, render_state);
     }
   }
 }

@@ -24,7 +24,7 @@ private:
   NotNullPtr<ServerObject> AllocateObject(std::size_t type_index);
   NotNullPtr<ServerObject> DuplicateObject(NotNullPtr<const ServerObject> rhs);
 
-  void InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data, GameLogicContainer & game_container);
+  void InitObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObjectInitData> init_data, GameWorld & world);
   void CopyObject(NotNullPtr<ServerObject> object, NotNullPtr<const ServerObject> rhs);
   void FreeObject(NotNullPtr<ServerObject> object);
   void ResetObjectHandles(NotNullPtr<ServerObject> object, const ServerObjectManager & obj_manager);

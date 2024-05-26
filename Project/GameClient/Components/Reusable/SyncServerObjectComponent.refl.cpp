@@ -28,7 +28,7 @@ SyncServerObjectComponent::~SyncServerObjectComponent()
 void SyncServerObjectComponent::UpdateFirst()
 {
   auto server_obj = GetEntity()->GetServerObjectAs<GameServerObjectBase>();
-  auto game_container = GetEntity()->GetGameContainer()->GetInstanceData()->GetLogicContainer();
+  auto world = GetEntity()->GetGameContainer()->GetInstanceData()->GetLogicContainer();
 
   if (server_obj)
   {

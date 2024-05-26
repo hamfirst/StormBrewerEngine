@@ -24,7 +24,7 @@ public:
   void Clear();
 
   void PushDraw(int layer_order, int draw_key, DrawListRenderCall && cb);
-  void Draw(GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
+  void Draw(GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state);
 
 private:
 

@@ -1,7 +1,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "Game/NetworkEvents/GameServerEventSender.h"
 #include "Game/Stage/GameStage.h"
 
@@ -30,7 +30,7 @@ bool PlayerStateJump::CanGraceJump() const
 }
 
 
-void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateJump::Move(PlayerServerObject & player, GameWorld & world)
 {
   auto target_velocity = player.m_Input.m_XInput * player.GetConfig()->m_MoveSpeed;
   if (player.m_Velocity.x < target_velocity)
@@ -52,7 +52,7 @@ void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & gam
 
   player.m_Velocity.y -= player.GetConfig()->m_Gravity;
 
-  player.MoveCheckCollisionDatabase(game_container);
+  player.MoveCheckCollisionDatabase(world);
 
   if (player.m_Velocity.y > GameNetVal(0) && player.m_Input.m_JumpHeld == false)
   {
@@ -60,15 +60,15 @@ void PlayerStateJump::Move(PlayerServerObject & player, GameLogicContainer & gam
   }
 }
 
-void PlayerStateJump::Transition(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateJump::Transition(PlayerServerObject & player, GameWorld & world)
 {
   if (player.m_OnGround)
   {
-    player.TransitionToState<PlayerStateIdle>(game_container);
+    player.TransitionToState<PlayerStateIdle>(world);
   }
 }
 
-void PlayerStateJump::Animate(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateJump::Animate(PlayerServerObject & player, GameWorld & world)
 {
   if (player.m_Velocity.y >= GameNetVal(0))
   {
@@ -88,7 +88,7 @@ void PlayerStateJump::Animate(PlayerServerObject & player, GameLogicContainer & 
     player.m_Facing = CharacterFacing::kRight;
   }
 
-  player.TriggerAnimationEvents(game_container, *this);
+  player.TriggerAnimationEvents(world, *this);
 }
 
 #endif

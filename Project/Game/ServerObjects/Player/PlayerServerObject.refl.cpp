@@ -2,7 +2,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "GameShared/Systems/GameLogicSystems.h"
 
 #include "Game/NetworkEvents/GameServerEventSender.h"
@@ -38,40 +38,40 @@ void PlayerServerObjectConfigResourcesLoad(const ConfigPtr<PlayerConfig> & confi
 GLOBAL_ASSET_ARRAY(ConfigPtr<PlayerConfig>, g_PlayerConfig, "./Configs/PlayerConfig.playerconfig");
 GLOBAL_DEPENDENT_ASSET_ARRAY(PlayerServerObjectConfigResources, g_PlayerConfigResources, g_PlayerConfig, PlayerServerObjectConfigResourcesLoad);
 
-void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container)
+void PlayerServerObject::Init(const PlayerServerObjectInitData & init_data, GameWorld & world)
 {
   m_State.SetType<PlayerStateIdle>();
 }
 
-void PlayerServerObject::UpdateFirst(GameLogicContainer & game_container)
+void PlayerServerObject::UpdateFirst(GameWorld & world)
 {
-  GameServerObjectBase::UpdateFirst(game_container);
+  GameServerObjectBase::UpdateFirst(world);
   m_ProcessedAttacks.clear();
 }
 
-void PlayerServerObject::UpdateMiddle(GameLogicContainer & game_container)
+void PlayerServerObject::UpdateMiddle(GameWorld & world)
 {
-  m_State->PreUpdate(*this, game_container);
-  m_State->Move(*this, game_container);
+  m_State->PreUpdate(*this, world);
+  m_State->Move(*this, world);
 
   m_Retransition = true;
-  m_State->Transition(*this, game_container);
+  m_State->Transition(*this, world);
   m_Retransition = false;
 
-  m_State->Animate(*this, game_container);
-  m_State->PostUpdate(*this, game_container);
+  m_State->Animate(*this, world);
+  m_State->PostUpdate(*this, world);
 
-  PushCVCBox(COMPILE_TIME_CRC32_STR("MoveBox"), game_container);
-  PushReceiveDamageEventBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), game_container);
-  PushReceiveDamageCollisionBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), game_container);
+  PushCVCBox(COMPILE_TIME_CRC32_STR("MoveBox"), world);
+  PushReceiveDamageEventBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), world);
+  PushReceiveDamageCollisionBoxes(COMPILE_TIME_CRC32_STR("ReceiveDamage"), world);
 }
 
-void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
+void PlayerServerObject::UpdateLast(GameWorld & world)
 {
   auto box = GetSprite()->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox"));
   box = box.Offset(m_Position);
 
-  for (auto & kill_vol : game_container.GetStage().GetKillVolumes())
+  for (auto & kill_vol : world.GetStage().GetKillVolumes())
   {
     if (BoxIntersect(box, kill_vol))
     {
@@ -82,7 +82,7 @@ void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
       ev.m_AttackId = -1;
       ev.m_DamageType = DamageType::kFall;
 
-      SendEvent(ev, EventMetaData(game_container));
+      SendEvent(ev, EventMetaData(world));
       return;
     }
   }
@@ -90,15 +90,15 @@ void PlayerServerObject::UpdateLast(GameLogicContainer & game_container)
   --m_RefireTime;
   if(m_RefireTime == 0)
   {
-    ProjectileServerObject::SpawnProjectile(m_Position, GetDirectionForFacing(m_Facing), GetTeam(game_container), GetObjectHandle(),
-            g_PlayerConfigResources[m_Config.CurrentIndex()].m_ProjectileConfig, game_container);
+    ProjectileServerObject::SpawnProjectile(m_Position, GetDirectionForFacing(m_Facing), GetTeam(world), GetObjectHandle(),
+            g_PlayerConfigResources[m_Config.CurrentIndex()].m_ProjectileConfig, world);
     m_RefireTime = 20;
   }
 }
 
-void PlayerServerObject::ResetState(GameLogicContainer & game_container)
+void PlayerServerObject::ResetState(GameWorld & world)
 {
-  TransitionToState<PlayerStateIdle>(game_container);
+  TransitionToState<PlayerStateIdle>(world);
 
   if (GetSlotIndex() == 0)
   {
@@ -112,12 +112,12 @@ void PlayerServerObject::ResetState(GameLogicContainer & game_container)
   m_Health = 255;
 }
 
-MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & game_container, const GameNetVec2 & extra_movement)
+MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameWorld & world, const GameNetVec2 & extra_movement)
 {
 #ifdef MOVER_ONE_WAY_COLLISION
-  auto result = GameServerObjectBase::MoveCheckCollisionDatabase(game_container, m_Velocity + extra_movement, m_FallThrough);
+  auto result = GameServerObjectBase::MoveCheckCollisionDatabase(world, m_Velocity + extra_movement, m_FallThrough);
 #else
-  auto result = GameServerObjectBase::MoveCheckCollisionDatabase(game_container, m_Velocity + extra_movement);
+  auto result = GameServerObjectBase::MoveCheckCollisionDatabase(world, m_Velocity + extra_movement);
 #endif
 
   if (result.m_HitRight)
@@ -151,7 +151,7 @@ MoverResult PlayerServerObject::MoveCheckCollisionDatabase(GameLogicContainer & 
 }
 
 #if defined(PLATFORMER_MOVEMENT)
-void PlayerServerObject::Jump(GameLogicContainer & game_container)
+void PlayerServerObject::Jump(GameWorld & world)
 {
 #if defined(PLAYER_ENABLE_JUMP)
   if (m_OnGround)
@@ -162,12 +162,12 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
     }
     else
     {
-      game_container.GetEventSender().BroadcastServerAuthEvent(PlaceholderServerAuthEvent{});
+      world.GetEventSender().BroadcastServerAuthEvent(PlaceholderServerAuthEvent{});
 
       m_Velocity.y += GetConfig()->m_JumpSpeed;
       m_OnGround = false;
 
-      TransitionToState<PlayerStateJump>(game_container);
+      TransitionToState<PlayerStateJump>(world);
     }
   }
   else if (m_State.Is<PlayerStateJump>())
@@ -177,7 +177,7 @@ void PlayerServerObject::Jump(GameLogicContainer & game_container)
     if (jump_state->CanGraceJump())
     {
       m_Velocity.y += GetConfig()->m_JumpSpeed;
-      TransitionToState<PlayerStateJump>(game_container);
+      TransitionToState<PlayerStateJump>(world);
     }
   }
 
@@ -237,7 +237,7 @@ bool PlayerServerObject::HandleDamageEvent(const DamageEvent & ev, const EventMe
 
 bool PlayerServerObject::HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta)
 {
-  auto & game_container = *meta.m_GameLogicContainer;
+  auto & world = *meta.m_GameLogicContainer;
 
   for (auto b = meta.m_ActiveAreaStart; b != meta.m_ActiveAreaEnd; ++b)
   {
@@ -248,7 +248,7 @@ bool PlayerServerObject::HandleDealDamageEvent(const DealDamageAnimationEvent & 
     dmg.m_Source = GetSlotIndex();
     dmg.m_Direction = m_Facing.ToEnum();
 
-    PushDealDamageEventBox(*b, dmg, game_container);
+    PushDealDamageEventBox(*b, dmg, world);
   }
 
   return true;
@@ -270,14 +270,14 @@ void PlayerServerObject::SetAnimationState(const AnimationState & anim_state)
   m_AnimDelay = anim_state.m_AnimDelay;
 }
 
-Optional<int> PlayerServerObject::GetAssociatedPlayer(GameLogicContainer & game_container) const
+Optional<int> PlayerServerObject::GetAssociatedPlayer(GameWorld & world) const
 {
   return GetSlotIndex();
 }
 
-int PlayerServerObject::GetTeam(GameLogicContainer & game_container) const
+int PlayerServerObject::GetTeam(GameWorld & world) const
 {
-  return game_container.GetLowFrequencyInstanceData().m_Players[GetSlotIndex()].m_Team;
+  return world.GetLowFrequencyInstanceData().m_Players[GetSlotIndex()].m_Team;
 }
 
 const SpritePtr & PlayerServerObject::GetSprite() const

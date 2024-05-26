@@ -80,7 +80,7 @@ protected:
   GameFullState & GetCurrentState();
   GameInstanceData & GetCurrentInstanceData();
   const GameInstanceLowFrequencyData & GetCurrentLowFrequencyData() const;
-  GameLogicContainer GetLogicContainer(int history_index = 0);
+  GameWorld GetLogicContainer(int history_index = 0);
 
   void SendPacketToPlayer(std::size_t client_id, GameInstanceStateGameplayPlayer & player);
 

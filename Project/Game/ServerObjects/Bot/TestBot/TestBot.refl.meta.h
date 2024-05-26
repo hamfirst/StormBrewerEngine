@@ -127,11 +127,11 @@ struct StormReflTypeInfo<TestBot>
 template <>
 struct StormReflTypeInfo<TestBot>::field_data_static<0 + StormReflTypeInfo<BotServerObject>::fields_n>
 {
-  using member_type = BotBehaviorTree; // StormBehaviorTree<BotServerObject, GameLogicContainer>
+  using member_type = BotBehaviorTree; // StormBehaviorTree<BotServerObject, GameWorld>
   static constexpr auto GetName() { return "m_Tree"; }
-  static constexpr auto GetType() { return "StormBehaviorTree<BotServerObject, GameLogicContainer>"; }
+  static constexpr auto GetType() { return "StormBehaviorTree<BotServerObject, GameWorld>"; }
   static constexpr unsigned GetFieldNameHash() { return 0x89A3CBC3; }
-  static constexpr unsigned GetTypeNameHash() { return 0xD4BF05A2; }
+  static constexpr unsigned GetTypeNameHash() { return 0x1BD9DD1A; }
   static constexpr bool HasDefault() { return true; }
   static constexpr auto GetFieldIndex() { return 0 + StormReflTypeInfo<BotServerObject>::fields_n; }
   static constexpr auto GetMemberPtr() { return &TestBot::m_Tree; }

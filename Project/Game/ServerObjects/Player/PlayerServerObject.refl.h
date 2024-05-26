@@ -3,7 +3,7 @@
 
 #include "Game/GameCommon.h"
 #include "Game/GameTypes.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 
 #include "Game/ServerObjects/GameServerObjectBase.refl.h"
 #include "Game/ServerObjects/Player/States/PlayerStateBase.refl.h"
@@ -45,17 +45,17 @@ public:
   PlayerServerObject & operator = (const PlayerServerObject & rhs) = default;
   PlayerServerObject & operator = (PlayerServerObject && rhs) = default;
 
-  void Init(const PlayerServerObjectInitData & init_data, GameLogicContainer & game_container);
-  void UpdateFirst(GameLogicContainer & game_container);
-  void UpdateMiddle(GameLogicContainer & game_container);
-  void UpdateLast(GameLogicContainer & game_container);
+  void Init(const PlayerServerObjectInitData & init_data, GameWorld & world);
+  void UpdateFirst(GameWorld & world);
+  void UpdateMiddle(GameWorld & world);
+  void UpdateLast(GameWorld & world);
 
-  void ResetState(GameLogicContainer & game_container);
+  void ResetState(GameWorld & world);
 
-  MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container, const GameNetVec2 & extra_movement = {});
+  MoverResult MoveCheckCollisionDatabase(GameWorld & world, const GameNetVec2 & extra_movement = {});
 
 #ifdef PLATFORMER_MOVEMENT
-  void Jump(GameLogicContainer & game_container);
+  void Jump(GameWorld & world);
 #endif
 
   bool SERVER_OBJECT_EVENT_HANDLER HandlePlaceholderEvent(const PlaceholderEvent & ev, const EventMetaData & meta);
@@ -64,8 +64,8 @@ public:
 
   virtual Optional<AnimationState> GetAnimationState() const override;
   virtual void SetAnimationState(const AnimationState & anim_state) override;
-  virtual Optional<int> GetAssociatedPlayer(GameLogicContainer & game_container) const override;
-  virtual int GetTeam(GameLogicContainer & game_container) const;
+  virtual Optional<int> GetAssociatedPlayer(GameWorld & world) const override;
+  virtual int GetTeam(GameWorld & world) const;
 
   virtual const SpritePtr & GetSprite() const override;
   virtual Optional<CharacterFacing> GetFacing() const override;
@@ -75,17 +75,17 @@ public:
   virtual czstr GetDefaultEntityBinding() const override;
 
   template <typename State>
-  NullOptPtr<State> TransitionToState(GameLogicContainer & game_container)
+  NullOptPtr<State> TransitionToState(GameWorld & world)
   {
     NetPolymorphic<PlayerStateBase> new_state(NetPolymorphicTypeInit<State>{});
-    m_State->Cleanup(*this, game_container);
-    new_state->Init(*this, game_container);
-    m_State->Destroy(*this, game_container);
+    m_State->Cleanup(*this, world);
+    new_state->Init(*this, world);
+    m_State->Destroy(*this, world);
     m_State = std::move(new_state);
 
     if (m_Retransition)
     {
-      m_State->Transition(*this, game_container);
+      m_State->Transition(*this, world);
     }
 
     return m_State.Get<State>();

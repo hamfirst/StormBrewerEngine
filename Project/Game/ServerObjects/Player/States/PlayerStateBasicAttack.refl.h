@@ -40,11 +40,11 @@ public:
   void Setup(PlayerServerObject & player, uint32_t animation_hash, const PlayerStateBasicAttackSettings & settings = {},
     const Optional<PlayerStateBasicAttackDamageSettings> & damage_settings = {}, bool inherit_movement = false);
 
-  virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) override;
-  virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) override;
-  virtual void Animate(PlayerServerObject & player, GameLogicContainer & game_container) override;
+  virtual void Move(PlayerServerObject & player, GameWorld & world) override;
+  virtual void Transition(PlayerServerObject & player, GameWorld & world) override;
+  virtual void Animate(PlayerServerObject & player, GameWorld & world) override;
 
-  virtual void PostUpdate(PlayerServerObject & player, GameLogicContainer & game_container) override;
+  virtual void PostUpdate(PlayerServerObject & player, GameWorld & world) override;
 
   bool STORM_REFL_FUNC HandleDealDamageEvent(const DealDamageAnimationEvent & ev, const EventMetaData & meta);
 

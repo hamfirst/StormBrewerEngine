@@ -24,30 +24,30 @@ CollisionDrawer::~CollisionDrawer()
 
 }
 
-void CollisionDrawer::Init(GameContainer & game_container)
+void CollisionDrawer::Init(GameContainer & world)
 {
 
 }
 
-void CollisionDrawer::Update(GameContainer & game_container)
+void CollisionDrawer::Update(GameContainer & world)
 {
-  auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
+  auto & stage = world.GetInstanceData()->GetStage();
+  auto & game_data = world.GetInstanceData()->GetGlobalInstanceData();
 
-  auto mask = GetCollisionMask(game_container);
+  auto mask = GetCollisionMask(world);
 }
 
-void CollisionDrawer::Render(GameContainer & game_container, const Box & viewport_bounds, 
+void CollisionDrawer::Render(GameContainer & world, const Box & viewport_bounds,
   const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {
-  auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetGlobalInstanceData();
+  auto & stage = world.GetInstanceData()->GetStage();
+  auto & game_data = world.GetInstanceData()->GetGlobalInstanceData();
 
   auto & shader = g_ShaderManager.GetDefaultWorldSpaceShader();
   render_state.BindShader(shader);
   shader.SetUniform(COMPILE_TIME_CRC32_STR("u_Offset"), -screen_center);
 
-  auto collision_mask = GetCollisionMask(game_container);
+  auto collision_mask = GetCollisionMask(world);
   
   GeometryVertexBufferBuilder builder;
   for (auto & elem : stage.GetCollisionLines())
@@ -65,10 +65,10 @@ void CollisionDrawer::Render(GameContainer & game_container, const Box & viewpor
   builder.DrawDefault(render_state, &shader);
 }
 
-uint32_t CollisionDrawer::GetCollisionMask(GameContainer & game_container)
+uint32_t CollisionDrawer::GetCollisionMask(GameContainer & world)
 {
-  auto & stage = game_container.GetInstanceData()->GetStage();
-  auto & game_data = game_container.GetInstanceData()->GetLowFrequencyData();
+  auto & stage = world.GetInstanceData()->GetStage();
+  auto & game_data = world.GetInstanceData()->GetLowFrequencyData();
 
   uint8_t collision_mask = 0;
   for (auto team = 0; team < kMaxTeams; ++team)

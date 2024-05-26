@@ -47,11 +47,11 @@ MapInstance::MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def,
   }
 }
 
-void MapInstance::Init(GameContainer & game_container)
+void MapInstance::Init(GameContainer & world)
 {
   for (auto & layer : m_EffectLayers)
   {
-    layer.Init(game_container);
+    layer.Init(world);
   }
 
   for (auto & elem : m_MapEntities)
@@ -64,7 +64,7 @@ void MapInstance::Init(GameContainer & game_container)
   }
 }
 
-void MapInstance::Update(GameContainer & game_container)
+void MapInstance::Update(GameContainer & world)
 {
   for (auto & layer : m_ManualTileLayers)
   {
@@ -78,7 +78,7 @@ void MapInstance::Update(GameContainer & game_container)
 
   for (auto & layer : m_EffectLayers)
   {
-    layer.Update(game_container);
+    layer.Update(world);
   }
 }
 
@@ -86,7 +86,7 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 {
   for (auto & layer : m_ParallaxLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
       layer.Draw(viewport_bounds, screen_center, m_Offset, render_state);
     });
@@ -94,7 +94,7 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 
   for (auto & layer : m_ManualTileLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
       layer.Draw(viewport_bounds, screen_center, render_state);
     });
@@ -106,9 +106,9 @@ void MapInstance::Draw(const Box & viewport_bounds, DrawList & draw_list)
 
   for (auto & layer : m_EffectLayers)
   {
-    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+    draw_list.PushDraw(layer.GetLayerOrder(), INT_MAX, [&](GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
     {
-      layer.Draw(game_container, viewport_bounds, screen_center, m_Offset, render_state);
+      layer.Draw(world, viewport_bounds, screen_center, m_Offset, render_state);
     });
   }
 }

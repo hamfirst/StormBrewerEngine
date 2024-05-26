@@ -7,14 +7,14 @@
 #include "Foundation/CallList/CallList.h"
 
 class ServerObjectManager;
-class GameLogicContainer;
+class GameWorld;
 
 class GameServerObjectOverlapSystem
 {
 public:
   void RegisterObjectType(std::size_t object_type, NotNullPtr<SpritePtr> sprite, uint32_t data_name_hash);
   void RegisterObjectInteraction(std::size_t src_object_type, std::size_t dst_object_type);
-  void CheckOverlaps(ServerObjectManager & obj_manager, GameLogicContainer & game_logic_container);
+  void CheckOverlaps(ServerObjectManager & obj_manager, GameWorld & game_logic_container);
 
 private:
   struct ObjectInfo

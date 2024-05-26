@@ -9,17 +9,17 @@
 
 #include "Runtime/Animation/AnimationState.h"
 
-void BotServerObject::Init(const BotServerObjectInitData & init_data, GameLogicContainer & game_container)
+void BotServerObject::Init(const BotServerObjectInitData & init_data, GameWorld & world)
 {
 
 }
 
-void BotServerObject::UpdateFirst(GameLogicContainer & game_container)
+void BotServerObject::UpdateFirst(GameWorld & world)
 {
-  GameServerObjectBase::UpdateFirst(game_container);
+  GameServerObjectBase::UpdateFirst(world);
 }
 
-void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
+void BotServerObject::UpdateMiddle(GameWorld & world)
 {
   auto behavior_tree = GetBehaviorTree();
 
@@ -28,7 +28,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
     while (true)
     {
       m_Retransition = false;
-      behavior_tree->Update(*this, game_container, game_container.GetInstanceData().m_Random);
+      behavior_tree->Update(*this, world, world.GetInstanceData().m_Random);
 
       if (m_Retransition == false)
       {
@@ -42,7 +42,7 @@ void BotServerObject::UpdateMiddle(GameLogicContainer & game_container)
   if (sprite)
   {
     auto box = sprite->GetSingleBoxDefault(COMPILE_TIME_CRC32_STR("MoveBox")).Offset(m_Position);
-    game_container.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
+    world.GetSystems().GetCVCPushSystem().SetCharacterCVCPosition(box, this);
   }
 }
 

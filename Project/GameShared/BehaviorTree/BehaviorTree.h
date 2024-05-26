@@ -4,6 +4,6 @@
 #include "StormBehavior/StormBehaviorTree.h"
 
 class BotServerObject;
-class GameLogicContainer;
+class GameWorld;
 
-using BotBehaviorTree = StormBehaviorTree<BotServerObject, GameLogicContainer>;
+using BotBehaviorTree = StormBehaviorTree<BotServerObject, GameWorld>;

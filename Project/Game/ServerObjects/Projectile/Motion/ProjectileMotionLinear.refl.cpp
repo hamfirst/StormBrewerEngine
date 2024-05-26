@@ -8,12 +8,12 @@ REGISTER_LOGIC_TYPE(ProjectileMotionLinearConfig, ProjectileMotionBaseConfig, Pr
 NET_REGISTER_TYPE(ProjectileMotionLinear, ProjectileMotionBase);
 
 
-void ProjectileMotionLinear::Init(ProjectileServerObject & proj, GameLogicContainer & game_container)
+void ProjectileMotionLinear::Init(ProjectileServerObject & proj, GameWorld & world)
 {
   m_RangeRemaining = GameNetVal((int)proj.m_Config->m_MaxDistance);
 }
 
-void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicContainer & game_container)
+void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameWorld & world)
 {
   auto config = GetConfigAs<ProjectileMotionLinearConfig>();
   if(config == nullptr)
@@ -24,28 +24,28 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
 
   auto new_pos = proj.m_Position + proj.m_Direction * (GameNetVal) config->m_Speed;
 
-  auto owner = proj.m_Owner.ResolveTo<GameServerObjectBase>(game_container.GetObjectManager());
+  auto owner = proj.m_Owner.ResolveTo<GameServerObjectBase>(world.GetObjectManager());
   if(owner && owner->GetCollisionId())
   {
     CollisionObjectMask coll_mask;
     coll_mask.Set(owner->GetCollisionId().Value());
 
-    auto result = game_container.GetSystems().GetCollisionDatabase().TracePath(
+    auto result = world.GetSystems().GetCollisionDatabase().TracePath(
             proj.m_Position, new_pos, 0xFFFFFFFF, &coll_mask);
 
     if (result)
     {
-      proj.HandleImpact(&result.Value(), game_container);
+      proj.HandleImpact(&result.Value(), world);
       return;
     }
   }
   else
   {
-    auto result = game_container.GetSystems().GetCollisionDatabase().TracePath(proj.m_Position, new_pos, 0xFFFFFFFF);
+    auto result = world.GetSystems().GetCollisionDatabase().TracePath(proj.m_Position, new_pos, 0xFFFFFFFF);
 
     if (result)
     {
-      proj.HandleImpact(&result.Value(), game_container);
+      proj.HandleImpact(&result.Value(), world);
       return;
     }
   }
@@ -55,7 +55,7 @@ void ProjectileMotionLinear::Update(ProjectileServerObject & proj, GameLogicCont
   m_RangeRemaining -= (GameNetVal)config->m_Speed;
   if(m_RangeRemaining < GameNetVal(0))
   {
-    proj.HandleRangeExpired(game_container);
+    proj.HandleRangeExpired(world);
     return;
   }
 }

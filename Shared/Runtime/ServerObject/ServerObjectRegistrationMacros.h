@@ -139,7 +139,7 @@ void ServerObjectName::RegisterServerObject()                                   
   };                                                                                                                            \
                                                                                                                                 \
   type_info.m_ObjectInit = [](NotNullPtr<ServerObject> object, NullOptPtr<const ServerObjectInitData> init_data,                \
-          GameLogicContainer & game_container)                                                                                  \
+          GameWorld & world)                                                                                                    \
   {                                                                                                                             \
     auto obj = static_cast<ServerObjectName *>(object);                                                                         \
     InitFunc                                                                                                                    \
@@ -219,7 +219,7 @@ NotNullPtr<ServerObjectEventDispatch> ServerObjectName::GetEventDispatch()      
 #define SERVER_OBJECT_CONSTRUCT_NOBASE          0
 #define SERVER_OBJECT_CONSTRUCT_BASE(BaseClass) COMPILE_TIME_CRC32_STR(#BaseClass)
 
-#define SERVER_OBJECT_INIT_DATA(InitData)       obj->Init(*static_cast<const InitData *>(init_data), game_container);
+#define SERVER_OBJECT_INIT_DATA(InitData)       obj->Init(*static_cast<const InitData *>(init_data), world);
 #define SERVER_OBJECT_NOINIT_DATA   
 
 #define REGISTER_BASE_SERVER_OBJECT(ServerObjectName) \

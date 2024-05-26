@@ -102,7 +102,7 @@ void VisualEffectManager::DrawAllEffects(const Box & viewport_bounds, DrawList &
     if (on_screen)
     {
       draw_list.PushDraw(elem->m_Layer, draw_order,
-        [this, e = elem](GameContainer & game_container, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
+        [this, e = elem](GameContainer & world, const Box & viewport_bounds, const RenderVec2 & screen_center, RenderState & render_state)
         {
           e->Render(viewport_bounds, screen_center, render_state);
         }

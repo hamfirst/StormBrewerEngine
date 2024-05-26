@@ -28,7 +28,7 @@ void ProjectileConfigResourcesLoad(const ConfigPtr<ProjectileConfig> & config, P
 GLOBAL_ASSET_DIRECTORY(ConfigPtr<ProjectileConfig>, g_ProjectileConfigs, "./Configs", "projectileconfig");
 GLOBAL_DEPENDENT_ASSET_ARRAY(ProjectileServerObjectConfigResources, g_ProjectileConfigInfo, g_ProjectileConfigs, ProjectileConfigResourcesLoad);
 
-void ProjectileServerObject::Init(const ProjectileServerObjectInitData & init_data, GameLogicContainer & game_container)
+void ProjectileServerObject::Init(const ProjectileServerObjectInitData & init_data, GameWorld & world)
 {
   m_Position = init_data.m_SpawnData.m_Position;
   m_Direction = init_data.m_SpawnData.m_Direction;
@@ -38,46 +38,46 @@ void ProjectileServerObject::Init(const ProjectileServerObjectInitData & init_da
   m_Config.SetTo(*init_data.m_SpawnData.m_Config);
 }
 
-void ProjectileServerObject::UpdateFirst(GameLogicContainer & game_container)
+void ProjectileServerObject::UpdateFirst(GameWorld & world)
 {
-  GameServerObjectBase::UpdateFirst(game_container);
+  GameServerObjectBase::UpdateFirst(world);
 }
 
-void ProjectileServerObject::UpdateMiddle(GameLogicContainer & game_container)
+void ProjectileServerObject::UpdateMiddle(GameWorld & world)
 {
   if(m_Motion)
   {
-    m_Motion->Update(*this, game_container);
+    m_Motion->Update(*this, world);
   }
 }
 
-void ProjectileServerObject::HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result, GameLogicContainer & game_container)
+void ProjectileServerObject::HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result, GameWorld & world)
 {
   if(m_Response)
   {
-    m_Response->HandleImpact(collision_result, *this, game_container);
+    m_Response->HandleImpact(collision_result, *this, world);
   }
   else
   {
-    Destroy(game_container.GetObjectManager());
+    Destroy(world.GetObjectManager());
   }
 }
 
-void ProjectileServerObject::HandleRangeExpired(GameLogicContainer & game_container)
+void ProjectileServerObject::HandleRangeExpired(GameWorld & world)
 {
   if(m_Response)
   {
-    m_Response->HandleRangeExpired(*this, game_container);
+    m_Response->HandleRangeExpired(*this, world);
   }
   else
   {
-    Destroy(game_container.GetObjectManager());
+    Destroy(world.GetObjectManager());
   }
 }
 
 NotNullPtr<ProjectileServerObject> ProjectileServerObject::SpawnProjectile(const GameNetVec2 & pos,
-        const GameNetVec2 & dir, int team_index, const ServerObjectHandle & owner_handle,
-        const ConfigPtr<ProjectileConfig> & config, GameLogicContainer & game_container)
+                                                                           const GameNetVec2 & dir, int team_index, const ServerObjectHandle & owner_handle,
+                                                                           const ConfigPtr<ProjectileConfig> & config, GameWorld & world)
 {
   ProjectileServerObjectInitData init_data;
   init_data.m_SpawnData.m_Position = pos;
@@ -89,16 +89,16 @@ NotNullPtr<ProjectileServerObject> ProjectileServerObject::SpawnProjectile(const
   NotNullPtr<ProjectileServerObject> ptr;
   if(config->m_Unsynced)
   {
-    ptr = game_container.GetObjectManager().CreateUnsyncedDynamicObject<ProjectileServerObject>(game_container, &init_data);
+    ptr = world.GetObjectManager().CreateUnsyncedDynamicObject<ProjectileServerObject>(world, &init_data);
   }
   else
   {
-    ptr = game_container.GetObjectManager().CreateDynamicObject<ProjectileServerObject>(game_container, &init_data);
+    ptr = world.GetObjectManager().CreateDynamicObject<ProjectileServerObject>(world, &init_data);
   }
 
   if(ptr->m_Motion)
   {
-    ptr->m_Motion->Init(*ptr, game_container);
+    ptr->m_Motion->Init(*ptr, world);
   }
 
   return ptr;
@@ -115,9 +115,9 @@ czstr ProjectileServerObject::GetDefaultEntityBinding() const
   return config.m_EntityFile.c_str();
 }
 
-Optional<int> ProjectileServerObject::GetAssociatedPlayer(GameLogicContainer & game_container) const
+Optional<int> ProjectileServerObject::GetAssociatedPlayer(GameWorld & world) const
 {
-  auto owner = m_Owner.Resolve(game_container.GetObjectManager());
+  auto owner = m_Owner.Resolve(world.GetObjectManager());
   if(owner)
   {
     return owner->GetSlotIndex();

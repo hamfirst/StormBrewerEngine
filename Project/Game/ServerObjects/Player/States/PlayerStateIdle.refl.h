@@ -7,9 +7,9 @@ class PlayerStateIdle : public PlayerStateBase, public PlayerStateEventHandler<P
 public:
   DECLARE_PLAYER_STATE;
 
-  virtual void Move(PlayerServerObject & player, GameLogicContainer & game_container) override;
-  virtual void Transition(PlayerServerObject & player, GameLogicContainer & game_container) override;
-  virtual void Animate(PlayerServerObject & player, GameLogicContainer & game_container) override;
+  virtual void Move(PlayerServerObject & player, GameWorld & world) override;
+  virtual void Transition(PlayerServerObject & player, GameWorld & world) override;
+  virtual void Animate(PlayerServerObject & player, GameWorld & world) override;
 
 public:
 };

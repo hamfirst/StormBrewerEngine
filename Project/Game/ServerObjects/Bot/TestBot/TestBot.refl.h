@@ -2,7 +2,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "GameShared/Systems/GameLogicSystems.h"
 
 #include "Game/NetworkEvents/GameServerEventSender.h"
@@ -31,9 +31,9 @@ public:
   TestBot & operator = (const TestBot & rhs) = default;
   TestBot & operator = (TestBot && rhs) = default;
 
-  void Init(const TestBotInitData & init_data, GameLogicContainer & game_container);
-  void UpdateFirst(GameLogicContainer & game_container);
-  void UpdateMiddle(GameLogicContainer & game_container);
+  void Init(const TestBotInitData & init_data, GameWorld & world);
+  void UpdateFirst(GameWorld & world);
+  void UpdateMiddle(GameWorld & world);
 
   virtual czstr GetDefaultEntityBinding() const override;
   virtual const SpritePtr & GetSprite() const override;

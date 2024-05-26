@@ -145,7 +145,7 @@ struct GameInstanceLowFrequencyData
   GameInitSettings m_Settings;
   NetSparseList<GamePlayer, kMaxPlayers> m_Players;
 #ifdef NET_ALLOW_OBSERVERS
-  NetSparseList<GameObserver, 128> m_Observers;
+  NetSparseList<GameObserver, kMaxObservers> m_Observers;
 #endif
 
 };

@@ -25,12 +25,12 @@ GameInstanceStateGameplay::GameInstanceStateGameplay(GameInstanceStateData & sta
   GameInstanceLowFrequencyData low_freq_data;
   bool modify_low_freq = false;
 
-  GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData, low_freq_data,
-          m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
+  GameWorld logic_container(m_Controller, m_StateData.GetInitSettings(), m_InitialState.m_InstanceData, low_freq_data,
+                            m_InitialState.m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
           m_DeliberateSyncSystemData,
 #endif
-          m_Stage, true, m_SendTimer, modify_low_freq);
+                            m_Stage, true, m_SendTimer, modify_low_freq);
 
 
   logic_container.SetAllowModifyLowFrequencyData(true);
@@ -440,12 +440,12 @@ void GameInstanceStateGameplay::BatchUpdate(int frames_to_rewind, int frames_to_
 
     int fake_send_timer = 0;
 
-    GameLogicContainer logic_container(m_Controller, m_StateData.GetInitSettings(), new_state->m_InstanceData,
-            *new_low_freq_data, new_state->m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
+    GameWorld logic_container(m_Controller, m_StateData.GetInitSettings(), new_state->m_InstanceData,
+                              *new_low_freq_data, new_state->m_ServerObjectManager, m_ServerObjectEventSystem, *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
             m_DeliberateSyncSystemData,
 #endif
-            m_Stage, true, fake_send_timer, modified_low_freq);
+                              m_Stage, true, fake_send_timer, modified_low_freq);
 
     auto input_visitor = [&](int frame_count, HistoryInput & elem)
     {   
@@ -691,8 +691,8 @@ void GameInstanceStateGameplay::SendAuthEvent(std::size_t class_id, const void *
 
   if (current_frame < m_FurthestRewind)
   {
-    auto game_container = GetLogicContainer(m_ReconcileFrame);
-    m_Controller.HandleAuthEvent(game_container, class_id, event_ptr);
+    auto world = GetLogicContainer(m_ReconcileFrame);
+    m_Controller.HandleAuthEvent(world, class_id, event_ptr);
   }
 }
 
@@ -744,18 +744,18 @@ const GameInstanceLowFrequencyData & GameInstanceStateGameplay::GetCurrentLowFre
   return *m_CurrentLowFrequencyData;
 }
 
-GameLogicContainer GameInstanceStateGameplay::GetLogicContainer(int history_index)
+GameWorld GameInstanceStateGameplay::GetLogicContainer(int history_index)
 {
   m_CurrentLowFrequencyData = std::make_shared<GameInstanceLowFrequencyData>(*m_CurrentLowFrequencyData);
   m_LowFrequencyHistory.ReplaceTop(m_CurrentLowFrequencyData);
 
-  return GameLogicContainer(m_Controller, m_StateData.GetInitSettings(), m_CurrentState->m_InstanceData,
-          *m_CurrentLowFrequencyData, m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
-          *this, *this, m_Systems,
+  return GameWorld(m_Controller, m_StateData.GetInitSettings(), m_CurrentState->m_InstanceData,
+                   *m_CurrentLowFrequencyData, m_CurrentState->m_ServerObjectManager, m_ServerObjectEventSystem,
+                   *this, *this, m_Systems,
 #ifdef DELIBERATE_SYNC_SYSTEM_LIST
           m_DeliberateSyncSystemData,
 #endif
-          m_Stage, true, m_SendTimer, m_ModifiedLowFreq);
+                   m_Stage, true, m_SendTimer, m_ModifiedLowFreq);
 }
 
 void GameInstanceStateGameplay::SendPacketToPlayer(std::size_t client_id, GameInstanceStateGameplayPlayer & player)

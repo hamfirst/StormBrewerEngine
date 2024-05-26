@@ -12,7 +12,7 @@
 
 GLOBAL_ASSET(EntityResourcePtr, "./Entities/TestBot.entity", g_TestBotEntity);
 
-static StormBehaviorTreeTemplate<BotServerObject, GameLogicContainer> BehaviorTreeTemplate =
+static StormBehaviorTreeTemplate<BotServerObject, GameWorld> BehaviorTreeTemplate =
   SELECT()
     .AddChild(
             STATE<PlayAnimationBotState>(COMPILE_TIME_CRC32_STR("Idle"))
@@ -24,19 +24,19 @@ TestBot::TestBot()
   m_Tree.SetBehaviorTree(&BehaviorTreeTemplate);
 }
 
-void TestBot::Init(const TestBotInitData & init_data, GameLogicContainer & game_container)
+void TestBot::Init(const TestBotInitData & init_data, GameWorld & world)
 {
 
 }
 
-void TestBot::UpdateFirst(GameLogicContainer & game_container)
+void TestBot::UpdateFirst(GameWorld & world)
 {
-  BotServerObject::UpdateFirst(game_container);
+  BotServerObject::UpdateFirst(world);
 }
 
-void TestBot::UpdateMiddle(GameLogicContainer & game_container)
+void TestBot::UpdateMiddle(GameWorld & world)
 {
-  BotServerObject::UpdateMiddle(game_container);
+  BotServerObject::UpdateMiddle(world);
 }
 
 czstr TestBot::GetDefaultEntityBinding() const

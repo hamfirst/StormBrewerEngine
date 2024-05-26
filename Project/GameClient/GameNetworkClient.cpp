@@ -5,7 +5,7 @@
 #include "Engine/Text/TextManager.h"
 #include "Engine/Audio/AudioManager.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "GameShared/GameProtocol.h"
 
 #include "Game/NetworkEvents/GameMessages.refl.meta.h"

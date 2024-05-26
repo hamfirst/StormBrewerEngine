@@ -18,28 +18,28 @@ MapEffectLayerInstance::MapEffectLayerInstance(MapDef & map, std::size_t layer_i
   }
 }
 
-void MapEffectLayerInstance::Init(GameContainer & game_container)
+void MapEffectLayerInstance::Init(GameContainer & world)
 {
   if (m_Renderer)
   {
-    m_Renderer->Init(game_container);
+    m_Renderer->Init(world);
   }
 }
 
-void MapEffectLayerInstance::Update(GameContainer & game_container)
+void MapEffectLayerInstance::Update(GameContainer & world)
 {
   if (m_Renderer)
   {
-    m_Renderer->Update(game_container);
+    m_Renderer->Update(world);
   }
 }
 
-void MapEffectLayerInstance::Draw(GameContainer & game_container, const Box & viewport_bounds, 
+void MapEffectLayerInstance::Draw(GameContainer & world, const Box & viewport_bounds,
   const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state)
 {
   if (m_Renderer)
   {
-    m_Renderer->Render(game_container, viewport_bounds, screen_center, offset, render_state);
+    m_Renderer->Render(world, viewport_bounds, screen_center, offset, render_state);
   }
 }
 

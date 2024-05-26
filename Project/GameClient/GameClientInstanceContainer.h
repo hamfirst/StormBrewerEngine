@@ -8,7 +8,7 @@
 #include "Game/GameController/GameController.refl.h"
 #include "Game/State/GameFullState.refl.h"
 #include "ProjectSettings/ProjectNetworkSettings.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "Game/Systems/GameDeliberateSyncSystemList.h"
 
 #include "GameClient/GameClientController.refl.h"
@@ -31,7 +31,7 @@ class GameClientInstanceContainer
 {
 public:
 
-  GameClientInstanceContainer(GameContainer & game_container, GameClientEventSender & event_sender, int num_local_clients, bool authority);
+  GameClientInstanceContainer(GameContainer & world, GameClientEventSender & event_sender, int num_local_clients, bool authority);
 
   GameClientInstanceContainer(const GameClientInstanceContainer & rhs) = delete;
   GameClientInstanceContainer(GameClientInstanceContainer && rhs) = delete;
@@ -61,8 +61,8 @@ public:
   void PushAuthorityEvent(NetPolymorphic<ServerAuthNetworkEvent> && event, int frame);
   void HandleLocalServerAuthorityEvent(std::size_t class_id, const void * ev);
 
-  GameLogicContainer GetLogicContainer(NullOptPtr<bool> authority = nullptr, int & send_timer = s_BogusSendTimer);
-  GameLogicContainer GetLogicContainer(std::size_t history_index);
+  GameWorld GetLogicContainer(NullOptPtr<bool> authority = nullptr, int & send_timer = s_BogusSendTimer);
+  GameWorld GetLogicContainer(std::size_t history_index);
 
   GameController & GetGameController();
   GameClientEventSender & GetEventSender();

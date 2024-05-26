@@ -15,8 +15,8 @@ public:
 
   explicit PlayAnimationBotState(uint32_t animation_hash);
 
-  void Activate(BotServerObject & bot, GameLogicContainer & container);
-  bool Update(BotServerObject & bot, GameLogicContainer & container);
+  void Activate(BotServerObject & bot, GameWorld & container);
+  bool Update(BotServerObject & bot, GameWorld & container);
 
 private:
   uint32_t m_AnimationHash;

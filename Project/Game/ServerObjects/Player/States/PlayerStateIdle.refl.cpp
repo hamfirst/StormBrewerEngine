@@ -1,7 +1,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "Game/NetworkEvents/GameServerEventSender.h"
 #include "Game/Stage/GameStage.h"
 
@@ -20,7 +20,7 @@
 
 NET_REGISTER_TYPE(PlayerStateIdle, PlayerStateBase);
 
-void PlayerStateIdle::Move(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateIdle::Move(PlayerServerObject & player, GameWorld & world)
 {
 #ifndef PLATFORMER_MOVEMENT
 
@@ -32,16 +32,16 @@ void PlayerStateIdle::Move(PlayerServerObject & player, GameLogicContainer & gam
   player.m_Velocity.x = 0;
   player.m_Velocity.y -= player.GetConfig()->m_Gravity;
 
-  player.MoveCheckCollisionDatabase(game_container);
+  player.MoveCheckCollisionDatabase(world);
 
 #endif
 
 }
 
-void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateIdle::Transition(PlayerServerObject & player, GameWorld & world)
 {
 #ifdef NET_USE_ROUND_TIMER
-  if (game_container.GetInstanceData().m_RoundState == RoundState::kPreRound)
+  if (world.GetInstanceData().m_RoundState == RoundState::kPreRound)
   {
     return;
   }
@@ -51,7 +51,7 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
 
   if (player.m_Input.m_InputStr > GameNetVal(0))
   {
-    player.TransitionToState<PlayerStateMoving>(game_container);
+    player.TransitionToState<PlayerStateMoving>(world);
   }
 
 #else
@@ -60,7 +60,7 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
 
   if (player.m_OnGround == false)
   {
-    auto jump_state = player.TransitionToState<PlayerStateJump>(game_container);
+    auto jump_state = player.TransitionToState<PlayerStateJump>(world);
     if (jump_state)
     {
       jump_state->AllowGraceJump();
@@ -73,14 +73,14 @@ void PlayerStateIdle::Transition(PlayerServerObject & player, GameLogicContainer
 
   if (player.m_Input.m_XInput != GameNetVal(0))
   {
-    player.TransitionToState<PlayerStateMoving>(game_container);
+    player.TransitionToState<PlayerStateMoving>(world);
     return;
   }
 
 #endif
 }
 
-void PlayerStateIdle::Animate(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateIdle::Animate(PlayerServerObject & player, GameWorld & world)
 {
 #ifndef PLATFORMER_MOVEMENT
   switch ((CharacterFacing)player.m_Facing)
@@ -102,6 +102,6 @@ void PlayerStateIdle::Animate(PlayerServerObject & player, GameLogicContainer & 
 
 #endif
 
-  player.TriggerAnimationEvents(game_container, *this);
+  player.TriggerAnimationEvents(world, *this);
 }
 

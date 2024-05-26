@@ -20,14 +20,14 @@ public:
   CollisionDrawer(const CollisionDrawerInitData & init_data);
   virtual ~CollisionDrawer();
 
-  virtual void Init(GameContainer & game_container) override;
-  virtual void Update(GameContainer & game_container) override;
-  virtual void Render(GameContainer & game_container, const Box & viewport_bounds, 
+  virtual void Init(GameContainer & world) override;
+  virtual void Update(GameContainer & world) override;
+  virtual void Render(GameContainer & world, const Box & viewport_bounds,
     const RenderVec2 & screen_center, const Vector2 & offset, RenderState & render_state) override;
 
 protected:
 
-  uint32_t GetCollisionMask(GameContainer & game_container);
+  uint32_t GetCollisionMask(GameContainer & world);
 
 private:
 

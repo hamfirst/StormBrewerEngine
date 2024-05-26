@@ -21,8 +21,8 @@ class MapInstance
 public:
   MapInstance(NotNullPtr<EngineState> engine_state, MapDef & map_def, std::size_t map_id, const Vector2 & offset);
 
-  void Init(GameContainer & game_container);
-  void Update(GameContainer & game_container);
+  void Init(GameContainer & world);
+  void Update(GameContainer & world);
   void Draw(const Box & viewport_bounds, DrawList & draw_list);
 
 private:

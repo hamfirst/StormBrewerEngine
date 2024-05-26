@@ -10,12 +10,12 @@ NET_REGISTER_BASE_TYPE(ProjectileResponseBase);
 
 
 void ProjectileResponseBase::HandleImpact(NullOptPtr<CollisionDatabaseTraceResult> collision_result,
-        ProjectileServerObject & proj, GameLogicContainer & game_container)
+                                          ProjectileServerObject & proj, GameWorld & world)
 {
-  proj.Destroy(game_container.GetObjectManager());
+  proj.Destroy(world.GetObjectManager());
 }
 
-void ProjectileResponseBase::HandleRangeExpired(ProjectileServerObject & proj, GameLogicContainer & game_container)
+void ProjectileResponseBase::HandleRangeExpired(ProjectileServerObject & proj, GameWorld & world)
 {
-  proj.Destroy(game_container.GetObjectManager());
+  proj.Destroy(world.GetObjectManager());
 }

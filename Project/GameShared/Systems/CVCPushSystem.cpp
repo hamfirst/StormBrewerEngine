@@ -9,11 +9,11 @@ void CVCPushSystem::SetCharacterCVCPosition(const Box & box, NotNullPtr<GameServ
   m_Data.push_back(CVCData{ obj->GetObjectHandle(), box });
 }
 
-void CVCPushSystem::ProcessCVC(GameLogicContainer & game_container)
+void CVCPushSystem::ProcessCVC(GameWorld & world)
 {
   for (std::size_t index1 = 0, end = m_Data.size(); index1 < end; ++index1)
   {
-    auto obj1 = m_Data[index1].m_Handle.ResolveTo<GameServerObjectBase>(game_container.GetObjectManager());
+    auto obj1 = m_Data[index1].m_Handle.ResolveTo<GameServerObjectBase>(world.GetObjectManager());
     if (obj1 == nullptr)
     {
       continue;
@@ -24,7 +24,7 @@ void CVCPushSystem::ProcessCVC(GameLogicContainer & game_container)
 
     for (std::size_t index2 = index1 + 1; index2 < end; ++index2)
     {
-      auto obj2 = m_Data[index2].m_Handle.ResolveTo<GameServerObjectBase>(game_container.GetObjectManager());
+      auto obj2 = m_Data[index2].m_Handle.ResolveTo<GameServerObjectBase>(world.GetObjectManager());
       if (obj2 == nullptr)
       {
         continue;
@@ -52,7 +52,7 @@ void CVCPushSystem::ProcessCVC(GameLogicContainer & game_container)
         auto half_diff_x = diff_x / GameNetVal(2);
         auto movement = GameNetVec2(half_diff_x, GameNetVal(0));
 
-        auto move1_result = obj1->MoveCheckCollisionDatabase(game_container, movement);
+        auto move1_result = obj1->MoveCheckCollisionDatabase(world, movement);
         if (move1_result.m_HitLeft || move1_result.m_HitRight)
         {
           movement = GameNetVec2(-diff_x, GameNetVal(0));
@@ -62,11 +62,11 @@ void CVCPushSystem::ProcessCVC(GameLogicContainer & game_container)
           movement = GameNetVec2(-half_diff_x, GameNetVal(0));
         }
 
-        auto move2_result = obj2->MoveCheckCollisionDatabase(game_container, movement);
+        auto move2_result = obj2->MoveCheckCollisionDatabase(world, movement);
         if (move2_result.m_HitLeft || move2_result.m_HitRight)
         {
           movement = GameNetVec2(half_diff_x, GameNetVal(0));
-          obj1->MoveCheckCollisionDatabase(game_container, movement);
+          obj1->MoveCheckCollisionDatabase(world, movement);
         }
       }
     }

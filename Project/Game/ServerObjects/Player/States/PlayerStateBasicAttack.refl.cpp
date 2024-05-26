@@ -1,7 +1,7 @@
 
 #include "Game/GameCommon.h"
 
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "Game/NetworkEvents/GameServerEventSender.h"
 #include "Game/Stage/GameStage.h"
 
@@ -41,7 +41,7 @@ void PlayerStateBasicAttack::Setup(PlayerServerObject & player, uint32_t animati
   }
 }
 
-void PlayerStateBasicAttack::Move(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateBasicAttack::Move(PlayerServerObject & player, GameWorld & world)
 {
   player.m_Velocity.x = 0;
 
@@ -82,24 +82,24 @@ void PlayerStateBasicAttack::Move(PlayerServerObject & player, GameLogicContaine
     }
   }
 
-  player.MoveCheckCollisionDatabase(game_container, m_AnimationVelocity);
+  player.MoveCheckCollisionDatabase(world, m_AnimationVelocity);
 }
 
-void PlayerStateBasicAttack::Transition(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateBasicAttack::Transition(PlayerServerObject & player, GameWorld & world)
 {
 #if PROJECT_PERSPECTIVE == PERSPECTIVE_SIDESCROLLER
   if (m_Settings.m_InterruptIfNoGround && player.m_OnGround == false)
   {
-    player.TransitionToState<PlayerStateJump>(game_container);
+    player.TransitionToState<PlayerStateJump>(world);
     return;
   }
 #endif
 }
 
-void PlayerStateBasicAttack::Animate(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateBasicAttack::Animate(PlayerServerObject & player, GameWorld & world)
 {
   bool finished = player.FrameAdvance(m_AnimationHash, false);
-  player.TriggerAnimationEvents(game_container, *this);
+  player.TriggerAnimationEvents(world, *this);
 
   if (finished)
   {
@@ -111,21 +111,21 @@ void PlayerStateBasicAttack::Animate(PlayerServerObject & player, GameLogicConta
 #if PROJECT_PERSPECTIVE == PERSPECTIVE_SIDESCROLLER
     if (player.m_OnGround)
     {
-      player.TransitionToState<PlayerStateIdle>(game_container);
+      player.TransitionToState<PlayerStateIdle>(world);
     }
     else
     {
-      player.TransitionToState<PlayerStateJump>(game_container);
+      player.TransitionToState<PlayerStateJump>(world);
     }
 #else
-    player.TransitionToState<PlayerStateIdle>(game_container);
+    player.TransitionToState<PlayerStateIdle>(world);
 #endif
 
     return;
   }
 }
 
-void PlayerStateBasicAttack::PostUpdate(PlayerServerObject & player, GameLogicContainer & game_container)
+void PlayerStateBasicAttack::PostUpdate(PlayerServerObject & player, GameWorld & world)
 {
   if (m_DamageSettings)
   {
@@ -136,7 +136,7 @@ void PlayerStateBasicAttack::PostUpdate(PlayerServerObject & player, GameLogicCo
     dmg.m_Source = player.GetSlotIndex();
     dmg.m_Direction = player.m_Facing;
 
-    player.PushDealDamageEventBoxes(COMPILE_TIME_CRC32_STR("DealDamage"), dmg, game_container);
+    player.PushDealDamageEventBoxes(COMPILE_TIME_CRC32_STR("DealDamage"), dmg, world);
   }
 }
 

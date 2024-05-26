@@ -4,13 +4,13 @@
 
 int s_BogusSendTimer = 0;
 
-GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & game_container, GameClientEventSender & event_sender, int num_local_clients, bool authority) :
+GameClientInstanceContainer::GameClientInstanceContainer(GameContainer & world, GameClientEventSender & event_sender, int num_local_clients, bool authority) :
   m_ReconcileFrame(0),
-  m_GameContainer(game_container),
+  m_GameContainer(world),
   m_EventSender(event_sender),
-  m_ClientController(game_container),
-  m_LevelLoader(game_container),
-  m_EntitySync(game_container),
+  m_ClientController(world),
+  m_LevelLoader(world),
+  m_EntitySync(world),
   m_ServerEventResponder(authority, this, &m_ClientController, &m_Reconciler, &m_ReconcileFrame),
   m_Loaded(false),
   m_Authority(authority),
@@ -340,9 +340,9 @@ void GameClientInstanceContainer::HandleLocalServerAuthorityEvent(std::size_t cl
   m_ClientController.HandleAuthEvent(class_id, ev);
 }
 
-GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<bool> authority, int & send_timer)
+GameWorld GameClientInstanceContainer::GetLogicContainer(NullOptPtr<bool> authority, int & send_timer)
 {
-  return GameLogicContainer(
+  return GameWorld(
     GetGameController(),
     m_InitSettings,
     GetFullState().m_InstanceData,
@@ -359,9 +359,9 @@ GameLogicContainer GameClientInstanceContainer::GetLogicContainer(NullOptPtr<boo
     authority ? *authority : m_Authority, send_timer, m_ModifiedLowFreq);
 }
 
-GameLogicContainer GameClientInstanceContainer::GetLogicContainer(std::size_t history_index)
+GameWorld GameClientInstanceContainer::GetLogicContainer(std::size_t history_index)
 {
-  return GameLogicContainer(
+  return GameWorld(
     GetGameController(),
     m_InitSettings,
     GetHistoryState(history_index).m_InstanceData,

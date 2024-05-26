@@ -51,6 +51,7 @@
 #define NET_SYNC_SERVER_RATE 3
 
 static const int kMaxPlayers = 16;
+static const int kMaxObservers = 16;
 static const int kMaxTeams = 2;
 
 static const int kMaxLatency = 160;

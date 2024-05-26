@@ -45,12 +45,12 @@ void MapSystem::DrawAllMaps(const Box & viewport_bounds, DrawList & draw_list)
   }
 }
 
-void MapSystem::UpdateAllMaps(GameContainer & game_container)
+void MapSystem::UpdateAllMaps(GameContainer & world)
 {
   for (auto & map : m_Maps)
   {
     MapInstance * inst = map.second.get();
-    inst->Update(game_container);
+    inst->Update(world);
   }
 }
 

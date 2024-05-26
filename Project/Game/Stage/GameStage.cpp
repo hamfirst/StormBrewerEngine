@@ -9,7 +9,7 @@
 
 #include "Game/Markup/PlayerSpawn.refl.meta.h"
 #include "Game/Markup/KillVolume.refl.meta.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 
 GameStage::GameStage(const Map & map) :
   m_DynamicObjectCount(127),
@@ -267,7 +267,7 @@ GameFullState GameStage::CreateDefaultGameState() const
   return GameFullState{ ServerObjectManager(m_StaticObjects, m_DynamicObjects, m_DynamicObjectCount, kMaxPlayers) };
 }
 
-void GameStage::InitAllObjects(GameLogicContainer & game_container) const
+void GameStage::InitAllObjects(GameWorld & world) const
 {
-  game_container.GetObjectManager().InitAllObjects(m_StaticObjects, m_DynamicObjects, game_container);
+  world.GetObjectManager().InitAllObjects(m_StaticObjects, m_DynamicObjects, world);
 }

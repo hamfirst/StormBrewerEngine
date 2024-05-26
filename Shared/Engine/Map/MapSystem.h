@@ -19,7 +19,7 @@ public:
   NullOptPtr<MapInstance> GetMapInstance(std::size_t map_id);
 
   void DrawAllMaps(const Box & viewport_bounds, DrawList & draw_listl);
-  void UpdateAllMaps(GameContainer & game_container);
+  void UpdateAllMaps(GameContainer & world);
   void UnloadAllMaps();
 private:
 

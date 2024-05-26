@@ -10,9 +10,9 @@ class {class_name} : public BotStateBase, public BotStateEventHandler<{class_nam
 public:
   NET_REFL;
 
-  virtual void Move(BotServerObject & Bot, GameLogicContainer & game_container) override;
-  virtual void Transition(BotServerObject & Bot, GameLogicContainer & game_container) override;
-  virtual void Animate(BotServerObject & Bot, GameLogicContainer & game_container) override;
+  virtual void Move(BotServerObject & Bot, GameLogicContainer & world) override;
+  virtual void Transition(BotServerObject & Bot, GameLogicContainer & world) override;
+  virtual void Animate(BotServerObject & Bot, GameLogicContainer & world) override;
 
 public:
   // Serialized variables

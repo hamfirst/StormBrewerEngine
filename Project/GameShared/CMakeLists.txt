@@ -18,11 +18,11 @@ set(GENERIC_SRC_GameShared
             BehaviorTree/States/PlayAnimationBotState.refl.reg.cpp
             GameEventReconciler.cpp
             GameLevelList.cpp
-            GameLogicContainer.cpp
             GamePlayList.cpp
             GameSharedCommon.cpp
             GameStageManager.cpp
             GameWebrtc.cpp
+            GameWorld.cpp
             Systems/CVCPushSystem.cpp
             Systems/GameLogicSystems.cpp
             Systems/GameServerObjectOverlapSystem.cpp
@@ -39,13 +39,13 @@ set(GENERIC_HEADER_GameShared
             GameLevelList.h
             GameLevelListAsset.refl.h
             GameLevelListAsset.refl.meta.h
-            GameLogicContainer.h
             GamePlayList.h
             GamePlayListAsset.refl.h
             GamePlayListAsset.refl.meta.h
             GameProtocol.h
             GameSharedCommon.h
             GameStageManager.h
+            GameWorld.h
             Systems/CVCPushSystem.h
             Systems/GameLogicSystems.h
             Systems/GameServerObjectOverlapRegistrationMacros.h

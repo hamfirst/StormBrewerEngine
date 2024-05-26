@@ -7,12 +7,12 @@ PlayAnimationBotState::PlayAnimationBotState(uint32_t animation_hash) :
   
 }
 
-void PlayAnimationBotState::Activate(BotServerObject & bot, GameLogicContainer & container)
+void PlayAnimationBotState::Activate(BotServerObject & bot, GameWorld & container)
 {
   bot.ResetAnimState();
 }
 
-bool PlayAnimationBotState::Update(BotServerObject & bot, GameLogicContainer & container)
+bool PlayAnimationBotState::Update(BotServerObject & bot, GameWorld & container)
 {
   if(bot.FrameAdvance(m_AnimationHash, false))
   {

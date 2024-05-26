@@ -82,7 +82,7 @@ RenderVec2 Camera::TransformFromClipSpaceToWorldSpace(const RenderVec2 & pos)
   return transformed_pos;
 }
 
-void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine_state, RenderState & render_state)
+void Camera::Draw(GameContainer & world, NotNullPtr<EngineState> engine_state, RenderState & render_state)
 {
   Box viewport;
 
@@ -103,5 +103,5 @@ void Camera::Draw(GameContainer & game_container, NotNullPtr<EngineState> engine
   engine_state->GetMapSystem()->DrawAllMaps(viewport, draw_list);
   engine_state->GetEntitySystem()->DrawAllEntities(viewport, draw_list);
   engine_state->GetVisualEffectManager()->DrawAllEffects(viewport, draw_list);
-  draw_list.Draw(game_container, viewport, m_Position, render_state);
+  draw_list.Draw(world, viewport, m_Position, render_state);
 }

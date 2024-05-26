@@ -4,7 +4,7 @@
 #include "Game/GameCommon.h"
 
 #include "Game/GameTypes.h"
-#include "GameShared/GameLogicContainer.h"
+#include "GameShared/GameWorld.h"
 #include "Game/NetworkEvents/GameNetworkData.refl.h"
 
 #include "Game/ServerObjects/CharacterFacing.refl.h"
@@ -35,8 +35,8 @@ public:
   GameServerObjectBase & operator = (const GameServerObjectBase & rhs) = default;
   GameServerObjectBase & operator = (GameServerObjectBase && rhs) = default;
 
-  void Init(const GameServerObjectBaseInitData & init_data, GameLogicContainer & game_container);
-  void UpdateFirst(GameLogicContainer & container);
+  void Init(const GameServerObjectBaseInitData & init_data, GameWorld & world);
+  void UpdateFirst(GameWorld & container);
 
   virtual void InitPosition(const Vector2 & pos) override;
 
@@ -50,37 +50,37 @@ public:
   bool FrameAdvance(uint32_t anim_name_hash, bool loop = true, int frames = 1);
   void ResetAnimState();
 
-  void PushDealDamageEventBox(const Box & b, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameLogicContainer & game_container);
-  void PushReceiveDamageEventBox(const Box & b, GameLogicContainer & game_container);
-  void PushReceiveDamageEventBox(uint32_t box_name_hash, GameLogicContainer & game_container);
-  void PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
-  void PushReceiveDamageCollisionBox(const Box & b, GameLogicContainer & game_container);
-  void PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameLogicContainer & game_container);
-  void PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameLogicContainer & game_container);
-  void PushCVCBox(const Box & b, GameLogicContainer & game_container);
-  void PushCVCBox(uint32_t box_name_hash, GameLogicContainer & game_container);
+  void PushDealDamageEventBox(const Box & b, const DamageEvent & damage_event, GameWorld & world);
+  void PushDealDamageEventBox(uint32_t box_name_hash, const DamageEvent & damage_event, GameWorld & world);
+  void PushDealDamageEventBoxes(uint32_t multi_box_name_hash, const DamageEvent & damage_event, GameWorld & world);
+  void PushReceiveDamageEventBox(const Box & b, GameWorld & world);
+  void PushReceiveDamageEventBox(uint32_t box_name_hash, GameWorld & world);
+  void PushReceiveDamageEventBoxes(uint32_t multi_box_name_hash, GameWorld & world);
+  void PushReceiveDamageCollisionBox(const Box & b, GameWorld & world);
+  void PushReceiveDamageCollisionBox(uint32_t box_name_hash, GameWorld & world);
+  void PushReceiveDamageCollisionBoxes(uint32_t multi_box_name_hash, GameWorld & world);
+  void PushCVCBox(const Box & b, GameWorld & world);
+  void PushCVCBox(uint32_t box_name_hash, GameWorld & world);
 
 #ifdef MOVER_ONE_WAY_COLLISION
-  MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity, bool fallthrough = false);
+  MoverResult MoveCheckCollisionDatabase(GameWorld & world, const GameNetVec2 & velocity, bool fallthrough = false);
 #else
-  MoverResult MoveCheckCollisionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity);
+  MoverResult MoveCheckCollisionDatabase(GameWorld & world, const GameNetVec2 & velocity);
 #endif
 
-  GameNetVec2 MoveCheckIntersectionDatabase(GameLogicContainer & game_container, const GameNetVec2 & velocity, GameNetVal player_radius, GameNetVal move_threshold);
+  GameNetVec2 MoveCheckIntersectionDatabase(GameWorld & world, const GameNetVec2 & velocity, GameNetVal player_radius, GameNetVal move_threshold);
 
   virtual const SpritePtr & GetSprite() const;
   virtual Optional<CharacterFacing> GetFacing() const;
   virtual Optional<int> GetCollisionId() const;
 
   template <typename Target>
-  void TriggerAnimationEvents(GameLogicContainer & game_container, Target & target)
+  void TriggerAnimationEvents(GameWorld & world, Target & target)
   {
     auto anim_state = GetAnimationState();
     if (anim_state)
     {
-      GetSprite()->SendEventsTo(target, anim_state.Value(), EventMetaData(this, &game_container));
+      GetSprite()->SendEventsTo(target, anim_state.Value(), EventMetaData(this, &world));
     }
   }
 
